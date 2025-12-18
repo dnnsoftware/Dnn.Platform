@@ -26,7 +26,7 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, GetServerList());
+                return this.Request.CreateResponse(HttpStatusCode.OK, this.GetServerList());
             }
             catch (Exception exc)
             {
@@ -88,7 +88,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
-        private static IEnumerable<WebServer> GetServerList()
+        private IEnumerable<WebServer> GetServerList()
         {
             return DotNetNuke.Entities.Host.ServerController.GetServers().Select(s => new WebServer()
             {

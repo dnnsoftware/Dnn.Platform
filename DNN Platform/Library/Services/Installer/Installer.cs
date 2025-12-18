@@ -158,7 +158,7 @@ namespace DotNetNuke.Services.Installer
             {
                 packageType = Util.ReadAttribute(rootNav, "type");
             }
-            else if (rootNav.Name.Equals("languagepack", StringComparison.OrdinalIgnoreCase))
+            else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
             {
                 packageType = "LanguagePack";
             }
@@ -285,11 +285,11 @@ namespace DotNetNuke.Services.Installer
             this.LogInstallEvent("Package", "Install");
 
             // when the installer initialized by file stream, we need save the file stream into backup folder.
-            if (this.inputStream != null && succeeded && this.Packages.Count != 0)
+            if (this.inputStream != null && succeeded && this.Packages.Any())
             {
                 Task.Run(() =>
                 {
-                    BackupStreamIntoFile(this.inputStream, this.Packages[0].Package);
+                    this.BackupStreamIntoFile(this.inputStream, this.Packages[0].Package);
                 });
             }
 
@@ -353,32 +353,6 @@ namespace DotNetNuke.Services.Installer
             // log installation event
             this.LogInstallEvent("Package", "UnInstall");
             return true;
-        }
-
-        private static void BackupStreamIntoFile(Stream stream, PackageInfo package)
-        {
-            try
-            {
-                var filePath = Util.GetPackageBackupPath(package);
-
-                if (File.Exists(filePath))
-                {
-                    File.SetAttributes(filePath, FileAttributes.Normal);
-                    File.Delete(filePath);
-                }
-
-                using var fileStream = File.Create(filePath);
-                if (stream.CanSeek)
-                {
-                    stream.Seek(0, SeekOrigin.Begin);
-                }
-
-                stream.CopyTo(fileStream);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
         }
 
         /// <summary>The InstallPackages method installs the packages.</summary>
@@ -476,7 +450,7 @@ namespace DotNetNuke.Services.Installer
             {
                 packageType = Util.ReadAttribute(rootNav, "type");
             }
-            else if (rootNav.Name.Equals("languagepack", StringComparison.OrdinalIgnoreCase))
+            else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
             {
                 packageType = "LanguagePack";
             }
@@ -518,6 +492,34 @@ namespace DotNetNuke.Services.Installer
                 {
                     this.InstallerInfo.Log.AddInfo(Util.UNINSTALL_Success + " - " + installer.Package.Name);
                 }
+            }
+        }
+
+        private void BackupStreamIntoFile(Stream stream, PackageInfo package)
+        {
+            try
+            {
+                var filePath = Util.GetPackageBackupPath(package);
+
+                if (File.Exists(filePath))
+                {
+                    File.SetAttributes(filePath, FileAttributes.Normal);
+                    File.Delete(filePath);
+                }
+
+                using (var fileStream = File.Create(filePath))
+                {
+                    if (stream.CanSeek)
+                    {
+                        stream.Seek(0, SeekOrigin.Begin);
+                    }
+
+                    stream.CopyTo(fileStream);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
             }
         }
     }

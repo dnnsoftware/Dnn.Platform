@@ -16,9 +16,6 @@ using Dnn.CakeUtils;
 /// <summary>A cake task to generate the Microsoft.Web.Infrastructure package.</summary>
 public sealed class PackageMicrosoftWebInfrastructure : FrostingTask<Context>
 {
-    private static readonly string[] AllFiles = ["*",];
-    private static readonly string[] ManifestFiles = ["*.dnn",];
-
     /// <inheritdoc/>
     public override void Run(Context context)
     {
@@ -33,7 +30,7 @@ public sealed class PackageMicrosoftWebInfrastructure : FrostingTask<Context>
         context.Zip(
             packageDir.ToString(),
             packageZip,
-            context.GetFilesByPatterns(packageDir, AllFiles, ManifestFiles));
+            context.GetFilesByPatterns(packageDir, new[] { "*" }, new[] { "*.dnn" }));
 
         var manifestPath = context.GetFiles(packageDir.Path.CombineWithFilePath("*.dnn").ToString()).Single();
         context.Information($"Reading manifest from {manifestPath}");
@@ -42,7 +39,7 @@ public sealed class PackageMicrosoftWebInfrastructure : FrostingTask<Context>
         var assemblies =
             from XmlNode assemblyNode in manifest.SelectNodes("//assembly")
             from XmlNode childNode in assemblyNode.ChildNodes
-            where childNode.LocalName.Equals("name", System.StringComparison.Ordinal)
+            where childNode.LocalName.Equals("name")
             select childNode;
 
         foreach (var assemblyNameNode in assemblies)
@@ -56,7 +53,7 @@ public sealed class PackageMicrosoftWebInfrastructure : FrostingTask<Context>
                 append: true);
 
             var versionNode = assemblyNameNode.ParentNode.ChildNodes.Cast<XmlNode>()
-                .SingleOrDefault(childNode => childNode.LocalName.Equals("version", System.StringComparison.Ordinal));
+                .SingleOrDefault(childNode => childNode.LocalName.Equals("version"));
             if (versionNode != null)
             {
                 versionNode.InnerText = FileVersionInfo.GetVersionInfo(context.MakeAbsolute(assemblyPath).FullPath).FileVersion;

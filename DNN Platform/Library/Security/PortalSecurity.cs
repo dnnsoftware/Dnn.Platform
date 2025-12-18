@@ -1,11 +1,10 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Security
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
@@ -261,7 +260,7 @@ namespace DotNetNuke.Security
             if (roles != null)
             {
                 // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
-                foreach (string role in roles.Split(';'))
+                foreach (string role in roles.Split(new[] { ';' }))
                 {
                     if (!string.IsNullOrEmpty(role))
                     {
@@ -405,13 +404,14 @@ namespace DotNetNuke.Security
         /// <param name="numBytes">This is the number of bytes for the key.</param>
         /// <returns>A random string.</returns>
         /// <remarks>This is a public function used for generating SHA1 keys.</remarks>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string CreateKey(int numBytes)
         {
-            using var rng = new RNGCryptoServiceProvider();
-            var buff = new byte[numBytes];
-            rng.GetBytes(buff);
-            return BytesToHexString(buff);
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                var buff = new byte[numBytes];
+                rng.GetBytes(buff);
+                return BytesToHexString(buff);
+            }
         }
 
         /// <summary>
@@ -420,7 +420,6 @@ namespace DotNetNuke.Security
         /// <param name="strKey">The encryption key.</param>
         /// <param name="strData">The encrypted data.</param>
         /// <returns>The decrypted string.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string Decrypt(string strKey, string strData)
         {
             return CryptographyProvider.Instance().DecryptParameter(strData, strKey);
@@ -432,7 +431,6 @@ namespace DotNetNuke.Security
         /// <param name="message">The encrypted message.</param>
         /// <param name="passphrase">The passphrase.</param>
         /// <returns>The decrypted string.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string DecryptString(string message, string passphrase)
         {
             return CryptographyProvider.Instance().DecryptString(message, passphrase);
@@ -444,7 +442,6 @@ namespace DotNetNuke.Security
         /// <param name="key">The key.</param>
         /// <param name="data">The data.</param>
         /// <returns>The encrypted string.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string Encrypt(string key, string data)
         {
             return CryptographyProvider.Instance().EncryptParameter(data, key);
@@ -456,7 +453,6 @@ namespace DotNetNuke.Security
         /// <param name="message">The message.</param>
         /// <param name="passphrase">The passphrase.</param>
         /// <returns>The encrypted string.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string EncryptString(string message, string passphrase)
         {
             return CryptographyProvider.Instance().EncryptString(message, passphrase);
@@ -529,7 +525,6 @@ namespace DotNetNuke.Security
         /// <param name="configSource">The external file to search the words. Ignored when configType is ListController.</param>
         /// <param name="filterScope">When using ListController configType, this parameter indicates which list(s) to use.</param>
         /// <returns>The original text with the profanity words replaced.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string Replace(string inputString, ConfigType configType, string configSource, FilterScope filterScope)
         {
             switch (configType)
@@ -569,7 +564,7 @@ namespace DotNetNuke.Security
                 case ConfigType.ExternalFile:
                     throw new NotImplementedException();
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(configType));
+                    throw new ArgumentOutOfRangeException("configType");
             }
 
             return inputString;
@@ -588,7 +583,6 @@ namespace DotNetNuke.Security
         /// <param name="configSource">The external file to search the words. Ignored when configType is ListController.</param>
         /// <param name="filterScope">When using ListController configType, this parameter indicates which list(s) to use.</param>
         /// <returns>The original text with the profanity words removed.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string Remove(string inputString, ConfigType configType, string configSource, FilterScope filterScope)
         {
             switch (configType)
@@ -628,7 +622,7 @@ namespace DotNetNuke.Security
                 case ConfigType.ExternalFile:
                     throw new NotImplementedException();
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(configType));
+                    throw new ArgumentOutOfRangeException("configType");
             }
 
             return inputString;
@@ -639,7 +633,6 @@ namespace DotNetNuke.Security
         /// </summary>
         /// <param name="user">The user info.</param>
         /// <param name="createPersistentCookie">if set to <see langword="true"/> [create persistent cookie].</param>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void SignIn(UserInfo user, bool createPersistentCookie)
         {
             if (PortalController.IsMemberOfPortalGroup(user.PortalID) || createPersistentCookie)
@@ -717,7 +710,6 @@ namespace DotNetNuke.Security
         /// <summary>
         /// Signs the current user out.
         /// </summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void SignOut()
         {
             InvalidateAspNetSession(HttpContext.Current);
@@ -838,7 +830,6 @@ namespace DotNetNuke.Security
         /// The only time we should call this is if the host allowed extensions list has changed.
         /// </summary>
         /// <param name="newMasterList">Comma separated list of extensions that govern all users on this installation.</param>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void CheckAllPortalFileExtensionWhitelists(string newMasterList)
         {
             var masterList = new FileExtensionWhitelist(newMasterList);

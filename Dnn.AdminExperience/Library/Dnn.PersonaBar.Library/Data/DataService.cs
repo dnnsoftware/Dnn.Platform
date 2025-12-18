@@ -94,7 +94,7 @@ namespace Dnn.PersonaBar.Library.Data
                 DataProvider.GetNull(portalId),
                 menuId,
                 permissionId,
-                GetRoleNull(roleId),
+                this.GetRoleNull(roleId),
                 DataProvider.GetNull(userId),
                 allowAccees,
                 currentUserId);
@@ -147,7 +147,7 @@ namespace Dnn.PersonaBar.Library.Data
             DataProvider.ExecuteNonQuery("PersonaBar_UpdateMenuController", identifier, controller, userId);
         }
 
-        private static object GetRoleNull(int roleId)
+        private object GetRoleNull(int roleId)
         {
             if (roleId.ToString() == "-4")
             {

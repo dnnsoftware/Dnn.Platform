@@ -26,9 +26,6 @@ namespace DotNetNuke.Entities.Urls
     {
         internal const int SiteRootRewrite = -3;
         internal const int AllTabsRewrite = -1;
-        private const string TabKeySeparator = "::";
-
-        private static readonly string[] TabKeySeparators = [TabKeySeparator,];
 
         private static readonly Regex TabIdRegex = new Regex(
             @"(?:\?|\&)tabid\=(?<tabid>[\d]+)",
@@ -365,7 +362,7 @@ namespace DotNetNuke.Entities.Urls
                             int parmStart = i + 1; // determine if any parameters on this value
 
                             // make up the index that is looked for in the Tab Dictionary
-                            string urlPart = aliasPath + TabKeySeparator + tabPath;
+                            string urlPart = aliasPath + "::" + tabPath;
 
                             // the :: allows separation of pagename and portal alias
                             string tabKeyVal = urlPart.ToLowerInvariant(); // force lower case lookup, all keys are lower case
@@ -386,7 +383,7 @@ namespace DotNetNuke.Entities.Urls
                             if (!found && tabPathLength == 1)
                             {
                                 // look for special case where the site root has a * value
-                                string siteRootLookup = aliasPath + TabKeySeparator + "*";
+                                string siteRootLookup = aliasPath + "::" + "*";
                                 using (tabDict.GetReadLock())
                                 {
                                     found = tabDict.ContainsKey(siteRootLookup);
@@ -755,12 +752,12 @@ namespace DotNetNuke.Entities.Urls
         {
             isPhysicalResource = false;
             checkFurtherForRewrite = true;
-            if (File.Exists(physicalPath) && !physicalPath.EndsWith("\\_noext.aspx"))
+            if (File.Exists(physicalPath) && physicalPath.EndsWith("\\_noext.aspx") == false)
             {
                 // resource found
                 string appPath = Globals.ApplicationMapPath + "\\default.aspx";
                 bool isDefaultAspxPath = false;
-                if (!string.Equals(physicalPath, appPath, StringComparison.OrdinalIgnoreCase))
+                if (string.Compare(physicalPath, appPath, StringComparison.OrdinalIgnoreCase) != 0)
                 {
                     string aliasQs;
                     if (AdvancedUrlRewriter.CheckForChildPortalRootUrl(fullUrl, result, out aliasQs))
@@ -769,7 +766,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        // it's not the default.aspx path or a child alias request, so we haven't identified the resource
+                        // it's not the default.aspx path or a child alias request, so we haven't identifed the resource
                         isPhysicalResource = true;
                         checkFurtherForRewrite = false;
                         result.DebugMessages.Add("Resource Identified No Rewrite Used");
@@ -836,7 +833,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 var url = absoluteUri; // get local copy because it gets hacked around
 
-                // Remove querystring if it exists.
+                // Remove querystring if exists..
                 if (queryString != string.Empty)
                 {
                     url = url.Replace(queryString, string.Empty);
@@ -845,7 +842,7 @@ namespace DotNetNuke.Entities.Urls
                 var rules = rewriterConfig.Rules;
                 if (rules == null)
                 {
-                    throw new InvalidOperationException("DotNetNuke.HttpModules.Config.RewriterRuleCollection is null");
+                    throw new NullReferenceException("DotNetNuke.HttpModules.Config.RewriterRuleCollection is null");
                 }
 
                 for (var i = 0; i <= rules.Count - 1; i++)
@@ -875,7 +872,7 @@ namespace DotNetNuke.Entities.Urls
                             for (var x = 1; x <= urlParams.Length - 1; x++)
                             {
                                 if (urlParams[x].Trim().Length > 0 &&
-                                    !urlParams[x].Equals(Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
+                                    !urlParams[x].Equals(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     rewritePath = rewritePath + "&" + urlParams[x].Replace(".aspx", string.Empty).Trim() + "=";
                                     if (x < (urlParams.Length - 1))
@@ -1007,7 +1004,7 @@ namespace DotNetNuke.Entities.Urls
             // we should be checking that the tab path matches //Admin//pagename or //admin
             // in this way we should avoid partial matches (ie //Administrators
             if (tabPath.StartsWith("//" + adminPageName + "//", StringComparison.CurrentCultureIgnoreCase)
-                || string.Equals(tabPath, "//" + adminPageName, StringComparison.OrdinalIgnoreCase))
+                || string.Compare(tabPath, "//" + adminPageName, StringComparison.OrdinalIgnoreCase) == 0)
             {
                 return true;
             }
@@ -1132,7 +1129,7 @@ namespace DotNetNuke.Entities.Urls
                             if (cultureMatch.Success)
                             {
                                 cultureId = cultureMatch.Groups[1].Value + "-" +
-                                            cultureMatch.Groups[2].ToString().ToUpperInvariant();
+                                            cultureMatch.Groups[2].ToString().ToUpper();
                             }
 
                             // set procedure level culture code, which indicates a language was found in the path
@@ -1153,9 +1150,9 @@ namespace DotNetNuke.Entities.Urls
                     string thisParm = urlParms[i];
 
                     // here's the thing - we either take the last one and put it at the start, or just go two-by-two
-                    if (!thisParm.Equals(Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
+                    if (!thisParm.Equals(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (thisParm.Equals("tabid", StringComparison.OrdinalIgnoreCase))
+                        if (thisParm.Equals("tabid", StringComparison.InvariantCultureIgnoreCase))
                         {
                             skip = true;
 
@@ -1173,7 +1170,7 @@ namespace DotNetNuke.Entities.Urls
                                 result.Action = ActionType.CheckFor301;
 
                                 // set the value field back to false, because, even if the parameter handling is
-                                // first parm last, this was an old style URL designed to be redirected.
+                                // first parm last, this was an old style URl desitned to be redirected.
                                 // and we would expect old-style urls to have the correct parameter order
                                 // note this assumes tabid is the first parm in the list.
                                 valueField = false;
@@ -1181,7 +1178,8 @@ namespace DotNetNuke.Entities.Urls
                         }
                         else if (!skip)
                         {
-                            string urlParm = CleanExtension(thisParm, pageExtension, out var extReplaced);
+                            bool extReplaced;
+                            string urlParm = CleanExtension(thisParm, pageExtension, out extReplaced);
 
                             if (extReplaced && pageExtension == string.Empty)
                             {
@@ -1192,19 +1190,18 @@ namespace DotNetNuke.Entities.Urls
                             if (valueField)
                             {
                                 // this parameter is going into the value half of a &key=value pair
-                                parmString.Append('=');
+                                parmString.Append("=");
                                 parmString.Append(urlParm);
                                 valueField = false;
                                 if (isUserParm)
                                 {
-                                    ////int userIdVal;
-                                    ////int.TryParse(urlParm, out userIdVal);
-
+                                    int userIdVal;
+                                    int.TryParse(urlParm, out userIdVal);
                                     isUserParm = false;
                                 }
 
                                 // 786 : redirect ctl/terms etc
-                                if (keyName != null && keyName.Equals("ctl", StringComparison.OrdinalIgnoreCase))
+                                if (keyName != null && keyName.ToLowerInvariant() == "ctl")
                                 {
                                     RequestRedirectOnBuiltInUrl(urlParm, parmString.ToString(), result);
                                 }
@@ -1213,21 +1210,21 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 // this parameter is going into the key half of a &key=value pair
                                 keyName = urlParm;
-                                parmString.Append('&');
+                                parmString.Append("&");
                                 parmString.Append(urlParm);
                                 valueField = true;
 
                                 // if we are looking for a userid parameter in this querystring, check for a match
                                 if (userIdParm != null)
                                 {
-                                    if (string.Equals(keyName, userIdParm, StringComparison.OrdinalIgnoreCase))
+                                    if (string.Compare(keyName, userIdParm, StringComparison.OrdinalIgnoreCase) == 0)
                                     {
                                         isUserParm = true;
                                     }
                                 }
                             }
                         }
-                        else
+                        else if (skip)
                         {
                             skip = false;
                         }
@@ -1300,17 +1297,18 @@ namespace DotNetNuke.Entities.Urls
                     if (tabMatch.Success)
                     {
                         string rawTabId = tabMatch.Groups["tabid"].Value;
-                        if (int.TryParse(rawTabId, out var tabId))
+                        int tabId;
+                        if (int.TryParse(rawTabId, out tabId))
                         {
-                            if (rewriteActions.TryGetValue(tabId, out var action))
+                            if (rewriteActions.ContainsKey(tabId))
                             {
                                 // find the right set of rewrite actions for this tab
-                                tabRewrites = action;
+                                tabRewrites = rewriteActions[tabId];
                             }
                         }
                     }
 
-                    if (rewriteActions.TryGetValue(AllTabsRewrite, out var allRewrites))
+                    if (rewriteActions.ContainsKey(AllTabsRewrite))
                     {
                         // -1 means 'all tabs' - rewriting across all tabs
                         // initialise to empty collection if there are no specific tab rewrites
@@ -1320,13 +1318,14 @@ namespace DotNetNuke.Entities.Urls
                         }
 
                         // add in the all rewrites
+                        SharedList<ParameterRewriteAction> allRewrites = rewriteActions[AllTabsRewrite];
                         foreach (ParameterRewriteAction rewrite in allRewrites)
                         {
                             tabRewrites.Add(rewrite); // add the 'all' range to the tab range
                         }
                     }
 
-                    if (isSiteRoot && rewriteActions.TryGetValue(SiteRootRewrite, out var siteRootRewrites))
+                    if (isSiteRoot && rewriteActions.ContainsKey(SiteRootRewrite))
                     {
                         // initialise to empty collection if there are no specific tab rewrites
                         if (tabRewrites == null)
@@ -1334,6 +1333,7 @@ namespace DotNetNuke.Entities.Urls
                             tabRewrites = new SharedList<ParameterRewriteAction>();
                         }
 
+                        SharedList<ParameterRewriteAction> siteRootRewrites = rewriteActions[SiteRootRewrite];
                         foreach (ParameterRewriteAction rewrite in siteRootRewrites)
                         {
                             tabRewrites.Add(rewrite); // add the site root rewrites to the collection
@@ -1523,12 +1523,12 @@ namespace DotNetNuke.Entities.Urls
                             tabKey = tabKey.TrimEnd('/');
                         }
 
-                        tabKey += TabKeySeparator;
+                        tabKey += "::";
                         using (tabDict.GetReadLock())
                         {
-                            if (tabDict.TryGetValue(tabKey, out var tabUrl))
+                            if (tabDict.ContainsKey(tabKey))
                             {
-                                newUrl = tabUrl;
+                                newUrl = tabDict[tabKey];
                                 reWritten = true;
                             }
                         }
@@ -1585,12 +1585,12 @@ namespace DotNetNuke.Entities.Urls
                                     tabKey = tabKey.Substring(0, tabKey.Length - 13); // 13 = "/default.aspx".length
                                 }
 
-                                tabKey += TabKeySeparator;
+                                tabKey += "::";
                                 using (tabDict.GetReadLock())
                                 {
-                                    if (tabDict.TryGetValue(tabKey, out var tabUrl))
+                                    if (tabDict.ContainsKey(tabKey))
                                     {
-                                        newUrl = tabUrl;
+                                        newUrl = tabDict[tabKey];
                                         reWritten = true;
                                         customTabAlias = true; // this alias is used as the alias for a custom tab
                                     }
@@ -1684,7 +1684,7 @@ namespace DotNetNuke.Entities.Urls
         private static bool CheckSpecialCase(string tabKeyVal, SharedDictionary<string, string> tabDict)
         {
             bool found = false;
-            int pathStart = tabKeyVal.LastIndexOf(TabKeySeparator, StringComparison.Ordinal); // look for portal alias separator
+            int pathStart = tabKeyVal.LastIndexOf("::", StringComparison.Ordinal); // look for portal alias separator
             int lastPath = tabKeyVal.LastIndexOf('/');
 
             // get any path separator in the tab path portion
@@ -1723,13 +1723,12 @@ namespace DotNetNuke.Entities.Urls
                 new CacheItemArgs(cacheKey, 20, CacheItemPriority.High, portalId),
                 c => new Dictionary<string, UserInfo>());
 
-            if (!vanityUrlLookupDictionary.TryGetValue(vanityUrl, out var user))
+            if (!vanityUrlLookupDictionary.ContainsKey(vanityUrl))
             {
-                user = UserController.GetUserByVanityUrl(portalId, vanityUrl);
-                vanityUrlLookupDictionary[vanityUrl] = user;
+                vanityUrlLookupDictionary[vanityUrl] = UserController.GetUserByVanityUrl(portalId, vanityUrl);
             }
 
-            return user;
+            return vanityUrlLookupDictionary[vanityUrl];
         }
 
         private static bool CheckTabPath(string tabKeyVal, UrlAction result, FriendlyUrlSettings settings, SharedDictionary<string, string> tabDict, ref string newUrl)
@@ -1753,7 +1752,7 @@ namespace DotNetNuke.Entities.Urls
             var doNotRedirectRegex = RegexUtils.GetCachedRegex(settings.DoNotRedirectRegex);
             if (!found && !Globals.ServicesFrameworkRegex.IsMatch(result.RawUrl) && !doNotRedirectRegex.IsMatch(result.RawUrl))
             {
-                string[] urlParams = tabLookUpKey.Split(TabKeySeparators, StringSplitOptions.None);
+                string[] urlParams = tabLookUpKey.Split(new[] { "::" }, StringSplitOptions.None);
                 if (urlParams.Length > 1)
                 {
                     // Extract the first Url parameter
@@ -1781,7 +1780,7 @@ namespace DotNetNuke.Entities.Urls
                             string profilePagePath = TabPathHelper.GetFriendlyUrlTabPath(profilePage, options, Guid.NewGuid());
 
                             // modify lookup key;
-                            tabLookUpKey = tabLookUpKey.Replace(TabKeySeparator + string.Format("{0}/{1}", settings.VanityUrlPrefix, vanityUrl), TabKeySeparator + profilePagePath.TrimStart('/').ToLowerInvariant());
+                            tabLookUpKey = tabLookUpKey.Replace("::" + string.Format("{0}/{1}", settings.VanityUrlPrefix, vanityUrl), "::" + profilePagePath.TrimStart('/').ToLowerInvariant());
 
                             using (tabDict.GetReadLock())
                             {
@@ -1811,10 +1810,10 @@ namespace DotNetNuke.Entities.Urls
 
                     if (!newUrl.Contains(currentLocale))
                     {
-                        var tabPath = tabLookUpKey.Split(TabKeySeparators, StringSplitOptions.None)[1];
+                        var tabPath = tabLookUpKey.Split(new[] { "::" }, StringSplitOptions.None)[1];
                         using (tabDict.GetReadLock())
                         {
-                            foreach (var key in tabDict.Keys.Where(k => k.EndsWith(TabKeySeparator + tabPath)))
+                            foreach (var key in tabDict.Keys.Where(k => k.EndsWith("::" + tabPath)))
                             {
                                 if (tabDict[key].Contains("language=" + currentLocale))
                                 {

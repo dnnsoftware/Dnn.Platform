@@ -8,9 +8,9 @@ namespace DotNetNuke.Web.Common
 
     public static class SharedConstants
     {
-        public static readonly string RootFolder;
-        public static readonly string HostRootFolder;
-        public static readonly string Unspecified;
+        public static readonly string RootFolder = null;
+        public static readonly string HostRootFolder = null;
+        public static readonly string Unspecified = null;
 
         static SharedConstants()
         {

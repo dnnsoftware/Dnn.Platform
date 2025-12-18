@@ -5,7 +5,6 @@ namespace DotNetNuke.Services.ModuleCache
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
     using DotNetNuke.ComponentModel;
@@ -48,7 +47,6 @@ namespace DotNetNuke.Services.ModuleCache
         {
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected string ByteArrayToString(byte[] arrInput)
         {
             int i;

@@ -74,23 +74,11 @@ namespace Dnn.PersonaBar.UI.Services
             }
         }
 
-        private static string GetJsonFileContent(string culture)
-        {
-            var path = GetResourcesJsonFilePath(culture);
-            return File.Exists(path) ? File.ReadAllText(path, Encoding.UTF8) : null;
-        }
-
-        private static string GetResourcesJsonFilePath(string culture)
-        {
-            var path = Path.Combine(Constants.PersonaBarRelativePath, "Resources", $"LocalResources.{culture}.resources");
-            return HttpContext.Current.Server.MapPath(path);
-        }
-
         private IDictionary<string, IDictionary<string, string>> GetResourcesFromFile(string culture)
         {
             if (!this.Expired(culture))
             {
-                var jsonFileContent = GetJsonFileContent(culture);
+                var jsonFileContent = this.GetJsonFileContent(culture);
                 return jsonFileContent != null
                     ? JsonConvert.DeserializeObject<IDictionary<string, IDictionary<string, string>>>(jsonFileContent)
                     : null;
@@ -107,7 +95,7 @@ namespace Dnn.PersonaBar.UI.Services
                 return false;
             }
 
-            var jsonFilePath = GetResourcesJsonFilePath(culture);
+            var jsonFilePath = this.GetResourcesJsonFilePath(culture);
             var jsonFile = new FileInfo(jsonFilePath);
             if (!jsonFile.Exists)
             {
@@ -127,7 +115,13 @@ namespace Dnn.PersonaBar.UI.Services
             return expired;
         }
 
-        private Dictionary<string, IDictionary<string, string>> GenerateJsonFile(string culture)
+        private string GetJsonFileContent(string culture)
+        {
+            var path = this.GetResourcesJsonFilePath(culture);
+            return File.Exists(path) ? File.ReadAllText(path, Encoding.UTF8) : null;
+        }
+
+        private IDictionary<string, IDictionary<string, string>> GenerateJsonFile(string culture)
         {
             var resources = new Dictionary<string, IDictionary<string, string>>();
             var resourceFiles = this.GetAllResourceFiles(culture);
@@ -143,7 +137,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
 
             var content = JsonConvert.SerializeObject(resources);
-            var filePath = GetResourcesJsonFilePath(culture);
+            var filePath = this.GetResourcesJsonFilePath(culture);
             var folderPath = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(folderPath))
             {
@@ -155,16 +149,16 @@ namespace Dnn.PersonaBar.UI.Services
             return resources;
         }
 
-        private Dictionary<string, string> GetLocalizedDictionary(string relativePath, string culture)
+        private IDictionary<string, string> GetLocalizedDictionary(string relativePath, string culture)
         {
             var localizedDict = Dnn.PersonaBar.Library.Controllers.LocalizationController.Instance.GetLocalizedDictionary(relativePath, culture);
-            if (!culture.Equals(Localization.SystemLocale, StringComparison.OrdinalIgnoreCase))
+            if (!culture.Equals(Localization.SystemLocale, StringComparison.InvariantCultureIgnoreCase))
             {
                 var fallbackCulture = this.GetFallbackCulture(culture);
                 var folder = Path.GetDirectoryName(relativePath)?.Replace("\\", "/");
                 var fileName = Path.GetFileNameWithoutExtension(relativePath)?
                                 .ToLowerInvariant().Replace("." + culture.ToLowerInvariant(), string.Empty);
-                var culturePart = fallbackCulture.Equals(Localization.SystemLocale, StringComparison.OrdinalIgnoreCase)
+                var culturePart = fallbackCulture.Equals(Localization.SystemLocale, StringComparison.InvariantCultureIgnoreCase)
                                     ? string.Empty : "." + fallbackCulture;
                 var fallbackFilePath = $"{folder}//{fileName}{culturePart}.resx";
                 if (!File.Exists(HttpContext.Current.Server.MapPath(fallbackFilePath)))
@@ -199,7 +193,13 @@ namespace Dnn.PersonaBar.UI.Services
             return Localization.SystemLocale;
         }
 
-        private Dictionary<string, string> GetAllResourceFiles(string culture)
+        private string GetResourcesJsonFilePath(string culture)
+        {
+            var path = Path.Combine(Constants.PersonaBarRelativePath, "Resources", $"LocalResources.{culture}.resources");
+            return HttpContext.Current.Server.MapPath(path);
+        }
+
+        private IDictionary<string, string> GetAllResourceFiles(string culture)
         {
             var physicalPath = HttpContext.Current.Server.MapPath(Constants.PersonaBarRelativePath);
             var allFiles = Directory.GetFiles(physicalPath, "*.resx", SearchOption.AllDirectories);
@@ -224,14 +224,14 @@ namespace Dnn.PersonaBar.UI.Services
                 }
 
                 var filePath = Path.Combine(folder, key + ".resx");
-                if (!culture.Equals(Localization.SystemLocale, StringComparison.OrdinalIgnoreCase))
+                if (!culture.Equals(Localization.SystemLocale, StringComparison.InvariantCultureIgnoreCase))
                 {
                     var cultureSpecificFileName = $"{key}.{culture}.resx";
                     var cultureSpecificFile = allFiles.FirstOrDefault(f =>
                     {
                         var name = Path.GetFileName(f);
                         return !string.IsNullOrEmpty(name)
-                                    && name.Equals(cultureSpecificFileName, StringComparison.OrdinalIgnoreCase);
+                                    && name.Equals(cultureSpecificFileName, StringComparison.InvariantCultureIgnoreCase);
                     });
 
                     if (string.IsNullOrEmpty(cultureSpecificFile))
@@ -242,7 +242,7 @@ namespace Dnn.PersonaBar.UI.Services
                         {
                             var name = Path.GetFileName(f);
                             return !string.IsNullOrEmpty(name)
-                                        && name.Equals(cultureSpecificFileName, StringComparison.OrdinalIgnoreCase);
+                                        && name.Equals(cultureSpecificFileName, StringComparison.InvariantCultureIgnoreCase);
                         });
                     }
 

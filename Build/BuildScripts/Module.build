@@ -1,5 +1,6 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="CopyAndPackage" BeforeTargets="Build" DependsOnTargets="CopyBin;GetFiles;UpdateFiles;DebugProject;Package" />
+  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;UpdateFiles;DebugProject;Package">
+  </Target>
   <Target Name="GetFiles">
     <ItemGroup>
       <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />

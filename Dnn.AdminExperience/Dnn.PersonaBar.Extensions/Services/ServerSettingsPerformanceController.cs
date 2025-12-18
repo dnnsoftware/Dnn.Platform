@@ -81,7 +81,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     HostEnableCompositeFiles = this.hostSettings.CrmEnableCompositeFiles,
                     HostMinifyCss = this.hostSettings.CrmMinifyCss,
                     HostMinifyJs = this.hostSettings.CrmMinifyJs,
-                    CurrentPortalVersion = GetPortalVersion(portalId),
+                    CurrentPortalVersion = this.GetPortalVersion(portalId),
 
                     // Options
                     CachingProviderOptions = this.performanceController.GetCachingProviderOptions(),
@@ -201,10 +201,11 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
-        private static int GetPortalVersion(int portalId)
+        private int GetPortalVersion(int portalId)
         {
             var settingValue = PortalController.GetPortalSetting(ClientResourceSettings.VersionKey, portalId, "0");
-            if (int.TryParse(settingValue, out var version))
+            int version;
+            if (int.TryParse(settingValue, out version))
             {
                 if (version == 0)
                 {

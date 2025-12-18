@@ -5,7 +5,6 @@ namespace DotNetNuke.Services.Sitemap
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -13,7 +12,6 @@ namespace DotNetNuke.Services.Sitemap
     using System.Web;
     using System.Xml;
 
-    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Portals;
@@ -71,15 +69,20 @@ namespace DotNetNuke.Services.Sitemap
                 if (string.IsNullOrEmpty(this.cacheIndexFileNameFormat))
                 {
                     var currentCulture = Localization.GetPageLocale(this.portalSettings).Name.ToLowerInvariant();
-                    this.cacheIndexFileNameFormat = $"sitemap_{{0}}.{currentCulture}.xml";
+                    this.cacheIndexFileNameFormat = string.Format("sitemap_{{0}}" + ".{0}.xml", currentCulture);
                 }
 
                 return this.cacheIndexFileNameFormat;
             }
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public List<SitemapProvider> Providers => providers;
+        public List<SitemapProvider> Providers
+        {
+            get
+            {
+                return providers;
+            }
+        }
 
         /// <summary>Builds the complete portal sitemap.</summary>
         /// <param name="output">The writer to which the sitemap is to be written.</param>
@@ -125,12 +128,13 @@ namespace DotNetNuke.Services.Sitemap
                     }
                     catch (Exception ex)
                     {
-                        var exceptionMessage = Localization.GetExceptionMessage(
-                            "SitemapProviderError",
-                            "URL sitemap provider '{0}' failed with error: {1}",
-                            provider.Name,
-                            ex.Message);
-                        Services.Exceptions.Exceptions.LogException(new SitemapException(exceptionMessage, ex));
+                        Services.Exceptions.Exceptions.LogException(
+                            new Exception(
+                                Localization.GetExceptionMessage(
+                                    "SitemapProviderError",
+                                    "URL sitemap provider '{0}' failed with error: {1}",
+                                    provider.Name,
+                                    ex.Message)));
                     }
 
                     foreach (SitemapUrl url in urls)
@@ -230,55 +234,6 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
-        /// <summary>  Adds a new url to the sitemap.</summary>
-        /// <param name="sitemapUrl">The url to be included in the sitemap.</param>
-        private static void AddUrl(SitemapUrl sitemapUrl, XmlWriter writer)
-        {
-            writer.WriteStartElement("url");
-            writer.WriteElementString("loc", sitemapUrl.Url);
-            writer.WriteElementString("lastmod", sitemapUrl.LastModified.ToString("yyyy-MM-dd"));
-            writer.WriteElementString("changefreq", sitemapUrl.ChangeFrequency.ToString().ToLowerInvariant());
-            writer.WriteElementString("priority", sitemapUrl.Priority.ToString("F01", CultureInfo.InvariantCulture));
-
-            // if (sitemapUrl.AlternateUrls != null)
-            // {
-            //    foreach (AlternateUrl alternate in sitemapUrl.AlternateUrls)
-            //    {
-            //        writer.WriteStartElement("link", "http://www.w3.org/1999/xhtml");
-            //        writer.WriteAttributeString("rel", "alternate");
-            //        writer.WriteAttributeString("hreflang", alternate.Language);
-            //        writer.WriteAttributeString("href", alternate.Url);
-            //        writer.WriteEndElement();
-            //    }
-            // }
-            writer.WriteEndElement();
-        }
-
-        private static bool IsChildPortal(PortalSettings ps, HttpContext context)
-        {
-            bool isChild = false;
-            string portalName = null;
-            var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(ps.PortalId).ToList();
-            string serverPath = Globals.GetAbsoluteServerPath(context.Request);
-
-            if (arr.Count > 0)
-            {
-                IPortalAliasInfo portalAlias = arr[0];
-                portalName = Globals.GetPortalDomainName(ps.PortalAlias.HTTPAlias, null, true);
-                if (portalAlias.HttpAlias.IndexOf("/") > -1)
-                {
-                    portalName = PortalController.GetPortalFolder(portalAlias.HttpAlias);
-                }
-
-                if (!string.IsNullOrEmpty(portalName) && Directory.Exists(serverPath + portalName))
-                {
-                    isChild = true;
-                }
-            }
-
-            return isChild;
-        }
-
         /// <summary>  Generates a sitemap file.</summary>
         /// <param name="cached">Wheter the generated file should be cached or not.</param>
         /// <param name="output">The output stream.</param>
@@ -324,7 +279,7 @@ namespace DotNetNuke.Services.Sitemap
                     // write urls to output
                     foreach (SitemapUrl url in allUrls)
                     {
-                        AddUrl(url, writer);
+                        this.AddURL(url, writer);
                     }
 
                     writer.WriteEndElement();
@@ -339,53 +294,80 @@ namespace DotNetNuke.Services.Sitemap
             }
             finally
             {
-                sitemapOutput?.Dispose();
+                if (sitemapOutput != null)
+                {
+                    sitemapOutput.Dispose();
+                }
             }
         }
 
-        /// <summary>Generates a sitemap index file.</summary>
+        /// <summary>  Generates a sitemapindex file.</summary>
         /// <param name="output">The output stream.</param>
         /// <param name="totalFiles">Number of files that are included in the sitemap index.</param>
         private void WriteSitemapIndex(TextWriter output, int totalFiles)
         {
-            using var sitemapOutput = new StreamWriter($@"{this.portalSettings.HomeSystemDirectoryMapPath}Sitemap\{this.CacheFileName}", false, Encoding.UTF8);
-
-            // Initialize writer
-            var settings = new XmlWriterSettings
+            TextWriter sitemapOutput;
+            using (sitemapOutput = new StreamWriter(this.portalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + this.CacheFileName, false, Encoding.UTF8))
             {
-                Indent = true,
-                Encoding = Encoding.UTF8,
-                OmitXmlDeclaration = false,
-            };
+                // Initialize writer
+                var settings = new XmlWriterSettings();
+                settings.Indent = true;
+                settings.Encoding = Encoding.UTF8;
+                settings.OmitXmlDeclaration = false;
 
-            using (var writer = XmlWriter.Create(sitemapOutput, settings))
-            {
-                // build header
-                writer.WriteStartElement("sitemapindex", "http://www.sitemaps.org/schemas/sitemap/" + SitemapVersion);
-
-                // write urls to output
-                for (int index = 1; index <= totalFiles; index++)
+                using (var writer = XmlWriter.Create(sitemapOutput, settings))
                 {
-                    string url = null;
+                    // build header
+                    writer.WriteStartElement("sitemapindex", "http://www.sitemaps.org/schemas/sitemap/" + SitemapVersion);
 
-                    url = "~/Sitemap.aspx?i=" + index;
-                    if (IsChildPortal(this.portalSettings, HttpContext.Current))
+                    // write urls to output
+                    for (int index = 1; index <= totalFiles; index++)
                     {
-                        url += "&portalid=" + this.portalSettings.PortalId;
+                        string url = null;
+
+                        url = "~/Sitemap.aspx?i=" + index;
+                        if (this.IsChildPortal(this.portalSettings, HttpContext.Current))
+                        {
+                            url += "&portalid=" + this.portalSettings.PortalId;
+                        }
+
+                        writer.WriteStartElement("sitemap");
+                        writer.WriteElementString("loc", Globals.AddHTTP(HttpContext.Current.Request.Url.Host + Globals.ResolveUrl(url)));
+                        writer.WriteElementString("lastmod", DateTime.Now.ToString("yyyy-MM-dd"));
+                        writer.WriteEndElement();
                     }
 
-                    writer.WriteStartElement("sitemap");
-                    writer.WriteElementString("loc", Globals.AddHTTP(HttpContext.Current.Request.Url.Host + Globals.ResolveUrl(url)));
-                    writer.WriteElementString("lastmod", DateTime.Now.ToString("yyyy-MM-dd"));
                     writer.WriteEndElement();
+                    writer.Close();
                 }
 
-                writer.WriteEndElement();
-                writer.Close();
+                sitemapOutput.Flush();
+                sitemapOutput.Close();
             }
+        }
 
-            sitemapOutput.Flush();
-            sitemapOutput.Close();
+        /// <summary>  Adds a new url to the sitemap.</summary>
+        /// <param name="sitemapUrl">The url to be included in the sitemap.</param>
+        private void AddURL(SitemapUrl sitemapUrl, XmlWriter writer)
+        {
+            writer.WriteStartElement("url");
+            writer.WriteElementString("loc", sitemapUrl.Url);
+            writer.WriteElementString("lastmod", sitemapUrl.LastModified.ToString("yyyy-MM-dd"));
+            writer.WriteElementString("changefreq", sitemapUrl.ChangeFrequency.ToString().ToLowerInvariant());
+            writer.WriteElementString("priority", sitemapUrl.Priority.ToString("F01", CultureInfo.InvariantCulture));
+
+            // if (sitemapUrl.AlternateUrls != null)
+            // {
+            //    foreach (AlternateUrl alternate in sitemapUrl.AlternateUrls)
+            //    {
+            //        writer.WriteStartElement("link", "http://www.w3.org/1999/xhtml");
+            //        writer.WriteAttributeString("rel", "alternate");
+            //        writer.WriteAttributeString("hreflang", alternate.Language);
+            //        writer.WriteAttributeString("href", alternate.Url);
+            //        writer.WriteEndElement();
+            //    }
+            // }
+            writer.WriteEndElement();
         }
 
         /// <summary>  Is sitemap is cached, verifies is the cached file exists and is still valid.</summary>
@@ -420,10 +402,37 @@ namespace DotNetNuke.Services.Sitemap
             }
 
             // write the cached file to output
-            using var reader = new StreamReader(this.portalSettings.HomeSystemDirectoryMapPath + "/Sitemap/" + file, Encoding.UTF8);
-            output.Write(reader.ReadToEnd());
+            using (var reader = new StreamReader(this.portalSettings.HomeSystemDirectoryMapPath + "/Sitemap/" + file, Encoding.UTF8))
+            {
+                output.Write(reader.ReadToEnd());
 
-            reader.Close();
+                reader.Close();
+            }
+        }
+
+        private bool IsChildPortal(PortalSettings ps, HttpContext context)
+        {
+            bool isChild = false;
+            string portalName = null;
+            var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(ps.PortalId).ToList();
+            string serverPath = Globals.GetAbsoluteServerPath(context.Request);
+
+            if (arr.Count > 0)
+            {
+                var portalAlias = (PortalAliasInfo)arr[0];
+                portalName = Globals.GetPortalDomainName(ps.PortalAlias.HTTPAlias, null, true);
+                if (portalAlias.HTTPAlias.IndexOf("/") > -1)
+                {
+                    portalName = PortalController.GetPortalFolder(portalAlias.HTTPAlias);
+                }
+
+                if (!string.IsNullOrEmpty(portalName) && Directory.Exists(serverPath + portalName))
+                {
+                    isChild = true;
+                }
+            }
+
+            return isChild;
         }
     }
 }

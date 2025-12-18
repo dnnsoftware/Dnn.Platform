@@ -133,7 +133,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
         public virtual bool CanViewPageList(int menuId)
         {
             var permissions = MenuPermissionController.GetMenuPermissions(PortalSettings.Current.PortalId, menuId);
-            return MenuPermissionController.HasMenuPermission(new MenuPermissionCollection(permissions), "VIEW_PAGE_LIST") || IsPageAdmin();
+            return MenuPermissionController.HasMenuPermission(new MenuPermissionCollection(permissions), "VIEW_PAGE_LIST") || this.IsPageAdmin();
         }
 
         /// <inheritdoc/>
@@ -172,7 +172,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
                 PortalSettings.Current.ActiveTab.ParentId == PortalSettings.Current.AdminTabId || PortalSettings.Current.ActiveTab.TabID == PortalSettings.Current.AdminTabId;
         }
 
-        private static bool IsPageAdmin()
+        private bool IsPageAdmin()
         {
             return // TabPermissionController.CanAddContentToPage() ||
                 TabPermissionController.CanAddPage()

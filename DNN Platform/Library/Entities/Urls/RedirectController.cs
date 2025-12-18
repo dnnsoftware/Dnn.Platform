@@ -112,49 +112,58 @@ namespace DotNetNuke.Entities.Urls
                     int tabId = result.TabId;
                     if (tabId > -1)
                     {
-                        if (redirectActions.TryGetValue(tabId, out var parameterRedirectActions))
+                        if (redirectActions.ContainsKey(tabId))
                         {
                             // find the right set of replaced actions for this tab
-                            parmRedirects = parameterRedirectActions;
+                            parmRedirects = redirectActions[tabId];
                         }
                     }
 
                     // check for 'all tabs' redirections
-                    if (redirectActions.TryGetValue(-1, out var allRedirects))
+                    if (redirectActions.ContainsKey(-1))
                     {
                         // -1 means 'all tabs' - rewriting across all tabs
                         // initialise to empty collection if there are no specific tab redirects
                         if (parmRedirects == null)
                         {
-                            parmRedirects = [];
+                            parmRedirects = new List<ParameterRedirectAction>();
                         }
 
                         // add in the all redirects
+                        List<ParameterRedirectAction> allRedirects = redirectActions[-1];
                         parmRedirects.AddRange(allRedirects); // add the 'all' range to the tab range
                         tabId = result.TabId;
                     }
 
-                    if (redirectActions.TryGetValue(-2, out var defaultRedirects) && result.OriginalPath.ToLowerInvariant().Contains("default.aspx"))
+                    if (redirectActions.ContainsKey(-2) && result.OriginalPath.ToLowerInvariant().Contains("default.aspx"))
                     {
                         // for the default.aspx page
-                        parmRedirects ??= [];
+                        if (parmRedirects == null)
+                        {
+                            parmRedirects = new List<ParameterRedirectAction>();
+                        }
 
+                        List<ParameterRedirectAction> defaultRedirects = redirectActions[-2];
                         parmRedirects.AddRange(defaultRedirects); // add the default.aspx redirects to the list
                         tabId = result.TabId;
                     }
 
                     // 726 : allow for site-root redirects, ie redirects where no page match
-                    if (redirectActions.TryGetValue(-3, out var siteRootRedirects))
+                    if (redirectActions.ContainsKey(-3))
                     {
                         // request is for site root
-                        parmRedirects ??= [];
+                        if (parmRedirects == null)
+                        {
+                            parmRedirects = new List<ParameterRedirectAction>();
+                        }
 
+                        List<ParameterRedirectAction> siteRootRedirects = redirectActions[-3];
                         parmRedirects.AddRange(siteRootRedirects); // add the site root redirects to the collection
                     }
 
                     // OK what we have now is a list of redirects for the currently requested tab (either because it was specified by tab id,
                     // or because there is a replaced for 'all tabs'
-                    if (parmRedirects is { Count: > 0 } && rewrittenUrl != null)
+                    if (parmRedirects != null && parmRedirects.Count > 0 && rewrittenUrl != null)
                     {
                         foreach (ParameterRedirectAction parmRedirect in parmRedirects)
                         {
@@ -218,16 +227,14 @@ namespace DotNetNuke.Entities.Urls
                                         if (tabIdNext)
                                         {
                                             // changes the tabid of page, effects a page redirect along with a parameter redirect
-                                            if (int.TryParse(parmPart, out tabId))
-                                            {
-                                                parms = parms.Replace("tabid/" + tabId.ToString(), string.Empty);
-                                            }
+                                            int.TryParse(parmPart, out tabId);
+                                            parms = parms.Replace("tabid/" + tabId.ToString(), string.Empty);
 
                                             // remove the tabid/xx from the path
                                             break; // that's it, we're finished
                                         }
 
-                                        if (parmPart.Equals("tabid", StringComparison.OrdinalIgnoreCase))
+                                        if (parmPart.Equals("tabid", StringComparison.InvariantCultureIgnoreCase))
                                         {
                                             tabIdNext = true;
                                         }

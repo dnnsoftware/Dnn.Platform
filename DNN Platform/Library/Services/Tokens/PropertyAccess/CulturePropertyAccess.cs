@@ -24,42 +24,42 @@ namespace DotNetNuke.Services.Tokens
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             CultureInfo ci = formatProvider;
-            if (propertyName.Equals(CultureDropDownTypes.EnglishName.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals(CultureDropDownTypes.EnglishName.ToString(), StringComparison.InvariantCultureIgnoreCase))
             {
                 return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ci.EnglishName), format);
             }
 
-            if (propertyName.Equals(CultureDropDownTypes.Lcid.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals(CultureDropDownTypes.Lcid.ToString(), StringComparison.InvariantCultureIgnoreCase))
             {
                 return ci.LCID.ToString();
             }
 
-            if (propertyName.Equals(CultureDropDownTypes.Name.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals(CultureDropDownTypes.Name.ToString(), StringComparison.InvariantCultureIgnoreCase))
             {
                 return PropertyAccess.FormatString(ci.Name, format);
             }
 
-            if (propertyName.Equals(CultureDropDownTypes.NativeName.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals(CultureDropDownTypes.NativeName.ToString(), StringComparison.InvariantCultureIgnoreCase))
             {
                 return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ci.NativeName), format);
             }
 
-            if (propertyName.Equals(CultureDropDownTypes.TwoLetterIsoCode.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals(CultureDropDownTypes.TwoLetterIsoCode.ToString(), StringComparison.InvariantCultureIgnoreCase))
             {
                 return PropertyAccess.FormatString(ci.TwoLetterISOLanguageName, format);
             }
 
-            if (propertyName.Equals(CultureDropDownTypes.ThreeLetterIsoCode.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals(CultureDropDownTypes.ThreeLetterIsoCode.ToString(), StringComparison.InvariantCultureIgnoreCase))
             {
                 return PropertyAccess.FormatString(ci.ThreeLetterISOLanguageName, format);
             }
 
-            if (propertyName.Equals(CultureDropDownTypes.DisplayName.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals(CultureDropDownTypes.DisplayName.ToString(), StringComparison.InvariantCultureIgnoreCase))
             {
                 return PropertyAccess.FormatString(ci.DisplayName, format);
             }
 
-            if (propertyName.Equals("languagename", StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals("languagename", StringComparison.InvariantCultureIgnoreCase))
             {
                 if (ci.IsNeutralCulture)
                 {
@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Tokens
                 }
             }
 
-            if (propertyName.Equals("languagenativename", StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals("languagenativename", StringComparison.InvariantCultureIgnoreCase))
             {
                 if (ci.IsNeutralCulture)
                 {
@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Tokens
                 }
             }
 
-            if (propertyName.Equals("countryname", StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals("countryname", StringComparison.InvariantCultureIgnoreCase))
             {
                 if (ci.IsNeutralCulture)
                 {
@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Tokens
                 }
             }
 
-            if (propertyName.Equals("countrynativename", StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals("countrynativename", StringComparison.InvariantCultureIgnoreCase))
             {
                 if (ci.IsNeutralCulture)
                 {

@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         [DataMember(Name = "maxFiles")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public int MaxFiles;
+        public int MaxFiles = 0;
 
         [DataMember(Name = "extensions")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]

@@ -6,7 +6,6 @@
 namespace DotNetNuke.Web.Mvc.Helpers
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Web.Mvc;
     using System.Web.Routing;
     using System.Web.UI;
@@ -206,7 +205,6 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         /// <summary>Requests that a script from a JavaScript Library be registered on the client browser.</summary>
         /// <param name="name">The name of the JavaScript Library.</param>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void JavaScriptLibraryInclude(string name)
         {
             JavaScript.RequestRegistration(name);
@@ -215,7 +213,6 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>Requests that a script from a JavaScript Library be registered on the client browser.</summary>
         /// <param name="name">The name of the JavaScript Library.</param>
         /// <param name="version">The library's version.</param>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void JavaScriptLibraryInclude(string name, Version version)
         {
             JavaScript.RequestRegistration(name, version);
@@ -231,7 +228,6 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// When <see cref="SpecificVersion.LatestMinor"/> is passed, match the major and minor versions.
         /// When <see cref="SpecificVersion.Exact"/> is passed, match all parts of the version.
         /// </param>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void JavaScriptLibraryInclude(string name, Version version, SpecificVersion specificVersion)
         {
             JavaScript.RequestRegistration(name, version, specificVersion);

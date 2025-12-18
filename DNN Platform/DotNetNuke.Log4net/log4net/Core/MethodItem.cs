@@ -39,7 +39,7 @@ namespace log4net.Core
         public MethodItem()
         {
             this.m_name = NA;
-            this.m_parameters = [];
+            this.m_parameters = new string[0];
         }
 
         /// <summary>constructs a method item from the name of the method.</summary>

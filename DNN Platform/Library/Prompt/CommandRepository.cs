@@ -59,6 +59,7 @@ namespace DotNetNuke.Prompt
         /// <inheritdoc/>
         public IConsoleCommand GetCommand(IServiceProvider serviceProvider, string commandName)
         {
+            commandName = commandName.ToUpper();
             var allCommands = this.CommandList();
             if (allCommands.TryGetValue(commandName, out var command))
             {
@@ -93,7 +94,7 @@ namespace DotNetNuke.Prompt
         private static string CreateCommandFromClass(string className)
         {
             var camelCasedParts = SplitCamelCase(className);
-            return string.Join("-", camelCasedParts.Select(x => x.ToLowerInvariant()));
+            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
         }
 
         private static string[] SplitCamelCase(string source)
@@ -101,7 +102,7 @@ namespace DotNetNuke.Prompt
             return Regex.Split(source, @"(?<!^)(?=[A-Z])");
         }
 
-        private static CommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
+        private static ICommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
         {
             var commandHelp = new CommandHelp();
             if (consoleCommand != null)
@@ -113,7 +114,7 @@ namespace DotNetNuke.Prompt
                 var commandParameters = cmd.GetFields(BindingFlags.NonPublic | BindingFlags.Static)
                     .Select(x => x.GetCustomAttributes(typeof(ConsoleCommandParameterAttribute), false).FirstOrDefault())
                     .Cast<ConsoleCommandParameterAttribute>().ToList();
-                if (commandParameters.Count != 0)
+                if (commandParameters.Any())
                 {
                     var options = commandParameters.Where(attribute => attribute != null).Select(attribute => new CommandOption
                     {
@@ -138,10 +139,13 @@ namespace DotNetNuke.Prompt
 
         private SortedDictionary<string, ICommand> GetCommandsInternal()
         {
-            var commands = new SortedDictionary<string, ICommand>(StringComparer.OrdinalIgnoreCase);
+            var commands = new SortedDictionary<string, ICommand>();
             var typeLocator = new TypeLocator();
             var allCommandTypes = typeLocator.GetAllMatchingTypes(
-                t => t is { IsClass: true, IsAbstract: false, IsVisible: true, } &&
+                t => t != null &&
+                     t.IsClass &&
+                     !t.IsAbstract &&
+                     t.IsVisible &&
                      typeof(IConsoleCommand).IsAssignableFrom(t));
 
             using var serviceScope = this.serviceScopeFactory.CreateScope();
@@ -151,7 +155,7 @@ namespace DotNetNuke.Prompt
                 var assemblyName = cmd.Assembly.GetName();
                 var version = assemblyName.Version.ToString();
                 var commandAttribute = (ConsoleCommandAttribute)attr;
-                var key = commandAttribute.Name;
+                var key = commandAttribute.Name.ToUpper();
 
                 var command = (IConsoleCommand)ActivatorUtilities.CreateInstance(serviceScope.ServiceProvider, cmd);
                 var localResourceFile = command?.LocalResourceFile;

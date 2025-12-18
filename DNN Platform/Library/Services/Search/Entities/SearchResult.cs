@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Search.Entities
         /// </summary>
         public SearchResult()
         {
-            this.Tags = [];
+            this.Tags = new string[0];
             this.NumericKeys = new Dictionary<string, int>();
             this.Keywords = new Dictionary<string, string>();
             this.SearchContext = new Dictionary<string, string>();

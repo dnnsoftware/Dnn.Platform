@@ -6,7 +6,7 @@
     <WorkingDirectory>$(RootDirectory)</WorkingDirectory>
   </PropertyGroup>
 
-  <Target Name="CopyAndPackage" BeforeTargets="Build" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package" />
+  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package"></Target>
   <Target Name="GetFiles">
     <ItemGroup>
       <PersonaBar-views Include="admin/personaBar/**/*.html" />

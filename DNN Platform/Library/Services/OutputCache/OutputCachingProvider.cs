@@ -6,7 +6,6 @@ namespace DotNetNuke.Services.OutputCache
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Security.Cryptography;
     using System.Text;
@@ -73,7 +72,6 @@ namespace DotNetNuke.Services.OutputCache
         {
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected string ByteArrayToString(byte[] arrInput)
         {
             int i = 0;
@@ -96,7 +94,6 @@ namespace DotNetNuke.Services.OutputCache
             }
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected void WriteStreamAsText(HttpContext context, Stream stream, long offset, long length)
         {
             if (length < 0)

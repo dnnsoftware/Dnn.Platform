@@ -97,7 +97,7 @@ namespace Dnn.AzureConnector.Components
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {
             var connectors = this.FindAzureFolderMappings(portalId);
-            if (connectors != null && connectors.Count != 0)
+            if (connectors != null && connectors.Any())
             {
                 connectors.ForEach(x => { this.Id = x.FolderMappingID.ToString(); });
                 var finalCon = connectors.Select(x => (IConnector)Activator.CreateInstance(this.GetType())).ToList();
@@ -143,10 +143,10 @@ namespace Dnn.AzureConnector.Components
 
             var settings = folderMapping != null ? folderMapping.FolderMappingSettings : new Hashtable();
 
-            configs.Add("AccountName", GetSetting(settings, Constants.AzureAccountName, true));
-            configs.Add("AccountKey", GetSetting(settings, Constants.AzureAccountKey, true));
-            configs.Add("Container", GetSetting(settings, Constants.AzureContainerName));
-            configs.Add("Connected", !string.IsNullOrEmpty(GetSetting(settings, Constants.AzureAccountName)) && !string.IsNullOrEmpty(GetSetting(settings, Constants.AzureContainerName)) ? "true" : "false");
+            configs.Add("AccountName", this.GetSetting(settings, Constants.AzureAccountName, true));
+            configs.Add("AccountKey", this.GetSetting(settings, Constants.AzureAccountKey, true));
+            configs.Add("Container", this.GetSetting(settings, Constants.AzureContainerName));
+            configs.Add("Connected", !string.IsNullOrEmpty(this.GetSetting(settings, Constants.AzureAccountName)) && !string.IsNullOrEmpty(this.GetSetting(settings, Constants.AzureContainerName)) ? "true" : "false");
 
             // This setting will improve the UI to set password-type inputs on secure settings
             configs.Add("SecureSettings", "AccountKey");
@@ -160,7 +160,7 @@ namespace Dnn.AzureConnector.Components
             customErrorMessage = string.Empty;
             var azureAccountName = values[Constants.AzureAccountName];
             var azureAccountKey = values[Constants.AzureAccountKey];
-            var azureContainerName = values.TryGetValue(Constants.AzureContainerName, out var containerName) ? containerName : string.Empty;
+            var azureContainerName = values.ContainsKey(Constants.AzureContainerName) ? values[Constants.AzureContainerName] : string.Empty;
 
             var emptyFields = string.IsNullOrEmpty(azureAccountKey) && string.IsNullOrEmpty(azureAccountName);
 
@@ -169,14 +169,14 @@ namespace Dnn.AzureConnector.Components
             {
                 if (this.SupportsMultiple)
                 {
-                    throw new AzureConnectorException(Localization.GetString("ErrorRequiredFields", Constants.LocalResourceFile));
+                    throw new Exception(Localization.GetString("ErrorRequiredFields", Constants.LocalResourceFile));
                 }
 
                 this.DeleteAzureFolderMapping(portalId);
                 return true;
             }
 
-            if (!Validation(azureAccountName, azureAccountKey, azureContainerName))
+            if (!this.Validation(azureAccountName, azureAccountKey, azureContainerName))
             {
                 validated = false;
                 return true;
@@ -184,7 +184,7 @@ namespace Dnn.AzureConnector.Components
 
             if (this.FolderMappingNameExists(portalId, this.DisplayName, Convert.ToInt32(!string.IsNullOrEmpty(this.Id) ? this.Id : null)))
             {
-                throw new AzureConnectorException(Localization.GetString("ErrorMappingNameExists", Constants.LocalResourceFile));
+                throw new Exception(Localization.GetString("ErrorMappingNameExists", Constants.LocalResourceFile));
             }
 
             try
@@ -202,9 +202,9 @@ namespace Dnn.AzureConnector.Components
 
                 var settings = folderMapping.FolderMappingSettings;
 
-                var savedAccount = GetSetting(settings, Constants.AzureAccountName, true);
-                var savedKey = GetSetting(settings, Constants.AzureAccountKey, true);
-                var savedContainer = GetSetting(settings, Constants.AzureContainerName);
+                var savedAccount = this.GetSetting(settings, Constants.AzureAccountName, true);
+                var savedKey = this.GetSetting(settings, Constants.AzureAccountKey, true);
+                var savedContainer = this.GetSetting(settings, Constants.AzureContainerName);
 
                 var accountChanged = savedAccount != azureAccountName || savedKey != azureAccountKey;
 
@@ -224,9 +224,9 @@ namespace Dnn.AzureConnector.Components
                 settings[Constants.AzureAccountName] = folderProvider.EncryptValue(azureAccountName);
                 settings[Constants.AzureAccountKey] = folderProvider.EncryptValue(azureAccountKey);
 
-                if (values.TryGetValue(Constants.AzureContainerName, out var container) && !string.IsNullOrEmpty(container))
+                if (values.ContainsKey(Constants.AzureContainerName) && !string.IsNullOrEmpty(values[Constants.AzureContainerName]))
                 {
-                    settings[Constants.AzureContainerName] = container;
+                    settings[Constants.AzureContainerName] = values[Constants.AzureContainerName];
                 }
                 else
                 {
@@ -304,101 +304,6 @@ namespace Dnn.AzureConnector.Components
             return folderMapping;
         }
 
-        private static bool Validation(string azureAccountName, string azureAccountKey, string azureContainerName)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(azureAccountName))
-                {
-                    throw new ConnectorArgumentException(Localization.GetString(
-                        "AccountNameCannotBeEmpty.ErrorMessage",
-                        Constants.LocalResourceFile));
-                }
-
-                if (string.IsNullOrWhiteSpace(azureAccountKey))
-                {
-                    throw new ConnectorArgumentException(Localization.GetString(
-                        "AccountKeyCannotBeEmpty.ErrorMessage",
-                        Constants.LocalResourceFile));
-                }
-
-                StorageCredentials sc = new StorageCredentials(azureAccountName, azureAccountKey);
-                var csa = new CloudStorageAccount(sc, true);
-                var blobClient = csa.CreateCloudBlobClient();
-
-                blobClient.DefaultRequestOptions.RetryPolicy = new NoRetry();
-
-                var containers = blobClient.ListContainers();
-                if (containers.Any())
-                {
-                    if (!string.IsNullOrEmpty(azureContainerName))
-                    {
-                        if (!containers.Any(container => container.Name == azureContainerName))
-                        {
-                            throw new AzureConnectorException(Localization.GetString("ErrorInvalidContainerName", Constants.LocalResourceFile));
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    throw new AzureConnectorException(Localization.GetString("AccountNotFound.ErrorMessage", Constants.LocalResourceFile));
-                }
-            }
-            catch (StorageException ex)
-            {
-                if (ex.RequestInformation.ExtendedErrorInformation != null)
-                {
-                    if (ex.RequestInformation.ExtendedErrorInformation.ErrorCode == "AccountNotFound")
-                    {
-                        throw new AzureConnectorException(Localization.GetString("AccountNotFound.ErrorMessage", Constants.LocalResourceFile), ex);
-                    }
-                    else if (ex.RequestInformation.ExtendedErrorInformation.ErrorCode == "AccessDenied")
-                    {
-                        throw new AzureConnectorException(Localization.GetString("AccessDenied.ErrorMessage", Constants.LocalResourceFile), ex);
-                    }
-                    else
-                    {
-                        throw new AzureConnectorException(ex.RequestInformation.HttpStatusMessage, ex);
-                    }
-                }
-
-                throw new AzureConnectorException(ex.RequestInformation.HttpStatusMessage ?? ex.Message, ex);
-            }
-            catch (FormatException ex)
-            {
-                if (ex.GetType() == typeof(UriFormatException))
-                {
-                    throw new ConnectorArgumentException(Localization.GetString("InvalidAccountName.ErrorMessage", Constants.LocalResourceFile));
-                }
-
-                throw new ConnectorArgumentException(Localization.GetString("InvalidAccountKey.ErrorMessage", Constants.LocalResourceFile));
-            }
-        }
-
-        private static string GetSetting(Hashtable settings, string name, bool encrypt = false)
-        {
-            if (!settings.ContainsKey(name))
-            {
-                return string.Empty;
-            }
-
-            if (encrypt)
-            {
-                var folderProvider = FolderProvider.Instance(Constants.FolderProviderType);
-                return folderProvider.GetEncryptedSetting(settings, name);
-            }
-
-            return settings[name].ToString();
-        }
-
         private void DeleteAzureFolderMapping(int portalId, int folderMappingId)
         {
             this.folderMappingController.DeleteFolderMapping(portalId, folderMappingId);
@@ -443,7 +348,7 @@ namespace Dnn.AzureConnector.Components
                                                                                          f2.FolderMappingID !=
                                                                                          folderMappingId));
 
-                if (removableFolders.Any())
+                if (removableFolders.Count() > 0)
                 {
                     foreach (var removableFolder in removableFolders.OrderByDescending(rf => rf.FolderPath))
                     {
@@ -457,7 +362,7 @@ namespace Dnn.AzureConnector.Components
 
                 folderMappingFolders = folders.Where(f => f.FolderMappingID == folderMappingId);
 
-                if (folderMappingFolders.Any())
+                if (folderMappingFolders.Count() > 0)
                 {
                     var defaultFolderMapping = this.folderMappingController.GetDefaultFolderMapping(portalId);
 
@@ -470,13 +375,120 @@ namespace Dnn.AzureConnector.Components
             }
         }
 
+        private bool Validation(string azureAccountName, string azureAccountKey, string azureContainerName)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(azureAccountName))
+                {
+                    throw new ConnectorArgumentException(Localization.GetString(
+                        "AccountNameCannotBeEmpty.ErrorMessage",
+                        Constants.LocalResourceFile));
+                }
+
+                if (string.IsNullOrWhiteSpace(azureAccountKey))
+                {
+                    throw new ConnectorArgumentException(Localization.GetString(
+                        "AccountKeyCannotBeEmpty.ErrorMessage",
+                        Constants.LocalResourceFile));
+                }
+
+                StorageCredentials sc = new StorageCredentials(azureAccountName, azureAccountKey);
+                var csa = new CloudStorageAccount(sc, true);
+                var blobClient = csa.CreateCloudBlobClient();
+
+                blobClient.DefaultRequestOptions.RetryPolicy = new NoRetry();
+
+                var containers = blobClient.ListContainers();
+                if (containers.Any())
+                {
+                    if (!string.IsNullOrEmpty(azureContainerName))
+                    {
+                        if (!containers.Any(container => container.Name == azureContainerName))
+                        {
+                            throw new Exception(Localization.GetString(
+                                "ErrorInvalidContainerName",
+                                Constants.LocalResourceFile));
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    throw new Exception(Localization.GetString(
+                        "AccountNotFound.ErrorMessage",
+                        Constants.LocalResourceFile));
+                }
+            }
+            catch (StorageException ex)
+            {
+                if (ex.RequestInformation.ExtendedErrorInformation != null)
+                {
+                    if (ex.RequestInformation.ExtendedErrorInformation.ErrorCode == "AccountNotFound")
+                    {
+                        throw new Exception(Localization.GetString(
+                            "AccountNotFound.ErrorMessage",
+                            Constants.LocalResourceFile));
+                    }
+                    else if (ex.RequestInformation.ExtendedErrorInformation.ErrorCode == "AccessDenied")
+                    {
+                        throw new Exception(Localization.GetString(
+                            "AccessDenied.ErrorMessage",
+                            Constants.LocalResourceFile));
+                    }
+                    else
+                    {
+                        throw new Exception(ex.RequestInformation.HttpStatusMessage);
+                    }
+                }
+
+                throw new Exception(ex.RequestInformation.HttpStatusMessage ?? ex.Message);
+            }
+            catch (FormatException ex)
+            {
+                if (ex.GetType() == typeof(UriFormatException))
+                {
+                    throw new ConnectorArgumentException(Localization.GetString(
+                        "InvalidAccountName.ErrorMessage",
+                        Constants.LocalResourceFile));
+                }
+
+                throw new ConnectorArgumentException(Localization.GetString(
+                    "InvalidAccountKey.ErrorMessage",
+                    Constants.LocalResourceFile));
+            }
+        }
+
+        private string GetSetting(Hashtable settings, string name, bool encrypt = false)
+        {
+            if (!settings.ContainsKey(name))
+            {
+                return string.Empty;
+            }
+
+            if (encrypt)
+            {
+                var folderProvider = FolderProvider.Instance(Constants.FolderProviderType);
+                return folderProvider.GetEncryptedSetting(settings, name);
+            }
+
+            return settings[name].ToString();
+        }
+
         private FolderMappingInfo FindAzureFolderMapping(int portalId, bool autoCreate = true, bool checkId = false)
         {
             var folderMappings = this.folderMappingController.GetFolderMappings(portalId)
                 .Where(f => f.FolderProviderType == Constants.FolderProviderType).ToList();
 
             // Create new mapping if none is found.
-            if (folderMappings.Count == 0 && autoCreate)
+            if (!folderMappings.Any() && autoCreate)
             {
                 return this.CreateAzureFolderMapping(portalId, DefaultDisplayName);
             }
@@ -496,7 +508,7 @@ namespace Dnn.AzureConnector.Components
             return folderMapping;
         }
 
-        private List<FolderMappingInfo> FindAzureFolderMappings(int portalId)
+        private IList<FolderMappingInfo> FindAzureFolderMappings(int portalId)
         {
             return this.folderMappingController.GetFolderMappings(portalId)
                 .Where(f => f.FolderProviderType == Constants.FolderProviderType).ToList();
@@ -507,7 +519,7 @@ namespace Dnn.AzureConnector.Components
             return this.folderMappingController.GetFolderMappings(portalId)
                 .Any(
                     f =>
-                        f.MappingName.Equals(mappingName, StringComparison.OrdinalIgnoreCase) &&
+                        f.MappingName.ToLowerInvariant() == mappingName.ToLowerInvariant() &&
                         (f.FolderMappingID != exceptMappingId));
         }
 

@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             log.AddProperty("Url Rewriting Caching Message", "Page Index Cache Cleared.  Reason: " + reason);
-            log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString());
+            log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
             LogController.Instance.AddLog(log);
         }
 
@@ -230,7 +230,7 @@ namespace DotNetNuke.Entities.Urls
             bool foundAlias = false;
 
             // Do a specified PortalAlias check first
-            PortalAliasInfo portalAliasInfo = portalAliasCollection.SingleOrDefault(a => a.HTTPAlias.Equals(portalAlias, StringComparison.OrdinalIgnoreCase));
+            PortalAliasInfo portalAliasInfo = portalAliasCollection.SingleOrDefault(a => a.HTTPAlias == portalAlias.ToLowerInvariant());
             if (portalAliasInfo != null)
             {
                 if (portalAliasInfo.PortalID == portalId)
@@ -264,14 +264,14 @@ namespace DotNetNuke.Entities.Urls
                     if (portalAliasInfo != null)
                     {
                         string httpAlias = portalAliasInfo.HTTPAlias.ToLowerInvariant();
-                        if (httpAlias.StartsWith(portalAlias, StringComparison.OrdinalIgnoreCase) && portalAliasInfo.PortalID == portalId)
+                        if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && portalAliasInfo.PortalID == portalId)
                         {
                             retValue = portalAliasInfo;
                             break;
                         }
 
                         httpAlias = httpAlias.StartsWith("www.") ? httpAlias.Replace("www.", string.Empty) : string.Concat("www.", httpAlias);
-                        if (httpAlias.StartsWith(portalAlias, StringComparison.InvariantCultureIgnoreCase) && portalAliasInfo.PortalID == portalId)
+                        if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && portalAliasInfo.PortalID == portalId)
                         {
                             retValue = portalAliasInfo;
                             break;
@@ -320,9 +320,9 @@ namespace DotNetNuke.Entities.Urls
                         {
                             // get the path from the dictionary
                             string tabKey = tab.TabID.ToString();
-                            if (tpd.TryGetValue(tabKey, out var path))
+                            if (tpd.ContainsKey(tabKey))
                             {
-                                tabPath = path;
+                                tabPath = tpd[tabKey];
                             }
                         }
                     }
@@ -461,7 +461,7 @@ namespace DotNetNuke.Entities.Urls
                 }
 
                 // now add the custom redirect to the tab dictionary
-                if (string.Equals(httpAlias, redirectAlias, StringComparison.OrdinalIgnoreCase))
+                if (string.Compare(httpAlias, redirectAlias, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     AddToTabDict(
                         tabIndex,
@@ -656,7 +656,7 @@ namespace DotNetNuke.Entities.Urls
             IEnumerable<PortalAliasInfo> chosenAliases,
             bool hasSiteRootRedirect,
             Dictionary<string, DupKeyCheck> dupCheck,
-            List<string> usingHttpAliases)
+            ICollection<string> usingHttpAliases)
         {
             foreach (PortalAliasInfo alias in chosenAliases)
             {
@@ -1182,20 +1182,22 @@ namespace DotNetNuke.Entities.Urls
                     // replace the existing dictionary ONLY if the existing dictionary entry is a
                     // deleted tab.
                     bool replaceTab = keyDupAction == UrlEnums.TabKeyPreference.TabOK; // default, replace the tab
-                    if (!replaceTab)
+                    if (replaceTab == false)
                     {
                         // ok, the tab to be added is either a redirected or deleted tab
                         // get the existing entry
                         // 775 : don't assume that the duplicate check dictionary has the key
-                        if (dupCheckDict.TryGetValue(dupKey, out var dupKeyCheck))
+                        if (dupCheckDict.ContainsKey(dupKey))
                         {
+                            DupKeyCheck foundTab = dupCheckDict[dupKey];
+
                             // a redirected tab will replace a deleted tab
-                            if (dupKeyCheck.IsDeleted && keyDupAction == UrlEnums.TabKeyPreference.TabRedirected)
+                            if (foundTab.IsDeleted && keyDupAction == UrlEnums.TabKeyPreference.TabRedirected)
                             {
                                 replaceTab = true;
                             }
 
-                            if (dupKeyCheck.TabIdOriginal == "-1")
+                            if (foundTab.TabIdOriginal == "-1")
                             {
                                 replaceTab = true;
                             }
@@ -1220,27 +1222,30 @@ namespace DotNetNuke.Entities.Urls
             }
 
             // checking for duplicates means throwing an exception when one is found, but this is just logged to the event log
-            if (dupCheckDict.TryGetValue(dupKey, out var foundTab))
+            if (dupCheckDict.ContainsKey(dupKey))
             {
+                DupKeyCheck foundTAb = dupCheckDict[dupKey];
+
                 // -1 tabs are login, register, privacy etc
-                if ((!foundTab.IsDeleted && !isDeleted) // found is not deleted, this tab is not deleted
+                if ((foundTAb.IsDeleted == false && isDeleted == false) // found is not deleted, this tab is not deleted
                     && keyDupAction == UrlEnums.TabKeyPreference.TabOK
-                    && foundTab.TabIdOriginal != "-1")
+                    && foundTAb.TabIdOriginal != "-1")
                 {
                     // check whether to log for this or not
-                    if (checkForDupUrls && foundTab.TabIdOriginal != tabId.ToString())
+                    if (checkForDupUrls && foundTAb.TabIdOriginal != tabId.ToString())
                     {
-                        // don't show message for where same tab is being added twice)
+                        // dont' show message for where same tab is being added twice)
                         // there is a naming conflict where this alias/tab path could be mistaken
+                        int tabIdOriginal;
                         string tab1Name = string.Empty, tab2Name = string.Empty;
                         var dupInSameCulture = false;
-                        if (int.TryParse(foundTab.TabIdOriginal, out var tabIdOriginal))
+                        if (int.TryParse(foundTAb.TabIdOriginal, out tabIdOriginal))
                         {
-                            var portalDic = PortalController.GetPortalDictionary();
+                            Dictionary<int, int> portalDic = PortalController.GetPortalDictionary();
                             int portalId = -1;
-                            if (portalDic != null && portalDic.TryGetValue(tabId, out var pid))
+                            if (portalDic != null && portalDic.ContainsKey(tabId))
                             {
-                                portalId = pid;
+                                portalId = portalDic[tabId];
                             }
 
                             TabInfo tab1 = TabController.Instance.GetTab(tabIdOriginal, portalId, false);
@@ -1264,9 +1269,9 @@ namespace DotNetNuke.Entities.Urls
 
                         if (dupInSameCulture)
                         {
-                            string msg = "Page naming conflict. Url of (" + foundTab.TabPath +
+                            string msg = "Page naming conflict. Url of (" + foundTAb.TabPath +
                                          ") resolves to two separate pages (" + tab1Name + " [tabid = " +
-                                         foundTab.TabIdOriginal + "], " + tab2Name + " [tabid = " + tabId.ToString() +
+                                         foundTAb.TabIdOriginal + "], " + tab2Name + " [tabid = " + tabId.ToString() +
                                          "]). Only the second page will be shown for the url.";
                             const string msg2 =
                                 "PLEASE NOTE : this is an information message only, this message does not affect site operations in any way.";
@@ -1281,7 +1286,7 @@ namespace DotNetNuke.Entities.Urls
                             log.AddProperty(
                                 "Hide this message",
                                 "To stop this message from appearing in the log, uncheck the option for 'Produce an Exception in the Site Log if two pages have the same name/path?' in the Advanced Url Rewriting settings.");
-                            log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString());
+                            log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
                             LogController.Instance.AddLog(log);
                         }
                     }
@@ -1627,12 +1632,12 @@ namespace DotNetNuke.Entities.Urls
                 foreach (string httpAlias in usingHttpAliases)
                 {
                     // 750 : using -1 instead of buildPortalId
-                    // 850 : set culture code based on httpAlias, where specific culture
+                    // 850 : set culture code based on httpALias, where specific culture
                     // is being associated with httpAlias
                     string cultureCode = null;
-                    if (chosenAliasesCultures.TryGetValue(httpAlias, out var culture))
+                    if (chosenAliasesCultures.ContainsKey(httpAlias))
                     {
-                        cultureCode = culture;
+                        cultureCode = chosenAliasesCultures[httpAlias];
                     }
 
                     AddStandardPagesToDict(tabIndex, dupCheck, httpAlias, buildPortalId, cultureCode);
@@ -1644,9 +1649,9 @@ namespace DotNetNuke.Entities.Urls
                     // 750 : using -1 instead of buildPortalId
                     // is being associated with httpAlias
                     string cultureCode = null;
-                    if (chosenAliasesCultures.TryGetValue(httpAlias, out var culture))
+                    if (chosenAliasesCultures.ContainsKey(httpAlias))
                     {
-                        cultureCode = culture;
+                        cultureCode = chosenAliasesCultures[httpAlias];
                     }
 
                     AddStandardPagesToDict(tabIndex, dupCheck, httpAlias, buildPortalId, cultureCode);
@@ -1752,9 +1757,9 @@ namespace DotNetNuke.Entities.Urls
                 currentCulture = thisPortal.DefaultLanguage;
             }
 
-            if (tab.CustomAliases.TryGetValue(currentCulture, out var alias))
+            if (tab.CustomAliases.ContainsKey(currentCulture))
             {
-                customHttpAlias = alias.ToLowerInvariant();
+                customHttpAlias = tab.CustomAliases[currentCulture].ToLowerInvariant();
             }
 
             customAliasUsed = httpAliases.Contains(customHttpAlias);

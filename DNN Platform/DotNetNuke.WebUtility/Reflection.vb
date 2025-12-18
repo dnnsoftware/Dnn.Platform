@@ -2,10 +2,9 @@
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
 Imports System
-Imports System.Globalization
-Imports System.Reflection
 'Imports System.Configuration
 Imports System.Web.Compilation
+Imports System.Reflection
 
 Namespace DotNetNuke.UI.Utilities
 
@@ -72,7 +71,7 @@ Namespace DotNetNuke.UI.Utilities
                     ' could not load the type
                     If Not IgnoreErrors Then
                         'LogException(exc)
-                        Throw
+                        Throw exc
                     End If
                 End Try
             End If
@@ -90,7 +89,7 @@ Namespace DotNetNuke.UI.Utilities
 
         Public Shared Function GetProperty(ByVal Type As Type, ByVal PropertyName As String, ByVal Target As Object) As Object
             If Not Type Is Nothing Then
-                Return Type.InvokeMember(PropertyName, System.Reflection.BindingFlags.GetProperty, Nothing, Target, Nothing, CultureInfo.InvariantCulture)
+                Return Type.InvokeMember(PropertyName, System.Reflection.BindingFlags.GetProperty, Nothing, Target, Nothing)
             Else
                 Return Nothing
             End If
@@ -98,7 +97,7 @@ Namespace DotNetNuke.UI.Utilities
 
         Public Shared Sub SetProperty(ByVal Type As Type, ByVal PropertyName As String, ByVal Target As Object, ByVal Args() As Object)
             If Not Type Is Nothing Then
-                Type.InvokeMember(PropertyName, System.Reflection.BindingFlags.SetProperty, Nothing, Target, Args, CultureInfo.InvariantCulture)
+                Type.InvokeMember(PropertyName, System.Reflection.BindingFlags.SetProperty, Nothing, Target, Args)
             End If
         End Sub
 

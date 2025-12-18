@@ -112,7 +112,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             if (node != null && isNewPortal)
             {
                 HtmlUtils.WriteKeepAlive();
-                ParsePortalSettings(node, portalId);
+                this.ParsePortalSettings(node, portalId);
             }
 
             node = this.Template.SelectSingleNode("//locales");
@@ -137,13 +137,13 @@ namespace DotNetNuke.Entities.Portals.Templates
             node = this.Template.SelectSingleNode("//portal/rolegroups");
             if (node != null)
             {
-                ParseRoleGroups(node.CreateNavigator(), portalId, administratorId);
+                this.ParseRoleGroups(node.CreateNavigator(), portalId, administratorId);
             }
 
             node = this.Template.SelectSingleNode("//portal/roles");
             if (node != null)
             {
-                ParseRoles(node.CreateNavigator(), portalId, administratorId);
+                this.ParseRoles(node.CreateNavigator(), portalId, administratorId);
             }
 
             node = this.Template.SelectSingleNode("//portal/portalDesktopModules");
@@ -155,13 +155,13 @@ namespace DotNetNuke.Entities.Portals.Templates
             node = this.Template.SelectSingleNode("//portal/folders");
             if (node != null)
             {
-                ParseFolders(node, portalId);
+                this.ParseFolders(node, portalId);
             }
 
             node = this.Template.SelectSingleNode("//portal/extensionUrlProviders");
             if (node != null)
             {
-                ParseExtensionUrlProviders(node.CreateNavigator(), portalId);
+                this.ParseExtensionUrlProviders(node.CreateNavigator(), portalId);
             }
 
             var defaultFolderMapping = FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
@@ -172,7 +172,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 objFolder.IsProtected = true;
                 FolderManager.Instance.UpdateFolder(objFolder);
 
-                AddFolderPermissions(portalId, objFolder.FolderID);
+                this.AddFolderPermissions(portalId, objFolder.FolderID);
             }
 
             if (FolderManager.Instance.GetFolder(portalId, "Templates/") == null)
@@ -244,7 +244,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                     }
                 }
 
-                ParseTabs(businessControllerProvider, node, portalId, false, mergeTabs, isNewPortal);
+                this.ParseTabs(businessControllerProvider, node, portalId, false, mergeTabs, isNewPortal);
             }
 
             CachingProvider.EnableCacheExpiration();
@@ -638,7 +638,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             return returnCollection;
         }
 
-        private static void ParseFolders(XmlNode nodeFolders, int portalId)
+        private void ParseFolders(XmlNode nodeFolders, int portalId)
         {
             var folderManager = FolderManager.Instance;
             var folderMappingController = FolderMappingController.Instance;
@@ -659,7 +659,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                         try
                         {
                             folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, folderPath)
-                                            ?? GetFolderMappingFromStorageLocation(portalId, node);
+                                            ?? this.GetFolderMappingFromStorageLocation(portalId, node);
                         }
                         catch (Exception ex)
                         {
@@ -705,7 +705,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
         }
 
-        private static void ParsePortalSettings(XmlNode nodeSettings, int portalId)
+        private void ParsePortalSettings(XmlNode nodeSettings, int portalId)
         {
             string currentCulture = PortalController.GetActivePortalLanguage(portalId);
             var objPortal = PortalController.Instance.GetPortal(portalId);
@@ -930,7 +930,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
         }
 
-        private static void ParseRoleGroups(XPathNavigator nav, int portalID, int administratorId)
+        private void ParseRoleGroups(XPathNavigator nav, int portalID, int administratorId)
         {
             var administratorRoleId = -1;
             var registeredRoleId = -1;
@@ -977,7 +977,7 @@ namespace DotNetNuke.Entities.Portals.Templates
 
             // update portal setup
             var portal = PortalController.Instance.GetPortal(portalID);
-            UpdatePortalSetup(
+            this.UpdatePortalSetup(
                 portalID,
                 administratorId,
                 administratorRoleId,
@@ -996,7 +996,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 PortalController.GetActivePortalLanguage(portalID));
         }
 
-        private static void ParseRoles(XPathNavigator nav, int portalID, int administratorId)
+        private void ParseRoles(XPathNavigator nav, int portalID, int administratorId)
         {
             var administratorRoleId = -1;
             var registeredRoleId = -1;
@@ -1034,7 +1034,7 @@ namespace DotNetNuke.Entities.Portals.Templates
 
             // update portal setup
             var portal = PortalController.Instance.GetPortal(portalID);
-            UpdatePortalSetup(
+            this.UpdatePortalSetup(
                 portalID,
                 administratorId,
                 administratorRoleId,
@@ -1053,7 +1053,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 PortalController.GetActivePortalLanguage(portalID));
         }
 
-        private static void ParseTab(IBusinessControllerProvider businessControllerProvider, XmlNode nodeTab, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, ref Hashtable hModules, ref Hashtable hTabs, bool isNewPortal)
+        private void ParseTab(IBusinessControllerProvider businessControllerProvider, XmlNode nodeTab, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, ref Hashtable hModules, ref Hashtable hTabs, bool isNewPortal)
         {
             TabInfo tab = null;
             string strName = XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "name");
@@ -1128,7 +1128,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                         break;
                 }
 
-                UpdatePortalSetup(
+                this.UpdatePortalSetup(
                     portalId,
                     portal.AdministratorId,
                     portal.AdministratorRoleId,
@@ -1154,7 +1154,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
         }
 
-        private static void ParseTabs(IBusinessControllerProvider businessControllerProvider, XmlNode nodeTabs, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
+        private void ParseTabs(IBusinessControllerProvider businessControllerProvider, XmlNode nodeTabs, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             // used to control if modules are true modules or instances
             // will hold module ID from template / new module ID so new instances can reference right moduleid
@@ -1198,7 +1198,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab"))
             {
                 HtmlUtils.WriteKeepAlive();
-                ParseTab(businessControllerProvider, nodeTab, portalId, isAdminTemplate, mergeTabs, ref hModules, ref hTabs, isNewPortal);
+                this.ParseTab(businessControllerProvider, nodeTab, portalId, isAdminTemplate, mergeTabs, ref hModules, ref hTabs, isNewPortal);
             }
 
             // Process tabs that are linked to tabs
@@ -1285,7 +1285,7 @@ namespace DotNetNuke.Entities.Portals.Templates
         ////    File.WriteAllText(Path.Combine(templatePath, templateFile), buffer.ToString());
         ////}
 
-        private static void ParseExtensionUrlProviders(XPathNavigator providersNavigator, int portalId)
+        private void ParseExtensionUrlProviders(XPathNavigator providersNavigator, int portalId)
         {
             var providers = ExtensionUrlProviderController.GetProviders(portalId);
             foreach (XPathNavigator providerNavigator in providersNavigator.Select("extensionUrlProvider"))
@@ -1321,7 +1321,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
         }
 
-        private static FolderMappingInfo GetFolderMappingFromStorageLocation(int portalId, XmlNode folderNode)
+        private FolderMappingInfo GetFolderMappingFromStorageLocation(int portalId, XmlNode folderNode)
         {
             var storageLocation = Convert.ToInt32(XmlUtils.GetNodeValue(folderNode, "storagelocation", "0"));
 
@@ -1336,7 +1336,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
         }
 
-        private static void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
+        private void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
         {
             DataProvider.Instance().UpdatePortalSetup(
                 portalId,
@@ -1359,7 +1359,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             DataCache.ClearHostCache(true);
         }
 
-        private static void AddFolderPermissions(int portalId, int folderId)
+        private void AddFolderPermissions(int portalId, int folderId)
         {
             var portal = PortalController.Instance.GetPortal(portalId);
             var folderManager = FolderManager.Instance;

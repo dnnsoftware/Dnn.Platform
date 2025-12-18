@@ -50,6 +50,11 @@
             </assembly>
             <assembly>
               <path>bin</path>
+              <name>System.IO.Pipelines.dll</name>
+              <version>9.0.225.6610</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
               <name>System.Text.Encodings.Web.dll</name>
               <version>9.0.225.6610</version>
             </assembly>

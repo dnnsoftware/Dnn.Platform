@@ -195,7 +195,7 @@ namespace Dnn.ExportImport.Components.Services
                                             }
 
                                             var value = userProfile.PropertyValue;
-                                            if (userProfile.PropertyName.Equals("photo", StringComparison.OrdinalIgnoreCase) && (value = this.GetUserPhotoId(portalId, value, user)) == null)
+                                            if (userProfile.PropertyName.Equals("photo", StringComparison.InvariantCultureIgnoreCase) && (value = this.GetUserPhotoId(portalId, value, user)) == null)
                                             {
                                                 continue;
                                             }
@@ -291,7 +291,7 @@ namespace Dnn.ExportImport.Components.Services
                     FolderManager.Instance.GetUserFolder(
                         UserController.GetUserByName(portalId, user.Username)))
                     .ToList();
-            if (files.Count == 0)
+            if (!files.Any())
             {
                 return null;
             }

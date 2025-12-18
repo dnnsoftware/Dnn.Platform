@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     filePath = filePath.Substring(1);
                 }
 
-                if (!file.Extension.Equals(".dnn", StringComparison.OrdinalIgnoreCase))
+                if (!file.Extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (string.IsNullOrEmpty(this.subFolder))
                     {

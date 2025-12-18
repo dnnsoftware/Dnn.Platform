@@ -26,7 +26,12 @@ namespace DotNetNuke.Web.Mvc
 
         public DnnMvcHandler(RequestContext requestContext)
         {
-            this.RequestContext = requestContext ?? throw new ArgumentNullException(nameof(requestContext));
+            if (requestContext == null)
+            {
+                throw new ArgumentNullException("requestContext");
+            }
+
+            this.RequestContext = requestContext;
         }
 
         public static bool DisableMvcResponseHeader { get; set; }
@@ -65,7 +70,7 @@ namespace DotNetNuke.Web.Mvc
         /// <inheritdoc/>
         void IHttpHandler.ProcessRequest(HttpContext httpContext)
         {
-            SetThreadCulture();
+            this.SetThreadCulture();
             MembershipModule.AuthenticateRequest(this.RequestContext.HttpContext, allowUnknownExtensions: true);
             this.ProcessRequest(httpContext);
         }
@@ -74,7 +79,7 @@ namespace DotNetNuke.Web.Mvc
         {
             try
             {
-                var moduleExecutionEngine = GetModuleExecutionEngine();
+                var moduleExecutionEngine = this.GetModuleExecutionEngine();
 
                 // Check if the controller supports IDnnController
                 var moduleResult =
@@ -93,7 +98,7 @@ namespace DotNetNuke.Web.Mvc
             this.ProcessRequest(httpContextBase);
         }
 
-        private static void SetThreadCulture()
+        private void SetThreadCulture()
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
             if (portalSettings is null)
@@ -110,7 +115,7 @@ namespace DotNetNuke.Web.Mvc
             Localization.SetThreadCultures(pageLocale, portalSettings);
         }
 
-        private static IModuleExecutionEngine GetModuleExecutionEngine()
+        private IModuleExecutionEngine GetModuleExecutionEngine()
         {
             var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
 

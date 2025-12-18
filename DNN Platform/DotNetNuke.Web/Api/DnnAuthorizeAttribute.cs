@@ -15,19 +15,18 @@ namespace DotNetNuke.Web.Api
     /// <summary>Provides Dnn specific details authorization filter.</summary>
     public sealed class DnnAuthorizeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
-        private static readonly List<string> DefaultAuthTypes = [];
+        private static readonly List<string> DefaultAuthTypes = new List<string>();
 
-        private static readonly string[] EmptyArray = [];
-        private static readonly char[] Separator = [',',];
+        private static readonly string[] EmptyArray = new string[0];
 
         private string staticRoles;
-        private string[] staticRolesSplit = [];
+        private string[] staticRolesSplit = new string[0];
 
         private string denyRoles;
-        private string[] denyRolesSplit = [];
+        private string[] denyRolesSplit = new string[0];
 
         private string authTypes;
-        private string[] authTypesSplit = [];
+        private string[] authTypesSplit = new string[0];
 
         /// <summary>Gets or sets the authorized roles (separated by comma).</summary>
         public string StaticRoles
@@ -85,7 +84,7 @@ namespace DotNetNuke.Web.Api
                 return false;
             }
 
-            if (this.denyRolesSplit.Length != 0)
+            if (this.denyRolesSplit.Any())
             {
                 var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
                 if (!currentUser.IsSuperUser && this.denyRolesSplit.Any(currentUser.IsInRole))
@@ -94,7 +93,7 @@ namespace DotNetNuke.Web.Api
                 }
             }
 
-            if (this.staticRolesSplit.Length != 0)
+            if (this.staticRolesSplit.Any())
             {
                 var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
                 if (!this.staticRolesSplit.Any(currentUser.IsInRole))
@@ -108,7 +107,7 @@ namespace DotNetNuke.Web.Api
             var currentAuthType = (identity.AuthenticationType ?? string.Empty).Trim();
             if (currentAuthType.Length > 0)
             {
-                if (this.authTypesSplit.Length != 0)
+                if (this.authTypesSplit.Any())
                 {
                     return this.authTypesSplit.Contains(currentAuthType);
                 }
@@ -136,7 +135,7 @@ namespace DotNetNuke.Web.Api
                 return EmptyArray;
             }
 
-            var split = original.Split(Separator, StringSplitOptions.RemoveEmptyEntries)
+            var split = original.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Trim()).Where(s => !string.IsNullOrEmpty(s));
             return split.ToArray();
         }

@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 {
                     var fileName = entry.FullName;
                     string extension = Path.GetExtension(fileName);
-                    if (extension != null && (extension.Equals(".dnn", StringComparison.OrdinalIgnoreCase) || extension.Equals(".dnn5", StringComparison.OrdinalIgnoreCase)))
+                    if (extension != null && (extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase) || extension.Equals(".dnn5", StringComparison.InvariantCultureIgnoreCase)))
                     {
                         // Manifest
                         var manifest = entry.ReadTextFile();
@@ -135,7 +135,7 @@ namespace DotNetNuke.Services.Installer.Packages
                             {
                                 packageType = XmlUtils.GetAttributeValue(rootNav, "type");
                             }
-                            else if (rootNav.Name.Equals("languagepack", StringComparison.OrdinalIgnoreCase))
+                            else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 packageType = "LanguagePack";
                             }
@@ -467,7 +467,7 @@ namespace DotNetNuke.Services.Installer.Packages
             ClearCache(Null.NullInteger);
         }
 
-        private static List<PackageDependencyInfo> GetPackageDependencies()
+        private static IEnumerable<PackageDependencyInfo> GetPackageDependencies()
         {
             return CBO.GetCachedObject<List<PackageDependencyInfo>>(
                 new CacheItemArgs(

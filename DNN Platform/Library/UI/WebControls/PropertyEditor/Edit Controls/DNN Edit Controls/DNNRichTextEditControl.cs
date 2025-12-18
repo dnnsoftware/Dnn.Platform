@@ -65,7 +65,7 @@ namespace DotNetNuke.UI.WebControls
             var dataChanged = false;
             var presentValue = this.StringValue;
             var postedValue = this.EditorText;
-            if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
+            if (!presentValue.Equals(postedValue))
             {
                 this.Value = postedValue;
                 dataChanged = true;
@@ -126,9 +126,9 @@ namespace DotNetNuke.UI.WebControls
         /// <inheritdoc/>
         protected override void OnDataChanged(EventArgs e)
         {
-            var strValue = RemoveBaseTags(Convert.ToString(this.Value));
-            var strOldValue = RemoveBaseTags(Convert.ToString(this.OldValue));
-            var args = new PropertyEditorEventArgs(this.Name) { Value = this.Page.Server.HtmlEncode(strValue), OldValue = this.Page.Server.HtmlEncode(strOldValue), StringValue = this.Page.Server.HtmlEncode(RemoveBaseTags(this.StringValue)) };
+            var strValue = this.RemoveBaseTags(Convert.ToString(this.Value));
+            var strOldValue = this.RemoveBaseTags(Convert.ToString(this.OldValue));
+            var args = new PropertyEditorEventArgs(this.Name) { Value = this.Page.Server.HtmlEncode(strValue), OldValue = this.Page.Server.HtmlEncode(strOldValue), StringValue = this.Page.Server.HtmlEncode(this.RemoveBaseTags(this.StringValue)) };
             this.OnValueChanged(args);
         }
 
@@ -170,7 +170,7 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
         }
 
-        private static string RemoveBaseTags(string strInput)
+        private string RemoveBaseTags(string strInput)
         {
             return Globals.BaseTagRegex.Replace(strInput, " ");
         }

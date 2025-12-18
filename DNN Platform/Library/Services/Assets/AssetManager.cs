@@ -80,7 +80,7 @@ namespace DotNetNuke.Services.Assets
         /// <inheritdoc/>
         public ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure)
         {
-            var folder = GetFolderInfo(folderId);
+            var folder = this.GetFolderInfo(folderId);
 
             if (!FolderPermissionController.CanBrowseFolder((FolderInfo)folder))
             {
@@ -101,14 +101,14 @@ namespace DotNetNuke.Services.Assets
             }
 
             var recursive = subfolderFilter == SubfolderFilter.IncludeSubfoldersFilesOnly;
-            var files = GetFiles(folder, sortProperties, startIndex, recursive).ToList();
+            var files = this.GetFiles(folder, sortProperties, startIndex, recursive).ToList();
 
             IEnumerable<object> content;
-            if (startIndex + numItems <= folders.Count)
+            if (startIndex + numItems <= folders.Count())
             {
                 content = folders.Skip(startIndex).Take(numItems);
             }
-            else if (startIndex >= folders.Count)
+            else if (startIndex >= folders.Count())
             {
                 content = files.Skip(startIndex - folders.Count).Take(numItems);
             }
@@ -123,7 +123,7 @@ namespace DotNetNuke.Services.Assets
             {
                 Folder = folder,
                 Items = content.ToList(),
-                TotalCount = folders.Count + files.Count,
+                TotalCount = folders.Count() + files.Count(),
             };
         }
 
@@ -131,7 +131,7 @@ namespace DotNetNuke.Services.Assets
         public ContentPage SearchFolderContent(int folderId, string pattern, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure)
         {
             var recursive = subfolderFilter != SubfolderFilter.ExcludeSubfolders;
-            var folder = GetFolderInfo(folderId);
+            var folder = this.GetFolderInfo(folderId);
 
             var files = FolderManager.Instance.SearchFiles(folder, pattern, recursive);
             var sortProperties = SortProperties.Parse(sortExpression);
@@ -143,7 +143,7 @@ namespace DotNetNuke.Services.Assets
             {
                 Folder = folder,
                 Items = content.ToList(),
-                TotalCount = sortedFiles.Count,
+                TotalCount = sortedFiles.Count(),
             };
         }
 
@@ -173,13 +173,13 @@ namespace DotNetNuke.Services.Assets
             }
 
             // Chech if the new name has invalid chars
-            if (IsInvalidName(filteredName))
+            if (this.IsInvalidName(filteredName))
             {
-                throw new AssetManagerException(GetInvalidCharsErrorText());
+                throw new AssetManagerException(this.GetInvalidCharsErrorText());
             }
 
             // Check if the new name is a reserved name
-            if (IsReservedName(filteredName))
+            if (this.IsReservedName(filteredName))
             {
                 throw new AssetManagerException(Localization.GetExceptionMessage("FolderFileNameIsReserved", FolderFileNameIsReservedDefaultMessage));
             }
@@ -210,18 +210,18 @@ namespace DotNetNuke.Services.Assets
             newFolderName = CleanDotsAtTheEndOfTheName(newFolderName);
 
             // Check if the new name has invalid chars
-            if (IsInvalidName(newFolderName))
+            if (this.IsInvalidName(newFolderName))
             {
-                throw new AssetManagerException(GetInvalidCharsErrorText());
+                throw new AssetManagerException(this.GetInvalidCharsErrorText());
             }
 
             // Check if the name is reserved
-            if (IsReservedName(newFolderName))
+            if (this.IsReservedName(newFolderName))
             {
                 throw new AssetManagerException(Localization.GetExceptionMessage("FolderFileNameIsReserved", FolderFileNameIsReservedDefaultMessage));
             }
 
-            var folder = GetFolderInfo(folderId);
+            var folder = this.GetFolderInfo(folderId);
 
             // Check if user has appropiate permissions
             if (!HasPermission(folder, "MANAGE"))
@@ -235,13 +235,13 @@ namespace DotNetNuke.Services.Assets
                 return folder;
             }
 
-            if (folder.FolderName.Equals(newFolderName, StringComparison.OrdinalIgnoreCase))
+            if (folder.FolderName.Equals(newFolderName, StringComparison.InvariantCultureIgnoreCase))
             {
-                folder.FolderPath = ReplaceFolderName(folder.FolderPath, folder.FolderName, newFolderName);
+                folder.FolderPath = this.ReplaceFolderName(folder.FolderPath, folder.FolderName, newFolderName);
                 return FolderManager.Instance.UpdateFolder(folder);
             }
 
-            var newFolderPath = GetNewFolderPath(newFolderName, folder);
+            var newFolderPath = this.GetNewFolderPath(newFolderName, folder);
 
             // Check if the new folder already exists
             if (FolderManager.Instance.FolderExists(folder.PortalID, newFolderPath))
@@ -260,18 +260,18 @@ namespace DotNetNuke.Services.Assets
 
             var filterFolderName = CleanDotsAtTheEndOfTheName(folderName);
 
-            if (IsInvalidName(filterFolderName))
+            if (this.IsInvalidName(filterFolderName))
             {
-                throw new AssetManagerException(GetInvalidCharsErrorText());
+                throw new AssetManagerException(this.GetInvalidCharsErrorText());
             }
 
             // Check if the new name is a reserved name
-            if (IsReservedName(filterFolderName))
+            if (this.IsReservedName(filterFolderName))
             {
                 throw new AssetManagerException(Localization.GetExceptionMessage("FolderFileNameIsReserved", FolderFileNameIsReservedDefaultMessage));
             }
 
-            var parentFolder = GetFolderInfo(folderParentId);
+            var parentFolder = this.GetFolderInfo(folderParentId);
 
             if (!HasPermission(parentFolder, "ADD"))
             {
@@ -321,7 +321,7 @@ namespace DotNetNuke.Services.Assets
                 }
                 else
                 {
-                    DeleteFolder(folder, nonDeletedSubfolders);
+                    this.DeleteFolder(folder, nonDeletedSubfolders);
                 }
             }
 
@@ -382,7 +382,7 @@ namespace DotNetNuke.Services.Assets
             return name.Trim().TrimEnd('.', ' ');
         }
 
-        private static IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, SortProperties sortProperties, int startIndex, bool recursive)
+        private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, SortProperties sortProperties, int startIndex, bool recursive)
         {
             Requires.NotNull("folder", folder);
 
@@ -394,11 +394,11 @@ namespace DotNetNuke.Services.Assets
             return SortFiles(FolderManager.Instance.GetFiles(folder, recursive, true), sortProperties);
         }
 
-        private static void DeleteFolder(IFolderInfo folder, ICollection<IFolderInfo> nonDeletedItems)
+        private void DeleteFolder(IFolderInfo folder, ICollection<IFolderInfo> nonDeletedItems)
         {
             var nonDeletedSubfolders = new List<IFolderInfo>();
             FolderManager.Instance.DeleteFolder(folder, nonDeletedSubfolders);
-            if (nonDeletedSubfolders.Count == 0)
+            if (!nonDeletedSubfolders.Any())
             {
                 return;
             }
@@ -409,14 +409,14 @@ namespace DotNetNuke.Services.Assets
             }
         }
 
-        private static bool IsInvalidName(string itemName)
+        private bool IsInvalidName(string itemName)
         {
-            var invalidFilenameChars = RegexUtils.GetCachedRegex("[" + Regex.Escape(GetInvalidChars()) + "]");
+            var invalidFilenameChars = RegexUtils.GetCachedRegex("[" + Regex.Escape(this.GetInvalidChars()) + "]");
 
             return invalidFilenameChars.IsMatch(itemName);
         }
 
-        private static string GetInvalidChars()
+        private string GetInvalidChars()
         {
             var invalidChars = new string(Path.GetInvalidFileNameChars());
 
@@ -424,7 +424,7 @@ namespace DotNetNuke.Services.Assets
             {
                 if (invalidChars.IndexOf(ch) == -1)
                 {
-                    // The ch does not exist
+                    // The ch does not exists
                     invalidChars += ch;
                 }
             }
@@ -432,13 +432,13 @@ namespace DotNetNuke.Services.Assets
             return invalidChars;
         }
 
-        private static bool IsReservedName(string name)
+        private bool IsReservedName(string name)
         {
             var reservedNames = new[] { "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9", "CLOCK$" };
             return reservedNames.Contains(Path.GetFileNameWithoutExtension(name.ToUpperInvariant()));
         }
 
-        private static string GetInvalidCharsErrorText()
+        private string GetInvalidCharsErrorText()
         {
             throw new AssetManagerException(
                 Localization.GetExceptionMessage(
@@ -447,7 +447,7 @@ namespace DotNetNuke.Services.Assets
                     "\\:/*?\"<>|"));
         }
 
-        private static IFolderInfo GetFolderInfo(int folderId)
+        private IFolderInfo GetFolderInfo(int folderId)
         {
             var folder = FolderManager.Instance.GetFolder(folderId);
             if (folder == null)
@@ -458,7 +458,7 @@ namespace DotNetNuke.Services.Assets
             return folder;
         }
 
-        private static string ReplaceFolderName(string path, string folderName, string newFolderName)
+        private string ReplaceFolderName(string path, string folderName, string newFolderName)
         {
             var newPath = PathUtils.Instance.RemoveTrailingSlash(path);
             if (string.IsNullOrEmpty(newPath))
@@ -475,9 +475,9 @@ namespace DotNetNuke.Services.Assets
             return newPath.Substring(0, nameIndex) + newPath.Substring(nameIndex).Replace(folderName, newFolderName);
         }
 
-        private static string GetNewFolderPath(string newFolderName, IFolderInfo folder)
+        private string GetNewFolderPath(string newFolderName, IFolderInfo folder)
         {
-            if (folder.FolderName.Equals(newFolderName, StringComparison.OrdinalIgnoreCase))
+            if (folder.FolderName.ToLowerInvariant() == newFolderName.ToLowerInvariant())
             {
                 return folder.FolderPath;
             }

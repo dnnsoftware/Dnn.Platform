@@ -274,7 +274,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     var compactNode = document.SelectSingleNode("/dotnetnuke/packages/package/azureCompatible");
                     if (compactNode != null && !string.IsNullOrEmpty(compactNode.InnerText))
                     {
-                        compact = compactNode.InnerText.Equals("true", StringComparison.OrdinalIgnoreCase);
+                        compact = compactNode.InnerText.ToLowerInvariant() == "true";
                     }
                 }
                 catch (Exception ex)

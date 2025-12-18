@@ -11,7 +11,7 @@
     <InstallPath>$(WebsiteInstallPath)\Provider</InstallPath>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Target Name="CopyAndPackage" BeforeTargets="Build" DependsOnTargets="CopyBin;Package" />
+  <Target Name="AfterBuild" DependsOnTargets="CopyBin;Package" />
   <Target Name="CopyBin">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />

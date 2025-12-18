@@ -157,7 +157,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
             // Profanity Filter
             var profanityFilterSetting = this.GetPortalSetting("MessagingProfanityFilters", sender.PortalID, "NO");
-            if (profanityFilterSetting.Equals("YES", StringComparison.OrdinalIgnoreCase))
+            if (profanityFilterSetting.Equals("YES", StringComparison.InvariantCultureIgnoreCase))
             {
                 message.Subject = this.InputFilter(message.Subject);
                 message.Body = this.InputFilter(message.Body);
@@ -176,7 +176,7 @@ namespace DotNetNuke.Services.Social.Messaging
             {
                 foreach (var attachment in fileIDs.Select(fileId => new MessageAttachment { MessageAttachmentID = Null.NullInteger, FileID = fileId, MessageID = message.MessageID }))
                 {
-                    if (CanViewFile(attachment.FileID) && IsFileInUserFolder(attachment.FileID, sender))
+                    if (this.CanViewFile(attachment.FileID) && this.IsFileInUserFolder(attachment.FileID, sender))
                     {
                         this.dataService.SaveMessageAttachment(attachment, UserController.Instance.GetCurrentUserInfo().UserID);
                     }
@@ -284,7 +284,7 @@ namespace DotNetNuke.Services.Social.Messaging
             return () => new MessagingController();
         }
 
-        private static bool CanViewFile(int fileId)
+        private bool CanViewFile(int fileId)
         {
             var file = FileManager.Instance.GetFile(fileId);
             if (file == null)
@@ -296,9 +296,9 @@ namespace DotNetNuke.Services.Social.Messaging
             return folder != null && FolderPermissionController.Instance.CanViewFolder(folder);
         }
 
-        private static bool IsFileInUserFolder(int fileId, UserInfo sender)
+        private bool IsFileInUserFolder(int fileID, UserInfo sender)
         {
-            var file = FileManager.Instance.GetFile(fileId);
+            var file = FileManager.Instance.GetFile(fileID);
             if (file == null)
             {
                 return false;

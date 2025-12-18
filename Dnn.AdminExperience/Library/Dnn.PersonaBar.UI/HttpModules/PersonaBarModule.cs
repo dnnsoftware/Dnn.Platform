@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PersonaBarModule));
 
         private static readonly object LockAppStarted = new object();
-        private static bool hasAppStarted;
+        private static bool hasAppStarted = false;
 
         /// <inheritdoc/>
         public void Init(HttpApplication application)

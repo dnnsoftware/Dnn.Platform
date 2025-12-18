@@ -13,9 +13,9 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnGenericHiddenField<T> : HiddenField
         where T : class, new()
     {
-        private T typedValue;
+        private T typedValue = null;
 
-        private bool isValueSerialized;
+        private bool isValueSerialized = false;
 
         public T TypedValueOrDefault
         {

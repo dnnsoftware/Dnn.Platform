@@ -50,7 +50,7 @@ namespace DotNetNuke.Entities.Urls
                     // loop through all specified tab names
                     foreach (string tabName in tabNames.Split(';'))
                     {
-                        if (string.Equals(tabName, "default.aspx", StringComparison.OrdinalIgnoreCase))
+                        if (string.Compare(tabName, "default.aspx", StringComparison.OrdinalIgnoreCase) == 0)
                         {
                             // default.aspx is marked with a -2 tabid
                             tabIds.Add(-2);

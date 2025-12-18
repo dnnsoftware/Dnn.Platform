@@ -25,11 +25,11 @@ namespace Dnn.PersonaBar.Extensions.Components
             switch (version)
             {
                 case "01.04.00":
-                    UpdateMenuController();
+                    this.UpdateMenuController();
                     break;
 
                 case "01.05.00":
-                    if (TelerikAssemblyExists())
+                    if (this.TelerikAssemblyExists())
                     {
                         UpdateTelerikEncryptionKey("Telerik.Web.UI.DialogParametersEncryptionKey");
                     }
@@ -75,14 +75,14 @@ namespace Dnn.PersonaBar.Extensions.Components
             return strError;
         }
 
-        private static void UpdateMenuController()
+        private void UpdateMenuController()
         {
             PersonaBarRepository.Instance.UpdateMenuController(Dnn.PersonaBar.Vocabularies.Components.Constants.MenuIdentifier, string.Empty);
         }
 
-        private static bool TelerikAssemblyExists()
+        private bool TelerikAssemblyExists()
         {
-            return File.Exists(Path.Combine(Globals.ApplicationMapPath, @"bin\Telerik.Web.UI.dll"));
+            return File.Exists(Path.Combine(Globals.ApplicationMapPath, "bin\\Telerik.Web.UI.dll"));
         }
     }
 }

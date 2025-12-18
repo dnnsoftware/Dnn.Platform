@@ -120,7 +120,7 @@ namespace DotNetNuke.Entities.Users.Social
             this.AddLog(logContent);
 
             // clear cache
-            ClearRelationshipCache(relationship);
+            this.ClearRelationshipCache(relationship);
         }
 
         /// <inheritdoc/>
@@ -177,7 +177,7 @@ namespace DotNetNuke.Entities.Users.Social
             this.AddLog(logContent);
 
             // clear cache
-            ClearRelationshipCache(relationship);
+            this.ClearRelationshipCache(relationship);
         }
 
         /// <inheritdoc/>
@@ -197,7 +197,7 @@ namespace DotNetNuke.Entities.Users.Social
             this.AddLog(logContent);
 
             // cache clear
-            ClearUserCache(userRelationship);
+            this.ClearUserCache(userRelationship);
         }
 
         /// <inheritdoc/>
@@ -251,7 +251,7 @@ namespace DotNetNuke.Entities.Users.Social
             this.AddLog(logContent);
 
             // cache clear
-            ClearUserCache(userRelationship);
+            this.ClearUserCache(userRelationship);
         }
 
         /// <inheritdoc/>
@@ -565,7 +565,12 @@ namespace DotNetNuke.Entities.Users.Social
             return this.GetRelationshipsByPortalId(portalId).FirstOrDefault(re => re.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers);
         }
 
-        private static void ClearRelationshipCache(Relationship relationship)
+        private void AddLog(string logContent)
+        {
+            this.eventLogger.AddLog("Message", logContent, EventLogType.ADMIN_ALERT);
+        }
+
+        private void ClearRelationshipCache(Relationship relationship)
         {
             if (relationship.UserId == Null.NullInteger)
             {
@@ -573,7 +578,7 @@ namespace DotNetNuke.Entities.Users.Social
             }
         }
 
-        private static void ClearUserCache(UserRelationship userRelationship)
+        private void ClearUserCache(UserRelationship userRelationship)
         {
             // Get Portal
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
@@ -596,11 +601,6 @@ namespace DotNetNuke.Entities.Users.Social
                     DataCache.ClearUserCache(settings.PortalId, relatedUser.Username);
                 }
             }
-        }
-
-        private void AddLog(string logContent)
-        {
-            this.eventLogger.AddLog("Message", logContent, EventLogType.ADMIN_ALERT);
         }
 
         private void ManageUserRelationshipStatus(int userRelationshipId, RelationshipStatus newStatus)

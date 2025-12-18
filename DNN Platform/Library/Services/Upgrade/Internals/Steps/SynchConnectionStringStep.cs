@@ -83,9 +83,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
             else
             {
-                dbowner = string.IsNullOrEmpty(GetUpgradeConnectionStringUserId())
+                dbowner = string.IsNullOrEmpty(this.GetUpgradeConnectionStringUserID())
                                            ? connectionConfig.User + "."
-                                           : GetUpgradeConnectionStringUserId();
+                                           : this.GetUpgradeConnectionStringUserID();
             }
 
             var connectionString = builder.ToString();
@@ -96,22 +96,22 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var modified = false;
 
             // save to web.config if different
-            if (!appConnectionString.Equals(connectionString, System.StringComparison.OrdinalIgnoreCase))
+            if (appConnectionString.ToLower() != connectionString.ToLower())
             {
                 Config.UpdateConnectionString(connectionString);
                 modified = true;
             }
 
             // Compare (and overwrite) Owner and Qualifier in Data Provider
-            if (!Config.GetDataBaseOwner().Equals(dbowner, System.StringComparison.OrdinalIgnoreCase) ||
-                (!Config.GetObjectQualifer().Equals(connectionConfig.Qualifier, System.StringComparison.OrdinalIgnoreCase)))
+            if (Config.GetDataBaseOwner().ToLower() != dbowner.ToLower() ||
+                (Config.GetObjectQualifer().ToLower() != connectionConfig.Qualifier.ToLower()))
             {
                 Config.UpdateDataProvider("SqlDataProvider", dbowner, connectionConfig.Qualifier);
                 modified = true;
             }
 
             // Compare (and overwrite) Owner and Qualifier in Data Provider
-            if (!string.IsNullOrEmpty(connectionConfig.UpgradeConnectionString) && !Config.GetUpgradeConnectionString().Equals(connectionConfig.UpgradeConnectionString, System.StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrEmpty(connectionConfig.UpgradeConnectionString) && Config.GetUpgradeConnectionString().ToLower() != connectionConfig.UpgradeConnectionString.ToLower())
             {
                 Config.UpdateUpgradeConnectionString("SqlDataProvider", connectionConfig.UpgradeConnectionString);
                 modified = true;
@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             this.Status = modified ? StepStatus.AppRestart : StepStatus.Done;
         }
 
-        private static string GetUpgradeConnectionStringUserId()
+        private string GetUpgradeConnectionStringUserID()
         {
             string dbUser = string.Empty;
             string connection = Config.GetUpgradeConnectionString();

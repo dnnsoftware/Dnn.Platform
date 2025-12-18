@@ -12,8 +12,8 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
-    /// <inheritdoc cref="IRemoveItemFromCollectionStep" />
-    internal sealed class RemoveItemFromCollectionStep : XmlStepBase, IRemoveItemFromCollectionStep
+    /// <inheritdoc/>
+    internal class RemoveItemFromCollectionStep : XmlStepBase, IRemoveItemFromCollectionStep
     {
         /// <summary>Initializes a new instance of the <see cref="RemoveItemFromCollectionStep"/> class.</summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
@@ -29,11 +29,11 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 
         /// <inheritdoc/>
         [Required]
-        public string CollectionPath { get; set; }
+        public virtual string CollectionPath { get; set; }
 
         /// <inheritdoc/>
         [Required]
-        public string AttributeNamesToIncludeInSearch { get; set; }
+        public virtual string AttributeNamesToIncludeInSearch { get; set; }
 
         /// <inheritdoc/>
         [Required]

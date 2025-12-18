@@ -200,13 +200,13 @@ namespace DotNetNuke.Services.Search.Internals
                         {
                             Document = searcher.Doc(match.Doc),
                             Score = match.Score,
-                            DisplayScore = GetDisplayScoreFromMatch(match.ToString()),
-                            TitleSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.TitleTag, searchContext.LuceneQuery.TitleSnippetLength),
-                            BodySnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.BodyTag, searchContext.LuceneQuery.BodySnippetLength),
-                            DescriptionSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.DescriptionTag, searchContext.LuceneQuery.TitleSnippetLength),
-                            TagSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.Tag, searchContext.LuceneQuery.TitleSnippetLength),
-                            AuthorSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.AuthorNameTag, searchContext.LuceneQuery.TitleSnippetLength),
-                            ContentSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.ContentTag, searchContext.LuceneQuery.TitleSnippetLength),
+                            DisplayScore = this.GetDisplayScoreFromMatch(match.ToString()),
+                            TitleSnippet = this.GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.TitleTag, searchContext.LuceneQuery.TitleSnippetLength),
+                            BodySnippet = this.GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.BodyTag, searchContext.LuceneQuery.BodySnippetLength),
+                            DescriptionSnippet = this.GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.DescriptionTag, searchContext.LuceneQuery.TitleSnippetLength),
+                            TagSnippet = this.GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.Tag, searchContext.LuceneQuery.TitleSnippetLength),
+                            AuthorSnippet = this.GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.AuthorNameTag, searchContext.LuceneQuery.TitleSnippetLength),
+                            ContentSnippet = this.GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.ContentTag, searchContext.LuceneQuery.TitleSnippetLength),
                         }).ToList();
                     break;
                 }
@@ -431,34 +431,6 @@ namespace DotNetNuke.Services.Search.Internals
             return sb;
         }
 
-        private static string GetHighlightedText(FastVectorHighlighter highlighter, FieldQuery fieldQuery, IndexSearcher searcher, ScoreDoc match, string tag, int length)
-        {
-            var s = highlighter.GetBestFragment(fieldQuery, searcher.IndexReader, match.Doc, tag, length);
-            if (!string.IsNullOrEmpty(s))
-            {
-                s = HttpUtility.HtmlEncode(s).Replace(HighlightPreTag, HtmlPreTag).Replace(HighlightPostTag, HtmlPostTag);
-            }
-
-            return s;
-        }
-
-        /// <summary>Extract the Score portion of the match.ToString().</summary>
-        private static string GetDisplayScoreFromMatch(string match)
-        {
-            var displayScore = string.Empty;
-            if (!string.IsNullOrEmpty(match))
-            {
-                var beginPos = match.IndexOf('[');
-                var endPos = match.LastIndexOf(']');
-                if (beginPos > 0 && endPos > 0 && endPos > beginPos)
-                {
-                    displayScore = match.Substring(beginPos + 1, endPos - beginPos - 1);
-                }
-            }
-
-            return displayScore;
-        }
-
         private void CheckDisposed()
         {
             if (Thread.VolatileRead(ref this.isDisposed) == DISPOSED)
@@ -531,6 +503,34 @@ namespace DotNetNuke.Services.Search.Internals
         {
             return System.IO.Directory.Exists(this.IndexFolder) &&
                    System.IO.Directory.GetFiles(this.IndexFolder, "*.*").Length > 0;
+        }
+
+        private string GetHighlightedText(FastVectorHighlighter highlighter, FieldQuery fieldQuery, IndexSearcher searcher, ScoreDoc match, string tag, int length)
+        {
+            var s = highlighter.GetBestFragment(fieldQuery, searcher.IndexReader, match.Doc, tag, length);
+            if (!string.IsNullOrEmpty(s))
+            {
+                s = HttpUtility.HtmlEncode(s).Replace(HighlightPreTag, HtmlPreTag).Replace(HighlightPostTag, HtmlPostTag);
+            }
+
+            return s;
+        }
+
+        /// <summary>Extract the Score portion of the match.ToString().</summary>
+        private string GetDisplayScoreFromMatch(string match)
+        {
+            var displayScore = string.Empty;
+            if (!string.IsNullOrEmpty(match))
+            {
+                var beginPos = match.IndexOf('[');
+                var endPos = match.LastIndexOf(']');
+                if (beginPos > 0 && endPos > 0 && endPos > beginPos)
+                {
+                    displayScore = match.Substring(beginPos + 1, endPos - beginPos - 1);
+                }
+            }
+
+            return displayScore;
         }
 
         private void DisposeWriter(bool commit = true)

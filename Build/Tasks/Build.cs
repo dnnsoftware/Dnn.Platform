@@ -56,7 +56,7 @@ namespace DotNetNuke.Build.Tasks
                 .SetNoConsoleLogger(context.IsRunningInCI);
         }
 
-        private static void ReportIssuesToAzurePipelines(Context context, FilePath cleanLog, FilePath buildLog)
+        private static void ReportIssuesToAzurePipelines(ICakeContext context, FilePath cleanLog, FilePath buildLog)
         {
             var issueProviders =
                 from logFilePath in new[] { cleanLog, buildLog, }

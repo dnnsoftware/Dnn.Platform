@@ -10,7 +10,7 @@ namespace DotNetNuke.Maintenance.Shims
     /// A concrete implementation of <see cref="IDesktopModuleController"/>
     /// that relies on the <see cref="DesktopModuleController"/> class.
     /// </summary>
-    internal sealed class DesktopModuleControllerShim : IDesktopModuleController
+    internal class DesktopModuleControllerShim : IDesktopModuleController
     {
         /// <inheritdoc/>
         public DesktopModuleInfo GetDesktopModuleByModuleName(string moduleName, int portalID)

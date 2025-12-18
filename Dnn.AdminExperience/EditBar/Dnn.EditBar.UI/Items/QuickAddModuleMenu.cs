@@ -56,13 +56,13 @@ namespace Dnn.EditBar.UI.Items
 
                 var moduleList = ControlBarController.Instance.GetCategoryDesktopModules(portalSettings.PortalId, "Common", string.Empty).Select(m =>
                 {
-                    var selected = string.Equals(m.Value.DesktopModule.ModuleName, "DNN_HTML", StringComparison.OrdinalIgnoreCase) ? " selected" : string.Empty;
+                    var selected = string.Equals(m.Value.DesktopModule.ModuleName, "DNN_HTML", StringComparison.InvariantCultureIgnoreCase) ? " selected" : string.Empty;
                     return $"<option value=\"{m.Value.DesktopModuleID}\"{selected}>{WebUtility.HtmlEncode(m.Value.FriendlyName)}</option>";
                 });
                 var panes = string.Empty;
                 foreach (string paneName in portalSettings.ActiveTab.Panes)
                 {
-                    var selected = string.Equals(paneName, "ContentPane", StringComparison.OrdinalIgnoreCase) ? " selected" : string.Empty;
+                    var selected = string.Equals(paneName, "ContentPane", StringComparison.InvariantCultureIgnoreCase) ? " selected" : string.Empty;
                     panes += $"<option value=\"{WebUtility.HtmlEncode(paneName)}\"{selected}>{WebUtility.HtmlEncode(paneName)}</options>";
                 }
 

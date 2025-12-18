@@ -51,6 +51,6 @@ namespace DotNetNuke.Services.GeneratedImage
         /// <summary>Gets http status code.</summary>
         public HttpStatusCode? HttpStatusCode { get; private set; }
 
-        public bool IsEmptyImage { get; set; }
+        public bool IsEmptyImage { get; set; } = false;
     }
 }

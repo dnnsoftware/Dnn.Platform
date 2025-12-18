@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Web.Api.Auth.ApiTokens
 {
-    using System.Diagnostics.CodeAnalysis;
-
     using DotNetNuke.Entities.Modules.Settings;
 
     /// <summary>
@@ -34,7 +32,6 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         /// <summary>
         /// Gets a value indicating whether API tokens are enabled.
         /// </summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool ApiTokensEnabled => ApiTokenAuthMessageHandler.IsEnabled;
 
         /// <summary>

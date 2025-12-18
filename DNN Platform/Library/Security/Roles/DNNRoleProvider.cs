@@ -141,7 +141,7 @@ namespace DotNetNuke.Security.Roles
 
             foreach (var setting in role.Settings)
             {
-                if (!currentSettings.TryGetValue(setting.Key, out var settingValue) || settingValue != setting.Value)
+                if (!currentSettings.ContainsKey(setting.Key) || currentSettings[setting.Key] != setting.Value)
                 {
                     this.dataProvider.UpdateRoleSetting(role.RoleID, setting.Key, setting.Value, UserController.Instance.GetCurrentUserInfo().UserID);
                 }
@@ -149,7 +149,7 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>AddUserToRole adds a User to a Role.</summary>
-        /// <param name="portalId">ID of the portal.</param>
+        /// <param name="portalId">Id of the portal.</param>
         /// <param name="user">The user to add.</param>
         /// <param name="userRole">The role to add the user to.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
@@ -247,7 +247,7 @@ namespace DotNetNuke.Security.Roles
                 roleGroup.RoleGroupName.Trim(),
                 (roleGroup.Description ?? string.Empty).Trim(),
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            ClearRoleGroupCache(roleGroup.PortalID);
+            this.ClearRoleGroupCache(roleGroup.PortalID);
             return roleGroupId;
         }
 
@@ -256,7 +256,7 @@ namespace DotNetNuke.Security.Roles
         public override void DeleteRoleGroup(RoleGroupInfo roleGroup)
         {
             this.dataProvider.DeleteRoleGroup(roleGroup.RoleGroupID);
-            ClearRoleGroupCache(roleGroup.PortalID);
+            this.ClearRoleGroupCache(roleGroup.PortalID);
         }
 
         /// <summary>GetRoleGroup gets a RoleGroup from the Data Store.</summary>
@@ -273,7 +273,7 @@ namespace DotNetNuke.Security.Roles
         {
             roleGroupName = roleGroupName.Trim();
             return this.GetRoleGroupsInternal(portalId).SingleOrDefault(
-                r => roleGroupName.Equals(r.RoleGroupName.Trim(), StringComparison.OrdinalIgnoreCase));
+                r => roleGroupName.Equals(r.RoleGroupName.Trim(), StringComparison.InvariantCultureIgnoreCase));
         }
 
         /// <summary>Get the RoleGroups for a portal.</summary>
@@ -293,17 +293,7 @@ namespace DotNetNuke.Security.Roles
                 roleGroup.RoleGroupName.Trim(),
                 (roleGroup.Description ?? string.Empty).Trim(),
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            ClearRoleGroupCache(roleGroup.PortalID);
-        }
-
-        private static void ClearRoleGroupCache(int portalId)
-        {
-            DataCache.ClearCache(GetRoleGroupsCacheKey(portalId));
-        }
-
-        private static string GetRoleGroupsCacheKey(int portalId)
-        {
-            return string.Format(DataCache.RoleGroupsCacheKey, portalId);
+            this.ClearRoleGroupCache(roleGroup.PortalID);
         }
 
         private void AddDNNUserRole(UserRoleInfo userRole)
@@ -321,10 +311,20 @@ namespace DotNetNuke.Security.Roles
                     UserController.Instance.GetCurrentUserInfo().UserID));
         }
 
+        private void ClearRoleGroupCache(int portalId)
+        {
+            DataCache.ClearCache(this.GetRoleGroupsCacheKey(portalId));
+        }
+
+        private string GetRoleGroupsCacheKey(int portalId)
+        {
+            return string.Format(DataCache.RoleGroupsCacheKey, portalId);
+        }
+
         private IEnumerable<RoleGroupInfo> GetRoleGroupsInternal(int portalId)
         {
             var cacheArgs = new CacheItemArgs(
-                GetRoleGroupsCacheKey(portalId),
+                this.GetRoleGroupsCacheKey(portalId),
                 DataCache.RoleGroupsCacheTimeOut,
                 DataCache.RoleGroupsCachePriority);
 

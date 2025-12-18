@@ -75,7 +75,7 @@ namespace DotNetNuke.Web.UI.WebControls.Extensions
         /// <returns>the specific item or null if didn't match the text with any item.</returns>
         public static ListItem FindByTextWithIgnoreCase(this ListItemCollection listItems, string text)
         {
-            return listItems.Cast<ListItem>().FirstOrDefault(item => item.Text.Equals(text, StringComparison.OrdinalIgnoreCase));
+            return listItems.Cast<ListItem>().FirstOrDefault(item => item.Text.Equals(text, StringComparison.InvariantCultureIgnoreCase));
         }
 
         /// <summary>Use this method instead of ListItemCollection.FindBValue to find the specific item with case-insensitive.</summary>
@@ -84,7 +84,7 @@ namespace DotNetNuke.Web.UI.WebControls.Extensions
         /// <returns>the specific item or null if didn't match the value with any item.</returns>
         public static ListItem FindByValueWithIgnoreCase(this ListItemCollection listItems, string value)
         {
-            return listItems.Cast<ListItem>().FirstOrDefault(item => item.Value.Equals(value, StringComparison.OrdinalIgnoreCase));
+            return listItems.Cast<ListItem>().FirstOrDefault(item => item.Value.Equals(value, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

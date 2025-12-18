@@ -102,22 +102,22 @@ namespace DNN.Connectors.GoogleAnalytics
             {
                 foreach (AnalyticsSetting setting in analyticsConfig.Settings)
                 {
-                    switch (setting.SettingName.ToUpperInvariant())
+                    switch (setting.SettingName.ToLower())
                     {
-                        case "TRACKINGID":
+                        case "trackingid":
                             trackingId = setting.SettingValue;
                             break;
-                        case "URLPARAMETER":
+                        case "urlparameter":
                             urlParameter = setting.SettingValue;
                             break;
-                        case "TRACKFORADMIN":
-                            trackForAdmin = HandleCustomBoolean(setting.SettingValue);
+                        case "trackforadmin":
+                            trackForAdmin = this.HandleCustomBoolean(setting.SettingValue);
                             break;
-                        case "ANONYMIZEIP":
-                            anonymizeIp = HandleCustomBoolean(setting.SettingValue);
+                        case "anonymizeip":
+                            anonymizeIp = this.HandleCustomBoolean(setting.SettingValue);
                             break;
-                        case "TRACKUSERID":
-                            trackUserId = HandleCustomBoolean(setting.SettingValue);
+                        case "trackuserid":
+                            trackUserId = this.HandleCustomBoolean(setting.SettingValue);
                             break;
                     }
                 }
@@ -135,8 +135,8 @@ namespace DNN.Connectors.GoogleAnalytics
                 { "TrackAdministrators", trackForAdmin },
                 { "AnonymizeIp", anonymizeIp },
                 { "TrackUserId", trackUserId },
-                { "DataConsent", HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
-                { "isDeactivating", HandleCustomBoolean("false") },
+                { "DataConsent", this.HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
+                { "isDeactivating", this.HandleCustomBoolean("false") },
             };
 
             return configItems;
@@ -148,25 +148,25 @@ namespace DNN.Connectors.GoogleAnalytics
             // Delete / Deactivation functionality added into SaveConfig because
             // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
             customErrorMessage = string.Empty;
+            bool isValid;
 
             try
             {
-                if (!bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out var isDeactivating))
-                {
-                    isDeactivating = false;
-                }
+                var isDeactivating = false;
 
-                string trackingId;
+                bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
+
+                string trackingID;
                 string urlParameter;
                 string trackForAdmin;
                 string anonymizeIp;
                 string trackUserId;
 
-                var isValid = true;
+                isValid = true;
 
                 if (isDeactivating)
                 {
-                    trackingId = null;
+                    trackingID = null;
                     urlParameter = null;
                     trackForAdmin = null;
                     anonymizeIp = null;
@@ -174,13 +174,13 @@ namespace DNN.Connectors.GoogleAnalytics
                 }
                 else
                 {
-                    trackingId = values["TrackingID"] != null ? values["TrackingID"].ToUpperInvariant().Trim() : string.Empty;
+                    trackingID = values["TrackingID"] != null ? values["TrackingID"].ToUpperInvariant().Trim() : string.Empty;
                     urlParameter = values["UrlParameter"]?.Trim() ?? string.Empty;
                     trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
                     anonymizeIp = values["AnonymizeIp"] != null ? values["AnonymizeIp"].ToLowerInvariant().Trim() : string.Empty;
                     trackUserId = values["TrackUserId"] != null ? values["TrackUserId"].ToLowerInvariant().Trim() : string.Empty;
 
-                    if (string.IsNullOrEmpty(trackingId))
+                    if (string.IsNullOrEmpty(trackingID))
                     {
                         isValid = false;
                         customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
@@ -197,7 +197,7 @@ namespace DNN.Connectors.GoogleAnalytics
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "TrackingId",
-                        SettingValue = trackingId,
+                        SettingValue = trackingID,
                     });
 
                     config.Settings.Add(new AnalyticsSetting
@@ -242,7 +242,7 @@ namespace DNN.Connectors.GoogleAnalytics
         /// </summary>
         /// <param name="value">The string representing a boolean.</param>
         /// <returns>The string representing a boolean after the correction.</returns>
-        private static string HandleCustomBoolean(string value)
+        private string HandleCustomBoolean(string value)
         {
             if ((value ?? string.Empty).Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
             {

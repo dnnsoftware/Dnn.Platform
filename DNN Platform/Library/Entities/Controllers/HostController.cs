@@ -56,7 +56,7 @@ namespace DotNetNuke.Entities.Controllers
                 }
                 else
                 {
-                    retValue = settingValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || settingValue.Equals("TRUE", StringComparison.OrdinalIgnoreCase);
+                    retValue = settingValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || settingValue.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
                 }
             }
             catch (Exception exc)
@@ -80,8 +80,10 @@ namespace DotNetNuke.Entities.Controllers
         {
             Requires.NotNullOrEmpty("key", key);
 
+            double retValue;
+
             var settings = ((IHostSettingsService)this).GetSettings();
-            if (!settings.TryGetValue(key, out var value) || !double.TryParse(value.Value, out var retValue))
+            if (!settings.ContainsKey(key) || !double.TryParse(settings[key].Value, out retValue))
             {
                 retValue = defaultValue;
             }
@@ -100,8 +102,10 @@ namespace DotNetNuke.Entities.Controllers
         {
             Requires.NotNullOrEmpty("key", key);
 
+            int retValue;
+
             var settings = ((IHostSettingsService)this).GetSettings();
-            if (!settings.TryGetValue(key, out var value) || !int.TryParse(value.Value, out var retValue))
+            if (!settings.ContainsKey(key) || !int.TryParse(settings[key].Value, out retValue))
             {
                 retValue = defaultValue;
             }
@@ -150,12 +154,12 @@ namespace DotNetNuke.Entities.Controllers
             Requires.NotNullOrEmpty("key", key);
 
             var settings = ((IHostSettingsService)this).GetSettings();
-            if (!settings.TryGetValue(key, out var value) || value.Value == null)
+            if (!settings.ContainsKey(key) || settings[key].Value == null)
             {
                 return defaultValue;
             }
 
-            return value.Value;
+            return settings[key].Value;
         }
 
         /// <inheritdoc/>

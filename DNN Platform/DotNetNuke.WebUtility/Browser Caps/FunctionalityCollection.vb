@@ -1,4 +1,4 @@
-﻿' Copyright (c) .NET Foundation. All rights reserved.
+' Copyright (c) .NET Foundation. All rights reserved.
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
 Imports System
@@ -44,7 +44,7 @@ Namespace DotNetNuke.UI.Utilities
                     End If
                 Next
                 If Not bFound Then
-                    Throw New KeyNotFoundException("Item Not Found")
+                    Throw New Exception("Item Not Found")
                 End If
             End Set
         End Property

@@ -3,9 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
-    using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Drawing;
     using System.Drawing.Drawing2D;
     using System.IO;
@@ -18,8 +16,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     /// <summary>User Profile Picture ImageTransform class.</summary>
     public class UserProfilePicTransform : ImageTransform
     {
-        private static readonly HashSet<string> ImageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO", };
-
         /// <summary>Initializes a new instance of the <see cref="UserProfilePicTransform"/> class.</summary>
         public UserProfilePicTransform()
         {
@@ -29,11 +25,10 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             this.CompositingQuality = CompositingQuality.HighQuality;
         }
 
-        /// <summary>Gets provides a Unique String for the image transformation.</summary>
+        /// <summary>Gets provides an Unique String for the image transformation.</summary>
         public override string UniqueString => base.UniqueString + this.UserID;
 
         /// <summary>Gets a value indicating whether is reusable.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool IsReusable => false;
 
         /// <summary>Gets or sets the UserID of the profile pic.</summary>
@@ -42,15 +37,19 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// <inheritdoc />
         public override Image ProcessImage(Image image)
         {
-            if (this.TryGetPhotoFile(out var photoFile))
+            IFileInfo photoFile;
+
+            if (this.TryGetPhotoFile(out photoFile))
             {
                 if (!IsImageExtension(photoFile.Extension))
                 {
                     return this.GetNoAvatarImage();
                 }
 
-                using var content = FileManager.Instance.GetFileContent(photoFile);
-                return this.CopyImage(content);
+                using (var content = FileManager.Instance.GetFileContent(photoFile))
+                {
+                    return this.CopyImage(content);
+                }
             }
 
             return this.GetNoAvatarImage();
@@ -60,7 +59,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// <returns>A <see cref="Bitmap"/> of the No Avatar image.</returns>
         public Bitmap GetNoAvatarImage()
         {
-            var avatarAbsolutePath = $@"{Globals.ApplicationMapPath}\images\no_avatar.gif";
+            var avatarAbsolutePath = Globals.ApplicationMapPath + @"\images\no_avatar.gif";
             using (var content = File.OpenRead(avatarAbsolutePath))
             {
                 return this.CopyImage(content);
@@ -113,7 +112,8 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 extension = $".{extension}";
             }
 
-            return ImageExtensions.Contains(extension);
+            var imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
+            return imageExtensions.Contains(extension.ToUpper());
         }
     }
 }

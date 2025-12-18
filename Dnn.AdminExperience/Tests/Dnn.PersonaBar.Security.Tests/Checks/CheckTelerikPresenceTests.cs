@@ -50,8 +50,8 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
             {
                 // assert
                 Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Unverified));
-                Assert.That(result.Notes.Count, Is.EqualTo(1));
-                Assert.That(result.Notes.First(), Is.EqualTo("An internal error occurred. See logs for details."));
+                Assert.That(result.Notes.Count(), Is.EqualTo(1));
+                Assert.That(result.Notes.First() == "An internal error occurred. See logs for details.", Is.True);
             });
         }
 
@@ -83,7 +83,7 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
                 // assert
                 Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Failure));
                 Assert.That(result.Notes.Count(), Is.EqualTo(1));
-                Assert.That(result.Notes.First(), Does.Contain("* DotNetNuke.Modules.Mod3.dll"));
+                Assert.That(result.Notes.First().Contains("* DotNetNuke.Modules.Mod3.dll"), Is.True);
             });
         }
 
@@ -99,7 +99,7 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
 
             telerikUtilsMock
                 .Setup(x => x.GetAssembliesThatDependOnTelerik())
-                .Returns(() => []);
+                .Returns(() => new string[0]);
 
             var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
 

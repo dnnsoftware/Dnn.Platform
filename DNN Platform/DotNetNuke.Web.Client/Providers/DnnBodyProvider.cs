@@ -26,11 +26,12 @@ namespace DotNetNuke.Web.Client.Providers
         public const string DnnBodyPlaceHolderName = "BodySCRIPTS";
 
         /// <summary>Initializes the provider.</summary>
-        /// <param name="name">The friendly name of the provider.</param>
-        /// <param name="config">A collection of the name/value pairs representing the provider-specific attributes specified in the configuration for this provider.</param>
-        /// <exception cref="System.ArgumentNullException">The name of the provider is null.</exception>
-        /// <exception cref="System.ArgumentException">The name of the provider has a length of zero.</exception>
-        /// <exception cref="System.InvalidOperationException">An attempt is made to call <see cref="System.Configuration.Provider.ProviderBase.Initialize"/> on a provider after the provider has already been initialized.</exception>
+        /// <param name="name">The friendly name of the provider.
+        ///                 </param><param name="config">A collection of the name/value pairs representing the provider-specific attributes specified in the configuration for this provider.
+        ///                 </param><exception cref="T:System.ArgumentNullException">The name of the provider is null.
+        ///                 </exception><exception cref="T:System.ArgumentException">The name of the provider has a length of zero.
+        ///                 </exception><exception cref="T:System.InvalidOperationException">An attempt is made to call <see cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)"/> on a provider after the provider has already been initialized.
+        ///                 </exception>
         public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)
         {
             // Assign the provider a default name if it doesn't have one
@@ -123,14 +124,16 @@ namespace DotNetNuke.Web.Client.Providers
         /// </remarks>
         protected override void RegisterDependencies(HttpContextBase http, string js, string css)
         {
-            if (http.CurrentHandler is not Page page)
+            if (!(http.CurrentHandler is Page))
             {
                 throw new InvalidOperationException("The current HttpHandler in a WebFormsFileRegistrationProvider must be of type Page");
             }
 
+            var page = (Page)http.CurrentHandler;
+
             if (page.Header == null)
             {
-                throw new InvalidOperationException("DnnBodyProvider requires a runat='server' tag in the page's header tag");
+                throw new NullReferenceException("DnnBodyProvider requires a runat='server' tag in the page's header tag");
             }
 
             var jsScriptBlock = new LiteralControl(js.Replace("&", "&amp;"));
@@ -148,10 +151,10 @@ namespace DotNetNuke.Web.Client.Providers
             }
 
             var scriptManager = ScriptManager.GetCurrent(page);
-            if (scriptManager is { IsInAsyncPostBack: true })
+            if (scriptManager != null && scriptManager.IsInAsyncPostBack)
             {
                 holderControl.ID = "$crm_" + holderControl.ID;
-                scriptManager.RegisterDataItem(holderControl, $"{jsScriptBlock.Text}{cssStyleBlock.Text}");
+                scriptManager.RegisterDataItem(holderControl, string.Format("{0}{1}", jsScriptBlock.Text, cssStyleBlock.Text));
             }
         }
     }

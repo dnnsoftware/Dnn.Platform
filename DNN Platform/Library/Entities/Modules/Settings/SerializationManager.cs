@@ -71,76 +71,17 @@ namespace DotNetNuke.Entities.Modules.Settings
             }
         }
 
-        private static string GetSettingValueAsString<T>(T settingValue)
-        {
-            if (settingValue is DateTime dateTimeValue)
-            {
-                return dateTimeValue.ToString("o", CultureInfo.InvariantCulture);
-            }
-
-            if (settingValue is TimeSpan timeSpanValue)
-            {
-                return timeSpanValue.ToString("c", CultureInfo.InvariantCulture);
-            }
-
-            return Convert.ToString(settingValue, CultureInfo.InvariantCulture);
-        }
-
-        private static string ChangeFormatForBooleansIfNeeded(Type propertyType, string propertyValue)
-        {
-            if (!propertyType.Name.Equals("Boolean", StringComparison.Ordinal))
-            {
-                return propertyValue;
-            }
-
-            if (bool.TryParse(propertyValue, out _))
-            {
-                return propertyValue;
-            }
-
-            if (propertyValue.Equals("1", StringComparison.Ordinal))
-            {
-                return bool.TrueString;
-            }
-
-            if (propertyValue.Equals("0", StringComparison.Ordinal))
-            {
-                return bool.FalseString;
-            }
-
-            return propertyValue;
-        }
-
-        private static object CallSerializerMethod(string serializerTypeName, Type typeArgument, object value, string methodName)
-        {
-            var serializerType = Framework.Reflection.CreateType(serializerTypeName, true);
-            if (serializerType == null)
-            {
-                return null;
-            }
-
-            var serializer = Framework.Reflection.CreateInstance(serializerType);
-            if (serializer == null)
-            {
-                return null;
-            }
-
-            var serializerInterfaceType = typeof(ISettingsSerializer<>).MakeGenericType(typeArgument);
-            var method = serializerInterfaceType.GetMethod(methodName);
-            return method?.Invoke(serializer, new[] { value, });
-        }
-
         private string SerializeValue<T>(T value, string serializer, Type valueType)
         {
             string settingValueAsString = null;
             if (!string.IsNullOrEmpty(serializer))
             {
-                settingValueAsString = (string)CallSerializerMethod(serializer, valueType, value, nameof(ISettingsSerializer<T>.Serialize));
+                settingValueAsString = (string)this.CallSerializerMethod(serializer, valueType, value, nameof(ISettingsSerializer<T>.Serialize));
             }
 
             if (settingValueAsString == null)
             {
-                settingValueAsString = GetSettingValueAsString(value);
+                settingValueAsString = this.GetSettingValueAsString(value);
             }
 
             return settingValueAsString;
@@ -151,7 +92,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             string serializer,
             Type destinationType)
         {
-            if (destinationType.GetGenericArguments().Length != 0
+            if (destinationType.GetGenericArguments().Any()
                 && destinationType.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
                 // Nullable type
@@ -170,7 +111,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
             if (!string.IsNullOrEmpty(serializer))
             {
-                return CallSerializerMethod(
+                return this.CallSerializerMethod(
                     serializer,
                     destinationType,
                     propertyValue,
@@ -217,7 +158,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
             if (destinationType.GetInterface(typeof(IConvertible).FullName) != null)
             {
-                propertyValue = ChangeFormatForBooleansIfNeeded(destinationType, propertyValue);
+                propertyValue = this.ChangeFormatForBooleansIfNeeded(destinationType, propertyValue);
                 return Convert.ChangeType(propertyValue, destinationType, CultureInfo.InvariantCulture);
             }
 
@@ -229,6 +170,67 @@ namespace DotNetNuke.Entities.Modules.Settings
 
             // TODO: Localize exception
             throw new InvalidCastException($"Could not cast {propertyValue} to {destinationType}");
+        }
+
+        private string GetSettingValueAsString<T>(T settingValue)
+        {
+            var dateTimeValue = settingValue as DateTime?;
+            if (dateTimeValue != null)
+            {
+                return dateTimeValue.Value.ToString("o", CultureInfo.InvariantCulture);
+            }
+
+            var timeSpanValue = settingValue as TimeSpan?;
+            if (timeSpanValue != null)
+            {
+                return timeSpanValue.Value.ToString("c", CultureInfo.InvariantCulture);
+            }
+
+            return Convert.ToString(settingValue, CultureInfo.InvariantCulture);
+        }
+
+        private string ChangeFormatForBooleansIfNeeded(Type propertyType, string propertyValue)
+        {
+            if (!propertyType.Name.Equals("Boolean"))
+            {
+                return propertyValue;
+            }
+
+            if (bool.TryParse(propertyValue, out _))
+            {
+                return propertyValue;
+            }
+
+            if (propertyValue.Equals("1"))
+            {
+                return bool.TrueString;
+            }
+
+            if (propertyValue.Equals("0"))
+            {
+                return bool.FalseString;
+            }
+
+            return propertyValue;
+        }
+
+        private object CallSerializerMethod(string serializerTypeName, Type typeArgument, object value, string methodName)
+        {
+            var serializerType = Framework.Reflection.CreateType(serializerTypeName, true);
+            if (serializerType == null)
+            {
+                return null;
+            }
+
+            var serializer = Framework.Reflection.CreateInstance(serializerType);
+            if (serializer == null)
+            {
+                return null;
+            }
+
+            var serializerInterfaceType = typeof(ISettingsSerializer<>).MakeGenericType(typeArgument);
+            var method = serializerInterfaceType.GetMethod(methodName);
+            return method?.Invoke(serializer, new[] { value, });
         }
     }
 }

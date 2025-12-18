@@ -13,14 +13,12 @@ namespace Dnn.EditBar.UI.Controllers
     using System.Xml;
     using System.Xml.XPath;
 
-    using Dnn.PersonaBar.Library.Controllers;
-
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Cache;
 
-    internal sealed class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
+    internal class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
     {
         public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
         public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
@@ -73,17 +71,17 @@ namespace Dnn.EditBar.UI.Controllers
 
         private static void AssertHeaderValue(IEnumerable<XmlNode> headers, string key, string value)
         {
-            var header = headers.FirstOrDefault(x => GetNameAttribute(x).Equals(key, StringComparison.OrdinalIgnoreCase));
+            var header = headers.FirstOrDefault(x => GetNameAttribute(x).Equals(key, StringComparison.InvariantCultureIgnoreCase));
             if (header != null)
             {
-                if (!header.InnerText.Equals(value, StringComparison.OrdinalIgnoreCase))
+                if (!header.InnerText.Equals(value, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    throw new LocalizationException($"Resource header '{key}' != '{value}'");
+                    throw new ApplicationException(string.Format("Resource header '{0}' != '{1}'", key, value));
                 }
             }
             else
             {
-                throw new LocalizationException($"Resource header '{key}' is missing");
+                throw new ApplicationException(string.Format("Resource header '{0}' is missing", key));
             }
         }
 

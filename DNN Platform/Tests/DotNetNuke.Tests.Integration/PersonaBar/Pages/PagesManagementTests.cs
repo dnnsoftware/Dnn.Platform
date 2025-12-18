@@ -8,7 +8,6 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
     using System.Configuration;
     using System.Linq;
     using System.Net;
-    using System.Threading.Tasks;
 
     using DNN.Integration.Test.Framework;
     using DNN.Integration.Test.Framework.Helpers;
@@ -34,9 +33,9 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
         }
 
         [OneTimeSetUp]
-        public override async Task TestFixtureSetUp()
+        public override void TestFixtureSetUp()
         {
-            await base.TestFixtureSetUp();
+            base.TestFixtureSetUp();
 
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 

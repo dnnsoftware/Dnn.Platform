@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Analytics
 {
-    using System.Diagnostics.CodeAnalysis;
-
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Analytics.Config;
     using DotNetNuke.Services.Tokens;
@@ -15,14 +13,11 @@ namespace DotNetNuke.Services.Analytics
 
         public abstract string RenderScript(string scriptTemplate);
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string ReplaceTokens(string s)
         {
-            var tokenizer = new TokenReplace
-            {
-                AccessingUser = UserController.Instance.GetCurrentUserInfo(),
-                DebugMessages = false,
-            };
+            var tokenizer = new TokenReplace();
+            tokenizer.AccessingUser = UserController.Instance.GetCurrentUserInfo();
+            tokenizer.DebugMessages = false;
             return tokenizer.ReplaceEnvironmentTokens(s);
         }
 

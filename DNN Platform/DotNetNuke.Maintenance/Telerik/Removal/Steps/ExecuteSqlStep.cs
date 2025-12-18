@@ -11,8 +11,8 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Maintenance.Shims;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
-    /// <inheritdoc cref="IExecuteSqlStep" />
-    internal sealed class ExecuteSqlStep : StepBase, IExecuteSqlStep
+    /// <inheritdoc/>
+    internal class ExecuteSqlStep : StepBase, IExecuteSqlStep
     {
         private readonly IDataProvider dataProvider;
 

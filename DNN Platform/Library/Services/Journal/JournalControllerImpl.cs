@@ -88,7 +88,7 @@ internal class JournalControllerImpl : IJournalController
         UserInfo currentUser = UserController.GetUserById(journalItem.PortalId, journalItem.UserId);
         if (currentUser == null)
         {
-            throw new UserDoesNotExistException("Unable to locate the current user");
+            throw new Exception("Unable to locate the current user");
         }
 
         string xml = null;
@@ -218,7 +218,7 @@ internal class JournalControllerImpl : IJournalController
         UserInfo currentUser = UserController.GetUserById(journalItem.PortalId, journalItem.UserId);
         if (currentUser == null)
         {
-            throw new UserDoesNotExistException("Unable to locate the current user");
+            throw new Exception("Unable to locate the current user");
         }
 
         string xml = null;
@@ -581,21 +581,21 @@ internal class JournalControllerImpl : IJournalController
 
     private static XmlElement CreateElement(XmlDocument xDoc, string name, string value)
     {
-        var element = xDoc.CreateElement(name);
+        var xnode = xDoc.CreateElement(name);
         var xtext = xDoc.CreateTextNode(value);
-        element.AppendChild(xtext);
-        return element;
+        xnode.AppendChild(xtext);
+        return xnode;
     }
 
     private static XmlElement CreateCDataElement(XmlDocument xDoc, string name, string value)
     {
-        var element = xDoc.CreateElement(name);
+        var xnode = xDoc.CreateElement(name);
         var xdata = xDoc.CreateCDataSection(value);
-        element.AppendChild(xdata);
-        return element;
+        xnode.AppendChild(xdata);
+        return xnode;
     }
 
-    private static MemoryStream GetJournalImageContent(Stream fileContent)
+    private static Stream GetJournalImageContent(Stream fileContent)
     {
         Image image = new Bitmap(fileContent);
         var thumbnailWidth = 400;

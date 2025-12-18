@@ -1,61 +1,515 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\Microsoft.SourceLink.GitHub.8.0.0\build\Microsoft.SourceLink.GitHub.props" Condition="Exists('..\..\packages\Microsoft.SourceLink.GitHub.8.0.0\build\Microsoft.SourceLink.GitHub.props')" />
+  <Import Project="..\..\packages\Microsoft.SourceLink.Common.8.0.0\build\Microsoft.SourceLink.Common.props" Condition="Exists('..\..\packages\Microsoft.SourceLink.Common.8.0.0\build\Microsoft.SourceLink.Common.props')" />
+  <Import Project="..\..\packages\Microsoft.Build.Tasks.Git.8.0.0\build\Microsoft.Build.Tasks.Git.props" Condition="Exists('..\..\packages\Microsoft.Build.Tasks.Git.8.0.0\build\Microsoft.Build.Tasks.Git.props')" />
   <PropertyGroup>
-    <OutputPath>bin</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <TargetFramework>net48</TargetFramework>
     <Deterministic>true</Deterministic>
-    <LangVersion>latest</LangVersion>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <AnalysisMode>Recommended</AnalysisMode>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>CS1591</NoWarn>
-    <WarningsNotAsErrors>CS0618,SA1600,CA1010,CA1051,CA1305,CA1310,CA1311,CA1707,CA1711,CA1716,CA1720,CA1725,CA3075,CA5351</WarningsNotAsErrors>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EE1329FE-FD88-4E1A-968C-345E394EF080}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DotNetNuke.Web</RootNamespace>
+    <AssemblyName>DotNetNuke.Web</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WebControl</MyType>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <Nonshipping>true</Nonshipping>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\DotNetNuke.Web.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600</WarningsNotAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\DotNetNuke.Web.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600</WarningsNotAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <NoWarn>1591</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.3.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Web.Infrastructure" Version="2.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="StyleCop.Analyzers">
-      <Version>1.2.0-beta.556</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="WebFormsMvp" Version="1.4.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Reference Include="ClientDependency.Core, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Dnn.ClientDependency.1.10.0\lib\net48\ClientDependency.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DotNetNuke.HttpModules">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\HttpModules\bin\DotNetNuke.HttpModules.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Instrumentation">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.8.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.Bson, Version=1.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.Bson.1.0.3\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Buffers.4.6.0\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Memory.4.6.0\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.6.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.6.0\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.3.0\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.3.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.3.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="WebFormsMvp, Version=1.4.5.0, Culture=neutral, PublicKeyToken=537f18701145dff0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WebFormsMvp.1.4.5.0\lib\WebFormsMvp.dll</HintPath>
+    </Reference>
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
-    <ProjectReference Include="..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj" />
-    <ProjectReference Include="..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj" />
-    <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj" />
-    <ProjectReference Include="..\DotNetNuke.ModulePipeline\DotNetNuke.ModulePipeline.csproj" />
-    <ProjectReference Include="..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj" />
-    <ProjectReference Include="..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj" />
-    <ProjectReference Include="..\HttpModules\DotNetNuke.HttpModules.csproj" />
-    <ProjectReference Include="..\Library\DotNetNuke.Library.csproj" />
+    <Compile Include="..\..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Api\ApiTokenAuthorizeAttribute.cs" />
+    <Compile Include="Api\AuthFilterBase.cs" />
+    <Compile Include="Api\AuthFilterContext.cs" />
+    <Compile Include="Api\AuthorizeAttributeBase.cs" />
+    <Compile Include="Api\Auth\ApiTokenAuthMessageHandler.cs" />
+    <Compile Include="Api\Auth\ApiTokens\ApiTokenController.cs" />
+    <Compile Include="Api\Auth\ApiTokens\ApiTokenExtensions.cs" />
+    <Compile Include="Api\Auth\ApiTokens\ApiTokenFilter.cs" />
+    <Compile Include="Api\Auth\ApiTokens\ApiTokenSettings.cs" />
+    <Compile Include="Api\Auth\ApiTokens\ApiTokenSettingsRepository.cs" />
+    <Compile Include="Api\Auth\ApiTokens\ApiTokenTimespan.cs" />
+    <Compile Include="Api\Auth\ApiTokens\IApiTokenController.cs" />
+    <Compile Include="Api\Auth\ApiTokens\Models\ApiToken.cs" />
+    <Compile Include="Api\Auth\ApiTokens\Models\ApiTokenBase.cs" />
+    <Compile Include="Api\Auth\ApiTokens\Models\ApiTokenAttribute.cs" />
+    <Compile Include="Api\Auth\ApiTokens\Models\ApiTokenKey.cs" />
+    <Compile Include="Api\Auth\ApiTokens\Models\ApiTokenScope.cs" />
+    <Compile Include="Api\Auth\ApiTokens\Repositories\ApiTokenRepository.cs" />
+    <Compile Include="Api\Auth\ApiTokens\Repositories\IApiTokenRepository.cs" />
+    <Compile Include="Api\DnnAuthorizeAttribute.cs" />
+    <Compile Include="Api\DnnExceptionFilterAttribute.cs" />
+    <Compile Include="Api\DnnHttpControllerSelector.cs" />
+    <Compile Include="Api\DnnModuleAuthorizeAttribute.cs" />
+    <Compile Include="Api\Extensions\StartupExtensions.cs" />
+    <Compile Include="Api\HttpConfigurationExtensions.cs" />
+    <Compile Include="Api\HttpStatusCodeAdditions.cs" />
+    <Compile Include="Api\Internal\AntiForgery.cs" />
+    <Compile Include="Api\Internal\AntiForgeryImpl.cs" />
+    <Compile Include="Api\Internal\DnnDependencyResolver.cs" />
+    <Compile Include="Api\Internal\DnnPagePermissionAttribute.cs" />
+    <Compile Include="Api\Internal\IAntiForgery.cs" />
+    <Compile Include="Api\Internal\IFrameSupportedValidateAntiForgeryTokenAttribute.cs" />
+    <Compile Include="Api\Auth\AuthMessageHandlerBase.cs" />
+    <Compile Include="Api\Auth\BasicAuthMessageHandler.cs" />
+    <Compile Include="Api\Auth\DigestAuthMessageHandler.cs" />
+    <Compile Include="Api\Internal\Auth\WebFormsAuthMessageHandler.cs" />
+    <Compile Include="Api\Internal\DnnActionFilterProvider.cs" />
+    <Compile Include="Api\Internal\DnnContextMessageHandler.cs" />
+    <Compile Include="Api\Internal\DnnPageEditorAttribute.cs" />
+    <Compile Include="Api\Internal\PagePermissionsAttributesHelper.cs" />
+    <Compile Include="Api\IPortalAliasRouteManager.cs" />
+    <Compile Include="Api\ITabAndModuleInfoProvider.cs" />
+    <Compile Include="Api\PortalAliasRouteManager.cs" />
+    <Compile Include="Api\RequireAdminAttribute.cs" />
+    <Compile Include="Api\RouteExtensions.cs" />
+    <Compile Include="Api\RequireHostAttribute.cs" />
+    <Compile Include="Api\StandardTabAndModuleInfoProvider.cs" />
+    <Compile Include="Api\StringPassThroughMediaTypeFormatter.cs" />
+    <Compile Include="Api\SupportedModulesAttribute.cs" />
+    <Compile Include="Api\TraceWriter.cs" />
+    <Compile Include="Api\UrlHelperExtensions.cs" />
+    <Compile Include="Api\ValidateAntiForgeryTokenAttribute.cs" />
+    <Compile Include="Common\DotNetNukeSecurity.cs" />
+    <Compile Include="Common\DotNetNukeShutdownOverload.cs" />
+    <Compile Include="Common\DynamicSharedConstants.cs" />
+    <Compile Include="Common\DotNetNukeHttpApplication.cs" />
+    <Compile Include="Api\WebApiException.cs" />
+    <Compile Include="Common\LazyServiceProvider.cs" />
+    <Compile Include="Common\WebFormsServiceProvider.cs" />
+    <Compile Include="Components\Controllers\ControlBarController.cs" />
+    <Compile Include="Components\Controllers\IControlBarController.cs" />
+    <Compile Include="Components\Controllers\Models\MenuItemViewModel.cs" />
+    <Compile Include="Components\Controllers\Models\UpgradeIndicatorViewModel.cs" />
+    <Compile Include="Components\LocalizationHelper.cs" />
+    <Compile Include="ConfigSection\AuthServicesConfiguration.cs" />
+    <Compile Include="ConfigSection\MessageHandlerEntry.cs" />
+    <Compile Include="ConfigSection\MessageHandlersCollection.cs" />
+    <Compile Include="DependencyInjection\BuildUpExtensions.cs" />
+    <Compile Include="InternalServices\PublishPageDto.cs" />
+    <Compile Include="Mvp\IModuleView{TModel}.cs" />
+    <Compile Include="Mvp\ISettingsView{TModel}.cs" />
+    <Compile Include="Mvp\IWebServiceView{TModel}.cs" />
+    <Compile Include="Mvp\ModulePresenter{TView,TModel}.cs" />
+    <Compile Include="Mvp\ModuleSettingsPresenterBase{TView}.cs" />
+    <Compile Include="Mvp\ModuleSettingsPresenter{TView,TModel}.cs" />
+    <Compile Include="Mvp\ModuleView{TModel}.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Prompt\ListServices.cs" />
+    <Compile Include="Models\ModuleDetail.cs" />
+    <Compile Include="Models\ModuleInstance.cs" />
+    <Compile Include="Models\SiteDetail.cs" />
+    <Compile Include="InternalServices\ControlBarController.cs" />
+    <Compile Include="InternalServices\ContentWorkflowServiceController.cs" />
+    <Compile Include="InternalServices\CountryRegionController.cs" />
+    <Compile Include="InternalServices\EventLogServiceController.cs" />
+    <Compile Include="InternalServices\LanguageServiceController.cs" />
+    <Compile Include="InternalServices\ImageHeader.cs" />
+    <Compile Include="InternalServices\NotificationDTO.cs" />
+    <Compile Include="InternalServices\PageServiceController.cs" />
+    <Compile Include="InternalServices\ItemListServiceController.cs" />
+    <Compile Include="InternalServices\SearchServiceController.cs" />
+    <Compile Include="InternalServices\FileUploadController.cs" />
+    <Compile Include="InternalServices\ModuleServiceController.cs" />
+    <Compile Include="InternalServices\NotificationsServiceController.cs" />
+    <Compile Include="InternalServices\ProfileServiceController.cs" />
+    <Compile Include="InternalServices\RelationshipServiceController.cs" />
+    <Compile Include="InternalServices\MessagingServiceController.cs" />
+    <Compile Include="InternalServices\ServiceRouteMapper.cs" />
+    <Compile Include="InternalServices\NewUserNotificationServiceController.cs" />
+    <Compile Include="InternalServices\UserFileController.cs" />
+    <Compile Include="InternalServices\Views\Search\GroupedDetailView.cs" />
+    <Compile Include="InternalServices\Views\Search\GroupedBasicView.cs" />
+    <Compile Include="InternalServices\Views\Search\BasicView.cs" />
+    <Compile Include="InternalServices\Views\Search\DetailedView.cs" />
+    <Compile Include="Models\TabModule.cs" />
+    <Compile Include="Mvp\ProfileModuleViewBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Mvp\SettingsModel.cs" />
+    <Compile Include="Mvp\SettingsView.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Api\Internal\Auth\DigestAuthentication.cs" />
+    <Compile Include="Api\Internal\Auth\DigestAuthenticationRequest.cs" />
+    <Compile Include="Api\DnnApiController.cs" />
+    <Compile Include="Api\HttpRequestMessageExtensions.cs" />
+    <Compile Include="Api\IOverrideDefaultAuthLevel.cs" />
+    <Compile Include="Api\IMapRoute.cs" />
+    <Compile Include="Api\IServiceRouteMapper.cs" />
+    <Compile Include="Api\Internal\ServicesRoutingManager.cs" />
+    <Compile Include="Common\SharedConstants.cs" />
+    <Compile Include="Services\MobileHelperController.cs" />
+    <Compile Include="Services\ServiceRouteMapper.cs" />
+    <Compile Include="DependencyInjectionInitialize.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="UI\DotNetNukeException.cs" />
+    <Compile Include="UI\WebControls\DnnDropDownListState.cs" />
+    <Compile Include="UI\WebControls\DnnFileDropDownList.cs" />
+    <Compile Include="UI\WebControls\DnnFileUploadOptions.cs" />
+    <Compile Include="UI\WebControls\DnnFileUpload.cs" />
+    <Compile Include="UI\WebControls\DnnFileUploadResources.cs" />
+    <Compile Include="UI\WebControls\DnnPortalPageDropDownList.cs" />
+    <Compile Include="UI\WebControls\DnnDropDownListOptions.cs" />
+    <Compile Include="UI\WebControls\DnnFolderDropDownList.cs" />
+    <Compile Include="UI\WebControls\DnnGenericHiddenField.cs" />
+    <Compile Include="UI\WebControls\DnnDropDownList.cs" />
+    <Compile Include="UI\WebControls\DnnConfirmPasswordOptions.cs" />
+    <Compile Include="UI\WebControls\DnnFormPasswordItem.cs" />
+    <Compile Include="UI\WebControls\DnnFilePickerUploader.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\DnnFormPanel.cs" />
+    <Compile Include="UI\WebControls\DnnFormTabStrip.cs" />
+    <Compile Include="UI\WebControls\DnnImageButton.cs" />
+    <Compile Include="UI\WebControls\DnnImage.cs" />
+    <Compile Include="UI\WebControls\DnnMemberListControl.cs" />
+    <Compile Include="UI\WebControls\DnnPageDropDownList.cs" />
+    <Compile Include="UI\WebControls\DnnPaswordStrengthOptions.cs" />
+    <Compile Include="Mvp\IWebServiceView.cs" />
+    <Compile Include="Mvp\WebServicePresenter.cs" />
+    <Compile Include="Mvp\WebServiceView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Mvp\WebServiceViewBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Mvp\IWebServiceViewBase.cs" />
+    <Compile Include="Mvp\HttpHandlerPresenter.cs" />
+    <Compile Include="Mvp\HttpHandlerView.cs" />
+    <Compile Include="Mvp\IHttpHandlerView.cs" />
+    <Compile Include="Mvp\IModuleViewBase.cs" />
+    <Compile Include="Mvp\ISettingsView.cs" />
+    <Compile Include="Mvp\SettingsViewBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Mvp\WebServiceViewOfT.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Mvp\AttributeBasedViewStateSerializer.cs" />
+    <Compile Include="Mvp\ViewStateAttribute.cs" />
+    <Compile Include="UI\RibbonBarManager.cs" />
+    <Compile Include="UI\Utilities.cs" />
+    <Compile Include="UI\WebControls\DnnFormEditControlItem.cs" />
+    <Compile Include="UI\WebControls\DnnFormLabel.cs" />
+    <Compile Include="UI\WebControls\DnnFormTextBoxItem.cs" />
+    <Compile Include="UI\WebControls\DnnFormRadioButtonListItem.cs" />
+    <Compile Include="UI\WebControls\DnnFormListItemBase.cs" />
+    <Compile Include="UI\WebControls\DnnTextButton.cs" />
+    <Compile Include="UI\WebControls\DnnTextLink.cs" />
+    <Compile Include="UI\WebControls\DnnTimeZoneComboBox.cs" />
+    <Compile Include="UI\WebControls\DnnTimeZoneEditControl.cs" />
+    <Compile Include="UI\WebControls\DnnButton.cs" />
+    <Compile Include="UI\WebControls\DnnFieldLabel.cs" />
+    <Compile Include="UI\WebControls\DnnFieldLiteral.cs" />
+    <Compile Include="UI\WebControls\DnnFormEditor.cs" />
+    <Compile Include="UI\WebControls\DnnFormEmptyTemplate.cs" />
+    <Compile Include="UI\WebControls\DnnFormItemBase.cs" />
+    <Compile Include="UI\WebControls\DnnFormTab.cs" />
+    <Compile Include="UI\WebControls\DnnFormSection.cs" />
+    <Compile Include="UI\WebControls\DnnFormSectionTemplate.cs" />
+    <Compile Include="UI\WebControls\DnnFormTemplateItem.cs" />
+    <Compile Include="UI\WebControls\DnnFormLiteralItem.cs" />
+    <Compile Include="UI\WebControls\DnnLabel.cs" />
+    <Compile Include="UI\WebControls\DnnLiteral.cs" />
+    <Compile Include="UI\WebControls\DnnRadioButton.cs" />
+    <Compile Include="UI\WebControls\DnnRibbonBar.cs" />
+    <Compile Include="UI\WebControls\DnnRibbonBarGroup.cs" />
+    <Compile Include="UI\WebControls\DnnRibbonBarGroupCollection.cs" />
+    <Compile Include="UI\WebControls\DnnRibbonBarTool.cs" />
+    <Compile Include="UI\WebControls\DnnTab.cs" />
+    <Compile Include="UI\WebControls\DnnTabCollection.cs" />
+    <Compile Include="UI\WebControls\DnnFormMode.cs" />
+    <Compile Include="UI\WebControls\Extensions\ListControlExtensions.cs" />
+    <Compile Include="UI\WebControls\Extensions\WebControlExtensions.cs" />
+    <Compile Include="UI\WebControls\IDnnRibbonBarTool.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnCheckBoxList.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnComboBoxOption.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnComboBox.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnDatePicker.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnDateTimePicker.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnFormComboBoxItem.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnFormToggleButtonItem.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnGrid.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnGridBoundColumn.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnGridTemplateColumn.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnModuleComboBox.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnScriptBlock.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnSkinComboBox.cs" />
+    <Compile Include="UI\WebControls\Internal\OptionItem.cs" />
+    <Compile Include="UI\WebControls\Internal\PropertyEditorControls\DateEditControl.cs" />
+    <Compile Include="UI\WebControls\Internal\PropertyEditorControls\DateTimeEditControl.cs" />
+    <Compile Include="UI\WebControls\Internal\RenderOption.cs" />
+    <Compile Include="UI\WebControls\Internal\TermsSelector.cs" />
+    <Compile Include="UI\WebControls\ItemListOptions.cs" />
+    <Compile Include="UI\WebControls\ItemListServicesOptions.cs" />
+    <Compile Include="UI\WebControls\RibbonBarToolInfo.cs" />
+    <Compile Include="UI\WebControls\TypedControlCollection.cs" />
+    <Compile Include="UI\WebControls\UniformControlCollection.cs" />
+    <Compile Include="UI\WebControls\DnnUnsortedList.cs" />
+    <Compile Include="UI\WebControls\DnnUnsortedListItem.cs" />
+    <Compile Include="UI\WebControls\DnnUrlControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Validators\AttributeBasedObjectValidator.cs" />
+    <Compile Include="Validators\DataAnnotationsObjectValidator.cs" />
+    <Compile Include="Validators\ObjectValidator.cs" />
+    <Compile Include="Validators\PropertyBasedObjectValidator.cs" />
+    <Compile Include="Validators\ValidationError.cs" />
+    <Compile Include="Validators\ValidationResult.cs" />
+    <Compile Include="Validators\Validator.cs" />
   </ItemGroup>
-
   <ItemGroup>
-    <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
-    <Compile Include="..\..\SolutionInfo.cs" Link="SolutionInfo.cs" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Management" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Compile Include="Mvp\ModulePresenter.cs" />
+    <Compile Include="Mvp\ModuleView.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Mvp\IModuleView.cs" />
+    <Compile Include="Mvp\ModulePresenterBase.cs" />
+    <Compile Include="Mvp\ModuleViewBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\DnnCheckBox.cs" />
+    <Compile Include="UI\WebControls\DnnFileEditControl.cs" />
+    <Compile Include="UI\WebControls\DnnFilePicker.cs" />
+    <Compile Include="UI\WebControls\DnnImageEditControl.cs" />
+    <Compile Include="UI\ILocalizable.cs" />
+    <Compile Include="UI\MessageWindowParameters.cs" />
+    <Compile Include="UI\WebControls\DnnLanguageLabel.cs" />
+    <Compile Include="UI\WebControls\Tags.cs" />
+    <Compile Include="UI\WebControls\TermsEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
+    <None Include="app.config" />
+    <None Include="Library.build">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer">
+      <Project>{5fe5d021-9c8d-47a6-bd34-f328ba3e709c}</Project>
+      <Name>DotNetNuke.Internal.SourceGenerators</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj">
+      <Project>{0fca217a-5f9a-4f5b-a31b-86d64ae65198}</Project>
+      <Name>DotNetNuke.DependencyInjection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.ModulePipeline\DotNetNuke.ModulePipeline.csproj">
+      <Project>{c4823821-cfb3-4394-851f-e39d0974efbd}</Project>
+      <Name>DotNetNuke.ModulePipeline</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
   <Import Project="Library.build" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Microsoft.Build.Tasks.Git.8.0.0\build\Microsoft.Build.Tasks.Git.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Build.Tasks.Git.8.0.0\build\Microsoft.Build.Tasks.Git.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.Build.Tasks.Git.8.0.0\build\Microsoft.Build.Tasks.Git.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Build.Tasks.Git.8.0.0\build\Microsoft.Build.Tasks.Git.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.Common.8.0.0\build\Microsoft.SourceLink.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.Common.8.0.0\build\Microsoft.SourceLink.Common.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.Common.8.0.0\build\Microsoft.SourceLink.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.Common.8.0.0\build\Microsoft.SourceLink.Common.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.GitHub.8.0.0\build\Microsoft.SourceLink.GitHub.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.GitHub.8.0.0\build\Microsoft.SourceLink.GitHub.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.GitHub.8.0.0\build\Microsoft.SourceLink.GitHub.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.GitHub.8.0.0\build\Microsoft.SourceLink.GitHub.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\Microsoft.Build.Tasks.Git.8.0.0\build\Microsoft.Build.Tasks.Git.targets" Condition="Exists('..\..\packages\Microsoft.Build.Tasks.Git.8.0.0\build\Microsoft.Build.Tasks.Git.targets')" />
+  <Import Project="..\..\packages\Microsoft.SourceLink.Common.8.0.0\build\Microsoft.SourceLink.Common.targets" Condition="Exists('..\..\packages\Microsoft.SourceLink.Common.8.0.0\build\Microsoft.SourceLink.Common.targets')" />
+  <Import Project="..\..\packages\Microsoft.SourceLink.GitHub.8.0.0\build\Microsoft.SourceLink.GitHub.targets" Condition="Exists('..\..\packages\Microsoft.SourceLink.GitHub.8.0.0\build\Microsoft.SourceLink.GitHub.targets')" />
 </Project>

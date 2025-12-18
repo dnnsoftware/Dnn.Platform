@@ -5,7 +5,6 @@
 namespace DotNetNuke.Web.Api
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Web.Http;
 
     using DotNetNuke.Entities.Modules;
@@ -25,17 +24,28 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>Gets portalSettings for the current portal.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        public PortalSettings PortalSettings
+        {
+            get
+            {
+                return PortalController.Instance.GetCurrentPortalSettings();
+            }
+        }
 
         /// <summary>Gets userInfo for the current user.</summary>
-        public UserInfo UserInfo => this.PortalSettings.UserInfo;
+        public UserInfo UserInfo
+        {
+            get { return this.PortalSettings.UserInfo; }
+        }
 
         /// <summary>
         /// Gets moduleInfo for the current module.
         /// <remarks>Will be null unless a valid pair of module and tab ids were provided in the request</remarks>
         /// </summary>
-        public ModuleInfo ActiveModule => this.activeModule.Value;
+        public ModuleInfo ActiveModule
+        {
+            get { return this.activeModule.Value; }
+        }
 
         private ModuleInfo InitModuleInfo()
         {

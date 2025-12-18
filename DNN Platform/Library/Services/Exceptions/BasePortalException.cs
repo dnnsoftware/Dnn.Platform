@@ -127,7 +127,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 var context = HttpContext.Current;
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                Exception innerException = new WrappedException(this.message, this);
+                var innerException = new Exception(this.message, this);
                 while (innerException.InnerException != null)
                 {
                     innerException = innerException.InnerException;
@@ -152,7 +152,7 @@ namespace DotNetNuke.Services.Exceptions
                 }
 
                 var currentUserInfo = UserController.Instance.GetCurrentUserInfo();
-                this.UserID = currentUserInfo?.UserID ?? -1;
+                this.UserID = (currentUserInfo != null) ? currentUserInfo.UserID : -1;
 
                 if (this.UserID != -1)
                 {
@@ -267,15 +267,6 @@ namespace DotNetNuke.Services.Exceptions
                 this.message = string.Empty;
                 this.source = string.Empty;
                 Logger.Error(exc);
-            }
-        }
-
-        private class WrappedException : Exception
-        {
-            /// <inheritdoc />
-            public WrappedException(string message, Exception innerException)
-                : base(message, innerException)
-            {
             }
         }
 

@@ -46,8 +46,8 @@ namespace DotNetNuke.Tests.Core.Collections
 
             Assert.Multiple(() =>
             {
-                Assert.That(list, Has.Some.EqualTo(2));
-                Assert.That(list, Has.None.EqualTo(9999));
+                Assert.That(list.Contains(2), Is.True);
+                Assert.That(list.Contains(9999), Is.False);
             });
         }
 

@@ -13,8 +13,8 @@
     <iconUrl>https://dnncommunity.org/favicon.ico</iconUrl>
   </metadata>
   <files>
-    <file src="Dnn.Platform\DNN Platform\Tests\DotNetNuke.Tests.Integration\bin\DNN.Integration.Test.Framework.dll" target="lib\"/>
-    <file src="Dnn.Platform\DNN Platform\Tests\DotNetNuke.Tests.Integration\bin\DNN.Integration.Test.Framework.pdb" target="lib\"/>
+    <file src="Dnn.Platform\DNN Platform\Tests\DotNetNuke.Tests.Integration\bin\Release\DNN.Integration.Test.Framework.dll" target="lib\"/>
+    <file src="Dnn.Platform\DNN Platform\Tests\DotNetNuke.Tests.Integration\bin\Release\DNN.Integration.Test.Framework.pdb" target="lib\"/>
     <file src="..\..\..\Build\Tools\NuGet\logo-for-nuget.png" target="images\"/>
   </files>
 </package>

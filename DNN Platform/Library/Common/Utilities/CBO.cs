@@ -984,16 +984,16 @@ namespace DotNetNuke.Common.Utilities
 
         private static string GetTableName(Type objType)
         {
-            var tableName = string.Empty;
+            string tableName = string.Empty;
 
-            // If no attribute then use Type Name
+            // If no attrubute then use Type Name
             if (string.IsNullOrEmpty(tableName))
             {
                 tableName = objType.Name;
                 if (tableName.EndsWith("Info"))
                 {
                     // Remove Info ending
-                    tableName = tableName.Replace("Info", string.Empty);
+                    tableName.Replace("Info", string.Empty);
                 }
             }
 

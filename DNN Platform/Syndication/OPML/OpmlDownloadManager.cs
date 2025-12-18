@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Syndication
     using DotNetNuke.Instrumentation;
 
     /// <summary>Helper class that provides memory and disk caching of the downloaded feeds.</summary>
-    internal sealed class OpmlDownloadManager
+    internal class OpmlDownloadManager
     {
         private const string OPMLDir = "/OPML/";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OpmlDownloadManager));

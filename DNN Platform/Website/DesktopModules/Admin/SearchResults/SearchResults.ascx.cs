@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.SearchResults
             get
             {
                 var searchScopeParam = this.SearchScopeParam;
-                return string.IsNullOrEmpty(searchScopeParam) ? [] : searchScopeParam.Split(',');
+                return string.IsNullOrEmpty(searchScopeParam) ? new string[0] : searchScopeParam.Split(',');
             }
         }
 

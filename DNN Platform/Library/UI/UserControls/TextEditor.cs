@@ -252,10 +252,8 @@ namespace DotNetNuke.UI.UserControls
 
             set
             {
-                var strMode = value.ToUpperInvariant().Substring(0, 1);
-                if (!string.Equals(strMode, "R", StringComparison.Ordinal)
-                    && !string.Equals(strMode, "H", StringComparison.Ordinal)
-                    && !string.Equals(strMode, "T", StringComparison.Ordinal))
+                var strMode = value.ToUpper().Substring(0, 1);
+                if (strMode != "R" && strMode != "H" && strMode != "T")
                 {
                     strMode = "H";
                 }

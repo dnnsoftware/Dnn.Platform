@@ -16,10 +16,9 @@ namespace DotNetNuke.Security.Permissions.Controls
 
     public class DesktopModulePermissionsGrid : PermissionsGrid
     {
-        private static readonly string[] PermissionKeySeparator = ["##",];
         private DesktopModulePermissionCollection desktopModulePermissions;
         private List<PermissionInfoBase> permissionsList;
-        private int portalDesktopModuleId = -1;
+        private int portalDesktopModuleID = -1;
 
         /// <summary>Gets the Permissions Collection.</summary>
         public DesktopModulePermissionCollection Permissions
@@ -39,13 +38,13 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                return this.portalDesktopModuleId;
+                return this.portalDesktopModuleID;
             }
 
             set
             {
-                int oldValue = this.portalDesktopModuleId;
-                this.portalDesktopModuleId = value;
+                int oldValue = this.portalDesktopModuleID;
+                this.portalDesktopModuleID = value;
                 if (this.desktopModulePermissions == null || oldValue != value)
                 {
                     this.GetDesktopModulePermissions();
@@ -174,7 +173,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     if (!string.IsNullOrEmpty(state))
                     {
                         // First Break the String into individual Keys
-                        string[] permissionKeys = state.Split(PermissionKeySeparator, StringSplitOptions.None);
+                        string[] permissionKeys = state.Split(new[] { "##" }, StringSplitOptions.None);
                         foreach (string key in permissionKeys)
                         {
                             string[] settings = key.Split('|');

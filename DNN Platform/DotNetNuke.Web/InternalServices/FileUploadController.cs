@@ -155,7 +155,7 @@ namespace DotNetNuke.Web.InternalServices
                         foreach (var item in provider.Contents)
                         {
                             var name = item.Headers.ContentDisposition.Name;
-                            switch (name.ToUpperInvariant())
+                            switch (name.ToUpper())
                             {
                                 case "\"FOLDER\"":
                                     folder = item.ReadAsStringAsync().Result ?? string.Empty;
@@ -166,27 +166,15 @@ namespace DotNetNuke.Web.InternalServices
                                     break;
 
                                 case "\"OVERWRITE\"":
-                                    if (!bool.TryParse(item.ReadAsStringAsync().Result, out overwrite))
-                                    {
-                                        overwrite = false;
-                                    }
-
+                                    bool.TryParse(item.ReadAsStringAsync().Result, out overwrite);
                                     break;
 
                                 case "\"ISHOSTMENU\"":
-                                    if (!bool.TryParse(item.ReadAsStringAsync().Result, out isHostMenu))
-                                    {
-                                        isHostMenu = false;
-                                    }
-
+                                    bool.TryParse(item.ReadAsStringAsync().Result, out isHostMenu);
                                     break;
 
                                 case "\"EXTRACT\"":
-                                    if (!bool.TryParse(item.ReadAsStringAsync().Result, out extract))
-                                    {
-                                        extract = false;
-                                    }
-
+                                    bool.TryParse(item.ReadAsStringAsync().Result, out extract);
                                     break;
 
                                 case "\"POSTFILE\"":
@@ -308,37 +296,21 @@ namespace DotNetNuke.Web.InternalServices
                                 break;
 
                             case "\"OVERWRITE\"":
-                                if (!bool.TryParse(item.ReadAsStringAsync().Result, out overwrite))
-                                {
-                                    overwrite = false;
-                                }
-
+                                bool.TryParse(item.ReadAsStringAsync().Result, out overwrite);
                                 break;
 
                             case "\"ISHOSTPORTAL\"":
-                                if (!bool.TryParse(item.ReadAsStringAsync().Result, out isHostPortal))
-                                {
-                                    isHostPortal = false;
-                                }
-
+                                bool.TryParse(item.ReadAsStringAsync().Result, out isHostPortal);
                                 break;
 
                             case "\"EXTRACT\"":
-                                if (!bool.TryParse(item.ReadAsStringAsync().Result, out extract))
-                                {
-                                    extract = false;
-                                }
-
+                                bool.TryParse(item.ReadAsStringAsync().Result, out extract);
                                 break;
 
                             case "\"PORTALID\"":
                                 if (userInfo.IsSuperUser)
                                 {
-                                    var originalPortalId = portalId;
-                                    if (!int.TryParse(item.ReadAsStringAsync().Result, out portalId))
-                                    {
-                                        portalId = originalPortalId;
-                                    }
+                                    int.TryParse(item.ReadAsStringAsync().Result, out portalId);
                                 }
 
                                 break;
@@ -352,7 +324,7 @@ namespace DotNetNuke.Web.InternalServices
                                     fileName = Path.GetFileName(fileName);
                                 }
 
-                                if (!Globals.FileEscapingRegex.Match(fileName).Success)
+                                if (Globals.FileEscapingRegex.Match(fileName).Success == false)
                                 {
                                     stream = item.ReadAsStreamAsync().Result;
                                 }
@@ -391,7 +363,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private static SavedFileDTO SaveFile(
             Stream stream,
-            PortalSettings portalSettings,
+            IPortalSettings portalSettings,
             UserInfo userInfo,
             string folder,
             string filter,
@@ -630,7 +602,7 @@ namespace DotNetNuke.Web.InternalServices
                 result.Path = result.FileId > 0 ? path : string.Empty;
                 result.FileName = fileName;
 
-                if (extract && extension.Equals("zip", StringComparison.OrdinalIgnoreCase))
+                if (extract && extension.ToLowerInvariant() == "zip")
                 {
                     FileManager.Instance.DeleteFile(file);
                 }
@@ -664,16 +636,18 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-        private static PortalInfo[] GetMyPortalGroup()
+        private static IEnumerable<PortalInfo> GetMyPortalGroup()
         {
-            return (from @group in PortalGroupController.Instance.GetPortalGroups().ToArray()
-                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
-                into portals
-                where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
-                select portals.ToArray()).FirstOrDefault();
+            var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
+            var mygroup = (from @group in groups
+                           select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
+                               into portals
+                           where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
+                           select portals.ToArray()).FirstOrDefault();
+            return mygroup;
         }
 
-        private static string GetFileName(WebResponse response)
+        private string GetFileName(WebResponse response)
         {
             if (!response.Headers.AllKeys.Contains("Content-Disposition"))
             {
@@ -684,10 +658,10 @@ namespace DotNetNuke.Web.InternalServices
             return new ContentDisposition(contentDisposition).FileName;
         }
 
-        private static bool VerifySafeUrl(string url)
+        private bool VerifySafeUrl(string url)
         {
             Uri uri = new Uri(url);
-            if (uri.Scheme is "http" or "https")
+            if (uri.Scheme == "http" || uri.Scheme == "https")
             {
                 if (!uri.Host.Contains("."))
                 {

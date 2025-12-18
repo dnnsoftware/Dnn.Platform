@@ -4,7 +4,6 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -321,8 +320,13 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>  Gets the current Portal Settings.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        protected PortalSettings PortalSettings
+        {
+            get
+            {
+                return PortalController.Instance.GetCurrentPortalSettings();
+            }
+        }
 
         /// <summary>  Gets or sets the current mode of the control.</summary>
         /// <remarks>

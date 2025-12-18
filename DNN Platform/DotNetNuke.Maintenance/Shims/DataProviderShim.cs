@@ -8,8 +8,11 @@ namespace DotNetNuke.Maintenance.Shims
 
     using DotNetNuke.Data;
 
-    /// <summary>An implementation of <see cref="IDataProvider"/> that relies on the <see cref="DataProvider"/> class.</summary>
-    internal sealed class DataProviderShim : IDataProvider
+    /// <summary>
+    /// An implementation of <see cref="IDataProvider"/>
+    /// that relies on the <see cref="DataProvider"/> class.
+    /// </summary>
+    internal class DataProviderShim : IDataProvider
     {
         /// <inheritdoc/>
         public IDataReader ExecuteSQL(string sql)

@@ -30,10 +30,10 @@ namespace DotNetNuke.UI.WebControls
         public EditorInfo CreateEditControl()
         {
             EditorInfo editInfo = null;
-            PropertyInfo objProperty = GetProperty(this.dataSource, this.fieldName);
+            PropertyInfo objProperty = this.GetProperty(this.dataSource, this.fieldName);
             if (objProperty != null)
             {
-                editInfo = GetEditorInfo(this.dataSource, objProperty);
+                editInfo = this.GetEditorInfo(this.dataSource, objProperty);
             }
 
             return editInfo;
@@ -68,8 +68,8 @@ namespace DotNetNuke.UI.WebControls
             return false;
         }
 
-        /// <summary>GetEditorInfo builds an EditorInfo object for a property.</summary>
-        private static EditorInfo GetEditorInfo(object dataSource, PropertyInfo objProperty)
+        /// <summary>GetEditorInfo builds an EditorInfo object for a propoerty.</summary>
+        private EditorInfo GetEditorInfo(object dataSource, PropertyInfo objProperty)
         {
             var editInfo = new EditorInfo();
 
@@ -188,7 +188,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>GetProperty returns the property that is being "bound" to.</summary>
-        private static PropertyInfo GetProperty(object dataSource, string fieldName)
+        private PropertyInfo GetProperty(object dataSource, string fieldName)
         {
             if (dataSource != null)
             {

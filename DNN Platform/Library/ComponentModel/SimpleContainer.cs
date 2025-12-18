@@ -56,7 +56,7 @@ namespace DotNetNuke.ComponentModel
         {
             IComponentBuilder builder = this.GetComponentBuilder(name);
 
-            return GetComponent(builder);
+            return this.GetComponent(builder);
         }
 
         /// <inheritdoc/>
@@ -76,9 +76,9 @@ namespace DotNetNuke.ComponentModel
 
                 if (builderCount > 0)
                 {
-                    IComponentBuilder builder = GetDefaultComponentBuilder(componentType);
+                    IComponentBuilder builder = this.GetDefaultComponentBuilder(componentType);
 
-                    component = GetComponent(builder);
+                    component = this.GetComponent(builder);
                 }
             }
 
@@ -95,7 +95,7 @@ namespace DotNetNuke.ComponentModel
             {
                 IComponentBuilder builder = this.GetComponentBuilder(name);
 
-                component = GetComponent(builder);
+                component = this.GetComponent(builder);
             }
 
             return component;
@@ -172,33 +172,6 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
-        private static object GetComponent(IComponentBuilder builder)
-        {
-            object component;
-            if (builder == null)
-            {
-                component = null;
-            }
-            else
-            {
-                component = builder.BuildComponent();
-            }
-
-            return component;
-        }
-
-        private static IComponentBuilder GetDefaultComponentBuilder(ComponentType componentType)
-        {
-            IComponentBuilder builder;
-
-            using (componentType.ComponentBuilders.GetReadLock())
-            {
-                builder = componentType.ComponentBuilders.DefaultBuilder;
-            }
-
-            return builder;
-        }
-
         private void AddBuilder(Type contractType, IComponentBuilder builder)
         {
             ComponentType componentType = this.GetComponentType(contractType);
@@ -233,6 +206,21 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
+        private object GetComponent(IComponentBuilder builder)
+        {
+            object component;
+            if (builder == null)
+            {
+                component = null;
+            }
+            else
+            {
+                component = builder.BuildComponent();
+            }
+
+            return component;
+        }
+
         private IComponentBuilder GetComponentBuilder(string name)
         {
             IComponentBuilder builder;
@@ -240,6 +228,18 @@ namespace DotNetNuke.ComponentModel
             using (this.componentBuilders.GetReadLock())
             {
                 this.componentBuilders.TryGetValue(name, out builder);
+            }
+
+            return builder;
+        }
+
+        private IComponentBuilder GetDefaultComponentBuilder(ComponentType componentType)
+        {
+            IComponentBuilder builder;
+
+            using (componentType.ComponentBuilders.GetReadLock())
+            {
+                builder = componentType.ComponentBuilders.DefaultBuilder;
             }
 
             return builder;

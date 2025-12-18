@@ -717,7 +717,7 @@ namespace DotNetNuke.UI.UserControls
                     this.cboRegion.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", string.Empty));
                 }
 
-                if (countryCode.Equals("us", StringComparison.OrdinalIgnoreCase))
+                if (countryCode.Equals("us", StringComparison.InvariantCultureIgnoreCase))
                 {
                     this.valRegion1.Enabled = true;
                     this.valRegion2.Enabled = false;

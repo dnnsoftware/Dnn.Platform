@@ -1,45 +1,47 @@
-﻿//
+﻿// 
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
-//
-namespace DotNetNuke.Tests.Utilities;
-
+// 
+using System.Configuration;
 using System.IO;
 
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Tests.UI.WatiN.Utilities;
 
-public class MailManager
+namespace DotNetNuke.Tests.Utilities
 {
-    private static string GetEmailDumpFolderPath()
+    public class MailManager
     {
-        return Directory.GetCurrentDirectory().Replace("\\Fixtures", "\\Packages") + "\\TestEmails";
-    }
-
-    public static void ClearDumpFolder()
-    {
-        string emailPath = GetEmailDumpFolderPath();
-
-        if (Directory.Exists(emailPath))
+        private static string GetEmailDumpFolderPath()
         {
-            foreach (var file in Directory.GetFiles(emailPath))
+            return Directory.GetCurrentDirectory().Replace("\\Fixtures", "\\Packages") + "\\TestEmails";
+        }
+
+        public static void ClearDumpFolder()
+        {
+            string emailPath = GetEmailDumpFolderPath();
+
+            if (Directory.Exists(emailPath))
             {
-                File.Delete(file);
+                foreach (var file in Directory.GetFiles(emailPath))
+                {
+                    File.Delete(file);
+                }
             }
         }
-    }
 
-    public static void SetUpMailDumpFolder()
-    {
-        string emailPath = GetEmailDumpFolderPath();
-        var mailDropPath = Directory.GetCurrentDirectory().Replace("\\Fixtures", "\\Community\\Tests\\Packages");
-
-        if (!Directory.Exists(emailPath))
+        public static void SetUpMailDumpFolder()
         {
-            Directory.CreateDirectory(emailPath);
-        }
+            string emailPath = GetEmailDumpFolderPath();
+            var mailDropPath = Directory.GetCurrentDirectory().Replace("\\Fixtures", "\\Community\\Tests\\Packages");
 
-        WebConfigManager.UpdateConfigForMailDrop(mailDropPath, emailPath);
-        HostController.Instance.Update("SMTPServer", "localhost", false);
+            if (!Directory.Exists(emailPath))
+            {
+                Directory.CreateDirectory(emailPath);
+            }
+
+            WebConfigManager.UpdateConfigForMailDrop(mailDropPath, emailPath);
+            HostController.Instance.Update("SMTPServer", "localhost", false);
+        }
     }
 }

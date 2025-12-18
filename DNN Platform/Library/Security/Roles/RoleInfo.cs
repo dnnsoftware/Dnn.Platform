@@ -312,7 +312,7 @@ namespace DotNetNuke.Security.Roles
                 case "datecreated":
                     return PropertyAccess.FormatString(this.CreatedOnDate.ToString(), format);
                 case "photourl":
-                    return PropertyAccess.FormatString(FormatUrl(this.PhotoURL), format);
+                    return PropertyAccess.FormatString(this.FormatUrl(this.PhotoURL), format);
                 case "stat_status":
                     return PropertyAccess.FormatString(this.GetString("stat_status", string.Empty), format);
                 case "stat_photo":
@@ -320,7 +320,7 @@ namespace DotNetNuke.Security.Roles
                 case "stat_file":
                     return PropertyAccess.FormatString(this.GetString("stat_file", string.Empty), format);
                 case "url":
-                    return PropertyAccess.FormatString(FormatUrl(this.GetString("URL", string.Empty)), format);
+                    return PropertyAccess.FormatString(this.FormatUrl(this.GetString("URL", string.Empty)), format);
                 case "issystemrole":
                     return PropertyAccess.Boolean2LocalizedYesNo(this.IsSystemRole, formatProvider);
                 case "grouptype":
@@ -562,17 +562,6 @@ namespace DotNetNuke.Security.Roles
             writer.WriteEndElement();
         }
 
-        private static string FormatUrl(string url)
-        {
-            if (url.StartsWith("/") && HttpContext.Current != null)
-            {
-                // server absolute path
-                return Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
-            }
-
-            return url;
-        }
-
         private void GetRoleType()
         {
             var portal = PortalController.Instance.GetPortal(this.PortalID);
@@ -601,12 +590,23 @@ namespace DotNetNuke.Security.Roles
                 return defaultValue;
             }
 
-            if (this.Settings.TryGetValue(keyName, out var settingValue))
+            if (this.Settings.ContainsKey(keyName))
             {
-                return settingValue;
+                return this.Settings[keyName];
             }
 
             return defaultValue;
+        }
+
+        private string FormatUrl(string url)
+        {
+            if (url.StartsWith("/") && HttpContext.Current != null)
+            {
+                // server absolute path
+                return Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
+            }
+
+            return url;
         }
     }
 }

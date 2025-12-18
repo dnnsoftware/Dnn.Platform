@@ -10,29 +10,49 @@ namespace DotNetNuke.Web.Validators
 
     public class ValidationResult
     {
+        private readonly IEnumerable<ValidationError> errors;
+
         public ValidationResult()
         {
-            this.Errors = [];
+            this.errors = Enumerable.Empty<ValidationError>();
         }
 
         public ValidationResult(IEnumerable<ValidationError> errors)
         {
             Requires.NotNull("errors", errors);
-            this.Errors = errors;
+            this.errors = errors;
         }
 
-        public static ValidationResult Successful => new();
+        public static ValidationResult Successful
+        {
+            get
+            {
+                return new ValidationResult();
+            }
+        }
 
-        public IEnumerable<ValidationError> Errors { get; }
+        public IEnumerable<ValidationError> Errors
+        {
+            get
+            {
+                return this.errors;
+            }
+        }
 
-        public bool IsValid => !this.Errors.Any();
+        public bool IsValid
+        {
+            get
+            {
+                return this.errors.Count() == 0;
+            }
+        }
 
         public ValidationResult CombineWith(ValidationResult other)
         {
             Requires.NotNull("other", other);
 
             // Just concatenate the errors collection
-            return new ValidationResult(this.Errors.Concat(other.Errors));
+            return new ValidationResult(this.errors.Concat(other.Errors));
         }
     }
 }

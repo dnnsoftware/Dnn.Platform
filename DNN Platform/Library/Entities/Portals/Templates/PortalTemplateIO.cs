@@ -28,7 +28,7 @@ namespace DotNetNuke.Entities.Portals.Internal
                 return Directory.GetFiles(path, "*.template").Where(x => Path.GetFileNameWithoutExtension(x) != "admin");
             }
 
-            return [];
+            return new string[0];
         }
 
         /// <inheritdoc/>
@@ -40,7 +40,7 @@ namespace DotNetNuke.Entities.Portals.Internal
                 return Directory.GetFiles(path, "*.template.??-??.resx");
             }
 
-            return [];
+            return new string[0];
         }
 
         /// <inheritdoc/>
@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Portals.Internal
         /// <inheritdoc/>
         public string GetLanguageFilePath(string templateFilePath, string cultureCode)
         {
-            return CheckFilePath($"{templateFilePath}.{cultureCode}.resx");
+            return CheckFilePath(string.Format("{0}.{1}.resx", templateFilePath, cultureCode));
         }
 
         /// <inheritdoc/>

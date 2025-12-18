@@ -154,7 +154,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
             }
 
-            if (folder.Name.Equals("app_localresources", StringComparison.OrdinalIgnoreCase) || folder.Name.Equals("app_globalresources", StringComparison.OrdinalIgnoreCase) || folder.Name.Equals("_default", StringComparison.OrdinalIgnoreCase))
+            if (folder.Name.ToLowerInvariant() == "app_localresources" || folder.Name.ToLowerInvariant() == "app_globalresources" || folder.Name.ToLowerInvariant() == "_default")
             {
                 // Add the Files in the Folder
                 FileInfo[] files = folder.GetFiles();
@@ -166,7 +166,7 @@ namespace DotNetNuke.Services.Installer.Writers
                         filePath = filePath.Substring(1);
                     }
 
-                    if (file.Name.Contains(this.Language.Code, StringComparison.OrdinalIgnoreCase) || (this.Language.Code.Equals("en-us", StringComparison.OrdinalIgnoreCase) && !file.Name.Contains("-")))
+                    if (file.Name.ToLowerInvariant().Contains(this.Language.Code.ToLowerInvariant()) || (this.Language.Code.ToLowerInvariant() == "en-us" && !file.Name.Contains("-")))
                     {
                         this.AddFile(Path.Combine(filePath, file.Name));
                     }
@@ -517,19 +517,18 @@ namespace DotNetNuke.Services.Installer.Writers
                             else
                             {
                                 // Attempt to figure out the Extension
-                                foreach (var kvp in DesktopModuleController.GetDesktopModules(Null.NullInteger))
+                                foreach (KeyValuePair<int, DesktopModuleInfo> kvp in
+                                    DesktopModuleController.GetDesktopModules(Null.NullInteger))
                                 {
-                                    if (kvp.Value.FolderName.Equals(moduleName, StringComparison.OrdinalIgnoreCase))
+                                    if (kvp.Value.FolderName.ToLowerInvariant() == moduleName)
                                     {
                                         // Found Module - Get Package
                                         var dependentPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == kvp.Value.PackageID);
                                         this.Package.Name += "_" + dependentPackage.Name;
                                         this.Package.FriendlyName += " " + dependentPackage.FriendlyName;
-                                        this.languagePack = new LanguagePackInfo
-                                        {
-                                            DependentPackageID = dependentPackage.PackageID,
-                                            LanguageID = locale.LanguageId,
-                                        };
+                                        this.languagePack = new LanguagePackInfo();
+                                        this.languagePack.DependentPackageID = dependentPackage.PackageID;
+                                        this.languagePack.LanguageID = locale.LanguageId;
                                         break;
                                     }
                                 }

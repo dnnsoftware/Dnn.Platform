@@ -101,22 +101,23 @@ namespace Dnn.PersonaBar.Users.Tests
         public void Run_AddRolesWhenRoleNotValid_ThrowsException()
         {
             // Arrange
-            const int UserId = 2;
-            var userInfo = this.GetUser(UserId, true);
+            var userId = 2;
+            var userInfo = this.GetUser(userId, true);
 
             this.userValidatorMock
-                .Setup(u => u.ValidateUser(UserId, this.portalSettings, null, out userInfo))
+                .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
                 .Returns(this.errorResultModel);
 
             var userInfoList = new List<UserRoleInfo>(
-            [
-                new UserRoleInfo
+                    new[]
+                    {
+                        new UserRoleInfo
                         {
                             RoleID = 1,
                             PortalID = this.testPortalId,
                             IsPublic = true,
-                        }
-            ]);
+                        },
+                    });
 
             var total = 1;
             this.usersControllerMock
@@ -124,19 +125,24 @@ namespace Dnn.PersonaBar.Users.Tests
                 .Returns(userInfoList);
 
             var rolesList = new List<RoleInfo>(
-            [
-                new RoleInfo
+                    new[]
+                    {
+                        new RoleInfo
                         {
                             RoleID = 1,
                             RoleName = "Tester",
-                        }
-            ]);
+                        },
+                    });
 
             this.rolesControllerMock
                 .Setup(r => r.GetRolesByNames(this.portalSettings, -1, It.IsAny<IList<string>>()))
                 .Returns(rolesList);
 
-            Assert.Throws<RoleNotFoundException>(() => this.RunCommand(UserId.ToString(), "--roles", "Not Tester"), "Should throw exception");
+            // Act
+            TestDelegate ex = () => this.RunCommand(userId.ToString(), "--roles", "Not Tester");
+
+            // Assert
+            Assert.Throws<Exception>(ex, "Should throw exception");
         }
 
         protected override void ChildSetup()

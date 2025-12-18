@@ -24,7 +24,6 @@ namespace Dnn.PersonaBar.Users.Components
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
 
@@ -34,7 +33,7 @@ namespace Dnn.PersonaBar.Users.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Services.UsersController));
 
-        private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         public static UserInfo GetUser(int userId, PortalSettings portalSettings, UserInfo userInfo, out KeyValuePair<HttpStatusCode, string> response)
         {
@@ -93,7 +92,7 @@ namespace Dnn.PersonaBar.Users.Components
                 userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.SuperUsers)));
             }
 
-            if (!PortalSettings.DataConsentActive)
+            if (!this.PortalSettings.DataConsentActive)
             {
                 userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.HasAgreedToTerms)));
                 userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.HasNotAgreedToTerms)));
@@ -122,7 +121,7 @@ namespace Dnn.PersonaBar.Users.Components
         {
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {
-                throw new InvalidOperationException(Localization.GetString("CannotChangePassword", Constants.LocalResourcesFile));
+                throw new Exception(Localization.GetString("CannotChangePassword", Constants.LocalResourcesFile));
             }
 
             var user = UserController.Instance.GetUserById(portalId, userId);
@@ -138,14 +137,14 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 if (membershipPasswordController.FoundBannedPassword(newPassword) || user.Username == newPassword)
                 {
-                    throw new InvalidPasswordException(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile));
+                    throw new Exception(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile));
                 }
             }
 
             // check new password is not in history
             if (membershipPasswordController.IsPasswordInHistory(user.UserID, user.PortalID, newPassword, false))
             {
-                throw new InvalidPasswordException(Localization.GetString("PasswordResetFailed_PasswordInHistory", Constants.LocalResourcesFile));
+                throw new Exception(Localization.GetString("PasswordResetFailed_PasswordInHistory", Constants.LocalResourcesFile));
             }
 
             try
@@ -153,7 +152,7 @@ namespace Dnn.PersonaBar.Users.Components
                 var passwordChanged = UserController.ResetAndChangePassword(user, newPassword);
                 if (!passwordChanged)
                 {
-                    throw new InvalidPasswordException(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile));
+                    throw new Exception(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile));
                 }
 
                 return true;
@@ -162,7 +161,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 // Password Answer missing
                 Logger.Error(exc);
-                throw new InvalidPasswordException(Localization.GetString("PasswordInvalid", Constants.LocalResourcesFile), exc);
+                throw new Exception(Localization.GetString("PasswordInvalid", Constants.LocalResourcesFile));
             }
             catch (ThreadAbortException)
             {
@@ -172,21 +171,23 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 // Password validation has failed
                 Logger.Error(exc);
-                throw new InvalidPasswordException(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile), exc);
+                throw new InvalidPasswordException(
+                    Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile),
+                    exc);
             }
             catch (Exception exc)
             {
                 // Fail
                 Logger.Error(exc);
-                throw new InvalidPasswordException(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile), exc);
+                throw new Exception(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile));
             }
         }
 
         /// <inheritdoc/>
         public UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto, int requestPortalId = -1)
         {
-            int portalId = PortalSettings.PortalId;
-            PortalSettings requestPortalSettings = PortalSettings;
+            int portalId = this.PortalSettings.PortalId;
+            PortalSettings requestPortalSettings = this.PortalSettings;
 
             if (requestPortalId != -1)
             {
@@ -225,7 +226,7 @@ namespace Dnn.PersonaBar.Users.Components
 
             // either update the username or update the user details
             // only call ChangeUsername when the username has actually changed
-            if (userBasicDto.Username != user.Username && CanUpdateUsername(user) && !requestPortalSettings.Registration.UseEmailAsUserName)
+            if (userBasicDto.Username != user.Username && this.CanUpdateUsername(user) && !requestPortalSettings.Registration.UseEmailAsUserName)
             {
                 UserController.ChangeUsername(user.UserID, userBasicDto.Username);
                 user.Username = userBasicDto.Username;
@@ -243,7 +244,7 @@ namespace Dnn.PersonaBar.Users.Components
 
             UserController.UpdateUser(portalId, user);
 
-            if (requestPortalSettings.Registration.UseEmailAsUserName && (!user.Username.Equals(user.Email, StringComparison.OrdinalIgnoreCase)))
+            if (requestPortalSettings.Registration.UseEmailAsUserName && (user.Username.ToLowerInvariant() != user.Email.ToLowerInvariant()))
             {
                 UserController.ChangeUsername(user.UserID, user.Email);
             }
@@ -255,11 +256,11 @@ namespace Dnn.PersonaBar.Users.Components
         /// <inheritdoc/>
         public UserRoleDto SaveUserRole(int portalId, UserInfo currentUserInfo, UserRoleDto userRoleDto, bool notifyUser, bool isOwner)
         {
-            PortalSettings portalSettings = PortalSettings;
+            PortalSettings portalSettings = this.PortalSettings;
 
-            if (PortalSettings.PortalId != portalId)
+            if (this.PortalSettings.PortalId != portalId)
             {
-                portalSettings = GetPortalSettings(portalId);
+                portalSettings = this.GetPortalSettings(portalId);
             }
 
             if (!UserRoleDto.AllowExpiredRole(portalSettings, userRoleDto.UserId, userRoleDto.RoleId))
@@ -269,9 +270,9 @@ namespace Dnn.PersonaBar.Users.Components
 
             var user = UserController.Instance.GetUserById(portalId, userRoleDto.UserId);
             var role = RoleController.Instance.GetRoleById(portalId, userRoleDto.RoleId);
-            if (role is not { Status: RoleStatus.Approved })
+            if (role == null || role.Status != RoleStatus.Approved)
             {
-                throw new RoleNotApprovedException(Localization.GetString("RoleIsNotApproved", Constants.LocalResourcesFile));
+                throw new Exception(Localization.GetString("RoleIsNotApproved", Constants.LocalResourcesFile));
             }
 
             if (currentUserInfo.IsSuperUser || currentUserInfo.Roles.Contains(portalSettings.AdministratorRoleName) ||
@@ -299,7 +300,7 @@ namespace Dnn.PersonaBar.Users.Components
                 };
             }
 
-            throw new SecurityException(Localization.GetString("InSufficientPermissions", Constants.LocalResourcesFile));
+            throw new Exception(Localization.GetString("InSufficientPermissions", Constants.LocalResourcesFile));
         }
 
         /// <inheritdoc/>
@@ -376,7 +377,7 @@ namespace Dnn.PersonaBar.Users.Components
                 return null;
             }
 
-            if (role.RoleID == PortalSettings.AdministratorRoleId && !IsAdmin(portalSettings))
+            if (role.RoleID == this.PortalSettings.AdministratorRoleId && !IsAdmin(portalSettings))
             {
                 message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.BadRequest, Localization.GetString("InvalidRequest", Constants.LocalResourcesFile));
                 return null;
@@ -399,16 +400,16 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 // Update User Roles if needed
                 if (!userInfo.IsSuperUser && userInfo.IsInRole("Unverified Users") &&
-                    PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
+                    this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
                 {
                     UserController.ApproveUser(userInfo);
                 }
 
-                Mail.SendMail(userInfo, MessageType.UserAuthorized, PortalSettings);
+                Mail.SendMail(userInfo, MessageType.UserAuthorized, this.PortalSettings);
             }
             else if (PortalController.GetPortalSettingAsBoolean("AlwaysSendUserUnAuthorizedEmail", portalId, false))
             {
-                Mail.SendMail(userInfo, MessageType.UserUnAuthorized, PortalSettings);
+                Mail.SendMail(userInfo, MessageType.UserUnAuthorized, this.PortalSettings);
             }
         }
 
@@ -465,45 +466,6 @@ namespace Dnn.PersonaBar.Users.Components
         private static bool IsAdmin(UserInfo user, PortalSettings portalSettings)
         {
             return user.IsSuperUser || user.IsInRole(portalSettings.AdministratorRoleName);
-        }
-
-        private static bool CanUpdateUsername(UserInfo user)
-        {
-            // can only update username if a host/admin and account being managed is not a superuser
-            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
-            {
-                // only allow updates for non-superuser accounts
-                if (!user.IsSuperUser)
-                {
-                    return true;
-                }
-            }
-
-            // if an admin, check if the user is only within this portal
-            if (UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.AdministratorRoleName))
-            {
-                // only allow updates for non-superuser accounts
-                if (user.IsSuperUser)
-                {
-                    return false;
-                }
-
-                if (PortalController.GetPortalsByUser(user.UserID).Count == 1)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static PortalSettings GetPortalSettings(int portalId)
-        {
-            var portalSettings = new PortalSettings(portalId);
-            var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
-            portalSettings.PrimaryAlias = portalAliases.FirstOrDefault(a => a.IsPrimary);
-            portalSettings.PortalAlias = PortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
-            return portalSettings;
         }
 
         private IEnumerable<UserBasicDto> GetUsersFromDb(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
@@ -568,19 +530,49 @@ namespace Dnn.PersonaBar.Users.Components
                     }
 
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(usersContract), usersContract, $"Filter was an unexpected value, supported values include {nameof(UserFilters.All)}, {nameof(UserFilters.Authorized)}, {nameof(UserFilters.SuperUsers)}, {nameof(UserFilters.UnAuthorized)}, {nameof(UserFilters.Deleted)}, {nameof(UserFilters.HasAgreedToTerms)}, {nameof(UserFilters.HasNotAgreedToTerms)}, {nameof(UserFilters.RequestedRemoval)}, and {nameof(UserFilters.RegisteredUsers)}.");
+                    throw new ArgumentOutOfRangeException();
             }
 
             return users;
         }
 
-        private List<UserBasicDto2> GetUsers(GetUsersContract usersContract, bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers, bool? hasAgreedToTerms, bool? requestsRemoval, out int totalRecords)
+        private bool CanUpdateUsername(UserInfo user)
+        {
+            // can only update username if a host/admin and account being managed is not a superuser
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+            {
+                // only allow updates for non-superuser accounts
+                if (user.IsSuperUser == false)
+                {
+                    return true;
+                }
+            }
+
+            // if an admin, check if the user is only within this portal
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(this.PortalSettings.AdministratorRoleName))
+            {
+                // only allow updates for non-superuser accounts
+                if (user.IsSuperUser)
+                {
+                    return false;
+                }
+
+                if (PortalController.GetPortalsByUser(user.UserID).Count == 1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers, bool? hasAgreedToTerms, bool? requestsRemoval, out int totalRecords)
         {
             var parsedSearchText = string.IsNullOrEmpty(usersContract.SearchText) ? string.Empty : SearchTextFilter.CleanWildcards(usersContract.SearchText.Trim());
 
-            usersContract.SearchText = $"{parsedSearchText}*";
+            usersContract.SearchText = string.Format("{0}*", parsedSearchText);
 
-            var records = CBO.FillCollection<UserBasicDto2>(
+            List<UserBasicDto2> records = CBO.FillCollection<UserBasicDto2>(
                 this.CallGetUsersBySearchTerm(
                     usersContract,
                     includeAuthorized,
@@ -596,6 +588,15 @@ namespace Dnn.PersonaBar.Users.Components
 
             totalRecords = records.Count == 0 ? 0 : records[0].TotalCount;
             return records;
+        }
+
+        private PortalSettings GetPortalSettings(int portalId)
+        {
+            var portalSettings = new PortalSettings(portalId);
+            var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+            portalSettings.PrimaryAlias = portalAliases.FirstOrDefault(a => a.IsPrimary);
+            portalSettings.PortalAlias = PortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
+            return portalSettings;
         }
     }
 }

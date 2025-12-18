@@ -18,13 +18,13 @@ namespace DotNetNuke.Tests.Data
         public static void RecordWithIdPresent(string databaseName, string tableName, string primaryKeyField, int id)
         {
             var count = DataUtil.GetRecordCount(databaseName, tableName, primaryKeyField, id.ToString());
-            Assert.That(count, Is.EqualTo(1));
+            Assert.That(count == 1, Is.True);
         }
 
         public static void RecordWithIdNotPresent(string databaseName, string tableName, string primaryKeyField, int id)
         {
             var count = DataUtil.GetRecordCount(databaseName, tableName, primaryKeyField, id.ToString());
-            Assert.That(count, Is.EqualTo(0));
+            Assert.That(count == 0, Is.True);
         }
     }
 }

@@ -22,8 +22,8 @@ namespace DotNetNuke.UI.Skins.Controls
         private readonly INavigationManager navigationManager;
         private string separator = "<img alt=\"breadcrumb separator\" src=\"" + Globals.ApplicationPath + "/images/breadcrumb.gif\">";
         private string cssClass = "SkinObject";
-        private int rootLevel;
-        private bool showRoot;
+        private int rootLevel = 0;
+        private bool showRoot = false;
         private string homeUrl = string.Empty;
         private string homeTabName = "Root";
 

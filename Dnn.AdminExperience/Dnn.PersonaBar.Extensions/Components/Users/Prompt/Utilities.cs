@@ -11,7 +11,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt
     /// <summary>Utility methods for the users prompt commands.</summary>
     public partial class Utilities
     {
-        private static readonly UserValidator UserValidator = new UserValidator();
+        private static readonly IUserValidator UserValidator = new UserValidator();
 
         /// <inheritdoc cref="IUserValidator.ValidateUser"/>
         [DnnDeprecated(9, 2, 1, "Use IUserValidator.ValidateUser.")]

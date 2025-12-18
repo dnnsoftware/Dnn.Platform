@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Connections
         /// <inheritdoc/>
         public override IEnumerable<Type> SupportedTypes
         {
-            get { return new ReadOnlyCollection<Type>(new List<Type>([typeof(object)])); }
+            get { return new ReadOnlyCollection<Type>(new List<Type>(new[] { typeof(object) })); }
         }
 
         /// <inheritdoc/>
@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Connections
         {
             if (dictionary == null)
             {
-                throw new ArgumentNullException(nameof(dictionary));
+                throw new ArgumentNullException("dictionary");
             }
 
             return type == typeof(object) ? new DynamicJsonObject(dictionary) : null;
@@ -45,7 +45,12 @@ namespace DotNetNuke.Services.Connections
 
             public DynamicJsonObject(IDictionary<string, object> dictionary)
             {
-                this.dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
+                if (dictionary == null)
+                {
+                    throw new ArgumentNullException("dictionary");
+                }
+
+                this.dictionary = dictionary;
             }
 
             public override string ToString()
@@ -112,7 +117,7 @@ namespace DotNetNuke.Services.Connections
                 {
                     if (!firstInDictionary)
                     {
-                        sb.Append(',');
+                        sb.Append(",");
                     }
 
                     firstInDictionary = false;
@@ -134,7 +139,7 @@ namespace DotNetNuke.Services.Connections
                         {
                             if (!firstInArray)
                             {
-                                sb.Append(',');
+                                sb.Append(",");
                             }
 
                             firstInArray = false;
@@ -153,7 +158,7 @@ namespace DotNetNuke.Services.Connections
                             }
                         }
 
-                        sb.Append(']');
+                        sb.Append("]");
                     }
                     else
                     {
@@ -161,7 +166,7 @@ namespace DotNetNuke.Services.Connections
                     }
                 }
 
-                sb.Append('}');
+                sb.Append("}");
             }
         }
     }

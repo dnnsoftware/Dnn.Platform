@@ -70,7 +70,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>Whether <paramref name="validationCode"/> matches the <paramref name="parameters"/>.</returns>
         internal static bool ValidationCodeMatched(IHostSettings hostSettings, IList<object> parameters, string validationCode)
         {
-            return validationCode.Equals(ComputeValidationCode(hostSettings, parameters), System.StringComparison.Ordinal);
+            return validationCode.Equals(ComputeValidationCode(hostSettings, parameters));
         }
     }
 }

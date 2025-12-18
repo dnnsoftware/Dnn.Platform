@@ -277,7 +277,7 @@ Namespace DotNetNuke.UI.Utilities
                 If String.IsNullOrEmpty(strValue) = False Then
                     Try
                         'fix serialization issues with invalid json objects
-                        If strValue.StartsWith("`"c) Then
+                        If strValue.IndexOf("`") = 0 Then
                             strValue = strValue.Substring(1).Replace("`", """")
                         End If
 
@@ -321,11 +321,8 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         Private Shared Function GetClientVariableNameValuePair(ByVal objPage As Page, ByVal strVar As String) As String
             Dim objDict As Generic.Dictionary(Of String, String) = GetClientVariableList(objPage)
-
-            Dim value As String = Nothing
-
-            If objDict.TryGetValue(strVar, value) Then
-                Return strVar & COLUMN_DELIMITER & value
+            If objDict.ContainsKey(strVar) Then
+                Return strVar & COLUMN_DELIMITER & objDict(strVar)
             End If
             Return ""
         End Function
@@ -770,7 +767,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' </history>
         ''' -----------------------------------------------------------------------------
         Public Shared Function RegisterDNNVariableControl(ByVal objParent As System.Web.UI.Control) As HtmlInputHidden
-            Dim ctlVar As NonNamingHiddenInput = GetDNNVariableControl(objParent)
+            Dim ctlVar As System.Web.UI.HtmlControls.HtmlInputHidden = GetDNNVariableControl(objParent)
 
             If ctlVar Is Nothing Then
                 Dim oForm As Control = FindForm(objParent)
@@ -836,14 +833,14 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         Public Shared Sub RegisterPostBackEventHandler(ByVal objParent As Control, ByVal strEventName As String, ByVal objDelegate As ClientAPIPostBackControl.PostBackEvent, ByVal blnMultipleHandlers As Boolean)
             Const CLIENTAPI_POSTBACKCTL_ID As String = "ClientAPIPostBackCtl"
-            Dim objCtl As ClientAPIPostBackControl = Globals.FindControlRecursive(objParent.Page, CLIENTAPI_POSTBACKCTL_ID)           'DotNetNuke.Globals.FindControlRecursive(objParent, CLIENTAPI_POSTBACKCTL_ID)
+            Dim objCtl As Control = Globals.FindControlRecursive(objParent.Page, CLIENTAPI_POSTBACKCTL_ID)           'DotNetNuke.Globals.FindControlRecursive(objParent, CLIENTAPI_POSTBACKCTL_ID)
             If objCtl Is Nothing Then
                 objCtl = New ClientAPIPostBackControl(objParent.Page, strEventName, objDelegate)
                 objCtl.ID = CLIENTAPI_POSTBACKCTL_ID
                 objParent.Controls.Add(objCtl)
                 ClientAPI.RegisterClientVariable(objParent.Page, "__dnn_postBack", GetPostBackClientHyperlink(objCtl, "[DATA]"), True)
             ElseIf blnMultipleHandlers Then
-                objCtl.AddEventHandler(strEventName, objDelegate)
+                CType(objCtl, ClientAPIPostBackControl).AddEventHandler(strEventName, objDelegate)
             End If
         End Sub
 
@@ -896,7 +893,7 @@ Namespace DotNetNuke.UI.Utilities
             If Len(ClientAPI.GetClientVariable(objPage, strKey)) > 0 Then
                 Return ClientAPI.GetClientVariable(objPage, strKey).Split(","c)
             Else
-                Return Array.Empty(Of String)
+                Return New String() {}
             End If
         End Function
 
@@ -980,7 +977,7 @@ Namespace DotNetNuke.UI.Utilities
                     ret = False
                 End If
             Else
-                Throw New InvalidOperationException("Control does not have CallbackMethodAttribute")
+                Throw New Exception("Control does not have CallbackMethodAttribute")
             End If
 
             Return ret
@@ -997,14 +994,14 @@ Namespace DotNetNuke.UI.Utilities
             Dim mi As MethodInfo = controlType.GetMethod(methodName, (BindingFlags.Public Or (BindingFlags.Static Or BindingFlags.Instance)))
 
             If (mi Is Nothing) Then
-                Throw New InvalidOperationException($"Class: {controlType.FullName} does not have the method: {methodName}")
+                Throw New Exception(String.Format("Class: {0} does not have the method: {1}", controlType.FullName, methodName))
             End If
             Dim methodParams As ParameterInfo() = mi.GetParameters
 
             'only allow methods with attribute to be called 
             Dim methAttr As ControlMethodAttribute = DirectCast(Attribute.GetCustomAttribute(mi, GetType(ControlMethodAttribute)), ControlMethodAttribute)
             If methAttr Is Nothing OrElse args.Count <> methodParams.Length Then
-                Throw New InvalidOperationException($"Class: {controlType.FullName} does not have the method: {methodName}")
+                Throw New Exception(String.Format("Class: {0} does not have the method: {1}", controlType.FullName, methodName))
             End If
 
             Dim targetArgs As Object() = New Object(args.Count - 1) {}
@@ -1064,7 +1061,7 @@ Namespace DotNetNuke.UI.Utilities
             For Each pair As KeyValuePair(Of String, Object) In dict
                 pi = TheType.GetProperty(pair.Key)
                 If Not pi Is Nothing AndAlso pi.CanWrite AndAlso Not pair.Value Is Nothing Then
-                    TheType.InvokeMember(pair.Key, BindingFlags.SetProperty, Nothing, item, New Object() {pair.Value}, CultureInfo.InvariantCulture)
+                    TheType.InvokeMember(pair.Key, System.Reflection.BindingFlags.SetProperty, Nothing, item, New Object() {pair.Value})
                 End If
             Next
             Return item

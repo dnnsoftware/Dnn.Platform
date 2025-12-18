@@ -6,7 +6,6 @@ namespace DotNetNuke.Entities.Users.Membership
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
@@ -117,7 +116,6 @@ namespace DotNetNuke.Entities.Users.Membership
         /// <param name="userId">user attempting to reset their password.</param>
         /// <param name="resetToken">reset token supplied via email link.</param>
         /// <returns>true if value matches (so has not been used before) and is within expiration window.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool IsValidToken(int userId, Guid resetToken)
         {
             if (UserController.Instance.GetCurrentUserInfo().PasswordResetToken == resetToken &&
@@ -135,7 +133,6 @@ namespace DotNetNuke.Entities.Users.Membership
         /// </summary>
         /// <param name="inputString">user entered password.</param>
         /// <returns>true if password found, false otherwise.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool FoundBannedPassword(string inputString)
         {
             const string listName = "BannedPasswords";
@@ -161,19 +158,11 @@ namespace DotNetNuke.Entities.Users.Membership
             return false;
         }
 
-        private static byte[] GetRandomSaltValue()
-        {
-            using var rcsp = new RNGCryptoServiceProvider();
-            var bSalt = new byte[16];
-            rcsp.GetBytes(bSalt);
-            return bSalt;
-        }
-
         private void AddPasswordHistory(int userId, string password, int passwordsRetained, int daysRetained)
         {
             using (HashAlgorithm ha = HashAlgorithm.Create())
             {
-                byte[] newSalt = GetRandomSaltValue();
+                byte[] newSalt = this.GetRandomSaltValue();
                 byte[] bytePassword = Encoding.Unicode.GetBytes(password);
                 var inputBuffer = new byte[bytePassword.Length + 16];
                 Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
@@ -182,6 +171,16 @@ namespace DotNetNuke.Entities.Users.Membership
                 string hashedPassword = Convert.ToBase64String(bhashedPassword);
 
                 this.dataProvider.AddPasswordHistory(userId, hashedPassword, Convert.ToBase64String(newSalt), passwordsRetained, daysRetained);
+            }
+        }
+
+        private byte[] GetRandomSaltValue()
+        {
+            using (var rcsp = new RNGCryptoServiceProvider())
+            {
+                var bSalt = new byte[16];
+                rcsp.GetBytes(bSalt);
+                return bSalt;
             }
         }
     }

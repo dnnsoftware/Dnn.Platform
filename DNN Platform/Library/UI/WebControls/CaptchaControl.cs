@@ -16,7 +16,6 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
@@ -86,12 +85,24 @@ namespace DotNetNuke.UI.WebControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Description("Set the Style for the Error Message Control.")]
-        public Style ErrorStyle => this.errorStyle;
+        public Style ErrorStyle
+        {
+            get
+            {
+                return this.errorStyle;
+            }
+        }
 
         /// <summary>Gets a value indicating whether the control is valid.</summary>
         [Category("Validation")]
         [Description("Returns True if the user was CAPTCHA validated after a postback.")]
-        public bool IsValid => this.isValid;
+        public bool IsValid
+        {
+            get
+            {
+                return this.isValid;
+            }
+        }
 
         /// <summary>Gets the Style to use for the Text Box.</summary>
         [Browsable(true)]
@@ -99,15 +110,28 @@ namespace DotNetNuke.UI.WebControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Description("Set the Style for the Text Box Control.")]
-        public Style TextBoxStyle => this.textBoxStyle;
+        public Style TextBoxStyle
+        {
+            get
+            {
+                return this.textBoxStyle;
+            }
+        }
 
         /// <summary>Gets or sets the BackGroundColor.</summary>
         [Category("Appearance")]
         [Description("The Background Color to use for the Captcha Image.")]
         public Color BackGroundColor
         {
-            get => this.backGroundColor;
-            set => this.backGroundColor = value;
+            get
+            {
+                return this.backGroundColor;
+            }
+
+            set
+            {
+                this.backGroundColor = value;
+            }
         }
 
         /// <summary>Gets or sets the BackGround Image.</summary>
@@ -115,8 +139,15 @@ namespace DotNetNuke.UI.WebControls
         [Description("A Background Image to use for the Captcha Image.")]
         public string BackGroundImage
         {
-            get => this.backGroundImage;
-            set => this.backGroundImage = value;
+            get
+            {
+                return this.backGroundImage;
+            }
+
+            set
+            {
+                this.backGroundImage = value;
+            }
         }
 
         /// <summary>Gets or sets the list of characters.</summary>
@@ -125,8 +156,15 @@ namespace DotNetNuke.UI.WebControls
         [Description("Characters used to render CAPTCHA text. A character will be picked randomly from the string.")]
         public string CaptchaChars
         {
-            get => this.captchaChars;
-            set => this.captchaChars = value;
+            get
+            {
+                return this.captchaChars;
+            }
+
+            set
+            {
+                this.captchaChars = value;
+            }
         }
 
         /// <summary>Gets or sets the height of the Captcha image.</summary>
@@ -134,8 +172,15 @@ namespace DotNetNuke.UI.WebControls
         [Description("Height of Captcha Image.")]
         public Unit CaptchaHeight
         {
-            get => this.captchaHeight;
-            set => this.captchaHeight = value;
+            get
+            {
+                return this.captchaHeight;
+            }
+
+            set
+            {
+                this.captchaHeight = value;
+            }
         }
 
         /// <summary>Gets or sets the length of the Captcha string.</summary>
@@ -144,8 +189,15 @@ namespace DotNetNuke.UI.WebControls
         [Description("Number of CaptchaChars used in the CAPTCHA text")]
         public int CaptchaLength
         {
-            get => this.captchaLength;
-            set => this.captchaLength = value;
+            get
+            {
+                return this.captchaLength;
+            }
+
+            set
+            {
+                this.captchaLength = value;
+            }
         }
 
         /// <summary>Gets or sets the width of the Captcha image.</summary>
@@ -153,16 +205,30 @@ namespace DotNetNuke.UI.WebControls
         [Description("Width of Captcha Image.")]
         public Unit CaptchaWidth
         {
-            get => this.captchaWidth;
-            set => this.captchaWidth = value;
+            get
+            {
+                return this.captchaWidth;
+            }
+
+            set
+            {
+                this.captchaWidth = value;
+            }
         }
 
         /// <summary>Gets or sets a value indicating whether the Viewstate is enabled.</summary>
         [Browsable(false)]
         public override bool EnableViewState
         {
-            get => base.EnableViewState;
-            set => base.EnableViewState = value;
+            get
+            {
+                return base.EnableViewState;
+            }
+
+            set
+            {
+                base.EnableViewState = value;
+            }
         }
 
         /// <summary>Gets or sets the ErrorMessage to display if the control is invalid.</summary>
@@ -177,8 +243,15 @@ namespace DotNetNuke.UI.WebControls
         [DefaultValue(EXPIRATIONDEFAULT)]
         public int Expiration
         {
-            get => this.expiration;
-            set => this.expiration = value;
+            get
+            {
+                return this.expiration;
+            }
+
+            set
+            {
+                this.expiration = value;
+            }
         }
 
         /// <summary>Gets or sets the Url to use to render the control.</summary>
@@ -187,8 +260,15 @@ namespace DotNetNuke.UI.WebControls
         [DefaultValue(RENDERURLDEFAULT)]
         public string RenderUrl
         {
-            get => this.renderUrl;
-            set => this.renderUrl = value;
+            get
+            {
+                return this.renderUrl;
+            }
+
+            set
+            {
+                this.renderUrl = value;
+            }
         }
 
         /// <summary>Gets or sets the Help Text to use.</summary>
@@ -197,7 +277,13 @@ namespace DotNetNuke.UI.WebControls
         [Description("Instructional text displayed next to CAPTCHA image.")]
         public string Text { get; set; }
 
-        private static bool IsDesignMode => HttpContext.Current == null;
+        private bool IsDesignMode
+        {
+            get
+            {
+                return HttpContext.Current == null;
+            }
+        }
 
         /// <summary>LoadPostData loads the Post Back Data and determines whether the value has change.</summary>
         /// <param name="postDataKey">A key to the PostBack Data to load.</param>
@@ -376,7 +462,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Raises the <see cref="UserValidated" /> event.
+        /// Raises the <see cref="E:UserValidated" /> event.
         /// </summary>
         /// <param name="e">The <see cref="ServerValidateEventArgs"/> instance containing the event data.</param>
         protected virtual void OnUserValidated(ServerValidateEventArgs e)
@@ -775,12 +861,11 @@ namespace DotNetNuke.UI.WebControls
         private string GetUrl()
         {
             var url = this.ResolveUrl(this.RenderUrl);
-            var encryptedTicket = Encrypt(this.EncodeTicket(), DateTime.Now.AddSeconds(this.Expiration));
-            url += $"?{KEY}={encryptedTicket}";
+            url += "?" + KEY + "=" + Encrypt(this.EncodeTicket(), DateTime.Now.AddSeconds(this.Expiration));
 
             // Append the Alias to the url so that it doesn't lose track of the alias it's currently on
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            url += "&alias=" + ((IPortalAliasInfo)portalSettings.PortalAlias).HttpAlias;
+            url += "&alias=" + portalSettings.PortalAlias.HTTPAlias;
             return url;
         }
 
@@ -789,7 +874,7 @@ namespace DotNetNuke.UI.WebControls
         {
             var sb = new StringBuilder();
 
-            sb.Append(this.CaptchaWidth.Value);
+            sb.Append(this.CaptchaWidth.Value.ToString());
             sb.Append(separator + this.CaptchaHeight.Value);
             sb.Append(separator + this.captchaText);
             sb.Append(separator + this.BackGroundImage);

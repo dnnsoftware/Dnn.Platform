@@ -63,29 +63,22 @@ namespace DotNetNuke.UI.WebControls
             TabInfo linkedTabInfo = TabController.Instance.GetTab(this.IntegerValue, Globals.GetPortalSettings().PortalId, false);
 
             // don't render anything if we didn't find the tab
-            if (linkedTabInfo == null)
+            if (linkedTabInfo != null)
             {
-                return;
-            }
+                // Not really sure how to get a good TabID and ModuleID but it's only for tracking so not to concerned
+                int tabID = 0;
+                int moduleID = 0;
+                int.TryParse(this.Page.Request.QueryString["tabid"], out tabID);
+                int.TryParse(this.Page.Request.QueryString["mid"], out moduleID);
 
-            // Not really sure how to get a good TabID and ModuleID, but it's only for tracking so not to concerned
-            if (!int.TryParse(this.Page.Request.QueryString["tabid"], out var tabId))
-            {
-                tabId = Null.NullInteger;
+                string url = Globals.LinkClick(this.StringValue, tabID, moduleID, true);
+                this.ControlStyle.AddAttributesToRender(writer);
+                writer.AddAttribute(HtmlTextWriterAttribute.Href, url);
+                writer.AddAttribute(HtmlTextWriterAttribute.Class, "Normal");
+                writer.RenderBeginTag(HtmlTextWriterTag.A);
+                writer.Write(linkedTabInfo.LocalizedTabName);
+                writer.RenderEndTag();
             }
-
-            if (!int.TryParse(this.Page.Request.QueryString["mid"], out var moduleId))
-            {
-                moduleId = Null.NullInteger;
-            }
-
-            string url = Globals.LinkClick(this.StringValue, tabId, moduleId, true);
-            this.ControlStyle.AddAttributesToRender(writer);
-            writer.AddAttribute(HtmlTextWriterAttribute.Href, url);
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "Normal");
-            writer.RenderBeginTag(HtmlTextWriterTag.A);
-            writer.Write(linkedTabInfo.LocalizedTabName);
-            writer.RenderEndTag();
         }
     }
 }

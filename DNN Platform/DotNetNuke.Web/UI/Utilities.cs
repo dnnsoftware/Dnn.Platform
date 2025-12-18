@@ -4,7 +4,6 @@
 namespace DotNetNuke.Web.UI
 {
     using System;
-    using System.Globalization;
     using System.IO;
     using System.Reflection;
     using System.Web;
@@ -246,8 +245,8 @@ namespace DotNetNuke.Web.UI
             return string.Format(
                 "return postBackConfirm('{0}', event, '{1}', '{2}', '', '{3}');",
                 HttpUtility.JavaScriptStringEncode(message.Message),
-                HttpUtility.JavaScriptStringEncode(message.WindowWidth.ToString(CultureInfo.InvariantCulture)),
-                HttpUtility.JavaScriptStringEncode(message.WindowHeight.ToString(CultureInfo.InvariantCulture)),
+                HttpUtility.JavaScriptStringEncode(message.WindowWidth.ToString()),
+                HttpUtility.JavaScriptStringEncode(message.WindowHeight.ToString()),
                 HttpUtility.JavaScriptStringEncode(message.Title));
         }
 

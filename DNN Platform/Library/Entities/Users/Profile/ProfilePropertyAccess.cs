@@ -132,7 +132,7 @@ namespace DotNetNuke.Entities.Users
         public static string GetRichValue(ProfilePropertyDefinition property, string formatString, CultureInfo formatProvider)
         {
             string result = string.Empty;
-            if (!string.IsNullOrEmpty(property.PropertyValue) || DisplayDataType(property).Equals("image", StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrEmpty(property.PropertyValue) || DisplayDataType(property).Equals("image", StringComparison.InvariantCultureIgnoreCase))
             {
                 switch (DisplayDataType(property).ToLowerInvariant())
                 {
@@ -218,7 +218,7 @@ namespace DotNetNuke.Entities.Users
             {
                 var profile = this.user.Profile;
                 var property = profile.ProfileProperties.Cast<ProfilePropertyDefinition>()
-                                                        .SingleOrDefault(p => string.Equals(p.PropertyName, propertyName, StringComparison.OrdinalIgnoreCase));
+                                                        .SingleOrDefault(p => string.Equals(p.PropertyName, propertyName, StringComparison.CurrentCultureIgnoreCase));
 
                 if (property != null)
                 {
@@ -240,7 +240,7 @@ namespace DotNetNuke.Entities.Users
                 }
 
                 propertyNotFound = true;
-                return property != null && property.PropertyName.Equals("photo", StringComparison.OrdinalIgnoreCase)
+                return property != null && property.PropertyName.Equals("photo", StringComparison.InvariantCultureIgnoreCase)
                     ? Globals.ApplicationPath + "/images/no_avatar.gif" : PropertyAccess.ContentLocked;
             }
 

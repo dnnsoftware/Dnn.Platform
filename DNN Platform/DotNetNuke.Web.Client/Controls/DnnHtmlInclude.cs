@@ -92,7 +92,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             }
         }
 
-        private List<BasicFile> GetIncludes(string innerHtml, ClientDependencyType dependencyType)
+        private IEnumerable<BasicFile> GetIncludes(string innerHtml, ClientDependencyType dependencyType)
         {
             Regex tagRegex;
             string sourceAttribute, mime;

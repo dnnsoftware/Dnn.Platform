@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.FileSystem
     public class FileContentTypeManager : ComponentBase<IFileContentTypeManager, FileContentTypeManager>, IFileContentTypeManager
     {
         private static readonly object ThreadLocker = new object();
-        private Dictionary<string, string> contentTypes;
+        private IDictionary<string, string> contentTypes;
 
         /// <inheritdoc/>
         public virtual IDictionary<string, string> ContentTypes
@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.FileSystem
                             var listEntries = listController.GetListEntryInfoItems("ContentTypes");
                             if (listEntries == null || !listEntries.Any())
                             {
-                                this.contentTypes = GetDefaultContentTypes();
+                                this.contentTypes = this.GetDefaultContentTypes();
                             }
                             else
                             {
@@ -60,50 +60,50 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             var key = extension.TrimStart('.').ToLowerInvariant();
-            return this.ContentTypes.TryGetValue(key, out var contentType) ? contentType : "application/octet-stream";
+            return this.ContentTypes.ContainsKey(key) ? this.ContentTypes[key] : "application/octet-stream";
         }
 
-        private static Dictionary<string, string> GetDefaultContentTypes()
+        private Dictionary<string, string> GetDefaultContentTypes()
         {
-            return new Dictionary<string, string>
-            {
-                { "txt", "text/plain" },
-                { "htm", "text/html" },
-                { "html", "text/html" },
-                { "rtf", "text/richtext" },
-                { "jpg", "image/jpeg" },
-                { "jpeg", "image/jpeg" },
-                { "gif", "image/gif" },
-                { "bmp", "image/bmp" },
-                { "png", "image/png" },
-                { "ico", "image/x-icon" },
-                { "svg", "image/svg+xml" },
-                { "ttf", "font/ttf" },
-                { "eot", "application/vnd.ms-fontobject" },
-                { "woff", "application/font-woff" },
-                { "mp3", "audio/mpeg" },
-                { "wma", "audio/x-ms-wma" },
-                { "mpg", "video/mpeg" },
-                { "mpeg", "video/mpeg" },
-                { "avi", "video/avi" },
-                { "mp4", "video/mp4" },
-                { "wmv", "video/x-ms-wmv" },
-                { "pdf", "application/pdf" },
-                { "doc", "application/msword" },
-                { "dot", "application/msword" },
-                { "docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
-                { "dotx", "application/vnd.openxmlformats-officedocument.wordprocessingml.template" },
-                { "csv", "text/csv" },
-                { "xls", "application/x-msexcel" },
-                { "xlt", "application/x-msexcel" },
-                { "xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
-                { "xltx", "application/vnd.openxmlformats-officedocument.spreadsheetml.template" },
-                { "ppt", "application/vnd.ms-powerpoint" },
-                { "pps", "application/vnd.ms-powerpoint" },
-                { "pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation" },
-                { "ppsx", "application/vnd.openxmlformats-officedocument.presentationml.slideshow" },
-                { "css", "text/css" },
-            };
+            var contentTypes = new Dictionary<string, string>();
+            contentTypes.Add("txt", "text/plain");
+            contentTypes.Add("htm", "text/html");
+            contentTypes.Add("html", "text/html");
+            contentTypes.Add("rtf", "text/richtext");
+            contentTypes.Add("jpg", "image/jpeg");
+            contentTypes.Add("jpeg", "image/jpeg");
+            contentTypes.Add("gif", "image/gif");
+            contentTypes.Add("bmp", "image/bmp");
+            contentTypes.Add("png", "image/png");
+            contentTypes.Add("ico", "image/x-icon");
+            contentTypes.Add("svg", "image/svg+xml");
+            contentTypes.Add("ttf", "font/ttf");
+            contentTypes.Add("eot", "application/vnd.ms-fontobject");
+            contentTypes.Add("woff", "application/font-woff");
+            contentTypes.Add("mp3", "audio/mpeg");
+            contentTypes.Add("wma", "audio/x-ms-wma");
+            contentTypes.Add("mpg", "video/mpeg");
+            contentTypes.Add("mpeg", "video/mpeg");
+            contentTypes.Add("avi", "video/avi");
+            contentTypes.Add("mp4", "video/mp4");
+            contentTypes.Add("wmv", "video/x-ms-wmv");
+            contentTypes.Add("pdf", "application/pdf");
+            contentTypes.Add("doc", "application/msword");
+            contentTypes.Add("dot", "application/msword");
+            contentTypes.Add("docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            contentTypes.Add("dotx", "application/vnd.openxmlformats-officedocument.wordprocessingml.template");
+            contentTypes.Add("csv", "text/csv");
+            contentTypes.Add("xls", "application/x-msexcel");
+            contentTypes.Add("xlt", "application/x-msexcel");
+            contentTypes.Add("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            contentTypes.Add("xltx", "application/vnd.openxmlformats-officedocument.spreadsheetml.template");
+            contentTypes.Add("ppt", "application/vnd.ms-powerpoint");
+            contentTypes.Add("pps", "application/vnd.ms-powerpoint");
+            contentTypes.Add("pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
+            contentTypes.Add("ppsx", "application/vnd.openxmlformats-officedocument.presentationml.slideshow");
+            contentTypes.Add("css", "text/css");
+
+            return contentTypes;
         }
     }
 }

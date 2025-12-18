@@ -69,7 +69,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
                 return false;
             }
 
-            if (query.TryGetValue("sku", out var sku) && !string.IsNullOrEmpty(sku))
+            if (query.ContainsKey("sku") && !string.IsNullOrEmpty(query["sku"]))
             {
                 if (DotNetNukeContext.Current.Application.SKU != query["sku"])
                 {
@@ -78,10 +78,10 @@ namespace Dnn.PersonaBar.UI.MenuControllers
             }
 
             int tabId, portalId;
-            if (query.TryGetValue("path", out var path) && !string.IsNullOrEmpty(path))
+            if (query.ContainsKey("path") && !string.IsNullOrEmpty(query["path"]))
             {
                 portalId = query.TryGetValue("portalId", out var queryPortalId) ? Convert.ToInt32(queryPortalId) : PortalSettings.Current.PortalId;
-                tabId = TabController.GetTabByTabPath(portalId, path, string.Empty);
+                tabId = TabController.GetTabByTabPath(portalId, query["path"], string.Empty);
 
                 if (tabId == Null.NullInteger)
                 {
@@ -90,13 +90,13 @@ namespace Dnn.PersonaBar.UI.MenuControllers
             }
             else
             {
-                if (!query.TryGetValue("portalId", out var portalIdQuery) || !query.TryGetValue("tabId", out var tabIdQuery))
+                if (!query.ContainsKey("portalId") || !query.ContainsKey("tabId"))
                 {
                     return false;
                 }
 
-                portalId = Convert.ToInt32(portalIdQuery);
-                tabId = Convert.ToInt32(tabIdQuery);
+                portalId = Convert.ToInt32(query["portalId"]);
+                tabId = Convert.ToInt32(query["tabId"]);
             }
 
             var tab = TabController.Instance.GetTab(tabId, portalId);
@@ -110,7 +110,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
             return null;
         }
 
-        private static Dictionary<string, string> GetPathQuery(MenuItem menuItem)
+        private static IDictionary<string, string> GetPathQuery(MenuItem menuItem)
         {
             var path = menuItem.Path;
             if (!path.Contains("?"))

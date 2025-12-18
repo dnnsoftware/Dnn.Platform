@@ -7,7 +7,6 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
     using System;
     using System.Collections.Generic;
     using System.Configuration;
-    using System.Threading.Tasks;
 
     using DNN.Integration.Test.Framework;
     using DNN.Integration.Test.Framework.Helpers;
@@ -32,9 +31,9 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         }
 
         [OneTimeSetUp]
-        public override async Task TestFixtureSetUp()
+        public override void TestFixtureSetUp()
         {
-            await base.TestFixtureSetUp();
+            base.TestFixtureSetUp();
             try
             {
                 if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
@@ -49,9 +48,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         }
 
         [Test]
-        public async Task Journal_Should_Able_To_Attach_Files_Upload_By_Himself()
+        public void Journal_Should_Able_To_Attach_Files_Upload_By_Himself()
         {
-            var (connector, userId, username, fileId) = await this.PrepareNewUser();
+            int userId, fileId;
+            string username;
+            var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
             // POST JOURNAL
             var postData = new
@@ -68,10 +69,12 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         }
 
         [Test]
-        public async Task Journal_Should_Not_Able_To_Attach_Files_Upload_By_Other_User()
+        public void Journal_Should_Not_Able_To_Attach_Files_Upload_By_Other_User()
         {
-            var (connector, userId, username, _) = await this.PrepareNewUser();
-            var fileId = DatabaseHelper.ExecuteScalar<int>($"SELECT MIN(FileId) FROM {{objectQualifier}}Files WHERE PortalId = {this.PortalId}");
+            int userId, fileId;
+            string username;
+            var connector = this.PrepareNewUser(out userId, out username, out fileId);
+            fileId = DatabaseHelper.ExecuteScalar<int>($"SELECT MIN(FileId) FROM {{objectQualifier}}Files WHERE PortalId = {this.PortalId}");
 
             // POST JOURNAL
             var postData = new
@@ -104,9 +107,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         }
 
         [Test]
-        public async Task Journal_Should_Not_Able_To_Post_On_Other_User_Profile_Page()
+        public void Journal_Should_Not_Able_To_Post_On_Other_User_Profile_Page()
         {
-            var (connector, _, username, fileId) = await this.PrepareNewUser();
+            int userId, fileId;
+            string username;
+            var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
             // POST JOURNAL
             var postData = new
@@ -139,10 +144,12 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         }
 
         [Test]
-        public async Task Journal_Should_Able_To_Post_On_Friends_Profile_Page()
+        public void Journal_Should_Able_To_Post_On_Friends_Profile_Page()
         {
-            var (connector1, userId1, username1, fileId1) = await this.PrepareNewUser();
-            var (connector2, userId2, username2, fileId2) = await this.PrepareNewUser();
+            int userId1, fileId1, userId2, fileId2;
+            string username1, username2;
+            var connector1 = this.PrepareNewUser(out userId1, out username1, out fileId1);
+            var connector2 = this.PrepareNewUser(out userId2, out username2, out fileId2);
 
             // ADD FRIENDS
             connector1.PostJson("/API/MemberDirectory/MemberDirectory/AddFriend", new { friendId = userId2 }, this.GetRequestHeaders("Member Directory"));
@@ -165,9 +172,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         }
 
         [Test]
-        public async Task Journal_Should_Able_To_Post_On_Group_Already_Join()
+        public void Journal_Should_Able_To_Post_On_Group_Already_Join()
         {
-            var (connector, userId, username, fileId) = await this.PrepareNewUser();
+            int userId, fileId;
+            string username;
+            var connector = this.PrepareNewUser(out userId, out username, out fileId);
             var groupId = this.CreateNewGroup(username.Replace("testuser", "testrole"));
             this.AddUserToGroup(groupId, userId);
 
@@ -186,9 +195,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         }
 
         [Test]
-        public async Task Journal_Should_Not_Able_To_Post_On_Group_Not_Join()
+        public void Journal_Should_Not_Able_To_Post_On_Group_Not_Join()
         {
-            var (connector, userId, username, fileId) = await this.PrepareNewUser();
+            int userId, fileId;
+            string username;
+            var connector = this.PrepareNewUser(out userId, out username, out fileId);
             var groupId = this.CreateNewGroup(username.Replace("testuser", "testrole"));
 
             // POST JOURNAL
@@ -222,9 +233,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         }
 
         [Test]
-        public async Task Journal_Should_Not_Able_To_Post_Xss_Code_In_ImageUrl()
+        public void Journal_Should_Not_Able_To_Post_Xss_Code_In_ImageUrl()
         {
-            var (connector, userId, username, fileId) = await this.PrepareNewUser();
+            int userId, fileId;
+            string username;
+            var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
             // POST JOURNAL
             var postData = new
@@ -248,9 +261,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         }
 
         [Test]
-        public async Task Journal_Should_Not_Able_To_Post_Xss_Code_In_Url()
+        public void Journal_Should_Not_Able_To_Post_Xss_Code_In_Url()
         {
-            var (connector, userId, username, _) = await this.PrepareNewUser();
+            int userId, fileId;
+            string username;
+            var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
             // POST JOURNAL
             var postData = new
@@ -272,9 +287,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         }
 
         [Test]
-        public async Task Journal_Should_Not_Able_To_Post_External_Link_In_Url()
+        public void Journal_Should_Not_Able_To_Post_Extenal_Link_In_Url()
         {
-            var (connector, userId, username, _) = await this.PrepareNewUser();
+            int userId, fileId;
+            string username;
+            var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
             // POST JOURNAL
             var postData = new
@@ -296,9 +313,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         }
 
         [Test]
-        public async Task Journal_Should_Able_See_By_All_When_Set_Security_To_Everyone()
+        public void Journal_Should_Able_See_By_All_When_Set_Security_To_Everyone()
         {
-            var (connector, userId, username, fileId) = await this.PrepareNewUser();
+            int userId, fileId;
+            string username;
+            var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
             // POST JOURNAL
             var journalText = $"{username} Post";
@@ -323,10 +342,12 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         }
 
         [Test]
-        public async Task Journal_Should_Only_Able_See_By_Members_When_Set_Security_To_CommunityMembers()
+        public void Journal_Should_Only_Able_See_By_Members_When_Set_Security_To_CommunityMembers()
         {
-            var (connector1, userId1, username1, fileId1) = await this.PrepareNewUser();
-            var (connector2, _, _, _) = await this.PrepareNewUser();
+            int userId1, fileId1, userId2, fileId2;
+            string username1, username2;
+            var connector1 = this.PrepareNewUser(out userId1, out username1, out fileId1);
+            var connector2 = this.PrepareNewUser(out userId2, out username2, out fileId2);
 
             // POST JOURNAL
             var journalText = $"{username1} Post";
@@ -351,11 +372,13 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         }
 
         [Test]
-        public async Task Journal_Should_Only_Able_See_By_Friends_When_Set_Security_To_Friends()
+        public void Journal_Should_Only_Able_See_By_Friends_When_Set_Security_To_Friends()
         {
-            var (connector1, userId1, username1, fileId1) = await this.PrepareNewUser();
-            var (connector2, userId2, _, _) = await this.PrepareNewUser();
-            var (connector3, _, _, _) = await this.PrepareNewUser();
+            int userId1, fileId1, userId2, fileId2, userId3, fileId3;
+            string username1, username2, username3;
+            var connector1 = this.PrepareNewUser(out userId1, out username1, out fileId1);
+            var connector2 = this.PrepareNewUser(out userId2, out username2, out fileId2);
+            var connector3 = this.PrepareNewUser(out userId3, out username3, out fileId3);
 
             // ADD FRIENDS
             connector1.PostJson("/API/MemberDirectory/MemberDirectory/AddFriend", new { friendId = userId2 }, this.GetRequestHeaders("Member Directory"));
@@ -385,9 +408,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         }
 
         [Test]
-        public async Task Journal_Should_Only_Able_See_By_Himself_When_Set_Security_To_Private()
+        public void Journal_Should_Only_Able_See_By_Himself_When_Set_Security_To_Private()
         {
-            var (connector, userId, username, fileId) = await this.PrepareNewUser();
+            int userId, fileId;
+            string username;
+            var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
             // POST JOURNAL
             var journalText = $"{username} Post";
@@ -411,9 +436,9 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             Assert.That(response.IndexOf(journalText), Is.EqualTo(-1));
         }
 
-        private async Task<(IWebApiConnector Connector, int UserId, string Username, int FileId)> PrepareNewUser()
+        private IWebApiConnector PrepareNewUser(out int userId, out string username, out int fileId)
         {
-            return await WebApiTestHelper.PrepareNewUser(this.PortalId);
+            return WebApiTestHelper.PrepareNewUser(out userId, out username, out fileId, this.PortalId);
         }
 
         private int CreateNewGroup(string roleName)

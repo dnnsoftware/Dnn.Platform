@@ -17,10 +17,10 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
     public class AddPageTests : IntegrationTestBase
     {
         private const string AddBulkPagesApi = "/API/PersonaBar/Pages/SaveBulkPages";
-        private const string VerifyBulkPagesApi = "/API/PersonaBar/Pages/PreSaveBulkPagesValidate";
+        private const string VerigyBulkPagesApi = "/API/PersonaBar/Pages/PreSaveBulkPagesValidate";
 
         [Test]
-        public void Add_Multi_Pages_For_Existing_Should_Return_Results()
+        public void Add_Multi_Pages_For_Exisitng_Shoul_Return_Results()
         {
             var rnd = new Random().Next(1000, 10000);
             var addPagesDto = new BulkPage
@@ -45,7 +45,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
                 Assert.That(result.Response.Pages.First().ErrorMessage, Is.Null);
             });
 
-            var response2 = connector.PostJson(VerifyBulkPagesApi, addPagesDto).Content.ReadAsStringAsync().Result;
+            var response2 = connector.PostJson(VerigyBulkPagesApi, addPagesDto).Content.ReadAsStringAsync().Result;
             var result2 = JsonConvert.DeserializeObject<BulkPageResponseWrapper>(response2);
             Console.WriteLine(@"Verify bulk pages ersponse = {0}", response2);
             Assert.Multiple(() =>

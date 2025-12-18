@@ -79,7 +79,7 @@ namespace Dnn.ExportImport.Components.Services
                     var folders =
                         CBO.FillCollection<ExportFolder>(DataProvider.Instance()
                             .GetFolders(portalId, toDate, fromDate)).ToList();
-                    var totalFolders = folders.Count != 0 ? folders.Count : 0;
+                    var totalFolders = folders.Any() ? folders.Count : 0;
                     folders = folders.Skip(skip).ToList();
 
                     // Update the total items count in the check points. This should be updated only once.
@@ -148,7 +148,7 @@ namespace Dnn.ExportImport.Components.Services
                                     files.Select(
                                         file => portal.HomeDirectoryMapPath
                                                 + folder.FolderPath
-                                                + GetActualFileName(file)),
+                                                + this.GetActualFileName(file)),
                                     folderOffset,
                                     isUserFolder ? "TempUsers" : null);
                             }
@@ -248,7 +248,7 @@ namespace Dnn.ExportImport.Components.Services
                     // Stage 2 starts
                     var sourceFolders = this.Repository.GetAllItems<ExportFolder>(x => x.CreatedOnDate, true, skip).ToList();
 
-                    var totalFolders = sourceFolders.Count != 0 ? sourceFolders.Count : 0;
+                    var totalFolders = sourceFolders.Any() ? sourceFolders.Count : 0;
 
                     // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalFolders : this.CheckPoint.TotalItems;
@@ -297,7 +297,7 @@ namespace Dnn.ExportImport.Components.Services
 
                                 foreach (var folderPermission in sourceFolderPermissions)
                                 {
-                                    ProcessFolderPermission(
+                                    this.ProcessFolderPermission(
                                         importJob,
                                         importDto,
                                         folderPermission,
@@ -330,7 +330,7 @@ namespace Dnn.ExportImport.Components.Services
 
                             foreach (var file in sourceFiles)
                             {
-                                ProcessFiles(importJob, importDto, file, localFiles);
+                                this.ProcessFiles(importJob, importDto, file, localFiles);
                             }
 
                             totalFilesImported += sourceFiles.Count;
@@ -389,7 +389,125 @@ namespace Dnn.ExportImport.Components.Services
             return match.Success;
         }
 
-        private static void ProcessFolderPermission(ExportImportJob importJob, ImportDto importDto, ExportFolderPermission folderPermission, IEnumerable<ExportFolderPermission> localPermissions)
+        private bool ProcessFolder(ExportImportJob importJob, ImportDto importDto, ExportFolder folder)
+        {
+            var portalId = importJob.PortalId;
+            if (folder == null)
+            {
+                return false;
+            }
+
+            var existingFolder = CBO.FillObject<ExportFolder>(DotNetNuke.Data.DataProvider.Instance().GetFolder(portalId, folder.FolderPath ?? string.Empty));
+            var isUpdate = false;
+            var modifiedBy = Util.GetUserIdByName(importJob, folder.LastModifiedByUserId, folder.LastModifiedByUserName);
+            if (existingFolder != null)
+            {
+                switch (importDto.CollisionResolution)
+                {
+                    case CollisionResolution.Overwrite:
+                        isUpdate = true;
+                        break;
+                    case CollisionResolution.Ignore:
+                        return false;
+                    default:
+                        throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
+                }
+            }
+
+            folder.FolderPath = string.IsNullOrEmpty(folder.FolderPath) ? string.Empty : folder.FolderPath;
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folder.FolderMappingName);
+            if (folderMapping == null)
+            {
+                return false;
+            }
+
+            var workFlowId = this.GetLocalWorkFlowId(folder.WorkflowId);
+            if (isUpdate)
+            {
+                Util.FixDateTime(existingFolder);
+                DotNetNuke.Data.DataProvider.Instance()
+                    .UpdateFolder(
+                        importJob.PortalId,
+                        folder.VersionGuid,
+                        existingFolder.FolderId,
+                        folder.FolderPath,
+                        folder.StorageLocation,
+                        folder.MappedPath,
+                        folder.IsProtected,
+                        folder.IsCached,
+                        DateUtils.GetDatabaseLocalTime(),
+                        modifiedBy,
+                        folderMapping.FolderMappingID,
+                        folder.IsVersioned,
+                        workFlowId,
+                        existingFolder.ParentId ?? Null.NullInteger);
+
+                folder.FolderId = existingFolder.FolderId;
+
+                if (folder.UserId != null && folder.UserId > 0 && !string.IsNullOrEmpty(folder.Username))
+                {
+                    this.SyncUserFolder(importJob.PortalId, folder);
+                }
+            }
+            else
+            {
+                folder.FolderMappingId = folderMapping.FolderMappingID;
+                var createdBy = Util.GetUserIdByName(importJob, folder.CreatedByUserId, folder.CreatedByUserName);
+                if (folder.ParentId != null && folder.ParentId > 0)
+                {
+                    // Find the previously created parent folder id.
+                    folder.ParentId = CBO.FillObject<ExportFolder>(DotNetNuke.Data.DataProvider.Instance().GetFolder(portalId, folder.ParentFolderPath ?? string.Empty))?.FolderId;
+                }
+
+                // ignore folders which start with Users but are not user folders.
+                if (!folder.FolderPath.StartsWith(DefaultUsersFoldersPath))
+                {
+                    folder.FolderId = DotNetNuke.Data.DataProvider.Instance()
+                        .AddFolder(
+                            importJob.PortalId,
+                            Guid.NewGuid(),
+                            folder.VersionGuid,
+                            folder.FolderPath,
+                            folder.MappedPath,
+                            folder.StorageLocation,
+                            folder.IsProtected,
+                            folder.IsCached,
+                            DateUtils.GetDatabaseLocalTime(),
+                            createdBy,
+                            folderMapping.FolderMappingID,
+                            folder.IsVersioned,
+                            workFlowId,
+                            folder.ParentId ?? Null.NullInteger);
+                }
+
+                // Case when the folder is a user folder.
+                else if (folder.UserId != null && folder.UserId > 0 && !string.IsNullOrEmpty(folder.Username))
+                {
+                    var userInfo = UserController.GetUserByName(portalId, folder.Username);
+                    if (userInfo == null)
+                    {
+                        folder.FolderId = 0;
+                        return false;
+                    }
+
+                    userInfo.IsSuperUser = false;
+                    var newFolder = FolderManager.Instance.GetUserFolder(userInfo);
+                    folder.FolderId = newFolder.FolderID;
+                    folder.FolderPath = newFolder.FolderPath;
+                    this.SyncUserFolder(importJob.PortalId, folder);
+                    return true;
+                }
+                else
+                {
+                    folder.FolderId = 0;
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void ProcessFolderPermission(ExportImportJob importJob, ImportDto importDto, ExportFolderPermission folderPermission, IEnumerable<ExportFolderPermission> localPermissions)
         {
             var portalId = importJob.PortalId;
             var noRole = Convert.ToInt32(Globals.glbRoleNothing);
@@ -406,7 +524,7 @@ namespace Dnn.ExportImport.Components.Services
                     (x.FolderPath == folderPermission.FolderPath ||
                      (string.IsNullOrEmpty(x.FolderPath) && string.IsNullOrEmpty(folderPermission.FolderPath))) &&
                     x.PermissionCode == folderPermission.PermissionCode && x.PermissionKey == folderPermission.PermissionKey
-                    && x.PermissionName.Equals(folderPermission.PermissionName, StringComparison.OrdinalIgnoreCase) &&
+                    && x.PermissionName.Equals(folderPermission.PermissionName, StringComparison.InvariantCultureIgnoreCase) &&
                     x.RoleId == roleId && x.UserId == userId);
 
             var isUpdate = false;
@@ -491,7 +609,7 @@ namespace Dnn.ExportImport.Components.Services
             folderPermission.LocalId = folderPermission.FolderPermissionId;
         }
 
-        private static void ProcessFiles(ExportImportJob importJob, ImportDto importDto, ExportFile file, IEnumerable<ExportFile> localFiles)
+        private void ProcessFiles(ExportImportJob importJob, ImportDto importDto, ExportFile file, IEnumerable<ExportFile> localFiles)
         {
             if (file == null)
             {
@@ -581,7 +699,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private static void SyncUserFolder(int portalId, ExportFolder folder)
+        private void SyncUserFolder(int portalId, ExportFolder folder)
         {
             var portal = PortalController.Instance.GetPortal(portalId);
             var tempUsersFolderPath =
@@ -612,129 +730,11 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private static string GetActualFileName(ExportFile objFile)
+        private string GetActualFileName(ExportFile objFile)
         {
             return (objFile.StorageLocation == (int)FolderController.StorageLocationTypes.SecureFileSystem)
                 ? objFile.FileName + Globals.glbProtectedExtension
                 : objFile.FileName;
-        }
-
-        private bool ProcessFolder(ExportImportJob importJob, ImportDto importDto, ExportFolder folder)
-        {
-            var portalId = importJob.PortalId;
-            if (folder == null)
-            {
-                return false;
-            }
-
-            var existingFolder = CBO.FillObject<ExportFolder>(DotNetNuke.Data.DataProvider.Instance().GetFolder(portalId, folder.FolderPath ?? string.Empty));
-            var isUpdate = false;
-            var modifiedBy = Util.GetUserIdByName(importJob, folder.LastModifiedByUserId, folder.LastModifiedByUserName);
-            if (existingFolder != null)
-            {
-                switch (importDto.CollisionResolution)
-                {
-                    case CollisionResolution.Overwrite:
-                        isUpdate = true;
-                        break;
-                    case CollisionResolution.Ignore:
-                        return false;
-                    default:
-                        throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
-                }
-            }
-
-            folder.FolderPath = string.IsNullOrEmpty(folder.FolderPath) ? string.Empty : folder.FolderPath;
-            var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folder.FolderMappingName);
-            if (folderMapping == null)
-            {
-                return false;
-            }
-
-            var workFlowId = this.GetLocalWorkFlowId(folder.WorkflowId);
-            if (isUpdate)
-            {
-                Util.FixDateTime(existingFolder);
-                DotNetNuke.Data.DataProvider.Instance()
-                    .UpdateFolder(
-                        importJob.PortalId,
-                        folder.VersionGuid,
-                        existingFolder.FolderId,
-                        folder.FolderPath,
-                        folder.StorageLocation,
-                        folder.MappedPath,
-                        folder.IsProtected,
-                        folder.IsCached,
-                        DateUtils.GetDatabaseLocalTime(),
-                        modifiedBy,
-                        folderMapping.FolderMappingID,
-                        folder.IsVersioned,
-                        workFlowId,
-                        existingFolder.ParentId ?? Null.NullInteger);
-
-                folder.FolderId = existingFolder.FolderId;
-
-                if (folder.UserId != null && folder.UserId > 0 && !string.IsNullOrEmpty(folder.Username))
-                {
-                    SyncUserFolder(importJob.PortalId, folder);
-                }
-            }
-            else
-            {
-                folder.FolderMappingId = folderMapping.FolderMappingID;
-                var createdBy = Util.GetUserIdByName(importJob, folder.CreatedByUserId, folder.CreatedByUserName);
-                if (folder.ParentId != null && folder.ParentId > 0)
-                {
-                    // Find the previously created parent folder id.
-                    folder.ParentId = CBO.FillObject<ExportFolder>(DotNetNuke.Data.DataProvider.Instance().GetFolder(portalId, folder.ParentFolderPath ?? string.Empty))?.FolderId;
-                }
-
-                // ignore folders which start with Users but are not user folders.
-                if (!folder.FolderPath.StartsWith(DefaultUsersFoldersPath))
-                {
-                    folder.FolderId = DotNetNuke.Data.DataProvider.Instance()
-                        .AddFolder(
-                            importJob.PortalId,
-                            Guid.NewGuid(),
-                            folder.VersionGuid,
-                            folder.FolderPath,
-                            folder.MappedPath,
-                            folder.StorageLocation,
-                            folder.IsProtected,
-                            folder.IsCached,
-                            DateUtils.GetDatabaseLocalTime(),
-                            createdBy,
-                            folderMapping.FolderMappingID,
-                            folder.IsVersioned,
-                            workFlowId,
-                            folder.ParentId ?? Null.NullInteger);
-                }
-
-                // Case when the folder is a user folder.
-                else if (folder.UserId != null && folder.UserId > 0 && !string.IsNullOrEmpty(folder.Username))
-                {
-                    var userInfo = UserController.GetUserByName(portalId, folder.Username);
-                    if (userInfo == null)
-                    {
-                        folder.FolderId = 0;
-                        return false;
-                    }
-
-                    userInfo.IsSuperUser = false;
-                    var newFolder = FolderManager.Instance.GetUserFolder(userInfo);
-                    folder.FolderId = newFolder.FolderID;
-                    folder.FolderPath = newFolder.FolderPath;
-                    SyncUserFolder(importJob.PortalId, folder);
-                    return true;
-                }
-                else
-                {
-                    folder.FolderId = 0;
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         private int GetCurrentSkip()

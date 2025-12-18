@@ -6,7 +6,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
     using System;
     using System.Data.Common;
     using System.Data.SqlClient;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Net;
     using System.Threading;
@@ -24,8 +23,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
     /// <summary>The Controller class for Installer.</summary>
     internal class InstallControllerImpl : IInstallController
     {
-        private static readonly string[] VersionSeparator = [".",];
-
         /// <inheritdoc/>
         public string InstallerLogName
         {
@@ -69,7 +66,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             connectionConfig.Password = value;
                             break;
                         case "integrated security":
-                            connectionConfig.Integrated = value.Equals("true", StringComparison.OrdinalIgnoreCase);
+                            connectionConfig.Integrated = value.ToLowerInvariant() == "true";
                             break;
                         case "attachdbfilename":
                             connectionConfig.File = value.Replace("|DataDirectory|", string.Empty);
@@ -311,10 +308,10 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 connectionConfig.Server = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "server");
                 connectionConfig.Database = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "database");
                 connectionConfig.File = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "file");
-                connectionConfig.Integrated = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "integrated").Equals("true", StringComparison.OrdinalIgnoreCase);
+                connectionConfig.Integrated = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "integrated").ToLowerInvariant() == "true";
                 connectionConfig.User = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "user");
                 connectionConfig.Password = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "password");
-                connectionConfig.RunAsDbowner = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "runasdbowner").Equals("true", StringComparison.OrdinalIgnoreCase);
+                connectionConfig.RunAsDbowner = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "runasdbowner").ToLowerInvariant() == "true";
                 connectionConfig.Qualifier = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "qualifier");
                 connectionConfig.UpgradeConnectionString = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "upgradeconnectionstring");
 
@@ -333,7 +330,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 superUserConfig.Password = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "password");
                 superUserConfig.Email = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "email");
                 superUserConfig.Locale = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "locale");
-                superUserConfig.UpdatePassword = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "updatepassword").Equals("true", StringComparison.OrdinalIgnoreCase);
+                superUserConfig.UpdatePassword = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "updatepassword").ToLowerInvariant() == "true";
 
                 installConfig.SuperUser = superUserConfig;
             }
@@ -352,7 +349,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             XmlAttribute secureAttrib = settingNode.Attributes["Secure"];
                             if (secureAttrib != null)
                             {
-                                if (secureAttrib.Value.Equals("true", StringComparison.OrdinalIgnoreCase))
+                                if (secureAttrib.Value.ToLowerInvariant() == "true")
                                 {
                                     settingIsSecure = true;
                                 }
@@ -392,18 +389,18 @@ namespace DotNetNuke.Services.Upgrade.Internals
                         portalConfig.Description = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "description");
                         portalConfig.Keywords = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "keywords");
                         portalConfig.TemplateFileName = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "templatefile");
-                        portalConfig.IsChild = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "ischild").Equals("true", StringComparison.OrdinalIgnoreCase);
+                        portalConfig.IsChild = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "ischild").ToLowerInvariant() == "true";
                         portalConfig.HomeDirectory = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "homedirectory");
 
                         // Get the Portal Alias
                         XmlNodeList portalAliases = portalNode.SelectNodes("portalaliases/portalalias");
                         if (portalAliases != null)
                         {
-                            foreach (XmlNode portalAlias in portalAliases)
+                            foreach (XmlNode portalAliase in portalAliases)
                             {
-                                if (!string.IsNullOrEmpty(portalAlias.InnerText))
+                                if (!string.IsNullOrEmpty(portalAliase.InnerText))
                                 {
-                                    portalConfig.PortAliases.Add(portalAlias.InnerText);
+                                    portalConfig.PortAliases.Add(portalAliase.InnerText);
                                 }
                             }
                         }
@@ -430,7 +427,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                     var serverVersion = sqlConnection.ServerVersion;
                     if (serverVersion != null)
                     {
-                        var serverVersionDetails = serverVersion.Split(VersionSeparator, StringSplitOptions.None);
+                        var serverVersionDetails = serverVersion.Split(new[] { "." }, StringSplitOptions.None);
 
                         var versionNumber = int.Parse(serverVersionDetails[0]);
 
@@ -445,7 +442,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             using (var testCommand = new SqlCommand("select serverproperty('Edition')", sqlConnection))
                             {
                                 var result = testCommand.ExecuteScalar();
-                                isValidVersion = result.ToString().Equals("SQL Azure", StringComparison.OrdinalIgnoreCase);
+                                isValidVersion = result.ToString().Equals("SQL Azure", StringComparison.InvariantCultureIgnoreCase);
                             }
                         }
                     }
@@ -486,7 +483,14 @@ namespace DotNetNuke.Services.Upgrade.Internals
         public bool IsSqlServerDbo()
         {
             string dbo = DataProvider.Instance().Settings["databaseOwner"];
-            return !dbo.Trim().Equals("dbo.", StringComparison.OrdinalIgnoreCase);
+            if (dbo.Trim().ToLowerInvariant() != "dbo.")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <inheritdoc/>
@@ -499,11 +503,11 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 string installFolder = HttpContext.Current.Server.MapPath("~/Install/language");
 
                 // no need to download english, always there
-                if (cultureCode != "en-us" && !string.IsNullOrEmpty(downloadUrl))
+                if (cultureCode != "en-us" && string.IsNullOrEmpty(downloadUrl) != true)
                 {
                     var newCulture = new CultureInfo(cultureCode);
                     Thread.CurrentThread.CurrentCulture = newCulture;
-                    GetLanguagePack(downloadUrl, installFolder);
+                    this.GetLanguagePack(downloadUrl, installFolder);
                     return true;
                 }
 
@@ -521,7 +525,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             CultureInfo pageCulture = null;
 
             // 1. querystring
-            pageCulture = GetCultureFromQs();
+            pageCulture = this.GetCultureFromQs();
 
             // 2. cookie
             pageCulture = this.GetCultureFromCookie();
@@ -573,7 +577,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return culture;
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public CultureInfo GetCultureFromBrowser()
         {
             CultureInfo culture = null;
@@ -599,7 +602,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return newNode;
         }
 
-        private static CultureInfo GetCultureFromQs()
+        private CultureInfo GetCultureFromQs()
         {
             if (HttpContext.Current == null || HttpContext.Current.Request["language"] == null)
             {
@@ -611,7 +614,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return culture;
         }
 
-        private static void GetLanguagePack(string downloadUrl, string installFolder)
+        private void GetLanguagePack(string downloadUrl, string installFolder)
         {
             string myfile = string.Empty;
             WebResponse wr = Util.GetExternalRequest(

@@ -190,7 +190,7 @@ namespace DotNetNuke.Common.Utilities
                         canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
                         canvas.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-                        if (!extension.Equals(".png", StringComparison.OrdinalIgnoreCase))
+                        if (!extension.Equals(".png", StringComparison.InvariantCultureIgnoreCase))
                         {
                             canvas.Clear(Color.White);
                             canvas.FillRectangle(Brushes.White, 0, 0, imgSize.Width, imgSize.Height);
@@ -200,15 +200,15 @@ namespace DotNetNuke.Common.Utilities
 
                         // newImg.Save
                         ImageFormat imgFormat = ImageFormat.Bmp;
-                        if (extension.Equals(".png", StringComparison.OrdinalIgnoreCase))
+                        if (extension.Equals(".png", StringComparison.InvariantCultureIgnoreCase))
                         {
                             imgFormat = ImageFormat.Png;
                         }
-                        else if (extension.Equals(".gif", StringComparison.OrdinalIgnoreCase))
+                        else if (extension.Equals(".gif", StringComparison.InvariantCultureIgnoreCase))
                         {
                             imgFormat = ImageFormat.Gif;
                         }
-                        else if (extension.Equals(".jpg", StringComparison.OrdinalIgnoreCase))
+                        else if (extension.Equals(".jpg", StringComparison.InvariantCultureIgnoreCase))
                         {
                             imgFormat = ImageFormat.Jpeg;
                         }

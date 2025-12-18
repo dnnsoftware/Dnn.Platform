@@ -6,7 +6,6 @@
 namespace Dnn.PersonaBar.UI.UserControls
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Net;
@@ -64,7 +63,6 @@ namespace Dnn.PersonaBar.UI.UserControls
         public string PersonaBarSettings => JsonConvert.SerializeObject(this.personaBarContainer.GetConfiguration());
 
         /// <summary>Gets the site's virtual application root path.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string AppPath => Globals.ApplicationPath;
 
         /// <summary>Gets the client resource version number.</summary>

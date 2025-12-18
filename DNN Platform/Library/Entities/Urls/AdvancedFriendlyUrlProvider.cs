@@ -214,16 +214,16 @@ namespace DotNetNuke.Entities.Urls
         {
             if (portalSettings == null)
             {
-                throw new ArgumentNullException(nameof(portalSettings));
+                throw new ArgumentNullException("portalSettings");
             }
 
-            return FriendlyUrlInternal(tab, path, pageName, string.Empty, (PortalSettings)portalSettings);
+            return this.FriendlyUrlInternal(tab, path, pageName, string.Empty, (PortalSettings)portalSettings);
         }
 
         /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
-            return FriendlyUrlInternal(tab, path, pageName, portalAlias, null);
+            return this.FriendlyUrlInternal(tab, path, pageName, portalAlias, null);
         }
 
         private static string AddPage(string path, string pageName)
@@ -375,7 +375,7 @@ namespace DotNetNuke.Entities.Urls
                     || settings.PageExtensionUsageType == PageExtensionUsageType.PageOnly)
                 {
                     // check whether a 'custom' (other than default.aspx) page was supplied, and insert that as the pageAndExtension
-                    if (!string.Equals(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
+                    if (string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) != 0)
                     {
                         extension = "/" + pageName.Replace(".aspx", settings.PageExtension);
                     }
@@ -388,7 +388,7 @@ namespace DotNetNuke.Entities.Urls
                 }
                 else
                 {
-                    if (!string.Equals(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
+                    if (string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) != 0)
                     {
                         // get rid of the .aspx on the page if it was there
                         extension = "/" + pageName.Replace(".aspx", string.Empty); // +"/"; //610 : don't always end with /
@@ -537,7 +537,7 @@ namespace DotNetNuke.Entities.Urls
                         // lookup the culture code of the portal settings object
                     }
 
-                    IPortalAliasInfo redirectAlias;
+                    PortalAliasInfo redirectAlias;
                     if (aliasMapping == PortalSettings.PortalAliasMapping.Redirect)
                     {
                         // Alias mapping is redirect -> Search for primary alias
@@ -552,13 +552,13 @@ namespace DotNetNuke.Entities.Urls
                     if (redirectAlias != null)
                     {
                         if (!string.IsNullOrEmpty(redirectAlias.CultureCode)
-                            && !string.Equals(redirectAlias.HttpAlias, httpAlias, StringComparison.OrdinalIgnoreCase))
+                            && string.Compare(redirectAlias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) != 0)
                         {
                             // found the primary alias, and it's different from the supplied portal alias
                             // and the site is using a redirect portal alias mapping
                             // substitute in the primary Alias for the supplied alias
                             friendlyPath = friendlyPath.Replace(Globals.AddHTTP(httpAlias), string.Empty);
-                            httpAlias = redirectAlias.HttpAlias;
+                            httpAlias = redirectAlias.HTTPAlias;
                             if (!string.IsNullOrEmpty(redirectAlias.CultureCode))
                             {
                                 cultureSpecificAlias = true;
@@ -573,14 +573,14 @@ namespace DotNetNuke.Entities.Urls
                         else
                         {
                             // check to see if we matched for this alias - if so, it's a culture specific alias
-                            if (string.Equals(redirectAlias.HttpAlias, httpAlias, StringComparison.OrdinalIgnoreCase) &&
+                            if (string.Compare(redirectAlias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) == 0 &&
                                 !string.IsNullOrEmpty(redirectAlias.CultureCode))
                             {
                                 cultureSpecificAlias = true;
                             }
                         }
 
-                        // 852 : check to see if the skinSrc is explicitly specified, which we don't want to duplicate if the alias also specifies this
+                        // 852 : check to see if the skinSrc is explicityl specified, which we don't want to duplicate if the alias also specifies this
                         if (path.ToLowerInvariant().Contains("skinsrc=") && primaryAliases.ContainsSpecificSkins())
                         {
                             // path has a skin specified and (at least one) alias has a skin specified
@@ -666,7 +666,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 friendlyPath = queryStringMatch.Groups[1].Value;
                 friendlyPath = DefaultPageRegex.Replace(friendlyPath, string.Empty);
-                if (!string.Equals(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
+                if (string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) != 0)
                 {
                     // take out the end page name, it will get re-added
                     var pgNameRx = RegexUtils.GetCachedRegex(pageName, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
@@ -692,7 +692,7 @@ namespace DotNetNuke.Entities.Urls
                         // Add name part of name/value pair
                         if (friendlyPath.EndsWith("/"))
                         {
-                            if (pair[0].Equals("tabid", StringComparison.OrdinalIgnoreCase))
+                            if (pair[0].Equals("tabid", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 // always lowercase the tabid part of the path
                                 pathToAppend = pathToAppend + pair[0].ToLowerInvariant();
@@ -715,7 +715,7 @@ namespace DotNetNuke.Entities.Urls
                                 if (rx.IsMatch(pair[1]) == false)
                                 {
                                     // Contains Non-AlphaNumeric Characters
-                                    if (pair[0].Equals("tabid", StringComparison.OrdinalIgnoreCase))
+                                    if (pair[0].ToLowerInvariant() == "tabid")
                                     {
                                         int tabId;
                                         if (int.TryParse(pair[1], out tabId))
@@ -768,7 +768,7 @@ namespace DotNetNuke.Entities.Urls
                                     {
                                         for (int j = 2; j <= pair.GetUpperBound(0); j++)
                                         {
-                                            valueBuilder.Append('=');
+                                            valueBuilder.Append("=");
                                             valueBuilder.Append(pair[j]);
                                         }
                                     }
@@ -894,11 +894,11 @@ namespace DotNetNuke.Entities.Urls
 
             // 821 : new 'CustomOnly' setting which allows keeping base Urls but also using Custom Urls.  Basically keeps search friendly
             // but allows for customised urls and redirects
-            bool customOnly = settings.UrlFormat.Equals("customonly", StringComparison.OrdinalIgnoreCase);
+            bool customOnly = settings.UrlFormat.Equals("customonly", StringComparison.InvariantCultureIgnoreCase);
             FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
 
             // determine if an improved friendly Url is wanted at all
-            if ((settings.UrlFormat.Equals("advanced", StringComparison.OrdinalIgnoreCase) || customOnly) && !RewriteController.IsExcludedFromFriendlyUrls(tab, settings, false))
+            if ((settings.UrlFormat.Equals("advanced", StringComparison.InvariantCultureIgnoreCase) || customOnly) && !RewriteController.IsExcludedFromFriendlyUrls(tab, settings, false))
             {
                 string newTabPath;
                 string customHttpAlias;
@@ -1040,7 +1040,7 @@ namespace DotNetNuke.Entities.Urls
                         bool hasPath = newPath != string.Empty;
 
                         // 871 : case insensitive comparison for culture
-                        bool isDefaultLanguage = string.Equals(cultureCode, defaultCode, StringComparison.OrdinalIgnoreCase);
+                        bool isDefaultLanguage = string.Compare(cultureCode, defaultCode, StringComparison.OrdinalIgnoreCase) == 0;
                         bool isCustomUrl;
                         newTabPath = TabPathHelper.GetTabPath(
                             tab,
@@ -1332,25 +1332,25 @@ namespace DotNetNuke.Entities.Urls
                 // Just append to path, if no value exists
                 if (pathParts.Length <= i + 1)
                 {
-                    pathBuilder.Append($"/{pathParts[i]}");
+                    pathBuilder.Append(string.Format("/{0}", pathParts[i]));
                     continue;
                 }
 
                 // Either add key/value parameter pair to path or to query
                 var key = pathParts[i];
                 var value = pathParts[i + 1];
-                if (notInPath.IsMatch($"/{key}/{value}"))
+                if (notInPath.IsMatch(string.Format("/{0}/{1}", key, value)))
                 {
                     if (queryStringBuilder.Length > 0)
                     {
-                        queryStringBuilder.Append('&');
+                        queryStringBuilder.Append("&");
                     }
 
-                    queryStringBuilder.Append($"{key}={value}");
+                    queryStringBuilder.Append(string.Format("{0}={1}", key, value));
                 }
                 else
                 {
-                    pathBuilder.Append($"/{key}/{value}");
+                    pathBuilder.Append(string.Format("/{0}/{1}", key, value));
                 }
             }
 
@@ -1399,7 +1399,7 @@ namespace DotNetNuke.Entities.Urls
             return builtInUrl;
         }
 
-        private static string FriendlyUrlInternal(TabInfo tab, string path, string pageName, string portalAlias, PortalSettings portalSettings)
+        private string FriendlyUrlInternal(TabInfo tab, string path, string pageName, string portalAlias, PortalSettings portalSettings)
         {
             var parentTraceId = Guid.Empty;
             var portalId = portalSettings?.PortalId ?? tab.PortalID;
@@ -1424,7 +1424,7 @@ namespace DotNetNuke.Entities.Urls
                 portalSettings = CheckAndUpdatePortalSettingsForNewAlias(portalSettings, cultureSpecificAlias, portalAlias);
             }
 
-            if (tab == null && path == "~/" && string.Equals(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
+            if (tab == null && path == "~/" && string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) == 0)
             {
                 // this is a request for the site root for the dnn logo skin object (642)
                 // do nothing, the friendly alias is already correct - we don't want to append 'default.aspx' on the end

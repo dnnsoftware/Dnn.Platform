@@ -6,7 +6,6 @@ namespace DotNetNuke.Entities.Urls
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
     using DotNetNuke.Entities.Portals;
@@ -115,13 +114,11 @@ namespace DotNetNuke.Entities.Urls
             return false;
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string EnsureNotLeadingChar(string leading, string path)
         {
             return FriendlyUrlController.EnsureNotLeadingChar(leading, path);
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected string CleanNameForUrl(string urlValue, FriendlyUrlOptions options)
         {
             bool changed;
@@ -132,13 +129,11 @@ namespace DotNetNuke.Entities.Urls
             return result;
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected string CleanNameForUrl(string urlValue, FriendlyUrlOptions options, out bool replacedUnwantedChars)
         {
             return FriendlyUrlController.CleanNameForUrl(urlValue, options, out replacedUnwantedChars);
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected string CreateQueryStringFromParameters(string[] urlParms, int skipUpToPosition)
         {
             string result = string.Empty;
@@ -175,7 +170,6 @@ namespace DotNetNuke.Entities.Urls
             return result;
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected string EnsureLeadingChar(string leading, string path)
         {
             return FriendlyUrlController.EnsureLeadingChar(leading, path);

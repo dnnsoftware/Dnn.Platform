@@ -1,124 +1,161 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Tests.Core.Services.Mail;
-
-using System.Net.Mail;
-using System.Net.Mime;
-using System.Text;
-
-using DotNetNuke.Services.Mail;
-using NUnit.Framework;
-
-[TestFixture]
-public class MailTests
+namespace DotNetNuke.Tests.Core.Services.Mail
 {
-    [Test]
-    public void ConvertToText_returns_the_input_for_simple_strings()
+    using System;
+    using System.Net.Mail;
+    using System.Net.Mime;
+    using System.Text;
+
+    using DotNetNuke.Services.Mail;
+    using NUnit.Framework;
+
+    [TestFixture]
+    public class MailTests
     {
-        var result = Mail.ConvertToText("Hello World");
-        Assert.That(result, Is.EqualTo("Hello World"));
-    }
-
-    [Test]
-    public void ConvertToText_removes_tags()
-    {
-        var result = Mail.ConvertToText("<div class=\"x\"><p>Hello World</p></div>");
-        Assert.That(result.Trim(), Is.EqualTo("Hello World"));
-    }
-
-    [Test]
-    [Ignore("This wasn't included before and now fails")]
-    public void ConvertToText_removes_styles_including_css_defs()
-    {
-        var result = Mail.ConvertToText("<style>\r\nHello</style>World");
-        Assert.That(result.Trim(), Is.EqualTo("World"));
-    }
-
-    [Test]
-    public void GivenBodyIsNotHtmlWhenAddAlternateViewThenShouldContainsPlainViewOnly()
-    {
-        // special character
-        MailMessage mailMessage = new MailMessage { IsBodyHtml = false, };
-        ContentType plain = new ContentType("text/plain") { CharSet = "us-ascii", };
-        AlternateView plainView = AlternateView.CreateAlternateViewFromString("body\n", plain);
-
-        CoreMailProvider.AddAlternateView(mailMessage, "body\n", Encoding.ASCII);
-
-        AssertEqualAlternativeView(plainView, mailMessage.AlternateViews[0]);
-        Assert.That(mailMessage.AlternateViews.Count, Is.EqualTo(1));
-    }
-
-    [Test]
-    public void GivenBodyHtmlWhenAddAlternateViewThenShouldContainsPlainAndHtmlViews()
-    {
-        // special character
-        MailMessage mailMessage = new MailMessage { IsBodyHtml = true, };
-        ContentType plain = new ContentType("text/plain") { CharSet = "us-ascii", };
-        ContentType html = new ContentType("text/html") { CharSet = "us-ascii", };
-        AlternateView plainView = AlternateView.CreateAlternateViewFromString("body\n", plain);
-        AlternateView htmlView = AlternateView.CreateAlternateViewFromString("body\n", html);
-
-        CoreMailProvider.AddAlternateView(mailMessage, "body\n", Encoding.ASCII);
-
-        AssertEqualAlternativeView(plainView, mailMessage.AlternateViews[0]);
-        AssertEqualAlternativeView(htmlView, mailMessage.AlternateViews[1]);
-        Assert.That(mailMessage.AlternateViews.Count, Is.EqualTo(2));
-    }
-
-    [Test]
-    public void GivenEncodingIsAsciiWhenAddAlternateViewThenCharsetShouldAlwaysAscii()
-    {
-        // special character
-        MailMessage mailMessage = new MailMessage { IsBodyHtml = true, };
-        ContentType plain = new ContentType("text/plain") { CharSet = "us-ascii", };
-        ContentType html = new ContentType("text/html") { CharSet = "us-ascii", };
-
-        CoreMailProvider.AddAlternateView(mailMessage, "body\n", Encoding.ASCII);
-
-        Assert.That(mailMessage.AlternateViews[0].ContentType, Is.EqualTo(plain));
-        Assert.That(mailMessage.AlternateViews[1].ContentType, Is.EqualTo(html));
-
-        // no special character
-        mailMessage = new MailMessage()
+        [Test]
+        public void ConvertToText_returns_the_input_for_simple_strings()
         {
-            IsBodyHtml = true,
-        };
+            Func<string, string> sut = DotNetNuke.Services.Mail.Mail.ConvertToText;
+            var result = sut("Hello World");
+            Assert.AreEqual("Hello World", result);
+        }
 
-        CoreMailProvider.AddAlternateView(mailMessage, "body", Encoding.ASCII);
-
-        Assert.That(mailMessage.AlternateViews[0].ContentType, Is.EqualTo(plain));
-        Assert.That(mailMessage.AlternateViews[1].ContentType, Is.EqualTo(html));
-    }
-
-    [Test]
-    public void GivenBodyEncodingIsUTF8WhenAddAlternateViewThenCharsetShouldAlwaysUTF8()
-    {
-        // special character
-        MailMessage mailMessage = new MailMessage { IsBodyHtml = true, };
-        ContentType plain = new ContentType("text/plain") { CharSet = "utf-8", };
-        ContentType html = new ContentType("text/html") { CharSet = "utf-8", };
-
-        CoreMailProvider.AddAlternateView(mailMessage, "body\n", Encoding.UTF8);
-
-        Assert.That(mailMessage.AlternateViews[0].ContentType, Is.EqualTo(plain));
-        Assert.That(mailMessage.AlternateViews[1].ContentType, Is.EqualTo(html));
-
-        // no special character
-        mailMessage = new MailMessage()
+        [Test]
+        public void ConvertToText_removes_tags()
         {
-            IsBodyHtml = true,
-        };
+            Func<string, string> sut = DotNetNuke.Services.Mail.Mail.ConvertToText;
+            var result = sut("<div class=\"x\"><p>Hello World</p></div>");
+            Assert.AreEqual("Hello World", result.Trim());
+        }
 
-        CoreMailProvider.AddAlternateView(mailMessage, "body", Encoding.UTF8);
+        [Test]
+        public void ConvertToText_removes_styles_including_css_defs()
+        {
+            Func<string, string> sut = DotNetNuke.Services.Mail.Mail.ConvertToText;
+            var result = sut("<style>\r\nHello</style>World");
+            Assert.AreEqual("World", result.Trim());
+        }
 
-        Assert.That(mailMessage.AlternateViews[0].ContentType, Is.EqualTo(plain));
-        Assert.That(mailMessage.AlternateViews[1].ContentType, Is.EqualTo(html));
-    }
+        [Test]
+        public void GivenBodyIsNotHtmlWhenAddAlternateViewThenShouldContainsPlainViewOnly()
+        {
+            // special character
+            MailMessage mailMessage = new MailMessage()
+            {
+                IsBodyHtml = false
+            };
+            ContentType plain = new ContentType("text/plain")
+            {
+                CharSet = "us-ascii"
+            };
+            AlternateView plainView = AlternateView.CreateAlternateViewFromString("body\n", plain);
 
-    private static void AssertEqualAlternativeView(AlternateView expected, AlternateView actual)
-    {
-        Assert.That(actual.ContentType, Is.EqualTo(expected.ContentType));
-        Assert.That(actual.ContentStream, Is.EqualTo(expected.ContentStream));
+            CoreMailProvider.AddAlternateView(mailMessage, "body\n", Encoding.ASCII);
+
+            AssertEqualAlternativeView(plainView, mailMessage.AlternateViews[0]);
+            Assert.AreEqual(1, mailMessage.AlternateViews.Count);
+        }
+
+        [Test]
+        public void GivenBodyHtmlWhenAddAlternateViewThenShouldContainsPlainAndHtmlViews()
+        {
+            // special character
+            MailMessage mailMessage = new MailMessage()
+            {
+                IsBodyHtml = true
+            };
+            ContentType plain = new ContentType("text/plain")
+            {
+                CharSet = "us-ascii"
+            };
+            ContentType html = new ContentType("text/html")
+            {
+                CharSet = "us-ascii"
+            };
+            AlternateView plainView = AlternateView.CreateAlternateViewFromString("body\n", plain);
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString("body\n", html);
+
+            CoreMailProvider.AddAlternateView(mailMessage, "body\n", Encoding.ASCII);
+
+            AssertEqualAlternativeView(plainView, mailMessage.AlternateViews[0]);
+            AssertEqualAlternativeView(htmlView, mailMessage.AlternateViews[1]);
+            Assert.AreEqual(2, mailMessage.AlternateViews.Count);
+        }
+
+        [Test]
+        public void GivenEncodingIsAsciiWhenAddAlternateViewThenCharsetShouldAlwaysAscii()
+        {
+            // special character
+            MailMessage mailMessage = new MailMessage()
+            {
+                IsBodyHtml = true
+            };
+            ContentType plain = new ContentType("text/plain")
+            {
+                CharSet = "us-ascii"
+            };
+            ContentType html = new ContentType("text/html")
+            {
+                CharSet = "us-ascii"
+            };
+
+            CoreMailProvider.AddAlternateView(mailMessage, "body\n", Encoding.ASCII);
+
+            Assert.AreEqual(plain, mailMessage.AlternateViews[0].ContentType);
+            Assert.AreEqual(html, mailMessage.AlternateViews[1].ContentType);
+
+            // no special character
+            mailMessage = new MailMessage()
+            {
+                IsBodyHtml = true
+            };
+
+            CoreMailProvider.AddAlternateView(mailMessage, "body", Encoding.ASCII);
+
+            Assert.AreEqual(plain, mailMessage.AlternateViews[0].ContentType);
+            Assert.AreEqual(html, mailMessage.AlternateViews[1].ContentType);
+        }
+
+        [Test]
+        public void GivenBodyEncodingIsUTF8WhenAddAlternateViewThenCharsetShouldAwaysUTF8()
+        {
+            // special character
+            MailMessage mailMessage = new MailMessage()
+            {
+                IsBodyHtml = true
+            };
+            ContentType plain = new ContentType("text/plain")
+            {
+                CharSet = "utf-8"
+            };
+            ContentType html = new ContentType("text/html")
+            {
+                CharSet = "utf-8"
+            };
+
+            CoreMailProvider.AddAlternateView(mailMessage, "body\n", Encoding.UTF8);
+
+            Assert.AreEqual(plain, mailMessage.AlternateViews[0].ContentType);
+            Assert.AreEqual(html, mailMessage.AlternateViews[1].ContentType);
+
+            // no special character
+            mailMessage = new MailMessage()
+            {
+                IsBodyHtml = true
+            };
+
+            CoreMailProvider.AddAlternateView(mailMessage, "body", Encoding.UTF8);
+
+            Assert.AreEqual(plain, mailMessage.AlternateViews[0].ContentType);
+            Assert.AreEqual(html, mailMessage.AlternateViews[1].ContentType);
+        }
+
+        private static void AssertEqualAlternativeView(AlternateView expected, AlternateView actual)
+        {
+            Assert.AreEqual(expected.ContentType, actual.ContentType);
+            Assert.AreEqual(expected.ContentStream, actual.ContentStream);
+        }
     }
 }

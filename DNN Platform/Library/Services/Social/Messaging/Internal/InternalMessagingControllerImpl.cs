@@ -127,7 +127,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
             // Profanity Filter
             var profanityFilterSetting = this.GetPortalSetting("MessagingProfanityFilters", sender.PortalID, "NO");
-            if (profanityFilterSetting.Equals("YES", StringComparison.OrdinalIgnoreCase))
+            if (profanityFilterSetting.Equals("YES", StringComparison.InvariantCultureIgnoreCase))
             {
                 body = this.InputFilter(body);
             }

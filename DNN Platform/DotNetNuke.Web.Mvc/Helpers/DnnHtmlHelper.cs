@@ -6,7 +6,6 @@ namespace DotNetNuke.Web.Mvc.Helpers
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -64,7 +63,6 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         internal HtmlHelper HtmlHelper { get; set; }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public MvcHtmlString AntiForgeryToken()
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();

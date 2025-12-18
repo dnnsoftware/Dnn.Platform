@@ -43,6 +43,8 @@ namespace DotNetNuke.Services.GeneratedImage
             Globals.ApplicationPath + "/Portals/",
         };
 
+        private static readonly int DefaultDimension = 0;
+
         private readonly IServiceProvider serviceProvider;
         private readonly IApplicationStatusInfo appStatus;
         private string defaultImageFile = string.Empty;
@@ -122,7 +124,7 @@ namespace DotNetNuke.Services.GeneratedImage
         /// <inheritdoc/>
         public override ImageInfo GenerateImage(NameValueCollection parameters)
         {
-            SetupCulture();
+            this.SetupCulture();
 
             // which type of image should be generated ?
             string mode = string.IsNullOrEmpty(parameters["mode"]) ? "profilepic" : parameters["mode"].ToLowerInvariant();
@@ -184,11 +186,9 @@ namespace DotNetNuke.Services.GeneratedImage
                         break;
 
                     case "placeholder":
-                        var placeHolderTrans = new PlaceholderTransform
-                        {
-                            Width = ParseDimension(parameters["w"]),
-                            Height = ParseDimension(parameters["h"]),
-                        };
+                        var placeHolderTrans = new PlaceholderTransform();
+                        placeHolderTrans.Width = ParseDimension(parameters["w"]);
+                        placeHolderTrans.Height = ParseDimension(parameters["h"]);
 
                         if (!string.IsNullOrEmpty(parameters["Color"]))
                         {
@@ -197,7 +197,8 @@ namespace DotNetNuke.Services.GeneratedImage
 
                         if (!string.IsNullOrEmpty(parameters["Text"]))
                         {
-                            if (bool.TryParse(Config.GetSetting("AllowDnnImagePlaceholderText"), out var allowDnnImagePlaceholderText) && allowDnnImagePlaceholderText)
+                            bool.TryParse(Config.GetSetting("AllowDnnImagePlaceholderText"), out bool allowDnnImagePlaceholderText);
+                            if (allowDnnImagePlaceholderText)
                             {
                                 placeHolderTrans.Text = text;
                             }
@@ -501,23 +502,25 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private static int ParseDimension(string value)
         {
-            const int DefaultDimension = 0;
             if (string.IsNullOrEmpty(value))
             {
                 return DefaultDimension;
             }
 
-            if (!int.TryParse(value, out var dimension))
+            int dimension = DefaultDimension;
+            if (!int.TryParse(value, out dimension))
             {
-                if (double.TryParse(value, out var doubleDimension))
+                double doubleDimension;
+                if (double.TryParse(value, out doubleDimension))
                 {
                     dimension = (int)Math.Round(doubleDimension, 0);
                 }
             }
 
             // The system won't allow a resize for an image bigger than 4K pixels
-            const int MaxDimension = 4000;
-            if (dimension is > MaxDimension or < 0)
+            const int maxDimension = 4000;
+
+            if (dimension > maxDimension || dimension < 0)
             {
                 dimension = DefaultDimension;
             }
@@ -542,21 +545,6 @@ namespace DotNetNuke.Services.GeneratedImage
                     return ImageFormat.Icon;
                 default:
                     return ImageFormat.Png;
-            }
-        }
-
-        private static void SetupCulture()
-        {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-            if (settings == null)
-            {
-                return;
-            }
-
-            var pageLocale = TestableLocalization.Instance.GetPageLocale(settings);
-            if (pageLocale != null)
-            {
-                TestableLocalization.Instance.SetThreadCultures(pageLocale, settings);
             }
         }
 
@@ -617,6 +605,21 @@ namespace DotNetNuke.Services.GeneratedImage
                         this.IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
                         break;
                 }
+            }
+        }
+
+        private void SetupCulture()
+        {
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            if (settings == null)
+            {
+                return;
+            }
+
+            var pageLocale = TestableLocalization.Instance.GetPageLocale(settings);
+            if (pageLocale != null)
+            {
+                TestableLocalization.Instance.SetThreadCultures(pageLocale, settings);
             }
         }
     }

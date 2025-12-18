@@ -84,7 +84,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         private void CheckRequired()
         {
             var nullProperties = this.GetType().GetProperties()
-                .Where(p => p.GetCustomAttributes(typeof(RequiredAttribute), true).Length != 0)
+                .Where(p => p.GetCustomAttributes(typeof(RequiredAttribute), true).Any())
                 .Where(p => string.IsNullOrEmpty($"{p.GetValue(this)}"))
                 .Select(p => p.Name)
                 .ToArray();

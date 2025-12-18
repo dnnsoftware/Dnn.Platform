@@ -52,21 +52,24 @@ namespace DotNetNuke.Tests.Integration.Tests
         }
 
         [Test]
-        public async Task Friend_Request_Should_Match_Target_User_Culture()
+        public void Friend_Request_Should_Match_Target_User_Culture()
         {
             this.PrepareSecondLanguage();
-            var (_, userId1, userName1, _) = await this.CreateNewUser();
-            var (_, userId2, _, _) = await this.CreateNewUser();
+            int userId1, userId2, fileId1, fileId2;
+            string userName1, userName2;
+            this.CreateNewUser(out userId1, out userName1, out fileId1);
+            this.CreateNewUser(out userId2, out userName2, out fileId2);
 
             this.UpdateUserProfile(userId1, UserProfile.USERPROFILE_PreferredLocale, FirstLanguage);
             this.UpdateUserProfile(userId2, UserProfile.USERPROFILE_PreferredLocale, SecondLanguage);
             WebApiTestHelper.ClearHostCache();
 
             var connector = WebApiTestHelper.LoginUser(userName1);
-            connector.PostJson(
-                "API/MemberDirectory/MemberDirectory/AddFriend",
-                new { friendId = userId2, },
-                this.GetRequestHeaders());
+            connector.PostJson("API/MemberDirectory/MemberDirectory/AddFriend", new
+            {
+                friendId = userId2,
+            }, this.GetRequestHeaders());
+
             var notificationTitle = this.GetNotificationTitle(userId1);
 
             // the notification should use french language: testuser8836 veut être amis avec vous
@@ -119,9 +122,9 @@ namespace DotNetNuke.Tests.Integration.Tests
             return false;
         }
 
-        private async Task<(IWebApiConnector Connector, int UserId, string Username, int FileId)> CreateNewUser()
+        private IWebApiConnector CreateNewUser(out int userId, out string username, out int fileId)
         {
-            return await WebApiTestHelper.PrepareNewUser(PortalId);
+            return WebApiTestHelper.PrepareNewUser(out userId, out username, out fileId, PortalId);
         }
 
         private string GetNotificationTitle(int userId)

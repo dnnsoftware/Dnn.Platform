@@ -150,7 +150,7 @@ namespace DotNetNuke.Entities.Modules
                 if (this.Request.QueryString["ctl"] != null)
                 {
                     string ctl = this.Request.QueryString["ctl"];
-                    if (ctl.Equals("edit", StringComparison.OrdinalIgnoreCase))
+                    if (ctl.Equals("edit", StringComparison.InvariantCultureIgnoreCase))
                     {
                         isEdit = true;
                     }
@@ -182,7 +182,7 @@ namespace DotNetNuke.Entities.Modules
                         if (this.Request.QueryString["ctl"] != null)
                         {
                             string ctl = this.Request.QueryString["ctl"];
-                            if (ctl.Equals("profile", StringComparison.OrdinalIgnoreCase))
+                            if (ctl.Equals("profile", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 isProfile = true;
                             }
@@ -297,7 +297,7 @@ namespace DotNetNuke.Entities.Modules
                 if (this.PortalSettings.EnableRegisterNotification || this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
                 {
                     strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, this.PortalSettings);
-                    SendAdminNotification(newUser, this.PortalSettings);
+                    this.SendAdminNotification(newUser, this.PortalSettings);
                 }
 
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
@@ -354,42 +354,6 @@ namespace DotNetNuke.Entities.Modules
             }
 
             return strMessage;
-        }
-
-        private static void SendAdminNotification(UserInfo newUser, PortalSettings portalSettings)
-        {
-            var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";
-            var locale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId).Code;
-            var notification = new Notification
-            {
-                NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,
-                IncludeDismissAction = newUser.Membership.Approved,
-                SenderUserID = portalSettings.AdministratorId,
-                Subject = GetNotificationSubject(locale, newUser, portalSettings),
-                Body = GetNotificationBody(locale, newUser, portalSettings),
-                Context = newUser.UserID.ToString(CultureInfo.InvariantCulture),
-            };
-            var adminrole = RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId);
-            var roles = new List<RoleInfo> { adminrole };
-            NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, roles, new List<UserInfo>());
-        }
-
-        private static string GetNotificationBody(string locale, UserInfo newUser, PortalSettings portalSettings)
-        {
-            const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_BODY";
-            return LocalizeNotificationText(text, locale, newUser, portalSettings);
-        }
-
-        private static string LocalizeNotificationText(string text, string locale, UserInfo user, PortalSettings portalSettings)
-        {
-            // This method could need a custom ArrayList in future notification types. Currently it is null
-            return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, string.Empty, portalSettings.AdministratorId);
-        }
-
-        private static string GetNotificationSubject(string locale, UserInfo newUser, PortalSettings portalSettings)
-        {
-            const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_SUBJECT";
-            return LocalizeNotificationText(text, locale, newUser, portalSettings);
         }
 
         /// <summary>InitialiseUser initialises a "new" user.</summary>
@@ -505,6 +469,42 @@ namespace DotNetNuke.Entities.Modules
             }
 
             return country;
+        }
+
+        private void SendAdminNotification(UserInfo newUser, PortalSettings portalSettings)
+        {
+            var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";
+            var locale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId).Code;
+            var notification = new Notification
+            {
+                NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,
+                IncludeDismissAction = newUser.Membership.Approved,
+                SenderUserID = portalSettings.AdministratorId,
+                Subject = this.GetNotificationSubject(locale, newUser, portalSettings),
+                Body = this.GetNotificationBody(locale, newUser, portalSettings),
+                Context = newUser.UserID.ToString(CultureInfo.InvariantCulture),
+            };
+            var adminrole = RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId);
+            var roles = new List<RoleInfo> { adminrole };
+            NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, roles, new List<UserInfo>());
+        }
+
+        private string GetNotificationBody(string locale, UserInfo newUser, PortalSettings portalSettings)
+        {
+            const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_BODY";
+            return this.LocalizeNotificationText(text, locale, newUser, portalSettings);
+        }
+
+        private string LocalizeNotificationText(string text, string locale, UserInfo user, PortalSettings portalSettings)
+        {
+            // This method could need a custom ArrayList in future notification types. Currently it is null
+            return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, string.Empty, portalSettings.AdministratorId);
+        }
+
+        private string GetNotificationSubject(string locale, UserInfo newUser, PortalSettings portalSettings)
+        {
+            const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_SUBJECT";
+            return this.LocalizeNotificationText(text, locale, newUser, portalSettings);
         }
     }
 }

@@ -3,7 +3,9 @@
     <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
   </PropertyGroup>
   <Import Project="..\..\DNN_Platform.build" />
-  <Target Name="CopyBin" BeforeTargets="Build">
+  <Target Name="AfterBuild" DependsOnTargets="DebugProject">
+  </Target>
+  <Target Name="DebugProject">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Extensions.DependencyInjection.Abstractions.dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Extensions.DependencyInjection.dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Web.Infrastructure.dll" DestinationFolder="$(WebsitePath)/bin" />

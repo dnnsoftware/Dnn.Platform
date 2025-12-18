@@ -21,7 +21,7 @@ namespace DotNetNuke.Common.Utilities
             var fullName = input.FullName.Replace('\\', '/');
             if (fullName.StartsWith("..") || fullName.Contains("/../"))
             {
-                throw new IllegalZipFileException("Illegal Zip File");
+                throw new Exception("Illegal Zip File");
             }
         }
 
@@ -67,7 +67,7 @@ namespace DotNetNuke.Common.Utilities
             var fullName = input.Name.Replace('\\', '/');
             if (fullName.StartsWith("..") || fullName.Contains("/../"))
             {
-                throw new IllegalZipFileException("Illegal Zip File");
+                throw new Exception("Illegal Zip File");
             }
         }
     }

@@ -10,7 +10,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Dto
         /// <summary>Initializes a new instance of the <see cref="StateTransactionMessage"/> class.</summary>
         public StateTransactionMessage()
         {
-            this.Params = [];
+            this.Params = new string[] { };
         }
 
         /// <summary>Gets or sets params of the message.</summary>

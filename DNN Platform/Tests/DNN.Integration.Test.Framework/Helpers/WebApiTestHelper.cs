@@ -8,7 +8,6 @@ namespace DNN.Integration.Test.Framework.Helpers
     using System.Net;
     using System.Security.Cryptography;
     using System.Text;
-    using System.Threading.Tasks;
 
     using DNN.Integration.Test.Framework.Controllers;
     using NUnit.Framework;
@@ -20,7 +19,7 @@ namespace DNN.Integration.Test.Framework.Helpers
         private static readonly string HostGuid = HostSettingsHelper.GetHostSettingValue("GUID");
         private static IWebApiConnector _anonymousConnector;
 
-        /// <summary>Returns a connector to access the default site anonymously.</summary>
+        /// <summary>Returns a coonector to access the default site annonymously.</summary>
         /// <returns>IWebApiConnector object to perform more actions.</returns>
         public static IWebApiConnector GetAnnonymousConnector(string url = null)
         {
@@ -46,16 +45,16 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             };
         }
 
-        public static async Task<(IWebApiConnector Connector, int UserId, string Username, int FileId)> PrepareNewUser(int portalId = 0)
+        public static IWebApiConnector PrepareNewUser(out int userId, out string username, out int fileId, int portalId = 0)
         {
-            var username = $"testuser{Rnd.Next(1000, 9999)}";
+            username = $"testuser{Rnd.Next(1000, 9999)}";
             var email = $"{username}@dnn.com";
 
             using (WebApiTestHelper.Register(username, AppConfigHelper.HostPassword, username, email))
             {
             }
 
-            var userId = DatabaseHelper.ExecuteScalar<int>($"SELECT UserId FROM {{objectQualifier}}Users WHERE Username = '{username}'");
+            userId = DatabaseHelper.ExecuteScalar<int>($"SELECT UserId FROM {{objectQualifier}}Users WHERE Username = '{username}'");
 
             var connector = WebApiTestHelper.LoginHost();
             var url = $"/API/PersonaBar/Users/UpdateAuthorizeStatus?userId={userId}&authorized=true";
@@ -63,11 +62,11 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             connector.Logout();
 
             var userConnector = WebApiTestHelper.LoginUser(username);
-            await userConnector.UploadUserFile("Files\\Test.png", true, userId);
+            userConnector.UploadUserFile("Files\\Test.png", true, userId);
 
-            var fileId = DatabaseHelper.ExecuteScalar<int>($"SELECT MAX(FileId) FROM {{objectQualifier}}Files WHERE FileName = 'Test.png' AND CreatedByUserID = {userId} AND PortalId = {portalId}");
+            fileId = DatabaseHelper.ExecuteScalar<int>($"SELECT MAX(FileId) FROM {{objectQualifier}}Files WHERE FileName = 'Test.png' AND CreatedByUserID = {userId} AND PortalId = {portalId}");
 
-            return (userConnector, userId, username, fileId);
+            return userConnector;
         }
 
         /// <summary>Register a user by using the Registration form.</summary>

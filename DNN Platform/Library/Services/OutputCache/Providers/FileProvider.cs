@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             string cacheFolder = GetCacheFolder(portalId);
             if (!string.IsNullOrEmpty(cacheFolder))
             {
-                PurgeCache(cacheFolder);
+                this.PurgeCache(cacheFolder);
             }
         }
 
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             {
                 foreach (string file in Directory.GetFiles(cacheFolder, "*" + AttribFileExtension))
                 {
-                    if (IsFileExpired(file))
+                    if (this.IsFileExpired(file))
                     {
                         string fileToDelete = file.Replace(AttribFileExtension, DataFileExtension);
                         if (!FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
@@ -102,12 +102,12 @@ namespace DotNetNuke.Services.OutputCache.Providers
         {
             try
             {
-                var portals = PortalController.GetPortalDictionary();
-                if (portals.TryGetValue(tabId, out var portalId) && portalId > Null.NullInteger)
+                Dictionary<int, int> portals = PortalController.GetPortalDictionary();
+                if (portals.ContainsKey(tabId) && portals[tabId] > Null.NullInteger)
                 {
                     var filesNotDeleted = new StringBuilder();
                     int i = 0;
-                    string cacheFolder = GetCacheFolder(portalId);
+                    string cacheFolder = GetCacheFolder(portals[tabId]);
 
                     if (!string.IsNullOrEmpty(cacheFolder))
                     {
@@ -276,7 +276,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             return cacheFolder;
         }
 
-        private static bool IsFileExpired(string file)
+        private bool IsFileExpired(string file)
         {
             StreamReader oRead = null;
             try
@@ -301,7 +301,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        private static void PurgeCache(string folder)
+        private void PurgeCache(string folder)
         {
             try
             {

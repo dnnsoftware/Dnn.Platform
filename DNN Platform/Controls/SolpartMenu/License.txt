@@ -1,0 +1,27 @@
+'=============================================================================
+'No Nonsense Copyright and License for Solpart ASP.NET Hierarchical WebControl
+'=============================================================================
+'
+'Copyright:
+'
+'This library was written by me.  You are welcome to use it, modify it to suit 
+'your needs, distribute it as you see fit.  I'm happy if you use it for 
+'personal stuff or for commercial gain.
+'
+'The only thing you can't do is to restrict anyone else from using it however 
+'they see fit.  You may not copyright it yourself or change the rules I have 
+'set on how it can be used.
+'
+'Solpart ASP.NET Hierarchical WebControl Copyright (C) 2002 by Jon Henning
+'
+'License:
+'
+'You can use this however you like.  I make no guarantees whatsoever that it 
+'will suit your purpose.  You take full responsibility for getting it working 
+'properly and for any implications of its failure or inability to satisfy your 
+'every need.
+'
+'=============================================================================
+'
+'Email:     jhenning@solpart.com
+'Web:       http://www.solpart.com/techcorner

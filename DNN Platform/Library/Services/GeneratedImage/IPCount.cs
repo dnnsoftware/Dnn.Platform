@@ -118,27 +118,27 @@ namespace DotNetNuke.Services.GeneratedImage
                         var files = new DirectoryInfo(CachePath).GetFiles();
                         var threshold = DateTime.Now.Subtract(PurgeInterval);
                         var toTryDeleteAgain = new List<FileInfo>();
-                        foreach (var file in files)
+                        foreach (var fileinfo in files)
                         {
-                            if (!file.Name.Equals("_lastpurge", StringComparison.OrdinalIgnoreCase) && file.LastWriteTime < threshold)
+                            if (fileinfo.Name.ToLowerInvariant() != "_lastpurge" && fileinfo.LastWriteTime < threshold)
                             {
                                 try
                                 {
-                                    file.Delete();
+                                    fileinfo.Delete();
                                 }
                                 catch (Exception)
                                 {
-                                    toTryDeleteAgain.Add(file);
+                                    toTryDeleteAgain.Add(fileinfo);
                                 }
                             }
                         }
 
                         Thread.Sleep(0);
-                        foreach (var file in toTryDeleteAgain)
+                        foreach (var fileinfo in toTryDeleteAgain)
                         {
                             try
                             {
-                                file.Delete();
+                                fileinfo.Delete();
                             }
                             catch (Exception)
                             {

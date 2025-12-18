@@ -5,7 +5,6 @@ namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Globalization;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
@@ -290,14 +289,14 @@ namespace DotNetNuke.UI.UserControls
                     this.txtIM.Text = this.IM;
                     if (!string.IsNullOrEmpty(this.ControlColumnWidth))
                     {
-                        this.txtFirstName.Width = Unit.Parse(this.ControlColumnWidth, CultureInfo.InvariantCulture);
-                        this.txtLastName.Width = Unit.Parse(this.ControlColumnWidth, CultureInfo.InvariantCulture);
-                        this.txtEmail.Width = Unit.Parse(this.ControlColumnWidth, CultureInfo.InvariantCulture);
-                        this.txtUsername.Width = Unit.Parse(this.ControlColumnWidth, CultureInfo.InvariantCulture);
-                        this.txtPassword.Width = Unit.Parse(this.ControlColumnWidth, CultureInfo.InvariantCulture);
-                        this.txtConfirm.Width = Unit.Parse(this.ControlColumnWidth, CultureInfo.InvariantCulture);
-                        this.txtWebsite.Width = Unit.Parse(this.ControlColumnWidth, CultureInfo.InvariantCulture);
-                        this.txtIM.Width = Unit.Parse(this.ControlColumnWidth, CultureInfo.InvariantCulture);
+                        this.txtFirstName.Width = Unit.Parse(this.ControlColumnWidth);
+                        this.txtLastName.Width = Unit.Parse(this.ControlColumnWidth);
+                        this.txtEmail.Width = Unit.Parse(this.ControlColumnWidth);
+                        this.txtUsername.Width = Unit.Parse(this.ControlColumnWidth);
+                        this.txtPassword.Width = Unit.Parse(this.ControlColumnWidth);
+                        this.txtConfirm.Width = Unit.Parse(this.ControlColumnWidth);
+                        this.txtWebsite.Width = Unit.Parse(this.ControlColumnWidth);
+                        this.txtIM.Width = Unit.Parse(this.ControlColumnWidth);
                     }
 
                     if (!this.showPassword)

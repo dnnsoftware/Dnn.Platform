@@ -27,7 +27,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
     public class AdminMenuController : ServiceLocator<IAdminMenuController, AdminMenuController>, IAdminMenuController
     {
         private readonly IApplicationStatusInfo appStatus;
-        private Dictionary<string, IList<string>> knownPages;
+        private IDictionary<string, IList<string>> knownPages;
 
         /// <summary>Initializes a new instance of the <see cref="AdminMenuController"/> class.</summary>
         [Obsolete("Deprecated in IApplicationStatusInfo 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
@@ -137,14 +137,14 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
                 this.knownPages = new Dictionary<string, IList<string>>();
             }
 
-            if (this.knownPages.TryGetValue(type, out var pageNames))
+            if (this.knownPages.ContainsKey(type))
             {
-                return pageNames;
+                return this.knownPages[type];
             }
 
             var personaBarPath = Constants.PersonaBarRelativePath.Replace("~/", string.Empty);
             var dataPath = Path.Combine(this.appStatus.ApplicationMapPath, personaBarPath, "data/adminpages.resources");
-            var xmlDocument = new XmlDocument { XmlResolver = null, };
+            var xmlDocument = new XmlDocument { XmlResolver = null };
             xmlDocument.Load(dataPath);
             var pages = xmlDocument.SelectNodes($"//pages//{type}//name")?.Cast<XmlNode>().Select(n => n.InnerXml.Trim()).ToList();
             this.knownPages.Add(type, pages);

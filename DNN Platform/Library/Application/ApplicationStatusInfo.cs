@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Application
@@ -123,14 +123,14 @@ namespace DotNetNuke.Application
         public Version DatabaseVersion { get; private set; }
 
         /// <inheritdoc />
-        public string ApplicationMapPath { get => this.applicationMapPath ?? (this.applicationMapPath = GetCurrentDomainDirectory()); }
+        public string ApplicationMapPath { get => this.applicationMapPath ?? (this.applicationMapPath = this.GetCurrentDomainDirectory()); }
 
         /// <inheritdoc />
         public bool IsInstalled()
         {
             const int c_PassingScore = 4;
-            int installationdatefactor = Convert.ToInt32(HasInstallationDate() ? 1 : 0);
-            int dataproviderfactor = Convert.ToInt32(HasDataProviderLogFiles() ? 3 : 0);
+            int installationdatefactor = Convert.ToInt32(this.HasInstallationDate() ? 1 : 0);
+            int dataproviderfactor = Convert.ToInt32(this.HasDataProviderLogFiles() ? 3 : 0);
             int htmlmodulefactor = Convert.ToInt32(this.ModuleDirectoryExists("html") ? 2 : 0);
             int portaldirectoryfactor = Convert.ToInt32(this.HasNonDefaultPortalDirectory() ? 2 : 0);
             int localexecutionfactor = Convert.ToInt32(HttpContext.Current.Request.IsLocal ? c_PassingScore - 1 : 0);
@@ -138,11 +138,11 @@ namespace DotNetNuke.Application
             // This calculation ensures that you have a more than one item that indicates you have already installed DNN.
             // While it is possible that you might not have an installation date or that you have deleted log files
             // it is unlikely that you have removed every trace of an installation and yet still have a working install
-            bool isInstalled = (!IsInstallationURL()) && ((installationdatefactor + dataproviderfactor + htmlmodulefactor + portaldirectoryfactor + localexecutionfactor) >= c_PassingScore);
+            bool isInstalled = (!this.IsInstallationURL()) && ((installationdatefactor + dataproviderfactor + htmlmodulefactor + portaldirectoryfactor + localexecutionfactor) >= c_PassingScore);
 
             // we need to tighten this check. We now are enforcing the existence of the InstallVersion value in web.config. If
             // this value exists, then DNN was previously installed, and we should never try to re-install it
-            return isInstalled || HasInstallVersion();
+            return isInstalled || this.HasInstallVersion();
         }
 
         /// <summary>Sets the status.</summary>
@@ -207,7 +207,7 @@ namespace DotNetNuke.Application
 
         /// <summary>Determines whether current request is for install.</summary>
         /// <returns><see langword="true"/> if current request is for install; otherwise, <see langword="false"/>.</returns>
-        private static bool IsInstallationURL()
+        private bool IsInstallationURL()
         {
             string requestURL = HttpContext.Current.Request.RawUrl.ToLowerInvariant().Replace("\\", "/");
             return requestURL.Contains("/install.aspx") || requestURL.Contains("/installwizard.aspx");
@@ -215,14 +215,14 @@ namespace DotNetNuke.Application
 
         /// <summary>Determines whether has installation date.</summary>
         /// <returns><see langword="true"/> if has installation date; otherwise, <see langword="false"/>.</returns>
-        private static bool HasInstallationDate()
+        private bool HasInstallationDate()
         {
             return Config.GetSetting("InstallationDate") != null;
         }
 
         /// <summary>Determines whether has data provider log files.</summary>
         /// <returns><see langword="true"/> if has data provider log files; otherwise, <see langword="false"/>.</returns>
-        private static bool HasDataProviderLogFiles()
+        private bool HasDataProviderLogFiles()
         {
             Provider currentdataprovider = Config.GetDefaultProvider("data");
             string providerpath = currentdataprovider.Attributes["providerPath"];
@@ -240,16 +240,38 @@ namespace DotNetNuke.Application
             return false;
         }
 
+        /// <summary>Check whether the modules directory is exists.</summary>
+        /// <param name="moduleName">Name of the module.</param>
+        /// <returns><see langword="true"/> if the module directory exist, otherwise, <see langword="false"/>.</returns>
+        private bool ModuleDirectoryExists(string moduleName)
+        {
+            string dir = this.ApplicationMapPath + "\\desktopmodules\\" + moduleName;
+            return Directory.Exists(dir);
+        }
+
+        /// <summary>Determines whether has portal directory except default portal directory in portal path.</summary>
+        /// <returns><see langword="true"/> if has portal directory except default portal directory in portal path; otherwise, <see langword="false"/>.</returns>
+        private bool HasNonDefaultPortalDirectory()
+        {
+            string dir = this.ApplicationMapPath + "\\portals";
+            if (Directory.Exists(dir))
+            {
+                return Directory.GetDirectories(dir).Length > 1;
+            }
+
+            return false;
+        }
+
         /// <summary>Determines whether has InstallVersion set.</summary>
         /// <returns><see langword="true"/> if has installation date; otherwise, <see langword="false"/>.</returns>
-        private static bool HasInstallVersion()
+        private bool HasInstallVersion()
         {
             return Config.GetSetting("InstallVersion") != null;
         }
 
         /// <summary>Get the current domain directory.</summary>
         /// <returns>returns the domain directory.</returns>
-        private static string GetCurrentDomainDirectory()
+        private string GetCurrentDomainDirectory()
         {
             var dir = AppDomain.CurrentDomain.BaseDirectory.Replace("/", "\\");
             if (dir.Length > 3 && dir.EndsWith("\\"))
@@ -258,28 +280,6 @@ namespace DotNetNuke.Application
             }
 
             return dir;
-        }
-
-        /// <summary>Check whether the modules directory exists.</summary>
-        /// <param name="moduleName">Name of the module.</param>
-        /// <returns><see langword="true"/> if the module directory exist, otherwise, <see langword="false"/>.</returns>
-        private bool ModuleDirectoryExists(string moduleName)
-        {
-            string dir = $@"{this.ApplicationMapPath}\desktopmodules\{moduleName}";
-            return Directory.Exists(dir);
-        }
-
-        /// <summary>Determines whether has portal directory except default portal directory in portal path.</summary>
-        /// <returns><see langword="true"/> if has portal directory except default portal directory in portal path; otherwise, <see langword="false"/>.</returns>
-        private bool HasNonDefaultPortalDirectory()
-        {
-            string dir = $@"{this.ApplicationMapPath}\portals";
-            if (Directory.Exists(dir))
-            {
-                return Directory.GetDirectories(dir).Length > 1;
-            }
-
-            return false;
         }
     }
 }

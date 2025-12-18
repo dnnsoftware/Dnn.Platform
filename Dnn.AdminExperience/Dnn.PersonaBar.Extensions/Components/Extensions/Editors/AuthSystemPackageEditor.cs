@@ -81,10 +81,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                     if (packageSettings.EditorActions.TryGetValue("enabled", out value)
                         && !string.IsNullOrEmpty(value))
                     {
-                        if (bool.TryParse(value, out var isEnabled))
-                        {
-                            authSystem.IsEnabled = isEnabled;
-                        }
+                        bool b;
+                        bool.TryParse(value, out b);
+                        authSystem.IsEnabled = b;
                     }
 
                     AuthenticationController.UpdateAuthentication(authSystem);
@@ -170,7 +169,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                         }
 
                         if (packageSettings.EditorActions.TryGetValue("appEnabled", out value)
-                            && !config.Enabled.ToString().Equals(value, StringComparison.OrdinalIgnoreCase))
+                            && config.Enabled.ToString().ToUpperInvariant() != value.ToUpperInvariant())
                         {
                             config.Enabled = "TRUE".Equals(value, StringComparison.OrdinalIgnoreCase);
                             dirty = true;

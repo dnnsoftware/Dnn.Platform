@@ -8,7 +8,6 @@ namespace DNN.Integration.Test.Framework
     using System.Globalization;
     using System.Net;
     using System.Threading;
-    using System.Threading.Tasks;
 
     using DNN.Integration.Test.Framework.Helpers;
     using NUnit.Framework;
@@ -43,9 +42,8 @@ namespace DNN.Integration.Test.Framework
         }
 
         [OneTimeSetUp]
-        public virtual async Task TestFixtureSetUp()
+        public virtual void TestFixtureSetUp()
         {
-            await Task.Yield();
         }
 
         [OneTimeTearDown]

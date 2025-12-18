@@ -107,7 +107,7 @@ namespace DotNetNuke.Entities.Urls
             omitSettings = omitSettings.ToLowerInvariant();
             localPath = localPath.ToLowerInvariant();
 
-            var omissions = omitSettings.Split('|');
+            var omissions = omitSettings.Split(new[] { '|' });
 
             bool shouldOmit = omissions.Any(x => localPath.EndsWith(x));
 

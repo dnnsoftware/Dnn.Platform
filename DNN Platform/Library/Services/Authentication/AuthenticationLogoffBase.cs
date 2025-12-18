@@ -4,7 +4,6 @@
 namespace DotNetNuke.Services.Authentication
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -37,7 +36,6 @@ namespace DotNetNuke.Services.Authentication
         /// <value>
         /// The Dependency Service.
         /// </value>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected new IServiceProvider DependencyProvider => Globals.GetCurrentServiceProvider();
 
         /// <summary>Handles the <see cref="LogOff"/> event.</summary>

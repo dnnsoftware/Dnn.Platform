@@ -4,17 +4,20 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
-    using System.Globalization;
     using System.Web.UI.WebControls;
 
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class ControlStyleAttribute : Attribute
     {
+        private readonly string cssClass;
+        private readonly Unit height;
+        private readonly Unit width;
+
         /// <summary>Initializes a new instance of the <see cref="ControlStyleAttribute"/> class.</summary>
         /// <param name="cssClass">The css class to apply to the associated property.</param>
         public ControlStyleAttribute(string cssClass)
         {
-            this.CssClass = cssClass;
+            this.cssClass = cssClass;
         }
 
         /// <summary>Initializes a new instance of the <see cref="ControlStyleAttribute"/> class.</summary>
@@ -22,8 +25,8 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="width">control width.</param>
         public ControlStyleAttribute(string cssClass, string width)
         {
-            this.CssClass = cssClass;
-            this.Width = Unit.Parse(width, CultureInfo.InvariantCulture);
+            this.cssClass = cssClass;
+            this.width = Unit.Parse(width);
         }
 
         /// <summary>Initializes a new instance of the <see cref="ControlStyleAttribute"/> class.</summary>
@@ -32,15 +35,33 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="height">control height.</param>
         public ControlStyleAttribute(string cssClass, string width, string height)
         {
-            this.CssClass = cssClass;
-            this.Height = Unit.Parse(height, CultureInfo.InvariantCulture);
-            this.Width = Unit.Parse(width, CultureInfo.InvariantCulture);
+            this.cssClass = cssClass;
+            this.height = Unit.Parse(height);
+            this.width = Unit.Parse(width);
         }
 
-        public string CssClass { get; }
+        public string CssClass
+        {
+            get
+            {
+                return this.cssClass;
+            }
+        }
 
-        public Unit Height { get; }
+        public Unit Height
+        {
+            get
+            {
+                return this.height;
+            }
+        }
 
-        public Unit Width { get; }
+        public Unit Width
+        {
+            get
+            {
+                return this.width;
+            }
+        }
     }
 }

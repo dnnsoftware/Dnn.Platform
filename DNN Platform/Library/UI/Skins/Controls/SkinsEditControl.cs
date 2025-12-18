@@ -160,7 +160,7 @@ namespace DotNetNuke.UI.Skins.Controls
             foreach (KeyValuePair<int, string> kvp in this.DictionaryValue)
             {
                 postedValue = postCollection[this.UniqueID + "_skin" + kvp.Key];
-                if (kvp.Value.Equals(postedValue, StringComparison.Ordinal))
+                if (kvp.Value.Equals(postedValue))
                 {
                     newDictionaryValue[kvp.Key] = kvp.Value;
                 }

@@ -39,7 +39,7 @@ namespace Dnn.EditBar.UI.Controllers
     /// <summary>Content Editor Manager.</summary>
     public class ContentEditorManager : UserControlBase
     {
-        /// <summary>The folder that contains the control.</summary>
+        /// <summary>The folder that containes the control.</summary>
         public const string ControlFolder = "~/DesktopModules/admin/Dnn.EditBar/Resources";
 
         private const int CssFileOrder = 40;
@@ -48,17 +48,29 @@ namespace Dnn.EditBar.UI.Controllers
         /// <summary>Gets or sets the skin.</summary>
         public Skin Skin { get; set; }
 
-        private static string LocalResourcesFile => Path.Combine(ControlFolder, "ContentEditorManager/App_LocalResources/SharedResources.resx");
+        private string LocalResourcesFile
+        {
+            get { return Path.Combine(ControlFolder, "ContentEditorManager/App_LocalResources/SharedResources.resx"); }
+        }
 
         private bool SupportAjax
         {
-            get => ScriptManager.GetCurrent(this.Page) != null && this.supportAjax;
-            set => this.supportAjax = value;
+            get
+            {
+                return ScriptManager.GetCurrent(this.Page) != null && this.supportAjax;
+            }
+
+            set
+            {
+                this.supportAjax = value;
+            }
         }
 
-        /// <summary>Determines whether the specified permission is allowed for the tab.</summary>
+        /// <summary>
+        /// Determines whether the specified permission is allowed for the tab.
+        /// </summary>
         /// <param name="permissionKey">The permission key to check.</param>
-        /// <returns>A value indicating whether the user has the specified permission for the tab.</returns>
+        /// <returns>A value inticating whether the user has the specified permission for the tab.</returns>
         public static bool HasTabPermission(string permissionKey)
         {
             var principal = Thread.CurrentPrincipal;
@@ -99,7 +111,7 @@ namespace Dnn.EditBar.UI.Controllers
 
             if (GetCurrent(this.Page) != null)
             {
-                throw new InvalidOperationException("Instance has already initialized");
+                throw new Exception("Instance has already initialized");
             }
 
             this.AutoSetUserMode();
@@ -167,7 +179,7 @@ namespace Dnn.EditBar.UI.Controllers
                 try
                 {
                     // find update panels in pane and fire the unload event for a known issue: CONTENT-4039
-                    var updatePanels = GetUpdatePanelsInPane(pane);
+                    var updatePanels = this.GetUpdatePanelsInPane(pane);
                     updatePanels.ForEach(p => p.Unload += this.UpdatePanelUnloadEvent);
                     updatePanel.Unload += this.UpdatePanelUnloadEvent;
 
@@ -187,11 +199,11 @@ namespace Dnn.EditBar.UI.Controllers
                 pane.Attributes["class"] = string.Empty;
 
                 var scriptManager = ScriptManager.GetCurrent(this.Page);
-                if (scriptManager is { IsInAsyncPostBack: true }
-                    && updatePanel.ClientID == this.Request.Form["__EVENTTARGET"]
-                    && !string.IsNullOrEmpty(this.Request.Form["__EVENTARGUMENT"])
-                    && !this.Request.Form["__EVENTARGUMENT"].Equals("undefined", StringComparison.OrdinalIgnoreCase)
-                    && this.Request.Form["__EVENTARGUMENT"].StartsWith("module-", StringComparison.OrdinalIgnoreCase))
+                if (scriptManager != null && scriptManager.IsInAsyncPostBack
+                        && updatePanel.ClientID == this.Request.Form["__EVENTTARGET"]
+                        && !string.IsNullOrEmpty(this.Request.Form["__EVENTARGUMENT"])
+                        && this.Request.Form["__EVENTARGUMENT"].ToLowerInvariant() != "undefined"
+                        && this.Request.Form["__EVENTARGUMENT"].ToLowerInvariant().StartsWith("module-"))
                 {
                     var moduleId = Convert.ToInt32(this.Request.Form["__EVENTARGUMENT"].Substring(7));
 
@@ -245,34 +257,6 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 FindControlRecursive(subControl, controlId, foundControls);
             }
-        }
-
-        private static string GetPanesClientIds(IEnumerable<IEnumerable<string>> panelClientIdCollection)
-        {
-            return string.Join(";", panelClientIdCollection.Select(x => string.Join(",", x)));
-        }
-
-        private static List<UpdatePanel> GetUpdatePanelsInPane(Control parent)
-        {
-            var panels = new List<UpdatePanel>();
-            if (parent is UpdatePanel panel)
-            {
-                panels.Add(panel);
-            }
-            else if (parent != null && !IsListControl(parent))
-            {
-                foreach (Control childControl in parent.Controls)
-                {
-                    panels.AddRange(GetUpdatePanelsInPane(childControl));
-                }
-            }
-
-            return panels;
-        }
-
-        private static bool IsListControl(Control control)
-        {
-            return control is DataBoundControl or Repeater or DataGrid;
         }
 
         private void RegisterClientResources()
@@ -330,7 +314,7 @@ namespace Dnn.EditBar.UI.Controllers
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/admin/Dnn.EditBar/css/editBarContainer.css");
         }
 
-        private List<List<string>> GetPaneClientIdCollection()
+        private IEnumerable<IEnumerable<string>> GetPaneClientIdCollection()
         {
             var panelClientIds = new List<List<string>>(this.PortalSettings.ActiveTab.Panes.Count);
 
@@ -379,7 +363,7 @@ namespace Dnn.EditBar.UI.Controllers
             ClientAPI.RegisterClientVariable(this.Page, "cem_loginurl", Globals.LoginURL(HttpContext.Current.Request.RawUrl, false), true);
 
             var panes = string.Join(",", this.PortalSettings.ActiveTab.Panes.Cast<string>());
-            var panesClientIds = GetPanesClientIds(this.GetPaneClientIdCollection());
+            var panesClientIds = this.GetPanesClientIds(this.GetPaneClientIdCollection());
             var script = string.Format(
                 @"dnn.ContentEditorManager.init({{type: 'moduleManager', panes: '{0}', panesClientIds: '{2}', supportAjax: {1}}});",
                 HttpUtility.JavaScriptStringEncode(panes),
@@ -397,41 +381,76 @@ namespace Dnn.EditBar.UI.Controllers
             }
         }
 
+        private string GetPanesClientIds(IEnumerable<IEnumerable<string>> panelCliendIdCollection)
+        {
+            return string.Join(";", panelCliendIdCollection.Select(x => string.Join(",", x)));
+        }
+
         private void RegisterLocalResources()
         {
-            var script = $$"""
-                           dnn.ContentEditorManagerResources = {
-                               title: '{{Localization.GetSafeJSString("AddModule.Text", LocalResourcesFile)}}',
-                               nomodules: '{{Localization.GetSafeJSString("NoModules.Text", LocalResourcesFile)}}',
-                               dragtip: '{{Localization.GetSafeJSString("DragTip.Text", LocalResourcesFile)}}',
-                               pendingsave: '{{Localization.GetSafeJSString("PendingSave.Text", LocalResourcesFile)}}',
-                               confirmTitle: '{{Localization.GetSafeJSString("ConfirmTitle.Text", LocalResourcesFile)}}',
-                               confirmYes: '{{Localization.GetSafeJSString("ConfirmYes.Text", LocalResourcesFile)}}',
-                               confirmNo: '{{Localization.GetSafeJSString("ConfirmNo.Text", LocalResourcesFile)}}',
-                               cancelConfirm: '{{Localization.GetSafeJSString("CancelConfirm.Text", LocalResourcesFile)}}',
-                               deleteModuleConfirm: '{{Localization.GetSafeJSString("DeleteModuleConfirm.Text", LocalResourcesFile)}}',
-                               cancel: '{{Localization.GetSafeJSString("Cancel.Text", LocalResourcesFile)}}',
-                               searchPlaceHolder: '{{Localization.GetSafeJSString("SearchPlaceHolder.Text", LocalResourcesFile)}}',
-                               categoryRecommended: '{{Localization.GetSafeJSString("Category_Recommended.Text", LocalResourcesFile)}}',
-                               categoryAll: '{{Localization.GetSafeJSString("Category_All.Text", LocalResourcesFile)}}',
-                               pagePicker_clearButtonTooltip: '{{Localization.GetSafeJSString("pagePicker_clearButtonTooltip.Text", LocalResourcesFile)}}',
-                               pagePicker_loadingResultText: '{{Localization.GetSafeJSString("pagePicker_loadingResultText.Text", LocalResourcesFile)}}',
-                               pagePicker_resultsText: '{{Localization.GetSafeJSString("pagePicker_resultsText.Text", LocalResourcesFile)}}',
-                               pagePicker_searchButtonTooltip: '{{Localization.GetSafeJSString("pagePicker_searchButtonTooltip.Text", LocalResourcesFile)}}',
-                               pagePicker_searchInputPlaceHolder: '{{Localization.GetSafeJSString("pagePicker_searchInputPlaceHolder.Text", LocalResourcesFile)}}',
-                               pagePicker_selectedItemCollapseTooltip: '{{Localization.GetSafeJSString("pagePicker_selectedItemCollapseTooltip.Text", LocalResourcesFile)}}',
-                               pagePicker_selectedItemExpandTooltip: '{{Localization.GetSafeJSString("pagePicker_selectedItemExpandTooltip.Text", LocalResourcesFile)}}',
-                               pagePicker_selectItemDefaultText: '{{Localization.GetSafeJSString("pagePicker_selectItemDefaultText.Text", LocalResourcesFile)}}',
-                               pagePicker_sortAscendingButtonTitle: '{{Localization.GetSafeJSString("pagePicker_sortAscendingButtonTitle.Text", LocalResourcesFile)}}',
-                               pagePicker_sortAscendingButtonTooltip: '{{Localization.GetSafeJSString("pagePicker_sortAscendingButtonTooltip.Text", LocalResourcesFile)}}',
-                               pagePicker_sortDescendingButtonTooltip: '{{Localization.GetSafeJSString("pagePicker_sortDescendingButtonTooltip.Text", LocalResourcesFile)}}',
-                               pagePicker_unsortedOrderButtonTooltip: '{{Localization.GetSafeJSString("pagePicker_unsortedOrderButtonTooltip.Text", LocalResourcesFile)}}',
-                               site: '{{Localization.GetSafeJSString("Site.Text", LocalResourcesFile)}}',
-                               page: '{{Localization.GetSafeJSString("Page.Text", LocalResourcesFile)}}',
-                               addExistingModule: '{{Localization.GetSafeJSString("AddExistingModule.Text", LocalResourcesFile)}}',
-                               makeCopy: '{{Localization.GetSafeJSString("MakeCopy.Text", LocalResourcesFile)}}'
-                           };
-                           """;
+            var script = string.Format(
+                """
+                dnn.ContentEditorManagerResources = {{
+                    title: '{0}',
+                    nomodules: '{1}',
+                    dragtip: '{2}',
+                    pendingsave: '{3}',
+                    confirmTitle: '{4}',
+                    confirmYes: '{5}',
+                    confirmNo: '{6}',
+                    cancelConfirm: '{7}',
+                    deleteModuleConfirm: '{8}',
+                    cancel: '{9}',
+                    searchPlaceHolder: '{10}',
+                    categoryRecommended: '{11}',
+                    categoryAll: '{12}',
+                    pagePicker_clearButtonTooltip: '{13}',
+                    pagePicker_loadingResultText: '{14}',
+                    pagePicker_resultsText: '{15}',
+                    pagePicker_searchButtonTooltip: '{16}',
+                    pagePicker_searchInputPlaceHolder: '{17}',
+                    pagePicker_selectedItemCollapseTooltip: '{18}',
+                    pagePicker_selectedItemExpandTooltip: '{19}',
+                    pagePicker_selectItemDefaultText: '{20}',
+                    pagePicker_sortAscendingButtonTitle: '{21}',
+                    pagePicker_sortAscendingButtonTooltip: '{22}',
+                    pagePicker_sortDescendingButtonTooltip: '{23}',
+                    pagePicker_unsortedOrderButtonTooltip: '{24}',
+                    site: '{25}',
+                    page: '{26}',
+                    addExistingModule: '{27}',
+                    makeCopy: '{28}'
+                }};
+                """,
+                Localization.GetSafeJSString("AddModule.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("NoModules.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("DragTip.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("PendingSave.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("ConfirmTitle.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("ConfirmYes.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("ConfirmNo.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("CancelConfirm.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("DeleteModuleConfirm.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("Cancel.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("SearchPlaceHolder.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("Category_Recommended.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("Category_All.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_clearButtonTooltip.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_loadingResultText.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_resultsText.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_searchButtonTooltip.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_searchInputPlaceHolder.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_selectedItemCollapseTooltip.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_selectedItemExpandTooltip.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_selectItemDefaultText.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_sortAscendingButtonTitle.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_sortAscendingButtonTooltip.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_sortDescendingButtonTooltip.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_unsortedOrderButtonTooltip.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("Site.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("Page.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("AddExistingModule.Text", this.LocalResourcesFile),
+                Localization.GetSafeJSString("MakeCopy.Text", this.LocalResourcesFile));
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {
@@ -551,13 +570,38 @@ namespace Dnn.EditBar.UI.Controllers
                         .FirstOrDefault(m => m.ModuleID == moduleId);
         }
 
+        private List<UpdatePanel> GetUpdatePanelsInPane(Control parent)
+        {
+            var panels = new List<UpdatePanel>();
+            if (parent is UpdatePanel)
+            {
+                panels.Add(parent as UpdatePanel);
+            }
+            else if (parent != null && !this.IsListControl(parent))
+            {
+                foreach (Control childControl in parent.Controls)
+                {
+                    panels.AddRange(this.GetUpdatePanelsInPane(childControl));
+                }
+            }
+
+            return panels;
+        }
+
+        private bool IsListControl(Control control)
+        {
+            return control is DataBoundControl || control is Repeater || control is DataGrid;
+        }
+
         private void UpdatePanelUnloadEvent(object sender, EventArgs e)
         {
             try
             {
                 var methodInfo = typeof(ScriptManager).GetMethods(BindingFlags.NonPublic | BindingFlags.Instance)
-                            .First(i => i.Name.Equals("System.Web.UI.IScriptManagerInternal.RegisterUpdatePanel", StringComparison.Ordinal));
-                methodInfo.Invoke(ScriptManager.GetCurrent(this.Page), [sender,]);
+                            .First(i => i.Name.Equals("System.Web.UI.IScriptManagerInternal.RegisterUpdatePanel"));
+                methodInfo.Invoke(
+                    ScriptManager.GetCurrent(this.Page),
+                    new[] { sender });
             }
             catch (Exception ex)
             {
@@ -596,17 +640,17 @@ namespace Dnn.EditBar.UI.Controllers
 
         private void SetUserMode(string userMode)
         {
-            Personalization.SetProfile("Usability", "UserMode" + this.PortalSettings.PortalId, userMode.ToUpperInvariant());
+            Personalization.SetProfile("Usability", "UserMode" + this.PortalSettings.PortalId, userMode.ToUpper());
         }
 
         private void AutoSetUserMode()
         {
             int tabId = this.PortalSettings.ActiveTab.TabID;
             int portalId = PortalSettings.Current.PortalId;
-            string pageId = $"{portalId}:{tabId}";
+            string pageId = string.Format("{0}:{1}", portalId, tabId);
 
             HttpCookie cookie = this.Request.Cookies["StayInEditMode"];
-            if (cookie is { Value: "YES", })
+            if (cookie != null && cookie.Value == "YES")
             {
                 if (Personalization.GetUserMode() != PortalSettings.Mode.Edit)
                 {
@@ -687,9 +731,9 @@ namespace Dnn.EditBar.UI.Controllers
                 var property = typeof(Page).GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Instance);
                 if (property != null)
                 {
-                    var value = property.GetValue(original, []);
+                    var value = property.GetValue(original, new object[] { });
 
-                    property.SetValue(this, value, []);
+                    property.SetValue(this, value, new object[] { });
                 }
             }
         }

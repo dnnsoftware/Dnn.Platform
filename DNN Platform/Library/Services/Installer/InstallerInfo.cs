@@ -211,7 +211,7 @@ namespace DotNetNuke.Services.Installer
             {
                 // Add file to list
                 var file = new InstallFile(entry, this);
-                if (file.Type == InstallFileType.Resources && (file.Name.Equals("containers.zip", StringComparison.OrdinalIgnoreCase) || file.Name.Equals("skins.zip", StringComparison.OrdinalIgnoreCase)))
+                if (file.Type == InstallFileType.Resources && (file.Name.Equals("containers.zip", StringComparison.InvariantCultureIgnoreCase) || file.Name.Equals("skins.zip", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     // Temporarily save the TempInstallFolder
                     string tmpInstallFolder = this.TempInstallFolder;
@@ -278,7 +278,7 @@ namespace DotNetNuke.Services.Installer
             }
             else
             {
-                this.Log.AddFailure(new ReadManifestException(Util.EXCEPTION_FileLoad));
+                this.Log.AddFailure(new Exception(Util.EXCEPTION_FileLoad));
                 this.Log.EndJob(Util.FILES_ReadingEnd);
             }
 

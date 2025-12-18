@@ -465,7 +465,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             HttpContextSource.Current.Items[LegacyPrefix + jsl] = true;
         }
 
-        private static List<JavaScriptLibrary> ResolveVersionConflicts(IEventLogger eventLogger, IPortalSettings portalSettings, IEnumerable<string> scripts)
+        private static IEnumerable<JavaScriptLibrary> ResolveVersionConflicts(IEventLogger eventLogger, IPortalSettings portalSettings, IEnumerable<string> scripts)
         {
             var finalScripts = new List<JavaScriptLibrary>();
             foreach (var libraryId in scripts)
@@ -570,7 +570,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             return string.Empty;
         }
 
-        private static List<string> GetScriptVersions(IApplicationStatusInfo appStatus)
+        private static IEnumerable<string> GetScriptVersions(IApplicationStatusInfo appStatus)
         {
             var orderedScripts = (from object item in HttpContextSource.Current.Items.Keys
                                   where item.ToString().StartsWith(ScriptPrefix)

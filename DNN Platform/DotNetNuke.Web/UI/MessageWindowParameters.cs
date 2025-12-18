@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI
 {
-    using System.Globalization;
     using System.Web.UI.WebControls;
 
     public class MessageWindowParameters
@@ -38,8 +37,8 @@ namespace DotNetNuke.Web.UI
         {
             this.message = message;
             this.title = title;
-            this.windowWidth = Unit.Parse(windowWidth, CultureInfo.InvariantCulture);
-            this.windowHeight = Unit.Parse(windowHeight, CultureInfo.InvariantCulture);
+            this.windowWidth = Unit.Parse(windowWidth);
+            this.windowHeight = Unit.Parse(windowHeight);
         }
 
         public string Message

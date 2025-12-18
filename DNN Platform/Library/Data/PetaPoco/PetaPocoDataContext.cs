@@ -154,16 +154,7 @@ namespace DotNetNuke.Data.PetaPoco
         /// <inheritdoc/>
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                this.database.Dispose();
-            }
+            this.database.Dispose();
         }
     }
 }

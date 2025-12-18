@@ -73,7 +73,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
         private static string CreateCommandFromClass(string className)
         {
             var camelCasedParts = SplitCamelCase(className);
-            return string.Join("-", camelCasedParts.Select(x => x.ToLowerInvariant()));
+            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
         }
 
         private static string[] SplitCamelCase(string source)
@@ -83,10 +83,13 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
 
         private SortedDictionary<string, Command> GetCommandsInternal()
         {
-            var commands = new SortedDictionary<string, Command>(StringComparer.OrdinalIgnoreCase);
+            var commands = new SortedDictionary<string, Command>();
             var typeLocator = new TypeLocator();
             var allCommandTypes = typeLocator.GetAllMatchingTypes(
-                t => t is { IsClass: true, IsAbstract: false, IsVisible: true, } &&
+                t => t != null &&
+                     t.IsClass &&
+                     !t.IsAbstract &&
+                     t.IsVisible &&
                      typeof(IConsoleCommand).IsAssignableFrom(t));
 
             using var serviceScope = this.serviceScopeFactory.CreateScope();
@@ -96,7 +99,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                 var assemblyName = commandType.Assembly.GetName();
                 var version = assemblyName.Version.ToString();
                 var commandAttribute = (ConsoleCommandAttribute)attr;
-                var key = commandAttribute.Name;
+                var key = commandAttribute.Name.ToUpper();
 
                 var command = (IConsoleCommand)ActivatorUtilities.GetServiceOrCreateInstance(serviceScope.ServiceProvider, commandType);
                 var localResourceFile = command?.LocalResourceFile;
@@ -126,7 +129,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                 var flagAttributes = commandType.GetFields(BindingFlags.NonPublic | BindingFlags.Static)
                     .Select(x => x.GetCustomAttributes(typeof(FlagParameterAttribute), false).FirstOrDefault())
                     .Cast<FlagParameterAttribute>().ToList();
-                if (flagAttributes.Count != 0)
+                if (flagAttributes.Any())
                 {
                     var options = flagAttributes.Where(attribute => attribute != null).Select(attribute => new CommandOption
                     {

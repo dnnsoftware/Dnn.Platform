@@ -80,7 +80,7 @@ namespace Dnn.PersonaBar.Security.Components
         {
             try
             {
-                var check = this.auditChecks.FirstOrDefault(c => c.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
+                var check = this.auditChecks.FirstOrDefault(c => c.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
                 return check?.Execute();
             }
             catch (Exception)

@@ -5,7 +5,6 @@ namespace DotNetNuke.Web.Mvc.Routing
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Web.Routing;
@@ -60,7 +59,6 @@ namespace DotNetNuke.Web.Mvc.Routing
             return this.GetAllRouteValues((IPortalAliasInfo)portalAliasInfo, routeValues);
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public RouteValueDictionary GetAllRouteValues(IPortalAliasInfo portalAliasInfo, object routeValues)
         {
             var allRouteValues = new RouteValueDictionary(routeValues);

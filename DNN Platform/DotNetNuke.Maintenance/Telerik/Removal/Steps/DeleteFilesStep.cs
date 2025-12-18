@@ -13,7 +13,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Maintenance.Telerik.Removal;
 
     /// <summary>Deletes files.</summary>
-    internal sealed class DeleteFilesStep : StepBase, IDeleteFilesStep
+    internal class DeleteFilesStep : StepBase, IDeleteFilesStep
     {
         private readonly IFileSystemProvider fileSystemProvider;
         private readonly IApplicationStatusInfo applicationStatusInfo;

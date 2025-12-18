@@ -5,7 +5,6 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -56,7 +55,7 @@ namespace DotNetNuke.UI.WebControls
             get { return Convert.ToString(this.OldValue); }
         }
 
-        /// <summary>Gets the ListEntryInfo objects associated with the control.</summary>
+        /// <summary>Gets the ListEntryInfo objects associated witht the control.</summary>
         protected IEnumerable<ListEntryInfo> ListEntries
         {
             get
@@ -71,8 +70,13 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        protected int PortalId => PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
+        protected int PortalId
+        {
+            get
+            {
+                return PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
+            }
+        }
 
         /// <inheritdoc/>
         protected override string StringValue
@@ -139,7 +143,7 @@ namespace DotNetNuke.UI.WebControls
             bool dataChanged = false;
             string presentValue = this.StringValue;
             string postedValue = postCollection[postDataKey + "_value"];
-            if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
+            if (!presentValue.Equals(postedValue))
             {
                 this.Value = postedValue;
                 dataChanged = true;

@@ -90,7 +90,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 workflow = this.workflowRepository.GetWorkflow(workflowId);
             }
 
-            var initialTransaction = CreateInitialTransaction(contentItemId, workflow.FirstState.StateID, userId);
+            var initialTransaction = this.CreateInitialTransaction(contentItemId, workflow.FirstState.StateID, userId);
 
             // Perform action before starting workflow
             this.PerformWorkflowActionOnStateChanging(initialTransaction, WorkflowActionTypes.StartWorkflow);
@@ -144,7 +144,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 throw new WorkflowConcurrencyException();
             }
 
-            var nextState = GetNextWorkflowState(workflow, contentItem.StateID);
+            var nextState = this.GetNextWorkflowState(workflow, contentItem.StateID);
             if (nextState.StateID == workflow.LastState.StateID)
             {
                 this.CompleteWorkflow(stateTransaction);
@@ -204,7 +204,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 throw new WorkflowConcurrencyException();
             }
 
-            var previousState = GetPreviousWorkflowState(workflow, contentItem.StateID);
+            var previousState = this.GetPreviousWorkflowState(workflow, contentItem.StateID);
             if (previousState.StateID == workflow.LastState.StateID)
             {
                 this.DiscardWorkflow(stateTransaction);
@@ -358,7 +358,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                     select UserController.GetUserById(settings.PortalId, permission.UserID)).ToList();
         }
 
-        private static List<UserInfo> IncludeSuperUsers(List<UserInfo> users)
+        private static List<UserInfo> IncludeSuperUsers(ICollection<UserInfo> users)
         {
             var superUsers = UserController.GetUsers(false, true, Null.NullInteger);
             foreach (UserInfo superUser in superUsers)
@@ -383,7 +383,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return Localization.GetString(logName + ".Comment");
         }
 
-        private static StateTransaction CreateInitialTransaction(int contentItemId, int stateId, int userId)
+        private StateTransaction CreateInitialTransaction(int contentItemId, int stateId, int userId)
         {
             return new StateTransaction
             {
@@ -392,66 +392,6 @@ namespace DotNetNuke.Entities.Content.Workflow
                 UserId = userId,
                 Message = new StateTransactionMessage(),
             };
-        }
-
-        private static bool WasDraftSubmitted(Entities.Workflow workflow, int currentStateId)
-        {
-            var isDirectPublishWorkflow = workflow.IsSystem && workflow.States.Count() == 1;
-            var draftSubmitted = workflow.FirstState.StateID != currentStateId;
-            return !(isDirectPublishWorkflow || !draftSubmitted);
-        }
-
-        private static string GetWorkflowNotificationContext(ContentItem contentItem, WorkflowState state)
-        {
-            return $"{contentItem.ContentItemId}:{state.WorkflowID}:{state.StateID}";
-        }
-
-        private static WorkflowState GetNextWorkflowState(Entities.Workflow workflow, int stateId)
-        {
-            WorkflowState nextState = null;
-            var states = workflow.States.OrderBy(s => s.Order);
-            int index;
-
-            // locate the current state
-            for (index = 0; index < states.Count(); index++)
-            {
-                if (states.ElementAt(index).StateID == stateId)
-                {
-                    break;
-                }
-            }
-
-            index = index + 1;
-            if (index < states.Count())
-            {
-                nextState = states.ElementAt(index);
-            }
-
-            return nextState ?? workflow.FirstState;
-        }
-
-        private static WorkflowState GetPreviousWorkflowState(Entities.Workflow workflow, int stateId)
-        {
-            WorkflowState previousState = null;
-            var states = workflow.States.OrderBy(s => s.Order);
-            int index;
-
-            if (workflow.FirstState.StateID == stateId)
-            {
-                return workflow.LastState;
-            }
-
-            // locate the current state
-            for (index = 0; index < states.Count(); index++)
-            {
-                if (states.ElementAt(index).StateID == stateId)
-                {
-                    previousState = states.ElementAt(index - 1);
-                    break;
-                }
-            }
-
-            return previousState ?? workflow.LastState;
         }
 
         private void PerformWorkflowActionOnStateChanged(StateTransaction stateTransaction, WorkflowActionTypes actionType)
@@ -487,7 +427,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private UserInfo GetUserThatHaveStartedOrSubmittedDraftState(Entities.Workflow workflow, ContentItem contentItem, StateTransaction stateTransaction)
         {
-            bool wasDraftSubmitted = WasDraftSubmitted(workflow, stateTransaction.CurrentStateId);
+            bool wasDraftSubmitted = this.WasDraftSubmitted(workflow, stateTransaction.CurrentStateId);
             if (wasDraftSubmitted)
             {
                 return this.GetSubmittedDraftStateUser(contentItem);
@@ -518,9 +458,21 @@ namespace DotNetNuke.Entities.Content.Workflow
             return null;
         }
 
+        private bool WasDraftSubmitted(Entities.Workflow workflow, int currentStateId)
+        {
+            var isDirectPublishWorkflow = workflow.IsSystem && workflow.States.Count() == 1;
+            var draftSubmitted = workflow.FirstState.StateID != currentStateId;
+            return !(isDirectPublishWorkflow || !draftSubmitted);
+        }
+
+        private string GetWorkflowNotificationContext(ContentItem contentItem, WorkflowState state)
+        {
+            return string.Format("{0}:{1}:{2}", contentItem.ContentItemId, state.WorkflowID, state.StateID);
+        }
+
         private void DeleteWorkflowNotifications(ContentItem contentItem, WorkflowState state)
         {
-            var context = GetWorkflowNotificationContext(contentItem, state);
+            var context = this.GetWorkflowNotificationContext(contentItem, state);
             var notificationTypeId = this.notificationsController.GetNotificationType(ContentWorkflowNotificationType).NotificationTypeId;
             this.DeleteNotificationsByType(notificationTypeId, context);
             notificationTypeId = this.notificationsController.GetNotificationType(ContentWorkflowNotificatioStartWorkflowType).NotificationTypeId;
@@ -565,7 +517,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
                 var message = workflowAction.GetActionMessage(stateTransaction, state);
 
-                var notification = this.GetNotification(GetWorkflowNotificationContext(contentItem, state), stateTransaction, message, ContentWorkflowNotificationNoActionType);
+                var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, state), stateTransaction, message, ContentWorkflowNotificationNoActionType);
 
                 this.notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
             }
@@ -594,7 +546,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
                 var message = workflowAction.GetActionMessage(stateTransaction, workflow.FirstState);
 
-                var notification = this.GetNotification(GetWorkflowNotificationContext(contentItem, workflow.FirstState), stateTransaction, message, ContentWorkflowNotificatioStartWorkflowType);
+                var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, workflow.FirstState), stateTransaction, message, ContentWorkflowNotificatioStartWorkflowType);
 
                 this.notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
             }
@@ -615,7 +567,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
                 var reviewers = this.GetUserAndRolesForStateReviewers(portalSettings, state);
 
-                if (reviewers.Roles.Count == 0 && reviewers.Users.Count == 0)
+                if (!reviewers.Roles.Any() && !reviewers.Users.Any())
                 {
                     return; // If there are no receivers, the notification is avoided
                 }
@@ -628,7 +580,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
                 var message = workflowAction.GetActionMessage(stateTransaction, state);
 
-                var notification = this.GetNotification(GetWorkflowNotificationContext(contentItem, state), stateTransaction, message, ContentWorkflowNotificationType);
+                var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, state), stateTransaction, message, ContentWorkflowNotificationType);
 
                 this.notificationsController.SendNotification(notification, portalSettings.PortalId, reviewers.Roles.ToList(), reviewers.Users.ToList());
             }
@@ -740,6 +692,54 @@ namespace DotNetNuke.Entities.Content.Workflow
             result = result.Replace("[CONTENT]", item != null ? item.ContentTitle : string.Empty);
             result = result.Replace("[COMMENT]", !string.IsNullOrEmpty(comment) ? comment : string.Empty);
             return result;
+        }
+
+        private WorkflowState GetNextWorkflowState(Entities.Workflow workflow, int stateId)
+        {
+            WorkflowState nextState = null;
+            var states = workflow.States.OrderBy(s => s.Order);
+            int index;
+
+            // locate the current state
+            for (index = 0; index < states.Count(); index++)
+            {
+                if (states.ElementAt(index).StateID == stateId)
+                {
+                    break;
+                }
+            }
+
+            index = index + 1;
+            if (index < states.Count())
+            {
+                nextState = states.ElementAt(index);
+            }
+
+            return nextState ?? workflow.FirstState;
+        }
+
+        private WorkflowState GetPreviousWorkflowState(Entities.Workflow workflow, int stateId)
+        {
+            WorkflowState previousState = null;
+            var states = workflow.States.OrderBy(s => s.Order);
+            int index;
+
+            if (workflow.FirstState.StateID == stateId)
+            {
+                return workflow.LastState;
+            }
+
+            // locate the current state
+            for (index = 0; index < states.Count(); index++)
+            {
+                if (states.ElementAt(index).StateID == stateId)
+                {
+                    previousState = states.ElementAt(index - 1);
+                    break;
+                }
+            }
+
+            return previousState ?? workflow.LastState;
         }
 
         private class ReviewersDto

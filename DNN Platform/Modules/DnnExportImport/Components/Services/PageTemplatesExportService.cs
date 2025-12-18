@@ -87,7 +87,7 @@ namespace Dnn.ExportImport.Components.Services
 
                         var folder = FolderManager.Instance.GetFolder(template.FolderId);
                         CompressionUtil.AddFileToArchive(
-                            portal.HomeDirectoryMapPath + folder.FolderPath + GetActualFileName(template),
+                            portal.HomeDirectoryMapPath + folder.FolderPath + this.GetActualFileName(template),
                             templatesFile,
                             folderOffset);
 
@@ -191,7 +191,7 @@ namespace Dnn.ExportImport.Components.Services
             return this.Repository.GetCount<ExportPageTemplate>();
         }
 
-        private static string GetActualFileName(ExportPageTemplate objFile)
+        private string GetActualFileName(ExportPageTemplate objFile)
         {
             return (objFile.StorageLocation == (int)FolderController.StorageLocationTypes.SecureFileSystem)
                 ? objFile.FileName + Globals.glbProtectedExtension

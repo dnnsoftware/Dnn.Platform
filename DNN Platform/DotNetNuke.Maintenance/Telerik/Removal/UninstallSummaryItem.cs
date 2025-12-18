@@ -42,12 +42,12 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
         {
             if (step.Quiet && step.Success.HasValue && step.Success.Value)
             {
-                return [];
+                return new UninstallSummaryItem[0];
             }
 
             return step is IStepArray stepArray && stepArray.Steps.Any()
                 ? stepArray.Steps.SelectMany(s => FromStep(s)).ToArray()
-                : [new UninstallSummaryItem(step)];
+                : new[] { new UninstallSummaryItem(step) };
         }
     }
 }

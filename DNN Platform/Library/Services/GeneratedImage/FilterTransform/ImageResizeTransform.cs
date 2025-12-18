@@ -174,7 +174,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             }
         }
 
-        private Bitmap FitImage(Image img, int scaledHeight, int scaledWidth)
+        private Image FitImage(Image img, int scaledHeight, int scaledWidth)
         {
             int resizeWidth;
             int resizeHeight;
@@ -216,7 +216,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             return newimage;
         }
 
-        private Bitmap FitSquareImage(Image img)
+        private Image FitSquareImage(Image img)
         {
             int resizeWidth;
             int resizeHeight;
@@ -234,8 +234,8 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                 resizeHeight = Convert.ToInt32((float)img.Height / (float)img.Width * newDim);
             }
 
-            var newImage = new Bitmap(newDim + (2 * this.border), newDim + (2 * this.border));
-            var graphics = Graphics.FromImage(newImage);
+            var newimage = new Bitmap(newDim + (2 * this.border), newDim + (2 * this.border));
+            var graphics = Graphics.FromImage(newimage);
 
             graphics.CompositingMode = CompositingMode.SourceCopy;
             graphics.CompositingQuality = this.CompositingQuality;
@@ -244,10 +244,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 
             graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, newDim + (2 * this.border), newDim + (2 * this.border)));
             graphics.DrawImage(img, ((newDim - resizeWidth) / 2) + this.border, ((newDim - resizeHeight) / 2) + this.border, resizeWidth, resizeHeight);
-            return newImage;
+            return newimage;
         }
 
-        private Bitmap CropImage(Image img, int scaledHeight, int scaledWidth)
+        private Image CropImage(Image img, int scaledHeight, int scaledWidth)
         {
             int resizeWidth;
             int resizeHeight;
@@ -275,7 +275,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             return newImage;
         }
 
-        private Bitmap FillImage(Image img)
+        private Image FillImage(Image img)
         {
             int resizeHeight = this.Height;
             int resizeWidth = this.Width;

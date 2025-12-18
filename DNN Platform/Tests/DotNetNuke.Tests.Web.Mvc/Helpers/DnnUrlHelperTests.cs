@@ -245,7 +245,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             {
                 // Assert
                 Assert.That(url, Is.Not.Null);
-                Assert.That(url, Is.EqualTo(expectedResult));
+                Assert.That(expectedResult.Equals(url), Is.True);
             });
         }
 
@@ -289,9 +289,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             {
                 // Assert
                 Assert.That(routeValues.Values, Has.Count.EqualTo(3));
-                Assert.That(routeValues, Does.ContainKey("action"));
-                Assert.That(routeValues, Does.ContainKey("controller"));
-                Assert.That(routeValues, Does.ContainKey("id"));
+                Assert.That(routeValues.ContainsKey("action"), Is.True);
+                Assert.That(routeValues.ContainsKey("controller"), Is.True);
+                Assert.That(routeValues.ContainsKey("id"), Is.True);
                 Assert.That((string)routeValues["action"], Is.EqualTo("foo"));
                 Assert.That((string)routeValues["controller"], Is.EqualTo("bar"));
                 Assert.That((int)routeValues["id"], Is.EqualTo(5));

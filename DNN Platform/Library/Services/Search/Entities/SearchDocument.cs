@@ -7,20 +7,20 @@ namespace DotNetNuke.Services.Search.Entities
     using System.Collections.Generic;
 
     /// <summary>The document that will be stored in Search Index.</summary>
-    /// <remarks>Each document is one discrete unit of content to be indexed and is independent of other Documents.</remarks>
+    /// <remarks>Each document is one discrete unit of content to be indexed and is independent from other Documents.</remarks>
     [Serializable]
     public class SearchDocument : SearchDocumentToDelete
     {
         /// <summary>Initializes a new instance of the <see cref="SearchDocument"/> class.</summary>
         public SearchDocument()
         {
-            this.Tags = [];
+            this.Tags = new string[0];
             this.IsActive = true;
         }
 
         /// <summary>Gets or sets content's Title.</summary>
         /// <remarks>
-        /// HTML tags are stripped from this property, but certain HTML attribute values will be retained, i.e. alt and title attribute values.
+        /// HTML tags are stripped from this property, but certain HTML attribute values will be retain, ie. alt and title attribute values.
         /// </remarks>
         public string Title { get; set; }
 

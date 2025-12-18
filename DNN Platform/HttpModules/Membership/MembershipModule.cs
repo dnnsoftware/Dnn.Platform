@@ -4,7 +4,6 @@
 namespace DotNetNuke.HttpModules.Membership
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Security.Principal;
@@ -64,7 +63,6 @@ namespace DotNetNuke.HttpModules.Membership
         }
 
         /// <summary>Gets the name of the module.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string ModuleName => "DNNMembershipModule";
 
         /// <summary>Called when unverified user skin initialize.</summary>
@@ -195,7 +193,7 @@ namespace DotNetNuke.HttpModules.Membership
             application.PreSendRequestHeaders += this.OnPreSendRequestHeaders;
         }
 
-        /// <summary>Disposes of the resources (other than memory) used by the module that implements <see cref="System.Web.IHttpModule" />.</summary>
+        /// <summary>Disposes of the resources (other than memory) used by the module that implements <see cref="T:System.Web.IHttpModule" />.</summary>
         public void Dispose()
         {
         }
@@ -220,7 +218,7 @@ namespace DotNetNuke.HttpModules.Membership
             {
                 if (user == null || user.IsDeleted || user.Membership.LockedOut
                     || (!user.Membership.Approved && !user.IsInRole("Unverified Users"))
-                    || !user.Username.Equals(context.User.Identity.Name, StringComparison.OrdinalIgnoreCase))
+                    || !user.Username.Equals(context.User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return true;
                 }

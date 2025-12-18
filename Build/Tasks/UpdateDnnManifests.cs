@@ -32,7 +32,7 @@ namespace DotNetNuke.Build.Tasks
         public override void Run(Context context)
         {
             var unversionedManifests = context.FileReadLines("./Build/Tasks/unversionedManifests.txt");
-            foreach (var file in context.GetFilesByPatterns(".", ["**/*.dnn",], unversionedManifests))
+            foreach (var file in context.GetFilesByPatterns(".", new[] { "**/*.dnn" }, unversionedManifests))
             {
                 if (context.Settings.Version == "off")
                 {
@@ -41,22 +41,20 @@ namespace DotNetNuke.Build.Tasks
 
                 context.Information("Transforming: " + file);
                 var transformFile = context.File(Path.GetTempFileName());
-                context.FileAppendText(transformFile, GetXdtTransformation(context));
+                context.FileAppendText(transformFile, this.GetXdtTransformation(context));
                 context.XdtTransformConfig(file, transformFile, file);
             }
         }
 
-        private static string GetXdtTransformation(Context context)
+        private string GetXdtTransformation(Context context)
         {
-            return $"""
-                    <?xml version="1.0"?>
-                    <dotnetnuke xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
-                      <packages>
-                        <package version="{GetVersionString(context)}" 
-                                 xdt:Transform="SetAttributes(version)" />
-                      </packages>
-                    </dotnetnuke>
-                    """;
+            return $@"<?xml version=""1.0""?>
+<dotnetnuke xmlns:xdt=""http://schemas.microsoft.com/XML-Document-Transform"">
+  <packages>
+    <package version=""{GetVersionString(context)}"" 
+             xdt:Transform=""SetAttributes(version)"" />
+  </packages>
+</dotnetnuke>";
         }
     }
 }

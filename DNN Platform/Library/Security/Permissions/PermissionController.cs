@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Security.Permissions
@@ -6,7 +6,6 @@ namespace DotNetNuke.Security.Permissions
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
 
@@ -31,7 +30,7 @@ namespace DotNetNuke.Security.Permissions
             var permissionsBuilder = new StringBuilder();
             foreach (PermissionInfoBase permission in permissions)
             {
-                if (permissionKey.Equals(permission.PermissionKey, StringComparison.OrdinalIgnoreCase))
+                if (permissionKey.Equals(permission.PermissionKey, StringComparison.InvariantCultureIgnoreCase))
                 {
                     // Deny permissions are prefixed with a "!"
                     string prefix = !permission.AllowAccess ? "!" : string.Empty;
@@ -44,7 +43,7 @@ namespace DotNetNuke.Security.Permissions
                     }
                     else
                     {
-                        permissionString = $"{prefix}[{permission.UserID}];";
+                        permissionString = prefix + "[" + permission.UserID + "];";
                     }
 
                     // build permissions string ensuring that Deny permissions are inserted at the beginning and Grant permissions at the end
@@ -65,7 +64,7 @@ namespace DotNetNuke.Security.Permissions
             // ensure leading delimiter
             if (!permissionsString.StartsWith(";"))
             {
-                permissionsString = permissionsString.Insert(0, ";");
+                permissionsString.Insert(0, ";");
             }
 
             return permissionsString;
@@ -99,7 +98,6 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.AddDefinition" />
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public int AddPermission(IPermissionDefinitionInfo permission)
         {
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_CREATED);
@@ -110,12 +108,11 @@ namespace DotNetNuke.Security.Permissions
                 permission.PermissionName,
                 UserController.Instance.GetCurrentUserInfo().UserID));
 
-            ClearCache();
+            this.ClearCache();
             return permissionId;
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.DeleteDefinition" />
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void DeletePermission(int permissionID)
         {
             EventLogController.Instance.AddLog(
@@ -125,11 +122,10 @@ namespace DotNetNuke.Security.Permissions
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.PERMISSION_DELETED);
             Provider.DeletePermission(permissionID);
-            ClearCache();
+            this.ClearCache();
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.GetDefinition" />
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public PermissionInfo GetPermission(int permissionID)
         {
             return GetPermissions().SingleOrDefault(p => p.PermissionID == permissionID);
@@ -163,7 +159,6 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.UpdateDefinition" />
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void UpdatePermission(IPermissionDefinitionInfo permission)
         {
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_UPDATED);
@@ -174,7 +169,7 @@ namespace DotNetNuke.Security.Permissions
                 permission.PermissionKey,
                 permission.PermissionName,
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            ClearCache();
+            this.ClearCache();
         }
 
         public T RemapPermission<T>(T permission, int portalId)
@@ -272,7 +267,7 @@ namespace DotNetNuke.Security.Permissions
         void IPermissionDefinitionService.UpdateDefinition(IPermissionDefinitionInfo permission) => this.UpdatePermission(permission);
 
         /// <inheritdoc />
-        void IPermissionDefinitionService.ClearCache() => ClearCache();
+        void IPermissionDefinitionService.ClearCache() => this.ClearCache();
 
         private static IEnumerable<PermissionInfo> GetPermissions()
         {
@@ -301,8 +296,8 @@ namespace DotNetNuke.Security.Permissions
 
         private static IEnumerable<PermissionInfo> GetPermissionByCodeAndKeyEnumerable(string permissionCode, string permissionKey)
         {
-            return GetPermissions().Where(p => p.PermissionCode.Equals(permissionCode, StringComparison.OrdinalIgnoreCase)
-                                               && p.PermissionKey.Equals(permissionKey, StringComparison.OrdinalIgnoreCase));
+            return GetPermissions().Where(p => p.PermissionCode.Equals(permissionCode, StringComparison.InvariantCultureIgnoreCase)
+                                               && p.PermissionKey.Equals(permissionKey, StringComparison.InvariantCultureIgnoreCase));
         }
 
         private static IEnumerable<PermissionInfo> GetPermissionsByModuleDefIdEnumerable(int moduleDefId)
@@ -318,7 +313,7 @@ namespace DotNetNuke.Security.Permissions
             return GetPermissions().Where(p => p.ModuleDefID == moduleDefId || p.PermissionCode == "SYSTEM_MODULE_DEFINITION");
         }
 
-        private static void ClearCache()
+        private void ClearCache()
         {
             DataCache.RemoveCache(DataCache.PermissionsCacheKey);
         }

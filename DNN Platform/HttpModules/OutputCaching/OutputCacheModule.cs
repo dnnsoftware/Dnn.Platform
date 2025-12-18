@@ -55,7 +55,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
         private void OnResolveRequestCache(object sender, EventArgs e)
         {
             bool cached = false;
-            if (this.app?.Context == null || !this.app.Response.ContentType.Equals("text/html", StringComparison.OrdinalIgnoreCase) || this.app.Context.Request.IsAuthenticated || this.app.Context.Request.Browser.Crawler)
+            if (this.app?.Context == null || !this.app.Response.ContentType.Equals("text/html", StringComparison.InvariantCultureIgnoreCase) || this.app.Context.Request.IsAuthenticated || this.app.Context.Request.Browser.Crawler)
             {
                 return;
             }

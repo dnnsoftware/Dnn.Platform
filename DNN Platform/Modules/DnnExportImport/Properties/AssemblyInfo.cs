@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 
 using System.Reflection;
-using System.Resources;
 
 [assembly: AssemblyTitle("DnnExportImport")]
 [assembly: AssemblyDescription("DNN Site Export/Import Engine")]
-[assembly: NeutralResourcesLanguage("en-US")]

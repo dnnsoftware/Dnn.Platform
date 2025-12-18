@@ -214,14 +214,14 @@ namespace DotNetNuke.Tests.Web.Api
             var portalInfo = new ArrayList { new PortalInfo { PortalID = 0 } };
             this.mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
 
-            this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(0)).Returns([new PortalAliasInfo { HTTPAlias = "www.foo.com" }]);
-            this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(0)).Returns([new PortalAliasInfo { HTTPAlias = "www.foo.com" }]);
+            this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
+            this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
 
             var routeCollection = new RouteCollection();
             var srm = new ServicesRoutingManager(Globals.DependencyProvider, routeCollection);
 
             // Act
-            srm.MapHttpRoute("folder", "default", "url", ["foo"]);
+            srm.MapHttpRoute("folder", "default", "url", new[] { "foo" });
 
             // Assert
             var route = (Route)routeCollection[0];
@@ -230,7 +230,7 @@ namespace DotNetNuke.Tests.Web.Api
             Assert.Multiple(() =>
             {
                 Assert.That(route.DataTokens["Name"], Is.EqualTo("folder-default-0-old"));
-                Assert.That(route.Url, Does.StartWith("DesktopModules"));
+                Assert.That(route.Url.StartsWith("DesktopModules"), Is.True);
             });
         }
     }

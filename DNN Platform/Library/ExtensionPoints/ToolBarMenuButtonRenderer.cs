@@ -50,7 +50,7 @@ namespace DotNetNuke.ExtensionPoints
             str.AppendLine("<ul>");
             foreach (var item in extension.Items)
             {
-                str.AppendLine(GetItemOutput(item));
+                str.AppendLine(this.GetItemOutput(item));
             }
 
             str.AppendLine("</ul>");
@@ -60,14 +60,14 @@ namespace DotNetNuke.ExtensionPoints
             return str.ToString();
         }
 
-        private static string GetItemOutput(IMenuButtonItemExtensionPoint item)
+        private string GetItemOutput(IMenuButtonItemExtensionPoint item)
         {
             if (string.IsNullOrEmpty(item.Type))
             {
-                return $"<li class='{item.CssClass}' id='{item.ItemId}' ><a href='#' onclick='{item.Action}; return false;'><span {item.Attributes}>{item.Text}</span></a></li>";
+                return string.Format("<li class='{0}' id='{1}' ><a href='#' onclick='{2}; return false;'><span {3}>{4}</span></a></li>", item.CssClass, item.ItemId, item.Action, item.Attributes, item.Text);
             }
 
-            return $"<li><input type='{item.Type}' name='{item.ItemId}' id='{item.ItemId}' value='{item.Text}' {item.Attributes} onclick='{item.Action}; return false;'/>{item.Text}</li>";
+            return string.Format("<li><input type='{0}' name='{1}' id='{2}' value='{3}' {4} onclick='{5}; return false;'/>{6}</li>", item.Type, item.ItemId, item.ItemId, item.Text, item.Attributes, item.Action, item.Text);
         }
     }
 }

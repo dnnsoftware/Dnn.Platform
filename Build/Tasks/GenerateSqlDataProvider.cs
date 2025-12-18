@@ -16,7 +16,7 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            var fileName = context.GetTwoDigitsVersionNumber()[..8] + ".SqlDataProvider";
+            var fileName = context.GetTwoDigitsVersionNumber().Substring(0, 8) + ".SqlDataProvider";
             var filePath = "./Dnn Platform/Website/Providers/DataProviders/SqlDataProvider/" + fileName;
             if (File.Exists(filePath))
             {

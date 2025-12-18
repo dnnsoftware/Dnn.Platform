@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Journal
 {
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Common.Utilities;
@@ -21,10 +20,10 @@ namespace DotNetNuke.Services.Journal
             var colContentTypes = from t in typeController.GetContentTypes() where t.ContentType == contentTypeName select t;
             int contentTypeId;
 
-            if (colContentTypes.Any())
+            if (colContentTypes.Count() > 0)
             {
                 var contentType = colContentTypes.Single();
-                contentTypeId = contentType?.ContentTypeId ?? CreateContentType(contentTypeName);
+                contentTypeId = contentType == null ? CreateContentType(contentTypeName) : contentType.ContentTypeId;
             }
             else
             {
@@ -40,7 +39,6 @@ namespace DotNetNuke.Services.Journal
         /// <param name="moduleId">The module ID.</param>
         /// <returns>The newly created ContentItemID from the data store.</returns>
         /// <remarks>This is for the first question in the thread. Not for replies or items with ParentID > 0.</remarks>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal ContentItem CreateContentItem(JournalItem objJournalItem, int tabId, int moduleId)
         {
             var typeController = new ContentTypeController();
@@ -53,10 +51,10 @@ namespace DotNetNuke.Services.Journal
             var colContentTypes = from t in typeController.GetContentTypes() where t.ContentType == contentTypeName select t;
             int contentTypeID;
 
-            if (colContentTypes.Any())
+            if (colContentTypes.Count() > 0)
             {
                 var contentType = colContentTypes.Single();
-                contentTypeID = contentType?.ContentTypeId ?? CreateContentType(contentTypeName);
+                contentTypeID = contentType == null ? CreateContentType(contentTypeName) : contentType.ContentTypeId;
             }
             else
             {
@@ -85,7 +83,6 @@ namespace DotNetNuke.Services.Journal
         /// <param name="objJournalItem">The journal item.</param>
         /// <param name="tabId">The tab ID.</param>
         /// <param name="moduleId">The module ID.</param>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void UpdateContentItem(JournalItem objJournalItem, int tabId, int moduleId)
         {
             var objContent = Util.GetContentController().GetContentItem(objJournalItem.ContentItemId);
@@ -114,7 +111,6 @@ namespace DotNetNuke.Services.Journal
 
         /// <summary>This removes a content item associated with a question/thread from the data store. Should run every time an entire thread is deleted.</summary>
         /// <param name="contentItemID">The content item ID.</param>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void DeleteContentItem(int contentItemID)
         {
             if (contentItemID <= Null.NullInteger)

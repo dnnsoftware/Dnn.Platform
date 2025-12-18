@@ -90,19 +90,16 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                int moduleId = this.moduleID;
-                if (moduleId == -2)
+                int moduleID = this.moduleID;
+                if (moduleID == -2)
                 {
                     if (this.Request.QueryString["mid"] != null)
                     {
-                        if (!int.TryParse(this.Request.QueryString["mid"], out moduleId))
-                        {
-                            moduleId = -2;
-                        }
+                        int.TryParse(this.Request.QueryString["mid"], out moduleID);
                     }
                 }
 
-                return moduleId;
+                return moduleID;
             }
 
             set

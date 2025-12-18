@@ -6,8 +6,8 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
 {
     using System;
 
-    /// <inheritdoc cref="ITelerikUninstaller" />
-    internal sealed class TelerikUninstaller : UnInstaller, ITelerikUninstaller
+    /// <inheritdoc />
+    internal class TelerikUninstaller : UnInstaller, ITelerikUninstaller
     {
         /// <summary>Initializes a new instance of the <see cref="TelerikUninstaller"/> class.</summary>
         /// <param name="serviceProvider">An instance of <see cref="IServiceProvider"/>.</param>

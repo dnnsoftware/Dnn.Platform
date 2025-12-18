@@ -38,7 +38,7 @@ namespace DotNetNuke.Security.Permissions
         {
             foreach (FolderPermissionInfo permission in folderPermissions)
             {
-                if (permission.FolderPath.Equals(folderPath, StringComparison.OrdinalIgnoreCase))
+                if (permission.FolderPath.Equals(folderPath, StringComparison.InvariantCultureIgnoreCase))
                 {
                     this.Add(permission);
                 }

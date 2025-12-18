@@ -22,7 +22,7 @@ namespace DotNetNuke.Tests.Web.Mvc
             {
                 Assert.Multiple(() =>
                 {
-                    Assert.That(actual, Does.ContainKey(pair.Key));
+                    Assert.That(actual.ContainsKey(pair.Key), Is.True);
                     Assert.That(actual[pair.Key], Is.EqualTo(pair.Value));
                 });
             }

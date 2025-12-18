@@ -90,7 +90,7 @@ namespace Dnn.PersonaBar.Library.Attributes
                 {
                     if (!hasPermission)
                     {
-                        var menuItem = GetMenuByIdentifier(menuName);
+                        var menuItem = this.GetMenuByIdentifier(menuName);
                         if (menuItem != null && portalSettings != null)
                         {
                             hasPermission = this.PersonaBarController.IsVisible(portalSettings, portalSettings.UserInfo, menuItem);
@@ -119,7 +119,7 @@ namespace Dnn.PersonaBar.Library.Attributes
             }
         }
 
-        private static MenuItem GetMenuByIdentifier(string menuName)
+        private MenuItem GetMenuByIdentifier(string menuName)
         {
             if (string.IsNullOrEmpty(menuName))
             {

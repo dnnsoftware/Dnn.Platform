@@ -12,7 +12,7 @@ namespace DotNetNuke.ComponentModel
         where TType : class, TContract
     {
         private static TContract testableInstance;
-        private static bool useTestable;
+        private static bool useTestable = false;
 
         /// <summary>Gets an instance of the Component.</summary>
         public static TContract Instance

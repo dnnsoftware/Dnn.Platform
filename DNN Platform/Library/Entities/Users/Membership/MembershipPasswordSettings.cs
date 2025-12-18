@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Entities.Users.Membership
 {
-    using System.Diagnostics.CodeAnalysis;
     using System.Web;
     using System.Web.Security;
 
@@ -40,15 +39,24 @@ namespace DotNetNuke.Entities.Users.Membership
         }
 
         /// <summary>Gets minimum number of non-alphanumeric characters setting for password strength indicator.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public int MinNonAlphanumericCharacters => System.Web.Security.Membership.MinRequiredNonAlphanumericCharacters;
+        public int MinNonAlphanumericCharacters
+        {
+            get
+            {
+                return System.Web.Security.Membership.MinRequiredNonAlphanumericCharacters;
+            }
+        }
 
         /// <summary>Gets minimum length of password setting for password strength indicator.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public int MinPasswordLength => System.Web.Security.Membership.MinRequiredPasswordLength;
+        public int MinPasswordLength
+        {
+            get
+            {
+                return System.Web.Security.Membership.MinRequiredPasswordLength;
+            }
+        }
 
         /// <summary>Gets currently configured password format for installation.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public PasswordFormat PasswordFormat
         {
             get
@@ -66,8 +74,10 @@ namespace DotNetNuke.Entities.Users.Membership
         }
 
         /// <summary>Gets regular Expression to validate password strength.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public string ValidationExpression => System.Web.Security.Membership.PasswordStrengthRegularExpression;
+        public string ValidationExpression
+        {
+            get { return System.Web.Security.Membership.PasswordStrengthRegularExpression; }
+        }
 
         public bool EnableBannedList { get; set; }
 

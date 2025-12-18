@@ -1,18 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Deterministic>true</Deterministic>
-    <LangVersion>latest</LangVersion>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <AnalysisMode>Recommended</AnalysisMode>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>NU1701</NoWarn>
-    <WarningsNotAsErrors>CA1305,CA1310</WarningsNotAsErrors>
-    <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/DotNetNuke.Maintenance.xml</DocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
+    <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/DotNetNuke.Maintenance.xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,12 +19,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Library\DotNetNuke.Library.csproj" />
+    <Compile Include="..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\SolutionInfo.cs" Link="SolutionInfo.cs" />
     <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Library\DotNetNuke.Library.csproj" />
   </ItemGroup>
 
   <Import Project="..\..\DNN_Platform.build" />

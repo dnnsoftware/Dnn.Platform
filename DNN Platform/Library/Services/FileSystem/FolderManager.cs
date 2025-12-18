@@ -7,7 +7,6 @@ namespace DotNetNuke.Services.FileSystem
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -494,7 +493,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("newFolderName", newFolderName);
 
-            if (folder.FolderName.Equals(newFolderName, StringComparison.Ordinal))
+            if (folder.FolderName.Equals(newFolderName))
             {
                 return;
             }
@@ -603,7 +602,7 @@ namespace DotNetNuke.Services.FileSystem
                     this.ProcessMergedTreeItemInAddMode(item, portalId);
                 }
 
-                RemoveSyncFoldersData();
+                this.RemoveSyncFoldersData();
 
                 // Step 2: Delete Files and Folders
                 for (var i = mergedTree.Count - 1; i >= 0; i--)
@@ -838,9 +837,9 @@ namespace DotNetNuke.Services.FileSystem
 
             foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
             {
-                if (!permission.PermissionKey.Equals("READ", StringComparison.OrdinalIgnoreCase) &&
-                    !permission.PermissionKey.Equals("WRITE", StringComparison.OrdinalIgnoreCase) &&
-                    !permission.PermissionKey.Equals("BROWSE", StringComparison.OrdinalIgnoreCase))
+                if (!permission.PermissionKey.Equals("READ", StringComparison.InvariantCultureIgnoreCase) &&
+                    !permission.PermissionKey.Equals("WRITE", StringComparison.InvariantCultureIgnoreCase) &&
+                    !permission.PermissionKey.Equals("BROWSE", StringComparison.InvariantCultureIgnoreCase))
                 {
                     continue;
                 }
@@ -853,7 +852,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 folder.FolderPermissions.Add(folderPermission);
 
-                if (permission.PermissionKey.Equals("READ", StringComparison.OrdinalIgnoreCase))
+                if (permission.PermissionKey.Equals("READ", StringComparison.InvariantCultureIgnoreCase))
                 {
                     this.AddAllUserReadPermission(folder, permission);
                 }
@@ -901,7 +900,6 @@ namespace DotNetNuke.Services.FileSystem
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         /// <param name="portalId">The site (portal) ID.</param>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void ClearFolderProviderCachedLists(int portalId)
         {
             foreach (var folderMapping in FolderMappingController.Instance.GetFolderMappings(portalId))
@@ -1222,13 +1220,12 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A single folder mapping, <see cref="FolderMappingInfo"/>.</returns>
         internal virtual FolderMappingInfo GetFolderMapping(Dictionary<int, FolderMappingInfo> folderMappings, int folderMappingId)
         {
-            if (!folderMappings.TryGetValue(folderMappingId, out var folderMapping))
+            if (!folderMappings.ContainsKey(folderMappingId))
             {
-                folderMapping = FolderMappingController.Instance.GetFolderMapping(folderMappingId);
-                folderMappings.Add(folderMappingId, folderMapping);
+                folderMappings.Add(folderMappingId, FolderMappingController.Instance.GetFolderMapping(folderMappingId));
             }
 
-            return folderMapping;
+            return folderMappings[folderMappingId];
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
@@ -1919,7 +1916,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private static FolderPermissionCollection GetFolderPermissionsFromSyncData(int portalId, string relativePath)
         {
-            var threadId = Environment.CurrentManagedThreadId;
+            var threadId = Thread.CurrentThread.ManagedThreadId;
             FolderPermissionCollection permissions = null;
             if (SyncFoldersData.ContainsKey(threadId))
             {
@@ -1941,7 +1938,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private static void InitialiseSyncFoldersData(int portalId, string relativePath)
         {
-            var threadId = Environment.CurrentManagedThreadId;
+            var threadId = Thread.CurrentThread.ManagedThreadId;
             var permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
             if (SyncFoldersData.ContainsKey(threadId))
             {
@@ -1960,16 +1957,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private static void RemoveSyncFoldersData()
-        {
-            var threadId = Environment.CurrentManagedThreadId;
-            if (SyncFoldersData.ContainsKey(threadId))
-            {
-                SyncFoldersData.TryRemove(threadId, out _);
-            }
-        }
-
-        private int AddFolderInternal(FolderInfo folder)
+        private int AddFolderInternal(IFolderInfo folder)
         {
             // Check this is not a duplicate
             var existingFolder = this.GetFolder(folder.PortalID, folder.FolderPath);
@@ -2011,7 +1999,9 @@ namespace DotNetNuke.Services.FileSystem
                     parentId);
 
                 // Refetch folder for logging
-                this.AddLogEntry(this.GetFolder(folder.PortalID, folder.FolderPath), EventLogController.EventLogType.FOLDER_CREATED);
+                folder = this.GetFolder(folder.PortalID, folder.FolderPath);
+
+                this.AddLogEntry(folder, EventLogController.EventLogType.FOLDER_CREATED);
 
                 if (parentFolder != null)
                 {
@@ -2248,6 +2238,15 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             return folders.Where(f => f.ParentID == parentFolder.FolderID);
+        }
+
+        private void RemoveSyncFoldersData()
+        {
+            var threadId = Thread.CurrentThread.ManagedThreadId;
+            if (SyncFoldersData.ContainsKey(threadId))
+            {
+                SyncFoldersData.TryRemove(threadId, out _);
+            }
         }
 
         /// <summary>This class and its members are reserved for internal use and are not intended to be used in your code.</summary>

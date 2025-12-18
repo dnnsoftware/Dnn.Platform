@@ -7,7 +7,7 @@ namespace Dnn.PersonaBar.Library.Permissions
 
     using Dnn.PersonaBar.Library.Model;
 
-    internal sealed class CompareMenuPermissions : IComparer
+    internal class CompareMenuPermissions : IComparer
     {
         /// <inheritdoc/>
         public int Compare(object x, object y)

@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.FileSystem
                 // notification that the event is progressing
                 this.Progressing(); // OPTIONAL
 
-                Synchronize();
+                this.Synchronize();
 
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
 
@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private static void Synchronize()
+        private void Synchronize()
         {
             var folderManager = FolderManager.Instance;
 

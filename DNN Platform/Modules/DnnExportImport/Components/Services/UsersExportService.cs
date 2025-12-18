@@ -403,7 +403,7 @@ namespace Dnn.ExportImport.Components.Services
                                 if (aspNetUser != null)
                                 {
                                     tempAspUserCount += 1;
-                                    row["ApplicationId"] = GetApplicationId();
+                                    row["ApplicationId"] = this.GetApplicationId();
                                     row["AspUserId"] = aspNetUser.UserId;
                                     row["MobileAlias"] = aspNetUser.MobileAlias;
                                     row["IsAnonymous"] = aspNetUser.IsAnonymous;
@@ -494,15 +494,17 @@ namespace Dnn.ExportImport.Components.Services
             return this.Repository.GetCount<ExportUser>();
         }
 
-        private static Guid GetApplicationId()
+        private Guid GetApplicationId()
         {
-            using var db =
+            using (var db =
                 new PetaPocoDataContext(
                     DotNetNuke.Data.DataProvider.Instance().Settings["connectionStringName"],
-                    "aspnet_");
-            return db.ExecuteScalar<Guid>(
-                CommandType.Text,
-                "SELECT TOP 1 ApplicationId FROM aspnet_Applications");
+                    "aspnet_"))
+            {
+                return db.ExecuteScalar<Guid>(
+                    CommandType.Text,
+                    "SELECT TOP 1 ApplicationId FROM aspnet_Applications");
+            }
         }
     }
 }

@@ -18,7 +18,7 @@ namespace DotNetNuke.Collections
         {
             var data = items.ToArray();
 
-            if (data.Length == 0)
+            if (!data.Any())
             {
                 return null;
             }

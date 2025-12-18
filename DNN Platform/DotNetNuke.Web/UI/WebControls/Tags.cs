@@ -85,7 +85,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public bool ShowTags { get; set; }
 
-        private static Vocabulary TagVocabulary
+        private Vocabulary TagVocabulary
         {
             get
             {
@@ -110,7 +110,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
                 // Render Category Links
-                var categories = from cat in this.ContentItem.Terms where cat.VocabularyId != TagVocabulary.VocabularyId select cat;
+                var categories = from cat in this.ContentItem.Terms where cat.VocabularyId != this.TagVocabulary.VocabularyId select cat;
 
                 for (int i = 0; i <= categories.Count() - 1; i++)
                 {
@@ -127,7 +127,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-                    this.RenderTerm(writer, categories.ToList()[i], i < categories.Count() - 1 && this.RepeatDirection.Equals("horizontal", StringComparison.OrdinalIgnoreCase));
+                    this.RenderTerm(writer, categories.ToList()[i], i < categories.Count() - 1 && this.RepeatDirection.ToLowerInvariant() == "horizontal");
 
                     writer.RenderEndTag();
                 }
@@ -143,7 +143,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
                 // Render Tag Links
-                var tags = from cat in this.ContentItem.Terms where cat.VocabularyId == TagVocabulary.VocabularyId select cat;
+                var tags = from cat in this.ContentItem.Terms where cat.VocabularyId == this.TagVocabulary.VocabularyId select cat;
 
                 for (int i = 0; i <= tags.Count() - 1; i++)
                 {
@@ -160,7 +160,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-                    this.RenderTerm(writer, tags.ToList()[i], i < tags.Count() - 1 && this.RepeatDirection.Equals("horizontal", StringComparison.OrdinalIgnoreCase));
+                    this.RenderTerm(writer, tags.ToList()[i], i < tags.Count() - 1 && this.RepeatDirection.ToLowerInvariant() == "horizontal");
 
                     writer.RenderEndTag();
                 }
@@ -258,14 +258,14 @@ namespace DotNetNuke.Web.UI.WebControls
                 sb.Append("<script language='javascript' type='text/javascript' >");
                 sb.Append(Environment.NewLine);
                 sb.Append("function disableEnterKey(e)");
-                sb.Append('{');
+                sb.Append("{");
                 sb.Append("var key;");
                 sb.Append("if(window.event)");
                 sb.Append("key = window.event.keyCode;");
                 sb.Append("else ");
                 sb.Append("key = e.which;");
                 sb.Append("return (key != 13);");
-                sb.Append('}');
+                sb.Append("}");
                 sb.Append("</script>");
 
                 this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), this.UniqueID, sb.ToString());
@@ -332,19 +332,19 @@ namespace DotNetNuke.Web.UI.WebControls
                     if (!string.IsNullOrEmpty(t))
                     {
                         string tagName = t.Trim(' ');
-                        Term existingTerm = (from term in this.ContentItem.Terms.AsQueryable() where term.Name.Equals(tagName, StringComparison.OrdinalIgnoreCase) select term).SingleOrDefault();
+                        Term existingTerm = (from term in this.ContentItem.Terms.AsQueryable() where term.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select term).SingleOrDefault();
 
                         if (existingTerm == null)
                         {
                             // Not tagged
                             TermController termController = new TermController();
                             Term term =
-                                (from te in termController.GetTermsByVocabulary(TagVocabulary.VocabularyId) where te.Name.Equals(tagName, StringComparison.OrdinalIgnoreCase) select te).
+                                (from te in termController.GetTermsByVocabulary(this.TagVocabulary.VocabularyId) where te.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select te).
                                     SingleOrDefault();
                             if (term == null)
                             {
                                 // Add term
-                                term = new Term(TagVocabulary.VocabularyId);
+                                term = new Term(this.TagVocabulary.VocabularyId);
                                 term.Name = tagName;
                                 termController.AddTerm(term);
                             }

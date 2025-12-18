@@ -80,17 +80,6 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        private static string GetCleanUrl(string url)
-        {
-            var cleanUrl = PortalSecurity.Instance.InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
-            if (url != cleanUrl)
-            {
-                return string.Empty;
-            }
-
-            return url;
-        }
-
         /// <summary>
         /// getQSParams builds up a new querystring. This is necessary
         /// in order to prep for navigateUrl.
@@ -126,30 +115,26 @@ namespace DotNetNuke.UI.Skins.Controls
                             if (isLocalized)
                             {
                                 string moduleIdKey = arrKeys[i].ToLowerInvariant();
+                                int moduleID;
+                                int tabid;
 
-                                if (int.TryParse(queryStringCollection[moduleIdKey], out var moduleId) &&
-                                    int.TryParse(queryStringCollection["tabid"], out var tabid))
+                                int.TryParse(queryStringCollection[moduleIdKey], out moduleID);
+                                int.TryParse(queryStringCollection["tabid"], out tabid);
+                                ModuleInfo localizedModule = ModuleController.Instance.GetModuleByCulture(moduleID, tabid, settings.PortalId, LocaleController.Instance.GetLocale(newLanguage));
+                                if (localizedModule != null)
                                 {
-                                    var localizedModule = ModuleController.Instance.GetModuleByCulture(
-                                        moduleId,
-                                        tabid,
-                                        settings.PortalId,
-                                        LocaleController.Instance.GetLocale(newLanguage));
-                                    if (localizedModule != null)
+                                    if (!string.IsNullOrEmpty(returnValue))
                                     {
-                                        if (!string.IsNullOrEmpty(returnValue))
-                                        {
-                                            returnValue += "&";
-                                        }
-
-                                        returnValue += $"{moduleIdKey}={localizedModule.ModuleID}";
+                                        returnValue += "&";
                                     }
+
+                                    returnValue += moduleIdKey + "=" + localizedModule.ModuleID;
                                 }
                             }
 
                             break;
                         default:
-                            if (arrKeys[i].Equals("portalid", StringComparison.OrdinalIgnoreCase) && this.objPortal.ActiveTab.IsSuperTab)
+                            if ((arrKeys[i].ToLowerInvariant() == "portalid") && this.objPortal.ActiveTab.IsSuperTab)
                             {
                                 // skip parameter
                                 // navigateURL adds portalid to querystring if tab is superTab
@@ -263,7 +248,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                     if (!string.IsNullOrEmpty(fullurl))
                     {
-                        return GetCleanUrl(fullurl);
+                        return this.GetCleanUrl(fullurl);
                     }
                 }
             }
@@ -289,7 +274,18 @@ namespace DotNetNuke.UI.Skins.Controls
             var isSuperTab = this.objPortal.ActiveTab.IsSuperTab;
             var url = $"{TestableGlobals.Instance.NavigateURL(tabId, isSuperTab, this.objPortal, controlKey, newLanguage, queryStrings)}{rawQueryString}";
 
-            return GetCleanUrl(url);
+            return this.GetCleanUrl(url);
+        }
+
+        private string GetCleanUrl(string url)
+        {
+            var cleanUrl = PortalSecurity.Instance.InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
+            if (url != cleanUrl)
+            {
+                return string.Empty;
+            }
+
+            return url;
         }
     }
 }

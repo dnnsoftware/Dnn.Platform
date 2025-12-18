@@ -732,14 +732,16 @@ namespace DotNetNuke.Services.Mail
             return MailProvider.Instance().SendMail(mailInfo, smtpInfo);
         }
 
-        private static List<MailAttachment> ConvertAttachments(List<Attachment> attachments)
+        private static ICollection<MailAttachment> ConvertAttachments(List<Attachment> attachments)
         {
             return attachments.Select(
                     attachment =>
                     {
-                        using var ms = new MemoryStream();
-                        attachment.ContentStream.CopyTo(ms);
-                        return new MailAttachment(attachment.Name, ms.ToArray());
+                        using (var ms = new MemoryStream())
+                        {
+                            attachment.ContentStream.CopyTo(ms);
+                            return new MailAttachment(attachment.Name, ms.ToArray());
+                        }
                     })
                 .ToList();
         }

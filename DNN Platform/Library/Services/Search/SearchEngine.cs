@@ -6,7 +6,6 @@ namespace DotNetNuke.Services.Search
     using System;
     using System.Collections.Generic;
     using System.Data.SqlTypes;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Modules;
@@ -78,7 +77,6 @@ namespace DotNetNuke.Services.Search
             this.SchedulerItem.AddLogNote("<br/><b>Total Items Indexed: " + indexedSearchDocumentCount + "</b>");
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal bool CompactSearchIndexIfNeeded(ScheduleHistoryItem scheduleItem)
         {
             var searchHelper = SearchHelper.Instance;
@@ -138,7 +136,6 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>Commits (flushes) all added and deleted content to search engine's disk file.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void Commit()
         {
             InternalSearchController.Instance.Commit();

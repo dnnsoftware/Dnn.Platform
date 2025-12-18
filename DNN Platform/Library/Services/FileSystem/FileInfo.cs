@@ -29,9 +29,9 @@ namespace DotNetNuke.Services.FileSystem
         private DateTime? lastModificationTime;
         private int folderMappingID;
 
-        private int? width;
-        private int? height;
-        private string sha1Hash;
+        private int? width = null;
+        private int? height = null;
+        private string sha1Hash = null;
 
         /// <summary>Initializes a new instance of the <see cref="FileInfo"/> class.</summary>
         public FileInfo()

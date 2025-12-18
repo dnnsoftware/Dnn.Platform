@@ -5,7 +5,6 @@ namespace Dnn.ExportImport.Components.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
 
     using Dnn.ExportImport.Components.Common;
@@ -78,7 +77,6 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="exportJob">The export job.</param>
         /// <param name="exportFileInfo">The export file info.</param>
         /// <param name="summary">The summary.</param>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void CreatePackageManifest(ExportImportJob exportJob, ExportFileInfo exportFileInfo, ImportExportSummary summary)
         {
             var filePath = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportManifestName);

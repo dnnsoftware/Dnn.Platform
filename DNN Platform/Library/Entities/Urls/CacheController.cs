@@ -9,7 +9,6 @@ namespace DotNetNuke.Entities.Urls
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Configuration;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Threading;
     using System.Web.Caching;
@@ -80,10 +79,10 @@ namespace DotNetNuke.Entities.Urls
 
             using (portals.GetWriteLock())
             {
-                if (portals.TryGetValue(portalId, out var portal))
+                if (portals.ContainsKey(portalId))
                 {
                     // portal found, return
-                    pi = portal;
+                    pi = portals[portalId];
                 }
                 else
                 {
@@ -105,7 +104,8 @@ namespace DotNetNuke.Entities.Urls
                             // Home page redirect loop when using default language not en-US and first request with secondary language
                             // check for correct, default language code in portal object
                             string portalCultureCode = pi.CultureCode;
-                            if (portalCultureCode != null && !string.Equals(portalCultureCode, pi.DefaultLanguage, StringComparison.Ordinal))
+                            if (portalCultureCode != null &&
+                                string.CompareOrdinal(portalCultureCode, pi.DefaultLanguage) != 0)
                             {
                                 // portal culture code and default culture code are not the same.
                                 // this means we will get the incorrect home page tab id
@@ -131,20 +131,19 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // 912: capture as fall back any exception resulting from doing a portal lookup in 6.x
                         // this happens when portalId = -1
-                        // no long, no handling, just pass onwards with null portal
+                        // no long, no handling, just passonwards with null portal
                     }
                 }
             }
 
             if (exceptionOnNull && pi == null)
             {
-                throw new PortalNotFoundException("No Portal Found for portalid : " + portalId.ToString());
+                throw new NullReferenceException("No Portal Found for portalid : " + portalId.ToString());
             }
 
             return pi;
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void RemovedPageIndexCallBack(string k, object v, CacheItemRemovedReason r)
         {
             cacheItemRemovedReason = r;
@@ -636,7 +635,7 @@ namespace DotNetNuke.Entities.Urls
                 log.AddProperty("Cache Item Key", key);
                 log.AddProperty("PortalId", portalId.ToString());
                 log.AddProperty("Provider With Tabs", string.Join(",", providersWithTabsStr.ToArray()));
-                log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString());
+                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
                 LogController.Instance.AddLog(log);
             }
         }
@@ -664,15 +663,15 @@ namespace DotNetNuke.Entities.Urls
                     foreach (int tabId in provider.ProviderConfig.TabIds)
                     {
                         List<ExtensionUrlProvider> thisTabProviders;
-                        if (tabsProviders.TryGetValue(tabId, out var tabProviders))
+                        if (tabsProviders.ContainsKey(tabId))
                         {
-                            thisTabProviders = tabProviders;
+                            thisTabProviders = tabsProviders[tabId];
                             thisTabProviders.Add(provider);
                             tabsProviders[tabId] = thisTabProviders; // assign back to position in tabs
                         }
                         else
                         {
-                            thisTabProviders = [provider,];
+                            thisTabProviders = new List<ExtensionUrlProvider> { provider };
                             tabsProviders.Add(tabId, thisTabProviders);
                             tabIdStr.Add(tabId.ToString());
                         }
@@ -684,14 +683,14 @@ namespace DotNetNuke.Entities.Urls
                 // store the list of providers where the provider might be called with no valid TabId, because
                 // the provider allows for Urls with no DNN Page path, which means the TabId can't be identified
                 // by the Url Rewriter.  This identifies the Provider as using a 'siteRootRewrite'
-                if (!provider.AlwaysUsesDnnPagePath(portalId))
+                if (provider.AlwaysUsesDnnPagePath(portalId) == false)
                 {
                     List<ExtensionUrlProvider> noPathProviders;
 
                     // add this one
-                    if (tabsProviders.TryGetValue(RewriteController.SiteRootRewrite, out var pathProviders))
+                    if (tabsProviders.ContainsKey(RewriteController.SiteRootRewrite))
                     {
-                        noPathProviders = pathProviders;
+                        noPathProviders = tabsProviders[RewriteController.SiteRootRewrite];
                         noPathProviders.Add(provider);
                         tabsProviders[RewriteController.SiteRootRewrite] = noPathProviders;
 
@@ -699,7 +698,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        noPathProviders = [provider,];
+                        noPathProviders = new List<ExtensionUrlProvider> { provider };
                         tabsProviders.Add(RewriteController.SiteRootRewrite, noPathProviders);
                         tabIdStr.Add("NoPath");
                     }
@@ -727,7 +726,7 @@ namespace DotNetNuke.Entities.Urls
                 log.AddProperty("PortalId/TabIds", portalId.ToString() + "/" + string.Join(",", tabIdStr.ToArray()));
                 log.AddProperty("All Tabs Providers Count", allTabsProviders.Count.ToString());
                 log.AddProperty("Portal Tabs Providers Count", providerCount.ToString());
-                log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString());
+                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
                 LogController.Instance.AddLog(log);
             }
         }
@@ -746,7 +745,6 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="urlDict">A dictionary of tabs for all portals.</param>
         /// <param name="urlPortals">The portal IDs.</param>
         /// <param name="customAliasTabs">A dictionary of portals for which we've retrieved the tabs.</param>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void GetFriendlyUrlIndexFromCache(
             out SharedDictionary<int, SharedDictionary<string, string>> urlDict,
             out ConcurrentBag<int> urlPortals,
@@ -778,7 +776,6 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void GetPageIndexFromCache(
             out SharedDictionary<string, string> dict,
             out SharedDictionary<int, PathSizes> portalDepthInfo,
@@ -822,7 +819,7 @@ namespace DotNetNuke.Entities.Urls
 
             logRemovedReason = settings.LogCacheMessages;
 
-            SetPageCache(UrlDictKey, urlDict, new DNNCacheDependency(GetTabsCacheDependency(urlPortals)), settings, this.onRemovePageIndex);
+            SetPageCache(UrlDictKey, urlDict, new DNNCacheDependency(this.GetTabsCacheDependency(urlPortals)), settings, this.onRemovePageIndex);
             SetPageCache(UrlPortalsKey, urlPortals, settings);
             SetPageCache(CustomAliasTabsKey, customAliasTabs, settings);
 
@@ -837,7 +834,7 @@ namespace DotNetNuke.Entities.Urls
                     log.AddProperty("Item Count", urlDict.Values.Count.ToString());
                 }
 
-                log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString());
+                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
                 log.AddProperty("Item added to cache", "Url Portals object added to cache.  Key:" + UrlPortalsKey + "  Items: " + urlPortals.Count.ToString());
                 using (customAliasTabs.GetReadLock())
                 {
@@ -864,7 +861,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             // 783 : use cache dependency to manage page index instead of triggerDictionaryRebuild regex.
-            SetPageCache(PageIndexKey, tabDictionary, new DNNCacheDependency(GetTabsCacheDependency(portalIds)), settings, this.onRemovePageIndex);
+            SetPageCache(PageIndexKey, tabDictionary, new DNNCacheDependency(this.GetTabsCacheDependency(portalIds)), settings, this.onRemovePageIndex);
 
             SetPageCache(PageIndexDepthKey, portalDepthInfo, settings);
 
@@ -882,18 +879,17 @@ namespace DotNetNuke.Entities.Urls
                     log.AddProperty("Item Count", tabDictionary.Count.ToString());
                 }
 
-                log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString());
+                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
                 LogController.Instance.AddLog(log);
             }
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void StoreTabPathsInCache(int portalId, SharedDictionary<string, string> tabPathDictionary, FriendlyUrlSettings settings)
         {
             SetPageCache(
                 string.Format(TabPathsKey, portalId),
                 tabPathDictionary,
-                new DNNCacheDependency(GetTabsCacheDependency(new List<int> { portalId })),
+                new DNNCacheDependency(this.GetTabsCacheDependency(new List<int> { portalId })),
                 settings,
                 null);
         }
@@ -947,7 +943,7 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        private static CacheDependency GetTabsCacheDependency(IEnumerable<int> portalIds)
+        private CacheDependency GetTabsCacheDependency(IEnumerable<int> portalIds)
         {
             var keys = new List<string>();
             foreach (int portalId in portalIds)

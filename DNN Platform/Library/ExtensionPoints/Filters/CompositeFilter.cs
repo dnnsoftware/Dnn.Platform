@@ -9,12 +9,12 @@ namespace DotNetNuke.ExtensionPoints.Filters
 
     public class CompositeFilter : IExtensionPointFilter
     {
-        private readonly List<IExtensionPointFilter> filters;
+        private readonly IList<IExtensionPointFilter> filters;
 
         /// <summary>Initializes a new instance of the <see cref="CompositeFilter"/> class.</summary>
         public CompositeFilter()
         {
-            this.filters = [];
+            this.filters = new List<IExtensionPointFilter>();
         }
 
         public CompositeFilter And(IExtensionPointFilter filter)

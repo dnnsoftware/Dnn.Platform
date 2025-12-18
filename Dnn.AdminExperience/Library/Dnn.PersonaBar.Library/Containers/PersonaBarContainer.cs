@@ -115,7 +115,7 @@ namespace Dnn.PersonaBar.Library.Containers
         {
         }
 
-        private Dictionary<string, object> GetConfiguration(PortalSettings portalSettings)
+        private IDictionary<string, object> GetConfiguration(PortalSettings portalSettings)
         {
             var settings = new Dictionary<string, object>();
             var user = portalSettings.UserInfo;

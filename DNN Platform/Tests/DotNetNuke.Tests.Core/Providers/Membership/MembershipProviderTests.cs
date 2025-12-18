@@ -26,12 +26,6 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
     [TestFixture]
     public class MembershipProviderTests : DnnUnitTest
     {
-        [OneTimeSetUp]
-        public override void OneTimeSetUp()
-        {
-            base.OneTimeSetUp();
-        }
-
         [SetUp]
         public void SetUp()
         {

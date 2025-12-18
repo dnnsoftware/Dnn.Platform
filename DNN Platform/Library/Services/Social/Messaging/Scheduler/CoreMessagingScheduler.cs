@@ -452,126 +452,6 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             return template;
         }
 
-        /// <summary>Sends the digest.</summary>
-        /// <param name="messages">The messages.</param>
-        /// <param name="portalSettings">The portal settings.</param>
-        /// <param name="senderUser">The sender user.</param>
-        /// <param name="recipientUser">The recipient user.</param>
-        private static void SendDigest(IEnumerable<MessageRecipient> messages, PortalSettings portalSettings, UserInfo senderUser, UserInfo recipientUser)
-        {
-            var messageRecipients = messages as MessageRecipient[] ?? messages.ToArray();
-
-            if (!IsUserAbleToReceiveAnEmail(recipientUser))
-            {
-                MarkMessagesAsDispatched(messageRecipients);
-                return;
-            }
-
-            if (!IsSendEmailEnable(portalSettings.PortalId))
-            {
-                MarkMessagesAsDispatched(messageRecipients);
-                return;
-            }
-
-            var defaultLanguage = recipientUser.Profile.PreferredLocale;
-
-            var emailSubjectTemplate = GetEmailSubjectTemplate(portalSettings, defaultLanguage);
-            var emailBodyTemplate = GetEmailBodyTemplate(portalSettings, defaultLanguage);
-            var emailBodyItemTemplate = GetEmailBodyItemTemplate(portalSettings, defaultLanguage);
-
-            var emailBodyItemContent = messageRecipients.Aggregate(
-                string.Empty,
-                (current, message) => current + GetEmailItemContent(portalSettings, message, emailBodyItemTemplate));
-
-            var fromAddress = portalSettings.Email;
-            var toAddress = recipientUser.Email;
-
-            var senderName = GetSenderName(senderUser.DisplayName, portalSettings.PortalName);
-            var senderAddress = GetSenderAddress(senderName, fromAddress);
-
-            var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
-            var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, recipientUser);
-            body = RemoveHttpUrlsIfSiteisSSLEnabled(body, portalSettings);
-
-            Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);
-
-            MarkMessagesAsDispatched(messageRecipients);
-        }
-
-        /// <summary>Sends the message and attachments if configured to include them.</summary>
-        /// <param name="messageRecipient">The message recipient.</param>
-        private static void SendMessage(MessageRecipient messageRecipient)
-        {
-            var message = InternalMessagingController.Instance.GetMessage(messageRecipient.MessageID);
-
-            var toUser = UserController.Instance.GetUser(message.PortalID, messageRecipient.UserID);
-            if (!IsUserAbleToReceiveAnEmail(toUser))
-            {
-                InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
-                return;
-            }
-
-            if (!IsSendEmailEnable(message.PortalID))
-            {
-                InternalMessagingController.Instance.MarkMessageAsSent(messageRecipient.MessageID, messageRecipient.RecipientID);
-                return;
-            }
-
-            var defaultLanguage = toUser.Profile.PreferredLocale;
-            var portalSettings = new PortalSettings(message.PortalID);
-
-            var emailBodyTemplate = GetEmailBodyTemplate(portalSettings, defaultLanguage);
-            var emailBodyItemTemplate = GetEmailBodyItemTemplate(portalSettings, defaultLanguage);
-
-            var author = UserController.Instance.GetUser(message.PortalID, message.SenderUserID);
-            var fromAddress = (UserController.GetUserByEmail(portalSettings.PortalId, portalSettings.Email) != null) ?
-                string.Format("{0} < {1} >", UserController.GetUserByEmail(portalSettings.PortalId, portalSettings.Email).DisplayName, portalSettings.Email) : portalSettings.Email;
-            var toAddress = toUser.Email;
-
-            if (Mail.Mail.IsValidEmailAddress(toUser.Email, toUser.PortalID))
-            {
-                var senderName = GetSenderName(author.DisplayName, portalSettings.PortalName);
-                var senderAddress = GetSenderAddress(senderName, portalSettings.Email);
-                var emailBodyItemContent = GetEmailItemContent(portalSettings, messageRecipient, emailBodyItemTemplate);
-                var subject = InternalMessagingController.Instance.GetMessage(message.MessageID).Subject;
-                if (string.IsNullOrEmpty(subject))
-                {
-                    subject = string.Format(GetEmailSubjectTemplate(portalSettings, defaultLanguage), portalSettings.PortalName);
-                }
-
-                var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, toUser);
-                body = RemoveHttpUrlsIfSiteisSSLEnabled(body, portalSettings);
-
-                // Include the attachment in the email message if configured to do so
-                if (InternalMessagingController.Instance.AttachmentsAllowed(message.PortalID))
-                {
-                    Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body, CreateAttachments(message.MessageID).ToList());
-                }
-                else
-                {
-                    Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);
-                }
-            }
-
-            InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
-        }
-
-        /// <summary>Creates list of attachments for the specified message.</summary>
-        /// <param name="messageId">The message identifier.</param>
-        /// <returns>A list of attachments.</returns>
-        private static IEnumerable<Attachment> CreateAttachments(int messageId)
-        {
-            foreach (var fileView in InternalMessagingController.Instance.GetAttachments(messageId))
-            {
-                var file = FileManager.Instance.GetFile(fileView.FileId);
-                var fileContent = FileManager.Instance.GetFileContent(file);
-                if (file != null)
-                {
-                    yield return new Attachment(fileContent, file.ContentType);
-                }
-            }
-        }
-
         /// <summary>Handles the frequent digests.</summary>
         /// <param name="schedulerInstance">The scheduler instance.</param>
         /// <param name="remainingMessages">The remaining messages.</param>
@@ -654,7 +534,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                                 var senderUser = UserController.Instance.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
                                 var recipientUser = UserController.Instance.GetUser(messageDetails.PortalID, singleMessage.UserID);
 
-                                SendDigest(messageRecipients, portalSettings, senderUser, recipientUser);
+                                this.SendDigest(messageRecipients, portalSettings, senderUser, recipientUser);
                             }
 
                             messagesSent = messagesSent + 1;
@@ -678,6 +558,52 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             this.ScheduleHistoryItem.AddLogNote("Sent " + messagesSent + " " + frequency + " digest subscription emails.  ");
 
             return messagesSent;
+        }
+
+        /// <summary>Sends the digest.</summary>
+        /// <param name="messages">The messages.</param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="senderUser">The sender user.</param>
+        /// <param name="recipientUser">The recipient user.</param>
+        private void SendDigest(IEnumerable<MessageRecipient> messages, PortalSettings portalSettings, UserInfo senderUser, UserInfo recipientUser)
+        {
+            var messageRecipients = messages as MessageRecipient[] ?? messages.ToArray();
+
+            if (!IsUserAbleToReceiveAnEmail(recipientUser))
+            {
+                MarkMessagesAsDispatched(messageRecipients);
+                return;
+            }
+
+            if (!IsSendEmailEnable(portalSettings.PortalId))
+            {
+                MarkMessagesAsDispatched(messageRecipients);
+                return;
+            }
+
+            var defaultLanguage = recipientUser.Profile.PreferredLocale;
+
+            var emailSubjectTemplate = GetEmailSubjectTemplate(portalSettings, defaultLanguage);
+            var emailBodyTemplate = GetEmailBodyTemplate(portalSettings, defaultLanguage);
+            var emailBodyItemTemplate = GetEmailBodyItemTemplate(portalSettings, defaultLanguage);
+
+            var emailBodyItemContent = messageRecipients.Aggregate(
+                string.Empty,
+                (current, message) => current + GetEmailItemContent(portalSettings, message, emailBodyItemTemplate));
+
+            var fromAddress = portalSettings.Email;
+            var toAddress = recipientUser.Email;
+
+            var senderName = GetSenderName(senderUser.DisplayName, portalSettings.PortalName);
+            var senderAddress = GetSenderAddress(senderName, fromAddress);
+
+            var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
+            var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, recipientUser);
+            body = RemoveHttpUrlsIfSiteisSSLEnabled(body, portalSettings);
+
+            Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);
+
+            MarkMessagesAsDispatched(messageRecipients);
         }
 
         /// <summary>Gets the schedule item date setting.</summary>
@@ -728,7 +654,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                     {
                         foreach (var messageRecipient in batchMessages)
                         {
-                            SendMessage(messageRecipient);
+                            this.SendMessage(messageRecipient);
                             messagesSent = messagesSent + 1;
                         }
                     }
@@ -743,8 +669,82 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 }
             }
 
-            this.ScheduleHistoryItem.AddLogNote($"<br>Messaging Scheduler '{schedulerInstance}' sent a total of {messagesSent} message(s)");
+            this.ScheduleHistoryItem.AddLogNote(string.Format("<br>Messaging Scheduler '{0}' sent a total of {1} message(s)", schedulerInstance, messagesSent));
             return messagesSent;
+        }
+
+        /// <summary>Sends the message and attachments if configured to include them.</summary>
+        /// <param name="messageRecipient">The message recipient.</param>
+        private void SendMessage(MessageRecipient messageRecipient)
+        {
+            var message = InternalMessagingController.Instance.GetMessage(messageRecipient.MessageID);
+
+            var toUser = UserController.Instance.GetUser(message.PortalID, messageRecipient.UserID);
+            if (!IsUserAbleToReceiveAnEmail(toUser))
+            {
+                InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
+                return;
+            }
+
+            if (!IsSendEmailEnable(message.PortalID))
+            {
+                InternalMessagingController.Instance.MarkMessageAsSent(messageRecipient.MessageID, messageRecipient.RecipientID);
+                return;
+            }
+
+            var defaultLanguage = toUser.Profile.PreferredLocale;
+            var portalSettings = new PortalSettings(message.PortalID);
+
+            var emailBodyTemplate = GetEmailBodyTemplate(portalSettings, defaultLanguage);
+            var emailBodyItemTemplate = GetEmailBodyItemTemplate(portalSettings, defaultLanguage);
+
+            var author = UserController.Instance.GetUser(message.PortalID, message.SenderUserID);
+            var fromAddress = (UserController.GetUserByEmail(portalSettings.PortalId, portalSettings.Email) != null) ?
+                string.Format("{0} < {1} >", UserController.GetUserByEmail(portalSettings.PortalId, portalSettings.Email).DisplayName, portalSettings.Email) : portalSettings.Email;
+            var toAddress = toUser.Email;
+
+            if (Mail.Mail.IsValidEmailAddress(toUser.Email, toUser.PortalID))
+            {
+                var senderName = GetSenderName(author.DisplayName, portalSettings.PortalName);
+                var senderAddress = GetSenderAddress(senderName, portalSettings.Email);
+                var emailBodyItemContent = GetEmailItemContent(portalSettings, messageRecipient, emailBodyItemTemplate);
+                var subject = InternalMessagingController.Instance.GetMessage(message.MessageID).Subject;
+                if (string.IsNullOrEmpty(subject))
+                {
+                    subject = string.Format(GetEmailSubjectTemplate(portalSettings, defaultLanguage), portalSettings.PortalName);
+                }
+
+                var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, toUser);
+                body = RemoveHttpUrlsIfSiteisSSLEnabled(body, portalSettings);
+
+                // Include the attachment in the email message if configured to do so
+                if (InternalMessagingController.Instance.AttachmentsAllowed(message.PortalID))
+                {
+                    Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body, this.CreateAttachments(message.MessageID).ToList());
+                }
+                else
+                {
+                    Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);
+                }
+            }
+
+            InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
+        }
+
+        /// <summary>Creates list of attachments for the specified message.</summary>
+        /// <param name="messageId">The message identifier.</param>
+        /// <returns>A list of attachments.</returns>
+        private IEnumerable<Attachment> CreateAttachments(int messageId)
+        {
+            foreach (var fileView in InternalMessagingController.Instance.GetAttachments(messageId))
+            {
+                var file = FileManager.Instance.GetFile(fileView.FileId);
+                var fileContent = FileManager.Instance.GetFileContent(file);
+                if (file != null)
+                {
+                    yield return new Attachment(fileContent, file.ContentType);
+                }
+            }
         }
     }
 }

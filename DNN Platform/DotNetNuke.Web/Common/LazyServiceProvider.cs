@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.Common
         {
             if (this.serviceProvider is null)
             {
-                throw new InvalidOperationException("Cannot resolve services until the service provider is built.");
+                throw new Exception("Cannot resolve services until the service provider is built.");
             }
 
             return this.serviceProvider.GetService(serviceType);

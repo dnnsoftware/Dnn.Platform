@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Syndication
 {
-    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -18,7 +17,6 @@ namespace DotNetNuke.Services.Syndication
         private int tabId = Null.NullInteger;
 
         /// <summary>Gets the portal settings.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public PortalSettings Settings => Globals.GetPortalSettings();
 
         /// <summary>Gets the tab ID of the request.</summary>
@@ -56,7 +54,6 @@ namespace DotNetNuke.Services.Syndication
         }
 
         /// <summary>Gets the HTTP request.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public HttpRequest Request => HttpContext.Current.Request;
     }
 }

@@ -24,12 +24,6 @@ namespace DotNetNuke.Tests.Core.Services.Installer
     {
         private FakeServiceProvider serviceProvider;
 
-        [OneTimeSetUp]
-        public override void OneTimeSetUp()
-        {
-            base.OneTimeSetUp();
-        }
-
         [SetUp]
         public void SetUp()
         {

@@ -20,19 +20,25 @@ namespace Dnn.PersonaBar.SiteGroups.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteGroupsController));
 
-        private static IManagePortalGroups GroupManager => SiteGroups.Instance;
+        private IManagePortalGroups GroupManager
+        {
+            get
+            {
+                return SiteGroups.Instance;
+            }
+        }
 
         [HttpGet]
         public HttpResponseMessage GetSiteGroups()
         {
-            var groups = GroupManager.SiteGroups();
+            var groups = this.GroupManager.SiteGroups();
             return this.Request.CreateResponse(HttpStatusCode.OK, groups);
         }
 
         [HttpGet]
         public HttpResponseMessage GetAvailablePortals()
         {
-            var portals = GroupManager.AvailablePortals();
+            var portals = this.GroupManager.AvailablePortals();
             return this.Request.CreateResponse(HttpStatusCode.OK, portals);
         }
 
@@ -42,7 +48,7 @@ namespace Dnn.PersonaBar.SiteGroups.Services
         {
             try
             {
-                var id = GroupManager.Save(portalGroup);
+                var id = this.GroupManager.Save(portalGroup);
                 return this.Request.CreateResponse(HttpStatusCode.OK, id);
             }
             catch (Exception ex)
@@ -58,7 +64,7 @@ namespace Dnn.PersonaBar.SiteGroups.Services
         {
             try
             {
-                GroupManager.Delete(groupId);
+                this.GroupManager.Delete(groupId);
                 return this.Request.CreateResponse(HttpStatusCode.OK, groupId);
             }
             catch (Exception ex)

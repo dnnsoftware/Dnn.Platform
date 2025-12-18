@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Installer.Blocker
     public class InstallBlocker : ServiceLocator<IInstallBlocker, InstallBlocker>, IInstallBlocker
     {
         private const string InstallBlockerFile = "\\installBlocker.lock";
-        private bool fileCreated;
+        private bool fileCreated = false;
 
         /// <inheritdoc/>
         public void RegisterInstallBegining()

@@ -23,7 +23,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         public void DeleteLibrary(JavaScriptLibrary library)
         {
             DataProvider.Instance().ExecuteNonQuery("DeleteJavaScriptLibrary", library.JavaScriptLibraryID);
-            ClearCache();
+            this.ClearCache();
         }
 
         /// <summary>Get information about the latest version of a <see cref="JavaScriptLibrary"/> that matches the given <paramref name="predicate"/>.</summary>
@@ -74,7 +74,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 library.ObjectName,
                 library.PreferredScriptLocation,
                 library.CDNPath);
-            ClearCache();
+            this.ClearCache();
         }
 
         /// <inheritdoc/>
@@ -83,7 +83,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             return () => Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryController>();
         }
 
-        private static void ClearCache()
+        private void ClearCache()
         {
             DataCache.RemoveCache(DataCache.JavaScriptLibrariesCacheKey);
         }

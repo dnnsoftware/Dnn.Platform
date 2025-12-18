@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             var synonyms = SearchHelper.Instance.GetSynonyms(portalId, cultureCode, this.termAtt.Term).ToArray();
-            if (synonyms.Length == 0)
+            if (!synonyms.Any())
             {
                 return false;
             }

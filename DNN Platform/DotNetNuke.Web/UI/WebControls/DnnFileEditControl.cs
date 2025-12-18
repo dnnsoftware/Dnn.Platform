@@ -34,7 +34,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             // string postedValue = postCollection[string.Format("{0}FileControl$dnnFileUploadFileId", postDataKey)];
             string postedValue = this.fileControl.FileID.ToString();
-            if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
+            if (!presentValue.Equals(postedValue))
             {
                 this.Value = postedValue;
                 dataChanged = true;

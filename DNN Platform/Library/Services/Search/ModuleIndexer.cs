@@ -6,11 +6,9 @@ namespace DotNetNuke.Services.Search
     using System;
     using System.Collections.Generic;
     using System.Data.SqlTypes;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Modules;
-    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -33,7 +31,7 @@ namespace DotNetNuke.Services.Search
         private static readonly int ModuleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
         private readonly IBusinessControllerProvider businessControllerProvider;
-        private readonly Dictionary<int, IEnumerable<ModuleIndexInfo>> searchModules;
+        private readonly IDictionary<int, IEnumerable<ModuleIndexInfo>> searchModules;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleIndexer"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
@@ -61,12 +59,12 @@ namespace DotNetNuke.Services.Search
             if (needSearchModules)
             {
                 var portals = PortalController.Instance.GetPortals();
-                foreach (var portal in portals.Cast<IPortalInfo>())
+                foreach (var portal in portals.Cast<PortalInfo>())
                 {
-                    this.searchModules.Add(portal.PortalId, GetModulesForIndex(portal.PortalId));
+                    this.searchModules.Add(portal.PortalID, this.GetModulesForIndex(portal.PortalID));
                 }
 
-                this.searchModules.Add(Null.NullInteger, GetModulesForIndex(Null.NullInteger));
+                this.searchModules.Add(Null.NullInteger, this.GetModulesForIndex(Null.NullInteger));
             }
         }
 
@@ -78,8 +76,8 @@ namespace DotNetNuke.Services.Search
             var totalIndexed = 0;
             startDateLocal = this.GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new List<SearchDocument>();
-            var searchModuleCollection = this.searchModules.TryGetValue(portalId, out var indexes)
-                ? indexes.Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
+            var searchModuleCollection = this.searchModules.ContainsKey(portalId)
+                ? this.searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
                 : this.GetSearchModules(portalId);
 
             // Some modules update LastContentModifiedOnDate (e.g. Html module) when their content changes.
@@ -89,7 +87,7 @@ namespace DotNetNuke.Services.Search
                 !(SqlDateTime.MinValue.Value < module.LastContentModifiedOnDate && module.LastContentModifiedOnDate < startDateLocal))
                 .OrderBy(m => m.LastContentModifiedOnDate).ThenBy(m => m.ModuleID).ToArray();
 
-            if (modulesInDateRange.Length != 0)
+            if (modulesInDateRange.Any())
             {
                 foreach (var module in modulesInDateRange)
                 {
@@ -99,7 +97,7 @@ namespace DotNetNuke.Services.Search
                         var contentInfo = new SearchContentModuleInfo { ModSearchBaseControllerType = controller, ModInfo = module };
                         var searchItems = contentInfo.ModSearchBaseControllerType.GetModifiedSearchDocuments(module, startDateLocal.ToUniversalTime());
 
-                        if (searchItems is { Count: > 0, })
+                        if (searchItems != null && searchItems.Count > 0)
                         {
                             AddModuleMetaData(searchItems, module);
                             searchDocuments.AddRange(searchItems);
@@ -142,9 +140,8 @@ namespace DotNetNuke.Services.Search
         public List<SearchDocument> GetModuleMetaData(int portalId, DateTime startDate)
         {
             var searchDocuments = new List<SearchDocument>();
-            var searchModuleCollection = this.searchModules.TryGetValue(portalId, out var indexes)
-                ? indexes.Select(m => m.ModuleInfo)
-                : this.GetSearchModules(portalId, true);
+            var searchModuleCollection = this.searchModules.ContainsKey(portalId) ?
+                                            this.searchModules[portalId].Select(m => m.ModuleInfo) : this.GetSearchModules(portalId, true);
             foreach (ModuleInfo module in searchModuleCollection)
             {
                 try
@@ -191,10 +188,9 @@ namespace DotNetNuke.Services.Search
             return this.GetSearchModules(portalId, false);
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected IEnumerable<ModuleInfo> GetSearchModules(int portalId, bool allModules)
         {
-            return from mii in GetModulesForIndex(portalId)
+            return from mii in this.GetModulesForIndex(portalId)
                    where allModules || mii.SupportSearch
                    select mii.ModuleInfo;
         }
@@ -212,7 +208,7 @@ namespace DotNetNuke.Services.Search
                         module.ModuleID,
                         module.TabID,
                         module.PortalID);
-                throw new BusinessControllerClassException(message, ex);
+                throw new Exception(message, ex);
             }
             catch (Exception ex1)
             {
@@ -238,7 +234,7 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        private static List<ModuleIndexInfo> GetModulesForIndex(int portalId)
+        private IEnumerable<ModuleIndexInfo> GetModulesForIndex(int portalId)
         {
             var businessControllers = new Dictionary<string, bool>();
             var searchModuleIds = new HashSet<int>();
@@ -282,7 +278,7 @@ namespace DotNetNuke.Services.Search
         }
 
         private int IndexCollectedDocs(
-            Action<IEnumerable<SearchDocument>> indexer, List<SearchDocument> searchDocuments, int portalId, ScheduleHistoryItem schedule)
+            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, ScheduleHistoryItem schedule)
         {
             indexer.Invoke(searchDocuments);
             var total = searchDocuments.Count;

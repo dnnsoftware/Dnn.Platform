@@ -5,7 +5,6 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.IO.Compression;
     using System.Text;
@@ -300,7 +299,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="writer">The XmlWriter.</param>
         /// <param name="manifest">The manifest.</param>
         /// <remarks>This overload takes a package manifest and writes it to a Writer.</remarks>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void WriteManifest(XmlWriter writer, string manifest)
         {
             WriteManifestStartElement(writer);
@@ -388,7 +386,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
 
             // Close Package
-            WritePackageEndElement(writer);
+            this.WritePackageEndElement(writer);
 
             if (!packageFragment)
             {
@@ -492,7 +490,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     filePath = "[app_code]" + filePath;
                 }
 
-                if (!file.Extension.Equals(".dnn", StringComparison.OrdinalIgnoreCase) && (file.Attributes & FileAttributes.Hidden) == 0)
+                if (!file.Extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase) && (file.Attributes & FileAttributes.Hidden) == 0)
                 {
                     this.AddFile(Path.Combine(filePath, file.Name));
                 }
@@ -558,8 +556,8 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
 
                 if (
-                    !(fileName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase) || fileName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) || fileName.Equals("dotnetnuke", StringComparison.OrdinalIgnoreCase) ||
-                      fileName.Equals("dotnetnuke.webutility", StringComparison.OrdinalIgnoreCase) || fileName.Equals("dotnetnuke.webcontrols", StringComparison.OrdinalIgnoreCase)))
+                    !(fileName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase) || fileName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) || fileName.Equals("dotnetnuke", StringComparison.InvariantCultureIgnoreCase) ||
+                      fileName.Equals("dotnetnuke.webutility", StringComparison.InvariantCultureIgnoreCase) || fileName.Equals("dotnetnuke.webcontrols", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     this.AddFile(fileName + ".dll");
                 }
@@ -606,15 +604,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="writer">The XML writer to use.</param>
         protected virtual void WriteManifestComponent(XmlWriter writer)
         {
-        }
-
-        private static void WritePackageEndElement(XmlWriter writer)
-        {
-            // Close components Element
-            writer.WriteEndElement();
-
-            // Close package Element
-            writer.WriteEndElement();
         }
 
         private void AddFilesToZip(ZipArchive stream, IDictionary<string, InstallFile> files, string basePath)
@@ -692,8 +681,20 @@ namespace DotNetNuke.Services.Installer.Writers
             }
             finally
             {
-                strmZipFile?.Close();
+                if (strmZipFile != null)
+                {
+                    strmZipFile.Close();
+                }
             }
+        }
+
+        private void WritePackageEndElement(XmlWriter writer)
+        {
+            // Close components Element
+            writer.WriteEndElement();
+
+            // Close package Element
+            writer.WriteEndElement();
         }
 
         private void WritePackageStartElement(XmlWriter writer)

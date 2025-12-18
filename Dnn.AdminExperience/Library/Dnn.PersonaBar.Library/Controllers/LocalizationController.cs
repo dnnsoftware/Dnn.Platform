@@ -32,7 +32,7 @@ namespace Dnn.PersonaBar.Library.Controllers
         /// <inheritdoc/>
         public long GetResxTimeStamp(string resourceFile, Dto.Localization localization)
         {
-            return GetLastModifiedTime(resourceFile, this.CultureName, localization).Ticks;
+            return this.GetLastModifiedTime(resourceFile, this.CultureName, localization).Ticks;
         }
 
         /// <inheritdoc/>
@@ -109,17 +109,17 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         private static void AssertHeaderValue(IEnumerable<XmlNode> headers, string key, string value)
         {
-            var header = headers.FirstOrDefault(x => GetNameAttribute(x).Equals(key, StringComparison.OrdinalIgnoreCase));
+            var header = headers.FirstOrDefault(x => GetNameAttribute(x).Equals(key, StringComparison.InvariantCultureIgnoreCase));
             if (header != null)
             {
-                if (!header.InnerText.Equals(value, StringComparison.OrdinalIgnoreCase))
+                if (!header.InnerText.Equals(value, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    throw new LocalizationException($"Resource header '{key}' != '{value}'");
+                    throw new ApplicationException(string.Format("Resource header '{0}' != '{1}'", key, value));
                 }
             }
             else
             {
-                throw new LocalizationException($"Resource header '{key}' is missing");
+                throw new ApplicationException(string.Format("Resource header '{0}' is missing", key));
             }
         }
 
@@ -165,7 +165,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
         }
 
-        private static DateTime GetLastModifiedTime(string resourceFile, string culture, Dto.Localization localization)
+        private DateTime GetLastModifiedTime(string resourceFile, string culture, Dto.Localization localization)
         {
             Requires.NotNullOrEmpty("culture", culture);
 
@@ -176,7 +176,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 return (DateTime)DataCache.GetCache(cacheKey);
             }
 
-            var lastModifiedDate = GetLastModifiedTimeInternal(resourceFile, culture);
+            var lastModifiedDate = this.GetLastModifiedTimeInternal(resourceFile, culture);
 
             DataCache.SetCache(
                 cacheKey,
@@ -190,7 +190,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             return lastModifiedDate;
         }
 
-        private static DateTime GetLastModifiedTimeInternal(string resourceFile, string culture)
+        private DateTime GetLastModifiedTimeInternal(string resourceFile, string culture)
         {
             var cultureSpecificFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile.Replace(".resx", string.Empty) + "." + culture + ".resx");
             var lastModifiedDate = DateTime.MinValue;

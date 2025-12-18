@@ -43,7 +43,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
                 {
                     Records = lstOut.Count,
                     Data = lstOut,
-                    FieldOrder = ["Name", "Description", "Version", "Category",],
+                    FieldOrder = new[]
+                    {
+                    "Name", "Description", "Version", "Category",
+                    },
                 };
             }
             catch (Exception ex)

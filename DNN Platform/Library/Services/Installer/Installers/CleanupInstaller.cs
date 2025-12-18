@@ -183,7 +183,7 @@ namespace DotNetNuke.Services.Installer.Installers
             validPath = validPath.TrimEnd(Path.DirectorySeparatorChar);
 
             if (!validPath.StartsWith(appPath, StringComparison.InvariantCultureIgnoreCase) ||
-                string.Equals(validPath, appPath, StringComparison.OrdinalIgnoreCase))
+                string.Equals(validPath, appPath, StringComparison.InvariantCultureIgnoreCase))
             {
                 validPath = null;
                 return false; // not the app root or paths outside the app root

@@ -24,19 +24,24 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         /// <inheritdoc/>
         public bool LazyLoad => false;
 
-        private static string LocalResourceFile => "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx";
+        private string LocalResourceFile
+        {
+            get { return "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx"; }
+        }
 
         public static string LoadScript(string name)
         {
-            var resourceName = $"Dnn.PersonaBar.Extensions.Components.Security.Resources.{name}.resources";
-            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-            if (stream != null)
+            var resourceName = string.Format("Dnn.PersonaBar.Extensions.Components.Security.Resources.{0}.resources", name);
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
             {
-                var script = new StreamReader(stream).ReadToEnd();
-                return script.Replace("%SiteRoot%", Globals.ApplicationMapPath);
-            }
+                if (stream != null)
+                {
+                    var script = new StreamReader(stream).ReadToEnd();
+                    return script.Replace("%SiteRoot%", Globals.ApplicationMapPath);
+                }
 
-            return null;
+                return null;
+            }
         }
 
         /// <inheritdoc/>
@@ -58,7 +63,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 if (!VerifyScript(name))
                 {
                     result.Severity = SeverityEnum.Warning;
-                    result.Notes.Add(Localization.GetString(name + ".Error", LocalResourceFile));
+                    result.Notes.Add(Localization.GetString(name + ".Error", this.LocalResourceFile));
                 }
             }
 
@@ -75,38 +80,38 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                     if (name == "ExecuteCommand")
                     {
                         // since sql error is expected here, do not go through DataProvider so that no error will be logged
-                        using var connection = new SqlConnection(DataProvider.Instance().ConnectionString);
-                        try
+                        using (var connection = new SqlConnection(DataProvider.Instance().ConnectionString))
                         {
-                            connection.Open();
-                            var command = new SqlCommand(script, connection) { CommandType = CommandType.Text };
-                            using var reader = command.ExecuteReader();
-                            if (reader.Read())
+                            try
                             {
-                                if (!int.TryParse(reader[0].ToString(), out var affectCount))
+                                connection.Open();
+                                var command = new SqlCommand(script, connection) { CommandType = CommandType.Text };
+                                using (var reader = command.ExecuteReader())
                                 {
-                                    affectCount = 0;
+                                    if (reader.Read())
+                                    {
+                                        int affectCount;
+                                        int.TryParse(reader[0].ToString(), out affectCount);
+                                        return affectCount == 0;
+                                    }
                                 }
-
-                                return affectCount == 0;
                             }
-                        }
-                        catch (Exception)
-                        {
-                            // ignore;
+                            catch (Exception)
+                            {
+                                // ignore;
+                            }
                         }
                     }
                     else
                     {
-                        using var reader = DataProvider.Instance().ExecuteSQL(script);
-                        if (reader != null && reader.Read())
+                        using (var reader = DataProvider.Instance().ExecuteSQL(script))
                         {
-                            if (!int.TryParse(reader[0].ToString(), out var affectCount))
+                            if (reader != null && reader.Read())
                             {
-                                affectCount = 0;
+                                int affectCount;
+                                int.TryParse(reader[0].ToString(), out affectCount);
+                                return affectCount == 0;
                             }
-
-                            return affectCount == 0;
                         }
                     }
                 }

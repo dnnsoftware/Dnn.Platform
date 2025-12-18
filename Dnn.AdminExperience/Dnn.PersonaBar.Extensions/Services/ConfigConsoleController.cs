@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
                 {
                     Success = true,
                     Results = configFileList,
-                    TotalResults = configFileList.Count,
+                    TotalResults = configFileList.Count(),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);

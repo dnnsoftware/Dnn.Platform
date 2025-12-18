@@ -213,13 +213,13 @@ namespace DotNetNuke.Services.Authentication
         public static bool HasSocialAuthenticationEnabled(UserControl control = null)
         {
             return (from a in GetEnabledAuthenticationServices()
-                    let enabled = (a.AuthenticationType.Equals("Facebook", StringComparison.Ordinal)
-                                     || a.AuthenticationType.Equals("Google", StringComparison.Ordinal)
-                                     || a.AuthenticationType.Equals("Live", StringComparison.Ordinal)
-                                     || a.AuthenticationType.Equals("Twitter", StringComparison.Ordinal))
+                    let enabled = (a.AuthenticationType.Equals("Facebook")
+                                     || a.AuthenticationType.Equals("Google")
+                                     || a.AuthenticationType.Equals("Live")
+                                     || a.AuthenticationType.Equals("Twitter"))
                                   ? IsEnabledForPortal(a, PortalSettings.Current.PortalId)
                                   : !string.IsNullOrEmpty(a.LoginControlSrc) && ((control?.LoadControl("~/" + a.LoginControlSrc) as AuthenticationLoginBase)?.Enabled ?? true)
-                    where !a.AuthenticationType.Equals("DNN", StringComparison.Ordinal) && enabled
+                    where !a.AuthenticationType.Equals("DNN") && enabled
                     select a).Any();
         }
 

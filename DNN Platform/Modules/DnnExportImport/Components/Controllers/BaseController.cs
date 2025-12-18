@@ -6,7 +6,6 @@ namespace Dnn.ExportImport.Components.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
 
@@ -66,7 +65,6 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="portalId">The portal ID.</param>
         /// <param name="jobId">The job ID.</param>
         /// <returns>A value indicating whether the job was found.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool CancelJob(int portalId, int jobId)
         {
             var controller = EntitiesController.Instance;
@@ -85,7 +83,6 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="portalId">The portal ID.</param>
         /// <param name="jobId">The job ID.</param>
         /// <returns>A value indicating whether the job was found.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool RemoveJob(int portalId, int jobId)
         {
             var controller = EntitiesController.Instance;
@@ -111,7 +108,6 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="jobType">The job type.</param>
         /// <param name="keywords">Keywords.</param>
         /// <returns>An <see cref="AllJobsResult"/> instance.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public AllJobsResult GetAllJobs(int portalId, int currentPortalId, int? pageSize, int? pageIndex, int? jobType, string keywords)
         {
             if (pageIndex < 0)
@@ -171,7 +167,6 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="portalId">The portal ID.</param>
         /// <param name="jobType">The job type.</param>
         /// <returns>The last job time.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public DateTime? GetLastJobTime(int portalId, JobType jobType)
         {
             return EntitiesController.Instance.GetLastJobTime(portalId, jobType);
@@ -282,7 +277,6 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="userId">The user ID.</param>
         /// <param name="jobId">The job ID.</param>
         /// <param name="logTypeKey">The log type key.</param>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected void AddEventLog(int portalId, int userId, int jobId, string logTypeKey)
         {
             var objSecurity = PortalSecurity.Instance;

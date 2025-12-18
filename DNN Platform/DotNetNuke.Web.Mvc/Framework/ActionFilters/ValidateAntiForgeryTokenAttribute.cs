@@ -6,7 +6,6 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading;
     using System.Web;
@@ -51,7 +50,6 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             return true;
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected string GetAntiForgeryCookieValue(HttpContextBase context)
         {
             foreach (var cookieValue in context.Request.Headers.GetValues("Cookie"))

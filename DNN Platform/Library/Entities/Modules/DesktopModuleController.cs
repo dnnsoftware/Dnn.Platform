@@ -6,7 +6,6 @@ namespace DotNetNuke.Entities.Modules
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Xml;
 
@@ -368,7 +367,6 @@ namespace DotNetNuke.Entities.Modules
 
         /// <summary>DeleteDesktopModule deletes a Desktop Module By ID.</summary>
         /// <param name="desktopModuleID">The ID of the Desktop Module to delete.</param>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void DeleteDesktopModule(int desktopModuleID)
         {
             DataProvider.DeleteDesktopModule(desktopModuleID);
@@ -386,10 +384,9 @@ namespace DotNetNuke.Entities.Modules
             this.UpdateModuleInterfaces(ref desktopModuleInfo, (UserController.Instance.GetCurrentUserInfo() == null) ? string.Empty : UserController.Instance.GetCurrentUserInfo().Username, true);
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void UpdateModuleInterfaces(ref DesktopModuleInfo desktopModuleInfo, string sender, bool forceAppRestart)
         {
-            CheckInterfacesImplementation(ref desktopModuleInfo);
+            this.CheckInterfacesImplementation(ref desktopModuleInfo);
             var oAppStartMessage = new EventMessage
             {
                 Sender = sender,
@@ -606,8 +603,8 @@ namespace DotNetNuke.Entities.Modules
 
         private static void CreateContentItem(DesktopModuleInfo desktopModule)
         {
-            var typeController = new ContentTypeController();
-            var contentType = ContentType.DesktopModule;
+            IContentTypeController typeController = new ContentTypeController();
+            ContentType contentType = ContentType.DesktopModule;
 
             if (contentType == null)
             {
@@ -615,14 +612,14 @@ namespace DotNetNuke.Entities.Modules
                 contentType.ContentTypeId = typeController.AddContentType(contentType);
             }
 
-            var contentController = Util.GetContentController();
+            IContentController contentController = Util.GetContentController();
             desktopModule.Content = desktopModule.FriendlyName;
             desktopModule.Indexed = false;
             desktopModule.ContentTypeId = contentType.ContentTypeId;
             desktopModule.ContentItemId = contentController.AddContentItem(desktopModule);
         }
 
-        private static void CheckInterfacesImplementation(ref DesktopModuleInfo desktopModuleInfo)
+        private void CheckInterfacesImplementation(ref DesktopModuleInfo desktopModuleInfo)
         {
             var businessControllerType = Reflection.CreateType(desktopModuleInfo.BusinessControllerClass);
 

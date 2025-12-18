@@ -121,9 +121,9 @@ namespace DotNetNuke.Web.UI.WebControls
             additionalFilters.Add("SortAscending", this.SortAscending.ToString());
 
             // Currently Not Used by the SPROC
-            var filterUser = this.Filters.TryGetValue("UserId", out var userId) && userId != null ? new UserInfo { UserID = int.Parse(userId) } : new UserInfo() { PortalID = this.currentUser.PortalID };
-            var role = this.Filters.TryGetValue("RoleId", out var roleId) && roleId != null ? new UserRoleInfo { RoleID = int.Parse(roleId) } : null;
-            var relationship = this.Filters.TryGetValue("RelationshipTypeId", out var relationshipTypeId) && relationshipTypeId != null ? new RelationshipType() { RelationshipTypeId = int.Parse(relationshipTypeId) } : null;
+            var filterUser = this.Filters.ContainsKey("UserId") && this.Filters["UserId"] != null ? new UserInfo() { UserID = int.Parse(this.Filters["UserId"]) } : new UserInfo() { PortalID = this.currentUser.PortalID };
+            var role = this.Filters.ContainsKey("RoleId") && this.Filters["RoleId"] != null ? new UserRoleInfo() { RoleID = int.Parse(this.Filters["RoleId"]) } : null;
+            var relationship = this.Filters.ContainsKey("RelationshipTypeId") && this.Filters["RelationshipTypeId"] != null ? new RelationshipType() { RelationshipTypeId = int.Parse(this.Filters["RelationshipTypeId"]) } : null;
 
             foreach (var filter in this.Filters.Where(filter => !additionalFilters.ContainsKey(filter.Key)))
             {

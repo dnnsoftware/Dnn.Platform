@@ -287,7 +287,7 @@ namespace DotNetNuke.Entities.Portals
 
             // remove parent folder if its empty.
             var parentFolder = Directory.GetParent(physicalPath);
-            while (parentFolder != null && !parentFolder.FullName.Equals(serverPath.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
+            while (parentFolder != null && !parentFolder.FullName.Equals(serverPath.TrimEnd('\\'), StringComparison.InvariantCultureIgnoreCase))
             {
                 if (parentFolder.GetDirectories().Length + parentFolder.GetFiles().Length == 0)
                 {
@@ -710,7 +710,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.OrdinalIgnoreCase);
+                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
                 }
             }
             catch (Exception exc)
@@ -761,7 +761,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.OrdinalIgnoreCase);
+                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
                 }
             }
             catch (Exception exc)
@@ -1155,9 +1155,9 @@ namespace DotNetNuke.Entities.Portals
 
             // PortalSettings IS Nothing - probably means we haven't set it yet (in Begin Request)
             // so try detecting the user's cookie
-            if (context.Request["language"] != null)
+            if (HttpContext.Current.Request["language"] != null)
             {
-                language = context.Request["language"];
+                language = HttpContext.Current.Request["language"];
                 isDefaultLanguage = false;
             }
 
@@ -1355,7 +1355,7 @@ namespace DotNetNuke.Entities.Portals
             else
             {
                 message += Localization.GetString("CreatePortal.Error");
-                throw new CreatePortalException(message);
+                throw new Exception(message);
             }
 
             try
@@ -1436,7 +1436,7 @@ namespace DotNetNuke.Entities.Portals
             else
             {
                 message += Localization.GetString("CreatePortal.Error");
-                throw new CreatePortalException(message);
+                throw new Exception(message);
             }
 
             try
@@ -1471,12 +1471,12 @@ namespace DotNetNuke.Entities.Portals
             {
                 var currentFileName = Path.GetFileName(templateFilePath);
                 var langs = languageFileNames
-                                .Where(x => GetTemplateName(x).Equals(currentFileName, StringComparison.OrdinalIgnoreCase))
-                                .Select(x => GetCultureCode(x))
+                                .Where(x => this.GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase))
+                                .Select(x => this.GetCultureCode(x))
                                 .Distinct()
                                 .ToList();
 
-                if (langs.Count != 0)
+                if (langs.Any())
                 {
                     langs.ForEach(x => list.Add(new PortalTemplateInfo(this.hostSettings, templateFilePath, x)));
                 }
@@ -2157,7 +2157,7 @@ namespace DotNetNuke.Entities.Portals
             return objPortalSettings;
         }
 
-        private static PortalInfo GetPortalInternal(PortalController portalController, int portalId, string cultureCode)
+        private static PortalInfo GetPortalInternal(IPortalController portalController, int portalId, string cultureCode)
         {
             return portalController.GetPortalList(cultureCode).SingleOrDefault(p => ((IPortalInfo)p).PortalId == portalId);
         }
@@ -2287,7 +2287,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.OrdinalIgnoreCase);
+                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
                 }
             }
             catch (Exception exc)
@@ -2398,18 +2398,6 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static string GetCultureCode(string languageFileName)
-        {
-            // e.g. "default template.template.en-US.resx"
-            return languageFileName.GetLocaleCodeFromFileName();
-        }
-
-        private static string GetTemplateName(string languageFileName)
-        {
-            // e.g. "default template.template.en-US.resx"
-            return languageFileName.GetFileNameFromLocalizedResxFile();
-        }
-
         private void CreatePortalInternal(int portalId, string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal, ref string message)
         {
             // Add default workflows
@@ -2429,12 +2417,12 @@ namespace DotNetNuke.Entities.Portals
                 homeDirectory = "Portals/" + portalId;
             }
 
-            string mappedHomeDirectory = string.Format($@"{Globals.ApplicationMapPath}\{homeDirectory}\").Replace("/", @"\");
+            string mappedHomeDirectory = string.Format(Globals.ApplicationMapPath + "\\" + homeDirectory + "\\").Replace("/", "\\");
 
             if (Directory.Exists(mappedHomeDirectory))
             {
                 message += string.Format(Localization.GetString("CreatePortalHomeFolderExists.Error"), homeDirectory);
-                throw new CreatePortalException(message);
+                throw new Exception(message);
             }
 
             message += portalTemplateImporter.CreateProfileDefinitions(portalId);
@@ -2465,7 +2453,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    throw new CreatePortalException(message);
+                    throw new Exception(message);
                 }
 
                 if (message == Null.NullString)
@@ -2476,7 +2464,7 @@ namespace DotNetNuke.Entities.Portals
                         Directory.CreateDirectory(mappedHomeDirectory);
 
                         // ensure that the Templates folder exists
-                        string templateFolder = $"{mappedHomeDirectory}Templates";
+                        string templateFolder = string.Format("{0}Templates", mappedHomeDirectory);
                         if (!Directory.Exists(templateFolder))
                         {
                             Directory.CreateDirectory(templateFolder);
@@ -2506,7 +2494,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    throw new CreatePortalException(message);
+                    throw new Exception(message);
                 }
 
                 if (message == Null.NullString)
@@ -2523,7 +2511,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    throw new CreatePortalException(message);
+                    throw new Exception(message);
                 }
 
                 LocaleCollection newPortalLocales = null;
@@ -2542,7 +2530,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    throw new CreatePortalException(message);
+                    throw new Exception(message);
                 }
 
                 if (message == Null.NullString)
@@ -2663,13 +2651,13 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    throw new CreatePortalException(message);
+                    throw new Exception(message);
                 }
             }
             else
             {
                 DeletePortalInternal(portalId);
-                throw new CreatePortalException(message);
+                throw new Exception(message);
             }
         }
 
@@ -2713,6 +2701,12 @@ namespace DotNetNuke.Entities.Portals
             return ensuredSettingValue;
         }
 
+        private string GetCultureCode(string languageFileName)
+        {
+            // e.g. "default template.template.en-US.resx"
+            return languageFileName.GetLocaleCodeFromFileName();
+        }
+
         private FolderMappingInfo GetFolderMappingFromConfig(FolderTypeConfig node, int portalId)
         {
             var folderMapping = new FolderMappingInfo
@@ -2729,6 +2723,12 @@ namespace DotNetNuke.Entities.Portals
             }
 
             return folderMapping;
+        }
+
+        private string GetTemplateName(string languageFileName)
+        {
+            // e.g. "default template.template.en-US.resx"
+            return languageFileName.GetFileNameFromLocalizedResxFile();
         }
 
         private void UpdatePortalInternal(PortalInfo portal, bool clearCache)

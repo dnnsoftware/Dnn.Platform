@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.ModuleCache
         /// <inheritdoc/>
         public override int GetItemCount(int tabModuleId)
         {
-            return GetCacheKeys(tabModuleId).Count;
+            return this.GetCacheKeys(tabModuleId).Count;
         }
 
         /// <inheritdoc/>
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.ModuleCache
             // throw new NotSupportedException();
         }
 
-        private static List<string> GetCacheKeys(int tabModuleId)
+        private List<string> GetCacheKeys(int tabModuleId)
         {
             var keys = new List<string>();
             IDictionaryEnumerator cacheEnum = CachingProvider.Instance().GetEnumerator();

@@ -69,7 +69,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (removeOldestVersions)
             {
-                this.RemoveOldestVersions(file);
+                this.RemoveOldestsVersions(file);
             }
 
             if (published)
@@ -103,7 +103,7 @@ namespace DotNetNuke.Services.FileSystem
                     file.FileName);
 
             // Notify File Changed
-            OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
+            this.OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         /// <inheritdoc/>
@@ -138,7 +138,7 @@ namespace DotNetNuke.Services.FileSystem
                 }
 
                 // Notify File Changed
-                OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
+                this.OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
@@ -235,7 +235,7 @@ namespace DotNetNuke.Services.FileSystem
 
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
-            return GetVersionContent(folderProvider, folder, file, version);
+            return this.GetVersionContent(folderProvider, folder, file, version);
         }
 
         /// <inheritdoc/>
@@ -249,7 +249,7 @@ namespace DotNetNuke.Services.FileSystem
 
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
-            using (var content = GetVersionContent(folderProvider, folder, file, version))
+            using (var content = this.GetVersionContent(folderProvider, folder, file, version))
             {
                 FileManager.Instance.AddFile(folder, file.FileName, content, true, true, file.ContentType, userId);
             }
@@ -264,12 +264,12 @@ namespace DotNetNuke.Services.FileSystem
             file.Height = fileVersion.Height;
             FileManager.Instance.UpdateFile(file);
 
-            this.RemoveOldestVersions(file);
+            this.RemoveOldestsVersions(file);
         }
 
         internal static string GetVersionedFilename(IFileInfo file, int version)
         {
-            return $"{file.FileId}_{version}.v.resources";
+            return string.Format("{0}_{1}.v.resources", file.FileId, version);
         }
 
         private static void RenameFile(IFileInfo file, string newFileName)
@@ -284,7 +284,7 @@ namespace DotNetNuke.Services.FileSystem
             DataCache.RemoveCache("GetFileById" + file.FileId);
         }
 
-        private static void OnFileChanged(IFileInfo fileInfo, int userId)
+        private void OnFileChanged(IFileInfo fileInfo, int userId)
         {
             EventManager.Instance.OnFileChanged(new FileChangedEventArgs
             {
@@ -293,12 +293,12 @@ namespace DotNetNuke.Services.FileSystem
             });
         }
 
-        private static Stream GetVersionContent(FolderProvider provider, IFolderInfo folder, IFileInfo file, int version)
+        private Stream GetVersionContent(FolderProvider provider, IFolderInfo folder, IFileInfo file, int version)
         {
             return provider.GetFileStream(folder, file, version);
         }
 
-        private void RemoveOldestVersions(IFileInfo file)
+        private void RemoveOldestsVersions(IFileInfo file)
         {
             var portalId = FolderManager.Instance.GetFolder(file.FolderId).PortalID;
             var versions = this.GetFileVersions(file);

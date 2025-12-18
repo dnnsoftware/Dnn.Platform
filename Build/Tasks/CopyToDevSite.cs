@@ -15,13 +15,11 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>A cake task to copy the built website to the dev site's directory.</summary>
     public sealed class CopyToDevSite : FrostingTask<Context>
     {
-        private static readonly string[] IncludeAll = ["**/*",];
-
         /// <inheritdoc/>
         public override void Run(Context context)
         {
             context.CleanDirectory(context.Settings.WebsitePath);
-            var files = context.GetFilesByPatterns(context.WebsiteFolder, IncludeAll, context.PackagingPatterns.InstallExclude);
+            var files = context.GetFilesByPatterns(context.WebsiteFolder, new[] { "**/*" }, context.PackagingPatterns.InstallExclude);
             files.Add(context.GetFilesByPatterns(context.WebsiteFolder, context.PackagingPatterns.InstallInclude));
             context.Information("Copying {0} files to {1}", files.Count, context.Settings.WebsitePath);
             context.CopyFiles(files, context.Settings.WebsitePath, true);

@@ -61,16 +61,16 @@ namespace DotNetNuke.Services.Exceptions
             }
 
             var st = new StackTrace(e, true);
-            var sf = st.GetFrame(0);
+            StackFrame sf = st.GetFrame(0);
             if (sf != null)
             {
                 try
                 {
                     // Get the corresponding method for that stack frame.
-                    var mi = sf.GetMethod();
+                    MemberInfo mi = sf.GetMethod();
 
                     // Get the namespace where that method is defined.
-                    var res = mi.DeclaringType.Namespace + ".";
+                    string res = mi.DeclaringType.Namespace + ".";
 
                     // Append the type name.
                     res += mi.DeclaringType.Name + ".";

@@ -99,7 +99,6 @@ namespace DotNetNuke.Entities.Modules.Prompt
 
             var totalPages = (total / max) + (total % max == 0 ? 0 : 1);
             var pageNo = this.Page > 0 ? this.Page : 1;
-            var count = results.Count();
             return new ConsoleResultModel
             {
                 Data = results,
@@ -110,8 +109,8 @@ namespace DotNetNuke.Entities.Modules.Prompt
                     TotalRecords = total,
                     PageSize = max,
                 },
-                Records = count,
-                Output = count == 0 ? this.LocalizeString("Prompt_NoModules") : string.Empty,
+                Records = results.Count(),
+                Output = results.Count() == 0 ? this.LocalizeString("Prompt_NoModules") : string.Empty,
             };
         }
     }

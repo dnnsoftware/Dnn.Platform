@@ -14,7 +14,6 @@ namespace DotNetNuke.HttpModules.RequestFilter
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Cache;
-    using DotNetNuke.Services.Exceptions;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -84,7 +83,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
                         }
                         catch (Exception ex)
                         {
-                            DotNetNuke.Services.Exceptions.Exceptions.LogException(new RequestFilterException($"Unable to read RequestFilter Rule: {ruleList.Current.OuterXml}:", ex));
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(new Exception(string.Format("Unable to read RequestFilter Rule: {0}:", ruleList.Current.OuterXml), ex));
                         }
                     }
                 }

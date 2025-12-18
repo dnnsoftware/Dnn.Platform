@@ -4,7 +4,6 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
 
     using DotNetNuke.Entities.Modules.Actions;
@@ -40,11 +39,22 @@ namespace DotNetNuke.UI.Containers
         public event ActionEventHandler Action;
 
         /// <summary>Gets a value indicating whether the page is in edit mode.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public bool EditMode => Personalization.GetUserMode() != PortalSettings.Mode.View;
+        public bool EditMode
+        {
+            get
+            {
+                return Personalization.GetUserMode() != PortalSettings.Mode.View;
+            }
+        }
 
         /// <summary>Gets a value indicating whether the action supports icons.</summary>
-        public bool SupportsIcons => this.m_supportsIcons;
+        public bool SupportsIcons
+        {
+            get
+            {
+                return this.m_supportsIcons;
+            }
+        }
 
         /// <summary>Gets the ActionManager instance for this Action control.</summary>
         /// <returns>An ActionManager object.</returns>

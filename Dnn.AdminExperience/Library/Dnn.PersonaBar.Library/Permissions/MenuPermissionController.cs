@@ -33,10 +33,9 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MenuPermissionController));
 
-        private static readonly DataService DataService = new DataService();
+        private static readonly IDataService DataService = new DataService();
         private static readonly object ThreadLocker = new object();
         private static readonly object DefaultPermissionLocker = new object();
-        private static readonly char[] RoleSeparator = ['|',];
 
         public static bool CanView(int portalId, MenuItem menu)
         {
@@ -247,7 +246,7 @@ namespace Dnn.PersonaBar.Library.Permissions
         {
             try
             {
-                var defaultPermissions = roleName.Split(RoleSeparator, StringSplitOptions.RemoveEmptyEntries).ToList();
+                var defaultPermissions = roleName.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 if (defaultPermissions.Count > 1)
                 {
                     roleName = defaultPermissions[0];

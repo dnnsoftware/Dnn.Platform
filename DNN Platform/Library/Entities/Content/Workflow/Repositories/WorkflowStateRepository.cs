@@ -60,7 +60,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 rep.Insert(state);
             }
 
-            CacheWorkflowState(state);
+            this.CacheWorkflowState(state);
         }
 
         /// <inheritdoc/>
@@ -83,7 +83,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
             DataCache.RemoveCache(GetWorkflowStateKey(state.StateID));
             DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
-            CacheWorkflowState(state);
+            this.CacheWorkflowState(state);
         }
 
         /// <inheritdoc/>
@@ -123,12 +123,13 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             return string.Format(DataCache.ContentWorkflowStateCacheKey, stateId);
         }
 
-        private static void CacheWorkflowState(WorkflowState state)
+        private void CacheWorkflowState(WorkflowState state)
         {
             if (state.StateID > 0)
             {
                 CBO.GetCachedObject<WorkflowState>(
-                    new CacheItemArgs(GetWorkflowStateKey(state.StateID), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
+                    new CacheItemArgs(
+                GetWorkflowStateKey(state.StateID), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
                     _ => state);
             }
         }

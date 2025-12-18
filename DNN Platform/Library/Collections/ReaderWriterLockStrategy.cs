@@ -117,7 +117,7 @@ namespace DotNetNuke.Collections.Internal
             }
             else
             {
-                throw new LockTimeoutException("ReaderWriterLockStrategy.GetReadLock timed out");
+                throw new ApplicationException("ReaderWriterLockStrategy.GetReadLock timed out");
             }
         }
 
@@ -138,7 +138,7 @@ namespace DotNetNuke.Collections.Internal
             }
             else
             {
-                throw new LockTimeoutException("ReaderWriterLockStrategy.GetWriteLock timed out");
+                throw new ApplicationException("ReaderWriterLockStrategy.GetWriteLock timed out");
             }
         }
 

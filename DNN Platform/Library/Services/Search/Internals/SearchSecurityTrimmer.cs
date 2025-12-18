@@ -88,13 +88,13 @@ namespace DotNetNuke.Services.Search.Internals
             this.hitDocs.Add(new ScoreDoc(doc + this.docBase, this.scorer.Score()));
         }
 
-        private static string GetStringFromField(Document doc, SortField sortField)
+        private string GetStringFromField(Document doc, SortField sortField)
         {
             var field = doc.GetField(sortField.Field);
             return field == null ? string.Empty : field.StringValue;
         }
 
-        private static long GetLongFromField(Document doc, SortField sortField)
+        private long GetLongFromField(Document doc, SortField sortField)
         {
             var field = doc.GetField(sortField.Field);
             if (field == null)
@@ -129,26 +129,26 @@ namespace DotNetNuke.Services.Search.Internals
             else
             {
                 var fields = this.luceneQuery.Sort.GetSort();
-                if (fields is not { Length: 1 })
+                if (fields == null || fields.Count() != 1)
                 {
                     useRelevance = true;
                 }
                 else
                 {
                     var field = fields[0];
-                    if (field.Type is SortField.INT or SortField.LONG)
+                    if (field.Type == SortField.INT || field.Type == SortField.LONG)
                     {
                         if (field.Reverse)
                         {
                             tempDocs = this.hitDocs.Select(d => new { SDoc = d, Document = this.searcher.Doc(d.Doc) })
-                                       .OrderByDescending(rec => GetLongFromField(rec.Document, field))
+                                       .OrderByDescending(rec => this.GetLongFromField(rec.Document, field))
                                        .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
                         }
                         else
                         {
                             tempDocs = this.hitDocs.Select(d => new { SDoc = d, Document = this.searcher.Doc(d.Doc) })
-                                       .OrderBy(rec => GetLongFromField(rec.Document, field))
+                                       .OrderBy(rec => this.GetLongFromField(rec.Document, field))
                                        .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
                         }
@@ -158,14 +158,14 @@ namespace DotNetNuke.Services.Search.Internals
                         if (field.Reverse)
                         {
                             tempDocs = this.hitDocs.Select(d => new { SDoc = d, Document = this.searcher.Doc(d.Doc) })
-                                           .OrderByDescending(rec => GetStringFromField(rec.Document, field))
+                                           .OrderByDescending(rec => this.GetStringFromField(rec.Document, field))
                                            .ThenByDescending(rec => rec.Document.Boost)
                                            .Select(rec => rec.SDoc);
                         }
                         else
                         {
                             tempDocs = this.hitDocs.Select(d => new { SDoc = d, Document = this.searcher.Doc(d.Doc) })
-                                       .OrderBy(rec => GetStringFromField(rec.Document, field))
+                                       .OrderBy(rec => this.GetStringFromField(rec.Document, field))
                                        .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
                         }

@@ -4,7 +4,6 @@
 
 namespace Dnn.EditBar.UI.Items
 {
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using Dnn.EditBar.Library.Items;
@@ -25,16 +24,13 @@ namespace Dnn.EditBar.UI.Items
 
         internal Workflow Workflow => this.WorkflowState != null ? WorkflowManager.Instance.GetWorkflow(this.WorkflowState.WorkflowID) : null;
 
-        internal WorkflowState WorkflowState => this.IsWorkflowEnabled ? WorkflowStateManager.Instance.GetWorkflowState(ContentItem.StateID) : null;
+        internal WorkflowState WorkflowState => this.IsWorkflowEnabled ? WorkflowStateManager.Instance.GetWorkflowState(this.ContentItem.StateID) : null;
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal bool IsEditMode => Personalization.GetUserMode() == PortalSettings.Mode.Edit;
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal bool IsPlatform => DotNetNukeContext.Current.Application.SKU == "DNN";
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        internal bool IsWorkflowEnabled => IsVersioningEnabled && TabWorkflowSettings.Instance.IsWorkflowEnabled(PortalSettings.Current.PortalId, TabController.CurrentPage.TabID);
+        internal bool IsWorkflowEnabled => this.IsVersioningEnabled && TabWorkflowSettings.Instance.IsWorkflowEnabled(PortalSettings.Current.PortalId, TabController.CurrentPage.TabID);
 
         internal bool? IsFirstState => this.WorkflowState != null ? this.WorkflowState.StateName == this.Workflow.FirstState.StateName : null; // 'Draft'
 
@@ -42,27 +38,23 @@ namespace Dnn.EditBar.UI.Items
 
         internal bool? IsLastState => this.WorkflowState != null ? this.WorkflowState.StateName == this.Workflow.LastState.StateName : null; // 'Published'
 
-        internal bool? IsDraftWithPermissions => this.IsWorkflowEnabled ? this.workflowEngine.IsWorkflowOnDraft(ContentItem) && this.HasDraftPermission : null;
+        internal bool? IsDraftWithPermissions => this.IsWorkflowEnabled ? this.workflowEngine.IsWorkflowOnDraft(this.ContentItem) && this.HasDraftPermission : null;
 
-        internal bool? IsReviewOrOtherIntermediateStateWithPermissions => this.IsWorkflowEnabled ? !this.workflowEngine.IsWorkflowCompleted(ContentItem) && WorkflowSecurity.Instance.HasStateReviewerPermission(ContentItem.StateID) : null;
+        internal bool? IsReviewOrOtherIntermediateStateWithPermissions => this.IsWorkflowEnabled ? !this.workflowEngine.IsWorkflowCompleted(this.ContentItem) && WorkflowSecurity.Instance.HasStateReviewerPermission(this.ContentItem.StateID) : null;
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal bool IsWorkflowCompleted => WorkflowEngine.Instance.IsWorkflowCompleted(TabController.CurrentPage.ContentItemId);
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal bool HasBeenPublished => TabController.CurrentPage.HasBeenPublished;
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal bool HasUnpublishVersion => TabVersionBuilder.Instance.GetUnPublishedVersion(TabController.CurrentPage.TabID) != null;
 
-        internal bool HasUnpublishVersionWithPermissions => this.HasUnpublishVersion && this.IsWorkflowEnabled && WorkflowSecurity.Instance.HasStateReviewerPermission(ContentItem.StateID);
+        internal bool HasUnpublishVersionWithPermissions => this.HasUnpublishVersion && this.IsWorkflowEnabled && WorkflowSecurity.Instance.HasStateReviewerPermission(this.ContentItem.StateID);
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal bool HasDraftPermission => PermissionProvider.Instance().CanAddContentToPage(TabController.CurrentPage);
 
-        private static ContentItem ContentItem => Util.GetContentController().GetContentItem(TabController.CurrentPage.ContentItemId);
+        private ContentItem ContentItem => Util.GetContentController().GetContentItem(TabController.CurrentPage.ContentItemId);
 
-        private static bool IsVersioningEnabled => TabVersionSettings.Instance.IsVersioningEnabled(PortalSettings.Current.PortalId, TabController.CurrentPage.TabID);
+        private bool IsVersioningEnabled => TabVersionSettings.Instance.IsVersioningEnabled(PortalSettings.Current.PortalId, TabController.CurrentPage.TabID);
 
         // State before the last one.
         private WorkflowState PriorState => this.IsWorkflowEnabled ? this.Workflow.States == null || !this.Workflow.States.Any() ? null : this.Workflow.States.OrderBy(s => s.Order).Reverse().Skip(1).FirstOrDefault() : null;

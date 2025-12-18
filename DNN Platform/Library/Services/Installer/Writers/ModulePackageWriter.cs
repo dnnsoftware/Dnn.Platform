@@ -151,7 +151,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     Logger.Error(exc);
 
-                    throw new ReadManifestException(Util.EXCEPTION_Type, exc);
+                    throw new Exception(Util.EXCEPTION_Type);
                 }
             }
 

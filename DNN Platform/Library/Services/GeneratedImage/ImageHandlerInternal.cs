@@ -8,7 +8,6 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
     using System.Drawing;
     using System.Drawing.Imaging;
     using System.Globalization;
@@ -18,7 +17,6 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Text;
     using System.Web;
 
-    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -76,14 +74,12 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public long ImageCompression { get; set; }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public int IPCountMax
         {
             get { return IPCount.MaxCount; }
             set { IPCount.MaxCount = value; }
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public TimeSpan IpCountPurgeInterval
         {
             get { return IPCount.PurgeInterval; }
@@ -141,7 +137,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     {
                         LogUserID = PortalSettings.Current.UserId,
                         LogPortalID = PortalSettings.Current.PortalId,
-                        LogTypeKey = nameof(EventLogType.ADMIN_ALERT),
+                        LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
                     };
                     logInfo.AddProperty("DnnImageHandler", message);
                     logInfo.AddProperty("IP", ipAddress);
@@ -157,7 +153,7 @@ namespace DotNetNuke.Services.GeneratedImage
             // Check if domain is allowed to embed image
             if (!string.IsNullOrEmpty(this.AllowedDomains[0]) &&
                 context.Request.UrlReferrer != null &&
-                !context.Request.UrlReferrer.Host.Equals(context.Request.Url.Host, StringComparison.OrdinalIgnoreCase))
+                context.Request.UrlReferrer.Host.ToLowerInvariant() != context.Request.Url.Host.ToLowerInvariant())
             {
                 bool allowed = false;
                 string allowedDomains = string.Empty;
@@ -166,7 +162,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     if (!string.IsNullOrEmpty(allowedDomain))
                     {
                         allowedDomains += allowedDomain + ",";
-                        if (context.Request.UrlReferrer.Host.Contains(allowedDomain, StringComparison.OrdinalIgnoreCase))
+                        if (context.Request.UrlReferrer.Host.ToLowerInvariant().Contains(allowedDomain.ToLowerInvariant()))
                         {
                             allowed = true;
                         }
@@ -183,15 +179,11 @@ namespace DotNetNuke.Services.GeneratedImage
                         {
                             LogUserID = PortalSettings.Current.UserId,
                             LogPortalID = PortalSettings.Current.PortalId,
-                            LogTypeKey = nameof(EventLogType.ADMIN_ALERT),
+                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
                         };
                         logInfo.AddProperty("DnnImageHandler", message);
                         logInfo.AddProperty("IP", ipAddress);
-
-#pragma warning disable CA1507 // Use nameof in place of string
                         logInfo.AddProperty("AllowedDomains", allowedDomains);
-#pragma warning restore CA1507
-
                         logController.AddLog(logInfo);
                     }
 
@@ -227,7 +219,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
             var userId = -1;
             var cacheCleared = false;
-            var isProfilePic = "profilepic".Equals(context.Request.QueryString["mode"], StringComparison.OrdinalIgnoreCase);
+            var isProfilePic = "profilepic".Equals(context.Request.QueryString["mode"], StringComparison.InvariantCultureIgnoreCase);
             if (isProfilePic)
             {
                 if (int.TryParse(context.Request.QueryString["userId"], out userId))
@@ -265,7 +257,7 @@ namespace DotNetNuke.Services.GeneratedImage
             if (this.EnableServerCache)
             {
                 var isAnonymousUser = userId <= 0 ? true : false;
-                if (isProfilePic && !isAnonymousUser && !IsPicVisibleToCurrentUser(userId))
+                if (isProfilePic && !isAnonymousUser && !this.IsPicVisibleToCurrentUser(userId))
                 {
                     string message = "Not allowed to see profile picture";
 
@@ -413,21 +405,6 @@ namespace DotNetNuke.Services.GeneratedImage
             return e;
         }
 
-        private static bool IsPicVisibleToCurrentUser(int profileUserId)
-        {
-            var settings = PortalController.Instance.GetCurrentSettings();
-            var profileUser = UserController.Instance.GetUser(settings.PortalId, profileUserId);
-
-            var photoProperty = profileUser?.Profile.GetProperty("Photo");
-            if (photoProperty == null)
-            {
-                return false;
-            }
-
-            var currentUser = UserController.Instance.GetCurrentUserInfo();
-            return ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, currentUser, profileUser);
-        }
-
         private string GetUniqueIDString(HttpContextBase context, string uniqueIdStringSeed)
         {
             var builder = new StringBuilder();
@@ -524,6 +501,25 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 image?.Dispose();
             }
+        }
+
+        private bool IsPicVisibleToCurrentUser(int profileUserId)
+        {
+            var settings = PortalController.Instance.GetCurrentSettings();
+            var profileUser = UserController.Instance.GetUser(settings.PortalId, profileUserId);
+            if (profileUser == null)
+            {
+                return false;
+            }
+
+            var photoProperty = profileUser.Profile.GetProperty("Photo");
+            if (photoProperty == null)
+            {
+                return false;
+            }
+
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            return ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, currentUser, profileUser);
         }
     }
 }

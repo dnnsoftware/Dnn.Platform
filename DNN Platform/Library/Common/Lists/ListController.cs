@@ -8,7 +8,6 @@ namespace DotNetNuke.Common.Lists
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading;
 
@@ -51,7 +50,6 @@ namespace DotNetNuke.Common.Lists
         }
 
         /// <summary>Gets the lists that do not support localization.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IReadOnlyCollection<string> UnLocalizedLists => UnLocalizableLists;
 
         /// <summary>
@@ -63,7 +61,7 @@ namespace DotNetNuke.Common.Lists
         public int AddListEntry(ListEntryInfo listEntry)
         {
             bool enableSortOrder = listEntry.SortOrder > 0;
-            ClearListCache(listEntry.PortalID);
+            this.ClearListCache(listEntry.PortalID);
             int entryId = DataProvider.Instance().AddListEntry(
                 listEntry.ListName,
                 listEntry.Value,
@@ -115,7 +113,7 @@ namespace DotNetNuke.Common.Lists
                 }
             }
 
-            ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
+            this.ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
             return entryId;
         }
 
@@ -145,8 +143,8 @@ namespace DotNetNuke.Common.Lists
             DataProvider.Instance().DeleteList(listName, parentKey);
             if (list != null)
             {
-                ClearListCache(list.PortalID);
-                ClearEntriesCache(list.Name, list.PortalID);
+                this.ClearListCache(list.PortalID);
+                this.ClearEntriesCache(list.Name, list.PortalID);
             }
         }
 
@@ -166,7 +164,7 @@ namespace DotNetNuke.Common.Lists
             // add Children
             if (includeChildren)
             {
-                foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(list.PortalID))
+                foreach (KeyValuePair<string, ListInfo> listPair in this.GetListInfoDictionary(list.PortalID))
                 {
                     if (listPair.Value.ParentList.StartsWith(list.Key))
                     {
@@ -189,8 +187,8 @@ namespace DotNetNuke.Common.Lists
         {
             ListEntryInfo entry = this.GetListEntryInfo(entryId);
             DataProvider.Instance().DeleteListEntryByID(entryId, deleteChild);
-            ClearListCache(entry.PortalID);
-            ClearEntriesCache(entry.ListName, entry.PortalID);
+            this.ClearListCache(entry.PortalID);
+            this.ClearEntriesCache(entry.ListName, entry.PortalID);
         }
 
         /// <summary>Deletes a list entry by its name.</summary>
@@ -201,14 +199,13 @@ namespace DotNetNuke.Common.Lists
         {
             ListEntryInfo entry = this.GetListEntryInfo(listName, listValue);
             DataProvider.Instance().DeleteListEntryByListName(listName, listValue, deleteChild);
-            ClearListCache(entry.PortalID);
-            ClearEntriesCache(listName, entry.PortalID);
+            this.ClearListCache(entry.PortalID);
+            this.ClearEntriesCache(listName, entry.PortalID);
         }
 
         /// <summary>Gets a list entry information.</summary>
         /// <param name="entryId">The id of the list entry.</param>
         /// <returns><see cref="ListEntryInfo"/>.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ListEntryInfo GetListEntryInfo(int entryId)
         {
             return CBO.FillObject<ListEntryInfo>(DataProvider.Instance().GetListEntry(entryId));
@@ -218,39 +215,35 @@ namespace DotNetNuke.Common.Lists
         /// <param name="listName">The name of the list.</param>
         /// <param name="entryId">The id of the list entry.</param>
         /// <returns><see cref="ListEntryInfo"/>.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ListEntryInfo GetListEntryInfo(string listName, int entryId)
         {
-            return GetListEntries(listName, Null.NullInteger).SingleOrDefault(l => l.EntryID == entryId);
+            return this.GetListEntries(listName, Null.NullInteger).SingleOrDefault(l => l.EntryID == entryId);
         }
 
         /// <summary>Gets a list entry information.</summary>
         /// <param name="listName">The name of the list.</param>
         /// <param name="listValue">The value of the list entry.</param>
         /// <returns><see cref="ListEntryInfo"/>.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ListEntryInfo GetListEntryInfo(string listName, string listValue)
         {
-            return GetListEntries(listName, Null.NullInteger).SingleOrDefault(l => l.Value == listValue);
+            return this.GetListEntries(listName, Null.NullInteger).SingleOrDefault(l => l.Value == listValue);
         }
 
         /// <summary>Gets the entries in the list with the given <paramref name="listName"/>.</summary>
         /// <param name="listName">The name of the list.</param>
         /// <returns>An enumeration of list entries.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<ListEntryInfo> GetListEntryInfoItems(string listName)
         {
-            return GetListEntries(listName, Null.NullInteger);
+            return this.GetListEntries(listName, Null.NullInteger);
         }
 
         /// <summary>Gets the entries in a child list.</summary>
         /// <param name="listName">The list name.</param>
         /// <param name="parentKey">The parent key.</param>
         /// <returns>An enumeration of list entries.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<ListEntryInfo> GetListEntryInfoItems(string listName, string parentKey)
         {
-            return GetListEntries(listName, Null.NullInteger).Where(l => l.ParentKey == parentKey);
+            return this.GetListEntries(listName, Null.NullInteger).Where(l => l.ParentKey == parentKey);
         }
 
         /// <summary>Gets the entries in a child list.</summary>
@@ -258,10 +251,9 @@ namespace DotNetNuke.Common.Lists
         /// <param name="parentKey">The parent key.</param>
         /// <param name="portalId">The id of the site (portal) from which to get the list from.</param>
         /// <returns>An enumeration of list entries.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<ListEntryInfo> GetListEntryInfoItems(string listName, string parentKey, int portalId)
         {
-            return GetListEntries(listName, portalId).Where(l => l.ParentKey == parentKey);
+            return this.GetListEntries(listName, portalId).Where(l => l.ParentKey == parentKey);
         }
 
         /// <summary>Gets all list entries for a given list name.</summary>
@@ -313,7 +305,6 @@ namespace DotNetNuke.Common.Lists
         /// <param name="parentKey">The parent key.</param>
         /// <param name="portalId">The id of the site (portal) to get the list from.</param>
         /// <returns><see cref="ListInfo"/>.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ListInfo GetListInfo(string listName, string parentKey, int portalId)
         {
             ListInfo list = null;
@@ -324,13 +315,13 @@ namespace DotNetNuke.Common.Lists
             }
 
             key += listName;
-            Dictionary<string, ListInfo> dicLists = GetListInfoDictionary(portalId);
+            Dictionary<string, ListInfo> dicLists = this.GetListInfoDictionary(portalId);
             if (!dicLists.TryGetValue(key, out list))
             {
                 IDataReader dr = DataProvider.Instance().GetList(listName, parentKey, portalId);
                 try
                 {
-                    list = FillListInfo(dr, true);
+                    list = this.FillListInfo(dr, true);
                 }
                 finally
                 {
@@ -370,11 +361,10 @@ namespace DotNetNuke.Common.Lists
         /// <param name="parentKey">The parent key.</param>
         /// <param name="portalId">The id of the site (portal) to get the list from.</param>
         /// <returns><see cref="ListInfoCollection"/>.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ListInfoCollection GetListInfoCollection(string listName, string parentKey, int portalId)
         {
             IList lists = new ListInfoCollection();
-            foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(portalId).OrderBy(l => l.Value.DisplayName))
+            foreach (KeyValuePair<string, ListInfo> listPair in this.GetListInfoDictionary(portalId).OrderBy(l => l.Value.DisplayName))
             {
                 ListInfo list = listPair.Value;
                 if ((list.Name == listName || string.IsNullOrEmpty(listName)) && (list.ParentKey == parentKey || string.IsNullOrEmpty(parentKey)) &&
@@ -426,8 +416,8 @@ namespace DotNetNuke.Common.Lists
                 string.Empty,
                 EventLogType.LISTENTRY_UPDATED);
 
-            ClearListCache(listEntry.PortalID);
-            ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
+            this.ClearListCache(listEntry.PortalID);
+            this.ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
         }
 
         /// <summary>Updates a list sort order.</summary>
@@ -437,8 +427,8 @@ namespace DotNetNuke.Common.Lists
         {
             DataProvider.Instance().UpdateListSortOrder(entryID, moveUp);
             ListEntryInfo entry = this.GetListEntryInfo(entryID);
-            ClearListCache(entry.PortalID);
-            ClearEntriesCache(entry.ListName, entry.PortalID);
+            this.ClearListCache(entry.PortalID);
+            this.ClearEntriesCache(entry.ListName, entry.PortalID);
         }
 
         private static Dictionary<string, ListEntryInfo> ListEntryInfoItemsToDictionary(IEnumerable<ListEntryInfo> items)
@@ -449,18 +439,18 @@ namespace DotNetNuke.Common.Lists
             return dict;
         }
 
-        private static void ClearListCache(int portalId)
+        private void ClearListCache(int portalId)
         {
             DataCache.ClearListsCache(portalId);
         }
 
-        private static void ClearEntriesCache(string listName, int portalId)
+        private void ClearEntriesCache(string listName, int portalId)
         {
             string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
             DataCache.RemoveCache(cacheKey);
         }
 
-        private static ListInfo FillListInfo(IDataReader dr, bool checkForOpenDataReader)
+        private ListInfo FillListInfo(IDataReader dr, bool checkForOpenDataReader)
         {
             ListInfo list = null;
 
@@ -495,7 +485,7 @@ namespace DotNetNuke.Common.Lists
             return list;
         }
 
-        private static Dictionary<string, ListInfo> FillListInfoDictionary(IDataReader dr)
+        private Dictionary<string, ListInfo> FillListInfoDictionary(IDataReader dr)
         {
             var dic = new Dictionary<string, ListInfo>();
             try
@@ -503,7 +493,7 @@ namespace DotNetNuke.Common.Lists
                 while (dr.Read())
                 {
                     // fill business object
-                    ListInfo list = FillListInfo(dr, false);
+                    ListInfo list = this.FillListInfo(dr, false);
                     if (!dic.ContainsKey(list.Key))
                     {
                         dic.Add(list.Key, list);
@@ -523,7 +513,7 @@ namespace DotNetNuke.Common.Lists
             return dic;
         }
 
-        private static Dictionary<string, ListInfo> GetListInfoDictionary(int portalId)
+        private Dictionary<string, ListInfo> GetListInfoDictionary(int portalId)
         {
             string cacheKey = string.Format(DataCache.ListsCacheKey, portalId);
             return CBO.GetCachedObject<Dictionary<string, ListInfo>>(
@@ -531,10 +521,10 @@ namespace DotNetNuke.Common.Lists
                 cacheKey,
                 DataCache.ListsCacheTimeOut,
                 DataCache.ListsCachePriority),
-                c => FillListInfoDictionary(DataProvider.Instance().GetLists(portalId)));
+                c => this.FillListInfoDictionary(DataProvider.Instance().GetLists(portalId)));
         }
 
-        private static IEnumerable<ListEntryInfo> GetListEntries(string listName, int portalId)
+        private IEnumerable<ListEntryInfo> GetListEntries(string listName, int portalId)
         {
             string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
             return CBO.GetCachedObject<IEnumerable<ListEntryInfo>>(

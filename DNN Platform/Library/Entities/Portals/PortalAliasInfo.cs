@@ -174,7 +174,7 @@ namespace DotNetNuke.Entities.Portals
                         break;
                     case "browserType":
                         string type = reader.ReadElementContentAsString();
-                        this.BrowserType = type.Equals("mobile", StringComparison.OrdinalIgnoreCase) ? BrowserTypes.Mobile : BrowserTypes.Normal;
+                        this.BrowserType = type.Equals("mobile", StringComparison.InvariantCultureIgnoreCase) ? BrowserTypes.Mobile : BrowserTypes.Normal;
                         break;
                     case "primary":
                         this.IsPrimary = reader.ReadElementContentAsBoolean();

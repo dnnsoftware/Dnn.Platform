@@ -91,11 +91,11 @@ namespace DotNetNuke.Services.Search.Internals
         public string GetSearchDocumentTypeDisplayName(SearchResult searchResult)
         {
             // ModuleDefId will be zero for non-module
-            var key = $"{searchResult.SearchTypeId}-{searchResult.ModuleDefId}-{Thread.CurrentThread.CurrentCulture}";
+            var key = string.Format("{0}-{1}-{2}", searchResult.SearchTypeId, searchResult.ModuleDefId, Thread.CurrentThread.CurrentCulture);
             var keys = CBO.Instance.GetCachedObject<IDictionary<string, string>>(
                             new CacheItemArgs(key, 120, CacheItemPriority.Default), this.SearchDocumentTypeDisplayNameCallBack, false);
 
-            return keys.TryGetValue(key, out var documentTypeDisplayName) ? documentTypeDisplayName : string.Empty;
+            return keys.ContainsKey(key) ? keys[key] : string.Empty;
         }
 
         /// <inheritdoc/>
@@ -258,7 +258,7 @@ namespace DotNetNuke.Services.Search.Internals
             return results;
         }
 
-        private static NumericRangeQuery<int> NumericValueQuery(string numericName, int numericVal)
+        private static Query NumericValueQuery(string numericName, int numericVal)
         {
             return NumericRangeQuery.NewIntRange(numericName, numericVal, numericVal, true, true);
         }
@@ -569,7 +569,7 @@ namespace DotNetNuke.Services.Search.Internals
                 }
 
                 doc.Add(field);
-                sb.Append(SearchHelper.Instance.StripTagsNoAttributes(kvp.Value, true)).Append(' ');
+                sb.Append(SearchHelper.Instance.StripTagsNoAttributes(kvp.Value, true)).Append(" ");
             }
 
             foreach (var kvp in searchDocument.NumericKeys)

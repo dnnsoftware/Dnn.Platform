@@ -26,19 +26,18 @@ namespace DotNetNuke.Services.Assets
                 return 0;
             }
 
-            return string.Compare(this.GetFolderPath(folderIdA), this.GetFolderPath(folderIdB), System.StringComparison.Ordinal);
+            return string.Compare(this.GetFolderPath(folderIdA), this.GetFolderPath(folderIdB));
         }
 
         private string GetFolderPath(int folderId)
         {
-            if (!this.cache.TryGetValue(folderId, out var folderPath))
+            if (!this.cache.ContainsKey(folderId))
             {
                 var folder = FolderManager.Instance.GetFolder(folderId);
-                folderPath = folder.FolderPath;
-                this.cache.Add(folderId, folderPath);
+                this.cache.Add(folderId, folder.FolderPath);
             }
 
-            return folderPath;
+            return this.cache[folderId];
         }
     }
 }

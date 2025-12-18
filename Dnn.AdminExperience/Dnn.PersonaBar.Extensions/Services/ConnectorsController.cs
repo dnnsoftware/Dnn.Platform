@@ -37,15 +37,13 @@ namespace Dnn.PersonaBar.Connectors.Services
         [HttpGet]
         public HttpResponseMessage GetConnections()
         {
-            var connections = this.GetConnections(this.PortalId);
-            connections.ForEach(x =>
-            {
+            var connections = this.GetConnections(this.PortalId)
+                .ForEach(x =>
                 {
-                    x.HasConfig(this.PortalSettings.PortalId);
-                }
-            });
-
-            var connectionsResponse = connections
+                    {
+                        x.HasConfig(this.PortalSettings.PortalId);
+                    }
+                })
                 .Select(c => new
                 {
                     id = c.Id,
@@ -57,10 +55,8 @@ namespace Dnn.PersonaBar.Connectors.Services
                     pluginFolder = Globals.ResolveUrl(c.PluginFolder),
                     configurations = c.GetConfig(this.PortalSettings.PortalId),
                     supportsMultiple = c.SupportsMultiple,
-                })
-                .OrderBy(connection => connection.name)
-                .ToList();
-            return this.Request.CreateResponse(HttpStatusCode.OK, connectionsResponse);
+                }).OrderBy(connection => connection.name).ToList();
+            return this.Request.CreateResponse(HttpStatusCode.OK, connections);
         }
 
         [HttpPost]
@@ -71,22 +67,21 @@ namespace Dnn.PersonaBar.Connectors.Services
             {
                 var jsonData = DotNetNuke.Common.Utilities.Json.Serialize(postData);
                 var serializer = new JavaScriptSerializer();
-                serializer.RegisterConverters([new DynamicJsonConverter(),]);
+                serializer.RegisterConverters(new[] { new DynamicJsonConverter() });
 
-                dynamic postObject = serializer.Deserialize<object>(jsonData);
+                dynamic postObject = serializer.Deserialize(jsonData, typeof(object));
 
                 var name = postObject.name;
                 var displayName = postObject.displayName;
                 var id = postObject.id;
-                var connectors = this.GetConnections(this.PortalId);
-                connectors.ForEach(x =>
+                var connectors =
+                    this.GetConnections(this.PortalId).ForEach(x =>
                     {
                         {
                             x.HasConfig(this.PortalSettings.PortalId);
                         }
-                    });
-
-                connectors = connectors.Where(
+                    })
+                        .Where(
                             c =>
                                 c.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).ToList();
 
@@ -109,7 +104,7 @@ namespace Dnn.PersonaBar.Connectors.Services
                 bool validated = false;
                 if (connector != null)
                 {
-                    var configs = GetConfigAsDictionary(postObject.configurations);
+                    var configs = this.GetConfigAsDictionary(postObject.configurations);
                     string customErrorMessage;
                     var saved = connector.SaveConfig(this.PortalSettings.PortalId, configs, ref validated, out customErrorMessage);
 
@@ -163,21 +158,24 @@ namespace Dnn.PersonaBar.Connectors.Services
             {
                 var jsonData = DotNetNuke.Common.Utilities.Json.Serialize(postData);
                 var serializer = new JavaScriptSerializer();
-                serializer.RegisterConverters([new DynamicJsonConverter(),]);
-                dynamic postObject = serializer.Deserialize<object>(jsonData);
+                serializer.RegisterConverters(new[] { new DynamicJsonConverter() });
+                dynamic postObject = serializer.Deserialize(jsonData, typeof(object));
 
                 var name = postObject.name;
                 var id = postObject.id;
-                var connectors = this.GetConnections(this.PortalId);
-                connectors.ForEach(x =>
-                {
+                var connectors =
+                    this.GetConnections(this.PortalId).ForEach(x =>
                     {
-                        x.HasConfig(this.PortalSettings.PortalId);
-                    }
-                });
-                connectors = connectors.Where(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).ToList();
+                        {
+                            x.HasConfig(this.PortalSettings.PortalId);
+                        }
+                    })
+                        .Where(
+                            c =>
+                                c.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).ToList();
 
-                var connector = connectors.FirstOrDefault(c => c.SupportsMultiple && c.Id == id);
+                var connector =
+                    connectors.FirstOrDefault(c => c.SupportsMultiple && c.Id == id);
                 if (connector != null)
                 {
                     connector.DeleteConnector(this.PortalId);
@@ -210,20 +208,19 @@ namespace Dnn.PersonaBar.Connectors.Services
         [HttpGet]
         public HttpResponseMessage GetConnectionLocalizedString(string name, string culture)
         {
-            var connections = this.GetConnections(this.PortalId);
-            connections.ForEach(x =>
+            var connection = this.GetConnections(this.PortalId).ForEach(x =>
             {
                 {
                     x.HasConfig(this.PortalSettings.PortalId);
                 }
-            });
-            var connection = connections.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            })
+                .FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             if (connection == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
-            var resourceFile = $"{connection.PluginFolder}/App_LocalResources/SharedResources.resx";
+            var resourceFile = string.Format("{0}/App_LocalResources/SharedResources.resx", connection.PluginFolder);
             IDictionary<string, string> localizedStrings;
             try
             {
@@ -238,7 +235,19 @@ namespace Dnn.PersonaBar.Connectors.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, localizedStrings);
         }
 
-        private static Dictionary<string, string> GetConfigAsDictionary(dynamic configurations)
+        private IList<IConnector> GetConnections(int portalId)
+        {
+            var connectors = this.connectionsManager.GetConnectors(this.serviceProvider);
+            var allConnectors = new List<IConnector>();
+            foreach (var con in connectors)
+            {
+                allConnectors.AddRange(con.GetConnectors(portalId));
+            }
+
+            return allConnectors;
+        }
+
+        private IDictionary<string, string> GetConfigAsDictionary(dynamic configurations)
         {
             var configs = new Dictionary<string, string>();
 
@@ -256,18 +265,6 @@ namespace Dnn.PersonaBar.Connectors.Services
             }
 
             return configs;
-        }
-
-        private List<IConnector> GetConnections(int portalId)
-        {
-            var connectors = this.connectionsManager.GetConnectors(this.serviceProvider);
-            var allConnectors = new List<IConnector>();
-            foreach (var con in connectors)
-            {
-                allConnectors.AddRange(con.GetConnectors(portalId));
-            }
-
-            return allConnectors;
         }
     }
 }

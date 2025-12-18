@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <inheritdoc/>
         public IList<FolderTypeConfig> FolderTypes { get; internal set; }
 
-        private Dictionary<string, string> FolderMappings { get; set; }
+        private IDictionary<string, string> FolderMappings { get; set; }
 
         /// <inheritdoc/>
         public void LoadConfig()
@@ -76,47 +76,18 @@ namespace DotNetNuke.Services.FileSystem
         /// <inheritdoc/>
         public FolderMappingInfo GetFolderMapping(int portalId, string folderPath)
         {
-            if (!this.FolderMappings.TryGetValue(folderPath, out var mapping))
+            if (!this.FolderMappings.ContainsKey(folderPath))
             {
                 return null;
             }
 
-            return FolderMappingController.Instance.GetFolderMapping(portalId, mapping);
+            return FolderMappingController.Instance.GetFolderMapping(portalId, this.FolderMappings[folderPath]);
         }
 
         /// <inheritdoc/>
         protected override Func<IFolderMappingsConfigController> GetFactory()
         {
             return () => new FolderMappingsConfigController();
-        }
-
-        private static FolderTypeConfig GetFolderMappingFromConfigNode(XmlNode node)
-        {
-            var nodeNavigator = node.CreateNavigator();
-            var folderType = new FolderTypeConfig()
-            {
-                Name = XmlUtils.GetAttributeValue(nodeNavigator, "name"),
-                Provider = XmlUtils.GetNodeValue(nodeNavigator, "provider"),
-            };
-            XmlNodeList settingsNode = node.SelectNodes("settings/setting");
-            if (settingsNode != null)
-            {
-                var settings = new List<FolderTypeSettingConfig>();
-                foreach (XmlNode settingNode in settingsNode)
-                {
-                    var encryptValue = XmlUtils.GetAttributeValue(settingNode.CreateNavigator(), "encrypt");
-                    settings.Add(new FolderTypeSettingConfig
-                    {
-                        Name = XmlUtils.GetAttributeValue(settingNode.CreateNavigator(), "name"),
-                        Value = settingNode.InnerText,
-                        Encrypt = !string.IsNullOrEmpty(encryptValue) && bool.Parse(encryptValue),
-                    });
-                }
-
-                folderType.Settings = settings;
-            }
-
-            return folderType;
         }
 
         private void FillFolderMappings(XmlDocument configDocument)
@@ -145,8 +116,37 @@ namespace DotNetNuke.Services.FileSystem
             this.FolderTypes.Clear();
             foreach (XmlNode folderTypeNode in folderTypesNode)
             {
-                this.FolderTypes.Add(GetFolderMappingFromConfigNode(folderTypeNode));
+                this.FolderTypes.Add(this.GetFolderMappingFromConfigNode(folderTypeNode));
             }
+        }
+
+        private FolderTypeConfig GetFolderMappingFromConfigNode(XmlNode node)
+        {
+            var nodeNavigator = node.CreateNavigator();
+            var folderType = new FolderTypeConfig()
+            {
+                Name = XmlUtils.GetAttributeValue(nodeNavigator, "name"),
+                Provider = XmlUtils.GetNodeValue(nodeNavigator, "provider"),
+            };
+            XmlNodeList settingsNode = node.SelectNodes("settings/setting");
+            if (settingsNode != null)
+            {
+                var settings = new List<FolderTypeSettingConfig>();
+                foreach (XmlNode settingNode in settingsNode)
+                {
+                    var encryptValue = XmlUtils.GetAttributeValue(settingNode.CreateNavigator(), "encrypt");
+                    settings.Add(new FolderTypeSettingConfig
+                    {
+                        Name = XmlUtils.GetAttributeValue(settingNode.CreateNavigator(), "name"),
+                        Value = settingNode.InnerText,
+                        Encrypt = !string.IsNullOrEmpty(encryptValue) && bool.Parse(encryptValue),
+                    });
+                }
+
+                folderType.Settings = settings;
+            }
+
+            return folderType;
         }
     }
 }

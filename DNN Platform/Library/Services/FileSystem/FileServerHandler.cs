@@ -41,25 +41,19 @@ namespace DotNetNuke.Services.FileSystem
                 // get TabId
                 if (context.Request.QueryString["tabid"] != null)
                 {
-                    if (!int.TryParse(context.Request.QueryString["tabid"], out tabId))
-                    {
-                        tabId = -1;
-                    }
+                    int.TryParse(context.Request.QueryString["tabid"], out tabId);
                 }
 
                 // get ModuleId
                 if (context.Request.QueryString["mid"] != null)
                 {
-                    if (!int.TryParse(context.Request.QueryString["mid"], out moduleId))
-                    {
-                        moduleId = -1;
-                    }
+                    int.TryParse(context.Request.QueryString["mid"], out moduleId);
                 }
             }
             catch (Exception)
             {
                 // The TabId or ModuleId are incorrectly formatted (potential DOS)
-                Handle404Exception(context, context.Request.RawUrl);
+                this.Handle404Exception(context, context.Request.RawUrl);
             }
 
             // get Language
@@ -116,7 +110,7 @@ namespace DotNetNuke.Services.FileSystem
                     // verify whether the tab is exist, otherwise throw out 404.
                     if (TabController.Instance.GetTab(int.Parse(url), portalSettings.PortalId, false) == null)
                     {
-                        Handle404Exception(context, context.Request.RawUrl);
+                        this.Handle404Exception(context, context.Request.RawUrl);
                     }
                 }
 
@@ -142,10 +136,7 @@ namespace DotNetNuke.Services.FileSystem
                 bool blnForceDownload = false;
                 if ((context.Request.QueryString["forcedownload"] != null) || (context.Request.QueryString["contenttype"] != null))
                 {
-                    if (!bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload))
-                    {
-                        blnForceDownload = false;
-                    }
+                    bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload);
                 }
 
                 var contentDisposition = blnForceDownload ? ContentDisposition.Attachment : ContentDisposition.Inline;
@@ -162,7 +153,7 @@ namespace DotNetNuke.Services.FileSystem
                             var file = fileManager.GetFile(int.Parse(UrlUtils.GetParameterValue(url)));
                             if (file != null)
                             {
-                                if (!file.IsEnabled || !HasAPublishedVersion(file))
+                                if (!file.IsEnabled || !this.HasAPublishedVersion(file))
                                 {
                                     if (context.Request.IsAuthenticated)
                                     {
@@ -218,7 +209,7 @@ namespace DotNetNuke.Services.FileSystem
 
                             if (!download)
                             {
-                                Handle404Exception(context, url);
+                                this.Handle404Exception(context, url);
                             }
 
                             break;
@@ -241,16 +232,16 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 catch (Exception)
                 {
-                    Handle404Exception(context, url);
+                    this.Handle404Exception(context, url);
                 }
             }
             else
             {
-                Handle404Exception(context, url);
+                this.Handle404Exception(context, url);
             }
         }
 
-        private static bool HasAPublishedVersion(IFileInfo file)
+        private bool HasAPublishedVersion(IFileInfo file)
         {
             if (file.HasBeenPublished)
             {
@@ -262,7 +253,7 @@ namespace DotNetNuke.Services.FileSystem
             return user != null && user.UserID == file.CreatedByUserID;
         }
 
-        private static void Handle404Exception(HttpContext context, string url)
+        private void Handle404Exception(HttpContext context, string url)
         {
             try
             {

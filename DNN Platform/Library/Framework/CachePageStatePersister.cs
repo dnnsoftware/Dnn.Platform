@@ -32,7 +32,7 @@ namespace DotNetNuke.Framework
             // Abort if cache key is not available or valid
             if (string.IsNullOrEmpty(key) || !key.StartsWith("VS_"))
             {
-                throw new InvalidViewStateCacheKeyException("Missing valid " + ViewStateCacheKey);
+                throw new ApplicationException("Missing valid " + ViewStateCacheKey);
             }
 
             var state = DataCache.GetCache<Pair>(key);
@@ -64,8 +64,8 @@ namespace DotNetNuke.Framework
             {
                 key.Append("VS_");
                 key.Append(this.Page.Session == null ? Guid.NewGuid().ToString() : this.Page.Session.SessionID);
-                key.Append('_');
-                key.Append(DateTime.Now.Ticks);
+                key.Append("_");
+                key.Append(DateTime.Now.Ticks.ToString());
             }
 
             // Save view state and control state separately

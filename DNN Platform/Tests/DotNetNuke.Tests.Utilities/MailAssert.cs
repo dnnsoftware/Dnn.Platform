@@ -17,7 +17,7 @@ namespace DotNetNuke.Tests.Utilities
         {
             var contentLine = ConvertEmailContentFromBase64ToUnicode(GetEmailFileName(toAddress, findByText));
 
-            Assert.That(contentLine, Does.Contain(expectedValue));
+            Assert.That(contentLine.Contains(expectedValue), Is.True);
         }
 
         public static void ContentLineContains(string expectedValue, string toAddress, string findByText)
@@ -31,7 +31,7 @@ namespace DotNetNuke.Tests.Utilities
         {
             string fromLine = FindEmailLineUsingRegex("From", GetEmailFileName(toAddress, findByText));
 
-            Assert.That(fromLine, Does.Contain(expectedValue));
+            Assert.That(fromLine.Contains(expectedValue), Is.True);
         }
 
         public static void MessageSent(string expectedValue, string toAddress, string message)
@@ -43,21 +43,21 @@ namespace DotNetNuke.Tests.Utilities
         {
             string replyToLine = FindEmailLineUsingRegex("Reply-To", GetEmailFileName(toAddress, findByText));
 
-            Assert.That(replyToLine, Does.Contain(expectedValue));
+            Assert.That(replyToLine.Contains(expectedValue), Is.True);
         }
 
         public static void SubjectLineContains(string expectedValue, string toAddress, string findByText)
         {
             string subjectLine = FindEmailLineUsingRegex("Subject", GetEmailFileName(toAddress, findByText));
 
-            Assert.That(subjectLine, Does.Contain(expectedValue));
+            Assert.That(subjectLine.Contains(expectedValue), Is.True);
         }
 
         public static void ToLineContains(string expectedValue, string toAddress, string findByText)
         {
             string toLine = FindEmailLineUsingRegex("To", GetEmailFileName(toAddress, findByText));
 
-            Assert.That(toLine, Does.Contain(expectedValue));
+            Assert.That(toLine.Contains(expectedValue), Is.True);
         }
 
         private static string ConvertEmailContentFromBase64ToUnicode(string emailFileName)
@@ -129,7 +129,7 @@ namespace DotNetNuke.Tests.Utilities
                 }
             }
 
-            Assert.That(emailFileName, Is.Not.Null, message + " The test was searching in: " + emailPath);
+            Assert.That(emailFileName != null, Is.True, message + " The test was searching in: " + emailPath);
 
             return emailFileName;
         }

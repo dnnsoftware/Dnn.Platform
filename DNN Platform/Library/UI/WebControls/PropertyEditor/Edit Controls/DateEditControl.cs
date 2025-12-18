@@ -136,7 +136,7 @@ namespace DotNetNuke.UI.WebControls
             bool dataChanged = false;
             string presentValue = this.StringValue;
             string postedValue = postCollection[postDataKey + "date"];
-            if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
+            if (!presentValue.Equals(postedValue))
             {
                 this.Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
                 dataChanged = true;

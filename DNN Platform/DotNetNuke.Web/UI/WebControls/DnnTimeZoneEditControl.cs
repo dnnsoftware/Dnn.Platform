@@ -34,7 +34,7 @@ namespace DotNetNuke.Web.UI.WebControls
             bool dataChanged = false;
             string presentValue = this.StringValue;
             string postedValue = this.timeZones.SelectedValue;
-            if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
+            if (!presentValue.Equals(postedValue))
             {
                 this.Value = postedValue;
                 dataChanged = true;

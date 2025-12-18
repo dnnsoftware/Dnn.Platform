@@ -17,11 +17,9 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class TermsSelector : DnnComboBox
     {
-        private static readonly char[] TermIdSeparator = [',',];
-
         public int PortalId { get; set; }
 
-        public bool IncludeSystemVocabularies { get; set; }
+        public bool IncludeSystemVocabularies { get; set; } = false;
 
         public bool IncludeTags { get; set; } = true;
 
@@ -34,7 +32,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 {
                     var termRep = Util.GetTermController();
 
-                    var termIds = this.Value.Split(TermIdSeparator, StringSplitOptions.RemoveEmptyEntries);
+                    var termIds = this.Value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var i in termIds)
                     {
                         if (!string.IsNullOrEmpty(i.Trim()))
@@ -71,7 +69,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
             if (!string.IsNullOrEmpty(this.CssClass))
             {
-                this.CssClass = $"{this.CssClass} TermsSelector";
+                this.CssClass = string.Format("{0} TermsSelector", this.CssClass);
             }
             else
             {

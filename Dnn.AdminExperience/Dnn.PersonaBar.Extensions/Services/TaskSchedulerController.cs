@@ -58,7 +58,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                 {
                     Success = true,
                     Results = availableServers,
-                    TotalResults = servers.Count,
+                    TotalResults = servers.Count(),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -93,7 +93,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         NextStart = (v.Enabled && !Null.IsNull(v.NextStart)) ? v.NextStart.ToString() : string.Empty,
                         Frequency = this.controller.GetTimeLapse(v.TimeLapse, v.TimeLapseMeasurement),
                     }),
-                    TotalResults = arrSchedule.Length,
+                    TotalResults = arrSchedule.Count(),
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -284,7 +284,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     scheduleDto.RetryTimeLapse = Null.NullInteger;
                 }
 
-                if (!VerifyValidTimeLapseRetry(scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement, scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement))
+                if (!this.VerifyValidTimeLapseRetry(scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement, scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InvalidFrequencyAndRetry", localResourcesFile));
                 }
@@ -329,7 +329,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     scheduleDto.RetryTimeLapse = Null.NullInteger;
                 }
 
-                if (!VerifyValidTimeLapseRetry(scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement, scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement))
+                if (!this.VerifyValidTimeLapseRetry(scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement, scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InvalidFrequencyAndRetry", localResourcesFile));
                 }
@@ -386,35 +386,37 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             {
                 if (SchedulingProvider.Enabled)
                 {
-                    var processing =
-                        from ScheduleHistoryItem item in SchedulingProvider.Instance().GetScheduleProcessing()
-                        select new
-                        {
-                            item.ScheduleID,
-                            item.TypeFullName,
-                            StartDate = !Null.IsNull(item.StartDate) ? item.StartDate.ToString() : string.Empty,
-                            ElapsedTime = Math.Round(item.ElapsedTime, 3),
-                            item.ObjectDependencies,
-                            ScheduleSource = item.ScheduleSource.ToString(),
-                            item.ThreadID,
-                            item.Servers,
-                        };
+                    Collection arrScheduleProcessing = SchedulingProvider.Instance().GetScheduleProcessing();
 
-                    var queue =
-                        from ScheduleHistoryItem item in SchedulingProvider.Instance().GetScheduleQueue()
-                        select new
-                        {
-                            item.ScheduleID,
-                            item.FriendlyName,
-                            NextStart = !Null.IsNull(item.NextStart) ? item.NextStart.ToString() : string.Empty,
-                            item.Overdue,
-                            RemainingTime = GetTimeStringFromSeconds(item.RemainingTime),
-                            RemainingSeconds = item.RemainingTime,
-                            item.ObjectDependencies,
-                            ScheduleSource = item.ScheduleSource.ToString(),
-                            item.ThreadID,
-                            item.Servers,
-                        };
+                    var processing = from ScheduleHistoryItem item in arrScheduleProcessing
+                                     select new
+                                     {
+                                         item.ScheduleID,
+                                         item.TypeFullName,
+                                         StartDate = !Null.IsNull(item.StartDate) ? item.StartDate.ToString() : string.Empty,
+                                         ElapsedTime = Math.Round(item.ElapsedTime, 3),
+                                         item.ObjectDependencies,
+                                         ScheduleSource = item.ScheduleSource.ToString(),
+                                         item.ThreadID,
+                                         item.Servers,
+                                     };
+
+                    Collection arrScheduleQueue = SchedulingProvider.Instance().GetScheduleQueue();
+
+                    var queue = from ScheduleHistoryItem item in arrScheduleQueue
+                                select new
+                                {
+                                    item.ScheduleID,
+                                    item.FriendlyName,
+                                    NextStart = !Null.IsNull(item.NextStart) ? item.NextStart.ToString() : string.Empty,
+                                    item.Overdue,
+                                    RemainingTime = GetTimeStringFromSeconds(item.RemainingTime),
+                                    RemainingSeconds = item.RemainingTime,
+                                    item.ObjectDependencies,
+                                    ScheduleSource = item.ScheduleSource.ToString(),
+                                    item.ThreadID,
+                                    item.Servers,
+                                };
 
                     var response = new
                     {
@@ -618,7 +620,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             return Localization.GetString("LessThanMinute", localResourcesFile);
         }
 
-        private static bool VerifyValidTimeLapseRetry(int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement)
+        private bool VerifyValidTimeLapseRetry(int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement)
         {
             if (retryTimeLapse == 0)
             {

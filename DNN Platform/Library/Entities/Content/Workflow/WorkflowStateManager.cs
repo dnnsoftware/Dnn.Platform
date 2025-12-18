@@ -220,7 +220,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateCannotBeMoved", Localization.ExceptionsResourceFile));
             }
 
-            var currentIndex = GetStateIndex(states, state);
+            var currentIndex = this.GetStateIndex(states, state);
 
             if (currentIndex == 0
                 || currentIndex == states.Length - 1)
@@ -261,9 +261,10 @@ namespace DotNetNuke.Entities.Content.Workflow
             return () => new WorkflowStateManager();
         }
 
-        private static int GetStateIndex(WorkflowState[] states, WorkflowState currentState)
+        private int GetStateIndex(WorkflowState[] states, WorkflowState currentState)
         {
-            var i = 0;
+            int i = 0;
+
             foreach (var state in states)
             {
                 if (state.StateID == currentState.StateID)

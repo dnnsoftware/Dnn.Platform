@@ -15,7 +15,6 @@ namespace DNN.Integration.Test.Framework
     using System.Net.Http.Headers;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
     using System.Web;
     using System.Xml;
     using System.Xml.Linq;
@@ -215,10 +214,7 @@ namespace DNN.Integration.Test.Framework
             return this.IsLoggedIn;
         }
 
-        public async Task<HttpResponseMessage> UploadUserFile(
-            string fileName,
-            bool waitHttpResponse = true,
-            int userId = -1)
+        public HttpResponseMessage UploadUserFile(string fileName, bool waitHttpResponse = true, int userId = -1)
         {
             this.EnsureLoggedIn();
 
@@ -230,7 +226,7 @@ namespace DNN.Integration.Test.Framework
                 folder = $"Users/{rootFolder}/{subFolder}/{userId}/";
             }
 
-            return await this.UploadFile(fileName, folder, waitHttpResponse);
+            return this.UploadFile(fileName, folder, waitHttpResponse);
         }
 
         public HttpResponseMessage ActivityStreamUploadUserFile(IDictionary<string, string> headers, string fileName)
@@ -239,10 +235,10 @@ namespace DNN.Integration.Test.Framework
             return this.ActivityStreamUploadFile(headers, fileName);
         }
 
-        public async Task<bool> UploadCmsFile(string fileName, string portalFolder)
+        public bool UploadCmsFile(string fileName, string portalFolder)
         {
             this.EnsureLoggedIn();
-            var result = await this.UploadFile(fileName, portalFolder);
+            var result = this.UploadFile(fileName, portalFolder);
             return result.IsSuccessStatusCode;
         }
 
@@ -717,7 +713,7 @@ namespace DNN.Integration.Test.Framework
             }
         }
 
-        private async Task<HttpResponseMessage> UploadFile(string fileName, string portalFolder, bool waitHttpResponse = true)
+        private HttpResponseMessage UploadFile(string fileName, string portalFolder, bool waitHttpResponse = true)
         {
             using (var client = this.CreateHttpClient("/", true))
             {
@@ -728,8 +724,8 @@ namespace DNN.Integration.Test.Framework
 
                 if (string.IsNullOrEmpty(this._inputFieldVerificationToken))
                 {
-                    var resultGet = await client.GetAsync("/");
-                    var data = await resultGet.Content.ReadAsStringAsync();
+                    var resultGet = client.GetAsync("/").Result;
+                    var data = resultGet.Content.ReadAsStringAsync().Result;
                     this._inputFieldVerificationToken = GetVerificationToken(data);
 
                     if (!string.IsNullOrEmpty(this._inputFieldVerificationToken))
@@ -766,7 +762,7 @@ namespace DNN.Integration.Test.Framework
                 content.Add(fileContent);
 
                 client.DefaultRequestHeaders.UserAgent.ParseAdd(this.UserAgentValue);
-                var result = await client.PostAsync(UploadFileRequestPath, content);
+                var result = client.PostAsync(UploadFileRequestPath, content).Result;
                 return !waitHttpResponse
                     ? result
                     : EnsureSuccessResponse(result, "UploadFile", UploadFileRequestPath);
@@ -902,7 +898,7 @@ namespace DNN.Integration.Test.Framework
                 client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, cachedPage.VerificationToken);
             }
 
-            return cachedPage != null ? cachedPage.InputFields : [];
+            return cachedPage != null ? cachedPage.InputFields : new string[0];
         }
 
         private HttpWebResponse MultipartFormDataPost(

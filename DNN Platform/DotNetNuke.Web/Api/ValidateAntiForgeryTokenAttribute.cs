@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.Api
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
-        protected static readonly Tuple<bool, string> SuccessResult = new Tuple<bool, string>(true, null);
+        protected static Tuple<bool, string> SuccessResult = new Tuple<bool, string>(true, null);
 
         private static readonly List<string> BypassedAuthTypes = new List<string>();
 
@@ -51,11 +51,12 @@ namespace DotNetNuke.Web.Api
 
         protected static string GetAntiForgeryCookieValue(HttpActionContext actionContext)
         {
-            if (actionContext?.Request != null && actionContext.Request.Headers.TryGetValues("Cookie", out var cookies))
+            IEnumerable<string> cookies;
+            if (actionContext?.Request != null && actionContext.Request.Headers.TryGetValues("Cookie", out cookies))
             {
                 foreach (var cookieValue in cookies)
                 {
-                    var nameIndex = cookieValue.IndexOf(AntiForgery.Instance.CookieName, StringComparison.OrdinalIgnoreCase);
+                    var nameIndex = cookieValue.IndexOf(AntiForgery.Instance.CookieName, StringComparison.InvariantCultureIgnoreCase);
                     if (nameIndex > -1)
                     {
                         var valueIndex = nameIndex + AntiForgery.Instance.CookieName.Length + 1;

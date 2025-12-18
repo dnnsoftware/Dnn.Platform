@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
         [JsonProperty("query")]
         public string Query { get; set; }
 
-        [JsonProperty(nameof(Timeout))]
+        [JsonProperty("Timeout")]
         public int Timeout { get; set; }
     }
 }

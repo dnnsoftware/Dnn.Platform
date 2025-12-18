@@ -11,7 +11,6 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
     using System.Net.Http.Headers;
     using System.Text;
     using System.Threading;
-    using System.Threading.Tasks;
     using System.Web;
 
     using DNN.Integration.Test.Framework;
@@ -51,9 +50,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         }
 
         [OneTimeSetUp]
-        public override async Task TestFixtureSetUp()
+        public override void TestFixtureSetUp()
         {
-            await base.TestFixtureSetUp();
+            base.TestFixtureSetUp();
             try
             {
                 if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))

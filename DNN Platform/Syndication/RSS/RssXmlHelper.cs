@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.Syndication
     using System.Xml;
 
     /// <summary>A helper class for handling RSS XML.</summary>
-    internal sealed class RssXmlHelper
+    internal class RssXmlHelper
     {
         /// <summary>Internal helper class for XML to RSS conversion (and for generating XML from RSS).</summary>
         /// <param name="doc">The XML document.</param>
@@ -22,15 +22,15 @@ namespace DotNetNuke.Services.Syndication
 
             try
             {
-                var root = doc.DocumentElement;
+                XmlNode root = doc.DocumentElement;
                 if (root.Name == "rss")
                 {
                     // RSS
-                    for (var c = root.FirstChild; c != null; c = c.NextSibling)
+                    for (XmlNode c = root.FirstChild; c != null; c = c.NextSibling)
                     {
                         if (c.NodeType == XmlNodeType.Element && c.Name == "channel")
                         {
-                            for (var n = c.FirstChild; n != null; n = n.NextSibling)
+                            for (XmlNode n = c.FirstChild; n != null; n = n.NextSibling)
                             {
                                 if (n.NodeType == XmlNodeType.Element)
                                 {
@@ -110,13 +110,13 @@ namespace DotNetNuke.Services.Syndication
         /// <returns>The new XML element.</returns>
         internal static XmlNode SaveRssElementAsXml(XmlNode parentNode, RssElementBase element, string elementName)
         {
-            var doc = parentNode.OwnerDocument;
-            var node = doc.CreateElement(elementName);
+            XmlDocument doc = parentNode.OwnerDocument;
+            XmlNode node = doc.CreateElement(elementName);
             parentNode.AppendChild(node);
 
-            foreach (var attr in element.Attributes)
+            foreach (KeyValuePair<string, string> attr in element.Attributes)
             {
-                var attrNode = doc.CreateElement(attr.Key);
+                XmlNode attrNode = doc.CreateElement(attr.Key);
                 attrNode.InnerText = ResolveAppRelativeLinkToUrl(attr.Value);
                 node.AppendChild(attrNode);
             }
@@ -128,13 +128,13 @@ namespace DotNetNuke.Services.Syndication
         {
             var attributes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-            for (var n = node.FirstChild; n != null; n = n.NextSibling)
+            for (XmlNode n = node.FirstChild; n != null; n = n.NextSibling)
             {
                 if (n.NodeType == XmlNodeType.Element && !NodeHasSubElements(n))
                 {
-                    if (attributes.TryGetValue(n.Name, out var attribute))
+                    if (attributes.ContainsKey(n.Name))
                     {
-                        attributes[n.Name] = $"{attribute}, {n.InnerText.Trim()}";
+                        attributes[n.Name] = attributes[n.Name] + ", " + n.InnerText.Trim();
                     }
                     else
                     {

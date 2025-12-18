@@ -105,7 +105,21 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        private static bool AreChildToolsVisible(ref ControlCollection children, ref bool foundTool)
+        private bool CheckVisibility()
+        {
+            bool returnValue = true;
+            if (this.Visible && this.CheckToolVisibility)
+            {
+                // Hide group if all tools are invisible
+                bool foundTool = false;
+                ControlCollection controls = this.contentContainer.Controls;
+                returnValue = this.AreChildToolsVisible(ref controls, ref foundTool);
+            }
+
+            return returnValue;
+        }
+
+        private bool AreChildToolsVisible(ref ControlCollection children, ref bool foundTool)
         {
             bool returnValue = false;
 
@@ -123,7 +137,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 else
                 {
                     ControlCollection controls = ctrl.Controls;
-                    if (AreChildToolsVisible(ref controls, ref foundTool))
+                    if (this.AreChildToolsVisible(ref controls, ref foundTool))
                     {
                         if (foundTool)
                         {
@@ -137,20 +151,6 @@ namespace DotNetNuke.Web.UI.WebControls
             if (!foundTool)
             {
                 return true;
-            }
-
-            return returnValue;
-        }
-
-        private bool CheckVisibility()
-        {
-            bool returnValue = true;
-            if (this.Visible && this.CheckToolVisibility)
-            {
-                // Hide group if all tools are invisible
-                bool foundTool = false;
-                ControlCollection controls = this.contentContainer.Controls;
-                returnValue = AreChildToolsVisible(ref controls, ref foundTool);
             }
 
             return returnValue;

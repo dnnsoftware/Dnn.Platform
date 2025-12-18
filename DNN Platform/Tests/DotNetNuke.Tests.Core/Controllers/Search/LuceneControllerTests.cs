@@ -673,7 +673,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
 
             // Assert
-            Assert.That(lockFile, Does.Exist);
+            Assert.That(File.Exists(lockFile), Is.True);
             Assert.DoesNotThrow(() => this.luceneController.Add(doc1));
         }
 
@@ -693,7 +693,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var secondController = new LuceneControllerImpl();
 
             // Assert
-            Assert.That(lockFile, Does.Exist);
+            Assert.That(File.Exists(lockFile), Is.True);
             Assert.Throws<SearchException>(() => secondController.Add(doc1));
         }
 

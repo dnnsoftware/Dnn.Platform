@@ -63,7 +63,7 @@ namespace Dnn.PersonaBar.Security.Attributes
 
                 foreach (var registrationField in registrationTokens)
                 {
-                    if (!string.IsNullOrWhiteSpace(registrationField) && !RegistrationProfileController.Instance.Search(portalId, registrationField).Any())
+                    if (!string.IsNullOrWhiteSpace(registrationField) && RegistrationProfileController.Instance.Search(portalId, registrationField).Count() == 0)
                     {
                         return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), validationContext.DisplayName, registrationField));
                     }

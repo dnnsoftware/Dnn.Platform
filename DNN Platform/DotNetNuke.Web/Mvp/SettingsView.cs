@@ -40,9 +40,9 @@ namespace DotNetNuke.Web.Mvp
         {
             var value = defaultValue;
 
-            if (this.Model.ModuleSettings.TryGetValue(key, out var settingValue))
+            if (this.Model.ModuleSettings.ContainsKey(key))
             {
-                value = settingValue;
+                value = this.Model.ModuleSettings[key];
             }
 
             return value;
@@ -52,9 +52,9 @@ namespace DotNetNuke.Web.Mvp
         {
             var value = defaultValue;
 
-            if (this.Model.TabModuleSettings.TryGetValue(key, out var settingValue))
+            if (this.Model.TabModuleSettings.ContainsKey(key))
             {
-                value = settingValue;
+                value = this.Model.TabModuleSettings[key];
             }
 
             return value;

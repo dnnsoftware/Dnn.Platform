@@ -92,18 +92,12 @@ namespace DotNetNuke.UI
             int moduleId = -1;
             if (request.QueryString["mid"] != null)
             {
-                if (!int.TryParse(request.QueryString["mid"], out moduleId))
-                {
-                    moduleId = -1;
-                }
+                int.TryParse(request.QueryString["mid"], out moduleId);
             }
 
-            if (request.QueryString["moduleid"] != null && (key.Equals("module", StringComparison.OrdinalIgnoreCase) || key.Equals("help", StringComparison.OrdinalIgnoreCase)))
+            if (request.QueryString["moduleid"] != null && (key.Equals("module", StringComparison.InvariantCultureIgnoreCase) || key.Equals("help", StringComparison.InvariantCultureIgnoreCase)))
             {
-                if (!int.TryParse(request.QueryString["moduleid"], out moduleId))
-                {
-                    moduleId = -1;
-                }
+                int.TryParse(request.QueryString["moduleid"], out moduleId);
             }
 
             return moduleId;
@@ -141,7 +135,7 @@ namespace DotNetNuke.UI
                 slaveModule = new ModuleInfo { ModuleID = moduleId, ModuleDefID = -1, TabID = tabId, InheritViewPermissions = true };
             }
 
-            if (request.QueryString["moduleid"] != null && (key.Equals("module", StringComparison.OrdinalIgnoreCase) || key.Equals("help", StringComparison.OrdinalIgnoreCase)))
+            if (request.QueryString["moduleid"] != null && (key.ToLowerInvariant() == "module" || key.ToLowerInvariant() == "help"))
             {
                 slaveModule.ModuleDefID = -1;
             }

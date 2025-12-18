@@ -11,7 +11,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Maintenance.Telerik.Removal;
 
     /// <summary>A container for an array of steps.</summary>
-    internal sealed class RemoveExtensionStep : StepArrayBase, IRemoveExtensionStep
+    internal class RemoveExtensionStep : StepArrayBase, IRemoveExtensionStep
     {
         private readonly IServiceProvider serviceProvider;
 

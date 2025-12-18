@@ -23,19 +23,17 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(CreateSymbols))]
     public sealed class GeneratePackagesChecksums : FrostingTask<Context>
     {
-        private static readonly string[] ZipFiles = ["*.zip",];
-
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            context.Information("Computing packages checksums…");
+            context.Information("Computing packages checksums...");
 
             var sb = new StringBuilder();
             sb.AppendLine($"## MD5 Checksums")
                 .AppendLine($"| File       | Checksum |")
                 .AppendLine($"|------------|----------|");
 
-            var files = context.GetFilesByPatterns(context.ArtifactsFolder, ZipFiles);
+            var files = context.GetFilesByPatterns(context.ArtifactsFolder, new[] { "*.zip" });
             foreach (var file in files)
             {
                 string hash;
@@ -45,7 +43,9 @@ namespace DotNetNuke.Build.Tasks
                     using (var stream = File.OpenRead(file.FullPath))
                     {
                         var hashBytes = md5.ComputeHash(stream);
-                        hash = Convert.ToHexStringLower(hashBytes);
+                        hash = BitConverter.ToString(hashBytes)
+                            .Replace("-", string.Empty)
+                            .ToLowerInvariant();
                     }
                 }
 

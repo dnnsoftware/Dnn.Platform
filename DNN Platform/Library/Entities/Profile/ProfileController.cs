@@ -369,7 +369,7 @@ namespace DotNetNuke.Entities.Profile
                 string propertyValue = propertyDefinition.PropertyValue;
                 if (propertyDefinition.IsDirty)
                 {
-                    if (propertyName.Equals(UserProfile.USERPROFILE_Photo, StringComparison.OrdinalIgnoreCase))
+                    if (propertyName.Equals(UserProfile.USERPROFILE_Photo, StringComparison.InvariantCultureIgnoreCase))
                     {
                         photoChanged = true;
                     }
@@ -571,7 +571,7 @@ namespace DotNetNuke.Entities.Profile
             return PortalController.GetEffectivePortalId(portalId);
         }
 
-        private static List<ProfilePropertyDefinition> GetPropertyDefinitions(IHostSettings hostSettings, int portalId)
+        private static IEnumerable<ProfilePropertyDefinition> GetPropertyDefinitions(IHostSettings hostSettings, int portalId)
         {
             // Get the Cache Key
             string key = string.Format(DataCache.ProfileDefinitionsCacheKey, portalId);

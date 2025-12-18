@@ -124,7 +124,7 @@ namespace Dnn.ExportImport.Components.Scheduler
 
                                 SchedulingController.PurgeScheduleHistory();
 
-                                Logger.Error("The Scheduler item stopped because main thread stopped, set schedule into emergency mode so it will start after app restart.");
+                                Logger.Error("The Schduler item stopped because main thread stopped, set schedule into emergency mode so it will start after app restart.");
                                 succeeded = false;
                             }
                             catch (Exception ex)
@@ -135,7 +135,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                             }
 
                             this.entitiesController.UpdateJobStatus(job);
-                            if (job.JobStatus is JobStatus.Successful or JobStatus.Cancelled)
+                            if (job.JobStatus == JobStatus.Successful || job.JobStatus == JobStatus.Cancelled)
                             {
                                 // clear everything to be sure imported items take effect
                                 DataCache.ClearCache();
@@ -143,7 +143,7 @@ namespace Dnn.ExportImport.Components.Scheduler
 
                             break;
                         default:
-                            throw new InvalidOperationException("Unknown job type: " + job.JobType);
+                            throw new Exception("Unknown job type: " + job.JobType);
                     }
 
                     this.ScheduleHistoryItem.Succeeded = true;

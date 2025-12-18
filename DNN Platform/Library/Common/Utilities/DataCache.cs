@@ -377,16 +377,20 @@ namespace DotNetNuke.Common.Utilities
         public static void ClearModuleCache(int tabId)
         {
             CachingProvider.Instance().Clear("Module", tabId.ToString());
-            var portals = PortalController.GetPortalDictionary();
-            if (portals.TryGetValue(tabId, out var portalId))
+            Dictionary<int, int> portals = PortalController.GetPortalDictionary();
+            if (portals.ContainsKey(tabId))
             {
-                var tabSettings = TabController.Instance.GetTabSettings(tabId);
+                Hashtable tabSettings = TabController.Instance.GetTabSettings(tabId);
                 if (tabSettings["CacheProvider"] != null && tabSettings["CacheProvider"].ToString().Length > 0)
                 {
-                    var outputProvider = OutputCachingProvider.Instance(tabSettings["CacheProvider"].ToString());
-                    outputProvider?.Remove(tabId);
+                    OutputCachingProvider outputProvider = OutputCachingProvider.Instance(tabSettings["CacheProvider"].ToString());
+                    if (outputProvider != null)
+                    {
+                        outputProvider.Remove(tabId);
+                    }
                 }
 
+                var portalId = portals[tabId];
                 RemoveCache(string.Format(SharedModulesByPortalCacheKey, portalId));
                 RemoveCache(string.Format(SharedModulesWithPortalCacheKey, portalId));
             }
@@ -719,9 +723,9 @@ namespace DotNetNuke.Common.Utilities
                 try
                 {
                     // Try to get lock Object (for key) from Dictionary
-                    if (LockDictionary.TryGetValue(key, out var value))
+                    if (LockDictionary.ContainsKey(key))
                     {
-                        @lock = value;
+                        @lock = LockDictionary[key];
                     }
                 }
                 finally
@@ -737,15 +741,14 @@ namespace DotNetNuke.Common.Utilities
                     try
                     {
                         // Double check dictionary
-                        if (!LockDictionary.TryGetValue(key, out var value))
+                        if (!LockDictionary.ContainsKey(key))
                         {
                             // Create new lock
-                            value = new object();
-                            LockDictionary[key] = value;
+                            LockDictionary[key] = new object();
                         }
 
                         // Retrieve lock
-                        @lock = value;
+                        @lock = LockDictionary[key];
                     }
                     finally
                     {

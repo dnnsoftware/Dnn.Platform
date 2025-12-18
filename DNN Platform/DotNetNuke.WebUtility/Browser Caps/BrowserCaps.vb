@@ -1,4 +1,4 @@
-﻿' Copyright (c) .NET Foundation. All rights reserved.
+' Copyright (c) .NET Foundation. All rights reserved.
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
 Imports System
@@ -76,7 +76,7 @@ Namespace DotNetNuke.UI.Utilities
 
                 Dim objDoc As XPathDocument = Nothing
                 Dim objReader As FileStream = Nothing
-                Dim tr As StreamReader = Nothing
+                Dim tr As TextReader = Nothing
                 Dim fileExists As Boolean = File.Exists(strPath)
                 Try
                     objCaps = New BrowserCaps()
@@ -111,7 +111,7 @@ Namespace DotNetNuke.UI.Utilities
                         Next
                     End If
                 Catch ex As Exception
-                    Throw
+                    Throw ex
                 Finally
                     If Not objReader Is Nothing Then
                         objReader.Close()

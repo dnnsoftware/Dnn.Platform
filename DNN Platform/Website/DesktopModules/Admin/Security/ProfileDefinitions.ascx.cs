@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly INavigationManager navigationManager;
         private readonly IHostSettings hostSettings;
         private ProfilePropertyDefinitionCollection profileProperties;
-        private bool requiredColumnHidden;
+        private bool requiredColumnHidden = false;
 
         /// <summary>Initializes a new instance of the <see cref="ProfileDefinitions"/> class.</summary>
         public ProfileDefinitions()

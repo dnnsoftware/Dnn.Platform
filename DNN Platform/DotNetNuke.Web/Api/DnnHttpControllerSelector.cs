@@ -48,8 +48,8 @@ namespace DotNetNuke.Web.Api
         {
             Requires.NotNull("request", request);
 
-            string controllerName = GetControllerName(request);
-            IEnumerable<string> namespaces = GetNameSpaces(request);
+            string controllerName = this.GetControllerName(request);
+            IEnumerable<string> namespaces = this.GetNameSpaces(request);
             if (namespaces == null || !namespaces.Any() || string.IsNullOrEmpty(controllerName))
             {
                 throw new HttpResponseException(request.CreateErrorResponse(
@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.Api
             var matches = new List<HttpControllerDescriptor>();
             foreach (string ns in namespaces)
             {
-                string fullName = GetFullName(controllerName, ns);
+                string fullName = this.GetFullName(controllerName, ns);
 
                 HttpControllerDescriptor descriptor;
                 if (this.DescriptorCache.TryGetValue(fullName, out descriptor))
@@ -89,17 +89,23 @@ namespace DotNetNuke.Web.Api
             return this.DescriptorCache;
         }
 
-        private static string GetFullName(string controllerName, string ns)
+        private string GetFullName(string controllerName, string ns)
         {
-            return $"{ns}.{controllerName}{ControllerSuffix}".ToLowerInvariant();
+            return string.Format("{0}.{1}{2}", ns, controllerName, ControllerSuffix).ToLowerInvariant();
         }
 
-        private static string[] GetNameSpaces(HttpRequestMessage request)
+        private string[] GetNameSpaces(HttpRequestMessage request)
         {
-            return request.GetRouteData()?.Route.GetNameSpaces();
+            IHttpRouteData routeData = request.GetRouteData();
+            if (routeData == null)
+            {
+                return null;
+            }
+
+            return routeData.Route.GetNameSpaces();
         }
 
-        private static string GetControllerName(HttpRequestMessage request)
+        private string GetControllerName(HttpRequestMessage request)
         {
             IHttpRouteData routeData = request.GetRouteData();
             if (routeData == null)
@@ -108,7 +114,8 @@ namespace DotNetNuke.Web.Api
             }
 
             // Look up controller in route data
-            routeData.Values.TryGetValue(ControllerKey, out var controllerName);
+            object controllerName;
+            routeData.Values.TryGetValue(ControllerKey, out controllerName);
             return controllerName as string;
         }
 

@@ -185,8 +185,6 @@ csharp_prefer_braces = true:silent
 csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = true
 
-csharp_preferred_modifier_order = public, private, protected, internal, static, required, abstract, virtual, sealed, override, new, readonly, extern, unsafe, volatile, async:suggestion
-
 # ReSharper properties
 resharper_instance_members_qualify_members = field, property, event, method
 resharper_csharp_wrap_arguments_style = chop_if_long

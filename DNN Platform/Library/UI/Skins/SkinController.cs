@@ -35,11 +35,22 @@ namespace DotNetNuke.UI.Skins
         private static readonly Regex GdirRegex = new Regex("\\[g]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex SdirRegex = new Regex("\\[s]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex LdirRegex = new Regex("\\[l]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private static readonly string[] MessageSeparator = ["<br />",];
 
-        public static string RootSkin => "Skins";
+        public static string RootSkin
+        {
+            get
+            {
+                return "Skins";
+            }
+        }
 
-        public static string RootContainer => "Containers";
+        public static string RootContainer
+        {
+            get
+            {
+                return "Containers";
+            }
+        }
 
         public static int AddSkin(int skinPackageID, string skinSrc)
         {
@@ -364,7 +375,7 @@ namespace DotNetNuke.UI.Skins
                 if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
                 {
                     // process embedded zip files
-                    if (objZipEntry.FullName.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.OrdinalIgnoreCase))
+                    if (objZipEntry.FullName.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
                     {
                         using (var objMemoryStream = new MemoryStream())
                         {
@@ -373,7 +384,7 @@ namespace DotNetNuke.UI.Skins
                             strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
                         }
                     }
-                    else if (objZipEntry.FullName.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.OrdinalIgnoreCase))
+                    else if (objZipEntry.FullName.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
                     {
                         using (var objMemoryStream = new MemoryStream())
                         {
@@ -415,7 +426,7 @@ namespace DotNetNuke.UI.Skins
                             case ".html":
                             case ".ascx":
                             case ".css":
-                                if (strFileName.IndexOf(Globals.glbAboutPage, StringComparison.InvariantCultureIgnoreCase) < 0)
+                                if (strFileName.ToLowerInvariant().IndexOf(Globals.glbAboutPage.ToLowerInvariant()) < 0)
                                 {
                                     arrSkinFiles.Add(strFileName);
                                 }
@@ -444,7 +455,7 @@ namespace DotNetNuke.UI.Skins
             {
                 var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("Install Skin:", skinName));
-                Array arrMessage = strMessage.Split(MessageSeparator, StringSplitOptions.None);
+                Array arrMessage = strMessage.Split(new[] { "<br />" }, StringSplitOptions.None);
                 foreach (string strRow in arrMessage)
                 {
                     log.LogProperties.Add(new LogDetailInfo("Info:", HtmlUtils.StripTags(strRow, true)));
@@ -521,7 +532,7 @@ namespace DotNetNuke.UI.Skins
         /// <param name="skinFile">The File Name without extension.</param>
         private static string FormatSkinName(string skinFolder, string skinFile)
         {
-            if (skinFolder.Equals("_default", StringComparison.OrdinalIgnoreCase))
+            if (skinFolder.Equals("_default", StringComparison.InvariantCultureIgnoreCase))
             {
                 // host folder
                 return skinFile;

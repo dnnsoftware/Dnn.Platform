@@ -11,7 +11,6 @@ namespace DotNetNuke.Data
     using System.Data.Common;
     using System.Data.SqlClient;
     using System.Data.SqlTypes;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Text;
@@ -67,8 +66,10 @@ namespace DotNetNuke.Data
             }
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public string DefaultProviderName => Instance().ProviderName;
+        public string DefaultProviderName
+        {
+            get { return Instance().ProviderName; }
+        }
 
         public abstract bool IsConnectionValid { get; }
 
@@ -1621,7 +1622,7 @@ namespace DotNetNuke.Data
                 moduleId,
                 portalId,
                 permissionId,
-                GetRoleNull(roleId),
+                this.GetRoleNull(roleId),
                 allowAccess,
                 this.GetNull(userId),
                 createdByUserId);
@@ -1670,7 +1671,7 @@ namespace DotNetNuke.Data
                 moduleId,
                 portalId,
                 permissionId,
-                GetRoleNull(roleId),
+                this.GetRoleNull(roleId),
                 allowAccess,
                 this.GetNull(userId),
                 lastModifiedByUserId);
@@ -1682,7 +1683,7 @@ namespace DotNetNuke.Data
                 "AddTabPermission",
                 tabId,
                 permissionId,
-                GetRoleNull(roleID),
+                this.GetRoleNull(roleID),
                 allowAccess,
                 this.GetNull(userId),
                 createdByUserID);
@@ -1720,7 +1721,7 @@ namespace DotNetNuke.Data
                 tabPermissionId,
                 tabId,
                 permissionId,
-                GetRoleNull(roleID),
+                this.GetRoleNull(roleID),
                 allowAccess,
                 this.GetNull(userId),
                 lastModifiedByUserID);
@@ -1732,7 +1733,7 @@ namespace DotNetNuke.Data
                 "AddFolderPermission",
                 folderId,
                 permissionId,
-                GetRoleNull(roleID),
+                this.GetRoleNull(roleID),
                 allowAccess,
                 this.GetNull(userId),
                 createdByUserID);
@@ -1749,7 +1750,7 @@ namespace DotNetNuke.Data
                 "SaveTabPermission",
                 portalId,
                 permissionId,
-                GetRoleNull(roleId),
+                this.GetRoleNull(roleId),
                 allowAccess,
                 this.GetNull(userId),
                 createdByUserId);
@@ -1812,7 +1813,7 @@ namespace DotNetNuke.Data
                 folderPermissionID,
                 folderID,
                 permissionID,
-                GetRoleNull(roleID),
+                this.GetRoleNull(roleID),
                 allowAccess,
                 this.GetNull(userID),
                 lastModifiedByUserID);
@@ -1824,7 +1825,7 @@ namespace DotNetNuke.Data
                 "AddDesktopModulePermission",
                 portalDesktopModuleID,
                 permissionID,
-                GetRoleNull(roleID),
+                this.GetRoleNull(roleID),
                 allowAccess,
                 this.GetNull(userID),
                 createdByUserID);
@@ -1867,7 +1868,7 @@ namespace DotNetNuke.Data
                 desktopModulePermissionID,
                 portalDesktopModuleID,
                 permissionID,
-                GetRoleNull(roleID),
+                this.GetRoleNull(roleID),
                 allowAccess,
                 this.GetNull(userID),
                 lastModifiedByUserID);
@@ -4068,7 +4069,7 @@ namespace DotNetNuke.Data
             return dateToFix;
         }
 
-        private static object GetRoleNull(int roleID)
+        private object GetRoleNull(int roleID)
         {
             if (roleID.ToString(CultureInfo.InvariantCulture) == Globals.glbRoleNothing)
             {

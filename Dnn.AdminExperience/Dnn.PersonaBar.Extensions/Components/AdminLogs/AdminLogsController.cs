@@ -6,7 +6,6 @@ namespace Dnn.PersonaBar.AdminLogs.Components
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Net.Mail;
@@ -49,14 +48,17 @@ namespace Dnn.PersonaBar.AdminLogs.Components
 
         public LogTypeInfo GetMyLogType(string logTypeKey)
         {
-            this.LogTypeDictionary.TryGetValue(logTypeKey, out var logType);
+            LogTypeInfo logType;
+            this.LogTypeDictionary.TryGetValue(logTypeKey, out logType);
 
-            logType ??= new LogTypeInfo();
+            if (logType == null)
+            {
+                logType = new LogTypeInfo();
+            }
 
             return logType;
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string GetPropertiesText(object obj)
         {
             var str = new StringBuilder();
@@ -106,7 +108,6 @@ namespace Dnn.PersonaBar.AdminLogs.Components
                 EventLogController.EventLogType.ADMIN_ALERT);
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public Dictionary<string, string> GetKeepMostRecentOptions()
         {
             Dictionary<string, string> options = new Dictionary<string, string>();
@@ -131,11 +132,10 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             return options;
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public Dictionary<string, string> GetOccurenceThresholdOptions()
         {
             Dictionary<string, string> thresholds = new Dictionary<string, string>();
-            int[] items = [1, 2, 3, 4, 5, 10, 25, 100, 250, 500, 1000,];
+            int[] items = { 1, 2, 3, 4, 5, 10, 25, 100, 250, 500, 1000 };
             foreach (int item in items)
             {
                 if (item == 1)
@@ -155,11 +155,10 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             return thresholds;
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public Dictionary<string, string> GetOccurenceThresholds()
         {
             Dictionary<string, string> thresholds = new Dictionary<string, string>();
-            int[] items = [1, 2, 3, 4, 5, 10, 25, 100, 250, 500, 1000,];
+            int[] items = { 1, 2, 3, 4, 5, 10, 25, 100, 250, 500, 1000 };
             foreach (int item in items)
             {
                 if (item == 1)
@@ -179,7 +178,6 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             return thresholds;
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public Dictionary<string, string> GetOccurenceThresholdNotificationTimes()
         {
             Dictionary<string, string> notificationTimes = new Dictionary<string, string>();
@@ -191,31 +189,27 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             return notificationTimes;
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public Dictionary<string, string> GetOccurenceThresholdNotificationTimeTypes()
         {
             Dictionary<string, string> notificationTimeTypes = new Dictionary<string, string>();
             foreach (int item in new[] { 1, 2, 3, 4 })
             {
-                notificationTimeTypes.Add(Localization.GetString($"TimeType_{item}", Constants.LocalResourcesFile), item.ToString(CultureInfo.InvariantCulture));
+                notificationTimeTypes.Add(Localization.GetString(string.Format("TimeType_{0}", item), Constants.LocalResourcesFile), item.ToString(CultureInfo.InvariantCulture));
             }
 
             return notificationTimeTypes;
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void UpdateLogTypeConfig(LogTypeConfigInfo logTypeConfigInfo)
         {
             LogController.Instance.UpdateLogTypeConfigInfo(logTypeConfigInfo);
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void AddLogTypeConfig(LogTypeConfigInfo logTypeConfigInfo)
         {
             LogController.Instance.AddLogTypeConfigInfo(logTypeConfigInfo);
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void DeleteLogTypeConfig(string logTypeConfigId)
         {
             var logTypeConfigInfo = new LogTypeConfigInfo();
@@ -223,7 +217,6 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             LogController.Instance.DeleteLogTypeConfigInfo(logTypeConfigInfo);
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public LogTypeConfigInfo GetLogTypeConfig(string logTypeConfigId)
         {
             return LogController.Instance.GetLogTypeConfigInfoByID(logTypeConfigId);
@@ -241,7 +234,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             {
                 const string tempFileName = "errorlog.xml";
                 var filePath = this.PortalSettings.HomeDirectoryMapPath + tempFileName;
-                var xmlDoc = GetExceptions(logItemIds);
+                var xmlDoc = this.GetExceptions(logItemIds);
                 xmlDoc.Save(filePath);
 
                 var attachments = new List<Attachment>();
@@ -274,7 +267,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             return returnMsg;
         }
 
-        private static XmlDocument GetExceptions(IEnumerable<string> logIds)
+        private XmlDocument GetExceptions(IEnumerable<string> logIds)
         {
             var objXml = new XmlDocument { XmlResolver = null };
             objXml.LoadXml("<LogEntries></LogEntries>");
@@ -283,7 +276,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
                 var log = LogController.Instance.GetLog(logId);
                 var xmlDoc = new XmlDocument { XmlResolver = null };
 
-                if (log is LogInfo logInfo)
+                if (log != null && log is LogInfo logInfo)
                 {
                     xmlDoc.LoadXml(logInfo.Serialize());
                 }

@@ -17,13 +17,11 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(OtherPackages))]
     public sealed class CreateInstall : FrostingTask<Context>
     {
-        private static readonly string[] IncludeAll = ["**/*",];
-
         /// <inheritdoc/>
         public override void Run(Context context)
         {
             context.CreateDirectory(context.ArtifactsFolder);
-            var files = context.GetFilesByPatterns(context.WebsiteFolder, IncludeAll, context.PackagingPatterns.InstallExclude);
+            var files = context.GetFilesByPatterns(context.WebsiteFolder, new[] { "**/*" }, context.PackagingPatterns.InstallExclude);
             files.Add(context.GetFilesByPatterns(context.WebsiteFolder, context.PackagingPatterns.InstallInclude));
             context.Information("Zipping {0} files for Install zip", files.Count);
 

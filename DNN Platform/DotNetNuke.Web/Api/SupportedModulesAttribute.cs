@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.Api
 
         public SupportedModulesAttribute(string supportedModules)
         {
-            this.supportedModules = supportedModules.Split(',');
+            this.supportedModules = supportedModules.Split(new[] { ',' });
         }
 
         public SupportedModulesAttribute(params string[] supportedModules)

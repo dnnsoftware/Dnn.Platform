@@ -84,7 +84,12 @@ namespace Dnn.EditBar.UI.Services
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        private static bool IsModuleAdmin(PortalSettings portalSettings)
+        private bool IsPageEditor()
+        {
+            return PagePermissionsAttributesHelper.HasTabPermission("EDIT,CONTENT,MANAGE") || this.IsModuleAdmin(this.PortalSettings);
+        }
+
+        private bool IsModuleAdmin(PortalSettings portalSettings)
         {
             bool isModuleAdmin = false;
             foreach (ModuleInfo objModule in TabController.CurrentPage.Modules)
@@ -101,11 +106,6 @@ namespace Dnn.EditBar.UI.Services
             }
 
             return portalSettings.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && isModuleAdmin;
-        }
-
-        private bool IsPageEditor()
-        {
-            return PagePermissionsAttributesHelper.HasTabPermission("EDIT,CONTENT,MANAGE") || IsModuleAdmin(this.PortalSettings);
         }
     }
 }

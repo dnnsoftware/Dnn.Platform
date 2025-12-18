@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Seo.Components
 
             if (cacheFolder.Exists)
             {
-                foreach (var file in cacheFolder.GetFiles("sitemap*.xml"))
+                foreach (FileInfo file in cacheFolder.GetFiles("sitemap*.xml"))
                 {
                     file.Delete();
                 }
@@ -49,39 +49,39 @@ namespace Dnn.PersonaBar.Seo.Components
 
         public string GetSearchEngineSubmissionUrl(string searchEngine)
         {
-            var url = string.Empty;
+            var strURL = string.Empty;
 
-            switch (searchEngine.ToUpperInvariant().Trim())
+            switch (searchEngine.ToLower().Trim())
             {
-                case "GOOGLE":
-                    url += "http://www.google.com/addurl?q=" + Globals.HTTPPOSTEncode(Globals.AddHTTP(Globals.GetDomainName(HttpContext.Current.Request)));
-                    url += "&dq=";
+                case "google":
+                    strURL += "http://www.google.com/addurl?q=" + Globals.HTTPPOSTEncode(Globals.AddHTTP(Globals.GetDomainName(HttpContext.Current.Request)));
+                    strURL += "&dq=";
                     if (!string.IsNullOrEmpty(this.portalSettings.PortalName))
                     {
-                        url += Globals.HTTPPOSTEncode(this.portalSettings.PortalName);
+                        strURL += Globals.HTTPPOSTEncode(this.portalSettings.PortalName);
                     }
 
                     if (!string.IsNullOrEmpty(this.portalSettings.Description))
                     {
-                        url += Globals.HTTPPOSTEncode(this.portalSettings.Description);
+                        strURL += Globals.HTTPPOSTEncode(this.portalSettings.Description);
                     }
 
                     if (!string.IsNullOrEmpty(this.portalSettings.KeyWords))
                     {
-                        url += Globals.HTTPPOSTEncode(this.portalSettings.KeyWords);
+                        strURL += Globals.HTTPPOSTEncode(this.portalSettings.KeyWords);
                     }
 
-                    url += "&submit=Add+URL";
+                    strURL += "&submit=Add+URL";
                     break;
-                case "YAHOO!":
-                    url = "http://siteexplorer.search.yahoo.com/submit";
+                case "yahoo!":
+                    strURL = "http://siteexplorer.search.yahoo.com/submit";
                     break;
-                case "BING":
-                    url = "http://www.bing.com/webmaster";
+                case "bing":
+                    strURL = "http://www.bing.com/webmaster";
                     break;
             }
 
-            return url;
+            return strURL;
         }
 
         public void CreateVerification(string verification)

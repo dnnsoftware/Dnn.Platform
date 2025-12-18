@@ -8,8 +8,6 @@ namespace Dnn.AzureConnector.Services
     /// <inheritdoc/>
     public class ServiceRouteMapper : IServiceRouteMapper
     {
-        private static readonly string[] Namespaces = ["Dnn.AzureConnector.Services",];
-
         /// <inheritdoc/>
         public void RegisterRoutes(IMapRoute routeManager)
         {
@@ -17,7 +15,7 @@ namespace Dnn.AzureConnector.Services
                 "AzureConnector",
                 "default",
                 "{controller}/{action}",
-                Namespaces);
+                new[] { "Dnn.AzureConnector.Services" });
         }
     }
 }

@@ -5,7 +5,6 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Web.UI;
@@ -24,12 +23,29 @@ namespace DotNetNuke.UI.WebControls
         private string displayMode = "Native";
         private LanguagesListType listType = LanguagesListType.Enabled;
 
-        protected LanguagesListType ListType => this.listType;
+        protected LanguagesListType ListType
+        {
+            get
+            {
+                return this.listType;
+            }
+        }
 
-        protected string DisplayMode => this.displayMode;
+        protected string DisplayMode
+        {
+            get
+            {
+                return this.displayMode;
+            }
+        }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        protected PortalSettings PortalSettings
+        {
+            get
+            {
+                return PortalController.Instance.GetCurrentPortalSettings();
+            }
+        }
 
         /// <inheritdoc/>
         public void RaisePostBackEvent(string eventArgument)
@@ -79,7 +95,7 @@ namespace DotNetNuke.UI.WebControls
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnLeft");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-            var cultures = new List<CultureInfo>();
+            IList<CultureInfo> cultures = new List<CultureInfo>();
             switch (this.ListType)
             {
                 case LanguagesListType.All:

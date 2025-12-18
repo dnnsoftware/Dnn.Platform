@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Host
         /// <inheritdoc/>
         public override string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
-            if (propertyName.Equals("hosttitle", System.StringComparison.OrdinalIgnoreCase) || currentScope == Scope.Debug)
+            if (propertyName.ToLowerInvariant() == "hosttitle" || currentScope == Scope.Debug)
             {
                 return base.GetProperty(propertyName, format, formatProvider, accessingUser, currentScope, ref propertyNotFound);
             }

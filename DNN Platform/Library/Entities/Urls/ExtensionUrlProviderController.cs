@@ -455,7 +455,7 @@ namespace DotNetNuke.Entities.Urls
                     if (!string.IsNullOrEmpty(customPath))
                     {
                         // was customPath any different to friendlyUrlPath?
-                        if (!string.Equals(customPath, friendlyUrlPath, StringComparison.Ordinal))
+                        if (string.CompareOrdinal(customPath, friendlyUrlPath) != 0)
                         {
                             wasChanged = true;
                             changedPath = customPath.Trim();

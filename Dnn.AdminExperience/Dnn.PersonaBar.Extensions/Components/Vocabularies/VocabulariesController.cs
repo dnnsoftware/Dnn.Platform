@@ -128,7 +128,7 @@ namespace Dnn.PersonaBar.Vocabularies.Components
             return this.termController.GetTerm(termId);
         }
 
-        private static void AddChildNodes(List<Term> termList, TermDto parentNode)
+        private void AddChildNodes(List<Term> termList, TermDto parentNode)
         {
             if (parentNode.ChildTerms != null)
             {
@@ -149,7 +149,7 @@ namespace Dnn.PersonaBar.Vocabularies.Components
                             VocabularyId = term.VocabularyId,
                             ChildTerms = new List<TermDto>(),
                         };
-                        AddChildNodes(termList, node);
+                        this.AddChildNodes(termList, node);
                         parentNode.ChildTerms.Add(node);
                     }
                 }

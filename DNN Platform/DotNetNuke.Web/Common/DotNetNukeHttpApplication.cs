@@ -118,11 +118,6 @@ namespace DotNetNuke.Web.Common.Internal
                    || url.EndsWith("install.aspx");
         }
 
-        private static bool IsInstallInProgress(HttpApplication app)
-        {
-            return InstallBlocker.Instance.IsInstallInProgress();
-        }
-
         private void Application_End(object sender, EventArgs eventArgs)
         {
             Logger.Info("Application Ending");
@@ -224,7 +219,7 @@ namespace DotNetNuke.Web.Common.Internal
                 return;
             }
 
-            if (IsInstallInProgress(app))
+            if (this.IsInstallInProgress(app))
             {
                 return;
             }
@@ -240,6 +235,11 @@ namespace DotNetNuke.Web.Common.Internal
                 var page = HttpContext.Current.Handler as PageBase;
                 page.HeaderIsWritten = true;
             }
+        }
+
+        private bool IsInstallInProgress(HttpApplication app)
+        {
+            return InstallBlocker.Instance.IsInstallInProgress();
         }
     }
 }

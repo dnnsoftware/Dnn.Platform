@@ -27,7 +27,7 @@ namespace Dnn.PersonaBar.UI.Services.DTO
 
         /// <summary>Gets or sets a value indicating whether the current framework version has a critical issue.</summary>
         [DataMember(Name = "Critical")]
-        public bool IsCritical { get; set; }
+        public bool IsCritical { get; set; } = false;
 
         /// <summary>Gets or sets the date the latest DNN version was published.</summary>
         [DataMember(Name = "Published")]

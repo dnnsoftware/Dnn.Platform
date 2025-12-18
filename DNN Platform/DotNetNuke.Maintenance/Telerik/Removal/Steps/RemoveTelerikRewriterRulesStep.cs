@@ -12,8 +12,8 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
-    /// <inheritdoc cref="IRemoveTelerikRewriterRulesStep" />
-    internal sealed class RemoveTelerikRewriterRulesStep : XmlStepBase, IRemoveTelerikRewriterRulesStep
+    /// <inheritdoc/>
+    internal class RemoveTelerikRewriterRulesStep : XmlStepBase, IRemoveTelerikRewriterRulesStep
     {
         /// <summary>Initializes a new instance of the <see cref="RemoveTelerikRewriterRulesStep"/> class.</summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>

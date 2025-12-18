@@ -4,14 +4,12 @@
 namespace DotNetNuke.Modules.SearchInput
 {
     using System.Collections;
-    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
 
     public class SearchInputController
     {
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ArrayList GetSearchResultModules(int portalID)
         {
             return CBO.FillCollection(DataProvider.Instance().GetSearchResultModules(portalID), typeof(SearchResultsModuleInfo));

@@ -5,7 +5,6 @@ namespace DotNetNuke.Services.Authentication
 {
     using System;
     using System.ComponentModel;
-    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Common;
 
@@ -33,7 +32,6 @@ namespace DotNetNuke.Services.Authentication
         public int PortalID { get; set; }
 
         /// <summary>Gets the Dependency Provider to resolve registered services with the container.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected IServiceProvider DependencyProvider => Globals.GetCurrentServiceProvider();
     }
 }

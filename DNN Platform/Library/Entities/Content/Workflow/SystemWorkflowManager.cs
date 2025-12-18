@@ -56,7 +56,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <inheritdoc/>
         public WorkflowState GetDraftStateDefinition(int order)
         {
-            var state = GetDefaultWorkflowState(order);
+            var state = this.GetDefaultWorkflowState(order);
             state.StateName = Localization.GetString("DefaultWorkflowState1.StateName");
             return state;
         }
@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <inheritdoc/>
         public WorkflowState GetPublishedStateDefinition(int order)
         {
-            var state = GetDefaultWorkflowState(order);
+            var state = this.GetDefaultWorkflowState(order);
             state.StateName = Localization.GetString("DefaultWorkflowState3.StateName");
             return state;
         }
@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <inheritdoc/>
         public WorkflowState GetReadyForReviewStateDefinition(int order)
         {
-            var state = GetDefaultWorkflowState(order);
+            var state = this.GetDefaultWorkflowState(order);
             state.StateName = Localization.GetString("DefaultWorkflowState2.StateName");
             state.SendNotification = true;
             state.SendNotificationToAdministrators = true;
@@ -85,7 +85,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return () => new SystemWorkflowManager();
         }
 
-        private static WorkflowState GetDefaultWorkflowState(int order)
+        private WorkflowState GetDefaultWorkflowState(int order)
         {
             return new WorkflowState
             {

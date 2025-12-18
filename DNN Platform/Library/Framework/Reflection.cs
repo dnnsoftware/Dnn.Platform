@@ -4,7 +4,6 @@
 namespace DotNetNuke.Framework
 {
     using System;
-    using System.Globalization;
     using System.Reflection;
     using System.Web.Compilation;
 
@@ -457,7 +456,14 @@ namespace DotNetNuke.Framework
         /// <returns>The property's value, or <see langword="null"/> if <paramref name="type"/> is <see langword="null"/>.</returns>
         public static object GetProperty(Type type, string propertyName, object target)
         {
-            return type?.InvokeMember(propertyName, BindingFlags.GetProperty, null, target, null, CultureInfo.InvariantCulture);
+            if (type != null)
+            {
+                return type.InvokeMember(propertyName, BindingFlags.GetProperty, null, target, null);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>Dynamically set the value of a property.</summary>
@@ -467,7 +473,10 @@ namespace DotNetNuke.Framework
         /// <param name="args">The input to the property.</param>
         public static void SetProperty(Type type, string propertyName, object target, object[] args)
         {
-            type?.InvokeMember(propertyName, BindingFlags.SetProperty, null, target, args, CultureInfo.InvariantCulture);
+            if (type != null)
+            {
+                type.InvokeMember(propertyName, BindingFlags.SetProperty, null, target, args);
+            }
         }
 
         /// <summary>Dynamically invoke a method on an object.</summary>
@@ -477,7 +486,10 @@ namespace DotNetNuke.Framework
         /// <param name="args">The input to the method.</param>
         public static void InvokeMethod(Type type, string propertyName, object target, object[] args)
         {
-            type?.InvokeMember(propertyName, BindingFlags.InvokeMethod, null, target, args, CultureInfo.InvariantCulture);
+            if (type != null)
+            {
+                type.InvokeMember(propertyName, BindingFlags.InvokeMethod, null, target, args);
+            }
         }
 
         /// <summary>Dynamically create a default Provider from a ProviderType.</summary>

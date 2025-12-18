@@ -12,7 +12,7 @@ namespace DotNetNuke.Maintenance.Shims
     /// A concrete implementation of the <see cref="IModuleDefinitionController"/> interface
     /// that relies on the <see cref="ModuleDefinitionController"/> class.
     /// </summary>
-    internal sealed class ModuleDefinitionControllerShim : IModuleDefinitionController
+    internal class ModuleDefinitionControllerShim : IModuleDefinitionController
     {
         /// <inheritdoc/>
         public Dictionary<string, ModuleDefinitionInfo> GetModuleDefinitionsByDesktopModuleID(int desktopModuleID)

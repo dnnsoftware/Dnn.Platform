@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
                 }
             }
 
-            var outOfPublishPeriod = IsFileOutOfPublishPeriod(file);
+            var outOfPublishPeriod = this.IsFileOutOfPublishPeriod(file);
             if (outOfPublishPeriod)
             {
                 lockReasonKey = "FileLockedOutOfPublishPeriodError";
@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
                 return false;
             }
 
-            return IsFileOutOfPublishPeriod(file);
+            return this.IsFileOutOfPublishPeriod(file);
         }
 
         /// <inheritdoc/>
@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             return () => new FileLockingController();
         }
 
-        private static bool IsFileOutOfPublishPeriod(IFileInfo file)
+        private bool IsFileOutOfPublishPeriod(IFileInfo file)
         {
             // Publish Period locks
             return file.EnablePublishPeriod && (file.StartDate > DateTime.Today || (file.EndDate < DateTime.Today && file.EndDate != Null.NullDate));

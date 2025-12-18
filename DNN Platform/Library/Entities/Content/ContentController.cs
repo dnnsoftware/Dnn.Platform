@@ -143,7 +143,7 @@ namespace DotNetNuke.Entities.Content
             union = terms.Aggregate(
                 union,
                 (current, term) =>
-                    current.Count == 0
+                    !current.Any()
                         ? this.GetContentItemsByTerm(term).ToList()
                         : current.Intersect(this.GetContentItemsByTerm(term), new ContentItemEqualityComparer()).ToList());
 

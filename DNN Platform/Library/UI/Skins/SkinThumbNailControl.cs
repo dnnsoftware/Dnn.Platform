@@ -242,7 +242,7 @@ namespace DotNetNuke.UI.Skins
         /// <param name="strSkinFile">The File Name without extension.</param>
         private static string FormatSkinName(string strSkinFolder, string strSkinFile)
         {
-            if (strSkinFolder.Equals("_default", StringComparison.OrdinalIgnoreCase))
+            if (strSkinFolder.Equals("_default", StringComparison.InvariantCultureIgnoreCase))
             {
                 // host folder
                 return strSkinFile;

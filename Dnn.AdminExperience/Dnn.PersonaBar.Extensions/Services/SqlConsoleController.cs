@@ -18,8 +18,6 @@ namespace Dnn.PersonaBar.SqlConsole.Services
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.SqlConsole.Components;
-
-    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Services.Log.EventLog;
@@ -108,7 +106,7 @@ namespace Dnn.PersonaBar.SqlConsole.Services
             var outputTables = new List<DataTable>();
             string errorMessage;
 
-            var runAsQuery = RunAsScript(query.Query);
+            var runAsQuery = this.RunAsScript(query.Query);
             if (runAsQuery)
             {
                 errorMessage = DataProvider.Instance().ExecuteScript(connectionstring, query.Query, query.Timeout);
@@ -141,11 +139,6 @@ namespace Dnn.PersonaBar.SqlConsole.Services
             return this.Request.CreateResponse(statusCode, new { Data = runAsQuery ? null : outputTables, Error = errorMessage });
         }
 
-        private static bool RunAsScript(string query)
-        {
-            return SqlObjRegex.IsMatch(query);
-        }
-
         private void RecordAuditEventLog(string query)
         {
             var props = new LogProperties { new LogDetailInfo("User", this.UserInfo.Username), new LogDetailInfo("SQL Query", query) };
@@ -154,13 +147,18 @@ namespace Dnn.PersonaBar.SqlConsole.Services
             var log = new LogInfo
             {
                 LogUserID = this.UserInfo.UserID,
-                LogTypeKey = nameof(EventLogType.HOST_SQL_EXECUTED),
+                LogTypeKey = EventLogController.EventLogType.HOST_SQL_EXECUTED.ToString(),
                 LogProperties = props,
                 BypassBuffering = true,
                 LogPortalID = Null.NullInteger,
             };
 
             LogController.Instance.AddLog(log);
+        }
+
+        private bool RunAsScript(string query)
+        {
+            return SqlObjRegex.IsMatch(query);
         }
     }
 }

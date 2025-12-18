@@ -205,7 +205,7 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             var executingServer = ServerController.GetExecutingServerName();
 
-            var scheduleItem = SchedulingController.GetSchedule(GetSchedulerTypeFullName(), executingServer);
+            var scheduleItem = SchedulingController.GetSchedule(this.GetSchedulerTypeFullName(), executingServer);
             if (scheduleItem != null)
             {
                 SchedulingProvider.Instance().RunScheduleItemNow(scheduleItem, true);
@@ -223,7 +223,7 @@ namespace Dnn.ExportImport.Components.Controllers
             return () => new EntitiesController();
         }
 
-        private static string GetSchedulerTypeFullName()
+        private string GetSchedulerTypeFullName()
         {
             var type = typeof(ExportImportScheduler);
             return $"{type.FullName}, {type.Assembly.GetName().Name}";

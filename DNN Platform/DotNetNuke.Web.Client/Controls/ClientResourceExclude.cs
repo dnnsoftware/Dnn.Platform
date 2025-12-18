@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.Client.Controls
                     this.clientResourceController.RemoveScriptByName(this.Name);
                     break;
                 default:
-                    throw new InvalidOperationException("DependencyType must be either Css or Javascript");
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }

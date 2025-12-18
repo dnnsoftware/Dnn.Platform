@@ -43,7 +43,7 @@ namespace Dnn.EditBar.Library.Items
 
         /// <summary>Gets the menu order.</summary>
         [DataMember(Name = "order")]
-        public virtual int Order { get; }
+        public virtual int Order { get; } = 0;
 
         /// <summary>Gets the menu script path, which will handle the button click event.</summary>
         [DataMember(Name = "loader")]
@@ -51,7 +51,7 @@ namespace Dnn.EditBar.Library.Items
 
         /// <summary>Gets a value indicating whether the menu have custom layout.</summary>
         [DataMember(Name = "customLayout")]
-        public virtual bool CustomLayout { get; }
+        public virtual bool CustomLayout { get; } = false;
 
         /// <summary>Gets menu custom settings.</summary>
         [DataMember(Name = "settings")]

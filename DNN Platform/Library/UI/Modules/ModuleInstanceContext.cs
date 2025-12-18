@@ -5,7 +5,6 @@ namespace DotNetNuke.UI.Modules
 {
     using System;
     using System.Collections;
-    using System.Diagnostics.CodeAnalysis;
     using System.Web;
     using System.Web.UI;
 
@@ -50,7 +49,6 @@ namespace DotNetNuke.UI.Modules
         }
 
         /// <summary>Gets a value indicating whether the user is in the Administrator role.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool EditMode => TabPermissionController.CanAdminPage();
 
         /// <summary>Gets a value indicating whether the module is Editable (in Admin mode).</summary>
@@ -88,14 +86,37 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        public bool IsHostMenu => Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
+        public bool IsHostMenu
+        {
+            get
+            {
+                return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
+            }
+        }
 
-        public PortalAliasInfo PortalAlias => this.PortalSettings.PortalAlias;
+        public PortalAliasInfo PortalAlias
+        {
+            get
+            {
+                return this.PortalSettings.PortalAlias;
+            }
+        }
 
-        public int PortalId => this.PortalSettings.PortalId;
+        public int PortalId
+        {
+            get
+            {
+                return this.PortalSettings.PortalId;
+            }
+        }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        public PortalSettings PortalSettings
+        {
+            get
+            {
+                return PortalController.Instance.GetCurrentPortalSettings();
+            }
+        }
 
         /// <summary>Gets the settings for this context.</summary>
         public Hashtable Settings
@@ -229,7 +250,7 @@ namespace DotNetNuke.UI.Modules
 
         public string EditUrl(string keyName, string keyValue, string controlKey)
         {
-            var parameters = Array.Empty<string>();
+            var parameters = new string[] { };
             return this.EditUrl(keyName, keyValue, controlKey, parameters);
         }
 
@@ -319,18 +340,6 @@ namespace DotNetNuke.UI.Modules
             return count;
         }
 
-        private static bool SupportShowInPopup(string url)
-        {
-            if (HttpContext.Current == null || !url.Contains("://"))
-            {
-                return true;
-            }
-
-            var isSecureConnection = UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request);
-            return (isSecureConnection && url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
-                   || (!isSecureConnection && url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase));
-        }
-
         /// <summary>AddHelpActions Adds the Help actions to the Action Menu.</summary>
         private void AddHelpActions()
         {
@@ -338,7 +347,7 @@ namespace DotNetNuke.UI.Modules
             var showInNewWindow = false;
             if (!string.IsNullOrEmpty(this.Configuration.ModuleControl.HelpURL) && Host.EnableModuleOnLineHelp && this.PortalSettings.EnablePopUps)
             {
-                var supportInPopup = SupportShowInPopup(this.Configuration.ModuleControl.HelpURL);
+                var supportInPopup = this.SupportShowInPopup(this.Configuration.ModuleControl.HelpURL);
                 if (supportInPopup)
                 {
                     url = UrlUtils.PopUpUrl(this.Configuration.ModuleControl.HelpURL, this.PortalSettings, false, false, 550, 950);
@@ -476,7 +485,7 @@ namespace DotNetNuke.UI.Modules
             foreach (object obj in this.PortalSettings.ActiveTab.Panes)
             {
                 var pane = obj as string;
-                if (!string.IsNullOrEmpty(pane) && this.Configuration != null && !this.Configuration.PaneName.Equals(pane, StringComparison.OrdinalIgnoreCase))
+                if (!string.IsNullOrEmpty(pane) && this.Configuration != null && !this.Configuration.PaneName.Equals(pane, StringComparison.InvariantCultureIgnoreCase))
                 {
                     this.moduleMoveActions.Actions.Add(
                         this.GetNextActionID(),
@@ -734,6 +743,18 @@ namespace DotNetNuke.UI.Modules
                     action.ClientScript = UrlUtils.PopUpUrl(action.Url, this.moduleControl as Control, this.PortalSettings, true, false);
                 }
             }
+        }
+
+        private bool SupportShowInPopup(string url)
+        {
+            if (HttpContext.Current == null || !url.Contains("://"))
+            {
+                return true;
+            }
+
+            var isSecureConnection = UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request);
+            return (isSecureConnection && url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
+                   || (!isSecureConnection && url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

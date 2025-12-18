@@ -7,7 +7,6 @@ namespace DotNetNuke.Security.Permissions
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Collections.Internal;
@@ -97,7 +96,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAddFolder(FolderInfo folder)
         {
-            return HasFolderPermission(folder, AddFolderPermissionKey);
+            return this.HasFolderPermission(folder, AddFolderPermissionKey);
         }
 
         /// <summary>Returns a flag indicating whether the current user can browse the folder.</summary>
@@ -133,7 +132,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanCopyFolder(FolderInfo folder)
         {
-            return HasFolderPermission(folder, CopyFolderPermissionKey);
+            return this.HasFolderPermission(folder, CopyFolderPermissionKey);
         }
 
         /// <summary>Returns a flag indicating whether the current user can delete a folder or file.</summary>
@@ -141,7 +140,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanDeleteFolder(FolderInfo folder)
         {
-            return HasFolderPermission(folder, DeleteFolderPermissionKey);
+            return this.HasFolderPermission(folder, DeleteFolderPermissionKey);
         }
 
         /// <summary>Returns a flag indicating whether the current user can manage a folder's settings.</summary>
@@ -149,7 +148,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanManageFolder(FolderInfo folder)
         {
-            return HasFolderPermission(folder, ManageFolderPermissionKey);
+            return this.HasFolderPermission(folder, ManageFolderPermissionKey);
         }
 
         /// <summary>Returns a flag indicating whether the current user can view a folder or file.</summary>
@@ -157,7 +156,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanViewFolder(FolderInfo folder)
         {
-            return HasFolderPermission(folder, ViewFolderPermissionKey);
+            return this.HasFolderPermission(folder, ViewFolderPermissionKey);
         }
 
         public virtual void DeleteFolderPermissionsByUser(UserInfo objUser)
@@ -539,7 +538,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A List with the implicit roles.</returns>
         public virtual IEnumerable<RoleInfo> ImplicitRolesForPages(int portalId)
         {
-            return DefaultImplicitRoles(portalId);
+            return this.DefaultImplicitRoles(portalId);
         }
 
         /// <summary>Returns a list with all roles with implicit permissions on Folders.</summary>
@@ -547,7 +546,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A List with the implicit roles.</returns>
         public virtual IEnumerable<RoleInfo> ImplicitRolesForFolders(int portalId)
         {
-            return DefaultImplicitRoles(portalId);
+            return this.DefaultImplicitRoles(portalId);
         }
 
         /// <summary>Returns a flag indicating whether the current user can add content to a page.</summary>
@@ -555,7 +554,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAddContentToPage(TabInfo tab)
         {
-            return HasPagePermission(tab, ContentPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
+            return this.HasPagePermission(tab, ContentPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>Returns a flag indicating whether the current user can add a child page to a page.</summary>
@@ -563,7 +562,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAddPage(TabInfo tab)
         {
-            return HasPagePermission(tab, AddPagePermissionKey) || (tab.TabID == Null.NullInteger && this.CanAddTopLevel(tab.PortalID)) || this.IsPageAdmin(tab.PortalID);
+            return this.HasPagePermission(tab, AddPagePermissionKey) || (tab.TabID == Null.NullInteger && this.CanAddTopLevel(tab.PortalID)) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>Returns a flag indicating whether the current user can administer a page.</summary>
@@ -579,7 +578,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanCopyPage(TabInfo tab)
         {
-            return HasPagePermission(tab, CopyPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
+            return this.HasPagePermission(tab, CopyPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>Returns a flag indicating whether the current user can delete a page.</summary>
@@ -587,7 +586,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanDeletePage(TabInfo tab)
         {
-            return HasPagePermission(tab, DeletePagePermissionKey) || this.IsPageAdmin(tab.PortalID);
+            return this.HasPagePermission(tab, DeletePagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>Returns a flag indicating whether the current user can export a page.</summary>
@@ -595,7 +594,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanExportPage(TabInfo tab)
         {
-            return HasPagePermission(tab, ExportPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
+            return this.HasPagePermission(tab, ExportPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>Returns a flag indicating whether the current user can import a page.</summary>
@@ -603,7 +602,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanImportPage(TabInfo tab)
         {
-            return HasPagePermission(tab, ImportPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
+            return this.HasPagePermission(tab, ImportPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>Returns a flag indicating whether the current user can manage a page's settings.</summary>
@@ -611,7 +610,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanManagePage(TabInfo tab)
         {
-            return HasPagePermission(tab, ManagePagePermissionKey) || this.IsPageAdmin(tab.PortalID);
+            return this.HasPagePermission(tab, ManagePagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>Returns a flag indicating whether the current user can see a page in a navigation object.</summary>
@@ -619,7 +618,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanNavigateToPage(TabInfo tab)
         {
-            return HasPagePermission(tab, NavigatePagePermissionKey) || HasPagePermission(tab, ViewPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
+            return this.HasPagePermission(tab, NavigatePagePermissionKey) || this.HasPagePermission(tab, ViewPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>Returns a flag indicating whether the current user can view a page.</summary>
@@ -627,7 +626,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanViewPage(TabInfo tab)
         {
-            return HasPagePermission(tab, ViewPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
+            return this.HasPagePermission(tab, ViewPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>Returns a flag indicating whether the current user can add top level pages.</summary>
@@ -898,20 +897,18 @@ namespace DotNetNuke.Security.Permissions
                     || this.HasModulePermission(moduleConfiguration.ModulePermissions, "EDIT"));
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected bool IsDeniedModulePermission(ModuleInfo moduleConfiguration, string permissionKey)
         {
-            return IsDeniedModulePermission(moduleConfiguration.ModulePermissions, "VIEW")
-                   || IsDeniedModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
-                   || IsDeniedModulePermission(moduleConfiguration.ModulePermissions, "EDIT");
+            return this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, "VIEW")
+                   || this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
+                   || this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, "EDIT");
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected bool IsDeniedTabPermission(TabInfo tab, string permissionKey)
         {
-            return IsDeniedTabPermission(tab.TabPermissions, "VIEW")
-                   || IsDeniedTabPermission(tab.TabPermissions, permissionKey)
-                   || IsDeniedTabPermission(tab.TabPermissions, "EDIT");
+            return this.IsDeniedTabPermission(tab.TabPermissions, "VIEW")
+                   || this.IsDeniedTabPermission(tab.TabPermissions, permissionKey)
+                   || this.IsDeniedTabPermission(tab.TabPermissions, "EDIT");
         }
 
         private static DNNCacheDependency GetCacheDependency(int portalId)
@@ -1020,9 +1017,10 @@ namespace DotNetNuke.Security.Permissions
                     var desktopModulePermissionInfo = CBO.FillObject<DesktopModulePermissionInfo>(dr, false);
 
                     // add DesktopModule Permission to dictionary
-                    if (dic.TryGetValue(desktopModulePermissionInfo.PortalDesktopModuleID, out var permissions))
+                    if (dic.ContainsKey(desktopModulePermissionInfo.PortalDesktopModuleID))
                     {
-                        permissions.Add(desktopModulePermissionInfo);
+                        // Add DesktopModulePermission to DesktopModulePermission Collection already in dictionary for TabId
+                        dic[desktopModulePermissionInfo.PortalDesktopModuleID].Add(desktopModulePermissionInfo);
                     }
                     else
                     {
@@ -1047,110 +1045,21 @@ namespace DotNetNuke.Security.Permissions
             return dic;
         }
 
-        private static bool HasFolderPermission(FolderInfo folder, string permissionKey)
-        {
-            if (folder == null)
-            {
-                return false;
-            }
-
-            return (PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(permissionKey))
-                    || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(AdminFolderPermissionKey)))
-                   && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(permissionKey));
-
-            // Deny on Edit permission on folder shouldn't take away any other explicitly Allowed
-            // && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
-        }
-
-        private static bool HasPagePermission(TabInfo tab, string permissionKey)
-        {
-            return (PortalSecurity.IsInRoles(tab.TabPermissions.ToString(permissionKey))
-                    || PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)))
-                   && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey));
-
-            // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
-            // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
-        }
-
-        private static bool HasSitePermission(PortalInfo portal, string permissionKey)
-        {
-            return (PortalSecurity.IsInRoles(portal.PortalPermissions.ToString(permissionKey))
-                    || PortalSecurity.IsInRoles(portal.PortalPermissions.ToString(AdminPagePermissionKey)))
-                   && !PortalSecurity.IsDenied(portal.PortalPermissions.ToString(permissionKey));
-
-            // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
-            // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
-        }
-
-        private static bool IsDeniedModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
-        {
-            bool isDenied = Null.NullBoolean;
-            if (permissionKey.Contains(","))
-            {
-                foreach (string permission in permissionKey.Split(','))
-                {
-                    if (PortalSecurity.IsDenied(modulePermissions.ToString(permission)))
-                    {
-                        isDenied = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                isDenied = PortalSecurity.IsDenied(modulePermissions.ToString(permissionKey));
-            }
-
-            return isDenied;
-        }
-
-        private static bool IsDeniedTabPermission(TabPermissionCollection tabPermissions, string permissionKey)
-        {
-            bool isDenied = Null.NullBoolean;
-            if (permissionKey.Contains(","))
-            {
-                foreach (string permission in permissionKey.Split(','))
-                {
-                    if (PortalSecurity.IsDenied(tabPermissions.ToString(permission)))
-                    {
-                        isDenied = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                isDenied = PortalSecurity.IsDenied(tabPermissions.ToString(permissionKey));
-            }
-
-            return isDenied;
-        }
-
-        private static List<RoleInfo> DefaultImplicitRoles(int portalId)
-        {
-            return
-            [
-                RoleController.Instance.GetRoleById(
-                    portalId,
-                    PortalController.Instance.GetPortal(portalId).AdministratorRoleId),
-            ];
-        }
-
         /// <summary>GetModulePermissions gets a Dictionary of ModulePermissionCollections by Module.</summary>
-        /// <param name="tabId">The ID of the tab.</param>
-        private Dictionary<int, ModulePermissionCollection> GetModulePermissions(int tabId)
+        /// <param name="tabID">The ID of the tab.</param>
+        private Dictionary<int, ModulePermissionCollection> GetModulePermissions(int tabID)
         {
-            string cacheKey = string.Format(DataCache.ModulePermissionCacheKey, tabId);
+            string cacheKey = string.Format(DataCache.ModulePermissionCacheKey, tabID);
             return CBO.GetCachedObject<Dictionary<int, ModulePermissionCollection>>(
-                new CacheItemArgs(cacheKey, DataCache.ModulePermissionCacheTimeOut, DataCache.ModulePermissionCachePriority, tabId), this.GetModulePermissionsCallBack);
+                new CacheItemArgs(cacheKey, DataCache.ModulePermissionCacheTimeOut, DataCache.ModulePermissionCachePriority, tabID), this.GetModulePermissionsCallBack);
         }
 
         /// <summary>GetModulePermissionsCallBack gets a Dictionary of ModulePermissionCollections by Module from the the Database.</summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters needed for the database call.</param>
         private object GetModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
-            var tabId = (int)cacheItemArgs.ParamList[0];
-            IDataReader dr = this.dataProvider.GetModulePermissionsByTabID(tabId);
+            var tabID = (int)cacheItemArgs.ParamList[0];
+            IDataReader dr = this.dataProvider.GetModulePermissionsByTabID(tabID);
             var dic = new Dictionary<int, ModulePermissionCollection>();
             try
             {
@@ -1160,9 +1069,9 @@ namespace DotNetNuke.Security.Permissions
                     var modulePermissionInfo = CBO.FillObject<ModulePermissionInfo>(dr, false);
 
                     // add Module Permission to dictionary
-                    if (dic.TryGetValue(modulePermissionInfo.ModuleID, out var permissions))
+                    if (dic.ContainsKey(modulePermissionInfo.ModuleID))
                     {
-                        permissions.Add(modulePermissionInfo);
+                        dic[modulePermissionInfo.ModuleID].Add(modulePermissionInfo);
                     }
                     else
                     {
@@ -1217,9 +1126,10 @@ namespace DotNetNuke.Security.Permissions
                         var tabPermissionInfo = CBO.FillObject<TabPermissionInfo>(dr, false);
 
                         // add Tab Permission to dictionary
-                        if (dic.TryGetValue(tabPermissionInfo.TabID, out var permissions))
+                        if (dic.ContainsKey(tabPermissionInfo.TabID))
                         {
-                            permissions.Add(tabPermissionInfo);
+                            // Add TabPermission to TabPermission Collection already in dictionary for TabId
+                            dic[tabPermissionInfo.TabID].Add(tabPermissionInfo);
                         }
                         else
                         {
@@ -1243,6 +1153,95 @@ namespace DotNetNuke.Security.Permissions
             }
 
             return dic;
+        }
+
+        private bool HasFolderPermission(FolderInfo folder, string permissionKey)
+        {
+            if (folder == null)
+            {
+                return false;
+            }
+
+            return (PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(permissionKey))
+                    || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(AdminFolderPermissionKey)))
+                   && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(permissionKey));
+
+            // Deny on Edit permission on folder shouldn't take away any other explicitly Allowed
+            // && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
+        }
+
+        private bool HasPagePermission(TabInfo tab, string permissionKey)
+        {
+            return (PortalSecurity.IsInRoles(tab.TabPermissions.ToString(permissionKey))
+                    || PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)))
+                    && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey));
+
+            // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
+            // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
+        }
+
+        private bool HasSitePermission(PortalInfo portal, string permissionKey)
+        {
+            return (PortalSecurity.IsInRoles(portal.PortalPermissions.ToString(permissionKey))
+                    || PortalSecurity.IsInRoles(portal.PortalPermissions.ToString(AdminPagePermissionKey)))
+                    && !PortalSecurity.IsDenied(portal.PortalPermissions.ToString(permissionKey));
+
+            // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
+            // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
+        }
+
+        private bool IsDeniedModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
+        {
+            bool isDenied = Null.NullBoolean;
+            if (permissionKey.Contains(","))
+            {
+                foreach (string permission in permissionKey.Split(','))
+                {
+                    if (PortalSecurity.IsDenied(modulePermissions.ToString(permission)))
+                    {
+                        isDenied = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                isDenied = PortalSecurity.IsDenied(modulePermissions.ToString(permissionKey));
+            }
+
+            return isDenied;
+        }
+
+        private bool IsDeniedTabPermission(TabPermissionCollection tabPermissions, string permissionKey)
+        {
+            bool isDenied = Null.NullBoolean;
+            if (permissionKey.Contains(","))
+            {
+                foreach (string permission in permissionKey.Split(','))
+                {
+                    if (PortalSecurity.IsDenied(tabPermissions.ToString(permission)))
+                    {
+                        isDenied = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                isDenied = PortalSecurity.IsDenied(tabPermissions.ToString(permissionKey));
+            }
+
+            return isDenied;
+        }
+
+        private IEnumerable<RoleInfo> DefaultImplicitRoles(int portalId)
+        {
+            return new List<RoleInfo>
+            {
+                RoleController.Instance.GetRoleById(
+                    portalId,
+                    PortalController.Instance.GetPortal(portalId).AdministratorRoleId),
+            };
         }
 
         /// <summary>GetPortalPermissions gets a Dictionary of PortalPermissionCollections by PortalId.</summary>
@@ -1273,9 +1272,10 @@ namespace DotNetNuke.Security.Permissions
                         var portalPermissionInfo = CBO.FillObject<PortalPermissionInfo>(dr, false);
 
                         // add Portal Permission to dictionary
-                        if (dic.TryGetValue(portalPermissionInfo.PortalID, out var permissions))
+                        if (dic.ContainsKey(portalPermissionInfo.PortalID))
                         {
-                            permissions.Add(portalPermissionInfo);
+                            // Add TabPermission to TabPermission Collection already in dictionary for TabId
+                            dic[portalPermissionInfo.PortalID].Add(portalPermissionInfo);
                         }
                         else
                         {

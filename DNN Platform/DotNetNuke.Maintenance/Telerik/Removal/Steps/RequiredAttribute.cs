@@ -11,7 +11,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     /// A step execution fails if a required property is not set by the time <see cref="IStep.Execute"/> is called.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    internal sealed class RequiredAttribute : Attribute
+    internal class RequiredAttribute : Attribute
     {
     }
 }

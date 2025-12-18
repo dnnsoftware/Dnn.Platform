@@ -4,7 +4,7 @@
 namespace Dnn.AzureConnector.Components
 {
     /// <summary>Azure connector constants.</summary>
-    internal static class Constants
+    internal class Constants
     {
         /// <summary>The folder provider type.</summary>
         public const string FolderProviderType = "AzureFolderProvider";

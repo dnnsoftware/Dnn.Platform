@@ -397,7 +397,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 // Assert
                 Assert.That(search.Results, Has.Count.EqualTo(1));
-                Assert.That(StripEllipses(search.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + veryLongWord + "</b>"));
+                Assert.That(this.StipEllipses(search.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + veryLongWord + "</b>"));
             });
         }
 
@@ -905,13 +905,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             // Arrange
             string[] docs =
-            [
+            {
                 Line1,
                 Line2,
                 Line3,
                 Line4,
-                Line5
-            ];
+                Line5,
+                };
             this.AddLinesAsSearchDocs(docs);
 
             // Act
@@ -922,16 +922,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 // Assert
                 Assert.That(search.Results, Has.Count.EqualTo(docs.Length));
                 Assert.That(
-                    search.Results.Select(r => StripEllipses(r.Snippet)),
-                    Is.EqualTo(
-                        [
-                            "brown <b>fox</b> jumps over the lazy dog",
-                            "quick <b>fox</b> jumps over the black dog - Italian",
-                            "gold <b>fox</b> jumped over the lazy black dog",
-                            "e red <b>fox</b> jumped over the lazy dark gray dog",
-                            "quick <b>fox</b> jumps over the white dog - los de el Espana",
-                        ])
-                        .AsCollection,
+                    new[]
+                    {
+                  "brown <b>fox</b> jumps over the lazy dog",
+                  "quick <b>fox</b> jumps over the black dog - Italian",
+                  "gold <b>fox</b> jumped over the lazy black dog",
+                  "e red <b>fox</b> jumped over the lazy dark gray dog",
+                  "quick <b>fox</b> jumps over the white dog - los de el Espana",
+                    }.SequenceEqual(search.Results.Select(r => this.StipEllipses(r.Snippet))),
+                    Is.True,
                     "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Snippet)));
             });
         }
@@ -1790,12 +1789,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 // Assert
                 Assert.That(searches1.TotalHits, Is.EqualTo(2));
-                Assert.That(StripEllipses(searches1.Results[0].Snippet).Trim(), Is.EqualTo("<b>z&#232;bre</b> or panth&#232;re"));
-                Assert.That(StripEllipses(searches1.Results[1].Snippet).Trim(), Is.EqualTo("<b>zebre</b> without accent"));
+                Assert.That(this.StipEllipses(searches1.Results[0].Snippet).Trim(), Is.EqualTo("<b>z&#232;bre</b> or panth&#232;re"));
+                Assert.That(this.StipEllipses(searches1.Results[1].Snippet).Trim(), Is.EqualTo("<b>zebre</b> without accent"));
 
                 Assert.That(searches2.TotalHits, Is.EqualTo(2));
-                Assert.That(StripEllipses(searches2.Results[0].Snippet).Trim(), Is.EqualTo("<b>z&#232;bre</b> or panth&#232;re"));
-                Assert.That(StripEllipses(searches2.Results[1].Snippet).Trim(), Is.EqualTo("<b>zebre</b> without accent"));
+                Assert.That(this.StipEllipses(searches2.Results[0].Snippet).Trim(), Is.EqualTo("<b>z&#232;bre</b> or panth&#232;re"));
+                Assert.That(this.StipEllipses(searches2.Results[1].Snippet).Trim(), Is.EqualTo("<b>zebre</b> without accent"));
             });
         }
 
@@ -1821,8 +1820,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Assert.That(search1.TotalHits, Is.EqualTo(1));
                 Assert.That(search2.TotalHits, Is.EqualTo(1));
 
-                Assert.That(StripEllipses(search1.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + lines[0] + "</b>"));
-                Assert.That(StripEllipses(search2.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + lines[1] + "</b>"));
+                Assert.That(this.StipEllipses(search1.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + lines[0] + "</b>"));
+                Assert.That(this.StipEllipses(search2.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + lines[1] + "</b>"));
             });
         }
 
@@ -1847,9 +1846,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 // Assert
                 Assert.That(search.TotalHits, Is.EqualTo(3));
-                Assert.That(StripEllipses(search.Results[0].Snippet), Is.EqualTo("I <b>ride</b> my bike to work"));
-                Assert.That(StripEllipses(search.Results[1].Snippet), Is.EqualTo("m are <b>riding</b> their bikes"));
-                Assert.That(StripEllipses(search.Results[2].Snippet), Is.EqualTo("e boy <b>rides</b> his bike to school"));
+                Assert.That(this.StipEllipses(search.Results[0].Snippet), Is.EqualTo("I <b>ride</b> my bike to work"));
+                Assert.That(this.StipEllipses(search.Results[1].Snippet), Is.EqualTo("m are <b>riding</b> their bikes"));
+                Assert.That(this.StipEllipses(search.Results[2].Snippet), Is.EqualTo("e boy <b>rides</b> his bike to school"));
             });
         }
 
@@ -1865,7 +1864,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             Assert.That(search.TotalHits, Is.EqualTo(added));
 
-            var snippets = search.Results.Select(result => StripEllipses(result.Snippet)).OrderBy(s => s).ToArray();
+            var snippets = search.Results.Select(result => this.StipEllipses(result.Snippet)).OrderBy(s => s).ToArray();
             Assert.Multiple(() =>
             {
                 Assert.That(snippets[0], Is.EqualTo("brown <b>fox</b> jumps over the lazy dog"));
@@ -2621,11 +2620,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             return r; // ah!
         }
 
-        private static string StripEllipses(string text)
-        {
-            return text.Replace("...", string.Empty).Trim();
-        }
-
         private void CreateNewLuceneControllerInstance(bool reCreate = false)
         {
             InternalSearchController.SetTestableInstance(new InternalSearchControllerImpl());
@@ -3102,6 +3096,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId } };
             return this.searchController.SiteSearch(query);
+        }
+
+        private string StipEllipses(string text)
+        {
+            return text.Replace("...", string.Empty).Trim();
         }
 
         /// <summary>

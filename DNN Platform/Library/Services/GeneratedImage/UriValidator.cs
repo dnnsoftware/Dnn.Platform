@@ -11,10 +11,11 @@ namespace DotNetNuke.Services.GeneratedImage
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
 
-    /// <summary>Validates urls that could be used in the Image Handler.</summary>
+    /// <summary>
+    /// Validates urls that could be used in the Image Handler.
+    /// </summary>
     internal class UriValidator
     {
-        private static readonly char[] AliasSeparator = ['/',];
         private readonly IPortalAliasController portalAliasController;
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace DotNetNuke.Services.GeneratedImage
             // Split the alias into host and optional path (e.g., "mysite.com/siteB")
             foreach (var alias in hostAliases)
             {
-                var aliasParts = alias.Split(AliasSeparator, 2, StringSplitOptions.None); // Split on the first '/' to separate host and path
+                var aliasParts = alias.Split(new[] { '/' }, 2, StringSplitOptions.None); // Split on the first '/' to separate host and path
                 string aliasHost = aliasParts[0]; // Host part of the alias (e.g., "mysite.com")
                 string aliasPath = aliasParts.Length > 1 ? "/" + aliasParts[1].TrimEnd('/') : string.Empty; // Path part, if any
 

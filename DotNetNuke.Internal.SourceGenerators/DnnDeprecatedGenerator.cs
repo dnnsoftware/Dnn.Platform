@@ -554,7 +554,7 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
             foreach (var attribute in attributeList.Attributes)
             {
                 token.ThrowIfCancellationRequested();
-                if (context.SemanticModel.GetSymbolInfo(attribute, token).Symbol is not IMethodSymbol attributeSymbol)
+                if (context.SemanticModel.GetSymbolInfo(attribute).Symbol is not IMethodSymbol attributeSymbol)
                 {
                     continue;
                 }
@@ -570,7 +570,7 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
         return null;
     }
 
-    private sealed class DnnDeprecation
+    private class DnnDeprecation
     {
         public DnnDeprecation(int majorVersion, int minorVersion, int patchVersion, string replacement)
         {

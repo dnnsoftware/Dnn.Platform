@@ -6,7 +6,6 @@ namespace DotNetNuke.Entities.Modules
     using System;
     using System.Collections;
     using System.ComponentModel;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text.RegularExpressions;
     using System.Threading;
@@ -271,14 +270,15 @@ namespace DotNetNuke.Entities.Modules
         public override void Dispose()
         {
             base.Dispose();
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
+            if (this.serviceScopeContainer.IsValueCreated)
+            {
+                this.serviceScopeContainer.Value.Dispose();
+            }
         }
 
         /// <summary>Gets the file name for the module cache.</summary>
         /// <param name="tabModuleId">The tab-module ID.</param>
         /// <returns>The absolute file path.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         [DnnDeprecated(7, 0, 0, "Please use ModuleController.CacheFileName(TabModuleID)", RemovalVersion = 11)]
         public partial string GetCacheFileName(int tabModuleId)
         {
@@ -291,7 +291,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>Gets the cache key for the module.</summary>
         /// <param name="tabModuleId">The tab-module ID.</param>
         /// <returns>The cache key.</returns>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         [DnnDeprecated(7, 0, 0, "Please use ModuleController.CacheKey(TabModuleID)", RemovalVersion = 11)]
         public partial string GetCacheKey(int tabModuleId)
         {
@@ -306,17 +305,6 @@ namespace DotNetNuke.Entities.Modules
         public partial void SynchronizeModule()
         {
             ModuleController.SynchronizeModule(this.ModuleId);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (this.serviceScopeContainer.IsValueCreated)
-                {
-                    this.serviceScopeContainer.Value.Dispose();
-                }
-            }
         }
 
         /// <inheritdoc/>

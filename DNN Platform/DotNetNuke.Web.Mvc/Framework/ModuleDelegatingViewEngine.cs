@@ -40,9 +40,9 @@ namespace DotNetNuke.Web.Mvc.Framework
         /// <param name="controllerContext">The controller context.</param><param name="view">The view.</param>
         public void ReleaseView(ControllerContext controllerContext, IView view)
         {
-            if (this.viewEngineMappings.TryGetValue(view, out var viewEngine))
+            if (this.viewEngineMappings.ContainsKey(view))
             {
-                viewEngine.ReleaseView(controllerContext, view);
+                this.viewEngineMappings[view].ReleaseView(controllerContext, view);
             }
         }
 
@@ -59,9 +59,9 @@ namespace DotNetNuke.Web.Mvc.Framework
         private ViewEngineResult RunAgainstModuleViewEngines(ControllerContext controllerContext, Func<ViewEngineCollection, ViewEngineResult> engineRequest)
         {
             var controller = controllerContext.Controller as IDnnController;
-            if (controller?.ViewEngineCollectionEx == null)
+            if (controller == null || controller.ViewEngineCollectionEx == null)
             {
-                return new ViewEngineResult([]);
+                return new ViewEngineResult(new string[0]);
             }
 
             var result = engineRequest(controller.ViewEngineCollectionEx);

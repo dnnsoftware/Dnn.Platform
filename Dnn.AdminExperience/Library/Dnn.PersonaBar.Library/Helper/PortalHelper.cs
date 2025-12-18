@@ -9,7 +9,7 @@ namespace Dnn.PersonaBar.Library.Helper
     /// <summary>A helper for portals.</summary>
     public partial class PortalHelper
     {
-        private static readonly ContentVerifier ContentVerifier = new ContentVerifier();
+        private static readonly IContentVerifier ContentVerifier = new ContentVerifier();
 
         /// <inheritdoc cref="IContentVerifier.IsContentExistsForRequestedPortal"/>
 #pragma warning disable CS1066

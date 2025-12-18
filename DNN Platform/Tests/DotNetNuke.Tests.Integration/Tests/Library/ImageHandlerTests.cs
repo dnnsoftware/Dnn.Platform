@@ -24,7 +24,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Library
             var relativeUrl = string.Format(HandlerPath, "https://google.com");
 
             var response = session.GetContent(relativeUrl).Content.ReadAsStringAsync().Result;
-            Assert.That(response, Does.StartWith("�PNG\r\n"), $"Content = {response}");
+            Assert.That(response.StartsWith("�PNG\r\n"), Is.True, $"Content = {response}");
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Library
             var relativeUrl = string.Format(HandlerPath, AppConfigHelper.SiteUrl);
 
             var response = session.GetContent(relativeUrl).Content.ReadAsStringAsync().Result;
-            Assert.That(response, Does.StartWith("GIF89a"), $"Content = {response}");
+            Assert.That(response.StartsWith("GIF89a"), Is.True, $"Content = {response}");
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Library
                 LogText("Getting image from " + absoluteUrl);
 
                 var response = session.GetContent(absoluteUrl).Content.ReadAsStringAsync().Result;
-                Assert.That(response, Does.StartWith("GIF89a"), $"Url: {absoluteUrl} / Content = {response}");
+                Assert.That(response.StartsWith("GIF89a"), Is.True, $"Url: {absoluteUrl} / Content = {response}");
             }
         }
 
@@ -81,7 +81,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Library
             var session = WebApiTestHelper.GetAnnonymousConnector();
             var relativeUrl = $"/DnnImageHandler.ashx?mode=securefile&fileId={fileId}&MaxWidth={maxWidth}&MaxHeight={maxHeight}";
             var response = session.GetContent(relativeUrl);
-            Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK));
+            Assert.That(response.StatusCode == System.Net.HttpStatusCode.OK, Is.True);
         }
     }
 }

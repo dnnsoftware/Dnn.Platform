@@ -7,7 +7,7 @@ namespace DotNetNuke.Services.Syndication
     using System.Collections.Generic;
 
     /// <summary>Internal representation of parsed RSS channel.</summary>
-    internal sealed class RssChannelDom
+    internal class RssChannelDom
     {
         /// <summary>Initializes a new instance of the <see cref="RssChannelDom"/> class.</summary>
         /// <param name="channel">The channel attributes.</param>

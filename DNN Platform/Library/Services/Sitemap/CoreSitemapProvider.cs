@@ -16,7 +16,6 @@ namespace DotNetNuke.Services.Sitemap
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
     public class CoreSitemapProvider : SitemapProvider
@@ -46,7 +45,7 @@ namespace DotNetNuke.Services.Sitemap
             var languagePublished = LocaleController.Instance.GetLocale(ps.PortalId, currentLanguage).IsPublished;
             var tabs = TabController.Instance.GetTabsByPortal(portalId).Values
                         .Where(t => (!t.IsSystem
-                                    && !ps.ContentLocalizationEnabled) || (languagePublished && t.CultureCode.Equals(currentLanguage, StringComparison.OrdinalIgnoreCase)));
+                                    && !ps.ContentLocalizationEnabled) || (languagePublished && t.CultureCode.Equals(currentLanguage, StringComparison.InvariantCultureIgnoreCase)));
             foreach (TabInfo tab in tabs)
             {
                 try
@@ -71,13 +70,14 @@ namespace DotNetNuke.Services.Sitemap
                 }
                 catch (Exception ex)
                 {
-                    var exceptionMessage = Localization.GetExceptionMessage(
-                        "SitemapUrlGenerationError",
-                        "URL sitemap generation for page '{0} - {1}' caused an exception: {2}",
-                        tab.TabID,
-                        tab.TabName,
-                        ex.Message);
-                    Services.Exceptions.Exceptions.LogException(new SitemapException(exceptionMessage, ex));
+                    Services.Exceptions.Exceptions.LogException(
+                        new Exception(
+                            Localization.GetExceptionMessage(
+                                "SitemapUrlGenerationError",
+                                "URL sitemap generation for page '{0} - {1}' caused an exception: {2}",
+                                tab.TabID,
+                                tab.TabName,
+                                ex.Message)));
                 }
             }
 
@@ -92,7 +92,7 @@ namespace DotNetNuke.Services.Sitemap
             if (roles != null)
             {
                 // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
-                foreach (string role in roles.Split(';'))
+                foreach (string role in roles.Split(new[] { ';' }))
                 {
                     if (!string.IsNullOrEmpty(role))
                     {
@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.Sitemap
                         if (role.StartsWith("!"))
                         {
                             string denyRole = role.Replace("!", string.Empty);
-                            if (denyRole is Globals.glbRoleUnauthUserName or Globals.glbRoleAllUsersName)
+                            if (denyRole == Globals.glbRoleUnauthUserName || denyRole == Globals.glbRoleAllUsersName)
                             {
                                 hasPublicRole = false;
                                 break;

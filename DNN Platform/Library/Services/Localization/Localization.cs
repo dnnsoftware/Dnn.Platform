@@ -6,7 +6,6 @@ namespace DotNetNuke.Services.Localization
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
@@ -178,12 +177,24 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>Gets the current Culture being used.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public string CurrentCulture => Thread.CurrentThread.CurrentCulture.ToString();
+        public string CurrentCulture
+        {
+            get
+            {
+                // _CurrentCulture
+                return Thread.CurrentThread.CurrentCulture.ToString();
+            }
+        }
 
         /// <summary>Gets the CurrentUICulture for the Thread.</summary>
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public string CurrentUICulture => Thread.CurrentThread.CurrentUICulture.ToString();
+        public string CurrentUICulture
+        {
+            // _CurrentCulture
+            get
+            {
+                return Thread.CurrentThread.CurrentUICulture.ToString();
+            }
+        }
 
         public static int ActiveLanguagesByPortalID(int portalID)
         {
@@ -1166,9 +1177,9 @@ namespace DotNetNuke.Services.Localization
                 // we should be checking that the tab path matches //Admin//pagename or //admin
                 // in this way we should avoid partial matches (ie //Administrators
                 if (PortalSettings.Current.ActiveTab.TabPath.StartsWith("//Admin//", StringComparison.CurrentCultureIgnoreCase) ||
-                    string.Equals(PortalSettings.Current.ActiveTab.TabPath, "//Admin", StringComparison.OrdinalIgnoreCase) ||
+                    string.Compare(PortalSettings.Current.ActiveTab.TabPath, "//Admin", StringComparison.OrdinalIgnoreCase) == 0 ||
                     PortalSettings.Current.ActiveTab.TabPath.StartsWith("//Host//", StringComparison.CurrentCultureIgnoreCase) ||
-                    string.Equals(PortalSettings.Current.ActiveTab.TabPath, "//Host", StringComparison.OrdinalIgnoreCase))
+                    string.Compare(PortalSettings.Current.ActiveTab.TabPath, "//Host", StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     isAdminPage = true;
                 }
@@ -1321,7 +1332,7 @@ namespace DotNetNuke.Services.Localization
                 var portalLocales = GetPortalLocalizations(portalID);
                 if (portalLocales.Count <= 1)
                 {
-                    throw new PortalLocalizationRequiredException("You are trying to delete the only Portal localization entry in the system. This is NOT allowed!");
+                    throw new Exception("You are trying to delete the only Portal localization entry in the system. This is NOT allowd!");
                 }
             }
 
@@ -1884,14 +1895,14 @@ namespace DotNetNuke.Services.Localization
             return culture;
         }
 
-        private static List<object> GetPortalLocalizations(int portalId)
+        private static IList<object> GetPortalLocalizations(int portalID)
         {
-            return CBO.FillCollection<object>(DataProvider.Instance().GetPortalLocalizations(portalId));
+            return CBO.FillCollection<object>(DataProvider.Instance().GetPortalLocalizations(portalID));
         }
 
         /// <summary>
         /// When portal allows users to select their preferred UI language, this method
-        /// will return the user UI preferred language if defined; otherwise, defaults
+        /// will return the user UI preferred language if defined. Otherwise defaults
         /// to the current culture.
         /// </summary>
         /// <param name="currentCulture">Current culture.</param>

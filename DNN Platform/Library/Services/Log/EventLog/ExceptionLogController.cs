@@ -6,7 +6,6 @@ namespace DotNetNuke.Services.Log.EventLog
     using System;
     using System.Data.SqlClient;
     using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -89,7 +88,6 @@ namespace DotNetNuke.Services.Log.EventLog
             this.AddLog(objException, log, logType);
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void AddLog(Exception objException, LogInfo log, ExceptionLogType logType)
         {
             log.LogTypeKey = logType.ToString();

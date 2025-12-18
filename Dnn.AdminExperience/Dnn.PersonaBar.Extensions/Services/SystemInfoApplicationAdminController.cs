@@ -5,7 +5,6 @@
 namespace Dnn.PersonaBar.Servers.Services
 {
     using System;
-    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -24,16 +23,13 @@ namespace Dnn.PersonaBar.Servers.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoApplicationAdminController));
 
         public static string FirstCharToUpper(string input)
-            => FirstCharToUpper(input, CultureInfo.CurrentCulture);
-
-        public static string FirstCharToUpper(string input, CultureInfo culture)
         {
             if (string.IsNullOrEmpty(input))
             {
                 return input;
             }
 
-            return input.First().ToString().ToUpper(culture) + string.Join(string.Empty, input.Skip(1));
+            return input.First().ToString().ToUpper() + string.Join(string.Empty, input.Skip(1));
         }
 
         [HttpGet]
@@ -41,15 +37,15 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                var friendlyUrlProvider = GetProviderConfiguration("friendlyUrl");
+                var friendlyUrlProvider = this.GetProviderConfiguration("friendlyUrl");
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     product = DotNetNukeContext.Current.Application.Description,
                     version = DotNetNukeContext.Current.Application.Version.ToString(3),
-                    htmlEditorProvider = GetProviderConfiguration("htmlEditor"),
-                    dataProvider = GetProviderConfiguration("data"),
-                    cachingProvider = GetProviderConfiguration("caching"),
-                    loggingProvider = GetProviderConfiguration("logging"),
+                    htmlEditorProvider = this.GetProviderConfiguration("htmlEditor"),
+                    dataProvider = this.GetProviderConfiguration("data"),
+                    cachingProvider = this.GetProviderConfiguration("caching"),
+                    loggingProvider = this.GetProviderConfiguration("logging"),
                     friendlyUrlProvider,
                     friendlyUrlsEnabled = DotNetNuke.Entities.Host.Host.UseFriendlyUrls.ToString(),
                     friendlyUrlType = GetFriendlyUrlType(friendlyUrlProvider),
@@ -69,10 +65,10 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             var urlProvider = (Provider)ProviderConfiguration.GetProviderConfiguration("friendlyUrl").Providers[friendlyUrlProvider];
             var urlFormat = urlProvider.Attributes["urlformat"];
-            return string.IsNullOrWhiteSpace(urlFormat) ? "SearchFriendly" : FirstCharToUpper(urlFormat, CultureInfo.InvariantCulture);
+            return string.IsNullOrWhiteSpace(urlFormat) ? "SearchFriendly" : FirstCharToUpper(urlFormat);
         }
 
-        private static string GetProviderConfiguration(string providerName)
+        private string GetProviderConfiguration(string providerName)
         {
             return ProviderConfiguration.GetProviderConfiguration(providerName).DefaultProvider;
         }
