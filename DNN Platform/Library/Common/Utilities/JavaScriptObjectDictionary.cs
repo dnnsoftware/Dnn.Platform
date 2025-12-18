@@ -5,9 +5,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Web;
 
+[SuppressMessage("Microsoft.Design", "CA1050:DeclareTypesInNamespaces", Justification = "Breaking change")]
 public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, string>>
 {
     private OrderedDictionary dictionary;
