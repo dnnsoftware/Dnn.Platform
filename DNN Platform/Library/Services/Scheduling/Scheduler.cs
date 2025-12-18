@@ -28,9 +28,11 @@ namespace DotNetNuke.Services.Scheduling
             // If KeepRunning gets switched to false,
             // the scheduler stops running.
             [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public static bool KeepThreadAlive = true;
 
             [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public static bool KeepRunning = true;
 
             private static readonly SharedList<ScheduleItem> ScheduleQueue;

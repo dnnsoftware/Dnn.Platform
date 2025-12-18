@@ -6,6 +6,7 @@ namespace DotNetNuke.Common.Lists
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Common.Utilities;
 
@@ -71,21 +72,26 @@ namespace DotNetNuke.Common.Lists
         public struct Country
         {
             /// <summary>The country id.</summary>
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public int Id;
 
             /// <summary>The country name.</summary>
             /// <example>United States.</example>
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string Name;
 
             /// <summary>The country code.</summary>
             /// <example>US.</example>
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string Code;
 
             /// <summary>The country name and code.</summary>
             /// <example>United States (US).</example>
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string FullName;
 
             /// <summary>The country name and code with diacritics (accents) removed.</summary>
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string NormalizedFullName;
         }
     }

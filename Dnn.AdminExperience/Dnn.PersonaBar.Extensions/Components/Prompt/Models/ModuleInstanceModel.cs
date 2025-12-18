@@ -12,6 +12,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
     public class ModuleInstanceModel
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public int TabId;
 
         // command link

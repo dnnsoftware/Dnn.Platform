@@ -29,13 +29,11 @@ namespace DotNetNuke.Common.Lists
     {
         /// <summary>The list of list types that are not localized.</summary>
         [Obsolete("Deprecated in DotNetNuke 9.8.1. Use UnLocalizedLists instead. Scheduled removal in v11.0.0.")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "StyleCop.CSharp.MaintainabilityRules",
-            "SA1401:Fields should be private",
-            Justification = "Make private in v11.")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "Make private in v11.")]
         public readonly string[] NonLocalizedLists = UnLocalizableLists;
 
-        private static readonly string[] UnLocalizableLists = { "ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords" };
+        private static readonly string[] UnLocalizableLists = ["ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords",];
         private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="ListController"/> class.</summary>

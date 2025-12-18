@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.InternalServices
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Net;
@@ -48,7 +49,10 @@ namespace DotNetNuke.Web.InternalServices
 
         public struct Region
         {
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string Text;
+
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string Value;
         }
     }

@@ -31,6 +31,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         IRecyclebinController
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public static readonly string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RecyclebinController));
         private readonly ITabController tabController;

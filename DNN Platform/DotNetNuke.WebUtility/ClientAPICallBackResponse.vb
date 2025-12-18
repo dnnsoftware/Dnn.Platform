@@ -1,6 +1,7 @@
 ﻿' Copyright (c) .NET Foundation. All rights reserved.
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
+Imports System.Diagnostics.CodeAnalysis
 Imports System.Globalization
 Imports System.Web
 Imports System.Web.UI
@@ -28,10 +29,14 @@ Namespace DotNetNuke.UI.Utilities
             IFRAMEPost = 1
         End Enum
 
+        <SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification := "Breaking change")>
         Public Response As String = ""
+        <SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification := "Breaking change")>
         Public StatusCode As CallBackResponseStatusCode
+        <SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification := "Breaking change")>
         Public StatusDesc As String = ""
         Private m_objPage As Page
+        <SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification := "Breaking change")>
         Public CallBackType As CallBackTypeCode
 
         Public ReadOnly Property TransportType() As TransportTypeCode

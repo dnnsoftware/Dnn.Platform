@@ -100,6 +100,7 @@ namespace DotNetNuke.Services.Scheduling
     public abstract class SchedulingProvider
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public EventName EventName;
 
         /// <summary>Initializes a new instance of the <see cref="SchedulingProvider"/> class.</summary>

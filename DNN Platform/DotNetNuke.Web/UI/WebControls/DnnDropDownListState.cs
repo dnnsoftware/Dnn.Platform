@@ -13,6 +13,7 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         [DataMember(Name = "selectedItem")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public SerializableKeyValuePair<string, string> SelectedItem;
     }
 }
