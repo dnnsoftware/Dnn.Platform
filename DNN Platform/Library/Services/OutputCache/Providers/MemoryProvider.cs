@@ -39,14 +39,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        internal static string CachePrefix
-        {
-            get
-            {
-                return cachePrefix;
-            }
-        }
-
         /// <inheritdoc/>
         public override string GenerateCacheKey(int tabId, System.Collections.Specialized.StringCollection includeVaryByKeys, System.Collections.Specialized.StringCollection excludeVaryByKeys, SortedDictionary<string, string> varyBy)
         {
