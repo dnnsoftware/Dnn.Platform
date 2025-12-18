@@ -4,8 +4,10 @@
 namespace DotNetNuke.Abstractions.Logging
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>add xml docs.</summary>
+    [SuppressMessage("Microsoft.Design", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "Breaking change")]
     public interface ILogProperties : ICollection<ILogDetailInfo>
     {
         /// <summary>Gets the Summary.</summary>

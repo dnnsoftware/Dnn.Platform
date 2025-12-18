@@ -4,10 +4,12 @@
 namespace DotNetNuke.Services.OutputCache
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text;
 
     // helper class to capture the response into a file
+    [SuppressMessage("Microsoft.Design", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "Breaking change")]
     public abstract class OutputCacheResponseFilter : Stream
     {
         private Stream captureStream;
