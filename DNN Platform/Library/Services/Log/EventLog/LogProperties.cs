@@ -13,8 +13,8 @@ namespace DotNetNuke.Services.Log.EventLog
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
 
-    /// <inheritdoc />
-    public class LogProperties : ArrayList, ILogProperties
+    /// <inheritdoc cref="ILogProperties" />
+    public class LogProperties : ArrayList, ILogProperties, IList<ILogDetailInfo>
     {
         /// <inheritdoc />
         public string Summary
@@ -32,6 +32,13 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc />
+        ILogDetailInfo IList<ILogDetailInfo>.this[int index]
+        {
+            get => (ILogDetailInfo)this[index];
+            set => this[index] = value;
+        }
+
+        /// <inheritdoc />
         public void Add(ILogDetailInfo item) =>
             base.Add(item);
 
@@ -42,6 +49,14 @@ namespace DotNetNuke.Services.Log.EventLog
         /// <inheritdoc />
         public void CopyTo(ILogDetailInfo[] array, int arrayIndex) =>
             base.CopyTo(array, arrayIndex);
+
+        /// <inheritdoc />
+        public int IndexOf(ILogDetailInfo item)
+            => base.IndexOf(item);
+
+        /// <inheritdoc />
+        public void Insert(int index, ILogDetailInfo item)
+            => base.Insert(index, item);
 
         /// <inheritdoc />
         IEnumerator<ILogDetailInfo> IEnumerable<ILogDetailInfo>.GetEnumerator() =>
@@ -62,16 +77,14 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public void Deserialize(string content)
         {
-            using (XmlReader reader = XmlReader.Create(new StringReader(content)))
+            using var reader = XmlReader.Create(new StringReader(content));
+            reader.ReadStartElement("LogProperties");
+            if (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !string.IsNullOrEmpty(reader.LocalName))
             {
-                reader.ReadStartElement("LogProperties");
-                if (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !string.IsNullOrEmpty(reader.LocalName))
-                {
-                    this.ReadXml(reader);
-                }
-
-                reader.Close();
+                this.ReadXml(reader);
             }
+
+            reader.Close();
         }
 
         public void ReadXml(XmlReader reader)
@@ -94,16 +107,13 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public string Serialize()
         {
-            var settings = new XmlWriterSettings();
-            settings.ConformanceLevel = ConformanceLevel.Fragment;
-            settings.OmitXmlDeclaration = true;
+            var settings = new XmlWriterSettings { ConformanceLevel = ConformanceLevel.Fragment, OmitXmlDeclaration = true, };
             var sb = new StringBuilder();
-            using (XmlWriter writer = XmlWriter.Create(sb, settings))
-            {
-                this.WriteXml(writer);
-                writer.Close();
-                return sb.ToString();
-            }
+
+            using var writer = XmlWriter.Create(sb, settings);
+            this.WriteXml(writer);
+            writer.Close();
+            return sb.ToString();
         }
 
         /// <inheritdoc/>

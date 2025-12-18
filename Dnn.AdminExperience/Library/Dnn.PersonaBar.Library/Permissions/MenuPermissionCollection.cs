@@ -9,12 +9,14 @@ namespace Dnn.PersonaBar.Library.Permissions
     using System.Linq;
 
     using Dnn.PersonaBar.Library.Model;
+
+    using DotNetNuke.Abstractions.Security.Permissions;
+    using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Security.Permissions;
 
-    // -----------------------------------------------------------------------------
     [Serializable]
-    public class MenuPermissionCollection : CollectionBase
+    public class MenuPermissionCollection : GenericCollectionBase<MenuPermissionInfo>
     {
         public MenuPermissionCollection()
         {
@@ -39,24 +41,6 @@ namespace Dnn.PersonaBar.Library.Permissions
                     this.Add(permission);
                 }
             }
-        }
-
-        public MenuPermissionInfo this[int index]
-        {
-            get
-            {
-                return (MenuPermissionInfo)this.List[index];
-            }
-
-            set
-            {
-                this.List[index] = value;
-            }
-        }
-
-        public int Add(MenuPermissionInfo value)
-        {
-            return this.List.Add(value);
         }
 
         public int Add(MenuPermissionInfo value, bool checkForDuplicates)
@@ -133,31 +117,11 @@ namespace Dnn.PersonaBar.Library.Permissions
             return true;
         }
 
-        public bool Contains(MenuPermissionInfo value)
-        {
-            return this.List.Contains(value);
-        }
-
-        public int IndexOf(MenuPermissionInfo value)
-        {
-            return this.List.IndexOf(value);
-        }
-
-        public void Insert(int index, MenuPermissionInfo value)
-        {
-            this.List.Insert(index, value);
-        }
-
-        public void Remove(MenuPermissionInfo value)
-        {
-            this.List.Remove(value);
-        }
-
         public void Remove(int permissionId, int roleId, int userId)
         {
-            foreach (PermissionInfoBase permission in this.List)
+            foreach (IPermissionInfo permission in this.List)
             {
-                if (permission.PermissionID == permissionId && permission.UserID == userId && permission.RoleID == roleId)
+                if (permission.PermissionId == permissionId && permission.UserId == userId && permission.RoleId == roleId)
                 {
                     this.List.Remove(permission);
                     break;
@@ -167,13 +131,7 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         public List<PermissionInfoBase> ToList()
         {
-            var list = new List<PermissionInfoBase>();
-            foreach (PermissionInfoBase permission in this.List)
-            {
-                list.Add(permission);
-            }
-
-            return list;
+            return [..this.List.Cast<PermissionInfoBase>()];
         }
 
         public string ToString(string key)

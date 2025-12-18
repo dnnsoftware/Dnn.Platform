@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.Logging
 {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
 
     /// <summary>add xml docs.</summary>
