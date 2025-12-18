@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -46,6 +47,7 @@ namespace DotNetNuke.UI.WebControls
             Multiple = 1,
 
             /// <summary>Single select.</summary>
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
             Single = 2,
         }
 

@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Portals
 {
     using System;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Security.Cryptography;
     using System.Xml.Serialization;
 
@@ -156,6 +157,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         [XmlIgnore]
         [JsonIgnore]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
         public Guid GUID { get; set; }
 
         /// <inheritdoc />

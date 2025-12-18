@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.InternalServices
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Net;
     using System.Net.Http;
     using System.Text;
@@ -23,6 +24,7 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpGet]
         [DnnAuthorize(StaticRoles = "Administrators")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
         public HttpResponseMessage GetLogDetails(string guid)
         {
             Guid logId;

@@ -5,6 +5,7 @@
 namespace DotNetNuke.Abstractions.Application;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 using DotNetNuke.Abstractions.Security;
 using DotNetNuke.Internal.SourceGenerators;
@@ -129,6 +130,7 @@ public interface IHostSettings
     public IFileExtensionAllowList DefaultEndUserExtensionAllowList { get; }
 
     /// <summary>Gets the host GUID.</summary>
+    [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
     public string Guid { get; }
 
     /// <summary>Gets the Help URL.</summary>

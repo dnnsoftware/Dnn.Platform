@@ -4,6 +4,7 @@
 namespace DotNetNuke.Abstractions.Portals
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// The PortalSettings class encapsulates all of the settings for the Portal,
@@ -169,6 +170,7 @@ namespace DotNetNuke.Abstractions.Portals
         string FooterText { get; set; }
 
         /// <summary>Gets or sets the portal GUID.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
         Guid GUID { get; set; }
 
         /// <summary>Gets a value indicating whether folders which are hidden or whose name begins with underscore are included in folder synchronization.</summary>

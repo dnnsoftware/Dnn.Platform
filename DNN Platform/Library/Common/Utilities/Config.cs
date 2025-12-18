@@ -4,6 +4,7 @@
 namespace DotNetNuke.Common.Utilities
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Threading;
@@ -60,6 +61,7 @@ namespace DotNetNuke.Common.Utilities
             NotSet = 2,
 
             /// <summary>The application creates one object to monitor the main directory and uses this object to monitor each subdirectory.</summary>
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
             Single,
         }
 

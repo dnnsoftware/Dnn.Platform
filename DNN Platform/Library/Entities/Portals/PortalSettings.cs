@@ -312,6 +312,7 @@ namespace DotNetNuke.Entities.Portals
         public string FooterText { get; set; }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
         public Guid GUID { get; set; }
 
         /// <inheritdoc/>
