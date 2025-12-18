@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.UI
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Xml;
@@ -469,6 +470,7 @@ namespace DotNetNuke.Web.UI
             return tab.TabID;
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public static bool Validate_IsCircularReference(int portalID, int tabID)
         {
             if (tabID != -1)

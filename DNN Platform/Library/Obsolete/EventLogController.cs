@@ -26,6 +26,7 @@ namespace DotNetNuke.Services.Log.EventLog
         [Obsolete("Deprecated in DotNetNuke 9.8.0. Use 'DotNetNuke.Abstractions.Logging.EventLogType' instead. Scheduled removal in v11.0.0.")]
         public enum EventLogType
         {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
             /// <inheritdoc cref="Abstractions.Logging.EventLogType.USER_CREATED" />
             USER_CREATED = 0,
 
@@ -496,6 +497,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
             /// <inheritdoc cref="Abstractions.Logging.EventLogType.PORTALPERMISSION_UPDATED" />
             PORTALPERMISSION_UPDATED = 156,
+#pragma warning restore CA1707
         }
 
         [DnnDeprecated(9, 8, 0, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead")]

@@ -18,6 +18,7 @@ namespace DotNetNuke.Services.Installer.Installers
     public class ResourceFileInstaller : FileInstaller
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         public const string DEFAULT_MANIFESTEXT = ".manifest";

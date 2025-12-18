@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using System.Web.UI;
 
@@ -204,6 +205,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public virtual void ControlPanelTool_OnClick(object sender, EventArgs e)
         {
             switch (this.ToolInfo.ToolName)

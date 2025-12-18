@@ -9,6 +9,7 @@ namespace DotNetNuke.Common
     using System.ComponentModel;
     using System.Data;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -196,6 +197,7 @@ namespace DotNetNuke.Common
         public static readonly Regex ServicesFrameworkRegex = new Regex("/API/|DESKTOPMODULES/.+/API/", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         /// <summary>Checks for invalid usernames.</summary>
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public static readonly string USERNAME_UNALLOWED_ASCII = @"!""#$%&'()*+,/:;<=>?[\]^`{|}";
 
         private const string tabPathInvalidCharsEx = @"[&\? \./'#:\*]"; // this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.

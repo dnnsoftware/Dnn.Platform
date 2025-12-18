@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.Journal
 
     public interface IJournalDataService
     {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
         IDataReader Journal_ListForSummary(int portalId, int moduleId, int currentUserId, int rowIndex, int maxRows);
 
         IDataReader Journal_ListForProfile(int portalId, int moduleId, int currentUserId, int profileId, int rowIndex, int maxRows);
@@ -83,5 +84,6 @@ namespace DotNetNuke.Services.Journal
         void Journal_TypeFilters_Delete(int portalId, int moduleId);
 
         void Journal_TypeFilters_Save(int portalId, int moduleId, int journalTypeId);
+#pragma warning restore CA1707
     }
 }

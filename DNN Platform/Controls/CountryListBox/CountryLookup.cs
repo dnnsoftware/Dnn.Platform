@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Net;
@@ -90,6 +91,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>Gets the GeoIP data file stream.</summary>
 #pragma warning disable SA1300 // Element should begin with upper-case letter
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public MemoryStream m_MemoryStream { get; }
 #pragma warning restore SA1300 // Element should begin with upper-case letter
 

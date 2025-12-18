@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Entities.Urls
 {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
     public enum RedirectReason
     {
         /// <summary>The URL was in an unfriendly format.</summary>
@@ -120,4 +121,5 @@ namespace DotNetNuke.Entities.Urls
         /// <summary>A non-permanent redirect.</summary>
         Tab_Temporary_Redirect = 37,
     }
+#pragma warning restore CA1707
 }

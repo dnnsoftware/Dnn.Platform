@@ -100,6 +100,7 @@ namespace DotNetNuke.Services.Mail
         // Existing public API
         public enum AddressMethods
         {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
             /// <summary>Put the recipient's email address in the TO field.</summary>
             Send_TO = 1,
 
@@ -108,6 +109,7 @@ namespace DotNetNuke.Services.Mail
 
             /// <summary>Send via an email relay address.</summary>
             Send_Relay = 3,
+#pragma warning restore CA1707
         }
 
         /// <summary>Gets or sets priority of emails to be sent.</summary>

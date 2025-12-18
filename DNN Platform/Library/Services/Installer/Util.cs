@@ -31,8 +31,11 @@ namespace DotNetNuke.Services.Installer
     {
         // ReSharper disable InconsistentNaming
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public const string DEFAULT_MANIFESTEXT = ".manifest";
         public const string BackupInstallPackageFolder = "App_Data/ExtensionPackages/";
+
+#pragma warning disable CA1707 // Identifiers should not contain underscores
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
@@ -563,7 +566,8 @@ namespace DotNetNuke.Services.Installer
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
-        public static readonly string REGEX_Version = "\\d{2}.\\d{2}.\\d{2}";
+        public static readonly string REGEX_Version = @"\d{2}.\d{2}.\d{2}";
+#pragma warning restore CA1707
 
         // ReSharper restore InconsistentNaming
 

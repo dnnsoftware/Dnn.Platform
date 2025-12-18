@@ -2,6 +2,7 @@
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
 Imports System.Collections.Generic
+Imports System.Diagnostics.CodeAnalysis
 Imports System.Globalization
 Imports System.Reflection
 Imports System.Web
@@ -32,6 +33,7 @@ Namespace DotNetNuke.UI.Utilities
 
 #Region "Public Constants"
 
+#Disable Warning CA1707 'Identifiers should not contain underscores
         Public Const SCRIPT_CALLBACKID As String = "__DNNCAPISCI"
         Public Const SCRIPT_CALLBACKTYPE As String = "__DNNCAPISCT"
         Public Const SCRIPT_CALLBACKPARAM As String = "__DNNCAPISCP"
@@ -40,6 +42,7 @@ Namespace DotNetNuke.UI.Utilities
         Public Const SCRIPT_CALLBACKSTATUSDESCID As String = "__DNNCAPISCSDI"
 
         Public Const DNNVARIABLE_CONTROLID As String = "__dnnVariable"
+#Enable Warning CA1707
 
 #End Region
 
@@ -60,7 +63,7 @@ Namespace DotNetNuke.UI.Utilities
 
         ''' -----------------------------------------------------------------------------
         ''' <summary>
-        ''' Enumerates each namespace with a seperate js file
+        ''' Enumerates each namespace with a separate js file
         ''' </summary>
         ''' <remarks>
         ''' </remarks>
@@ -69,12 +72,14 @@ Namespace DotNetNuke.UI.Utilities
         ''' </history>
         ''' -----------------------------------------------------------------------------
         Public Enum ClientNamespaceReferences As Integer
+#Disable Warning CA1707 'Identifiers should not contain underscores
             dnn = 0
             dnn_dom = 1
             dnn_dom_positioning = 2
             dnn_xml = 3
             dnn_xmlhttp = 4
             dnn_motion = 5
+#Enable Warning CA1707
         End Enum
 
 #End Region
@@ -150,6 +155,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         ''' <summary>Character used for delimiting name from value</summary>
         ''' -----------------------------------------------------------------------------
+        <SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification := "Breaking change")>
         Public Shared ReadOnly Property COLUMN_DELIMITER() As String
             Get
                 If BrowserSupportsFunctionality(ClientFunctionality.SingleCharDelimiters) Then
@@ -163,6 +169,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         ''' <summary>Character used for delimiting name from value</summary>
         ''' -----------------------------------------------------------------------------
+        <SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification := "Breaking change")>
         Public Shared ReadOnly Property CUSTOM_COLUMN_DELIMITER() As String
             Get
                 If BrowserSupportsFunctionality(ClientFunctionality.SingleCharDelimiters) Then
@@ -176,6 +183,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         ''' <summary>Character used for delimiting name/value pairs</summary>
         ''' -----------------------------------------------------------------------------
+        <SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification := "Breaking change")>
         Public Shared ReadOnly Property CUSTOM_ROW_DELIMITER() As String
             Get
                 If BrowserSupportsFunctionality(ClientFunctionality.SingleCharDelimiters) Then
@@ -189,6 +197,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         ''' <summary>In order to reduce payload, substitute out " with different char, since when put in a hidden control it uses &quot;</summary>
         ''' -----------------------------------------------------------------------------
+        <SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification := "Breaking change")>
         Public Shared ReadOnly Property QUOTE_REPLACEMENT() As String
             Get
                 If BrowserSupportsFunctionality(ClientFunctionality.SingleCharDelimiters) Then
@@ -202,6 +211,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         ''' <summary>Character used for delimiting name/value pairs</summary>
         ''' -----------------------------------------------------------------------------
+        <SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification := "Breaking change")>
         Public Shared ReadOnly Property ROW_DELIMITER() As String
             Get
                 If BrowserSupportsFunctionality(ClientFunctionality.SingleCharDelimiters) Then

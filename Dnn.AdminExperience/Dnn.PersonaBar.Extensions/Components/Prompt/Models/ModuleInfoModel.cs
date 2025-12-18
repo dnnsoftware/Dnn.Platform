@@ -11,6 +11,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
     public class ModuleInfoModel
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         public string __ModuleId { get; set; } // command link
@@ -20,6 +21,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public string Title { get; set; }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         public string __ModuleName { get; set; } // command link

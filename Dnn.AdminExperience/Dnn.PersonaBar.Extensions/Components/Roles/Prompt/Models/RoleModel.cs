@@ -28,6 +28,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
         }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         public string __CreatedBy => $"get-user {this.CreatedBy}";

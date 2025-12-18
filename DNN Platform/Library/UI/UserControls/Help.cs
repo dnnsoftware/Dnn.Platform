@@ -129,6 +129,7 @@ namespace DotNetNuke.UI.UserControls
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected void cmdCancel_Click(object sender, EventArgs e)

@@ -18,6 +18,7 @@ namespace DotNetNuke.Services.Log.EventLog
     {
         public enum ExceptionLogType
         {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
             /// <summary>A general exception.</summary>
             GENERAL_EXCEPTION = 0,
 
@@ -38,6 +39,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
             /// <summary>An exception related to data issues.</summary>
             DATA_EXCEPTION = 6,
+#pragma warning restore CA1707
         }
 
         public void AddLog(Exception objException)

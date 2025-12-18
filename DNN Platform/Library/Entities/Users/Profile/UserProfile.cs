@@ -6,6 +6,7 @@
 namespace DotNetNuke.Entities.Users
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Xml.Serialization;
 
@@ -25,6 +26,7 @@ namespace DotNetNuke.Entities.Users
     public class UserProfile : IIndexable
     {
 #pragma warning disable SA1310 // Field names should not contain underscore
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 #pragma warning disable SA1600 // Elements should be documented
         // Name properties
         [Obsolete("Deprecated in DotNetNuke 9.8.0. Use the properties on this class instead. Scheduled for removal in v11.0.0.")]
@@ -74,6 +76,7 @@ namespace DotNetNuke.Entities.Users
         [Obsolete("Deprecated in DotNetNuke 9.8.0. Use the properties on this class instead. Scheduled for removal in v11.0.0.")]
         public const string USERPROFILE_Biography = UserProfileBiography;
 #pragma warning restore SA1310 // Field names should not contain underscore
+#pragma warning restore CA1707 // Identifiers should not contain underscores
 #pragma warning restore SA1600 // Elements should be documented
 
         private const string UserProfileFirstName = "FirstName";

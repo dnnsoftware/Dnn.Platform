@@ -57,6 +57,7 @@ namespace DotNetNuke.UI.Skins
         public const string OnInitMessage = "Skin_InitMessage";
         public const string OnInitMessageType = "Skin_InitMessageType";
 
+#pragma warning disable CA1707 // Identifiers should not contain underscores
         // ReSharper disable InconsistentNaming
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
@@ -72,6 +73,7 @@ namespace DotNetNuke.UI.Skins
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public static readonly string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
+#pragma warning restore CA1707
 
         // ReSharper restore InconsistentNaming
         private readonly ModuleInjectionManager moduleInjectionManager;

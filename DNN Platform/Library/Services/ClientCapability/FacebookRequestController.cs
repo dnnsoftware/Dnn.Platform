@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.ClientCapability
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Security.Cryptography;
     using System.Text;
     using System.Web;
@@ -15,8 +16,10 @@ namespace DotNetNuke.Services.ClientCapability
     {
         private const string SignedRequestParameter = "signed_request";
 
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public static string API_SECRET { get; set; }
 
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public static string APP_ID { get; set; }
 
         public string AccessToken { get; set; }
