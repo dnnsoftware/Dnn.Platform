@@ -115,14 +115,14 @@ namespace DNNConnect.CKEditorProvider.Web
 
                     if (info.PropertyType.Name == "Boolean")
                     {
-                        this.settings[xmlAttributeAttribute.AttributeName] = settingValue.ToLower();
+                        this.settings[xmlAttributeAttribute.AttributeName] = settingValue.ToLowerInvariant();
                     }
                     else
                     {
                         switch (info.Name)
                         {
                             case "ToolbarLocation":
-                                this.settings[xmlAttributeAttribute.AttributeName] = settingValue.ToLower();
+                                this.settings[xmlAttributeAttribute.AttributeName] = settingValue.ToLowerInvariant();
                                 break;
                             case "EnterMode":
                             case "ShiftEnterMode":
@@ -182,7 +182,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                                 codeMirrorArray.AppendFormat("{0}: '{1}',", xmlAttribute.AttributeName, HttpUtility.JavaScriptStringEncode(codeMirrorSettingValue));
                                                 break;
                                             case "Boolean":
-                                                codeMirrorArray.AppendFormat("{0}: {1},", xmlAttribute.AttributeName, codeMirrorSettingValue.ToLower());
+                                                codeMirrorArray.AppendFormat("{0}: {1},", xmlAttribute.AttributeName, codeMirrorSettingValue.ToLowerInvariant());
                                                 break;
                                         }
                                     }
@@ -219,15 +219,15 @@ namespace DNNConnect.CKEditorProvider.Web
                                                 wordcountArray.AppendFormat("{0}: '{1}',", xmlAttribute.AttributeName, HttpUtility.JavaScriptStringEncode(wordCountSettingValue));
                                                 break;
                                             case "Boolean":
-                                                wordcountArray.AppendFormat("{0}: {1},", xmlAttribute.AttributeName, wordCountSettingValue.ToLower());
+                                                wordcountArray.AppendFormat("{0}: {1},", xmlAttribute.AttributeName, wordCountSettingValue.ToLowerInvariant());
                                                 break;
                                         }
                                     }
 
-                                    var wordcountSettings = wordcountArray.ToString();
+                                    var wordCountSettings = wordcountArray.ToString();
 
                                     this.settings["wordcount"] =
-                                        $"{{ {wordcountSettings.Remove(wordcountSettings.Length - 1, 1)} }}";
+                                        $"{{ {wordCountSettings.Remove(wordCountSettings.Length - 1, 1)} }}";
                                 }
 
                                 break;

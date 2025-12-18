@@ -27,8 +27,8 @@
     /*globals jQuery, window */
     (function ($) {
         var moduleId = <% = ModuleContext.ModuleId %>;
-        var displayQuickSettings = <% = DisplayQuickSettings.ToString().ToLower() %>;
-        var supportsQuickSettings = <% = SupportsQuickSettings.ToString().ToLower() %>;
+        var displayQuickSettings = <% = DisplayQuickSettings.ToString().ToLowerInvariant() %>;
+        var supportsQuickSettings = <% = SupportsQuickSettings.ToString().ToLowerInvariant() %>;
 
         function setUpActions() {
             var tabId = <% = ModuleContext.TabId %>;
@@ -55,10 +55,10 @@
                     confirmTitle: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
                     sharedText: '<%= Localization.GetSafeJSString("ModuleShared.Text", Localization.SharedResourceFile) %>',
                     rootFolder: '<%= Page.ResolveClientUrl("~/") %>',
-                    supportsMove: <% = SupportsMove.ToString().ToLower() %>,
+                    supportsMove: <% = SupportsMove.ToString().ToLowerInvariant() %>,
                     supportsQuickSettings: supportsQuickSettings,
                     displayQuickSettings: displayQuickSettings,
-                    isShared : <% = IsShared.ToString().ToLower() %>,
+                    isShared : <% = IsShared.ToString().ToLowerInvariant() %>,
                     moduleTitle: '<% = Localization.GetSafeJSString(ModuleTitle) %>'
                 }
             );

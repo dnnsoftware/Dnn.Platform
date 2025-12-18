@@ -570,7 +570,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                         UserController.UpdateUser(this.UserPortalID, this.User);
 
-                        if (this.PortalSettings.Registration.UseEmailAsUserName && (this.User.Username.ToLower() != this.User.Email.ToLower()))
+                        if (this.PortalSettings.Registration.UseEmailAsUserName && (!string.Equals(this.User.Username, this.User.Email, StringComparison.OrdinalIgnoreCase)))
                         {
                             UserController.ChangeUsername(this.User.UserID, this.User.Email);
                         }

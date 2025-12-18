@@ -197,18 +197,18 @@ namespace Dnn.PersonaBar.Extensions.Services
         public HttpResponseMessage GetSourceFolders(/*int moduleControlId*/)
         {
             var path = Path.Combine(Globals.ApplicationMapPath, "DesktopModules");
-            var controlfolders = (
+            var controlFolders = (
                 from subdirectory in Directory.GetDirectories(path, "*", SearchOption.AllDirectories)
                 select subdirectory).ToList();
 
-            controlfolders.Insert(0, Path.Combine(Globals.ApplicationMapPath, "Admin\\Skins"));
+            controlFolders.Insert(0, Path.Combine(Globals.ApplicationMapPath, @"Admin\Skins"));
 
             // var moduleControl = ModuleControlController.GetModuleControl(moduleControlId);
             // var currentControlFolder = moduleControl == null ? "" :
             //    (Path.GetDirectoryName(moduleControl.ControlSrc.ToLower()) ?? "").Replace('\\', '/');
             var response = new List<KeyValuePair<string, string>>();
             var appPathLen = Globals.ApplicationMapPath.Length + 1;
-            foreach (var folder in controlfolders)
+            foreach (var folder in controlFolders)
             {
                 var moduleControls = Directory.EnumerateFiles(folder, "*.*", SearchOption.TopDirectoryOnly)
                     .Count(s => s.EndsWith(".ascx", StringComparison.OrdinalIgnoreCase) ||

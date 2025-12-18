@@ -66,7 +66,7 @@ namespace Dnn.ContactList.Spa.Components
             switch (propertyName)
             {
                 case "IsFormEnabled":
-                    propertyValue = _service.IsFormEnabled(_moduleId, _tabId).ToString().ToLower();
+                    propertyValue = _service.IsFormEnabled(_moduleId, _tabId).ToString().ToLowerInvariant();
                     break;
                 case "EmailRegex":
                     propertyValue = Regex.Escape(Globals.glbEmailRegEx);

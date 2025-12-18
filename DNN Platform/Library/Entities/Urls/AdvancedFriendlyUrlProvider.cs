@@ -1197,7 +1197,7 @@ namespace DotNetNuke.Entities.Urls
                             finalPath = AumDebugRegex.Replace(finalPath, string.Empty);
 
                             // 'and we're done!
-                            if ((customOnly && isCustomUrl) || customOnly == false || builtInUrl)
+                            if ((customOnly && isCustomUrl) || !customOnly || builtInUrl)
                             {
                                 result = Globals.AddHTTP(finalPath);
                             }
@@ -1205,7 +1205,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        var re = RegexUtils.GetCachedRegex("[^?]*/tabId/(\\d+)/ctl/([A-Z][a-z]+)/" + pageName + "$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                        var re = RegexUtils.GetCachedRegex($@"[^?]*/tabId/(\d+)/ctl/([A-Z][a-z]+)/{pageName}$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                         if (re.IsMatch(friendlyPath))
                         {
                             Match sesMatch = re.Match(friendlyPath);
