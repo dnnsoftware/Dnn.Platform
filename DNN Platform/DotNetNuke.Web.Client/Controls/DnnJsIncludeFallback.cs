@@ -7,7 +7,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    /// <summary>    Emit a fallback block for a script in the same part of the page.</summary>
+    /// <summary>Emit a fallback block for a script in the same part of the page.</summary>
     public class DnnJsIncludeFallback : WebControl
     {
         /// <summary>Initializes a new instance of the <see cref="DnnJsIncludeFallback"/> class.</summary>
@@ -40,7 +40,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 writer.Write("if (typeof " + this.ObjectName + " == 'undefined') {");
             }
 
-            writer.Write("document.write('<script src=\"" + this.FileName + "\" type=\"text/javascript\"></' + 'script>');");
+            writer.Write($"document.write('<script src=\"{this.FileName}\" type=\"text/javascript\"></' + 'script>');");
             writer.Write("}");
             writer.RenderEndTag();
         }
