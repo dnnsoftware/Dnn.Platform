@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Authentication
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using DotNetNuke.Common.Utilities;
@@ -34,6 +35,7 @@ namespace DotNetNuke.Services.Authentication
         public abstract bool Enabled { get; }
 
         /// <summary>Gets the IP address associated with the request.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string IPAddress
         {
             get

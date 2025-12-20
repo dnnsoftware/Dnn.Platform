@@ -47,9 +47,9 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// </summary>
         public int Group { get; set; } = 100;
 
-        protected override void OnInit(EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
-            base.OnInit(e);
+            base.OnLoad(e);
             this.RegisterIncludes(this.Text);
             this.Text = string.Empty;
         }
@@ -92,7 +92,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             }
         }
 
-        private IEnumerable<BasicFile> GetIncludes(string innerHtml, ClientDependencyType dependencyType)
+        private List<BasicFile> GetIncludes(string innerHtml, ClientDependencyType dependencyType)
         {
             Regex tagRegex;
             string sourceAttribute, mime;

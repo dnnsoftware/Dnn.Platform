@@ -19,8 +19,8 @@ namespace DotNetNuke.Web.Api
         /// <returns>A value indicating whether the <see cref="AllowAnonymousAttribute"/> is present.</returns>
         public static bool IsAnonymousAttributePresent(HttpActionContext actionContext)
         {
-            return actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
-                   || (actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
+            return actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Count != 0
+                   || (actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Count != 0
                          && actionContext.ActionDescriptor.GetCustomAttributes<AuthorizeAttributeBase>().All(t => t is SupportedModulesAttribute));
         }
 

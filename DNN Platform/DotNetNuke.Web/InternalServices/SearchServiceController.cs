@@ -80,8 +80,8 @@ namespace DotNetNuke.Web.InternalServices
             var userSearchSource = contentSources.FirstOrDefault(s => s.SearchTypeId == userSearchTypeId);
 
             var results = new List<GroupedBasicView>();
-            if (portalIds.Any() && searchTypeIds.Any() &&
-                (!string.IsNullOrEmpty(cleanedKeywords) || tags.Any()))
+            if (portalIds.Count != 0 && searchTypeIds.Count != 0 &&
+                (!string.IsNullOrEmpty(cleanedKeywords) || tags.Count > 0))
             {
                 var query = new SearchQuery
                 {
@@ -133,7 +133,7 @@ namespace DotNetNuke.Web.InternalServices
             var more = false;
             var totalHits = 0;
             var results = new List<GroupedDetailView>();
-            if (portalIds.Any() && searchTypeIds.Any() &&
+            if (portalIds.Count != 0 && searchTypeIds.Count != 0 &&
                 (!string.IsNullOrEmpty(cleanedKeywords) || tags.Any()))
             {
                 if (pageSize > maximumPageSize)
@@ -270,7 +270,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 // first entry
                 var first = results[0];
-                @group.Title = showFriendlyTitle ? this.GetFriendlyTitle(first) : first.Title;
+                @group.Title = showFriendlyTitle ? GetFriendlyTitle(first) : first.Title;
                 @group.DocumentUrl = first.Url;
 
                 // Find a different title for multiple entries with same url
@@ -311,7 +311,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 foreach (var result in results)
                 {
-                    var title = showFriendlyTitle ? this.GetFriendlyTitle(result) : result.Title;
+                    var title = showFriendlyTitle ? GetFriendlyTitle(result) : result.Title;
                     var detail = new DetailedView
                     {
                         Title = title != null && title.Contains("<") ? HttpUtility.HtmlEncode(title) : title,
@@ -359,7 +359,7 @@ namespace DotNetNuke.Web.InternalServices
                 var groupedResult = results.SingleOrDefault(g => g.DocumentTypeName == preview.DocumentTypeName);
                 if (groupedResult != null)
                 {
-                    if (!groupedResult.Results.Any(r => string.Equals(r.DocumentUrl, preview.DocumentUrl)))
+                    if (!groupedResult.Results.Any(r => string.Equals(r.DocumentUrl, preview.DocumentUrl, StringComparison.Ordinal)))
                     {
                         groupedResult.Results.Add(new BasicView
                         {
@@ -408,15 +408,15 @@ namespace DotNetNuke.Web.InternalServices
             });
         }
 
-        private static ArrayList GetModulesByDefinition(int portalID, string friendlyName)
+        private static ArrayList GetModulesByDefinition(int portalId, string friendlyName)
         {
-            var cacheKey = string.Format(ModuleInfosCacheKey, portalID);
+            var cacheKey = string.Format(ModuleInfosCacheKey, portalId);
             return CBO.GetCachedObject<ArrayList>(
                 new CacheItemArgs(cacheKey, ModuleInfosCacheTimeOut, ModuleInfosCachePriority),
-                args => CBO.FillCollection(DataProvider.Instance().GetModuleByDefinition(portalID, friendlyName), typeof(ModuleInfo)));
+                args => CBO.FillCollection(DataProvider.Instance().GetModuleByDefinition(portalId, friendlyName), typeof(ModuleInfo)));
         }
 
-        private static List<int> GetSearchTypeIds(IDictionary settings, IEnumerable<SearchContentSource> searchContentSources)
+        private static List<int> GetSearchTypeIds(Hashtable settings, IEnumerable<SearchContentSource> searchContentSources)
         {
             var list = new List<int>();
             var configuredList = new List<string>();
@@ -450,7 +450,7 @@ namespace DotNetNuke.Web.InternalServices
             return list.Distinct().ToList();
         }
 
-        private static IEnumerable<int> GetSearchModuleDefIds(IDictionary settings, IEnumerable<SearchContentSource> searchContentSources)
+        private static List<int> GetSearchModuleDefIds(Hashtable settings, IEnumerable<SearchContentSource> searchContentSources)
         {
             var list = new List<int>();
             var configuredList = new List<string>();
@@ -485,6 +485,16 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return list;
+        }
+
+        private static string GetFriendlyTitle(SearchResult result)
+        {
+            if (result.Keywords.TryGetValue("title", out var title) && !string.IsNullOrEmpty(title))
+            {
+                return title;
+            }
+
+            return result.Title;
         }
 
         private bool IsWildCardEnabledForModule()
@@ -560,7 +570,7 @@ namespace DotNetNuke.Web.InternalServices
             return defaultValue;
         }
 
-        private List<int> GetSearchPortalIds(IDictionary settings, int portalId)
+        private List<int> GetSearchPortalIds(Hashtable settings, int portalId)
         {
             var list = new List<int>();
             if (settings != null && !string.IsNullOrEmpty(Convert.ToString(settings["ScopeForPortals"])))
@@ -588,7 +598,7 @@ namespace DotNetNuke.Web.InternalServices
             return list;
         }
 
-        private IList<SearchContentSource> GetSearchContentSources(IList<string> typesList)
+        private List<SearchContentSource> GetSearchContentSources(IList<string> typesList)
         {
             var sources = new List<SearchContentSource>();
             var list = InternalSearchController.Instance.GetSearchContentSourceList(this.PortalSettings.PortalId);
@@ -602,21 +612,11 @@ namespace DotNetNuke.Web.InternalServices
             }
             else
             {
-                // no types fitler specified, add all available content sources
+                // no types filter specified, add all available content sources
                 sources.AddRange(list);
             }
 
             return sources;
-        }
-
-        private string GetFriendlyTitle(SearchResult result)
-        {
-            if (result.Keywords.ContainsKey("title") && !string.IsNullOrEmpty(result.Keywords["title"]))
-            {
-                return result.Keywords["title"];
-            }
-
-            return result.Title;
         }
 
         private string GetTitle(SearchResult result, bool showFriendlyTitle = false)
@@ -636,7 +636,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            return showFriendlyTitle ? this.GetFriendlyTitle(result) : result.Title;
+            return showFriendlyTitle ? GetFriendlyTitle(result) : result.Title;
         }
 
         private string GetTabTitleFromModuleId(int moduleId)

@@ -24,7 +24,7 @@ public class StylesheetResource : LinkResource, IStylesheetResource
     }
 
     /// <inheritdoc />
-    public bool Disabled { get; set; } = false;
+    public bool Disabled { get; set; }
 
     /// <inheritdoc />
     public override void Register()

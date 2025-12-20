@@ -22,26 +22,41 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// </summary>
         /// <param name="clientResourceController">The client resources controller.</param>
         public DnnJsInclude(IClientResourceController clientResourceController)
-            : base()
         {
             this.clientResourceController = clientResourceController;
             this.ForceProvider = ClientResourceProviders.DefaultJsProvider;
             this.DependencyType = ClientDependencyType.Javascript;
         }
 
-        protected override void OnInit(EventArgs e)
-        {
-            this.clientResourceController.CreateScript(this.FilePath, this.PathNameAlias)
-                        .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
-                        .SetProvider(this.ForceProvider)
-                        .SetPriority(this.Priority)
-                        .Register();
-        }
+        /// <inheritdoc cref="IScriptResource.Async" />
+        public bool Async { get; set; }
+
+        /// <inheritdoc cref="IScriptResource.Defer" />
+        public bool Defer { get; set; }
+
+        /// <inheritdoc cref="IScriptResource.NoModule" />
+        public bool NoModule { get; set; }
 
         /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
-            this.PathNameAlias = string.IsNullOrEmpty(this.PathNameAlias) ? string.Empty : this.PathNameAlias.ToLowerInvariant();
+            var script = this.clientResourceController.CreateScript(this.FilePath, this.PathNameAlias);
+            if (this.Async)
+            {
+                script = script.SetAsync();
+            }
+
+            if (this.Defer)
+            {
+                script = script.SetDefer();
+            }
+
+            if (this.NoModule)
+            {
+                script = script.SetNoModule();
+            }
+
+            this.RegisterResource(script);
             base.OnLoad(e);
         }
 

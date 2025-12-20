@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.FileSystem
 // ReSharper restore CheckNamespace
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
 
     using DotNetNuke.Common;
@@ -16,22 +17,11 @@ namespace DotNetNuke.Services.FileSystem
     public class SecureFolderProvider : StandardFolderProvider
     {
         /// <summary>Gets the file extension to use for protected files.</summary>
-        public string ProtectedExtension
-        {
-            get
-            {
-                return Globals.glbProtectedExtension;
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public string ProtectedExtension => Globals.glbProtectedExtension;
 
         /// <summary>Gets a value indicating whether the provider ensures the files/folders it manages are secure from outside access.</summary>
-        public override bool IsStorageSecure
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool IsStorageSecure => true;
 
         /// <inheritdoc/>
         public override string[] GetFiles(IFolderInfo folder)

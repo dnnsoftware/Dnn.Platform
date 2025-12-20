@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Tabs
             var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
             var tab = TabController.Instance.GetTab(tabID, portalID);
 
-            var existPermission = this.GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
+            var existPermission = GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
             return existPermission != null && existPermission.AllowAccess;
         }
 
@@ -45,11 +45,11 @@ namespace DotNetNuke.Entities.Tabs
 
             if (publish)
             {
-                this.PublishTabInternal(tab);
+                PublishTabInternal(tab);
             }
             else
             {
-                this.UnpublishTabInternal(tab);
+                UnpublishTabInternal(tab);
             }
         }
 
@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Tabs
             // If WorkflowID is -1, then there is no Workflow setting
             var workflowID = Convert.ToInt32(PortalController.GetPortalSetting("WorkflowID", portalID, "-1"));
 
-            return (workflowID == 1) || (workflowID == -1);
+            return workflowID is 1 or -1;
         }
 
         /// <inheritdoc/>
@@ -81,22 +81,22 @@ namespace DotNetNuke.Entities.Tabs
             return () => new TabPublishingController();
         }
 
-        private void PublishTabInternal(TabInfo tab)
+        private static void PublishTabInternal(TabInfo tab)
         {
             var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
 
-            var existPermission = this.GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
+            var existPermission = GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
             if (existPermission != null)
             {
                 tab.TabPermissions.Remove(existPermission);
             }
 
-            tab.TabPermissions.Add(this.GetTabPermissionByRole(tab.TabID, "VIEW", allUsersRoleId));
+            tab.TabPermissions.Add(GetTabPermissionByRole(tab.TabID, "VIEW", allUsersRoleId));
             TabPermissionController.SaveTabPermissions(tab);
-            this.ClearTabCache(tab);
+            ClearTabCache(tab);
         }
 
-        private void UnpublishTabInternal(TabInfo tab)
+        private static void UnpublishTabInternal(TabInfo tab)
         {
             var administratorsRoleID = PortalController.Instance.GetPortal(tab.PortalID).AdministratorRoleId;
             var permissionsToRemove = new List<int>();
@@ -107,10 +107,10 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             TabPermissionController.SaveTabPermissions(tab);
-            this.ClearTabCache(tab);
+            ClearTabCache(tab);
         }
 
-        private void ClearTabCache(TabInfo tabInfo)
+        private static void ClearTabCache(TabInfo tabInfo)
         {
             TabController.Instance.ClearCache(tabInfo.PortalID);
 
@@ -118,7 +118,7 @@ namespace DotNetNuke.Entities.Tabs
             DataCache.ClearModuleCache(tabInfo.TabID);
         }
 
-        private TabPermissionInfo GetAlreadyPermission(TabInfo tab, string permissionKey, int roleId)
+        private static TabPermissionInfo GetAlreadyPermission(TabInfo tab, string permissionKey, int roleId)
         {
             var permission = PermissionController.GetPermissionsByTab().Cast<PermissionInfo>().SingleOrDefault<PermissionInfo>(p => p.PermissionKey == permissionKey);
 
@@ -127,7 +127,7 @@ namespace DotNetNuke.Entities.Tabs
                     .FirstOrDefault(tp => tp.RoleID == roleId && tp.PermissionID == permission.PermissionID);
         }
 
-        private TabPermissionInfo GetTabPermissionByRole(int tabID, string permissionKey, int roleID)
+        private static TabPermissionInfo GetTabPermissionByRole(int tabID, string permissionKey, int roleID)
         {
             var permission = PermissionController.GetPermissionsByTab().Cast<PermissionInfo>().SingleOrDefault<PermissionInfo>(p => p.PermissionKey == permissionKey);
             var tabPermission = new TabPermissionInfo

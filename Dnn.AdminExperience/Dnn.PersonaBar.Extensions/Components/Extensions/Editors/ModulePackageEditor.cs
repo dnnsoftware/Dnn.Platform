@@ -42,7 +42,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                                         : new ModulePackagePermissionsDto(portalId, package);
 
             detail.DesktopModuleId = desktopModule.DesktopModuleID;
-            detail.Permissions = this.GetPermissionsData(portalId, desktopModule.DesktopModuleID);
+            detail.Permissions = GetPermissionsData(portalId, desktopModule.DesktopModuleID);
 
             return detail;
         }
@@ -63,12 +63,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
                 var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
 
-                this.UpdatePermissions(desktopModule, packageSettings);
+                UpdatePermissions(desktopModule, packageSettings);
 
                 if (isHostUser)
                 {
-                    this.UpdateModuleProperties(desktopModule, packageSettings.Settings);
-                    this.UpdateModuleProperties(desktopModule, packageSettings.EditorActions);
+                    UpdateModuleProperties(desktopModule, packageSettings.Settings);
+                    UpdateModuleProperties(desktopModule, packageSettings.EditorActions);
 
                     DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
                 }
@@ -121,7 +121,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             ModuleControlController.DeleteModuleControl(controlId);
         }
 
-        private void UpdateModuleProperties(DesktopModuleInfo desktopModule, IDictionary<string, string> settings)
+        private static void UpdateModuleProperties(DesktopModuleInfo desktopModule, IDictionary<string, string> settings)
         {
             foreach (var setting in settings)
             {
@@ -178,7 +178,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
         }
 
-        private PermissionsDto GetPermissionsData(int portalId, int desktopModuleId)
+        private static PermissionsDto GetPermissionsData(int portalId, int desktopModuleId)
         {
             var permissions = new PermissionsDto(true);
             if (desktopModuleId > 0)
@@ -213,9 +213,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             return permissions;
         }
 
-        private void UpdatePermissions(DesktopModuleInfo desktopModule, PackageSettingsDto packageSettings)
+        private static void UpdatePermissions(DesktopModuleInfo desktopModule, PackageSettingsDto packageSettings)
         {
-            if (!packageSettings.EditorActions.ContainsKey("permissions") || string.IsNullOrEmpty(packageSettings.EditorActions["permissions"]))
+            if (!packageSettings.EditorActions.TryGetValue("permissions", out var permissionsJson) || string.IsNullOrEmpty(permissionsJson))
             {
                 return;
             }
@@ -227,8 +227,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
 
             var portalSettings = new PortalSettings(packageSettings.PortalId);
-            var permissions = JsonConvert.DeserializeObject<PermissionsDto>(packageSettings.EditorActions["permissions"]);
-            var hasAdmin = permissions.RolePermissions == null ? false : permissions.RolePermissions.Any(permission => permission.RoleId == portalSettings.AdministratorRoleId);
+            var permissions = JsonConvert.DeserializeObject<PermissionsDto>(permissionsJson);
+            var hasAdmin = permissions.RolePermissions?.Any(permission => permission.RoleId == portalSettings.AdministratorRoleId) ?? false;
 
             var desktopModulePermissions = new DesktopModulePermissionCollection();
 
@@ -278,8 +278,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 {
                     foreach (var permission in userPermission.Permissions)
                     {
-                        int roleId;
-                        int.TryParse(Globals.glbRoleNothing, out roleId);
+                        if (!int.TryParse(Globals.glbRoleNothing, out var roleId))
+                        {
+                            roleId = -4;
+                        }
+
                         desktopModulePermissions.Add(new DesktopModulePermissionInfo()
                         {
                             PermissionID = permission.PermissionId,

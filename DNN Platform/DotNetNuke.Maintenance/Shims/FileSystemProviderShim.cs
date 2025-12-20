@@ -10,7 +10,7 @@ namespace DotNetNuke.Maintenance.Shims
     using DotNetNuke.Common;
 
     /// <summary>Abstraction on file system utilities to enable unit testing.</summary>
-    internal class FileSystemProviderShim : IFileSystemProvider
+    internal sealed class FileSystemProviderShim : IFileSystemProvider
     {
         /// <inheritdoc />
         public Stream CreateFileStream(string path, FileMode mode, FileAccess access)

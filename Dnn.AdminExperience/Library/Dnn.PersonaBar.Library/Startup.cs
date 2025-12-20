@@ -11,7 +11,7 @@ namespace Dnn.PersonaBar.Library
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Register services used by the Persona Bar library.</summary>
-    internal class Startup : IDnnStartup
+    internal sealed class Startup : IDnnStartup
     {
         /// <inheritdoc/>
         public void ConfigureServices(IServiceCollection services)

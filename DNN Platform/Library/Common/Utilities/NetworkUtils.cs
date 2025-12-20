@@ -155,7 +155,7 @@ namespace DotNetNuke.Common.Utils
         {
             try
             {
-                string[] elements = sNetwork.Split(new[] { '/' });
+                string[] elements = sNetwork.Split('/');
 
                 uint ip = IP2Int(elements[0]);
                 int bits = Convert.ToInt32(elements[1]);
@@ -191,7 +191,7 @@ namespace DotNetNuke.Common.Utils
         public static uint IP2Int(string ipNumber)
         {
             uint ip = 0;
-            string[] elements = ipNumber.Split(new[] { '.' });
+            string[] elements = ipNumber.Split('.');
             if (elements.Length == 4)
             {
                 ip = Convert.ToUInt32(elements[0]) << 24;

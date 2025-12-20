@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.UserRequest
                 userIPAddress = string.Empty;
             }
 
-            if (!string.IsNullOrEmpty(userIPAddress) && !this.ValidateIP(userIPAddress, ipFamily))
+            if (!string.IsNullOrEmpty(userIPAddress) && !ValidateIP(userIPAddress, ipFamily))
             {
                 userIPAddress = string.Empty;
             }
@@ -100,10 +100,9 @@ namespace DotNetNuke.Services.UserRequest
             return () => new UserRequestIPAddressController();
         }
 
-        private bool ValidateIP(string ipString, IPAddressFamily ipFamily)
+        private static bool ValidateIP(string ipString, IPAddressFamily ipFamily)
         {
-            IPAddress address;
-            if (IPAddress.TryParse(ipString, out address))
+            if (IPAddress.TryParse(ipString, out var address))
             {
                 if (ipFamily == IPAddressFamily.IPv4 &&
                     address.AddressFamily == AddressFamily.InterNetwork &&

@@ -32,15 +32,15 @@ namespace Dnn.EditBar.UI.Services
         {
             try
             {
-                var resources = this.GetResourcesFromFile(culture);
+                var resources = GetResourcesFromFile(culture);
                 if (resources == null)
                 {
                     lock (threadLocker)
                     {
-                        resources = this.GetResourcesFromFile(culture);
+                        resources = GetResourcesFromFile(culture);
                         if (resources == null)
                         {
-                            resources = this.GenerateJsonFile(culture);
+                            resources = GenerateJsonFile(culture);
                         }
                     }
                 }
@@ -54,11 +54,11 @@ namespace Dnn.EditBar.UI.Services
             }
         }
 
-        private IDictionary<string, IDictionary<string, string>> GetResourcesFromFile(string culture)
+        private static IDictionary<string, IDictionary<string, string>> GetResourcesFromFile(string culture)
         {
-            if (!this.Expired(culture))
+            if (!Expired(culture))
             {
-                var jsonFileContent = this.GetJsonFileContent(culture);
+                var jsonFileContent = GetJsonFileContent(culture);
                 return jsonFileContent != null
                     ? JsonConvert.DeserializeObject<IDictionary<string, IDictionary<string, string>>>(jsonFileContent)
                     : null;
@@ -67,7 +67,7 @@ namespace Dnn.EditBar.UI.Services
             return null;
         }
 
-        private bool Expired(string culture)
+        private static bool Expired(string culture)
         {
             var cacheKey = $"EditBarResources{culture}";
             if (DataCache.GetCache(cacheKey) != null)
@@ -75,7 +75,7 @@ namespace Dnn.EditBar.UI.Services
                 return false;
             }
 
-            var jsonFilePath = this.GetResourcesJsonFilePath(culture);
+            var jsonFilePath = GetResourcesJsonFilePath(culture);
             var jsonFile = new FileInfo(jsonFilePath);
             if (!jsonFile.Exists)
             {
@@ -83,7 +83,7 @@ namespace Dnn.EditBar.UI.Services
             }
 
             var lastModifiedTime = jsonFile.LastWriteTime;
-            var resourceFiles = this.GetAllResourceFiles(culture);
+            var resourceFiles = GetAllResourceFiles(culture);
 
             var expired = resourceFiles.Select(file => new FileInfo(file))
                 .Any(resourceFile => resourceFile.LastWriteTime > lastModifiedTime);
@@ -95,16 +95,16 @@ namespace Dnn.EditBar.UI.Services
             return expired;
         }
 
-        private string GetJsonFileContent(string culture)
+        private static string GetJsonFileContent(string culture)
         {
-            var path = this.GetResourcesJsonFilePath(culture);
+            var path = GetResourcesJsonFilePath(culture);
             return File.Exists(path) ? File.ReadAllText(path, Encoding.UTF8) : null;
         }
 
-        private IDictionary<string, IDictionary<string, string>> GenerateJsonFile(string culture)
+        private static Dictionary<string, IDictionary<string, string>> GenerateJsonFile(string culture)
         {
             var resources = new Dictionary<string, IDictionary<string, string>>();
-            var resourceFiles = this.GetAllResourceFiles(culture);
+            var resourceFiles = GetAllResourceFiles(culture);
             var editBarResourcesPath = Path.Combine(Constants.EditBarRelativePath, "App_LocalResources");
             foreach (var resourcesFile in resourceFiles)
             {
@@ -116,7 +116,7 @@ namespace Dnn.EditBar.UI.Services
             }
 
             var content = JsonConvert.SerializeObject(resources);
-            var filePath = this.GetResourcesJsonFilePath(culture);
+            var filePath = GetResourcesJsonFilePath(culture);
             var folderPath = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(folderPath))
             {
@@ -128,13 +128,13 @@ namespace Dnn.EditBar.UI.Services
             return resources;
         }
 
-        private string GetResourcesJsonFilePath(string culture)
+        private static string GetResourcesJsonFilePath(string culture)
         {
             var path = Path.Combine(Constants.EditBarRelativePath, "Resources", $"LocalResources.{culture}.resources");
             return HttpContext.Current.Server.MapPath(path);
         }
 
-        private IList<string> GetAllResourceFiles(string culture)
+        private static string[] GetAllResourceFiles(string culture)
         {
             var editBarResourcesPath = Path.Combine(Constants.EditBarRelativePath, "App_LocalResources");
             var physicalPath = HttpContext.Current.Server.MapPath(editBarResourcesPath);

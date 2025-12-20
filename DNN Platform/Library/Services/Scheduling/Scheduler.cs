@@ -36,6 +36,7 @@ namespace DotNetNuke.Services.Scheduling
             private static readonly SharedList<ScheduleHistoryItem> ScheduleInProgress;
             private static readonly TimeSpan LockTimeout = TimeSpan.FromSeconds(45);
             private static readonly ReaderWriterLockSlim StatusLock = new ReaderWriterLockSlim();
+            private static readonly char[] ServerSeparator = [',',];
 
             // This is the heart of the scheduler mechanism.
             // This class manages running new events according
@@ -123,7 +124,7 @@ namespace DotNetNuke.Services.Scheduling
                 }
 
                 // Get the individual server names from the scheduled item
-                var servers = scheduleItem.Servers.ToLowerInvariant().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var servers = scheduleItem.Servers.ToLowerInvariant().Split(ServerSeparator, StringSplitOptions.RemoveEmptyEntries);
 
                 // Get the enabled servers with recent activity.
                 var enabledServers = ServerController.GetEnabledServersWithActivity();
@@ -434,9 +435,9 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     using (ScheduleInProgress.GetReadLock(LockTimeout))
                     {
-                        if (scheduleItem.ObjectDependencies.Any())
+                        if (scheduleItem.ObjectDependencies.Length != 0)
                         {
-                            foreach (ScheduleHistoryItem item in ScheduleInProgress.Where(si => si.ObjectDependencies.Any()))
+                            foreach (ScheduleHistoryItem item in ScheduleInProgress.Where(si => si.ObjectDependencies.Length != 0))
                             {
                                 if (item.HasObjectDependencies(scheduleItem.ObjectDependencies))
                                 {

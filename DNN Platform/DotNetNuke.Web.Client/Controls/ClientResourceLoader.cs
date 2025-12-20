@@ -30,20 +30,14 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public ClientResourcePathCollection Paths { get; private set; }
 
-        private bool AsyncPostBackHandlerEnabled
-        {
-            get
-            {
-                return HttpContext.Current != null
-                       && HttpContext.Current.Items.Contains("AsyncPostBackHandlerEnabled");
-            }
-        }
+        private static bool AsyncPostBackHandlerEnabled =>
+            HttpContext.Current != null && HttpContext.Current.Items.Contains("AsyncPostBackHandlerEnabled");
 
         protected override void OnInit(System.EventArgs e)
         {
-            if (this.AsyncPostBackHandlerEnabled && ScriptManager.GetCurrent(this.Page) == null)
+            if (AsyncPostBackHandlerEnabled && ScriptManager.GetCurrent(this.Page) == null)
             {
-                throw new System.Exception("The ClientResourceLoader control requires a ScriptManager on the page when AsyncPostBackHandlerEnabled is true.");
+                throw new ScriptManagerRequiredException("The ClientResourceLoader control requires a ScriptManager on the page when AsyncPostBackHandlerEnabled is true.");
             }
 
             base.OnInit(e);
@@ -67,7 +61,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 path.Name = path.Name.ToLowerInvariant();
             }
 
-            if (this.AsyncPostBackHandlerEnabled)
+            if (AsyncPostBackHandlerEnabled)
             {
                 const string handlerScript = @"
 var loadScriptInSingleMode = function(){
