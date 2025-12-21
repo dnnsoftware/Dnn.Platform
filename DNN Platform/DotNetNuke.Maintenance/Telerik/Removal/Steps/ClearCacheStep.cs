@@ -10,8 +10,8 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Maintenance.Shims;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
-    /// <inheritdoc/>
-    internal class ClearCacheStep : StepBase, IClearCacheStep
+    /// <inheritdoc cref="IClearCacheStep" />
+    internal sealed class ClearCacheStep : StepBase, IClearCacheStep
     {
         private readonly IDataCache dataCache;
 

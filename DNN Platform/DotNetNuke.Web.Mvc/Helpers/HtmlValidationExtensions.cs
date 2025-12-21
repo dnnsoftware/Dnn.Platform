@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         // Validate
 
         /// <summary>Retrieves the validation metadata for the specified model and applies each rule to the data field.</summary>
-        /// <param name="html">The HTML helper instance that this method extends.</param><param name="modelName">The name of the property or model object that is being validated.</param><exception cref="T:System.ArgumentNullException">The <paramref name="modelName"/> parameter is null.</exception>
+        /// <param name="html">The HTML helper instance that this method extends.</param><param name="modelName">The name of the property or model object that is being validated.</param><exception cref="System.ArgumentNullException">The <paramref name="modelName"/> parameter is null.</exception>
         public static void Validate(this DnnHtmlHelper html, string modelName)
         {
             html.HtmlHelper.Validate(modelName);
@@ -32,7 +32,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         // ValidationMessage
 
-        /// <summary>Displays a validation message if an error exists for the specified field in the <see cref="T:System.Web.Mvc.ModelStateDictionary"/> object.</summary>
+        /// <summary>Displays a validation message if an error exists for the specified field in the <see cref="System.Web.Mvc.ModelStateDictionary"/> object.</summary>
         ///
         /// <returns>
         /// If the property or object is valid, an empty string; otherwise, a span element that contains an error message.
@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationMessage(modelName);
         }
 
-        /// <summary>Displays a validation message if an error exists for the specified field in the <see cref="T:System.Web.Mvc.ModelStateDictionary"/> object.</summary>
+        /// <summary>Displays a validation message if an error exists for the specified field in the <see cref="System.Web.Mvc.ModelStateDictionary"/> object.</summary>
         ///
         /// <returns>
         /// If the property or object is valid, an empty string; otherwise, a span element that contains an error message.
@@ -54,7 +54,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationMessage(modelName, htmlAttributes);
         }
 
-        /// <summary>Displays a validation message if an error exists for the specified field in the <see cref="T:System.Web.Mvc.ModelStateDictionary"/> object.</summary>
+        /// <summary>Displays a validation message if an error exists for the specified field in the <see cref="System.Web.Mvc.ModelStateDictionary"/> object.</summary>
         ///
         /// <returns>
         /// If the property or object is valid, an empty string; otherwise, a span element that contains an error message.
@@ -65,7 +65,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationMessage(modelName, validationMessage);
         }
 
-        /// <summary>Displays a validation message if an error exists for the specified field in the <see cref="T:System.Web.Mvc.ModelStateDictionary"/> object.</summary>
+        /// <summary>Displays a validation message if an error exists for the specified field in the <see cref="System.Web.Mvc.ModelStateDictionary"/> object.</summary>
         ///
         /// <returns>
         /// If the property or object is valid, an empty string; otherwise, a span element that contains an error message.
@@ -76,7 +76,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationMessage(modelName, validationMessage, htmlAttributes);
         }
 
-        /// <summary>Displays a validation message if an error exists for the specified field in the <see cref="T:System.Web.Mvc.ModelStateDictionary"/> object.</summary>
+        /// <summary>Displays a validation message if an error exists for the specified field in the <see cref="System.Web.Mvc.ModelStateDictionary"/> object.</summary>
         ///
         /// <returns>
         /// If the property or object is valid, an empty string; otherwise, a span element that contains an error message.
@@ -87,7 +87,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationMessage(modelName, htmlAttributes);
         }
 
-        /// <summary>Displays a validation message if an error exists for the specified field in the <see cref="T:System.Web.Mvc.ModelStateDictionary"/> object.</summary>
+        /// <summary>Displays a validation message if an error exists for the specified field in the <see cref="System.Web.Mvc.ModelStateDictionary"/> object.</summary>
         ///
         /// <returns>
         /// If the property or object is valid, an empty string; otherwise, a span element that contains an error message.
@@ -148,7 +148,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         // ValidationSummary
 
-        /// <summary>Returns an unordered list (ul element) of validation messages that are in the <see cref="T:System.Web.Mvc.ModelStateDictionary"/> object.</summary>
+        /// <summary>Returns an unordered list (ul element) of validation messages that are in the <see cref="System.Web.Mvc.ModelStateDictionary"/> object.</summary>
         ///
         /// <returns>
         /// A string that contains an unordered list (ul element) of validation messages.
@@ -159,7 +159,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationSummary();
         }
 
-        /// <summary>Returns an unordered list (ul element) of validation messages that are in the <see cref="T:System.Web.Mvc.ModelStateDictionary"/> object and optionally displays only model-level errors.</summary>
+        /// <summary>Returns an unordered list (ul element) of validation messages that are in the <see cref="System.Web.Mvc.ModelStateDictionary"/> object and optionally displays only model-level errors.</summary>
         ///
         /// <returns>
         /// A string that contains an unordered list (ul element) of validation messages.
@@ -170,7 +170,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationSummary(excludePropertyErrors);
         }
 
-        /// <summary>Returns an unordered list (ul element) of validation messages that are in the <see cref="T:System.Web.Mvc.ModelStateDictionary"/> object.</summary>
+        /// <summary>Returns an unordered list (ul element) of validation messages that are in the <see cref="System.Web.Mvc.ModelStateDictionary"/> object.</summary>
         ///
         /// <returns>
         /// A string that contains an unordered list (ul element) of validation messages.
@@ -181,7 +181,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationSummary(message);
         }
 
-        /// <summary>Returns an unordered list (ul element) of validation messages that are in the <see cref="T:System.Web.Mvc.ModelStateDictionary"/> object and optionally displays only model-level errors.</summary>
+        /// <summary>Returns an unordered list (ul element) of validation messages that are in the <see cref="System.Web.Mvc.ModelStateDictionary"/> object and optionally displays only model-level errors.</summary>
         ///
         /// <returns>
         /// A string that contains an unordered list (ul element) of validation messages.
@@ -192,7 +192,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationSummary(excludePropertyErrors, message);
         }
 
-        /// <summary>Returns an unordered list (ul element) of validation messages in the <see cref="T:System.Web.Mvc.ModelStateDictionary"/> object.</summary>
+        /// <summary>Returns an unordered list (ul element) of validation messages in the <see cref="System.Web.Mvc.ModelStateDictionary"/> object.</summary>
         ///
         /// <returns>
         /// A string that contains an unordered list (ul element) of validation messages.
@@ -203,7 +203,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationSummary(message, htmlAttributes);
         }
 
-        /// <summary>Returns an unordered list (ul element) of validation messages that are in the <see cref="T:System.Web.Mvc.ModelStateDictionary"/> object and optionally displays only model-level errors.</summary>
+        /// <summary>Returns an unordered list (ul element) of validation messages that are in the <see cref="System.Web.Mvc.ModelStateDictionary"/> object and optionally displays only model-level errors.</summary>
         ///
         /// <returns>
         /// A string that contains an unordered list (ul element) of validation messages.
@@ -214,7 +214,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationSummary(excludePropertyErrors, message, htmlAttributes);
         }
 
-        /// <summary>Returns an unordered list (ul element) of validation messages that are in the <see cref="T:System.Web.Mvc.ModelStateDictionary"/> object.</summary>
+        /// <summary>Returns an unordered list (ul element) of validation messages that are in the <see cref="System.Web.Mvc.ModelStateDictionary"/> object.</summary>
         ///
         /// <returns>
         /// A string that contains an unordered list (ul element) of validation messages.
@@ -225,7 +225,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationSummary(message, htmlAttributes);
         }
 
-        /// <summary>Returns an unordered list (ul element) of validation messages that are in the <see cref="T:System.Web.Mvc.ModelStateDictionary"/> object and optionally displays only model-level errors.</summary>
+        /// <summary>Returns an unordered list (ul element) of validation messages that are in the <see cref="System.Web.Mvc.ModelStateDictionary"/> object and optionally displays only model-level errors.</summary>
         ///
         /// <returns>
         /// A string that contains an unordered list (ul element) of validation messages.

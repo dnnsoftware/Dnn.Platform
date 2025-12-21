@@ -106,15 +106,15 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        /// <summary>Copies the collection objects to a one-dimensional <see cref="T:System.Array">Array</see> instance beginning at the specified index.</summary>
-        /// <param name="array">The one-dimensional <see cref="T:System.Array">Array</see> that is the destination of the values copied from the collection.</param>
+        /// <summary>Copies the collection objects to a one-dimensional <see cref="System.Array">Array</see> instance beginning at the specified index.</summary>
+        /// <param name="array">The one-dimensional <see cref="System.Array">Array</see> that is the destination of the values copied from the collection.</param>
         /// <param name="index">The index of the array at which to begin inserting.</param>
         public void CopyTo(SearchContentModuleInfo[] array, int index)
         {
             this.List.CopyTo(array, index);
         }
 
-        /// <summary>Creates a one-dimensional <see cref="T:System.Array">Array</see> instance containing the collection items.</summary>
+        /// <summary>Creates a one-dimensional <see cref="System.Array">Array</see> instance containing the collection items.</summary>
         /// <returns>Array of type SearchContentModuleInfo.</returns>
         public SearchContentModuleInfo[] ToArray()
         {

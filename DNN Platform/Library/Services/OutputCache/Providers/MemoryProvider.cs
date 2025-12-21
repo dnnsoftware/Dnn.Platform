@@ -49,27 +49,20 @@ namespace DotNetNuke.Services.OutputCache.Providers
         /// <inheritdoc/>
         public override string GenerateCacheKey(int tabId, System.Collections.Specialized.StringCollection includeVaryByKeys, System.Collections.Specialized.StringCollection excludeVaryByKeys, SortedDictionary<string, string> varyBy)
         {
-            return this.GetCacheKey(base.GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy));
+            return GetCacheKey(base.GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy));
         }
 
         /// <inheritdoc/>
         public override int GetItemCount(int tabId)
         {
-            return GetCacheKeys(tabId).Count();
+            return GetCacheKeys(tabId).Count;
         }
 
         /// <inheritdoc/>
         public override byte[] GetOutput(int tabId, string cacheKey)
         {
             object output = Cache[cacheKey];
-            if (output != null)
-            {
-                return (byte[])output;
-            }
-            else
-            {
-                return null;
-            }
+            return (byte[])output;
         }
 
         /// <inheritdoc/>
@@ -150,11 +143,11 @@ namespace DotNetNuke.Services.OutputCache.Providers
             return keys;
         }
 
-        private string GetCacheKey(string cacheKey)
+        private static string GetCacheKey(string cacheKey)
         {
             if (string.IsNullOrEmpty(cacheKey))
             {
-                throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
+                throw new ArgumentException("Argument cannot be null or an empty string", nameof(cacheKey));
             }
 
             return string.Concat(cachePrefix, cacheKey);

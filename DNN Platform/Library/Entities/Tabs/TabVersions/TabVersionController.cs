@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         public void SaveTabVersion(TabVersion tabVersion, int createdByUserID, int modifiedByUserID)
         {
             tabVersion.TabVersionId = Provider.SaveTabVersion(tabVersion.TabVersionId, tabVersion.TabId, tabVersion.TimeStamp, tabVersion.Version, tabVersion.IsPublished, createdByUserID, modifiedByUserID);
-            this.ClearCache(tabVersion.TabId);
+            ClearCache(tabVersion.TabId);
         }
 
         /// <inheritdoc/>
@@ -81,7 +81,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
 
             var tabVersionId = Provider.SaveTabVersion(0, tabId, DateTime.UtcNow, newVersion, isPublished, createdByUserID, createdByUserID);
-            this.ClearCache(tabId);
+            ClearCache(tabId);
 
             return this.GetTabVersion(tabVersionId, tabId);
         }
@@ -90,7 +90,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         public void DeleteTabVersion(int tabId, int tabVersionId)
         {
             Provider.DeleteTabVersion(tabVersionId);
-            this.ClearCache(tabId);
+            ClearCache(tabId);
         }
 
         /// <inheritdoc/>
@@ -110,7 +110,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return string.Format(DataCache.TabVersionsCacheKey, tabId);
         }
 
-        private void ClearCache(int tabId)
+        private static void ClearCache(int tabId)
         {
             DataCache.RemoveCache(GetTabVersionsCacheKey(tabId));
         }

@@ -129,7 +129,7 @@ namespace DotNetNuke.Prompt
                 flagName = flagName.Substring(2);
             }
 
-            return flagName.ToLower().Trim();
+            return flagName.ToLowerInvariant().Trim();
         }
 
         private void ParseFlags()
@@ -167,7 +167,7 @@ namespace DotNetNuke.Prompt
                     }
                 }
 
-                this.Flags.Add(flagName.ToLower(), flagValue);
+                this.Flags.Add(flagName.ToLowerInvariant(), flagValue);
             }
         }
 

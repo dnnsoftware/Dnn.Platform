@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.Client
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using System.Web;
 
@@ -56,7 +57,7 @@ namespace DotNetNuke.Web.Client
             {
                 if (!this.statusChecked)
                 {
-                    this.status = this.GetStatusByReflection();
+                    this.status = GetStatusByReflection();
                     this.statusChecked = true;
                 }
 
@@ -72,6 +73,7 @@ namespace DotNetNuke.Web.Client
             return this.IsOverridingDefaultSettingsEnabled(portalId);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool IsOverridingDefaultSettingsEnabled(int? portalId)
         {
             var portalVersion = GetIntegerSetting(portalId, PortalSettingsDictionaryKey, VersionKey);
@@ -90,6 +92,7 @@ namespace DotNetNuke.Web.Client
             return this.GetVersion(portalId);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public int? GetVersion(int? portalId)
         {
             var portalVersion = GetIntegerSetting(portalId, PortalSettingsDictionaryKey, VersionKey);
@@ -261,6 +264,21 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
+        private static UpgradeStatus GetStatusByReflection()
+        {
+            try
+            {
+                using var scope = GetServiceScope();
+                var applicationStatusInfo = scope.ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+                return applicationStatusInfo.Status;
+            }
+            catch (Exception exception)
+            {
+                LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to Get Status By Reflection", exception);
+                return UpgradeStatus.Unknown;
+            }
+        }
+
         private bool? IsBooleanSettingEnabled(int? portalId, string settingKey)
         {
             if (this.Status != UpgradeStatus.None)
@@ -287,21 +305,6 @@ namespace DotNetNuke.Web.Client
 
             // otherwise tell the calling method that nothing is set
             return null;
-        }
-
-        private UpgradeStatus GetStatusByReflection()
-        {
-            try
-            {
-                using var scope = GetServiceScope();
-                var applicationStatusInfo = scope.ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
-                return applicationStatusInfo.Status;
-            }
-            catch (Exception exception)
-            {
-                LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to Get Status By Reflection", exception);
-                return UpgradeStatus.Unknown;
-            }
         }
     }
 }

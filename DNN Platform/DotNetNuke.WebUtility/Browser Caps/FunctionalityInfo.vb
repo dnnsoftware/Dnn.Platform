@@ -1,4 +1,4 @@
-' Copyright (c) .NET Foundation. All rights reserved.
+﻿' Copyright (c) .NET Foundation. All rights reserved.
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
 Imports System.Xml.Serialization
@@ -66,13 +66,13 @@ Namespace DotNetNuke.UI.Utilities
             Return _hasMatch
         End Function
 
-        Private Function HasMatch(ByVal browsers As BrowserCollection, ByVal strAgent As String, ByVal strBrowser As String, ByVal dblVersion As Double) As Boolean
+        Private Shared Function HasMatch(ByVal browsers As BrowserCollection, ByVal strAgent As String, ByVal strBrowser As String, ByVal dblVersion As Double) As Boolean
             Dim _hasMatch As Boolean = False
 
             'Parse through the browsers to find a match based on name/minversion
             For Each browser As Browser In browsers
                 'Check by browser name and min version
-                If (Not String.IsNullOrEmpty(browser.Name) AndAlso browser.Name.ToLower.Equals(strBrowser.ToLower) AndAlso browser.MinVersion <= dblVersion) Then
+                If (Not String.IsNullOrEmpty(browser.Name) AndAlso browser.Name.Equals(strBrowser, StringComparison.OrdinalIgnoreCase) AndAlso browser.MinVersion <= dblVersion) Then
                     _hasMatch = True
                     Exit For
                 End If
@@ -89,7 +89,7 @@ Namespace DotNetNuke.UI.Utilities
                 For Each browser As Browser In browsers
                     'Check if UserAgent contains the string (Contains)
                     If Not String.IsNullOrEmpty(browser.Contains) Then
-                        If strAgent.ToLower().IndexOf(browser.Contains.ToLower()) > -1 Then
+                        If strAgent.IndexOf(browser.Contains, StringComparison.OrdinalIgnoreCase) > -1 Then
                             _hasMatch = True
                             Exit For
                         End If

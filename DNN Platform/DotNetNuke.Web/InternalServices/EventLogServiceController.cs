@@ -41,7 +41,7 @@ namespace DotNetNuke.Web.InternalServices
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Title = Localization.GetSafeJSString("CriticalError.Error", Localization.SharedResourceFile),
-                    Content = this.GetPropertiesText(logInfo),
+                    Content = GetPropertiesText(logInfo),
                 });
             }
             catch (Exception ex)
@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-        private string GetPropertiesText(LogInfo logInfo)
+        private static string GetPropertiesText(LogInfo logInfo)
         {
             var objLogProperties = logInfo.LogProperties;
             var str = new StringBuilder();

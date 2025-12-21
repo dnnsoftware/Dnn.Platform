@@ -30,10 +30,10 @@ namespace DotNetNuke.Common.Utilities
         /// </returns>
         public static XmlNode AddElement(this XmlNode node, string elementName, string elementValue, bool useCData)
         {
-            XmlNode newElement = node.OwnerDocument.CreateElement(elementName);
+            var newElement = node.OwnerDocument.CreateElement(elementName);
             if (useCData)
             {
-                XmlCDataSection cData = node.OwnerDocument.CreateCDataSection(elementValue);
+                var cData = node.OwnerDocument.CreateCDataSection(elementValue);
                 newElement.AppendChild(cData);
             }
             else
@@ -57,10 +57,10 @@ namespace DotNetNuke.Common.Utilities
         /// </returns>
         public static XmlNode AddElement(this XmlNode node, string elementName, string elementValue, bool useCData, string namespaceUri, string namespaceAbbr)
         {
-            XmlNode newElement = node.OwnerDocument.CreateElement(namespaceAbbr + ":" + elementName, namespaceUri);
+            var newElement = node.OwnerDocument.CreateElement(namespaceAbbr + ":" + elementName, namespaceUri);
             if (useCData)
             {
-                XmlCDataSection cData = node.OwnerDocument.CreateCDataSection(elementValue);
+                var cData = node.OwnerDocument.CreateCDataSection(elementValue);
                 newElement.AppendChild(cData);
             }
             else

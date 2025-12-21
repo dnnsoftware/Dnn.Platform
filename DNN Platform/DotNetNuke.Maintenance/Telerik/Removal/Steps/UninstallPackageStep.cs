@@ -14,8 +14,8 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Maintenance.Telerik.Removal;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// <inheritdoc/>
-    internal class UninstallPackageStep : StepBase, IUninstallPackageStep
+    /// <inheritdoc cref="IUninstallPackageStep" />
+    internal sealed class UninstallPackageStep : StepBase, IUninstallPackageStep
     {
         private readonly IPackageController packageController;
         private readonly IApplicationStatusInfo applicationStatusInfo;

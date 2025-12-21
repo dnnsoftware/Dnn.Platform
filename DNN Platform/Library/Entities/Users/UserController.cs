@@ -208,7 +208,7 @@ namespace DotNetNuke.Entities.Users
             }
             else
             {
-                throw new Exception("Invalid Password");
+                throw new InvalidPasswordException("Invalid Password");
             }
 
             return passwordChanged;
@@ -218,7 +218,7 @@ namespace DotNetNuke.Entities.Users
         /// <param name="portalid">The site (portal) id where the user exists.</param>
         /// <param name="username">The username of the user to change the password for.</param>
         /// <param name="newPassword">The new password.</param>
-        /// <param name="answer">The password reset question/answer answer.</param>
+        /// <param name="answer">The answer to the password reset question/answer.</param>
         /// <param name="resetToken">The password reset token, typically supplied through a password reset email.</param>
         /// <param name="errorMessage">If the attempt fails, this parameter will contain the reason.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
@@ -290,7 +290,7 @@ namespace DotNetNuke.Entities.Users
             }
             else
             {
-                throw new Exception("Invalid Password");
+                throw new InvalidPasswordException("Invalid Password");
             }
 
             return passwordChanged;
@@ -747,7 +747,7 @@ namespace DotNetNuke.Entities.Users
                 case UserCreateStatus.InvalidLastName:
                     return Localization.GetString("InvalidLastName");
                 default:
-                    throw new ArgumentException("Unknown UserCreateStatus value encountered", "userRegistrationStatus");
+                    throw new ArgumentException("Unknown UserCreateStatus value encountered", nameof(userRegistrationStatus));
             }
         }
 

@@ -16,6 +16,9 @@ using Dnn.CakeUtils;
 /// <summary>Provides the base functionality for packaging a folder inside Components.</summary>
 public abstract class PackageComponentTask : FrostingTask<Context>
 {
+    private static readonly string[] AllFiles = ["*",];
+    private static readonly string[] ManifestFiles = ["*.dnn",];
+
     /// <summary>Initializes a new instance of the <see cref="PackageComponentTask"/> class.</summary>
     /// <param name="componentName">The name of the component.</param>
     /// <param name="primaryAssemblyName">The name of the primary assembly.</param>
@@ -50,7 +53,7 @@ public abstract class PackageComponentTask : FrostingTask<Context>
         context.Zip(
             packageDir.ToString(),
             packageZip,
-            context.GetFilesByPatterns(packageDir, new[] { "*" }, new[] { "*.dnn" }));
+            context.GetFilesByPatterns(packageDir, AllFiles, ManifestFiles));
 
         var manifestPath = context.GetFiles(packageDir.Path.CombineWithFilePath("*.dnn").ToString()).Single();
         context.Information($"Reading manifest from {manifestPath}");
@@ -59,7 +62,7 @@ public abstract class PackageComponentTask : FrostingTask<Context>
         var assemblies =
             from XmlNode assemblyNode in manifest.SelectNodes("//assembly")
             from XmlNode childNode in assemblyNode.ChildNodes
-            where childNode.LocalName.Equals("name")
+            where childNode.LocalName.Equals("name", System.StringComparison.Ordinal)
             select childNode;
 
         foreach (var assemblyNameNode in assemblies)
@@ -73,7 +76,7 @@ public abstract class PackageComponentTask : FrostingTask<Context>
                 append: true);
 
             var versionNode = assemblyNameNode.ParentNode?.ChildNodes.Cast<XmlNode>()
-                .SingleOrDefault(childNode => childNode.LocalName.Equals("version"));
+                .SingleOrDefault(childNode => childNode.LocalName.Equals("version", System.StringComparison.Ordinal));
             if (versionNode != null)
             {
                 versionNode.InnerText = context.GetAssemblyFileVersion(assemblyPath);

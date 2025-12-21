@@ -60,15 +60,15 @@ namespace DotNetNuke.UI.Skins
         // ReSharper disable InconsistentNaming
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
+        public static readonly string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
+        public static readonly string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
+        public static readonly string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
 
         // ReSharper restore InconsistentNaming
         private readonly ModuleInjectionManager moduleInjectionManager;
@@ -694,6 +694,26 @@ namespace DotNetNuke.UI.Skins
             return skinPath.IndexOf(defaultSkinPath, StringComparison.CurrentCultureIgnoreCase) != -1;
         }
 
+        private static void EnsureContentItemForTab(Entities.Tabs.TabInfo tabInfo)
+        {
+            // If tab exists but ContentItem not, then we create it
+            if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
+            {
+                TabController.Instance.CreateContentItem(tabInfo);
+                TabController.Instance.UpdateTab(tabInfo);
+            }
+        }
+
+        private static void EnsureContentItemForModule(ModuleInfo module)
+        {
+            // If module exists but ContentItem not, then we create it
+            if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
+            {
+                ModuleController.Instance.CreateContentItem(module);
+                ModuleController.Instance.UpdateModule(module);
+            }
+        }
+
         private bool CheckExpired()
         {
             bool blnExpired = false;
@@ -793,7 +813,7 @@ namespace DotNetNuke.UI.Skins
                         case "article":
                         case "aside":
                             // content pane
-                            if (!objPaneControl.ID.Equals("controlpanel", StringComparison.InvariantCultureIgnoreCase))
+                            if (!objPaneControl.ID.Equals("controlpanel", StringComparison.OrdinalIgnoreCase))
                             {
                                 // Add to the PortalSettings (for use in the Control Panel)
                                 this.PortalSettings.ActiveTab.Panes.Add(objPaneControl.ID);
@@ -821,7 +841,7 @@ namespace DotNetNuke.UI.Skins
             }
 
             // We need to ensure that Content Item exists since in old versions Content Items are not needed for modules
-            this.EnsureContentItemForModule(module);
+            EnsureContentItemForModule(module);
 
             var pane = this.GetPane(module);
             if (pane != null)
@@ -857,7 +877,7 @@ namespace DotNetNuke.UI.Skins
             if (TabPermissionController.CanViewPage())
             {
                 // We need to ensure that Content Item exists since in old versions Content Items are not needed for tabs
-                this.EnsureContentItemForTab(this.PortalSettings.ActiveTab);
+                EnsureContentItemForTab(this.PortalSettings.ActiveTab);
 
                 // Versioning checks.
                 if (!TabController.CurrentPage.HasAVisibleVersion)
@@ -922,26 +942,6 @@ namespace DotNetNuke.UI.Skins
             }
 
             return success;
-        }
-
-        private void EnsureContentItemForTab(Entities.Tabs.TabInfo tabInfo)
-        {
-            // If tab exists but ContentItem not, then we create it
-            if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
-            {
-                TabController.Instance.CreateContentItem(tabInfo);
-                TabController.Instance.UpdateTab(tabInfo);
-            }
-        }
-
-        private void EnsureContentItemForModule(ModuleInfo module)
-        {
-            // If module exists but ContentItem not, then we create it
-            if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
-            {
-                ModuleController.Instance.CreateContentItem(module);
-                ModuleController.Instance.UpdateModule(module);
-            }
         }
 
         private void ProcessPanes()

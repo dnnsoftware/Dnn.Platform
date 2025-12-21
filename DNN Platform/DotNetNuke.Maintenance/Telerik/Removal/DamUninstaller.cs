@@ -7,8 +7,8 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
     using System;
     using System.Collections;
 
-    /// <inheritdoc />
-    internal class DamUninstaller : UnInstaller, IDamUninstaller
+    /// <inheritdoc cref="IDamUninstaller" />
+    internal sealed class DamUninstaller : UnInstaller, IDamUninstaller
     {
         /// <summary>Initializes a new instance of the <see cref="DamUninstaller"/> class.</summary>
         /// <param name="serviceProvider">An instance of <see cref="IServiceProvider"/>.</param>

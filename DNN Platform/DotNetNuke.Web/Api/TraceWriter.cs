@@ -31,10 +31,10 @@ namespace DotNetNuke.Web.Api
 
             var rec = new TraceRecord(request, category, level);
             traceAction(rec);
-            this.Log(rec);
+            Log(rec);
         }
 
-        private void Log(TraceRecord rec)
+        private static void Log(TraceRecord rec)
         {
             var message = new StringBuilder();
 
@@ -42,23 +42,23 @@ namespace DotNetNuke.Web.Api
             {
                 if (rec.Request.Method != null)
                 {
-                    message.Append(" ").Append(rec.Request.Method.Method);
+                    message.Append(' ').Append(rec.Request.Method.Method);
                 }
 
                 if (rec.Request.RequestUri != null)
                 {
-                    message.Append(" ").Append(rec.Request.RequestUri.AbsoluteUri);
+                    message.Append(' ').Append(rec.Request.RequestUri.AbsoluteUri);
                 }
             }
 
             if (!string.IsNullOrEmpty(rec.Category))
             {
-                message.Append(" ").Append(rec.Category);
+                message.Append(' ').Append(rec.Category);
             }
 
             if (!string.IsNullOrEmpty(rec.Message))
             {
-                message.Append(" ").Append(rec.Message);
+                message.Append(' ').Append(rec.Message);
             }
 
             string output = message.ToString();

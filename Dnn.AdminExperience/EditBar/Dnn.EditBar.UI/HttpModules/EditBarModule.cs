@@ -22,7 +22,7 @@ namespace Dnn.EditBar.UI.HttpModules
     public class EditBarModule : IHttpModule
     {
         private static readonly object LockAppStarted = new object();
-        private static bool hasAppStarted = false;
+        private static bool hasAppStarted;
 
         private readonly IHostSettings hostSettings;
 

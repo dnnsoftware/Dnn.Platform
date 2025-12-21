@@ -908,9 +908,9 @@ namespace Dnn.PersonaBar.Security.Services
                     u.LastName,
                     u.DisplayName,
                     u.Email,
-                    CreatedDate = this.DisplayDate(u.Membership.CreatedDate),
-                    LastLoginDate = this.DisplayDate(u.Membership.LastLoginDate),
-                    LastActivityDate = this.DisplayDate(u.Membership.LastActivityDate),
+                    CreatedDate = DisplayDate(u.Membership.CreatedDate),
+                    LastLoginDate = DisplayDate(u.Membership.LastLoginDate),
+                    LastActivityDate = DisplayDate(u.Membership.LastActivityDate),
                 }).ToList();
 
                 var response = new
@@ -979,12 +979,12 @@ namespace Dnn.PersonaBar.Security.Services
                 var highRiskFiles = Components.Utility.GetLastModifiedExecutableFiles().Select(f => new
                 {
                     FilePath = this.GetFilePath(f.FullName),
-                    LastWriteTime = this.DisplayDate(f.LastWriteTime),
+                    LastWriteTime = DisplayDate(f.LastWriteTime),
                 });
                 var lowRiskFiles = Components.Utility.GetLastModifiedFiles().Select(f => new
                 {
                     FilePath = this.GetFilePath(f.FullName),
-                    LastWriteTime = this.DisplayDate(f.LastWriteTime),
+                    LastWriteTime = DisplayDate(f.LastWriteTime),
                 });
                 var response = new
                 {
@@ -1022,7 +1022,7 @@ namespace Dnn.PersonaBar.Security.Services
                                           SettingName = Convert.ToString(dr["SettingName"]),
                                           SettingValue = Convert.ToString(dr["SettingValue"]),
                                           LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                          LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
+                                          LastModifiedOnDate = DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
                                       }).ToList();
 
                 var hostSettings = (from DataRow dr in settings[1].Rows
@@ -1031,7 +1031,7 @@ namespace Dnn.PersonaBar.Security.Services
                                         SettingName = Convert.ToString(dr["SettingName"]),
                                         SettingValue = Convert.ToString(dr["SettingValue"]),
                                         LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                        LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
+                                        LastModifiedOnDate = DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
                                     }).ToList();
 
                 var tabSettings = (from DataRow dr in settings[2].Rows
@@ -1042,7 +1042,7 @@ namespace Dnn.PersonaBar.Security.Services
                                        SettingName = Convert.ToString(dr["SettingName"]),
                                        SettingValue = Convert.ToString(dr["SettingValue"]),
                                        LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                       LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
+                                       LastModifiedOnDate = DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
                                    }).ToList();
 
                 var moduleSettings = (from DataRow dr in settings[3].Rows
@@ -1054,7 +1054,7 @@ namespace Dnn.PersonaBar.Security.Services
                                           SettingName = Convert.ToString(dr["SettingName"]),
                                           SettingValue = Convert.ToString(dr["SettingValue"]),
                                           LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                          LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
+                                          LastModifiedOnDate = DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
                                       }).ToList();
 
                 var response = new
@@ -1549,6 +1549,13 @@ namespace Dnn.PersonaBar.Security.Services
             return portalAlias;
         }
 
+        private static string DisplayDate(DateTime userDate)
+        {
+            var date = Null.NullString;
+            date = !Null.IsNull(userDate) ? userDate.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            return date;
+        }
+
         private int ValidateTabId(int tabId)
         {
             var tab = TabController.Instance.GetTab(tabId, this.PortalId);
@@ -1579,13 +1586,6 @@ namespace Dnn.PersonaBar.Security.Services
                 var tab = TabController.Instance.GetTab(tabId, this.PortalId);
                 return tab != null ? tab.TabPath : string.Empty;
             }
-        }
-
-        private string DisplayDate(DateTime userDate)
-        {
-            var date = Null.NullString;
-            date = !Null.IsNull(userDate) ? userDate.ToString(CultureInfo.InvariantCulture) : string.Empty;
-            return date;
         }
 
         private string GetFilePath(string filePath)

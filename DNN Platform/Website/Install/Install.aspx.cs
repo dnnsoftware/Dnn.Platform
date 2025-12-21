@@ -224,6 +224,7 @@ namespace DotNetNuke.Services.Install
             }
             else
             {
+                bool cleanupLocker = false;
                 try
                 {
                     var synchConnectionString = new SynchConnectionStringStep();
@@ -259,6 +260,7 @@ namespace DotNetNuke.Services.Install
                                 return;
                             }
 
+                            cleanupLocker = true;
                             RegisterInstallBegining();
                         }
 
@@ -314,7 +316,10 @@ namespace DotNetNuke.Services.Install
                 }
                 finally
                 {
-                    RegisterInstallEnd();
+                    if (cleanupLocker)
+                    {
+                        RegisterInstallEnd();
+                    }
                 }
             }
         }
@@ -352,6 +357,7 @@ namespace DotNetNuke.Services.Install
 
         private void UpgradeApplication()
         {
+            bool cleanupLocker = false;
             try
             {
                 if (Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie())
@@ -377,6 +383,7 @@ namespace DotNetNuke.Services.Install
                         return;
                     }
 
+                    cleanupLocker = true;
                     RegisterInstallBegining();
                 }
 
@@ -498,7 +505,10 @@ namespace DotNetNuke.Services.Install
             }
             finally
             {
-                RegisterInstallEnd();
+                if (cleanupLocker)
+                {
+                    RegisterInstallEnd();
+                }
             }
         }
 

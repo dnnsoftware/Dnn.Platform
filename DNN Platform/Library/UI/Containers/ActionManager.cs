@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
     using System.Web.UI.WebControls;
 
@@ -49,9 +50,10 @@ namespace DotNetNuke.UI.Containers
         /// <summary>DisplayControl determines whether the associated Action control should be displayed.</summary>
         /// <param name="objNodes">The nav nodes.</param>
         /// <returns><see langword="true"/> if the nodes should be displayed, otherwise <see langword="false"/>.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool DisplayControl(DNNNodeCollection objNodes)
         {
-            if (objNodes != null && objNodes.Count > 0 && Personalization.GetUserMode() != PortalSettings.Mode.View)
+            if (objNodes is { Count: > 0 } && Personalization.GetUserMode() != PortalSettings.Mode.View)
             {
                 DNNNode objRootNode = objNodes[0];
                 if (objRootNode.HasNodes && objRootNode.DNNNodes.Count == 0)
@@ -95,6 +97,7 @@ namespace DotNetNuke.UI.Containers
         /// <summary>GetClientScriptURL gets the client script to attach to the control's client side onclick event.</summary>
         /// <param name="action">The Action.</param>
         /// <param name="control">The Control.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void GetClientScriptURL(ModuleAction action, WebControl control)
         {
             if (!string.IsNullOrEmpty(action.ClientScript))

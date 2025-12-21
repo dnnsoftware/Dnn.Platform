@@ -168,7 +168,7 @@ namespace DotNetNuke.Common.Utilities
                             // skip parameter
                             break;
                         default:
-                            if (keys[i].Equals("portalid", StringComparison.InvariantCultureIgnoreCase) && Globals.GetPortalSettings().ActiveTab.IsSuperTab)
+                            if (keys[i].Equals("portalid", StringComparison.OrdinalIgnoreCase) && Globals.GetPortalSettings().ActiveTab.IsSuperTab)
                             {
                                 // skip parameter
                                 // navigateURL adds portalid to querystring if tab is superTab
@@ -298,7 +298,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     closingUrl = (closingUrl != Null.NullString) ? closingUrl : string.Empty;
                     popUpUrl =
-                        $"javascript:dnnModal.show('{HttpUtility.JavaScriptStringEncode(popUpUrl)}{delimiter}popUp=true',/*showReturn*/{onClickEvent.ToString().ToLowerInvariant()},{windowHeight},{windowWidth},{refresh.ToString().ToLower()},'{HttpUtility.JavaScriptStringEncode(closingUrl)}')";
+                        $"javascript:dnnModal.show('{HttpUtility.JavaScriptStringEncode(popUpUrl)}{delimiter}popUp=true',/*showReturn*/{onClickEvent.ToString().ToLowerInvariant()},{windowHeight},{windowWidth},{refresh.ToString().ToLowerInvariant()},'{HttpUtility.JavaScriptStringEncode(closingUrl)}')";
                 }
                 else
                 {
@@ -431,7 +431,7 @@ namespace DotNetNuke.Common.Utilities
                     var uri2 = new Uri(aliasWithHttp);
 
                     // protocol switching (HTTP <=> HTTPS) is allowed by not being checked here
-                    if (!string.Equals(uri1.DnsSafeHost, uri2.DnsSafeHost, StringComparison.CurrentCultureIgnoreCase))
+                    if (!string.Equals(uri1.DnsSafeHost, uri2.DnsSafeHost, StringComparison.OrdinalIgnoreCase))
                     {
                         return string.Empty;
                     }

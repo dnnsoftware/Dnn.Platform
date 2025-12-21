@@ -40,10 +40,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
         // ReSharper restore InconsistentNaming
         private const string MyFileName = "filepickeruploader.ascx";
-        private int? portalId = null;
+        private int? portalId;
         private string fileFilter;
         private string folderPath = string.Empty;
-        private bool folderPathSet = false;
+        private bool folderPathSet;
 
         public bool UsePersonalFolder { get; set; }
 

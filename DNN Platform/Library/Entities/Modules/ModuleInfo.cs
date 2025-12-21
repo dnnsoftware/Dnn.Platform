@@ -109,9 +109,12 @@ namespace DotNetNuke.Entities.Modules
                     return false;
                 }
 
-                bool val;
-                bool.TryParse(setting.ToString(), out val);
-                return val;
+                if (bool.TryParse(setting.ToString(), out var val))
+                {
+                    return val;
+                }
+
+                return false;
             }
         }
 

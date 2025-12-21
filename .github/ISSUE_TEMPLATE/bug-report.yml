@@ -72,7 +72,7 @@ body:
         **NOTE:** _If your version is not listed, please upgrade to the latest version. If you cannot upgrade at this time, please open a [Discussion](https://github.com/dnnsoftware/Dnn.Platform/discussions) instead._
       multiple: true
       options:
-        - 10.1.2 (latest v10 release)
+        - 10.2.0 (latest v10 release)
         - Current development branch (unreleased)
     validations:
       required: true

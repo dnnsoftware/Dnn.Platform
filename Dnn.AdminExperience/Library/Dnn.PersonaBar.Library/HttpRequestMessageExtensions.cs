@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.Library
                 return null;
             }
 
-            var match = queryStrings.FirstOrDefault(kv => string.Compare(kv.Key, key, true) == 0);
+            var match = queryStrings.FirstOrDefault(kv => string.Equals(kv.Key, key, StringComparison.OrdinalIgnoreCase));
             if (string.IsNullOrEmpty(match.Value))
             {
                 return null;

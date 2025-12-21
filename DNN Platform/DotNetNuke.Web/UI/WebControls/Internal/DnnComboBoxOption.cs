@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         }
 
         [DataMember(Name = "create")]
-        public bool Create { get; set; } = false;
+        public bool Create { get; set; }
 
         [DataMember(Name = "preload")]
         public string Preload { get; set; }

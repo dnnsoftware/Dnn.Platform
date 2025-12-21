@@ -100,14 +100,14 @@ namespace DotNetNuke.ComponentModel
         public virtual void RegisterComponent<TComponent>(string name)
             where TComponent : class
         {
-            this.RegisterComponent(name, typeof(TComponent), typeof(TComponent), ComponentLifeStyleType.Singleton);
+            this.RegisterComponent<TComponent, TComponent>(name, ComponentLifeStyleType.Singleton);
         }
 
         /// <inheritdoc/>
         public virtual void RegisterComponent<TComponent>(string name, ComponentLifeStyleType lifestyle)
             where TComponent : class
         {
-            this.RegisterComponent(name, typeof(TComponent), typeof(TComponent), lifestyle);
+            this.RegisterComponent<TComponent, TComponent>(name, lifestyle);
         }
 
         /// <inheritdoc/>
@@ -121,7 +121,7 @@ namespace DotNetNuke.ComponentModel
         public virtual void RegisterComponent<TContract, TComponent>(string name)
             where TComponent : class
         {
-            this.RegisterComponent(name, typeof(TContract), typeof(TComponent), ComponentLifeStyleType.Singleton);
+            this.RegisterComponent<TContract, TComponent>(name, ComponentLifeStyleType.Singleton);
         }
 
         /// <inheritdoc/>
@@ -158,7 +158,7 @@ namespace DotNetNuke.ComponentModel
         /// <inheritdoc/>
         public void RegisterComponentInstance<TContract>(object instance)
         {
-            this.RegisterComponentInstance(instance.GetType().FullName, typeof(TContract), instance);
+            this.RegisterComponentInstance<TContract>(instance.GetType().FullName, instance);
         }
 
         /// <inheritdoc/>
