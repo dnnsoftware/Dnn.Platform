@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         public const string TagPattern = @"<{0}((\s+\w+(\s*=\s*(?:"".*?""|'.*?'|[^'"">\s]+))?)+\s*|\s*)/?>";
         public const string AttributePattern = @"{0}(\s*=\s*(?:""(?<val>.*?)""|'(?<val>.*?)'|(?<val>[^'"">\s]+)))";
 
-        private const string MatchAllAttributes = "(\\S+)=[\"']?((?:.(?![\"']?\\s+(?:\\S+)=|[>\"']))+.)[\"']?";
+        private const string MatchAllAttributes = @"(\S+)=[""']?((?:.(?![""']?\s+(?:\S+)=|[>""']))+.)[""']?";
 
         private static readonly Regex LinkTagRegex = new Regex(string.Format(TagPattern, "link"), RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex ScriptTagRegex = new Regex(string.Format(TagPattern, "script"), RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
@@ -32,19 +32,13 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.clientResourceController = clientResourceController;
         }
 
-        /// <summary>
-        /// Gets or sets the provider to force for this resource include.
-        /// </summary>
+        /// <summary>Gets or sets the provider to force for this resource include.</summary>
         public string ForceProvider { get; set; }
 
-        /// <summary>
-        /// Gets or sets the priority for this resource include.
-        /// </summary>
+        /// <summary>Gets or sets the priority for this resource include.</summary>
         public int Priority { get; set; } = 100;
 
-        /// <summary>
-        /// Gets or sets the group for this resource include.
-        /// </summary>
+        /// <summary>Gets or sets the group for this resource include.</summary>
         public int Group { get; set; } = 100;
 
         protected override void OnLoad(EventArgs e)
