@@ -4,6 +4,7 @@
 
 namespace DNN.Integration.Test.Framework.Helpers
 {
+    using System;
     using System.IO;
     using System.Reflection;
 
@@ -11,9 +12,9 @@ namespace DNN.Integration.Test.Framework.Helpers
     {
         public static string GetAbsoluteDir(string relativePathIn)
         {
-            if (!relativePathIn.StartsWith("\\"))
+            if (!relativePathIn.StartsWith(@"\", StringComparison.Ordinal))
             {
-                relativePathIn = "\\" + relativePathIn;
+                relativePathIn = @"\" + relativePathIn;
             }
 
             var rootDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

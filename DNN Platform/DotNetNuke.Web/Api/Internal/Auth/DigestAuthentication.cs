@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.Api.Internal.Auth
 {
     using System;
+    using System.Globalization;
     using System.Security.Cryptography;
     using System.Security.Principal;
     using System.Text;
@@ -54,7 +55,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             string ha1 = string.Empty;
             for (int i = 0; i <= 15; i++)
             {
-                ha1 += string.Format("{0:x02}", bha1[i]);
+                ha1 += string.Format(CultureInfo.InvariantCulture, "{0:x02}", bha1[i]);
             }
 
             return ha1;
@@ -77,7 +78,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             {
                 byte[] decodedBytes = Convert.FromBase64String(newNonce);
                 string expireStr = Encoding.Default.GetString(decodedBytes);
-                expireTime = DateTime.Parse(expireStr);
+                expireTime = DateTime.Parse(expireStr, CultureInfo.InvariantCulture);
             }
             catch (FormatException)
             {
@@ -128,7 +129,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
         private string GenerateUnhashedDigest()
         {
             string a1 =
-                $"{this.request.RequestParams["username"].Replace("\\\\", "\\")}:{this.request.RequestParams["realm"]}:{this.password}";
+                $"{this.request.RequestParams["username"].Replace("\\\\", @"\")}:{this.request.RequestParams["realm"]}:{this.password}";
             string ha1 = CreateMd5HashBinHex(a1);
             string a2 = $"{this.request.HttpMethod}:{this.request.RequestParams["uri"]}";
             string ha2 = CreateMd5HashBinHex(a2);

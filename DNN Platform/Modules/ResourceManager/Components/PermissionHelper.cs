@@ -6,6 +6,7 @@ namespace Dnn.Modules.ResourceManager.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.Modules.ResourceManager.Services.Dto;
@@ -86,7 +87,7 @@ namespace Dnn.Modules.ResourceManager.Components
 
             // Show also default roles
             dto.EnsureRole(RoleController.Instance.GetRoleById(PortalSettings.Current.PortalId, PortalSettings.Current.RegisteredRoleId), false, true);
-            dto.EnsureRole(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName }, false, true);
+            dto.EnsureRole(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture), RoleName = Globals.glbRoleAllUsersName, }, false, true);
         }
 
         /// <summary>Ensures the <see cref="Permissions"/> dto has the given role.</summary>
@@ -171,8 +172,8 @@ namespace Dnn.Modules.ResourceManager.Components
             }
 
             // Retrieves roles info
-            data.Roles.Add(new { RoleID = int.Parse(Globals.glbRoleUnauthUser), GroupId = -1, RoleName = Globals.glbRoleUnauthUserName });
-            data.Roles.Add(new { RoleID = int.Parse(Globals.glbRoleAllUsers), GroupId = -1, RoleName = Globals.glbRoleAllUsersName });
+            data.Roles.Add(new { RoleID = int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture), GroupId = -1, RoleName = Globals.glbRoleUnauthUserName });
+            data.Roles.Add(new { RoleID = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture), GroupId = -1, RoleName = Globals.glbRoleAllUsersName });
             foreach (var role in roleController.GetRoles(portalId).OrderBy(r => r.RoleName))
             {
                 data.Roles.Add(new { GroupId = role.RoleGroupID, RoleId = role.RoleID, Name = role.RoleName });
@@ -221,7 +222,7 @@ namespace Dnn.Modules.ResourceManager.Components
                     IFolderPermissionInfo iInfo = info;
                     iInfo.FolderId = folderId;
                     iInfo.PermissionId = permission.PermissionId;
-                    iInfo.RoleId = int.Parse(Globals.glbRoleNothing);
+                    iInfo.RoleId = int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
                     iInfo.UserId = p.UserId;
                     return info;
                 });

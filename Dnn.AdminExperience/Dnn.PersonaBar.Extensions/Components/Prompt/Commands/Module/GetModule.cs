@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Net;
 
     using Dnn.PersonaBar.Library.Prompt;
@@ -43,19 +44,23 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         public override ConsoleResultModel Run()
         {
             var lst = new List<ModuleInfoModel>();
-            KeyValuePair<HttpStatusCode, string> message;
             var moduleInfo = ModulesControllerLibrary.Instance.GetModule(
                 this.PortalSettings,
                 this.ModuleId,
                 this.PageId,
-                out message);
+                out var message);
             if (moduleInfo == null && !string.IsNullOrEmpty(message.Value))
             {
                 return new ConsoleErrorResultModel(message.Value);
             }
 
             lst.Add(ModuleInfoModel.FromDnnModuleInfo(moduleInfo));
-            return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_GetModule_Result"), this.ModuleId, this.PageId) };
+            return new ConsoleResultModel
+            {
+                Data = lst,
+                Records = lst.Count,
+                Output = string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Prompt_GetModule_Result"), this.ModuleId, this.PageId),
+            };
         }
     }
 }

@@ -14,6 +14,37 @@ namespace DotNetNuke.Framework.Reflections
 
     public class TypeLocator : ITypeLocator, IAssemblyLocator
     {
+        private static readonly HashSet<string> IgnoreAssemblies = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "DotNetNuke.Authentication.Facebook",
+            "DotNetNuke.Authentication.Google",
+            "DotNetNuke.Authentication.LiveConnect",
+            "DotNetNuke.Authentication.Twitter",
+            "DotNetNuke.ASP2MenuNavigationProvider",
+            "DotNetNuke.DNNDropDownNavigationProvider",
+            "DotNetNuke.DNNMenuNavigationProvider",
+            "DotNetNuke.DNNTreeNavigationProvider",
+            "DotNetNuke.HttpModules",
+            "DotNetNuke.Instrumentation",
+            "DotNetNuke.Log4Net",
+            "DotNetNuke.Modules.Groups",
+            "DotNetNuke.Modules.Html",
+            "DotNetNuke.Modules.HtmlEditorManager",
+            "DotNetNuke.Modules.MobileManagement",
+            "DotNetNuke.Modules.PreviewProfileManagement",
+            "DotNetNuke.Modules.RazorHost",
+            "DotNetNuke.Modules.Taxonomy",
+            "DotNetNuke.Modules.UrlManagement",
+            "DotNetNuke.RadEditorProvider",
+            "DotNetNuke.Services.Syndication",
+            "DotNetNuke.Web.Client",
+            "DotNetNuke.Web.DDRMenu",
+            "DotNetNuke.Web.Razor",
+            "DotNetNuke.Web.Mvc",
+            "DotNetNuke.WebControls",
+            "DotNetNuke.WebUtility",
+        };
+
         private IAssemblyLocator assemblyLocator;
 
         /// <inheritdoc/>
@@ -67,51 +98,26 @@ namespace DotNetNuke.Framework.Reflections
 
         private static bool CanScan(Assembly assembly)
         {
-            string[] ignoreAssemblies =
-            [
-                "DotNetNuke.Authentication.Facebook",
-                "DotNetNuke.Authentication.Google",
-                "DotNetNuke.Authentication.LiveConnect",
-                "DotNetNuke.Authentication.Twitter",
-                "DotNetNuke.ASP2MenuNavigationProvider",
-                "DotNetNuke.DNNDropDownNavigationProvider",
-                "DotNetNuke.DNNMenuNavigationProvider",
-                "DotNetNuke.DNNTreeNavigationProvider",
-                "DotNetNuke.HttpModules",
-                "DotNetNuke.Instrumentation",
-                "DotNetNuke.Log4Net",
-                "DotNetNuke.Modules.Groups",
-                "DotNetNuke.Modules.Html",
-                "DotNetNuke.Modules.HtmlEditorManager",
-                "DotNetNuke.Modules.MobileManagement",
-                "DotNetNuke.Modules.PreviewProfileManagement",
-                "DotNetNuke.Modules.RazorHost",
-                "DotNetNuke.Modules.Taxonomy",
-                "DotNetNuke.Modules.UrlManagement",
-                "DotNetNuke.RadEditorProvider",
-                "DotNetNuke.Services.Syndication",
-                "DotNetNuke.Web.Client",
-                "DotNetNuke.Web.DDRMenu",
-                "DotNetNuke.Web.Razor",
-                "DotNetNuke.Web.Mvc",
-                "DotNetNuke.WebControls",
-                "DotNetNuke.WebUtility"
-            ];
-
             // First eliminate by "class"
-            var assemblyName = assembly.FullName.ToLowerInvariant();
-            bool canScan = !(assemblyName.StartsWith("clientdependency.core") || assemblyName.StartsWith("countrylistbox")
-                || assemblyName.StartsWith("icsharpcode") || assemblyName.StartsWith("fiftyone")
-                || assemblyName.StartsWith("lucene") || assemblyName.StartsWith("microsoft")
-                || assemblyName.StartsWith("newtonsoft") || assemblyName.StartsWith("petapoco")
-                || assemblyName.StartsWith("sharpziplib") || assemblyName.StartsWith("system")
-                || assemblyName.StartsWith("telerik") || assemblyName.StartsWith("webformsmvp")
-                || assemblyName.StartsWith("webmatrix"));
+            var assemblyName = assembly.FullName;
+            bool canScan = !(assemblyName.StartsWith("clientdependency.core", StringComparison.OrdinalIgnoreCase)
+                             || assemblyName.StartsWith("countrylistbox", StringComparison.OrdinalIgnoreCase)
+                             || assemblyName.StartsWith("icsharpcode", StringComparison.OrdinalIgnoreCase)
+                             || assemblyName.StartsWith("fiftyone", StringComparison.OrdinalIgnoreCase)
+                             || assemblyName.StartsWith("lucene", StringComparison.OrdinalIgnoreCase)
+                             || assemblyName.StartsWith("microsoft", StringComparison.OrdinalIgnoreCase)
+                             || assemblyName.StartsWith("newtonsoft", StringComparison.OrdinalIgnoreCase)
+                             || assemblyName.StartsWith("petapoco", StringComparison.OrdinalIgnoreCase)
+                             || assemblyName.StartsWith("sharpziplib", StringComparison.OrdinalIgnoreCase)
+                             || assemblyName.StartsWith("system", StringComparison.OrdinalIgnoreCase)
+                             || assemblyName.StartsWith("telerik", StringComparison.OrdinalIgnoreCase)
+                             || assemblyName.StartsWith("webformsmvp", StringComparison.OrdinalIgnoreCase)
+                             || assemblyName.StartsWith("webmatrix", StringComparison.OrdinalIgnoreCase));
 
             if (canScan)
             {
                 // Next eliminate specific assemblies
-                if (ignoreAssemblies.Any(ignoreAssembly => assemblyName.Equals(ignoreAssembly, StringComparison.OrdinalIgnoreCase)))
+                if (IgnoreAssemblies.Contains(assemblyName))
                 {
                     canScan = false;
                 }

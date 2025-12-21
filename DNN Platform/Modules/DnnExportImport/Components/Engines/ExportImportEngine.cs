@@ -8,6 +8,7 @@ namespace Dnn.ExportImport.Components.Engines
     using System.Data;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
 
@@ -665,7 +666,7 @@ namespace Dnn.ExportImport.Components.Engines
                     scheduleId,
                     Constants.LastJobStartTimeKey,
                     time.ToUniversalTime()
-                        .DateTime.ToString(Constants.JobRunDateTimeFormat));
+                        .DateTime.ToString(Constants.JobRunDateTimeFormat, CultureInfo.InvariantCulture));
         }
 
         private static void DoPacking(ExportImportJob exportJob, string dbName)
@@ -724,6 +725,7 @@ namespace Dnn.ExportImport.Components.Engines
                 catch (Exception e)
                 {
                     Logger.ErrorFormat(
+                        CultureInfo.InvariantCulture,
                         "Unable to clear {0} while calling CleanupDatabaseIfDirty. Error: {1}",
                         type.Name,
                         e.Message);

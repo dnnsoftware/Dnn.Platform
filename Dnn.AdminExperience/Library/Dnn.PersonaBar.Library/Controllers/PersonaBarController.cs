@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using Dnn.PersonaBar.Library.Containers;
@@ -46,6 +47,7 @@ namespace Dnn.PersonaBar.Library.Controllers
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public PersonaBarMenu GetMenu(PortalSettings portalSettings, UserInfo user)
         {
             try

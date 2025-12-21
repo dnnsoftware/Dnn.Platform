@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Xml;
@@ -17,6 +18,7 @@ namespace DotNetNuke.Services.Installer.Installers
     public class ResourceFileInstaller : FileInstaller
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         public const string DEFAULT_MANIFESTEXT = ".manifest";
@@ -65,6 +67,7 @@ namespace DotNetNuke.Services.Installer.Installers
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void DeleteFile(InstallFile file)
         {
         }
@@ -113,7 +116,7 @@ namespace DotNetNuke.Services.Installer.Installers
                             // Write path
                             writer.WriteElementString(
                                 "path",
-                                entry.FullName.Substring(0, entry.FullName.IndexOf(fileName)));
+                                entry.FullName.Substring(0, entry.FullName.IndexOf(fileName, StringComparison.OrdinalIgnoreCase)));
 
                             // Write name
                             writer.WriteElementString("name", fileName);
@@ -132,7 +135,7 @@ namespace DotNetNuke.Services.Installer.Installers
                             // Close files Element
                             writer.WriteEndElement();
 
-                            this.Log.AddInfo(string.Format(Util.FILE_Created, entry.FullName));
+                            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.FILE_Created, entry.FullName));
                         }
 
                         // Close files Element
@@ -175,23 +178,22 @@ namespace DotNetNuke.Services.Installer.Installers
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void RollbackFile(InstallFile insFile)
         {
-            using (var unzip = new ZipArchive(new FileStream(insFile.InstallerInfo.TempInstallFolder + insFile.FullName, FileMode.Open)))
+            using var unzip = new ZipArchive(new FileStream(insFile.InstallerInfo.TempInstallFolder + insFile.FullName, FileMode.Open));
+            foreach (var entry in unzip.FileEntries())
             {
-                foreach (var entry in unzip.FileEntries())
+                // Check for Backups
+                if (File.Exists(insFile.BackupPath + entry.FullName))
                 {
-                    // Check for Backups
-                    if (File.Exists(insFile.BackupPath + entry.FullName))
-                    {
-                        // Restore File
-                        Util.RestoreFile(new InstallFile(entry, this.Package.InstallerInfo), this.PhysicalBasePath, this.Log);
-                    }
-                    else
-                    {
-                        // Delete File
-                        Util.DeleteFile(entry.FullName, this.PhysicalBasePath, this.Log);
-                    }
+                    // Restore File
+                    Util.RestoreFile(new InstallFile(entry, this.Package.InstallerInfo), this.PhysicalBasePath, this.Log);
+                }
+                else
+                {
+                    // Delete File
+                    Util.DeleteFile(entry.FullName, this.PhysicalBasePath, this.Log);
                 }
             }
         }

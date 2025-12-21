@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -89,14 +90,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             else
             {
-                this.flag.ImageUrl = string.Format("~/images/Flags/{0}.gif", this.Language);
+                this.flag.ImageUrl = $"~/images/Flags/{this.Language}.gif";
             }
 
             if (this.DisplayType == 0)
             {
                 PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 string viewTypePersonalizationKey = "ViewType" + portalSettings.PortalId;
-                string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
+                string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey), CultureInfo.InvariantCulture);
                 switch (viewType)
                 {
                     case "NATIVE":

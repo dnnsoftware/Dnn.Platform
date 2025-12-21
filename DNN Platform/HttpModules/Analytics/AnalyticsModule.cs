@@ -47,6 +47,7 @@ namespace DotNetNuke.HttpModules.Analytics
         public string ModuleName => "AnalyticsModule";
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication application)
         {
             application.PreRequestHandlerExecute += this.OnPreRequestHandlerExecute;

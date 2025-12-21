@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI.WebControls;
 
     public class DnnCheckBox : CheckBox
@@ -12,7 +13,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return Convert.ToString(this.ViewState["CommandArgument"]);
+                return Convert.ToString(this.ViewState["CommandArgument"], CultureInfo.InvariantCulture);
             }
 
             set

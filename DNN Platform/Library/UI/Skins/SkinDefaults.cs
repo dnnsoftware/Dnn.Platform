@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.Skins
 {
     using System;
+    using System.Globalization;
     using System.Xml;
 
     using DotNetNuke.Common.Utilities;
@@ -79,7 +80,7 @@ namespace DotNetNuke.UI.Skins
         {
             return
                 CBO.GetCachedObject<SkinDefaults>(
-                    new CacheItemArgs(string.Format(DataCache.SkinDefaultsCacheKey, defaultType), DataCache.SkinDefaultsCacheTimeOut, DataCache.SkinDefaultsCachePriority, defaultType),
+                    new CacheItemArgs(string.Format(CultureInfo.InvariantCulture, DataCache.SkinDefaultsCacheKey, defaultType), DataCache.SkinDefaultsCacheTimeOut, DataCache.SkinDefaultsCachePriority, defaultType),
                     GetSkinDefaultsCallback);
         }
 

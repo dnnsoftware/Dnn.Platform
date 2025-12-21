@@ -5,6 +5,7 @@ namespace DotNetNuke.Instrumentation
 {
     using System;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Web.Compilation;
@@ -62,7 +63,7 @@ namespace DotNetNuke.Instrumentation
 
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelTrace))
             {
-                Logger.TraceFormat("Entering Method [{0}]", CallingFrame.GetMethod().Name);
+                Logger.TraceFormat(CultureInfo.InvariantCulture, "Entering Method [{0}]", CallingFrame.GetMethod().Name);
             }
         }
 
@@ -79,7 +80,7 @@ namespace DotNetNuke.Instrumentation
                     returnObject = "NULL";
                 }
 
-                Logger.TraceFormat("Method [{0}] Returned [{1}]", CallingFrame.GetMethod().Name, returnObject);
+                Logger.TraceFormat(CultureInfo.InvariantCulture, "Method [{0}] Returned [{1}]", CallingFrame.GetMethod().Name, returnObject);
             }
         }
 
@@ -90,7 +91,7 @@ namespace DotNetNuke.Instrumentation
 
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelTrace))
             {
-                Logger.TraceFormat("Method [{0}] Returned", CallingFrame.GetMethod().Name);
+                Logger.TraceFormat(CultureInfo.InvariantCulture, "Method [{0}] Returned", CallingFrame.GetMethod().Name);
             }
         }
 
@@ -110,14 +111,7 @@ namespace DotNetNuke.Instrumentation
         /// <param name="format">A <see href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">composite format string</see>.</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
         public static void Trace(string format, params object[] args)
-        {
-            EnsureConfig();
-
-            if (Logger.Logger.IsEnabledFor(DnnLogger.LevelTrace))
-            {
-                Logger.TraceFormat(format, args);
-            }
-        }
+            => Trace(CultureInfo.InvariantCulture, format, args);
 
         /// <summary>Log a message at the Trace log level.</summary>
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>
@@ -160,7 +154,7 @@ namespace DotNetNuke.Instrumentation
                 }
                 else
                 {
-                    Logger.DebugFormat(format, args);
+                    Logger.DebugFormat(CultureInfo.InvariantCulture, format, args);
                 }
             }
         }
@@ -217,7 +211,7 @@ namespace DotNetNuke.Instrumentation
                 }
                 else
                 {
-                    Logger.InfoFormat(format, args);
+                    Logger.InfoFormat(CultureInfo.InvariantCulture, format, args);
                 }
             }
         }
@@ -272,7 +266,7 @@ namespace DotNetNuke.Instrumentation
                 }
                 else
                 {
-                    Logger.WarnFormat(format, args);
+                    Logger.WarnFormat(CultureInfo.InvariantCulture, format, args);
                 }
             }
         }
@@ -335,11 +329,11 @@ namespace DotNetNuke.Instrumentation
             {
                 if (args.Length == 0)
                 {
-                    Logger.ErrorFormat(format);
+                    Logger.Error(format);
                 }
                 else
                 {
-                    Logger.ErrorFormat(format, args);
+                    Logger.ErrorFormat(CultureInfo.InvariantCulture, format, args);
                 }
             }
         }
@@ -394,7 +388,7 @@ namespace DotNetNuke.Instrumentation
                 }
                 else
                 {
-                    Logger.FatalFormat(format, args);
+                    Logger.FatalFormat(CultureInfo.InvariantCulture, format, args);
                 }
             }
         }

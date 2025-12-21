@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -14,7 +15,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
     using DotNetNuke.Services.Localization;
 
     [ConsoleCommand("exit", Constants.GeneralCategory, "Prompt_Exit_Description")]
-
+    [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
     public class Exit : IConsoleCommand
     {
         /// <inheritdoc/>

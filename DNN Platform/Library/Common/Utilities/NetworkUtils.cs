@@ -4,6 +4,7 @@
 namespace DotNetNuke.Common.Utils
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
@@ -100,7 +101,7 @@ namespace DotNetNuke.Common.Utils
             {
                 ipByte[x] = Convert.ToByte((ip & mask8) >> ((3 - x) * 8));
                 mask8 = mask8 >> 8;
-                addr += ipByte[x].ToString() + ".";
+                addr += ipByte[x].ToString(CultureInfo.InvariantCulture) + ".";
 
                 // add current octet to string
             }
@@ -143,14 +144,14 @@ namespace DotNetNuke.Common.Utils
                 oneBit = oneBit >> 1;
             }
 
-            string answer = LongToIp(ipL & maskL) + " /" + cidr.ToString();
+            string answer = $"{LongToIp(ipL & maskL)} /{cidr.ToString(CultureInfo.InvariantCulture)}";
             return answer;
         }
 
-        /// <summary>Network2s the ip range.</summary>
+        /// <summary>Converts a network to its IP range.</summary>
         /// <param name="sNetwork">The network name.</param>
-        /// <param name="startIP">The start ip.</param>
-        /// <param name="endIP">The end ip.</param>
+        /// <param name="startIP">The start IP.</param>
+        /// <param name="endIP">The end IP.</param>
         public static void Network2IpRange(string sNetwork, out uint startIP, out uint endIP)
         {
             try
@@ -158,7 +159,7 @@ namespace DotNetNuke.Common.Utils
                 string[] elements = sNetwork.Split('/');
 
                 uint ip = IP2Int(elements[0]);
-                int bits = Convert.ToInt32(elements[1]);
+                int bits = Convert.ToInt32(elements[1], CultureInfo.InvariantCulture);
 
                 uint mask = ~(0xffffffff >> bits);
 
@@ -194,10 +195,10 @@ namespace DotNetNuke.Common.Utils
             string[] elements = ipNumber.Split('.');
             if (elements.Length == 4)
             {
-                ip = Convert.ToUInt32(elements[0]) << 24;
-                ip += Convert.ToUInt32(elements[1]) << 16;
-                ip += Convert.ToUInt32(elements[2]) << 8;
-                ip += Convert.ToUInt32(elements[3]);
+                ip = Convert.ToUInt32(elements[0], CultureInfo.InvariantCulture) << 24;
+                ip += Convert.ToUInt32(elements[1], CultureInfo.InvariantCulture) << 16;
+                ip += Convert.ToUInt32(elements[2], CultureInfo.InvariantCulture) << 8;
+                ip += Convert.ToUInt32(elements[3], CultureInfo.InvariantCulture);
             }
 
             return ip;

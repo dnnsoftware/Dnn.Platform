@@ -697,7 +697,7 @@ namespace DotNetNuke.Entities.Urls
                 if (this.useBaseFriendlyUrls == null)
                 {
                     this.useBaseFriendlyUrls = this.GetStringSetting(UseBaseFriendlyUrlsSetting, string.Empty);
-                    if (!string.IsNullOrEmpty(this.useBaseFriendlyUrls) && !this.useBaseFriendlyUrls.EndsWith(";"))
+                    if (!string.IsNullOrEmpty(this.useBaseFriendlyUrls) && !this.useBaseFriendlyUrls.EndsWith(";", StringComparison.Ordinal))
                     {
                         this.useBaseFriendlyUrls += ";";
                     }

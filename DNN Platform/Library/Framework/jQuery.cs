@@ -5,6 +5,7 @@ namespace DotNetNuke.Framework
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -99,7 +100,7 @@ namespace DotNetNuke.Framework
             JavaScript.RequestRegistration(CommonJs.jQuery);
 
             var seconds = ((cookieTimeout * 60) - 30) * 1000; // ping server 30 seconds before cookie is time out.
-            var scriptBlock = string.Format("(function($){{setInterval(function(){{$.get(location.href)}}, {1});}}(jQuery));", Globals.ApplicationPath, seconds);
+            var scriptBlock = string.Format(CultureInfo.InvariantCulture, "(function($){{setInterval(function(){{$.get(location.href)}}, {1});}}(jQuery));", Globals.ApplicationPath, seconds);
             ScriptManager.RegisterClientScriptBlock(page, page.GetType(), "PageKeepAlive", scriptBlock, true);
         }
 
@@ -111,7 +112,7 @@ namespace DotNetNuke.Framework
                 object setting = HttpContext.Current.Items[key];
                 if (setting != null)
                 {
-                    retValue = Convert.ToBoolean(setting);
+                    retValue = Convert.ToBoolean(setting, CultureInfo.InvariantCulture);
                 }
             }
             catch (Exception ex)

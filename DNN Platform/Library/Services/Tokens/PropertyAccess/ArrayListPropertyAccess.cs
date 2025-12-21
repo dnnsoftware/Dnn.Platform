@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Tokens
                 outputFormat = "g";
             }
 
-            int intIndex = int.Parse(propertyName);
+            int intIndex = int.Parse(propertyName, CultureInfo.InvariantCulture);
             if ((this.custom != null) && this.custom.Count > intIndex)
             {
                 valueObject = this.custom[intIndex].ToString();

@@ -4,6 +4,7 @@
 namespace Dnn.ExportImport.Components.Services
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
 
@@ -55,7 +56,7 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = exportJob.PortalId;
             try
             {
-                var templatesFile = string.Format(this.templatesFolder, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
+                var templatesFile = string.Format(CultureInfo.InvariantCulture, this.templatesFolder, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
                 if (this.CheckPoint.Stage == 0)
                 {
@@ -83,7 +84,7 @@ namespace Dnn.ExportImport.Components.Services
                         this.Repository.CreateItem(template, null);
                         totalTemplatesExported += 1;
                         var folderOffset = portal.HomeDirectoryMapPath.Length +
-                                           (portal.HomeDirectoryMapPath.EndsWith("\\") ? 0 : 1);
+                                           (portal.HomeDirectoryMapPath.EndsWith(@"\", StringComparison.Ordinal) ? 0 : 1);
 
                         var folder = FolderManager.Instance.GetFolder(template.FolderId);
                         CompressionUtil.AddFileToArchive(
@@ -110,9 +111,9 @@ namespace Dnn.ExportImport.Components.Services
             }
             finally
             {
-                this.CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
+                this.CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex, }) : null;
                 this.CheckPointStageCallback(this);
-                this.Result.AddSummary("Exported Templates", totalTemplatesExported.ToString());
+                this.Result.AddSummary("Exported Templates", totalTemplatesExported.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -131,7 +132,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             var portalId = importJob.PortalId;
-            var templatesFile = string.Format(this.templatesFolder, importJob.Directory.TrimEnd('\\').TrimEnd('/'));
+            var templatesFile = string.Format(CultureInfo.InvariantCulture, this.templatesFolder, importJob.Directory.TrimEnd('\\').TrimEnd('/'));
             var totalTemplates = this.GetImportTotal();
 
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalTemplates : this.CheckPoint.TotalItems;
@@ -160,7 +161,7 @@ namespace Dnn.ExportImport.Components.Services
                         portal.HomeDirectoryMapPath,
                         importDto.CollisionResolution == CollisionResolution.Overwrite);
 
-                    this.Result.AddSummary("Imported templates", totalTemplates.ToString());
+                    this.Result.AddSummary("Imported templates", totalTemplates.ToString(CultureInfo.InvariantCulture));
                     this.CheckPoint.Stage++;
                     this.CheckPoint.StageData = null;
                     this.CheckPoint.Progress = 90;

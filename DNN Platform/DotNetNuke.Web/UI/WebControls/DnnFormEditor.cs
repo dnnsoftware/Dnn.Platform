@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.WebControls;
@@ -149,7 +150,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual void CreateControlHierarchy(bool useDataSource)
         {
-            this.CssClass = string.IsNullOrEmpty(this.CssClass) ? "dnnForm" : this.CssClass.Contains("dnnForm") ? this.CssClass : string.Format("dnnForm {0}", this.CssClass);
+            this.CssClass = string.IsNullOrEmpty(this.CssClass)
+                ? "dnnForm"
+                : this.CssClass.Contains("dnnForm")
+                    ? this.CssClass
+                    : $"dnnForm {this.CssClass}";
 
             this.SetUpTabs();
 
@@ -161,6 +166,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void LoadControlState(object state)
         {
             if (state != null)

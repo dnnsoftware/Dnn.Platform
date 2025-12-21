@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Net;
 
     using Dnn.PersonaBar.Library.Prompt;
@@ -72,7 +73,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                     this.Status = RoleStatus.Disabled;
                     break;
                 default:
-                    this.AddMessage(string.Format(this.LocalizeString("Prompt_InvalidRoleStatus"), FlagStatus));
+                    this.AddMessage(string.Format(CultureInfo.InvariantCulture, this.LocalizeString("Prompt_InvalidRoleStatus"), FlagStatus));
                     break;
             }
         }

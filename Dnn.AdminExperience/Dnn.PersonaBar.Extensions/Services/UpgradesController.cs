@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Extensions.Services
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -98,7 +99,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
 
             var upgrade = upgrades.FirstOrDefault(u => u.PackageName.Equals(data.PackageName, StringComparison.OrdinalIgnoreCase));
-            if (upgrade == null || !upgrade.CanInstall)
+            if (upgrade is not { CanInstall: true, })
             {
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = LocalizeString($"Upgrade_NoValidUpgrade", data.PackageName), });
             }
@@ -218,7 +219,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         private static string LocalizeString(string key, params object[] args)
         {
-            return string.Format(Localization.GetString(key, ResourceFile), args);
+            return string.Format(CultureInfo.CurrentCulture, Localization.GetString(key, ResourceFile), args);
         }
 
         private async Task<HttpResponseMessage> UploadFileAction(CancellationToken cancellationToken)

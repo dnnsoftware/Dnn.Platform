@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common.Utilities;
@@ -34,8 +35,8 @@ namespace DotNetNuke.UI.WebControls
                 bool boolValue = Null.NullBoolean;
                 try
                 {
-                    // Try and cast the value to an Boolean
-                    boolValue = Convert.ToBoolean(this.Value);
+                    // Try and cast the value to a Boolean
+                    boolValue = Convert.ToBoolean(this.Value, CultureInfo.InvariantCulture);
                 }
                 catch (Exception exc)
                 {
@@ -56,7 +57,7 @@ namespace DotNetNuke.UI.WebControls
                 try
                 {
                     // Try and cast the value to an Boolean
-                    boolValue = Convert.ToBoolean(this.OldValue);
+                    boolValue = Convert.ToBoolean(this.OldValue, CultureInfo.InvariantCulture);
                 }
                 catch (Exception exc)
                 {

@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.PersonaBar.Extensions.Components.Dto;
@@ -149,7 +150,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                         desktopModule.IsPremium = Convert.ToBoolean(settingValue);
                         break;
                     case "shareable":
-                        desktopModule.Shareable = (ModuleSharing)Convert.ToInt32(settingValue);
+                        desktopModule.Shareable = (ModuleSharing)Convert.ToInt32(settingValue, CultureInfo.InvariantCulture);
                         break;
                     case "assignportal":
                         AssignPortals(desktopModule, JsonConvert.DeserializeObject<IList<ListItemDto>>(settingValue));
@@ -162,14 +163,14 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                         SaveModuleDefinition(definition);
                         break;
                     case "deletedefinition":
-                        DeleteModuleDefinition(Convert.ToInt32(settingValue));
+                        DeleteModuleDefinition(Convert.ToInt32(settingValue, CultureInfo.InvariantCulture));
                         break;
                     case "savemodulecontrol":
                         var moduleControl = JsonConvert.DeserializeObject<ModuleControlDto>(settingValue);
                         SaveModuleControl(moduleControl);
                         break;
                     case "deletemodulecontrol":
-                        DeleteModuleControl(Convert.ToInt32(settingValue));
+                        DeleteModuleControl(Convert.ToInt32(settingValue, CultureInfo.InvariantCulture));
                         break;
                     case "friendlyname":
                         desktopModule.FriendlyName = settingValue;
@@ -306,7 +307,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 }
             }
 
-            DataCache.RemoveCache(string.Format(DataCache.PortalDesktopModuleCacheKey, portalSettings.PortalId));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.PortalDesktopModuleCacheKey, portalSettings.PortalId));
         }
     }
 }

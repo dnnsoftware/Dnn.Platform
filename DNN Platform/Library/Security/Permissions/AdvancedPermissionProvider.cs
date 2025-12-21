@@ -6,6 +6,7 @@ namespace DotNetNuke.Security.Permissions
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Security.Permissions;
@@ -123,6 +124,7 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override FolderPermissionCollection GetFolderPermissionsCollectionByFolder(int portalId, string folder)
         {
             var basePermissions = base.GetFolderPermissionsCollectionByFolder(portalId, folder);
@@ -172,6 +174,7 @@ namespace DotNetNuke.Security.Permissions
             || base.CanViewModule(module);
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override ModulePermissionCollection GetModulePermissions(int moduleId, int tabId)
         {
             var module = this.moduleController.GetModule(moduleId, tabId, false);

@@ -4,6 +4,9 @@
 
 namespace DotNetNuke.Entities.Portals
 {
+    using System.Diagnostics.CodeAnalysis;
+
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class UserCopiedEventArgs
     {
         public bool Cancel { get; set; }

@@ -161,7 +161,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 }
                 else
                 {
-                    result.Append('%' + string.Format("{0:X2}", (int)symbol));
+                    result.Append('%' + string.Format(CultureInfo.InvariantCulture, "{0:X2}", (int)symbol));
                 }
             }
 
@@ -426,7 +426,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private static List<QueryParameter> GetQueryParameters(string parameters)
         {
-            if (parameters.StartsWith("?"))
+            if (parameters.StartsWith("?", StringComparison.Ordinal))
             {
                 parameters = parameters.Remove(0, 1);
             }
@@ -438,7 +438,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 string[] p = parameters.Split('&');
                 foreach (string s in p)
                 {
-                    if (!string.IsNullOrEmpty(s) && !s.StartsWith(OAuthParameterPrefix))
+                    if (!string.IsNullOrEmpty(s) && !s.StartsWith(OAuthParameterPrefix, StringComparison.OrdinalIgnoreCase))
                     {
                         if (s.IndexOf('=') > -1)
                         {
@@ -698,15 +698,11 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
             catch (WebException ex)
             {
-                using (Stream responseStream = ex.Response.GetResponseStream())
+                using var responseStream = ex.Response.GetResponseStream();
+                if (responseStream != null)
                 {
-                    if (responseStream != null)
-                    {
-                        using (var responseReader = new StreamReader(responseStream))
-                        {
-                            Logger.ErrorFormat("WebResponse exception: {0}", responseReader.ReadToEnd());
-                        }
-                    }
+                    using var responseReader = new StreamReader(responseStream);
+                    Logger.ErrorFormat(CultureInfo.InvariantCulture, "WebResponse exception: {0}", responseReader.ReadToEnd());
                 }
             }
 
@@ -759,9 +755,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
             string normalizedRequestParameters = requestParameters.ToNormalizedString();
 
             var signatureBase = new StringBuilder();
-            signatureBase.AppendFormat("{0}&", httpMethod.ToUpperInvariant());
-            signatureBase.AppendFormat("{0}&", UrlEncode(normalizedUrl));
-            signatureBase.AppendFormat("{0}", UrlEncode(normalizedRequestParameters));
+            signatureBase.AppendFormat(CultureInfo.InvariantCulture, "{0}&", httpMethod.ToUpperInvariant());
+            signatureBase.AppendFormat(CultureInfo.InvariantCulture, "{0}&", UrlEncode(normalizedUrl));
+            signatureBase.AppendFormat(CultureInfo.InvariantCulture, "{0}", UrlEncode(normalizedRequestParameters));
 
             return signatureBase.ToString();
         }

@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.ClientDependency
         {
             try
             {
-                string[] filePaths = Directory.GetFiles(string.Format("{0}/App_Data/ClientDependency", Common.Globals.ApplicationMapPath));
+                string[] filePaths = Directory.GetFiles($"{Common.Globals.ApplicationMapPath}/App_Data/ClientDependency");
                 foreach (string filePath in filePaths)
                 {
                     File.Delete(filePath);
@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.ClientDependency
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging client dependency files task failed: {0}.", exc.ToString()));
+                this.ScheduleHistoryItem.AddLogNote($"Purging client dependency files task failed: {exc.ToString()}.");
 
                 // notification that we have errored
                 this.Errored(ref exc); // REQUIRED

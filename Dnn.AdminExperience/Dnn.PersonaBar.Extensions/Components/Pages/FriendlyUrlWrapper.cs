@@ -4,6 +4,8 @@
 
 namespace Dnn.PersonaBar.Pages.Components
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Urls;
 
@@ -16,6 +18,7 @@ namespace Dnn.PersonaBar.Pages.Components
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void ValidateUrl(string urlPath, int tabld, PortalSettings portalSettings, out bool modified)
         {
             FriendlyUrlController.ValidateUrl(urlPath, tabld, portalSettings, out modified);

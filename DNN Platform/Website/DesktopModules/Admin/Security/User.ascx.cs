@@ -5,6 +5,7 @@ namespace DotNetNuke.Modules.Admin.Users
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI;
 
@@ -221,7 +222,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 ArrayList portals = PortalController.GetPortalsByUser(this.dataProvider, this.User.UserID);
                 if (portals.Count > 1)
                 {
-                    this.numSites.Text = string.Format(Localization.GetString("UpdateUserName", this.LocalResourceFile), portals.Count.ToString());
+                    this.numSites.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UpdateUserName", this.LocalResourceFile), portals.Count.ToString());
                     this.cboSites.Visible = true;
                     this.cboSites.DataSource = portals;
                     this.cboSites.DataTextField = "PortalName";
@@ -569,7 +570,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                         UserController.UpdateUser(this.UserPortalID, this.User);
 
-                        if (this.PortalSettings.Registration.UseEmailAsUserName && (this.User.Username.ToLower() != this.User.Email.ToLower()))
+                        if (this.PortalSettings.Registration.UseEmailAsUserName && (!string.Equals(this.User.Username, this.User.Email, StringComparison.OrdinalIgnoreCase)))
                         {
                             UserController.ChangeUsername(this.User.UserID, this.User.Email);
                         }

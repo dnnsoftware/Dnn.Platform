@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.UI.WebControls;
@@ -94,7 +95,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <inheritdoc/>
         protected override void RenderViewMode(System.Web.UI.HtmlTextWriter writer)
         {
-            string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value));
+            string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value, CultureInfo.InvariantCulture));
             this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
             writer.Write(propValue);

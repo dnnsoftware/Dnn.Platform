@@ -7,6 +7,8 @@ namespace DotNetNuke.Services.GeneratedImage
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Profile;
@@ -14,11 +16,13 @@ namespace DotNetNuke.Services.GeneratedImage
     /// <summary>this class handles profile changes.</summary>
     [Export(typeof(IProfileEventHandlers))]
     [ExportMetadata("MessageType", "ProfileEventHandler")]
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class ProfileEventHandler : IProfileEventHandlers
     {
         /// <summary>This method add the updated user id into cache to clear image from disk before returning to UI.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="profileArgs">The event arguments.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void ProfileUpdated(object sender, ProfileEventArgs profileArgs)
         {
             if (profileArgs?.User == null || profileArgs.OldProfile == null)
@@ -34,7 +38,7 @@ namespace DotNetNuke.Services.GeneratedImage
             var oldPhotoVisibilityMode = oldProfile.GetProperty(Entities.Users.UserProfile.USERPROFILE_Photo)?.ProfileVisibility.VisibilityMode;
             if (newProfile.Photo != oldProfile.Photo || newPhotoVisibilityMode != oldPhotoVisibilityMode)
             {
-                var cacheKey = string.Format(DataCache.UserIdListToClearDiskImageCacheKey, user.PortalID);
+                var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.UserIdListToClearDiskImageCacheKey, user.PortalID);
                 Dictionary<int, DateTime> userIds;
                 if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null)
                 {
@@ -42,10 +46,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 }
 
                 // Add the userid to the clear cache list, if not already in the list.
-                if (userIds.ContainsKey(user.UserID))
-                {
-                    userIds.Remove(user.UserID);
-                }
+                userIds.Remove(user.UserID);
 
                 userIds.Add(user.UserID, DateTime.UtcNow);
                 DataCache.SetCache(cacheKey, userIds);

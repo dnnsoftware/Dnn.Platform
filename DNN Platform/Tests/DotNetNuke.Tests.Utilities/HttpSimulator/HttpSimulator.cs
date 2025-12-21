@@ -389,7 +389,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         private static string ExtractQueryStringPart(Uri url)
         {
             var query = url.Query;
-            return query.StartsWith("?") ? query.Substring(1) : query;
+            return query.StartsWith("?", StringComparison.Ordinal) ? query.Substring(1) : query;
         }
 
         private void InitializeSession()

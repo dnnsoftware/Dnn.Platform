@@ -4,6 +4,7 @@
 namespace Dnn.ExportImport.Components.Services
 {
     using System;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.ExportImport.Components.Common;
@@ -65,7 +66,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             this.Repository.CreateItems(profileProperties);
-            this.Result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString());
+            this.Result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString(CultureInfo.InvariantCulture));
             this.CheckPoint.Progress = 100;
             this.CheckPoint.ProcessedItems = profileProperties.Count;
             this.CheckPoint.Completed = true;
@@ -122,7 +123,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
             }
 
-            this.Result.AddSummary("Imported Profile Properties", profileProperties.Count.ToString());
+            this.Result.AddSummary("Imported Profile Properties", profileProperties.Count.ToString(CultureInfo.InvariantCulture));
             this.CheckPoint.ProcessedItems = profileProperties.Count;
             this.CheckPoint.Completed = true;
             this.CheckPoint.Progress = 100;

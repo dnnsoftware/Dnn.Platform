@@ -4,6 +4,7 @@
 
 namespace DNNConnect.CKEditorProvider
 {
+    using System;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -76,7 +77,7 @@ namespace DNNConnect.CKEditorProvider
                 }
             }
 
-            if (pagesArray.ToString().EndsWith(","))
+            if (pagesArray.ToString().EndsWith(",", StringComparison.Ordinal))
             {
                 pagesArray.Remove(pagesArray.Length - 1, 1);
             }

@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Search.Internals
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -377,14 +378,15 @@ namespace DotNetNuke.Services.Search.Internals
                         {
                             analyzer = Reflection.CreateInstance(analyzerType) as Analyzer;
                         }
-                        else if (analyzerType?.GetConstructor(new Type[] { typeof(Lucene.Net.Util.Version) }) != null)
+                        else if (analyzerType?.GetConstructor([typeof(Lucene.Net.Util.Version),]) != null)
                         {
-                            analyzer = Reflection.CreateInstance(analyzerType, new object[] { Constants.LuceneVersion }) as Analyzer;
+                            analyzer = Reflection.CreateInstance(analyzerType, [Constants.LuceneVersion,]) as Analyzer;
                         }
 
                         if (analyzer == null)
                         {
                             throw new ArgumentException(string.Format(
+                                CultureInfo.CurrentCulture,
                                 Localization.GetExceptionMessage("InvalidAnalyzerClass", "The class '{0}' cannot be created because it's invalid or is not an analyzer, will use default analyzer."),
                                 customAnalyzerType));
                         }

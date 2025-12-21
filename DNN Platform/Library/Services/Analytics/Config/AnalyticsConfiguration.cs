@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Analytics.Config
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.IO;
     using System.Xml.Serialization;
     using System.Xml.XPath;
@@ -64,7 +65,7 @@ namespace DotNetNuke.Services.Analytics.Config
                 config = (AnalyticsConfiguration)DataCache.GetCache(cacheKey);
                 if (config == null)
                 {
-                    filePath = PortalSettings.Current.HomeDirectoryMapPath + "\\" + analyticsEngineName + ".config";
+                    filePath = PortalSettings.Current.HomeDirectoryMapPath + @"\" + analyticsEngineName + ".config";
 
                     if (!File.Exists(filePath))
                     {
@@ -91,8 +92,8 @@ namespace DotNetNuke.Services.Analytics.Config
                     foreach (XPathNavigator nav in doc.CreateNavigator().Select("AnalyticsConfig/Rules/AnalyticsRule"))
                     {
                         var rule = new AnalyticsRule();
-                        rule.RoleId = Convert.ToInt32(nav.SelectSingleNode("RoleId").Value);
-                        rule.TabId = Convert.ToInt32(nav.SelectSingleNode("TabId").Value);
+                        rule.RoleId = Convert.ToInt32(nav.SelectSingleNode("RoleId").Value, CultureInfo.InvariantCulture);
+                        rule.TabId = Convert.ToInt32(nav.SelectSingleNode("TabId").Value, CultureInfo.InvariantCulture);
                         rule.Label = nav.SelectSingleNode("Label").Value;
                         var valueNode = nav.SelectSingleNode("Value");
                         if (valueNode != null)
@@ -142,7 +143,7 @@ namespace DotNetNuke.Services.Analytics.Config
                 string filePath = string.Empty;
 
                 // Create a FileStream for the Config file
-                filePath = PortalSettings.Current.HomeDirectoryMapPath + "\\" + analyticsEngineName + ".config";
+                filePath = PortalSettings.Current.HomeDirectoryMapPath + @"\" + analyticsEngineName + ".config";
                 if (File.Exists(filePath))
                 {
                     File.SetAttributes(filePath, FileAttributes.Normal);

@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
+    using System;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -32,12 +33,12 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             if (this.ObjectName.Contains("."))
             {
                 // generate function check
-                writer.Write("if (typeof " + this.ObjectName + " != 'function') {");
+                writer.Write($"if (typeof {this.ObjectName} != 'function') {{");
             }
             else
             {
                 // generate object check
-                writer.Write("if (typeof " + this.ObjectName + " == 'undefined') {");
+                writer.Write($"if (typeof {this.ObjectName} == 'undefined') {{");
             }
 
             writer.Write("document.write('<script src=\"" + this.FileName + "\" type=\"text/javascript\"></' + 'script>');");

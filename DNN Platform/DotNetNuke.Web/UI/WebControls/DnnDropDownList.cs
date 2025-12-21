@@ -390,7 +390,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             var methodsAsJsonString = methods.ToJsonString();
 
-            var script = string.Format("dnn.createDropDownList('#{0}', {1}, {2});{3}", this.ClientID, optionsAsJsonString, methodsAsJsonString, Environment.NewLine);
+            var script = $"dnn.createDropDownList('#{this.ClientID}', {optionsAsJsonString}, {methodsAsJsonString});{Environment.NewLine}";
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {

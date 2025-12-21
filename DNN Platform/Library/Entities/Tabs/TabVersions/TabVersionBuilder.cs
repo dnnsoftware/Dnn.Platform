@@ -6,6 +6,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Modules;
@@ -85,12 +87,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var tabVersion = this.GetUnPublishedVersion(tabId);
             if (tabVersion == null)
             {
-                throw new InvalidOperationException(string.Format(Localization.GetString("TabHasNotAnUnpublishedVersion", Localization.ExceptionsResourceFile), tabId));
+                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, Localization.GetString("TabHasNotAnUnpublishedVersion", Localization.ExceptionsResourceFile), tabId));
             }
 
             if (tabVersion.IsPublished)
             {
-                throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionAlreadyPublished", Localization.ExceptionsResourceFile), tabId, tabVersion.Version));
+                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, Localization.GetString("TabVersionAlreadyPublished", Localization.ExceptionsResourceFile), tabId, tabVersion.Version));
             }
 
             var previousPublishVersion = this.GetCurrentVersion(tabId);
@@ -109,12 +111,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var tabVersion = this.GetUnPublishedVersion(tabId);
             if (tabVersion == null)
             {
-                throw new InvalidOperationException(string.Format(Localization.GetString("TabHasNotAnUnpublishedVersion", Localization.ExceptionsResourceFile), tabId));
+                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, Localization.GetString("TabHasNotAnUnpublishedVersion", Localization.ExceptionsResourceFile), tabId));
             }
 
             if (tabVersion.IsPublished)
             {
-                throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionAlreadyPublished", Localization.ExceptionsResourceFile), tabId, tabVersion.Version));
+                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, Localization.GetString("TabVersionAlreadyPublished", Localization.ExceptionsResourceFile), tabId, tabVersion.Version));
             }
 
             this.DiscardVersion(tabId, tabVersion);
@@ -129,19 +131,20 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public TabVersion RollBackVesion(int tabId, int createdByUserId, int version)
         {
             this.CheckVersioningEnabled(tabId);
 
             if (this.GetUnPublishedVersion(tabId) != null)
             {
-                throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionCannotBeRolledBack_UnpublishedVersionExists", Localization.ExceptionsResourceFile), tabId, version));
+                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, Localization.GetString("TabVersionCannotBeRolledBack_UnpublishedVersionExists", Localization.ExceptionsResourceFile), tabId, version));
             }
 
             var lastTabVersion = this.tabVersionController.GetTabVersions(tabId).OrderByDescending(tv => tv.Version).FirstOrDefault();
             if (lastTabVersion == null || lastTabVersion.Version == version)
             {
-                throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionCannotBeRolledBack_LastVersion", Localization.ExceptionsResourceFile), tabId, version));
+                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, Localization.GetString("TabVersionCannotBeRolledBack_LastVersion", Localization.ExceptionsResourceFile), tabId, version));
             }
 
             var publishedDetails = this.GetVersionModulesDetails(tabId, lastTabVersion.Version).ToArray();
@@ -161,7 +164,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 }
                 catch (DnnTabVersionException e)
                 {
-                    Logger.Error(string.Format("There was a problem making rollbak of the module {0}. Message: {1}.", rollbackDetail.ModuleId, e.Message));
+                    Logger.Error($"There was a problem making rollback of the module {rollbackDetail.ModuleId}. Message: {e.Message}.");
                     continue;
                 }
 
@@ -212,12 +215,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             catch (InvalidOperationException e)
             {
                 Services.Exceptions.Exceptions.LogException(e);
-                throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem", Localization.ExceptionsResourceFile), tabId), e);
+                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem", Localization.ExceptionsResourceFile), tabId), e);
             }
             catch (SqlException sqlException)
             {
                 Services.Exceptions.Exceptions.LogException(sqlException);
-                throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem", Localization.ExceptionsResourceFile), tabId));
+                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem", Localization.ExceptionsResourceFile), tabId));
             }
         }
 
@@ -250,7 +253,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// <inheritdoc/>
         public IEnumerable<ModuleInfo> GetCurrentModules(int tabId)
         {
-            var cacheKey = string.Format(DataCache.PublishedTabModuleCacheKey, tabId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PublishedTabModuleCacheKey, tabId);
             return CBO.GetCachedObject<IEnumerable<ModuleInfo>>(
                 new CacheItemArgs(
                 cacheKey,
@@ -260,6 +263,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IEnumerable<ModuleInfo> GetVersionModules(int tabId, int version)
         {
             return this.ConvertToModuleInfo(this.GetVersionModulesDetails(tabId, version), tabId);
@@ -463,9 +467,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 throw new InvalidOperationException(
                     string.Format(
-                        Localization.GetString(
-                            "TabVersionCannotBeDeleted_UnpublishedVersion",
-                            Localization.ExceptionsResourceFile),
+                        CultureInfo.InvariantCulture,
+                        Localization.GetString("TabVersionCannotBeDeleted_UnpublishedVersion", Localization.ExceptionsResourceFile),
                         tabId,
                         version));
             }
@@ -475,9 +478,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 throw new InvalidOperationException(
                     string.Format(
-                        Localization.GetString(
-                            "TabVersionCannotBeDiscarded_OnlyOneVersion",
-                            Localization.ExceptionsResourceFile),
+                        CultureInfo.InvariantCulture,
+                        Localization.GetString("TabVersionCannotBeDiscarded_OnlyOneVersion", Localization.ExceptionsResourceFile),
                         tabId,
                         version));
             }

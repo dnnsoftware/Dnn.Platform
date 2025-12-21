@@ -19,6 +19,7 @@ namespace Dnn.ExportImport.Components.Common
         // these are set by the API caller
 #pragma warning disable SA1310 // Field names should not contain underscore, bypassing this warning in case something unexpected consumes these.
 #pragma warning disable SA1600 // Elements should be documented, these names carry their meaning enough to not need documenting.
+#pragma warning disable CA1707 // Identifiers should not contain underscores
         public const string Category_Users = "USERS";
         public const string Category_Vocabularies = "VOCABULARIES";
         public const string Category_Roles = "ROLES";
@@ -63,5 +64,6 @@ namespace Dnn.ExportImport.Components.Common
         internal static readonly int MaxZipFilesMemory = 104857600; // 100 MB
 #pragma warning restore SA1310 // Field names should not contain underscore
 #pragma warning restore SA1600 // Elements should be documented
+#pragma warning restore CA1707
     }
 }

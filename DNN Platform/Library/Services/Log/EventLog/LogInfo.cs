@@ -4,6 +4,8 @@
 namespace DotNetNuke.Services.Log.EventLog
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Xml;
@@ -116,6 +118,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void AddProperty(string propertyName, string propertyValue)
         {
             try
@@ -192,7 +195,7 @@ namespace DotNetNuke.Services.Log.EventLog
                             this.LogPortalName = reader.ReadContentAsString();
                             break;
                         case "LogCreateDate":
-                            this.LogCreateDate = DateTime.Parse(reader.ReadContentAsString());
+                            this.LogCreateDate = DateTime.Parse(reader.ReadContentAsString(), CultureInfo.InvariantCulture);
                             break;
                         case "LogCreateDateNum":
                             this.LogCreateDateNum = reader.ReadContentAsLong();
@@ -270,13 +273,13 @@ namespace DotNetNuke.Services.Log.EventLog
             writer.WriteAttributeString("LogGUID", ((ILogInfo)this).LogGuid);
             writer.WriteAttributeString("LogFileID", ((ILogInfo)this).LogFileId);
             writer.WriteAttributeString("LogTypeKey", this.LogTypeKey);
-            writer.WriteAttributeString("LogUserID", ((ILogInfo)this).LogUserId.ToString());
-            writer.WriteAttributeString("LogEventID", ((ILogInfo)this).LogEventId.ToString());
+            writer.WriteAttributeString("LogUserID", ((ILogInfo)this).LogUserId.ToString(CultureInfo.InvariantCulture));
+            writer.WriteAttributeString("LogEventID", ((ILogInfo)this).LogEventId.ToString(CultureInfo.InvariantCulture));
             writer.WriteAttributeString("LogUserName", this.LogUserName);
-            writer.WriteAttributeString("LogPortalID", ((ILogInfo)this).LogPortalId.ToString());
+            writer.WriteAttributeString("LogPortalID", ((ILogInfo)this).LogPortalId.ToString(CultureInfo.InvariantCulture));
             writer.WriteAttributeString("LogPortalName", this.LogPortalName);
-            writer.WriteAttributeString("LogCreateDate", this.LogCreateDate.ToString());
-            writer.WriteAttributeString("LogCreateDateNum", this.LogCreateDateNum.ToString());
+            writer.WriteAttributeString("LogCreateDate", this.LogCreateDate.ToString(CultureInfo.InvariantCulture));
+            writer.WriteAttributeString("LogCreateDateNum", this.LogCreateDateNum.ToString(CultureInfo.InvariantCulture));
             writer.WriteAttributeString("BypassBuffering", this.BypassBuffering.ToString());
             writer.WriteAttributeString("LogServerName", this.LogServerName);
             writer.WriteAttributeString("LogConfigID", ((ILogInfo)this).LogConfigId);

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
     using System.Threading;
@@ -46,7 +47,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             // Clear the local cache
             this.ClearCacheInternal(type, data, true);
 
-            // Per API implementation standards only notify others if expiration has not been desabled
+            // Per API implementation standards only notify others if expiration has not been disabled
             if (CacheExpirationDisable)
             {
                 return;
@@ -57,6 +58,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void Remove(string key)
         {
             // Remove from local cache

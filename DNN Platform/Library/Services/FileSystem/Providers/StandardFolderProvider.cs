@@ -10,6 +10,7 @@ namespace DotNetNuke.Services.FileSystem
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
 
@@ -211,14 +212,14 @@ namespace DotNetNuke.Services.FileSystem
                     portalSettings.GUID.ToString());
             }
 
-            // Does site management want the cachebuster parameter?
+            // Does site management want the cache-buster parameter?
             if (portalSettings.AddCachebusterToResourceUris)
             {
-                var cachebusterToken = UrlUtils.EncryptParameter(
-                    file.LastModificationTime.GetHashCode().ToString(),
+                var cacheBusterToken = UrlUtils.EncryptParameter(
+                    file.LastModificationTime.GetHashCode().ToString(CultureInfo.InvariantCulture),
                     portalSettings.GUID.ToString());
 
-                return TestableGlobals.Instance.ResolveUrl(fullPath + "?ver=" + cachebusterToken);
+                return TestableGlobals.Instance.ResolveUrl(fullPath + "?ver=" + cacheBusterToken);
             }
 
             return TestableGlobals.Instance.ResolveUrl(fullPath);

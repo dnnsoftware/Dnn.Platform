@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Host
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
 
     using DotNetNuke.Entities.Controllers;
@@ -18,6 +19,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             if (propertyName.Equals("hosttitle", System.StringComparison.OrdinalIgnoreCase) || currentScope == Scope.Debug)

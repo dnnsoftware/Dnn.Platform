@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
+    using System;
+
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Services.Upgrade.Internals;
@@ -126,18 +128,18 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             string connection = Config.GetUpgradeConnectionString();
 
             // If connection string does not use integrated security, then get user id.
-            if (connection.ToLowerInvariant().Contains("user id") || connection.ToLowerInvariant().Contains("uid") || connection.ToLowerInvariant().Contains("user"))
+            if (connection.Contains("user id", StringComparison.OrdinalIgnoreCase) || connection.Contains("uid", StringComparison.OrdinalIgnoreCase) || connection.Contains("user", StringComparison.OrdinalIgnoreCase))
             {
                 string[] connectionParams = connection.Split(';');
 
                 foreach (string connectionParam in connectionParams)
                 {
-                    int index = connectionParam.IndexOf("=");
+                    int index = connectionParam.IndexOf("=", StringComparison.Ordinal);
                     if (index > 0)
                     {
                         string key = connectionParam.Substring(0, index);
                         string value = connectionParam.Substring(index + 1);
-                        if ("user id|uuid|user".Contains(key.Trim().ToLowerInvariant()))
+                        if ("user id|uuid|user".Contains(key.Trim(), StringComparison.OrdinalIgnoreCase))
                         {
                             dbUser = value.Trim();
                         }

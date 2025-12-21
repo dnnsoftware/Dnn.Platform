@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
+    using System.Globalization;
     using System.IO;
 
     using DotNetNuke.Instrumentation;
@@ -35,7 +36,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             {
                 var file = package.Key;
                 var packageType = package.Value.PackageType;
-                var message = string.Format(Localization.GetString("InstallingExtension", this.LocalInstallResourceFile), packageType, Path.GetFileName(file));
+                var message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("InstallingExtension", this.LocalInstallResourceFile), packageType, Path.GetFileName(file));
                 this.Details = message;
                 Logger.Trace(this.Details);
                 var success = Upgrade.InstallPackage(file, packageType, false);

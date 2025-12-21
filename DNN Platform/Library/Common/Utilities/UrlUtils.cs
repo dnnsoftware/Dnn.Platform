@@ -315,7 +315,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             // Removes the javascript txt for onClick scripts
-            if (onClickEvent && popUpUrl.StartsWith("javascript:"))
+            if (onClickEvent && popUpUrl.StartsWith("javascript:", StringComparison.OrdinalIgnoreCase))
             {
                 popUpUrl = popUpUrl.Replace("javascript:", string.Empty);
             }

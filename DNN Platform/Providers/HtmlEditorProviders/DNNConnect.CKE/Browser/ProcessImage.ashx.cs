@@ -255,7 +255,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
         private static string CleanName(string name)
         {
-            name = name.Replace("\\", "/");
+            name = name.Replace(@"\", "/");
             if (name.Contains("/"))
             {
                 name = name.Substring(name.LastIndexOf('/') + 1);

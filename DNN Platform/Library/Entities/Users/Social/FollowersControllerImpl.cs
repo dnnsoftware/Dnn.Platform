@@ -62,10 +62,12 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         {
             var notificationType = NotificationsController.Instance.GetNotificationType(IsFollowing(targetUser, initiatingUser) ? FollowerRequest : FollowBackRequest);
             var subject = string.Format(
+                CultureInfo.CurrentCulture,
                 Localization.GetString("AddFollowerRequestSubject", Localization.GlobalResourceFile),
                 initiatingUser.DisplayName);
 
             var body = string.Format(
+                CultureInfo.CurrentCulture,
                 Localization.GetString("AddFollowerRequestBody", Localization.GlobalResourceFile),
                 initiatingUser.DisplayName);
 
@@ -79,14 +81,14 @@ namespace DotNetNuke.Entities.Users.Social.Internal
                 SenderUserID = initiatingUser.UserID,
             };
 
-            NotificationsController.Instance.SendNotification(notification, initiatingUser.PortalID, null, new List<UserInfo> { targetUser });
+            NotificationsController.Instance.SendNotification(notification, initiatingUser.PortalID, null, [targetUser,]);
         }
 
         private static bool IsFollowing(UserInfo user1, UserInfo user2)
         {
             var userRelationship = RelationshipController.Instance.GetFollowerRelationship(user1, user2);
 
-            return userRelationship != null && userRelationship.Status == RelationshipStatus.Accepted;
+            return userRelationship is { Status: RelationshipStatus.Accepted, };
         }
     }
 }

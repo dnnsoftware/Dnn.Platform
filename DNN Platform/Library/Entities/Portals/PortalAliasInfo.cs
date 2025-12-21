@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Portals
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml;
     using System.Xml.Schema;
     using System.Xml.Serialization;
@@ -193,12 +194,12 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public void WriteXml(XmlWriter writer)
         {
-            // Write start of main elemenst
+            // Write start of main elements
             writer.WriteStartElement("portalAlias");
 
             // write out properties
-            writer.WriteElementString("portalID", this.ThisAsInterface.PortalId.ToString());
-            writer.WriteElementString("portalAliasID", this.ThisAsInterface.PortalAliasId.ToString());
+            writer.WriteElementString("portalID", this.ThisAsInterface.PortalId.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("portalAliasID", this.ThisAsInterface.PortalAliasId.ToString(CultureInfo.InvariantCulture));
             writer.WriteElementString("HTTPAlias", this.ThisAsInterface.HttpAlias);
             writer.WriteElementString("skin", this.Skin);
             writer.WriteElementString("cultureCode", this.CultureCode);

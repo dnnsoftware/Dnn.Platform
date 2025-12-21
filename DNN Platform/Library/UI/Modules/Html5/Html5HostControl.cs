@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.Modules.Html5
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Web;
     using System.Web.UI;
@@ -92,15 +93,13 @@ namespace DotNetNuke.UI.Modules.Html5
 
         private static string GetFileContentInternal(string filepath)
         {
-            using (var reader = new StreamReader(filepath))
-            {
-                return reader.ReadToEnd();
-            }
+            using var reader = new StreamReader(filepath);
+            return reader.ReadToEnd();
         }
 
         private string GetFileContent(string filepath)
         {
-            var cacheKey = string.Format(DataCache.SpaModulesContentHtmlFileCacheKey, filepath);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.SpaModulesContentHtmlFileCacheKey, filepath);
             var absoluteFilePath = this.Page.Server.MapPath(filepath);
             var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.SpaModulesHtmlFileTimeOut, DataCache.SpaModulesHtmlFileCachePriority)
             {
@@ -111,7 +110,7 @@ namespace DotNetNuke.UI.Modules.Html5
 
         private bool FileExists(string filepath)
         {
-            var cacheKey = string.Format(DataCache.SpaModulesFileExistsCacheKey, filepath);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.SpaModulesFileExistsCacheKey, filepath);
             return CBO.GetCachedObject<bool>(
                 new CacheItemArgs(
                 cacheKey,

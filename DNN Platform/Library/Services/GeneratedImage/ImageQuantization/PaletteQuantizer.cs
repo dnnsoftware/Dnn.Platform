@@ -17,6 +17,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// <summary>List of all colors in the palette.</summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected Color[] _colors;
@@ -110,6 +111,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// <summary>Retrieve the palette for the quantized image.</summary>
         /// <param name="palette">Any old palette, this is overwritten.</param>
         /// <returns>The new color palette.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override ColorPalette GetPalette(ColorPalette palette)
         {
             for (int index = 0; index < this._colors.Length; index++)

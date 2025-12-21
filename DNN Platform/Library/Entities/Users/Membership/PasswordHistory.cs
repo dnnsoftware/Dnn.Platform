@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Users.Membership
 {
     using System;
     using System.Data;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
 
@@ -24,7 +25,7 @@ namespace DotNetNuke.Entities.Users.Membership
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            this.PasswordHistoryId = Convert.ToInt32(dr["PasswordHistoryID"]);
+            this.PasswordHistoryId = Convert.ToInt32(dr["PasswordHistoryID"], CultureInfo.InvariantCulture);
             this.UserId = Null.SetNullInteger(dr["UserID"]);
             this.Password = dr["Password"].ToString();
             this.PasswordSalt = dr["PasswordSalt"].ToString();

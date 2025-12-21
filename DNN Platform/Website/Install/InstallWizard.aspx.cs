@@ -116,31 +116,13 @@ namespace DotNetNuke.Services.Install
         }
 
         /// <summary>Gets the current application version.</summary>
-        protected Version ApplicationVersion
-        {
-            get
-            {
-                return DotNetNukeContext.Current.Application.Version;
-            }
-        }
+        protected Version ApplicationVersion => DotNetNukeContext.Current.Application.Version;
 
         /// <summary>Gets the database version.</summary>
-        protected Version DatabaseVersion
-        {
-            get
-            {
-                return this.dataBaseVersion ?? (this.dataBaseVersion = DataProvider.Instance().GetVersion());
-            }
-        }
+        protected Version DatabaseVersion => this.dataBaseVersion ??= DataProvider.Instance().GetVersion();
 
         /// <summary>Gets the base version from the install template.</summary>
-        protected Version BaseVersion
-        {
-            get
-            {
-                return Upgrade.GetInstallVersion(this.InstallTemplate);
-            }
-        }
+        protected Version BaseVersion => Upgrade.GetInstallVersion(this.InstallTemplate);
 
         /// <summary>Gets the install template.</summary>
         protected XmlDocument InstallTemplate
@@ -470,7 +452,7 @@ namespace DotNetNuke.Services.Install
         /// <returns>A string representing the result of the action.</returns>
         public string ProcessAction(string someAction)
         {
-            // First check that we are not being targetted by an AJAX HttpPost, so get the current DB version
+            // First check that we are not being targeted by an AJAX HttpPost, so get the current DB version
             string strProviderPath = this.dataProvider.GetProviderPath();
             string nextVersion = this.GetNextScriptVersion(strProviderPath, this.DatabaseVersion);
             if (someAction != nextVersion)
@@ -852,7 +834,7 @@ namespace DotNetNuke.Services.Install
 
         private static void GetInstallerLocales(IApplicationStatusInfo appStatus)
         {
-            var filePath = appStatus.ApplicationMapPath + LocalesFile.Replace("/", "\\");
+            var filePath = appStatus.ApplicationMapPath + LocalesFile.Replace("/", @"\");
 
             if (File.Exists(filePath))
             {
@@ -915,14 +897,14 @@ namespace DotNetNuke.Services.Install
             var details = Localization.GetString("IsAbleToPerformDatabaseActionsCheck", localResourceFile);
             if (!InstallController.Instance.IsAbleToPerformDatabaseActions(connectionString))
             {
-                connectionResult = "ERROR: " + string.Format(Localization.GetString("IsAbleToPerformDatabaseActions", localResourceFile), details);
+                connectionResult = "ERROR: " + string.Format(CultureInfo.CurrentCulture, Localization.GetString("IsAbleToPerformDatabaseActions", localResourceFile), details);
             }
 
             // database actions check-running sql 2008 or higher
             details = Localization.GetString("IsValidSqlServerVersionCheck", localResourceFile);
             if (!InstallController.Instance.IsValidSqlServerVersion(connectionString))
             {
-                connectionResult = "ERROR: " + string.Format(Localization.GetString("IsValidSqlServerVersion", localResourceFile), details);
+                connectionResult = "ERROR: " + string.Format(CultureInfo.CurrentCulture, Localization.GetString("IsValidSqlServerVersion", localResourceFile), details);
             }
 
             return connectionResult;

@@ -7,6 +7,7 @@ namespace DotNetNuke.Security.Permissions.Controls
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Web.UI;
@@ -138,7 +139,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     if (objPermission.PermissionKey == "VIEW")
                     {
-                        this.AddPermission(objPermission, int.Parse(Globals.glbRoleNothing), Null.NullString, user.UserID, user.DisplayName, true);
+                        this.AddPermission(objPermission, int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture), Null.NullString, user.UserID, user.DisplayName, true);
                     }
                 }
             }
@@ -211,14 +212,14 @@ namespace DotNetNuke.Security.Permissions.Controls
                 // Load TabId
                 if (myState[1] != null)
                 {
-                    this.TabID = Convert.ToInt32(myState[1]);
+                    this.TabID = Convert.ToInt32(myState[1], CultureInfo.InvariantCulture);
                 }
 
                 // Load TabPermissions
                 if (myState[2] != null)
                 {
                     this.tabPermissions = new TabPermissionCollection();
-                    string state = Convert.ToString(myState[2]);
+                    string state = Convert.ToString(myState[2], CultureInfo.InvariantCulture);
                     if (!string.IsNullOrEmpty(state))
                     {
                         // First Break the String into individual Keys
@@ -296,10 +297,10 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             var item = e.Item;
 
-            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            if (item.ItemType is ListItemType.Item or ListItemType.AlternatingItem or ListItemType.SelectedItem)
             {
-                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
-                if (IsImplicitRole(PortalSettings.Current.PortalId, roleID))
+                var roleId = int.Parse(((DataRowView)item.DataItem)[0].ToString(), CultureInfo.InvariantCulture);
+                if (IsImplicitRole(PortalSettings.Current.PortalId, roleId))
                 {
                     if (item.Controls.Cast<Control>().Last().Controls[0] is ImageButton actionImage)
                     {
@@ -335,7 +336,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
             else
             {
-                objTabPermission.TabPermissionID = Convert.ToInt32(settings[2]);
+                objTabPermission.TabPermissionID = Convert.ToInt32(settings[2], CultureInfo.InvariantCulture);
             }
 
             objTabPermission.TabID = this.TabID;

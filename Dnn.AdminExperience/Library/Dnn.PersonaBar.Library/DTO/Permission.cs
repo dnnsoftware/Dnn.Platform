@@ -4,9 +4,11 @@
 
 namespace Dnn.PersonaBar.Library.Dto
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
     [DataContract]
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class Permission
     {
         [DataMember(Name = "permissionId")]

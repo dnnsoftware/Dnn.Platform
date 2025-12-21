@@ -133,7 +133,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var parentTab = TabController.Instance.GetTab(selectedPage.ParentId, this.PortalId, false);
                 while (parentTab != null)
                 {
-                    tabLevel = string.Format("{0},{1}", parentTab.TabID, tabLevel);
+                    tabLevel = string.Format(CultureInfo.InvariantCulture, "{0},{1}", parentTab.TabID, tabLevel);
                     parentTab = TabController.Instance.GetTab(parentTab.ParentId, this.PortalId, false);
                 }
 

@@ -14,6 +14,7 @@ namespace DotNetNuke.Data
         where TEntity : class
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected readonly IDataContext DataContext;
 
         /// <summary>Initializes a new instance of the <see cref="ControllerBase{TEntity, TContract, TSelf}"/> class.</summary>

@@ -42,7 +42,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         protected override void ExecuteInternal()
         {
             var doc = new XmlDocument { PreserveWhitespace = true };
-            var root = this.applicationStatusInfo.ApplicationMapPath + "\\";
+            var root = this.applicationStatusInfo.ApplicationMapPath + @"\";
             var fullPath = Path.GetFullPath(Path.Combine(root, this.RelativeFilePath));
             doc.Load(fullPath);
 

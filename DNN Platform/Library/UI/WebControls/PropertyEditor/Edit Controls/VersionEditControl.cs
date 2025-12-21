@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Web.UI;
 
     /// <summary>The VersionEditControl control provides a standard UI component for editing <see cref="Version"/> properties.</summary>
@@ -62,7 +63,7 @@ namespace DotNetNuke.UI.WebControls
             for (int i = 0; i <= 99; i++)
             {
                 // Add the Value Attribute
-                writer.AddAttribute(HtmlTextWriterAttribute.Value, i.ToString());
+                writer.AddAttribute(HtmlTextWriterAttribute.Value, i.ToString(CultureInfo.InvariantCulture));
                 if (val == i)
                 {
                     // Add the Selected Attribute
@@ -71,7 +72,7 @@ namespace DotNetNuke.UI.WebControls
 
                 // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
-                writer.Write(i.ToString("00"));
+                writer.Write(i.ToString("00", CultureInfo.CurrentCulture));
                 writer.RenderEndTag();
             }
 

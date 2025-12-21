@@ -190,7 +190,7 @@ namespace DotNetNuke.Framework
 
         /// <summary>
         ///   Sets the cache policy.  Unless a handler overrides
-        ///   this method, handlers will not allow a respons to be
+        ///   this method, handlers will not allow a response to be
         ///   cached.
         /// </summary>
         /// <param name="cache">Cache.</param>
@@ -207,7 +207,7 @@ namespace DotNetNuke.Framework
         /// </summary>
         protected void RespondFileNotFound()
         {
-            this.Response.StatusCode = Convert.ToInt32(HttpStatusCode.NotFound);
+            this.Response.StatusCode = (int)HttpStatusCode.NotFound;
             this.Response.End();
         }
 
@@ -219,7 +219,7 @@ namespace DotNetNuke.Framework
         {
             // It's really too bad that StatusCode property
             // is not of type HttpStatusCode.
-            this.Response.StatusCode = Convert.ToInt32(HttpStatusCode.InternalServerError);
+            this.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             this.Response.End();
         }
 
@@ -230,7 +230,7 @@ namespace DotNetNuke.Framework
         /// </summary>
         protected void RespondForbidden()
         {
-            this.Response.StatusCode = Convert.ToInt32(HttpStatusCode.Forbidden);
+            this.Response.StatusCode = (int)HttpStatusCode.Forbidden;
             this.Response.End();
         }
     }

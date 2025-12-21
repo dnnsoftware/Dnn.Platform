@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
     using System.Web.UI;
 
     using DotNetNuke.Entities.Portals;
@@ -24,13 +25,13 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (string.IsNullOrEmpty(this.objNode.Image) || this.objNode.Image.StartsWith("/"))
+                if (string.IsNullOrEmpty(this.objNode.Image) || this.objNode.Image.StartsWith("/", StringComparison.Ordinal))
                 {
                     return this.objNode.Image;
                 }
                 else
                 {
-                    return PortalController.Instance.GetCurrentPortalSettings().HomeDirectory + this.objNode.Image;
+                    return PortalController.Instance.GetCurrentSettings().HomeDirectory + this.objNode.Image;
                 }
             }
         }
@@ -134,7 +135,7 @@ namespace DotNetNuke.UI.WebControls
                     break;
                 }
 
-                strPath = GetSafeValue(objParent.Key, string.Empty) + "\\" + strPath;
+                strPath = GetSafeValue(objParent.Key, string.Empty) + @"\" + strPath;
                 objParent = objParent.ParentNode;
             }
             while (true);

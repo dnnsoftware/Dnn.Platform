@@ -96,6 +96,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     Status = 1,
                     Message =
                         string.Format(
+                            CultureInfo.CurrentCulture,
                             Components.RecyclebinController.Instance.LocalizeString("Service_RemoveTabError"),
                             errors),
                 });
@@ -120,6 +121,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     Status = 1,
                     Message =
                         string.Format(
+                            CultureInfo.CurrentCulture,
                             Components.RecyclebinController.Instance.LocalizeString("Service_RemoveTabModuleError"),
                             errors),
                 });
@@ -142,9 +144,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Status = 1,
-                    Message =
-                        string.Format(
-                            Components.RecyclebinController.Instance.LocalizeString("Service_RemoveUserError"), errors),
+                    Message = string.Format(CultureInfo.CurrentCulture, Components.RecyclebinController.Instance.LocalizeString("Service_RemoveUserError"), errors),
                 });
             }
 
@@ -167,9 +167,8 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                         return this.Request.CreateResponse(HttpStatusCode.NotFound);
                     }
 
-                    string resultmessage;
-                    Components.RecyclebinController.Instance.RestoreTab(tab, out resultmessage);
-                    errors.Append(resultmessage);
+                    Components.RecyclebinController.Instance.RestoreTab(tab, out var resultMessage);
+                    errors.Append(resultMessage);
                 }
             }
 
@@ -181,6 +180,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                         Status = 1,
                         Message =
                             string.Format(
+                                CultureInfo.CurrentCulture,
                                 Components.RecyclebinController.Instance.LocalizeString("Service_RestoreTabModuleError"),
                                 errors),
                     })
@@ -235,9 +235,8 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                         return this.Request.CreateResponse(HttpStatusCode.NotFound);
                     }
 
-                    string resultmessage;
-                    Components.RecyclebinController.Instance.RestoreUser(user, out resultmessage);
-                    errors.Append(resultmessage);
+                    Components.RecyclebinController.Instance.RestoreUser(user, out var resultMessage);
+                    errors.Append(resultMessage);
                 }
             }
 
@@ -249,6 +248,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                         Status = 1,
                         Message =
                             string.Format(
+                                CultureInfo.CurrentCulture,
                                 Components.RecyclebinController.Instance.LocalizeString("Service_RestoreTabModuleError"),
                                 errors),
                     })
@@ -259,10 +259,9 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = EmptyRecycleBinPermission)]
         public HttpResponseMessage EmptyRecycleBin()
         {
-            var totalRecords = 0;
-            var deletedTabs = Components.RecyclebinController.Instance.GetDeletedTabs(out totalRecords);
-            var deletedModules = Components.RecyclebinController.Instance.GetDeletedModules(out totalRecords);
-            var deletedUsers = Components.RecyclebinController.Instance.GetDeletedUsers(out totalRecords);
+            var deletedTabs = Components.RecyclebinController.Instance.GetDeletedTabs(out _);
+            var deletedModules = Components.RecyclebinController.Instance.GetDeletedModules(out _);
+            var deletedUsers = Components.RecyclebinController.Instance.GetDeletedUsers(out _);
             var errors = new StringBuilder();
 
             Components.RecyclebinController.Instance.DeleteModules(deletedModules, errors);
@@ -278,6 +277,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     Status = 1,
                     Message =
                         string.Format(
+                            CultureInfo.CurrentCulture,
                             Components.RecyclebinController.Instance.LocalizeString("Service_EmptyRecycleBinError"),
                             errors),
                 });
@@ -313,8 +313,8 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 Id = tab.TabID,
                 Name = tab.LocalizedTabName,
                 Url = tab.FullUrl,
-                ChildrenCount = portalTabs != null ? portalTabs.Count(ct => ct.ParentId == tab.TabID) : 0,
-                PublishDate = tab.CreatedOnDate.ToString("MM/dd/yyyy"),
+                ChildrenCount = portalTabs?.Count(ct => ct.ParentId == tab.TabID) ?? 0,
+                PublishDate = tab.CreatedOnDate.ToString("MM/dd/yyyy", CultureInfo.CurrentCulture),
                 Status = Components.RecyclebinController.Instance.GetTabStatus(tab),
                 ParentId = tab.ParentId,
                 Level = tab.Level,

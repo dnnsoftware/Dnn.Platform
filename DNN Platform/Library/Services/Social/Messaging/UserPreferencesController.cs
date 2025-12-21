@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Social.Messaging
         /// <inheritdoc/>
         public void SetUserPreference(UserPreference userPreference)
         {
-            this.dataService.SetUserPreference(userPreference.PortalId, userPreference.UserId, Convert.ToInt32(userPreference.MessagesEmailFrequency), Convert.ToInt32(userPreference.NotificationsEmailFrequency));
+            this.dataService.SetUserPreference(userPreference.PortalId, userPreference.UserId, (int)userPreference.MessagesEmailFrequency, (int)userPreference.NotificationsEmailFrequency);
         }
 
         /// <inheritdoc/>

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Web;
 
@@ -35,7 +36,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             foreach (var portal in installConfig.Portals)
             {
                 string description = Localization.GetString("CreatingSite", this.LocalInstallResourceFile);
-                this.Details = string.Format(description, portal.PortalName);
+                this.Details = string.Format(CultureInfo.CurrentCulture, description, portal.PortalName);
                 this.CreateSite(portal, installConfig);
 
                 counter++;
@@ -55,7 +56,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 domain = Globals.GetDomainName(HttpContext.Current.Request, true).ToLowerInvariant().Replace("/install/launchautoinstall", string.Empty).Replace("/install", string.Empty).Replace("/runinstall", string.Empty);
             }
 
-            var serverPath = Globals.ApplicationMapPath + "\\";
+            var serverPath = Globals.ApplicationMapPath + @"\";
 
             // Get the Portal Alias
             var portalAlias = domain;
@@ -68,7 +69,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             if (PortalAliasController.Instance.GetPortalAlias(portalAlias.ToLowerInvariant()) != null)
             {
                 string description = Localization.GetString("SkipCreatingSite", this.LocalInstallResourceFile);
-                this.Details = string.Format(description, portalAlias);
+                this.Details = string.Format(CultureInfo.CurrentCulture, description, portalAlias);
                 return;
             }
 
@@ -79,9 +80,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 email = "admin@" + domain.Replace("www.", string.Empty);
 
                 // Remove any domain subfolder information ( if it exists )
-                if (email.IndexOf("/") != -1)
+                if (email.IndexOf("/", StringComparison.Ordinal) != -1)
                 {
-                    email = email.Substring(0, email.IndexOf("/"));
+                    email = email.Substring(0, email.IndexOf("/", StringComparison.Ordinal));
                 }
             }
 
@@ -90,7 +91,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             if (!culture.Equals("en-us", StringComparison.OrdinalIgnoreCase))
             {
                 string installFolder = HttpContext.Current.Server.MapPath("~/Install/language");
-                string lpFilePath = installFolder + "\\installlanguage.resources";
+                string lpFilePath = $@"{installFolder}\installlanguage.resources";
 
                 if (File.Exists(lpFilePath))
                 {
@@ -120,7 +121,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var childPath = string.Empty;
             if (portal.IsChild)
             {
-                childPath = portalAlias.Substring(portalAlias.LastIndexOf("/") + 1);
+                childPath = portalAlias.Substring(portalAlias.LastIndexOf("/", StringComparison.Ordinal) + 1);
             }
 
             // Create Folder Mappings config

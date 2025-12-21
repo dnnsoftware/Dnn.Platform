@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Installer
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Xml;
@@ -172,7 +173,7 @@ namespace DotNetNuke.Services.Installer
 
                     bool isAppliedToProduct;
 
-                    if (!File.Exists(Globals.ApplicationMapPath + "\\" + this.TargetFileName))
+                    if (!File.Exists(Globals.ApplicationMapPath + @"\" + this.TargetFileName))
                     {
                         DnnInstallLogger.InstallLogInfo($"Target File {this.TargetFileName} doesn't exist, ignore the merge process");
                         return;
@@ -231,7 +232,7 @@ namespace DotNetNuke.Services.Installer
                 return rootNodePath;
             }
 
-            var index = rootNodePath.IndexOf("configuration");
+            var index = rootNodePath.IndexOf("configuration", StringComparison.OrdinalIgnoreCase);
             var adjustedPath = rootNodePath.Substring(index + "configuration".Length);
             adjustedPath = adjustedPath.TrimStart('/');
             if (string.IsNullOrEmpty(adjustedPath))
@@ -620,6 +621,7 @@ namespace DotNetNuke.Services.Installer
                             }
 
                             string commentHeaderText = string.Format(
+                                CultureInfo.InvariantCulture,
                                 Localization.GetString("XMLMERGE_Upgrade", Localization.SharedResourceFile),
                                 Environment.NewLine,
                                 this.Sender,

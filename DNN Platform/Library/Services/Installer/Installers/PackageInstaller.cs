@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Xml.XPath;
 
@@ -99,7 +100,7 @@ namespace DotNetNuke.Services.Installer.Installers
             // Add Event Message
             if (this.eventMessage != null && !string.IsNullOrEmpty(this.eventMessage.Attributes["UpgradeVersionsList"]))
             {
-                this.eventMessage.Attributes.Set("desktopModuleID", Null.NullInteger.ToString());
+                this.eventMessage.Attributes.Set("desktopModuleID", Null.NullInteger.ToString(CultureInfo.InvariantCulture));
                 EventQueueController.SendMessage(this.eventMessage, "Application_Start");
             }
 
@@ -309,18 +310,18 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 if (iconFileNav.Value != string.Empty)
                 {
-                    if (iconFileNav.Value.StartsWith("~/"))
+                    if (iconFileNav.Value.StartsWith("~/", StringComparison.Ordinal))
                     {
                         this.Package.IconFile = iconFileNav.Value;
                     }
-                    else if (iconFileNav.Value.StartsWith("DesktopModules", StringComparison.InvariantCultureIgnoreCase))
+                    else if (iconFileNav.Value.StartsWith("DesktopModules", StringComparison.OrdinalIgnoreCase))
                     {
-                        this.Package.IconFile = string.Format("~/{0}", iconFileNav.Value);
+                        this.Package.IconFile = $"~/{iconFileNav.Value}";
                     }
                     else
                     {
                         this.Package.IconFile = (string.IsNullOrEmpty(this.Package.FolderName) ? string.Empty : this.Package.FolderName + "/") + iconFileNav.Value;
-                        this.Package.IconFile = (!this.Package.IconFile.StartsWith("~/")) ? "~/" + this.Package.IconFile : this.Package.IconFile;
+                        this.Package.IconFile = (!this.Package.IconFile.StartsWith("~/", StringComparison.Ordinal)) ? "~/" + this.Package.IconFile : this.Package.IconFile;
                     }
                 }
             }
@@ -503,7 +504,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     string installOrder = componentNav.GetAttribute("installOrder", string.Empty);
                     if (!string.IsNullOrEmpty(installOrder))
                     {
-                        order = int.Parse(installOrder);
+                        order = int.Parse(installOrder, CultureInfo.InvariantCulture);
                     }
                 }
                 else
@@ -511,7 +512,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     string unInstallOrder = componentNav.GetAttribute("unInstallOrder", string.Empty);
                     if (!string.IsNullOrEmpty(unInstallOrder))
                     {
-                        order = int.Parse(unInstallOrder);
+                        order = int.Parse(unInstallOrder, CultureInfo.InvariantCulture);
                     }
                 }
 
@@ -542,7 +543,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
             try
             {
-                return FileSystemUtils.ReadFile(this.Package.InstallerInfo.TempInstallFolder + "\\" + source);
+                return FileSystemUtils.ReadFile(this.Package.InstallerInfo.TempInstallFolder + @"\" + source);
             }
             catch (PathNotFoundException)
             {

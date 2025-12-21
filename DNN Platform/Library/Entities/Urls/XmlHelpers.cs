@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Urls
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using DotNetNuke.Entities.Tabs;
 
@@ -73,7 +74,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
                                 else
                                 {
-                                    messages.Add("TabName " + tabName + " not found for portalId " + portalId.ToString());
+                                    messages.Add("TabName " + tabName + " not found for portalId " + portalId.ToString(CultureInfo.InvariantCulture));
                                 }
                             }
                         }

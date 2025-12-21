@@ -5,6 +5,7 @@
 namespace DotNetNuke.Common.Internal
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using DotNetNuke.Entities.Portals;
@@ -114,6 +115,7 @@ namespace DotNetNuke.Common.Internal
         /// <param name="returnURL">The URL to redirect to after logging in.</param>
         /// <param name="override">if set to <see langword="true"/>, show the login control on the current page, even if there is a login page defined for the site.</param>
         /// <returns>Formatted URL.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         string LoginURL(string returnURL, bool @override);
 
         /// <summary>Gets the URL to the current page.</summary>

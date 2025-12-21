@@ -4,30 +4,31 @@
 
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
 
     public static class EscapedString
     {
         private const char EscapeSequence = '\\';
-        private const string DoubleEscapseSequence = @"\\";
-        private const char DefaultSeperator = ',';
+        private const string DoubleEscapeSequence = @"\\";
+        private const char DefaultSeparator = ',';
 
         /// <summary>Combine the string values of the enumerable into an escaped string.</summary>
         /// <param name="enumerable">An IEnumerable of values to combine.</param>
-        /// <returns>An escaped string that is seperated using the specified characeter.  The escape character is '\'.
-        /// The string returned by .ToString() is used as the value of each item in the IEnumerable.</returns>
-        /// <remarks>The seperator char is ','.</remarks>
+        /// <returns>An escaped string that is separated using the specified character.  The escape character is <c>'\'</c>.
+        /// The string returned by <see cref="object.ToString"/> is used as the value of each item in the <paramref name="enumerable"/>.</returns>
+        /// <remarks>The separator char is <c>','</c>.</remarks>
         public static string Combine(IEnumerable enumerable)
         {
-            return Combine(enumerable, DefaultSeperator);
+            return Combine(enumerable, DefaultSeparator);
         }
 
         /// <summary>Combine the string values of the enumerable into an escaped string.</summary>
         /// <param name="enumerable">An IEnumerable of values to combine.</param>
-        /// <param name="seperator">The character to use as a seperator.</param>
-        /// <returns>An escaped string that is seperated using the specified characeter.  The escape character is '\'.
-        /// The string returned by .ToString() is used as the value of each item in the IEnumerable.</returns>
+        /// <param name="seperator">The character to use as a separator.</param>
+        /// <returns>An escaped string that is separated using the specified character.  The escape character is <c>'\'</c>.
+        /// The string returned by <see cref="object.ToString"/> is used as the value of each item in the <paramref name="enumerable"/>.</returns>
         public static string Combine(IEnumerable enumerable, char seperator)
         {
             string result = string.Empty;
@@ -43,41 +44,41 @@ namespace DotNetNuke.Common.Utilities
             return string.IsNullOrEmpty(result) ? string.Empty : result.Substring(0, result.Length - 1);
         }
 
-        /// <summary>Takes an escaped string and splits it into an IEnumerable of seperate strings.</summary>
-        /// <param name="combinedString">The string to seperate.</param>
-        /// <returns>IEnumerable of all the seperated strings.</returns>
-        /// <remarks>The escape character is '\', the seperator char is ','.</remarks>
+        /// <summary>Takes an escaped string and splits it into an IEnumerable of separate strings.</summary>
+        /// <param name="combinedString">The string to separate.</param>
+        /// <returns>IEnumerable of all the separated strings.</returns>
+        /// <remarks>The escape character is <c>'\'</c>, the separator char is <c>','</c>.</remarks>
         public static IEnumerable<string> Seperate(string combinedString)
         {
-            return Seperate(combinedString, DefaultSeperator);
+            return Seperate(combinedString, DefaultSeparator);
         }
 
-        /// <summary>Takes an escaped string and splits it into an IEnumerable of seperate strings.</summary>
-        /// <param name="combinedString">The string to seperate.</param>
+        /// <summary>Takes an escaped string and splits it into an IEnumerable of separate strings.</summary>
+        /// <param name="combinedString">The string to separate.</param>
         /// <param name="trimWhitespaces">Trims whitespaces.</param>
-        /// <returns>IEnumerable of all the seperated strings.</returns>
-        /// <remarks>The escape character is '\', the seperator char is ','.</remarks>
+        /// <returns>IEnumerable of all the separated strings.</returns>
+        /// <remarks>The escape character is <c>'\'</c>, the separator char is <c>','</c>.</remarks>
         public static IEnumerable<string> Seperate(string combinedString, bool trimWhitespaces)
         {
-            return Seperate(combinedString, DefaultSeperator, trimWhitespaces);
+            return Seperate(combinedString, DefaultSeparator, trimWhitespaces);
         }
 
-        /// <summary>Takes an escaped string and splits it into an IEnumerable of seperate strings.</summary>
-        /// <param name="combinedString">The string to seperate.</param>
+        /// <summary>Takes an escaped string and splits it into an IEnumerable of separate strings.</summary>
+        /// <param name="combinedString">The string to separate.</param>
         /// <param name="separator">The character on which to split.</param>
-        /// <returns>IEnumerable of all the seperated strings.</returns>
-        /// <remarks>The escape character is '\', the seperator char is ','.</remarks>
+        /// <returns>IEnumerable of all the separated strings.</returns>
+        /// <remarks>The escape character is <c>'\'</c>, the separator char is <c>','</c>.</remarks>
         public static IEnumerable<string> Seperate(string combinedString, char separator)
         {
             return Seperate(combinedString, separator, false);
         }
 
-        /// <summary>Takes an escaped string and splits it into an IEnumerable of seperate strings.</summary>
-        /// <param name="combinedString">The string to seperate.</param>
+        /// <summary>Takes an escaped string and splits it into an IEnumerable of separate strings.</summary>
+        /// <param name="combinedString">The string to separate.</param>
         /// <param name="seperator">The character on which to split.</param>
         /// <param name="trimWhitespaces">Trims whitespaces.</param>
-        /// <returns>IEnumerable of all the seperated strings.</returns>
-        /// <remarks>The escape character is '\'.</remarks>
+        /// <returns>IEnumerable of all the separated strings.</returns>
+        /// <remarks>The escape character is <c>'\'</c>.</remarks>
         public static IEnumerable<string> Seperate(string combinedString, char seperator, bool trimWhitespaces)
         {
             var result = new List<string>();
@@ -93,7 +94,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 var current = trimWhitespaces ? segments[i].Trim() : segments[i];
 
-                while (current.EndsWith(EscapeSequence.ToString()))
+                while (current.EndsWith(EscapeSequence.ToString(), StringComparison.Ordinal))
                 {
                     if (EndsInEscapeMode(current))
                     {
@@ -106,7 +107,7 @@ namespace DotNetNuke.Common.Utilities
                     }
                 }
 
-                result.Add(current.Replace(DoubleEscapseSequence, EscapeSequence.ToString()));
+                result.Add(current.Replace(DoubleEscapeSequence, EscapeSequence.ToString()));
             }
 
             return result;

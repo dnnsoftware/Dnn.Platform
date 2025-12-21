@@ -20,50 +20,62 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         [DataMember(Name = "clientId")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public string ClientId;
 
         [DataMember(Name = "moduleId")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public string ModuleId = string.Empty;
 
         [DataMember(Name = "parentClientId")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public string ParentClientId;
 
         [DataMember(Name = "showOnStartup")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public bool ShowOnStartup;
 
         [DataMember(Name = "folderPicker")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public DnnDropDownListOptions FolderPicker;
 
         [DataMember(Name = "maxFileSize")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public int MaxFileSize;
 
         [DataMember(Name = "maxFiles")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public int MaxFiles;
 
         [DataMember(Name = "extensions")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public List<string> Extensions;
 
         [DataMember(Name = "resources")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public DnnFileUploadResources Resources;
 
         [DataMember(Name = "width")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public int Width;
 
         [DataMember(Name = "height")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public int Height;
 
         [DataMember(Name = "folderPath")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public string FolderPath;
 
         private const int DefaultWidth = 780;
@@ -96,7 +108,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 CloseButtonText = Utilities.GetLocalizedString("FileUpload.CloseButton.Text"),
                 UploadFromWebButtonText = Utilities.GetLocalizedString("FileUpload.UploadFromWebButton.Text"),
                 DecompressingFile = Utilities.GetLocalizedString("FileUpload.DecompressingFile.Text"),
-                FileIsTooLarge = string.Format(Utilities.GetLocalizedString("FileUpload.FileIsTooLarge.Error") + " Mb", (this.MaxFileSize / (1024 * 1024)).ToString(CultureInfo.InvariantCulture)),
+                FileIsTooLarge = string.Format(CultureInfo.CurrentCulture, Utilities.GetLocalizedString("FileUpload.FileIsTooLarge.Error") + " Mb", (this.MaxFileSize / (1024 * 1024)).ToString(CultureInfo.InvariantCulture)),
                 FileUploadCancelled = Utilities.GetLocalizedString("FileUpload.FileUploadCancelled.Error"),
                 FileUploadFailed = Utilities.GetLocalizedString("FileUpload.FileUploadFailed.Error"),
                 TooManyFiles = Utilities.GetLocalizedString("FileUpload.TooManyFiles.Error"),

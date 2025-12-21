@@ -4,6 +4,8 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Net;
 
@@ -89,6 +91,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>Gets the GeoIP data file stream.</summary>
 #pragma warning disable SA1300 // Element should begin with upper-case letter
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public MemoryStream m_MemoryStream { get; }
 #pragma warning restore SA1300 // Element should begin with upper-case letter
 
@@ -272,7 +275,7 @@ namespace DotNetNuke.UI.WebControls
             var address = ipAddress.ToString().Split('.');
             if (address.Length == 4)
             {
-                return Convert.ToInt64((16777216 * Convert.ToDouble(address[0])) + (65536 * Convert.ToDouble(address[1])) + (256 * Convert.ToDouble(address[2])) + Convert.ToDouble(address[3]));
+                return Convert.ToInt64((16777216 * Convert.ToDouble(address[0], CultureInfo.InvariantCulture)) + (65536 * Convert.ToDouble(address[1], CultureInfo.InvariantCulture)) + (256 * Convert.ToDouble(address[2], CultureInfo.InvariantCulture)) + Convert.ToDouble(address[3], CultureInfo.InvariantCulture));
             }
             else
             {
@@ -283,11 +286,11 @@ namespace DotNetNuke.UI.WebControls
         private static string ConvertIPNumberToAddress(long ipNumber)
         {
             // Convert an IP Number to the IP Address equivalent
-            string ipNumberPart1 = Convert.ToString(((int)(ipNumber / 16777216)) % 256);
-            string ipNumberPart2 = Convert.ToString(((int)(ipNumber / 65536)) % 256);
-            string ipNumberPart3 = Convert.ToString(((int)(ipNumber / 256)) % 256);
-            string ipNumberPart4 = Convert.ToString(((int)ipNumber) % 256);
-            return ipNumberPart1 + "." + ipNumberPart2 + "." + ipNumberPart3 + "." + ipNumberPart4;
+            string ipNumberPart1 = Convert.ToString(((int)(ipNumber / 16777216)) % 256, CultureInfo.InvariantCulture);
+            string ipNumberPart2 = Convert.ToString(((int)(ipNumber / 65536)) % 256, CultureInfo.InvariantCulture);
+            string ipNumberPart3 = Convert.ToString(((int)(ipNumber / 256)) % 256, CultureInfo.InvariantCulture);
+            string ipNumberPart4 = Convert.ToString(((int)ipNumber) % 256, CultureInfo.InvariantCulture);
+            return $"{ipNumberPart1}.{ipNumberPart2}.{ipNumberPart3}.{ipNumberPart4}";
         }
     }
 }

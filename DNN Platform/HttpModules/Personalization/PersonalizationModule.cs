@@ -37,6 +37,7 @@ namespace DotNetNuke.HttpModules.Personalization
         public string ModuleName => "PersonalizationModule";
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication application)
         {
             application.EndRequest += this.OnEndRequest;

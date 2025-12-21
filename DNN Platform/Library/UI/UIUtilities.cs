@@ -173,28 +173,28 @@ namespace DotNetNuke.UI
             {
                 if (ctrl is UserControl)
                 {
-                    resourceFileName = string.Format("{0}/{1}/{2}.ascx.resx", ctrl.TemplateSourceDirectory, Localization.LocalResourceDirectory, ctrl.GetType().BaseType.Name);
+                    resourceFileName = $"{ctrl.TemplateSourceDirectory}/{Localization.LocalResourceDirectory}/{ctrl.GetType().BaseType.Name}.ascx.resx";
                     if (File.Exists(ctrl.Page.Server.MapPath(resourceFileName)))
                     {
                         break;
                     }
                 }
 
-                if (ctrl is IModuleControl)
+                if (ctrl is IModuleControl moduleControl)
                 {
-                    resourceFileName = ((IModuleControl)ctrl).LocalResourceFile;
+                    resourceFileName = moduleControl.LocalResourceFile;
                     break;
                 }
 
-                if (ctrl is ControlPanelBase)
+                if (ctrl is ControlPanelBase controlPanel)
                 {
-                    resourceFileName = ((ControlPanelBase)ctrl).LocalResourceFile;
+                    resourceFileName = controlPanel.LocalResourceFile;
                     break;
                 }
 
                 if (ctrl is Page)
                 {
-                    resourceFileName = string.Format("{0}/{1}/{2}.aspx.resx", ctrl.TemplateSourceDirectory, Localization.LocalResourceDirectory, ctrl.GetType().BaseType.Name);
+                    resourceFileName = $"{ctrl.TemplateSourceDirectory}/{Localization.LocalResourceDirectory}/{ctrl.GetType().BaseType.Name}.aspx.resx";
                 }
 
                 ctrl = ctrl.Parent;

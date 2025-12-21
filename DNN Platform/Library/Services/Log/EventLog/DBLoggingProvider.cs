@@ -8,6 +8,8 @@ namespace DotNetNuke.Services.Log.EventLog
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Threading;
     using System.Web;
     using System.Web.Caching;
@@ -38,7 +40,7 @@ namespace DotNetNuke.Services.Log.EventLog
         public override void AddLog(LogInfo logInfo)
         {
             string configPortalId = logInfo.LogPortalID != Null.NullInteger
-                                        ? logInfo.LogPortalID.ToString()
+                                        ? logInfo.LogPortalID.ToString(CultureInfo.InvariantCulture)
                                         : "*";
             var logTypeConfigInfo = this.GetLogTypeConfigInfoByKey(logInfo.LogTypeKey, configPortalId);
             if (logTypeConfigInfo is not { LoggingIsActive: true, })
@@ -70,6 +72,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void AddLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive, string threshold, string thresholdTime, string thresholdTimeType, string mailFromAddress, string mailToAddress)
         {
             int intThreshold = -1;
@@ -78,22 +81,22 @@ namespace DotNetNuke.Services.Log.EventLog
             int intKeepMostRecent = -1;
             if (Globals.NumberMatchRegex.IsMatch(threshold))
             {
-                intThreshold = Convert.ToInt32(threshold);
+                intThreshold = Convert.ToInt32(threshold, CultureInfo.InvariantCulture);
             }
 
             if (Globals.NumberMatchRegex.IsMatch(thresholdTime))
             {
-                intThresholdTime = Convert.ToInt32(thresholdTime);
+                intThresholdTime = Convert.ToInt32(thresholdTime, CultureInfo.InvariantCulture);
             }
 
             if (Globals.NumberMatchRegex.IsMatch(thresholdTimeType))
             {
-                intThresholdTimeType = Convert.ToInt32(thresholdTimeType);
+                intThresholdTimeType = Convert.ToInt32(thresholdTimeType, CultureInfo.InvariantCulture);
             }
 
             if (Globals.NumberMatchRegex.IsMatch(keepMostRecent))
             {
-                intKeepMostRecent = Convert.ToInt32(keepMostRecent);
+                intKeepMostRecent = Convert.ToInt32(keepMostRecent, CultureInfo.InvariantCulture);
             }
 
             DataProvider.Instance().AddLogTypeConfigInfo(
@@ -179,7 +182,7 @@ namespace DotNetNuke.Services.Log.EventLog
         /// <inheritdoc/>
         public override LogTypeConfigInfo GetLogTypeConfigInfoByID(string id)
         {
-            return CBO.FillObject<LogTypeConfigInfo>(DataProvider.Instance().GetLogTypeConfigInfoByID(Convert.ToInt32(id)));
+            return CBO.FillObject<LogTypeConfigInfo>(DataProvider.Instance().GetLogTypeConfigInfoByID(Convert.ToInt32(id, CultureInfo.InvariantCulture)));
         }
 
         /// <inheritdoc/>
@@ -233,13 +236,13 @@ namespace DotNetNuke.Services.Log.EventLog
         /// <inheritdoc/>
         public override bool LoggingIsEnabled(string logType, int portalID)
         {
-            string configPortalID = portalID.ToString();
+            string configPortalId = portalID.ToString(CultureInfo.InvariantCulture);
             if (portalID == -1)
             {
-                configPortalID = "*";
+                configPortalId = "*";
             }
 
-            LogTypeConfigInfo configInfo = this.GetLogTypeConfigInfoByKey(logType, configPortalID);
+            LogTypeConfigInfo configInfo = this.GetLogTypeConfigInfoByKey(logType, configPortalId);
             if (configInfo == null)
             {
                 return false;
@@ -285,7 +288,7 @@ namespace DotNetNuke.Services.Log.EventLog
             List<LogTypeConfigInfo> configInfos = CBO.FillCollection<LogTypeConfigInfo>(DataProvider.Instance().GetEventLogPendingNotifConfig());
             foreach (LogTypeConfigInfo typeConfigInfo in configInfos)
             {
-                IDataReader dr = DataProvider.Instance().GetEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID));
+                IDataReader dr = DataProvider.Instance().GetEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID, CultureInfo.InvariantCulture));
                 string log = string.Empty;
                 try
                 {
@@ -300,8 +303,8 @@ namespace DotNetNuke.Services.Log.EventLog
                     CBO.CloseDataReader(dr, true);
                 }
 
-                Mail.Mail.SendEmail(typeConfigInfo.MailFromAddress, typeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(log)));
-                DataProvider.Instance().UpdateEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID));
+                Mail.Mail.SendEmail(typeConfigInfo.MailFromAddress, typeConfigInfo.MailToAddress, "Event Notification", $"<pre>{HttpUtility.HtmlEncode(log)}</pre>");
+                DataProvider.Instance().UpdateEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID, CultureInfo.InvariantCulture));
             }
         }
 
@@ -339,6 +342,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void UpdateLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive, string threshold, string thresholdTime, string thresholdTimeType, string mailFromAddress, string mailToAddress)
         {
             var intThreshold = -1;
@@ -347,22 +351,22 @@ namespace DotNetNuke.Services.Log.EventLog
             var intKeepMostRecent = -1;
             if (Globals.NumberMatchRegex.IsMatch(threshold))
             {
-                intThreshold = Convert.ToInt32(threshold);
+                intThreshold = Convert.ToInt32(threshold, CultureInfo.InvariantCulture);
             }
 
             if (Globals.NumberMatchRegex.IsMatch(thresholdTime))
             {
-                intThresholdTime = Convert.ToInt32(thresholdTime);
+                intThresholdTime = Convert.ToInt32(thresholdTime, CultureInfo.InvariantCulture);
             }
 
             if (Globals.NumberMatchRegex.IsMatch(thresholdTimeType))
             {
-                intThresholdTimeType = Convert.ToInt32(thresholdTimeType);
+                intThresholdTimeType = Convert.ToInt32(thresholdTimeType, CultureInfo.InvariantCulture);
             }
 
             if (Globals.NumberMatchRegex.IsMatch(keepMostRecent))
             {
-                intKeepMostRecent = Convert.ToInt32(keepMostRecent);
+                intKeepMostRecent = Convert.ToInt32(keepMostRecent, CultureInfo.InvariantCulture);
             }
 
             DataProvider.Instance().UpdateLogTypeConfigInfo(
@@ -410,30 +414,30 @@ namespace DotNetNuke.Services.Log.EventLog
             var obj = new LogInfo();
             try
             {
-                obj.LogCreateDate = Convert.ToDateTime(dr["LogCreateDate"]);
-                obj.LogGUID = Convert.ToString(dr["LogGUID"]);
-                obj.LogPortalID = Convert.ToInt32(Null.SetNull(dr["LogPortalID"], obj.LogPortalID));
-                obj.LogPortalName = Convert.ToString(Null.SetNull(dr["LogPortalName"], obj.LogPortalName));
-                obj.LogServerName = Convert.ToString(Null.SetNull(dr["LogServerName"], obj.LogServerName));
-                obj.LogUserID = Convert.ToInt32(Null.SetNull(dr["LogUserID"], obj.LogUserID));
-                obj.LogEventID = Convert.ToInt32(Null.SetNull(dr["LogEventID"], obj.LogEventID));
-                obj.LogTypeKey = Convert.ToString(dr["LogTypeKey"]);
-                obj.LogUserName = Convert.ToString(dr["LogUserName"]);
-                obj.LogConfigID = Convert.ToString(dr["LogConfigID"]);
-                obj.LogProperties.Deserialize(Convert.ToString(dr["LogProperties"]));
-                obj.Exception.AssemblyVersion = Convert.ToString(Null.SetNull(dr["AssemblyVersion"], obj.Exception.AssemblyVersion));
-                obj.Exception.PortalId = Convert.ToInt32(Null.SetNull(dr["PortalId"], obj.Exception.PortalId));
-                obj.Exception.UserId = Convert.ToInt32(Null.SetNull(dr["UserId"], obj.Exception.UserId));
-                obj.Exception.TabId = Convert.ToInt32(Null.SetNull(dr["TabId"], obj.Exception.TabId));
-                obj.Exception.RawUrl = Convert.ToString(Null.SetNull(dr["RawUrl"], obj.Exception.RawUrl));
-                obj.Exception.Referrer = Convert.ToString(Null.SetNull(dr["Referrer"], obj.Exception.Referrer));
-                obj.Exception.UserAgent = Convert.ToString(Null.SetNull(dr["UserAgent"], obj.Exception.UserAgent));
-                obj.Exception.ExceptionHash = Convert.ToString(Null.SetNull(dr["ExceptionHash"], obj.Exception.ExceptionHash));
-                obj.Exception.Message = Convert.ToString(Null.SetNull(dr["Message"], obj.Exception.Message));
-                obj.Exception.StackTrace = Convert.ToString(Null.SetNull(dr["StackTrace"], obj.Exception.StackTrace));
-                obj.Exception.InnerMessage = Convert.ToString(Null.SetNull(dr["InnerMessage"], obj.Exception.InnerMessage));
-                obj.Exception.InnerStackTrace = Convert.ToString(Null.SetNull(dr["InnerStackTrace"], obj.Exception.InnerStackTrace));
-                obj.Exception.Source = Convert.ToString(Null.SetNull(dr["Source"], obj.Exception.Source));
+                obj.LogCreateDate = Convert.ToDateTime(dr["LogCreateDate"], CultureInfo.InvariantCulture);
+                obj.LogGUID = Convert.ToString(dr["LogGUID"], CultureInfo.InvariantCulture);
+                obj.LogPortalID = Convert.ToInt32(Null.SetNull(dr["LogPortalID"], obj.LogPortalID), CultureInfo.InvariantCulture);
+                obj.LogPortalName = Convert.ToString(Null.SetNull(dr["LogPortalName"], obj.LogPortalName), CultureInfo.InvariantCulture);
+                obj.LogServerName = Convert.ToString(Null.SetNull(dr["LogServerName"], obj.LogServerName), CultureInfo.InvariantCulture);
+                obj.LogUserID = Convert.ToInt32(Null.SetNull(dr["LogUserID"], obj.LogUserID), CultureInfo.InvariantCulture);
+                obj.LogEventID = Convert.ToInt32(Null.SetNull(dr["LogEventID"], obj.LogEventID), CultureInfo.InvariantCulture);
+                obj.LogTypeKey = Convert.ToString(dr["LogTypeKey"], CultureInfo.InvariantCulture);
+                obj.LogUserName = Convert.ToString(dr["LogUserName"], CultureInfo.InvariantCulture);
+                obj.LogConfigID = Convert.ToString(dr["LogConfigID"], CultureInfo.InvariantCulture);
+                obj.LogProperties.Deserialize(Convert.ToString(dr["LogProperties"], CultureInfo.InvariantCulture));
+                obj.Exception.AssemblyVersion = Convert.ToString(Null.SetNull(dr["AssemblyVersion"], obj.Exception.AssemblyVersion), CultureInfo.InvariantCulture);
+                obj.Exception.PortalId = Convert.ToInt32(Null.SetNull(dr["PortalId"], obj.Exception.PortalId), CultureInfo.InvariantCulture);
+                obj.Exception.UserId = Convert.ToInt32(Null.SetNull(dr["UserId"], obj.Exception.UserId), CultureInfo.InvariantCulture);
+                obj.Exception.TabId = Convert.ToInt32(Null.SetNull(dr["TabId"], obj.Exception.TabId), CultureInfo.InvariantCulture);
+                obj.Exception.RawUrl = Convert.ToString(Null.SetNull(dr["RawUrl"], obj.Exception.RawUrl), CultureInfo.InvariantCulture);
+                obj.Exception.Referrer = Convert.ToString(Null.SetNull(dr["Referrer"], obj.Exception.Referrer), CultureInfo.InvariantCulture);
+                obj.Exception.UserAgent = Convert.ToString(Null.SetNull(dr["UserAgent"], obj.Exception.UserAgent), CultureInfo.InvariantCulture);
+                obj.Exception.ExceptionHash = Convert.ToString(Null.SetNull(dr["ExceptionHash"], obj.Exception.ExceptionHash), CultureInfo.InvariantCulture);
+                obj.Exception.Message = Convert.ToString(Null.SetNull(dr["Message"], obj.Exception.Message), CultureInfo.InvariantCulture);
+                obj.Exception.StackTrace = Convert.ToString(Null.SetNull(dr["StackTrace"], obj.Exception.StackTrace), CultureInfo.InvariantCulture);
+                obj.Exception.InnerMessage = Convert.ToString(Null.SetNull(dr["InnerMessage"], obj.Exception.InnerMessage), CultureInfo.InvariantCulture);
+                obj.Exception.InnerStackTrace = Convert.ToString(Null.SetNull(dr["InnerStackTrace"], obj.Exception.InnerStackTrace), CultureInfo.InvariantCulture);
+                obj.Exception.Source = Convert.ToString(Null.SetNull(dr["Source"], obj.Exception.Source), CultureInfo.InvariantCulture);
                 /* DNN-6218 + DNN-6242: DB logging provider throws errors
                 // the view "vw_EventLog" doesn't have these fields or any table in the database
                 obj.Exception.FileName = Convert.ToString(Null.SetNull(dr["FileName"], obj.Exception.FileName));
@@ -463,7 +467,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 dr.NextResult();
                 while (dr.Read())
                 {
-                    totalRecords = Convert.ToInt32(dr["TotalRecords"]);
+                    totalRecords = Convert.ToInt32(dr["TotalRecords"], CultureInfo.InvariantCulture);
                 }
             }
             finally
@@ -517,7 +521,7 @@ namespace DotNetNuke.Services.Log.EventLog
                         objLogInfo.LogCreateDate,
                         objLogInfo.LogServerName,
                         logProperties,
-                        Convert.ToInt32(objLogInfo.LogConfigID),
+                        Convert.ToInt32(objLogInfo.LogConfigID, CultureInfo.InvariantCulture),
                         objLogInfo.Exception,
                         logTypeConfigInfo.EmailNotificationIsActive);
                     if (logTypeConfigInfo.EmailNotificationIsActive)
@@ -529,7 +533,7 @@ namespace DotNetNuke.Services.Log.EventLog
                                 if (logTypeConfigInfo.NotificationThreshold == 0)
                                 {
                                     string str = logQueueItem.LogInfo.Serialize();
-                                    Mail.Mail.SendEmail(logTypeConfigInfo.MailFromAddress, logTypeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(str)));
+                                    Mail.Mail.SendEmail(logTypeConfigInfo.MailFromAddress, logTypeConfigInfo.MailToAddress, "Event Notification", $"<pre>{HttpUtility.HtmlEncode(str)}</pre>");
                                 }
                             }
                             finally

@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework;
@@ -18,10 +19,13 @@ namespace DotNetNuke.UI.UserControls
     public abstract class LocaleSelectorControl : UserControlBase
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected DropDownList ddlPortalDefaultLanguage;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Literal litStatus;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected RadioButtonList rbViewType;
         private string myFileName = "LocaleSelectorControl.ascx";
         private string viewType = string.Empty;
@@ -56,7 +60,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (string.IsNullOrEmpty(this.viewType))
                 {
-                    this.viewType = Convert.ToString(Personalization.GetProfile("LanguageEnabler", string.Format("ViewType{0}", this.PortalSettings.PortalId)));
+                    this.viewType = Convert.ToString(Personalization.GetProfile("LanguageEnabler", string.Format(CultureInfo.InvariantCulture, "ViewType{0}", this.PortalSettings.PortalId)), CultureInfo.InvariantCulture);
                 }
 
                 if (string.IsNullOrEmpty(this.viewType))

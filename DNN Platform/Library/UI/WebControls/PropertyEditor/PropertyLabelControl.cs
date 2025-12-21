@@ -7,6 +7,7 @@ namespace DotNetNuke.UI.WebControls
     using System.ComponentModel;
     using System.Data;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -23,16 +24,22 @@ namespace DotNetNuke.UI.WebControls
     public class PropertyLabelControl : WebControl
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected LinkButton cmdHelp;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected HtmlGenericControl label;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblHelp;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblLabel;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel pnlTooltip;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel pnlHelp;
         private string resourceKey;
 
@@ -253,7 +260,7 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="e">The event arguments.</param>
         protected override void OnDataBinding(EventArgs e)
         {
-            // If there is a DataSource bind the relevent Properties
+            // If there is a DataSource bind the relevant Properties
             if (this.DataSource != null)
             {
                 this.EnsureChildControls();
@@ -263,12 +270,12 @@ namespace DotNetNuke.UI.WebControls
                     var dataRow = (DataRowView)this.DataSource;
                     if (this.ResourceKey == string.Empty)
                     {
-                        this.ResourceKey = Convert.ToString(dataRow[this.DataField]);
+                        this.ResourceKey = Convert.ToString(dataRow[this.DataField], CultureInfo.InvariantCulture);
                     }
 
                     if (this.DesignMode)
                     {
-                        this.label.InnerText = Convert.ToString(dataRow[this.DataField]);
+                        this.label.InnerText = Convert.ToString(dataRow[this.DataField], CultureInfo.InvariantCulture);
                     }
                 }
             }
@@ -302,18 +309,18 @@ namespace DotNetNuke.UI.WebControls
             // DNNClientAPI.EnableMinMax(cmdHelp, pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
             if (this.EditControl != null)
             {
-                this.label.Attributes.Add("for", this.EditControl is EditControl ? ((EditControl)this.EditControl).EditControlClientId : this.EditControl.ClientID);
+                this.label.Attributes.Add("for", this.EditControl is EditControl editControl ? editControl.EditControlClientId : this.EditControl.ClientID);
             }
 
             // make sure the help container have the default css class to active js handler.
             if (!this.pnlHelp.ControlStyle.CssClass.Contains("dnnClear"))
             {
-                this.pnlHelp.ControlStyle.CssClass = string.Format("dnnClear {0}", this.pnlHelp.ControlStyle.CssClass);
+                this.pnlHelp.ControlStyle.CssClass = $"dnnClear {this.pnlHelp.ControlStyle.CssClass}";
             }
 
             if (!this.pnlHelp.ControlStyle.CssClass.Contains("dnnFormHelpContent"))
             {
-                this.pnlHelp.ControlStyle.CssClass = string.Format("dnnFormHelpContent {0}", this.pnlHelp.ControlStyle.CssClass);
+                this.pnlHelp.ControlStyle.CssClass = $"dnnFormHelpContent {this.pnlHelp.ControlStyle.CssClass}";
             }
         }
     }

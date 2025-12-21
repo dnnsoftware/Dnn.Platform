@@ -110,7 +110,7 @@ namespace Dnn.EditBar.UI.Controllers
                     var name = GetNameAttribute(navigator);
 
                     const string textPostFix = ".Text";
-                    if (name.EndsWith(textPostFix))
+                    if (name.EndsWith(textPostFix, StringComparison.OrdinalIgnoreCase))
                     {
                         name = name.Substring(0, name.Length - textPostFix.Length);
                     }

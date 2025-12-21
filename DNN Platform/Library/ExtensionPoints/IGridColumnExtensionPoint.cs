@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.ExtensionPoints
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI.WebControls;
 
     public interface IGridColumnExtensionPoint : IExtensionPoint
@@ -18,6 +19,7 @@ namespace DotNetNuke.ExtensionPoints
 
         Unit HeaderStyleWidth { get; }
 
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         bool ReadOnly { get; }
 
         bool Reorderable { get; }

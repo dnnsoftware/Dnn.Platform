@@ -8,6 +8,8 @@ namespace DotNetNuke.Security.Membership
     using System.Collections.Generic;
     using System.Configuration.Provider;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -260,8 +262,8 @@ namespace DotNetNuke.Security.Membership
         /// <inheritdoc />
         public override void AddUserPortal(int portalId, int userId)
         {
-            Requires.NotNullOrEmpty("portalId", portalId.ToString());
-            Requires.NotNullOrEmpty("userId", userId.ToString());
+            Requires.NotNullOrEmpty("portalId", portalId.ToString(CultureInfo.InvariantCulture));
+            Requires.NotNullOrEmpty("userId", userId.ToString(CultureInfo.InvariantCulture));
             this.dataProvider.AddUserPortal(portalId, userId);
         }
 
@@ -310,7 +312,7 @@ namespace DotNetNuke.Security.Membership
 
             EventLogController.Instance.AddLog(
                 "userId",
-                userId.ToString(),
+                userId.ToString(CultureInfo.InvariantCulture),
                 portalSettings,
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.USERNAME_UPDATED);
@@ -545,7 +547,7 @@ namespace DotNetNuke.Security.Membership
         {
             return CBO.GetCachedObject<UserInfo>(
                 new CacheItemArgs(
-                    string.Format(DataCache.UserCacheKey, portalId, username),
+                    string.Format(CultureInfo.InvariantCulture, DataCache.UserCacheKey, portalId, username),
                     DataCache.UserCacheTimeOut,
                     DataCache.UserCachePriority),
                 _ => this.GetUserByUserNameFromDataStore(portalId, username));
@@ -641,6 +643,7 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationshipTypeId, bool isAdmin, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyNames, string propertyValues)
         {
             return FillUserList(
@@ -795,7 +798,7 @@ namespace DotNetNuke.Security.Membership
             if (objUsersOnline.IsEnabled())
             {
                 Hashtable userList = objUsersOnline.GetUserList();
-                var onlineUser = (OnlineUserInfo)userList[user.UserID.ToString()];
+                var onlineUser = (OnlineUserInfo)userList[user.UserID.ToString(CultureInfo.InvariantCulture)];
                 if (onlineUser != null)
                 {
                     isOnline = true;
@@ -1609,7 +1612,7 @@ namespace DotNetNuke.Security.Membership
             var createStatus = UserCreateStatus.AddUser;
 
             Hashtable settings = UserController.GetUserSettings(user.PortalID);
-            bool useProfanityFilter = Convert.ToBoolean(settings["Registration_UseProfanityFilter"]);
+            bool useProfanityFilter = Convert.ToBoolean(settings["Registration_UseProfanityFilter"], CultureInfo.InvariantCulture);
 
             // Validate Profanity
             if (useProfanityFilter)
@@ -1688,7 +1691,7 @@ namespace DotNetNuke.Security.Membership
         private void ValidateForDuplicateDisplayName(UserInfo user, ref UserCreateStatus createStatus)
         {
             Hashtable settings = UserController.GetUserSettings(user.PortalID);
-            bool requireUniqueDisplayName = Convert.ToBoolean(settings["Registration_RequireUniqueDisplayName"]);
+            bool requireUniqueDisplayName = Convert.ToBoolean(settings["Registration_RequireUniqueDisplayName"], CultureInfo.InvariantCulture);
 
             if (requireUniqueDisplayName)
             {

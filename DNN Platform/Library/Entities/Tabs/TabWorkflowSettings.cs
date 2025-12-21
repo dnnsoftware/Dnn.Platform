@@ -77,7 +77,7 @@ namespace DotNetNuke.Entities.Tabs
             var tabInfo = this.tabController.GetTab(tabId, portalId);
             var settings = this.tabController.GetTabSettings(tabId);
 
-            return !this.tabController.IsHostOrAdminPage(tabInfo) && (settings[TabWorkflowEnableKey] == null || Convert.ToBoolean(settings[TabWorkflowEnableKey]));
+            return !this.tabController.IsHostOrAdminPage(tabInfo) && (settings[TabWorkflowEnableKey] == null || Convert.ToBoolean(settings[TabWorkflowEnableKey], CultureInfo.InvariantCulture));
         }
 
         /// <inheritdoc/>

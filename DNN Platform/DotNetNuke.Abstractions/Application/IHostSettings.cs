@@ -5,6 +5,7 @@
 namespace DotNetNuke.Abstractions.Application;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 using DotNetNuke.Abstractions.Security;
 using DotNetNuke.Internal.SourceGenerators;
@@ -41,15 +42,15 @@ public interface IHostSettings
     public bool AllowControlPanelToDetermineVisibility { get; }
 
     /// <summary>Gets a value indicating whether Composite Files are enabled at the host level.</summary>
-    [DnnDeprecated(10, 2, 0, "Bundling is no longer supported, there is no replacement within DNN for this functionality.")]
+    [Obsolete("Deprecated in DotNetNuke 10.2.0. Bundling is no longer supported, there is no replacement within DNN for this functionality. Scheduled removal in v12.0.0.")]
     public bool CrmEnableCompositeFiles { get; }
 
     /// <summary>Gets a value indicating whether CSS Minification is enabled at the host level.</summary>
-    [DnnDeprecated(10, 2, 0, "Minification is no longer supported, there is no replacement within DNN for this functionality.")]
+    [Obsolete("Deprecated in DotNetNuke 10.2.0. Minification is no longer supported, there is no replacement within DNN for this functionality. Scheduled removal in v12.0.0.")]
     public bool CrmMinifyCss { get; }
 
     /// <summary>Gets a value indicating whether JS Minification is enabled at the host level.</summary>
-    [DnnDeprecated(10, 2, 0, "Minification is no longer supported, there is no replacement within DNN for this functionality.")]
+    [Obsolete("Deprecated in DotNetNuke 10.2.0. Minification is no longer supported, there is no replacement within DNN for this functionality. Scheduled removal in v12.0.0.")]
     public bool CrmMinifyJs { get; }
 
     /// <summary>Gets the Client Resource Management version number.</summary>
@@ -129,6 +130,7 @@ public interface IHostSettings
     public IFileExtensionAllowList DefaultEndUserExtensionAllowList { get; }
 
     /// <summary>Gets the host GUID.</summary>
+    [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
     public string Guid { get; }
 
     /// <summary>Gets the Help URL.</summary>

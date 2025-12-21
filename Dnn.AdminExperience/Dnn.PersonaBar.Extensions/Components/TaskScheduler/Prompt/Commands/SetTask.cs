@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -48,7 +49,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 
                 if (taskToUpdate == null)
                 {
-                    return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_TaskNotFound"), this.TaskId));
+                    return new ConsoleErrorResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Prompt_TaskNotFound"), this.TaskId));
                 }
 
                 if (taskToUpdate.Enabled == this.Enabled)

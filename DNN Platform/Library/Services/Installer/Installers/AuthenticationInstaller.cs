@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
+    using System.Globalization;
     using System.Xml.XPath;
 
     using DotNetNuke.Common.Utilities;
@@ -65,7 +66,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
 
                 this.Completed = true;
-                this.Log.AddInfo(string.Format(Util.AUTHENTICATION_Registered, this.authSystem.AuthenticationType));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.AUTHENTICATION_Registered, this.authSystem.AuthenticationType));
             }
             catch (Exception ex)
             {
@@ -107,7 +108,7 @@ namespace DotNetNuke.Services.Installer.Installers
             if (this.tempAuthSystem == null)
             {
                 // No Temp Auth System - Delete newly added system
-                this.DeleteAuthentiation();
+                this.DeleteAuthentication();
             }
             else
             {
@@ -119,14 +120,14 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>The UnInstall method uninstalls the authentication component.</summary>
         public override void UnInstall()
         {
-            this.DeleteAuthentiation();
+            this.DeleteAuthentication();
         }
 
         /// <summary>
-        /// The DeleteAuthentiation method deletes the Authentication System
+        /// The DeleteAuthentication method deletes the Authentication System
         /// from the data Store.
         /// </summary>
-        private void DeleteAuthentiation()
+        private void DeleteAuthentication()
         {
             try
             {
@@ -136,7 +137,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     AuthenticationController.DeleteAuthentication(authSystem);
                 }
 
-                this.Log.AddInfo(string.Format(Util.AUTHENTICATION_UnRegistered, authSystem.AuthenticationType));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.AUTHENTICATION_UnRegistered, authSystem.AuthenticationType));
             }
             catch (Exception ex)
             {

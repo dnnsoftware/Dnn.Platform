@@ -4,6 +4,7 @@
 namespace DotNetNuke.Data.PetaPoco
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using System.Threading;
 
@@ -45,7 +46,7 @@ namespace DotNetNuke.Data.PetaPoco
         {
             bool includeColumn = true;
 
-            // Check if the class has the ExplictColumnsAttribute
+            // Check if the class has the DeclareColumnsAttribute
             bool declareColumns = pocoProperty.DeclaringType != null
                             && pocoProperty.DeclaringType.GetCustomAttributes(typeof(DeclareColumnsAttribute), true).Length > 0;
 
@@ -95,6 +96,7 @@ namespace DotNetNuke.Data.PetaPoco
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public Func<object, object> GetFromDbConverter(PropertyInfo pi, Type sourceType)
         {
             return null;

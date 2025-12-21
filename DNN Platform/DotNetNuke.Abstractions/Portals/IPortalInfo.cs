@@ -4,6 +4,7 @@
 namespace DotNetNuke.Abstractions.Portals
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>The portal info.</summary>
     public interface IPortalInfo
@@ -72,9 +73,10 @@ namespace DotNetNuke.Abstractions.Portals
 
         /// <summary>Gets or sets GUID of the portal info object.</summary>
         /// <value>Portal info Object GUID.</value>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
         Guid GUID { get; set; }
 
-        /// <summary>Gets or sets tabdId of the Home page.</summary>
+        /// <summary>Gets or sets tab ID of the Home page.</summary>
         /// <value>TabId of the Home page.</value>
         int HomeTabId { get; set; }
 

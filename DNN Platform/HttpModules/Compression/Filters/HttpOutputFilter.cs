@@ -4,9 +4,11 @@
 namespace DotNetNuke.HttpModules.Compression
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
 
     /// <summary>A stream wrapping another steam for filtering content while streaming HTTP responses.</summary>
+    [SuppressMessage("Microsoft.Design", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "Breaking change")]
     public abstract class HttpOutputFilter : Stream
     {
         /// <summary>Initializes a new instance of the <see cref="HttpOutputFilter"/> class.</summary>
@@ -39,9 +41,11 @@ namespace DotNetNuke.HttpModules.Compression
         protected Stream BaseStream { get; }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override long Seek(long offset, SeekOrigin direction) => throw new NotSupportedException();
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void SetLength(long length) => throw new NotSupportedException();
 
         /// <inheritdoc/>

@@ -221,7 +221,7 @@ namespace DotNetNuke.Services.Localization
                     }
 
                     DataProvider.Instance().AddPortalLanguage(portalID, languageID, false, UserController.Instance.GetCurrentUserInfo().UserID);
-                    string cacheKey = string.Format(DataCache.LocalesCacheKey, portalID);
+                    string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.LocalesCacheKey, portalID);
                     DataCache.RemoveCache(cacheKey);
 
                     EventLogController.Instance.AddLog(
@@ -262,7 +262,7 @@ namespace DotNetNuke.Services.Localization
                 AddLanguageToPortal(portalID, language.LanguageId, false);
             }
 
-            DataCache.RemoveCache(string.Format(DataCache.LocalesCacheKey, portalID));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.LocalesCacheKey, portalID));
         }
 
         public static void AddLanguageToPortals(int languageID)
@@ -272,31 +272,30 @@ namespace DotNetNuke.Services.Localization
                 // Add Portal/Language to PortalLanguages
                 AddLanguageToPortal(portal.PortalID, languageID, false);
 
-                DataCache.RemoveCache(string.Format(DataCache.LocalesCacheKey, portal.PortalID));
+                DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.LocalesCacheKey, portal.PortalID));
             }
         }
 
         public static void AddTranslatorRole(int portalID, Locale language)
         {
             // Create new Translator Role
-            string roleName = string.Format("Translator ({0})", language.Code);
+            string roleName = $"Translator ({language.Code})";
             RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
 
             if (role == null)
             {
-                role = new RoleInfo();
-                role.RoleGroupID = Null.NullInteger;
-                role.PortalID = portalID;
-                role.RoleName = roleName;
-                role.Description = string.Format("A role for {0} translators", language.EnglishName);
-                role.SecurityMode = SecurityMode.SecurityRole;
-                role.Status = RoleStatus.Approved;
+                role = new RoleInfo
+                {
+                    RoleGroupID = Null.NullInteger, PortalID = portalID, RoleName = roleName, Description = $"A role for {language.EnglishName} translators",
+                    SecurityMode = SecurityMode.SecurityRole,
+                    Status = RoleStatus.Approved,
+                };
                 RoleController.Instance.AddRole(role);
             }
 
-            string roles = string.Format("Administrators;{0}", string.Format("Translator ({0})", language.Code));
+            string roles = $"Administrators;Translator ({language.Code})";
 
-            PortalController.UpdatePortalSetting(portalID, string.Format("DefaultTranslatorRoles-{0}", language.Code), roles);
+            PortalController.UpdatePortalSetting(portalID, $"DefaultTranslatorRoles-{language.Code}", roles);
         }
 
         /// <summary>Converts old TimeZoneOffset to new <see cref="TimeZoneInfo"/>.</summary>
@@ -466,17 +465,17 @@ namespace DotNetNuke.Services.Localization
         {
             if (HttpContext.Current == null)
             {
-                return string.Format(defaultValue, @params);
+                return string.Format(CultureInfo.CurrentCulture, defaultValue, @params);
             }
 
             var content = GetString(key, ExceptionsResourceFile);
-            return string.Format(string.IsNullOrEmpty(content) ? defaultValue : GetString(key, ExceptionsResourceFile), @params);
+            return string.Format(CultureInfo.CurrentCulture, string.IsNullOrEmpty(content) ? defaultValue : GetString(key, ExceptionsResourceFile), @params);
         }
 
         public static string GetLanguageDisplayMode(int portalId)
         {
             string viewTypePersonalizationKey = "ViewType" + portalId;
-            string viewType = Convert.ToString(Personalization.Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
+            string viewType = Convert.ToString(Personalization.Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey), CultureInfo.InvariantCulture);
             if (string.IsNullOrEmpty(viewType))
             {
                 viewType = "NATIVE";
@@ -499,7 +498,7 @@ namespace DotNetNuke.Services.Localization
                     name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(info.EnglishName);
                     break;
                 case CultureDropDownTypes.Lcid:
-                    name = info.LCID.ToString();
+                    name = info.LCID.ToString(CultureInfo.CurrentCulture);
                     break;
                 case CultureDropDownTypes.Name:
                     name = info.Name;
@@ -629,30 +628,30 @@ namespace DotNetNuke.Services.Localization
 
         public static string GetResourceFileName(string resourceFileName, string language, string mode, int portalId)
         {
-            if (!resourceFileName.EndsWith(".resx"))
+            if (!resourceFileName.EndsWith(".resx", StringComparison.OrdinalIgnoreCase))
             {
                 resourceFileName += ".resx";
             }
 
             if (language != SystemLocale)
             {
-                if (resourceFileName.ToLowerInvariant().EndsWith(".en-us.resx"))
+                if (resourceFileName.EndsWith(".en-us.resx", StringComparison.OrdinalIgnoreCase))
                 {
-                    resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 11) + "." + language + ".resx";
+                    resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 11)}.{language}.resx";
                 }
                 else
                 {
-                    resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + language + ".resx";
+                    resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 5)}.{language}.resx";
                 }
             }
 
             if (mode == "Host")
             {
-                resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + "Host.resx";
+                resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 5)}.Host.resx";
             }
             else if (mode == "Portal")
             {
-                resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + "Portal-" + portalId + ".resx";
+                resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 5)}.Portal-{portalId}.resx";
             }
 
             return resourceFileName;
@@ -1365,7 +1364,7 @@ namespace DotNetNuke.Services.Localization
                 }
 
                 // Get Translator Role
-                string roleName = string.Format("Translator ({0})", language.Code);
+                string roleName = $"Translator ({language.Code})";
                 RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
 
                 if (role != null)
@@ -1534,7 +1533,7 @@ namespace DotNetNuke.Services.Localization
             string oldCurrentCulture = this.CurrentUICulture;
             var newCulture = new CultureInfo(culture);
             Thread.CurrentThread.CurrentUICulture = newCulture;
-            string currencyStr = expression.ToString(newCulture.NumberFormat.CurrencySymbol);
+            string currencyStr = expression.ToString(newCulture.NumberFormat.CurrencySymbol, newCulture);
             var oldCulture = new CultureInfo(oldCurrentCulture);
             Thread.CurrentThread.CurrentUICulture = oldCulture;
             return currencyStr;
@@ -1545,7 +1544,7 @@ namespace DotNetNuke.Services.Localization
             string oldCurrentCulture = this.CurrentUICulture;
             var newCulture = new CultureInfo(culture);
             Thread.CurrentThread.CurrentUICulture = newCulture;
-            string dateStr = expression.ToString(newCulture.DateTimeFormat.FullDateTimePattern);
+            string dateStr = expression.ToString(newCulture.DateTimeFormat.FullDateTimePattern, newCulture);
             var oldCulture = new CultureInfo(oldCurrentCulture);
             Thread.CurrentThread.CurrentUICulture = oldCulture;
             return dateStr;
@@ -1556,7 +1555,7 @@ namespace DotNetNuke.Services.Localization
         /// If an exact match is not found (language-region), it will try to find a match for the language only.
         /// Ex: requested locale is "en-GB", requested language is "en", enabled locale is "en-US", so "en" is a match for "en-US".
         /// </summary>
-        /// <param name="portalId">Id of current portal.</param>
+        /// <param name="portalId">ID of current portal.</param>
         /// <param name="language">Language to be parsed.</param>
         /// <returns>A valid and enabled CultureInfo that matches the language passed if any.</returns>
         internal static CultureInfo GetCultureFromString(int portalId, string language)
@@ -1729,14 +1728,14 @@ namespace DotNetNuke.Services.Localization
                         }
                     }
 
-                    var alias = GetValidLanguageURL(portalId, httpAlias, locale.Code.ToLowerInvariant());
+                    var alias = GetValidLanguageUrl(portalId, httpAlias, locale.Code.ToLowerInvariant());
                     if (!string.IsNullOrEmpty(alias))
                     {
                         var newAlias = new PortalAliasInfo(currentAlias)
                         {
                             IsPrimary = true,
                             CultureCode = locale.Code,
-                            HTTPAlias = GetValidLanguageURL(portalId, httpAlias, locale.Code.ToLowerInvariant()),
+                            HTTPAlias = GetValidLanguageUrl(portalId, httpAlias, locale.Code.ToLowerInvariant()),
                         };
 
                         PortalAliasController.Instance.AddPortalAlias(newAlias);
@@ -1745,21 +1744,21 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        private static string GetValidLanguageURL(int portalId, string httpAlias, string locale)
+        private static string GetValidLanguageUrl(int portalId, string httpAlias, string locale)
         {
             string alias;
 
             bool isValid;
-            int counter = 0;
+            var counter = 0;
             do
             {
-                string modifiedLocale = locale;
+                var modifiedLocale = locale;
                 if (counter > 0)
                 {
                     modifiedLocale += counter.ToString(CultureInfo.InvariantCulture);
                 }
 
-                alias = string.Format("{0}/{1}", httpAlias, modifiedLocale);
+                alias = $"{httpAlias}/{modifiedLocale}";
 
                 var tab = TabController.Instance.GetTabByName(modifiedLocale, portalId);
                 isValid = tab == null;

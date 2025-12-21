@@ -6,6 +6,7 @@ namespace DotNetNuke.Security
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
@@ -84,7 +85,7 @@ namespace DotNetNuke.Security
             new Regex("javascript:", RxOptions),
             new Regex("vbscript:", RxOptions),
             new Regex("unescape", RxOptions),
-            new Regex("alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?", RxOptions),
+            new Regex(@"alert[\s(&nbsp;)]*\([\s(&nbsp;)]*'?[\s(&nbsp;)]*[""(&quot;)]?", RxOptions),
             new Regex(@"eval*.\(", RxOptions),
         };
 
@@ -98,6 +99,7 @@ namespace DotNetNuke.Security
         /// together.
         /// </summary>
         [Flags]
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public enum FilterFlag
         {
             /// <summary>Replaces line breaks with <c>&lt;br&gt;</c> tags.</summary>
@@ -266,7 +268,7 @@ namespace DotNetNuke.Security
                     if (!string.IsNullOrEmpty(role))
                     {
                         // Deny permission
-                        if (role.StartsWith("!"))
+                        if (role.StartsWith("!", StringComparison.Ordinal))
                         {
                             // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
                             if (settings != null && !(settings.PortalId == objUserInfo.PortalID && objUserInfo.IsInRole(settings.AdministratorRoleName)))
@@ -803,11 +805,11 @@ namespace DotNetNuke.Security
                 cookie.Expires = DateTime.Now.AddYears(-30);
             }
 
-            // clear any authentication provider tokens that match *UserToken convention e.g FacebookUserToken ,TwitterUserToken, LiveUserToken and GoogleUserToken
+            // clear any authentication provider tokens that match *UserToken convention e.g. FacebookUserToken ,TwitterUserToken, LiveUserToken and GoogleUserToken
             var authCookies = HttpContext.Current.Request.Cookies.AllKeys;
             foreach (var authCookie in authCookies)
             {
-                if (authCookie.EndsWith("UserToken"))
+                if (authCookie.EndsWith("UserToken", StringComparison.OrdinalIgnoreCase))
                 {
                     var auth = HttpContext.Current.Response.Cookies[authCookie];
                     if (auth != null)
@@ -929,7 +931,7 @@ namespace DotNetNuke.Security
             if (!string.IsNullOrEmpty(roleName))
             {
                 // Deny permission
-                if (roleName.StartsWith("!"))
+                if (roleName.StartsWith("!", StringComparison.Ordinal))
                 {
                     // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
                     if (settings != null && !(settings.PortalId == user.PortalID && user.IsInRole(settings.AdministratorRoleName)))
@@ -978,7 +980,7 @@ namespace DotNetNuke.Security
             var hexString = new StringBuilder();
             foreach (var b in bytes)
             {
-                hexString.Append(string.Format("{0:X2}", b));
+                hexString.Append(string.Format(CultureInfo.InvariantCulture, "{0:X2}", b));
             }
 
             return hexString.ToString();

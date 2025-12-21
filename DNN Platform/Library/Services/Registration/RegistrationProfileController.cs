@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Registration
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Common.Lists;
@@ -15,6 +16,7 @@ namespace DotNetNuke.Services.Registration
     public class RegistrationProfileController : ServiceLocator<IRegistrationProfileController, RegistrationProfileController>, IRegistrationProfileController
     {
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IEnumerable<string> Search(int portalId, string searchTerm)
         {
             var controller = new ListController();

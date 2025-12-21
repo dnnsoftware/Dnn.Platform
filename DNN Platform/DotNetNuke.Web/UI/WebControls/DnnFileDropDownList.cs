@@ -40,12 +40,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.Services.Parameters.TryGetValue("parentId", out var parentId) ? Convert.ToInt32(parentId) : Null.NullInteger;
+                return this.Services.Parameters.TryGetValue("parentId", out var parentId) ? Convert.ToInt32(parentId, CultureInfo.InvariantCulture) : Null.NullInteger;
             }
 
             set
             {
-                this.Services.Parameters["parentId"] = value.ToString();
+                this.Services.Parameters["parentId"] = value.ToString(CultureInfo.InvariantCulture);
             }
         }
 

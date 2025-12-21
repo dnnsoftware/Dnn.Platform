@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Search.Controllers
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
 
@@ -46,7 +47,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 return false;
             }
 
-            if (searchResult.UniqueKey.Contains("adminonly"))
+            if (searchResult.UniqueKey.Contains("adminonly", StringComparison.OrdinalIgnoreCase))
             {
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
                 return currentUser.IsSuperUser
@@ -54,20 +55,21 @@ namespace DotNetNuke.Services.Search.Controllers
                         || currentUser.UserID == userId;
             }
 
-            if (searchResult.UniqueKey.Contains("friendsandgroups"))
+            if (searchResult.UniqueKey.Contains("friendsandgroups", StringComparison.OrdinalIgnoreCase))
             {
-                var extendedVisibility = searchResult.UniqueKey.IndexOf("_") != searchResult.UniqueKey.LastIndexOf("_")
-                                             ? searchResult.UniqueKey.Split('_')[2]
-                                             : string.Empty;
+                var extendedVisibility =
+                    searchResult.UniqueKey.IndexOf("_", StringComparison.Ordinal) != searchResult.UniqueKey.LastIndexOf("_", StringComparison.Ordinal)
+                        ? searchResult.UniqueKey.Split('_')[2]
+                        : string.Empty;
                 return HasSocialRelationship(userInSearchResult, UserController.Instance.GetCurrentUserInfo(), extendedVisibility);
             }
 
-            if (searchResult.UniqueKey.Contains("membersonly"))
+            if (searchResult.UniqueKey.Contains("membersonly", StringComparison.OrdinalIgnoreCase))
             {
                 return UserController.Instance.GetCurrentUserInfo().UserID != Null.NullInteger;
             }
 
-            if (searchResult.UniqueKey.Contains("allusers"))
+            if (searchResult.UniqueKey.Contains("allusers", StringComparison.OrdinalIgnoreCase))
             {
                 var scopeForRoles =
                     PortalController.GetPortalSetting("SearchResult_ScopeForRoles", searchResult.PortalId, string.Empty)
@@ -99,7 +101,7 @@ namespace DotNetNuke.Services.Search.Controllers
         private static int GetUserId(SearchDocumentToDelete searchResult)
         {
             var match = SearchResultMatchRegex.Match(searchResult.UniqueKey);
-            return match.Success ? Convert.ToInt32(match.Groups[1].Value) : Null.NullInteger;
+            return match.Success ? Convert.ToInt32(match.Groups[1].Value, CultureInfo.InvariantCulture) : Null.NullInteger;
         }
 
         private static bool HasSocialRelationship(UserInfo targetUser, UserInfo accessingUser, string extendedVisibility)

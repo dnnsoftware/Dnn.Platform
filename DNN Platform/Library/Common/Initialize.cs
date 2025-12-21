@@ -152,7 +152,7 @@ namespace DotNetNuke.Common
                         null,
                         CultureInfo.InvariantCulture) is not HttpRuntime runtime)
                 {
-                    Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
+                    Logger.InfoFormat(CultureInfo.InvariantCulture, "Application shutting down. Reason: {0}", shutdownDetail);
                 }
                 else
                 {
@@ -197,23 +197,22 @@ namespace DotNetNuke.Common
         /// <returns>A value indicating whether the request should be processed in an HttpModule.</returns>
         public static bool ProcessHttpModule(HttpRequest request, bool allowUnknownExtensions, bool checkOmitFromRewriteProcessing)
         {
-            var toLowerLocalPath = request.Url.LocalPath.ToLowerInvariant();
-
-            if (toLowerLocalPath.EndsWith("webresource.axd")
-                    || toLowerLocalPath.EndsWith("scriptresource.axd")
-                    || toLowerLocalPath.EndsWith("captcha.aspx")
-                    || toLowerLocalPath.Contains("upgradewizard.aspx")
-                    || toLowerLocalPath.Contains("installwizard.aspx")
-                    || toLowerLocalPath.EndsWith("install.aspx"))
+            var localPath = request.Url.LocalPath;
+            if (localPath.EndsWith("webresource.axd", StringComparison.OrdinalIgnoreCase)
+                    || localPath.EndsWith("scriptresource.axd", StringComparison.OrdinalIgnoreCase)
+                    || localPath.EndsWith("captcha.aspx", StringComparison.OrdinalIgnoreCase)
+                    || localPath.Contains("upgradewizard.aspx", StringComparison.OrdinalIgnoreCase)
+                    || localPath.Contains("installwizard.aspx", StringComparison.OrdinalIgnoreCase)
+                    || localPath.EndsWith("install.aspx", StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
 
-            if (allowUnknownExtensions == false
-                    && toLowerLocalPath.EndsWith(".aspx") == false
-                    && toLowerLocalPath.EndsWith(".asmx") == false
-                    && toLowerLocalPath.EndsWith(".ashx") == false
-                    && toLowerLocalPath.EndsWith(".svc") == false)
+            if (!allowUnknownExtensions
+                    && !localPath.EndsWith(".aspx", StringComparison.OrdinalIgnoreCase)
+                    && !localPath.EndsWith(".asmx", StringComparison.OrdinalIgnoreCase)
+                    && !localPath.EndsWith(".ashx", StringComparison.OrdinalIgnoreCase)
+                    && !localPath.EndsWith(".svc", StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
@@ -493,11 +492,11 @@ namespace DotNetNuke.Common
 
         private static bool IsUpgradeOrInstallRequest(HttpRequest request)
         {
-            var url = request.Url.LocalPath.ToLowerInvariant();
+            var url = request.Url.LocalPath;
 
-            return url.EndsWith("/install.aspx")
-                || url.Contains("/upgradewizard.aspx")
-                || url.Contains("/installwizard.aspx");
+            return url.EndsWith("/install.aspx", StringComparison.OrdinalIgnoreCase)
+                || url.Contains("/upgradewizard.aspx", StringComparison.OrdinalIgnoreCase)
+                || url.Contains("/installwizard.aspx", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

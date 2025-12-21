@@ -596,7 +596,7 @@ namespace DotNetNuke.Services.Install
 
         private static void GetInstallerLocales(IApplicationStatusInfo applicationStatus)
         {
-            var filePath = applicationStatus.ApplicationMapPath + LocalesFile.Replace("/", "\\");
+            var filePath = applicationStatus.ApplicationMapPath + LocalesFile.Replace("/", @"\");
 
             if (File.Exists(filePath))
             {

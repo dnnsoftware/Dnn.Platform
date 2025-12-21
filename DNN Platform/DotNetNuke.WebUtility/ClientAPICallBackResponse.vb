@@ -1,6 +1,8 @@
 ﻿' Copyright (c) .NET Foundation. All rights reserved.
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
+Imports System.Diagnostics.CodeAnalysis
+Imports System.Globalization
 Imports System.Web
 Imports System.Web.UI
 
@@ -27,10 +29,14 @@ Namespace DotNetNuke.UI.Utilities
             IFRAMEPost = 1
         End Enum
 
+        <SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification := "Breaking change")>
         Public Response As String = ""
+        <SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification := "Breaking change")>
         Public StatusCode As CallBackResponseStatusCode
+        <SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification := "Breaking change")>
         Public StatusDesc As String = ""
         Private m_objPage As Page
+        <SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification := "Breaking change")>
         Public CallBackType As CallBackTypeCode
 
         Public ReadOnly Property TransportType() As TransportTypeCode
@@ -54,14 +60,14 @@ Namespace DotNetNuke.UI.Utilities
                     Dim strContextID As String = m_objPage.Request.Form("ctx")                    'if context passed in then we are using IFRAME Implementation
                     If IsNumeric(strContextID) Then
                         m_objPage.Response.Write("<html><head></head><body onload=""window.parent.dnn.xmlhttp.requests['" & strContextID & "'].complete(window.parent.dnn.dom.getById('txt', document).value);""><form>")
-                        m_objPage.Response.Write("<input type=""hidden"" id=""" & ClientAPI.SCRIPT_CALLBACKSTATUSID & """ value=""" & CInt(Me.StatusCode).ToString & """>")
+                        m_objPage.Response.Write("<input type=""hidden"" id=""" & ClientAPI.SCRIPT_CALLBACKSTATUSID & """ value=""" & CInt(Me.StatusCode).ToString(CultureInfo.InvariantCulture) & """>")
                         m_objPage.Response.Write("<input type=""hidden"" id=""" & ClientAPI.SCRIPT_CALLBACKSTATUSDESCID & """ value=""" & Me.StatusDesc & """>")
                         m_objPage.Response.Write("<textarea id=""txt"">")
                         m_objPage.Response.Write(HttpUtility.HtmlEncode(MSAJAX.Serialize(New With {.d = Response})))
                         m_objPage.Response.Write("</textarea></body></html>")
                     End If
                 Case TransportTypeCode.XMLHTTP
-                    m_objPage.Response.AppendHeader(ClientAPI.SCRIPT_CALLBACKSTATUSID, CInt(Me.StatusCode).ToString)
+                    m_objPage.Response.AppendHeader(ClientAPI.SCRIPT_CALLBACKSTATUSID, CInt(Me.StatusCode).ToString(CultureInfo.InvariantCulture))
                     m_objPage.Response.AppendHeader(ClientAPI.SCRIPT_CALLBACKSTATUSDESCID, Me.StatusDesc)
 
                     m_objPage.Response.Write(MSAJAX.Serialize(New With {.d = Response}))    '//don't serialize straight html

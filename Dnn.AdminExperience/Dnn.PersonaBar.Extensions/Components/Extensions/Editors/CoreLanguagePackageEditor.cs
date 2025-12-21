@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
     using System;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Extensions.Components.Dto;
     using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
@@ -57,13 +58,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
             try
             {
-                string value;
                 var changed = false;
                 var languagePack = LanguagePackController.GetLanguagePackByPackage(packageSettings.PackageId);
-                if (packageSettings.EditorActions.TryGetValue("languageId", out value)
-                    && !string.IsNullOrEmpty(value) && value != languagePack.LanguageID.ToString())
+                if (packageSettings.EditorActions.TryGetValue("languageId", out var value)
+                    && !string.IsNullOrEmpty(value) && value != languagePack.LanguageID.ToString(CultureInfo.InvariantCulture))
                 {
-                    languagePack.LanguageID = Convert.ToInt32(value);
+                    languagePack.LanguageID = Convert.ToInt32(value, CultureInfo.InvariantCulture);
                     changed = true;
                 }
 

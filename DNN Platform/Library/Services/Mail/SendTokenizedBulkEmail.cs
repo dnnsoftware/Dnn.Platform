@@ -100,6 +100,7 @@ namespace DotNetNuke.Services.Mail
         // Existing public API
         public enum AddressMethods
         {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
             /// <summary>Put the recipient's email address in the TO field.</summary>
             Send_TO = 1,
 
@@ -108,6 +109,7 @@ namespace DotNetNuke.Services.Mail
 
             /// <summary>Send via an email relay address.</summary>
             Send_Relay = 3,
+#pragma warning restore CA1707
         }
 
         /// <summary>Gets or sets priority of emails to be sent.</summary>
@@ -565,7 +567,7 @@ namespace DotNetNuke.Services.Mail
             };
             this.tokenReplace.User = this.sendingUser;
             string body = this.tokenReplace.ReplaceEnvironmentTokens(this.BodyFormat == MailFormat.Html ? this.confirmBodyHTML : this.confirmBodyText, parameters, "Custom");
-            string strSubject = string.Format(this.confirmSubject, subject);
+            string strSubject = string.Format(CultureInfo.CurrentCulture, this.confirmSubject, subject);
             if (!this.SuppressTokenReplace)
             {
                 strSubject = this.tokenReplace.ReplaceEnvironmentTokens(strSubject);
@@ -578,7 +580,7 @@ namespace DotNetNuke.Services.Mail
 
         /// <summary>check, if the user's language matches the current language filter.</summary>
         /// <param name="userLanguage">Language of the user.</param>
-        /// <returns>userlanguage matches current languageFilter.</returns>
+        /// <returns><paramref name="userLanguage"></paramref> matches current <see cref="LanguageFilter"/>.</returns>
         /// <remarks>if filter not set, true is returned.</remarks>
         private bool MatchLanguageFilter(string userLanguage)
         {

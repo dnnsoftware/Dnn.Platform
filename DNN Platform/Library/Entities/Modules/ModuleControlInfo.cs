@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Modules
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml;
     using System.Xml.Schema;
     using System.Xml.Serialization;
@@ -122,10 +123,10 @@ namespace DotNetNuke.Entities.Modules
                         this.SupportsPopUps = bool.Parse(reader.ReadElementContentAsString());
                         break;
                     case "viewOrder":
-                        string elementvalue = reader.ReadElementContentAsString();
-                        if (!string.IsNullOrEmpty(elementvalue))
+                        string elementValue = reader.ReadElementContentAsString();
+                        if (!string.IsNullOrEmpty(elementValue))
                         {
-                            this.ViewOrder = int.Parse(elementvalue);
+                            this.ViewOrder = int.Parse(elementValue, CultureInfo.InvariantCulture);
                         }
 
                         break;
@@ -156,7 +157,7 @@ namespace DotNetNuke.Entities.Modules
             writer.WriteElementString("supportsPopUps", this.SupportsPopUps.ToString());
             if (this.ViewOrder > Null.NullInteger)
             {
-                writer.WriteElementString("viewOrder", this.ViewOrder.ToString());
+                writer.WriteElementString("viewOrder", this.ViewOrder.ToString(CultureInfo.InvariantCulture));
             }
 
             // Write end of main element

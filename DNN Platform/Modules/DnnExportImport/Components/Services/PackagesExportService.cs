@@ -5,6 +5,7 @@
 namespace Dnn.ExportImport.Components.Services
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -57,8 +58,8 @@ namespace Dnn.ExportImport.Components.Services
             var totalPackagesExported = 0;
             try
             {
-                var packagesZipFileFormat = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipPackages}";
-                var packagesZipFile = string.Format(packagesZipFileFormat, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
+                var packagesZipFileFormat = $@"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\{Constants.ExportZipPackages}";
+                var packagesZipFile = string.Format(CultureInfo.InvariantCulture, packagesZipFileFormat, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
                 if (this.CheckPoint.Stage == 0)
                 {
@@ -111,9 +112,9 @@ namespace Dnn.ExportImport.Components.Services
             }
             finally
             {
-                this.CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
+                this.CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex, }) : null;
                 this.CheckPointStageCallback(this);
-                this.Result.AddSummary("Exported Packages", totalPackagesExported.ToString());
+                this.Result.AddSummary("Exported Packages", totalPackagesExported.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -197,7 +198,7 @@ namespace Dnn.ExportImport.Components.Services
                 return false;
             }
 
-            return fileInfo.Name.StartsWith("Skin_") || fileInfo.Name.StartsWith("Container_");
+            return fileInfo.Name.StartsWith("Skin_", StringComparison.OrdinalIgnoreCase) || fileInfo.Name.StartsWith("Container_", StringComparison.OrdinalIgnoreCase);
         }
 
         private static ExportPackage GenerateExportPackage(string filePath)

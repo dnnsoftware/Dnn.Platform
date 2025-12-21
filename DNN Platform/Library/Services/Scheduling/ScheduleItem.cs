@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Scheduling
     using System;
     using System.Collections;
     using System.Data;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
@@ -134,20 +135,18 @@ namespace DotNetNuke.Services.Scheduling
         /// <returns>A value indicating whether the item has object dependencies.</returns>
         public bool HasObjectDependencies(string strObjectDependencies)
         {
-            if (strObjectDependencies.IndexOf(",") > -1)
+            if (strObjectDependencies.IndexOf(",", StringComparison.Ordinal) > -1)
             {
-                string[] a;
-                a = strObjectDependencies.ToLowerInvariant().Split(',');
-                int i;
-                for (i = 0; i <= a.Length - 1; i++)
+                var dependencies = strObjectDependencies.Split(',');
+                for (var i = 0; i <= dependencies.Length - 1; i++)
                 {
-                    if (this.ObjectDependencies.IndexOf(a[i].Trim(), StringComparison.InvariantCultureIgnoreCase) > -1)
+                    if (this.ObjectDependencies.Contains(dependencies[i].Trim(), StringComparison.OrdinalIgnoreCase))
                     {
                         return true;
                     }
                 }
             }
-            else if (this.ObjectDependencies.IndexOf(strObjectDependencies, StringComparison.InvariantCultureIgnoreCase) > -1)
+            else if (this.ObjectDependencies.Contains(strObjectDependencies, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -175,7 +174,7 @@ namespace DotNetNuke.Services.Scheduling
 
             if (this.scheduleItemSettings != null && this.scheduleItemSettings.ContainsKey(key))
             {
-                return Convert.ToString(this.scheduleItemSettings[key]);
+                return Convert.ToString(this.scheduleItemSettings[key], CultureInfo.InvariantCulture);
             }
             else
             {

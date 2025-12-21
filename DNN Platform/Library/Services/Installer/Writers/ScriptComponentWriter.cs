@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Xml;
 
@@ -59,7 +60,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <inheritdoc/>
         protected override void WriteFileElement(XmlWriter writer, InstallFile file)
         {
-            this.Log.AddInfo(string.Format(Util.WRITER_AddFileToManifest, file.Name));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.WRITER_AddFileToManifest, file.Name));
             string type = "Install";
             string version = Null.NullString;
             string fileName = Path.GetFileNameWithoutExtension(file.Name);
@@ -75,7 +76,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 type = "Install";
                 version = new Version(0, 0, 0).ToString(3);
             }
-            else if (fileName.StartsWith("Install"))
+            else if (fileName.StartsWith("Install", StringComparison.OrdinalIgnoreCase))
             {
                 // Install.xx.xx.xx.SqlDataprovider
                 type = "Install";

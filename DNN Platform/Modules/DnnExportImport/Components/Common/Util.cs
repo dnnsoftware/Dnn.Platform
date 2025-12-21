@@ -6,6 +6,7 @@ namespace Dnn.ExportImport.Components.Common
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Reflection;
     using System.Text;
@@ -32,17 +33,17 @@ namespace Dnn.ExportImport.Components.Common
     public static partial class Util
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Util));
-        private static int noRole = Convert.ToInt32(Globals.glbRoleNothing);
+        private static int noRole = Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
 
-        /// <summary>Checks if a string is either null or empty ("").</summary>
+        /// <summary>Checks if a string is either null or empty (<c>""</c>).</summary>
         /// <param name="s">The string to check.</param>
         /// <returns>A value indicating whether the string is null or empty.</returns>
         [DnnDeprecated(9, 8, 0, "Use string.IsNullOrEmpty from System.String instead")]
         public static partial bool IsNullOrEmpty(this string s) => string.IsNullOrEmpty(s);
 
-        /// <summary>Checks if a string is either null or contains only whitespace (" ").</summary>
+        /// <summary>Checks if a string is either null or contains only whitespace (<c>" "</c>).</summary>
         /// <param name="s">The string to check.</param>
-        /// <returns>A value indicating whether the string is null or contains only whtespace.</returns>
+        /// <returns>A value indicating whether the string is null or contains only whitespace.</returns>
         [DnnDeprecated(9, 8, 0, "Use string.IsNullOrWhiteSpace from System.String instead")]
         public static partial bool IsNullOrWhiteSpace(this string s) => string.IsNullOrWhiteSpace(s);
 
@@ -68,10 +69,10 @@ namespace Dnn.ExportImport.Components.Common
             return serviceProvider.GetServices<BasePortableService>();
         }
 
-        /// <summary>Formats a size to a human readable format.</summary>
+        /// <summary>Formats a size to a human-readable format.</summary>
         /// <param name="bytes">The amount of bytes to represent.</param>
         /// <param name="decimals">How many decimal places to use in the resulting string.</param>
-        /// <returns>A human readable size format, for instance 1024 would return 1 KB.</returns>
+        /// <returns>A human-readable size format, for instance 1024 would return 1 KB.</returns>
         public static string FormatSize(long bytes, byte decimals = 1)
         {
             const long kb = 1024;
@@ -85,33 +86,33 @@ namespace Dnn.ExportImport.Components.Common
 
             if (bytes < mb)
             {
-                return (1.0 * bytes / kb).ToString("F" + decimals) + " KB";
+                return (1.0 * bytes / kb).ToString("F" + decimals, CultureInfo.CurrentCulture) + " KB";
             }
 
             if (bytes < gb)
             {
-                return (1.0 * bytes / mb).ToString("F" + decimals) + " MB";
+                return (1.0 * bytes / mb).ToString("F" + decimals, CultureInfo.CurrentCulture) + " MB";
             }
 
-            return (1.0 * bytes / gb).ToString("F" + decimals) + " GB";
+            return (1.0 * bytes / gb).ToString("F" + decimals, CultureInfo.CurrentCulture) + " GB";
         }
 
         /// <summary>Gets the export/import job cache key.</summary>
         /// <param name="job">The job to generate the key for.</param>
-        /// <returns>A string representing the cacke key.</returns>
+        /// <returns>A string representing the cache key.</returns>
         public static string GetExpImpJobCacheKey(ExportImportJob job)
         {
-            return string.Join(":", "ExpImpKey", job.PortalId.ToString(), job.JobId.ToString());
+            return string.Join(":", "ExpImpKey", job.PortalId.ToString(CultureInfo.InvariantCulture), job.JobId.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>Get the id of a user for populating audit control values.</summary>
         /// <param name="importJob">A reference to the import job.</param>
         /// <param name="exportedUserId">The user id for the user that created the export.</param>
-        /// <param name="exportUsername">The user name for the user that creted the export.</param>
+        /// <param name="exportUsername">The username for the user that created the export.</param>
         /// <returns>-1 if not found, 1 if the user is HOST, the user id if found on the imported site.</returns>
         public static int GetUserIdByName(ExportImportJob importJob, int? exportedUserId, string exportUsername)
         {
-            if (!exportedUserId.HasValue || exportedUserId <= 0)
+            if (exportedUserId is null or <= 0)
             {
                 return -1;
             }
@@ -336,7 +337,7 @@ namespace Dnn.ExportImport.Components.Common
         /// <returns>A human readable representation of the date and time.</returns>
         public static string GetDateTimeString(DateTime? dateTime)
         {
-            return dateTime?.ToString(Thread.CurrentThread.CurrentUICulture) ?? string.Empty;
+            return dateTime?.ToString(Thread.CurrentThread.CurrentCulture) ?? string.Empty;
         }
 
         /// <summary>Gets a string representation of a number formatted for the current thread culture.</summary>
@@ -344,7 +345,7 @@ namespace Dnn.ExportImport.Components.Common
         /// <returns>A string representing a number in the current thread culture format.</returns>
         public static string FormatNumber(int? number)
         {
-            return number?.ToString("n0", Thread.CurrentThread.CurrentUICulture);
+            return number?.ToString("n0", Thread.CurrentThread.CurrentCulture);
         }
     }
 }

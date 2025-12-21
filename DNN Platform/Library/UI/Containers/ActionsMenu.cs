@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common;
@@ -198,13 +199,14 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>ProcessNodes proceses a single node and its children.</summary>
+        /// <summary>ProcessNodes processes a single node and its children.</summary>
         /// <param name="objParent">The Node to process.</param>
         private void ProcessNodes(DNNNode objParent)
         {
             if (!string.IsNullOrEmpty(objParent.JSFunction))
             {
-                objParent.JSFunction = string.Format("if({0}){{{1}}};", objParent.JSFunction, this.Page.ClientScript.GetPostBackEventReference(this.ProviderControl.NavigationControl, objParent.ID));
+                var postBackEventReference = this.Page.ClientScript.GetPostBackEventReference(this.ProviderControl.NavigationControl, objParent.ID);
+                objParent.JSFunction = $"if({objParent.JSFunction}){{{postBackEventReference}}};";
             }
 
             foreach (DNNNode objNode in objParent.DNNNodes)
@@ -253,7 +255,7 @@ namespace DotNetNuke.UI.Containers
         {
             if (Globals.NumberMatchRegex.IsMatch(args.ID))
             {
-                ModuleAction action = this.ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
+                var action = this.ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID, CultureInfo.InvariantCulture));
                 if (!this.ActionManager.ProcessAction(action))
                 {
                     this.OnAction(new ActionEventArgs(action, this.ModuleControl.ModuleContext.Configuration));
@@ -267,10 +269,10 @@ namespace DotNetNuke.UI.Containers
             this.SetMenuDefaults();
             this.ActionRoot.Actions.AddRange(this.ModuleControl.ModuleContext.Actions); // Modules how add custom actions in control lifecycle will not have those actions populated...
 
-            ModuleAction objAction = this.ActionRoot;
-            if (this.ActionRoot.ID != Convert.ToInt32(args.ID))
+            var objAction = this.ActionRoot;
+            if (this.ActionRoot.ID != Convert.ToInt32(args.ID, CultureInfo.InvariantCulture))
             {
-                objAction = this.ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
+                objAction = this.ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID, CultureInfo.InvariantCulture));
             }
 
             if (args.Node == null)

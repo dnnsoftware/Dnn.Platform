@@ -6,6 +6,7 @@ namespace DotNetNuke.UI
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common.Utilities;
@@ -110,15 +111,14 @@ namespace DotNetNuke.UI
         {
             var objCol = new DNNNodeCollection(objControl.ClientID);
 
-            var objActionControl = objControl as IActionControl;
-            if (objActionControl != null)
+            if (objControl is IActionControl objActionControl)
             {
                 if (objActionRoot.Visible)
                 {
                     objCol.Add();
                     DNNNode objRoot = objCol[0];
-                    objRoot.ID = objActionRoot.ID.ToString();
-                    objRoot.Key = objActionRoot.ID.ToString();
+                    objRoot.ID = objActionRoot.ID.ToString(CultureInfo.InvariantCulture);
+                    objRoot.Key = objActionRoot.ID.ToString(CultureInfo.InvariantCulture);
                     objRoot.Text = objActionRoot.Title;
                     objRoot.NavigateURL = objActionRoot.Url;
                     objRoot.Image = objActionRoot.Icon;
@@ -289,8 +289,8 @@ namespace DotNetNuke.UI
                         {
                             int i = parentNode.DNNNodes.Add();
                             DNNNode node = parentNode.DNNNodes[i];
-                            node.ID = action.ID.ToString();
-                            node.Key = action.ID.ToString();
+                            node.ID = action.ID.ToString(CultureInfo.InvariantCulture);
+                            node.Key = action.ID.ToString(CultureInfo.InvariantCulture);
                             node.Text = action.Title; // no longer including SPACE in generic node collection, each control must handle how they want to display
                             if (string.IsNullOrEmpty(action.ClientScript) && string.IsNullOrEmpty(action.Url) && string.IsNullOrEmpty(action.CommandArgument))
                             {
@@ -364,7 +364,7 @@ namespace DotNetNuke.UI
                     objNode.Enabled = false;
                 }
 
-                objNode.ID = objTab.TabID.ToString();
+                objNode.ID = objTab.TabID.ToString(CultureInfo.InvariantCulture);
                 objNode.Key = objNode.ID;
                 objNode.Text = objTab.LocalizedTabName;
                 objNode.NavigateURL = objTab.FullUrl;
@@ -505,15 +505,13 @@ namespace DotNetNuke.UI
             // based off of tab properties, is it shown
             if (CanShowTab(objTab, TabPermissionController.CanAdminPage(), true, showHidden))
             {
-                DNNNodeCollection objParentNodes;
-                DNNNode objParentNode;
-                bool blnParentFound = nodesLookup.TryGetValue(objTab.ParentId.ToString(), out objParentNode);
+                bool blnParentFound = nodesLookup.TryGetValue(objTab.ParentId.ToString(CultureInfo.InvariantCulture), out var objParentNode);
                 if (!blnParentFound)
                 {
                     objParentNode = objRootNode;
                 }
 
-                objParentNodes = objParentNode.DNNNodes;
+                var objParentNodes = objParentNode.DNNNodes;
                 if (objTab.TabID == intStartTabId)
                 {
                     // is this the starting tab
@@ -523,7 +521,7 @@ namespace DotNetNuke.UI
                         if (objTabLookup[objTab.ParentId] != null)
                         {
                             AddNode((TabInfo)objTabLookup[objTab.ParentId], objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
-                            if (nodesLookup.TryGetValue(objTab.ParentId.ToString(), out objParentNode))
+                            if (nodesLookup.TryGetValue(objTab.ParentId.ToString(CultureInfo.InvariantCulture), out objParentNode))
                             {
                                 objParentNodes = objParentNode.DNNNodes;
                             }

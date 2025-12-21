@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -22,11 +23,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             if (comboBox != null)
             {
-                string selectedValue = !comboBox.Page.IsPostBack ? Convert.ToString(value) : comboBox.SelectedValue;
+                string selectedValue = !comboBox.Page.IsPostBack ? Convert.ToString(value, CultureInfo.InvariantCulture) : comboBox.SelectedValue;
 
-                if (listSource is Dictionary<string, string>)
+                if (listSource is Dictionary<string, string> items)
                 {
-                    var items = listSource as Dictionary<string, string>;
                     foreach (var item in items)
                     {
                         // comboBox.Items.Add(new ListItem(item.Key, item.Value));

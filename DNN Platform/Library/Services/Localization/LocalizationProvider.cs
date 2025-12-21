@@ -6,6 +6,8 @@ namespace DotNetNuke.Services.Localization
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -82,7 +84,7 @@ namespace DotNetNuke.Services.Localization
 
             if (!keyFound)
             {
-                Logger.WarnFormat("Missing localization key. key:{0} resFileRoot:{1} threadCulture:{2} userlan:{3}", key, resourceFileRoot, Thread.CurrentThread.CurrentUICulture, language);
+                Logger.WarnFormat(CultureInfo.InvariantCulture, "Missing localization key. key:{0} resFileRoot:{1} threadCulture:{2} userlan:{3}", key, resourceFileRoot, Thread.CurrentThread.CurrentUICulture, language);
             }
 
             return string.IsNullOrEmpty(resourceValue) ? string.Empty : resourceValue;
@@ -99,6 +101,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="createKey">if set to <see langword="true"/> a new key will be created if not found.</param>
         /// <returns>If the value could be saved then true will be returned, otherwise false.</returns>
         /// <exception cref="System.Exception">Any file io error or similar will lead to exceptions.</exception>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public bool SaveString(string key, string value, string resourceFileRoot, string language, PortalSettings portalSettings, CustomizedLocale resourceType, bool createFile, bool createKey)
         {
             try
@@ -603,7 +606,7 @@ namespace DotNetNuke.Services.Localization
             {
                 if (Globals.ApplicationPath != "/portals")
                 {
-                    if (cacheKey.StartsWith(Globals.ApplicationPath))
+                    if (cacheKey.StartsWith(Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase))
                     {
                         cacheKey = cacheKey.Substring(Globals.ApplicationPath.Length);
                     }
@@ -611,7 +614,7 @@ namespace DotNetNuke.Services.Localization
                 else
                 {
                     cacheKey = "~" + cacheKey;
-                    if (cacheKey.StartsWith("~" + Globals.ApplicationPath))
+                    if (cacheKey.StartsWith("~" + Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase))
                     {
                         cacheKey = cacheKey.Substring(Globals.ApplicationPath.Length + 1);
                     }

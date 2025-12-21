@@ -24,9 +24,11 @@ namespace DotNetNuke.Entities.Modules.Definitions
         V2 = 2,
 
         /// <summary>Version two of a skin.</summary>
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         V2_Skin = 3,
 
         /// <summary>Version two of a provider.</summary>
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         V2_Provider = 4,
 
         /// <summary>Version three.</summary>

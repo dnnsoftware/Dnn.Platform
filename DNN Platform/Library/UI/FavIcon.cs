@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.UI.Internals
 {
+    using System.Globalization;
     using System.Net;
 
     using DotNetNuke.Abstractions.Application;
@@ -75,7 +76,8 @@ namespace DotNetNuke.UI.Internals
         /// <param name="fileId">The file id or Null.NullInteger for none.</param>
         public void Update(int fileId)
         {
-            PortalController.UpdatePortalSetting(this.portalId, SettingName, fileId != Null.NullInteger ? string.Format("FileID={0}", fileId) : string.Empty, /*clearCache*/ true);
+            var settingValue = fileId != Null.NullInteger ? string.Format(CultureInfo.InvariantCulture, "FileID={0}", fileId) : string.Empty;
+            PortalController.UpdatePortalSetting(this.portalId, SettingName, settingValue, clearCache: true);
             DataCache.ClearCache(GetCacheKey(this.portalId));
         }
 

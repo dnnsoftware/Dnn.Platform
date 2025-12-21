@@ -134,7 +134,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return this.ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1);
+                return this.ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/", StringComparison.Ordinal) + 1);
             }
         }
 

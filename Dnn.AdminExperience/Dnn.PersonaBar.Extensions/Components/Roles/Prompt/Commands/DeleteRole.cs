@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Net;
 
     using Dnn.PersonaBar.Library.Prompt;
@@ -28,7 +29,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
-        public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing);
+        public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
 
         /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)

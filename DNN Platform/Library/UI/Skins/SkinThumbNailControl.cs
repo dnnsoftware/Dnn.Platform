@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.Skins
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -25,12 +26,14 @@ namespace DotNetNuke.UI.Skins
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected HtmlGenericControl ControlContainer;
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected RadioButtonList OptSkin;
@@ -41,7 +44,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToString(this.ViewState["SkinControlBorder"]);
+                return Convert.ToString(this.ViewState["SkinControlBorder"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -61,7 +64,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToInt32(this.ViewState["SkinControlColumns"]);
+                return Convert.ToInt32(this.ViewState["SkinControlColumns"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -78,7 +81,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToString(this.ViewState["SkinControlHeight"]);
+                return Convert.ToString(this.ViewState["SkinControlHeight"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -95,7 +98,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToString(this.ViewState["SkinRoot"]);
+                return Convert.ToString(this.ViewState["SkinRoot"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -130,7 +133,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToString(this.ViewState["SkinControlWidth"]);
+                return Convert.ToString(this.ViewState["SkinControlWidth"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -183,7 +186,7 @@ namespace DotNetNuke.UI.Skins
                 var arrFolders = Directory.GetDirectories(strRoot);
                 foreach (var strFolder in arrFolders)
                 {
-                    if (!strFolder.EndsWith(Globals.glbHostSkinFolder))
+                    if (!strFolder.EndsWith(Globals.glbHostSkinFolder, StringComparison.OrdinalIgnoreCase))
                     {
                         this.LoadSkins(strFolder, "[G]", false);
                     }
@@ -228,7 +231,7 @@ namespace DotNetNuke.UI.Skins
             if (Directory.Exists(strFolder))
             {
                 var arrFiles = Directory.GetFiles(strFolder, "*.ascx");
-                strFolder = strFolder.Substring(strFolder.LastIndexOf("\\") + 1);
+                strFolder = strFolder.Substring(strFolder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
 
                 foreach (var strFile in arrFiles)
                 {
@@ -256,7 +259,7 @@ namespace DotNetNuke.UI.Skins
                 case "default":
                     return strSkinFolder;
                 default:
-                    return string.Format("<span class=\"NormalBold\">{0} - {1}</span>", strSkinFolder, strSkinFile);
+                    return $"<span class=\"NormalBold\">{strSkinFolder} - {strSkinFile}</span>";
             }
         }
 
@@ -332,7 +335,7 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
-            strThumbnail = Globals.ApplicationPath + "\\" + strThumbnail.Substring(strThumbnail.IndexOf("portals\\", StringComparison.InvariantCultureIgnoreCase));
+            strThumbnail = Globals.ApplicationPath + @"\" + strThumbnail.Substring(strThumbnail.IndexOf("portals\\", StringComparison.InvariantCultureIgnoreCase));
             return strThumbnail;
         }
 
@@ -340,7 +343,7 @@ namespace DotNetNuke.UI.Skins
         private void AddDefaultSkin()
         {
             var strDefault = Localization.GetString("Not_Specified") + "<br />";
-            strDefault += "<img src=\"" + Globals.ApplicationPath.Replace("\\", "/") + "/images/spacer.gif\" width=\"140\" height=\"135\" border=\"0\">";
+            strDefault += "<img src=\"" + Globals.ApplicationPath.Replace(@"\", "/") + "/images/spacer.gif\" width=\"140\" height=\"135\" border=\"0\">";
             this.OptSkin.Items.Insert(0, new ListItem(strDefault, string.Empty));
         }
 
@@ -354,11 +357,11 @@ namespace DotNetNuke.UI.Skins
             if (File.Exists(strFile.Replace(".ascx", ".jpg")))
             {
                 strImage += "<a href=\"" + CreateThumbnail(strFile.Replace(".ascx", ".jpg")).Replace("thumbnail_", string.Empty) + "\" target=\"_blank\"><img src=\"" +
-                            CreateThumbnail(strFile.Replace(".ascx", ".jpg")).Replace("\\", "/") + "\" border=\"1\"></a>";
+                            CreateThumbnail(strFile.Replace(".ascx", ".jpg")).Replace(@"\", "/") + "\" border=\"1\"></a>";
             }
             else
             {
-                strImage += "<img src=\"" + Globals.ApplicationPath.Replace("\\", "/") + "/images/thumbnail.jpg\" border=\"1\">";
+                strImage += "<img src=\"" + Globals.ApplicationPath.Replace(@"\", "/") + "/images/thumbnail.jpg\" border=\"1\">";
             }
 
             this.OptSkin.Items.Add(new ListItem(FormatSkinName(strFolder, Path.GetFileNameWithoutExtension(strFile)) + "<br />" + strImage, root + "/" + strFolder + "/" + Path.GetFileName(strFile)));

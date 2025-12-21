@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Personalization
     using System;
     using System.Collections;
     using System.Data;
+    using System.Globalization;
     using System.Web;
 
     using DotNetNuke.Abstractions.Application;
@@ -50,11 +51,11 @@ namespace DotNetNuke.Services.Personalization
         // override allows for manipulation of PersonalizationInfo outside of HTTPContext
         public PersonalizationInfo LoadProfile(int userId, int portalId)
         {
-            var personalization = new PersonalizationInfo { UserId = userId, PortalId = portalId, IsModified = false };
+            var personalization = new PersonalizationInfo { UserId = userId, PortalId = portalId, IsModified = false, };
             string profileData = Null.NullString;
             if (userId > Null.NullInteger)
             {
-                var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
+                var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.UserPersonalizationCacheKey, portalId, userId);
                 profileData = CBO.GetCachedObject<string>(
                     new CacheItemArgs(
                         cacheKey,
@@ -104,7 +105,7 @@ namespace DotNetNuke.Services.Personalization
         // override allows for manipulation of PersonalizationInfo outside of HTTPContext
         public void SaveProfile(PersonalizationInfo personalization, int userId, int portalId)
         {
-            if (personalization != null && personalization.IsModified)
+            if (personalization is { IsModified: true, })
             {
                 var profileData = XmlUtils.SerializeDictionary(personalization.Profile, "profile");
                 if (userId > Null.NullInteger)
@@ -112,7 +113,7 @@ namespace DotNetNuke.Services.Personalization
                     DataProvider.Instance().UpdateProfile(userId, portalId, profileData);
 
                     // remove then re-add the updated one
-                    var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
+                    var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.UserPersonalizationCacheKey, portalId, userId);
                     DataCache.RemoveCache(cacheKey);
                     CBO.GetCachedObject<string>(
                         new CacheItemArgs(

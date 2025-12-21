@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 {
     using System;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Xml;
@@ -26,6 +27,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallController));
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public ParseResultDto ParsePackage(PortalSettings portalSettings, UserInfo user, string filePath, Stream stream)
         {
             var parseResult = new ParseResultDto();
@@ -90,6 +92,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public InstallResultDto InstallPackage(PortalSettings portalSettings, UserInfo user, string legacySkin, string filePath, Stream stream, bool isPortalPackage = false)
         {
             var installResult = new InstallResultDto();

@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -120,7 +121,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
         private static string GetWorkflowStateKey(int stateId)
         {
-            return string.Format(DataCache.ContentWorkflowStateCacheKey, stateId);
+            return string.Format(CultureInfo.InvariantCulture, DataCache.ContentWorkflowStateCacheKey, stateId);
         }
 
         private static void CacheWorkflowState(WorkflowState state)

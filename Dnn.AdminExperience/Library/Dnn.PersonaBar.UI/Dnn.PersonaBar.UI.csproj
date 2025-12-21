@@ -12,14 +12,10 @@
     <AnalysisMode>Recommended</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>1591</NoWarn>
-    <WarningsNotAsErrors>CA1305,CA1725,CA3075</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CA3075</WarningsNotAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="admin\personaBar\data\adminpages.resources" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
@@ -61,6 +57,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="admin\personaBar\data\adminpages.resources" />
     <EmbeddedResource Include="admin\personaBar\data\adminpages.resources" />
   </ItemGroup>
 

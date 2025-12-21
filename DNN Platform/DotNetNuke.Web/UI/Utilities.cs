@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.UI
                 if (string.IsNullOrEmpty(controlName))
                 {
                     controlName = targetControl.GetType().BaseType.Name;
-                    if (controlName.StartsWith("Rad") || controlName.StartsWith("Dnn"))
+                    if (controlName.StartsWith("Rad", StringComparison.Ordinal) || controlName.StartsWith("Dnn", StringComparison.Ordinal))
                     {
                         controlName = controlName.Substring(3);
                     }
@@ -75,15 +75,15 @@ namespace DotNetNuke.Web.UI
                     webControlSkinName = "default";
                 }
 
-                if (skinVirtualFolder.EndsWith("/"))
+                if (skinVirtualFolder.EndsWith("/", StringComparison.Ordinal))
                 {
                     skinVirtualFolder = skinVirtualFolder.Substring(0, skinVirtualFolder.Length - 1);
                 }
 
-                int lastIndex = skinVirtualFolder.LastIndexOf("/");
+                int lastIndex = skinVirtualFolder.LastIndexOf("/", StringComparison.Ordinal);
                 if (lastIndex > -1 && skinVirtualFolder.Length > lastIndex)
                 {
-                    skinName = skinVirtualFolder.Substring(skinVirtualFolder.LastIndexOf("/") + 1);
+                    skinName = skinVirtualFolder.Substring(skinVirtualFolder.LastIndexOf("/", StringComparison.Ordinal) + 1);
                 }
 
                 string systemWebControlSkin = string.Empty;
@@ -93,7 +93,7 @@ namespace DotNetNuke.Web.UI
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, "WebControlSkin");
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, skinName);
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, controlSubSkinName);
-                    systemWebControlSkin = Path.Combine(systemWebControlSkin, string.Format("{0}.{1}.css", controlName, webControlSkinName));
+                    systemWebControlSkin = Path.Combine(systemWebControlSkin, $"{controlName}.{webControlSkinName}.css");
 
                     // Check if the selected skin has the webcontrol skin
                     if (!File.Exists(systemWebControlSkin))
@@ -107,7 +107,7 @@ namespace DotNetNuke.Web.UI
                         skinVirtualFolder = targetControl.ResolveUrl("~/Portals/_default/Skins/_default");
                         skinName = "Default";
 
-                        if (skinVirtualFolder.EndsWith("/"))
+                        if (skinVirtualFolder.EndsWith("/", StringComparison.Ordinal))
                         {
                             skinVirtualFolder = skinVirtualFolder.Substring(0, skinVirtualFolder.Length - 1);
                         }
@@ -118,7 +118,7 @@ namespace DotNetNuke.Web.UI
                             systemWebControlSkin = Path.Combine(systemWebControlSkin, "WebControlSkin");
                             systemWebControlSkin = Path.Combine(systemWebControlSkin, skinName);
                             systemWebControlSkin = Path.Combine(systemWebControlSkin, controlSubSkinName);
-                            systemWebControlSkin = Path.Combine(systemWebControlSkin, string.Format("{0}.{1}.css", controlName, webControlSkinName));
+                            systemWebControlSkin = Path.Combine(systemWebControlSkin, $"{controlName}.{webControlSkinName}.css");
 
                             if (!File.Exists(systemWebControlSkin))
                             {
@@ -133,7 +133,7 @@ namespace DotNetNuke.Web.UI
                     string filePath = Path.Combine(skinVirtualFolder, "WebControlSkin");
                     filePath = Path.Combine(filePath, skinName);
                     filePath = Path.Combine(filePath, controlSubSkinName);
-                    filePath = Path.Combine(filePath, string.Format("{0}.{1}.css", controlName, webControlSkinName));
+                    filePath = Path.Combine(filePath, $"{controlName}.{webControlSkinName}.css");
                     filePath = filePath.Replace('\\', '/').Replace("//", "/").TrimEnd('/');
 
                     if (HttpContext.Current != null && HttpContext.Current.Handler is Page)
@@ -244,6 +244,7 @@ namespace DotNetNuke.Web.UI
 
             // function(text, mozEvent, oWidth, oHeight, callerObj, oTitle)
             return string.Format(
+                CultureInfo.InvariantCulture,
                 "return postBackConfirm('{0}', event, '{1}', '{2}', '', '{3}');",
                 HttpUtility.JavaScriptStringEncode(message.Message),
                 HttpUtility.JavaScriptStringEncode(message.WindowWidth.ToString(CultureInfo.InvariantCulture)),
@@ -255,7 +256,7 @@ namespace DotNetNuke.Web.UI
         {
             if (value != null)
             {
-                return Convert.ToString(value);
+                return Convert.ToString(value, CultureInfo.InvariantCulture);
             }
 
             return defaultValue;

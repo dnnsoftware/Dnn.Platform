@@ -4,6 +4,7 @@
 namespace DotNetNuke.HttpModules.UsersOnline
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -18,6 +19,7 @@ namespace DotNetNuke.HttpModules.UsersOnline
         public string ModuleName => "UsersOnlineModule";
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication application)
         {
             application.AuthorizeRequest += this.OnAuthorizeRequest;

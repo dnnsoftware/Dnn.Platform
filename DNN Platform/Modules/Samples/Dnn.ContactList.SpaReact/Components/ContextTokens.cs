@@ -23,20 +23,23 @@ namespace Dnn.ContactList.SpaReact.Components
             this.security = new SecurityContext(moduleContext.Configuration, user);
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            switch (propertyName.ToLower())
+            switch (propertyName.ToUpperInvariant())
             {
-                case "security":
+                case "SECURITY":
                     return HttpUtility.HtmlAttributeEncode(JsonConvert.SerializeObject(this.security));
-                case "module":
-                    return HttpUtility.HtmlAttributeEncode(JsonConvert.SerializeObject(new
-                    {
-                        this.moduleContext.ModuleId,
-                        this.moduleContext.TabId,
-                        this.moduleContext.TabModuleId,
-                        this.moduleContext.PortalId,
-                    }));
+                case "MODULE":
+                    return HttpUtility.HtmlAttributeEncode(
+                        JsonConvert.SerializeObject(
+                            new
+                            {
+                                this.moduleContext.ModuleId,
+                                this.moduleContext.TabId,
+                                this.moduleContext.TabModuleId,
+                                this.moduleContext.PortalId,
+                            }));
                 default:
                     propertyNotFound = true;
                     return string.Empty;

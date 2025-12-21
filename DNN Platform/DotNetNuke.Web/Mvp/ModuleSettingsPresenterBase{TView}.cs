@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.Mvp
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using DotNetNuke.Internal.SourceGenerators;
 
@@ -38,12 +39,12 @@ namespace DotNetNuke.Web.Mvp
 
             foreach (var key in this.ModuleContext.Configuration.ModuleSettings.Keys)
             {
-                this.ModuleSettings.Add(Convert.ToString(key), Convert.ToString(this.ModuleContext.Configuration.ModuleSettings[key]));
+                this.ModuleSettings.Add(Convert.ToString(key, CultureInfo.InvariantCulture), Convert.ToString(this.ModuleContext.Configuration.ModuleSettings[key], CultureInfo.InvariantCulture));
             }
 
             foreach (var key in this.ModuleContext.Configuration.TabModuleSettings.Keys)
             {
-                this.TabModuleSettings.Add(Convert.ToString(key), Convert.ToString(this.ModuleContext.Configuration.TabModuleSettings[key]));
+                this.TabModuleSettings.Add(Convert.ToString(key, CultureInfo.InvariantCulture), Convert.ToString(this.ModuleContext.Configuration.TabModuleSettings[key], CultureInfo.InvariantCulture));
             }
         }
 

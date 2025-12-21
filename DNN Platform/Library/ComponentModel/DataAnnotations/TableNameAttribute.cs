@@ -5,6 +5,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 {
     using System;
 
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     public class TableNameAttribute : Attribute
     {
         /// <summary>Initializes a new instance of the <see cref="TableNameAttribute"/> class.</summary>

@@ -5,11 +5,13 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Web.UI;
 
     /// <summary>Restricts the client to add only controls of specific type into the control collection.</summary>
     /// <typeparam name="T">The type of control.</typeparam>
-    public sealed class TypedControlCollection<T> : ControlCollection
+    public class TypedControlCollection<T> : ControlCollection, IList<T>
         where T : Control
     {
         /// <summary>Initializes a new instance of the <see cref="TypedControlCollection{T}"/> class.</summary>
@@ -19,12 +21,27 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
+        /// <inheritdoc />
+        public new T this[int index]
+        {
+            get => (T)base[index];
+            set => throw new NotSupportedException();
+        }
+
+        /// <inheritdoc />
+        public int IndexOf(T item)
+            => base.IndexOf(item);
+
+        /// <inheritdoc />
+        public void Insert(int index, T item)
+            => throw new NotSupportedException();
+
         /// <inheritdoc/>
         public override void Add(Control child)
         {
-            if (!(child is T))
+            if (child is not T item)
             {
-                throw new InvalidOperationException("Not supported");
+                this.ThrowOnInvalidControlType();
             }
 
             base.Add(child);
@@ -33,12 +50,63 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <inheritdoc/>
         public override void AddAt(int index, Control child)
         {
-            if (!(child is T))
+            if (child is not T)
             {
-                throw new InvalidOperationException("Not supported");
+                this.ThrowOnInvalidControlType();
             }
 
             base.AddAt(index, child);
+        }
+
+        /// <inheritdoc />
+        public void Add(T item)
+            => base.Add(item);
+
+        /// <inheritdoc />
+        public bool Contains(T item)
+            => base.Contains(item);
+
+        /// <inheritdoc />
+        public void CopyTo(T[] array, int arrayIndex)
+            => base.CopyTo(array, arrayIndex);
+
+        /// <inheritdoc />
+        public bool Remove(T item)
+        {
+            if (!this.Contains(item))
+            {
+                return false;
+            }
+
+            base.Remove(item);
+            return true;
+        }
+
+        /// <inheritdoc />
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+            => new TypedEnumerator(this.GetEnumerator());
+
+        protected virtual void ThrowOnInvalidControlType()
+        {
+            throw new InvalidOperationException("Not supported");
+        }
+
+        private sealed class TypedEnumerator(IEnumerator enumerator) : IEnumerator<T>
+        {
+            /// <inheritdoc />
+            public T Current => (T)enumerator.Current;
+
+            /// <inheritdoc />
+            object IEnumerator.Current => this.Current;
+
+            /// <inheritdoc />
+            public void Dispose() => (enumerator as IDisposable)?.Dispose();
+
+            /// <inheritdoc />
+            public bool MoveNext() => enumerator.MoveNext();
+
+            /// <inheritdoc />
+            public void Reset() => enumerator.Reset();
         }
     }
 }

@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.ExtensionPoints
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -13,13 +14,17 @@ namespace DotNetNuke.ExtensionPoints
         public string Text { get; set; }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void RenderContents(HtmlTextWriter op)
         {
-            op.Write(@"<div class=""" + this.CssClass + @""">
-	<h2 id=""" + this.PanelId + @""" class=""dnnFormSectionHead"">
-<a href="" class=""dnnLabelExpanded"">" + this.Text + @"</a>
-</h2>
-	<fieldset>");
+            op.Write(
+                $"""
+                 <div class="{this.CssClass}">
+                 	<h2 id="{this.PanelId}" class="dnnFormSectionHead">
+                 <a href=" class="dnnLabelExpanded">{this.Text}</a>
+                 </h2>
+                 	<fieldset>
+                 """);
             base.RenderContents(op);
             op.Write("</fieldset></div>");
         }

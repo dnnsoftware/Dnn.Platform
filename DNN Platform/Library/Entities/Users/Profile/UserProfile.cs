@@ -6,6 +6,7 @@
 namespace DotNetNuke.Entities.Users
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Xml.Serialization;
 
@@ -25,6 +26,7 @@ namespace DotNetNuke.Entities.Users
     public class UserProfile : IIndexable
     {
 #pragma warning disable SA1310 // Field names should not contain underscore
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 #pragma warning disable SA1600 // Elements should be documented
         // Name properties
         [Obsolete("Deprecated in DotNetNuke 9.8.0. Use the properties on this class instead. Scheduled for removal in v11.0.0.")]
@@ -74,6 +76,7 @@ namespace DotNetNuke.Entities.Users
         [Obsolete("Deprecated in DotNetNuke 9.8.0. Use the properties on this class instead. Scheduled for removal in v11.0.0.")]
         public const string USERPROFILE_Biography = UserProfileBiography;
 #pragma warning restore SA1310 // Field names should not contain underscore
+#pragma warning restore CA1707 // Identifiers should not contain underscores
 #pragma warning restore SA1600 // Elements should be documented
 
         private const string UserProfileFirstName = "FirstName";
@@ -155,7 +158,7 @@ namespace DotNetNuke.Entities.Users
                     bool isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, this.user);
                     if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
                     {
-                        var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
+                        var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue, CultureInfo.InvariantCulture));
                         if (fileInfo != null)
                         {
                             photoURL = FileManager.Instance.GetUrl(fileInfo);
@@ -462,19 +465,17 @@ namespace DotNetNuke.Entities.Users
             set
             {
                 string stringValue;
-                if (value is DateTime)
+                if (value is DateTime dateValue)
                 {
-                    var dateValue = (DateTime)value;
                     stringValue = dateValue.ToString(CultureInfo.InvariantCulture);
                 }
-                else if (value is TimeZoneInfo)
+                else if (value is TimeZoneInfo timezoneValue)
                 {
-                    var timezoneValue = (TimeZoneInfo)value;
                     stringValue = timezoneValue.Id;
                 }
                 else
                 {
-                    stringValue = Convert.ToString(value);
+                    stringValue = Convert.ToString(value, CultureInfo.InvariantCulture);
                 }
 
                 this.SetProfileProperty(name, stringValue);
@@ -522,11 +523,11 @@ namespace DotNetNuke.Entities.Users
                     var dataType = controller.GetListEntryInfo("DataType", profileProp.DataType);
                     if (dataType == null)
                     {
-                        LoggerSource.Instance.GetLogger(typeof(UserProfile)).ErrorFormat("Invalid data type {0} for profile property {1}", profileProp.DataType, profileProp.PropertyName);
+                        LoggerSource.Instance.GetLogger(typeof(UserProfile)).ErrorFormat(CultureInfo.InvariantCulture, "Invalid data type {0} for profile property {1}", profileProp.DataType, profileProp.PropertyName);
                         return propValue;
                     }
 
-                    if (dataType.Value == "Country" || dataType.Value == "Region")
+                    if (dataType.Value is "Country" or "Region")
                     {
                         propValue = GetListValue(dataType.Value, propValue);
                     }

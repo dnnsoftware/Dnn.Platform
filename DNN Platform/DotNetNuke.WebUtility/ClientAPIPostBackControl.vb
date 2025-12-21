@@ -1,6 +1,7 @@
-' Copyright (c) .NET Foundation. All rights reserved.
+﻿' Copyright (c) .NET Foundation. All rights reserved.
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
+Imports System.Diagnostics.CodeAnalysis
 Imports System.Web.UI
 
 Namespace DotNetNuke.UI.Utilities
@@ -99,6 +100,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' 	[Jon Henning]	9/15/2004	Created
         ''' </history>
         ''' -----------------------------------------------------------------------------
+        <SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification := "Breaking change")>
         Public Sub RaisePostBackEvent(ByVal strEventArgument As String) Implements System.Web.UI.IPostBackEventHandler.RaisePostBackEvent
             Dim objArg As ClientAPIPostBackEventArgs = New ClientAPIPostBackEventArgs(strEventArgument)
             If Not EventHandlers(objArg.EventName) Is Nothing Then

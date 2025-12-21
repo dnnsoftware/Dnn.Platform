@@ -8,6 +8,7 @@ namespace DotNetNuke.UI.WebControls
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Reflection;
     using System.Web.UI;
     using System.Web.UI.WebControls;
@@ -321,11 +322,11 @@ namespace DotNetNuke.UI.WebControls
             {
                 foreach (object item in dataList)
                 {
-                    BindingFlags bindings = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
+                    const BindingFlags bindings = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
                     PropertyInfo objTextProperty = item.GetType().GetProperty(this.DataTextField, bindings);
                     PropertyInfo objValueProperty = item.GetType().GetProperty(this.DataValueField, bindings);
-                    string objValue = Convert.ToString(objValueProperty.GetValue(item, null));
-                    string objText = Convert.ToString(objTextProperty.GetValue(item, null));
+                    string objValue = Convert.ToString(objValueProperty.GetValue(item, null), CultureInfo.InvariantCulture);
+                    string objText = Convert.ToString(objTextProperty.GetValue(item, null), CultureInfo.InvariantCulture);
 
                     list.Add(objText, objValue);
                 }
@@ -337,7 +338,7 @@ namespace DotNetNuke.UI.WebControls
         private void RenderButton(string buttonType, HtmlTextWriter writer)
         {
             string buttonText = Null.NullString;
-            string imageURL = Null.NullString;
+            string imageUrl = Null.NullString;
 
             // Begin Button Row
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
@@ -350,25 +351,25 @@ namespace DotNetNuke.UI.WebControls
                     buttonText = string.IsNullOrEmpty(this.AddKey)
                                     ? this.AddText
                                     : Localization.GetString(this.AddKey, this.LocalResourceFile);
-                    imageURL = this.AddImageURL;
+                    imageUrl = this.AddImageURL;
                     break;
                 case "AddAll":
                     buttonText = string.IsNullOrEmpty(this.AddAllKey)
                                     ? this.AddAllText
                                     : Localization.GetString(this.AddAllKey, this.LocalResourceFile);
-                    imageURL = this.AddAllImageURL;
+                    imageUrl = this.AddAllImageURL;
                     break;
                 case "Remove":
                     buttonText = string.IsNullOrEmpty(this.RemoveKey)
                                     ? this.RemoveText
                                     : Localization.GetString(this.RemoveKey, this.LocalResourceFile);
-                    imageURL = this.RemoveImageURL;
+                    imageUrl = this.RemoveImageURL;
                     break;
                 case "RemoveAll":
                     buttonText = string.IsNullOrEmpty(this.RemoveAllKey)
                                     ? this.RemoveAllText
                                     : Localization.GetString(this.RemoveAllKey, this.LocalResourceFile);
-                    imageURL = this.RemoveAllImageURL;
+                    imageUrl = this.RemoveAllImageURL;
                     break;
             }
 
@@ -378,9 +379,9 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderBeginTag(HtmlTextWriterTag.A);
 
             // Render Image
-            if (!string.IsNullOrEmpty(imageURL))
+            if (!string.IsNullOrEmpty(imageUrl))
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Src, this.ResolveClientUrl(imageURL));
+                writer.AddAttribute(HtmlTextWriterAttribute.Src, this.ResolveClientUrl(imageUrl));
                 writer.AddAttribute(HtmlTextWriterAttribute.Title, buttonText);
                 writer.AddAttribute(HtmlTextWriterAttribute.Border, "0");
                 writer.RenderBeginTag(HtmlTextWriterTag.Img);

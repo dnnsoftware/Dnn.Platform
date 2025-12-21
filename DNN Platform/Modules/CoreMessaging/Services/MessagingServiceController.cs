@@ -478,7 +478,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
                 var resourceFile = string.Format(
                     "~/DesktopModules/{0}/{1}/{2}",
-                    desktopModule.FolderName.Replace("\\", "/"),
+                    desktopModule.FolderName.Replace(@"\", "/"),
                     Localization.LocalResourceDirectory,
                     Localization.LocalSharedResourceFile);
 

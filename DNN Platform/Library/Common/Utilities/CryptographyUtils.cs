@@ -5,6 +5,7 @@
 namespace DotNetNuke.Common.Utilities
 {
     using System;
+    using System.Globalization;
     using System.Security.Cryptography;
     using System.Text;
 
@@ -95,11 +96,11 @@ namespace DotNetNuke.Common.Utilities
                 // create a StringBuilder object
                 var stringBuilder = new StringBuilder();
 
-                // loop to each each byte
+                // loop to each byte
                 foreach (var b in hashedByteArray)
                 {
                     // append it to our StringBuilder
-                    stringBuilder.Append(b.ToString("x2").ToLowerInvariant());
+                    stringBuilder.Append(b.ToString("x2", CultureInfo.InvariantCulture).ToLowerInvariant());
                 }
 
                 // return the hashed value

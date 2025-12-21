@@ -7,10 +7,12 @@ namespace DotNetNuke.Entities.Urls
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Data;
+    using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -57,82 +59,80 @@ namespace DotNetNuke.Entities.Urls
         /// <remarks>Note : similar copy for UI purposes in ConfigurationController.cs.</remarks>
         public static List<ExtensionUrlProvider> GetModuleProviders(int portalId)
         {
-            var cacheKey = string.Format("ExtensionUrlProviders_{0}", portalId);
+            var cacheKey = FormattableString.Invariant($"ExtensionUrlProviders_{portalId}");
             var moduleProviders = CBO.GetCachedObject<List<ExtensionUrlProvider>>(
                 new CacheItemArgs(
-                cacheKey,
-                60,
-                CacheItemPriority.High,
-                portalId),
-                c =>
-                                    {
-                                        var id = (int)c.Params[0];
-                                        IDataReader dr = DataProvider.Instance().GetExtensionUrlProviders(id);
-                                        try
-                                        {
-                                            var providers = new List<ExtensionUrlProvider>();
-                                            var providerConfigs = CBO.FillCollection(dr, new List<ExtensionUrlProviderInfo>(), false);
+                    cacheKey,
+                    60,
+                    CacheItemPriority.High,
+                    portalId),
+                static c =>
+                {
+                    var id = (int)c.Params[0];
+                    IDataReader dr = DataProvider.Instance().GetExtensionUrlProviders(id);
+                    try
+                    {
+                        var providers = new List<ExtensionUrlProvider>();
+                        var providerConfigs = CBO.FillCollection(dr, new List<ExtensionUrlProviderInfo>(), false);
 
-                                            foreach (var providerConfig in providerConfigs)
-                                            {
-                                                var providerType = Reflection.CreateType(providerConfig.ProviderType);
-                                                if (providerType == null)
-                                                {
-                                                    continue;
-                                                }
+                        foreach (var providerConfig in providerConfigs)
+                        {
+                            var providerType = Reflection.CreateType(providerConfig.ProviderType);
+                            if (providerType == null)
+                            {
+                                continue;
+                            }
 
-                                                var provider = Reflection.CreateObject(providerType) as ExtensionUrlProvider;
-                                                if (provider == null)
-                                                {
-                                                    continue;
-                                                }
+                            if (Reflection.CreateObject(providerType) is not ExtensionUrlProvider provider)
+                            {
+                                continue;
+                            }
 
-                                                provider.ProviderConfig = providerConfig;
-                                                provider.ProviderConfig.PortalId = id;
-                                                providers.Add(provider);
-                                            }
+                            provider.ProviderConfig = providerConfig;
+                            provider.ProviderConfig.PortalId = id;
+                            providers.Add(provider);
+                        }
 
-                                            if (dr.NextResult())
-                                            {
-                                                // Setup Settings
-                                                while (dr.Read())
-                                                {
-                                                    var extensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderID"]);
-                                                    var key = Null.SetNullString(dr["SettingName"]);
-                                                    var value = Null.SetNullString(dr["SettingValue"]);
+                        if (dr.NextResult())
+                        {
+                            // Setup Settings
+                            while (dr.Read())
+                            {
+                                var extensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderID"]);
+                                var key = Null.SetNullString(dr["SettingName"]);
+                                var value = Null.SetNullString(dr["SettingValue"]);
 
-                                                    var provider = providers.SingleOrDefault(p => p.ProviderConfig.ExtensionUrlProviderId == extensionUrlProviderId);
-                                                    if (provider != null)
-                                                    {
-                                                        provider.ProviderConfig.Settings[key] = value;
-                                                    }
-                                                }
-                                            }
+                                var provider = providers.SingleOrDefault(p =>
+                                    p.ProviderConfig.ExtensionUrlProviderId == extensionUrlProviderId);
+                                provider?.ProviderConfig.Settings[key] = value;
+                            }
+                        }
 
-                                            if (dr.NextResult())
-                                            {
-                                                // Setup Tabs
-                                                while (dr.Read())
-                                                {
-                                                    var extensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderID"]);
-                                                    var tabId = Null.SetNullInteger(dr["TabID"]);
+                        if (dr.NextResult())
+                        {
+                            // Setup Tabs
+                            while (dr.Read())
+                            {
+                                var extensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderID"]);
+                                var tabId = Null.SetNullInteger(dr["TabID"]);
 
-                                                    var provider = providers.SingleOrDefault(p => p.ProviderConfig.ExtensionUrlProviderId == extensionUrlProviderId);
-                                                    if (provider != null && !provider.ProviderConfig.TabIds.Contains(tabId))
-                                                    {
-                                                        provider.ProviderConfig.TabIds.Add(tabId);
-                                                    }
-                                                }
-                                            }
+                                var provider = providers.SingleOrDefault(p =>
+                                    p.ProviderConfig.ExtensionUrlProviderId == extensionUrlProviderId);
+                                if (provider != null && !provider.ProviderConfig.TabIds.Contains(tabId))
+                                {
+                                    provider.ProviderConfig.TabIds.Add(tabId);
+                                }
+                            }
+                        }
 
-                                            return providers;
-                                        }
-                                        finally
-                                        {
-                                            // Close reader
-                                            CBO.CloseDataReader(dr, true);
-                                        }
-                                    });
+                        return providers;
+                    }
+                    finally
+                    {
+                        // Close reader
+                        CBO.CloseDataReader(dr, true);
+                    }
+                });
 
             return moduleProviders;
         }
@@ -208,8 +208,8 @@ namespace DotNetNuke.Entities.Urls
                         log.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl) ? "[no redirect]" : result.FinalUrl);
                         log.AddProperty("Action", result.Action.ToString());
                         log.AddProperty("Reason", result.Reason.ToString());
-                        log.AddProperty("Portal Id", result.PortalId.ToString());
-                        log.AddProperty("Tab Id", result.TabId.ToString());
+                        log.AddProperty("Portal Id", result.PortalId.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("Tab Id", result.TabId.ToString(CultureInfo.InvariantCulture));
                         log.AddProperty("Http Alias", result.PortalAlias != null ? result.PortalAlias.HTTPAlias : "Null");
 
                         if (result.DebugMessages != null)
@@ -223,7 +223,7 @@ namespace DotNetNuke.Entities.Urls
                                     msg = "[message was null]";
                                 }
 
-                                log.AddProperty("Debug Message[result] " + i.ToString(), msg);
+                                log.AddProperty("Debug Message[result] " + i.ToString(CultureInfo.InvariantCulture), msg);
                                 i++;
                             }
                         }
@@ -238,7 +238,7 @@ namespace DotNetNuke.Entities.Urls
                         int i = 1;
                         foreach (string msg in messages)
                         {
-                            log.AddProperty("Debug Message[raw] " + i.ToString(), msg);
+                            log.AddProperty("Debug Message[raw] " + i.ToString(CultureInfo.InvariantCulture), msg);
                             i++;
                         }
                     }
@@ -460,8 +460,7 @@ namespace DotNetNuke.Entities.Urls
                             wasChanged = true;
                             changedPath = customPath.Trim();
                             changeToSiteRoot = !useDnnPagePath; // useDNNpagePath means no change to site root.
-                            const string format = "Path returned from {0} -> path:{1}, ending Page:{2}, use Page Path:{3}";
-                            messages.Add(string.Format(format, provider.ProviderConfig.ProviderName, customPath, endingPageName, useDnnPagePath));
+                            messages.Add($"Path returned from {provider.ProviderConfig.ProviderName} -> path:{customPath}, ending Page:{endingPageName}, use Page Path:{useDnnPagePath}");
                             break; // first module provider to change the Url is the only one used
                         }
                     }
@@ -645,15 +644,15 @@ namespace DotNetNuke.Entities.Urls
 
         private static void ClearCache()
         {
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
+            foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
             {
-                ClearCache(portal.PortalID);
+                ClearCache(portal.PortalId);
             }
         }
 
         private static void ClearCache(int portalId)
         {
-            var cacheKey = string.Format("ExtensionUrlProviders_{0}", portalId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, "ExtensionUrlProviders_{0}", portalId);
             DataCache.RemoveCache(cacheKey);
         }
 

@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Tokens
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             var json = propertyName.Trim();
-            if (!(json.StartsWith("{") && json.EndsWith("}")))
+            if (!(json.StartsWith("{", StringComparison.Ordinal) && json.EndsWith("}", StringComparison.Ordinal)))
             {
                 throw new ArgumentException("The token argument is not property formatted JSON");
             }

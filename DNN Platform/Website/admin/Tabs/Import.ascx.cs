@@ -179,7 +179,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     string invalidType;
                     if (!TabController.IsValidTabName(this.txtTabName.Text, out invalidType))
                     {
-                        var warningMessage = string.Format(Localization.GetString(invalidType, this.LocalResourceFile), this.txtTabName.Text);
+                        var warningMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString(invalidType, this.LocalResourceFile), this.txtTabName.Text);
                         UI.Skins.Skin.AddModuleMessage(this, warningMessage, ModuleMessage.ModuleMessageType.RedError);
                         return;
                     }

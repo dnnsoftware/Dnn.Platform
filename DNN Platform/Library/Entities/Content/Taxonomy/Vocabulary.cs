@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Common;
@@ -236,7 +237,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         public virtual void Fill(IDataReader dr)
         {
             this.VocabularyId = Null.SetNullInteger(dr["VocabularyID"]);
-            switch (Convert.ToInt16(dr["VocabularyTypeID"]))
+            switch (Convert.ToInt16(dr["VocabularyTypeID"], CultureInfo.InvariantCulture))
             {
                 case 1:
                     this.Type = VocabularyType.Simple;

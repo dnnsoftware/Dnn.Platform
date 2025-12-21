@@ -286,22 +286,22 @@ namespace Dnn.PersonaBar.Themes.Components
             var strSkin = objStreamReader.ReadToEnd();
             objStreamReader.Close();
             var strTag = $"<dnn:{updateTheme.Token} runat=\"server\" id=\"dnn{updateTheme.Token}\"";
-            var intOpenTag = strSkin.IndexOf(strTag);
+            var intOpenTag = strSkin.IndexOf(strTag, StringComparison.OrdinalIgnoreCase);
             if (intOpenTag != -1)
             {
-                var intCloseTag = strSkin.IndexOf(" />", intOpenTag);
+                var intCloseTag = strSkin.IndexOf(" />", intOpenTag, StringComparison.Ordinal);
                 var strAttribute = updateTheme.Setting;
-                var intStartAttribute = strSkin.IndexOf(strAttribute, intOpenTag);
+                var intStartAttribute = strSkin.IndexOf(strAttribute, intOpenTag, StringComparison.OrdinalIgnoreCase);
                 string strValue = updateTheme.Value;
                 if (intStartAttribute != -1 && intStartAttribute < intCloseTag)
                 {
                     // remove attribute
-                    var intEndAttribute = strSkin.IndexOf("\" ", intStartAttribute);
+                    var intEndAttribute = strSkin.IndexOf("\" ", intStartAttribute, StringComparison.Ordinal);
                     strSkin = strSkin.Substring(0, intStartAttribute) + strSkin.Substring(intEndAttribute + 2);
                 }
 
                 // add attribute
-                strSkin = strSkin.Insert(intOpenTag + strTag.Length, " " + strAttribute + "=\"" + strValue + "\"");
+                strSkin = strSkin.Insert(intOpenTag + strTag.Length, $" {strAttribute}=\"{strValue}\"");
 
                 File.SetAttributes(themePath, FileAttributes.Normal);
                 var objStream = File.CreateText(themePath);
@@ -371,10 +371,10 @@ namespace Dnn.PersonaBar.Themes.Components
         internal static string CreateThumbnail(string strImage)
         {
             var imageFileName = Path.GetFileName(strImage);
-            if (string.IsNullOrEmpty(imageFileName) || imageFileName.StartsWith("thumbnail_"))
+            if (string.IsNullOrEmpty(imageFileName) || imageFileName.StartsWith("thumbnail_", StringComparison.OrdinalIgnoreCase))
             {
                 strImage = strImage.Substring(Globals.ApplicationMapPath.Length);
-                strImage = strImage.Replace("\\", "/");
+                strImage = strImage.Replace(@"\", "/");
                 return strImage;
             }
 
@@ -440,7 +440,7 @@ namespace Dnn.PersonaBar.Themes.Components
             }
 
             strThumbnail = strThumbnail.Substring(Globals.ApplicationMapPath.Length);
-            strThumbnail = strThumbnail.Replace("\\", "/");
+            strThumbnail = strThumbnail.Replace(@"\", "/");
 
             // return thumbnail filename
             return strThumbnail;
@@ -448,12 +448,12 @@ namespace Dnn.PersonaBar.Themes.Components
 
         internal static ThemeLevel GetThemeLevel(string themeFilePath)
         {
-            themeFilePath = themeFilePath.Replace("\\", "/");
+            themeFilePath = themeFilePath.Replace(@"\", "/");
             if (!string.IsNullOrEmpty(Globals.ApplicationPath)
-                && !themeFilePath.StartsWith("[")
+                && !themeFilePath.StartsWith("[", StringComparison.Ordinal)
                 && !themeFilePath.StartsWith(Globals.ApplicationPath, StringComparison.InvariantCultureIgnoreCase))
             {
-                var needSlash = !Globals.ApplicationPath.EndsWith("/") && !themeFilePath.StartsWith("/");
+                var needSlash = !Globals.ApplicationPath.EndsWith("/", StringComparison.Ordinal) && !themeFilePath.StartsWith("/", StringComparison.Ordinal);
                 themeFilePath = $"{Globals.ApplicationPath}{(needSlash ? "/" : string.Empty)}{themeFilePath}";
             }
 
@@ -486,7 +486,7 @@ namespace Dnn.PersonaBar.Themes.Components
             {
                 foreach (var strFolder in Directory.GetDirectories(strRoot))
                 {
-                    var strName = strFolder.Substring(strFolder.LastIndexOf(@"\") + 1);
+                    var strName = strFolder.Substring(strFolder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
                     if (strName != "_default")
                     {
                         var themePath = strFolder.Replace(Globals.ApplicationMapPath, string.Empty).TrimStart('\\').ToLowerInvariant();
@@ -555,8 +555,8 @@ namespace Dnn.PersonaBar.Themes.Components
 
         private static bool IsFallbackContainer(string skinPath)
         {
-            var strDefaultContainerPath = (Globals.HostMapPath + SkinController.RootContainer + SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo).Folder).Replace("/", "\\");
-            if (strDefaultContainerPath.EndsWith("\\"))
+            var strDefaultContainerPath = (Globals.HostMapPath + SkinController.RootContainer + SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo).Folder).Replace("/", @"\");
+            if (strDefaultContainerPath.EndsWith(@"\", StringComparison.Ordinal))
             {
                 strDefaultContainerPath = strDefaultContainerPath.Substring(0, strDefaultContainerPath.Length - 1);
             }
@@ -566,8 +566,8 @@ namespace Dnn.PersonaBar.Themes.Components
 
         private static bool IsFallbackSkin(string skinPath)
         {
-            var strDefaultSkinPath = (Globals.HostMapPath + SkinController.RootSkin + SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo).Folder).Replace("/", "\\");
-            if (strDefaultSkinPath.EndsWith("\\"))
+            var strDefaultSkinPath = (Globals.HostMapPath + SkinController.RootSkin + SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo).Folder).Replace("/", @"\");
+            if (strDefaultSkinPath.EndsWith(@"\", StringComparison.Ordinal))
             {
                 strDefaultSkinPath = strDefaultSkinPath.Substring(0, strDefaultSkinPath.Length - 1);
             }
@@ -579,15 +579,7 @@ namespace Dnn.PersonaBar.Themes.Components
         {
             var filePath = Path.Combine(themePath, fileName);
             var lowercasePath = filePath.ToLowerInvariant();
-            string strRootSkin;
-            if (type == ThemeType.Skin)
-            {
-                strRootSkin = SkinController.RootSkin.ToLowerInvariant();
-            }
-            else
-            {
-                strRootSkin = SkinController.RootContainer.ToLowerInvariant();
-            }
+            var strRootSkin = type == ThemeType.Skin ? SkinController.RootSkin : SkinController.RootContainer;
 
             var strSkinType = themePath.IndexOf(Globals.HostMapPath, StringComparison.OrdinalIgnoreCase) != -1 ? "G" : "L";
             if (themePath.IndexOf(portalSettings.HomeSystemDirectoryMapPath, StringComparison.OrdinalIgnoreCase) > -1)
@@ -600,7 +592,7 @@ namespace Dnn.PersonaBar.Themes.Components
                         .Replace(@"\", "/")
                         .TrimStart('/');
 
-            return "[" + strSkinType + "]" + strUrl;
+            return $"[{strSkinType}]{strUrl}";
         }
 
         private static void UpdateManifest(PortalSettings portalSettings, UpdateThemeInfo updateTheme)

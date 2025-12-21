@@ -4,6 +4,7 @@
 namespace Dnn.PersonaBar.Extensions.Components
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -75,10 +76,10 @@ namespace Dnn.PersonaBar.Extensions.Components
         {
             var folder = PathUtils.Instance.RemoveTrailingSlash(GetSourceFolder(createModuleDto));
             var className = GetClassName(createModuleDto);
-            var moduleControlPath = Path.Combine(Globals.ApplicationMapPath, "DesktopModules/" + folder + "/" + createModuleDto.FileName);
+            var moduleControlPath = Path.Combine(Globals.ApplicationMapPath, $"DesktopModules/{folder}/{createModuleDto.FileName}");
             var message = Null.NullString;
 
-            var source = string.Format(LoadControlTemplate(), createModuleDto.Language, className);
+            var source = string.Format(CultureInfo.InvariantCulture, LoadControlTemplate(), createModuleDto.Language, className);
 
             // reset attributes
             if (File.Exists(moduleControlPath))
@@ -170,7 +171,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 return Null.NullInteger;
             }
 
-            if (!controlSrc.EndsWith(".ascx"))
+            if (!controlSrc.EndsWith(".ascx", StringComparison.Ordinal))
             {
                 controlSrc += ".ascx";
             }

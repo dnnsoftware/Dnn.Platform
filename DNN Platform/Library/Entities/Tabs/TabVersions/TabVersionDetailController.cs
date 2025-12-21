@@ -5,6 +5,8 @@
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -52,12 +54,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail, int createdByUserID)
         {
             this.SaveTabVersionDetail(tabVersionDetail, createdByUserID, createdByUserID);
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail, int createdByUserID, int modifiedByUserID)
         {
             tabVersionDetail.TabVersionDetailId = Provider.SaveTabVersionDetail(
@@ -94,7 +98,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         private static string GetTabVersionDetailCacheKey(int tabVersionId)
         {
-            return string.Format(DataCache.TabVersionDetailsCacheKey, tabVersionId);
+            return string.Format(CultureInfo.InvariantCulture, DataCache.TabVersionDetailsCacheKey, tabVersionId);
         }
     }
 }

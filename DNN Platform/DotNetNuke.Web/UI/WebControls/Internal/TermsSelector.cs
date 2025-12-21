@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web;
     using System.Web.UI.WebControls;
@@ -39,7 +40,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                     {
                         if (!string.IsNullOrEmpty(i.Trim()))
                         {
-                            var termId = Convert.ToInt32(i.Trim());
+                            var termId = Convert.ToInt32(i.Trim(), CultureInfo.InvariantCulture);
                             var term = termRep.GetTerm(termId);
                             if (term != null)
                             {
@@ -54,10 +55,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
             set
             {
-                this.Value = string.Join(",", value.Select(t => t.TermId.ToString()));
+                this.Value = string.Join(",", value.Select(t => t.TermId.ToString(CultureInfo.InvariantCulture)));
 
                 this.Items.Clear();
-                value.Select(t => new ListItem(t.Name, t.TermId.ToString()) { Selected = true }).ToList().ForEach(this.Items.Add);
+                value.Select(t => new ListItem(t.Name, t.TermId.ToString(CultureInfo.InvariantCulture)) { Selected = true }).ToList().ForEach(this.Items.Add);
             }
         }
 

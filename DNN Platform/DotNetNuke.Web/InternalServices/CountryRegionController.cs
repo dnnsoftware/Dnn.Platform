@@ -6,6 +6,8 @@ namespace DotNetNuke.Web.InternalServices
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -32,13 +34,13 @@ namespace DotNetNuke.Web.InternalServices
         [HttpGet]
         public HttpResponseMessage Regions(int country)
         {
-            List<Region> res = new List<Region>();
+            List<Region> res = [];
             foreach (ListEntryInfo r in new ListController().GetListEntryInfoItems("Region").Where(l => l.ParentID == country))
             {
                 res.Add(new Region
                 {
                     Text = r.Text,
-                    Value = r.EntryID.ToString(),
+                    Value = r.EntryID.ToString(CultureInfo.InvariantCulture),
                 });
             }
 
@@ -47,7 +49,10 @@ namespace DotNetNuke.Web.InternalServices
 
         public struct Region
         {
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string Text;
+
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string Value;
         }
     }

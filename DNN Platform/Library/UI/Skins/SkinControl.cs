@@ -22,13 +22,18 @@ namespace DotNetNuke.UI.Skins
     public class SkinControl : UserControlBase
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected DropDownList cboSkin;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected CommandButton cmdPreview;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected RadioButton optHost;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected RadioButton optSite;
+
         private string defaultKey = "System";
         private string skinRoot;
         private string skinSrc;
@@ -38,41 +43,20 @@ namespace DotNetNuke.UI.Skins
 
         public string DefaultKey
         {
-            get
-            {
-                return this.defaultKey;
-            }
-
-            set
-            {
-                this.defaultKey = value;
-            }
+            get => this.defaultKey;
+            set => this.defaultKey = value;
         }
 
         public string Width
         {
-            get
-            {
-                return Convert.ToString(this.ViewState["SkinControlWidth"]);
-            }
-
-            set
-            {
-                this.width = value;
-            }
+            get => Convert.ToString(this.ViewState["SkinControlWidth"], CultureInfo.InvariantCulture);
+            set => this.width = value;
         }
 
         public string SkinRoot
         {
-            get
-            {
-                return Convert.ToString(this.ViewState["SkinRoot"]);
-            }
-
-            set
-            {
-                this.skinRoot = value;
-            }
+            get => Convert.ToString(this.ViewState["SkinRoot"], CultureInfo.InvariantCulture);
+            set => this.skinRoot = value;
         }
 
         public string SkinSrc
@@ -130,7 +114,7 @@ namespace DotNetNuke.UI.Skins
             {
                 if (this.Request.QueryString["pid"] != null && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    this.objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
+                    this.objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"], CultureInfo.InvariantCulture));
                 }
                 else
                 {
@@ -187,6 +171,7 @@ namespace DotNetNuke.UI.Skins
         }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected void optHost_CheckedChanged(object sender, EventArgs e)
@@ -195,6 +180,7 @@ namespace DotNetNuke.UI.Skins
         }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected void optSite_CheckedChanged(object sender, EventArgs e)
@@ -203,6 +189,7 @@ namespace DotNetNuke.UI.Skins
         }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected void cmdPreview_Click(object sender, EventArgs e)
@@ -252,7 +239,7 @@ namespace DotNetNuke.UI.Skins
             // select current skin
             for (int intIndex = 0; intIndex < this.cboSkin.Items.Count; intIndex++)
             {
-                if (this.cboSkin.Items[intIndex].Value.Equals(Convert.ToString(this.ViewState["SkinSrc"]), StringComparison.OrdinalIgnoreCase))
+                if (this.cboSkin.Items[intIndex].Value.Equals(Convert.ToString(this.ViewState["SkinSrc"], CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase))
                 {
                     this.cboSkin.Items[intIndex].Selected = true;
                     break;

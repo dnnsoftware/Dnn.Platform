@@ -191,7 +191,7 @@ namespace DotNetNuke.Web.InternalServices
 
                                 case "\"POSTFILE\"":
                                     fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
-                                    if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
+                                    if (fileName.IndexOf(@"\", StringComparison.Ordinal) != -1)
                                     {
                                         fileName = Path.GetFileName(fileName);
                                     }
@@ -231,6 +231,7 @@ namespace DotNetNuke.Web.InternalServices
                                 {
                                     AlreadyExists = alreadyExists,
                                     Message = string.Format(
+                                        CultureInfo.CurrentCulture,
                                         GetLocalizedString("ErrorMessage"),
                                         fileName,
                                         errorMessage),
@@ -347,7 +348,7 @@ namespace DotNetNuke.Web.InternalServices
                                 break;
                             case "\"POSTFILE\"":
                                 fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
-                                if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
+                                if (fileName.IndexOf(@"\", StringComparison.Ordinal) != -1)
                                 {
                                     fileName = Path.GetFileName(fileName);
                                 }
@@ -480,7 +481,7 @@ namespace DotNetNuke.Web.InternalServices
         private static bool IsUserFolder(string folderPath, out int userId)
         {
             var match = UserFolderEx.Match(folderPath);
-            userId = match.Success ? int.Parse(match.Groups[1].Value) : Null.NullInteger;
+            userId = match.Success ? int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture) : Null.NullInteger;
 
             return match.Success;
         }
@@ -689,7 +690,7 @@ namespace DotNetNuke.Web.InternalServices
             Uri uri = new Uri(url);
             if (uri.Scheme is "http" or "https")
             {
-                if (!uri.Host.Contains("."))
+                if (!uri.Host.Contains(".", StringComparison.Ordinal))
                 {
                     return false;
                 }
@@ -699,12 +700,12 @@ namespace DotNetNuke.Web.InternalServices
                     return false;
                 }
 
-                if (uri.PathAndQuery.Contains("#") || uri.PathAndQuery.Contains(":"))
+                if (uri.PathAndQuery.Contains("#", StringComparison.Ordinal) || uri.PathAndQuery.Contains(":", StringComparison.Ordinal))
                 {
                     return false;
                 }
 
-                if (uri.Host.StartsWith("10") || uri.Host.StartsWith("172") || uri.Host.StartsWith("192"))
+                if (uri.Host.StartsWith("10", StringComparison.Ordinal) || uri.Host.StartsWith("172", StringComparison.Ordinal) || uri.Host.StartsWith("192", StringComparison.Ordinal))
                 {
                     // check nonroutable IP addresses
                     if (NetworkUtils.IsIPInRange(uri.Host, "10.0.0.0", "8") ||

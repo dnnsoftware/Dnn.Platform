@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Scheduling
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using System.Web.Compilation;
 
@@ -15,42 +16,22 @@ namespace DotNetNuke.Services.Scheduling
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProcessGroup));
 
-        private static int numberOfProcessesInQueue;
         private static int numberOfProcesses;
-        private static int processesCompleted;
-        private static int ticksElapsed;
 
         // ''''''''''''''''''''''''''''''''''''''''''''''''''
         // This class represents a process group for
         // our threads to run in.
         // ''''''''''''''''''''''''''''''''''''''''''''''''''
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public delegate void CompletedEventHandler();
 
         public event CompletedEventHandler Completed;
 
-        private static int GetTicksElapsed
-        {
-            get
-            {
-                return ticksElapsed;
-            }
-        }
+        private static int GetTicksElapsed { get; set; }
 
-        private static int GetProcessesCompleted
-        {
-            get
-            {
-                return processesCompleted;
-            }
-        }
+        private static int GetProcessesCompleted { get; set; }
 
-        private static int GetProcessesInQueue
-        {
-            get
-            {
-                return numberOfProcessesInQueue;
-            }
-        }
+        private static int GetProcessesInQueue { get; set; }
 
         public void Run(ScheduleHistoryItem objScheduleHistoryItem)
         {
@@ -59,7 +40,7 @@ namespace DotNetNuke.Services.Scheduling
             try
             {
                 // This is called from RunPooledThread()
-                ticksElapsed = Environment.TickCount - ticksElapsed;
+                GetTicksElapsed = Environment.TickCount - GetTicksElapsed;
                 serviceScope = Globals.DependencyProvider.CreateScope();
                 process = GetSchedulerClient(serviceScope.ServiceProvider, objScheduleHistoryItem.TypeFullName, objScheduleHistoryItem);
                 process.ScheduleHistoryItem = objScheduleHistoryItem;
@@ -107,11 +88,11 @@ namespace DotNetNuke.Services.Scheduling
                 // I don't think this is necessary with the
                 // other events.  I'll leave it for now and
                 // will probably take it out later.
-                if (processesCompleted == numberOfProcesses)
+                if (GetProcessesCompleted == numberOfProcesses)
                 {
-                    if (processesCompleted == numberOfProcesses)
+                    if (GetProcessesCompleted == numberOfProcesses)
                     {
-                        ticksElapsed = Environment.TickCount - ticksElapsed;
+                        GetTicksElapsed = Environment.TickCount - GetTicksElapsed;
                         if (this.Completed != null)
                         {
                             this.Completed();
@@ -148,8 +129,8 @@ namespace DotNetNuke.Services.Scheduling
 
                 // Track how many processes have completed for
                 // this instanciation of the ProcessGroup
-                numberOfProcessesInQueue -= 1;
-                processesCompleted += 1;
+                GetProcessesInQueue -= 1;
+                GetProcessesCompleted += 1;
             }
         }
 
@@ -157,7 +138,7 @@ namespace DotNetNuke.Services.Scheduling
         // callback to RunPooledThread which calls Run()
         public void AddQueueUserWorkItem(ScheduleItem s)
         {
-            numberOfProcessesInQueue += 1;
+            GetProcessesInQueue += 1;
             numberOfProcesses += 1;
             var obj = new ScheduleHistoryItem(s);
             try

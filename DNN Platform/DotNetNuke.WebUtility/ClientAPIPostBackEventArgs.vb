@@ -1,5 +1,7 @@
-' Copyright (c) .NET Foundation. All rights reserved.
+﻿' Copyright (c) .NET Foundation. All rights reserved.
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
+Imports System.Diagnostics.CodeAnalysis
 
 Namespace DotNetNuke.UI.Utilities
 
@@ -17,8 +19,11 @@ Namespace DotNetNuke.UI.Utilities
     ''' 	[Jon Henning]	9/15/2004	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
+    <SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification := "Breaking change")>
     Public Class ClientAPIPostBackEventArgs
+        <SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification := "Breaking change")>
         Public EventName As String
+        <SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification := "Breaking change")>
         Public EventArguments As Hashtable = New Hashtable
 
         Public Sub New()

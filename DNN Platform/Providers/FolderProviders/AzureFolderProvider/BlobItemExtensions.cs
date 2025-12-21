@@ -4,6 +4,8 @@
 
 namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 {
+    using System;
+
     using Microsoft.WindowsAzure.Storage.Blob;
 
     internal static class BlobItemExtensions
@@ -11,7 +13,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         public static string RelativePath(this IListBlobItem item)
         {
             var filterUrl = item.Container.Uri.AbsoluteUri;
-            if (!filterUrl.EndsWith("/"))
+            if (!filterUrl.EndsWith("/", StringComparison.Ordinal))
             {
                 filterUrl = filterUrl + "/";
             }

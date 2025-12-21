@@ -6,6 +6,8 @@ namespace Dnn.PersonaBar.Users.Components
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Threading;
@@ -85,22 +87,22 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 userFilters.Add(
                     new KeyValuePair<string, int>(
-                        Localization.GetString(Convert.ToString(filter), Constants.LocalResourcesFile), (int)filter));
+                        Localization.GetString(Convert.ToString(filter, CultureInfo.InvariantCulture), Constants.LocalResourcesFile), (int)filter));
             }
 
             if (!isSuperUser)
             {
-                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.SuperUsers)));
+                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == (int)UserFilters.SuperUsers));
             }
 
             if (!PortalSettings.DataConsentActive)
             {
-                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.HasAgreedToTerms)));
-                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.HasNotAgreedToTerms)));
-                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.RequestedRemoval)));
+                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == (int)UserFilters.HasAgreedToTerms));
+                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == (int)UserFilters.HasNotAgreedToTerms));
+                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == (int)UserFilters.RequestedRemoval));
             }
 
-            userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.RegisteredUsers))); // Temporarily removed registered users.
+            userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == (int)UserFilters.RegisteredUsers)); // Temporarily removed registered users.
             return userFilters;
         }
 
@@ -183,6 +185,7 @@ namespace Dnn.PersonaBar.Users.Components
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto, int requestPortalId = -1)
         {
             int portalId = PortalSettings.PortalId;

@@ -323,17 +323,26 @@ namespace DotNetNuke.Entities.Portals
 
         private static string GetRed(string hexValue)
         {
-            return int.Parse(hexValue.Substring(0, 2), NumberStyles.AllowHexSpecifier).ToString(CultureInfo.InvariantCulture);
+            return GetColorValue(hexValue, 0);
         }
 
         private static string GetGreen(string hexValue)
         {
-            return int.Parse(hexValue.Substring(2, 2), NumberStyles.AllowHexSpecifier).ToString(CultureInfo.InvariantCulture);
+            return GetColorValue(hexValue, 2);
         }
 
         private static string GetBlue(string hexValue)
         {
-            return int.Parse(hexValue.Substring(4, 2), NumberStyles.AllowHexSpecifier).ToString(CultureInfo.InvariantCulture);
+            return GetColorValue(hexValue, 4);
+        }
+
+        private static string GetColorValue(string hexValue, int startIndex)
+        {
+            return int.Parse(
+                    hexValue.Substring(startIndex, 2),
+                    NumberStyles.AllowHexSpecifier,
+                    CultureInfo.InvariantCulture)
+                .ToString(CultureInfo.InvariantCulture);
         }
     }
 }

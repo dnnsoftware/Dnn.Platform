@@ -57,18 +57,23 @@ namespace DotNetNuke.UI.Skins
         public const string OnInitMessage = "Skin_InitMessage";
         public const string OnInitMessageType = "Skin_InitMessageType";
 
+#pragma warning disable CA1707 // Identifiers should not contain underscores
         // ReSharper disable InconsistentNaming
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public static readonly string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public static readonly string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public static readonly string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
+#pragma warning restore CA1707
 
         // ReSharper restore InconsistentNaming
         private readonly ModuleInjectionManager moduleInjectionManager;
@@ -421,10 +426,10 @@ namespace DotNetNuke.UI.Skins
             var list = new List<InstalledSkinInfo>();
             foreach (string folder in Directory.GetDirectories(Path.Combine(Globals.HostMapPath, "Skins")))
             {
-                if (!folder.EndsWith(Globals.glbHostSkinFolder))
+                if (!folder.EndsWith(Globals.glbHostSkinFolder, StringComparison.OrdinalIgnoreCase))
                 {
                     var skin = new InstalledSkinInfo();
-                    skin.SkinName = folder.Substring(folder.LastIndexOf("\\") + 1);
+                    skin.SkinName = folder.Substring(folder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
                     skin.InUse = IsFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, string.Empty);
                     list.Add(skin);
                 }
@@ -531,7 +536,7 @@ namespace DotNetNuke.UI.Skins
             if (!TabPermissionController.CanAdminPage() && !success)
             {
                 // only display the warning to non-administrators (administrators will see the errors)
-                AddPageMessage(this, Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), this.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning, string.Empty);
+                AddPageMessage(this, Localization.GetString("ModuleLoadWarning.Error"), string.Format(CultureInfo.CurrentCulture, Localization.GetString("ModuleLoadWarning.Text"), this.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning, string.Empty);
             }
 
             this.InvokeSkinEvents(SkinEventType.OnSkinInit);
@@ -672,7 +677,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     // only display the error to administrators
                     var skinError = (Label)page.FindControl("SkinError");
-                    skinError.Text = string.Format(Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
+                    skinError.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
                     skinError.Visible = true;
                 }
 
@@ -685,8 +690,8 @@ namespace DotNetNuke.UI.Skins
         private static bool IsFallbackSkin(string skinPath)
         {
             SkinDefaults defaultSkin = SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo);
-            string defaultSkinPath = (Globals.HostMapPath + SkinController.RootSkin + defaultSkin.Folder).Replace("/", "\\");
-            if (defaultSkinPath.EndsWith("\\"))
+            string defaultSkinPath = (Globals.HostMapPath + SkinController.RootSkin + defaultSkin.Folder).Replace("/", @"\");
+            if (defaultSkinPath.EndsWith(@"\", StringComparison.Ordinal))
             {
                 defaultSkinPath = defaultSkinPath.Substring(0, defaultSkinPath.Length - 1);
             }
@@ -920,7 +925,7 @@ namespace DotNetNuke.UI.Skins
                     AddPageMessage(
                         this,
                         string.Empty,
-                        string.Format(Localization.GetString("ContractExpired.Error"), this.PortalSettings.PortalName, Globals.GetMediumDate(this.PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), this.PortalSettings.Email),
+                        string.Format(CultureInfo.CurrentCulture, Localization.GetString("ContractExpired.Error"), this.PortalSettings.PortalName, Globals.GetMediumDate(this.PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), this.PortalSettings.Email),
                         ModuleMessage.ModuleMessageType.RedError,
                         string.Empty);
                 }

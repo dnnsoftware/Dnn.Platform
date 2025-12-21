@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Users
 {
     using System;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Scheduling;
@@ -23,9 +24,9 @@ namespace DotNetNuke.Services.Users
         {
             try
             {
-                foreach (PortalInfo portal in new PortalController().GetPortals())
+                foreach (IPortalInfo portal in new PortalController().GetPortals())
                 {
-                    var settings = new PortalSettings(portal.PortalID);
+                    var settings = new PortalSettings(portal.PortalId);
                     if (settings.DataConsentActive)
                     {
                         if (settings.DataConsentUserDeleteAction == PortalSettings.UserDeleteAction.DelayedHardDelete)
@@ -44,13 +45,13 @@ namespace DotNetNuke.Services.Users
                                     break;
                             }
 
-                            var deletedUsers = UserController.GetDeletedUsers(portal.PortalID);
+                            var deletedUsers = UserController.GetDeletedUsers(portal.PortalId);
                             foreach (UserInfo user in deletedUsers)
                             {
                                 if (user.LastModifiedOnDate < thresholdDate && user.RequestsRemoval)
                                 {
                                     UserController.RemoveUser(user);
-                                    this.ScheduleHistoryItem.AddLogNote(string.Format("Removed user {0}{1}", user.Username, Environment.NewLine));
+                                    this.ScheduleHistoryItem.AddLogNote($"Removed user {user.Username}{Environment.NewLine}");
                                 }
                             }
                         }
@@ -64,7 +65,7 @@ namespace DotNetNuke.Services.Users
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging deleted users task failed: {0}.", exc.ToString()));
+                this.ScheduleHistoryItem.AddLogNote($"Purging deleted users task failed: {exc}.");
 
                 // notification that we have errored
                 this.Errored(ref exc); // REQUIRED

@@ -214,7 +214,7 @@ namespace Dnn.PersonaBar.Themes.Services
         {
             try
             {
-                var strFile = this.appStatus.ApplicationMapPath + "\\" + token.ToLowerInvariant().Replace("/", "\\").Replace(".ascx", ".xml");
+                var strFile = this.appStatus.ApplicationMapPath + @"\" + token.ToLowerInvariant().Replace("/", @"\").Replace(".ascx", ".xml");
                 var settings = new List<ListItemInfo>();
                 if (File.Exists(strFile))
                 {
@@ -240,7 +240,7 @@ namespace Dnn.PersonaBar.Themes.Services
         {
             try
             {
-                var strFile = this.appStatus.ApplicationMapPath + "\\" + token.ToLowerInvariant().Replace("/", "\\").Replace(".ascx", ".xml");
+                var strFile = this.appStatus.ApplicationMapPath + @"\" + token.ToLowerInvariant().Replace("/", @"\").Replace(".ascx", ".xml");
                 var value = string.Empty;
                 if (File.Exists(strFile))
                 {
@@ -288,9 +288,9 @@ namespace Dnn.PersonaBar.Themes.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidParameter");
                 }
 
-                var themeFilePath = updateTheme.Path.ToLowerInvariant();
-                if ((!themeFilePath.StartsWith("[g]") && !themeFilePath.StartsWith("[l]") && !themeFilePath.StartsWith("[s]"))
-                    || (themeFilePath.StartsWith("[g]") && !this.UserInfo.IsSuperUser))
+                var themeFilePath = updateTheme.Path;
+                if ((!themeFilePath.StartsWith("[g]", StringComparison.OrdinalIgnoreCase) && !themeFilePath.StartsWith("[l]", StringComparison.OrdinalIgnoreCase) && !themeFilePath.StartsWith("[s]", StringComparison.OrdinalIgnoreCase))
+                    || (themeFilePath.StartsWith("[g]", StringComparison.OrdinalIgnoreCase) && !this.UserInfo.IsSuperUser))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPermission");
                 }

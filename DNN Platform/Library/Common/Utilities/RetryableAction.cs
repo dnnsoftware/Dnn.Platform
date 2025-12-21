@@ -5,6 +5,7 @@
 namespace DotNetNuke.Common.Utilities.Internal
 {
     using System;
+    using System.Globalization;
     using System.Threading;
 
     using DotNetNuke.Instrumentation;
@@ -42,7 +43,7 @@ namespace DotNetNuke.Common.Utilities.Internal
         {
             if (delay.TotalMilliseconds > int.MaxValue)
             {
-                throw new ArgumentException(string.Format("delay must be less than {0} milliseconds", int.MaxValue));
+                throw new ArgumentException($"delay must be less than {int.MaxValue} milliseconds");
             }
 
             this.Action = action;
@@ -90,7 +91,7 @@ namespace DotNetNuke.Common.Utilities.Internal
         public void TryIt()
         {
             var currentDelay = (int)this.Delay.TotalMilliseconds;
-            int retrysRemaining = this.MaxRetries;
+            var retriesRemaining = this.MaxRetries;
 
             do
             {
@@ -99,22 +100,22 @@ namespace DotNetNuke.Common.Utilities.Internal
                     this.Action();
                     if (Logger.IsTraceEnabled)
                     {
-                        Logger.TraceFormat("Action succeeded - {0}", this.Description);
+                        Logger.TraceFormat(CultureInfo.InvariantCulture, "Action succeeded - {0}", this.Description);
                     }
 
                     return;
                 }
                 catch (Exception)
                 {
-                    if (retrysRemaining <= 0)
+                    if (retriesRemaining <= 0)
                     {
-                        Logger.WarnFormat("All retries of action failed - {0}", this.Description);
+                        Logger.WarnFormat(CultureInfo.InvariantCulture, "All retries of action failed - {0}", this.Description);
                         throw;
                     }
 
                     if (Logger.IsTraceEnabled)
                     {
-                        Logger.TraceFormat("Retrying action {0} - {1}", retrysRemaining, this.Description);
+                        Logger.TraceFormat(CultureInfo.InvariantCulture, "Retrying action {0} - {1}", retriesRemaining, this.Description);
                     }
 
                     SleepAction.Invoke(currentDelay);
@@ -126,7 +127,7 @@ namespace DotNetNuke.Common.Utilities.Internal
                     }
                 }
 
-                retrysRemaining--;
+                retriesRemaining--;
             }
             while (true);
         }

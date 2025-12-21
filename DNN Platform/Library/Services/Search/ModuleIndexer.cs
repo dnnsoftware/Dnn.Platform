@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.Search
     using System.Collections.Generic;
     using System.Data.SqlTypes;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Modules;
@@ -107,6 +108,7 @@ namespace DotNetNuke.Services.Search
                             if (Logger.IsTraceEnabled)
                             {
                                 Logger.TraceFormat(
+                                    CultureInfo.InvariantCulture,
                                     "ModuleIndexer: {0} search documents found for module [{1} mid:{2}]",
                                     searchItems.Count,
                                     module.DesktopModule.ModuleName,
@@ -204,14 +206,15 @@ namespace DotNetNuke.Services.Search
             try
             {
                 var message = string.Format(
-                        Localization.GetExceptionMessage(
-                            "ErrorCreatingBusinessControllerClass",
-                            "Error Creating BusinessControllerClass '{0}' of module({1}) id=({2}) in tab({3}) and portal({4})"),
-                        module.DesktopModule.BusinessControllerClass,
-                        module.DesktopModule.ModuleName,
-                        module.ModuleID,
-                        module.TabID,
-                        module.PortalID);
+                    CultureInfo.InvariantCulture,
+                    Localization.GetExceptionMessage(
+                        "ErrorCreatingBusinessControllerClass",
+                        "Error Creating BusinessControllerClass '{0}' of module({1}) id=({2}) in tab({3}) and portal({4})"),
+                    module.DesktopModule.BusinessControllerClass,
+                    module.DesktopModule.ModuleName,
+                    module.ModuleID,
+                    module.TabID,
+                    module.PortalID);
                 throw new BusinessControllerClassException(message, ex);
             }
             catch (Exception ex1)

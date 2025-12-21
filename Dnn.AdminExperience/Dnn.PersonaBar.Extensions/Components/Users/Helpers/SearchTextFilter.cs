@@ -4,6 +4,7 @@
 
 namespace Dnn.PersonaBar.Users.Components.Helpers
 {
+    using System;
     using System.Text;
     using System.Text.RegularExpressions;
 
@@ -11,39 +12,36 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
     {
         public static string CleanWildcards(string searchText)
         {
-            if (string.IsNullOrEmpty(searchText) || searchText.Equals("*", System.StringComparison.Ordinal) || searchText.Equals("%", System.StringComparison.Ordinal))
+            if (string.IsNullOrEmpty(searchText) || searchText.Equals("*", StringComparison.Ordinal) || searchText.Equals("%", StringComparison.Ordinal))
             {
                 return null;
             }
 
             var pattern = string.Empty;
 
-            var prefixWildcard = searchText.StartsWith("%") || searchText.StartsWith("*");
-            var suffixWildcard = searchText.EndsWith("%") || searchText.EndsWith("*");
+            var prefixWildcard = searchText.StartsWith("%", StringComparison.Ordinal) || searchText.StartsWith("*", StringComparison.Ordinal);
+            var suffixWildcard = searchText.EndsWith("%", StringComparison.Ordinal) || searchText.EndsWith("*", StringComparison.Ordinal);
 
-            bool iN_STRING = prefixWildcard == true && suffixWildcard == true;
-            bool pREFIX = prefixWildcard == true && suffixWildcard == false;
-            bool sUFFIX = suffixWildcard == true && prefixWildcard == false;
-            bool eXACT = suffixWildcard == false && prefixWildcard == false;
+            bool inString = prefixWildcard && suffixWildcard;
+            bool prefix = prefixWildcard && !suffixWildcard;
+            bool suffix = suffixWildcard && !prefixWildcard;
+            bool exact = !suffixWildcard && !prefixWildcard;
 
-            if (eXACT)
+            if (exact)
             {
                 pattern = searchText.Replace("*", string.Empty).Replace("%", string.Empty);
             }
+            else if (inString)
+            {
+                pattern = GetInStringSearchPattern(searchText);
+            }
+            else if (prefix)
+            {
+                pattern = GetPrefixSearchPattern(searchText);
+            }
             else
             {
-                if (iN_STRING == true)
-                {
-                    pattern = GetInStringSearchPattern(searchText);
-                }
-                else if (pREFIX == true)
-                {
-                    pattern = GetPrefixSearchPattern(searchText);
-                }
-                else if (sUFFIX == true)
-                {
-                    pattern = GetSuffixSearchPattern(searchText);
-                }
+                pattern = GetSuffixSearchPattern(searchText);
             }
 
             return pattern;
@@ -52,9 +50,7 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
         private static string GetInStringSearchPattern(string searchText)
         {
             var pattern = new StringBuilder();
-            var regexOptions = RegexOptions.IgnoreCase | RegexOptions.Compiled;
-            var inStringRegex = "^(\\*|%)?([\\w\\-_\\s\\*\\%\\.\\@]+)(\\*|%)$";
-            var regex = new Regex(inStringRegex, regexOptions);
+            var regex = new Regex(@"^(\*|%)?([\w\-_\s\*\%\.\@]+)(\*|%)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
             var matches = regex.Matches(searchText);
 
             if (matches.Count > 0)
@@ -73,10 +69,8 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
 
         private static string GetPrefixSearchPattern(string searchText)
         {
-            var regexOptions = RegexOptions.IgnoreCase | RegexOptions.Compiled;
             var pattern = new StringBuilder();
-            var prefixRegex = "^(\\*|%)?([\\w\\-_\\s\\*\\%\\.\\@]+)";
-            var regex = new Regex(prefixRegex, regexOptions);
+            var regex = new Regex(@"^(\*|%)?([\w\-_\s\*\%\.\@]+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
             var matches = regex.Matches(searchText);
 
             if (matches.Count > 0)
@@ -95,9 +89,7 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
         private static string GetSuffixSearchPattern(string searchText)
         {
             var pattern = new StringBuilder();
-            const RegexOptions regexOptions = RegexOptions.IgnoreCase | RegexOptions.Compiled;
-            const string suffixRegex = "([\\w\\-_\\*\\s\\%\\.\\@]+)(\\*|%)$";
-            var regex = new Regex(suffixRegex, regexOptions);
+            var regex = new Regex(@"([\w\-_\*\s\%\.\@]+)(\*|%)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
             var matches = regex.Matches(searchText);
 
             if (matches.Count > 0)

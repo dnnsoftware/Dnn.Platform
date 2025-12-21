@@ -5,6 +5,7 @@ namespace DotNetNuke.Common.Utilities
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -41,6 +42,7 @@ namespace DotNetNuke.Common.Utilities
             if (len != fs.Length)
             {
                 Logger.ErrorFormat(
+                    CultureInfo.InvariantCulture,
                     "Reading from {0} didn't read all data in buffer. Requested to read {1} bytes, but was read {2} bytes",
                     filePath,
                     fs.Length,
@@ -69,6 +71,7 @@ namespace DotNetNuke.Common.Utilities
             if (len != fs.Length)
             {
                 Logger.ErrorFormat(
+                    CultureInfo.InvariantCulture,
                     "Reading from {0} didn't read all data in buffer. Requested to read {1} bytes, but was read {2} bytes",
                     filePath,
                     fs.Length,
@@ -404,11 +407,11 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 strPath = Path.Combine(appStatus.ApplicationMapPath, strPath);
-                if (strPath.EndsWith("\\") && Directory.Exists(strPath))
+                if (strPath.EndsWith(@"\", StringComparison.Ordinal) && Directory.Exists(strPath))
                 {
                     var directoryInfo = new System.IO.DirectoryInfo(strPath);
-                    var applicationPath = appStatus.ApplicationMapPath + "\\";
-                    if (!directoryInfo.FullName.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase) ||
+                    var applicationPath = $@"{appStatus.ApplicationMapPath}\";
+                    if (!directoryInfo.FullName.StartsWith(applicationPath, StringComparison.OrdinalIgnoreCase) ||
                         directoryInfo.FullName.Equals(applicationPath, StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
@@ -472,11 +475,11 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 strPath = Path.Combine(appStatus.ApplicationMapPath, strPath);
-                if (strPath.EndsWith("\\") && await Directory.ExistsAsync(strPath))
+                if (strPath.EndsWith(@"\", StringComparison.Ordinal) && await Directory.ExistsAsync(strPath))
                 {
                     var directoryInfo = new System.IO.DirectoryInfo(strPath);
-                    var applicationPath = appStatus.ApplicationMapPath + "\\";
-                    if (!directoryInfo.FullName.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase) ||
+                    var applicationPath = $@"{appStatus.ApplicationMapPath}\";
+                    if (!directoryInfo.FullName.StartsWith(applicationPath, StringComparison.OrdinalIgnoreCase) ||
                         directoryInfo.FullName.Equals(applicationPath, StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
@@ -758,7 +761,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>A valid Windows path.</returns>
         public static string FixPath(string input)
         {
-            return string.IsNullOrEmpty(input) ? input : input.Trim().Replace("/", "\\");
+            return string.IsNullOrEmpty(input) ? input : input.Trim().Replace("/", @"\");
         }
 
         /// <summary>Adds a file to a zip.</summary>
@@ -782,10 +785,9 @@ namespace DotNetNuke.Common.Utilities
                 if (len != fs.Length)
                 {
                     Logger.ErrorFormat(
-                        "Reading from " +
-                        filePath +
-                        " didn't read all data in buffer. " +
-                        "Requested to read {0} bytes, but was read {1} bytes",
+                        CultureInfo.InvariantCulture,
+                        "Reading from {0} didn't read all data in buffer. Requested to read {1} bytes, but was read {2} bytes",
+                        filePath,
                         fs.Length,
                         len);
                 }

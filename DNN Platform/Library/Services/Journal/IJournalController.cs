@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Journal
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
 
     using DotNetNuke.Entities.Modules;
@@ -91,16 +92,19 @@ namespace DotNetNuke.Services.Journal
         /// <param name="fileName">File Name.</param>
         /// <param name="fileContent">File content.</param>
         /// <returns>A FileInfo object corresponding to the saved file.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         IFileInfo SaveJourmalFile(ModuleInfo module, UserInfo userInfo, string fileName, Stream fileContent);
 
         /// <summary>Save the journal object into database.</summary>
         /// <param name="journalItem">Journal object.</param>
         /// <param name="module">The module info of journal item context.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         void SaveJournalItem(JournalItem journalItem, ModuleInfo module);
 
         /// <summary>Update the journal info in database.</summary>
         /// <param name="journalItem">Journal object.</param>
         /// <param name="module">The module info of journal item context.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         void UpdateJournalItem(JournalItem journalItem, ModuleInfo module);
 
         /// <summary>Hard delete journal item by journal ID.</summary>

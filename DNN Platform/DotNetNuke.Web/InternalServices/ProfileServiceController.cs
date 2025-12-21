@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.InternalServices
 {
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -73,7 +74,7 @@ namespace DotNetNuke.Web.InternalServices
             user.VanityUrl = uniqueUrl;
             UserController.UpdateUser(this.PortalSettings.PortalId, user);
 
-            DataCache.RemoveCache(string.Format(CacheController.VanityUrlLookupKey, this.PortalSettings.PortalId));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, CacheController.VanityUrlLookupKey, this.PortalSettings.PortalId));
 
             // Url is clean and validated so we can update the User
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
@@ -85,7 +86,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             string searchString = HttpContext.Current.Request.Params["SearchString"].NormalizeString();
             string propertyName = HttpContext.Current.Request.Params["PropName"].NormalizeString();
-            int portalId = int.Parse(HttpContext.Current.Request.Params["PortalId"]);
+            int portalId = int.Parse(HttpContext.Current.Request.Params["PortalId"], CultureInfo.InvariantCulture);
             return this.Request.CreateResponse(HttpStatusCode.OK, Entities.Profile.ProfileController.SearchProfilePropertyValues(portalId, propertyName, searchString));
         }
 

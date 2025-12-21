@@ -933,7 +933,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var directories = new List<string> { @"C:\folder\subfolder", @"C:\folder\subfolder2", @"C:\folder\subfolder2\subsubfolder", @"C:\folder\subfolder2\subsubfolder2" };
 
             this.directory.Setup(d => d.GetDirectories(It.IsAny<string>()))
-                .Returns<string>(path => directories.FindAll(sub => sub.StartsWith(path + "\\") && sub.LastIndexOf("\\") == path.Length).ToArray());
+                .Returns<string>(path => directories.FindAll(sub => sub.StartsWith(path + @"\") && sub.LastIndexOf(@"\", StringComparison.Ordinal) == path.Length).ToArray());
 
             var result = this.mockFolderManager.Object.GetFileSystemFoldersRecursive(Constants.CONTENT_ValidPortalId, @"C:\folder");
 
@@ -958,7 +958,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var directories = new List<string> { @"C:\folder", @"C:\folder\subfolder", @"C:\folder\subfolder2", @"C:\folder\subfolder2\subsubfolder", @"C:\folder\subfolder2\subsubfolder2" };
 
             this.directory.Setup(d => d.GetDirectories(It.IsAny<string>()))
-                .Returns<string>(path => directories.FindAll(sub => sub.StartsWith(path + "\\") && sub.LastIndexOf("\\") == path.Length).ToArray());
+                .Returns<string>(path => directories.FindAll(sub => sub.StartsWith(path + @"\") && sub.LastIndexOf(@"\", StringComparison.Ordinal) == path.Length).ToArray());
 
             var result = this.mockFolderManager.Object.GetFileSystemFoldersRecursive(Constants.CONTENT_ValidPortalId, @"C:\folder");
 
@@ -1037,7 +1037,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .Returns<IFolderInfo>(parent => subfolders.FindAll(sub =>
                     sub.FolderPath.StartsWith(parent.FolderPath) &&
                     sub.FolderPath.Length > parent.FolderPath.Length &&
-                    sub.FolderPath.Substring(parent.FolderPath.Length).IndexOf("/") == sub.FolderPath.Substring(parent.FolderPath.Length).LastIndexOf("/")));
+                    sub.FolderPath.Substring(parent.FolderPath.Length).IndexOf("/", StringComparison.Ordinal) == sub.FolderPath.Substring(parent.FolderPath.Length).LastIndexOf("/", StringComparison.Ordinal)));
 
             var result = this.mockFolderManager.Object.GetDatabaseFoldersRecursive(this.folderInfo.Object);
 
@@ -1062,7 +1062,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .Returns<IFolderInfo>(parent => subfolders.FindAll(sub =>
                     sub.FolderPath.StartsWith(parent.FolderPath) &&
                     sub.FolderPath.Length > parent.FolderPath.Length &&
-                    sub.FolderPath.Substring(parent.FolderPath.Length).IndexOf("/") == sub.FolderPath.Substring(parent.FolderPath.Length).LastIndexOf("/")));
+                    sub.FolderPath.Substring(parent.FolderPath.Length).IndexOf("/", StringComparison.Ordinal) == sub.FolderPath.Substring(parent.FolderPath.Length).LastIndexOf("/", StringComparison.Ordinal)));
 
             var result = this.mockFolderManager.Object.GetDatabaseFoldersRecursive(this.folderInfo.Object);
 
@@ -1114,7 +1114,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         //        .Returns<string, FolderMappingInfo>((parent, fm) => subfolders.FindAll(sub =>
         //            sub.StartsWith(parent) &&
         //            sub.Length > parent.Length &&
-        //            sub.Substring(parent.Length).IndexOf("/") == sub.Substring(parent.Length).LastIndexOf("/")));
+        //            sub.Substring(parent.Length).IndexOf("/", StringComparison.Ordinal) == sub.Substring(parent.Length).LastIndexOf("/", StringComparison.Ordinal)));
 
         // var result = _mockFolderManager.Object.GetFolderMappingFoldersRecursive(folderMapping, "folder/");
 
@@ -1132,7 +1132,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         //        .Returns<string, FolderMappingInfo>((parent, fm) => subfolders.FindAll(sub =>
         //            sub.StartsWith(parent) &&
         //            sub.Length > parent.Length &&
-        //            sub.Substring(parent.Length).IndexOf("/") == sub.Substring(parent.Length).LastIndexOf("/")));
+        //            sub.Substring(parent.Length).IndexOf("/", StringComparison.Ordinal) == sub.Substring(parent.Length).LastIndexOf("/", StringComparison.Ordinal)));
 
         // var result = _mockFolderManager.Object.GetFolderMappingFoldersRecursive(folderMapping, "folder/");
 

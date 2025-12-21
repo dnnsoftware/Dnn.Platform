@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.Api
             Requires.NotNegative("count", count);
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
 
-            return string.Format("{0}DesktopModules/{1}/API/{2}", GeneratePrefixString(count), moduleFolderName, url);
+            return $"{GeneratePrefixString(count)}DesktopModules/{moduleFolderName}/API/{url}";
         }
 
         /// <inheritdoc/>
@@ -85,7 +85,7 @@ namespace DotNetNuke.Web.Api
             Requires.NotNegative("count", count);
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
 
-            return string.Format("{0}API/{1}/{2}", GeneratePrefixString(count), moduleFolderName, url);
+            return $"{GeneratePrefixString(count)}API/{moduleFolderName}/{url}";
         }
 
         /// <inheritdoc/>

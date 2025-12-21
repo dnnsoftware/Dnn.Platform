@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -15,7 +16,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             var appPath = Globals.ApplicationMapPath;
             var appPathLen = appPath.Length;
-            if (!appPath.EndsWith(@"\"))
+            if (!appPath.EndsWith(@"\", StringComparison.Ordinal))
             {
                 appPathLen++;
             }
@@ -23,7 +24,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return list.Select(kpv => new LocalizationEntry
             {
                 Name = kpv.Key,
-                NewValue = (kpv.Value.StartsWith(appPath) ? kpv.Value.Substring(appPathLen) : kpv.Value).Replace(@"\", @"/"),
+                NewValue = (kpv.Value.StartsWith(appPath, StringComparison.OrdinalIgnoreCase) ? kpv.Value.Substring(appPathLen) : kpv.Value).Replace(@"\", @"/"),
             });
         }
     }

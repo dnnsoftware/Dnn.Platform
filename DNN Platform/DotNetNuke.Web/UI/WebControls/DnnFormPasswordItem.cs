@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -51,7 +52,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 TextMode = TextBoxMode.Password,
                 CssClass = this.TextBoxCssClass,
                 MaxLength = 39, // ensure password cannot be cut if too long
-                Text = Convert.ToString(this.Value), // Load from ControlState
+                Text = Convert.ToString(this.Value, CultureInfo.InvariantCulture), // Load from ControlState
             };
             this.password.Attributes.Add("autocomplete", "off");
             this.password.Attributes.Add("aria-label", this.DataField);

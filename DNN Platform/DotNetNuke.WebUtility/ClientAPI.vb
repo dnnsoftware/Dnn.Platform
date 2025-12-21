@@ -2,6 +2,7 @@
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
 Imports System.Collections.Generic
+Imports System.Diagnostics.CodeAnalysis
 Imports System.Globalization
 Imports System.Reflection
 Imports System.Web
@@ -32,6 +33,7 @@ Namespace DotNetNuke.UI.Utilities
 
 #Region "Public Constants"
 
+#Disable Warning CA1707 'Identifiers should not contain underscores
         Public Const SCRIPT_CALLBACKID As String = "__DNNCAPISCI"
         Public Const SCRIPT_CALLBACKTYPE As String = "__DNNCAPISCT"
         Public Const SCRIPT_CALLBACKPARAM As String = "__DNNCAPISCP"
@@ -40,6 +42,7 @@ Namespace DotNetNuke.UI.Utilities
         Public Const SCRIPT_CALLBACKSTATUSDESCID As String = "__DNNCAPISCSDI"
 
         Public Const DNNVARIABLE_CONTROLID As String = "__dnnVariable"
+#Enable Warning CA1707
 
 #End Region
 
@@ -60,7 +63,7 @@ Namespace DotNetNuke.UI.Utilities
 
         ''' -----------------------------------------------------------------------------
         ''' <summary>
-        ''' Enumerates each namespace with a seperate js file
+        ''' Enumerates each namespace with a separate js file
         ''' </summary>
         ''' <remarks>
         ''' </remarks>
@@ -69,12 +72,14 @@ Namespace DotNetNuke.UI.Utilities
         ''' </history>
         ''' -----------------------------------------------------------------------------
         Public Enum ClientNamespaceReferences As Integer
+#Disable Warning CA1707 'Identifiers should not contain underscores
             dnn = 0
             dnn_dom = 1
             dnn_dom_positioning = 2
             dnn_xml = 3
             dnn_xmlhttp = 4
             dnn_motion = 5
+#Enable Warning CA1707
         End Enum
 
 #End Region
@@ -150,6 +155,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         ''' <summary>Character used for delimiting name from value</summary>
         ''' -----------------------------------------------------------------------------
+        <SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification := "Breaking change")>
         Public Shared ReadOnly Property COLUMN_DELIMITER() As String
             Get
                 If BrowserSupportsFunctionality(ClientFunctionality.SingleCharDelimiters) Then
@@ -163,6 +169,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         ''' <summary>Character used for delimiting name from value</summary>
         ''' -----------------------------------------------------------------------------
+        <SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification := "Breaking change")>
         Public Shared ReadOnly Property CUSTOM_COLUMN_DELIMITER() As String
             Get
                 If BrowserSupportsFunctionality(ClientFunctionality.SingleCharDelimiters) Then
@@ -176,6 +183,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         ''' <summary>Character used for delimiting name/value pairs</summary>
         ''' -----------------------------------------------------------------------------
+        <SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification := "Breaking change")>
         Public Shared ReadOnly Property CUSTOM_ROW_DELIMITER() As String
             Get
                 If BrowserSupportsFunctionality(ClientFunctionality.SingleCharDelimiters) Then
@@ -189,6 +197,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         ''' <summary>In order to reduce payload, substitute out " with different char, since when put in a hidden control it uses &quot;</summary>
         ''' -----------------------------------------------------------------------------
+        <SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification := "Breaking change")>
         Public Shared ReadOnly Property QUOTE_REPLACEMENT() As String
             Get
                 If BrowserSupportsFunctionality(ClientFunctionality.SingleCharDelimiters) Then
@@ -202,6 +211,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         ''' <summary>Character used for delimiting name/value pairs</summary>
         ''' -----------------------------------------------------------------------------
+        <SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification := "Breaking change")>
         Public Shared ReadOnly Property ROW_DELIMITER() As String
             Get
                 If BrowserSupportsFunctionality(ClientFunctionality.SingleCharDelimiters) Then
@@ -229,7 +239,7 @@ Namespace DotNetNuke.UI.Utilities
                 If Len(m_sScriptPath) > 0 Then
                     script = m_sScriptPath
                 ElseIf Not System.Web.HttpContext.Current Is Nothing Then
-                    If System.Web.HttpContext.Current.Request.ApplicationPath.EndsWith("/") Then
+                    If System.Web.HttpContext.Current.Request.ApplicationPath.EndsWith("/", StringComparison.Ordinal) Then
                         script = System.Web.HttpContext.Current.Request.ApplicationPath & "js/"
                     Else
                         script = System.Web.HttpContext.Current.Request.ApplicationPath & "/js/"
@@ -277,7 +287,7 @@ Namespace DotNetNuke.UI.Utilities
                 If String.IsNullOrEmpty(strValue) = False Then
                     Try
                         'fix serialization issues with invalid json objects
-                        If strValue.StartsWith("`"c) Then
+                        If strValue.StartsWith("`"c, StringComparison.Ordinal) Then
                             strValue = strValue.Substring(1).Replace("`", """")
                         End If
 
@@ -299,7 +309,7 @@ Namespace DotNetNuke.UI.Utilities
             Dim ctlVar As HtmlInputHidden = ClientVariableControl(objPage)
             ctlVar.Value = MSAJAX.Serialize(objDict)
             'minimize payload by using ` for ", which serializes to &quot;
-            If ctlVar.Value.IndexOf("`") = -1 Then
+            If ctlVar.Value.IndexOf("`", StringComparison.Ordinal) = -1 Then
                 'prefix the value with ` to denote that we escaped it (it was safe)
                 ctlVar.Value = "`" & ctlVar.Value.Replace("""", "`")
             End If
@@ -447,14 +457,14 @@ Namespace DotNetNuke.UI.Utilities
             Return GetCallbackEventReference(objControl, strArgument, strClientCallBack, strContext, srtClientErrorCallBack, strClientStatusCallBack, strPostChildrenOfId, ClientAPICallBackResponse.CallBackTypeCode.Simple)
         End Function
         Public Shared Function GetCallbackEventReference(ByVal objControl As Control, ByVal strArgument As String, ByVal strClientCallBack As String, ByVal strContext As String, ByVal srtClientErrorCallBack As String, ByVal strClientStatusCallBack As String, ByVal strPostChildrenOfId As String, ByVal eCallbackType As ClientAPICallBackResponse.CallBackTypeCode) As String
-            Dim strCallbackType As String = CInt(eCallbackType).ToString
+            Dim strCallbackType As String = CInt(eCallbackType).ToString(CultureInfo.InvariantCulture)
             If strArgument Is Nothing Then strArgument = "null"
             If strContext Is Nothing Then strContext = "null"
             If srtClientErrorCallBack Is Nothing Then srtClientErrorCallBack = "null"
             If strClientStatusCallBack Is Nothing Then strClientStatusCallBack = "null"
             If Len(strPostChildrenOfId) = 0 Then
                 strPostChildrenOfId = "null"
-            ElseIf strPostChildrenOfId.StartsWith("'") = False Then
+            ElseIf strPostChildrenOfId.StartsWith("'", StringComparison.Ordinal) = False Then
                 strPostChildrenOfId = "'" & strPostChildrenOfId & "'"
             End If
             Dim strControlID As String = objControl.ID
@@ -470,7 +480,7 @@ Namespace DotNetNuke.UI.Utilities
                     strControlID = strControlID & " " & objControl.ClientID                   'ID is not unique (obviously)
                 End If
 
-                Return String.Format("dnn.xmlhttp.doCallBack('{0}',{1},{2},{3},{4},{5},{6},{7},{8});", strControlID, strArgument, strClientCallBack, strContext, srtClientErrorCallBack, strClientStatusCallBack, "null", strPostChildrenOfId, strCallbackType)
+                Return String.Format(CultureInfo.InvariantCulture, "dnn.xmlhttp.doCallBack('{0}',{1},{2},{3},{4},{5},{6},{7},{8});", strControlID, strArgument, strClientCallBack, strContext, srtClientErrorCallBack, strClientStatusCallBack, "null", strPostChildrenOfId, strCallbackType)
             Else
                 Return ""
             End If
@@ -492,7 +502,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         Public Shared Function GetClientVariable(ByVal objPage As Page, ByVal strVar As String) As String
             Dim strPair As String = GetClientVariableNameValuePair(objPage, strVar)
-            If strPair.IndexOf(COLUMN_DELIMITER) > -1 Then
+            If strPair.IndexOf(COLUMN_DELIMITER, StringComparison.Ordinal) > -1 Then
                 Return Split(strPair, COLUMN_DELIMITER)(1)
             Else
                 Return ""
@@ -515,7 +525,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         Public Shared Function GetClientVariable(ByVal objPage As Page, ByVal strVar As String, ByVal strDefaultValue As String) As String
             Dim strPair As String = GetClientVariableNameValuePair(objPage, strVar)
-            If strPair.IndexOf(COLUMN_DELIMITER) > -1 Then
+            If strPair.IndexOf(COLUMN_DELIMITER, StringComparison.Ordinal) > -1 Then
                 Return Split(strPair, COLUMN_DELIMITER)(1)
             Else
                 Return strDefaultValue
@@ -975,7 +985,7 @@ Namespace DotNetNuke.UI.Utilities
                 If String.IsNullOrEmpty(FriendlyID) Then
                     format = "{0}={2} "
                 End If
-                ClientAPI.RegisterClientVariable(CallbackControl.Page, "__dnncbm", String.Format(format, name, FriendlyID, CallbackControl.UniqueID), False)
+                ClientAPI.RegisterClientVariable(CallbackControl.Page, "__dnncbm", String.Format(CultureInfo.InvariantCulture, format, name, FriendlyID, CallbackControl.UniqueID), False)
 
                 If BrowserSupportsFunctionality(ClientFunctionality.XMLHTTP) AndAlso BrowserSupportsFunctionality(ClientFunctionality.XML) Then
                     DotNetNuke.UI.Utilities.ClientAPI.RegisterClientReference(CallbackControl.Page, DotNetNuke.UI.Utilities.ClientAPI.ClientNamespaceReferences.dnn_xml)

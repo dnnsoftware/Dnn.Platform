@@ -6,6 +6,7 @@ namespace Dnn.ExportImport.Components.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
 
@@ -58,8 +59,8 @@ namespace Dnn.ExportImport.Components.Services
             var totalThemesExported = 0;
             try
             {
-                var packagesZipFileFormat = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipThemes}";
-                var packagesZipFile = string.Format(packagesZipFileFormat, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
+                var packagesZipFileFormat = $@"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\{Constants.ExportZipThemes}";
+                var packagesZipFile = string.Format(CultureInfo.InvariantCulture, packagesZipFileFormat, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
                 if (this.CheckPoint.Stage == 0)
                 {
@@ -111,7 +112,7 @@ namespace Dnn.ExportImport.Components.Services
             finally
             {
                 this.CheckPointStageCallback(this);
-                this.Result.AddSummary("Exported Themes", totalThemesExported.ToString());
+                this.Result.AddSummary("Exported Themes", totalThemesExported.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -154,15 +155,15 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             try
                             {
-                                var checkFolder = file.Replace(tempFolder + "\\", string.Empty).Split('\\')[0];
-                                var relativePath = file.Substring((tempFolder + "\\" + checkFolder + "\\").Length);
+                                var checkFolder = file.Replace($@"{tempFolder}\", string.Empty).Split('\\')[0];
+                                var relativePath = file.Substring($@"{tempFolder}\{checkFolder}\".Length);
                                 string targetPath;
 
                                 if (checkFolder == "_default")
                                 {
                                     targetPath = Path.Combine(Globals.HostMapPath, relativePath);
                                 }
-                                else if (checkFolder.EndsWith("-System"))
+                                else if (checkFolder.EndsWith("-System", StringComparison.OrdinalIgnoreCase))
                                 {
                                     targetPath = Path.Combine(portalSettings.HomeSystemDirectoryMapPath, relativePath);
                                 }

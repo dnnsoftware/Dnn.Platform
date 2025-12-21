@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common;
@@ -69,20 +70,18 @@ namespace DotNetNuke.UI.WebControls
 
                     foreach (FieldEditorControl checkEditor in this.Fields)
                     {
-                        if (checkEditor.Editor is DNNCountryEditControl)
+                        if (checkEditor.Editor is DNNCountryEditControl countryEdit)
                         {
-                            if (editor.Editor.Category == checkEditor.Editor.Category)
+                            if (editor.Editor.Category == countryEdit.Category)
                             {
-                                var countryEdit = (DNNCountryEditControl)checkEditor.Editor;
-                                country = Convert.ToString(countryEdit.Value);
+                                country = Convert.ToString(countryEdit.Value, CultureInfo.InvariantCulture);
                             }
                         }
                     }
 
                     // Create a ListAttribute for the Region
                     string countryKey = "Unknown";
-                    int entryId;
-                    if (int.TryParse(country, out entryId))
+                    if (int.TryParse(country, out var entryId))
                     {
                         ListController lc = new ListController();
                         ListEntryInfo item = lc.GetListEntryInfo(entryId);

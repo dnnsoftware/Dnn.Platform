@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Reflection;
     using System.Web.Caching;
 
@@ -211,7 +212,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                     }
                     catch (Exception ex)
                     {
-                        Exceptions.LogException(new ModuleLoadException(string.Format(Localization.GetString("ErrorDecryptingSetting", Localization.SharedResourceFile), mapping.FullParameterName), ex, ctlModule));
+                        Exceptions.LogException(new ModuleLoadException(string.Format(CultureInfo.CurrentCulture, Localization.GetString("ErrorDecryptingSetting", Localization.SharedResourceFile), mapping.FullParameterName), ex, ctlModule));
                     }
                 }
 

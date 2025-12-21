@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.FileSystem
 {
     using System;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Text.RegularExpressions;
 
     using DotNetNuke.Common.Utilities;
@@ -26,7 +27,7 @@ namespace DotNetNuke.Services.FileSystem
                 var portalId = Null.NullInteger;
                 if (portal != "_default")
                 {
-                    portalId = int.Parse(portal);
+                    portalId = int.Parse(portal, CultureInfo.InvariantCulture);
                 }
 
                 fileRequested = FileManager.Instance.GetFile(portalId, filePath);

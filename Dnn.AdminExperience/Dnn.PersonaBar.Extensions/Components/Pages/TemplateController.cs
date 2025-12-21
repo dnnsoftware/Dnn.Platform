@@ -58,7 +58,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 var folder = GetTemplateFolder() ?? CreateTemplateFolder();
 
                 filename = $"{folder.FolderPath}{template.Name}.page.template";
-                filename = filename.Replace("/", "\\");
+                filename = filename.Replace("/", @"\");
 
                 var xmlTemplate = new XmlDocument { XmlResolver = null };
                 var nodePortal = xmlTemplate.AppendChild(xmlTemplate.CreateElement("portal"));
@@ -158,7 +158,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         catch (Exception ex)
                         {
                             DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                            exceptions += string.Format("Template Tab # {0}. Error {1}<br/>", tabIndex + 1, ex.Message);
+                            exceptions += $"Template Tab # {tabIndex + 1}. Error {ex.Message}<br/>";
                         }
                     }
                     else

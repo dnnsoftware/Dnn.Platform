@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -334,7 +335,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
                 return 0;
             }
 
-            var cacheKey = string.Format(DataCache.UserNotificationsConversationCountCacheKey, portalId, userId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.UserNotificationsConversationCountCacheKey, portalId, userId);
             var cache = CachingProvider.Instance();
             var cacheObject = cache.GetItem(cacheKey);
             if (cacheObject is int)
@@ -360,7 +361,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
                 return 0;
             }
 
-            var cacheKey = string.Format(DataCache.UserNewThreadsCountCacheKey, portalId, userId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.UserNewThreadsCountCacheKey, portalId, userId);
             var cache = CachingProvider.Instance();
             var cacheObject = cache.GetItem(cacheKey);
             if (cacheObject is int)
@@ -424,7 +425,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             {
                 while (dr.Read())
                 {
-                    totalRecords = Convert.ToInt32(dr["TotalRecords"]);
+                    totalRecords = Convert.ToInt32(dr["TotalRecords"], CultureInfo.InvariantCulture);
                 }
             }
             finally
@@ -444,7 +445,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <inheritdoc/>
         public IList<MessageRecipient> GetNextMessagesForDigestDispatch(Frequency frequency, Guid schedulerInstance, int batchSize)
         {
-            return CBO.FillCollection<MessageRecipient>(this.dataService.GetNextMessagesForDigestDispatch(Convert.ToInt32(frequency), schedulerInstance, batchSize));
+            return CBO.FillCollection<MessageRecipient>(this.dataService.GetNextMessagesForDigestDispatch((int)frequency, schedulerInstance, batchSize));
         }
 
         /// <inheritdoc/>

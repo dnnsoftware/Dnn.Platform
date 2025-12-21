@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 DateTime dteValue = Null.NullDate;
                 try
                 {
-                    var dteString = Convert.ToString(this.Value);
+                    var dteString = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
                     DateTime.TryParse(dteString, CultureInfo.InvariantCulture, DateTimeStyles.None, out dteValue);
                 }
                 catch (Exception exc)
@@ -143,7 +143,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 string stringValue = Null.NullString;
                 if (this.DateValue.ToUniversalTime().Date != (DateTime)SqlDateTime.MinValue && this.DateValue != Null.NullDate)
                 {
-                    stringValue = this.DateValue.ToString(this.Format);
+                    stringValue = this.DateValue.ToString(this.Format, CultureInfo.InvariantCulture);
                 }
 
                 return stringValue;
@@ -151,7 +151,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
 
             set
             {
-                this.Value = DateTime.Parse(value);
+                this.Value = DateTime.Parse(value, CultureInfo.InvariantCulture);
             }
         }
 
@@ -184,7 +184,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 }
                 else
                 {
-                    this.Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
+                    this.Value = DateTime.Parse(postedValue, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
                     dataChanged = true;
                 }
             }

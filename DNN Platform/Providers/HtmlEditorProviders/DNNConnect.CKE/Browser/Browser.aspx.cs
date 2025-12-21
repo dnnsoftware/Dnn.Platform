@@ -10,6 +10,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -375,7 +376,7 @@ public partial class Browser : PageBase
 
                     return null;
                 default:
-                    if (extension.StartsWith("."))
+                    if (extension.StartsWith(".", StringComparison.Ordinal))
                     {
                         extension = extension.Replace(".", string.Empty);
                     }
@@ -551,7 +552,7 @@ public partial class Browser : PageBase
         if (!string.IsNullOrEmpty(fileUrl) && !string.IsNullOrEmpty(fileName))
         {
             // If we have both, combine them
-            fileUrl = !fileUrl.EndsWith("/")
+            fileUrl = !fileUrl.EndsWith("/", StringComparison.Ordinal)
                 ? $"{fileUrl}/{fileName}"
                 : $"{fileUrl}{fileName}";
         }
@@ -597,7 +598,7 @@ public partial class Browser : PageBase
     /// <returns>Returns the formatted JavaScript block.</returns>
     protected virtual string GetJsUploadCode(string fileName, string fileUrl)
     {
-        fileUrl = string.Format(!fileUrl.EndsWith("/") ? "{0}/{1}" : "{0}{1}", fileUrl, fileName);
+        fileUrl = string.Format(!fileUrl.EndsWith("/", StringComparison.Ordinal) ? "{0}/{1}" : "{0}{1}", fileUrl, fileName);
 
         var httpRequest = HttpContext.Current.Request;
 
@@ -1289,7 +1290,7 @@ public partial class Browser : PageBase
         string sAppPath = HttpContext.Current.Server.MapPath("~");
 
         return HttpContext.Current.Request.ApplicationPath +
-               sPath.Replace(sAppPath, string.Empty).Replace("\\", "/");
+               sPath.Replace(sAppPath, string.Empty).Replace(@"\", "/");
     }
 
     /// <summary>Get File Name without .resources extension.</summary>
@@ -1385,7 +1386,7 @@ public partial class Browser : PageBase
                 {
                     FolderID = folderInfo.FolderID,
                     UserID = currentUserInfo.UserID,
-                    RoleID = Convert.ToInt32(Globals.glbRoleNothing),
+                    RoleID = Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture),
                     AllowAccess = true,
                 };
         foreach (var folderPermission in folderPermissions)
@@ -1579,7 +1580,7 @@ public partial class Browser : PageBase
 
         var folderStart = startingFolderInfo.PhysicalPath;
 
-        folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
+        folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace(@"\", "/");
 
         startingFolderInfo = this.folderManager.AddFolder(this.portalSettings.PortalId, folderStart);
 
@@ -1604,7 +1605,7 @@ public partial class Browser : PageBase
         {
             var folderStart = userFolderPath;
 
-            folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
+            folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace(@"\", "/");
 
             userFolderInfo = this.folderManager.AddFolder(this.portalSettings.PortalId, folderStart);
 
@@ -1620,7 +1621,7 @@ public partial class Browser : PageBase
         {
             var folderStart = userFolderPath;
 
-            folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
+            folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace(@"\", "/");
 
             userFolderInfo = this.folderManager.AddFolder(this.portalSettings.PortalId, folderStart);
 
@@ -2290,7 +2291,7 @@ public partial class Browser : PageBase
 
             if (command == "EasyImageUpload")
             {
-                var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
+                var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/", StringComparison.Ordinal) ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
                 this.Response.ClearContent();
                 this.Response.ContentType = "application/json";
                 this.Response.Write($$"""{"default": {{HttpUtility.JavaScriptStringEncode(fileUrl, addDoubleQuotes: true)}}}""");
@@ -2300,7 +2301,7 @@ public partial class Browser : PageBase
                 // querystring parameter responseType equals "json" when the request comes from drag/drop
                 if (this.Request.QueryString["responseType"]?.Equals("json", StringComparison.InvariantCultureIgnoreCase) == true)
                 {
-                    var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
+                    var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/", StringComparison.Ordinal) ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
                     this.Response.ClearContent();
                     this.Response.ContentType = "application/json";
                     this.Response.Write($$"""{"uploaded": 1, "fileName": {{HttpUtility.JavaScriptStringEncode(fileName, addDoubleQuotes: true)}}, "url": {{HttpUtility.JavaScriptStringEncode(fileUrl, addDoubleQuotes: true)}}}""");
@@ -2783,7 +2784,7 @@ public partial class Browser : PageBase
 
             var tabUrl = selectedTab.FullUrl;
 
-            if (tabUrl.StartsWith("/"))
+            if (tabUrl.StartsWith("/", StringComparison.Ordinal))
             {
                 var requestUrl = HttpContext.Current.Request.Url;
                 tabUrl = $"{requestUrl.Scheme}://{requestUrl.Authority}{tabUrl}";

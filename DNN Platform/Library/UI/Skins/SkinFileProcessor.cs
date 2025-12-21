@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.Skins
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.IO;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -64,7 +65,7 @@ namespace DotNetNuke.UI.Skins
         /// <remarks>
         ///     The constructor primes the file processor with path information and
         ///     control data that should only be retrieved once.  It checks for the
-        ///     existentce of a skin level attribute file and read it in, if found.
+        ///     existence of a skin level attribute file and read it in, if found.
         ///     It also sorts through the complete list of controls and creates
         ///     a hashtable which contains only the skin objects and their source paths.
         ///     These are recognized by their ControlKey's which are formatted like
@@ -73,7 +74,7 @@ namespace DotNetNuke.UI.Skins
         /// </remarks>
         public SkinFileProcessor(string skinPath, string skinRoot, string skinName)
         {
-            this.Message += SkinController.FormatMessage(this.iNITIALIZEPROCESSOR, skinRoot + " :: " + skinName, 0, false);
+            this.Message += SkinController.FormatMessage(this.iNITIALIZEPROCESSOR, $"{skinRoot} :: {skinName}", 0, false);
 
             // Save path information for future use
             this.SkinRoot = skinRoot;
@@ -81,7 +82,8 @@ namespace DotNetNuke.UI.Skins
             this.SkinName = skinName;
 
             // Check for and read skin package level attribute information file
-            string fileName = this.SkinPath + this.SkinRoot + "\\" + this.SkinName + "\\" + skinRoot.Substring(0, skinRoot.Length - 1) + ".xml";
+            string fileName =
+                $@"{this.SkinPath}{this.SkinRoot}\{this.SkinName}\{skinRoot.Substring(0, skinRoot.Length - 1)}.xml";
             if (File.Exists(fileName))
             {
                 try
@@ -93,7 +95,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     // could not load XML file
                     Logger.Error(ex);
-                    this.Message += SkinController.FormatMessage(string.Format(this.pACKAGELOADERROR, ex.Message), Path.GetFileName(fileName), 2, true);
+                    this.Message += SkinController.FormatMessage(string.Format(CultureInfo.CurrentCulture, this.pACKAGELOADERROR, ex.Message), Path.GetFileName(fileName), 2, true);
                 }
             }
 
@@ -106,15 +108,15 @@ namespace DotNetNuke.UI.Skins
                 if (this.controlList.ContainsKey(token))
                 {
                     this.Message += SkinController.FormatMessage(
-                        string.Format(this.dUPLICATEERROR, token),
-                        string.Format(this.dUPLICATEDETAIL, this.controlList[token], objSkinControl.ControlSrc),
+                        string.Format(CultureInfo.CurrentCulture, this.dUPLICATEERROR, token),
+                        string.Format(CultureInfo.CurrentCulture, this.dUPLICATEDETAIL, this.controlList[token], objSkinControl.ControlSrc),
                         2,
                         true);
                 }
                 else
                 {
                     // Add it
-                    this.Message += SkinController.FormatMessage(string.Format(this.lOADSKINTOKEN, token), objSkinControl.ControlSrc, 2, false);
+                    this.Message += SkinController.FormatMessage(string.Format(CultureInfo.CurrentCulture, this.lOADSKINTOKEN, token), objSkinControl.ControlSrc, 2, false);
                     this.controlList.Add(token, objSkinControl.ControlSrc);
                 }
             }
@@ -478,17 +480,17 @@ namespace DotNetNuke.UI.Skins
             /// </remarks>
             private string ObjectMatchHandler(Match m)
             {
-                string oBJECT_PROC = Util.GetLocalizedString("ProcessObject");
-                string oBJECT_SKIN = Util.GetLocalizedString("SkinObject");
-                string oBJECT_PANE = Util.GetLocalizedString("PaneObject");
-                string cONTROL_FORMAT = Util.GetLocalizedString("ControlFormat");
-                string oBJECT_NOTFOUND = Util.GetLocalizedString("ObjectNotFound");
+                string processObject = Util.GetLocalizedString("ProcessObject");
+                string skinObject = Util.GetLocalizedString("SkinObject");
+                string pangeObject = Util.GetLocalizedString("PaneObject");
+                string controlFormat = Util.GetLocalizedString("ControlFormat");
+                string objectNotFound = Util.GetLocalizedString("ObjectNotFound");
 
                 // "token" string matches will be in the form of (" id=".." codetype=".." codebase=".." etc...><param name=".." value=".." />")
                 // we need to assume properly formatted HTML - attributes will be enclosed in double quotes and there will no spaces between assignments ( ie. attribute="value" )
 
                 // extract the embedded object attributes (" id=".." codetype=".." codebase=".." etc...")
-                string embeddedObjectAttributes = m.Groups["token"].Value.Substring(0, m.Groups["token"].Value.IndexOf(">"));
+                string embeddedObjectAttributes = m.Groups["token"].Value.Substring(0, m.Groups["token"].Value.IndexOf(">", StringComparison.Ordinal));
 
                 // split into array
                 string[] attributes = embeddedObjectAttributes.Split(' ');
@@ -499,16 +501,13 @@ namespace DotNetNuke.UI.Skins
                 string controlName = string.Empty;
 
                 // iterate and process valid attributes
-                string[] attribute;
-                string attributeName;
-                string attributeValue;
                 foreach (string strAttribute in attributes)
                 {
                     if (strAttribute != string.Empty)
                     {
-                        attribute = strAttribute.Split('=');
-                        attributeName = attribute[0].Trim();
-                        attributeValue = attribute[1].Trim().Replace("\"", string.Empty);
+                        var attribute = strAttribute.Split('=');
+                        var attributeName = attribute[0].Trim();
+                        var attributeValue = attribute[1].Trim().Replace("\"", string.Empty);
                         switch (attributeName.ToLowerInvariant())
                         {
                             case "id":
@@ -528,7 +527,7 @@ namespace DotNetNuke.UI.Skins
                 if (attributeNode.Equals("dotnetnuke/server", StringComparison.OrdinalIgnoreCase))
                 {
                     // we have a valid skin object specification
-                    this.Messages += SkinController.FormatMessage(oBJECT_PROC, token, 2, false);
+                    this.Messages += SkinController.FormatMessage(processObject, token, 2, false);
 
                     // if the embedded object is a recognized skin object
                     if (this.ControlList.ContainsKey(token) || token == "CONTENTPANE")
@@ -537,15 +536,15 @@ namespace DotNetNuke.UI.Skins
 
                         if (this.ControlList.ContainsKey(token))
                         {
-                            this.Messages += SkinController.FormatMessage(oBJECT_SKIN, (string)this.ControlList[token], 2, false);
+                            this.Messages += SkinController.FormatMessage(skinObject, (string)this.ControlList[token], 2, false);
                         }
                         else
                         {
-                            this.Messages += SkinController.FormatMessage(oBJECT_PANE, token, 2, false);
+                            this.Messages += SkinController.FormatMessage(pangeObject, token, 2, false);
                         }
 
                         // process embedded object params
-                        string parameters = m.Groups["token"].Value.Substring(m.Groups["token"].Value.IndexOf(">") + 1);
+                        string parameters = m.Groups["token"].Value.Substring(m.Groups["token"].Value.IndexOf(">", StringComparison.Ordinal) + 1);
                         parameters = parameters.Replace("<param name=\"", string.Empty);
                         parameters = parameters.Replace("\" value", string.Empty);
                         parameters = parameters.Replace("/>", string.Empty);
@@ -572,7 +571,7 @@ namespace DotNetNuke.UI.Skins
                             }
 
                             // return the control statement
-                            this.Messages += SkinController.FormatMessage(cONTROL_FORMAT, "&lt;" + skinControl + " /&gt;", 2, false);
+                            this.Messages += SkinController.FormatMessage(controlFormat, "&lt;" + skinControl + " /&gt;", 2, false);
                             skinControl = "<" + skinControl + "/>";
                         }
                         else
@@ -590,7 +589,7 @@ namespace DotNetNuke.UI.Skins
                             skinControl += parameters + "></div";
 
                             // return the control statement
-                            this.Messages += SkinController.FormatMessage(cONTROL_FORMAT, "&lt;" + skinControl + "&gt;", 2, false);
+                            this.Messages += SkinController.FormatMessage(controlFormat, "&lt;" + skinControl + "&gt;", 2, false);
                             skinControl = "<" + skinControl + ">";
                         }
 
@@ -599,7 +598,7 @@ namespace DotNetNuke.UI.Skins
                     else
                     {
                         // return the unmodified embedded object
-                        this.Messages += SkinController.FormatMessage(oBJECT_NOTFOUND, token, 2, false);
+                        this.Messages += SkinController.FormatMessage(objectNotFound, token, 2, false);
                         return "<object" + m.Groups["token"].Value + "</object>";
                     }
                 }
@@ -750,13 +749,13 @@ namespace DotNetNuke.UI.Skins
                 string strNewTag = strOldTag;
 
                 // we do not want to process object tags to DotNetNuke widgets
-                if (!m.Groups[0].Value.ToLowerInvariant().Contains("codetype=\"dotnetnuke/client\""))
+                if (!m.Groups[0].Value.Contains("codetype=\"dotnetnuke/client\"", StringComparison.OrdinalIgnoreCase))
                 {
                     switch (this.ParseOption)
                     {
                         case SkinParser.Localized:
                             // if the tag does not contain the localized path
-                            if (strNewTag.IndexOf(this.SkinPath) == -1)
+                            if (!strNewTag.Contains(this.SkinPath, StringComparison.OrdinalIgnoreCase))
                             {
                                 // insert the localized path
                                 strNewTag = m.Groups["tag"].Value + this.SkinPath + m.Groups["content"].Value + m.Groups["endtag"].Value;
@@ -765,14 +764,14 @@ namespace DotNetNuke.UI.Skins
                             break;
                         case SkinParser.Portable:
                             // if the tag does not contain a reference to the skinpath
-                            if (strNewTag.IndexOf("<%= skinpath %>", StringComparison.InvariantCultureIgnoreCase) == -1)
+                            if (!strNewTag.Contains("<%= skinpath %>", StringComparison.OrdinalIgnoreCase))
                             {
                                 // insert the skinpath
                                 strNewTag = m.Groups["tag"].Value + "<%= SkinPath %>" + m.Groups["content"].Value + m.Groups["endtag"].Value;
                             }
 
                             // if the tag contains the localized path
-                            if (strNewTag.IndexOf(this.SkinPath) != -1)
+                            if (strNewTag.Contains(this.SkinPath, StringComparison.OrdinalIgnoreCase))
                             {
                                 // remove the localized path
                                 strNewTag = strNewTag.Replace(this.SkinPath, string.Empty);
@@ -782,7 +781,7 @@ namespace DotNetNuke.UI.Skins
                     }
                 }
 
-                this.messages += SkinController.FormatMessage(this.subst, string.Format(this.substDetail, HttpUtility.HtmlEncode(strOldTag), HttpUtility.HtmlEncode(strNewTag)), 2, false);
+                this.messages += SkinController.FormatMessage(this.subst, string.Format(CultureInfo.InvariantCulture, this.substDetail, HttpUtility.HtmlEncode(strOldTag), HttpUtility.HtmlEncode(strNewTag)), 2, false);
                 return strNewTag;
             }
         }
@@ -790,25 +789,25 @@ namespace DotNetNuke.UI.Skins
         /// <summary>    Utility class for processing of skin files.</summary>
         private class SkinFile
         {
-            private const string StrPattern = "<\\s*body[^>]*>(?<skin>.*)<\\s*/\\s*body\\s*>";
+            private const string StrPattern = @"<\s*body[^>]*>(?<skin>.*)<\s*/\s*body\s*>";
 
             private static readonly Regex PaneCheck1Regex = new Regex("\\s*id\\s*=\\s*\"" + Globals.glbDefaultPane + "\"", RegexOptions.IgnoreCase | RegexOptions.Compiled);
             private static readonly Regex PaneCheck2Regex = new Regex("\\s*[" + Globals.glbDefaultPane + "]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
             private static readonly Regex BodyExtractionRegex = new Regex(StrPattern, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
 
-            private readonly string cONTROLDIR = Util.GetLocalizedString("ControlDirective");
-            private readonly string cONTROLREG = Util.GetLocalizedString("ControlRegister");
-            private readonly string fILEFORMATERROR = Util.GetLocalizedString("FileFormat.Error");
-            private readonly string fILELOAD = Util.GetLocalizedString("SkinFileLoad");
-            private readonly string fILELOADERROR = Util.GetLocalizedString("SkinFileLoad.Error");
-            private readonly string fILEWRITE = Util.GetLocalizedString("FileWrite");
+            private readonly string controlDirective = Util.GetLocalizedString("ControlDirective");
+            private readonly string controlRegister = Util.GetLocalizedString("ControlRegister");
+            private readonly string fileFormatError = Util.GetLocalizedString("FileFormat.Error");
+            private readonly string fileLoad = Util.GetLocalizedString("SkinFileLoad");
+            private readonly string fileLoadError = Util.GetLocalizedString("SkinFileLoad.Error");
+            private readonly string fileWrite = Util.GetLocalizedString("FileWrite");
+            private readonly string fileFormatDetail = Util.GetLocalizedString("FileFormat.Detail");
             private readonly XmlDocument fileAttributes;
             private readonly string fileExtension;
             private readonly string fileName;
             private readonly string skinRoot;
             private readonly string skinRootPath;
             private readonly string writeFileName;
-            private string fILEFORMATDETAIL = Util.GetLocalizedString("FileFormat.Detail");
             private string messages = string.Empty;
 
             /// <summary>Initializes a new instance of the <see cref="SkinFile"/> class.</summary>
@@ -861,7 +860,7 @@ namespace DotNetNuke.UI.Skins
                         // capture warning if file does not contain a id="ContentPane" or [CONTENTPANE]
                         if (!PaneCheck1Regex.IsMatch(this.Contents) && !PaneCheck2Regex.IsMatch(this.Contents))
                         {
-                            this.messages += SkinController.FormatMessage(this.fILEFORMATERROR, string.Format(this.fILEFORMATERROR, fileName), 2, true);
+                            this.messages += SkinController.FormatMessage(this.fileFormatError, string.Format(CultureInfo.InvariantCulture, this.fileFormatError, fileName), 2, true);
                         }
 
                         // Check for existence of and load skin file level attribute information
@@ -870,14 +869,14 @@ namespace DotNetNuke.UI.Skins
                             try
                             {
                                 this.fileAttributes.Load(fileName.Replace(this.FileExtension, ".xml"));
-                                this.messages += SkinController.FormatMessage(this.fILELOAD, fileName, 2, false);
+                                this.messages += SkinController.FormatMessage(this.fileLoad, fileName, 2, false);
                             }
                             catch (Exception exc)
                             {
                                 // could not load XML file
                                 Logger.Error(exc);
                                 this.fileAttributes = skinAttributes;
-                                this.messages += SkinController.FormatMessage(this.fILELOADERROR, fileName, 2, true);
+                                this.messages += SkinController.FormatMessage(this.fileLoadError, fileName, 2, true);
                             }
                         }
 
@@ -955,7 +954,7 @@ namespace DotNetNuke.UI.Skins
                     File.Delete(this.WriteFileName);
                 }
 
-                this.messages += SkinController.FormatMessage(this.fILEWRITE, Path.GetFileName(this.WriteFileName), 2, false);
+                this.messages += SkinController.FormatMessage(this.fileWrite, Path.GetFileName(this.WriteFileName), 2, false);
                 using (var objStreamWriter = new StreamWriter(this.WriteFileName))
                 {
                     objStreamWriter.WriteLine(this.Contents);
@@ -992,12 +991,12 @@ namespace DotNetNuke.UI.Skins
                     prefix += "<%@ Control language=\"vb\" AutoEventWireup=\"false\" Explicit=\"True\" Inherits=\"DotNetNuke.UI.Containers.Container\" %>" + Environment.NewLine;
                 }
 
-                messages += SkinController.FormatMessage(this.cONTROLDIR, HttpUtility.HtmlEncode(prefix), 2, false);
+                messages += SkinController.FormatMessage(this.controlDirective, HttpUtility.HtmlEncode(prefix), 2, false);
 
                 // add preformatted Control Registrations
                 foreach (string item in registrations)
                 {
-                    messages += SkinController.FormatMessage(this.cONTROLREG, HttpUtility.HtmlEncode(item), 2, false);
+                    messages += SkinController.FormatMessage(this.controlRegister, HttpUtility.HtmlEncode(item), 2, false);
                     prefix += item;
                 }
 

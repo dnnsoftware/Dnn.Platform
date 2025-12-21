@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Messaging.Data
 {
     using System;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Data;
 
@@ -13,6 +14,7 @@ namespace DotNetNuke.Services.Messaging.Data
         private readonly DataProvider provider = DataProvider.Instance();
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IDataReader GetMessageByID(int messageId)
         {
             return this.provider.ExecuteReader("Messaging_GetMessage", messageId);

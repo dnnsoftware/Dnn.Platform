@@ -5,6 +5,7 @@
 namespace DotNetNuke.Abstractions.Portals.Templates
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>Work with Portal Templates.</summary>
     public interface IPortalTemplateController
@@ -17,10 +18,11 @@ namespace DotNetNuke.Abstractions.Portals.Templates
         /// <param name="isNewPortal">Flag to determine whether the template is applied to an existing portal or a newly created one.</param>
         /// <remarks>
         /// When creating a new portal in DNN (PortalController.CreatePortal) the entry in the DB is first created and the
-        /// necessary folders on disk. After that this method is run to finish setting up the new potral. But one can also apply
+        /// necessary folders on disk. After that this method is run to finish setting up the new portal. But one can also apply
         /// a template to an existing portal. How clashes are handled is determined by the mergeTabs argument.
         /// The roles and settings nodes will only be processed on the portal template file.
         /// </remarks>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         void ApplyPortalTemplate(int portalId, IPortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal);
 
         /// <summary>Export a portal into a portal template.</summary>
@@ -28,7 +30,7 @@ namespace DotNetNuke.Abstractions.Portals.Templates
         /// <param name="fileName">The filename to use when writing the portal template to disk. Note it will be written to the host
         /// directory (Portals/_default).</param>
         /// <param name="description">Description of the template.</param>
-        /// <param name="isMultiLanguage">Whether the template is a multi language template.</param>
+        /// <param name="isMultiLanguage">Whether the template is a multi-language template.</param>
         /// <param name="locales">A list of locales that are to be exported.</param>
         /// <param name="localizationCulture">The default locale.</param>
         /// <param name="exportTabIds">A list of tab ids to export. These should be checked beforehand to ensure they form a continuous

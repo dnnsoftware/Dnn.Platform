@@ -4,6 +4,8 @@
 
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
+    using System.Globalization;
+
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
@@ -24,7 +26,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
             if (!string.IsNullOrEmpty(strError))
             {
                 this.Errors.Add(Localization.GetString("FcnMode", this.LocalInstallResourceFile) + ": " + strError);
-                Logger.TraceFormat("Adding FcnMode : {0}", strError);
+                Logger.TraceFormat(CultureInfo.InvariantCulture, "Adding FcnMode : {0}", strError);
             }
 
             this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;

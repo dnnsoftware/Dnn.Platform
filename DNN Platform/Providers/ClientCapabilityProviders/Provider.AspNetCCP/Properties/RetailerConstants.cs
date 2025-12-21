@@ -4,6 +4,7 @@
 namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Properties
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>A list of constants to use with the purchase solution.</summary>
     public static class RetailerConstants
@@ -17,10 +18,12 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Properties
 #pragma warning disable SA1310 // Field should not contain an underscore
         /// <summary>The url to send purchasers to.</summary>
         [Obsolete("Deprecated in DotNetNuke 9.8.1. Use RetailerUrl instead. Scheduled removal in v11.0.0.")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public const string RETAILER_URL = RetailerUrl;
 
         /// <summary>The name of the retailer.</summary>
         [Obsolete("Deprecated in DotNetNuke 9.8.1. Use RetailerName instead. Scheduled removal in v11.0.0.")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public const string RETAILER_NAME = RetailerName;
 #pragma warning restore SA1310 // Field should not contain an underscore
     }

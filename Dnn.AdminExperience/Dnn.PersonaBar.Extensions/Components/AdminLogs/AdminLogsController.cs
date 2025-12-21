@@ -267,7 +267,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             }
             else
             {
-                returnMsg = string.Format(Localization.GetString("InavlidEmailAddress", Constants.LocalResourcesFile), fromEmailAddress);
+                returnMsg = string.Format(CultureInfo.CurrentCulture, Localization.GetString("InavlidEmailAddress", Constants.LocalResourcesFile), fromEmailAddress);
                 error = Localization.GetString("EmailFailure", Constants.LocalResourcesFile);
             }
 

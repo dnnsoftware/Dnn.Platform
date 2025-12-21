@@ -18,6 +18,7 @@ namespace Dnn.PersonaBar.Pages.Components
     public class PageManagementController : ServiceLocator<IPageManagementController, PageManagementController>, IPageManagementController
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public static readonly string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
         private readonly ITabController tabController;
 

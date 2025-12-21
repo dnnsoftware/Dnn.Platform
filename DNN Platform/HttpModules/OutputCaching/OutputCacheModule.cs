@@ -8,6 +8,8 @@ namespace DotNetNuke.HttpModules.OutputCaching
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Net;
     using System.Web;
 
@@ -34,6 +36,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication httpApp)
         {
             this.app = httpApp;
@@ -105,7 +108,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             int maxCachedVariationsForTab = 250; // by default, prevent DOS attacks
             if (tabSettings["MaxVaryByCount"] != null && !string.IsNullOrEmpty(tabSettings["MaxVaryByCount"].ToString()))
             {
-                maxCachedVariationsForTab = Convert.ToInt32(tabSettings["MaxVaryByCount"].ToString());
+                maxCachedVariationsForTab = Convert.ToInt32(tabSettings["MaxVaryByCount"].ToString(), CultureInfo.InvariantCulture);
             }
 
             var includeVaryByKeys = new StringCollection
@@ -188,12 +191,12 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
             if (!varyBy.ContainsKey("portalid"))
             {
-                varyBy.Add("portalid", portalId.ToString());
+                varyBy.Add("portalid", portalId.ToString(CultureInfo.InvariantCulture));
             }
 
             if (!varyBy.ContainsKey("tabid"))
             {
-                varyBy.Add("tabid", tabId.ToString());
+                varyBy.Add("tabid", tabId?.ToString(CultureInfo.InvariantCulture) ?? string.Empty);
             }
 
             if (!varyBy.ContainsKey("locale"))
@@ -231,15 +234,15 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
             this.app.Context.Items[ContextKeyTabId] = tabId;
 
-            if (cached != true)
+            if (!cached)
             {
-                if (tabSettings["CacheDuration"] != null && !string.IsNullOrEmpty(tabSettings["CacheDuration"].ToString()) && Convert.ToInt32(tabSettings["CacheDuration"].ToString()) > 0)
+                if (tabSettings["CacheDuration"] != null && !string.IsNullOrEmpty(tabSettings["CacheDuration"].ToString()) && Convert.ToInt32(tabSettings["CacheDuration"].ToString(), CultureInfo.InvariantCulture) > 0)
                 {
-                    var seconds = Convert.ToInt32(tabSettings["CacheDuration"].ToString());
+                    var seconds = Convert.ToInt32(tabSettings["CacheDuration"].ToString(), CultureInfo.InvariantCulture);
                     var duration = new TimeSpan(0, 0, seconds);
 
                     var responseFilter = OutputCachingProvider.Instance(this.app.Context.Items[ContextKeyTabOutputCacheProvider].ToString()).GetResponseFilter(
-                        Convert.ToInt32(this.app.Context.Items[ContextKeyTabId]),
+                        Convert.ToInt32(this.app.Context.Items[ContextKeyTabId], CultureInfo.InvariantCulture),
                         maxCachedVariationsForTab,
                         this.app.Response.Filter,
                         cacheKey,
@@ -259,7 +262,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             {
                 if (this.app.Context.Items[ContextKeyResponseFilter] is OutputCacheResponseFilter responseFilter)
                 {
-                    responseFilter.StopFiltering(Convert.ToInt32(this.app.Context.Items[ContextKeyTabId]), false);
+                    responseFilter.StopFiltering(Convert.ToInt32(this.app.Context.Items[ContextKeyTabId], CultureInfo.InvariantCulture), false);
                 }
             }
         }

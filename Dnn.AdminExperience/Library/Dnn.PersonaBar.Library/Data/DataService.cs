@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Library.Data
 {
     using System;
     using System.Data;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
 
@@ -24,14 +25,14 @@ namespace Dnn.PersonaBar.Library.Data
                 controller,
                 resourceKey,
                 path,
-                Null.GetNull(link, DBNull.Value),
-                Null.GetNull(cssClass, DBNull.Value),
-                Null.GetNull(parentId, DBNull.Value),
+                Null.GetNull(link, DBNull.Value, CultureInfo.InvariantCulture),
+                Null.GetNull(cssClass, DBNull.Value, CultureInfo.InvariantCulture),
+                Null.GetNull(parentId, DBNull.Value, CultureInfo.InvariantCulture),
                 order,
                 allowHost,
                 enabled,
                 currentUserId,
-                Null.GetNull(iconFile, DBNull.Value));
+                Null.GetNull(iconFile, DBNull.Value, CultureInfo.InvariantCulture));
         }
 
         /// <inheritdoc/>
@@ -123,7 +124,7 @@ namespace Dnn.PersonaBar.Library.Data
         {
             return DataProvider.ExecuteScalar<int>(
                 "PersonaBar_SavePersonaBarPermission",
-                Null.GetNull(menuId, DBNull.Value),
+                Null.GetNull(menuId, DBNull.Value, CultureInfo.InvariantCulture),
                 permissionKey,
                 permissionName,
                 currentUserId);
@@ -149,7 +150,7 @@ namespace Dnn.PersonaBar.Library.Data
 
         private static object GetRoleNull(int roleId)
         {
-            if (roleId.ToString() == "-4")
+            if (roleId.ToString(CultureInfo.InvariantCulture) == "-4")
             {
                 return DBNull.Value;
             }
