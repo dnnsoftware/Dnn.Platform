@@ -40,23 +40,11 @@
   <ItemGroup>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Http, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Core.5.3.0\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.3.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Microsoft.AspNet.Mvc.5.3.0\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Web.MvcPipeline\DotNetNuke.Web.MvcPipeline.csproj" />
     <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj" />
@@ -70,44 +58,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="admin\personaBar\Mvc\PersonaBarContainerController.cs" />
-    <Compile Include="admin\personaBar\Mvc\PersonaBarContainerModel.cs" />
-    <Compile Include="admin\personaBar\UserControls\PersonaBarContainer.ascx.cs">
-      <DependentUpon>PersonaBarContainer.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\personaBar\UserControls\PersonaBarContainer.ascx.designer.cs">
-      <DependentUpon>PersonaBarContainer.ascx.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Components\BusinessController.cs" />
-    <Compile Include="Components\Controllers\AdminMenuController.cs" />
-    <Compile Include="Components\Controllers\IAdminMenuController.cs" />
-    <Compile Include="Components\EventHandlers\TabEventsHandler.cs" />
-    <Compile Include="Components\Installers\PersonaBarMenuInstaller.cs" />
-    <Compile Include="HttpModules\PersonaBarModule.cs" />
-    <Compile Include="MenuControllers\LinkMenuController.cs" />
-    <Compile Include="MenuControllers\EditMenuController.cs" />
-    <Compile Include="MenuControllers\PlatformMenuController.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\CacheDto.cs" />
-    <Compile Include="Services\Dto\FrameworkQueryDTO.cs" />
-    <Compile Include="Services\Dto\LocalUpgradeDto.cs" />
-    <Compile Include="Services\Dto\SuggestionDto.cs" />
-    <Compile Include="Services\Dto\RoleGroupDto.cs" />
-    <Compile Include="Services\ServerSummaryController.cs" />
-    <Compile Include="Services\MenuExtensionsController.cs" />
-    <Compile Include="Services\LocalizationController.cs" />
-    <Compile Include="Services\ComponentsController.cs" />
-    <Compile Include="Services\PortalsController.cs" />
-    <Compile Include="Services\TabsController.cs" />
-    <Compile Include="Services\UserSettingsController.cs" />
-    <Compile Include="Services\ServiceRouteMapper.cs" />
-    <Compile Include="..\..\..\SolutionInfo.cs">
-      <Link>Properties\SolutionInfo.cs</Link>
-    </Compile>
-    <Compile Include="Startup.cs" />
     <AdditionalFiles Include="..\..\..\stylecop.json" Link="stylecop.json" />
     <Compile Include="..\..\..\SolutionInfo.cs" Link="SolutionInfo.cs" />
   </ItemGroup>
@@ -115,106 +65,6 @@
   <ItemGroup>
     <EmbeddedResource Include="admin\personaBar\data\adminpages.resources" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="admin\personaBar\css\graph.css" />
-    <Content Include="admin\personaBar\css\main.css" />
-    <Content Include="admin\personaBar\css\permissionGrid.css" />
-    <Content Include="admin\personaBar\css\PersonaBarDialog.css" />
-    <Content Include="admin\personaBar\css\tags-input.css" />
-    <Content Include="admin\personaBar\scripts\bootstrap.js" />
-    <Content Include="admin\personaBar\scripts\config.js" />
-    <Content Include="admin\personaBar\scripts\contrib\domReady.js" />
-    <Content Include="admin\personaBar\scripts\contrib\knockout.validation.min.js" />
-    <Content Include="admin\personaBar\scripts\contrib\jquery-ui.min.js" />
-    <Content Include="admin\personaBar\scripts\contrib\jquery.js" />
-    <Content Include="admin\personaBar\scripts\contrib\jquery.qatooltip.js" />
-    <Content Include="admin\personaBar\scripts\contrib\knockout.js" />
-    <Content Include="admin\personaBar\scripts\contrib\knockout.mapping.js" />
-    <Content Include="admin\personaBar\scripts\contrib\moment.js" />
-    <Content Include="admin\personaBar\scripts\contrib\owl-carousel\AjaxLoader.gif" />
-    <Content Include="admin\personaBar\scripts\contrib\owl-carousel\grabbing.png" />
-    <Content Include="admin\personaBar\scripts\contrib\owl-carousel\owl.carousel.css" />
-    <Content Include="admin\personaBar\scripts\contrib\owl-carousel\owl.carousel.js" />
-    <Content Include="admin\personaBar\scripts\contrib\owl-carousel\owl.carousel.min.js" />
-    <Content Include="admin\personaBar\scripts\contrib\owl-carousel\owl.theme.css" />
-    <Content Include="admin\personaBar\scripts\contrib\owl-carousel\owl.transitions.css" />
-    <Content Include="admin\personaBar\scripts\contrib\require.js" />
-    <Content Include="admin\personaBar\scripts\contrib\text.js" />
-    <Content Include="admin\personaBar\scripts\koBindingHandlers\folderPicker.js" />
-    <Content Include="admin\personaBar\scripts\koBindingHandlers\tagsInput.js" />
-    <Content Include="admin\personaBar\scripts\main.js" />
-    <Content Include="admin\personaBar\scripts\pager.js" />
-    <Content Include="admin\personaBar\scripts\permissionGrid.js" />
-    <Content Include="admin\personaBar\scripts\permissionGridManager.js" />
-    <Content Include="admin\personaBar\scripts\persistent.js" />
-    <Content Include="admin\personaBar\scripts\PersonaBarDialog.js" />
-    <Content Include="admin\personaBar\scripts\scroller.js" />
-    <Content Include="admin\personaBar\scripts\sf.js" />
-    <Content Include="admin\personaBar\scripts\tabpanel.js" />
-    <Content Include="admin\personaBar\scripts\util.js" />
-    <Content Include="admin\personaBar\scripts\validator.js" />
-    <Content Include="Images\icon-personabarapp-16px.png" />
-    <Content Include="Images\icon-personabarapp-32px.png" />
-    <Content Include="01.03.00.txt" />
-    <Content Include="license.txt" />
-    <Content Include="Licenses\Admin Persona Bar Referenced Licences.txt" />
-    <Content Include="releaseNotes.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="admin\personaBar\App_LocalResources\PersonaBar.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="admin\personaBar\App_LocalResources\SharedResources.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
-      <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
-      <Name>DotNetNuke.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj">
-      <Project>{0fca217a-5f9a-4f5b-a31b-86d64ae65198}</Project>
-      <Name>DotNetNuke.DependencyInjection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
-      <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
-      <Name>DotNetNuke.Instrumentation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj">
-      <Project>{04f77171-0634-46e0-a95e-d7477c88712e}</Project>
-      <Name>DotNetNuke.Log4Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
-      <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
-      <Name>DotNetNuke.Web.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Web.MvcPipeline\DotNetNuke.Web.MvcPipeline.csproj">
-      <Project>{AA3EE19B-81A0-3766-E8F4-424C2425A8D3}</Project>
-      <Name>DotNetNuke.Web.MvcPipeline</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
-      <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
-      <Name>DotNetNuke.WebUtility</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Web\DotNetNuke.Web.csproj">
-      <Project>{ee1329fe-fd88-4e1a-968c-345e394ef080}</Project>
-      <Name>DotNetNuke.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DNN Platform\Library\DotNetNuke.Library.csproj">
-      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
-      <Name>DotNetNuke.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
-      <Project>{8b50ba8b-0a08-41b8-81b8-ea70707c7379}</Project>
-      <Name>Dnn.PersonaBar.Library</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 
   <Import Project="Module.build" />
 </Project>

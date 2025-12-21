@@ -22,7 +22,6 @@
     <DebugType>Portable</DebugType>
   </PropertyGroup>
   <ItemGroup>
-  <PackageReference Include="Dnn.ClientDependency" Version="1.9.10" />
   <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
   <PackageReference Include="Microsoft.AspNet.Razor" Version="3.3.0" />
   <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
