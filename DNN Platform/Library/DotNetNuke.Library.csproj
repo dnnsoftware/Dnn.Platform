@@ -83,6 +83,7 @@
     <ProjectReference Include="..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="..\Controls\CountryListBox\CountryListBox.csproj" />
     <ProjectReference Include="..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj" />
+    <ProjectReference Include="..\DotNetNuke.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.csproj" />
     <ProjectReference Include="..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj" />
     <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj" />
     <ProjectReference Include="..\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj" />
@@ -91,168 +92,10 @@
     <ProjectReference Include="..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj" />
     <ProjectReference Include="..\Syndication\DotNetNuke.Syndication.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
     <Compile Include="..\..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Entities\Content\Data\DataService.cs" />
-    <Compile Include="Entities\Content\Data\IDataService.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Entities\Content\ContentController.cs" />
-    <Compile Include="Entities\Content\ContentItem.cs" />
-    <Compile Include="Entities\Content\ContentType.cs" />
-    <Compile Include="Entities\Content\ContentTypeController.cs" />
-    <Compile Include="Entities\Content\IContentController.cs" />
-    <Compile Include="Entities\Content\IContentTypeController.cs" />
-    <Compile Include="Entities\Content\Taxonomy\IScopeTypeController.cs" />
-    <Compile Include="Entities\Content\Taxonomy\ITermController.cs" />
-    <Compile Include="Entities\Content\Taxonomy\IVocabularyController.cs" />
-    <Compile Include="Entities\Content\Taxonomy\ScopeType.cs" />
-    <Compile Include="Entities\Content\Taxonomy\ScopeTypeController.cs" />
-    <Compile Include="Entities\Content\Taxonomy\Term.cs" />
-    <Compile Include="Entities\Content\Taxonomy\TermController.cs" />
-    <Compile Include="Entities\Content\Taxonomy\Vocabulary.cs" />
-    <Compile Include="Entities\Content\Taxonomy\VocabularyController.cs" />
-    <Compile Include="Entities\Content\Taxonomy\VocabularyType.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Services\Messaging\Data\Message.cs" />
-    <Compile Include="Services\Messaging\Data\MessageStatusType.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Services\UserProfile\UserProfilePageHandler.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Common\Guard.cs" />
-    <Compile Include="Common\Requires.cs" />
-    <Compile Include="ComponentModel\ComponentBase.cs" />
-    <Compile Include="Framework\BaseHttpHandler.cs" />
-    <Compile Include="UI\Modules\IProfileModule.cs" />
-    <Compile Include="UI\Modules\ProfileModuleUserControlBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\UserControls\LocaleSelectorControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Entities\Controllers\HostController.cs" />
-    <Compile Include="Entities\Controllers\IHostController.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Entities\ConfigurationSetting.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Entities\Modules\Communications\IModuleCommunicator.cs" />
-    <Compile Include="Entities\Modules\Communications\IModuleListener.cs" />
-    <Compile Include="Entities\Modules\Communications\ModuleCommunicate.cs" />
-    <Compile Include="Entities\Modules\Communications\ModuleCommunicationEventArgs.cs" />
-    <Compile Include="Entities\Modules\Communications\ModuleCommunicationEventHandler.cs" />
-    <Compile Include="Entities\Modules\Communications\ModuleCommunicators.cs" />
-    <Compile Include="Entities\Modules\Communications\ModuleListeners.cs" />
-    <Compile Include="Entities\Modules\Communications\RoleChangeEventArgs.cs" />
-    <Compile Include="Services\Localization\ILocaleController.cs" />
-    <Compile Include="Services\Localization\LocaleController.cs" />
-    <Compile Include="UI\Skins\SkinScope.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Services\Analytics\GoogleAnalyticsController.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Common\Utilities\SqlUtils.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Collections\ExclusiveLockStrategy.cs" />
-    <Compile Include="Collections\ILockStrategy.cs" />
-    <Compile Include="Collections\ISharedCollectionLock.cs" />
-    <Compile Include="Collections\LockingStrategy.cs" />
-    <Compile Include="Collections\LockingStrategyFactory.cs" />
-    <Compile Include="Collections\MonitorLock.cs" />
-    <Compile Include="Collections\ReaderWriterLockStrategy.cs" />
-    <Compile Include="Collections\ReaderWriterSlimLock.cs" />
-    <Compile Include="Collections\ReadLockRequiredException.cs" />
-    <Compile Include="Collections\SharedDictionary.cs" />
-    <Compile Include="Collections\SharedList.cs" />
-    <Compile Include="Collections\WriteLockRequiredException.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Common\Utilities\FileSystemPermissionVerifier.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UI\Internal\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer">
-      <Project>{5fe5d021-9c8d-47a6-bd34-f328ba3e709c}</Project>
-      <Name>DotNetNuke.Internal.SourceGenerators</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Controls\CountryListBox\CountryListBox.csproj">
-      <Project>{ca056730-5759-41f8-a6c1-420f9c0c63e7}</Project>
-      <Name>CountryListBox</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
-      <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
-      <Name>DotNetNuke.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.csproj">
-      <Project>{33c9571d-e3af-46fc-dc75-9ca082bbdc3d}</Project>
-      <Name>DotNetNuke.ContentSecurityPolicy</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj">
-      <Project>{0fca217a-5f9a-4f5b-a31b-86d64ae65198}</Project>
-      <Name>DotNetNuke.DependencyInjection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
-      <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
-      <Name>DotNetNuke.Instrumentation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj">
-      <Project>{04f77171-0634-46e0-a95e-d7477c88712e}</Project>
-      <Name>DotNetNuke.Log4Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.Web.Client.ResourceManager\DotNetNuke.Web.Client.ResourceManager.csproj">
-      <Project>{039bafbd-e2db-40c4-b565-c27467d9b5e1}</Project>
-      <Name>DotNetNuke.Web.Client.ResourceManager</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
-      <Project>{537b45eb-2ec3-4849-bc6b-d761f43674a5}</Project>
-      <Name>DotNetNuke.Web.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
-      <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
-      <Name>DotNetNuke.WebUtility</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Syndication\DotNetNuke.Syndication.csproj">
-      <Project>{9f2f4076-d434-448f-9cbb-7bf7a9766ab1}</Project>
-      <Name>DotNetNuke.Syndication</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
-  <PropertyGroup>
-    <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
-  </PropertyGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.Build.Tasks.Git.8.0.0\build\Microsoft.Build.Tasks.Git.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Build.Tasks.Git.8.0.0\build\Microsoft.Build.Tasks.Git.props'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.Build.Tasks.Git.8.0.0\build\Microsoft.Build.Tasks.Git.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Build.Tasks.Git.8.0.0\build\Microsoft.Build.Tasks.Git.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.Common.8.0.0\build\Microsoft.SourceLink.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.Common.8.0.0\build\Microsoft.SourceLink.Common.props'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.Common.8.0.0\build\Microsoft.SourceLink.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.Common.8.0.0\build\Microsoft.SourceLink.Common.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.GitHub.8.0.0\build\Microsoft.SourceLink.GitHub.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.GitHub.8.0.0\build\Microsoft.SourceLink.GitHub.props'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.SourceLink.GitHub.8.0.0\build\Microsoft.SourceLink.GitHub.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.SourceLink.GitHub.8.0.0\build\Microsoft.SourceLink.GitHub.targets'))" />
-  </Target>
-  <Import Project="Library.build" />
-  <Import Project="..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets" Condition="Exists('..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets')" />
-  <Import Project="..\..\packages\Microsoft.Build.Tasks.Git.8.0.0\build\Microsoft.Build.Tasks.Git.targets" Condition="Exists('..\..\packages\Microsoft.Build.Tasks.Git.8.0.0\build\Microsoft.Build.Tasks.Git.targets')" />
-  <Import Project="..\..\packages\Microsoft.SourceLink.Common.8.0.0\build\Microsoft.SourceLink.Common.targets" Condition="Exists('..\..\packages\Microsoft.SourceLink.Common.8.0.0\build\Microsoft.SourceLink.Common.targets')" />
-  <Import Project="..\..\packages\Microsoft.SourceLink.GitHub.8.0.0\build\Microsoft.SourceLink.GitHub.targets" Condition="Exists('..\..\packages\Microsoft.SourceLink.GitHub.8.0.0\build\Microsoft.SourceLink.GitHub.targets')" />
 
 </Project>

@@ -1423,7 +1423,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                bool.TryParse(Config.GetSetting("DisableCsp"), out bool disableCsp);
+                _ = bool.TryParse(Config.GetSetting("DisableCsp"), out bool disableCsp);
 
                 var response = new
                 {
@@ -1478,7 +1478,7 @@ namespace Dnn.PersonaBar.Security.Services
                             CspHeader = true,
                             CspHeaderErrors = new[] { ex.Message },
                             CspReportingHeader = false,
-                            CspReportingHeaderErrors = new string[0],
+                            CspReportingHeaderErrors = Array.Empty<string>(),
                         },
                     });
                 }
@@ -1498,7 +1498,7 @@ namespace Dnn.PersonaBar.Security.Services
                             Error = new
                             {
                                 CspHeader = false,
-                                CspHeaderErrors = new string[0],
+                                CspHeaderErrors = Array.Empty<string>(),
                                 CspReportingHeader = true,
                                 CspReportingHeaderErrors = new[] { ex.Message },
                             },
@@ -1506,8 +1506,8 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 }
 
-                PortalController.UpdatePortalSetting(this.PortalId, "CspHeaderMode", request.CspHeaderMode.ToString().ToUpper());
-                PortalController.UpdatePortalSetting(this.PortalId, "CspHeaderFixed", request.CspHeaderFixed.ToString().ToUpper());
+                PortalController.UpdatePortalSetting(this.PortalId, "CspHeaderMode", request.CspHeaderMode.ToString().ToUpperInvariant());
+                PortalController.UpdatePortalSetting(this.PortalId, "CspHeaderFixed", request.CspHeaderFixed.ToString().ToUpperInvariant());
                 PortalController.UpdatePortalSetting(this.PortalId, "CspHeader", request.CspHeader);
                 PortalController.UpdatePortalSetting(this.PortalId, "CspReportingHeader", request.CspReportingHeader);
 
