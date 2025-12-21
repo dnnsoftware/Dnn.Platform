@@ -18,25 +18,16 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
         public ClientResourceLoader Parent { get; internal set; }
 
-        public Control BindingContainer
-        {
-            get
-            {
-                return this.Parent;
-            }
-        }
+        public Control BindingContainer => this.Parent;
 
         public void DataBind()
         {
-            this.OnDataBinding(new EventArgs());
+            this.OnDataBinding(EventArgs.Empty);
         }
 
         protected void OnDataBinding(EventArgs e)
         {
-            if (this.DataBinding != null)
-            {
-                this.DataBinding(this, e);
-            }
+            this.DataBinding?.Invoke(this, e);
         }
     }
 }

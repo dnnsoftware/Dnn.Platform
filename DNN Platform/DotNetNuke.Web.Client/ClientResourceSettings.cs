@@ -32,7 +32,6 @@ namespace DotNetNuke.Web.Client
         public static readonly string VersionKey = "CrmVersion";
 
         private static readonly Type PortalControllerType;
-        private static readonly Type CommonGlobalsType;
 
         private bool statusChecked;
         private UpgradeStatus status;
@@ -41,8 +40,6 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                // all these types are part of the same library, so we don't need a separate catch for each one
-                CommonGlobalsType = Type.GetType("DotNetNuke.Common.Globals, DotNetNuke");
                 PortalControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalController, DotNetNuke");
             }
             catch (Exception exception)
@@ -186,13 +183,6 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
-        private static IServiceScope GetServiceScope()
-        {
-            var getOrCreateServiceScopeMethod = CommonGlobalsType.GetMethod("GetOrCreateServiceScope", BindingFlags.NonPublic | BindingFlags.Static);
-            var serviceScope = getOrCreateServiceScopeMethod.Invoke(null, Array.Empty<object>());
-            return (IServiceScope)serviceScope;
-        }
-
         private static string GetPortalSettingThroughReflection(int? portalId, string settingKey)
         {
             if (portalId is null)
@@ -202,10 +192,10 @@ namespace DotNetNuke.Web.Client
 
             try
             {
-                using var scope = GetServiceScope();
+                using var scope = DependencyInjection.GetOrCreateServiceScope();
                 var portalController = ActivatorUtilities.GetServiceOrCreateInstance(scope.ServiceProvider, PortalControllerType);
                 var method = PortalControllerType.GetMethod("GetPortalSettings", BindingFlags.Public | BindingFlags.Instance);
-                var dictionary = (Dictionary<string, string>)method.Invoke(portalController, new object[] { portalId.Value, });
+                var dictionary = (Dictionary<string, string>)method.Invoke(portalController, [portalId.Value,]);
 
                 if (dictionary.TryGetValue(settingKey, out var value))
                 {
@@ -229,7 +219,7 @@ namespace DotNetNuke.Web.Client
                     return null;
                 }
 
-                using var scope = GetServiceScope();
+                using var scope = DependencyInjection.GetOrCreateServiceScope();
                 var portalAliasService = scope.ServiceProvider.GetRequiredService<IPortalAliasService>();
                 var alias = portalAliasService.GetPortalAlias(HttpContext.Current.Request.Url.Host);
 
@@ -247,7 +237,7 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                using var scope = GetServiceScope();
+                using var scope = DependencyInjection.GetOrCreateServiceScope();
                 var hostSettingsService = scope.ServiceProvider.GetRequiredService<IHostSettingsService>();
 
                 var dictionary = hostSettingsService.GetSettingsDictionary();
@@ -268,7 +258,7 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                using var scope = GetServiceScope();
+                using var scope = DependencyInjection.GetOrCreateServiceScope();
                 var applicationStatusInfo = scope.ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
                 return applicationStatusInfo.Status;
             }
