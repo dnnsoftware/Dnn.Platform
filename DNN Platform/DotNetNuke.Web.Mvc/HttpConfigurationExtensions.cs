@@ -34,12 +34,10 @@ namespace DotNetNuke.Web.Mvc
         {
             Requires.NotNull("configuration", configuration);
 
-            var providers = configuration.Properties.GetOrAdd(Key, InitValue) as ConcurrentQueue<ITabAndModuleInfoProvider>;
-
-            if (providers == null)
+            if (configuration.Properties.GetOrAdd(Key, InitValue) is not ConcurrentQueue<ITabAndModuleInfoProvider> providers)
             {
                 // shouldn't ever happen outside of unit tests
-                return new ITabAndModuleInfoProvider[] { };
+                return [];
             }
 
             return providers.ToArray();

@@ -11,7 +11,7 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
     {
         public static string CleanWildcards(string searchText)
         {
-            if (string.IsNullOrEmpty(searchText) || searchText.Equals("*") || searchText.Equals("%"))
+            if (string.IsNullOrEmpty(searchText) || searchText.Equals("*", System.StringComparison.Ordinal) || searchText.Equals("%", System.StringComparison.Ordinal))
             {
                 return null;
             }
@@ -62,9 +62,9 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
                 var matchText = matches[0].Groups[2].Value;
                 if (matchText != null && !string.IsNullOrEmpty(matchText))
                 {
-                    pattern.Append("%");
+                    pattern.Append('%');
                     pattern.Append(matchText.Replace("*", string.Empty).Replace("%", string.Empty));
-                    pattern.Append("%");
+                    pattern.Append('%');
                 }
             }
 
@@ -84,7 +84,7 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
                 var matchText = matches[0].Groups[2].Value;
                 if (matchText != null && !string.IsNullOrEmpty(matchText))
                 {
-                    pattern.Append("%");
+                    pattern.Append('%');
                     pattern.Append(matchText.Replace("*", string.Empty).Replace("%", string.Empty));
                 }
             }
@@ -95,8 +95,8 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
         private static string GetSuffixSearchPattern(string searchText)
         {
             var pattern = new StringBuilder();
-            var regexOptions = RegexOptions.IgnoreCase | RegexOptions.Compiled;
-            var suffixRegex = "([\\w\\-_\\*\\s\\%\\.\\@]+)(\\*|%)$";
+            const RegexOptions regexOptions = RegexOptions.IgnoreCase | RegexOptions.Compiled;
+            const string suffixRegex = "([\\w\\-_\\*\\s\\%\\.\\@]+)(\\*|%)$";
             var regex = new Regex(suffixRegex, regexOptions);
             var matches = regex.Matches(searchText);
 
@@ -106,7 +106,7 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
                 if (matchText != null && !string.IsNullOrEmpty(matchText))
                 {
                     pattern.Append(matchText.Replace("*", string.Empty).Replace("%", string.Empty));
-                    pattern.Append("%");
+                    pattern.Append('%');
                 }
             }
 

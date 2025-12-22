@@ -7,6 +7,7 @@ namespace DotNetNuke.Data
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text.RegularExpressions;
 
@@ -101,10 +102,10 @@ namespace DotNetNuke.Data
         /// <inheritdoc/>
         public override string ExecuteScript(string script, int timeoutSec)
         {
-            string exceptions = this.ExecuteScriptInternal(this.UpgradeConnectionString, script, timeoutSec);
+            string exceptions = ExecuteScriptInternal(this.UpgradeConnectionString, script, timeoutSec);
 
             // if the upgrade connection string is specified or or db_owner setting is not set to dbo
-            if (this.UpgradeConnectionString != this.ConnectionString || !this.DatabaseOwner.Trim().Equals("dbo.", StringComparison.InvariantCultureIgnoreCase))
+            if (this.UpgradeConnectionString != this.ConnectionString || !this.DatabaseOwner.Trim().Equals("dbo.", StringComparison.OrdinalIgnoreCase))
             {
                 try
                 {
@@ -112,7 +113,7 @@ namespace DotNetNuke.Data
                     // necesary because the UpgradeConnectionString will create stored procedures
                     // which restrict execute permissions for the ConnectionString user account. This is also
                     // necessary when db_owner is not set to "dbo"
-                    exceptions += this.GrantStoredProceduresPermission("EXECUTE", this.GetConnectionStringUserID());
+                    exceptions += this.GrantStoredProceduresPermission("EXECUTE", this.GetConnectionStringUserId());
                 }
                 catch (SqlException objException)
                 {
@@ -128,7 +129,7 @@ namespace DotNetNuke.Data
                     // necesary because the UpgradeConnectionString will create user defined functions
                     // which restrict execute permissions for the ConnectionString user account.  This is also
                     // necessary when db_owner is not set to "dbo"
-                    exceptions += this.GrantUserDefinedFunctionsPermission("EXECUTE", "SELECT", this.GetConnectionStringUserID());
+                    exceptions += this.GrantUserDefinedFunctionsPermission("EXECUTE", "SELECT", this.GetConnectionStringUserId());
                 }
                 catch (SqlException objException)
                 {
@@ -144,25 +145,25 @@ namespace DotNetNuke.Data
         /// <inheritdoc/>
         public override string ExecuteScript(string connectionString, string script)
         {
-            return this.ExecuteScriptInternal(connectionString, script);
+            return ExecuteScriptInternal(connectionString, script);
         }
 
         /// <inheritdoc/>
         public override string ExecuteScript(string connectionString, string script, int timeoutSec)
         {
-            return this.ExecuteScriptInternal(connectionString, script, timeoutSec);
+            return ExecuteScriptInternal(connectionString, script, timeoutSec);
         }
 
         /// <inheritdoc/>
         public override IDataReader ExecuteSQL(string sql)
         {
-            return this.ExecuteSQLInternal(this.ConnectionString, sql);
+            return ExecuteSQLInternal(this.ConnectionString, sql);
         }
 
         /// <inheritdoc/>
         public override IDataReader ExecuteSQL(string sql, int timeoutSec)
         {
-            return this.ExecuteSQLInternal(this.ConnectionString, sql, timeoutSec);
+            return ExecuteSQLInternal(this.ConnectionString, sql, timeoutSec);
         }
 
         /// <inheritdoc/>
@@ -182,35 +183,16 @@ namespace DotNetNuke.Data
         /// <inheritdoc/>
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage)
         {
-            return this.ExecuteSQLInternal(connectionString, sql, 0, out errorMessage);
+            return ExecuteSQLInternal(connectionString, sql, 0, out errorMessage);
         }
 
         /// <inheritdoc/>
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec, out string errorMessage)
         {
-            return this.ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
+            return ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
         }
 
-        private bool CanConnect()
-        {
-            bool connectionValid = true;
-
-            try
-            {
-                this.ExecuteNonQuery("GetDatabaseVersion");
-            }
-            catch (SqlException ex)
-            {
-                if (ex.Errors.Cast<SqlError>().Any(c => !(c.Number == 2812 && c.Class == 16)))
-                {
-                    connectionValid = false;
-                }
-            }
-
-            return connectionValid;
-        }
-
-        private string ExecuteScriptInternal(string connectionString, string script, int timeoutSec = 0)
+        private static string ExecuteScriptInternal(string connectionString, string script, int timeoutSec = 0)
         {
             string exceptions = string.Empty;
 
@@ -241,13 +223,13 @@ namespace DotNetNuke.Data
             return exceptions;
         }
 
-        private IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeoutSec = 0)
+        private static IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeoutSec = 0)
         {
             string errorMessage;
-            return this.ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
+            return ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
         }
 
-        private IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeoutSec, out string errorMessage)
+        private static IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeoutSec, out string errorMessage)
         {
             try
             {
@@ -277,23 +259,42 @@ namespace DotNetNuke.Data
             return null;
         }
 
-        private string GetConnectionStringUserID()
+        private bool CanConnect()
+        {
+            bool connectionValid = true;
+
+            try
+            {
+                this.ExecuteNonQuery("GetDatabaseVersion");
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Errors.Cast<SqlError>().Any(c => !(c.Number == 2812 && c.Class == 16)))
+                {
+                    connectionValid = false;
+                }
+            }
+
+            return connectionValid;
+        }
+
+        private string GetConnectionStringUserId()
         {
             string dbUser = "public";
 
             // If connection string does not use integrated security, then get user id.
-            // Normalize to uppercase before all of the comparisons
-            var connectionStringUppercase = this.ConnectionString.ToUpper();
-            if (connectionStringUppercase.Contains("USER ID") || connectionStringUppercase.Contains("UID") || connectionStringUppercase.Contains("USER"))
+            // Normalize to uppercase before all the comparisons
+            if (this.ConnectionString.Contains("USER ID", StringComparison.OrdinalIgnoreCase)
+                || this.ConnectionString.Contains("UID", StringComparison.OrdinalIgnoreCase)
+                || this.ConnectionString.Contains("USER", StringComparison.OrdinalIgnoreCase))
             {
-                string[] connSettings = connectionStringUppercase.Split(';');
-
-                foreach (string s in connSettings)
+                var connSettings = this.ConnectionString.Split(';');
+                foreach (var s in connSettings)
                 {
                     if (s != string.Empty)
                     {
-                        string[] connSetting = s.Split('=');
-                        if ("USER ID|UID|USER".Contains(connSetting[0].Trim()))
+                        var connSetting = s.Split('=');
+                        if ("USER ID|UID|USER".Contains(connSetting[0].Trim(), StringComparison.OrdinalIgnoreCase))
                         {
                             dbUser = connSetting[1].Trim();
                         }

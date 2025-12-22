@@ -232,13 +232,12 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private static bool AllowIndex(TabInfo tab)
         {
-            bool allowIndex;
-            return !tab.TabSettings.ContainsKey("AllowIndex") || !bool.TryParse(tab.TabSettings["AllowIndex"].ToString(), out allowIndex) || allowIndex;
+            return !tab.TabSettings.ContainsKey("AllowIndex") || !bool.TryParse(tab.TabSettings["AllowIndex"].ToString(), out var allowIndex) || allowIndex;
         }
 
         private static string GetPageType(string tabUrl)
         {
-            return Globals.GetURLType(tabUrl).ToString().ToLower();
+            return Globals.GetURLType(tabUrl).ToString().ToLowerInvariant();
         }
 
         // TODO: Refactor to use enum

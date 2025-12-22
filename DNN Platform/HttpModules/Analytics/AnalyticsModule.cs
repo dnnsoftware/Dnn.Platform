@@ -4,6 +4,7 @@
 namespace DotNetNuke.HttpModules.Analytics
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -42,6 +43,7 @@ namespace DotNetNuke.HttpModules.Analytics
         }
 
         /// <summary>Gets the HttpModule module name.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string ModuleName => "AnalyticsModule";
 
         /// <inheritdoc/>

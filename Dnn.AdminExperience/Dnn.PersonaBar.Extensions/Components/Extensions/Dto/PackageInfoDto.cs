@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
+    using System;
     using System.Linq;
 
     using DotNetNuke.Abstractions;
@@ -138,8 +139,10 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
 
         public PackageInfo ToPackageInfo()
         {
-            System.Version ver;
-            System.Version.TryParse(this.Version, out ver);
+            if (!System.Version.TryParse(this.Version, out var ver))
+            {
+                ver = null;
+            }
 
             return new PackageInfo
             {

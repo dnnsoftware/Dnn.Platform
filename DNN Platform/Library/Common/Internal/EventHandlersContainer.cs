@@ -29,7 +29,7 @@ namespace DotNetNuke.Common.Internal
         {
             try
             {
-                if (this.GetCurrentStatus() != UpgradeStatus.None)
+                if (GetCurrentStatus() != UpgradeStatus.None)
                 {
                     return;
                 }
@@ -51,7 +51,7 @@ namespace DotNetNuke.Common.Internal
             }
         }
 
-        private UpgradeStatus GetCurrentStatus()
+        private static UpgradeStatus GetCurrentStatus()
         {
             try
             {

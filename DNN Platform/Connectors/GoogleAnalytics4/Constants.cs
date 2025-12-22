@@ -5,7 +5,7 @@
 namespace DNN.Connectors.GoogleAnalytics4
 {
     /// <summary>Lists constants used across the connector.</summary>
-    internal class Constants
+    internal static class Constants
     {
         /// <summary>The path to the resource file used for localization.</summary>
         public const string LocalResourceFile = "~/DesktopModules/Connectors/GoogleAnalytics4/App_LocalResources/SharedResources.resx";

@@ -98,13 +98,21 @@ namespace DotNetNuke.Services.Analytics
                     {
                         case "anonymizeip":
                             {
-                                bool.TryParse(setting.SettingValue, out anonymize);
+                                if (!bool.TryParse(setting.SettingValue, out anonymize))
+                                {
+                                    anonymize = false;
+                                }
+
                                 break;
                             }
 
                         case "trackinguser":
                             {
-                                bool.TryParse(setting.SettingValue, out trackingUserId);
+                                if (!bool.TryParse(setting.SettingValue, out trackingUserId))
+                                {
+                                    trackingUserId = false;
+                                }
+
                                 break;
                             }
                     }

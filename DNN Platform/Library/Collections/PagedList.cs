@@ -24,7 +24,7 @@ namespace DotNetNuke.Collections
         public PagedList(IEnumerable<T> source, int pageIndex, int pageSize)
         {
             var enumerable = source as T[] ?? source.ToArray();
-            this.CommonConstruct(enumerable.Skip(pageIndex * pageSize).Take(pageSize).ToList(), enumerable.Count(), pageIndex, pageSize);
+            this.CommonConstruct(enumerable.Skip(pageIndex * pageSize).Take(pageSize).ToList(), enumerable.Length, pageIndex, pageSize);
         }
 
         /// <summary>
@@ -72,19 +72,19 @@ namespace DotNetNuke.Collections
             {
                 if (pageIndex > 0)
                 {
-                    throw new IndexOutOfRangeException("Invalid Page Index");
+                    throw new ArgumentOutOfRangeException(nameof(pageIndex), pageIndex, "Invalid Page Index");
                 }
             }
             else
             {
                 if (pageIndex < 0)
                 {
-                    throw new IndexOutOfRangeException("Index cannot be negative");
+                    throw new ArgumentOutOfRangeException(nameof(pageIndex), pageIndex, "Index cannot be negative");
                 }
 
                 if (pageIndex >= this.PageCount)
                 {
-                    throw new IndexOutOfRangeException("Invalid Page Index");
+                    throw new ArgumentOutOfRangeException(nameof(pageIndex), pageIndex, "Invalid Page Index");
                 }
             }
 

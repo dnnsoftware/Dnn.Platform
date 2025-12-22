@@ -16,35 +16,32 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     {
         private readonly IClientResourceController clientResourceController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnCssInclude"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnCssInclude"/> class.</summary>
         /// <param name="clientResourceController">The client resources controller.</param>
         public DnnCssInclude(IClientResourceController clientResourceController)
-            : base()
         {
             this.clientResourceController = clientResourceController;
             this.ForceProvider = ClientResourceProviders.DefaultCssProvider;
             this.DependencyType = ClientDependencyType.Css;
         }
 
+        /// <inheritdoc cref="ILinkResource.Media" />
         public string CssMedia { get; set; }
 
-        /// <inheritdoc/>
-        protected override void OnInit(EventArgs e)
-        {
-            this.clientResourceController.CreateStylesheet(this.FilePath, this.PathNameAlias)
-                        .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
-                        .SetProvider(this.ForceProvider)
-                        .SetPriority(this.Priority)
-                        .SetMedia(this.CssMedia)
-                        .Register();
-        }
+        /// <inheritdoc cref="ILinkResource.Preload" />
+        public bool Preload { get; set; }
 
         /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
-            this.PathNameAlias = string.IsNullOrEmpty(this.PathNameAlias) ? string.Empty : this.PathNameAlias.ToLowerInvariant();
+            var stylesheet = this.clientResourceController.CreateStylesheet(this.FilePath, this.PathNameAlias)
+                .SetMedia(this.CssMedia);
+            if (this.Preload)
+            {
+                stylesheet.SetPreload();
+            }
+
+            this.RegisterResource(stylesheet);
             base.OnLoad(e);
         }
 

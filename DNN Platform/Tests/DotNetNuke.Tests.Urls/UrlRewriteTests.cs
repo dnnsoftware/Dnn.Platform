@@ -38,11 +38,6 @@ namespace DotNetNuke.Tests.Urls
         private bool sslEnforced;
         private bool sslEnabled;
 
-        public UrlRewriteTests()
-            : base(0)
-        {
-        }
-
         [SetUp]
         public override void SetUp()
         {
@@ -105,9 +100,9 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [OneTimeSetUp]
-        public override void TestFixtureSetUp()
+        public override void OneTimeSetUp()
         {
-            base.TestFixtureSetUp();
+            base.OneTimeSetUp();
 
             var tab = TabController.Instance.GetTabByName(AboutUsPageName, this.PortalId);
             if (tab == null)
@@ -141,9 +136,9 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [OneTimeTearDown]
-        public override void TestFixtureTearDown()
+        public override void OneTimeTearDown()
         {
-            base.TestFixtureTearDown();
+            base.OneTimeTearDown();
 
             var aliasController = Globals.DependencyProvider.GetRequiredService<IPortalAliasService>();
             TestUtil.ReadStream("Aliases", (line, header) =>
@@ -622,7 +617,7 @@ namespace DotNetNuke.Tests.Urls
                 case 301:
                 case 302:
                     // Test for final Url if redirected
-                    Assert.That(expectedRedirectUrl.Equals(testHelper.Result.FinalUrl.TrimStart('/'), StringComparison.InvariantCultureIgnoreCase), Is.True);
+                    Assert.That(testHelper.Result.FinalUrl.TrimStart('/'), Is.EqualTo(expectedRedirectUrl).IgnoreCase);
                     Assert.That(testHelper.Result.Reason.ToString(), Is.EqualTo(redirectReason), "Redirect reason incorrect");
                     break;
             }

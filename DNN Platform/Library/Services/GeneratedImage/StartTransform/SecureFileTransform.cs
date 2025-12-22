@@ -4,7 +4,9 @@
 
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Drawing;
     using System.Drawing.Drawing2D;
     using System.IO;
@@ -17,6 +19,8 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     /// <summary>Secure File ImageTransform class.</summary>
     public class SecureFileTransform : ImageTransform
     {
+        private static readonly HashSet<string> ImageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO", };
+
         /// <summary>Initializes a new instance of the <see cref="SecureFileTransform"/> class.</summary>
         public SecureFileTransform()
         {
@@ -49,15 +53,14 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 return this.GetSecureFileExtensionIconImage();
             }
 
-            using (var content = FileManager.Instance.GetFileContent(this.SecureFile))
-            {
-                return this.CopyImage(content);
-            }
+            using var content = FileManager.Instance.GetFileContent(this.SecureFile);
+            return this.CopyImage(content);
         }
 
         /// <summary>Checks if the current user have READ permission on a given folder.</summary>
         /// <param name="folder">Folder info object.</param>
         /// <returns>True if the user has READ permission, false otherwise.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool DoesHaveReadFolderPermission(IFolderInfo folder)
         {
             return FolderPermissionController.HasFolderPermission(folder.FolderPermissions, "Read");
@@ -70,25 +73,21 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 extension = $".{extension}";
             }
 
-            var imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
-            return imageExtensions.Contains(extension.ToUpper());
+            return ImageExtensions.Contains(extension);
         }
 
         private Image GetSecureFileExtensionIconImage()
         {
-            var extensionImageAbsolutePath = Globals.ApplicationMapPath + "\\" +
-                       PortalSettings.Current.DefaultIconLocation.Replace("/", "\\") + "\\" +
-                       "Ext" + this.SecureFile.Extension + "_32x32_Standard.png";
+            var iconLocation = PortalSettings.Current.DefaultIconLocation.Replace("/", @"\");
+            var extensionImageAbsolutePath = $@"{Globals.ApplicationMapPath}\{iconLocation}\Ext{this.SecureFile.Extension}_32x32_Standard.png";
 
             if (!File.Exists(extensionImageAbsolutePath))
             {
                 return this.EmptyImage;
             }
 
-            using (var stream = new FileStream(extensionImageAbsolutePath, FileMode.Open))
-            {
-                return this.CopyImage(stream);
-            }
+            using var stream = new FileStream(extensionImageAbsolutePath, FileMode.Open);
+            return this.CopyImage(stream);
         }
     }
 }

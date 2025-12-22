@@ -33,6 +33,7 @@ namespace DotNetNuke.Entities.Icons
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IconController));
 
         private static readonly SharedDictionary<string, bool> IconsStatusOnDisk = new SharedDictionary<string, bool>();
+        private static readonly char[] Comma = [',',];
 
         /// <summary>Gets the Icon URL.</summary>
         /// <param name="key">Key to icon, e.g. edit.</param>
@@ -114,7 +115,7 @@ namespace DotNetNuke.Entities.Icons
                 }
             }
 
-            return result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            return result.Split(Comma, StringSplitOptions.RemoveEmptyEntries);
         }
 
         private static void CheckIconOnDisk(string path)

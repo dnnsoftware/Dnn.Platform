@@ -176,11 +176,16 @@ namespace DotNetNuke.Web.Api.Internal
             return false;
         }
 
+        private static void RegisterSystemRoutes()
+        {
+            ////_routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+        }
+
         private void RegisterAuthenticationHandlers()
         {
             // authentication message handlers from web.config file
             var authSvcCfg = AuthServicesConfiguration.GetConfig();
-            if (authSvcCfg?.MessageHandlers == null || authSvcCfg.MessageHandlers.Count <= 0)
+            if (authSvcCfg?.MessageHandlers is not { Count: > 0 })
             {
                 return;
             }
@@ -199,7 +204,7 @@ namespace DotNetNuke.Web.Api.Internal
                     var type = Reflection.CreateType(handlerEntry.ClassName, false);
                     if (ActivatorUtilities.CreateInstance(this.serviceProvider, type, handlerEntry.DefaultInclude, handlerEntry.ForceSsl) is not AuthMessageHandlerBase handler)
                     {
-                        throw new Exception("The handler is not a descendant of AuthMessageHandlerBase abstract class");
+                        throw new InvalidAuthHandlerException("The handler is not a descendant of AuthMessageHandlerBase abstract class");
                     }
 
                     var schemeName = handler.AuthScheme.ToUpperInvariant();
@@ -233,7 +238,7 @@ namespace DotNetNuke.Web.Api.Internal
 
         private void LocateServicesAndMapRoutes()
         {
-            this.RegisterSystemRoutes();
+            RegisterSystemRoutes();
             this.ClearCachedRouteData();
 
             this.moduleUsage.Clear();
@@ -256,11 +261,6 @@ namespace DotNetNuke.Web.Api.Internal
         private void ClearCachedRouteData()
         {
             this.portalAliasRouteManager.ClearCachedData();
-        }
-
-        private void RegisterSystemRoutes()
-        {
-            // _routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
         }
 
         private IEnumerable<IServiceRouteMapper> GetServiceRouteMappers(IServiceProvider serviceProvider)

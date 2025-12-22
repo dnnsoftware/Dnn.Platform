@@ -47,9 +47,9 @@ namespace DotNetNuke.Services.Mobile
             profile.Id = id;
 
             var logContent = string.Format("{0} Mobile Preview Profile '{1}'", profile.Id == Null.NullInteger ? "Add" : "Update", profile.Name);
-            this.AddLog(logContent);
+            AddLog(logContent);
 
-            this.ClearCache(profile.PortalId);
+            ClearCache(profile.PortalId);
         }
 
         /// <summary>delete a preview profile.</summary>
@@ -69,9 +69,9 @@ namespace DotNetNuke.Services.Mobile
                 DataProvider.Instance().DeletePreviewProfile(id);
 
                 var logContent = string.Format("Delete Mobile Preview Profile '{0}'", id);
-                this.AddLog(logContent);
+                AddLog(logContent);
 
-                this.ClearCache(portalId);
+                ClearCache(portalId);
             }
         }
 
@@ -90,6 +90,16 @@ namespace DotNetNuke.Services.Mobile
         public IPreviewProfile GetProfileById(int portalId, int id)
         {
             return this.GetProfilesByPortal(portalId).Where(r => r.Id == id).FirstOrDefault();
+        }
+
+        private static void ClearCache(int portalId)
+        {
+            DataCache.RemoveCache(string.Format(DataCache.PreviewProfilesCacheKey, portalId));
+        }
+
+        private static void AddLog(string logContent)
+        {
+            EventLogController.Instance.AddLog("Message", logContent, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.ADMIN_ALERT);
         }
 
         private IList<IPreviewProfile> GetProfilesByPortal(int portalId, bool addDefault)
@@ -111,16 +121,6 @@ namespace DotNetNuke.Services.Mobile
             }
 
             return profiles.Cast<IPreviewProfile>().ToList();
-        }
-
-        private void ClearCache(int portalId)
-        {
-            DataCache.RemoveCache(string.Format(DataCache.PreviewProfilesCacheKey, portalId));
-        }
-
-        private void AddLog(string logContent)
-        {
-            EventLogController.Instance.AddLog("Message", logContent, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.ADMIN_ALERT);
         }
 
         private List<PreviewProfile> CreateDefaultDevices(int portalId)

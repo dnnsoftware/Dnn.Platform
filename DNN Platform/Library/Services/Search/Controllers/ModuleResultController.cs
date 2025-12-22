@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 foreach (ModuleInfo module in tabModules)
                 {
                     var tab = TabController.Instance.GetTab(module.TabID, searchResult.PortalId, false);
-                    if (this.ModuleIsAvailable(tab, module) && !tab.IsDeleted && !tab.DisableLink && TabPermissionController.CanViewPage(tab))
+                    if (ModuleIsAvailable(tab, module) && !tab.IsDeleted && !tab.DisableLink && TabPermissionController.CanViewPage(tab))
                     {
                         // Check If authorised to View Module
                         if (ModulePermissionController.CanViewModule(module) && this.HasModuleSearchPermission(module, searchResult))
@@ -156,6 +156,22 @@ namespace DotNetNuke.Services.Search.Controllers
                 (args) => CBO.FillCollection(DataProvider.Instance().GetModule(moduleID, Null.NullInteger), typeof(ModuleInfo)));
         }
 
+        private static bool ModuleIsAvailable(TabInfo tab, ModuleInfo module)
+        {
+            return GetModules(tab).Any(m => m.ModuleID == module.ModuleID && !m.IsDeleted);
+        }
+
+        private static IEnumerable<ModuleInfo> GetModules(TabInfo tab)
+        {
+            int urlVersion;
+            if (TabVersionUtils.TryGetUrlVersion(out urlVersion))
+            {
+                return TabVersionBuilder.Instance.GetVersionModules(tab.TabID, urlVersion);
+            }
+
+            return TabVersionBuilder.Instance.GetCurrentModules(tab.TabID);
+        }
+
         private bool HasModuleSearchPermission(ModuleInfo module, SearchResult searchResult)
         {
             var canView = true;
@@ -184,22 +200,6 @@ namespace DotNetNuke.Services.Search.Controllers
         private IModuleSearchResultController GetModuleSearchController(ModuleInfo module)
         {
             return this.businessControllerProvider.GetInstance<IModuleSearchResultController>(module);
-        }
-
-        private bool ModuleIsAvailable(TabInfo tab, ModuleInfo module)
-        {
-            return this.GetModules(tab).Any(m => m.ModuleID == module.ModuleID && !m.IsDeleted);
-        }
-
-        private IEnumerable<ModuleInfo> GetModules(TabInfo tab)
-        {
-            int urlVersion;
-            if (TabVersionUtils.TryGetUrlVersion(out urlVersion))
-            {
-                return TabVersionBuilder.Instance.GetVersionModules(tab.TabID, urlVersion);
-            }
-
-            return TabVersionBuilder.Instance.GetCurrentModules(tab.TabID);
         }
     }
 }

@@ -337,7 +337,7 @@ namespace DotNetNuke.UI
         /// <param name="objPortalSettings">Portal settings object to determine if node is selected.</param>
         /// <param name="eToolTips">The tool-tip source.</param>
         /// <remarks>Logic moved to separate sub to make GetNavigationNodes cleaner.</remarks>
-        private static void AddNode(TabInfo objTab, DNNNodeCollection objNodes, Hashtable objBreadCrumbs, PortalSettings objPortalSettings, ToolTipSource eToolTips, IDictionary<string, DNNNode> nodesLookup)
+        private static void AddNode(TabInfo objTab, DNNNodeCollection objNodes, Hashtable objBreadCrumbs, PortalSettings objPortalSettings, ToolTipSource eToolTips, Dictionary<string, DNNNode> nodesLookup)
         {
             var objNode = new DNNNode();
 
@@ -497,7 +497,7 @@ namespace DotNetNuke.UI
             return objTab.ParentId == ((TabInfo)objTabLookup[intStartTabId]).ParentId;
         }
 
-        private static void ProcessTab(DNNNode objRootNode, TabInfo objTab, Hashtable objTabLookup, Hashtable objBreadCrumbs, int intLastBreadCrumbId, ToolTipSource eToolTips, int intStartTabId, int intDepth, int intNavNodeOptions, IDictionary<string, DNNNode> nodesLookup)
+        private static void ProcessTab(DNNNode objRootNode, TabInfo objTab, Hashtable objTabLookup, Hashtable objBreadCrumbs, int intLastBreadCrumbId, ToolTipSource eToolTips, int intStartTabId, int intDepth, int intNavNodeOptions, Dictionary<string, DNNNode> nodesLookup)
         {
             PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
             bool showHidden = (intNavNodeOptions & (int)NavNodeOptions.IncludeHiddenNodes) == (int)NavNodeOptions.IncludeHiddenNodes;

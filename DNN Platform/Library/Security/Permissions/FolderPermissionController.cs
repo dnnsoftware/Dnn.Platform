@@ -102,9 +102,9 @@ namespace DotNetNuke.Security.Permissions
             bool hasPermission = Provider.HasFolderPermission(objFolderPermissions, "WRITE");
             if (!hasPermission)
             {
-                if (permissionKey.Contains(","))
+                if (permissionKey.Contains(",", StringComparison.Ordinal))
                 {
-                    foreach (string permission in permissionKey.Split(','))
+                    foreach (var permission in permissionKey.Split(','))
                     {
                         if (Provider.HasFolderPermission(objFolderPermissions, permission))
                         {

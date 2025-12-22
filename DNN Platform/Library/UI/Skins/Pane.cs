@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.Skins
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -58,22 +59,11 @@ namespace DotNetNuke.UI.Skins
         }
 
         /// <summary>Gets a Dictionary of Containers.</summary>
-        protected Dictionary<string, Containers.Container> Containers
-        {
-            get
-            {
-                return this.containers ?? (this.containers = new Dictionary<string, Containers.Container>());
-            }
-        }
+        protected Dictionary<string, Containers.Container> Containers => this.containers ??= new Dictionary<string, Containers.Container>();
 
         /// <summary>Gets the PortalSettings of the Portal.</summary>
-        protected PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         /// <summary>Gets or sets the name (ID) of the Pane.</summary>
         protected string Name { get; set; }
@@ -97,7 +87,7 @@ namespace DotNetNuke.UI.Skins
                 sanitizedModuleName = Globals.CreateValidClass(module.DesktopModule.ModuleName, false);
             }
 
-            if (this.IsVersionableModule(module))
+            if (IsVersionableModule(module))
             {
                 classFormatString += " DnnVersionableControl";
             }
@@ -118,24 +108,20 @@ namespace DotNetNuke.UI.Skins
                 this.Containers.Add(container.ID, container);
 
                 // hide anything of type ActionsMenu - as we're injecting our own menu now.
-                container.InjectActionMenu = container.Controls.OfType<ActionBase>().Count() == 0;
+                container.InjectActionMenu = !container.Controls.OfType<ActionBase>().Any();
                 if (!container.InjectActionMenu)
                 {
                     foreach (var actionControl in container.Controls.OfType<IActionControl>())
                     {
-                        if (actionControl is ActionsMenu)
+                        if (actionControl is ActionsMenu and Control control)
                         {
-                            Control control = actionControl as Control;
-                            if (control != null)
-                            {
-                                control.Visible = false;
-                                container.InjectActionMenu = true;
-                            }
+                            control.Visible = false;
+                            container.InjectActionMenu = true;
                         }
                     }
                 }
 
-                if (Globals.IsLayoutMode() && Globals.IsAdminControl() == false)
+                if (Globals.IsLayoutMode() && !Globals.IsAdminControl())
                 {
                     // provide Drag-N-Drop capabilities
                     var dragDropContainer = new Panel();
@@ -271,6 +257,17 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
+        private static bool IsVersionableModule(ModuleInfo moduleInfo)
+        {
+            if (string.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
+            {
+                return false;
+            }
+
+            var controllerType = Framework.Reflection.CreateType(moduleInfo.DesktopModule.BusinessControllerClass);
+            return typeof(IVersionable).IsAssignableFrom(controllerType);
+        }
+
         private bool CanCollapsePane()
         {
             // This section sets the width to "0" on panes that have no modules.
@@ -310,10 +307,12 @@ namespace DotNetNuke.UI.Skins
         /// <returns>A Container.</returns>
         private Containers.Container LoadContainerByPath(string containerPath)
         {
-            if (containerPath.IndexOf("/skins/", StringComparison.InvariantCultureIgnoreCase) != -1 || containerPath.IndexOf("/skins\\", StringComparison.InvariantCultureIgnoreCase) != -1 || containerPath.IndexOf("\\skins\\", StringComparison.InvariantCultureIgnoreCase) != -1 ||
-                containerPath.IndexOf("\\skins/", StringComparison.InvariantCultureIgnoreCase) != -1)
+            if (containerPath.IndexOf("/skins/", StringComparison.InvariantCultureIgnoreCase) != -1
+                || containerPath.IndexOf(@"/skins\", StringComparison.InvariantCultureIgnoreCase) != -1
+                || containerPath.IndexOf(@"\skins\", StringComparison.InvariantCultureIgnoreCase) != -1
+                || containerPath.IndexOf(@"\skins/", StringComparison.InvariantCultureIgnoreCase) != -1)
             {
-                throw new Exception();
+                throw new InvalidContainerPathException($"Invalid container path: {containerPath}");
             }
 
             Containers.Container container = null;
@@ -403,11 +402,14 @@ namespace DotNetNuke.UI.Skins
             int previewModuleId = -1;
             if (request.QueryString["ModuleId"] != null)
             {
-                int.TryParse(request.QueryString["ModuleId"], out previewModuleId);
+                if (!int.TryParse(request.QueryString["ModuleId"], out previewModuleId))
+                {
+                    previewModuleId = -1;
+                }
             }
 
             // load user container ( based on cookie )
-            if ((request.QueryString["ContainerSrc"] != null) && (module.ModuleID == previewModuleId || previewModuleId == -1))
+            if (request.QueryString["ContainerSrc"] != null && (module.ModuleID == previewModuleId || previewModuleId == -1))
             {
                 string containerSrc = SkinController.FormatSkinSrc(Globals.QueryStringDecode(request.QueryString["ContainerSrc"]) + ".ascx", this.PortalSettings);
                 container = this.LoadContainerByPath(containerSrc);
@@ -475,15 +477,12 @@ namespace DotNetNuke.UI.Skins
                 {
                     // Check Skin for Container
                     var masterModules = this.PortalSettings.ActiveTab.ChildModules;
-                    if (masterModules.ContainsKey(module.ModuleID) && string.IsNullOrEmpty(masterModules[module.ModuleID].ContainerSrc))
+                    if (masterModules.TryGetValue(module.ModuleID, out var masterModule) && string.IsNullOrEmpty(masterModule.ContainerSrc))
                     {
                         // look for a container specification in the skin pane
-                        if (this.PaneControl != null)
+                        if (this.PaneControl?.Attributes["ContainerSrc"] != null)
                         {
-                            if (this.PaneControl.Attributes["ContainerSrc"] != null)
-                            {
-                                container = this.LoadContainerFromPane();
-                            }
+                            container = this.LoadContainerFromPane();
                         }
                     }
                 }
@@ -550,17 +549,6 @@ namespace DotNetNuke.UI.Skins
                 // Redirect to the same page to pick up changes
                 this.PaneControl.Page.Response.Redirect(this.PaneControl.Page.Request.RawUrl, true);
             }
-        }
-
-        private bool IsVersionableModule(ModuleInfo moduleInfo)
-        {
-            if (string.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
-            {
-                return false;
-            }
-
-            var controllerType = Framework.Reflection.CreateType(moduleInfo.DesktopModule.BusinessControllerClass);
-            return typeof(IVersionable).IsAssignableFrom(controllerType);
         }
     }
 }

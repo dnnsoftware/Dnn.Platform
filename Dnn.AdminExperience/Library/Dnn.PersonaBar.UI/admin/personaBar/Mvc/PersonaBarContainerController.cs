@@ -4,13 +4,8 @@
 
 namespace DotNetNuke.Framework.Controllers
 {
-    using System;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Net.NetworkInformation;
-    using System.Security.Policy;
-    using System.Web;
     using System.Web.Mvc;
 
     using Dnn.PersonaBar.Library.Containers;
@@ -20,12 +15,9 @@ namespace DotNetNuke.Framework.Controllers
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.ClientDependency;
-    using DotNetNuke.UI.ControlPanels;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using Newtonsoft.Json;
 
@@ -54,26 +46,26 @@ namespace DotNetNuke.Framework.Controllers
         }
 
         /// <summary>
-        /// Gets the Persona Bar settings as a JSON string.
-        /// </summary>
-        public string PersonaBarSettings => JsonConvert.SerializeObject(this.personaBarContainer.GetConfiguration());
-
-        /// <summary>
         /// Gets the application path.
         /// </summary>
-        public string AppPath => Globals.ApplicationPath;
+        public static string AppPath => Globals.ApplicationPath;
 
         /// <summary>
         /// Gets the build number of the application.
         /// </summary>
 #pragma warning disable CS0618 // Type or member is obsolete
-        public string BuildNumber => Host.CrmVersion.ToString(CultureInfo.InvariantCulture);
+        public static string BuildNumber => Host.CrmVersion.ToString(CultureInfo.InvariantCulture);
 #pragma warning restore CS0618 // Type or member is obsolete
+
+        /// <summary>
+        /// Gets the Persona Bar settings as a JSON string.
+        /// </summary>
+        public string PersonaBarSettings => JsonConvert.SerializeObject(this.personaBarContainer.GetConfiguration());
 
         /// <summary>
         /// Gets the current portal settings.
         /// </summary>
-        protected PortalSettings PortalSettings
+        protected static PortalSettings PortalSettings
         {
             get
             {
@@ -87,13 +79,15 @@ namespace DotNetNuke.Framework.Controllers
         /// Returns the default view for the Persona Bar container.
         /// </summary>
         /// <returns>An <see cref="ActionResult"/> representing the view.</returns>
+#pragma warning disable CA3147 // Mark Verb Handlers With Validate Antiforgery Token
         public ActionResult Index()
+#pragma warning restore CA3147 // Mark Verb Handlers With Validate Antiforgery Token
         {
             return this.View(new PersonaBarContainerModel()
             {
                 PersonaBarSettings = this.PersonaBarSettings,
-                AppPath = this.AppPath,
-                BuildNumber = this.BuildNumber,
+                AppPath = AppPath,
+                BuildNumber = BuildNumber,
                 Visible = this.InjectPersonaBar(),
             });
         }
@@ -111,7 +105,7 @@ namespace DotNetNuke.Framework.Controllers
                 return false;
             }
 
-            var menuStructure = PersonaBarController.Instance.GetMenu(this.PortalSettings, UserController.Instance.GetCurrentUserInfo());
+            var menuStructure = PersonaBarController.Instance.GetMenu(PortalSettings, UserController.Instance.GetCurrentUserInfo());
             if (menuStructure.MenuItems == null || !menuStructure.MenuItems.Any())
             {
                 return false;

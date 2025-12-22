@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.InternalServices
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -45,7 +46,7 @@ namespace DotNetNuke.Web.InternalServices
         private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly PersonalizationController personalizationController;
         private readonly Components.Controllers.IControlBarController controller;
-        private IDictionary<string, string> nameDics;
+        private Dictionary<string, string> nameDics;
 
         /// <summary>Initializes a new instance of the <see cref="ControlBarController"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
@@ -94,8 +95,8 @@ namespace DotNetNuke.Web.InternalServices
                 filteredList = bookmarkedModules.OrderBy(m => m.Key).Concat(filteredList.Except(bookmarkedModules));
 
                 // move Html on top
-                filteredList = filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant()).
-                                Concat(filteredList.Except(filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant())));
+                filteredList = filteredList.Where(m => m.Key.Equals(topModule, StringComparison.OrdinalIgnoreCase)).
+                                Concat(filteredList.Except(filteredList.Where(m => m.Key.Equals(topModule, StringComparison.OrdinalIgnoreCase))));
             }
 
             filteredList = filteredList
@@ -106,7 +107,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 ModuleID = kvp.Value.DesktopModuleID,
                 ModuleName = kvp.Key,
-                ModuleImage = this.GetDeskTopModuleImage(kvp.Value.DesktopModuleID),
+                ModuleImage = GetDeskTopModuleImage(kvp.Value.DesktopModuleID),
                 Bookmarked = bookmarkedModules.Any(m => m.Key == kvp.Key),
                 ExistsInBookmarkCategory = bookmarkCategoryModules.Any(m => m.Key == kvp.Key),
             }).ToList();
@@ -148,7 +149,7 @@ namespace DotNetNuke.Web.InternalServices
             List<PageDefDTO> result = new List<PageDefDTO>();
             foreach (var tab in tabList)
             {
-                if (tab.PortalID == this.PortalSettings.PortalId || (this.GetModules(tab.TabID).Count > 0 && tab.TabID != portalSettings.AdminTabId && tab.ParentId != portalSettings.AdminTabId))
+                if (tab.PortalID == this.PortalSettings.PortalId || (GetModules(tab.TabID).Count > 0 && tab.TabID != portalSettings.AdminTabId && tab.ParentId != portalSettings.AdminTabId))
                 {
                     result.Add(new PageDefDTO { TabID = tab.TabID, IndentedTabName = tab.IndentedTabName });
                 }
@@ -168,11 +169,11 @@ namespace DotNetNuke.Web.InternalServices
                 var result = new List<ModuleDefDTO>();
                 if (tabID > 0)
                 {
-                    var pageModules = this.GetModules(tabID);
+                    var pageModules = GetModules(tabID);
 
                     Dictionary<int, string> resultDict = pageModules.ToDictionary(module => module.ModuleID, module => module.ModuleTitle);
                     result.AddRange(from kvp in resultDict
-                                    let imageUrl = this.GetTabModuleImage(tabID, kvp.Key)
+                                    let imageUrl = GetTabModuleImage(tabID, kvp.Key)
                                     select new ModuleDefDTO { ModuleID = kvp.Key, ModuleName = kvp.Value, ModuleImage = imageUrl });
                 }
 
@@ -224,7 +225,7 @@ namespace DotNetNuke.Web.InternalServices
                         sortID = int.Parse(dto.Sort);
                         if (sortID >= 0)
                         {
-                            positionID = this.GetPaneModuleOrder(dto.Pane, sortID);
+                            positionID = GetPaneModuleOrder(dto.Pane, sortID);
                         }
                     }
                     catch (Exception exc)
@@ -284,7 +285,7 @@ namespace DotNetNuke.Web.InternalServices
                         }
                         else
                         {
-                            tabModuleId = this.DoAddNewModule(string.Empty, moduleLstID, dto.Pane, positionID, permissionType, string.Empty);
+                            tabModuleId = DoAddNewModule(string.Empty, moduleLstID, dto.Pane, positionID, permissionType, string.Empty);
                         }
                     }
 
@@ -407,7 +408,7 @@ namespace DotNetNuke.Web.InternalServices
             this.ToggleUserMode(userMode.UserMode);
             var response = this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
 
-            if (userMode.UserMode.Equals("VIEW", StringComparison.InvariantCultureIgnoreCase))
+            if (userMode.UserMode.Equals("VIEW", StringComparison.OrdinalIgnoreCase))
             {
                 var cookie = this.Request.Headers.GetCookies("StayInEditMode").FirstOrDefault();
                 if (cookie != null && !string.IsNullOrEmpty(cookie["StayInEditMode"].Value))
@@ -455,6 +456,7 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool CanAddModuleToPage()
         {
             return true;
@@ -470,22 +472,202 @@ namespace DotNetNuke.Web.InternalServices
                 cloneModuleContext ? bool.TrueString : bool.FalseString);
         }
 
-        private IList<ModuleInfo> GetModules(int tabID)
+        private static List<ModuleInfo> GetModules(int tabID)
         {
             var isRemote = TabController.Instance.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
             var tabModules = ModuleController.Instance.GetTabModules(tabID);
 
             var pageModules = isRemote
-                ? tabModules.Values.Where(m => this.ModuleSupportsSharing(m) && !m.IsDeleted).ToList()
+                ? tabModules.Values.Where(m => ModuleSupportsSharing(m) && !m.IsDeleted).ToList()
                 : tabModules.Values.Where(m => ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", m) && !m.IsDeleted).ToList();
 
             return pageModules;
         }
 
+        private static bool ModuleSupportsSharing(ModuleInfo moduleInfo)
+        {
+            switch (moduleInfo.DesktopModule.Shareable)
+            {
+                case ModuleSharing.Supported:
+                case ModuleSharing.Unknown:
+                    return moduleInfo.IsShareable;
+                default:
+                    return false;
+            }
+        }
+
+        private static string GetDeskTopModuleImage(int moduleId)
+        {
+            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
+            var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
+
+            string imageUrl =
+                (from package in packages
+                    join portMods in portalDesktopModules on package.PackageID equals portMods.Value.PackageID
+                    where portMods.Value.DesktopModuleID == moduleId
+                    select package.IconFile).FirstOrDefault();
+
+            imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
+        }
+
+        private static string GetTabModuleImage(int tabId, int moduleId)
+        {
+            var tabModules = ModuleController.Instance.GetTabModules(tabId);
+            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
+            var moduleDefinitions = ModuleDefinitionController.GetModuleDefinitions();
+            var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
+
+            string imageUrl = (from package in packages
+                join portMods in portalDesktopModules on package.PackageID equals portMods.Value.PackageID
+                join modDefs in moduleDefinitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
+                join tabMods in tabModules on modDefs.Value.DesktopModuleID equals tabMods.Value.DesktopModuleID
+                where tabMods.Value.ModuleID == moduleId
+                select package.IconFile).FirstOrDefault();
+
+            imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
+        }
+
+        private static ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)
+        {
+            var objModulePermission = new ModulePermissionInfo
+            {
+                ModuleID = objModule.ModuleID,
+                PermissionID = permission.PermissionID,
+                RoleID = roleId,
+                UserID = userId,
+                PermissionKey = permission.PermissionKey,
+                AllowAccess = allowAccess,
+            };
+
+            // add the permission to the collection
+            if (!objModule.ModulePermissions.Contains(objModulePermission))
+            {
+                objModule.ModulePermissions.Add(objModulePermission);
+            }
+
+            return objModulePermission;
+        }
+
+        private static int GetPaneModuleOrder(string pane, int sort)
+        {
+            var items = new List<int>();
+
+            foreach (ModuleInfo m in PortalSettings.Current.ActiveTab.Modules)
+            {
+                // if user is allowed to view module and module is not deleted
+                if (ModulePermissionController.CanViewModule(m) && !m.IsDeleted)
+                {
+                    // modules which are displayed on all tabs should not be displayed on the Admin or Super tabs
+                    if (!m.AllTabs || !PortalSettings.Current.ActiveTab.IsSuperTab)
+                    {
+                        if (string.Equals(m.PaneName, pane, StringComparison.OrdinalIgnoreCase))
+                        {
+                            int moduleOrder = m.ModuleOrder;
+
+                            while (items.Contains(moduleOrder) || moduleOrder == 0)
+                            {
+                                moduleOrder++;
+                            }
+
+                            items.Add(moduleOrder);
+                        }
+                    }
+                }
+            }
+
+            items.Sort();
+
+            if (items.Count > sort)
+            {
+                var itemOrder = items[sort];
+                return itemOrder - 1;
+            }
+            else if (items.Count > 0)
+            {
+                return items.Last() + 1;
+            }
+
+            return 0;
+        }
+
+        private static int DoAddNewModule(string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
+        {
+            try
+            {
+                if (!DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId).TryGetValue(desktopModuleId, out _))
+                {
+                    throw new ArgumentException($"Could not find desktop module with given ID: {desktopModuleId}", nameof(desktopModuleId));
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+
+            var tabModuleId = Null.NullInteger;
+            foreach (ModuleDefinitionInfo objModuleDefinition in
+                     ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId).Values)
+            {
+                var objModule = new ModuleInfo();
+                objModule.Initialize(PortalSettings.Current.ActiveTab.PortalID);
+
+                objModule.PortalID = PortalSettings.Current.ActiveTab.PortalID;
+                objModule.TabID = PortalSettings.Current.ActiveTab.TabID;
+                objModule.ModuleOrder = position;
+                objModule.ModuleTitle = string.IsNullOrEmpty(title) ? objModuleDefinition.FriendlyName : title;
+                objModule.PaneName = paneName;
+                objModule.ModuleDefID = objModuleDefinition.ModuleDefID;
+                if (objModuleDefinition.DefaultCacheTime > 0)
+                {
+                    objModule.CacheTime = objModuleDefinition.DefaultCacheTime;
+                    if (PortalSettings.Current.DefaultModuleId > Null.NullInteger && PortalSettings.Current.DefaultTabId > Null.NullInteger)
+                    {
+                        ModuleInfo defaultModule = ModuleController.Instance.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
+                        if (defaultModule != null)
+                        {
+                            objModule.CacheTime = defaultModule.CacheTime;
+                        }
+                    }
+                }
+
+                ModuleController.Instance.InitialModulePermission(objModule, objModule.TabID, permissionType);
+
+                if (PortalSettings.Current.ContentLocalizationEnabled)
+                {
+                    Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
+
+                    // set the culture of the module to that of the tab
+                    var tabInfo = TabController.Instance.GetTab(objModule.TabID, PortalSettings.Current.PortalId, false);
+                    objModule.CultureCode = tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code;
+                }
+                else
+                {
+                    objModule.CultureCode = Null.NullString;
+                }
+
+                objModule.AllTabs = false;
+                objModule.Alignment = align;
+
+                ModuleController.Instance.AddModule(objModule);
+
+                if (tabModuleId == Null.NullInteger)
+                {
+                    tabModuleId = objModule.ModuleID;
+                }
+
+                // update the position to let later modules with add after previous one.
+                position = ModuleController.Instance.GetTabModule(objModule.TabModuleID).ModuleOrder + 1;
+            }
+
+            return tabModuleId;
+        }
+
         private void ToggleUserMode(string mode)
         {
             var personalization = this.personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
-            personalization.Profile["Usability:UserMode" + this.PortalSettings.PortalId] = mode.ToUpper();
+            personalization.Profile["Usability:UserMode" + this.PortalSettings.PortalId] = mode.ToUpperInvariant();
             personalization.IsModified = true;
             this.personalizationController.SaveProfile(personalization);
         }
@@ -513,51 +695,6 @@ namespace DotNetNuke.Web.InternalServices
             return portalSettings;
         }
 
-        private bool ModuleSupportsSharing(ModuleInfo moduleInfo)
-        {
-            switch (moduleInfo.DesktopModule.Shareable)
-            {
-                case ModuleSharing.Supported:
-                case ModuleSharing.Unknown:
-                    return moduleInfo.IsShareable;
-                default:
-                    return false;
-            }
-        }
-
-        private string GetDeskTopModuleImage(int moduleId)
-        {
-            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
-            var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
-
-            string imageUrl =
-                (from pkgs in packages
-                 join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
-                 where portMods.Value.DesktopModuleID == moduleId
-                 select pkgs.IconFile).FirstOrDefault();
-
-            imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
-            return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
-        }
-
-        private string GetTabModuleImage(int tabId, int moduleId)
-        {
-            var tabModules = ModuleController.Instance.GetTabModules(tabId);
-            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
-            var moduleDefnitions = ModuleDefinitionController.GetModuleDefinitions();
-            var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
-
-            string imageUrl = (from pkgs in packages
-                               join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
-                               join modDefs in moduleDefnitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
-                               join tabMods in tabModules on modDefs.Value.DesktopModuleID equals tabMods.Value.DesktopModuleID
-                               where tabMods.Value.ModuleID == moduleId
-                               select pkgs.IconFile).FirstOrDefault();
-
-            imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
-            return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
-        }
-
         private bool ActiveTabHasChildren()
         {
             var children = TabController.GetTabsByParent(this.PortalSettings.ActiveTab.TabID, this.PortalSettings.ActiveTab.PortalID);
@@ -582,7 +719,7 @@ namespace DotNetNuke.Web.InternalServices
                 userID = user.UserID;
             }
 
-            if (moduleInfo != null && !moduleInfo.IsDeleted)
+            if (moduleInfo is { IsDeleted: false })
             {
                 // Is this from a site other than our own? (i.e., is the user requesting "module sharing"?)
                 var remote = moduleInfo.PortalID != PortalSettings.Current.PortalId;
@@ -592,11 +729,8 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         case ModuleSharing.Unsupported:
                             // Should never happen since the module should not be listed in the first place.
-                            throw new ApplicationException(string.Format(
-                                "Module '{0}' does not support Shareable and should not be listed in Add Existing Module from a different source site",
-                                moduleInfo.DesktopModule.FriendlyName));
+                            throw new SharingUnsupportedException($"Module '{moduleInfo.DesktopModule.FriendlyName}' does not support Shareable and should not be listed in Add Existing Module from a different source site");
                         case ModuleSharing.Supported:
-                            break;
                         case ModuleSharing.Unknown:
                             break;
                     }
@@ -693,7 +827,7 @@ namespace DotNetNuke.Web.InternalServices
                     // Ensure the Portal Admin has View rights
                     var permissionController = new PermissionController();
                     ArrayList arrSystemModuleViewPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
-                    this.AddModulePermission(
+                    AddModulePermission(
                         newModule,
                         (PermissionInfo)arrSystemModuleViewPermissions[0],
                         PortalSettings.Current.AdministratorRoleId,
@@ -715,142 +849,6 @@ namespace DotNetNuke.Web.InternalServices
             return -1;
         }
 
-        private ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)
-        {
-            var objModulePermission = new ModulePermissionInfo
-            {
-                ModuleID = objModule.ModuleID,
-                PermissionID = permission.PermissionID,
-                RoleID = roleId,
-                UserID = userId,
-                PermissionKey = permission.PermissionKey,
-                AllowAccess = allowAccess,
-            };
-
-            // add the permission to the collection
-            if (!objModule.ModulePermissions.Contains(objModulePermission))
-            {
-                objModule.ModulePermissions.Add(objModulePermission);
-            }
-
-            return objModulePermission;
-        }
-
-        private int GetPaneModuleOrder(string pane, int sort)
-        {
-            var items = new List<int>();
-
-            foreach (ModuleInfo m in PortalSettings.Current.ActiveTab.Modules)
-            {
-                // if user is allowed to view module and module is not deleted
-                if (ModulePermissionController.CanViewModule(m) && !m.IsDeleted)
-                {
-                    // modules which are displayed on all tabs should not be displayed on the Admin or Super tabs
-                    if (!m.AllTabs || !PortalSettings.Current.ActiveTab.IsSuperTab)
-                    {
-                        if (string.Equals(m.PaneName, pane, StringComparison.OrdinalIgnoreCase))
-                        {
-                            int moduleOrder = m.ModuleOrder;
-
-                            while (items.Contains(moduleOrder) || moduleOrder == 0)
-                            {
-                                moduleOrder++;
-                            }
-
-                            items.Add(moduleOrder);
-                        }
-                    }
-                }
-            }
-
-            items.Sort();
-
-            if (items.Count > sort)
-            {
-                var itemOrder = items[sort];
-                return itemOrder - 1;
-            }
-            else if (items.Count > 0)
-            {
-                return items.Last() + 1;
-            }
-
-            return 0;
-        }
-
-        private int DoAddNewModule(string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
-        {
-            try
-            {
-                DesktopModuleInfo desktopModule;
-                if (!DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId).TryGetValue(desktopModuleId, out desktopModule))
-                {
-                    throw new ArgumentException("desktopModuleId");
-                }
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-            }
-
-            var tabModuleId = Null.NullInteger;
-            foreach (ModuleDefinitionInfo objModuleDefinition in
-                ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId).Values)
-            {
-                var objModule = new ModuleInfo();
-                objModule.Initialize(PortalSettings.Current.ActiveTab.PortalID);
-
-                objModule.PortalID = PortalSettings.Current.ActiveTab.PortalID;
-                objModule.TabID = PortalSettings.Current.ActiveTab.TabID;
-                objModule.ModuleOrder = position;
-                objModule.ModuleTitle = string.IsNullOrEmpty(title) ? objModuleDefinition.FriendlyName : title;
-                objModule.PaneName = paneName;
-                objModule.ModuleDefID = objModuleDefinition.ModuleDefID;
-                if (objModuleDefinition.DefaultCacheTime > 0)
-                {
-                    objModule.CacheTime = objModuleDefinition.DefaultCacheTime;
-                    if (PortalSettings.Current.DefaultModuleId > Null.NullInteger && PortalSettings.Current.DefaultTabId > Null.NullInteger)
-                    {
-                        ModuleInfo defaultModule = ModuleController.Instance.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
-                        if (defaultModule != null)
-                        {
-                            objModule.CacheTime = defaultModule.CacheTime;
-                        }
-                    }
-                }
-
-                ModuleController.Instance.InitialModulePermission(objModule, objModule.TabID, permissionType);
-
-                if (PortalSettings.Current.ContentLocalizationEnabled)
-                {
-                    Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
-
-                    // set the culture of the module to that of the tab
-                    var tabInfo = TabController.Instance.GetTab(objModule.TabID, PortalSettings.Current.PortalId, false);
-                    objModule.CultureCode = tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code;
-                }
-                else
-                {
-                    objModule.CultureCode = Null.NullString;
-                }
-
-                objModule.AllTabs = false;
-                objModule.Alignment = align;
-
-                ModuleController.Instance.AddModule(objModule);
-
-                if (tabModuleId == Null.NullInteger)
-                {
-                    tabModuleId = objModule.ModuleID;
-                }
-
-                // update the position to let later modules with add after previous one.
-                position = ModuleController.Instance.GetTabModule(objModule.TabModuleID).ModuleOrder + 1;
-            }
-
-            return tabModuleId;
-        }
-
         private string GetModuleName(string moduleName)
         {
             if (this.nameDics == null)
@@ -863,7 +861,7 @@ namespace DotNetNuke.Web.InternalServices
                 };
             }
 
-            return this.nameDics.ContainsKey(moduleName) ? this.nameDics[moduleName] : moduleName;
+            return this.nameDics.TryGetValue(moduleName, out var name) ? name : moduleName;
         }
 
         public class ModuleDefDTO

@@ -16,13 +16,15 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(OtherPackages))]
     public sealed class BuildToTempFolder : FrostingTask<Context>
     {
+        private static readonly string[] SampleModuleArtifactsPattern = ["SampleModules/*.zip",];
+
         /// <inheritdoc/>
         public override void Run(Context context)
         {
             if (context.Settings.CopySampleProjects)
             {
                 context.Information("Copying Sample Projects to Temp Folder");
-                var files = context.GetFilesByPatterns(context.ArtifactsFolder, new[] { "SampleModules/*.zip" });
+                var files = context.GetFilesByPatterns(context.ArtifactsFolder, SampleModuleArtifactsPattern);
                 foreach (var file in files)
                 {
                     var destination = context.File(System.IO.Path.Combine(context.WebsiteFolder, "Install", "Module", file.GetFilename().ToString()));

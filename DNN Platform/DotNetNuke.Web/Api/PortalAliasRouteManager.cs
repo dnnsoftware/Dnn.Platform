@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.Api
             Requires.NotNegative("count", count);
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
 
-            return string.Format("{0}DesktopModules/{1}/API/{2}", new PortalAliasRouteManager().GeneratePrefixString(count), moduleFolderName, url);
+            return string.Format("{0}DesktopModules/{1}/API/{2}", GeneratePrefixString(count), moduleFolderName, url);
         }
 
         /// <inheritdoc/>
@@ -85,7 +85,7 @@ namespace DotNetNuke.Web.Api
             Requires.NotNegative("count", count);
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
 
-            return string.Format("{0}API/{1}/{2}", this.GeneratePrefixString(count), moduleFolderName, url);
+            return string.Format("{0}API/{1}/{2}", GeneratePrefixString(count), moduleFolderName, url);
         }
 
         /// <inheritdoc/>
@@ -109,7 +109,7 @@ namespace DotNetNuke.Web.Api
                 {
                     IEnumerable<string> aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).Select(x => x.HTTPAlias);
 
-                    aliases = this.StripApplicationPath(aliases);
+                    aliases = StripApplicationPath(aliases);
 
                     foreach (string alias in aliases)
                     {
@@ -151,7 +151,7 @@ namespace DotNetNuke.Web.Api
             }
         }
 
-        private IEnumerable<string> StripApplicationPath(IEnumerable<string> aliases)
+        private static IEnumerable<string> StripApplicationPath(IEnumerable<string> aliases)
         {
             string appPath = TestableGlobals.Instance.ApplicationPath;
 
@@ -163,7 +163,7 @@ namespace DotNetNuke.Web.Api
             return StripApplicationPathIterable(aliases, appPath);
         }
 
-        private string GeneratePrefixString(int count)
+        private static string GeneratePrefixString(int count)
         {
             if (count == 0)
             {

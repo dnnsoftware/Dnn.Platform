@@ -36,7 +36,10 @@ namespace DotNetNuke.UI.WebControls
                     // Try and cast the value to an Integer
                     if (this.Value != null)
                     {
-                        int.TryParse(this.Value.ToString(), out intValue);
+                        if (!int.TryParse(this.Value.ToString(), out intValue))
+                        {
+                            intValue = Null.NullInteger;
+                        }
                     }
                 }
                 catch (Exception exc)
@@ -58,7 +61,10 @@ namespace DotNetNuke.UI.WebControls
                 try
                 {
                     // Try and cast the value to an Integer
-                    int.TryParse(this.OldValue.ToString(), out intValue);
+                    if (!int.TryParse(this.OldValue.ToString(), out intValue))
+                    {
+                        intValue = Null.NullInteger;
+                    }
                 }
                 catch (Exception exc)
                 {

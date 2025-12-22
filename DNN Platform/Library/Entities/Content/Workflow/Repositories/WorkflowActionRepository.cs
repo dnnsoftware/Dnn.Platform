@@ -20,17 +20,15 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             using var context = DataContext.Instance();
             var rep = context.GetRepository<WorkflowAction>();
             return rep.Find("WHERE ContentTypeId = @0 AND ActionType = @1", contentTypeId, type).SingleOrDefault()
-                ?? this.GetWorkflowActionsDefaultsOrNull(contentTypeId, type); // fallback to default action (not in db)
+                ?? GetWorkflowActionsDefaultsOrNull(contentTypeId, type); // fallback to default action (not in db)
         }
 
         /// <inheritdoc/>
         public void AddWorkflowAction(WorkflowAction action)
         {
-            using (var context = DataContext.Instance())
-            {
-                var rep = context.GetRepository<WorkflowAction>();
-                rep.Insert(action);
-            }
+            using var context = DataContext.Instance();
+            var rep = context.GetRepository<WorkflowAction>();
+            rep.Insert(action);
         }
 
         /// <inheritdoc/>
@@ -39,7 +37,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             return () => new WorkflowActionRepository();
         }
 
-        private WorkflowAction GetWorkflowActionsDefaultsOrNull(int contentTypeId, string type)
+        private static WorkflowAction GetWorkflowActionsDefaultsOrNull(int contentTypeId, string type)
         {
             // only "Tab" ContentType is supported
             if (contentTypeId != ContentType.Tab.ContentTypeId)
@@ -60,7 +58,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 WorkflowActionTypes.DiscardState => typeof(DiscardState).AssemblyQualifiedName,
                 WorkflowActionTypes.CompleteState => typeof(CompleteState).AssemblyQualifiedName,
                 WorkflowActionTypes.StartWorkflow => typeof(StartWorkflow).AssemblyQualifiedName,
-                _ => throw new ArgumentOutOfRangeException(),
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, $"Unexpected workflow action type, supported values include {nameof(WorkflowActionTypes.DiscardWorkflow)}, {nameof(WorkflowActionTypes.CompleteWorkflow)}, {nameof(WorkflowActionTypes.DiscardState)}, {nameof(WorkflowActionTypes.CompleteState)}, and {nameof(WorkflowActionTypes.StartWorkflow)}."),
             };
 
             return new WorkflowAction()

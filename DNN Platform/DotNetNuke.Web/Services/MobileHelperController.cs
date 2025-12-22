@@ -23,6 +23,7 @@ namespace DotNetNuke.Web.Services
     [AllowAnonymous]
     public class MobileHelperController : DnnApiController
     {
+        private static readonly char[] ModuleSeparator = [',',];
         private readonly string dnnVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
 
         /// <summary>Gets the various defined monikers for the various tab modules in the system.</summary>
@@ -53,9 +54,9 @@ namespace DotNetNuke.Web.Services
             var modules = modulesController.GetAllTabsModules(portalId, false).OfType<ModuleInfo>()
                 .Where(tabmodule => monikers.ContainsKey(tabmodule.TabModuleID)).ToArray();
 
-            if (modules.Any())
+            if (modules.Length != 0)
             {
-                foreach (var moduleName in (moduleList ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var moduleName in (moduleList ?? string.Empty).Split(ModuleSeparator, StringSplitOptions.RemoveEmptyEntries))
                 {
                     var dtmRecord = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
                     if (dtmRecord != null)
@@ -150,7 +151,7 @@ namespace DotNetNuke.Web.Services
                 IsAdmin = this.UserInfo.IsInRole("Administrators"),
             };
 
-            foreach (var moduleName in (moduleList ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var moduleName in (moduleList ?? string.Empty).Split(ModuleSeparator, StringSplitOptions.RemoveEmptyEntries))
             {
                 var modulesCollection = GetTabModules((moduleName ?? string.Empty).Trim())
                     .Where(tabmodule => TabPermissionController.CanViewPage(tabmodule.TabInfo) &&

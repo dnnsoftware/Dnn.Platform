@@ -48,24 +48,22 @@ namespace DotNetNuke.Entities.Urls
                 List<ParameterReplaceAction> parmReplaces = null;
                 int tabId = tab.TabID;
 
-                if (replaceActions.ContainsKey(tabId))
+                if (replaceActions.TryGetValue(tabId, out var parameterReplaceActions))
                 {
                     // find the right set of replaced actions for this tab
-                    parmReplaces = replaceActions[tabId];
+                    parmReplaces = parameterReplaceActions;
                 }
 
                 // check for 'all tabs' replace action
-                if (replaceActions.ContainsKey(-1))
+                if (replaceActions.TryGetValue(-1, out var allReplaces))
                 {
                     // -1 means 'all tabs' - replacing across all tabs
                     // initialise to empty collection if there are no specific tab replaces
                     if (parmReplaces == null)
                     {
-                        parmReplaces = new List<ParameterReplaceAction>();
+                        parmReplaces = [];
                     }
 
-                    // add in the all replaces
-                    List<ParameterReplaceAction> allReplaces = replaceActions[-1];
                     parmReplaces.AddRange(allReplaces); // add the 'all' range to the tab range
                 }
 

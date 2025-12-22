@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.Common.Internal
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Reflection;
     using System.Threading;
@@ -54,7 +55,8 @@ namespace DotNetNuke.Web.Common.Internal
                         BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
                         null,
                         null,
-                        null);
+                        null,
+                        CultureInfo.InvariantCulture);
                     Logger.Trace("DirMonCompletion count: " + dirMonCount);
 
                     // enable our monitor only when fcnMode="Disabled"
@@ -151,7 +153,7 @@ namespace DotNetNuke.Web.Common.Internal
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
             }
 
-            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.OrdinalIgnoreCase))
             {
                 ShceduleShutdown();
             }
@@ -164,7 +166,7 @@ namespace DotNetNuke.Web.Common.Internal
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
             }
 
-            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.OrdinalIgnoreCase))
             {
                 ShceduleShutdown();
             }
@@ -177,7 +179,7 @@ namespace DotNetNuke.Web.Common.Internal
                 Logger.Info($"Watcher Activity: {e.ChangeType}. New Path: {e.FullPath}. Old Path: {e.OldFullPath}");
             }
 
-            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.OrdinalIgnoreCase))
             {
                 ShceduleShutdown();
             }
@@ -190,7 +192,7 @@ namespace DotNetNuke.Web.Common.Internal
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
             }
 
-            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.OrdinalIgnoreCase))
             {
                 ShceduleShutdown();
             }

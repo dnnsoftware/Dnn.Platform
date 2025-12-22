@@ -68,16 +68,11 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        protected TokenProvider Provider
-        {
-            get => ComponentFactory.GetComponent<TokenProvider>();
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected TokenProvider Provider => ComponentFactory.GetComponent<TokenProvider>();
 
         /// <summary>Gets the Format provider as Culture info from stored language or current culture.</summary>
-        protected override CultureInfo FormatProvider
-        {
-            get => this.TokenContext.Language;
-        }
+        protected override CultureInfo FormatProvider => this.TokenContext.Language;
 
         /// <summary>Gets or sets the current Access Level controlling access to critical user settings.</summary>
         protected Scope CurrentAccessLevel
