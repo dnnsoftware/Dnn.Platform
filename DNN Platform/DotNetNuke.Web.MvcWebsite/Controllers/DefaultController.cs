@@ -9,8 +9,10 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Mvc;
+
     using Dnn.EditBar.UI.Mvc;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common;
@@ -31,29 +33,54 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
     using DotNetNuke.Web.MvcPipeline.Models;
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 
+    /// <summary>
+    /// Default controller for handling page rendering in the MVC pipeline.
+    /// </summary>
     public class DefaultController : DnnPageController
     {
         private readonly INavigationManager navigationManager;
         private readonly IPageModelFactory pageModelFactory;
         private readonly IClientResourceController clientResourceController;
         private readonly IPageService pageService;
+        private readonly IHostSettings hostSettings;
 
-        public DefaultController(INavigationManager navigationManager, 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultController"/> class.
+        /// </summary>
+        /// <param name="navigationManager">The navigation manager for URL generation.</param>
+        /// <param name="pageModelFactory">The factory for creating page models.</param>
+        /// <param name="clientResourceController">The controller for managing client resources (scripts and stylesheets).</param>
+        /// <param name="pageService">The service for page-related operations.</param>
+        /// <param name="serviceProvider">The service provider for dependency resolution.</param>
+        /// <param name="hostSettings">The host settings configuration.</param>
+        public DefaultController(
+                                INavigationManager navigationManager, 
                                 IPageModelFactory pageModelFactory, 
                                 IClientResourceController clientResourceController,
                                 IPageService pageService,
-                                IServiceProvider serviceProvider)
+                                IServiceProvider serviceProvider,
+                                IHostSettings hostSettings)
             :base(serviceProvider)
         {
             this.navigationManager = navigationManager;
             this.pageModelFactory = pageModelFactory;
             this.clientResourceController = clientResourceController;
             this.pageService = pageService;
+            this.hostSettings = hostSettings;
         }
 
+        /// <summary>
+        /// Renders a page for the specified tab and language.
+        /// </summary>
+        /// <param name="tabid">The tab (page) identifier to render.</param>
+        /// <param name="language">The language code for localization.</param>
+        /// <returns>
+        /// A view result containing the rendered page, or an HTTP status code result if an error occurs.
+        /// Returns 403 (Forbidden) for access denied, 404 (Not Found) for missing pages, or redirects as needed.
+        /// </returns>
         public ActionResult Page(int tabid, string language)
         {
-            //TODO: CSP - enable when CSP implementation is ready
+            // TODO: CSP - enable when CSP implementation is ready
             /*
             this.HttpContext.Items.Add("CSP-NONCE", this.contentSecurityPolicy.Nonce);
 
@@ -82,7 +109,6 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
                 Exceptions.ProcessHttpException(new HttpException(503, Localization.GetString("SiteAccessedWhileInstallationWasInProgress.Error", Localization.GlobalResourceFile)));
             }
 
-          
             var user = this.PortalSettings.UserInfo;
 
             if (PortalSettings.Current.UserId > 0)
@@ -93,7 +119,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
 
             // Configure the ActiveTab with Skin/Container information
             PortalSettingsController.Instance().ConfigureActiveTab(this.PortalSettings);
-            
+
             try
             {
                 PageModel model = this.pageModelFactory.CreatePageModel(this);
@@ -101,6 +127,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
                 model.ClientResourceController = this.clientResourceController;
                 model.PageService = this.pageService;
                 this.InitializePage(model);
+
                 // DotNetNuke.Framework.JavaScriptLibraries.MvcJavaScript.Register(this.ControllerContext);
                 model.ClientVariables = MvcClientAPI.GetClientVariableList();
                 model.StartupScripts = MvcClientAPI.GetClientStartupScriptList();
@@ -127,6 +154,10 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             }
         }
 
+        /// <summary>
+        /// Registers all scripts and stylesheets required for the page rendering.
+        /// </summary>
+        /// <param name="page">The page model containing skin, container, and resource information.</param>
         private void RegisterScriptsAndStylesheets(PageModel page)
         {
             foreach (var styleSheet in page.Skin.RegisteredStylesheets)
@@ -157,6 +188,10 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             }
         }
 
+        /// <summary>
+        /// Initializes the page by handling tab name redirects, setting cache control headers, and configuring cookie consent.
+        /// </summary>
+        /// <param name="page">The page model to initialize.</param>
         private void InitializePage(PageModel page)
         {
             // redirect to a specific tab based on name
@@ -189,26 +224,23 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
                 }
             }
 
-            var cacheability = this.Request.IsAuthenticated ? Host.AuthenticatedCacheability : Host.UnauthenticatedCacheability;
+            var cacheability = this.Request.IsAuthenticated ? this.hostSettings.AuthenticatedCacheability : this.hostSettings.UnauthenticatedCacheability;
 
             switch (cacheability)
             {
-                case "0":
+                case CacheControlHeader.NoCache:
                     this.Response.Cache.SetCacheability(HttpCacheability.NoCache);
                     break;
-                case "1":
+                case CacheControlHeader.Private:
                     this.Response.Cache.SetCacheability(HttpCacheability.Private);
                     break;
-                case "2":
+                case CacheControlHeader.Public:
                     this.Response.Cache.SetCacheability(HttpCacheability.Public);
                     break;
-                case "3":
-                    this.Response.Cache.SetCacheability(HttpCacheability.Server);
-                    break;
-                case "4":
+                case CacheControlHeader.ServerAndNoCache:
                     this.Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
                     break;
-                case "5":
+                case CacheControlHeader.ServerAndPrivate:
                     this.Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate);
                     break;
             }
