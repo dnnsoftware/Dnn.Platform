@@ -19,16 +19,16 @@
 				<component type="Script">
 					<scripts>
 						<basePath>DesktopModules\Dnn\RazorContactList\</basePath>
-						<script type="Install">
-							<path>Providers\DataProviders\SqlDataProvider</path>
-							<name>01.00.00.SqlDataProvider</name>
-							<version>01.00.00</version>
-						</script>
-						<script type="Install">
-							<path>Providers\DataProviders\SqlDataProvider</path>
-							<name>01.00.01.SqlDataProvider</name>
-							<version>01.00.01</version>
-						</script>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>01.00.00.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+            <script type="Uninstall">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>Uninstall.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
 					</scripts>
 				</component>
 				<component type="Module">
