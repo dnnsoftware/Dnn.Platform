@@ -10,12 +10,20 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.UI.Modules;
 
+    /// <summary>
+    /// Represents the data and behavior required to render a module container.
+    /// </summary>
     public class ContainerModel
     {
         private ModuleInfo moduleConfiguration;
         private ModuleHostModel moduleHost;
         private PortalSettings portalSettings;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContainerModel"/> class.
+        /// </summary>
+        /// <param name="moduleConfiguration">The module configuration.</param>
+        /// <param name="portalSettings">The current portal settings.</param>
         public ContainerModel(ModuleInfo moduleConfiguration, PortalSettings portalSettings)
         {
             this.moduleConfiguration = moduleConfiguration;
@@ -23,6 +31,9 @@ namespace DotNetNuke.Web.MvcPipeline.Models
             this.portalSettings = portalSettings;
         }
 
+        /// <summary>
+        /// Gets the portal settings associated with this container.
+        /// </summary>
         public PortalSettings PortalSettings
         {
             get
@@ -30,6 +41,9 @@ namespace DotNetNuke.Web.MvcPipeline.Models
                 return this.portalSettings;
             }
         }
+        /// <summary>
+        /// Gets the module host model used to render the module.
+        /// </summary>
         public ModuleHostModel ModuleHost
         {
             get
@@ -38,6 +52,9 @@ namespace DotNetNuke.Web.MvcPipeline.Models
             }
         }
 
+        /// <summary>
+        /// Gets the module control instance associated with this container.
+        /// </summary>
         public IModuleControl ModuleControl
         {
             get
@@ -52,8 +69,14 @@ namespace DotNetNuke.Web.MvcPipeline.Models
             }
         }
 
+        /// <summary>
+        /// Gets or sets the HTML identifier assigned to the container.
+        /// </summary>
         public string ID { get; internal set; }
 
+        /// <summary>
+        /// Gets the directory path of the container control.
+        /// </summary>
         public string ContainerPath
         {
             get
@@ -62,8 +85,14 @@ namespace DotNetNuke.Web.MvcPipeline.Models
             }
         }
 
+        /// <summary>
+        /// Gets or sets the source path of the container control.
+        /// </summary>
         public string ContainerSrc { get; internal set; }
 
+        /// <summary>
+        /// Gets the MVC action name used to render the module within the container.
+        /// </summary>
         public string ActionName
         {
             get
@@ -79,6 +108,9 @@ namespace DotNetNuke.Web.MvcPipeline.Models
             }
         }
 
+        /// <summary>
+        /// Gets the MVC controller name used to render the module within the container.
+        /// </summary>
         public string ControllerName
         {
             get
@@ -94,6 +126,9 @@ namespace DotNetNuke.Web.MvcPipeline.Models
             }
         }
 
+        /// <summary>
+        /// Gets the Razor view path that corresponds to the container control.
+        /// </summary>
         public string ContainerRazorFile
         {
             get
@@ -102,6 +137,9 @@ namespace DotNetNuke.Web.MvcPipeline.Models
             }
         }
 
+        /// <summary>
+        /// Gets the module configuration for this container.
+        /// </summary>
         public ModuleInfo ModuleConfiguration
         {
             get
@@ -110,16 +148,34 @@ namespace DotNetNuke.Web.MvcPipeline.Models
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the container is rendered in edit mode.
+        /// </summary>
         public bool EditMode { get; internal set; }
 
+        /// <summary>
+        /// Gets or sets the footer markup for the container.
+        /// </summary>
         public string Footer { get; internal set; }
 
+        /// <summary>
+        /// Gets or sets the header markup for the container.
+        /// </summary>
         public string Header { get; internal set; }
 
+        /// <summary>
+        /// Gets or sets the CSS class applied to the content pane.
+        /// </summary>
         public string ContentPaneCssClass { get; internal set; }
 
+        /// <summary>
+        /// Gets or sets the inline style applied to the content pane.
+        /// </summary>
         public string ContentPaneStyle { get; internal set; }
 
+        /// <summary>
+        /// Gets or sets the stylesheets registered by the container.
+        /// </summary>
         public List<RegisteredStylesheet> RegisteredStylesheets { get; set; } = new List<RegisteredStylesheet>();
 
         private string ModuleName

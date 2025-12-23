@@ -9,8 +9,17 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for excluding previously registered CSS resources.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Excludes a previously registered stylesheet by its logical name.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="name">The logical stylesheet name to remove.</param>
+        /// <returns>An empty HTML string.</returns>
         public static IHtmlString DnnCssExclude(this HtmlHelper<PageModel> helper, string name)
         {
             HtmlHelpers.GetClientResourcesController(helper)

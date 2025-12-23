@@ -12,6 +12,9 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for including additional stylesheet links.
+    /// </summary>
     public static partial class SkinHelpers
     {
         public static IHtmlString Styles(this HtmlHelper<PageModel> helper, string styleSheet, string condition = "", bool isFirst = false, bool useSkinPath = true, string media = "", string name = "")

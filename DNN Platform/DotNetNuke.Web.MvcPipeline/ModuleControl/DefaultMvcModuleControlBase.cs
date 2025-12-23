@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
     using System.Web.UI;
+
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
@@ -22,20 +23,29 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    /// <summary>
+    /// Base implementation for MVC module controls, exposing common DNN context and services.
+    /// </summary>
     public abstract class DefaultMvcModuleControlBase : IMvcModuleControl, IDisposable
     {
         private readonly Lazy<ServiceScopeContainer> serviceScopeContainer = new Lazy<ServiceScopeContainer>(ServiceScopeContainer.GetRequestOrCreateScope);
         private string localResourceFile;
         private ModuleInstanceContext moduleContext;
 
+        /// <summary>
+        /// Gets the module configuration associated with this control.
+        /// </summary>
         public ModuleInfo ModuleConfiguration
         {
             get
             {
-                return ModuleContext.Configuration;
+                return this.ModuleContext.Configuration;
             }
         }
 
+        /// <summary>
+        /// Gets the identifier of the current tab.
+        /// </summary>
         public int TabId
         {
             get
@@ -44,6 +54,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        /// <summary>
+        /// Gets the identifier of the current module.
+        /// </summary>
         public int ModuleId
         {
             get
@@ -52,6 +65,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        /// <summary>
+        /// Gets the identifier of the current tab-module instance.
+        /// </summary>
         public int TabModuleId
         {
             get
@@ -60,6 +76,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the current tab is a host (superuser) tab.
+        /// </summary>
         public bool IsHostMenu
         {
             get
@@ -68,6 +87,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        /// <summary>
+        /// Gets the current portal settings.
+        /// </summary>
         public PortalSettings PortalSettings
         {
             get
@@ -76,6 +98,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        /// <summary>
+        /// Gets the identifier of the current portal.
+        /// </summary>
         public int PortalId
         {
             get
@@ -84,6 +109,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        /// <summary>
+        /// Gets information about the current user.
+        /// </summary>
         public UserInfo UserInfo
         {
             get
@@ -92,6 +120,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        /// <summary>
+        /// Gets the identifier of the current user.
+        /// </summary>
         public int UserId
         {
             get
@@ -100,6 +131,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        /// <summary>
+        /// Gets the current portal alias information.
+        /// </summary>
         public PortalAliasInfo PortalAlias
         {
             get
@@ -108,6 +142,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        /// <summary>
+        /// Gets the settings for the current module instance.
+        /// </summary>
         public Hashtable Settings
         {
             get
@@ -116,12 +153,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
-        /// <summary>Gets the underlying base control for this ModuleControl.</summary>
-        /// <returns>A String.</returns>
+        /// <summary>Gets or sets the underlying base control for this module control.</summary>
+        /// <returns>A <see cref="Control"/> instance.</returns>
         public Control Control { get; set; }
 
-        /// <summary>Gets the Name for this control.</summary>
-        /// <returns>A String.</returns>
+        /// <summary>Gets the name for this control.</summary>
+        /// <returns>A string representing the control name.</returns>
         public virtual string ControlName
         {
             get
@@ -137,8 +174,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
-        /// <summary>Gets or Sets the Path for this control (used primarily for UserControls).</summary>
-        /// <returns>A String.</returns>
+        /// <summary>Gets the path for this control (used primarily for user controls).</summary>
+        /// <returns>A string representing the control path.</returns>
         public virtual string ControlPath
         {
             get
@@ -147,15 +184,19 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 {
                     return "DesktopModules/" + this.ModuleConfiguration.DesktopModule.FolderName;
                 }
+
                 return string.Empty;
             }
         }
 
+        /// <summary>
+        /// Gets the default resource file name for this control.
+        /// </summary>
         public virtual string ResourceName
         {
             get
             {
-                return this.ControlName+".resx";
+                return this.ControlName + ".resx";
             }
         }
 
@@ -174,6 +215,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        /// <summary>
+        /// Gets or sets the module action collection for this control.
+        /// </summary>
         public ModuleActionCollection Actions
         {
             get
@@ -187,6 +231,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        /// <summary>
+        /// Gets or sets the help URL associated with this control.
+        /// </summary>
         public string HelpURL
         {
             get
@@ -200,9 +247,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
-
         /// <summary>Gets or sets the local resource file for this control.</summary>
-        /// <returns>A String.</returns>
+        /// <returns>A string representing the resource file path.</returns>
         public string LocalResourceFile
         {
             get
@@ -235,12 +281,16 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         /// </value>
         protected IServiceProvider DependencyProvider => this.serviceScopeContainer.Value.ServiceScope.ServiceProvider;
 
+        /// <summary>
+        /// Gets the next available action identifier for this module.
+        /// </summary>
+        /// <returns>The next action identifier.</returns>
         public int GetNextActionID()
         {
             return this.ModuleContext.GetNextActionID();
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public void Dispose()
         {
             // base.Dispose();
@@ -250,6 +300,11 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        /// <summary>
+        /// Renders the module control as HTML using the specified HTML helper.
+        /// </summary>
+        /// <param name="htmlHelper">The MVC HTML helper.</param>
+        /// <returns>The rendered HTML.</returns>
         public abstract IHtmlString Html(HtmlHelper htmlHelper);
     }
 }

@@ -16,10 +16,9 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Modules;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Modules
-    /// Class    : ModuleHost
-    /// <summary>ModuleHost hosts a Module Control (or its cached Content).</summary>
+    /// <summary>
+    /// Hosts a module control (or its cached content) for use within the MVC pipeline.
+    /// </summary>
     public sealed class ModuleHostModel
     {
         private const string DefaultCssProvider = "DnnPageHeaderProvider";
@@ -35,6 +34,10 @@ namespace DotNetNuke.Web.MvcPipeline.Models
 
         private IModuleControl control = null;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleHostModel"/> class.
+        /// </summary>
+        /// <param name="moduleConfiguration">The module configuration to host.</param>
         public ModuleHostModel(ModuleInfo moduleConfiguration)
         {
             this.moduleConfiguration = moduleConfiguration;
@@ -50,8 +53,9 @@ namespace DotNetNuke.Web.MvcPipeline.Models
             }
         }
 
-        /// <summary>Gets the attached ModuleControl.</summary>
-        /// <returns>An IModuleControl.</returns>
+        /// <summary>
+        /// Gets the attached <see cref="IModuleControl"/> instance.
+        /// </summary>
         public IModuleControl ModuleControl
         {
             get
@@ -62,10 +66,17 @@ namespace DotNetNuke.Web.MvcPipeline.Models
             }
         }
 
+        /// <summary>
+        /// Gets the CSS class applied to the module content.
+        /// </summary>
         public string CssClass { get; private set; }
 
-        /// <summary>Gets a flag that indicates whether the Module is in View Mode.</summary>
-        /// <returns>A Boolean.</returns>
+        /// <summary>
+        /// Determines whether the specified module is currently in view mode.
+        /// </summary>
+        /// <param name="moduleInfo">The module configuration.</param>
+        /// <param name="settings">The current portal settings.</param>
+        /// <returns><c>true</c> if the module is in view mode; otherwise, <c>false</c>.</returns>
         internal static bool IsViewMode(ModuleInfo moduleInfo, PortalSettings settings)
         {
             bool viewMode;

@@ -16,12 +16,20 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
     /// <remarks>
     /// This validation is only applicable when the <see cref="System.Web.Routing.Route" /> is one that we created. A user-defined
     /// type that is derived from <see cref="System.Web.Routing.RouteBase" /> may have different semantics.
-    ///
-    /// The logic here is duplicated from System.Web, but we need it to validate correctness of routes on startup. Since we can't
-    /// change System.Web, this just lives in a static class for MVC.
+    /// <para>
+    /// The logic here is duplicated from System.Web, but we need it to validate correctness of routes on startup.
+    /// Since we can't change System.Web, this just lives in a static class for MVC.
+    /// </para>
     /// </remarks>
     internal static class ConstraintValidation
     {
+        /// <summary>
+        /// Validates that all route constraints are either strings or implement <see cref="IRouteConstraint"/>.
+        /// </summary>
+        /// <param name="route">The route to validate.</param>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when a constraint value is neither a string nor an <see cref="IRouteConstraint"/> instance.
+        /// </exception>
         public static void Validate(Route route)
         {
             Contract.Assert(route != null);

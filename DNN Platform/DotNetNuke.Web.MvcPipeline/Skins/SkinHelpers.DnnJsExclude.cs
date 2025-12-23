@@ -10,8 +10,17 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for excluding previously registered JavaScript resources.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Excludes a previously registered JavaScript resource by its logical name.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="name">The logical script name to remove.</param>
+        /// <returns>An empty HTML string.</returns>
         public static IHtmlString DnnJsExclude(this HtmlHelper<PageModel> helper, string name)
         {
             HtmlHelpers.GetClientResourcesController(helper)

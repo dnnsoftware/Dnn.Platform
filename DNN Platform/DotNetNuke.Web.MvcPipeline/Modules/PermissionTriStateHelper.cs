@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using System.Collections;
     using System.Web;
     using System.Web.Mvc;
+
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Framework.JavaScriptLibraries;
@@ -18,8 +19,23 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// HTML helpers and utilities for rendering and initializing tri-state permission controls.
+    /// </summary>
     public static class PermissionTriStateHelper
     {
+        /// <summary>
+        /// Renders a tri-state permission control for a given permission value.
+        /// </summary>
+        /// <param name="helper">The HTML helper.</param>
+        /// <param name="name">The name/id for the hidden input.</param>
+        /// <param name="value">The current permission value (True, False, or Null).</param>
+        /// <param name="isFullControl">Whether this permission represents full control.</param>
+        /// <param name="isView">Whether this is a view permission.</param>
+        /// <param name="locked">Whether the permission is locked.</param>
+        /// <param name="supportsDenyMode">Whether deny mode is supported for this permission.</param>
+        /// <param name="permissionKey">An optional permission key used to add a CSS class.</param>
+        /// <returns>The HTML markup for the tri-state control.</returns>
         public static MvcHtmlString PermissionTriState(
             this HtmlHelper helper,
             string name,
@@ -104,6 +120,10 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             return MvcHtmlString.Create(img.ToString(TagRenderMode.SelfClosing) + hidden.ToString(TagRenderMode.SelfClosing));
         }
 
+        /// <summary>
+        /// Gets the JavaScript used to initialize tri-state permission controls on the page.
+        /// </summary>
+        /// <returns>The initialization script.</returns>
         public static string GetInitScript()
         {
             string grantImagePath, denyImagePath, nullImagePath, lockImagePath, grantAltText, denyAltText, nullAltText;

@@ -15,8 +15,19 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for rendering links to the portal privacy page.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Renders a link to the portal privacy page, using a localized default label when none is provided.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="text">Optional link text; when empty, a localized default is used.</param>
+        /// <param name="cssClass">Optional CSS class applied to the anchor.</param>
+        /// <param name="rel">Optional <c>rel</c> attribute value (for example, <c>nofollow</c>).</param>
+        /// <returns>An HTML string for the privacy link.</returns>
         public static IHtmlString Privacy(this HtmlHelper<PageModel> helper, string text = "", string cssClass = "SkinObject", string rel = "nofollow")
         {
             var navigationManager = helper.ViewData.Model.NavigationManager;

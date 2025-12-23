@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.MvcPipeline.Pages
     using System.Web;
     using System.Web.Helpers;
     using System.Web.Mvc;
+
     using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -25,9 +26,17 @@ namespace DotNetNuke.Web.MvcPipeline.Pages
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
     using DotNetNuke.Web.MvcPipeline.Utils;
 
+    /// <summary>
+    /// HTML helper extensions for rendering MVC pipeline page-level elements.
+    /// </summary>
     public static partial class HtmlHelpers
     {
 
+        /// <summary>
+        /// Renders all head tags (scripts, styles, meta tags) registered for the current page.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <returns>An HTML string containing the rendered head tags.</returns>
         public static IHtmlString RenderHeadTags(this HtmlHelper<PageModel> helper)
         {
             var pageService = helper.ViewData.Model.PageService;
@@ -46,6 +55,11 @@ namespace DotNetNuke.Web.MvcPipeline.Pages
             return new MvcHtmlString(headTags.ToString());
         }
 
+        /// <summary>
+        /// Renders page-level messages (errors, warnings, info, success) using DNN message styles.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <returns>An HTML string containing the rendered messages, or an empty string if there are no messages.</returns>
         public static IHtmlString RenderPageMessages(this HtmlHelper<PageModel> helper)
         {
             var pageService = helper.ViewData.Model.PageService;

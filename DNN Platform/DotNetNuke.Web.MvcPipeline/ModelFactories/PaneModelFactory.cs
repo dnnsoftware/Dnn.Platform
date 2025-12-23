@@ -19,21 +19,30 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.UI.Skins;
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Builds and configures <see cref="PaneModel"/> instances for module placement.
+    /// </summary>
     public class PaneModelFactory : IPaneModelFactory
     {
         private readonly IContainerModelFactory containerModelFactory;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PaneModelFactory"/> class.
+        /// </summary>
+        /// <param name="containerModelFactory">The container model factory.</param>
         public PaneModelFactory(IContainerModelFactory containerModelFactory)
         {
             this.containerModelFactory = containerModelFactory;
         }
 
+        /// <inheritdoc/>
         public PaneModel CreatePane(string name)
         {
             var pane = new PaneModel(name);
             return pane;
         }
 
+        /// <inheritdoc/>
         public PaneModel InjectModule(PaneModel pane, ModuleInfo module, PortalSettings portalSettings)
         {
             // this.containerWrapperControl = new HtmlGenericControl("div");
@@ -89,6 +98,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return pane;
         }
 
+        /// <inheritdoc/>
         public PaneModel ProcessPane(PaneModel pane)
         {
             if (Globals.IsLayoutMode())
@@ -112,6 +122,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 this.PaneControl.Controls.AddAt(0, ctlLabel);
                 */
             }
+
             /*
             else
             {
@@ -143,7 +154,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 canCollapsePane = false;
             }
 
-           
             return canCollapsePane;
         }
 
@@ -154,6 +164,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 return false;
             }
 
+            // TODO: Replace with DI-based resolution when business controller classes are migrated.
             var controller = DotNetNuke.Framework.Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, string.Empty);
             return controller is IVersionable;
         }
@@ -288,7 +299,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
                 // container = ControlUtilities.LoadControl<MvcContainer>(this.PaneControl.Page, containerPath);
                 container = this.containerModelFactory.CreateContainerModel(module, portalSettings, containerSrc);
-                //container.ContainerSrc = containerSrc;
+
+                // container.ContainerSrc = containerSrc;
 
                 // call databind so that any server logic in the container is executed
                 // container.DataBind();

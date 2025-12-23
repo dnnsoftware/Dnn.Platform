@@ -10,8 +10,20 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for rendering meta tags into the page head.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Renders a meta tag with the specified attributes.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="name">The meta name attribute.</param>
+        /// <param name="content">The meta content attribute.</param>
+        /// <param name="httpEquiv">The meta http-equiv attribute.</param>
+        /// <param name="insertFirst">Unused for MVC rendering; kept for API parity.</param>
+        /// <returns>An HTML string representing the meta tag.</returns>
         public static IHtmlString Meta(this HtmlHelper<PageModel> helper, string name = "", string content = "", string httpEquiv = "", bool insertFirst = false)
         {
             var metaTag = new TagBuilder("meta");

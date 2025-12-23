@@ -18,10 +18,23 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for rendering login/logout links.
+    /// </summary>
     public static partial class SkinHelpers
     {
         private const string LoginFileName = "Login.ascx";
 
+        /// <summary>
+        /// Renders a login or logout link depending on the current authentication state.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="cssClass">Optional CSS class applied to the link.</param>
+        /// <param name="text">Optional custom login text or HTML.</param>
+        /// <param name="logoffText">Optional custom logout text or HTML.</param>
+        /// <param name="legacyMode">If set to <c>true</c>, renders the classic login markup; otherwise, renders enhanced markup.</param>
+        /// <param name="showInErrorPage">If set to <c>true</c>, shows the control even on error pages.</param>
+        /// <returns>An HTML string representing the login or logout UI.</returns>
         public static IHtmlString Login(this HtmlHelper<PageModel> helper, string cssClass = "SkinObject", string text = "", string logoffText = "", bool legacyMode = true, bool showInErrorPage = false)
         {
             var navigationManager = helper.ViewData.Model.NavigationManager;

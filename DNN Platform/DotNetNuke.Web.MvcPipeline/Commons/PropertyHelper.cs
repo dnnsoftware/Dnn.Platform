@@ -11,6 +11,9 @@ namespace DotNetNuke.Web.MvcPipeline.Commons
 
     using DotNetNuke.Common;
 
+    /// <summary>
+    /// Provides fast reflection-based access to property values using cached delegates.
+    /// </summary>
     internal class PropertyHelper
     {
         private static readonly MethodInfo CallPropertyGetterByReferenceOpenGenericMethod = typeof(PropertyHelper).GetMethod("CallPropertyGetterByReference", BindingFlags.NonPublic | BindingFlags.Static);
@@ -31,19 +34,22 @@ namespace DotNetNuke.Web.MvcPipeline.Commons
         // Implementation of the fast getter.
         private delegate TValue ByRefFunc<TDeclaringType, TValue>(ref TDeclaringType arg);
 
+        /// <summary>
+        /// Gets or sets the property name.
+        /// </summary>
         public virtual string Name { get; protected set; }
 
         /// <summary>Creates and caches fast property helpers that expose getters for every public get property on the underlying type.</summary>
-        /// <param name="instance">the instance to extract property accessors for.</param>
-        /// <returns>a cached array of all public property getters from the underlying type of this instance.</returns>
+        /// <param name="instance">The instance to extract property accessors for.</param>
+        /// <returns>A cached array of all public property getters from the underlying type of this instance.</returns>
         public static PropertyHelper[] GetProperties(object instance)
         {
             return GetProperties(instance, CreateInstance, ReflectionCache);
         }
 
         /// <summary>Creates a single fast property getter. The result is not cached.</summary>
-        /// <param name="propertyInfo">propertyInfo to extract the getter for.</param>
-        /// <returns>a fast getter.</returns>
+        /// <param name="propertyInfo">Property information to extract the getter for.</param>
+        /// <returns>A fast property getter delegate.</returns>
         /// <remarks>This method is more memory efficient than a dynamically compiled lambda, and about the same speed.</remarks>
         public static Func<object, object> MakeFastPropertyGetter(PropertyInfo propertyInfo)
         {
@@ -79,12 +85,24 @@ namespace DotNetNuke.Web.MvcPipeline.Commons
             return (Func<object, object>)callPropertyGetterDelegate;
         }
 
+        /// <summary>
+        /// Gets the value of the property for the specified instance.
+        /// </summary>
+        /// <param name="instance">The instance to read the property value from.</param>
+        /// <returns>The property value.</returns>
         public object GetValue(object instance)
         {
             // Contract.Assert(valueGetter != null, "Must call Initialize before using this object");
             return this.valueGetter(instance);
         }
 
+        /// <summary>
+        /// Gets or creates cached <see cref="PropertyHelper"/> instances for the specified object's type.
+        /// </summary>
+        /// <param name="instance">The instance whose type is used to discover properties.</param>
+        /// <param name="createPropertyHelper">A factory used to create new <see cref="PropertyHelper"/> instances.</param>
+        /// <param name="cache">The cache used to store helpers per type.</param>
+        /// <returns>An array of <see cref="PropertyHelper"/> objects describing the type's public properties.</returns>
         protected static PropertyHelper[] GetProperties(
             object instance,
             Func<PropertyInfo, PropertyHelper> createPropertyHelper,

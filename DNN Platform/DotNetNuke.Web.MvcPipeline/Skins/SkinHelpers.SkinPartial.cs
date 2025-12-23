@@ -13,8 +13,18 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for rendering reusable Razor skin partials.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Renders a Razor partial view located under the current skin's <c>Views</c> folder.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="name">The partial view name (without path or extension).</param>
+        /// <returns>An HTML string containing the rendered partial view.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the page model is not available.</exception>
         public static IHtmlString SkinPartial(this HtmlHelper<PageModel> helper, string name = "")
         {
             var model = helper.ViewData.Model;

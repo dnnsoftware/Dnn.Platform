@@ -13,8 +13,20 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
 
     using DotNetNuke.Services.Localization;
     
+    /// <summary>
+    /// HTML helper extensions for rendering DNN-style labels with help icons.
+    /// </summary>
     public static partial class ModuleHelpers
     {
+        /// <summary>
+        /// Renders a DNN label with help icon for the specified model expression, using the given resource file for localization.
+        /// </summary>
+        /// <typeparam name="TModel">The model type.</typeparam>
+        /// <typeparam name="TProperty">The property type.</typeparam>
+        /// <param name="htmlHelper">The strongly-typed HTML helper.</param>
+        /// <param name="expression">The expression identifying the field.</param>
+        /// <param name="resourceFile">The localization resource file used to resolve the label text.</param>
+        /// <returns>The rendered label HTML.</returns>
         public static IHtmlString DnnLabelFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, string resourceFile)
         {
             // HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes)

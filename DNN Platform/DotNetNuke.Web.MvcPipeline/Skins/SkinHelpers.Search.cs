@@ -22,10 +22,33 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for rendering the search skin object and related scripts.
+    /// </summary>
     public static partial class SkinHelpers
     {
         private const string SearchFileName = "Search.ascx";
 
+        /// <summary>
+        /// Renders the DNN search skin object for the current page.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="id">The unique identifier used to generate element IDs.</param>
+        /// <param name="useDropDownList">If set to <c>true</c>, renders the dropdown-style search UI; otherwise, renders the classic UI.</param>
+        /// <param name="showWeb">If set to <c>true</c>, shows the web search option in classic mode.</param>
+        /// <param name="showSite">If set to <c>true</c>, shows the site search option in classic mode.</param>
+        /// <param name="cssClass">Optional CSS class applied to the search button.</param>
+        /// <param name="submit">Optional submit button text; defaults to a localized "Search" label.</param>
+        /// <param name="webIconURL">Optional icon URL for web search.</param>
+        /// <param name="webText">Optional label for web search.</param>
+        /// <param name="webToolTip">Optional tooltip for web search.</param>
+        /// <param name="webUrl">Optional external web search URL.</param>
+        /// <param name="siteText">Optional label for site search.</param>
+        /// <param name="useWebForSite">If set to <c>true</c>, uses the web search URL for site searches.</param>
+        /// <param name="enableWildSearch">If set to <c>true</c>, enables wildcard search behavior.</param>
+        /// <param name="minCharRequired">Minimum characters required to trigger auto-search.</param>
+        /// <param name="autoSearchDelayInMilliSecond">Delay in milliseconds before auto-search is triggered.</param>
+        /// <returns>An HTML string representing the rendered search UI.</returns>
         public static MvcHtmlString Search(
             this HtmlHelper<PageModel> helper,
             string id,

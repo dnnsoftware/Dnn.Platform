@@ -15,6 +15,9 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>
+    /// Manages MVC route names, URLs, and prefix counts based on portal aliases.
+    /// </summary>
     internal partial class PortalAliasMvcRouteManager : IPortalAliasMvcRouteManager
     {
         private List<int> prefixCounts;
@@ -27,7 +30,14 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
 
             return moduleFolderName + "-" + routeName + "-" + count.ToString(CultureInfo.InvariantCulture);
         }
-       
+
+        /// <summary>
+        /// Gets a route name for the specified module folder and route name based on a portal alias.
+        /// </summary>
+        /// <param name="moduleFolderName">The module folder name.</param>
+        /// <param name="routeName">The base route name.</param>
+        /// <param name="portalAlias">The portal alias information.</param>
+        /// <returns>The generated route name.</returns>
         public string GetRouteName(string moduleFolderName, string routeName, IPortalAliasInfo portalAlias)
         {
             var alias = portalAlias.HttpAlias;
@@ -44,6 +54,7 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
+        /// <inheritdoc/>
         public RouteValueDictionary GetAllRouteValues(IPortalAliasInfo portalAliasInfo, object routeValues)
         {
             var allRouteValues = new RouteValueDictionary(routeValues);

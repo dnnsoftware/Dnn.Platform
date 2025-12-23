@@ -15,8 +15,27 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Web.MvcPipeline.Models;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Skin helper methods for including CSS files via the DNN Client Dependency Framework.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Registers a stylesheet with the DNN Client Dependency Framework.
+        /// Optionally emits a CDF debug comment when running in debug mode or when <paramref name="addTag"/> is <c>true</c>.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="filePath">The stylesheet file path.</param>
+        /// <param name="pathNameAlias">The path alias (for example, <c>Skin</c>).</param>
+        /// <param name="priority">The client dependency priority.</param>
+        /// <param name="addTag">If set to <c>true</c>, emits a CDF debug comment.</param>
+        /// <param name="name">Optional logical name for the stylesheet.</param>
+        /// <param name="version">Optional version associated with the stylesheet.</param>
+        /// <param name="forceVersion">If set to <c>true</c>, forces the specified version.</param>
+        /// <param name="forceProvider">Optional provider name to force.</param>
+        /// <param name="forceBundle">Unused parameter retained for API compatibility.</param>
+        /// <param name="cssMedia">Optional media attribute (for example, <c>print</c> or <c>screen</c>).</param>
+        /// <returns>An empty HTML string or a CDF debug comment when requested.</returns>
         public static IHtmlString DnnCssInclude(this HtmlHelper<PageModel> helper, string filePath, string pathNameAlias = "", int priority = 100, bool addTag = false, string name = "", string version = "", bool forceVersion = false, string forceProvider = "", bool forceBundle = false, string cssMedia = "")
         {
             var ss = HtmlHelpers.GetClientResourcesController(helper)

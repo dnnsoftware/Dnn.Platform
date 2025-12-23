@@ -12,8 +12,17 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for rendering portal copyright text.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Renders the portal's configured footer text or a localized copyright label.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="cssClass">Optional CSS class applied to the span.</param>
+        /// <returns>An HTML string representing the copyright text.</returns>
         public static IHtmlString Copyright(this HtmlHelper<PageModel> helper, string cssClass = "SkinObject")
         {
             var portalSettings = PortalSettings.Current;

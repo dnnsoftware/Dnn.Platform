@@ -21,8 +21,28 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for rendering language and culture selection UI.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Renders the language selector and optional list of language links for the current portal.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="cssClass">Optional CSS class applied to the selector control.</param>
+        /// <param name="itemTemplate">Optional item template for language links.</param>
+        /// <param name="selectedItemTemplate">Optional template for the currently selected language.</param>
+        /// <param name="headerTemplate">Optional header template for the language list.</param>
+        /// <param name="footerTemplate">Optional footer template for the language list.</param>
+        /// <param name="alternateTemplate">Optional alternate item template for language links.</param>
+        /// <param name="separatorTemplate">Optional separator template between language items.</param>
+        /// <param name="commonHeaderTemplate">Optional common header template wrapping the control.</param>
+        /// <param name="commonFooterTemplate">Optional common footer template wrapping the control.</param>
+        /// <param name="showMenu">If set to <c>true</c>, shows the language drop-down menu.</param>
+        /// <param name="showLinks">If set to <c>true</c>, renders language links in addition to the drop-down.</param>
+        /// <param name="useCurrentCultureForTemplate">If set to <c>true</c>, uses the current culture to resolve templates; otherwise, uses <c>en-US</c>.</param>
+        /// <returns>An HTML string representing the language selector UI.</returns>
         public static IHtmlString Language(
             this HtmlHelper<PageModel> helper,
             string cssClass = "",
@@ -149,7 +169,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                 {
                     if (i > 0 && !string.IsNullOrEmpty(separatorTemplate))
                     {
-                        listItems += ParseTemplate(separatorTemplate, "", localTokenReplace, currentCulture);
+                        listItems += ParseTemplate(separatorTemplate, string.Empty, localTokenReplace, currentCulture);
                     }
                     i++;
 

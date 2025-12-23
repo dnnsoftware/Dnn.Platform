@@ -14,8 +14,17 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Web.MvcPipeline.Models;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Skin helper methods for rendering DNN application branding.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Renders a link to the DNN application site using the legal copyright text.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="cssClass">Optional CSS class applied to the anchor.</param>
+        /// <returns>An HTML string for the DNN copyright link, or empty when disabled.</returns>
         public static IHtmlString DotNetNuke(this HtmlHelper<PageModel> helper, string cssClass = "Normal")
         {
             var hostSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();

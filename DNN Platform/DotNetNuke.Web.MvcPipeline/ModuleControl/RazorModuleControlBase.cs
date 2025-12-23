@@ -1,22 +1,76 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Mvc.Html;
-using System.Web.Routing;
-using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
-using DotNetNuke.Web.MvcPipeline.Modules;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Security.Principal;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Mvc.Html;
+    using System.Web.Routing;
+
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
+    using DotNetNuke.Web.MvcPipeline.Modules;
+
+    /// <summary>
+    /// Base class for Razor-based MVC module controls.
+    /// </summary>
     public abstract class RazorModuleControlBase : DefaultMvcModuleControlBase
     {
-        private RazorModuleViewContext _viewContext;
+        private RazorModuleViewContext viewContext;
+
+        /// <summary>
+        /// Gets the default view path for this module control.
+        /// </summary>
+        protected virtual string DefaultViewName
+        {
+            get
+            {
+                return "~/" + this.ControlPath.Replace('\\', '/').Trim('/') + "/Views/" + this.ControlName + ".cshtml";
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the Razor module view context.
+        /// </summary>
+        public RazorModuleViewContext ViewContext
+        {
+            get
+            {
+                if (this.viewContext == null)
+                {
+                    this.viewContext = new RazorModuleViewContext
+                    {
+                        HttpContext = new HttpContextWrapper(System.Web.HttpContext.Current),
+                    };
+                }
+
+                return this.viewContext;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value));
+                }
+
+                this.viewContext = value;
+            }
+        }
+
+        /// <summary>
+        /// Renders the module control using Razor and returns the resulting HTML.
+        /// </summary>
+        /// <param name="htmlHelper">The MVC HTML helper.</param>
+        /// <returns>The rendered HTML.</returns>
         public override IHtmlString Html(HtmlHelper htmlHelper)
         {
             this.ViewContext.ViewData = new ViewDataDictionary(htmlHelper.ViewData);
@@ -27,14 +81,10 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             return res.Execute(htmlHelper);
         }
 
-        protected virtual string DefaultViewName
-        {
-            get
-            {
-                return "~/" + this.ControlPath.Replace('\\', '/').Trim('/') + "/Views/" + this.ControlName + ".cshtml";
-            }
-        }
-
+        /// <summary>
+        /// Executes the module and returns a Razor module result to be rendered.
+        /// </summary>
+        /// <returns>The Razor module result.</returns>
         public abstract IRazorModuleResult Invoke();
 
         /// <summary>
@@ -52,6 +102,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             return new ContentRazorModuleResult(content);
         }
 
+        /// <summary>
+        /// Returns a result which will render an error message.
+        /// </summary>
+        /// <param name="heading">The error heading.</param>
+        /// <param name="message">The error message.</param>
+        /// <returns>A <see cref="IRazorModuleResult"/>.</returns>
         public IRazorModuleResult Error(string heading, string message)
         {
             if (message == null)
@@ -62,66 +118,64 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             return new ErrorRazorModuleResult(heading, message);
         }
 
+        /// <summary>
+        /// Returns a result that renders the default view.
+        /// </summary>
+        /// <returns>A <see cref="IRazorModuleResult"/>.</returns>
         public IRazorModuleResult View()
         {
             return View(null);
         }
 
+        /// <summary>
+        /// Returns a result that renders the specified view.
+        /// </summary>
+        /// <param name="viewName">The view name.</param>
+        /// <returns>A <see cref="IRazorModuleResult"/>.</returns>
         public IRazorModuleResult View(string viewName)
         {
             return View(viewName, null);
         }
 
+        /// <summary>
+        /// Returns a result that renders the default view with the specified model.
+        /// </summary>
+        /// <param name="model">The view model.</param>
+        /// <returns>A <see cref="IRazorModuleResult"/>.</returns>
         public IRazorModuleResult View(object model)
         {
-            return View(null, model);
+            return this.View(null, model);
         }
+
+        /// <summary>
+        /// Returns a result that renders the specified view with the specified model.
+        /// </summary>
+        /// <param name="viewName">The view name.</param>
+        /// <param name="model">The view model.</param>
+        /// <returns>A <see cref="IRazorModuleResult"/>.</returns>
         public IRazorModuleResult View(string viewName, object model)
         {
             if (string.IsNullOrEmpty(viewName))
             {
                 viewName = this.DefaultViewName;
             }
-            return new ViewRazorModuleResult(viewName, model, ViewData);
-        }
 
-        public RazorModuleViewContext ViewContext
-        {
-            get
-            {
-                if (_viewContext == null)
-                {
-                    _viewContext = new RazorModuleViewContext();
-                    _viewContext.HttpContext = new System.Web.HttpContextWrapper(System.Web.HttpContext.Current);
-                }
-
-                return _viewContext;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException();
-                }
-
-                _viewContext = value;
-            }
+            return new ViewRazorModuleResult(viewName, model, this.ViewData);
         }
 
         /// <summary>
         /// Gets the <see cref="Http.HttpContext"/>.
         /// </summary>
-        public HttpContextBase HttpContext => ViewContext.HttpContext;
+        public HttpContextBase HttpContext => this.ViewContext.HttpContext;
 
         /// <summary>
         /// Gets the <see cref="HttpRequest"/>.
         /// </summary>
-        public HttpRequestBase Request => ViewContext.HttpContext.Request;
+        public HttpRequestBase Request => this.ViewContext.HttpContext.Request;
 
         /// <summary>
         /// Gets the <see cref="ViewDataDictionary"/>.
         /// </summary>
-        public ViewDataDictionary ViewData => ViewContext.ViewData;
-
+        public ViewDataDictionary ViewData => this.ViewContext.ViewData;
     }
 }

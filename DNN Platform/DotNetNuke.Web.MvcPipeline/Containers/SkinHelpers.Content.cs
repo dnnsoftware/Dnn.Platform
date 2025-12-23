@@ -49,7 +49,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
                     moduleDiv.InnerHtml += htmlHelper.ModuleErrorMessage(ex.Message, "Error loading module");
                 }
             }
-            
+
             var moduleContentPaneDiv = new TagBuilder("div");
             if (!string.IsNullOrEmpty(model.ContentPaneCssClass))
             {

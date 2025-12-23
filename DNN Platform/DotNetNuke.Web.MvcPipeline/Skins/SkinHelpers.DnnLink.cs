@@ -10,8 +10,18 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for rendering the "CMS by DNN" attribution link.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Renders an attribution link to the DNN community site, with text varied by the current host name.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="cssClass">Optional CSS class applied to the link.</param>
+        /// <param name="target">Optional link target attribute (for example, <c>_blank</c>).</param>
+        /// <returns>An HTML string representing the attribution link.</returns>
         public static IHtmlString DnnLink(this HtmlHelper<PageModel> helper, string cssClass = "", string target = "")
         {
             var link = new TagBuilder("a");

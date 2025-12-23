@@ -16,15 +16,23 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Web.MvcPipeline.Models;
     using DotNetNuke.Services.ClientDependency;
 
+    /// <summary>
+    /// Builds and configures <see cref="ContainerModel"/> instances for module containers.
+    /// </summary>
     public class ContainerModelFactory : IContainerModelFactory
     {
         private readonly IClientResourceController clientResourceController;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContainerModelFactory"/> class.
+        /// </summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
         public ContainerModelFactory(IClientResourceController clientResourceController)
         {
             this.clientResourceController = clientResourceController;
         }
 
+        /// <inheritdoc/>
         public ContainerModel CreateContainerModel(ModuleInfo configuration, PortalSettings portalSettings, string containerSrc)
         {
             var container = new ContainerModel(configuration, portalSettings);

@@ -46,6 +46,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using System.Globalization;
     using DotNetNuke.Services.ClientDependency;
 
+    /// <summary>
+    /// Builds <see cref="SkinModel"/> instances from portal, tab, and module configuration.
+    /// </summary>
     public class SkinModelFactory : ISkinModelFactory
     {
         public const string OnInitMessage = "Skin_InitMessage";
@@ -56,7 +59,15 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         private readonly IPageService PageService;
         private readonly IClientResourceController clientResourceController;
 
-        public SkinModelFactory(INavigationManager navigationManager, 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkinModelFactory"/> class.
+        /// </summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="paneModelFactory">The pane model factory.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="pageService">The page service used for messages and meta data.</param>
+        public SkinModelFactory(
+                                INavigationManager navigationManager, 
                                 IPaneModelFactory paneModelFactory,
                                 IClientResourceController clientResourceController,
                                 IPageService pageService)
@@ -67,6 +78,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             this.PageService = pageService;
         }
 
+        /// <inheritdoc/>
         public SkinModel CreateSkinModel(DnnPageController page)
         {
             SkinModel skin = null;

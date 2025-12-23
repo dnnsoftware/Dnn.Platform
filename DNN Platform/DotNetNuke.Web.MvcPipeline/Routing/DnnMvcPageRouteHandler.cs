@@ -9,6 +9,9 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
     using System.Web.Routing;
     using System.Web.SessionState;
 
+    /// <summary>
+    /// Route handler that creates <see cref="DnnMvcPageHandler"/> instances for MVC page routes.
+    /// </summary>
     public class DnnMvcPageRouteHandler : IRouteHandler
     {
         private readonly IControllerFactory controllerFactory;
@@ -31,12 +34,22 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             return this.GetHttpHandler(requestContext);
         }
 
+        /// <summary>
+        /// Creates the HTTP handler for the given request context.
+        /// </summary>
+        /// <param name="requestContext">The current request context.</param>
+        /// <returns>The HTTP handler.</returns>
         protected virtual IHttpHandler GetHttpHandler(RequestContext requestContext)
         {
             requestContext.HttpContext.SetSessionStateBehavior(this.GetSessionStateBehavior(requestContext));
             return new DnnMvcPageHandler(requestContext);
         }
 
+        /// <summary>
+        /// Gets the session state behavior for the controller handling the request.
+        /// </summary>
+        /// <param name="requestContext">The current request context.</param>
+        /// <returns>The desired session state behavior.</returns>
         protected virtual SessionStateBehavior GetSessionStateBehavior(RequestContext requestContext)
         {
             string controllerName = (string)requestContext.RouteData.Values["controller"];

@@ -1,4 +1,7 @@
-﻿namespace DotNetNuke.Web.MvcPipeline.Framework
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+namespace DotNetNuke.Web.MvcPipeline.Framework
 {
     using System.Globalization;
     using System.Web.Helpers;
@@ -18,6 +21,9 @@
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Default implementation of the MVC services framework used to coordinate AJAX scripts and anti-forgery support.
+    /// </summary>
     internal class MvcServicesFrameworkImpl : IMvcServicesFramework, IMvcServiceFrameworkInternals
     {
         private const string AntiForgeryKey = "dnnAntiForgeryRequested";
@@ -49,6 +55,7 @@
             SetKey(ScriptKey);
         }
 
+        /// <inheritdoc/>
         public void RegisterAjaxScript()
         {
             var path = ServicesFramework.GetServiceFrameworkRoot();
@@ -85,6 +92,7 @@
             return HttpContextSource.Current.Items.Contains(antiForgeryKey);
         }
 
+        /// <inheritdoc/>
         public void RegisterAjaxAntiForgery()
         {
             var path = ServicesFramework.GetServiceFrameworkRoot();

@@ -27,41 +27,47 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     using DotNetNuke.Collections;
     using DotNetNuke.Common.Internal;
 
+    /// <summary>
+    /// MVC module control that routes requests to MVC controllers and views based on the control source.
+    /// </summary>
     public class MvcModuleControl : DefaultMvcModuleControlBase
     {
 
         private const string ExcludedQueryStringParams = "tabid,mid,ctl,language,popup,action,controller";
         private const string ExcludedRouteValues = "mid,ctl,popup";
 
+        /// <summary>
+        /// Gets the control name, which maps to the MVC action name.
+        /// </summary>
         public override string ControlName
         {
             get
             {
-                return RouteActionName;
+                return this.RouteActionName;
             }
         }
 
 
-        /// <summary>Gets or Sets the Path for this control (used primarily for UserControls).</summary>
-        /// <returns>A String.</returns>
+        /// <summary>Gets the path for this control (used primarily for user controls).</summary>
+        /// <returns>A string representing the control path.</returns>
         public override string ControlPath
         {
             get
             {
-                return string.Format("~/DesktopModules/MVC/{0}", ModuleConfiguration.DesktopModule.FolderName);
+                return string.Format("~/DesktopModules/MVC/{0}", this.ModuleConfiguration.DesktopModule.FolderName);
             }
         }
 
-        /// <summary>Gets or sets the action name for the MVC route.</summary>
-        /// <returns>A String.</returns>
+        /// <summary>Gets the action name for the MVC route.</summary>
+        /// <returns>A string representing the action name.</returns>
         public string RouteActionName
         {
             get
             {
-                var segments = GetSegments();
+                var segments = this.GetSegments();
                 if (segments.Length < 2)
                 {
-                    return "";
+                    return string.Empty;
                 }
                 if (segments.Length == 3)
                 {
@@ -74,13 +80,13 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
-        /// <summary>Gets or sets the controller name for the MVC route.</summary>
-        /// <returns>A String.</returns>
+        /// <summary>Gets the controller name for the MVC route.</summary>
+        /// <returns>A string representing the controller name.</returns>
         public string RouteControllerName
         {
             get
             {
-                var segments = GetSegments();
+                var segments = this.GetSegments();
                 if (segments.Length < 2)
                 {
                     return string.Empty;
@@ -89,11 +95,14 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        /// <summary>
+        /// Gets the namespace that contains the MVC controllers for this module.
+        /// </summary>
         public string RouteNamespace
         {
             get
             {
-                var segments = GetSegments();
+                var segments = this.GetSegments();
                 if (segments.Length < 1)
                 {
                     return string.Empty;
@@ -102,11 +111,20 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        /// <summary>
+        /// Gets the segments that compose the MVC control source.
+        /// </summary>
+        /// <returns>An array of route segments.</returns>
         public string[] GetSegments()
         {
             return this.ModuleConfiguration.ModuleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
         }
 
+        /// <summary>
+        /// Renders the MVC module using the appropriate controller and action.
+        /// </summary>
+        /// <param name="htmlHelper">The MVC HTML helper.</param>
+        /// <returns>The rendered HTML.</returns>
         public override IHtmlString Html(HtmlHelper htmlHelper)
         {
             var module = this.ModuleConfiguration;
@@ -117,7 +135,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 throw new Exception("The controlSrc is not a MVC control: " + controlSrc);
             }
 
-            var segments = GetSegments();
+            var segments = this.GetSegments();
             if (segments.Length < 2)
             {
                 throw new Exception("The controlSrc is not a MVC control: " + controlSrc);
@@ -177,8 +195,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             else
             {
                 var control = ModuleControlController.GetModuleControlByControlKey(controlKey, module.ModuleDefID);
-                actionName = queryString.GetValueOrDefault("action", RouteActionName);
-                controllerName = queryString.GetValueOrDefault("controller", RouteControllerName);
+                actionName = queryString.GetValueOrDefault("action", this.RouteActionName);
+                controllerName = queryString.GetValueOrDefault("controller", this.RouteControllerName);
 
                 // values.Add("controller", controllerName);
                 // values.Add("action", actionName);
@@ -194,21 +212,26 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                     }
                 }
 
-                if (!string.IsNullOrEmpty(RouteNamespace))
+                if (!string.IsNullOrEmpty(this.RouteNamespace))
                 {
                     // routeData.DataTokens.Add("namespaces", new string[] { routeNamespace });
                 }
             }
             
-            string[] routeValues = { $"moduleId={ModuleConfiguration.ModuleID}", $"controller={RouteControllerName}", $"action={RouteActionName}" };
+            string[] routeValues =
+            {
+                $"moduleId={this.ModuleConfiguration.ModuleID}",
+                $"controller={this.RouteControllerName}",
+                $"action={this.RouteActionName}",
+            };
 
             var request = htmlHelper.ViewContext.HttpContext.Request;
             var req = request.Params;
-            var isMyRoute = req["MODULEID"] != null && req["CONTROLLER"] != null && int.TryParse(req["MODULEID"], out var modId) && modId == ModuleConfiguration.ModuleID;
+            var isMyRoute = req["MODULEID"] != null && req["CONTROLLER"] != null && int.TryParse(req["MODULEID"], out var modId) && modId == this.ModuleConfiguration.ModuleID;
 
-            var url = isMyRoute ? 
-                    request.Url.ToString() : 
-                    TestableGlobals.Instance.NavigateURL(ModuleConfiguration.TabID, TestableGlobals.Instance.IsHostTab(ModuleConfiguration.TabID), PortalSettings, string.Empty, routeValues);
+            var url = isMyRoute
+                ? request.Url.ToString()
+                : TestableGlobals.Instance.NavigateURL(this.ModuleConfiguration.TabID, TestableGlobals.Instance.IsHostTab(this.ModuleConfiguration.TabID), this.PortalSettings, string.Empty, routeValues);
 
             var formTag = new TagBuilder("form");
             formTag.Attributes.Add("action", url);
@@ -219,7 +242,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                                             actionName,
                                             controllerName,
                                             values);
-             return new MvcHtmlString(formTag.ToString());
+            return new MvcHtmlString(formTag.ToString());
         }
     }
 }

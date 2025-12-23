@@ -24,13 +24,28 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for rendering user/register/profile links and counts.
+    /// </summary>
     public static partial class SkinHelpers
     {
         private static string userResourceFile = GetSkinsResourceFile("User.ascx");
 
+        /// <summary>
+        /// Renders user-related UI, including register/login links or profile, messages, and notifications for authenticated users.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="cssClass">Optional CSS class applied to the rendered elements.</param>
+        /// <param name="text">Optional custom registration text or HTML.</param>
+        /// <param name="url">Optional registration URL override.</param>
+        /// <param name="showUnreadMessages">If set to <c>true</c>, shows unread message/notification counts.</param>
+        /// <param name="showAvatar">If set to <c>true</c>, shows the user avatar.</param>
+        /// <param name="legacyMode">If set to <c>true</c>, renders the classic user skin object; otherwise, renders enhanced markup.</param>
+        /// <param name="showInErrorPage">If set to <c>true</c>, shows the control even on error pages.</param>
+        /// <returns>An HTML string representing the user UI or an empty string when not visible.</returns>
         public static IHtmlString User(this HtmlHelper<PageModel> helper, string cssClass = "SkinObject", string text = "", string url = "", bool showUnreadMessages = true, bool showAvatar = true, bool legacyMode = true, bool showInErrorPage = false)
         {
-            //TODO: CSP - enable when CSP implementation is ready
+            // TODO: CSP - enable when CSP implementation is ready
             var nonce = string.Empty; // helper.ViewData.Model.ContentSecurityPolicy.Nonce;
             var portalSettings = PortalSettings.Current;
             var navigationManager = helper.ViewData.Model.NavigationManager;
@@ -52,11 +67,10 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
             if (legacyMode)
             {
-
                 if (helper.ViewContext.HttpContext.Request.IsAuthenticated == false)
                 {
                     if (portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration ||
-                    (portalSettings.Users > portalSettings.UserQuota && portalSettings.UserQuota != 0))
+                        (portalSettings.Users > portalSettings.UserQuota && portalSettings.UserQuota != 0))
                     {
                         return MvcHtmlString.Empty;
                     }
@@ -95,11 +109,13 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                         {
                             userLink.AddCssClass(cssClass);
                         }
+
                         userLink.Attributes.Add("href", userDisplayTextUrl);
                         userLink.Attributes.Add("title", userDisplayTextToolTip);
                         userLink.InnerHtml = userDisplayText;
                         return new MvcHtmlString(userLink.ToString());
                     }
+
                     return MvcHtmlString.Empty;
                 }
             }

@@ -7,14 +7,24 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using System;
     using System.Web;
     using System.Web.Mvc;
+
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
     using DotNetNuke.Web.MvcPipeline.Utils;
 
+    /// <summary>
+    /// HTML helpers for rendering module action menus.
+    /// </summary>
     public static partial class ModuleHelpers
     {
+        /// <summary>
+        /// Renders the module actions UI for the specified MVC module control.
+        /// </summary>
+        /// <param name="htmlHelper">The HTML helper.</param>
+        /// <param name="moduleControl">The MVC module control.</param>
+        /// <returns>The rendered module actions HTML.</returns>
         public static IHtmlString ModuleActions(this HtmlHelper htmlHelper, IMvcModuleControl moduleControl)
         {
             var actionsControl = new ModuleActionsControl();

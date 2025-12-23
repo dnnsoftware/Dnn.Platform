@@ -8,10 +8,12 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using System.Collections.Generic;
     using System.Web;
     using System.Web.Mvc;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
-    using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
+
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 
+    /// <summary>
+    /// HTML helpers for rendering standardized DNN module messages.
+    /// </summary>
     public static partial class ModuleHelpers
     {
         /// <summary>
@@ -38,7 +40,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             }
 
             var cssClass = GetMessageCssClass(messageType);
-            
+
             // Create the main panel
             var panelBuilder = new TagBuilder("div");
             panelBuilder.GenerateId("dnnSkinMessage");

@@ -6,6 +6,9 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
 {
     using System.Web.Mvc;
 
+    /// <summary>
+    /// Marker interface for MVC controllers participating in the DNN MVC pipeline.
+    /// </summary>
     public interface IMvcController : IController
     {
     }

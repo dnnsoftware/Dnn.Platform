@@ -6,6 +6,9 @@ namespace DotNetNuke.Web.MvcPipeline.Commons
 {
     using System.Web.Routing;
 
+    /// <summary>
+    /// Helper methods for working with anonymous or POCO types in the MVC pipeline.
+    /// </summary>
     public static class TypeHelper
     {
         /// <summary>
@@ -14,6 +17,8 @@ namespace DotNetNuke.Web.MvcPipeline.Commons
         /// This helper will cache accessors and types, and is intended when the anonymous object is accessed multiple
         /// times throughout the lifetime of the web application.
         /// </summary>
+        /// <param name="value">The source object whose public properties will be projected.</param>
+        /// <returns>A route value dictionary containing the object's property names and values.</returns>
         public static RouteValueDictionary ObjectToDictionary(object value)
         {
             var dictionary = new RouteValueDictionary();

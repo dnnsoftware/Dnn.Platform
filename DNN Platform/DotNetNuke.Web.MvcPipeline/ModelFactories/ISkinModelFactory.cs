@@ -7,8 +7,16 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Creates <see cref="SkinModel"/> instances for a given DNN MVC page.
+    /// </summary>
     public interface ISkinModelFactory
     {
+        /// <summary>
+        /// Creates a skin model for the specified page controller.
+        /// </summary>
+        /// <param name="page">The DNN MVC page controller.</param>
+        /// <returns>A populated <see cref="SkinModel"/>.</returns>
         SkinModel CreateSkinModel(DnnPageController page);
     }
 }

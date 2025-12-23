@@ -14,8 +14,20 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for rendering localized or tokenized text.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Renders a text span, optionally localized via a resource key and with token replacement.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="showText">The default text to show.</param>
+        /// <param name="cssClass">Optional CSS class applied to the span.</param>
+        /// <param name="resourceKey">Optional resource key used to look up localized text.</param>
+        /// <param name="replaceTokens">If set to <c>true</c>, runs DNN token replacement on the final text.</param>
+        /// <returns>An HTML string representing the rendered text.</returns>
         public static IHtmlString Text(this HtmlHelper<PageModel> helper, string showText = "", string cssClass = "", string resourceKey = "", bool replaceTokens = false)
         {
             var portalSettings = PortalSettings.Current;

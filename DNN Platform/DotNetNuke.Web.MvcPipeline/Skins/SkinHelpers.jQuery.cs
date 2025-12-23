@@ -12,8 +12,19 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Web.MvcPipeline.Models;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Skin helper methods for requesting jQuery and related JavaScript libraries.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Requests registration of jQuery and optional related libraries for the current page.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="dnnjQueryPlugins">If set to <c>true</c>, requests the DNN jQuery plugins bundle.</param>
+        /// <param name="jQueryHoverIntent">If set to <c>true</c>, requests the HoverIntent plugin.</param>
+        /// <param name="jQueryUI">If set to <c>true</c>, requests jQuery UI.</param>
+        /// <returns>An empty HTML string; scripts are registered via the JavaScript library helper.</returns>
         public static IHtmlString JQuery(this HtmlHelper<PageModel> helper, bool dnnjQueryPlugins = false, bool jQueryHoverIntent = false, bool jQueryUI = false)
         {
             var javaScript = HtmlHelpers.GetDependencyProvider(helper).GetRequiredService<IJavaScriptLibraryHelper>();

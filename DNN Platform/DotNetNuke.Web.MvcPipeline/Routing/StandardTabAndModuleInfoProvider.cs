@@ -14,6 +14,9 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Instrumentation;
 
+    /// <summary>
+    /// Default implementation for resolving tab and module information from an HTTP request.
+    /// </summary>
     public sealed class StandardTabAndModuleInfoProvider : ITabAndModuleInfoProvider
     {
         private const string ModuleIdKey = "ModuleId";

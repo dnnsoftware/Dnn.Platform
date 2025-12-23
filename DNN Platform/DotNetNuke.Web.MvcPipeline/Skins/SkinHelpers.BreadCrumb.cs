@@ -17,10 +17,24 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Web.MvcPipeline.Models;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Skin helper methods for rendering breadcrumb navigation.
+    /// </summary>
     public static partial class SkinHelpers
     {
         private const string UrlRegex = "(href|src)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)";
 
+        /// <summary>
+        /// Renders a breadcrumb trail for the current page using the MVC pipeline navigation model.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="cssClass">The CSS class applied to breadcrumb links.</param>
+        /// <param name="separator">The HTML used to separate breadcrumb items.</param>
+        /// <param name="rootLevel">The starting breadcrumb level; negative values show the portal root.</param>
+        /// <param name="useTitle">If set to <c>true</c>, uses the tab title instead of the tab name.</param>
+        /// <param name="hideWithNoBreadCrumb">If set to <c>true</c>, hides the control when only a single breadcrumb exists.</param>
+        /// <param name="cleanerMarkup">If set to <c>true</c>, renders simplified markup for the current tab.</param>
+        /// <returns>An HTML string representing the breadcrumb trail.</returns>
         public static IHtmlString BreadCrumb(this HtmlHelper<PageModel> helper, string cssClass = "SkinObject", string separator = "<img alt=\"breadcrumb separator\" src=\"/images/breadcrumb.gif\">", int rootLevel = 0, bool useTitle = false, bool hideWithNoBreadCrumb = false, bool cleanerMarkup = false)
         {
             var portalSettings = PortalSettings.Current;
@@ -132,7 +146,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
             breadcrumb.Append("</span>");
 
-            // Wrap in the outer span to match the original .ascx structure
+            // Wrap in the outer span to match the original .ascx structure.
             var outerHtml = new StringBuilder();
             outerHtml.Append("<span itemprop=\"breadcrumb\" itemscope itemtype=\"https://schema.org/breadcrumb\">");
             outerHtml.Append(breadcrumb.ToString());
@@ -141,6 +155,12 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             return new MvcHtmlString(outerHtml.ToString());
         }
 
+        /// <summary>
+        /// Resolves relative or application-rooted URLs inside the separator HTML to fully qualified paths.
+        /// </summary>
+        /// <param name="separator">The separator HTML string.</param>
+        /// <param name="portalSettings">The current portal settings.</param>
+        /// <returns>The separator HTML with resolved URLs.</returns>
         private static string ResolveSeparatorPaths(string separator, PortalSettings portalSettings)
         {
             if (string.IsNullOrEmpty(separator))

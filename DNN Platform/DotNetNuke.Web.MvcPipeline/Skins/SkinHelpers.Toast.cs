@@ -26,10 +26,19 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Web.MvcPipeline.Models;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Skin helper methods for rendering toast notification scripts.
+    /// </summary>
     public static partial class SkinHelpers
     {
         private static readonly string ToastCacheKey = "DNN_Toast_Config";
 
+        /// <summary>
+        /// Renders the client-side script required to show toast notifications for the current user.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="cssClass">Unused parameter preserved for API compatibility.</param>
+        /// <returns>An HTML string containing the toast initialization script, or empty if the user is offline.</returns>
         public static IHtmlString Toast(this HtmlHelper<PageModel> helper, string cssClass = "SkinObject")
         {
             if (!IsOnline())

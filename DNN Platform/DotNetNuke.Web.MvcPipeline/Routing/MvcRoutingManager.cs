@@ -17,6 +17,9 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.MvcPipeline.Commons;
 
+    /// <summary>
+    /// Provides routing registration and mapping for DNN MVC modules and pages.
+    /// </summary>
     public sealed class MvcRoutingManager : IRoutingManager, IMapRoute
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MvcRoutingManager));
@@ -24,11 +27,18 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
         private readonly RouteCollection routes;
         private readonly PortalAliasMvcRouteManager portalAliasMvcRouteManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MvcRoutingManager"/> class.
+        /// </summary>
         public MvcRoutingManager()
             : this(RouteTable.Routes)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MvcRoutingManager"/> class for testing.
+        /// </summary>
+        /// <param name="routes">The route collection to register routes in.</param>
         internal MvcRoutingManager(RouteCollection routes)
         {
             this.routes = routes;
@@ -36,8 +46,19 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             this.TypeLocator = new TypeLocator();
         }
 
+        /// <summary>
+        /// Gets or sets the type locator used to discover MVC route mappers.
+        /// </summary>
         internal ITypeLocator TypeLocator { get; set; }
 
+        /// <summary>
+        /// Maps a route for a module folder using the specified name, URL, and namespaces.
+        /// </summary>
+        /// <param name="moduleFolderName">The module folder name (area).</param>
+        /// <param name="routeName">The route name.</param>
+        /// <param name="url">The route URL pattern.</param>
+        /// <param name="namespaces">The controller namespaces associated with the route.</param>
+        /// <returns>The created <see cref="Route"/>.</returns>
         public Route MapRoute(string moduleFolderName, string routeName, string url, string[] namespaces)
         {
             return this.MapRoute(moduleFolderName, routeName, url, null /* defaults */, null /* constraints */, namespaces);

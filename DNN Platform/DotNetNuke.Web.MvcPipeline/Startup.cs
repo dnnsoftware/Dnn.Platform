@@ -4,6 +4,8 @@
 
 namespace DotNetNuke.Web.MvcPipeline
 {
+    using System.Web.Mvc;
+
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.DependencyInjection;
@@ -12,8 +14,10 @@ namespace DotNetNuke.Web.MvcPipeline
     using DotNetNuke.Web.MvcPipeline.Routing;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
-    using System.Web.Mvc;
 
+    /// <summary>
+    /// Configures services and MVC controllers used by the DNN MVC pipeline.
+    /// </summary>
     public class Startup : IDnnStartup
     {
         /// <inheritdoc/>
@@ -29,8 +33,8 @@ namespace DotNetNuke.Web.MvcPipeline
 
             DependencyResolver.SetResolver(new DnnMvcPipelineDependencyResolver(Globals.DependencyProvider));
 
-            //TODO: CSP - enable when CSP implementation is ready
-            //services.AddScoped<IContentSecurityPolicy, ContentSecurityPolicy>();
+            // TODO: CSP - enable when CSP implementation is ready
+            // services.AddScoped<IContentSecurityPolicy, ContentSecurityPolicy>();
         }
     }
 }

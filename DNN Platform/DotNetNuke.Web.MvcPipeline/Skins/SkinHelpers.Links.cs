@@ -17,10 +17,25 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.UI;
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for rendering navigation link lists.
+    /// </summary>
     public static partial class SkinHelpers
     {
         private static readonly Regex SrcRegex = new Regex("src=[']?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        /// <summary>
+        /// Renders a list of navigation links for tabs at the specified hierarchy level.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="cssClass">CSS class applied to each link.</param>
+        /// <param name="separator">Separator between links; may contain an image tag.</param>
+        /// <param name="level">The tab level to render: <c>same</c>, <c>child</c>, <c>parent</c>, or <c>root</c>.</param>
+        /// <param name="alignment">Layout alignment (for example, <c>vertical</c> for stacked links).</param>
+        /// <param name="showDisabled">If set to <c>true</c>, includes disabled tabs.</param>
+        /// <param name="forceLinks">If set to <c>true</c>, falls back to all tabs when no links are found at the requested level.</param>
+        /// <param name="includeActiveTab">If set to <c>true</c>, includes the active tab in the list.</param>
+        /// <returns>An HTML string containing the rendered links.</returns>
         public static IHtmlString Links(this HtmlHelper<PageModel> helper, string cssClass = "SkinObject", string separator = " ", string level = "same", string alignment = "", bool showDisabled = false, bool forceLinks = true, bool includeActiveTab = true)
         {
             var portalSettings = PortalSettings.Current;

@@ -14,13 +14,27 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Skin-related helper methods shared across MVC skin helper partials.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Gets the path to a resource file located in the specified template directory.
+        /// </summary>
+        /// <param name="templateSourceDirectory">The template source directory.</param>
+        /// <param name="fileName">The resource file name.</param>
+        /// <returns>The full relative path to the resource file.</returns>
         public static string GetResourceFile(string templateSourceDirectory, string fileName)
         {
             return templateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + fileName;
         }
 
+        /// <summary>
+        /// Gets the path to a resource file located under the admin skins directory.
+        /// </summary>
+        /// <param name="fileName">The resource file name.</param>
+        /// <returns>The full relative path to the admin skins resource file.</returns>
         public static string GetSkinsResourceFile(string fileName)
         {
             return GetResourceFile("/admin/Skins", fileName);

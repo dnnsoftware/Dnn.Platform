@@ -7,8 +7,16 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Creates <see cref="PageModel"/> instances for DNN MVC pages.
+    /// </summary>
     public interface IPageModelFactory
     {
+        /// <summary>
+        /// Creates a page model for the specified page controller.
+        /// </summary>
+        /// <param name="page">The DNN MVC page controller.</param>
+        /// <returns>A populated <see cref="PageModel"/>.</returns>
         PageModel CreatePageModel(DnnPageController page);
     }
 }

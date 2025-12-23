@@ -34,6 +34,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Builds <see cref="PageModel"/> instances from DNN portal and tab state for the MVC pipeline.
+    /// </summary>
     public class PageModelFactory : IPageModelFactory
     {
         private static readonly Regex HeaderTextRegex = new Regex(
@@ -48,6 +51,16 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         private readonly IHostSettings hostSettings;
         private readonly IPageService pageService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageModelFactory"/> class.
+        /// </summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        /// <param name="applicationInfo">The application information service.</param>
+        /// <param name="skinModelFactory">The skin model factory.</param>
+        /// <param name="hostSettings">The host settings service.</param>
+        /// <param name="pageService">The page service used for meta data.</param>
         public PageModelFactory(
             INavigationManager navigationManager,
             IPortalController portalController,
@@ -66,6 +79,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             this.pageService = pageService;
         }
 
+        /// <inheritdoc/>
         public PageModel CreatePageModel(DnnPageController controller)
         {
             var ctl = controller.Request.QueryString["ctl"] != null ? controller.Request.QueryString["ctl"] : string.Empty;

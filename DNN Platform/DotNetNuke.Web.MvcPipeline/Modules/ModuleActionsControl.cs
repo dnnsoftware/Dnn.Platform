@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using System;
     using System.Collections.Generic;
     using System.Web.Script.Serialization;
+
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -22,18 +23,23 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
-    using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
 
-
+    /// <summary>
+    /// Razor-based control responsible for rendering the module actions (gear) menu.
+    /// </summary>
     public class ModuleActionsControl : RazorModuleControlBase, IPageContributor
     {
-        private ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleActionsControl));
+        private readonly ILog logger = LoggerSource.Instance.GetLogger(typeof(ModuleActionsControl));
         private readonly List<int> validIDs = new List<int>();
+
+        private readonly Dictionary<string, string> actionScripts = new Dictionary<string, string>();
         private ModuleAction actionRoot;
 
-        private Dictionary<string, string> actionScripts = new Dictionary<string, string>();
-
+        /// <summary>
+        /// Gets a value indicating whether the current user is in edit mode.
+        /// </summary>
         public bool EditMode
         {
             get
@@ -42,6 +48,9 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             }
         }
 
+        /// <summary>
+        /// Gets the root action used to build the actions tree.
+        /// </summary>
         protected ModuleAction ActionRoot
         {
             get
@@ -55,45 +64,73 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             }
         }
 
+        /// <summary>
+        /// Gets the localized text for the generic (admin) actions group.
+        /// </summary>
         protected string AdminText
         {
             get { return Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile); }
         }
 
+        /// <summary>
+        /// Gets the localized text for the module-specific actions group.
+        /// </summary>
         protected string CustomText
         {
             get { return Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile); }
         }
 
+        /// <summary>
+        /// Gets the localized text used for move operations.
+        /// </summary>
         protected string MoveText
         {
             get { return Localization.GetString(ModuleActionType.MoveRoot, Localization.GlobalResourceFile); }
         }
 
-        protected PortalSettings PortalSettings
-        {
-            get
-            {
-                return this.ModuleContext.PortalSettings;
-            }
-        }
-
+        /// <summary>
+        /// Gets or sets the serialized JSON representing administrative actions.
+        /// </summary>
         protected string AdminActionsJSON { get; set; }
 
+        /// <summary>
+        /// Gets or sets the serialized JSON representing custom actions.
+        /// </summary>
         protected string CustomActionsJSON { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether quick settings are displayed.
+        /// </summary>
         protected bool DisplayQuickSettings { get; set; }
 
+        /// <summary>
+        /// Gets or sets the serialized JSON list of panes.
+        /// </summary>
         protected string Panes { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the module supports moving between panes.
+        /// </summary>
         protected bool SupportsMove { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the module supports quick settings.
+        /// </summary>
         protected bool SupportsQuickSettings { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the module is shared across tabs or portals.
+        /// </summary>
         protected bool IsShared { get; set; }
 
+        /// <summary>
+        /// Gets or sets the module title shown in the actions UI.
+        /// </summary>
         protected string ModuleTitle { get; set; }
 
+        /// <summary>
+        /// Gets the module action collection for the current module.
+        /// </summary>
         protected ModuleActionCollection Actions
         {
             get
@@ -102,8 +139,15 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             }
         }
 
+        /// <summary>
+        /// Gets or sets the current module control.
+        /// </summary>
         public IModuleControl ModuleControl { get; set; }
 
+        /// <summary>
+        /// Executes the Razor module control and returns the result.
+        /// </summary>
+        /// <returns>The Razor module result.</returns>
         public override IRazorModuleResult Invoke()
         {
             var moduleInfo = ModuleConfiguration;
@@ -130,11 +174,20 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             return View("ModuleActions", viewModel);
         }
 
+        /// <summary>
+        /// Gets a localized string from the global resource file.
+        /// </summary>
+        /// <param name="key">The resource key.</param>
+        /// <returns>The localized string.</returns>
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, Localization.GlobalResourceFile);
         }
        
+        /// <summary>
+        /// Populates the actions model based on the provided module configuration.
+        /// </summary>
+        /// <param name="moduleInfo">The module information.</param>
         protected void OnLoad(ModuleInfo moduleInfo)
         {
             this.ActionRoot.Actions.AddRange(this.Actions);
@@ -247,6 +300,10 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             }
         }
 
+        /// <summary>
+        /// Configures the page by registering resources required by the actions UI.
+        /// </summary>
+        /// <param name="context">The page configuration context.</param>
         public void ConfigurePage(PageConfigurationContext context)
         {
             context.ClientResourceController

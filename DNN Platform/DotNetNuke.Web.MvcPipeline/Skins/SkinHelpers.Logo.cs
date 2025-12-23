@@ -18,8 +18,20 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for rendering the portal logo.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Renders the portal logo as a link to the home page, optionally injecting SVG content.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="borderWidth">Optional CSS border width to apply to the logo image.</param>
+        /// <param name="cssClass">Optional CSS class applied to the logo image element.</param>
+        /// <param name="linkCssClass">Optional CSS class applied to the anchor element.</param>
+        /// <param name="injectSvg">If set to <c>true</c>, inlines SVG logo content instead of using an <c>&lt;img&gt;</c> tag.</param>
+        /// <returns>An HTML string representing the logo link.</returns>
         public static IHtmlString Logo(this HtmlHelper<PageModel> helper, string borderWidth = "", string cssClass = "", string linkCssClass = "", bool injectSvg = false)
         {
             var portalSettings = PortalSettings.Current;

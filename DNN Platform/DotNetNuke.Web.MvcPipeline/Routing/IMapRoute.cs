@@ -8,6 +8,9 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
     using System.Collections.Generic;
     using System.Web.Routing;
 
+    /// <summary>
+    /// Defines an API for mapping MVC routes for DNN modules.
+    /// </summary>
     public interface IMapRoute
     {
         /// <summary>Sets up the route(s) for DotNetNuke MVC Controls.</summary>

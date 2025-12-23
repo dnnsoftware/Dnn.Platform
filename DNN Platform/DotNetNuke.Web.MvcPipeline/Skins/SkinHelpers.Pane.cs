@@ -13,8 +13,18 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Skin helper methods for rendering pane containers and their modules.
+    /// </summary>
     public static partial class SkinExtensions
     {
+        /// <summary>
+        /// Renders a pane and its contained modules for the current skin.
+        /// </summary>
+        /// <param name="htmlHelper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="id">The pane identifier.</param>
+        /// <param name="cssClass">Optional CSS class applied to the pane container.</param>
+        /// <returns>An HTML string representing the rendered pane.</returns>
         public static IHtmlString Pane(this HtmlHelper<PageModel> htmlHelper, string id, string cssClass = "")
         {
             var model = htmlHelper.ViewData.Model;

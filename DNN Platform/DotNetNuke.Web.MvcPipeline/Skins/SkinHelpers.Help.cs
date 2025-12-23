@@ -16,8 +16,17 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Web.MvcPipeline.Models;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Skin helper methods for rendering help links to host or portal contacts.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Renders a mailto link for requesting support, directing to either host or portal email.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="cssClass">Optional CSS class applied to the anchor.</param>
+        /// <returns>An HTML string representing the help link, or empty if the user is not authenticated.</returns>
         public static IHtmlString Help(this HtmlHelper<PageModel> helper, string cssClass = "")
         {
             if (!helper.ViewContext.HttpContext.Request.IsAuthenticated)

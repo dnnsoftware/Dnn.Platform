@@ -8,8 +8,18 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Web.MvcPipeline.Models;
 
+    /// <summary>
+    /// Creates container models used to render modules within a pane.
+    /// </summary>
     public interface IContainerModelFactory
     {
+        /// <summary>
+        /// Creates a container model for the specified module configuration and portal settings.
+        /// </summary>
+        /// <param name="configuration">The module configuration.</param>
+        /// <param name="portalSettings">The current portal settings.</param>
+        /// <param name="containerSrc">The container source path.</param>
+        /// <returns>The created <see cref="ContainerModel"/>.</returns>
         ContainerModel CreateContainerModel(ModuleInfo configuration, PortalSettings portalSettings, string containerSrc);
     }
 }

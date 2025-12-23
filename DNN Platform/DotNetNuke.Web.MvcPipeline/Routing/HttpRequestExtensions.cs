@@ -16,25 +16,48 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.UserRequest;
 
+    /// <summary>
+    /// Extension methods for <see cref="HttpRequestBase"/> to find DNN tab and module information.
+    /// </summary>
     internal static class HttpRequestExtensions
     {
         private delegate bool TryMethod<T>(ITabAndModuleInfoProvider provider, HttpRequestBase request, out T output);
 
+        /// <summary>
+        /// Finds the tab identifier associated with the current request.
+        /// </summary>
+        /// <param name="request">The HTTP request.</param>
+        /// <returns>The tab identifier, or -1 if not found.</returns>
         public static int FindTabId(this HttpRequestBase request)
         {
             return IterateTabAndModuleInfoProviders(request, TryFindTabId, -1);
         }
 
+        /// <summary>
+        /// Finds the module information associated with the current request.
+        /// </summary>
+        /// <param name="request">The HTTP request.</param>
+        /// <returns>The <see cref="ModuleInfo"/> instance, or <c>null</c> if not found.</returns>
         public static ModuleInfo FindModuleInfo(this HttpRequestBase request)
         {
             return IterateTabAndModuleInfoProviders<ModuleInfo>(request, TryFindModuleInfo, null);
         }
 
+        /// <summary>
+        /// Finds the module identifier associated with the current request.
+        /// </summary>
+        /// <param name="request">The HTTP request.</param>
+        /// <returns>The module identifier, or -1 if not found.</returns>
         public static int FindModuleId(this HttpRequestBase request)
         {
             return IterateTabAndModuleInfoProviders(request, TryFindModuleId, -1);
         }
 
+        /// <summary>
+        /// Gets the client IP address for the current request.
+        /// </summary>
+        /// <param name="request">The HTTP request.</param>
+        /// <returns>The client IP address.</returns>
         public static string GetIPAddress(HttpRequestBase request)
         {
             return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(request);
@@ -55,6 +78,14 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             return provider.TryFindModuleId(request, out output);
         }
 
+        /// <summary>
+        /// Iterates over the registered <see cref="ITabAndModuleInfoProvider"/> instances to locate tab or module information.
+        /// </summary>
+        /// <typeparam name="T">The type of value to locate.</typeparam>
+        /// <param name="request">The HTTP request.</param>
+        /// <param name="func">The delegate used to attempt to find the value.</param>
+        /// <param name="fallback">The fallback value if nothing is found.</param>
+        /// <returns>The located value or the fallback.</returns>
         private static T IterateTabAndModuleInfoProviders<T>(HttpRequestBase request, TryMethod<T> func, T fallback)
         {
             var providers = GlobalConfiguration.Configuration.GetTabAndModuleInfoProviders();

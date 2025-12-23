@@ -13,8 +13,15 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
     using DotNetNuke.HttpModules.Membership;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>
+    /// MVC handler used by the DNN MVC pipeline to process page requests with proper culture and authentication.
+    /// </summary>
     public class DnnMvcPageHandler : MvcHandler, IHttpHandler, IRequiresSessionState
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DnnMvcPageHandler"/> class.
+        /// </summary>
+        /// <param name="requestContext">The current request context.</param>
         public DnnMvcPageHandler(RequestContext requestContext)
             : base(requestContext)
             {
@@ -28,6 +35,7 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             base.ProcessRequest(httpContext);
         }
 
+        /// <inheritdoc/>
         protected override IAsyncResult BeginProcessRequest(HttpContext httpContext, AsyncCallback callback, object state)
         {
             this.SetThreadCulture();
@@ -35,6 +43,9 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             return base.BeginProcessRequest(httpContext, callback, state);
         }
 
+        /// <summary>
+        /// Sets the current thread culture based on portal and page locale settings.
+        /// </summary>
         private void SetThreadCulture()
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();

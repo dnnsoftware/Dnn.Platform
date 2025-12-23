@@ -27,8 +27,17 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Web.MvcPipeline.Models;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Skin helper methods for rendering combined user and login UI elements.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Renders the combined user/login menu used by legacy DNN skins.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="showInErrorPage">If set to <c>true</c>, shows the control even on error pages.</param>
+        /// <returns>An HTML string representing the user/login UI.</returns>
         public static IHtmlString UserAndLogin(this HtmlHelper<PageModel> helper, bool showInErrorPage = false)
         {
             var portalSettings = PortalSettings.Current;
