@@ -37,6 +37,6 @@ namespace Dnn.EditBar.UI.Items
             && !this.IsDirectPublishWorkflow
             && (this.IsReviewOrOtherIntermediateStateWithPermissions == true
                 || (this.IsPriorState == true && this.IsDraftWithPermissions == true) // for Save Draft workflow
-                || (this.IsLastState == true && this.HasUnpublishVersion && this.HasDraftPermission == true)); // for Direct Publish workflow
+                || (this.IsLastState == true && this.HasUnpublishVersion && this.HasDraftPermission == true)); // handles other workflow scenarios (not Direct Publish)
     }
 }

@@ -822,8 +822,8 @@ namespace Dnn.PersonaBar.Pages.Components
                 : workflow == null
                     ? null
                     : isWorkflowCompleted
-                        ? workflow.LastState.StateName
-                        : workflow.FirstState.StateName;
+                        ? workflow.LastState?.StateName
+                        : workflow.FirstState?.StateName;
 
             page.HasAVisibleVersion = tab.HasAVisibleVersion;
             page.HasBeenPublished = tab.HasBeenPublished;
