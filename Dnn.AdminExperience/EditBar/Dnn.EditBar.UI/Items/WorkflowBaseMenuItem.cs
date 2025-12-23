@@ -62,9 +62,9 @@ namespace Dnn.EditBar.UI.Items
 
         internal bool IsDirectPublishWorkflow => this.Workflow?.WorkflowKey == SystemWorkflowManager.DirectPublishWorkflowKey;
 
-        private ContentItem ContentItem => Util.GetContentController().GetContentItem(TabController.CurrentPage.ContentItemId);
+        private static ContentItem ContentItem => Util.GetContentController().GetContentItem(TabController.CurrentPage.ContentItemId);
 
-        private bool IsVersioningEnabled => TabVersionSettings.Instance.IsVersioningEnabled(PortalSettings.Current.PortalId, TabController.CurrentPage.TabID);
+        private static bool IsVersioningEnabled => TabVersionSettings.Instance.IsVersioningEnabled(PortalSettings.Current.PortalId, TabController.CurrentPage.TabID);
 
         // State before the last one.
         private WorkflowState PriorState => this.IsWorkflowEnabled ? this.Workflow.States == null || !this.Workflow.States.Any() ? null : this.Workflow.States.OrderBy(s => s.Order).Reverse().Skip(1).FirstOrDefault() : null;
