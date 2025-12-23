@@ -278,6 +278,24 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.DataConsentDelayMeasurement = setting;
             setting = settings.GetValueOrDefault("AllowedExtensionsWhitelist", this.hostSettingsService.GetString("DefaultEndUserExtensionWhitelist"));
             portalSettings.AllowedExtensionsWhitelist = new FileExtensionWhitelist(setting);
+
+            setting = settings.GetValueOrDefault("CspHeaderMode", "OFF");
+            switch (setting.ToUpperInvariant())
+            {
+                case "ON":
+                    portalSettings.CspHeaderMode = PortalSettings.CspMode.On;
+                    break;
+                case "REPORTONLY":
+                    portalSettings.CspHeaderMode = PortalSettings.CspMode.ReportOnly;
+                    break;
+                default:
+                    portalSettings.CspHeaderMode = PortalSettings.CspMode.Off;
+                    break;
+            }
+
+            portalSettings.CspHeaderFixed = settings.GetValueOrDefault("CspHeaderFixed", false);
+            portalSettings.CspHeader = settings.GetValueOrDefault("CspHeader", "style-src 'unsafe-inline'; object-src 'none'; frame-ancestors 'none';");
+            portalSettings.CspReportingHeader = settings.GetValueOrDefault("CspReportingHeader", string.Empty);
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]

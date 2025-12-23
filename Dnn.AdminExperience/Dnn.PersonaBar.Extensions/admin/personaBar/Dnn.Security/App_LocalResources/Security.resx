@@ -1432,4 +1432,79 @@
   <data name="plAllowRichTextModuleTitle.Help" xml:space="preserve">
     <value>If enabled, HTML content will be allowed as module titles.</value>
   </data>
+  <data name="plCspHeader.Text" xml:space="preserve">
+    <value>CSP Header (Content-Security-Policy or Content-Security-Policy-Report-Only)</value>
+  </data>
+  <data name="plCspHeader.Help" xml:space="preserve">
+    <value>The CSP header to be added to the http response.</value>
+  </data>
+  <data name="plCspReportingHeader.Text" xml:space="preserve">
+    <value>CSP Reporting Header (Reporting-Endpoints)</value>
+  </data>
+  <data name="plCspReportingHeader.Help" xml:space="preserve">
+    <value>The CSP reporting header to be added to the http response (example: csp-endpoint="https://example.com/csp-reports" ).</value>
+  </data>
+  <data name="plCspHeaderMode.Text" xml:space="preserve">
+    <value>Content Security Policy</value>
+  </data>
+  <data name="plCspHeaderMode.Help" xml:space="preserve">
+    <value>The CSP mode to be used (Off, Report Only, On).</value>
+  </data>
+  <data name="CspHeaderModeOff.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="CspHeaderModeReportOnly.Text" xml:space="preserve">
+    <value>Report Only</value>
+  </data>
+  <data name="CspHeaderModeOn.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="CspHeaderModeOff.Help" xml:space="preserve">
+    <value>The CSP header will not be added to the response.</value>
+  </data>
+  <data name="CspHeaderModeReportOnly.Help" xml:space="preserve">
+    <value>The CSP header will be added to the response, but will not be enforced.</value>
+  </data>
+  <data name="CspHeaderModeOn.Help" xml:space="preserve">
+    <value>The CSP header will be added to the http response and enforced.</value>
+  </data>
+  <data name="CspSettings.Help" xml:space="preserve">
+    <value>Access to the administrative panels of DNN relies on Javascript features. DNN's Content Security Policy (CSP) feature by default emits "best effort" by using the settings below but allowing modules and themes to enlarge what is allowed on the site. You can disable this by using the "locked" mode. When using this "Locked" mode, please use "report only" first and ensure your site still works by examining any errors in your browser's console. In "locked" mode the CSP will be enlarged with the minimum required for either webforms or MVC support. Note that CSP can be disabled globally in the web.config in case you have locked yourself out.</value>
+  </data>
+  <data name="TabCspSettings.Text" xml:space="preserve">
+    <value>CSP SETTINGS</value>
+  </data>
+  <data name="CspHeader.Message" xml:space="preserve">
+    <value>Invalid CSP header</value>
+  </data>
+  <data name="CspReportingHeader.Message" xml:space="preserve">
+    <value>Invalid CSP reporting header</value>
+  </data>
+  <data name="CspSettingsUpdateSuccess.Text" xml:space="preserve">
+    <value>CSP settings updated</value>
+  </data>
+  <data name="CspSettingsError.Text" xml:space="preserve">
+    <value>An error has occurred. The CSP settings could not be updated. Please consult the admin log to determine the cause of this error.</value>
+  </data>
+  <data name="CspSettingsRestoreWarning.Text" xml:space="preserve">
+    <value>The changes to the CSP settings will be discarded. Do you wish to continue?</value>
+  </data>
+  <data name="plCspHeaderFixed.Text" xml:space="preserve">
+    <value>Disallow Extension Override</value>
+  </data>
+  <data name="plCspHeaderFixed.Help" xml:space="preserve">
+    <value>If enabled, the CSP header will be locked (i.e. set to settings below) and cannot be dynamically modified by skins or modules.</value>
+  </data>
+  <data name="SwitchOn.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="SwitchOff.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="CspDisabled.Help" xml:space="preserve">
+    <value>Content Security Policy (CSP) has been disabled in the web.config. Please enable it again to use this feature.</value>
+  </data>
+  <data name="CspLockConfirm.Text" xml:space="preserve">
+    <value>I confirm I am aware of the risks of using the "locked" feature.</value>
+  </data>
 </root>

@@ -33,6 +33,7 @@ namespace Dnn.PersonaBar.Security.Services
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Common.Utils;
+    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -1411,6 +1412,112 @@ namespace Dnn.PersonaBar.Security.Services
             this.apiTokenController.DeleteExpiredAndRevokedApiTokens(portalId, userId);
 
             return this.Request.CreateResponse(HttpStatusCode.OK, true);
+        }
+
+        /// GET: api/Security/GetCspSettings
+        /// <summary>Gets CSP settings.</summary>
+        /// <returns>CSP settings.</returns>
+        [HttpGet]
+        [RequireAdmin]
+        public HttpResponseMessage GetCspSettings()
+        {
+            try
+            {
+                _ = bool.TryParse(Config.GetSetting("DisableCsp"), out bool disableCsp);
+
+                var response = new
+                {
+                    Success = true,
+                    Results = new
+                    {
+                        Settings = new
+                        {
+                            this.PortalSettings.CspHeaderMode,
+                            this.PortalSettings.CspHeaderFixed,
+                            this.PortalSettings.CspHeader,
+                            this.PortalSettings.CspReportingHeader,
+                            CspDisabled = disableCsp,
+                        },
+                    },
+                };
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/Security/UpdateCspSettings
+        /// <summary>Updates CSP settings.</summary>
+        /// <param name="request">The CSP settings.</param>
+        /// <returns>CSP settings.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [RequireAdmin]
+        public HttpResponseMessage UpdateCspSettings(UpdateCspSettingsRequest request)
+        {
+            try
+            {
+                var policy = new ContentSecurityPolicy(true);
+                var parser = new ContentSecurityPolicyParser(policy);
+                try
+                {
+                    parser.Parse(request.CspHeader);
+                }
+                catch (Exception ex)
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new
+                    {
+                        Success = false,
+                        Message = "Bad CspHeader - " + ex.Message,
+                        Error = new
+                        {
+                            CspHeader = true,
+                            CspHeaderErrors = new[] { ex.Message },
+                            CspReportingHeader = false,
+                            CspReportingHeaderErrors = Array.Empty<string>(),
+                        },
+                    });
+                }
+
+                if (!string.IsNullOrEmpty(request.CspReportingHeader))
+                {
+                    try
+                    {
+                        policy.AddReportEndpointHeader(request.CspReportingHeader);
+                    }
+                    catch (Exception ex)
+                    {
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new
+                        {
+                            Success = false,
+                            Message = "Bad CspReportingHeader - " + ex.Message,
+                            Error = new
+                            {
+                                CspHeader = false,
+                                CspHeaderErrors = Array.Empty<string>(),
+                                CspReportingHeader = true,
+                                CspReportingHeaderErrors = new[] { ex.Message },
+                            },
+                        });
+                    }
+                }
+
+                PortalController.UpdatePortalSetting(this.PortalId, "CspHeaderMode", request.CspHeaderMode.ToString().ToUpperInvariant());
+                PortalController.UpdatePortalSetting(this.PortalId, "CspHeaderFixed", request.CspHeaderFixed.ToString().ToUpperInvariant());
+                PortalController.UpdatePortalSetting(this.PortalId, "CspHeader", request.CspHeader);
+                PortalController.UpdatePortalSetting(this.PortalId, "CspReportingHeader", request.CspReportingHeader);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
         }
 
         /// <summary>

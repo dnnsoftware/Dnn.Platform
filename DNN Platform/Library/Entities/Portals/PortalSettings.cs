@@ -133,6 +133,18 @@ namespace DotNetNuke.Entities.Portals
             HardDelete = 3,
         }
 
+        public enum CspMode
+        {
+            /// <summary>Content Security Header is not added.</summary>
+            Off = 0,
+
+            /// <summary>Content Security Header is added in Report Only mode.</summary>
+            ReportOnly = 1,
+
+            /// <summary>Content Security Header is added.</summary>
+            On = 2,
+        }
+
         public static PortalSettings Current
         {
             get
@@ -579,6 +591,14 @@ namespace DotNetNuke.Entities.Portals
                 return PortalController.GetPortalSettingAsBoolean("ShowQuickModuleAddMenu", this.PortalId, false);
             }
         }
+
+        public CspMode CspHeaderMode { get; internal set; }
+
+        public bool CspHeaderFixed { get; internal set; }
+
+        public string CspHeader { get; internal set; }
+
+        public string CspReportingHeader { get; internal set; }
 
         /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)

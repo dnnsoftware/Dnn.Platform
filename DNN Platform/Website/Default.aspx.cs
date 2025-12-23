@@ -21,6 +21,7 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Entities.Tabs;
@@ -68,7 +69,7 @@ namespace DotNetNuke.Framework
         /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public DefaultPage()
-            : this(null, null, null, null, null, null, null, null, null, null)
+            : this(null, null, null, null, null, null, null, null, null, null, null)
         {
         }
 
@@ -81,6 +82,7 @@ namespace DotNetNuke.Framework
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="portalSettingsController">The portal settings controller.</param>
+        /// <param name="contentSecurityPolicy">The content security policy.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
         /// <param name="pageService">The page service.</param>
         public DefaultPage(
@@ -93,7 +95,8 @@ namespace DotNetNuke.Framework
             IPortalController portalController,
             IPortalSettingsController portalSettingsController,
             IClientResourceController clientResourceController,
-            IPageService pageService)
+            IPageService pageService,
+            IContentSecurityPolicy contentSecurityPolicy)
             : base(portalController, appStatus, hostSettings)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
@@ -103,6 +106,7 @@ namespace DotNetNuke.Framework
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
             this.portalSettingsController = portalSettingsController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalSettingsController>();
+            this.ContentSecurityPolicy = contentSecurityPolicy ?? Globals.GetCurrentServiceProvider().GetRequiredService<IContentSecurityPolicy>();
             this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
             this.pageService = pageService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
         }
@@ -130,6 +134,9 @@ namespace DotNetNuke.Framework
                 this.ScrollTop.Value = value.ToString();
             }
         }
+
+        /// <summary>Gets a service that provides ContentSecurityPolicy features.</summary>
+        protected IContentSecurityPolicy ContentSecurityPolicy { get; }
 
         /// <summary>Gets a service that provides navigation features.</summary>
         protected INavigationManager NavigationManager { get; }
@@ -224,6 +231,24 @@ namespace DotNetNuke.Framework
 
             // set global page settings
             this.InitializePage();
+
+            if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On ||
+                this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly)
+            {
+                // If not fixed, we need to setup the default CSP settings
+                // After this modules can add there policies via the ContentSecurityPolicy service
+                if (!this.PortalSettings.CspHeaderFixed)
+                {
+                    try
+                    {
+                        this.AddCspHeaders();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error("CSP error", ex);
+                    }
+                }
+            }
 
             var ctlSkin = this.GetSkin();
 
@@ -375,6 +400,42 @@ namespace DotNetNuke.Framework
             if (!string.IsNullOrEmpty(this.PortalSettings.AddCompatibleHttpHeader) && !this.HeaderIsWritten)
             {
                 this.Page.Response.AddHeader("X-UA-Compatible", this.PortalSettings.AddCompatibleHttpHeader);
+            }
+
+            if ((this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly ||
+                    this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On) &&
+                    !this.HeaderIsWritten)
+            {
+                bool.TryParse(Config.GetSetting("DisableCsp"), out bool disableCsp);
+
+                if (!disableCsp)
+                {
+                    var header = "Content-Security-Policy";
+                    if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly)
+                    {
+                        header = "Content-Security-Policy-Report-Only";
+                    }
+
+                    // If fixed, we need to clear any existing contributors and just use the fixed headers
+                    if (this.PortalSettings.CspHeaderFixed)
+                    {
+                        this.ContentSecurityPolicy.ClearContentSecurityPolicyContributors();
+                        this.ContentSecurityPolicy.ClearReportingEndpointsContributors();
+                        this.AddCspHeaders();
+                    }
+
+                    var policy = this.ContentSecurityPolicy.GeneratePolicy();
+                    if (!string.IsNullOrEmpty(policy))
+                    {
+                        this.Page.Response.AddHeader(header, policy);
+                    }
+
+                    policy = this.ContentSecurityPolicy.GenerateReportingEndpoints();
+                    if (!string.IsNullOrEmpty(policy))
+                    {
+                        this.Page.Response.AddHeader("Reporting-Endpoints", policy);
+                    }
+                }
             }
 
             this.pageService.SetCanonicalLinkUrl(this.CanonicalLinkUrl, PagePriority.Page);
@@ -873,6 +934,21 @@ namespace DotNetNuke.Framework
             File.WriteAllText(physicalPath, styles);
 
             return webPath;
+        }
+
+        private void AddCspHeaders()
+        {
+            if (!string.IsNullOrEmpty(this.PortalSettings.CspHeader))
+            {
+                this.ContentSecurityPolicy.AddHeader(this.PortalSettings.CspHeader);
+            }
+
+            if (!string.IsNullOrEmpty(this.PortalSettings.CspReportingHeader))
+            {
+                this.ContentSecurityPolicy.AddReportEndpointHeader(this.PortalSettings.CspReportingHeader);
+            }
+
+            this.ContentSecurityPolicy.AddWebformsSupport();
         }
     }
 }
