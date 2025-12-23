@@ -21,7 +21,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         [DataMember(Name = "disabled")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public bool Disabled = false;
+        public bool Disabled;
 
         [DataMember(Name = "selectItemDefaultText")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]

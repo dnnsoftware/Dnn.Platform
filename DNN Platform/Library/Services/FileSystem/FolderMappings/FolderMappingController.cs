@@ -59,8 +59,7 @@ namespace DotNetNuke.Services.FileSystem
             var folders = folderManager.GetFolders(portalID);
 
             var folderMappingFolders = folders.Where(f => f.FolderMappingID == folderMappingID);
-
-            if (folderMappingFolders.Count() > 0)
+            if (folderMappingFolders.Any())
             {
                 // Delete files in folders with the provided mapping (only in the database)
                 foreach (var file in folderMappingFolders.Select<IFolderInfo, IEnumerable<IFileInfo>>(folderManager.GetFiles).SelectMany(files => files))
@@ -73,7 +72,7 @@ namespace DotNetNuke.Services.FileSystem
                 var removableFolders = folders.Where(f => f.FolderMappingID == folderMappingID && !folders1.Any(f2 => f2.FolderID != f.FolderID &&
                                 f2.FolderPath.StartsWith(f.FolderPath) && f2.FolderMappingID != folderMappingID));
 
-                if (removableFolders.Count() > 0)
+                if (removableFolders.Any())
                 {
                     foreach (var removableFolder in removableFolders.OrderByDescending(rf => rf.FolderPath))
                     {
@@ -87,7 +86,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 folderMappingFolders = folders.Where(f => f.FolderMappingID == folderMappingID);
 
-                if (folderMappingFolders.Count() > 0)
+                if (folderMappingFolders.Any())
                 {
                     var defaultFolderMapping = this.GetDefaultFolderMapping(portalID);
 

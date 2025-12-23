@@ -7,6 +7,7 @@ namespace Dnn.ExportImport.Components.Engines
     using System.Collections.Generic;
     using System.Data;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
 
@@ -483,6 +484,7 @@ namespace Dnn.ExportImport.Components.Engines
         /// <summary>Adds the logs to the database.</summary>
         /// <param name="jobId">The ID of the job to log.</param>
         /// <param name="completeLog">A collection of log items.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)
         {
             if (completeLog == null || completeLog.Count == 0)
@@ -625,7 +627,7 @@ namespace Dnn.ExportImport.Components.Engines
             additionalItems.ForEach(i => includedItems.Add(i));
 
             // must be included always when there is at least one other object to process
-            if (includedItems.Any())
+            if (includedItems.Count != 0)
             {
                 includedItems.Add(Constants.Category_Portal);
             }
@@ -694,7 +696,7 @@ namespace Dnn.ExportImport.Components.Engines
             return files.Sum(file => new FileInfo(file).Length);
         }
 
-        private static void CleanupDatabaseIfDirty(IExportImportRepository repository)
+        private static void CleanupDatabaseIfDirty(ExportImportRepository repository)
         {
             var exportDto = repository.GetSingleItem<ExportDto>();
             var isDirty = exportDto.IsDirty;

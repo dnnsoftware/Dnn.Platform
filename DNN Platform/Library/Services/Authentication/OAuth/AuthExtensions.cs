@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
                 if (i < parameters.Count - 1)
                 {
-                    sb.Append("&");
+                    sb.Append('&');
                 }
             }
 

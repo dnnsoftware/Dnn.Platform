@@ -25,25 +25,25 @@ namespace Dnn.PersonaBar.Security.Components
         {
             get
             {
-                return Localization.GetString(this.CheckName + "Reason", this.LocalResourceFile);
+                return Localization.GetString(this.CheckName + "Reason", LocalResourceFile);
             }
         }
 
         public string FailureText
         {
-            get { return Localization.GetString(this.CheckName + "Failure", this.LocalResourceFile); }
+            get { return Localization.GetString(this.CheckName + "Failure", LocalResourceFile); }
         }
 
         public string SuccessText
         {
-            get { return Localization.GetString(this.CheckName + "Success", this.LocalResourceFile); }
+            get { return Localization.GetString(this.CheckName + "Success", LocalResourceFile); }
         }
 
         public string CheckNameText
         {
             get
             {
-                return this.CheckName + " : " + Localization.GetString(this.CheckName + "Name", this.LocalResourceFile);
+                return this.CheckName + " : " + Localization.GetString(this.CheckName + "Name", LocalResourceFile);
             }
         }
 
@@ -53,9 +53,6 @@ namespace Dnn.PersonaBar.Security.Components
 
         public IList<string> Notes { get; set; }
 
-        private string LocalResourceFile
-        {
-            get { return "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx"; }
-        }
+        private static string LocalResourceFile => "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx";
     }
 }

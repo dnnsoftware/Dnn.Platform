@@ -11,37 +11,58 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using DotNetNuke.Web.Client.Cdf;
     using DotNetNuke.Web.Client.ResourceManager;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>Registers a JavaScript resource.</summary>
     public class DnnJsInclude : ClientResourceInclude
     {
         private readonly IClientResourceController clientResourceController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnJsInclude"/> class.
-        /// Sets up default settings for the control.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnJsInclude"/> class with default settings.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.1. Use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
+        public DnnJsInclude()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnJsInclude"/> class with default settings.</summary>
         /// <param name="clientResourceController">The client resources controller.</param>
         public DnnJsInclude(IClientResourceController clientResourceController)
-            : base()
         {
-            this.clientResourceController = clientResourceController;
+            this.clientResourceController = clientResourceController ?? DependencyInjection.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
             this.ForceProvider = ClientResourceProviders.DefaultJsProvider;
             this.DependencyType = ClientDependencyType.Javascript;
         }
 
-        protected override void OnInit(EventArgs e)
-        {
-            this.clientResourceController.CreateScript(this.FilePath, this.PathNameAlias)
-                        .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
-                        .SetProvider(this.ForceProvider)
-                        .SetPriority(this.Priority)
-                        .Register();
-        }
+        /// <inheritdoc cref="IScriptResource.Async" />
+        public bool Async { get; set; }
+
+        /// <inheritdoc cref="IScriptResource.Defer" />
+        public bool Defer { get; set; }
+
+        /// <inheritdoc cref="IScriptResource.NoModule" />
+        public bool NoModule { get; set; }
 
         /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
-            this.PathNameAlias = string.IsNullOrEmpty(this.PathNameAlias) ? string.Empty : this.PathNameAlias.ToLowerInvariant();
+            var script = this.clientResourceController.CreateScript(this.FilePath, this.PathNameAlias);
+            if (this.Async)
+            {
+                script = script.SetAsync();
+            }
+
+            if (this.Defer)
+            {
+                script = script.SetDefer();
+            }
+
+            if (this.NoModule)
+            {
+                script = script.SetNoModule();
+            }
+
+            this.RegisterResource(script);
             base.OnLoad(e);
         }
 

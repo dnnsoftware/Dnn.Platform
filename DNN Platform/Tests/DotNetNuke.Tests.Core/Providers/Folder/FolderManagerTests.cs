@@ -908,7 +908,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             this.pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderPath)).Returns(Constants.FOLDER_ValidFolderRelativePath);
 
-            this.directory.Setup(d => d.GetDirectories(Constants.FOLDER_ValidFolderPath)).Returns(new string[0]);
+            this.directory.Setup(d => d.GetDirectories(Constants.FOLDER_ValidFolderPath)).Returns([]);
 
             var result = this.mockFolderManager.Object.GetFileSystemFoldersRecursive(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderPath);
 
@@ -1334,7 +1334,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         // var mockFolder = MockComponentProvider.CreateFolderProvider("StandardFolderProvider");
 
-        // mockFolder.Setup(mf => mf.GetFiles(_folderInfo.Object)).Returns(new string[0]);
+        // mockFolder.Setup(mf => mf.GetFiles(_folderInfo.Object)).Returns([]);
 
         // var result = _mockFolderManager.Object.ProcessMergedTreeItem(mergedTree.Values[0], 0, mergedTree, Constants.CONTENT_ValidPortalId);
 
@@ -1581,7 +1581,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         // _pathUtils.Setup(pu => pu.GetPhysicalPath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderPath);
 
-        // _directory.Setup(d => d.GetFiles(Constants.FOLDER_ValidFolderPath)).Returns(new string[0]);
+        // _directory.Setup(d => d.GetFiles(Constants.FOLDER_ValidFolderPath)).Returns([]);
 
         // _mockFolderManager.Setup(mfm => mfm.CreateFolderInDatabase(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath, externalStorageLocation)).Verifiable();
 

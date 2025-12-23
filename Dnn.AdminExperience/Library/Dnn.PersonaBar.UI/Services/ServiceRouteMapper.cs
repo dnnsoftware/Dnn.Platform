@@ -32,14 +32,11 @@ namespace Dnn.PersonaBar.UI.Services
         {
             var typeLocator = new TypeLocator();
             return typeLocator.GetAllMatchingTypes(
-                t => t != null &&
-                     t.IsClass &&
-                     !t.IsAbstract &&
-                     t.IsVisible &&
+                t => t is { IsClass: true, IsAbstract: false, IsVisible: true, } &&
                      typeof(PersonaBarApiController).IsAssignableFrom(t));
         }
 
-        private static IList<string> FindPersonaBarServices()
+        private static List<string> FindPersonaBarServices()
         {
             var controllerTypes = GetAllApiControllers();
             var namespaces = new List<string>();

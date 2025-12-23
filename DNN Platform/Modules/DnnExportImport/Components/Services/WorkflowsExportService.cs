@@ -228,7 +228,7 @@ namespace Dnn.ExportImport.Components.Services
                                     var existingPermissions = workflowStateManager.GetWorkflowStatePermissionByState(workflowState.StateID);
                                     var local = existingPermissions.FirstOrDefault(
                                         x => x.PermissionCode == importPermission.PermissionCode && x.PermissionKey == importPermission.PermissionKey
-                                        && x.PermissionName.Equals(importPermission.PermissionName, StringComparison.InvariantCultureIgnoreCase) &&
+                                        && x.PermissionName.Equals(importPermission.PermissionName, StringComparison.OrdinalIgnoreCase) &&
                                         x.RoleID == roleId && x.UserID == userId);
 
                                     if (local == null)

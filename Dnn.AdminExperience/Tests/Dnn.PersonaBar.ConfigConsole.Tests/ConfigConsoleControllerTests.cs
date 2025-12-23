@@ -65,28 +65,21 @@ namespace Dnn.PersonaBar.ConfigConsole.Tests
         [TestCase("Random.file", "Random content", 0, false)]
         public void ValidateConfigFile(string fileName, string fileContent, int expectedErrorCount, bool shouldThrow)
         {
-            // arrange
-            var sut = new ConfigConsoleController();
-
             Exception exception = null;
-            IEnumerable<string> errors = new string[0];
+            IEnumerable<string> errors = [];
 
-            // act
             try
             {
-                errors = sut.ValidateConfigFile(fileName, fileContent);
+                errors = new ConfigConsoleController().ValidateConfigFile(fileName, fileContent);
             }
             catch (Exception ex)
             {
                 exception = ex;
             }
 
-            Assert.Multiple(() =>
-            {
-                // assert
-                Assert.That(exception != null, Is.EqualTo(shouldThrow));
-                Assert.That(errors.Count(), Is.EqualTo(expectedErrorCount));
-            });
+            using var scope = Assert.EnterMultipleScope();
+            Assert.That(exception, shouldThrow ? Is.Not.Null : Is.Null);
+            Assert.That(errors.ToList(), Has.Count.EqualTo(expectedErrorCount));
         }
     }
 }

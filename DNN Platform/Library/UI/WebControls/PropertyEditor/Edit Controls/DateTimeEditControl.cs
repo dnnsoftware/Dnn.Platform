@@ -49,7 +49,10 @@ namespace DotNetNuke.UI.WebControls
             DateTime postedValue = Null.NullDate;
             if (!string.IsNullOrEmpty(postedDate))
             {
-                DateTime.TryParse(postedDate, out postedValue);
+                if (!DateTime.TryParse(postedDate, out postedValue))
+                {
+                    postedValue = Null.NullDate;
+                }
             }
 
             if (postedHours != "12" || this.is24HourClock)
@@ -62,7 +65,7 @@ namespace DotNetNuke.UI.WebControls
             }
 
             postedValue = postedValue.AddMinutes(int.Parse(postedMinutes));
-            if (!this.is24HourClock && postedAMPM.Equals("PM"))
+            if (!this.is24HourClock && postedAMPM.Equals("PM", StringComparison.Ordinal))
             {
                 postedValue = postedValue.AddHours(12);
             }

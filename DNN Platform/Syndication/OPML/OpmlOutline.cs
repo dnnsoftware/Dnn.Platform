@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Syndication
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Xml;
 
     /// <summary>Class for managing an OPML feed outline.</summary>
@@ -16,6 +17,7 @@ namespace DotNetNuke.Services.Syndication
         }
 
         /// <summary>Gets the OPML outline version.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string Version => "2.0";
 
         /// <summary>Gets the OPML outline as an <see cref="XmlElement"/>.</summary>

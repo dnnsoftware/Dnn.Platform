@@ -55,7 +55,7 @@ namespace DotNetNuke.Web.Api.Auth
         /// <inheritdoc/>
         public override HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
-            if (response.StatusCode == HttpStatusCode.Unauthorized && this.SupportsDigestAuth(response.RequestMessage))
+            if (response.StatusCode == HttpStatusCode.Unauthorized && SupportsDigestAuth(response.RequestMessage))
             {
                 this.AddWwwAuthenticateHeader(response);
             }
@@ -71,7 +71,7 @@ namespace DotNetNuke.Web.Api.Auth
             byte[] expireBytes = Encoding.Default.GetBytes(expireStr);
             string nonce = Convert.ToBase64String(expireBytes);
 
-            nonce = nonce.TrimEnd(new[] { '=' });
+            nonce = nonce.TrimEnd('=');
             return nonce;
         }
 
@@ -98,6 +98,11 @@ namespace DotNetNuke.Web.Api.Auth
             return false;
         }
 
+        private static bool SupportsDigestAuth(HttpRequestMessage request)
+        {
+            return !IsXmlHttpRequest(request) && MembershipProviderConfig.PasswordRetrievalEnabled;
+        }
+
         private void AddStaleWwwAuthenticateHeader(HttpResponseMessage response)
         {
             this.AddWwwAuthenticateHeader(response, true);
@@ -107,11 +112,6 @@ namespace DotNetNuke.Web.Api.Auth
         {
             var value = $"realm=\"DNNAPI\", nonce=\"{CreateNewNonce()}\",  opaque=\"0000000000000000\", stale={isStale}, algorithm=MD5, qop=\"auth\"";
             response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(this.AuthScheme, value));
-        }
-
-        private bool SupportsDigestAuth(HttpRequestMessage request)
-        {
-            return !IsXmlHttpRequest(request) && MembershipProviderConfig.PasswordRetrievalEnabled;
         }
     }
 }

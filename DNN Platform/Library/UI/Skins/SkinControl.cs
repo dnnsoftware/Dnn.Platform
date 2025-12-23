@@ -7,6 +7,7 @@ namespace DotNetNuke.UI.Skins
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Web.UI.WebControls;
 
@@ -146,7 +147,7 @@ namespace DotNetNuke.UI.Skins
                     // set width of control
                     if (!string.IsNullOrEmpty(this.width))
                     {
-                        this.cboSkin.Width = Unit.Parse(this.width);
+                        this.cboSkin.Width = Unit.Parse(this.width, CultureInfo.InvariantCulture);
                     }
 
                     // set selected skin
@@ -251,7 +252,7 @@ namespace DotNetNuke.UI.Skins
             // select current skin
             for (int intIndex = 0; intIndex < this.cboSkin.Items.Count; intIndex++)
             {
-                if (this.cboSkin.Items[intIndex].Value.Equals(Convert.ToString(this.ViewState["SkinSrc"]), StringComparison.InvariantCultureIgnoreCase))
+                if (this.cboSkin.Items[intIndex].Value.Equals(Convert.ToString(this.ViewState["SkinSrc"]), StringComparison.OrdinalIgnoreCase))
                 {
                     this.cboSkin.Items[intIndex].Selected = true;
                     break;

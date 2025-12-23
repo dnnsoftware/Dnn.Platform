@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.Journal
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public bool CanComment = true;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public bool IsGroup = false;
+        public bool IsGroup;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string BaseUrl;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.Journal
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public long MaxUploadSize = Config.GetMaxUploadSize();
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public bool IsPublicGroup = false;
+        public bool IsPublicGroup;
         private readonly INavigationManager navigationManager;
 
         public View()

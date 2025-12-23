@@ -171,7 +171,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var actualNotificationType = CreateNewNotificationType();
             this.mockNotificationsController.Object.CreateNotificationType(actualNotificationType);
 
-            Assert.That(new NotificationTypeComparer().Equals(expectedNotificationType, actualNotificationType), Is.True);
+            Assert.That(actualNotificationType, Is.EqualTo(expectedNotificationType).Using(new NotificationTypeComparer()));
         }
 
         [Test]
@@ -240,7 +240,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var actualNotificationType = this.notificationsController.GetNotificationType(Constants.Messaging_NotificationTypeId);
 
-            Assert.That(new NotificationTypeComparer().Equals(expectedNotificationType, actualNotificationType), Is.True);
+            Assert.That(actualNotificationType, Is.EqualTo(expectedNotificationType).Using(new NotificationTypeComparer()));
         }
 
         [Test]
@@ -297,7 +297,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var actualNotificationType = this.notificationsController.GetNotificationType(Constants.Messaging_NotificationTypeName);
 
-            Assert.That(new NotificationTypeComparer().Equals(expectedNotificationType, actualNotificationType), Is.True);
+            Assert.That(actualNotificationType, Is.EqualTo(expectedNotificationType).Using(new NotificationTypeComparer()));
         }
 
         [Test]
@@ -384,9 +384,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Returns(expectedNotificationTypeAction);
 
             var action = CreateNewNotificationTypeAction();
-            this.mockNotificationsController.Object.SetNotificationTypeActions(new[] { action }, expectedNotificationTypeAction.NotificationTypeId);
+            this.mockNotificationsController.Object.SetNotificationTypeActions([action], expectedNotificationTypeAction.NotificationTypeId);
 
-            Assert.That(new NotificationTypeActionComparer().Equals(expectedNotificationTypeAction, action), Is.True);
+            Assert.That(action, Is.EqualTo(expectedNotificationTypeAction).Using(new NotificationTypeActionComparer()));
         }
 
         [Test]
@@ -455,7 +455,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var actualNotificationTypeAction = this.notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeActionId);
 
-            Assert.That(new NotificationTypeActionComparer().Equals(expectedNotificationTypeAction, actualNotificationTypeAction), Is.True);
+            Assert.That(actualNotificationTypeAction, Is.EqualTo(expectedNotificationTypeAction).Using(new NotificationTypeActionComparer()));
         }
 
         [Test]
@@ -518,7 +518,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var actualNotificationTypeAction = this.notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeId, Constants.Messaging_NotificationTypeActionNameResourceKey);
 
-            Assert.That(new NotificationTypeActionComparer().Equals(expectedNotificationTypeAction, actualNotificationTypeAction), Is.True);
+            Assert.That(actualNotificationTypeAction, Is.EqualTo(expectedNotificationTypeAction).Using(new NotificationTypeActionComparer()));
         }
 
         [Test]
@@ -557,7 +557,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             Assert.Multiple(() =>
             {
                 Assert.That(actualNotificationTypeActions, Has.Count.EqualTo(1));
-                Assert.That(new NotificationTypeActionComparer().Equals(expectedNotificationTypeAction, actualNotificationTypeActions[0]), Is.True);
+                Assert.That(actualNotificationTypeActions[0], Is.EqualTo(expectedNotificationTypeAction).Using(new NotificationTypeActionComparer()));
             });
         }
 
@@ -935,7 +935,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 roles,
                 users);
 
-            Assert.That(new NotificationComparer().Equals(expectedNotification, notification), Is.True);
+            Assert.That(notification, Is.EqualTo(expectedNotification).Using(new NotificationComparer()));
         }
 
         [Test]

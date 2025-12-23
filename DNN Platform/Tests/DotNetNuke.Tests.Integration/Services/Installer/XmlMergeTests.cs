@@ -21,6 +21,12 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         private const bool OutputXml = true;
         private readonly Assembly _assembly = typeof(XmlMergeTests).Assembly;
 
+        [OneTimeSetUp]
+        public override void OneTimeSetUp()
+        {
+            base.OneTimeSetUp();
+        }
+
         [SetUp]
         public void SetUp()
         {

@@ -390,7 +390,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         }
                         else
                         {
-                            throw new Exception("Didn't expect this!");
+                            throw new QuantizerException("Didn't expect this!");
                         }
                     }
 

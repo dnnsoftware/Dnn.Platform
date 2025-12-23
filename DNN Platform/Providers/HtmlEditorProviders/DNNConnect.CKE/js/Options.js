@@ -16,7 +16,7 @@
         $(".importButton").button({ icons: { primary: "ui-icon-arrowreturnthick-1-s" } });
         $(".exportButton").button({ icons: { primary: "ui-icon-disk" } });
         $(".DefaultButton").button();
-        $(".Toolbar").buttonset();
+        $(".Toolbar").controlgroup();
 
         EnableSorting();
 
@@ -119,7 +119,7 @@
         }
 
         $("#CKEditor_Options_rBlSetMode input").button();
-        $("#CKEditor_Options_rBlSetMode").buttonset();
+        $("#CKEditor_Options_rBlSetMode").controlgroup();
     }
 
     win.showDialog = function (id) {

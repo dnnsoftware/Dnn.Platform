@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         /// <inheritdoc />
         public string SchemeType => "ApiToken";
 
-        private Abstractions.Portals.IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
+        private static Abstractions.Portals.IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         /// <inheritdoc />
         public (ApiToken Token, UserInfo User) ValidateToken(HttpRequestMessage request)
@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                 return (null, null);
             }
 
-            var authorization = this.ValidateAuthHeader(request?.Headers.Authorization);
+            var authorization = ValidateAuthHeader(request?.Headers.Authorization);
             return string.IsNullOrEmpty(authorization) ? (null, null) : this.ValidateAuthorizationValue(authorization);
         }
 
@@ -134,11 +134,11 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
             {
                 var tokenBytes = new byte[32];
                 generator.GetBytes(tokenBytes);
-                newToken = this.EncodeBase64(tokenBytes);
+                newToken = EncodeBase64(tokenBytes);
             }
 
             var tokenAndHostGuid = newToken + Entities.Host.Host.GUID;
-            var hashedToken = this.GetHashedStr(tokenAndHostGuid);
+            var hashedToken = GetHashedStr(tokenAndHostGuid);
 
             var token = new ApiTokenBase()
             {
@@ -149,7 +149,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                 TokenHash = hashedToken,
             };
             var ret = this.apiTokenRepository.AddApiToken(token, apiKeys, userId);
-            this.eventLogger.AddLog(ret.ToLogProps(), this.PortalSettings, userId, EventLogType.APITOKEN_CREATED.ToString(), false);
+            this.eventLogger.AddLog(ret.ToLogProps(), PortalSettings, userId, EventLogType.APITOKEN_CREATED.ToString(), false);
             return newToken;
         }
 
@@ -165,12 +165,12 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
             if (delete)
             {
                 this.apiTokenRepository.DeleteApiToken(token.ToBase());
-                this.eventLogger.AddLog(token.ToLogProps(), this.PortalSettings, userId, EventLogType.APITOKEN_DELETED.ToString(), false);
+                this.eventLogger.AddLog(token.ToLogProps(), PortalSettings, userId, EventLogType.APITOKEN_DELETED.ToString(), false);
             }
             else
             {
                 this.apiTokenRepository.RevokeApiToken(token.ToBase(), userId);
-                this.eventLogger.AddLog(token.ToLogProps(), this.PortalSettings, userId, EventLogType.APITOKEN_REVOKED.ToString(), false);
+                this.eventLogger.AddLog(token.ToLogProps(), PortalSettings, userId, EventLogType.APITOKEN_REVOKED.ToString(), false);
             }
         }
 
@@ -180,14 +180,14 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
             this.apiTokenRepository.DeleteExpiredAndRevokedApiTokens(portalId, userId);
         }
 
-        private string ValidateAuthHeader(AuthenticationHeaderValue authHdr)
+        private static string ValidateAuthHeader(AuthenticationHeaderValue authHdr)
         {
             if (authHdr == null)
             {
                 return null;
             }
 
-            if (!string.Equals(authHdr.Scheme, AuthScheme, StringComparison.CurrentCultureIgnoreCase))
+            if (!string.Equals(authHdr.Scheme, AuthScheme, StringComparison.OrdinalIgnoreCase))
             {
                 if (Logger.IsTraceEnabled)
                 {
@@ -211,11 +211,22 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
             return authorization;
         }
 
+        private static string EncodeBase64(byte[] data)
+        {
+            return Convert.ToBase64String(data).TrimEnd('=');
+        }
+
+        private static string GetHashedStr(string data)
+        {
+            using var hasher = SHA384.Create();
+            return EncodeBase64(hasher.ComputeHash(TextEncoder.GetBytes(data)));
+        }
+
         private (ApiToken Token, UserInfo User) ValidateAuthorizationValue(string authorization)
         {
             var tokenAndHostGuid = authorization + Entities.Host.Host.GUID;
-            var hashedToken = this.GetHashedStr(tokenAndHostGuid);
-            var apiToken = this.apiTokenRepository.GetApiToken(this.PortalSettings.PortalId, hashedToken);
+            var hashedToken = GetHashedStr(tokenAndHostGuid);
+            var apiToken = this.apiTokenRepository.GetApiToken(PortalSettings.PortalId, hashedToken);
             if (apiToken != null)
             {
                 if (apiToken.ExpiresOn < DateUtils.GetDatabaseUtcTime() || apiToken.IsRevoked)
@@ -234,7 +245,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                 switch (apiToken.Scope)
                 {
                     case ApiTokenScope.User:
-                        var userInfo = UserController.GetUserById(this.PortalSettings.PortalId, apiToken.CreatedByUserId);
+                        var userInfo = UserController.GetUserById(PortalSettings.PortalId, apiToken.CreatedByUserId);
                         if (userInfo == null)
                         {
                             if (Logger.IsTraceEnabled)
@@ -249,7 +260,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                         return (apiToken, userInfo);
 
                     case ApiTokenScope.Portal:
-                        if (apiToken.PortalId == this.PortalSettings.PortalId)
+                        if (apiToken.PortalId == PortalSettings.PortalId)
                         {
                             this.apiTokenRepository.SetApiTokenLastUsed(apiToken);
                             return (apiToken, null);
@@ -269,19 +280,6 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
 
             this.eventLogger.AddLog("Token Auth", authorization, EventLogType.APITOKEN_AUTHENTICATION_FAILED);
             return (null, null);
-        }
-
-        private string EncodeBase64(byte[] data)
-        {
-            return Convert.ToBase64String(data).TrimEnd('=');
-        }
-
-        private string GetHashedStr(string data)
-        {
-            using (var hasher = SHA384.Create())
-            {
-                return this.EncodeBase64(hasher.ComputeHash(TextEncoder.GetBytes(data)));
-            }
         }
     }
 }

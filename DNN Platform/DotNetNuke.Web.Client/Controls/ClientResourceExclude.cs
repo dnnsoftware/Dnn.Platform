@@ -9,34 +9,34 @@ namespace DotNetNuke.Web.Client.Controls
 
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Web.Client.Cdf;
+    using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// Represents a control that excludes a client resource from being included in the page.
-    /// </summary>
+    /// <summary>Represents a control that excludes a client resource from being included in the page.</summary>
     public abstract class ClientResourceExclude : Control
     {
         private readonly IClientResourceController clientResourceController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClientResourceExclude"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ClientResourceExclude"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.1. Use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
+        protected ClientResourceExclude()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ClientResourceExclude"/> class.</summary>
         /// <param name="clientResourceController">The client resources controller.</param>
         protected ClientResourceExclude(IClientResourceController clientResourceController)
         {
-            this.clientResourceController = clientResourceController;
+            this.clientResourceController = clientResourceController ?? DependencyInjection.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
-        /// <summary>
-        /// Gets or sets the name of the client resource to exclude.
-        /// </summary>
+        /// <summary>Gets or sets the name of the client resource to exclude.</summary>
         public string Name { get; set; }
 
-        /// <summary>
-        /// Gets the dependency type of the client resource to exclude.
-        /// </summary>
+        /// <summary>Gets the dependency type of the client resource to exclude.</summary>
         public ClientDependencyType DependencyType { get; internal set; }
 
-        protected override void OnInit(EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
             switch (this.DependencyType)
             {
@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.Client.Controls
                     this.clientResourceController.RemoveScriptByName(this.Name);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new InvalidOperationException("DependencyType must be either Css or Javascript");
             }
         }
     }

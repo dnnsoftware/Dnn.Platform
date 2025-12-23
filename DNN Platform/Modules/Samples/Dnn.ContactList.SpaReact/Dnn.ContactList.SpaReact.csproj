@@ -17,6 +17,9 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <BaseOutputPath>.\bin</BaseOutputPath>
     <AssetTargetFallback>netstandard2.0</AssetTargetFallback>
+    <!-- Disable TypeScript compilation in MSBuild - handled by npm/yarn -->
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <EnableTypeScriptChecking>false</EnableTypeScriptChecking>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />

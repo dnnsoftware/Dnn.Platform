@@ -30,18 +30,18 @@ namespace DotNetNuke.Services.Log.EventLog
         private const int ReaderLockTimeout = 10000;
         private const int WriterLockTimeout = 10000;
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DBLoggingProvider));
-        private static readonly IList<LogQueueItem> LogQueue = new List<LogQueueItem>();
+        private static readonly List<LogQueueItem> LogQueue = [];
         private static readonly ReaderWriterLockSlim LockNotif = new ReaderWriterLockSlim();
         private static readonly ReaderWriterLockSlim LockQueueLog = new ReaderWriterLockSlim();
 
         /// <inheritdoc/>
         public override void AddLog(LogInfo logInfo)
         {
-            string configPortalID = logInfo.LogPortalID != Null.NullInteger
+            string configPortalId = logInfo.LogPortalID != Null.NullInteger
                                         ? logInfo.LogPortalID.ToString()
                                         : "*";
-            var logTypeConfigInfo = this.GetLogTypeConfigInfoByKey(logInfo.LogTypeKey, configPortalID);
-            if (logTypeConfigInfo == null || logTypeConfigInfo.LoggingIsActive == false)
+            var logTypeConfigInfo = this.GetLogTypeConfigInfoByKey(logInfo.LogTypeKey, configPortalId);
+            if (logTypeConfigInfo is not { LoggingIsActive: true, })
             {
                 return;
             }
@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Log.EventLog
             logInfo.LogConfigID = logTypeConfigInfo.ID;
             var logQueueItem = new LogQueueItem { LogInfo = logInfo, LogTypeConfigInfo = logTypeConfigInfo };
             SchedulingProvider scheduler = SchedulingProvider.Instance();
-            if (scheduler == null || logInfo.BypassBuffering || SchedulingProvider.Enabled == false
+            if (scheduler == null || logInfo.BypassBuffering || !SchedulingProvider.Enabled
                 || scheduler.GetScheduleStatus() == ScheduleStatus.STOPPED || !Host.EventLogBuffer)
             {
                 WriteLog(logQueueItem);

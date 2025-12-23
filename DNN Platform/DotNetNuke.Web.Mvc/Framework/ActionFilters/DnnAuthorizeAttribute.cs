@@ -15,10 +15,10 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
     public class DnnAuthorizeAttribute : AuthorizeAttributeBase
     {
         private string staticRoles;
-        private string[] staticRolesSplit = new string[0];
+        private string[] staticRolesSplit = [];
 
         private string denyRoles;
-        private string[] denyRolesSplit = new string[0];
+        private string[] denyRolesSplit = [];
 
         /// <summary>Gets or sets the authorized roles (separated by comma).</summary>
         public string StaticRoles
@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             set
             {
                 this.staticRoles = value;
-                this.staticRolesSplit = this.SplitString(this.staticRoles);
+                this.staticRolesSplit = SplitString(this.staticRoles);
             }
         }
 
@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             set
             {
                 this.denyRoles = value;
-                this.denyRolesSplit = this.SplitString(this.denyRoles);
+                this.denyRolesSplit = SplitString(this.denyRoles);
             }
         }
 
@@ -68,7 +68,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 return false;
             }
 
-            if (this.denyRolesSplit.Any())
+            if (this.denyRolesSplit.Length != 0)
             {
                 var currentUser = this.GetCurrentUser();
                 if (!currentUser.IsSuperUser && this.denyRolesSplit.Any(currentUser.IsInRole))
@@ -77,7 +77,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 }
             }
 
-            if (this.staticRolesSplit.Any())
+            if (this.staticRolesSplit.Length != 0)
             {
                 var currentUser = this.GetCurrentUser();
                 if (!this.staticRolesSplit.Any(currentUser.IsInRole))
@@ -89,11 +89,11 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             return true;
         }
 
-        private string[] SplitString(string original)
+        private static string[] SplitString(string original)
         {
             if (string.IsNullOrEmpty(original))
             {
-                return new string[0];
+                return [];
             }
 
             IEnumerable<string> split = from piece in original.Split(',')

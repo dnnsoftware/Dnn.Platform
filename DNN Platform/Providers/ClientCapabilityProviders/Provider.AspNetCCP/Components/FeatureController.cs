@@ -43,7 +43,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
             return Localization.GetString("SuccessMessage", ResourceFileRelativePath);
         }
 
-        private static IDictionary<string, string> CreateMappedCapabilities()
+        private static Dictionary<string, string> CreateMappedCapabilities()
         {
             var mappingCapabilities = new Dictionary<string, string>
             {
@@ -84,7 +84,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
         private static void UpdateRules()
         {
             var mapCapabilities = CreateMappedCapabilities();
-            IRedirectionController controller = new RedirectionController();
+            var controller = new RedirectionController();
             var redirections = controller.GetAllRedirections();
             foreach (var redirection in redirections.Where(redirection => redirection.MatchRules.Count > 0))
             {
@@ -110,9 +110,9 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                     }
                     else
                     {
-                        if (mapCapabilities.ContainsKey(rule.Capability))
+                        if (mapCapabilities.TryGetValue(rule.Capability, out var capability))
                         {
-                            rule.Capability = mapCapabilities[rule.Capability];
+                            rule.Capability = capability;
                             switch (rule.Expression)
                             {
                                 case "true":

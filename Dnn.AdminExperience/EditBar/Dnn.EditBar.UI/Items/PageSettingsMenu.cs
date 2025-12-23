@@ -57,12 +57,12 @@ namespace Dnn.EditBar.UI.Items
         {
             var isInEditMode = Personalization.GetUserMode() == PortalSettings.Mode.Edit;
             var isCurrentControlPanel = this.hostSettings.ControlPanel.EndsWith("PersonaBarContainer.ascx", StringComparison.InvariantCultureIgnoreCase);
-            var canEditPageSettings = this.CanEditPageSettings();
+            var canEditPageSettings = CanEditPageSettings();
 
             return isInEditMode && isCurrentControlPanel && canEditPageSettings;
         }
 
-        private bool CanEditPageSettings()
+        private static bool CanEditPageSettings()
         {
             return
                 TabPermissionController.CanAddPage() ||

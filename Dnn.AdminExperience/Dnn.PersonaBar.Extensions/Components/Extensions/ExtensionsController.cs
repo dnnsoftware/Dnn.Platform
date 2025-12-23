@@ -5,6 +5,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -74,9 +75,10 @@ namespace Dnn.PersonaBar.Extensions.Components
 
         protected INavigationManager NavigationManager { get; }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IDictionary<string, PackageType> GetPackageTypes()
         {
-            IDictionary<string, PackageType> installedPackageTypes = new Dictionary<string, PackageType>();
+            var installedPackageTypes = new Dictionary<string, PackageType>();
             foreach (var packageType in PackageController.Instance.GetExtensionPackageTypes())
             {
                 installedPackageTypes[packageType.PackageType] = packageType;
@@ -170,13 +172,13 @@ namespace Dnn.PersonaBar.Extensions.Components
 
                 foreach (string file in Directory.GetFiles(packagePath))
                 {
-                    if (file.ToLower().EndsWith(".zip") || file.ToLower().EndsWith(".resources"))
+                    if (file.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) || file.EndsWith(".resources", StringComparison.OrdinalIgnoreCase))
                     {
                         PackageController.ParsePackage(file, packagePath, validPackages, invalidPackages);
                     }
                 }
 
-                if (packageType.ToLowerInvariant() == "corelanguagepack")
+                if (packageType.Equals("corelanguagepack", StringComparison.OrdinalIgnoreCase))
                 {
                     GetAvailableLanguagePacks(validPackages);
                 }
@@ -245,7 +247,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 return string.Empty;
             }
 
-            if (packageInfo.PackageType.ToUpper() == "MODULE")
+            if (packageInfo.PackageType.Equals("MODULE", StringComparison.OrdinalIgnoreCase))
             {
                 if (portalId == Null.NullInteger)
                 {
@@ -411,14 +413,17 @@ namespace Dnn.PersonaBar.Extensions.Components
                             package.Name = myCIintl.NativeName;
                             package.PackageType = "CoreLanguagePack";
                             package.Description = cultureCode;
-                            Version ver = null;
-                            Version.TryParse(version, out ver);
+                            if (!Version.TryParse(version, out var ver))
+                            {
+                                ver = null;
+                            }
+
                             package.Version = ver;
 
                             if (
                                 installedLanguages.Any(
                                     l =>
-                                        LocaleController.Instance.GetLocale(l.LanguageID).Code.ToLowerInvariant().Equals(cultureCode.ToLowerInvariant())
+                                        LocaleController.Instance.GetLocale(l.LanguageID).Code.ToLowerInvariant().Equals(cultureCode.ToLowerInvariant(), StringComparison.Ordinal)
                                         && installedPackages.First(p => p.PackageID == l.PackageID).Version >= ver))
                             {
                                 continue;

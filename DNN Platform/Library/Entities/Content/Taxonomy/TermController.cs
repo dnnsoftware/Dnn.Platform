@@ -176,7 +176,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             if (vocabulary == null)
             {
-                throw new ArgumentException("Vocabulary does not exist.", "vocabularyName");
+                throw new ArgumentException("Vocabulary does not exist.", nameof(vocabularyName));
             }
 
             return this.GetTermsByVocabulary(vocabulary.VocabularyId);

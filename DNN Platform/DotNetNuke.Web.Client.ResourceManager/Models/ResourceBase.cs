@@ -63,7 +63,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public string Type { get; set; } = string.Empty;
 
         /// <inheritdoc />
-        public bool Blocking { get; set; } = false;
+        public bool Blocking { get; set; }
 
         /// <inheritdoc />
         public Dictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
@@ -123,16 +123,18 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderCrossOriginAttribute(StringBuilder htmlString)
         {
-            if (this.CrossOrigin != CrossOrigin.None)
+            switch (this.CrossOrigin)
             {
-                if (this.CrossOrigin == CrossOrigin.UseCredentials)
-                {
+                case CrossOrigin.UseCredentials:
                     htmlString.Append($" crossorigin=\"use-credentials\"");
-                }
-                else
-                {
+                    return;
+                case CrossOrigin.Anonymous:
                     htmlString.Append($" crossorigin=\"anonymous\"");
-                }
+                    return;
+                case CrossOrigin.None:
+                    return;
+                default:
+                    throw new InvalidOperationException($"Unexpected CrossOrigin value: {this.CrossOrigin}");
             }
         }
 
@@ -140,16 +142,18 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderFetchPriority(StringBuilder htmlString)
         {
-            if (this.FetchPriority != FetchPriority.Auto)
+            switch (this.FetchPriority)
             {
-                if (this.FetchPriority == FetchPriority.High)
-                {
+                case FetchPriority.High:
                     htmlString.Append($" fetchpriority=\"high\"");
-                }
-                else if (this.FetchPriority == FetchPriority.Low)
-                {
+                    return;
+                case FetchPriority.Low:
                     htmlString.Append($" fetchpriority=\"low\"");
-                }
+                    return;
+                case FetchPriority.Auto:
+                    return;
+                default:
+                    throw new InvalidOperationException($"Unexpected FetchPriority value: {this.FetchPriority}");
             }
         }
 
@@ -167,35 +171,36 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderReferrerPolicy(StringBuilder htmlString)
         {
-            if (this.ReferrerPolicy != ReferrerPolicy.None)
+            switch (this.ReferrerPolicy)
             {
-                switch (this.ReferrerPolicy)
-                {
-                    case ReferrerPolicy.NoReferrer:
-                        htmlString.Append(" referrerpolicy=\"no-referrer\"");
-                        break;
-                    case ReferrerPolicy.NoReferrerWhenDowngrade:
-                        htmlString.Append(" referrerpolicy=\"no-referrer-when-downgrade\"");
-                        break;
-                    case ReferrerPolicy.Origin:
-                        htmlString.Append(" referrerpolicy=\"origin\"");
-                        break;
-                    case ReferrerPolicy.OriginWhenCrossOrigin:
-                        htmlString.Append(" referrerpolicy=\"origin-when-cross-origin\"");
-                        break;
-                    case ReferrerPolicy.SameOrigin:
-                        htmlString.Append(" referrerpolicy=\"same-origin\"");
-                        break;
-                    case ReferrerPolicy.StrictOrigin:
-                        htmlString.Append(" referrerpolicy=\"strict-origin\"");
-                        break;
-                    case ReferrerPolicy.StrictOriginWhenCrossOrigin:
-                        htmlString.Append(" referrerpolicy=\"strict-origin-when-cross-origin\"");
-                        break;
-                    case ReferrerPolicy.UnsafeUrl:
-                        htmlString.Append(" referrerpolicy=\"unsafe-url\"");
-                        break;
-                }
+                case ReferrerPolicy.NoReferrer:
+                    htmlString.Append(" referrerpolicy=\"no-referrer\"");
+                    break;
+                case ReferrerPolicy.NoReferrerWhenDowngrade:
+                    htmlString.Append(" referrerpolicy=\"no-referrer-when-downgrade\"");
+                    break;
+                case ReferrerPolicy.Origin:
+                    htmlString.Append(" referrerpolicy=\"origin\"");
+                    break;
+                case ReferrerPolicy.OriginWhenCrossOrigin:
+                    htmlString.Append(" referrerpolicy=\"origin-when-cross-origin\"");
+                    break;
+                case ReferrerPolicy.SameOrigin:
+                    htmlString.Append(" referrerpolicy=\"same-origin\"");
+                    break;
+                case ReferrerPolicy.StrictOrigin:
+                    htmlString.Append(" referrerpolicy=\"strict-origin\"");
+                    break;
+                case ReferrerPolicy.StrictOriginWhenCrossOrigin:
+                    htmlString.Append(" referrerpolicy=\"strict-origin-when-cross-origin\"");
+                    break;
+                case ReferrerPolicy.UnsafeUrl:
+                    htmlString.Append(" referrerpolicy=\"unsafe-url\"");
+                    break;
+                case ReferrerPolicy.None:
+                    return;
+                default:
+                    throw new InvalidOperationException($"Unexpected ReferrerPolicy value: {this.ReferrerPolicy}");
             }
         }
 

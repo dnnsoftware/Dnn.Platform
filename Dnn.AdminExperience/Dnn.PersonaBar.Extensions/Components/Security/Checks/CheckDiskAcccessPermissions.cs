@@ -28,7 +28,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);
-            IList<string> accessErrors = new List<string>();
+            var accessErrors = new List<string>();
             try
             {
                 accessErrors = CheckAccessToDrives();
@@ -59,7 +59,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             return result;
         }
 
-        private static IList<string> CheckAccessToDrives()
+        private static List<string> CheckAccessToDrives()
         {
             var errors = new List<string>();
             var dir = new DirectoryInfo(Globals.ApplicationMapPath);

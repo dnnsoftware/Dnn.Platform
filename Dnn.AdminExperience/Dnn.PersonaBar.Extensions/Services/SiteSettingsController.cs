@@ -149,7 +149,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     portal.PortalName,
                     portal.Description,
                     portal.KeyWords,
-                    GUID = portal.GUID.ToString().ToUpper(),
+                    GUID = portal.GUID.ToString().ToUpperInvariant(),
                     portal.FooterText,
                     TimeZone = portalSettings.TimeZone.Id,
                     portal.HomeDirectory,
@@ -329,9 +329,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var portal = PortalController.Instance.GetPortal(pid, cultureCode);
                 var localizedPortalSettings = PortalController.Instance.GetPortalSettings(pid, cultureCode);
 
-                int redirectAfterLoginTabId = this.GetLocalizedTabIdSetting(localizedPortalSettings, "Redirect_AfterLogin");
-                int redirectAfterLogoutTabId = this.GetLocalizedTabIdSetting(localizedPortalSettings, "Redirect_AfterLogout");
-                int redirectAfterRegistrationTabId = this.GetLocalizedTabIdSetting(localizedPortalSettings, "Redirect_AfterRegistration");
+                int redirectAfterLoginTabId = GetLocalizedTabIdSetting(localizedPortalSettings, "Redirect_AfterLogin");
+                int redirectAfterLogoutTabId = GetLocalizedTabIdSetting(localizedPortalSettings, "Redirect_AfterLogout");
+                int redirectAfterRegistrationTabId = GetLocalizedTabIdSetting(localizedPortalSettings, "Redirect_AfterRegistration");
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
@@ -339,32 +339,32 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     {
                         PortalId = portal.PortalID,
                         portal.CultureCode,
-                        SplashTabId = this.TabSanitizer(portal.SplashTabId, pid)?.TabID,
-                        SplashTabName = this.TabSanitizer(portal.SplashTabId, pid)?.TabName,
-                        HomeTabId = this.TabSanitizer(portal.HomeTabId, pid)?.TabID,
-                        HomeTabName = this.TabSanitizer(portal.HomeTabId, pid)?.TabName,
-                        LoginTabId = this.TabSanitizer(portal.LoginTabId, pid)?.TabID,
-                        LoginTabName = this.TabSanitizer(portal.LoginTabId, pid)?.TabName,
-                        RegisterTabId = this.TabSanitizer(portal.RegisterTabId, pid)?.TabID,
-                        RegisterTabName = this.TabSanitizer(portal.RegisterTabId, pid)?.TabName,
-                        UserTabId = this.TabSanitizer(portal.UserTabId, pid)?.TabID,
-                        UserTabName = this.TabSanitizer(portal.UserTabId, pid)?.TabName,
-                        SearchTabId = this.TabSanitizer(portal.SearchTabId, pid)?.TabID,
-                        SearchTabName = this.TabSanitizer(portal.SearchTabId, pid)?.TabName,
-                        Custom404TabId = this.TabSanitizer(portal.Custom404TabId, pid)?.TabID,
-                        Custom404TabName = this.TabSanitizer(portal.Custom404TabId, pid)?.TabName,
-                        Custom500TabId = this.TabSanitizer(portal.Custom500TabId, pid)?.TabID,
-                        Custom500TabName = this.TabSanitizer(portal.Custom500TabId, pid)?.TabName,
-                        TermsTabId = this.TabSanitizer(portal.TermsTabId, pid)?.TabID,
-                        TermsTabName = this.TabSanitizer(portal.TermsTabId, pid)?.TabName,
-                        PrivacyTabId = this.TabSanitizer(portal.PrivacyTabId, pid)?.TabID,
-                        PrivacyTabName = this.TabSanitizer(portal.PrivacyTabId, pid)?.TabName,
-                        RedirectAfterLoginTabId = this.TabSanitizer(redirectAfterLoginTabId, pid)?.TabID,
-                        RedirectAfterLoginTabName = this.TabSanitizer(redirectAfterLoginTabId, pid)?.TabName,
-                        RedirectAfterLogoutTabId = this.TabSanitizer(redirectAfterLogoutTabId, pid)?.TabID,
-                        RedirectAfterLogoutTabName = this.TabSanitizer(redirectAfterLogoutTabId, pid)?.TabName,
-                        RedirectAfterRegistrationTabId = this.TabSanitizer(redirectAfterRegistrationTabId, pid)?.TabID,
-                        RedirectAfterRegistrationTabName = this.TabSanitizer(redirectAfterRegistrationTabId, pid)?.TabName,
+                        SplashTabId = TabSanitizer(portal.SplashTabId, pid)?.TabID,
+                        SplashTabName = TabSanitizer(portal.SplashTabId, pid)?.TabName,
+                        HomeTabId = TabSanitizer(portal.HomeTabId, pid)?.TabID,
+                        HomeTabName = TabSanitizer(portal.HomeTabId, pid)?.TabName,
+                        LoginTabId = TabSanitizer(portal.LoginTabId, pid)?.TabID,
+                        LoginTabName = TabSanitizer(portal.LoginTabId, pid)?.TabName,
+                        RegisterTabId = TabSanitizer(portal.RegisterTabId, pid)?.TabID,
+                        RegisterTabName = TabSanitizer(portal.RegisterTabId, pid)?.TabName,
+                        UserTabId = TabSanitizer(portal.UserTabId, pid)?.TabID,
+                        UserTabName = TabSanitizer(portal.UserTabId, pid)?.TabName,
+                        SearchTabId = TabSanitizer(portal.SearchTabId, pid)?.TabID,
+                        SearchTabName = TabSanitizer(portal.SearchTabId, pid)?.TabName,
+                        Custom404TabId = TabSanitizer(portal.Custom404TabId, pid)?.TabID,
+                        Custom404TabName = TabSanitizer(portal.Custom404TabId, pid)?.TabName,
+                        Custom500TabId = TabSanitizer(portal.Custom500TabId, pid)?.TabID,
+                        Custom500TabName = TabSanitizer(portal.Custom500TabId, pid)?.TabName,
+                        TermsTabId = TabSanitizer(portal.TermsTabId, pid)?.TabID,
+                        TermsTabName = TabSanitizer(portal.TermsTabId, pid)?.TabName,
+                        PrivacyTabId = TabSanitizer(portal.PrivacyTabId, pid)?.TabID,
+                        PrivacyTabName = TabSanitizer(portal.PrivacyTabId, pid)?.TabName,
+                        RedirectAfterLoginTabId = TabSanitizer(redirectAfterLoginTabId, pid)?.TabID,
+                        RedirectAfterLoginTabName = TabSanitizer(redirectAfterLoginTabId, pid)?.TabName,
+                        RedirectAfterLogoutTabId = TabSanitizer(redirectAfterLogoutTabId, pid)?.TabID,
+                        RedirectAfterLogoutTabName = TabSanitizer(redirectAfterLogoutTabId, pid)?.TabName,
+                        RedirectAfterRegistrationTabId = TabSanitizer(redirectAfterRegistrationTabId, pid)?.TabID,
+                        RedirectAfterRegistrationTabName = TabSanitizer(redirectAfterRegistrationTabId, pid)?.TabName,
                         PageHeadText = localizedPortalSettings["PageHeadText"],
                     },
                 });
@@ -403,21 +403,21 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 var portalInfo = PortalController.Instance.GetPortal(pid, cultureCode);
-                portalInfo.SplashTabId = this.ValidateTabId(request.SplashTabId, pid);
-                portalInfo.HomeTabId = this.ValidateTabId(request.HomeTabId, pid);
-                portalInfo.LoginTabId = this.ValidateTabId(request.LoginTabId, pid);
-                portalInfo.RegisterTabId = this.ValidateTabId(request.RegisterTabId, pid);
-                portalInfo.UserTabId = this.ValidateTabId(request.UserTabId, pid);
-                portalInfo.SearchTabId = this.ValidateTabId(request.SearchTabId, pid);
-                portalInfo.Custom404TabId = this.ValidateTabId(request.Custom404TabId, pid);
-                portalInfo.Custom500TabId = this.ValidateTabId(request.Custom500TabId, pid);
-                portalInfo.TermsTabId = this.ValidateTabId(request.TermsTabId, pid);
-                portalInfo.PrivacyTabId = this.ValidateTabId(request.PrivacyTabId, pid);
+                portalInfo.SplashTabId = ValidateTabId(request.SplashTabId, pid);
+                portalInfo.HomeTabId = ValidateTabId(request.HomeTabId, pid);
+                portalInfo.LoginTabId = ValidateTabId(request.LoginTabId, pid);
+                portalInfo.RegisterTabId = ValidateTabId(request.RegisterTabId, pid);
+                portalInfo.UserTabId = ValidateTabId(request.UserTabId, pid);
+                portalInfo.SearchTabId = ValidateTabId(request.SearchTabId, pid);
+                portalInfo.Custom404TabId = ValidateTabId(request.Custom404TabId, pid);
+                portalInfo.Custom500TabId = ValidateTabId(request.Custom500TabId, pid);
+                portalInfo.TermsTabId = ValidateTabId(request.TermsTabId, pid);
+                portalInfo.PrivacyTabId = ValidateTabId(request.PrivacyTabId, pid);
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
 
-                PortalController.UpdatePortalSetting(pid, "Redirect_AfterLogin", this.ValidateTabId(request.RedirectAfterLoginTabId, pid).ToString(), false, cultureCode);
-                PortalController.UpdatePortalSetting(pid, "Redirect_AfterLogout", this.ValidateTabId(request.RedirectAfterLogoutTabId, pid).ToString(), false, cultureCode);
-                PortalController.UpdatePortalSetting(pid, "Redirect_AfterRegistration", this.ValidateTabId(request.RedirectAfterRegistrationTabId, pid).ToString(), false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "Redirect_AfterLogin", ValidateTabId(request.RedirectAfterLoginTabId, pid).ToString(), false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "Redirect_AfterLogout", ValidateTabId(request.RedirectAfterLogoutTabId, pid).ToString(), false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "Redirect_AfterRegistration", ValidateTabId(request.RedirectAfterRegistrationTabId, pid).ToString(), false, cultureCode);
                 PortalController.UpdatePortalSetting(pid, "PageHeadText", string.IsNullOrEmpty(request.PageHeadText) ? "false" : request.PageHeadText);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -609,12 +609,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     v.PropertyDefinitionId,
                     v.PropertyName,
-                    DataType = this.DisplayDataType(v.DataType),
+                    DataType = DisplayDataType(v.DataType),
                     DefaultVisibility = v.DefaultVisibility.ToString(),
                     v.Required,
                     v.Visible,
                     v.ViewOrder,
-                    CanDelete = this.CanDeleteProperty(v),
+                    CanDelete = CanDeleteProperty(v),
                 }).OrderBy(v => v.ViewOrder);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
@@ -980,7 +980,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 var propertyDefinition = ProfileController.GetPropertyDefinition(propertyId, pid);
 
-                if (!this.CanDeleteProperty(propertyDefinition))
+                if (!CanDeleteProperty(propertyDefinition))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "ForbiddenDelete");
                 }
@@ -1200,7 +1200,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     strAlias = strAlias.Trim();
                 }
 
-                if (this.IsHttpAliasValid(strAlias))
+                if (IsHttpAliasValid(strAlias))
                 {
                     var aliases = PortalAliasController.Instance.GetPortalAliases();
                     if (aliases.Contains(strAlias))
@@ -1210,9 +1210,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             string.Format(Localization.GetString("DuplicateAlias", Components.Constants.Constants.LocalResourcesFile)));
                     }
 
-                    BrowserTypes browser;
-                    Enum.TryParse(request.BrowserType, out browser);
-                    PortalAliasInfo portalAlias = new PortalAliasInfo()
+                    if (!Enum.TryParse(request.BrowserType, out BrowserTypes browser))
+                    {
+                        browser = BrowserTypes.Normal;
+                    }
+
+                    var portalAlias = new PortalAliasInfo
                     {
                         PortalID = pid,
                         HTTPAlias = strAlias,
@@ -1263,13 +1266,16 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     strAlias = strAlias.Trim();
                 }
 
-                if (this.IsHttpAliasValid(strAlias))
+                if (IsHttpAliasValid(strAlias))
                 {
-                    BrowserTypes browser;
-                    Enum.TryParse(request.BrowserType, out browser);
+                    if (!Enum.TryParse(request.BrowserType, out BrowserTypes browser))
+                    {
+                        browser = BrowserTypes.Normal;
+                    }
+
                     if (request.PortalAliasID != null)
                     {
-                        PortalAliasInfo portalAlias = new PortalAliasInfo()
+                        var portalAlias = new PortalAliasInfo
                         {
                             PortalID = pid,
                             PortalAliasID = request.PortalAliasID.Value,
@@ -1574,8 +1580,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         CheckUpgrade = HostController.Instance.GetBoolean("CheckUpgrade", true),
                         portalSettings.DataConsentActive,
                         DataConsentResetTerms = false,
-                        DataConsentConsentRedirect = this.TabSanitizer(portalSettings.DataConsentConsentRedirect, pid)?.TabID,
-                        DataConsentConsentRedirectName = this.TabSanitizer(portalSettings.DataConsentConsentRedirect, pid)?.TabName,
+                        DataConsentConsentRedirect = TabSanitizer(portalSettings.DataConsentConsentRedirect, pid)?.TabID,
+                        DataConsentConsentRedirectName = TabSanitizer(portalSettings.DataConsentConsentRedirect, pid)?.TabName,
                         DataConsentUserDeleteAction = (int)portalSettings.DataConsentUserDeleteAction,
                         this.PortalSettings.DataConsentDelay,
                         this.PortalSettings.DataConsentDelayMeasurement,
@@ -1614,7 +1620,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 PortalController.UpdatePortalSetting(pid, "DataConsentActive", request.DataConsentActive.ToString(), false);
-                PortalController.UpdatePortalSetting(pid, "DataConsentConsentRedirect", this.ValidateTabId(request.DataConsentConsentRedirect, pid).ToString(), false);
+                PortalController.UpdatePortalSetting(pid, "DataConsentConsentRedirect", ValidateTabId(request.DataConsentConsentRedirect, pid).ToString(), false);
                 PortalController.UpdatePortalSetting(pid, "DataConsentUserDeleteAction", request.DataConsentUserDeleteAction.ToString(), false);
                 PortalController.UpdatePortalSetting(pid, "DataConsentDelay", request.DataConsentDelay.ToString(), false);
                 PortalController.UpdatePortalSetting(pid, "DataConsentDelayMeasurement", request.DataConsentDelayMeasurement, false);
@@ -1679,7 +1685,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 settings.SearchIndexPath = Path.Combine(Globals.ApplicationMapPath, HostController.Instance.GetString("SearchFolder", @"App_Data\Search"));
                 settings.MaxResultPerPage = HostController.Instance.GetInteger("Search_MaxResultPerPage", 100);
 
-                SearchStatistics searchStatistics = this.GetSearchStatistics();
+                SearchStatistics searchStatistics = GetSearchStatistics();
                 if (searchStatistics != null)
                 {
                     settings.SearchIndexDbSize = (searchStatistics.IndexDbSize / 1024f / 1024f).ToString("N") + " MB";
@@ -1767,7 +1773,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 var oldAnalyzer = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
                 var newAnalyzer = request.SearchCustomAnalyzer.Trim();
-                if (!oldAnalyzer.Equals(newAnalyzer))
+                if (!oldAnalyzer.Equals(newAnalyzer, StringComparison.Ordinal))
                 {
                     HostController.Instance.Update("Search_CustomAnalyzer", newAnalyzer);
 
@@ -2324,7 +2330,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     {
                         var needToRemoveOldDefaultLanguage = LocaleController.Instance.GetLocales(pid).Count == 1;
                         var oldDefaultLanguage = LocaleController.Instance.GetLocale(pid, portalSettings.DefaultLanguage);
-                        if (!this.IsLanguageEnabled(pid, newDefaultLanguage))
+                        if (!IsLanguageEnabled(pid, newDefaultLanguage))
                         {
                             var language = LocaleController.Instance.GetLocale(pid, newDefaultLanguage);
                             Localization.AddLanguageToPortal(pid, language.LanguageId, true);
@@ -2399,15 +2405,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             l.Code,
                             l.NativeName,
                             l.EnglishName,
-                            Enabled = this.IsLanguageEnabled(pid, l.Code),
+                            Enabled = IsLanguageEnabled(pid, l.Code),
                             IsDefault = l.Code == portalSettings.DefaultLanguage,
-                            LocalizablePages = this.GetLocalizablePages(pid, l.Code),
-                            LocalizedStatus = this.GetLocalizedStatus(portalSettings, l.Code),
-                            TranslatedPages = this.GetTranslatedPages(portalSettings, l.Code),
-                            TranslatedStatus = this.GetTranslatedStatus(portalSettings, l.Code),
-                            Active = this.IsLanguagePublished(pid, l.Code),
-                            IsLocalized = this.IsLocalized(portalSettings, l.Code),
-                            PublishedPages = this.GetPublishedLocalizedPages(pid, l.Code),
+                            LocalizablePages = GetLocalizablePages(pid, l.Code),
+                            LocalizedStatus = GetLocalizedStatus(portalSettings, l.Code),
+                            TranslatedPages = GetTranslatedPages(portalSettings, l.Code),
+                            TranslatedStatus = GetTranslatedStatus(portalSettings, l.Code),
+                            Active = IsLanguagePublished(pid, l.Code),
+                            IsLocalized = IsLocalized(portalSettings, l.Code),
+                            PublishedPages = GetPublishedLocalizedPages(pid, l.Code),
                         }),
                     });
                 }
@@ -2425,7 +2431,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             l.Code,
                             l.NativeName,
                             l.EnglishName,
-                            Enabled = this.IsLanguageEnabled(pid, l.Code),
+                            Enabled = IsLanguageEnabled(pid, l.Code),
                             IsDefault = l.Code == portalSettings.DefaultLanguage,
                         }),
                     });
@@ -2500,8 +2506,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         language.EnglishName,
                         language.Code,
                         language.Fallback,
-                        Enabled = this.IsLanguageEnabled(pid, language.Code),
-                        CanEnableDisable = this.CanEnableDisable(portalSettings, language.Code),
+                        Enabled = IsLanguageEnabled(pid, language.Code),
+                        CanEnableDisable = CanEnableDisable(portalSettings, language.Code),
                         IsDefault = language.Code == portalSettings.DefaultLanguage,
                         Roles = PortalController.GetPortalSetting($"DefaultTranslatorRoles-{language.Code}", pid, "Administrators"),
                     }
@@ -2594,7 +2600,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 language.Text = CultureInfo.GetCultureInfo(request.Code).NativeName;
                 Localization.SaveLanguage(language);
 
-                if (!this.IsLanguageEnabled(pid, language.Code))
+                if (!IsLanguageEnabled(pid, language.Code))
                 {
                     Localization.AddLanguageToPortal(pid, language.LanguageId, true);
                 }
@@ -3211,9 +3217,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             {
                 var objFolder = new DirectoryInfo(folder);
 
-                bool resxFilesDirectory = (objFolder.Name.ToLowerInvariant() == Localization.LocalResourceDirectory.ToLowerInvariant()) ||
-                                          (objFolder.Name.ToLowerInvariant() == Localization.ApplicationResourceDirectory.Replace("~/", string.Empty).ToLowerInvariant()) ||
-                                          folder.ToLowerInvariant().EndsWith("\\portals\\_default");
+                bool resxFilesDirectory = objFolder.Name.Equals(Localization.LocalResourceDirectory, StringComparison.OrdinalIgnoreCase) ||
+                                          objFolder.Name.Equals(Localization.ApplicationResourceDirectory.Replace("~/", string.Empty), StringComparison.OrdinalIgnoreCase) ||
+                                          folder.EndsWith("\\portals\\_default", StringComparison.OrdinalIgnoreCase);
 
                 if (resxFilesDirectory)
                 {
@@ -3223,7 +3229,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         var fileInfo = new FileInfo(file);
                         var match = LanguagesController.FileInfoRegex.Match(fileInfo.Name);
 
-                        if (match.Success && match.Groups[1].Value.ToLowerInvariant() != sysLocale)
+                        if (match.Success && !match.Groups[1].Value.Equals(sysLocale, StringComparison.OrdinalIgnoreCase))
                         {
                             continue;
                         }
@@ -3243,11 +3249,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return Localization.GetResourceFileName(filename, language, string.Empty, Globals.GetPortalSettings().PortalId);
         }
 
-        private bool IsLanguagePublished(int portalId, string code)
+        private static bool IsLanguagePublished(int portalId, string code)
         {
             bool isPublished = Null.NullBoolean;
-            Locale enabledLanguage;
-            if (LocaleController.Instance.GetLocales(portalId).TryGetValue(code, out enabledLanguage))
+            if (LocaleController.Instance.GetLocales(portalId).TryGetValue(code, out var enabledLanguage))
             {
                 isPublished = enabledLanguage.IsPublished;
             }
@@ -3255,10 +3260,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return isPublished;
         }
 
-        private string GetTranslatedPages(PortalSettings portalSettings, string code)
+        private static string GetTranslatedPages(PortalSettings portalSettings, string code)
         {
             string status = string.Empty;
-            if (!this.IsDefaultLanguage(portalSettings, code) && this.IsLocalized(portalSettings, code))
+            if (!IsDefaultLanguage(portalSettings, code) && IsLocalized(portalSettings, code))
             {
                 int translatedCount = (from t in TabController.Instance.GetTabsByPortal(portalSettings.PortalId).WithCulture(code, false).Values where t.IsTranslated && !t.IsDeleted select t).Count();
                 status = translatedCount.ToString(CultureInfo.InvariantCulture);
@@ -3267,42 +3272,42 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return status;
         }
 
-        private string GetLocalizedStatus(PortalSettings portalSettings, string code)
+        private static string GetLocalizedStatus(PortalSettings portalSettings, string code)
         {
             string status = string.Empty;
-            if (!this.IsDefaultLanguage(portalSettings, code) && this.IsLocalized(portalSettings, code))
+            if (!IsDefaultLanguage(portalSettings, code) && IsLocalized(portalSettings, code))
             {
-                int defaultPageCount = this.GetLocalizedPages(portalSettings.PortalId, portalSettings.DefaultLanguage, false).Count;
-                int currentPageCount = this.GetLocalizedPages(portalSettings.PortalId, code, false).Count;
+                int defaultPageCount = GetLocalizedPages(portalSettings.PortalId, portalSettings.DefaultLanguage, false).Count;
+                int currentPageCount = GetLocalizedPages(portalSettings.PortalId, code, false).Count;
                 status = $"{currentPageCount / (float)defaultPageCount:#0%}";
             }
 
             return status;
         }
 
-        private string GetLocalizablePages(int portalId, string code)
+        private static string GetLocalizablePages(int portalId, string code)
         {
-            int count = this.GetLocalizedPages(portalId, code, false).Count(t => !t.Value.IsDeleted);
+            int count = GetLocalizedPages(portalId, code, false).Count(t => !t.Value.IsDeleted);
             return count.ToString(CultureInfo.CurrentUICulture);
         }
 
-        private TabCollection GetLocalizedPages(int portalId, string code, bool includeNeutral)
+        private static TabCollection GetLocalizedPages(int portalId, string code, bool includeNeutral)
         {
             return TabController.Instance.GetTabsByPortal(portalId).WithCulture(code, includeNeutral);
         }
 
-        private int GetPublishedLocalizedPages(int portalId, string code)
+        private static int GetPublishedLocalizedPages(int portalId, string code)
         {
             var localizedTabs = TabController.Instance.GetTabsByPortal(portalId).WithCulture(code, false);
             return localizedTabs.Count(t => TabController.Instance.IsTabPublished(t.Value));
         }
 
-        private string GetTranslatedStatus(PortalSettings portalSettings, string code)
+        private static string GetTranslatedStatus(PortalSettings portalSettings, string code)
         {
             string status = string.Empty;
-            if (!this.IsDefaultLanguage(portalSettings, code) && this.IsLocalized(portalSettings, code))
+            if (!IsDefaultLanguage(portalSettings, code) && IsLocalized(portalSettings, code))
             {
-                int localizedCount = this.GetLocalizedPages(portalSettings.PortalId, code, false).Count;
+                int localizedCount = GetLocalizedPages(portalSettings.PortalId, code, false).Count;
                 int translatedCount = (from t in TabController.Instance.GetTabsByPortal(portalSettings.PortalId).WithCulture(code, false).Values where t.IsTranslated select t).Count();
                 status = $"{translatedCount / (float)localizedCount:#0%}";
             }
@@ -3310,17 +3315,17 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return status;
         }
 
-        private bool IsDefaultLanguage(PortalSettings portalSettings, string code)
+        private static bool IsDefaultLanguage(PortalSettings portalSettings, string code)
         {
             return code == portalSettings.DefaultLanguage;
         }
 
-        private bool IsLocalized(PortalSettings portalSettings, string code)
+        private static bool IsLocalized(PortalSettings portalSettings, string code)
         {
-            return code != portalSettings.DefaultLanguage && this.GetLocalizedPages(portalSettings.PortalId, code, false).Count > 0;
+            return code != portalSettings.DefaultLanguage && GetLocalizedPages(portalSettings.PortalId, code, false).Count > 0;
         }
 
-        private bool CanDeleteProperty(ProfilePropertyDefinition definition)
+        private static bool CanDeleteProperty(ProfilePropertyDefinition definition)
         {
             switch (definition.PropertyName.ToLowerInvariant())
             {
@@ -3332,6 +3337,116 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 default:
                     return true;
             }
+        }
+
+        private static string DisplayDataType(int dataType)
+        {
+            var retValue = Null.NullString;
+            var listController = new ListController();
+            var definitionEntry = listController.GetListEntryInfo("DataType", dataType);
+            if (definitionEntry != null)
+            {
+                retValue = definitionEntry.Value;
+            }
+
+            return retValue;
+        }
+
+        private static bool IsHttpAliasValid(string strAlias)
+        {
+            bool isValid = true;
+            if (string.IsNullOrEmpty(strAlias))
+            {
+                isValid = false;
+            }
+            else
+            {
+                if (strAlias.IndexOf("://", StringComparison.Ordinal) != -1)
+                {
+                    strAlias = strAlias.Remove(0, strAlias.IndexOf("://", StringComparison.Ordinal) + 3);
+                }
+
+                if (strAlias.IndexOf("\\\\", StringComparison.Ordinal) != -1)
+                {
+                    strAlias = strAlias.Remove(0, strAlias.IndexOf("\\\\", StringComparison.Ordinal) + 2);
+                }
+
+                // Validate Alias, this needs to be done with lowercase, downstream we only check with lowercase variables
+                if (!PortalAliasController.ValidateAlias(strAlias.ToLowerInvariant(), false))
+                {
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        }
+
+        private static bool IsLanguageEnabled(int portalId, string code)
+        {
+            return LocaleController.Instance.GetLocales(portalId).TryGetValue(code, out _);
+        }
+
+        private static bool CanEnableDisable(PortalSettings portalSettings, string code)
+        {
+            bool canEnable;
+            if (IsLanguageEnabled(portalSettings.PortalId, code))
+            {
+                canEnable = !IsDefaultLanguage(portalSettings, code) && !IsLanguagePublished(portalSettings.PortalId, code);
+            }
+            else
+            {
+                canEnable = !IsDefaultLanguage(portalSettings, code);
+            }
+
+            return canEnable;
+        }
+
+        private static SearchStatistics GetSearchStatistics()
+        {
+            try
+            {
+                return InternalSearchController.Instance.GetSearchStatistics();
+            }
+            catch (SearchIndexEmptyException)
+            {
+                return null;
+            }
+        }
+
+        private static void ClearEntriesCache(string listName, int portalId)
+        {
+            string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
+            DataCache.RemoveCache(cacheKey);
+        }
+
+        private static TabInfo TabSanitizer(int tabId, int portalId)
+        {
+            var tab = TabController.Instance.GetTab(tabId, portalId);
+            if (tab is { IsDeleted: false })
+            {
+                return tab;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private static int ValidateTabId(int tabId, int portalId)
+        {
+            var tab = TabController.Instance.GetTab(tabId, portalId);
+            return tab is { IsDeleted: false } ? tab.TabID : Null.NullInteger;
+        }
+
+        private static int GetLocalizedTabIdSetting(Dictionary<string, string> localizedPortalSettings, string settingKey)
+        {
+            if (localizedPortalSettings.TryGetValue(settingKey, out var settingValue))
+            {
+                int tabId = int.TryParse(settingValue, out tabId) ? tabId : -1;
+                return tabId;
+            }
+
+            return -1;
         }
 
         private string GetAbsoluteServerPath()
@@ -3351,19 +3466,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             {
                 return string.Empty;
             }
-        }
-
-        private string DisplayDataType(int dataType)
-        {
-            var retValue = Null.NullString;
-            var listController = new ListController();
-            var definitionEntry = listController.GetListEntryInfo("DataType", dataType);
-            if (definitionEntry != null)
-            {
-                retValue = definitionEntry.Value;
-            }
-
-            return retValue;
         }
 
         private bool ValidateProperty(ProfilePropertyDefinition definition, out HttpResponseMessage httpPropertyValidationError)
@@ -3402,56 +3504,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return isValid;
         }
 
-        private bool IsHttpAliasValid(string strAlias)
-        {
-            bool isValid = true;
-            if (string.IsNullOrEmpty(strAlias))
-            {
-                isValid = false;
-            }
-            else
-            {
-                if (strAlias.IndexOf("://", StringComparison.Ordinal) != -1)
-                {
-                    strAlias = strAlias.Remove(0, strAlias.IndexOf("://", StringComparison.Ordinal) + 3);
-                }
-
-                if (strAlias.IndexOf("\\\\", StringComparison.Ordinal) != -1)
-                {
-                    strAlias = strAlias.Remove(0, strAlias.IndexOf("\\\\", StringComparison.Ordinal) + 2);
-                }
-
-                // Validate Alias, this needs to be done with lowercase, downstream we only check with lowercase variables
-                if (!PortalAliasController.ValidateAlias(strAlias.ToLowerInvariant(), false))
-                {
-                    isValid = false;
-                }
-            }
-
-            return isValid;
-        }
-
-        private bool IsLanguageEnabled(int portalId, string code)
-        {
-            Locale enabledLanguage;
-            return LocaleController.Instance.GetLocales(portalId).TryGetValue(code, out enabledLanguage);
-        }
-
-        private bool CanEnableDisable(PortalSettings portalSettings, string code)
-        {
-            bool canEnable;
-            if (this.IsLanguageEnabled(portalSettings.PortalId, code))
-            {
-                canEnable = !this.IsDefaultLanguage(portalSettings, code) && !this.IsLanguagePublished(portalSettings.PortalId, code);
-            }
-            else
-            {
-                canEnable = !this.IsDefaultLanguage(portalSettings, code);
-            }
-
-            return canEnable;
-        }
-
         private CultureDropDownTypes GetCultureDropDownType(int portalId)
         {
             CultureDropDownTypes displayType;
@@ -3479,55 +3531,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
             string viewType = Convert.ToString(personalization.Profile[viewTypePersonalizationKey]);
             return string.IsNullOrEmpty(viewType) ? "NATIVE" : viewType;
-        }
-
-        private SearchStatistics GetSearchStatistics()
-        {
-            try
-            {
-                return InternalSearchController.Instance.GetSearchStatistics();
-            }
-            catch (SearchIndexEmptyException)
-            {
-                return null;
-            }
-        }
-
-        private void ClearEntriesCache(string listName, int portalId)
-        {
-            string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
-            DataCache.RemoveCache(cacheKey);
-        }
-
-        private TabInfo TabSanitizer(int tabId, int portalId)
-        {
-            var tab = TabController.Instance.GetTab(tabId, portalId);
-            if (tab != null && !tab.IsDeleted)
-            {
-                return tab;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        private int ValidateTabId(int tabId, int portalId)
-        {
-            var tab = TabController.Instance.GetTab(tabId, portalId);
-            return tab != null && !tab.IsDeleted ? tab.TabID : Null.NullInteger;
-        }
-
-        private int GetLocalizedTabIdSetting(Dictionary<string, string> localizedPortalSettings, string settingKey)
-        {
-            var settingValue = string.Empty;
-            if (localizedPortalSettings.TryGetValue(settingKey, out settingValue))
-            {
-                int tabId = int.TryParse(settingValue, out tabId) ? tabId : -1;
-                return tabId;
-            }
-
-            return -1;
         }
     }
 }

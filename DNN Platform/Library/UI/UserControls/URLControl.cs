@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.UserControls
     using System;
     using System.Collections;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -226,7 +227,10 @@ namespace DotNetNuke.UI.UserControls
                 }
                 else if (this.Request.QueryString["mid"] != null)
                 {
-                    int.TryParse(this.Request.QueryString["mid"], out myMid);
+                    if (!int.TryParse(this.Request.QueryString["mid"], out myMid))
+                    {
+                        myMid = -2;
+                    }
                 }
 
                 return myMid;
@@ -514,7 +518,7 @@ namespace DotNetNuke.UI.UserControls
                         else
                         {
                             string mCustomUrl = this.txtUrl.Text;
-                            if (mCustomUrl.Equals("http://", StringComparison.InvariantCultureIgnoreCase))
+                            if (mCustomUrl.Equals("http://", StringComparison.OrdinalIgnoreCase))
                             {
                                 r = string.Empty;
                             }
@@ -617,13 +621,13 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-                    this.cboUrls.Width = Unit.Parse(value);
-                    this.txtUrl.Width = Unit.Parse(value);
-                    this.cboImages.Width = Unit.Parse(value);
-                    this.cboTabs.Width = Unit.Parse(value);
-                    this.cboFolders.Width = Unit.Parse(value);
-                    this.cboFiles.Width = Unit.Parse(value);
-                    this.txtUser.Width = Unit.Parse(value);
+                    this.cboUrls.Width = Unit.Parse(value, CultureInfo.InvariantCulture);
+                    this.txtUrl.Width = Unit.Parse(value, CultureInfo.InvariantCulture);
+                    this.cboImages.Width = Unit.Parse(value, CultureInfo.InvariantCulture);
+                    this.cboTabs.Width = Unit.Parse(value, CultureInfo.InvariantCulture);
+                    this.cboFolders.Width = Unit.Parse(value, CultureInfo.InvariantCulture);
+                    this.cboFiles.Width = Unit.Parse(value, CultureInfo.InvariantCulture);
+                    this.txtUser.Width = Unit.Parse(value, CultureInfo.InvariantCulture);
                     this.ViewState["SkinControlWidth"] = value;
                 }
             }
@@ -729,7 +733,7 @@ namespace DotNetNuke.UI.UserControls
             catch (Exception exc)
             {
                 // Let's detect possible problems
-                Exceptions.LogException(new Exception("Error rendering URLControl subcontrols.", exc));
+                Exceptions.LogException(new RenderException("Error rendering URLControl subcontrols.", exc));
             }
         }
 

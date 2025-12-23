@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Connections
         {
             return
                 this.connectionsManager.GetConnectors(this.serviceProvider)
-                    .Where(c => c.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+                    .Where(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                     .Select(c => c.GetConfig(portalId))
                     .FirstOrDefault();
         }

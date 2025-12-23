@@ -601,7 +601,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var fileUrl = sfp.Object.GetFileUrl(this.fileInfo.Object);
 
             // Assert
-            Assert.That(fileUrl.ToLowerInvariant().Contains("linkclick"), Is.True);
+            Assert.That(fileUrl, Does.Contain("linkclick").IgnoreCase);
         }
 
         [Test]

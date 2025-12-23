@@ -40,7 +40,7 @@ namespace DotNetNuke.UI.WebControls
 
                 if (xSortOrderValue == ySortOrderValue)
                 {
-                    return string.Compare(xProp.Name, yProp.Name);
+                    return string.Compare(xProp.Name, yProp.Name, StringComparison.Ordinal);
                 }
                 else
                 {

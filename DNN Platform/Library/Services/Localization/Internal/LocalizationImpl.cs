@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Localization.Internal
 
             var values = cultureCodes.ToList();
 
-            foreach (string langHeader in HttpContextSource.Current.Request.UserLanguages ?? new string[0])
+            foreach (string langHeader in HttpContextSource.Current.Request.UserLanguages ?? [])
             {
                 string lang = langHeader;
 

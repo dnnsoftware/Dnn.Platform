@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Portals
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Portals;
@@ -56,14 +57,14 @@ namespace DotNetNuke.Entities.Portals
                     // this allows the parent domain name to resolve to the child alias ( the tabid still identifies the child portalid )
                     IPortalAliasInfo currentAliasInfo = currentAlias.Value;
                     string httpAlias = currentAliasInfo.HttpAlias.ToLowerInvariant();
-                    if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && currentAliasInfo.PortalId == portalId)
+                    if (httpAlias.StartsWith(portalAlias, StringComparison.OrdinalIgnoreCase) && currentAliasInfo.PortalId == portalId)
                     {
                         retValue = currentAliasInfo.HttpAlias;
                         break;
                     }
 
                     httpAlias = httpAlias.StartsWith("www.") ? httpAlias.Replace("www.", string.Empty) : string.Concat("www.", httpAlias);
-                    if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && currentAliasInfo.PortalId == portalId)
+                    if (httpAlias.StartsWith(portalAlias, StringComparison.OrdinalIgnoreCase) && currentAliasInfo.PortalId == portalId)
                     {
                         retValue = currentAliasInfo.HttpAlias;
                         break;
@@ -168,7 +169,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         IPortalAliasInfo IPortalAliasService.GetPortalAlias(string alias, int portalId) =>
             this.GetPortalAliasesInternal()
-                .SingleOrDefault((portalAliasInfo) => portalAliasInfo.Key.Equals(alias, StringComparison.InvariantCultureIgnoreCase) && ((IPortalAliasInfo)portalAliasInfo.Value).PortalId == portalId).Value;
+                .SingleOrDefault((portalAliasInfo) => portalAliasInfo.Key.Equals(alias, StringComparison.OrdinalIgnoreCase) && ((IPortalAliasInfo)portalAliasInfo.Value).PortalId == portalId).Value;
 
         /// <inheritdoc />
         IPortalAliasInfo IPortalAliasService.GetPortalAliasByPortalAliasId(int portalAliasId) =>
@@ -218,6 +219,7 @@ namespace DotNetNuke.Entities.Portals
             ClearCache(false);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal Dictionary<string, PortalAliasInfo> GetPortalAliasesInternal()
         {
             return CBO.GetCachedObject<Dictionary<string, PortalAliasInfo>>(
@@ -279,7 +281,7 @@ namespace DotNetNuke.Entities.Portals
             return portalAlias.All(c => validChars.Contains(c.ToString()));
         }
 
-        private IPortalAliasInfo GetPortalAliasLookupInternal(string alias)
+        private PortalAliasInfo GetPortalAliasLookupInternal(string alias)
         {
             return this.GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key == alias).Value;
         }

@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities
     using System;
     using System.ComponentModel;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Xml.Serialization;
 
     using DotNetNuke.Common.Utilities;
@@ -99,6 +100,7 @@ namespace DotNetNuke.Entities
         /// <summary>Clones the base properties of the entity.</summary>
         /// <param name="clonedItem">The cloned entity (cloned to).</param>
         /// <param name="originalItem">The original entity (cloned from).</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected void CloneBaseProperties(BaseEntityInfo clonedItem, BaseEntityInfo originalItem)
         {
             clonedItem.CreatedByUserID = originalItem.CreatedByUserID;
