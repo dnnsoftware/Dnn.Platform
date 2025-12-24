@@ -23,8 +23,7 @@ namespace DotNetNuke.Data
             {
                 var parameterFormat = " @{0}";
                 string parameterName = null;
-                var param = args[i] as IDataParameter;
-                if (param != null)
+                if (args[i] is IDataParameter param)
                 {
                     // intentionally adding an extra @ before parameter name, so PetaPoco won't try to match it to a passed-in arg
                     parameterFormat = " @{1}=@{0}";
@@ -39,7 +38,7 @@ namespace DotNetNuke.Data
                 sb.AppendFormat(CultureInfo.InvariantCulture, parameterFormat, i, parameterName);
                 if (i < args.Length - 1)
                 {
-                    sb.Append(",");
+                    sb.Append(',');
                 }
             }
 

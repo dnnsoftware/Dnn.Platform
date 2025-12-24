@@ -4,6 +4,7 @@
 namespace DotNetNuke.Framework
 {
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
     using System.Web.UI;
 
@@ -18,22 +19,13 @@ namespace DotNetNuke.Framework
     public class UserControlBase : UserControl
     {
         public bool IsHostMenu
-        {
-            get
-            {
-                return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
-            }
-        }
+            => Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
+            => PortalController.Instance.GetCurrentPortalSettings();
 
         /// <inheritdoc cref="HtmlUtils.JavaScriptStringEncode(string)"/>
         public static IHtmlString JavaScriptStringEncode(string value)

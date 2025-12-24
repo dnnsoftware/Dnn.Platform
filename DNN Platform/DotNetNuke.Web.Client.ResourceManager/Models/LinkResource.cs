@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
     public abstract class LinkResource : ResourceBase, ILinkResource
     {
         /// <inheritdoc />
-        public bool Preload { get; set; } = false;
+        public bool Preload { get; set; }
 
         /// <inheritdoc />
         public string Media { get; set; }

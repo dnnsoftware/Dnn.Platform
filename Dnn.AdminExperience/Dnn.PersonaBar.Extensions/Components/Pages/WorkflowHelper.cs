@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.Pages.Components
         public static int GetTabWorkflowId(TabInfo tab)
         {
             return tab.StateID == Null.NullInteger
-                ? TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(PortalSettings.Current.PortalId)
+                ? TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(tab.PortalID)
                 : WorkflowStateManager.Instance.GetWorkflowState(tab.StateID).WorkflowID;
         }
 

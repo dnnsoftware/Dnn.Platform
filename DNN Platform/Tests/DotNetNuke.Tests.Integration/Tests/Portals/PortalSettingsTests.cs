@@ -18,14 +18,10 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
         private string _settingName;
         private string _settingValue;
 
-        public PortalSettingsTests()
-            : base(Constants.PORTAL_Zero)
-        {
-        }
-
         [SetUp]
-        public void Setup()
+        public void SetUp()
         {
+
             this._settingName = "NameToCheckFor";
 
             // we need different value so when we save we force going to database

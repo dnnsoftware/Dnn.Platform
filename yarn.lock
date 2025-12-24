@@ -1943,7 +1943,7 @@ __metadata:
     react-widgets: "npm:^5.8.4"
     redux-undo: "npm:^1.0.0-beta9"
     scroll: "npm:^3.0.1"
-    storybook: "npm:9.1.13"
+    storybook: "npm:9.1.17"
     style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.2"
     typescript: "npm:^5.9.3"
@@ -8028,11 +8028,11 @@ __metadata:
   linkType: hard
 
 "baseline-browser-mapping@npm:^2.8.9":
-  version: 2.8.18
-  resolution: "baseline-browser-mapping@npm:2.8.18"
+  version: 2.9.7
+  resolution: "baseline-browser-mapping@npm:2.9.7"
   bin:
     baseline-browser-mapping: dist/cli.js
-  checksum: 10/073e2548e0036e96f49644b94ba15e30ad273c5b2c314102c7b1473cd65c33878347e49185a4fc38fb1742957132c894f1229de1006924135f9e90c434601d1f
+  checksum: 10/870ff0c62bbc4017afc0c4058fc67929034a3f0a1eecc31f7156b88ff2a629433ba2ce12cd84fa6f34b72748935cfa7d0067c723ec501195a0a807925732827a
   languageName: node
   linkType: hard
 
@@ -8474,9 +8474,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30001702, caniuse-lite@npm:^1.0.30001746":
-  version: 1.0.30001757
-  resolution: "caniuse-lite@npm:1.0.30001757"
-  checksum: 10/2efcb3614a6e2618727e6ae7fc76668496650605010a7471128885cc7d8d6c789a94154ee78cb7907719e1c29b6d43bb5e14937e25e28b774f9b8dde51191968
+  version: 1.0.30001760
+  resolution: "caniuse-lite@npm:1.0.30001760"
+  checksum: 10/ac5c13d00b946c3ace331d25379ed9d85743b1028aba79ae80402cb128b4b491122585144898fefb836d4d9879c13c717a081ae241a00420cbbc7e1b934ec685
   languageName: node
   linkType: hard
 
@@ -21005,9 +21005,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"storybook@npm:9.1.13":
-  version: 9.1.13
-  resolution: "storybook@npm:9.1.13"
+"storybook@npm:9.1.17":
+  version: 9.1.17
+  resolution: "storybook@npm:9.1.17"
   dependencies:
     "@storybook/global": "npm:^5.0.0"
     "@testing-library/jest-dom": "npm:^6.6.3"
@@ -21028,7 +21028,7 @@ __metadata:
       optional: true
   bin:
     storybook: ./bin/index.cjs
-  checksum: 10/fa97a2f73c980e3c13daa22931545a4ddfec85dffac51c557387a46482fcaf348c1ea9721bd9c5104376bd36b56749e6797611d8ae8b865135f5d95d0b481349
+  checksum: 10/fa7d56a7cf0c6849c8130f5b7b3fcbd6615216fce94dc4ff363a5622f7091f74dac7fe3e983cecc90b3cee922f8ca30b9997b5bb936c644971cb8d20262bc038
   languageName: node
   linkType: hard
 

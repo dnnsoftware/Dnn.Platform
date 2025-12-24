@@ -137,7 +137,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
                 var detailParameter = Host.DebugMode ? detail : UrlUtils.EncryptParameter(detail, Host.GUID);
                 var protocol = HostController.Instance.GetBoolean("UseSSLForCacheSync", false) ? "https://" : "http://";
                 var notificationUrl =
-                    $"{protocol}{server.Url}/SimpleWebFarmSync.aspx?command={commandParameter}&detail={detailParameter}";
+                    $"{protocol}{server.Url}/SimpleWebFarmSync.axd?command={commandParameter}&detail={detailParameter}";
 
                 // Build a webrequest
                 var notificationRequest = WebRequest.CreateHttp(notificationUrl);
@@ -171,7 +171,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
                     }
 
                     // Otherwise log the failure
-                    Exceptions.LogException(new ApplicationException(
+                    Exceptions.LogException(new SyncException(
                         $"Error sending cache server notification.  Url: {request.RequestUri.AbsoluteUri} with a status code {response.StatusCode}"));
                 }
             }
@@ -179,7 +179,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             {
                 if (e.Status != WebExceptionStatus.RequestCanceled)
                 {
-                    Exceptions.LogException(new Exception("Synchronization Error in Request: " + request.RequestUri.AbsoluteUri, e));
+                    Exceptions.LogException(new SyncException("Synchronization Error in Request: " + request.RequestUri.AbsoluteUri, e));
                 }
             }
         }

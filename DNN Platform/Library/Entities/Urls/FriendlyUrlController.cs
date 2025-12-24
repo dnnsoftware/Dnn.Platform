@@ -732,10 +732,10 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 string ch = c.ToString(CultureInfo.InvariantCulture);
 
                 // do replacement in pre-defined list?
-                if (replacementChars != null && replacementChars.ContainsKey(ch))
+                if (replacementChars != null && replacementChars.TryGetValue(ch, out var replacement))
                 {
                     // replace with value
-                    ch = replacementChars[ch];
+                    ch = replacement;
                     replacedUnwantedChars = true;
                 }
                 else if (convertDiacritics && CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.NonSpacingMark)
@@ -807,7 +807,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 && leading.Length <= path.Length && leading != string.Empty)
             {
                 string start = path.Substring(0, leading.Length);
-                if (string.Compare(start, leading, StringComparison.OrdinalIgnoreCase) != 0)
+                if (!string.Equals(start, leading, StringComparison.OrdinalIgnoreCase))
                 {
                     // not leading with this
                     path = leading + path;
@@ -823,7 +823,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 && leading.Length <= path.Length && leading != string.Empty)
             {
                 string start = path.Substring(0, leading.Length);
-                if (string.Compare(start, leading, StringComparison.OrdinalIgnoreCase) == 0)
+                if (string.Equals(start, leading, StringComparison.OrdinalIgnoreCase))
                 {
                     // matches start, take leading off
                     path = path.Substring(leading.Length);
@@ -1062,13 +1062,13 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
 
                         var tabUrl = path.Replace(Globals.AddHTTP(settings.PortalAlias.HTTPAlias), string.Empty);
 
-                        if (tabUrl.Equals("/" + url, StringComparison.InvariantCultureIgnoreCase))
+                        if (tabUrl.Equals("/" + url, StringComparison.OrdinalIgnoreCase))
                         {
                             isUnique = false;
                             break;
                         }
                     }
-                    else if (tab.TabUrls.Any(u => u.Url.Equals("/" + url, StringComparison.InvariantCultureIgnoreCase)))
+                    else if (tab.TabUrls.Any(u => u.Url.Equals("/" + url, StringComparison.OrdinalIgnoreCase)))
                     {
                         isUnique = false;
                         break;

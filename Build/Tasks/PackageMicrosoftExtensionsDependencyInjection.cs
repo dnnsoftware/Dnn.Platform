@@ -16,6 +16,9 @@ using Dnn.CakeUtils;
 /// <summary>A cake task to generate the Microsoft.Extensions.DependencyInjection  package.</summary>
 public sealed class PackageMicrosoftExtensionsDependencyInjection : FrostingTask<Context>
 {
+    private static readonly string[] AllFiles = ["*",];
+    private static readonly string[] ManifestFiles = ["*.dnn",];
+
     /// <inheritdoc/>
     public override void Run(Context context)
     {
@@ -30,7 +33,7 @@ public sealed class PackageMicrosoftExtensionsDependencyInjection : FrostingTask
         context.Zip(
             packageDir.ToString(),
             packageZip,
-            context.GetFilesByPatterns(packageDir, new[] { "*" }, new[] { "*.dnn" }));
+            context.GetFilesByPatterns(packageDir, AllFiles, ManifestFiles));
 
         var manifestPath = context.GetFiles(packageDir.Path.CombineWithFilePath("*.dnn").ToString()).Single();
         context.Information($"Reading manifest from {manifestPath}");
@@ -39,7 +42,7 @@ public sealed class PackageMicrosoftExtensionsDependencyInjection : FrostingTask
         var assemblies =
             from XmlNode assemblyNode in manifest.SelectNodes("//assembly")
             from XmlNode childNode in assemblyNode.ChildNodes
-            where childNode.LocalName.Equals("name")
+            where childNode.LocalName.Equals("name", System.StringComparison.Ordinal)
             select childNode;
 
         foreach (var assemblyNameNode in assemblies)
@@ -53,7 +56,7 @@ public sealed class PackageMicrosoftExtensionsDependencyInjection : FrostingTask
                 append: true);
 
             var versionNode = assemblyNameNode.ParentNode.ChildNodes.Cast<XmlNode>()
-                .SingleOrDefault(childNode => childNode.LocalName.Equals("version"));
+                .SingleOrDefault(childNode => childNode.LocalName.Equals("version", System.StringComparison.Ordinal));
             if (versionNode != null)
             {
                 versionNode.InnerText = FileVersionInfo.GetVersionInfo(context.MakeAbsolute(assemblyPath).FullPath).FileVersion;

@@ -119,16 +119,14 @@ namespace DotNetNuke.Web.Client.Providers
         /// </remarks>
         protected override void RegisterDependencies(HttpContextBase http, string js, string css)
         {
-            if (!(http.CurrentHandler is Page))
+            if (http.CurrentHandler is not Page page)
             {
                 throw new InvalidOperationException("The current HttpHandler in a WebFormsFileRegistrationProvider must be of type Page");
             }
 
-            var page = (Page)http.CurrentHandler;
-
             if (page.Header == null)
             {
-                throw new NullReferenceException("DnnPageHeaderProvider requires a runat='server' tag in the page's header tag");
+                throw new InvalidOperationException("DnnPageHeaderProvider requires a runat='server' tag in the page's header tag");
             }
 
             var jsScriptBlock = new LiteralControl(js.Replace("&", "&amp;"));
@@ -137,11 +135,11 @@ namespace DotNetNuke.Web.Client.Providers
             page.FindControl(CssPlaceHolderName).Controls.Add(cssStyleBlock);
 
             var scriptManager = ScriptManager.GetCurrent(page);
-            if (scriptManager != null && scriptManager.IsInAsyncPostBack)
+            if (scriptManager is { IsInAsyncPostBack: true })
             {
                 var jsHolder = page.FindControl(JsPlaceHolderName);
                 jsHolder.ID = "$crm_" + jsHolder.ID;
-                scriptManager.RegisterDataItem(jsHolder, string.Format("{0}{1}", jsScriptBlock.Text, cssStyleBlock.Text));
+                scriptManager.RegisterDataItem(jsHolder, $"{jsScriptBlock.Text}{cssStyleBlock.Text}");
             }
         }
     }

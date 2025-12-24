@@ -238,7 +238,7 @@ namespace Dnn.PersonaBar.Themes.Components
             var themePath = Path.Combine(Globals.ApplicationMapPath, theme.Path);
             var user = UserController.Instance.GetCurrentUserInfo();
 
-            if (!user.IsSuperUser && themePath.IndexOf("\\portals\\_default\\", StringComparison.OrdinalIgnoreCase) != Null.NullInteger)
+            if (!user.IsSuperUser && themePath.IndexOf(@"\portals\_default\", StringComparison.OrdinalIgnoreCase) != Null.NullInteger)
             {
                 throw new SecurityException("NoPermission");
             }
@@ -256,9 +256,9 @@ namespace Dnn.PersonaBar.Themes.Components
                     Globals.DeleteFolderRecursive(themePath);
                 }
 
-                if (Directory.Exists(themePath.Replace("\\" + SkinController.RootSkin.ToLower() + "\\", "\\" + SkinController.RootContainer + "\\")))
+                if (Directory.Exists(themePath.Replace($@"\{SkinController.RootSkin.ToLowerInvariant()}\", $@"\{SkinController.RootContainer}\")))
                 {
-                    Globals.DeleteFolderRecursive(themePath.Replace("\\" + SkinController.RootSkin.ToLower() + "\\", "\\" + SkinController.RootContainer + "\\"));
+                    Globals.DeleteFolderRecursive(themePath.Replace($@"\{SkinController.RootSkin.ToLowerInvariant()}\", $@"\{SkinController.RootContainer}\"));
                 }
             }
             else if (theme.Type == ThemeType.Container)
@@ -285,7 +285,7 @@ namespace Dnn.PersonaBar.Themes.Components
             var objStreamReader = File.OpenText(themePath);
             var strSkin = objStreamReader.ReadToEnd();
             objStreamReader.Close();
-            var strTag = "<dnn:" + updateTheme.Token + " runat=\"server\" id=\"dnn" + updateTheme.Token + "\"";
+            var strTag = $"<dnn:{updateTheme.Token} runat=\"server\" id=\"dnn{updateTheme.Token}\"";
             var intOpenTag = strSkin.IndexOf(strTag);
             if (intOpenTag != -1)
             {
@@ -308,7 +308,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 objStream.WriteLine(strSkin);
                 objStream.Close();
 
-                this.UpdateManifest(portalSettings, updateTheme);
+                UpdateManifest(portalSettings, updateTheme);
             }
         }
 
@@ -340,7 +340,7 @@ namespace Dnn.PersonaBar.Themes.Components
                         case ".htm":
                         case ".html":
                         case ".css":
-                            if (strFile.ToLower().IndexOf(Globals.glbAboutPage.ToLower()) < 0)
+                            if (strFile.IndexOf(Globals.glbAboutPage, StringComparison.CurrentCultureIgnoreCase) < 0)
                             {
                                 arrSkinFiles.Add(strFile);
                             }
@@ -479,14 +479,14 @@ namespace Dnn.PersonaBar.Themes.Components
             return () => new ThemesController();
         }
 
-        private static IList<ThemeInfo> GetThemes(ThemeType type, string strRoot)
+        private static List<ThemeInfo> GetThemes(ThemeType type, string strRoot)
         {
             var themes = new List<ThemeInfo>();
             if (Directory.Exists(strRoot))
             {
                 foreach (var strFolder in Directory.GetDirectories(strRoot))
                 {
-                    var strName = strFolder.Substring(strFolder.LastIndexOf("\\") + 1);
+                    var strName = strFolder.Substring(strFolder.LastIndexOf(@"\") + 1);
                     if (strName != "_default")
                     {
                         var themePath = strFolder.Replace(Globals.ApplicationMapPath, string.Empty).TrimStart('\\').ToLowerInvariant();
@@ -572,7 +572,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 strDefaultSkinPath = strDefaultSkinPath.Substring(0, strDefaultSkinPath.Length - 1);
             }
 
-            return skinPath.ToLowerInvariant() == strDefaultSkinPath.ToLowerInvariant();
+            return skinPath.Equals(strDefaultSkinPath, StringComparison.OrdinalIgnoreCase);
         }
 
         private static string FormatThemePath(PortalSettings portalSettings, string themePath, string fileName, ThemeType type)
@@ -582,11 +582,11 @@ namespace Dnn.PersonaBar.Themes.Components
             string strRootSkin;
             if (type == ThemeType.Skin)
             {
-                strRootSkin = SkinController.RootSkin.ToLower();
+                strRootSkin = SkinController.RootSkin.ToLowerInvariant();
             }
             else
             {
-                strRootSkin = SkinController.RootContainer.ToLower();
+                strRootSkin = SkinController.RootContainer.ToLowerInvariant();
             }
 
             var strSkinType = themePath.IndexOf(Globals.HostMapPath, StringComparison.OrdinalIgnoreCase) != -1 ? "G" : "L";
@@ -595,21 +595,21 @@ namespace Dnn.PersonaBar.Themes.Components
                 strSkinType = "S";
             }
 
-            var strUrl = lowercasePath.Substring(filePath.IndexOf("\\" + strRootSkin + "\\", StringComparison.OrdinalIgnoreCase))
+            var strUrl = lowercasePath.Substring(filePath.IndexOf($@"\{strRootSkin}\", StringComparison.OrdinalIgnoreCase))
                         .Replace(".ascx", string.Empty)
-                        .Replace("\\", "/")
+                        .Replace(@"\", "/")
                         .TrimStart('/');
 
             return "[" + strSkinType + "]" + strUrl;
         }
 
-        private void UpdateManifest(PortalSettings portalSettings, UpdateThemeInfo updateTheme)
+        private static void UpdateManifest(PortalSettings portalSettings, UpdateThemeInfo updateTheme)
         {
             var themePath = SkinController.FormatSkinSrc(updateTheme.Path, portalSettings);
             if (File.Exists(themePath.Replace(".ascx", ".htm")))
             {
                 var strFile = themePath.Replace(".ascx", ".xml");
-                if (File.Exists(strFile) == false)
+                if (!File.Exists(strFile))
                 {
                     strFile = strFile.Replace(Path.GetFileName(strFile), "skin.xml");
                 }
@@ -625,15 +625,15 @@ namespace Dnn.PersonaBar.Themes.Components
                     xmlDoc.InnerXml = "<Objects></Objects>";
                 }
 
-                var xmlToken = xmlDoc.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + updateTheme.Token + "]']");
+                var xmlToken = xmlDoc.DocumentElement.SelectSingleNode($"descendant::Object[Token='[{updateTheme.Token}]']");
                 if (xmlToken == null)
                 {
                     // add token
-                    string strToken = "<Token>[" + updateTheme.Token + "]</Token><Settings></Settings>";
+                    string strToken = $"<Token>[{updateTheme.Token}]</Token><Settings></Settings>";
                     xmlToken = xmlDoc.CreateElement("Object");
                     xmlToken.InnerXml = strToken;
                     xmlDoc.SelectSingleNode("Objects").AppendChild(xmlToken);
-                    xmlToken = xmlDoc.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + updateTheme.Token + "]']");
+                    xmlToken = xmlDoc.DocumentElement.SelectSingleNode($"descendant::Object[Token='[{updateTheme.Token}]']");
                 }
 
                 var strValue = updateTheme.Value;
@@ -648,10 +648,10 @@ namespace Dnn.PersonaBar.Themes.Components
                     }
                 }
 
-                if (blnUpdate == false)
+                if (!blnUpdate)
                 {
-                    var strSetting = "<Name>" + updateTheme.Setting + "</Name><Value>" + strValue + "</Value>";
-                    XmlNode xmlSetting = xmlDoc.CreateElement("Setting");
+                    var strSetting = $"<Name>{updateTheme.Setting}</Name><Value>{strValue}</Value>";
+                    var xmlSetting = xmlDoc.CreateElement("Setting");
                     xmlSetting.InnerXml = strSetting;
                     xmlToken.SelectSingleNode("Settings").AppendChild(xmlSetting);
                 }
@@ -664,9 +664,7 @@ namespace Dnn.PersonaBar.Themes.Components
                     }
 
                     var objStream = File.CreateText(strFile);
-                    var strXML = xmlDoc.InnerXml;
-                    strXML = strXML.Replace("><", ">" + Environment.NewLine + "<");
-                    objStream.WriteLine(strXML);
+                    objStream.WriteLine(xmlDoc.InnerXml.Replace("><", ">" + Environment.NewLine + "<"));
                     objStream.Close();
                 }
                 catch (Exception ex)

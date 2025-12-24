@@ -26,11 +26,13 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
             this.AdminContainer = Utilities.FormatContainerName(ps.DefaultAdminContainer);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
         public string __PageCount => "list-pages";
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming

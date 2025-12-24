@@ -77,7 +77,7 @@ namespace DotNetNuke.Services.Cache
         public override string PurgeCache()
         {
             // called by scheduled job to remove cache files which are no longer active
-            return this.PurgeCacheFiles(Globals.HostMapPath + CachingDirectory);
+            return PurgeCacheFiles(Globals.HostMapPath + CachingDirectory);
         }
 
         /// <inheritdoc/>
@@ -168,7 +168,7 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        private string PurgeCacheFiles(string folder)
+        private static string PurgeCacheFiles(string folder)
         {
             // declare counters
             int purgedFiles = 0;

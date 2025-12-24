@@ -21,6 +21,8 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(CreateDeploy))] // This is to ensure CreateUpgrade runs last and not in parallel, can be removed when we get to v11 where the telerik workaround is no longer needed
     public sealed class CreateUpgrade : FrostingTask<Context>
     {
+        private static readonly string[] IncludeAll = ["**/*",];
+
         /// <inheritdoc/>
         public override void Run(Context context)
         {
@@ -28,7 +30,7 @@ namespace DotNetNuke.Build.Tasks
             var excludes = new string[context.PackagingPatterns.InstallExclude.Length + context.PackagingPatterns.UpgradeExclude.Length];
             context.PackagingPatterns.InstallExclude.CopyTo(excludes, 0);
             context.PackagingPatterns.UpgradeExclude.CopyTo(excludes, context.PackagingPatterns.InstallExclude.Length);
-            var files = context.GetFilesByPatterns(context.WebsiteFolder, new[] { "**/*" }, excludes);
+            var files = context.GetFilesByPatterns(context.WebsiteFolder, IncludeAll, excludes);
             files.Add(context.GetFilesByPatterns(context.WebsiteFolder, context.PackagingPatterns.UpgradeInclude));
             context.Information("Zipping {0} files for Upgrade zip", files.Count);
 

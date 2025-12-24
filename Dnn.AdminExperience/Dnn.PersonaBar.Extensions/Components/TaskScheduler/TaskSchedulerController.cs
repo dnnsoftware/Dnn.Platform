@@ -5,6 +5,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -22,27 +23,22 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
         private static readonly string SchedulersToRunOnSameWebServerKey = "SchedulersToRunOnSameWebServer";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TaskSchedulerController));
 
-        private string LocalResourcesFile
-        {
-            get
-            {
-                return Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.TaskScheduler/App_LocalResources/TaskScheduler.resx");
-            }
-        }
+        private static string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.TaskScheduler/App_LocalResources/TaskScheduler.resx");
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string GetTimeLapse(int timeLapse, string timeLapseMeasurement)
         {
             if (timeLapse != Null.NullInteger)
             {
                 var str = Null.NullString;
-                var strPrefix = Localization.GetString("TimeLapsePrefix", this.LocalResourcesFile);
-                var strSec = Localization.GetString("Second", this.LocalResourcesFile);
-                var strMn = Localization.GetString("Minute", this.LocalResourcesFile);
-                var strHour = Localization.GetString("Hour", this.LocalResourcesFile);
-                var strDay = Localization.GetString("Day", this.LocalResourcesFile);
-                var strWeek = Localization.GetString("Week", this.LocalResourcesFile);
-                var strMonth = Localization.GetString("Month", this.LocalResourcesFile);
-                var strYear = Localization.GetString("Year", this.LocalResourcesFile);
+                var strPrefix = Localization.GetString("TimeLapsePrefix", LocalResourcesFile);
+                var strSec = Localization.GetString("Second", LocalResourcesFile);
+                var strMn = Localization.GetString("Minute", LocalResourcesFile);
+                var strHour = Localization.GetString("Hour", LocalResourcesFile);
+                var strDay = Localization.GetString("Day", LocalResourcesFile);
+                var strWeek = Localization.GetString("Week", LocalResourcesFile);
+                var strMonth = Localization.GetString("Month", LocalResourcesFile);
+                var strYear = Localization.GetString("Year", LocalResourcesFile);
                 var strSecs = Localization.GetString("Seconds");
                 var strMns = Localization.GetString("Minutes");
                 var strHours = Localization.GetString("Hours");
@@ -78,14 +74,16 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
                 return str;
             }
 
-            return Localization.GetString("n/a", this.LocalResourcesFile);
+            return Localization.GetString("n/a", LocalResourcesFile);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void StopSchedule()
         {
-            SchedulingProvider.Instance().Halt(Localization.GetString("ManuallyStopped", this.LocalResourcesFile));
+            SchedulingProvider.Instance().Halt(Localization.GetString("ManuallyStopped", LocalResourcesFile));
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ScheduleItem CreateScheduleItem(string typeFullName, string friendlyName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string scheduleStartDate, string servers)
         {
             var scheduleItem = new ScheduleItem();
@@ -119,31 +117,32 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             return scheduleItem;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<ScheduleItem> GetScheduleItems(bool? enabled, string serverName = "", string taskName = "")
         {
             try
             {
-                IEnumerable<ScheduleItem> scheduleviews;
+                IEnumerable<ScheduleItem> scheduleViews;
                 if (string.IsNullOrEmpty(serverName) || serverName == Localization.GetString("All"))
                 {
-                    scheduleviews = SchedulingController.GetSchedule();
+                    scheduleViews = SchedulingController.GetSchedule();
                 }
                 else
                 {
-                    scheduleviews = SchedulingController.GetSchedule(serverName);
+                    scheduleViews = SchedulingController.GetSchedule(serverName);
                 }
 
                 if (!string.IsNullOrEmpty(taskName))
                 {
-                    scheduleviews = scheduleviews.Where(item => item.FriendlyName.IndexOf(taskName, StringComparison.OrdinalIgnoreCase) >= 0);
+                    scheduleViews = scheduleViews.Where(item => item.FriendlyName.IndexOf(taskName, StringComparison.OrdinalIgnoreCase) >= 0);
                 }
 
                 if (enabled.HasValue)
                 {
-                    scheduleviews = scheduleviews.Where(item => item.Enabled == enabled.Value);
+                    scheduleViews = scheduleViews.Where(item => item.Enabled == enabled.Value);
                 }
 
-                var scheduleItems = scheduleviews as IList<ScheduleItem> ?? scheduleviews.ToList();
+                var scheduleItems = scheduleViews as IList<ScheduleItem> ?? scheduleViews.ToList();
                 foreach (var item in scheduleItems.Where(x => x.NextStart == Null.NullDate)
                             .Where(item => item.ScheduleStartDate != Null.NullDate))
                 {
@@ -162,34 +161,33 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
         /// <summary>Gets a list of servers to be recommended for a particular scheduler.</summary>
         /// <param name="schedulerId">Scheduler Id.</param>
         /// <returns>List of recommended servers for specified <paramref name="schedulerId"/>.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<string> GetRecommendedServers(int schedulerId)
         {
             var hostSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
 
             var schedulerIds = hostSettingsService.GetString(SchedulersToRunOnSameWebServerKey, string.Empty)
-                .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Split([',',], StringSplitOptions.RemoveEmptyEntries)
                 .Where(x => int.TryParse(x, out var id))
                 .Select(x => int.Parse(x))
                 .ToArray();
 
             if (!schedulerIds.Contains(schedulerId))
             {
-                return new string[0];
+                return [];
             }
 
-            var servers = SchedulingProvider.Instance().GetSchedule()
+            return SchedulingProvider.Instance().GetSchedule()
                 .Cast<ScheduleItem>()
                 .Where(x => x.ScheduleID != schedulerId
-                    && x.Enabled
-                    && schedulerIds.Contains(x.ScheduleID)
-                    && !string.IsNullOrWhiteSpace(x.Servers))
+                            && x.Enabled
+                            && schedulerIds.Contains(x.ScheduleID)
+                            && !string.IsNullOrWhiteSpace(x.Servers))
                 .SelectMany(x => x.Servers
-                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Split([',',], StringSplitOptions.RemoveEmptyEntries)
                     .Select(s => s.Trim()))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .OrderBy(x => x);
-
-            return servers;
         }
     }
 }

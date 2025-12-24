@@ -1,336 +1,44 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\packages\NUnit3TestAdapter.5.2.0\build\net462\NUnit3TestAdapter.props" Condition="Exists('..\..\..\packages\NUnit3TestAdapter.5.2.0\build\net462\NUnit3TestAdapter.props')" />
-  <Import Project="..\..\..\packages\NUnit.4.4.0\build\NUnit.props" Condition="Exists('..\..\..\packages\NUnit.4.4.0\build\NUnit.props')" />
-  <Import Project="..\..\..\packages\Microsoft.Testing.Platform.MSBuild.2.0.2\build\Microsoft.Testing.Platform.MSBuild.props" Condition="Exists('..\..\..\packages\Microsoft.Testing.Platform.MSBuild.2.0.2\build\Microsoft.Testing.Platform.MSBuild.props')" />
-  <Import Project="..\..\..\packages\Microsoft.Testing.Extensions.Telemetry.2.0.2\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props" Condition="Exists('..\..\..\packages\Microsoft.Testing.Extensions.Telemetry.2.0.2\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props')" />
-  <Import Project="..\..\..\packages\Microsoft.Testing.Platform.2.0.2\build\netstandard2.0\Microsoft.Testing.Platform.props" Condition="Exists('..\..\..\packages\Microsoft.Testing.Platform.2.0.2\build\netstandard2.0\Microsoft.Testing.Platform.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F9CE7C63-C729-4E3A-A266-6B23D75A1247}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DotNetNuke.Tests.Urls</RootNamespace>
-    <AssemblyName>DotNetNuke.Tests.Urls</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <RestorePackages>true</RestorePackages>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
-    <RunSettingsFilePath>
-    </RunSettingsFilePath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>SA0001</NoWarn>
+    <TargetFramework>net48</TargetFramework>
+    <IsPackable>false</IsPackable>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>618,SA0001</NoWarn>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>SA0001</NoWarn>
-    <LangVersion>latest</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Castle.Core.5.1.1\lib\net462\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.HttpModules">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\HttpModules\bin\DotNetNuke.HttpModules.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Instrumentation">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.log4net">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ApplicationInsights, Version=2.23.0.29, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.ApplicationInsights.2.23.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.8.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Testing.Extensions.MSBuild, Version=2.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Testing.Platform.MSBuild.2.0.2\lib\netstandard2.0\Microsoft.Testing.Extensions.MSBuild.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Testing.Extensions.Telemetry, Version=2.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Testing.Extensions.Telemetry.2.0.2\lib\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Testing.Extensions.TrxReport.Abstractions, Version=2.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Testing.Extensions.TrxReport.Abstractions.2.0.2\lib\netstandard2.0\Microsoft.Testing.Extensions.TrxReport.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Testing.Extensions.VSTestBridge, Version=2.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Testing.Extensions.VSTestBridge.2.0.2\lib\netstandard2.0\Microsoft.Testing.Extensions.VSTestBridge.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Testing.Platform, Version=2.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Testing.Platform.2.0.2\lib\netstandard2.0\Microsoft.Testing.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.TestPlatform.AdapterUtilities, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.TestPlatform.AdapterUtilities.18.0.1\lib\net462\Microsoft.TestPlatform.AdapterUtilities.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.TestPlatform.CoreUtilities, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.TestPlatform.ObjectModel.18.0.1\lib\net462\Microsoft.TestPlatform.CoreUtilities.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.TestPlatform.PlatformAbstractions, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.TestPlatform.ObjectModel.18.0.1\lib\net462\Microsoft.TestPlatform.PlatformAbstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.TestPlatform.ObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.TestPlatform.ObjectModel.18.0.1\lib\net462\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll</HintPath>
-    </Reference>
-    <Reference Include="Moq, Version=4.20.72.0, Culture=neutral, PublicKeyToken=69f491c39445e920">
-      <HintPath>..\..\..\packages\Moq.4.20.72\lib\net462\Moq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NUnit.4.4.0\lib\net462\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework.legacy, Version=4.4.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NUnit.4.4.0\lib\net462\nunit.framework.legacy.dll</HintPath>
-    </Reference>
-    <Reference Include="PetaPoco, Version=6.0.683.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\PetaPoco.Compiled.6.0.683\lib\net45\PetaPoco.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Buffers.4.6.0\lib\net462\System.Buffers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Collections.Immutable, Version=9.0.0.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Collections.Immutable.9.0.2\lib\net462\System.Collections.Immutable.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=9.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Diagnostics.DiagnosticSource.9.0.2\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Memory, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Memory.4.6.0\lib\net462\System.Memory.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Numerics.Vectors.4.6.0\lib\net462\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reflection.Metadata, Version=9.0.0.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Reflection.Metadata.9.0.2\lib\net462\System.Reflection.Metadata.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="NUnit" Version="4.4.0" />
+    <PackageReference Include="NUnit.Analyzers" Version="4.11.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="NUnit3TestAdapter" Version="6.0.0" />
+    <PackageReference Include="PetaPoco.Compiled" Version="6.0.683" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Extensions.cs" />
-    <Compile Include="ExtensionUrlProviderControllerTests.cs" />
-    <Compile Include="FriendlyUrlTests.cs" />
-    <Compile Include="TestUtil.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UrlAssert.cs" />
-    <Compile Include="UrlRewriteTests.cs" />
-    <Compile Include="UrlTestBase.cs" />
-    <Compile Include="UrlTestFactoryClass.cs" />
-    <Compile Include="UrlTestHelper.cs" />
+    <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\DNN Platform\Library\DotNetNuke.Library.csproj" />
+    <ProjectReference Include="..\..\..\DNN Platform\Tests\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <AdditionalFiles Include="..\..\..\stylecop.json">
-      <Link>stylecop.json</Link>
-    </AdditionalFiles>
-    <None Include="..\App.config">
-      <Link>App.config</Link>
-    </None>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-    <None Include="TestFiles\FriendlyUrl\PrimaryPortalAlias\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\PrimaryPortalAlias\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\Regex\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\Regex\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\DoNotRedirect\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\DoNotRedirect\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\Jira_Tests\DNN_5318.csv" />
-    <None Include="TestFiles\UrlRewrite\Jira_Tests\DNN_3361_dic.csv" />
-    <None Include="TestFiles\UrlRewrite\Jira_Tests\DNN_3361.csv" />
-    <None Include="TestFiles\UrlRewrite\Jira_Tests\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\SecureRedirect\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\SecureRedirect\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\PrimaryPortalAlias_Default\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\PrimaryPortalAlias_Default\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\ForwardExternalUrl\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\ForwardExternalUrl\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\Regex\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\Regex\TestFile.csv" />
-    <None Include="TestFiles\Users.csv" />
-    <None Include="DotNetNuke.config" />
-    <None Include="SiteUrls.config" />
-    <None Include="TestFiles\Aliases.csv" />
-    <None Include="TestFiles\FriendlyUrl\BaseFriendlyUrl\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\BaseFriendlyUrl\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\BaseTestList.csv" />
-    <None Include="TestFiles\FriendlyUrl\Diacritics\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\Diacritics\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\ReplaceCharsTestList.csv" />
-    <None Include="TestFiles\FriendlyUrl\DoubleChars\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\DoubleChars\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\IllegalChars\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\IllegalChars\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\SpaceEncoding\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\SpaceEncoding\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\CustomPageName\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\CustomPageName\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\ImprovedFriendlyUrl\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\ForceLowerCase\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\ForceLowerCase\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\IncludePageName\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\IncludePageName\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\PageExtension\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\LanguageParameter\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\LanguageParameter\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\ReplaceSpace\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\ReplaceSpace\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\ReverseLanguageParameter\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\ReverseLanguageParameter\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\ImprovedTestList.csv" />
-    <None Include="TestFiles\FriendlyUrl\VanityUrl\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\VanityUrl\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\BasicUrlRewrite\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\CanonicalRedirect\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\CanonicalRedirect\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\VanityUrl\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\VanityUrl\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\DeletedTabHandling\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\DeletedTabHandling\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\ForceLowerCase\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\ForceLowerCase\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\ForcePortalDefaultLanguage\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\ForcePortalDefaultLanguage\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\Diacritics\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\Diacritics\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\DoubleChars\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\DoubleChars\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\IllegalChars\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\IllegalChars\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\CustomPageName\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\CustomPageName\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\ReplaceCharsTestList.csv" />
-    <None Include="TestFiles\UrlRewrite\PrimaryPortalAlias\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\PrimaryPortalAlias\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\SiteRootRedirect\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\SiteRootRedirect\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\SearchFriendly\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\SearchFriendly\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\HumanFriendly\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\HumanFriendly\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\Exclude\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\Exclude\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\ExtensionLess\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\ExtensionLess\TestFile.csv" />
-    <None Include="TestFiles\FriendlyUrl\PageExtension\Settings.csv" />
-    <None Include="TestFiles\FriendlyUrl\ImprovedFriendlyUrl\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\LanguageParameter\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\LanguageParameter\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\ReplaceSpace\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\ReplaceSpace\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\ReverseLanguageParameter\Settings.csv" />
-    <None Include="TestFiles\UrlRewrite\ReverseLanguageParameter\TestFile.csv" />
-    <None Include="TestFiles\UrlRewrite\TestList.csv" />
+    <AdditionalFiles Include="..\..\..\stylecop.json" Link="stylecop.json" />
+    <None Include="..\App.config" Link="App.config" />  
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
-      <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
-      <Name>DotNetNuke.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
-      <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
-      <Name>DotNetNuke.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
-      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
-      <Name>DotNetNuke.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj">
-      <Project>{5AECE021-E449-4A7F-BF82-2FA7B236ED3E}</Project>
-      <Name>DotNetNuke.Tests.Utilities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="TestFiles\UrlRewrite\BasicUrlRewrite\TestFile.csv" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
-    <Content Include="TestFiles\FriendlyUrl\BaseFriendlyUrl\Setup.sql" />
-    <Content Include="TestFiles\FriendlyUrl\BaseFriendlyUrl\TearDown.sql" />
-    <Content Include="TestFiles\FriendlyUrl\TearDown.sql" />
-    <Content Include="TestFiles\FriendlyUrl\Setup.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\..\packages\NUnit.Analyzers.4.11.2\analyzers\dotnet\cs\nunit.analyzers.dll" />
-    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets'))" />
-    <Error Condition="!Exists('..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net472.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net472.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net472.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net472.targets'))" />
-    <Error Condition="!Exists('..\..\..\packages\Microsoft.Testing.Platform.2.0.2\build\netstandard2.0\Microsoft.Testing.Platform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Testing.Platform.2.0.2\build\netstandard2.0\Microsoft.Testing.Platform.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\Microsoft.Testing.Platform.2.0.2\build\netstandard2.0\Microsoft.Testing.Platform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Testing.Platform.2.0.2\build\netstandard2.0\Microsoft.Testing.Platform.targets'))" />
-    <Error Condition="!Exists('..\..\..\packages\Microsoft.Testing.Extensions.Telemetry.2.0.2\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Testing.Extensions.Telemetry.2.0.2\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\Microsoft.Testing.Platform.MSBuild.2.0.2\build\Microsoft.Testing.Platform.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Testing.Platform.MSBuild.2.0.2\build\Microsoft.Testing.Platform.MSBuild.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\Microsoft.Testing.Platform.MSBuild.2.0.2\build\Microsoft.Testing.Platform.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Testing.Platform.MSBuild.2.0.2\build\Microsoft.Testing.Platform.MSBuild.targets'))" />
-    <Error Condition="!Exists('..\..\..\packages\NUnit.4.4.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnit.4.4.0\build\NUnit.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\NUnit3TestAdapter.5.2.0\build\net462\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnit3TestAdapter.5.2.0\build\net462\NUnit3TestAdapter.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\NUnit3TestAdapter.5.2.0\build\net462\NUnit3TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnit3TestAdapter.5.2.0\build\net462\NUnit3TestAdapter.targets'))" />
-  </Target>
-  <Import Project="..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets" Condition="Exists('..\..\..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets')" />
-  <Import Project="..\..\..\packages\Microsoft.Testing.Platform.2.0.2\build\netstandard2.0\Microsoft.Testing.Platform.targets" Condition="Exists('..\..\..\packages\Microsoft.Testing.Platform.2.0.2\build\netstandard2.0\Microsoft.Testing.Platform.targets')" />
-  <Import Project="..\..\..\packages\Microsoft.Testing.Platform.MSBuild.2.0.2\build\Microsoft.Testing.Platform.MSBuild.targets" Condition="Exists('..\..\..\packages\Microsoft.Testing.Platform.MSBuild.2.0.2\build\Microsoft.Testing.Platform.MSBuild.targets')" />
-  <Import Project="..\..\..\packages\NUnit3TestAdapter.5.2.0\build\net462\NUnit3TestAdapter.targets" Condition="Exists('..\..\..\packages\NUnit3TestAdapter.5.2.0\build\net462\NUnit3TestAdapter.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

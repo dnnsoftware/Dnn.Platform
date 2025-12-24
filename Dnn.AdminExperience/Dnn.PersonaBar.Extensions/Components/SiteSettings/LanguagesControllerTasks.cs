@@ -136,16 +136,24 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         internal static LocalizationProgress ReadProgressFile()
         {
             var path = Path.Combine(Globals.ApplicationMapPath, "App_Data", LocalizationProgressFile);
-            using (var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 256))
+            using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 256);
+            var bytes = new byte[file.Length];
+            var bytesToRead = file.Length;
+            var bytesRead = 0;
+
+            do
             {
-                var bytes = new byte[file.Length];
-                file.Read(bytes, 0, bytes.Length);
-                var text = Encoding.UTF8.GetString(bytes);
-                return JsonConvert.DeserializeObject<LocalizationProgress>(text);
+                var readCount = file.Read(bytes, bytesRead, bytes.Length);
+                bytesRead += readCount;
+                bytesToRead -= readCount;
             }
+            while (bytesToRead > 0);
+
+            var text = Encoding.UTF8.GetString(bytes);
+            return JsonConvert.DeserializeObject<LocalizationProgress>(text);
         }
 
-        private static IList<TabInfo> GetTabsToLocalize(int portalId, string code, string defaultLocale)
+        private static List<TabInfo> GetTabsToLocalize(int portalId, string code, string defaultLocale)
         {
             var results = new List<TabInfo>();
             var portalTabs = TabController.Instance.GetTabsByPortal(portalId)
@@ -171,7 +179,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             return results;
         }
 
-        private static void ProcessLanguage(ICollection<TabInfo> pageList, Locale locale, string defaultLocale, int languageCount, int totalLanguages, LocalizationProgress progress)
+        private static void ProcessLanguage(List<TabInfo> pageList, Locale locale, string defaultLocale, int languageCount, int totalLanguages, LocalizationProgress progress)
         {
             progress.PrimaryTotal = totalLanguages;
             progress.PrimaryValue = languageCount;
@@ -228,15 +236,13 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         {
             var path = Path.Combine(Globals.ApplicationMapPath, "App_Data", LocalizationProgressFile);
             var text = JsonConvert.SerializeObject(progress);
-            using (var file = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read, 256))
-            {
-                var bytes = Encoding.UTF8.GetBytes(text);
-                file.Write(bytes, 0, bytes.Length);
-                file.Flush();
-            }
+            using var file = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read, 256);
+            var bytes = Encoding.UTF8.GetBytes(text);
+            file.Write(bytes, 0, bytes.Length);
+            file.Flush();
         }
 
-        private static IList<TabInfo> GetPages(int portalId)
+        private static List<TabInfo> GetPages(int portalId)
         {
             return (
                 from kvp in TabController.Instance.GetTabsByPortal(portalId)
@@ -250,11 +256,10 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         private static void PublishLanguage(string cultureCode, int portalId, bool publish)
         {
             var enabledLanguages = LocaleController.Instance.GetLocales(portalId);
-            Locale enabledlanguage;
-            if (enabledLanguages.TryGetValue(cultureCode, out enabledlanguage))
+            if (enabledLanguages.TryGetValue(cultureCode, out var enabledLanguage))
             {
-                enabledlanguage.IsPublished = publish;
-                LocaleController.Instance.UpdatePortalLocale(enabledlanguage);
+                enabledLanguage.IsPublished = publish;
+                LocaleController.Instance.UpdatePortalLocale(enabledLanguage);
             }
         }
     }

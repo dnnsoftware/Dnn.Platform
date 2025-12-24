@@ -16,9 +16,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
     {
         private readonly IHostSettings hostSettings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClientResourceController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ClientResourceController"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
         public ClientResourceController(IHostSettings hostSettings)
         {
@@ -26,11 +24,11 @@ namespace DotNetNuke.Web.Client.ResourceManager
             this.RegisterPathNameAlias("SharedScripts", "~/Resources/Shared/Scripts/");
         }
 
-        private List<IFontResource> Fonts { get; set; } = new List<IFontResource>();
+        private List<IFontResource> Fonts { get; set; } = [];
 
-        private List<IScriptResource> Scripts { get; set; } = new List<IScriptResource>();
+        private List<IScriptResource> Scripts { get; set; } = [];
 
-        private List<IStylesheetResource> Stylesheets { get; set; } = new List<IStylesheetResource>();
+        private List<IStylesheetResource> Stylesheets { get; set; } = [];
 
         private Dictionary<string, string> PathNameAliases { get; set; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 

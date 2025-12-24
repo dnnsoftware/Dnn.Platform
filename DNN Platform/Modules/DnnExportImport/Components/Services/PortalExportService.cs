@@ -21,6 +21,8 @@ namespace Dnn.ExportImport.Components.Services
     /// <summary>Service to export/import portal data.</summary>
     public class PortalExportService : BasePortableService
     {
+        private static readonly char[] SettingExportSeparator = [',',];
+
         /// <inheritdoc/>
         public override string Category => Constants.Category_Portal;
 
@@ -50,7 +52,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 var portalSettings = new List<ExportPortalSetting>();
                 var settingToMigrate =
-                    SettingsController.Instance.GetSetting(Constants.PortalSettingExportKey)?.SettingValue?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    SettingsController.Instance.GetSetting(Constants.PortalSettingExportKey)?.SettingValue?.Split(SettingExportSeparator, StringSplitOptions.RemoveEmptyEntries);
 
                 if (settingToMigrate != null)
                 {
@@ -58,7 +60,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     // Migrate only allowed portal settings.
                     portalSettings =
-                        portalSettings.Where(x => settingToMigrate.Any(setting => setting.Trim().Equals(x.SettingName, StringComparison.InvariantCultureIgnoreCase))).ToList();
+                        portalSettings.Where(x => settingToMigrate.Any(setting => setting.Trim().Equals(x.SettingName, StringComparison.OrdinalIgnoreCase))).ToList();
 
                     // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? portalSettings.Count : this.CheckPoint.TotalItems;

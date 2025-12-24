@@ -8,6 +8,8 @@ namespace DotNetNuke.Web.InternalServices
 
     public class ServiceRouteMapper : IServiceRouteMapper
     {
+        private static readonly string[] Namespaces = ["DotNetNuke.Web.InternalServices",];
+
         /// <inheritdoc/>
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
@@ -15,7 +17,7 @@ namespace DotNetNuke.Web.InternalServices
                 "InternalServices",
                 "default",
                 "{controller}/{action}",
-                new[] { "DotNetNuke.Web.InternalServices" });
+                Namespaces);
         }
     }
 }

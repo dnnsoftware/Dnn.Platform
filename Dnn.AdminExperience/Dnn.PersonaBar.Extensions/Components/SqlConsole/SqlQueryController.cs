@@ -93,10 +93,10 @@ namespace Dnn.PersonaBar.SqlConsole.Components
         /// <inheritdoc/>
         public IList<string> GetConnections()
         {
-            IList<string> connections = new List<string>();
+            var connections = new List<string>();
             foreach (ConnectionStringSettings connection in ConfigurationManager.ConnectionStrings)
             {
-                if (connection.Name.ToLowerInvariant() != "localmysqlserver" && connection.Name.ToLowerInvariant() != "localsqlserver")
+                if (!connection.Name.Equals("localmysqlserver", StringComparison.OrdinalIgnoreCase) && !connection.Name.Equals("localsqlserver", StringComparison.OrdinalIgnoreCase))
                 {
                     connections.Add(connection.Name);
                 }

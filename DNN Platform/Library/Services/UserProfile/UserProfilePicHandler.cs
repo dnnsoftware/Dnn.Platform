@@ -20,6 +20,17 @@ namespace DotNetNuke.Services.UserProfile
     {
         private static readonly object ResizeLocker = new object();
 
+        private static readonly HashSet<string> ImageExtensions = new(StringComparer.OrdinalIgnoreCase)
+        {
+            ".JPG",
+            ".JPE",
+            ".BMP",
+            ".GIF",
+            ".PNG",
+            ".JPEG",
+            ".ICO",
+        };
+
         /// <inheritdoc/>
         public bool IsReusable
         {
@@ -197,8 +208,7 @@ namespace DotNetNuke.Services.UserProfile
                 extension = $".{extension}";
             }
 
-            List<string> imageExtensions = [".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO"];
-            return imageExtensions.Contains(extension.ToUpper());
+            return ImageExtensions.Contains(extension);
         }
 
         private static void SetupCulture()

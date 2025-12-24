@@ -13,16 +13,16 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
     {
         // provide a default field order for use of callers
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public static string[] FieldOrder =
-        {
+        public static readonly string[] FieldOrder =
+        [
             "UserId",
             "Username",
             "Email",
             "LastLogin",
             "IsDeleted",
             "IsAuthorized",
-            "IsLockedOut",
-        };
+            "IsLockedOut"
+        ];
 
         public UserModelBase()
         {

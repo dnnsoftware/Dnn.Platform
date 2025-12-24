@@ -124,8 +124,8 @@ namespace DotNetNuke.Common.Utilities
         public virtual bool IsDefaultProtectedPath(string folderPath)
         {
             return string.IsNullOrEmpty(folderPath) ||
-                   folderPath.Equals("skins", StringComparison.InvariantCultureIgnoreCase) ||
-                   folderPath.Equals("containers", StringComparison.InvariantCultureIgnoreCase) ||
+                   folderPath.Equals("skins", StringComparison.OrdinalIgnoreCase) ||
+                   folderPath.Equals("containers", StringComparison.OrdinalIgnoreCase) ||
                    folderPath.StartsWith("skins/", StringComparison.InvariantCultureIgnoreCase) ||
                    folderPath.StartsWith("containers/", StringComparison.InvariantCultureIgnoreCase);
         }

@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Exceptions
         /// <param name="strError">The error message.</param>
         public ErrorContainer(string strError)
         {
-            this.Container = this.FormatException(strError);
+            this.Container = FormatException(strError);
         }
 
         /// <summary>Initializes a new instance of the <see cref="ErrorContainer"/> class.</summary>
@@ -30,11 +30,11 @@ namespace DotNetNuke.Services.Exceptions
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
             if (objUserInfo.IsSuperUser)
             {
-                this.Container = this.FormatException(strError, exc);
+                this.Container = FormatException(strError, exc);
             }
             else
             {
-                this.Container = this.FormatException(strError);
+                this.Container = FormatException(strError);
             }
         }
 
@@ -49,14 +49,14 @@ namespace DotNetNuke.Services.Exceptions
 
         public ModuleMessage Container { get; set; }
 
-        private ModuleMessage FormatException(string strError)
+        private static ModuleMessage FormatException(string strError)
         {
             ModuleMessage m;
             m = UI.Skins.Skin.GetModuleMessageControl(Localization.GetString("ErrorOccurred"), strError, ModuleMessage.ModuleMessageType.RedError);
             return m;
         }
 
-        private ModuleMessage FormatException(string strError, Exception exc)
+        private static ModuleMessage FormatException(string strError, Exception exc)
         {
             ModuleMessage m;
             if (exc != null)

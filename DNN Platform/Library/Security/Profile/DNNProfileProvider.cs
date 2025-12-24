@@ -41,7 +41,7 @@ namespace DotNetNuke.Security.Profile
             // Load the Profile properties
             if (user.UserID > Null.NullInteger)
             {
-                var key = this.GetProfileCacheKey(user);
+                var key = GetProfileCacheKey(user);
                 var cachedProperties = (ProfilePropertyDefinitionCollection)DataCache.GetCache(key);
                 if (cachedProperties != null)
                 {
@@ -54,7 +54,7 @@ namespace DotNetNuke.Security.Profile
                         while (dr.Read())
                         {
                             // Ensure the data reader returned is valid
-                            if (!string.Equals(dr.GetName(0), "ProfileID", StringComparison.InvariantCultureIgnoreCase))
+                            if (!string.Equals(dr.GetName(0), "ProfileID", StringComparison.OrdinalIgnoreCase))
                             {
                                 break;
                             }
@@ -112,7 +112,7 @@ namespace DotNetNuke.Security.Profile
         /// <param name="user">The user to persist to the Data Store.</param>
         public override void UpdateUserProfile(UserInfo user)
         {
-            var key = this.GetProfileCacheKey(user);
+            var key = GetProfileCacheKey(user);
             DataCache.ClearCache(key);
 
             ProfilePropertyDefinitionCollection properties = user.Profile.ProfileProperties;
@@ -134,9 +134,10 @@ namespace DotNetNuke.Security.Profile
                 // however if old is changed, we need to update new as well
                 else if (oldTimeZone.IsDirty)
                 {
-                    int oldOffset;
-                    int.TryParse(oldTimeZone.PropertyValue, out oldOffset);
-                    newTimeZone.PropertyValue = Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(oldOffset).Id;
+                    if (int.TryParse(oldTimeZone.PropertyValue, out var oldOffset))
+                    {
+                        newTimeZone.PropertyValue = Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(oldOffset).Id;
+                    }
                 }
             }
 
@@ -159,6 +160,11 @@ namespace DotNetNuke.Security.Profile
             }
         }
 
+        private static string GetProfileCacheKey(UserInfo user)
+        {
+            return string.Format(DataCache.UserProfileCacheKey, user.PortalID, user.Username);
+        }
+
         private void UpdateTimeZoneInfo(UserInfo user, ProfilePropertyDefinitionCollection properties)
         {
             ProfilePropertyDefinition newTimeZone = properties["PreferredTimeZone"];
@@ -168,11 +174,12 @@ namespace DotNetNuke.Security.Profile
                 // Old timezone is present but new is not...we will set that up.
                 if (!string.IsNullOrEmpty(oldTimeZone.PropertyValue) && string.IsNullOrEmpty(newTimeZone.PropertyValue))
                 {
-                    int oldOffset;
-                    int.TryParse(oldTimeZone.PropertyValue, out oldOffset);
-                    TimeZoneInfo timeZoneInfo = Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(oldOffset);
-                    newTimeZone.PropertyValue = timeZoneInfo.Id;
-                    this.UpdateUserProfile(user);
+                    if (int.TryParse(oldTimeZone.PropertyValue, out var oldOffset))
+                    {
+                        TimeZoneInfo timeZoneInfo = Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(oldOffset);
+                        newTimeZone.PropertyValue = timeZoneInfo.Id;
+                        this.UpdateUserProfile(user);
+                    }
                 }
 
                 // It's also possible that the new value is set but not the old value. We need to make them backwards compatible
@@ -185,11 +192,6 @@ namespace DotNetNuke.Security.Profile
                     }
                 }
             }
-        }
-
-        private string GetProfileCacheKey(UserInfo user)
-        {
-            return string.Format(DataCache.UserProfileCacheKey, user.PortalID, user.Username);
         }
     }
 }

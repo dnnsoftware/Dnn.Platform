@@ -13,48 +13,29 @@ namespace DotNetNuke.Common.Utilities
         private readonly string key;
         private readonly Func<T> initializer;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StateVariable{T}"/> class.
-        /// Initializes a new item variable.
-        /// </summary>
-        /// <param name="key">
-        /// The key to use for storing the value in the items.
-        /// </param>
+        /// <summary>Initializes a new instance of the <see cref="StateVariable{T}"/> class.</summary>
+        /// <param name="key">The key to use for storing the value in the items.</param>
         protected StateVariable(string key)
         {
             if (string.IsNullOrEmpty(key))
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
             }
 
             this.key = key + this.GetType().FullName;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StateVariable{T}"/> class.
-        /// Initializes a new item variable with a initializer.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="StateVariable{T}"/> class with an initializer.</summary>
         /// <param name="key">The key to use for storing the value in the dictionary.</param>
         /// <param name="initializer">A function that is called in order to create a default value per dictionary.</param>
         protected StateVariable(string key, Func<T> initializer)
             : this(key)
         {
-            if (initializer == null)
-            {
-                throw new ArgumentNullException("initializer");
-            }
-
-            this.initializer = initializer;
+            this.initializer = initializer ?? throw new ArgumentNullException(nameof(initializer));
         }
 
-        /// <summary>Gets a value indicating whether indicates wether there is a value present or not.</summary>
-        public bool HasValue
-        {
-            get
-            {
-                return this[this.key] != null;
-            }
-        }
+        /// <summary>Gets a value indicating whether indicates whether there is a value present or not.</summary>
+        public bool HasValue => this[this.key] != null;
 
         /// <summary>Gets the value in the current items or if none is available <c>default(T)</c>.</summary>
         public T ValueOrDefault

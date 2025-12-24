@@ -7,6 +7,7 @@ namespace DotNetNuke.Entities.Modules
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -289,21 +290,15 @@ namespace DotNetNuke.Entities.Modules
                 // ReSharper restore AssignNullToNotNullAttribute
             }
 
-            XmlNode newNode = xmlModule.CreateElement("definition");
-            ModuleDefinitionInfo objModuleDef = ModuleDefinitionController.GetModuleDefinitionByID(module.ModuleDefID);
+            var newNode = xmlModule.CreateElement("definition");
+            var objModuleDef = ModuleDefinitionController.GetModuleDefinitionByID(module.ModuleDefID);
             newNode.InnerText = DesktopModuleController.GetDesktopModule(objModuleDef.DesktopModuleID, module.PortalID).ModuleName;
-            if (moduleNode != null)
-            {
-                moduleNode.AppendChild(newNode);
-            }
+            moduleNode?.AppendChild(newNode);
 
             // Add Module Definition Info
-            XmlNode definitionNode = xmlModule.CreateElement("moduledefinition");
+            var definitionNode = xmlModule.CreateElement("moduledefinition");
             definitionNode.InnerText = objModuleDef.FriendlyName;
-            if (moduleNode != null)
-            {
-                moduleNode.AppendChild(definitionNode);
-            }
+            moduleNode?.AppendChild(definitionNode);
 
             return moduleNode;
         }
@@ -965,11 +960,7 @@ namespace DotNetNuke.Entities.Modules
 
             // get module dictionary from cache
             var modules = DataCache.GetCache<Dictionary<string, ModuleInfo>>(key) ?? new Dictionary<string, ModuleInfo>();
-            if (modules.ContainsKey(definitionName))
-            {
-                module = modules[definitionName];
-            }
-            else
+            if (!modules.TryGetValue(definitionName, out module))
             {
                 // clone the dictionary so that we have a local copy
                 var clonemodules = new Dictionary<string, ModuleInfo>();
@@ -1083,7 +1074,7 @@ namespace DotNetNuke.Entities.Modules
                 cacheKey,
                 DataCache.TabModuleCacheTimeOut,
                 DataCache.TabModuleCachePriority),
-                c => this.GetModulesCurrentPage(tabId));
+                c => GetModulesCurrentPage(tabId));
         }
 
         /// <summary>  Get a list of all TabModule references of a module instance.</summary>
@@ -1129,12 +1120,12 @@ namespace DotNetNuke.Entities.Modules
                         continue;
                     }
 
-                    ModulePermissionInfo modulePermission = this.AddModulePermission(module, systemModulePermission, tabPermission.RoleID, tabPermission.UserID, tabPermission.AllowAccess);
+                    ModulePermissionInfo modulePermission = AddModulePermission(module, systemModulePermission, tabPermission.RoleID, tabPermission.UserID, tabPermission.AllowAccess);
 
                     // ensure that every EDIT permission which allows access also provides VIEW permission
                     if (modulePermission.PermissionKey == "EDIT" && modulePermission.AllowAccess)
                     {
-                        this.AddModulePermission(module, (PermissionInfo)systemModuleViewPermissions[0], modulePermission.RoleID, modulePermission.UserID, true);
+                        AddModulePermission(module, (PermissionInfo)systemModuleViewPermissions[0], modulePermission.RoleID, modulePermission.UserID, true);
                     }
                 }
 
@@ -1150,7 +1141,7 @@ namespace DotNetNuke.Entities.Modules
                         // create the module permission
                         var customModulePermission = (PermissionInfo)customModulePermissions[j];
 
-                        this.AddModulePermission(module, customModulePermission, tabPermission.RoleID, tabPermission.UserID, tabPermission.AllowAccess);
+                        AddModulePermission(module, customModulePermission, tabPermission.RoleID, tabPermission.UserID, tabPermission.AllowAccess);
                     }
                 }
             }
@@ -1263,7 +1254,7 @@ namespace DotNetNuke.Entities.Modules
                 }
                 else
                 {
-                    this.UpdateContentItem(module);
+                    UpdateContentItem(module);
                 }
             }
 
@@ -1610,6 +1601,7 @@ namespace DotNetNuke.Entities.Modules
             this.ClearCache(localizedModule.TabID);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal Hashtable GetModuleSettings(int moduleId, int tabId)
         {
             string cacheKey = string.Format(DataCache.ModuleSettingsCacheKey, tabId);
@@ -1647,10 +1639,11 @@ namespace DotNetNuke.Entities.Modules
                                 return moduleSettingsDic;
                             });
 
-            return moduleSettings.ContainsKey(moduleId) ? moduleSettings[moduleId] : new Hashtable();
+            return moduleSettings.TryGetValue(moduleId, out var setting) ? setting : new Hashtable();
         }
 
-        internal Hashtable GetTabModuleSettings(int tabmoduleId, int tabId)
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        internal Hashtable GetTabModuleSettings(int tabModuleId, int tabId)
         {
             string cacheKey = string.Format(DataCache.TabModuleSettingsCacheKey, tabId);
 
@@ -1662,33 +1655,30 @@ namespace DotNetNuke.Entities.Modules
                 c =>
                             {
                                 var tabModuleSettingsDic = new Dictionary<int, Hashtable>();
-                                using (IDataReader dr = DataProvider.Instance().GetTabModuleSettingsByTab(tabId))
+                                using var dr = DataProvider.Instance().GetTabModuleSettingsByTab(tabId);
+                                while (dr.Read())
                                 {
-                                    while (dr.Read())
+                                    int tMId = dr.GetInt32(0);
+                                    if (!tabModuleSettingsDic.TryGetValue(tMId, out var settings))
                                     {
-                                        int tMId = dr.GetInt32(0);
-                                        Hashtable settings;
-                                        if (!tabModuleSettingsDic.TryGetValue(tMId, out settings))
-                                        {
-                                            settings = new Hashtable();
-                                            tabModuleSettingsDic[tMId] = settings;
-                                        }
+                                        settings = new Hashtable();
+                                        tabModuleSettingsDic[tMId] = settings;
+                                    }
 
-                                        if (!dr.IsDBNull(2))
-                                        {
-                                            settings[dr.GetString(1)] = dr.GetString(2);
-                                        }
-                                        else
-                                        {
-                                            settings[dr.GetString(1)] = string.Empty;
-                                        }
+                                    if (!dr.IsDBNull(2))
+                                    {
+                                        settings[dr.GetString(1)] = dr.GetString(2);
+                                    }
+                                    else
+                                    {
+                                        settings[dr.GetString(1)] = string.Empty;
                                     }
                                 }
 
                                 return tabModuleSettingsDic;
                             });
 
-            return tabModuleSettings.ContainsKey(tabmoduleId) ? tabModuleSettings[tabmoduleId] : new Hashtable();
+            return tabModuleSettings.TryGetValue(tabModuleId, out var setting) ? setting : new Hashtable();
         }
 
         /// <inheritdoc/>
@@ -1732,7 +1722,7 @@ namespace DotNetNuke.Entities.Modules
                     nodeModule.OwnerDocument.RemoveChild(existing);
                 }
 
-                XmlNode newNode = nodeModule.OwnerDocument.CreateElement("content");
+                var newNode = nodeModule.OwnerDocument.CreateElement("content");
                 var xmlAttr = nodeModule.OwnerDocument.CreateAttribute("type");
                 xmlAttr.Value = Globals.CleanName(module.DesktopModule.ModuleName);
                 newNode.Attributes?.Append(xmlAttr);
@@ -2078,6 +2068,130 @@ namespace DotNetNuke.Entities.Modules
             DataProvider.UpdateTabModuleVersion(tabModuleId, Guid.NewGuid());
         }
 
+        private static ModulePermissionInfo AddModulePermission(ModuleInfo module, PermissionInfo permission, int roleId, int userId, bool allowAccess)
+        {
+            var modulePermission = new ModulePermissionInfo
+            {
+                ModuleID = module.ModuleID,
+                PermissionID = permission.PermissionID,
+                RoleID = roleId,
+                UserID = userId,
+                PermissionKey = permission.PermissionKey,
+                AllowAccess = allowAccess,
+            };
+
+            // add the permission to the collection
+            if (!module.ModulePermissions.Contains(modulePermission))
+            {
+                module.ModulePermissions.Add(modulePermission);
+            }
+
+            return modulePermission;
+        }
+
+        /// <summary>Checks whether module VIEW permission is inherited from its tab.</summary>
+        /// <param name="module">The module.</param>
+        /// <param name="permission">The module permission.</param>
+        private static bool IsModuleViewPermissionInherited(ModuleInfo module, ModulePermissionInfo permission)
+        {
+            Requires.NotNull(module);
+
+            Requires.NotNull(permission);
+
+            var permissionViewKey = "VIEW";
+
+            if (!module.InheritViewPermissions || permission.PermissionKey != permissionViewKey)
+            {
+                return false;
+            }
+
+            var tabPermissions = TabPermissionController.GetTabPermissions(module.TabID, module.PortalID);
+
+            return tabPermissions?.Where(x => x.RoleID == permission.RoleID && x.PermissionKey == permissionViewKey).Any() == true;
+        }
+
+        /// <summary>Checks whether given permission is granted for translator role.</summary>
+        /// <param name="permission">The module permission.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="culture">The culture code.</param>
+        private static bool IsTranslatorRolePermission(ModulePermissionInfo permission, int portalId, string culture)
+        {
+            Requires.NotNull(permission);
+
+            if (string.IsNullOrWhiteSpace(culture) || portalId == Null.NullInteger)
+            {
+                return false;
+            }
+
+            var translatorSettingKey = $"DefaultTranslatorRoles-{culture}";
+
+            var translatorSettingValue =
+                PortalController.GetPortalSetting(translatorSettingKey, portalId, null) ??
+                HostController.Instance.GetString(translatorSettingKey, null);
+
+            var translatorRoles =
+                translatorSettingValue?.Split([';',], StringSplitOptions.RemoveEmptyEntries);
+
+            return translatorRoles?.Any(r => r.Equals(permission.RoleName, StringComparison.OrdinalIgnoreCase)) == true;
+        }
+
+        /// <summary>Copies permissions from source to new tab.</summary>
+        /// <param name="sourceModule">Source module.</param>
+        /// <param name="newModule">New module.</param>
+        private static void CopyModulePermissions(ModuleInfo sourceModule, ModuleInfo newModule)
+        {
+            Requires.NotNull(sourceModule);
+
+            Requires.NotNull(newModule);
+
+            foreach (ModulePermissionInfo permission in sourceModule.ModulePermissions)
+            {
+                // skip inherited view and translator permissions
+                if (IsModuleViewPermissionInherited(newModule, permission) ||
+                    IsTranslatorRolePermission(permission, sourceModule.PortalID, sourceModule.CultureCode))
+                {
+                    continue;
+                }
+
+                // need to force vew permission to be copied
+                permission.PermissionKey = newModule.InheritViewPermissions && permission.PermissionKey == "VIEW" ?
+                    null :
+                    permission.PermissionKey;
+
+                AddModulePermission(
+                    newModule,
+                    permission,
+                    permission.RoleID,
+                    permission.UserID,
+                    permission.AllowAccess);
+            }
+        }
+
+        /// <summary>Update content item when the module title changed.</summary>
+        /// <param name="module">The module info.</param>
+        private static void UpdateContentItem(ModuleInfo module)
+        {
+            IContentController contentController = Util.GetContentController();
+            if (module.Content != module.ModuleTitle)
+            {
+                module.Content = module.ModuleTitle;
+                contentController.UpdateContentItem(module);
+            }
+        }
+
+        private static Dictionary<int, ModuleInfo> GetModulesCurrentPage(int tabId)
+        {
+            var modules = CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId));
+
+            var dictionary = new Dictionary<int, ModuleInfo>();
+            foreach (var module in modules)
+            {
+                dictionary[module.ModuleID] = module;
+            }
+
+            return dictionary;
+        }
+
         private void AddModuleInternal(ModuleInfo module)
         {
             // add module
@@ -2116,111 +2230,12 @@ namespace DotNetNuke.Entities.Modules
             EventManager.Instance.OnModuleCreated(new ModuleEventArgs { Module = module });
         }
 
-        private ModulePermissionInfo AddModulePermission(ModuleInfo module, PermissionInfo permission, int roleId, int userId, bool allowAccess)
-        {
-            var modulePermission = new ModulePermissionInfo
-            {
-                ModuleID = module.ModuleID,
-                PermissionID = permission.PermissionID,
-                RoleID = roleId,
-                UserID = userId,
-                PermissionKey = permission.PermissionKey,
-                AllowAccess = allowAccess,
-            };
-
-            // add the permission to the collection
-            if (!module.ModulePermissions.Contains(modulePermission))
-            {
-                module.ModulePermissions.Add(modulePermission);
-            }
-
-            return modulePermission;
-        }
-
         private void CopyTabModuleSettingsInternal(ModuleInfo fromModule, ModuleInfo toModule)
         {
             // Copy each setting to the new TabModule instance
             foreach (DictionaryEntry setting in fromModule.TabModuleSettings)
             {
                 this.UpdateTabModuleSetting(toModule.TabModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
-            }
-        }
-
-        /// <summary>Checks whether module VIEW permission is inherited from its tab.</summary>
-        /// <param name="module">The module.</param>
-        /// <param name="permission">The module permission.</param>
-        private bool IsModuleViewPermissionInherited(ModuleInfo module, ModulePermissionInfo permission)
-        {
-            Requires.NotNull(module);
-
-            Requires.NotNull(permission);
-
-            var permissionViewKey = "VIEW";
-
-            if (!module.InheritViewPermissions || permission.PermissionKey != permissionViewKey)
-            {
-                return false;
-            }
-
-            var tabPermissions = TabPermissionController.GetTabPermissions(module.TabID, module.PortalID);
-
-            return tabPermissions?.Where(x => x.RoleID == permission.RoleID && x.PermissionKey == permissionViewKey).Any() == true;
-        }
-
-        /// <summary>Checks whether given permission is granted for translator role.</summary>
-        /// <param name="permission">The module permission.</param>
-        /// <param name="portalId">The portal ID.</param>
-        /// <param name="culture">The culture code.</param>
-        private bool IsTranslatorRolePermission(ModulePermissionInfo permission, int portalId, string culture)
-        {
-            Requires.NotNull(permission);
-
-            if (string.IsNullOrWhiteSpace(culture) || portalId == Null.NullInteger)
-            {
-                return false;
-            }
-
-            var translatorSettingKey = $"DefaultTranslatorRoles-{culture}";
-
-            var translatorSettingValue =
-                PortalController.GetPortalSetting(translatorSettingKey, portalId, null) ??
-                HostController.Instance.GetString(translatorSettingKey, null);
-
-            var translatorRoles =
-                translatorSettingValue?.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-
-            return translatorRoles?.Any(r => r.Equals(permission.RoleName, StringComparison.OrdinalIgnoreCase)) == true;
-        }
-
-        /// <summary>Copies permissions from source to new tab.</summary>
-        /// <param name="sourceModule">Source module.</param>
-        /// <param name="newModule">New module.</param>
-        private void CopyModulePermisions(ModuleInfo sourceModule, ModuleInfo newModule)
-        {
-            Requires.NotNull(sourceModule);
-
-            Requires.NotNull(newModule);
-
-            foreach (ModulePermissionInfo permission in sourceModule.ModulePermissions)
-            {
-                // skip inherited view and translator permissions
-                if (this.IsModuleViewPermissionInherited(newModule, permission) ||
-                    this.IsTranslatorRolePermission(permission, sourceModule.PortalID, sourceModule.CultureCode))
-                {
-                    continue;
-                }
-
-                // need to force vew permission to be copied
-                permission.PermissionKey = newModule.InheritViewPermissions && permission.PermissionKey == "VIEW" ?
-                    null :
-                    permission.PermissionKey;
-
-                this.AddModulePermission(
-                    newModule,
-                    permission,
-                    permission.RoleID,
-                    permission.UserID,
-                    permission.AllowAccess);
             }
         }
 
@@ -2265,7 +2280,7 @@ namespace DotNetNuke.Entities.Modules
                 }
 
                 // copy permisions from source to new module
-                this.CopyModulePermisions(sourceModule, newModule);
+                CopyModulePermissions(sourceModule, newModule);
 
                 // Add Module
                 this.AddModuleInternal(newModule);
@@ -2490,31 +2505,6 @@ namespace DotNetNuke.Entities.Modules
                 DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, moduleInfo.TabModuleID));
                 this.ClearCache(moduleInfo.TabID);
             }
-        }
-
-        /// <summary>Update content item when the module title changed.</summary>
-        /// <param name="module">The module info.</param>
-        private void UpdateContentItem(ModuleInfo module)
-        {
-            IContentController contentController = Util.GetContentController();
-            if (module.Content != module.ModuleTitle)
-            {
-                module.Content = module.ModuleTitle;
-                contentController.UpdateContentItem(module);
-            }
-        }
-
-        private Dictionary<int, ModuleInfo> GetModulesCurrentPage(int tabId)
-        {
-            var modules = CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId));
-
-            var dictionary = new Dictionary<int, ModuleInfo>();
-            foreach (var module in modules)
-            {
-                dictionary[module.ModuleID] = module;
-            }
-
-            return dictionary;
         }
     }
 }
