@@ -4,7 +4,7 @@ import "./style.less";
 import { Collapsible, GridCell, IconButton }  from "@dnnsoftware/dnn-react-common";
 import resx from "resources";
 import util from "utils";
-import CheckIcon from "../../../img/common/checkmark.svg";
+import CheckIcon from "../../../img/common/checkmark.svg?react";
 
 let canEdit = false;
 
@@ -32,7 +32,7 @@ class RoleRow extends Component {
         document.removeEventListener("click", this.handleClick);
         this._isMounted = false;
     }
-    
+
     handleClick(event) {
         // Note: this workaround is needed in IE. The remove event listener in the componentWillUnmount is called
         // before the handleClick handler is called, but in spite of that, the handleClick is executed. To avoid
