@@ -14,6 +14,7 @@
     "/web.*.config",
     "/App_Data/RadSpell/en-US.tdf",
     "/bin/Dnn.AuthServices.Jwt.*",
+    "/bin/Dnn.ContactList.*",
     "/bin/Dnn.EditBar.*",
     "/bin/Dnn.Modules.*",
     "/bin/Dnn.PersonaBar.*",
@@ -84,6 +85,7 @@
     "/bin/Providers/*.xml"
   ],
   "symbolsExclude": [
+    "/bin/Dnn.ContactList.*",
     "/bin/DotNetNuke.log4net*",
     "/bin/HtmlAgilityPack*",
     "/bin/Lucene*",
