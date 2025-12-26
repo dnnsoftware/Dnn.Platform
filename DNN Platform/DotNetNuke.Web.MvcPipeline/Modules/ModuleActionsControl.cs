@@ -49,6 +49,11 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
         }
 
         /// <summary>
+        /// Gets or sets the current module control.
+        /// </summary>
+        public IModuleControl ModuleControl { get; set; }
+
+        /// <summary>
         /// Gets the root action used to build the actions tree.
         /// </summary>
         protected ModuleAction ActionRoot
@@ -131,7 +136,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
         /// <summary>
         /// Gets the module action collection for the current module.
         /// </summary>
-        protected ModuleActionCollection Actions
+        protected ModuleActionCollection ModuleControlActions
         {
             get
             {
@@ -140,17 +145,12 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
         }
 
         /// <summary>
-        /// Gets or sets the current module control.
-        /// </summary>
-        public IModuleControl ModuleControl { get; set; }
-
-        /// <summary>
         /// Executes the Razor module control and returns the result.
         /// </summary>
         /// <returns>The Razor module result.</returns>
         public override IRazorModuleResult Invoke()
         {
-            var moduleInfo = ModuleConfiguration;
+            var moduleInfo = this.ModuleConfiguration;
             this.OnLoad(moduleInfo);
 
             var viewModel = new Models.ModuleActionsModel
@@ -158,9 +158,10 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
                 ModuleContext = moduleInfo,
                 SupportsQuickSettings = this.SupportsQuickSettings,
                 DisplayQuickSettings = this.DisplayQuickSettings,
-                // QuickSettingsModel = this.qu,
                 CustomActionsJSON = this.CustomActionsJSON,
                 AdminActionsJSON = this.AdminActionsJSON,
+
+                // QuickSettingsModel
                 Panes = this.Panes,
                 CustomText = this.CustomText,
                 AdminText = this.AdminText,
@@ -171,7 +172,28 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
                 ActionScripts = this.actionScripts,
             };
 
-            return View("ModuleActions", viewModel);
+            return this.View("ModuleActions", viewModel);
+        }
+
+        /// <summary>
+        /// Configures the page by registering resources required by the actions UI.
+        /// </summary>
+        /// <param name="context">The page configuration context.</param>
+        public void ConfigurePage(PageConfigurationContext context)
+        {
+            context.ClientResourceController
+                  .CreateStylesheet("~/admin/menus/ModuleActions/ModuleActions.css")
+                  .SetPriority(FileOrder.Css.ModuleCss)
+                  .Register();
+            context.ClientResourceController
+                .CreateStylesheet("~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css")
+                .SetPriority(FileOrder.Css.ModuleCss)
+                .Register();
+            context.ClientResourceController
+                .CreateScript("~/admin/menus/ModuleActions/ModuleActions.js")
+                .Register();
+            context.JavaScriptLibraryHelper.RequestRegistration(CommonJs.DnnPlugins);
+            context.ServicesFramework.RequestAjaxAntiForgerySupport();
         }
 
         /// <summary>
@@ -183,14 +205,14 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
         {
             return Localization.GetString(key, Localization.GlobalResourceFile);
         }
-       
+
         /// <summary>
         /// Populates the actions model based on the provided module configuration.
         /// </summary>
         /// <param name="moduleInfo">The module information.</param>
         protected void OnLoad(ModuleInfo moduleInfo)
         {
-            this.ActionRoot.Actions.AddRange(this.Actions);
+            this.ActionRoot.Actions.AddRange(this.ModuleControlActions);
             this.AdminActionsJSON = "[]";
             this.CustomActionsJSON = "[]";
             this.Panes = "[]";
@@ -291,7 +313,6 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
 
                     this.SupportsMove = true;
                 }
-                
             }
             catch (Exception exc)
             {
@@ -299,27 +320,5 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
                 throw exc;
             }
         }
-
-        /// <summary>
-        /// Configures the page by registering resources required by the actions UI.
-        /// </summary>
-        /// <param name="context">The page configuration context.</param>
-        public void ConfigurePage(PageConfigurationContext context)
-        {
-            context.ClientResourceController
-                  .CreateStylesheet("~/admin/menus/ModuleActions/ModuleActions.css")
-                  .SetPriority(FileOrder.Css.ModuleCss)
-                  .Register();
-            context.ClientResourceController
-                .CreateStylesheet("~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css")
-                .SetPriority(FileOrder.Css.ModuleCss)
-                .Register();
-            context.ClientResourceController
-                .CreateScript("~/admin/menus/ModuleActions/ModuleActions.js")
-                .Register();
-            context.JavaScriptLibraryHelper.RequestRegistration(CommonJs.DnnPlugins);
-            context.ServicesFramework.RequestAjaxAntiForgerySupport();
-        }
-
     }
 }

@@ -171,6 +171,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                     {
                         listItems += ParseTemplate(separatorTemplate, string.Empty, localTokenReplace, currentCulture);
                     }
+
                     i++;
 
                     string listItem = string.Empty;

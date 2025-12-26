@@ -365,26 +365,6 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
         public abstract string ViewName();
 
         /// <summary>
-        /// Gets the localized string for the specified key.
-        /// </summary>
-        /// <param name="key">The localization key.</param>
-        /// <returns>The localized string.</returns>
-        protected string LocalizeString(string key)
-        {
-            return Localization.GetString(key, this.LocalResourceFile);
-        }
-
-        /// <summary>
-        /// Gets a localized string that is safe for use in JavaScript.
-        /// </summary>
-        /// <param name="key">The localization key.</param>
-        /// <returns>The localized JavaScript-safe string.</returns>
-        protected string LocalizeSafeJsString(string key)
-        {
-            return Localization.GetSafeJSString(key, this.LocalResourceFile);
-        }
-
-        /// <summary>
         /// Invokes the module view for the specified input configuration.
         /// </summary>
         /// <param name="input">The control view model input.</param>
@@ -404,9 +384,30 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
                 activeModule.PaneName = input.PanaName;
                 activeModule.IconFile = input.IconFile;
             }
+
             this.moduleContext.Configuration = activeModule;
             var model = this.ViewModel();
             return this.PartialView(this.ViewName(), model);
+        }
+
+        /// <summary>
+        /// Gets the localized string for the specified key.
+        /// </summary>
+        /// <param name="key">The localization key.</param>
+        /// <returns>The localized string.</returns>
+        protected string LocalizeString(string key)
+        {
+            return Localization.GetString(key, this.LocalResourceFile);
+        }
+
+        /// <summary>
+        /// Gets a localized string that is safe for use in JavaScript.
+        /// </summary>
+        /// <param name="key">The localization key.</param>
+        /// <returns>The localized JavaScript-safe string.</returns>
+        protected string LocalizeSafeJsString(string key)
+        {
+            return Localization.GetSafeJSString(key, this.LocalResourceFile);
         }
     }
 }

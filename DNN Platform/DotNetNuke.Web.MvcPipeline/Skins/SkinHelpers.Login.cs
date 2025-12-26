@@ -38,8 +38,9 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         public static IHtmlString Login(this HtmlHelper<PageModel> helper, string cssClass = "SkinObject", string text = "", string logoffText = "", bool legacyMode = true, bool showInErrorPage = false)
         {
             var navigationManager = helper.ViewData.Model.NavigationManager;
-            //TODO: CSP - enable when CSP implementation is ready
-            var nonce = string.Empty; //helper.ViewData.Model.ContentSecurityPolicy.Nonce;
+
+            // TODO: CSP - enable when CSP implementation is ready
+            var nonce = string.Empty; // helper.ViewData.Model.ContentSecurityPolicy.Nonce;
             var portalSettings = PortalSettings.Current;
             var request = HttpContext.Current.Request;
 
@@ -146,6 +147,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                 {
                     nonceAttribute = $"nonce=\"{nonce}\"";
                 }
+
                 var script = string.Format(
                     @"
                     <script {0} >

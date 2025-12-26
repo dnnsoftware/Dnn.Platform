@@ -32,7 +32,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             {
                 throw new InvalidOperationException("The model need to be present.");
             }
-            
+
             var editDiv = new TagBuilder("div");
 
             // editDiv.GenerateId("dnn_" + id + "_SyncPanel");
@@ -49,8 +49,9 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             {
                 paneDiv.AddCssClass(cssClass);
             }
+
             id = id.ToLower();
-            
+
             if (model.Skin.Panes.ContainsKey(id))
             {
                 var pane = model.Skin.Panes[id];
@@ -93,7 +94,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                     paneDiv.AddCssClass("EditBarEmptyPane");
                 }
             }
-            
+
             if (model.IsEditMode)
             {
                 // Add support for drag and drop

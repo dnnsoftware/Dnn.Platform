@@ -5,16 +5,16 @@
 namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 {
     using System;
+
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.MvcPipeline.Models;
     using DotNetNuke.Services.ClientDependency;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.MvcPipeline.Models;
 
     /// <summary>
     /// Builds and configures <see cref="ContainerModel"/> instances for module containers.
@@ -151,16 +151,13 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         /// </summary>
         private ContainerModel ProcessStylesheets(ContainerModel container, bool includeModuleCss)
         {
-            // MvcClientResourceManager.RegisterStyleSheet(this.Page.ControllerContext, container.ContainerPath + "container.css", FileOrder.Css.ContainerCss);
-            //container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = container.ContainerPath + "container.css", FileOrder = FileOrder.Css.ContainerCss });
-            this.clientResourceController.RegisterStylesheet(container.ContainerPath + "container.css" , DotNetNuke.Abstractions.ClientResources.FileOrder.Css.ContainerCss, true);
+            this.clientResourceController.RegisterStylesheet(container.ContainerPath + "container.css", DotNetNuke.Abstractions.ClientResources.FileOrder.Css.ContainerCss, true);
 
             if (!string.IsNullOrEmpty(container.ContainerSrc))
             {
-                // MvcClientResourceManager.RegisterStyleSheet(this.Page.ControllerContext, container.ContainerSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificContainerCss);
-                //container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = container.ContainerSrc.Replace(".ascx", ".css"), FileOrder = FileOrder.Css.SpecificContainerCss });
                 this.clientResourceController.RegisterStylesheet(container.ContainerSrc.Replace(".ascx", ".css"), DotNetNuke.Abstractions.ClientResources.FileOrder.Css.SpecificContainerCss, true);
             }
+
             // process the base class module properties
             if (includeModuleCss)
             {
@@ -179,8 +176,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                         stylesheet = Globals.ApplicationPath + "/DesktopModules/" + folderName.Replace("\\", "/") + "/module.css";
                     }
 
-                    // MvcClientResourceManager.RegisterStyleSheet(this.Page.ControllerContext, stylesheet, FileOrder.Css.ModuleCss);
-                    //container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = stylesheet, FileOrder = FileOrder.Css.ModuleCss });
                     this.clientResourceController.RegisterStylesheet(stylesheet, DotNetNuke.Abstractions.ClientResources.FileOrder.Css.ModuleCss, true);
                 }
 
@@ -189,8 +184,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 {
                     stylesheet = Globals.ApplicationPath + "/" + controlSrc.Substring(0, ix + 1) + "module.css";
 
-                    // MvcClientResourceManager.RegisterStyleSheet(this.Page.ControllerContext, stylesheet, FileOrder.Css.ModuleCss);
-                    //container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = stylesheet, FileOrder = FileOrder.Css.ModuleCss });
                     this.clientResourceController.RegisterStylesheet(stylesheet, DotNetNuke.Abstractions.ClientResources.FileOrder.Css.ModuleCss, true);
                 }
             }
@@ -230,7 +223,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
         private ContainerModel AddAdministratorOnlyHighlighting(ContainerModel container, string message)
         {
-            // this.ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo dnnFormInfoAdminErrMssg\">{0}</div>", message)));
+            // todo  this.ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo dnnFormInfoAdminErrMssg\">{0}</div>", message)));
             return container;
         }
     }

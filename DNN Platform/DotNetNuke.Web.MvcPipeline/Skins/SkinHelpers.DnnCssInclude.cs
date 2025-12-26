@@ -45,14 +45,17 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             {
                 ss.SetProvider(forceProvider);
             }
+
             if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(version))
             {
                 ss.SetNameAndVersion(name, version, forceVersion);
             }
+
             if (!string.IsNullOrEmpty(cssMedia))
             {
                 ss.SetMedia(cssMedia);
             }
+
             ss.Register();
 
             if (addTag || helper.ViewContext.HttpContext.IsDebuggingEnabled)

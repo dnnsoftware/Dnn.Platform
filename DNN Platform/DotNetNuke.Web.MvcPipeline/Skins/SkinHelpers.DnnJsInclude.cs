@@ -38,9 +38,8 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         public static IHtmlString DnnJsInclude(this HtmlHelper<PageModel> helper, string filePath, string pathNameAlias = "", int priority = 100, bool addTag = false, string name = "", string version = "", bool forceVersion = false, string forceProvider = "", bool forceBundle = false, bool defer = false)
         {
             // var htmlAttibs = new { nonce = helper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString(), defer = defer ? "defer" : string.Empty };
-            //todo CSP - implement nonce support
+            // todo CSP - implement nonce support
             // htmlAttibs.Add("nonce", helper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString());
-
             var script = HtmlHelpers.GetClientResourcesController(helper)
                 .CreateScript(filePath, pathNameAlias)
                 .SetPriority(priority);
@@ -48,14 +47,17 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             {
                 script.SetProvider(forceProvider);
             }
+
             if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(version))
             {
                 script.SetNameAndVersion(name, version, forceVersion);
             }
+
             if (defer)
             {
                 script.SetDefer();
             }
+
             script.Register();
 
             if (addTag || helper.ViewContext.HttpContext.IsDebuggingEnabled)

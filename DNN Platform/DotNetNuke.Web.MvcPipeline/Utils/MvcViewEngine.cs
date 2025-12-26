@@ -58,68 +58,6 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
         /// name, or as fully qualified ~/ path including extension.
         /// </param>
         /// <param name="model">The model to pass to the view renderer.</param>
-        /// <returns>String of the rendered view or <c>null</c> on error.</returns>
-        public string RenderPartialViewToString(string viewPath, object model = null)
-        {
-            return this.RenderViewToStringInternal(viewPath, model, true);
-        }
-
-        /// <summary>
-        /// Renders a partial MVC view to given Writer. Use this method to render
-        /// a partial view that doesn't merge with _Layout and doesn't fire
-        /// _ViewStart.
-        /// </summary>
-        /// <param name="viewPath">
-        /// The path to the view to render. Either in same controller, shared by
-        /// name, or as fully qualified ~/ path including extension.
-        /// </param>
-        /// <param name="model">The model to pass to the view renderer.</param>
-        /// <param name="writer">Writer to render the view to.</param>
-        public void RenderPartialView(string viewPath, object model, TextWriter writer)
-        {
-            this.RenderViewToWriterInternal(viewPath, writer, model, true);
-        }
-
-        /// <summary>
-        /// Renders a full MVC view to a string. Will render with the full MVC
-        /// view engine including running _ViewStart and merging into _Layout.
-        /// </summary>
-        /// <param name="viewPath">
-        /// The path to the view to render. Either in same controller, shared by
-        /// name, or as fully qualified ~/ path including extension.
-        /// </param>
-        /// <param name="model">The model to render the view with.</param>
-        /// <returns>String of the rendered view or <c>null</c> on error.</returns>
-        public string RenderViewToString(string viewPath, object model = null)
-        {
-            return this.RenderViewToStringInternal(viewPath, model, false);
-        }
-
-        /// <summary>
-        /// Renders a full MVC view to a writer. Will render with the full MVC
-        /// view engine including running _ViewStart and merging into _Layout.
-        /// </summary>
-        /// <param name="viewPath">
-        /// The path to the view to render. Either in same controller, shared by
-        /// name, or as fully qualified ~/ path including extension.
-        /// </param>
-        /// <param name="model">The model to render the view with.</param>
-        /// <param name="writer">Writer to render the view to.</param>
-        public void RenderView(string viewPath, object model, TextWriter writer)
-        {
-            this.RenderViewToWriterInternal(viewPath, writer, model, false);
-        }
-
-        /// <summary>
-        /// Renders a partial MVC view to string. Use this method to render
-        /// a partial view that doesn't merge with _Layout and doesn't fire
-        /// _ViewStart.
-        /// </summary>
-        /// <param name="viewPath">
-        /// The path to the view to render. Either in same controller, shared by
-        /// name, or as fully qualified ~/ path including extension.
-        /// </param>
-        /// <param name="model">The model to pass to the view renderer.</param>
         /// <param name="controllerContext">Active controller context.</param>
         /// <returns>String of the rendered view or <c>null</c> on error.</returns>
         public static string RenderPartialView(string viewPath, object model = null, ControllerContext controllerContext = null)
@@ -190,6 +128,114 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
                 errorMessage = ex.GetBaseException().Message;
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Creates an instance of an MVC controller from scratch
+        /// when no existing <see cref="ControllerContext"/> is present.
+        /// </summary>
+        /// <typeparam name="T">Type of the controller to create.</typeparam>
+        /// <param name="routeData">Optional route data used to initialize the controller context.</param>
+        /// <param name="parameters">Optional constructor parameters for the controller.</param>
+        /// <returns>Controller for <typeparamref name="T"/>.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if <see cref="HttpContext.Current"/> is not available.</exception>
+        public static T CreateController<T>(RouteData routeData = null, params object[] parameters)
+                    where T : Controller, new()
+        {
+            // create a disconnected controller instance
+            T controller = (T)Activator.CreateInstance(typeof(T), parameters);
+
+            // get context wrapper from HttpContext if available
+            HttpContextBase wrapper = null;
+            if (HttpContext.Current != null)
+            {
+                wrapper = new HttpContextWrapper(HttpContext.Current);
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    "Can't create Controller Context if no active HttpContext instance is available.");
+            }
+
+            if (routeData == null)
+            {
+                routeData = new RouteData();
+            }
+
+            // add the controller routing if not existing
+            if (!routeData.Values.ContainsKey("controller") && !routeData.Values.ContainsKey("Controller"))
+            {
+                routeData.Values.Add(
+                    "controller",
+                    controller.GetType().Name
+                        .ToLower()
+                        .Replace("controller", string.Empty));
+            }
+
+            controller.ControllerContext = new ControllerContext(wrapper, routeData, controller);
+            return controller;
+        }
+
+        /// <summary>
+        /// Renders a partial MVC view to string. Use this method to render
+        /// a partial view that doesn't merge with _Layout and doesn't fire
+        /// _ViewStart.
+        /// </summary>
+        /// <param name="viewPath">
+        /// The path to the view to render. Either in same controller, shared by
+        /// name, or as fully qualified ~/ path including extension.
+        /// </param>
+        /// <param name="model">The model to pass to the view renderer.</param>
+        /// <returns>String of the rendered view or <c>null</c> on error.</returns>
+        public string RenderPartialViewToString(string viewPath, object model = null)
+        {
+            return this.RenderViewToStringInternal(viewPath, model, true);
+        }
+
+        /// <summary>
+        /// Renders a partial MVC view to given Writer. Use this method to render
+        /// a partial view that doesn't merge with _Layout and doesn't fire
+        /// _ViewStart.
+        /// </summary>
+        /// <param name="viewPath">
+        /// The path to the view to render. Either in same controller, shared by
+        /// name, or as fully qualified ~/ path including extension.
+        /// </param>
+        /// <param name="model">The model to pass to the view renderer.</param>
+        /// <param name="writer">Writer to render the view to.</param>
+        public void RenderPartialView(string viewPath, object model, TextWriter writer)
+        {
+            this.RenderViewToWriterInternal(viewPath, writer, model, true);
+        }
+
+        /// <summary>
+        /// Renders a full MVC view to a string. Will render with the full MVC
+        /// view engine including running _ViewStart and merging into _Layout.
+        /// </summary>
+        /// <param name="viewPath">
+        /// The path to the view to render. Either in same controller, shared by
+        /// name, or as fully qualified ~/ path including extension.
+        /// </param>
+        /// <param name="model">The model to render the view with.</param>
+        /// <returns>String of the rendered view or <c>null</c> on error.</returns>
+        public string RenderViewToString(string viewPath, object model = null)
+        {
+            return this.RenderViewToStringInternal(viewPath, model, false);
+        }
+
+        /// <summary>
+        /// Renders a full MVC view to a writer. Will render with the full MVC
+        /// view engine including running _ViewStart and merging into _Layout.
+        /// </summary>
+        /// <param name="viewPath">
+        /// The path to the view to render. Either in same controller, shared by
+        /// name, or as fully qualified ~/ path including extension.
+        /// </param>
+        /// <param name="model">The model to render the view with.</param>
+        /// <param name="writer">Writer to render the view to.</param>
+        public void RenderView(string viewPath, object model, TextWriter writer)
+        {
+            this.RenderViewToWriterInternal(viewPath, writer, model, false);
         }
 
         /// <summary>
@@ -311,52 +357,6 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Creates an instance of an MVC controller from scratch
-        /// when no existing <see cref="ControllerContext"/> is present.
-        /// </summary>
-        /// <typeparam name="T">Type of the controller to create.</typeparam>
-        /// <param name="routeData">Optional route data used to initialize the controller context.</param>
-        /// <param name="parameters">Optional constructor parameters for the controller.</param>
-        /// <returns>Controller for <typeparamref name="T"/>.</returns>
-        /// <exception cref="InvalidOperationException">Thrown if <see cref="HttpContext.Current"/> is not available.</exception>
-        public static T CreateController<T>(RouteData routeData = null, params object[] parameters)
-                    where T : Controller, new()
-        {
-            // create a disconnected controller instance
-            T controller = (T)Activator.CreateInstance(typeof(T), parameters);
-
-            // get context wrapper from HttpContext if available
-            HttpContextBase wrapper = null;
-            if (HttpContext.Current != null)
-            {
-                wrapper = new HttpContextWrapper(HttpContext.Current);
-            }
-            else
-            {
-                throw new InvalidOperationException(
-                    "Can't create Controller Context if no active HttpContext instance is available.");
-            }
-
-            if (routeData == null)
-            {
-                routeData = new RouteData();
-            }
-
-            // add the controller routing if not existing
-            if (!routeData.Values.ContainsKey("controller") && !routeData.Values.ContainsKey("Controller"))
-            {
-                routeData.Values.Add(
-                    "controller",
-                    controller.GetType().Name
-                        .ToLower()
-                        .Replace("controller", string.Empty));
-            }
-
-            controller.ControllerContext = new ControllerContext(wrapper, routeData, controller);
-            return controller;
         }
     }
 }

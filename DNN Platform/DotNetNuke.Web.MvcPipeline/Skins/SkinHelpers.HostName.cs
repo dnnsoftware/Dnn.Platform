@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
             var link = new TagBuilder("a");
             link.Attributes.Add("href", Globals.AddHTTP(hostSettings.HostUrl));
-            
+
             if (!string.IsNullOrEmpty(cssClass))
             {
                 link.AddCssClass(cssClass);

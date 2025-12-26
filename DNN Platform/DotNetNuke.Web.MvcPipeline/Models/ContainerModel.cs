@@ -41,6 +41,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
                 return this.portalSettings;
             }
         }
+
         /// <summary>
         /// Gets the module host model used to render the module.
         /// </summary>
@@ -70,7 +71,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         }
 
         /// <summary>
-        /// Gets or sets the HTML identifier assigned to the container.
+        /// Gets the HTML identifier assigned to the container.
         /// </summary>
         public string ID { get; internal set; }
 
@@ -86,7 +87,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         }
 
         /// <summary>
-        /// Gets or sets the source path of the container control.
+        /// Gets the source path of the container control.
         /// </summary>
         public string ContainerSrc { get; internal set; }
 
@@ -149,27 +150,27 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the container is rendered in edit mode.
+        /// Gets the value indicating whether the container is rendered in edit mode.
         /// </summary>
         public bool EditMode { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the footer markup for the container.
+        /// Gets the footer markup for the container.
         /// </summary>
         public string Footer { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the header markup for the container.
+        /// Gets the header markup for the container.
         /// </summary>
         public string Header { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the CSS class applied to the content pane.
+        /// Gets the CSS class applied to the content pane.
         /// </summary>
         public string ContentPaneCssClass { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the inline style applied to the content pane.
+        /// Gets the inline style applied to the content pane.
         /// </summary>
         public string ContentPaneStyle { get; internal set; }
 

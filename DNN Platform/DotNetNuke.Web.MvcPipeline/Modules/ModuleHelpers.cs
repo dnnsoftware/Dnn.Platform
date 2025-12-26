@@ -45,6 +45,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             {
                 throw new InvalidOperationException("The LocalResourceFile must be set in the ViewData to use this helper.");
             }
+
             var localResourceFile = (string)htmlHelper.ViewContext.ViewData["LocalResourceFile"];
             return MvcHtmlString.Create(Localization.GetString(key, localResourceFile));
         }
@@ -60,6 +61,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             {
                 throw new InvalidOperationException("The ModuleContext must be set in the ViewData to use this helper.");
             }
+
             var moduleContext = (ModuleInstanceContext)htmlHelper.ViewContext.ViewData["ModuleContext"];
             return MvcHtmlString.Create(moduleContext.EditUrl());
         }
@@ -76,6 +78,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             {
                 throw new InvalidOperationException("The ModuleContext must be set in the ViewData to use this helper.");
             }
+
             var moduleContext = (ModuleInstanceContext)htmlHelper.ViewContext.ViewData["ModuleContext"];
             return MvcHtmlString.Create(moduleContext.EditUrl(controlKey));
         }
@@ -93,6 +96,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             {
                 throw new InvalidOperationException("The ModuleContext must be set in the ViewData to use this helper.");
             }
+
             var moduleContext = (ModuleInstanceContext)htmlHelper.ViewContext.ViewData["ModuleContext"];
             return MvcHtmlString.Create(moduleContext.EditUrl(keyName, keyValue));
         }
@@ -111,6 +115,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             {
                 throw new InvalidOperationException("The ModuleContext must be set in the ViewData to use this helper.");
             }
+
             var moduleContext = (ModuleInstanceContext)htmlHelper.ViewContext.ViewData["ModuleContext"];
             return MvcHtmlString.Create(moduleContext.EditUrl(keyName, keyValue, controlKey));
         }
@@ -130,6 +135,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             {
                 throw new InvalidOperationException("The ModuleContext must be set in the ViewData to use this helper.");
             }
+
             var moduleContext = (ModuleInstanceContext)htmlHelper.ViewContext.ViewData["ModuleContext"];
             return MvcHtmlString.Create(moduleContext.EditUrl(keyName, keyValue, controlKey, additionalParameters));
         }
@@ -147,6 +153,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             {
                 throw new InvalidOperationException("The ModuleContext must be set in the ViewData to use this helper.");
             }
+
             var moduleContext = (ModuleInstanceContext)htmlHelper.ViewContext.ViewData["ModuleContext"];
 
             var viewPath = string.Format("~/DesktopModules/{0}/Views/{1}.cshtml", moduleContext.Configuration.DesktopModule.FolderName, partialViewName);
@@ -168,6 +175,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             {
                 throw new InvalidOperationException("The ModuleContext must be set in the ViewData to use this helper.");
             }
+
             var moduleContext = (ModuleInstanceContext)htmlHelper.ViewContext.ViewData["ModuleContext"];
 
             var viewPath = string.Format("~/DesktopModules/{0}/Views/{1}.cshtml", moduleContext.Configuration.DesktopModule.FolderName, partialViewName);

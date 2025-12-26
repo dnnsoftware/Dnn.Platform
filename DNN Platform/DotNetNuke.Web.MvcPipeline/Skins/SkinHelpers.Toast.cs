@@ -61,7 +61,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             var config = InitializeToastConfig();
             string serviceModuleName = config["ServiceModuleName"];
             string serviceAction = config["ServiceAction"];
-            string additionalScripts = config.ContainsKey("AddtionalScripts") ? config["AddtionalScripts"] : "";
+            string additionalScripts = config.ContainsKey("AddtionalScripts") ? config["AddtionalScripts"] : string.Empty;
 
             string notificationLink = GetNotificationLink(portalSettings);
             string notificationLabel = GetNotificationLabel();
@@ -160,7 +160,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             var config = new Dictionary<string, string>
             {
                 { "ServiceModuleName", "InternalServices" },
-                { "ServiceAction", "NotificationsService/GetToasts" }
+                { "ServiceAction", "NotificationsService/GetToasts" },
             };
 
             try
@@ -200,9 +200,9 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
                 DataCache.SetCache(ToastCacheKey, config);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                //DotNetNuke.Instrumentation.LoggerSource.Instance.GetLogger(typeof(SkinHelpers)).Error(ex);
+                // DotNetNuke.Instrumentation.LoggerSource.Instance.GetLogger(typeof(SkinHelpers)).Error(ex);
             }
 
             return config;

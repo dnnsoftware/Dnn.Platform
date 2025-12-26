@@ -90,11 +90,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 PortalId = controller.PortalSettings.PortalId,
                 TabId = controller.PortalSettings.ActiveTab.TabID,
                 Language = Thread.CurrentThread.CurrentCulture.Name,
-                //TODO: CSP - enable when CSP implementation is ready
+
+                // TODO: CSP - enable when CSP implementation is ready
                 // ContentSecurityPolicy = this.contentSecurityPolicy,
                 NavigationManager = this.navigationManager,
                 PageService = this.pageService,
-                FavIconLink = FavIcon.GetHeaderLink(hostSettings, controller.PortalSettings.PortalId),
+                FavIconLink = FavIcon.GetHeaderLink(this.hostSettings, controller.PortalSettings.PortalId),
             };
             if (controller.PortalSettings.ActiveTab.PageHeadText != Null.NullString && !Globals.IsAdminControl())
             {
@@ -148,14 +149,15 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 {
                     strTitle.Append(string.Concat(" > ", controller.PortalSettings.ActiveTab.LocalizedTabName));
                 }
-                pageService.SetTitle(strTitle.ToString(), PagePriority.Page);
+
+                this.pageService.SetTitle(strTitle.ToString(), PagePriority.Page);
             }
             else
             {
                 // If tab is named, use that title, otherwise build it out via breadcrumbs
                 if (!string.IsNullOrEmpty(controller.PortalSettings.ActiveTab.Title))
                 {
-                    pageService.SetTitle(controller.PortalSettings.ActiveTab.Title, PagePriority.Page);
+                    this.pageService.SetTitle(controller.PortalSettings.ActiveTab.Title, PagePriority.Page);
                 }
                 else
                 {
@@ -165,12 +167,13 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                     {
                         strTitle.Append(string.Concat(" > ", tab.TabName));
                     }
-                    pageService.SetTitle(strTitle.ToString(), PagePriority.Page);
+
+                    this.pageService.SetTitle(strTitle.ToString(), PagePriority.Page);
                 }
             }
-           
+
             // Set to page
-            pageModel.Title = pageService.GetTitle();
+            pageModel.Title = this.pageService.GetTitle();
 
             // set the background image if there is one selected
             if (!UrlUtils.InPopUp())
@@ -194,24 +197,24 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             // META description
             if (!string.IsNullOrEmpty(controller.PortalSettings.ActiveTab.Description))
             {
-                pageService.SetDescription(controller.PortalSettings.ActiveTab.Description, PagePriority.Page);
+                this.pageService.SetDescription(controller.PortalSettings.ActiveTab.Description, PagePriority.Page);
             }
             else
             {
-                pageService.SetDescription(controller.PortalSettings.Description, PagePriority.Site);
+                this.pageService.SetDescription(controller.PortalSettings.Description, PagePriority.Site);
             }
-            pageModel.Description = pageService.GetDescription();
+            pageModel.Description = this.pageService.GetDescription();
 
             // META keywords
             if (!string.IsNullOrEmpty(controller.PortalSettings.ActiveTab.KeyWords))
             {
-                pageService.SetKeyWords(controller.PortalSettings.ActiveTab.KeyWords, PagePriority.Page);
+                this.pageService.SetKeyWords(controller.PortalSettings.ActiveTab.KeyWords, PagePriority.Page);
             }
             else
             {
-                pageService.SetKeyWords(controller.PortalSettings.KeyWords, PagePriority.Site);
+                this.pageService.SetKeyWords(controller.PortalSettings.KeyWords, PagePriority.Site);
             }
-            pageModel.KeyWords = pageService.GetKeyWords();
+            pageModel.KeyWords = this.pageService.GetKeyWords();
 
             // META copyright
             if (!string.IsNullOrEmpty(controller.PortalSettings.FooterText))
@@ -244,12 +247,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 }
             }
 
-            
-            foreach (var item in this.pageService.GetMessages())
-            {
-                //pageModel.(this, item.Heading, item.Message, item.MessageType.ToModuleMessageType(), item.IconSrc);
-            }
-
             pageModel.CanonicalLinkUrl = this.pageService.GetCanonicalLinkUrl();
 
             // NonProduction Label Injection
@@ -264,7 +261,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
             return pageModel;
         }
-        
+
         private IFileInfo GetBackgroundFileInfo(PortalSettings portalSettings)
         {
             var cacheKey = string.Format(DataCache.PortalCacheKey, portalSettings.PortalId, "BackgroundFile");

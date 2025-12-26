@@ -31,7 +31,6 @@ namespace DotNetNuke.Web.MvcPipeline.Pages
     /// </summary>
     public static partial class HtmlHelpers
     {
-
         /// <summary>
         /// Renders all head tags (scripts, styles, meta tags) registered for the current page.
         /// </summary>
@@ -45,6 +44,7 @@ namespace DotNetNuke.Web.MvcPipeline.Pages
             {
                 headTags.Append(item.Value);
             }
+
             foreach (var item in pageService.GetMetaTags())
             {
                 var tag = new TagBuilder("meta");
@@ -52,6 +52,7 @@ namespace DotNetNuke.Web.MvcPipeline.Pages
                 tag.Attributes.Add("content", item.Content);
                 headTags.Append(tag.ToString());
             }
+
             return new MvcHtmlString(headTags.ToString());
         }
 
@@ -72,9 +73,7 @@ namespace DotNetNuke.Web.MvcPipeline.Pages
                 foreach (var msg in pageService.GetMessages())
                 {
                     var wrapper = new TagBuilder("div");
-
                     var panel = new TagBuilder("div");
-                    
                     switch (msg.MessageType)
                     {
                         case PageMessageType.Error:
@@ -90,6 +89,7 @@ namespace DotNetNuke.Web.MvcPipeline.Pages
                             panel.AddCssClass("dnnFormInfo");
                             break;
                     }
+
                     panel.AddCssClass("dnnFormMessage");
                     if (!string.IsNullOrEmpty(msg.Heading))
                     {

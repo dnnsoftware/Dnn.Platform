@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         public static IHtmlString Links(this HtmlHelper<PageModel> helper, string cssClass = "SkinObject", string separator = " ", string level = "same", string alignment = "", bool showDisabled = false, bool forceLinks = true, bool includeActiveTab = true)
         {
             var portalSettings = PortalSettings.Current;
-            
+
             // Separator processing
             if (!string.IsNullOrEmpty(separator) && separator != " ")
             {
@@ -47,6 +47,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                 {
                     separator = SrcRegex.Replace(separator, "$&" + portalSettings.ActiveTab.SkinPath);
                 }
+
                 separator = string.Format("<span class=\"{0}\">{1}</span>", cssClass, separator);
             }
             else
@@ -85,7 +86,8 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
         private static string ProcessTab(TabInfo objTab, PortalSettings portalSettings, string level, string cssClass, bool includeActiveTab, bool showDisabled)
         {
-            if (Navigation.CanShowTab(objTab, false, showDisabled)) // Assuming AdminMode is false for now as it wasn't passed, or check permissions
+            // Assuming AdminMode is false for now as it wasn't passed, or check permissions
+            if (Navigation.CanShowTab(objTab, false, showDisabled))
             {
                 switch (level)
                 {
@@ -98,27 +100,32 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                                 return AddLink(objTab.TabName, objTab.FullUrl, cssClass);
                             }
                         }
+
                         break;
                     case "child":
                         if (objTab.ParentId == portalSettings.ActiveTab.TabID)
                         {
                             return AddLink(objTab.TabName, objTab.FullUrl, cssClass);
                         }
+
                         break;
                     case "parent":
                         if (objTab.TabID == portalSettings.ActiveTab.ParentId)
                         {
                             return AddLink(objTab.TabName, objTab.FullUrl, cssClass);
                         }
+
                         break;
                     case "root":
                         if (objTab.Level == 0)
                         {
                             return AddLink(objTab.TabName, objTab.FullUrl, cssClass);
                         }
+
                         break;
                 }
             }
+
             return string.Empty;
         }
 

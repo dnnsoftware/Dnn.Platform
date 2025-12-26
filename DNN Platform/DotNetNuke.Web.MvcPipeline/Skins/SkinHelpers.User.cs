@@ -93,6 +93,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                         // registerLink.Attributes.Add("onclick", clickEvent);
                         registerScript = GetRegisterScript(registerLink.Attributes["href"], nonce);
                     }
+
                     return new MvcHtmlString(registerLink.ToString() + registerScript);
                 }
                 else
@@ -328,6 +329,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                 {
                     nonceAttribute = $"nonce=\"{nonce}\"";
                 }
+
                 var script = string.Format(
                     @"
                     <script {0} >

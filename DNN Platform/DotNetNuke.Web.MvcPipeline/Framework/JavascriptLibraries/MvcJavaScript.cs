@@ -1,4 +1,7 @@
-﻿namespace DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+namespace DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries
 {
     using System;
     using System.Collections;
@@ -24,6 +27,7 @@
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>Provides functionality for registering JavaScript libraries in the MVC pipeline.</summary>
     public class MvcJavaScript
     {
         private const string ScriptPrefix = "JSL.";
@@ -48,6 +52,8 @@
             }
         }
 
+        /// <summary>Registers a client reference for the specified namespace reference.</summary>
+        /// <param name="reference">The client namespace reference to register.</param>
         public static void RegisterClientReference(ClientAPI.ClientNamespaceReferences reference)
         {
             var controller = GetClientResourcesController();
@@ -290,18 +296,19 @@
 
         private static string GetProvider(JavaScriptLibrary jsl)
         {
-            if (jsl.PreferredScriptLocation== ScriptLocation.PageHead)
+            if (jsl.PreferredScriptLocation == ScriptLocation.PageHead)
             {
                 return "DnnPageHeaderProvider";
             }
-            else if (jsl.PreferredScriptLocation == ScriptLocation.PageHead)
+            else if (jsl.PreferredScriptLocation == ScriptLocation.BodyTop)
             {
                 return "DnnBodyProvider";
             }
-            else if (jsl.PreferredScriptLocation == ScriptLocation.PageHead)
+            else if (jsl.PreferredScriptLocation == ScriptLocation.BodyBottom)
             {
                 return "DnnFormBottomProvider";
             }
+
             return string.Empty;
         }
 

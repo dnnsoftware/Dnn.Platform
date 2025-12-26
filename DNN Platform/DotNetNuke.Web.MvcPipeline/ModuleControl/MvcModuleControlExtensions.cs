@@ -5,22 +5,14 @@
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 {
     using System;
-    using System.Collections.Generic;
-    using System.Web;
-    using System.Web.Mvc;
-    using DotNetNuke.Entities.Modules;
+
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Modules;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
-    using DotNetNuke.Web.MvcPipeline.ModuleControl;
 
     /// <summary>
     /// Extension methods for IMvcModuleControl interface.
     /// </summary>
     public static class MvcModuleControlExtensions
     {
-
         /// <summary>
         /// Gets a localized string for the module control.
         /// </summary>
@@ -67,9 +59,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         /// Gets an edit URL for the module with specific parameters.
         /// </summary>
         /// <param name="moduleControl">The module control instance.</param>
-        /// <param name="keyName">The parameter key name.</param>
-        /// <param name="keyValue">The parameter key value.</param>
-        /// <param name="controlKey">The control key for the edit page.</param>
         /// <returns>The edit URL with parameters.</returns>
         public static string EditUrl(this IMvcModuleControl moduleControl)
         {
@@ -77,6 +66,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             {
                 throw new ArgumentNullException(nameof(moduleControl));
             }
+
             return EditUrl(moduleControl, "Edit", string.Empty, string.Empty);
         }
 
@@ -84,8 +74,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         /// Gets an edit URL for the module with specific parameters.
         /// </summary>
         /// <param name="moduleControl">The module control instance.</param>
-        /// <param name="keyName">The parameter key name.</param>
-        /// <param name="keyValue">The parameter key value.</param>
         /// <param name="controlKey">The control key for the edit page.</param>
         /// <returns>The edit URL with parameters.</returns>
         public static string EditUrl(this IMvcModuleControl moduleControl, string controlKey)
@@ -94,6 +82,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             {
                 throw new ArgumentNullException(nameof(moduleControl));
             }
+
             return EditUrl(moduleControl, controlKey, string.Empty, string.Empty);
         }
 
@@ -103,7 +92,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         /// <param name="moduleControl">The module control instance.</param>
         /// <param name="keyName">The parameter key name.</param>
         /// <param name="keyValue">The parameter key value.</param>
-        /// <param name="controlKey">The control key for the edit page.</param>
         /// <returns>The edit URL with parameters.</returns>
         public static string EditUrl(this IMvcModuleControl moduleControl, string keyName, string keyValue)
         {
@@ -111,6 +99,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             {
                 throw new ArgumentNullException(nameof(moduleControl));
             }
+
             return EditUrl(moduleControl, keyName, keyValue, string.Empty);
         }
 
@@ -128,6 +117,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             {
                 throw new ArgumentNullException(nameof(moduleControl));
             }
+
             var parameters = new string[] { };
             return EditUrl(moduleControl, keyName, keyValue, controlKey, parameters);
         }
@@ -139,6 +129,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         /// <param name="keyName">The parameter key name.</param>
         /// <param name="keyValue">The parameter key value.</param>
         /// <param name="controlKey">The control key for the edit page.</param>
+        /// <param name="additionalParameters">The additionalParameters.</param>
         /// <returns>The edit URL with parameters.</returns>
         public static string EditUrl(this IMvcModuleControl moduleControl, string keyName, string keyValue, string controlKey, params string[] additionalParameters)
         {
@@ -146,18 +137,19 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             {
                 throw new ArgumentNullException(nameof(moduleControl));
             }
+
             var parameters = GetParameters(moduleControl, controlKey, additionalParameters);
             return moduleControl.ModuleContext.EditUrl(keyName, keyValue, controlKey, parameters);
         }
-
 
         /// <summary>
         /// Gets an edit URL for the module with specific parameters.
         /// </summary>
         /// <param name="moduleControl">The module control instance.</param>
-        /// <param name="keyName">The parameter key name.</param>
-        /// <param name="keyValue">The parameter key value.</param>
-        /// <param name="controlKey">The control key for the edit page.</param>
+        /// <param name="tabID">The parameter tabID.</param>
+        /// <param name="controlKey">The parameter kcontrolKey.</param>
+        /// <param name="pageRedirect">The parameter pageRedirect.</param>
+        /// <param name="additionalParameters">The additionalParameters.</param>
         /// <returns>The edit URL with parameters.</returns>
         public static string EditUrl(this IMvcModuleControl moduleControl, int tabID, string controlKey, bool pageRedirect, params string[] additionalParameters)
         {
@@ -165,6 +157,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             {
                 throw new ArgumentNullException(nameof(moduleControl));
             }
+
             var parameters = GetParameters(moduleControl, controlKey, additionalParameters);
             return moduleControl.ModuleContext.NavigateUrl(tabID, controlKey, pageRedirect, parameters);
         }

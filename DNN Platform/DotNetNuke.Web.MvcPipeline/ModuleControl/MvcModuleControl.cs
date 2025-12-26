@@ -12,27 +12,18 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
     using System.Web.Routing;
-    using System.Web.UI;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Actions;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Containers;
-    using DotNetNuke.UI.Modules;
     using DotNetNuke.Collections;
     using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Localization;
 
     /// <summary>
     /// MVC module control that routes requests to MVC controllers and views based on the control source.
     /// </summary>
     public class MvcModuleControl : DefaultMvcModuleControlBase
     {
-
         private const string ExcludedQueryStringParams = "tabid,mid,ctl,language,popup,action,controller";
         private const string ExcludedRouteValues = "mid,ctl,popup";
 
@@ -46,7 +37,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 return this.RouteActionName;
             }
         }
-
 
         /// <summary>Gets the path for this control (used primarily for user controls).</summary>
         /// <returns>A string representing the control path.</returns>
@@ -69,6 +59,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 {
                     return string.Empty;
                 }
+
                 if (segments.Length == 3)
                 {
                     return segments[2];
@@ -91,6 +82,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 {
                     return string.Empty;
                 }
+
                 return segments[1];
             }
         }
@@ -107,6 +99,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 {
                     return string.Empty;
                 }
+
                 return segments[0];
             }
         }
@@ -145,12 +138,11 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             string actionName = string.Empty;
             var controlKey = module.ModuleControl.ControlKey;
 
-
             this.LocalResourceFile = string.Format(
                 "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
                 module.DesktopModule.FolderName,
                 Localization.LocalResourceDirectory,
-                RouteActionName);
+                this.RouteActionName);
 
             RouteValueDictionary values = new RouteValueDictionary
                     {
@@ -162,7 +154,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                         { "ContainerSrc", module.ContainerSrc },
                         { "ContainerPath", module.ContainerPath },
                         { "IconFile", module.IconFile },
-                        { "area", area }
+                        { "area", area },
                     };
 
             var queryString = htmlHelper.ViewContext.HttpContext.Request.QueryString;
@@ -181,25 +173,14 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             if (moduleId != module.ModuleID && string.IsNullOrEmpty(controlKey))
             {
                 // Set default routeData for module that is not the "selected" module
-                actionName = RouteActionName;
-                controllerName = RouteControllerName;
-
-                // routeData.Values.Add("controller", controllerName);
-                // routeData.Values.Add("action", actionName);
-
-                if (!string.IsNullOrEmpty(RouteNamespace))
-                {
-                    // routeData.DataTokens.Add("namespaces", new string[] { routeNamespace });
-                }
+                actionName = this.RouteActionName;
+                controllerName = this.RouteControllerName;
             }
             else
             {
                 var control = ModuleControlController.GetModuleControlByControlKey(controlKey, module.ModuleDefID);
                 actionName = queryString.GetValueOrDefault("action", this.RouteActionName);
                 controllerName = queryString.GetValueOrDefault("controller", this.RouteControllerName);
-
-                // values.Add("controller", controllerName);
-                // values.Add("action", actionName);
 
                 foreach (var param in queryString.AllKeys)
                 {
@@ -211,13 +192,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                         }
                     }
                 }
-
-                if (!string.IsNullOrEmpty(this.RouteNamespace))
-                {
-                    // routeData.DataTokens.Add("namespaces", new string[] { routeNamespace });
-                }
             }
-            
+
             string[] routeValues =
             {
                 $"moduleId={this.ModuleConfiguration.ModuleID}",

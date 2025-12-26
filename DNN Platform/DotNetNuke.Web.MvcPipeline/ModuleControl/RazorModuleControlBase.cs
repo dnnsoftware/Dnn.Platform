@@ -27,17 +27,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         private RazorModuleViewContext viewContext;
 
         /// <summary>
-        /// Gets the default view path for this module control.
-        /// </summary>
-        protected virtual string DefaultViewName
-        {
-            get
-            {
-                return "~/" + this.ControlPath.Replace('\\', '/').Trim('/') + "/Views/" + this.ControlName + ".cshtml";
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the Razor module view context.
         /// </summary>
         public RazorModuleViewContext ViewContext
@@ -63,6 +52,32 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 }
 
                 this.viewContext = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Http.HttpContext"/>.
+        /// </summary>
+        public HttpContextBase HttpContext => this.ViewContext.HttpContext;
+
+        /// <summary>
+        /// Gets the <see cref="HttpRequest"/>.
+        /// </summary>
+        public HttpRequestBase Request => this.ViewContext.HttpContext.Request;
+
+        /// <summary>
+        /// Gets the <see cref="ViewDataDictionary"/>.
+        /// </summary>
+        public ViewDataDictionary ViewData => this.ViewContext.ViewData;
+
+        /// <summary>
+        /// Gets the default view path for this module control.
+        /// </summary>
+        protected virtual string DefaultViewName
+        {
+            get
+            {
+                return "~/" + this.ControlPath.Replace('\\', '/').Trim('/') + "/Views/" + this.ControlName + ".cshtml";
             }
         }
 
@@ -124,7 +139,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         /// <returns>A <see cref="IRazorModuleResult"/>.</returns>
         public IRazorModuleResult View()
         {
-            return View(null);
+            return this.View(null);
         }
 
         /// <summary>
@@ -134,7 +149,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         /// <returns>A <see cref="IRazorModuleResult"/>.</returns>
         public IRazorModuleResult View(string viewName)
         {
-            return View(viewName, null);
+            return this.View(viewName, null);
         }
 
         /// <summary>
@@ -162,20 +177,5 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 
             return new ViewRazorModuleResult(viewName, model, this.ViewData);
         }
-
-        /// <summary>
-        /// Gets the <see cref="Http.HttpContext"/>.
-        /// </summary>
-        public HttpContextBase HttpContext => this.ViewContext.HttpContext;
-
-        /// <summary>
-        /// Gets the <see cref="HttpRequest"/>.
-        /// </summary>
-        public HttpRequestBase Request => this.ViewContext.HttpContext.Request;
-
-        /// <summary>
-        /// Gets the <see cref="ViewDataDictionary"/>.
-        /// </summary>
-        public ViewDataDictionary ViewData => this.ViewContext.ViewData;
     }
 }

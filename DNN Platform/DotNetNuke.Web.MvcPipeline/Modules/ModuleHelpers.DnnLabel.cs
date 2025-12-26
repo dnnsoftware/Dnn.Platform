@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using System.Web.Mvc.Html;
 
     using DotNetNuke.Services.Localization;
-    
+
     /// <summary>
     /// HTML helper extensions for rendering DNN-style labels with help icons.
     /// </summary>

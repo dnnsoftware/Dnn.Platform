@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -26,6 +27,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
@@ -42,9 +44,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Web.MvcPipeline.Models;
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
-    using DotNetNuke.Services.Pages;
-    using System.Globalization;
-    using DotNetNuke.Services.ClientDependency;
 
     /// <summary>
     /// Builds <see cref="SkinModel"/> instances from portal, tab, and module configuration.
@@ -56,7 +55,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
         private readonly INavigationManager navigationManager;
         private readonly IPaneModelFactory paneModelFactory;
-        private readonly IPageService PageService;
+        private readonly IPageService pageService;
         private readonly IClientResourceController clientResourceController;
 
         /// <summary>
@@ -67,7 +66,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         /// <param name="clientResourceController">The client resource controller.</param>
         /// <param name="pageService">The page service used for messages and meta data.</param>
         public SkinModelFactory(
-                                INavigationManager navigationManager, 
+                                INavigationManager navigationManager,
                                 IPaneModelFactory paneModelFactory,
                                 IClientResourceController clientResourceController,
                                 IPageService pageService)
@@ -75,7 +74,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             this.navigationManager = navigationManager;
             this.paneModelFactory = paneModelFactory;
             this.clientResourceController = clientResourceController;
-            this.PageService = pageService;
+            this.pageService = pageService;
         }
 
         /// <inheritdoc/>
@@ -160,10 +159,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 {
                     var heading = Localization.GetString("PageDisabled.Header");
                     var message = Localization.GetString("PageDisabled.Text");
-                    this.PageService.AddWarningMessage(heading, message);
+                    this.pageService.AddWarningMessage(heading, message);
                 }
             }
-
 
             // add CSS links
             this.clientResourceController.CreateStylesheet("~/Resources/Shared/stylesheets/dnndefault/10.0.0/default.css")
@@ -173,7 +171,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
             this.clientResourceController.RegisterStylesheet(string.Concat(page.PortalSettings.ActiveTab.SkinPath, "skin.css"), FileOrder.Css.SkinCss, true);
             this.clientResourceController.RegisterStylesheet(page.PortalSettings.ActiveTab.SkinSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificSkinCss, true);
-
 
             // register css variables
             var cssVariablesStyleSheet = this.GetCssVariablesStylesheet(page.PortalSettings.PortalId, page.PortalSettings.GetStyles(), page.PortalSettings.HomeSystemDirectory);
@@ -204,6 +201,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                                    : "~/js/dnn.modalpopup.js";
                 skin.RegisteredScripts.Add(new RegisteredScript() { Script = popupFilePath, FileOrder = FileOrder.Js.DnnModalPopup });
             }
+
             return skin;
         }
 
@@ -221,20 +219,16 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 ctlSkin = new SkinModel();
                 ctlSkin.SkinSrc = skinSrc;
 
-                // Load the Panes
-                this.LoadPanes(page.PortalSettings);
-
                 // Load the Module Control(s)
                 var success = Globals.IsAdminControl() ? this.ProcessSlaveModule(page.PortalSettings, ctlSkin) : this.ProcessMasterModules(page.PortalSettings, ctlSkin);
 
                 // Load the Control Panel
                 this.InjectControlPanel(ctlSkin, page.Request);
 
-                
                 // Register any error messages on the Skin
                 if (page.Request.QueryString["error"] != null && Host.ShowCriticalErrors)
                 {
-                    this.PageService.AddErrorMessage(" ", Localization.GetString("CriticalError.Error"));
+                    this.pageService.AddErrorMessage(" ", Localization.GetString("CriticalError.Error"));
 
                     if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                     {
@@ -246,14 +240,13 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                         this.clientResourceController.RegisterScript("~/resources/shared/scripts/dnn.logViewer.js");
                     }
                 }
-                
+
                 if (!success && !TabPermissionController.CanAdminPage())
                 {
                     // only display the warning to non-administrators (administrators will see the errors)
-                    this.PageService.AddWarningMessage(Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), page.PortalSettings.Email));
+                    this.pageService.AddWarningMessage(Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), page.PortalSettings.Email));
                 }
 
-                
                 if (HttpContext.Current != null && HttpContext.Current.Items.Contains(OnInitMessage))
                 {
                     var messageType = PageMessageType.Warning;
@@ -262,12 +255,11 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                         messageType = (PageMessageType)Enum.Parse(typeof(PageMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
                     }
 
-                    this.PageService.AddMessage(new PageMessage(string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType, string.Empty, PagePriority.Default));
+                    this.pageService.AddMessage(new PageMessage(string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType, string.Empty, PagePriority.Default));
 
                     JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                     ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
                 }
-                
 
                 // Process the Panes attributes
                 foreach (var key in ctlSkin.Panes.Keys)
@@ -316,11 +308,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 if (TabPermissionController.CanAdminPage())
                 {
                     // only display the error to administrators
-                    /*
-                    var skinError = (Label)page.FindControl("SkinError");
-                    skinError.Text = string.Format(Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
-                    skinError.Visible = true;
-                    */
                     ctlSkin.SkinError = string.Format(Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
                 }
 
@@ -328,58 +315,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             }
 
             return ctlSkin;
-        }
-
-        private void LoadPanes(PortalSettings portalSettings)
-        {
-            /*
-            portalSettings.ActiveTab.Panes.Add("HeaderPane");
-            portalSettings.ActiveTab.Panes.Add("ContentPane");
-            portalSettings.ActiveTab.Panes.Add("ContentPaneLower");
-            */
-
-            /*
-            // iterate page controls
-            foreach (Control ctlControl in this.Controls)
-            {
-                var objPaneControl = ctlControl as HtmlContainerControl;
-
-                // Panes must be runat=server controls so they have to have an ID
-                if (objPaneControl != null && !string.IsNullOrEmpty(objPaneControl.ID))
-                {
-                    // load the skin panes
-                    switch (objPaneControl.TagName.ToLowerInvariant())
-                    {
-                        case "td":
-                        case "div":
-                        case "span":
-                        case "p":
-                        case "section":
-                        case "header":
-                        case "footer":
-                        case "main":
-                        case "article":
-                        case "aside":
-                            // content pane
-                            if (!objPaneControl.ID.Equals("controlpanel", StringComparison.InvariantCultureIgnoreCase))
-                            {
-                                // Add to the PortalSettings (for use in the Control Panel)
-                                portalSettings.ActiveTab.Panes.Add(objPaneControl.ID);
-
-                                // Add to the Panes collection
-                                this.Panes.Add(objPaneControl.ID.ToLowerInvariant(), new Pane(objPaneControl));
-                            }
-                            else
-                            {
-                                // Control Panel pane
-                                this.controlPanel = objPaneControl;
-                            }
-
-                            break;
-                    }
-                }
-            }
-            */
         }
 
         private bool ProcessMasterModules(PortalSettings portalSettings, SkinModel skin)
@@ -408,9 +343,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                     if (TabVersionController.Instance.GetTabVersions(TabController.CurrentPage.TabID).All(tabVersion => tabVersion.Version != urlVersion))
                     {
                         throw new NotFoundException("ErrorPage404", this.navigationManager.NavigateURL(portalSettings.ErrorPage404, string.Empty, "status=404"));
-                        /*
-                        this.Response.Redirect(this.NavigationManager.NavigateURL(portalSettings.ErrorPage404, string.Empty, "status=404"));
-                        */
                     }
                 }
 
@@ -431,7 +363,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 }
                 else
                 {
-                    this.PageService.AddErrorMessage(
+                    this.pageService.AddErrorMessage(
                         string.Empty,
                         string.Format(Localization.GetString("ContractExpired.Error"), portalSettings.PortalName, Globals.GetMediumDate(portalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), portalSettings.Email));
                 }
@@ -513,9 +445,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 else
                 {
                     throw new AccesDeniedException("AccesDenied", Globals.AccessDeniedURL(Localization.GetString("ModuleAccess.Error")));
-                    /*
-                    this.Response.Redirect(Globals.AccessDeniedURL(Localization.GetString("ModuleAccess.Error")), true);
-                    */
                 }
             }
 
@@ -556,7 +485,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
             if (!found)
             {
-                // this.Panes.TryGetValue(Globals.glbDefaultPane.ToLowerInvariant(), out pane);
                 skin.Panes.Add(module.PaneName.ToLowerInvariant(), this.paneModelFactory.CreatePane(module.PaneName.ToLowerInvariant()));
                 found = skin.Panes.TryGetValue(module.PaneName.ToLowerInvariant(), out pane);
             }
@@ -605,43 +533,13 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
         private void InjectControlPanel(SkinModel skin, HttpRequestBase request)
         {
-            // if querystring dnnprintmode=true, controlpanel will not be shown
             if (request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp() && request.QueryString["hidecommandbar"] != "true")
             {
-                // if (Host.AllowControlPanelToDetermineVisibility || (ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal()))
                 if (ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal())
                 {
                     // ControlPanel processing
                     skin.ControlPanelRazor = Path.GetFileNameWithoutExtension(Host.ControlPanel);
                     ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-
-                    /*
-                    var controlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
-                    var form = (HtmlForm)this.Parent.FindControl("Form");
-
-                    if (controlPanel.IncludeInControlHierarchy)
-                    {
-                        // inject ControlPanel control into skin
-                        if (this.ControlPanel == null || HostController.Instance.GetBoolean("IgnoreControlPanelWrapper", false))
-                        {
-                            if (form != null)
-                            {
-                                form.Controls.AddAt(0, controlPanel);
-                            }
-                            else
-                            {
-                                this.Page.Controls.AddAt(0, controlPanel);
-                            }
-                        }
-                        else
-                        {
-                            this.ControlPanel.Controls.Add(controlPanel);
-                        }
-
-                        // register admin.css
-                        ClientResourceManager.RegisterAdminStylesheet(this.Page, Globals.HostPath + "admin.css");
-                    }
-                    */
                 }
             }
         }
@@ -697,7 +595,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return FileManager.Instance.GetFile((int)itemArgs.Params[1], styleSheet);
         }
 
-
         private string GetCssVariablesStylesheet(int portalId, Abstractions.Portals.IPortalStyles portalStyles, string homeSystemDirectory)
         {
             var cacheKey = string.Format(DataCache.PortalStylesCacheKey, portalId);
@@ -734,6 +631,5 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
             return webPath;
         }
-
     }
 }

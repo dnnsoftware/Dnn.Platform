@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
     using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Routing;
+
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
@@ -99,13 +100,13 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
                 var routeUrl = this.portalAliasMvcRouteManager.GetRouteUrl(moduleFolderName, url, count);
                 route = MapRouteWithNamespace(fullRouteName, moduleFolderName, routeUrl, defaults, constraints, namespaces);
                 this.routes.Add(route);
-                Logger.Trace("Mapping route: " + fullRouteName + " Area="+moduleFolderName + " @ " + routeUrl);
+                Logger.Trace("Mapping route: " + fullRouteName + " Area=" + moduleFolderName + " @ " + routeUrl);
             }
 
             return route;
         }
 
-
+        /// <inheritdoc/>
         public void RegisterRoutes()
         {
             // add standard tab and module id provider
@@ -114,19 +115,9 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             {
                 // routes.Clear(); -- don't use; it will remove original WEP API maps
                 this.LocateServicesAndMapRoutes();
-                // routes.MapMvcAttributeRoutes();
             }
 
-            // AreaRegistration.RegisterAllAreas();
-
             Logger.TraceFormat("Registered a total of {0} routes", this.routes.Count);
-        }
-
-        private static bool IsTracingEnabled()
-        {
-            var configValue = Config.GetSetting("EnableServicesFrameworkTracing");
-
-            return !string.IsNullOrEmpty(configValue) && Convert.ToBoolean(configValue);
         }
 
         internal static bool IsValidServiceRouteMapper(Type t)
@@ -134,37 +125,11 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IMvcRouteMapper).IsAssignableFrom(t);
         }
 
-        private void RegisterSystemRoutes()
+        private static bool IsTracingEnabled()
         {
-            var dataTokens = new RouteValueDictionary();
-            var ns = new string[] { "DotNetNuke.Web.MvcWebsite.Controllers" };
-            dataTokens["Namespaces"] = ns;
+            var configValue = Config.GetSetting("EnableServicesFrameworkTracing");
 
-            var route = new Route(
-                "DesktopModules/{controller}/{action}/{tabid}/{language}",
-                new RouteValueDictionary(new { action = "Index", tabid = UrlParameter.Optional, language = UrlParameter.Optional }),
-                null, // No constraints
-                dataTokens,
-                new DnnMvcPageRouteHandler()
-            );
-            this.routes.Add(route);
-            /*
-            dataTokens = new RouteValueDictionary();
-            ns = new string[] { "DotNetNuke.Modules.Html.Controllers" };
-            dataTokens["Namespaces"] = ns;
-            dataTokens["area"] = "Html";
-
-
-            route = new Route(
-                "DesktopModules/{controller}/{action}",
-                new RouteValueDictionary(new { action = "Index" }),
-                null, // No constraints
-                dataTokens,
-                new DnnMvcPageRouteHandler()
-            );
-
-            this.routes.Add(route);
-            */
+            return !string.IsNullOrEmpty(configValue) && Convert.ToBoolean(configValue);
         }
 
         private static Route MapRouteWithNamespace(string name, string area, string url, object defaults, object constraints, string[] namespaces)
@@ -178,6 +143,7 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             {
                 route.DataTokens = new RouteValueDictionary();
             }
+
             route.DataTokens.Add("area", area);
             ConstraintValidation.Validate(route);
             if ((namespaces != null) && (namespaces.Length > 0))
@@ -195,9 +161,25 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             return dictionary != null ? new RouteValueDictionary(dictionary) : TypeHelper.ObjectToDictionary(values);
         }
 
+        private void RegisterSystemRoutes()
+        {
+            var dataTokens = new RouteValueDictionary();
+            var ns = new string[] { "DotNetNuke.Web.MvcWebsite.Controllers" };
+            dataTokens["Namespaces"] = ns;
+
+            var route = new Route(
+                "DesktopModules/{controller}/{action}/{tabid}/{language}",
+                new RouteValueDictionary(new { action = "Index", tabid = UrlParameter.Optional, language = UrlParameter.Optional }),
+                null, // No constraints
+                dataTokens,
+                new DnnMvcPageRouteHandler());
+
+            this.routes.Add(route);
+        }
+
         private void LocateServicesAndMapRoutes()
         {
-            RegisterSystemRoutes();
+            this.RegisterSystemRoutes();
             this.ClearCachedRouteData();
 
             this.moduleUsage.Clear();

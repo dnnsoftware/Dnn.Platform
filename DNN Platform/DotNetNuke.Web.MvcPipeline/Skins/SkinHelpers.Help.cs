@@ -36,7 +36,6 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
             var portalSettings = PortalSettings.Current;
             var hostSettings = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-            
             var link = new TagBuilder("a");
             if (!string.IsNullOrEmpty(cssClass))
             {

@@ -17,7 +17,6 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Framework;
     using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
-    //using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ResourceManager;
 
     using DotNetNuke.Web.MvcPipeline.Models;
@@ -68,7 +67,8 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             int autoSearchDelayInMilliSecond = 400)
         {
             var navigationManager = helper.ViewData.Model.NavigationManager;
-            //TODO: CSP - enable when CSP implementation is ready
+
+            // TODO: CSP - enable when CSP implementation is ready
             var nonce = string.Empty; // helper.ViewData.Model.ContentSecurityPolicy.Nonce;
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             var controller = HtmlHelpers.GetClientResourcesController(helper);
@@ -260,7 +260,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             {
                 button.AddCssClass(cssClass);
             }
-                
+
             button.Attributes["href"] = searchUrl; // "#";
             button.InnerHtml = submit ?? Localization.GetString("Search", GetSkinsResourceFile(SearchFileName));
             return button.ToString();
@@ -273,6 +273,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             {
                 nonceAttribute = $"nonce=\"{nonce}\"";
             }
+
             return string.Format(
                 @"
                 <script {8} >

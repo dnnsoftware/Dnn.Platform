@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System;
     using System.Web;
     using System.Web.Mvc;
+
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Web.MvcPipeline.Models;
 

@@ -82,16 +82,6 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
             controller.RegisterScript(scriptPath);
         }
 
-        private static void SetKey(string key)
-        {
-            HttpContextSource.Current.Items[key] = true;
-        }
-
-        private static bool CheckKey(string antiForgeryKey)
-        {
-            return HttpContextSource.Current.Items.Contains(antiForgeryKey);
-        }
-
         /// <inheritdoc/>
         public void RegisterAjaxAntiForgery()
         {
@@ -114,9 +104,20 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
             {
                 scriptPath = "~/js/dnn.servicesframework.js";
             }
+
             GetClientResourcesController()
                 .CreateScript(scriptPath)
                 .Register();
+        }
+
+        private static void SetKey(string key)
+        {
+            HttpContextSource.Current.Items[key] = true;
+        }
+
+        private static bool CheckKey(string antiForgeryKey)
+        {
+            return HttpContextSource.Current.Items.Contains(antiForgeryKey);
         }
 
         private static IClientResourceController GetClientResourcesController()

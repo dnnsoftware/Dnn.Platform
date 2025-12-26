@@ -7,7 +7,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System;
     using System.Web;
     using System.Web.Mvc;
-    using DotNetNuke.Common;
+
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
     using Microsoft.Extensions.DependencyInjection;
