@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using System.Threading;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -25,14 +26,17 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     public class PaneModelFactory : IPaneModelFactory
     {
         private readonly IContainerModelFactory containerModelFactory;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PaneModelFactory"/> class.
         /// </summary>
         /// <param name="containerModelFactory">The container model factory.</param>
-        public PaneModelFactory(IContainerModelFactory containerModelFactory)
+        /// <param name="hostSettings">The host settings.</param>
+        public PaneModelFactory(IContainerModelFactory containerModelFactory, IHostSettings hostSettings)
         {
             this.containerModelFactory = containerModelFactory;
+            this.hostSettings = hostSettings;
         }
 
         /// <inheritdoc/>

@@ -5,7 +5,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
 {
     using System.Collections.Generic;
     using System.IO;
-
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.UI.Modules;
@@ -24,10 +24,11 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         /// </summary>
         /// <param name="moduleConfiguration">The module configuration.</param>
         /// <param name="portalSettings">The current portal settings.</param>
-        public ContainerModel(ModuleInfo moduleConfiguration, PortalSettings portalSettings)
+        /// <param name="hostSettings">The host settings.</param>
+        public ContainerModel(ModuleInfo moduleConfiguration, PortalSettings portalSettings, IHostSettings hostSettings)
         {
             this.moduleConfiguration = moduleConfiguration;
-            this.moduleHost = new ModuleHostModel(moduleConfiguration);
+            this.moduleHost = new ModuleHostModel(moduleConfiguration, hostSettings);
             this.portalSettings = portalSettings;
         }
 

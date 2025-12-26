@@ -4,7 +4,7 @@
 namespace DotNetNuke.Web.MvcPipeline.Models
 {
     using System.Text.RegularExpressions;
-
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -38,10 +38,10 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         /// Initializes a new instance of the <see cref="ModuleHostModel"/> class.
         /// </summary>
         /// <param name="moduleConfiguration">The module configuration to host.</param>
-        public ModuleHostModel(ModuleInfo moduleConfiguration)
+        public ModuleHostModel(ModuleInfo moduleConfiguration, IHostSettings hostSettings)
         {
             this.moduleConfiguration = moduleConfiguration;
-            if (Host.EnableCustomModuleCssClass)
+            if (hostSettings.EnableCustomModuleCssClass)
             {
                 string moduleName = this.moduleConfiguration.DesktopModule.ModuleName;
                 if (moduleName != null)

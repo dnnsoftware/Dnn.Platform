@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System.Web.Mvc;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -23,6 +24,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Services.Social.Messaging.Internal;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Skin helper methods for rendering user/register/profile links and counts.
@@ -49,6 +51,9 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             var nonce = string.Empty; // helper.ViewData.Model.ContentSecurityPolicy.Nonce;
             var portalSettings = PortalSettings.Current;
             var navigationManager = helper.ViewData.Model.NavigationManager;
+            var portalController = GetDependencyProvider(helper).GetRequiredService<IPortalController>();
+            var appStatus = GetDependencyProvider(helper).GetRequiredService<IApplicationStatusInfo>();
+            var portalGroupController = GetDependencyProvider(helper).GetRequiredService<IPortalGroupController>();
 
             if (portalSettings.InErrorPageRequest() && !showInErrorPage)
             {
@@ -163,14 +168,15 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                         // Add menu-items (viewProfile, userMessages, userNotifications, etc.)
                         if (showUnreadMessages)
                         {
+                            var effectivePortalId = PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, userInfo.PortalID);
                             // Create Messages
-                            var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(userInfo.UserID, PortalController.GetEffectivePortalId(userInfo.PortalID));
+                            var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(userInfo.UserID, effectivePortalId);
 
                             var messageLinkText = unreadMessages > 0 ? string.Format(Localization.GetString("Messages", userResourceFile), unreadMessages) : string.Format(Localization.GetString("NoMessages", userResourceFile));
                             ul.InnerHtml += CreateMenuItem(messageLinkText, "userMessages", navigationManager.NavigateURL(GetMessageTab(portalSettings)));
 
                             // Create Notifications
-                            var unreadAlerts = NotificationsController.Instance.CountNotifications(userInfo.UserID, PortalController.GetEffectivePortalId(userInfo.PortalID));
+                            var unreadAlerts = NotificationsController.Instance.CountNotifications(userInfo.UserID, effectivePortalId);
                             var alertLink = navigationManager.NavigateURL(GetMessageTab(portalSettings), string.Empty, string.Format("userId={0}", userInfo.UserID), "view=notifications", "action=notifications");
                             var alertLinkText = unreadAlerts > 0 ? string.Format(Localization.GetString("Notifications", userResourceFile), unreadAlerts) : string.Format(Localization.GetString("NoNotifications", userResourceFile));
 

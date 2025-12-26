@@ -13,8 +13,11 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Pages;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -50,13 +53,21 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     /// </summary>
     public class SkinModelFactory : ISkinModelFactory
     {
+        /// <summary>Gets the key used to store initialization messages in HttpContext.Items.</summary>
         public const string OnInitMessage = "Skin_InitMessage";
+
+        /// <summary>Gets the key used to store initialization message types in HttpContext.Items.</summary>
         public const string OnInitMessageType = "Skin_InitMessageType";
 
         private readonly INavigationManager navigationManager;
         private readonly IPaneModelFactory paneModelFactory;
         private readonly IPageService pageService;
         private readonly IClientResourceController clientResourceController;
+        private readonly IHostSettings hostSettings;
+        private readonly IPortalController portalController;
+
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkinModelFactory"/> class.
@@ -65,35 +76,48 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         /// <param name="paneModelFactory">The pane model factory.</param>
         /// <param name="clientResourceController">The client resource controller.</param>
         /// <param name="pageService">The page service used for messages and meta data.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status information.</param>
+        /// <param name="eventLogger">The event logger.</param>
         public SkinModelFactory(
                                 INavigationManager navigationManager,
                                 IPaneModelFactory paneModelFactory,
                                 IClientResourceController clientResourceController,
-                                IPageService pageService)
+                                IPageService pageService,
+                                IHostSettings hostSettings,
+                                IPortalController portalController,
+                                IApplicationStatusInfo appStatus,
+                                IEventLogger eventLogger)
         {
             this.navigationManager = navigationManager;
             this.paneModelFactory = paneModelFactory;
             this.clientResourceController = clientResourceController;
             this.pageService = pageService;
+            this.hostSettings = hostSettings;
+            this.portalController = portalController;
+            this.appStatus = appStatus;
+            this.eventLogger = eventLogger;
         }
 
         /// <inheritdoc/>
-        public SkinModel CreateSkinModel(DnnPageController page)
+        public SkinModel CreateSkinModel(DnnPageController pageController)
         {
             SkinModel skin = null;
             var skinSource = Null.NullString;
+            PortalSettings portalSettings = pageController.PortalSettings;
 
-            if (page.PortalSettings.EnablePopUps && UrlUtils.InPopUp())
+            if (portalSettings.EnablePopUps && UrlUtils.InPopUp())
             {
                 // attempt to find and load a popup skin from the assigned skinned source
-                skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
+                skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(portalSettings.DefaultAdminSkin, portalSettings) : portalSettings.ActiveTab.SkinSrc;
                 if (!string.IsNullOrEmpty(skinSource))
                 {
-                    skinSource = SkinController.FormatSkinSrc(SkinController.FormatSkinPath(skinSource) + "popUpSkin.ascx", page.PortalSettings);
+                    skinSource = SkinController.FormatSkinSrc(SkinController.FormatSkinPath(skinSource) + "popUpSkin.ascx", portalSettings);
 
-                    if (File.Exists(HttpContext.Current.Server.MapPath(SkinController.FormatSkinSrc(skinSource, page.PortalSettings))))
+                    if (File.Exists(HttpContext.Current.Server.MapPath(SkinController.FormatSkinSrc(skinSource, portalSettings))))
                     {
-                        skin = this.LoadSkin(page, skinSource);
+                        skin = this.LoadSkin(pageController, skinSource);
                     }
                 }
 
@@ -101,31 +125,31 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 if (skin == null)
                 {
                     skinSource = Globals.HostPath + "Skins/_default/popUpSkin.ascx";
-                    skin = this.LoadSkin(page, skinSource);
+                    skin = this.LoadSkin(pageController, skinSource);
                 }
 
                 // set skin path
-                page.PortalSettings.ActiveTab.SkinPath = SkinController.FormatSkinPath(skinSource);
+                portalSettings.ActiveTab.SkinPath = SkinController.FormatSkinPath(skinSource);
             }
             else
             {
                 // skin preview
-                if (page.Request.QueryString["SkinSrc"] != null)
+                if (pageController.Request.QueryString["SkinSrc"] != null)
                 {
-                    skinSource = SkinController.FormatSkinSrc(Globals.QueryStringDecode(page.Request.QueryString["SkinSrc"]) + ".ascx", page.PortalSettings);
-                    skin = this.LoadSkin(page, skinSource);
+                    skinSource = SkinController.FormatSkinSrc(Globals.QueryStringDecode(pageController.Request.QueryString["SkinSrc"]) + ".ascx", portalSettings);
+                    skin = this.LoadSkin(pageController, skinSource);
                 }
 
                 // load user skin ( based on cookie )
                 if (skin == null)
                 {
-                    var skinCookie = page.Request.Cookies["_SkinSrc" + page.PortalSettings.PortalId];
+                    var skinCookie = pageController.Request.Cookies["_SkinSrc" + portalSettings.PortalId];
                     if (skinCookie != null)
                     {
                         if (!string.IsNullOrEmpty(skinCookie.Value))
                         {
-                            skinSource = SkinController.FormatSkinSrc(skinCookie.Value + ".ascx", page.PortalSettings);
-                            skin = this.LoadSkin(page, skinSource);
+                            skinSource = SkinController.FormatSkinSrc(skinCookie.Value + ".ascx", portalSettings);
+                            skin = this.LoadSkin(pageController, skinSource);
                         }
                     }
                 }
@@ -134,26 +158,26 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 if (skin == null)
                 {
                     // DNN-6170 ensure skin value is culture specific
-                    skinSource = Globals.IsAdminSkin() ? PortalController.GetPortalSetting("DefaultAdminSkin", page.PortalSettings.PortalId, Host.DefaultPortalSkin, page.PortalSettings.CultureCode) : page.PortalSettings.ActiveTab.SkinSrc;
+                    skinSource = Globals.IsAdminSkin() ? PortalController.GetPortalSetting(this.portalController, "DefaultAdminSkin", portalSettings.PortalId, this.hostSettings.DefaultPortalSkin, portalSettings.CultureCode) : portalSettings.ActiveTab.SkinSrc;
                     if (!string.IsNullOrEmpty(skinSource))
                     {
-                        skinSource = SkinController.FormatSkinSrc(skinSource, page.PortalSettings);
-                        skin = this.LoadSkin(page, skinSource);
+                        skinSource = SkinController.FormatSkinSrc(skinSource, portalSettings);
+                        skin = this.LoadSkin(pageController, skinSource);
                     }
                 }
 
                 // error loading skin - load default
                 if (skin == null)
                 {
-                    skinSource = SkinController.FormatSkinSrc(SkinController.GetDefaultPortalSkin(), page.PortalSettings);
-                    skin = this.LoadSkin(page, skinSource);
+                    skinSource = SkinController.FormatSkinSrc(SkinController.GetDefaultPortalSkin(), portalSettings);
+                    skin = this.LoadSkin(pageController, skinSource);
                 }
 
                 // set skin path
-                page.PortalSettings.ActiveTab.SkinPath = SkinController.FormatSkinPath(skinSource);
+                portalSettings.ActiveTab.SkinPath = SkinController.FormatSkinPath(skinSource);
             }
 
-            if (page.PortalSettings.ActiveTab.DisableLink)
+            if (portalSettings.ActiveTab.DisableLink)
             {
                 if (TabPermissionController.CanAdminPage())
                 {
@@ -169,20 +193,20 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 .SetPriority(FileOrder.Css.DefaultCss)
                 .Register();
 
-            this.clientResourceController.RegisterStylesheet(string.Concat(page.PortalSettings.ActiveTab.SkinPath, "skin.css"), FileOrder.Css.SkinCss, true);
-            this.clientResourceController.RegisterStylesheet(page.PortalSettings.ActiveTab.SkinSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificSkinCss, true);
+            this.clientResourceController.RegisterStylesheet(string.Concat(portalSettings.ActiveTab.SkinPath, "skin.css"), FileOrder.Css.SkinCss, true);
+            this.clientResourceController.RegisterStylesheet(portalSettings.ActiveTab.SkinSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificSkinCss, true);
 
             // register css variables
-            var cssVariablesStyleSheet = this.GetCssVariablesStylesheet(page.PortalSettings.PortalId, page.PortalSettings.GetStyles(), page.PortalSettings.HomeSystemDirectory);
+            var cssVariablesStyleSheet = this.GetCssVariablesStylesheet(portalSettings.PortalId, portalSettings.GetStyles(), portalSettings.HomeSystemDirectory);
             skin.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = cssVariablesStyleSheet, FileOrder = FileOrder.Css.DefaultCss });
 
             // register the custom stylesheet of current page
-            if (page.PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(page.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
+            if (portalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(portalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
             {
-                var styleSheet = page.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString();
+                var styleSheet = portalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString();
 
                 // Try and go through the FolderProvider first
-                var stylesheetFile = this.GetPageStylesheetFileInfo(styleSheet, page.PortalSettings.PortalId);
+                var stylesheetFile = this.GetPageStylesheetFileInfo(styleSheet, portalSettings.PortalId);
                 if (stylesheetFile != null)
                 {
                     skin.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = FileManager.Instance.GetUrl(stylesheetFile), FileOrder = FileOrder.Css.DefaultCss });
@@ -193,9 +217,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 }
             }
 
-            if (page.PortalSettings.EnablePopUps)
+            if (portalSettings.EnablePopUps)
             {
-                JavaScript.RequestRegistration(CommonJs.jQueryUI);
+                JavaScript.RequestRegistration(this.appStatus, this.eventLogger, portalSettings, CommonJs.jQueryUI);
                 var popupFilePath = HttpContext.Current.IsDebuggingEnabled
                                    ? "~/js/Debug/dnn.modalpopup.js"
                                    : "~/js/dnn.modalpopup.js";
@@ -226,7 +250,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 this.InjectControlPanel(ctlSkin, page.Request);
 
                 // Register any error messages on the Skin
-                if (page.Request.QueryString["error"] != null && Host.ShowCriticalErrors)
+                if (page.Request.QueryString["error"] != null && this.hostSettings.ShowCriticalErrors)
                 {
                     this.pageService.AddErrorMessage(" ", Localization.GetString("CriticalError.Error"));
 
@@ -235,7 +259,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                         ServicesFramework.Instance.RequestAjaxScriptSupport();
                         ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-                        JavaScript.RequestRegistration(CommonJs.jQueryUI);
+                        JavaScript.RequestRegistration(this.appStatus, this.eventLogger, page.PortalSettings, CommonJs.jQueryUI);
                         MvcJavaScript.RegisterClientReference(DotNetNuke.UI.Utilities.ClientAPI.ClientNamespaceReferences.dnn_dom);
                         this.clientResourceController.RegisterScript("~/resources/shared/scripts/dnn.logViewer.js");
                     }
@@ -257,7 +281,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
                     this.pageService.AddMessage(new PageMessage(string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType, string.Empty, PagePriority.Default));
 
-                    JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                    JavaScript.RequestRegistration(this.appStatus, this.eventLogger, page.PortalSettings, CommonJs.DnnPlugins);
                     ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
                 }
 
@@ -271,7 +295,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !isSpecialPageMode)
                 {
                     // Register Drag and Drop plugin
-                    JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                    JavaScript.RequestRegistration(this.appStatus, this.eventLogger, page.PortalSettings, CommonJs.DnnPlugins);
 
                     // MvcClientResourceManager.RegisterStyleSheet(page.ControllerContext, "~/resources/shared/stylesheets/dnn.dragDrop.css", FileOrder.Css.FeatureCss);
                     ctlSkin.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = "~/resources/shared/stylesheets/dnn.dragDrop.css", FileOrder = FileOrder.Css.FeatureCss });
@@ -538,7 +562,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 if (ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal())
                 {
                     // ControlPanel processing
-                    skin.ControlPanelRazor = Path.GetFileNameWithoutExtension(Host.ControlPanel);
+                    skin.ControlPanelRazor = Path.GetFileNameWithoutExtension(this.hostSettings.ControlPanel);
                     ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
                 }
             }
@@ -583,6 +607,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         {
             var cacheKey = string.Format(DataCache.PortalCacheKey, portalId, "PageStylesheet" + styleSheet);
             var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, styleSheet, portalId),
                 this.GetPageStylesheetInfoCallBack);
 
@@ -604,7 +629,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 DataCache.PortalCachePriority,
                 portalStyles,
                 homeSystemDirectory);
-            var filePath = CBO.GetCachedObject<string>(cacheArgs, this.GetCssVariablesStylesheetCallback);
+            var filePath = CBO.GetCachedObject<string>(this.hostSettings, cacheArgs, this.GetCssVariablesStylesheetCallback);
             return filePath;
         }
 

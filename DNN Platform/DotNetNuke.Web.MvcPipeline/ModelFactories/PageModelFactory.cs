@@ -15,6 +15,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Pages;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -45,6 +46,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
         private readonly INavigationManager navigationManager;
         private readonly IPortalController portalController;
+        private readonly IPortalSettingsController portalSettingsController;
         private readonly IModuleControlPipeline moduleControlPipeline;
         private readonly IApplicationInfo applicationInfo;
         private readonly ISkinModelFactory skinModelFactory;
@@ -56,6 +58,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         /// </summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalSettingsController">The portal settings controller.</param>
         /// <param name="moduleControlPipeline">The module control pipeline.</param>
         /// <param name="applicationInfo">The application information service.</param>
         /// <param name="skinModelFactory">The skin model factory.</param>
@@ -64,6 +67,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         public PageModelFactory(
             INavigationManager navigationManager,
             IPortalController portalController,
+            IPortalSettingsController portalSettingsController,
             IModuleControlPipeline moduleControlPipeline,
             IApplicationInfo applicationInfo,
             ISkinModelFactory skinModelFactory,
@@ -72,6 +76,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         {
             this.navigationManager = navigationManager;
             this.portalController = portalController;
+            this.portalSettingsController = portalSettingsController;
             this.moduleControlPipeline = moduleControlPipeline;
             this.applicationInfo = applicationInfo;
             this.skinModelFactory = skinModelFactory;
@@ -83,35 +88,37 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         public PageModel CreatePageModel(DnnPageController controller)
         {
             var ctl = controller.Request.QueryString["ctl"] != null ? controller.Request.QueryString["ctl"] : string.Empty;
+            IPortalSettings portalSettings = controller.PortalSettings;
+            TabInfo activeTab = controller.PortalSettings.ActiveTab;
             var pageModel = new PageModel
             {
                 IsEditMode = Globals.IsEditMode(),
                 AntiForgery = AntiForgery.GetHtml().ToHtmlString(),
-                PortalId = controller.PortalSettings.PortalId,
-                TabId = controller.PortalSettings.ActiveTab.TabID,
+                PortalId = portalSettings.PortalId,
+                TabId = activeTab.TabID,
                 Language = Thread.CurrentThread.CurrentCulture.Name,
 
                 // TODO: CSP - enable when CSP implementation is ready
                 // ContentSecurityPolicy = this.contentSecurityPolicy,
                 NavigationManager = this.navigationManager,
                 PageService = this.pageService,
-                FavIconLink = FavIcon.GetHeaderLink(this.hostSettings, controller.PortalSettings.PortalId),
+                FavIconLink = FavIcon.GetHeaderLink(this.hostSettings, portalSettings.PortalId),
             };
-            if (controller.PortalSettings.ActiveTab.PageHeadText != Null.NullString && !Globals.IsAdminControl())
+            if (activeTab.PageHeadText != Null.NullString && !Globals.IsAdminControl())
             {
-                pageModel.PageHeadText = controller.PortalSettings.ActiveTab.PageHeadText;
+                pageModel.PageHeadText = activeTab.PageHeadText;
             }
 
-            if (!string.IsNullOrEmpty(controller.PortalSettings.PageHeadText))
+            if (!string.IsNullOrEmpty(portalSettings.PageHeadText))
             {
-                pageModel.PortalHeadText = controller.PortalSettings.PageHeadText;
+                pageModel.PortalHeadText = portalSettings.PageHeadText;
             }
 
             // set page title
             if (UrlUtils.InPopUp())
             {
-                var strTitle = new StringBuilder(controller.PortalSettings.PortalName);
-                var slaveModule = DotNetNuke.UI.UIUtilities.GetSlaveModule(controller.PortalSettings.ActiveTab.TabID);
+                var strTitle = new StringBuilder(portalSettings.PortalName);
+                var slaveModule = DotNetNuke.UI.UIUtilities.GetSlaveModule(activeTab.TabID);
 
                 // Skip is popup is just a tab (no slave module)
                 if (slaveModule.DesktopModuleID != Null.NullInteger)
@@ -142,12 +149,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
                     var title = Localization.LocalizeControlTitle(control);
 
-                    strTitle.Append(string.Concat(" > ", controller.PortalSettings.ActiveTab.LocalizedTabName));
+                    strTitle.Append(string.Concat(" > ", activeTab.LocalizedTabName));
                     strTitle.Append(string.Concat(" > ", title));
                 }
                 else
                 {
-                    strTitle.Append(string.Concat(" > ", controller.PortalSettings.ActiveTab.LocalizedTabName));
+                    strTitle.Append(string.Concat(" > ", activeTab.LocalizedTabName));
                 }
 
                 this.pageService.SetTitle(strTitle.ToString(), PagePriority.Page);
@@ -155,15 +162,15 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             else
             {
                 // If tab is named, use that title, otherwise build it out via breadcrumbs
-                if (!string.IsNullOrEmpty(controller.PortalSettings.ActiveTab.Title))
+                if (!string.IsNullOrEmpty(activeTab.Title))
                 {
-                    this.pageService.SetTitle(controller.PortalSettings.ActiveTab.Title, PagePriority.Page);
+                    this.pageService.SetTitle(activeTab.Title, PagePriority.Page);
                 }
                 else
                 {
                     // Elected for SB over true concatenation here due to potential for long nesting depth
-                    var strTitle = new StringBuilder(controller.PortalSettings.PortalName);
-                    foreach (TabInfo tab in controller.PortalSettings.ActiveTab.BreadCrumbs)
+                    var strTitle = new StringBuilder(portalSettings.PortalName);
+                    foreach (TabInfo tab in activeTab.BreadCrumbs)
                     {
                         strTitle.Append(string.Concat(" > ", tab.TabName));
                     }
@@ -178,9 +185,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             // set the background image if there is one selected
             if (!UrlUtils.InPopUp())
             {
-                if (!string.IsNullOrEmpty(controller.PortalSettings.BackgroundFile))
+                if (!string.IsNullOrEmpty(portalSettings.BackgroundFile))
                 {
-                    var fileInfo = this.GetBackgroundFileInfo(controller.PortalSettings);
+                    var fileInfo = this.GetBackgroundFileInfo(portalSettings);
                     pageModel.BackgroundUrl = FileManager.Instance.GetUrl(fileInfo);
 
                     // ((HtmlGenericControl)this.FindControl("Body")).Attributes["style"] = string.Concat("background-image: url('", url, "')");
@@ -189,41 +196,43 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
             // META Refresh
             // Only autorefresh the page if we are in VIEW-mode and if we aren't displaying some module's subcontrol.
-            if (controller.PortalSettings.ActiveTab.RefreshInterval > 0 && Personalization.GetUserMode() == PortalSettings.Mode.View && string.IsNullOrEmpty(ctl))
+            if (activeTab.RefreshInterval > 0 && Personalization.GetUserMode() == PortalSettings.Mode.View && string.IsNullOrEmpty(ctl))
             {
-                pageModel.MetaRefresh = controller.PortalSettings.ActiveTab.RefreshInterval.ToString();
+                pageModel.MetaRefresh = activeTab.RefreshInterval.ToString();
             }
 
             // META description
-            if (!string.IsNullOrEmpty(controller.PortalSettings.ActiveTab.Description))
+            if (!string.IsNullOrEmpty(activeTab.Description))
             {
-                this.pageService.SetDescription(controller.PortalSettings.ActiveTab.Description, PagePriority.Page);
+                this.pageService.SetDescription(activeTab.Description, PagePriority.Page);
             }
             else
             {
-                this.pageService.SetDescription(controller.PortalSettings.Description, PagePriority.Site);
+                this.pageService.SetDescription(portalSettings.Description, PagePriority.Site);
             }
+
             pageModel.Description = this.pageService.GetDescription();
 
             // META keywords
-            if (!string.IsNullOrEmpty(controller.PortalSettings.ActiveTab.KeyWords))
+            if (!string.IsNullOrEmpty(activeTab.KeyWords))
             {
-                this.pageService.SetKeyWords(controller.PortalSettings.ActiveTab.KeyWords, PagePriority.Page);
+                this.pageService.SetKeyWords(activeTab.KeyWords, PagePriority.Page);
             }
             else
             {
-                this.pageService.SetKeyWords(controller.PortalSettings.KeyWords, PagePriority.Site);
+                this.pageService.SetKeyWords(portalSettings.KeyWords, PagePriority.Site);
             }
+
             pageModel.KeyWords = this.pageService.GetKeyWords();
 
             // META copyright
-            if (!string.IsNullOrEmpty(controller.PortalSettings.FooterText))
+            if (!string.IsNullOrEmpty(portalSettings.FooterText))
             {
-                pageModel.Copyright = controller.PortalSettings.FooterText.Replace("[year]", DateTime.Now.Year.ToString());
+                pageModel.Copyright = portalSettings.FooterText.Replace("[year]", DateTime.Now.Year.ToString());
             }
             else
             {
-                pageModel.Copyright = string.Concat("Copyright (c) ", DateTime.Now.Year, " by ", controller.PortalSettings.PortalName);
+                pageModel.Copyright = string.Concat("Copyright (c) ", DateTime.Now.Year, " by ", portalSettings.PortalName);
             }
 
             // META generator
@@ -231,13 +240,13 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
             // META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag
             if (!UrlUtils.InPopUp() &&
-                !(HeaderTextRegex.IsMatch(controller.PortalSettings.ActiveTab.PageHeadText) ||
-                  HeaderTextRegex.IsMatch(controller.PortalSettings.PageHeadText)))
+                !(HeaderTextRegex.IsMatch(activeTab.PageHeadText) ||
+                  HeaderTextRegex.IsMatch(portalSettings.PageHeadText)))
             {
                 var allowIndex = true;
-                if (controller.PortalSettings.ActiveTab.TabSettings.ContainsKey("AllowIndex") &&
-                     bool.TryParse(controller.PortalSettings.ActiveTab.TabSettings["AllowIndex"].ToString(), out allowIndex) &&
-                     !allowIndex || ctl == "Login" || ctl == "Register")
+                if ((activeTab.TabSettings.ContainsKey("AllowIndex") &&
+                     bool.TryParse(activeTab.TabSettings["AllowIndex"].ToString(), out allowIndex) &&
+                     !allowIndex) || ctl == "Login" || ctl == "Register")
                 {
                     pageModel.MetaRobots = "NOINDEX, NOFOLLOW";
                 }
@@ -250,7 +259,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             pageModel.CanonicalLinkUrl = this.pageService.GetCanonicalLinkUrl();
 
             // NonProduction Label Injection
-            if (this.applicationInfo.Status != Abstractions.Application.ReleaseMode.Stable && Host.DisplayBetaNotice && !UrlUtils.InPopUp())
+            if (this.applicationInfo.Status != Abstractions.Application.ReleaseMode.Stable && this.hostSettings.DisplayBetaNotice && !UrlUtils.InPopUp())
             {
                 var versionString =
                     $" ({this.applicationInfo.Status} Version: {this.applicationInfo.Version})";
@@ -262,10 +271,11 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return pageModel;
         }
 
-        private IFileInfo GetBackgroundFileInfo(PortalSettings portalSettings)
+        private IFileInfo GetBackgroundFileInfo(IPortalSettings portalSettings)
         {
             var cacheKey = string.Format(DataCache.PortalCacheKey, portalSettings.PortalId, "BackgroundFile");
             var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, portalSettings.PortalId, portalSettings.BackgroundFile),
                 this.GetBackgroundFileInfoCallBack);
 

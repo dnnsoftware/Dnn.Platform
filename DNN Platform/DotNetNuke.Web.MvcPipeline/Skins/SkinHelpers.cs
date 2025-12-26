@@ -39,5 +39,25 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         {
             return GetResourceFile("/admin/Skins", fileName);
         }
+
+        /// <summary>
+        /// Gets the dependency injection service provider from the current <see cref="DnnPageController"/>.
+        /// </summary>
+        /// <param name="htmlHelper">The MVC HTML helper.</param>
+        /// <returns>The service provider associated with the current controller.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when the current controller is not a <see cref="DnnPageController"/>.
+        /// </exception>
+        internal static IServiceProvider GetDependencyProvider(HtmlHelper htmlHelper)
+        {
+            var controller = htmlHelper.ViewContext.Controller as DnnPageController;
+
+            if (controller == null)
+            {
+                throw new InvalidOperationException("The HtmlHelper can only be used from DnnPageController");
+            }
+
+            return controller.DependencyProvider;
+        }
     }
 }

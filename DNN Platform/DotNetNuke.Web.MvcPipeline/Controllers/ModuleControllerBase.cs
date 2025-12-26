@@ -24,21 +24,10 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
         /// Initializes a new instance of the <see cref="ModuleControllerBase"/> class.
         /// </summary>
         /// <param name="dependencyProvider">The dependency injection service provider.</param>
-        public ModuleControllerBase(IServiceProvider dependencyProvider) 
+        public ModuleControllerBase(IServiceProvider dependencyProvider)
             : base(dependencyProvider)
         {
             this.activeModule = new Lazy<ModuleInfo>(this.InitModuleInfo);
-        }
-
-        /// <summary>
-        /// Gets the current portal settings.
-        /// </summary>
-        public PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 {
     using System;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -22,20 +23,23 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     public class ContainerModelFactory : IContainerModelFactory
     {
         private readonly IClientResourceController clientResourceController;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContainerModelFactory"/> class.
         /// </summary>
         /// <param name="clientResourceController">The client resource controller.</param>
-        public ContainerModelFactory(IClientResourceController clientResourceController)
+        /// <param name="hostSettings">The host settings.</param>
+        public ContainerModelFactory(IClientResourceController clientResourceController, IHostSettings hostSettings)
         {
             this.clientResourceController = clientResourceController;
+            this.hostSettings = hostSettings;
         }
 
         /// <inheritdoc/>
         public ContainerModel CreateContainerModel(ModuleInfo configuration, PortalSettings portalSettings, string containerSrc)
         {
-            var container = new ContainerModel(configuration, portalSettings);
+            var container = new ContainerModel(configuration, portalSettings, this.hostSettings);
             container.ContainerSrc = containerSrc;
             container = this.ProcessModule(container, portalSettings);
             return container;

@@ -22,8 +22,17 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.Modules;
 
+    /// <summary>
+    /// Container-related HTML helper methods for skinning, including module content rendering.
+    /// </summary>
     public static partial class SkinHelpers
     {
+        /// <summary>
+        /// Renders the module content for the current container, including the module control, actions, and styling.
+        /// </summary>
+        /// <param name="htmlHelper">The HTML helper for the container model.</param>
+        /// <returns>The HTML string representing the module content.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the model is not present.</exception>
         public static IHtmlString Content(this HtmlHelper<ContainerModel> htmlHelper)
         {
             var model = htmlHelper.ViewData.Model;
