@@ -21,6 +21,7 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs.Actions;
@@ -2415,8 +2416,14 @@ namespace DotNetNuke.Entities.Tabs
                 AddAllTabsModules(tab);
             }
 
-            // Check Tab Versioning
-            if (tab.PortalID == Null.NullInteger || !TabVersionSettings.Instance.IsVersioningEnabled(tab.PortalID, tab.TabID))
+            // Publish immediately if versioning/workflow are not active or site workflow is Direct Publish
+            var versioningEnabled = tab.PortalID != Null.NullInteger && TabVersionSettings.Instance.IsVersioningEnabled(tab.PortalID);
+            var workflowEnabled = tab.PortalID != Null.NullInteger && TabWorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID);
+            var directPublishWorkflowId = tab.PortalID != Null.NullInteger ? SystemWorkflowManager.Instance.GetDirectPublishWorkflow(tab.PortalID)?.WorkflowID ?? Null.NullInteger : Null.NullInteger;
+            var defaultWorkflowId = tab.PortalID != Null.NullInteger ? TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(tab.PortalID) : Null.NullInteger;
+            var isDirectPublishWorkflow = workflowEnabled && directPublishWorkflowId != Null.NullInteger && defaultWorkflowId == directPublishWorkflowId;
+
+            if (tab.PortalID == Null.NullInteger || !versioningEnabled || !workflowEnabled || isDirectPublishWorkflow)
             {
                 this.MarkAsPublished(tab);
             }
