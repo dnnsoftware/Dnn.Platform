@@ -69,8 +69,10 @@
     "/web.config",
     "/App_Data/Database.mdf",
     "/App_Data/Database_log.LDF",
-    "/bin/Providers/DotNetNuke.Providers.AspNetClientCapabilityProvider.dll",
     "/bin/Newtonsoft.Json.dll",
+    "/bin/System.Collections.Immutable.dll",
+    "/bin/System.Text.Encoding.CodePages.dll",
+    "/bin/Providers/DotNetNuke.Providers.AspNetClientCapabilityProvider.dll",
     "/bin/System.Runtime.CompilerServices.Unsafe.dll",
     "/Config/DotNetNuke.config",
     "/Install/InstallWizard.aspx"
