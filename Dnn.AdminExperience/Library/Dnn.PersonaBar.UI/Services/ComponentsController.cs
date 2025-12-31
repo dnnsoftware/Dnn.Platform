@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.UI.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -48,9 +49,10 @@ namespace Dnn.PersonaBar.UI.Services
         }
 
         /// <summary>Gets the local resource file path.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
 
-        private int UnauthUserRoleId => int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
+        private static int UnauthUserRoleId => int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
 
         /// <summary>An API action for getting the role groups for the portal.</summary>
         /// <param name="reload">Whether to clear the cache.</param>
@@ -142,7 +144,7 @@ namespace Dnn.PersonaBar.UI.Services
                 if (roleGroupId <= Null.NullInteger
                         && Globals.glbRoleUnauthUserName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
-                    matchedRoles.Add(new RoleInfo { RoleID = this.UnauthUserRoleId, RoleName = Globals.glbRoleUnauthUserName });
+                    matchedRoles.Add(new RoleInfo { RoleID = UnauthUserRoleId, RoleName = Globals.glbRoleUnauthUserName });
                 }
 
                 var roleList = new SortedList<string, int>();

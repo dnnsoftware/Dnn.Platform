@@ -49,8 +49,8 @@ namespace Dnn.PersonaBar.Users.Components
         }
 
         // NOTE - While making modifications in this method, developer must refer to call tree in Register.ascx.cs.
-        // Especially Validate and CreateUser methods. Register class inherits from UserModuleBase, which also contains bunch of logic.
-        // This method can easily be modified to pass passowrd, display name, etc.
+        // Especially Validate and CreateUser methods. Register class inherits from UserModuleBase, which also contains a bunch of logic.
+        // This method can easily be modified to pass password, display name, etc.
         // It is recommended to write unit tests.
 
         /// <inheritdoc/>
@@ -68,7 +68,7 @@ namespace Dnn.PersonaBar.Users.Components
 
             if (disallowRegistration)
             {
-                throw new Exception(Localization.GetString("RegistrationNotAllowed", Library.Constants.SharedResources));
+                throw new RegistrationException(Localization.GetString("RegistrationNotAllowed", Library.Constants.SharedResources));
             }
 
             // initial creation of the new User object
@@ -82,7 +82,7 @@ namespace Dnn.PersonaBar.Users.Components
                 username,
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
-            if (!cleanUsername.Equals(username))
+            if (!cleanUsername.Equals(username, StringComparison.Ordinal))
             {
                 throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
             }
@@ -97,7 +97,7 @@ namespace Dnn.PersonaBar.Users.Components
             // ensure this user doesn't exist
             if (!string.IsNullOrEmpty(username) && UserController.GetUserByName(portalSettings.PortalId, username) != null)
             {
-                throw new Exception(Localization.GetString(
+                throw new RegistrationException(Localization.GetString(
                     "RegistrationUsernameAlreadyPresent",
                     Library.Constants.SharedResources));
             }
@@ -139,54 +139,54 @@ namespace Dnn.PersonaBar.Users.Components
             var settings = UserController.GetUserSettings(portalSettings.PortalId);
 
             // Verify Profanity filter
-            if (this.GetBoolSetting(settings, "Registration_UseProfanityFilter"))
+            if (GetBoolSetting(settings, "Registration_UseProfanityFilter"))
             {
                 var portalSecurity = PortalSecurity.Instance;
                 if (!portalSecurity.ValidateInput(newUser.Username, PortalSecurity.FilterFlag.NoProfanity) || !portalSecurity.ValidateInput(newUser.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
                 {
-                    throw new Exception(Localization.GetString(
+                    throw new RegistrationException(Localization.GetString(
                         "RegistrationProfanityNotAllowed",
                         Library.Constants.SharedResources));
                 }
             }
 
             // Email Address Validation
-            var emailValidator = this.GetStringSetting(settings, "Security_EmailValidation");
+            var emailValidator = GetStringSetting(settings, "Security_EmailValidation");
             if (!string.IsNullOrEmpty(emailValidator))
             {
                 var regExp = RegexUtils.GetCachedRegex(emailValidator, RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 var matches = regExp.Matches(newUser.Email);
                 if (matches.Count == 0)
                 {
-                    throw new Exception(Localization.GetString(
+                    throw new RegistrationException(Localization.GetString(
                         "RegistrationInvalidEmailUsed",
                         Library.Constants.SharedResources));
                 }
             }
 
             // Excluded Terms Verification
-            var excludeRegex = this.GetExcludeTermsRegex(settings);
+            var excludeRegex = GetExcludeTermsRegex(settings);
             if (!string.IsNullOrEmpty(excludeRegex))
             {
                 var regExp = RegexUtils.GetCachedRegex(excludeRegex, RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 var matches = regExp.Matches(newUser.Username);
                 if (matches.Count > 0)
                 {
-                    throw new Exception(Localization.GetString(
+                    throw new RegistrationException(Localization.GetString(
                         "RegistrationExcludedTermsUsed",
                         Library.Constants.SharedResources));
                 }
             }
 
             // User Name Validation
-            var userNameValidator = this.GetStringSetting(settings, "Security_UserNameValidation");
+            var userNameValidator = GetStringSetting(settings, "Security_UserNameValidation");
             if (!string.IsNullOrEmpty(userNameValidator))
             {
                 var regExp = RegexUtils.GetCachedRegex(userNameValidator, RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 var matches = regExp.Matches(newUser.Username);
                 if (matches.Count == 0)
                 {
-                    throw new Exception(Localization.GetString(
+                    throw new RegistrationException(Localization.GetString(
                         "RegistrationInvalidUserNameUsed",
                         Library.Constants.SharedResources));
                 }
@@ -196,9 +196,9 @@ namespace Dnn.PersonaBar.Users.Components
             var user = UserController.GetUserByName(portalSettings.PortalId, newUser.Username);
             if (user != null)
             {
-                if (this.GetBoolSetting(settings, "Registration_UseEmailAsUserName"))
+                if (GetBoolSetting(settings, "Registration_UseEmailAsUserName"))
                 {
-                    throw new Exception(UserController.GetUserCreateStatus(UserCreateStatus.DuplicateEmail));
+                    throw new RegistrationException(UserController.GetUserCreateStatus(UserCreateStatus.DuplicateEmail));
                 }
 
                 var i = 1;
@@ -214,7 +214,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             // ensure unique display name
-            if (this.GetBoolSetting(settings, "Registration_RequireUniqueDisplayName"))
+            if (GetBoolSetting(settings, "Registration_RequireUniqueDisplayName"))
             {
                 user = UserController.Instance.GetUserByDisplayname(portalSettings.PortalId, newUser.DisplayName);
                 if (user != null)
@@ -233,7 +233,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             // Update display name format
-            var displaynameFormat = this.GetStringSetting(settings, "Security_DisplayNameFormat");
+            var displaynameFormat = GetStringSetting(settings, "Security_DisplayNameFormat");
             if (!string.IsNullOrEmpty(displaynameFormat))
             {
                 newUser.UpdateDisplayName(displaynameFormat);
@@ -301,7 +301,7 @@ namespace Dnn.PersonaBar.Users.Components
 
         private static string LocalizeNotificationText(string text, string locale, UserInfo user, PortalSettings portalSettings)
         {
-            // This method could need a custom ArrayList in future notification types. Currently it is null
+            // This method could need a custom ArrayList in future notification types. Currently, it is null
             return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, string.Empty, portalSettings.AdministratorId);
         }
 
@@ -311,19 +311,19 @@ namespace Dnn.PersonaBar.Users.Components
             return LocalizeNotificationText(text, locale, newUser, portalSettings);
         }
 
-        private bool GetBoolSetting(Hashtable settings, string settingKey)
+        private static bool GetBoolSetting(Hashtable settings, string settingKey)
         {
             return settings[settingKey] != null && Convert.ToBoolean(settings[settingKey]);
         }
 
-        private string GetStringSetting(Hashtable settings, string settingKey)
+        private static string GetStringSetting(Hashtable settings, string settingKey)
         {
             return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
         }
 
-        private string GetExcludeTermsRegex(Hashtable settings)
+        private static string GetExcludeTermsRegex(Hashtable settings)
         {
-            var excludeTerms = this.GetStringSetting(settings, "Registration_ExcludeTerms");
+            var excludeTerms = GetStringSetting(settings, "Registration_ExcludeTerms");
             var regex = string.Empty;
             if (!string.IsNullOrEmpty(excludeTerms))
             {

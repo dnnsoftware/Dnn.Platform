@@ -53,11 +53,5 @@
     "name": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform",
     "folder": "DNN Platform/Components/Microsoft.CodeDom.Providers.DotNetCompilerPlatform/",
     "destination": "Install/Library"
-  },
-  {
-    "name": "MicrosoftFileSystemGlobbing",
-    "folder": "DNN Platform/Components/Microsoft.Extensions.FileSystemGlobbing/",
-    "destination": "Install/Library",
-    "excludes": [ "**/*.xml" ]
   }
 ]

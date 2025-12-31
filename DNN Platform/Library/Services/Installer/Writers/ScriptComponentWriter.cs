@@ -63,13 +63,13 @@ namespace DotNetNuke.Services.Installer.Writers
             string type = "Install";
             string version = Null.NullString;
             string fileName = Path.GetFileNameWithoutExtension(file.Name);
-            if (fileName.Equals("uninstall", StringComparison.InvariantCultureIgnoreCase))
+            if (fileName.Equals("uninstall", StringComparison.OrdinalIgnoreCase))
             {
                 // UnInstall.SqlDataprovider
                 type = "UnInstall";
                 version = this.Package.Version.ToString(3);
             }
-            else if (fileName.Equals("install", StringComparison.InvariantCultureIgnoreCase))
+            else if (fileName.Equals("install", StringComparison.OrdinalIgnoreCase))
             {
                 // Install.SqlDataprovider
                 type = "Install";

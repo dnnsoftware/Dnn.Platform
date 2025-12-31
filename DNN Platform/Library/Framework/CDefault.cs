@@ -98,6 +98,7 @@ namespace DotNetNuke.Framework
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected void ManageInstallerFiles()
         {
             if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))

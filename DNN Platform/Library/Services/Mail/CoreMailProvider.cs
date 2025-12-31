@@ -177,7 +177,7 @@ namespace DotNetNuke.Services.Mail
                     var needUpdateSender = false;
                     if (smtpInfo.Username.Contains("@")
                         && senderAddress == Host.HostEmail
-                        && !senderAddress.Equals(smtpInfo.Username, StringComparison.InvariantCultureIgnoreCase))
+                        && !senderAddress.Equals(smtpInfo.Username, StringComparison.OrdinalIgnoreCase))
                     {
                         senderAddress = smtpInfo.Username;
                         needUpdateSender = true;

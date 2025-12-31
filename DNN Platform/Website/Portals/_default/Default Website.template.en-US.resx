@@ -463,10 +463,10 @@
     <value>My Messages</value>
   </data>
   <data name="Tab.MyMessages.Name.Text" xml:space="preserve">
-    <value>Messsages</value>
+    <value>Messages</value>
   </data>
   <data name="Tab.MyMessages.Title.Text" xml:space="preserve">
-    <value>My Messsages</value>
+    <value>My Messages</value>
   </data>
   <data name="Tab.MyMessages.ContentPane.Module.MemberDirectory.Title.Text" xml:space="preserve">
     <value>Member Directory</value>

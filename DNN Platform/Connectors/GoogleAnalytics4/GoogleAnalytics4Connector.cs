@@ -99,13 +99,13 @@ namespace DNN.Connectors.GoogleAnalytics4
             {
                 foreach (AnalyticsSetting setting in ga4Config.Settings)
                 {
-                    switch (setting.SettingName.ToLower())
+                    switch (setting.SettingName.ToUpperInvariant())
                     {
-                        case "ga4id":
+                        case "GA4ID":
                             ga4Id = setting.SettingValue;
                             break;
-                        case "trackforadmin":
-                            trackForAdmin = this.HandleCustomBoolean(setting.SettingValue);
+                        case "TRACKFORADMIN":
+                            trackForAdmin = HandleCustomBoolean(setting.SettingValue);
                             break;
                     }
                 }
@@ -115,7 +115,7 @@ namespace DNN.Connectors.GoogleAnalytics4
             {
                 { "Ga4ID", ga4Id },
                 { "TrackAdministrators", trackForAdmin },
-                { "isDeactivating", this.HandleCustomBoolean("false") },
+                { "isDeactivating", HandleCustomBoolean("false") },
             };
 
             return configItems;
@@ -127,62 +127,66 @@ namespace DNN.Connectors.GoogleAnalytics4
             // Delete / Deactivation functionality added into SaveConfig because
             // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
             customErrorMessage = string.Empty;
-            bool isValid;
 
             try
             {
-                bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out var isDeactivating);
+                if (!bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out var isDeactivating))
+                {
+                    isDeactivating = false;
+                }
 
-                string ga4ID;
+                string ga4Id;
                 string trackForAdmin;
 
-                isValid = true;
+                var isValid = true;
 
                 if (isDeactivating)
                 {
-                    ga4ID = null;
+                    ga4Id = null;
                     trackForAdmin = null;
                 }
                 else
                 {
-                    ga4ID = values["Ga4ID"] != null ? values["Ga4ID"].ToUpperInvariant().Trim() : string.Empty;
+                    ga4Id = values["Ga4ID"] != null ? values["Ga4ID"].ToUpperInvariant().Trim() : string.Empty;
                     trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
 
-                    if (string.IsNullOrEmpty(ga4ID))
+                    if (string.IsNullOrEmpty(ga4Id))
                     {
                         isValid = false;
                         customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
                     }
                 }
 
-                if (isValid)
+                if (!isValid)
                 {
-                    var config = new AnalyticsConfiguration
-                    {
-                        Settings = new AnalyticsSettingCollection(),
-                    };
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "Ga4Id",
-                        SettingValue = ga4ID,
-                    });
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "TrackForAdmin",
-                        SettingValue = trackForAdmin,
-                    });
-
-                    AnalyticsConfiguration.SaveConfig("GoogleAnalytics4", config);
-
-                    if (!isDeactivating)
-                    {
-                        this.EnsureScriptInConfig();
-                    }
+                    return false;
                 }
 
-                return isValid;
+                var config = new AnalyticsConfiguration
+                {
+                    Settings = new AnalyticsSettingCollection
+                    {
+                        new AnalyticsSetting
+                        {
+                            SettingName = "Ga4Id",
+                            SettingValue = ga4Id,
+                        },
+                        new AnalyticsSetting
+                        {
+                            SettingName = "TrackForAdmin",
+                            SettingValue = trackForAdmin,
+                        },
+                    },
+                };
+
+                AnalyticsConfiguration.SaveConfig("GoogleAnalytics4", config);
+
+                if (!isDeactivating)
+                {
+                    EnsureScriptInConfig();
+                }
+
+                return true;
             }
             catch (Exception ex)
             {
@@ -192,10 +196,10 @@ namespace DNN.Connectors.GoogleAnalytics4
         }
 
         /// <summary>Check if there's an AnalyticsEngine element in siteanalytics.config for this connector. If not, adds the default one.</summary>
-        private void EnsureScriptInConfig()
+        private static void EnsureScriptInConfig()
         {
-            var applicationMappath = HttpContext.Current.Server.MapPath("\\");
-            var file = applicationMappath + "\\SiteAnalytics.config";
+            var applicationMapPath = HttpContext.Current.Server.MapPath(@"\");
+            var file = applicationMapPath + @"\SiteAnalytics.config";
             var xdoc = new XmlDocument();
             xdoc.Load(file);
             var found = false;
@@ -210,7 +214,7 @@ namespace DNN.Connectors.GoogleAnalytics4
 
             if (!found)
             {
-                var fileGa4 = applicationMappath + "\\DesktopModules\\Connectors\\GoogleAnalytics4\\GoogleAnalytics4.config";
+                var fileGa4 = applicationMapPath + @"\DesktopModules\Connectors\GoogleAnalytics4\GoogleAnalytics4.config";
                 var xdocGa4 = new XmlDocument();
                 xdocGa4.Load(fileGa4);
 
@@ -232,7 +236,7 @@ namespace DNN.Connectors.GoogleAnalytics4
         /// </summary>
         /// <param name="value">The string representing a boolean.</param>
         /// <returns>The string representing a boolean after the correction.</returns>
-        private string HandleCustomBoolean(string value)
+        private static string HandleCustomBoolean(string value)
         {
             if ((value ?? string.Empty).Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
             {

@@ -86,7 +86,6 @@ namespace DotNetNuke.Services.Mail
             this.RemoveDuplicates = removeDuplicates;
             this.Subject = subject;
             this.Body = body;
-            this.SuppressTokenReplace = this.SuppressTokenReplace;
             this.Initialize();
         }
 
@@ -184,15 +183,15 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether shall duplicate email addresses be ignored? (default value: false).</summary>
+        /// <summary>Gets or sets a value indicating whether duplicate email addresses shall be ignored? (default value: false).</summary>
         /// <remarks>Duplicate Users (e.g. from multiple role selections) will always be ignored.</remarks>
         public bool RemoveDuplicates { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether shall automatic TokenReplace be prohibited?.</summary>
+        /// <summary>Gets or sets a value indicating whether automatic TokenReplace shall be prohibited?.</summary>
         /// <remarks>default value: false.</remarks>
         public bool SuppressTokenReplace { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether shall List of recipients appended to confirmation report?.</summary>
+        /// <summary>Gets or sets a value indicating whether List of recipients shall be appended to confirmation report?.</summary>
         /// <remarks>enabled by default.</remarks>
         public bool ReportRecipients { get; set; }
 

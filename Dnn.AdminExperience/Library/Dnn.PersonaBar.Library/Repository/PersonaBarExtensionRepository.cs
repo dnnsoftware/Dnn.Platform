@@ -19,7 +19,7 @@ namespace Dnn.PersonaBar.Library.Repository
     {
         private const string PersonaBarExtensionsCacheKey = "PersonaBarExtensions";
         private static readonly object ThreadLocker = new object();
-        private readonly IDataService dataService = new DataService();
+        private readonly DataService dataService = new DataService();
 
         /// <inheritdoc/>
         public void SaveExtension(PersonaBarExtension extension)
@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Library.Repository
                 extension.Enabled,
                 UserController.Instance.GetCurrentUserInfo().UserID);
 
-            this.ClearCache();
+            ClearCache();
         }
 
         /// <inheritdoc/>
@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Library.Repository
         {
             this.dataService.DeletePersonaBarExtension(identifier);
 
-            this.ClearCache();
+            ClearCache();
         }
 
         /// <inheritdoc/>
@@ -86,7 +86,7 @@ namespace Dnn.PersonaBar.Library.Repository
             return () => new PersonaBarExtensionRepository();
         }
 
-        private void ClearCache()
+        private static void ClearCache()
         {
             DataCache.RemoveCache(PersonaBarExtensionsCacheKey);
         }

@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
         public void DeleteFileData(IFileInfo file)
         {
             DataProvider.Instance().DeleteFile(file.PortalId, file.FileName, file.FolderId);
-            this.DeleteContentItem(file.ContentItemID);
+            DeleteContentItem(file.ContentItemID);
         }
 
         /// <inheritdoc/>
@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             return () => new FileDeletionController();
         }
 
-        private void DeleteContentItem(int contentItemId)
+        private static void DeleteContentItem(int contentItemId)
         {
             if (contentItemId == Null.NullInteger)
             {

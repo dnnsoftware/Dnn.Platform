@@ -117,16 +117,14 @@ namespace DotNetNuke.Web.Client.Providers
         /// </remarks>
         protected override void RegisterDependencies(HttpContextBase http, string js, string css)
         {
-            if (!(http.CurrentHandler is Page))
+            if (http.CurrentHandler is not Page page)
             {
                 throw new InvalidOperationException("The current HttpHandler in a WebFormsFileRegistrationProvider must be of type Page");
             }
 
-            var page = (Page)http.CurrentHandler;
-
             if (page.Header == null)
             {
-                throw new NullReferenceException("DnnFormBottomProvider requires a runat='server' tag in the page's header tag");
+                throw new InvalidOperationException("DnnFormBottomProvider requires a runat='server' tag in the page's header tag");
             }
 
             var jsScriptBlock = new LiteralControl(js.Replace("&", "&amp;"));

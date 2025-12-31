@@ -7,6 +7,7 @@ namespace DotNetNuke.UI.UserControls
     using System;
     using System.Collections;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework;
@@ -162,14 +163,14 @@ namespace DotNetNuke.UI.UserControls
                     // set dimensions of control
                     if (!string.IsNullOrEmpty(this.ListBoxWidth))
                     {
-                        this.lstAvailable.Width = Unit.Parse(this.ListBoxWidth);
-                        this.lstAssigned.Width = Unit.Parse(this.ListBoxWidth);
+                        this.lstAvailable.Width = Unit.Parse(this.ListBoxWidth, CultureInfo.InvariantCulture);
+                        this.lstAssigned.Width = Unit.Parse(this.ListBoxWidth, CultureInfo.InvariantCulture);
                     }
 
                     if (!string.IsNullOrEmpty(this.ListBoxHeight))
                     {
-                        this.lstAvailable.Height = Unit.Parse(this.ListBoxHeight);
-                        this.lstAssigned.Height = Unit.Parse(this.ListBoxHeight);
+                        this.lstAvailable.Height = Unit.Parse(this.ListBoxHeight, CultureInfo.InvariantCulture);
+                        this.lstAssigned.Height = Unit.Parse(this.ListBoxHeight, CultureInfo.InvariantCulture);
                     }
 
                     // load available
@@ -177,14 +178,14 @@ namespace DotNetNuke.UI.UserControls
                     this.lstAvailable.DataValueField = this.dataValueField;
                     this.lstAvailable.DataSource = this.Available;
                     this.lstAvailable.DataBind();
-                    this.Sort(this.lstAvailable);
+                    Sort(this.lstAvailable);
 
                     // load selected
                     this.lstAssigned.DataTextField = this.dataTextField;
                     this.lstAssigned.DataValueField = this.dataValueField;
                     this.lstAssigned.DataSource = this.Assigned;
                     this.lstAssigned.DataBind();
-                    this.Sort(this.lstAssigned);
+                    Sort(this.lstAssigned);
 
                     // set enabled
                     this.lstAvailable.Enabled = this.enabled;
@@ -198,6 +199,22 @@ namespace DotNetNuke.UI.UserControls
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        private static void Sort(ListBox ctlListBox)
+        {
+            var arrListItems = new ArrayList();
+            foreach (ListItem objListItem in ctlListBox.Items)
+            {
+                arrListItems.Add(objListItem);
+            }
+
+            arrListItems.Sort(new ListItemComparer());
+            ctlListBox.Items.Clear();
+            foreach (ListItem objListItem in arrListItems)
+            {
+                ctlListBox.Items.Add(objListItem);
             }
         }
 
@@ -220,7 +237,7 @@ namespace DotNetNuke.UI.UserControls
 
             this.lstAvailable.ClearSelection();
             this.lstAssigned.ClearSelection();
-            this.Sort(this.lstAssigned);
+            Sort(this.lstAssigned);
         }
 
         private void CmdRemove_Click(object sender, EventArgs e)
@@ -242,7 +259,7 @@ namespace DotNetNuke.UI.UserControls
 
             this.lstAvailable.ClearSelection();
             this.lstAssigned.ClearSelection();
-            this.Sort(this.lstAvailable);
+            Sort(this.lstAvailable);
         }
 
         private void CmdAddAll_Click(object sender, EventArgs e)
@@ -255,7 +272,7 @@ namespace DotNetNuke.UI.UserControls
             this.lstAvailable.Items.Clear();
             this.lstAvailable.ClearSelection();
             this.lstAssigned.ClearSelection();
-            this.Sort(this.lstAssigned);
+            Sort(this.lstAssigned);
         }
 
         private void CmdRemoveAll_Click(object sender, EventArgs e)
@@ -268,23 +285,7 @@ namespace DotNetNuke.UI.UserControls
             this.lstAssigned.Items.Clear();
             this.lstAvailable.ClearSelection();
             this.lstAssigned.ClearSelection();
-            this.Sort(this.lstAvailable);
-        }
-
-        private void Sort(ListBox ctlListBox)
-        {
-            var arrListItems = new ArrayList();
-            foreach (ListItem objListItem in ctlListBox.Items)
-            {
-                arrListItems.Add(objListItem);
-            }
-
-            arrListItems.Sort(new ListItemComparer());
-            ctlListBox.Items.Clear();
-            foreach (ListItem objListItem in arrListItems)
-            {
-                ctlListBox.Items.Add(objListItem);
-            }
+            Sort(this.lstAvailable);
         }
     }
 }

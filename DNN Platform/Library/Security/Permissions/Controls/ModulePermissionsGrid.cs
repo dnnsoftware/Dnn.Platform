@@ -21,6 +21,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
     public class ModulePermissionsGrid : PermissionsGrid
     {
+        private static readonly string[] PermissionKeySeparator = ["##",];
         private bool inheritViewPermissionsFromTab;
         private int moduleID = -1;
         private ModulePermissionCollection modulePermissions;
@@ -197,7 +198,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
             else
             {
-                enabled = !this.IsImplicitRole(role.PortalID, role.RoleID);
+                enabled = !IsImplicitRole(role.PortalID, role.RoleID);
             }
 
             return enabled;
@@ -335,7 +336,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     if (!string.IsNullOrEmpty(state))
                     {
                         // First Break the String into individual Keys
-                        string[] permissionKeys = state.Split(new[] { "##" }, StringSplitOptions.None);
+                        string[] permissionKeys = state.Split(PermissionKeySeparator, StringSplitOptions.None);
                         foreach (string key in permissionKeys)
                         {
                             string[] settings = key.Split('|');
@@ -410,7 +411,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <summary>Check if a role is implicit for Module Permissions.</summary>
-        private bool IsImplicitRole(int portalId, int roleId)
+        private static bool IsImplicitRole(int portalId, int roleId)
         {
             return ModulePermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
         }
@@ -450,7 +451,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
             {
                 var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
-                if (this.IsImplicitRole(PortalSettings.Current.PortalId, roleID))
+                if (IsImplicitRole(PortalSettings.Current.PortalId, roleID))
                 {
                     var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
                     if (actionImage != null)

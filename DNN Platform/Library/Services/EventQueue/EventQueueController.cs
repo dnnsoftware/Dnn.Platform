@@ -127,7 +127,7 @@ namespace DotNetNuke.Services.EventQueue
                     var messageProcessor = (EventMessageProcessorBase)Reflection.CreateObject(serviceProvider, message.ProcessorType, message.ProcessorType);
                     if (!messageProcessor.ProcessMessage(message))
                     {
-                        throw new Exception();
+                        throw new EventMessageException($"Event message of type {message.ProcessorType} returned false");
                     }
 
                     // Set Message complete so it is not run a second time
@@ -286,15 +286,14 @@ namespace DotNetNuke.Services.EventQueue
         private static string[] GetSubscribers(string eventName)
         {
             // Get the subscribers to this event
-            string[] subscribers = null;
-            PublishedEvent publishedEvent = null;
-            if (EventQueueConfiguration.GetConfig().PublishedEvents.TryGetValue(eventName, out publishedEvent))
+            string[] subscribers;
+            if (EventQueueConfiguration.GetConfig().PublishedEvents.TryGetValue(eventName, out var publishedEvent))
             {
                 subscribers = publishedEvent.Subscribers.Split(";".ToCharArray());
             }
             else
             {
-                subscribers = new string[] { };
+                subscribers = [];
             }
 
             return subscribers;

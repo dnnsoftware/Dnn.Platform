@@ -142,7 +142,7 @@ namespace DotNetNuke.Common.Lists
             var childList = new ArrayList();
             foreach (object child in this.List)
             {
-                if (((ListInfo)child).Key.IndexOf(parentKey.ToLowerInvariant()) > -1)
+                if (((ListInfo)child).Key.Contains(parentKey, StringComparison.OrdinalIgnoreCase))
                 {
                     childList.Add(child);
                 }

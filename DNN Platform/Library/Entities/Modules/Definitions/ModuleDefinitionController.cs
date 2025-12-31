@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -172,6 +173,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// <summary>DeleteModuleDefinition deletes a Module Definition By ID.</summary>
         /// <param name="moduleDefinitionId">The ID of the Module Definition to delete.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void DeleteModuleDefinition(int moduleDefinitionId)
         {
             // Delete associated permissions

@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Security.Components
 {
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Net;
@@ -14,6 +15,8 @@ namespace Dnn.PersonaBar.Security.Components
     using System.Web.UI;
 
     using Dnn.PersonaBar.Security.Services.Dto;
+
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
@@ -28,6 +31,7 @@ namespace Dnn.PersonaBar.Security.Components
     {
         private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<string> GetAuthenticationProviders()
         {
             var authSystems = AuthenticationController.GetEnabledAuthenticationServices();
@@ -41,6 +45,7 @@ namespace Dnn.PersonaBar.Security.Components
             return authProviders;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IList<UserRoleInfo> GetAdminUsers(int portalId, string cultureCode = "")
         {
             var activeLanguage = string.IsNullOrEmpty(cultureCode)
@@ -52,6 +57,7 @@ namespace Dnn.PersonaBar.Security.Components
             return adminUsers;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public TabDto GetPortalTabs(int portalId, string cultureCode, bool isMultiLanguage)
         {
             if (string.IsNullOrEmpty(cultureCode))
@@ -81,7 +87,7 @@ namespace Dnn.PersonaBar.Security.Components
                         ChildTabs = new List<TabDto>(),
                     };
 
-                    this.AddChildNodes(node, portalInfo, cultureCode);
+                    AddChildNodes(node, portalInfo, cultureCode);
                     rootNode.ChildTabs.Add(node);
                 }
             }
@@ -89,6 +95,7 @@ namespace Dnn.PersonaBar.Security.Components
             return rootNode;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public List<DataTable> GetModifiedSettings()
         {
             var tables = new List<DataTable>();
@@ -107,14 +114,17 @@ namespace Dnn.PersonaBar.Security.Components
             return tables;
         }
 
-        private void AddChildNodes(TabDto parentNode, PortalInfo portal, string cultureCode)
+        private static void AddChildNodes(TabDto parentNode, IPortalInfo portal, string cultureCode)
         {
             if (parentNode.ChildTabs != null)
             {
                 parentNode.ChildTabs.Clear();
-                int parentId;
-                int.TryParse(parentNode.TabId, out parentId);
-                var tabs = this.GetFilteredTabs(TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(cultureCode, true)).WithParentId(parentId);
+                if (!int.TryParse(parentNode.TabId, out var parentId))
+                {
+                    parentId = 0;
+                }
+
+                var tabs = GetFilteredTabs(TabController.Instance.GetTabsByPortal(portal.PortalId).WithCulture(cultureCode, true)).WithParentId(parentId);
 
                 foreach (var tab in tabs)
                 {
@@ -126,14 +136,14 @@ namespace Dnn.PersonaBar.Security.Components
                             TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
                             ParentTabId = tab.ParentId,
                         };
-                        this.AddChildNodes(node, portal, cultureCode);
+                        AddChildNodes(node, portal, cultureCode);
                         parentNode.ChildTabs.Add(node);
                     }
                 }
             }
         }
 
-        private TabCollection GetFilteredTabs(TabCollection tabs)
+        private static TabCollection GetFilteredTabs(TabCollection tabs)
         {
             var filteredTabs = tabs.Where(kvp => !kvp.Value.IsSystem && !kvp.Value.IsDeleted && !kvp.Value.DisableLink).Select(kvp => kvp.Value);
             return new TabCollection(filteredTabs);

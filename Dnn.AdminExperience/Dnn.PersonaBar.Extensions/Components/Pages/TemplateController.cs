@@ -102,7 +102,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var portalSettings = PortalController.Instance.GetCurrentSettings();
             var templateFolder = FolderManager.Instance.GetFolder(portalSettings.PortalId, TemplatesFolderPath);
 
-            return this.LoadTemplates(portalSettings.PortalId, templateFolder);
+            return LoadTemplates(portalSettings.PortalId, templateFolder);
         }
 
         /// <inheritdoc/>
@@ -208,16 +208,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return FolderManager.Instance.AddFolder(PortalSettings.Current.PortalId, TemplatesFolderPath);
         }
 
-        private void SerializeTab(PageTemplate template, XmlDocument xmlTemplate, XmlNode nodeTabs)
-        {
-            var portalSettings = PortalController.Instance.GetCurrentSettings();
-            var tab = this.tabController.GetTab(template.TabId, portalSettings.PortalId, false);
-            var xmlTab = new XmlDocument { XmlResolver = null };
-            var nodeTab = TabController.SerializeTab(this.businessControllerProvider, xmlTab, tab, template.IncludeContent);
-            nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
-        }
-
-        private IEnumerable<Template> LoadTemplates(int portalId, IFolderInfo templateFolder)
+        private static List<Template> LoadTemplates(int portalId, IFolderInfo templateFolder)
         {
             var templates = new List<Template>();
             if (templateFolder == null)
@@ -234,8 +225,11 @@ namespace Dnn.PersonaBar.Pages.Components
             var files = Globals.GetFileList(portalId, "page.template", false, templateFolder.FolderPath);
             foreach (FileItem file in files)
             {
-                int i;
-                int.TryParse(file.Value, out i);
+                if (!int.TryParse(file.Value, out var i))
+                {
+                    i = 0;
+                }
+
                 templates.Add(new Template
                 {
                     Id = file.Text.Replace(".page.template", string.Empty),
@@ -244,6 +238,15 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             return templates;
+        }
+
+        private void SerializeTab(PageTemplate template, XmlDocument xmlTemplate, XmlNode nodeTabs)
+        {
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
+            var tab = this.tabController.GetTab(template.TabId, portalSettings.PortalId, false);
+            var xmlTab = new XmlDocument { XmlResolver = null };
+            var nodeTab = TabController.SerializeTab(this.businessControllerProvider, xmlTab, tab, template.IncludeContent);
+            nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
         }
     }
 }

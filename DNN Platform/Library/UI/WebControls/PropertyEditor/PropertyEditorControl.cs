@@ -482,7 +482,7 @@ namespace DotNetNuke.UI.WebControls
             else
             {
                 this.Fields.Clear();
-                if (arrGroups != null && arrGroups.Length > 0)
+                if (arrGroups is { Length: > 0 })
                 {
                     foreach (string strGroup in arrGroups)
                     {
@@ -491,7 +491,7 @@ namespace DotNetNuke.UI.WebControls
                             if (this.DisplayMode == EditorDisplayMode.Div)
                             {
                                 var groupData = this.UnderlyingDataSource.Cast<object>().Where(obj => this.GetCategory(obj) == strGroup.Trim() && this.GetRowVisibility(obj));
-                                if (groupData.Count() > 0)
+                                if (groupData.Any())
                                 {
                                     // Add header
                                     var header = new HtmlGenericControl("h2");
@@ -767,7 +767,7 @@ namespace DotNetNuke.UI.WebControls
         /// GetProperties will return an array of public properties for the current DataSource
         /// object.  The properties will be sorted according to the SortMode property.
         /// </remarks>
-        private IEnumerable<PropertyInfo> GetProperties()
+        private PropertyInfo[] GetProperties()
         {
             if (this.DataSource != null)
             {

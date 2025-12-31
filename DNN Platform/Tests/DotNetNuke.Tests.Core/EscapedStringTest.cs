@@ -18,11 +18,11 @@ namespace DotNetNuke.Tests.Core
         [Test]
         public void SimpleCase()
         {
-            this.DoTest(new[] { "first", "second" }, "first,second");
+            DoTest(new[] { "first", "second" }, "first,second");
         }
 
         [Test]
-        public void CombinesWithSpecifiedSeperator()
+        public void CombinesWithSpecifiedSeparator()
         {
             string result = EscapedString.Combine(new[] { "first", "second" }, ';');
 
@@ -30,7 +30,7 @@ namespace DotNetNuke.Tests.Core
         }
 
         [Test]
-        public void SeperatesWithSpecifiedSeperator()
+        public void SeparatesWithSpecifiedSeparator()
         {
             IEnumerable<string> result = EscapedString.Seperate("first]second", ']');
 
@@ -38,111 +38,111 @@ namespace DotNetNuke.Tests.Core
         }
 
         [Test]
-        public void EmbeddedSeperator()
+        public void EmbeddedSeparator()
         {
-            this.DoTest(new[] { "fi,rst", "second" }, @"fi\,rst,second");
+            DoTest(new[] { "fi,rst", "second" }, @"fi\,rst,second");
         }
 
         [Test]
-        public void DoubleSeperator()
+        public void DoubleSeparator()
         {
-            this.DoTest(new[] { "fi,,rst", "second" }, @"fi\,\,rst,second");
+            DoTest(new[] { "fi,,rst", "second" }, @"fi\,\,rst,second");
         }
 
         [Test]
-        public void MultipleSeperators()
+        public void MultipleSeparators()
         {
-            this.DoTest(new[] { "fi,rst", ",second," }, @"fi\,rst,\,second\,");
+            DoTest(new[] { "fi,rst", ",second," }, @"fi\,rst,\,second\,");
         }
 
         [Test]
         public void EscapeCharacter()
         {
-            this.DoTest(new[] { @"fi\rst", "second" }, @"fi\\rst,second");
+            DoTest(new[] { @"fi\rst", "second" }, @"fi\\rst,second");
         }
 
         [Test]
         public void EmbeddedEscapeSequence()
         {
-            this.DoTest(new[] { @"fi\,rst", "second" }, @"fi\\\,rst,second");
+            DoTest(new[] { @"fi\,rst", "second" }, @"fi\\\,rst,second");
         }
 
         [Test]
         public void CrazyContrivedStuff()
         {
-            this.DoTest(new[] { @"\\\,,fi\,rst,,\,\\", "second" }, @"\\\\\\\,\,fi\\\,rst\,\,\\\,\\\\,second");
+            DoTest(new[] { @"\\\,,fi\,rst,,\,\\", "second" }, @"\\\\\\\,\,fi\\\,rst\,\,\\\,\\\\,second");
         }
 
         [Test]
         public void EmptyElement()
         {
-            this.DoTest(new[] { "first", string.Empty, "third" }, "first,,third");
+            DoTest(new[] { "first", string.Empty, "third" }, "first,,third");
         }
 
         [Test]
         public void MultipleEmptyElements()
         {
-            this.DoTest(new[] { string.Empty, string.Empty, string.Empty }, ",,");
+            DoTest(new[] { string.Empty, string.Empty, string.Empty }, ",,");
         }
 
         [Test]
         public void EmptyEnumerable()
         {
-            this.DoTest(new object[] { }, string.Empty);
+            DoTest(new object[] { }, string.Empty);
         }
 
         [Test]
         public void SingleElement()
         {
-            this.DoTest(new[] { "only item here" }, "only item here");
+            DoTest(new[] { "only item here" }, "only item here");
         }
 
         [Test]
         public void AllEscapeChars()
         {
-            this.DoTest(new[] { @"\", @"\\", @"\\\" }, @"\\,\\\\,\\\\\\");
+            DoTest(new[] { @"\", @"\\", @"\\\" }, @"\\,\\\\,\\\\\\");
         }
 
         [Test]
-        public void AllSeperatorChars()
+        public void AllSeparatorChars()
         {
-            this.DoTest(new[] { ",", ",,", ",,," }, @"\,,\,\,,\,\,\,");
+            DoTest(new[] { ",", ",,", ",,," }, @"\,,\,\,,\,\,\,");
         }
 
         [Test]
-        public void AllEscapedSeperators()
+        public void AllEscapedSeparators()
         {
-            this.DoTest(new[] { @"\,", @"\,\,", @"\,\,\," }, @"\\\,,\\\,\\\,,\\\,\\\,\\\,");
+            DoTest(new[] { @"\,", @"\,\,", @"\,\,\," }, @"\\\,,\\\,\\\,,\\\,\\\,\\\,");
         }
 
         [Test]
         public void TrimWhitespaces()
         {
-            this.SeperateTest(
-                new[] { "item1", "ite\nm2", "item3", "item4", "item5", "item6", "item7" }, "item1,ite\nm2,\nitem3, item4,item5\t,\r\nitem6,\vitem7", true);
+            SeparateTest(
+                ["item1", "ite\nm2", "item3", "item4", "item5", "item6", "item7"], "item1,ite\nm2,\nitem3, item4,item5\t,\r\nitem6,\vitem7", true);
         }
 
         [Test]
         public void KeepWhitespaces()
         {
-            this.SeperateTest(
-                new[] { "item1", "ite\nm2", "\nitem3", " item4", "item5\t", "\r\nitem6", "\vitem7" }, "item1,ite\nm2,\nitem3, item4,item5\t,\r\nitem6,\vitem7", false);
+            SeparateTest(
+                ["item1", "ite\nm2", "\nitem3", " item4", "item5\t", "\r\nitem6", "\vitem7"], "item1,ite\nm2,\nitem3, item4,item5\t,\r\nitem6,\vitem7", false);
         }
 
-        private void DoTest(IEnumerable enumerable, string s)
+        private static void DoTest(IEnumerable enumerable, string s)
         {
-            this.CombineTest(enumerable, s);
-            this.SeperateTest(enumerable.Cast<string>(), s);
+            CombineTest(enumerable, s);
+            SeparateTest(enumerable.Cast<string>(), s);
         }
 
-        private void SeperateTest(IEnumerable<string> expected, string data, bool trimWhitespaces = false)
+        private static void SeparateTest(IEnumerable<string> expected, string data, bool trimWhitespaces = false)
         {
             var result = EscapedString.Seperate(data, trimWhitespaces);
 
             Assert.That(result, Is.EqualTo(expected).AsCollection);
         }
 
-        private void CombineTest(IEnumerable data, string expected)
+        private static void CombineTest(IEnumerable data, string expected)
         {
             string result = EscapedString.Combine(data);
 

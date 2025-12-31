@@ -528,7 +528,7 @@ namespace DotNetNuke.Entities.Users
 
                     if (dataType.Value == "Country" || dataType.Value == "Region")
                     {
-                        propValue = this.GetListValue(dataType.Value, propValue);
+                        propValue = GetListValue(dataType.Value, propValue);
                     }
                 }
             }
@@ -577,7 +577,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        private string GetListValue(string listName, string value)
+        private static string GetListValue(string listName, string value)
         {
             ListController listController = new ListController();
             int entryId;

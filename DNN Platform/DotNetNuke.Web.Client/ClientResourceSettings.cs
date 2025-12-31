@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.Client
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using System.Web;
 
@@ -31,7 +32,6 @@ namespace DotNetNuke.Web.Client
         public static readonly string VersionKey = "CrmVersion";
 
         private static readonly Type PortalControllerType;
-        private static readonly Type CommonGlobalsType;
 
         private bool statusChecked;
         private UpgradeStatus status;
@@ -40,8 +40,6 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                // all these types are part of the same library, so we don't need a separate catch for each one
-                CommonGlobalsType = Type.GetType("DotNetNuke.Common.Globals, DotNetNuke");
                 PortalControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalController, DotNetNuke");
             }
             catch (Exception exception)
@@ -56,7 +54,7 @@ namespace DotNetNuke.Web.Client
             {
                 if (!this.statusChecked)
                 {
-                    this.status = this.GetStatusByReflection();
+                    this.status = GetStatusByReflection();
                     this.statusChecked = true;
                 }
 
@@ -72,6 +70,7 @@ namespace DotNetNuke.Web.Client
             return this.IsOverridingDefaultSettingsEnabled(portalId);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool IsOverridingDefaultSettingsEnabled(int? portalId)
         {
             var portalVersion = GetIntegerSetting(portalId, PortalSettingsDictionaryKey, VersionKey);
@@ -90,6 +89,7 @@ namespace DotNetNuke.Web.Client
             return this.GetVersion(portalId);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public int? GetVersion(int? portalId)
         {
             var portalVersion = GetIntegerSetting(portalId, PortalSettingsDictionaryKey, VersionKey);
@@ -183,13 +183,6 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
-        private static IServiceScope GetServiceScope()
-        {
-            var getOrCreateServiceScopeMethod = CommonGlobalsType.GetMethod("GetOrCreateServiceScope", BindingFlags.NonPublic | BindingFlags.Static);
-            var serviceScope = getOrCreateServiceScopeMethod.Invoke(null, Array.Empty<object>());
-            return (IServiceScope)serviceScope;
-        }
-
         private static string GetPortalSettingThroughReflection(int? portalId, string settingKey)
         {
             if (portalId is null)
@@ -199,10 +192,10 @@ namespace DotNetNuke.Web.Client
 
             try
             {
-                using var scope = GetServiceScope();
+                using var scope = DependencyInjection.GetOrCreateServiceScope();
                 var portalController = ActivatorUtilities.GetServiceOrCreateInstance(scope.ServiceProvider, PortalControllerType);
                 var method = PortalControllerType.GetMethod("GetPortalSettings", BindingFlags.Public | BindingFlags.Instance);
-                var dictionary = (Dictionary<string, string>)method.Invoke(portalController, new object[] { portalId.Value, });
+                var dictionary = (Dictionary<string, string>)method.Invoke(portalController, [portalId.Value,]);
 
                 if (dictionary.TryGetValue(settingKey, out var value))
                 {
@@ -226,7 +219,7 @@ namespace DotNetNuke.Web.Client
                     return null;
                 }
 
-                using var scope = GetServiceScope();
+                using var scope = DependencyInjection.GetOrCreateServiceScope();
                 var portalAliasService = scope.ServiceProvider.GetRequiredService<IPortalAliasService>();
                 var alias = portalAliasService.GetPortalAlias(HttpContext.Current.Request.Url.Host);
 
@@ -244,7 +237,7 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                using var scope = GetServiceScope();
+                using var scope = DependencyInjection.GetOrCreateServiceScope();
                 var hostSettingsService = scope.ServiceProvider.GetRequiredService<IHostSettingsService>();
 
                 var dictionary = hostSettingsService.GetSettingsDictionary();
@@ -259,6 +252,21 @@ namespace DotNetNuke.Web.Client
             }
 
             return null;
+        }
+
+        private static UpgradeStatus GetStatusByReflection()
+        {
+            try
+            {
+                using var scope = DependencyInjection.GetOrCreateServiceScope();
+                var applicationStatusInfo = scope.ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+                return applicationStatusInfo.Status;
+            }
+            catch (Exception exception)
+            {
+                LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to Get Status By Reflection", exception);
+                return UpgradeStatus.Unknown;
+            }
         }
 
         private bool? IsBooleanSettingEnabled(int? portalId, string settingKey)
@@ -287,21 +295,6 @@ namespace DotNetNuke.Web.Client
 
             // otherwise tell the calling method that nothing is set
             return null;
-        }
-
-        private UpgradeStatus GetStatusByReflection()
-        {
-            try
-            {
-                using var scope = GetServiceScope();
-                var applicationStatusInfo = scope.ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
-                return applicationStatusInfo.Status;
-            }
-            catch (Exception exception)
-            {
-                LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to Get Status By Reflection", exception);
-                return UpgradeStatus.Unknown;
-            }
         }
     }
 }

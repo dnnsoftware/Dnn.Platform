@@ -241,6 +241,45 @@ namespace DotNetNuke.Services.Search.Controllers
             return result;
         }
 
+        private static Sort GetSort(SearchQuery query)
+        {
+            var sort = Sort.RELEVANCE; // default sorting - relevance is always descending.
+            if (query.SortField != SortFields.Relevance)
+            {
+                var reverse = query.SortDirection != SortDirections.Ascending;
+
+                switch (query.SortField)
+                {
+                    case SortFields.LastModified:
+                        sort = new Sort(new SortField(Constants.ModifiedTimeTag, SortField.LONG, reverse));
+                        break;
+                    case SortFields.Title:
+                        sort = new Sort(new SortField(Constants.TitleTag, SortField.STRING, reverse));
+                        break;
+                    case SortFields.Tag:
+                        sort = new Sort(new SortField(Constants.Tag, SortField.STRING, reverse));
+                        break;
+                    case SortFields.NumericKey:
+                        sort = new Sort(new SortField(Constants.NumericKeyPrefixTag + query.CustomSortField, SortField.INT, reverse));
+                        break;
+                    case SortFields.Keyword:
+                        sort = new Sort(new SortField(Constants.KeywordsPrefixTag + query.CustomSortField, SortField.STRING, reverse));
+                        break;
+                    case SortFields.CustomStringField:
+                        sort = new Sort(new SortField(query.CustomSortField, SortField.STRING, reverse));
+                        break;
+                    case SortFields.CustomNumericField:
+                        sort = new Sort(new SortField(query.CustomSortField, SortField.INT, reverse));
+                        break;
+                    default:
+                        sort = Sort.RELEVANCE;
+                        break;
+                }
+            }
+
+            return sort;
+        }
+
         private Tuple<int, IList<SearchResult>> GetResults(SearchQuery searchQuery)
         {
             Requires.NotNull("Query", searchQuery);
@@ -252,7 +291,7 @@ namespace DotNetNuke.Services.Search.Controllers
             }
 
             if (searchQuery.SortField == SortFields.CustomStringField || searchQuery.SortField == SortFields.CustomNumericField
-                || searchQuery.SortField == SortFields.NumericKey || searchQuery.SortField == SortFields.Keyword)
+                                                                      || searchQuery.SortField == SortFields.NumericKey || searchQuery.SortField == SortFields.Keyword)
             {
                 Requires.NotNullOrEmpty("CustomSortField", searchQuery.CustomSortField);
             }
@@ -346,7 +385,7 @@ namespace DotNetNuke.Services.Search.Controllers
             var luceneQuery = new LuceneQuery
             {
                 Query = query,
-                Sort = this.GetSort(searchQuery),
+                Sort = GetSort(searchQuery),
                 PageIndex = searchQuery.PageIndex,
                 PageSize = searchQuery.PageSize,
                 TitleSnippetLength = searchQuery.TitleSnippetLength,
@@ -354,45 +393,6 @@ namespace DotNetNuke.Services.Search.Controllers
             };
 
             return this.GetSecurityTrimmedResults(searchQuery, luceneQuery);
-        }
-
-        private Sort GetSort(SearchQuery query)
-        {
-            var sort = Sort.RELEVANCE; // default sorting - relevance is always descending.
-            if (query.SortField != SortFields.Relevance)
-            {
-                var reverse = query.SortDirection != SortDirections.Ascending;
-
-                switch (query.SortField)
-                {
-                    case SortFields.LastModified:
-                        sort = new Sort(new SortField(Constants.ModifiedTimeTag, SortField.LONG, reverse));
-                        break;
-                    case SortFields.Title:
-                        sort = new Sort(new SortField(Constants.TitleTag, SortField.STRING, reverse));
-                        break;
-                    case SortFields.Tag:
-                        sort = new Sort(new SortField(Constants.Tag, SortField.STRING, reverse));
-                        break;
-                    case SortFields.NumericKey:
-                        sort = new Sort(new SortField(Constants.NumericKeyPrefixTag + query.CustomSortField, SortField.INT, reverse));
-                        break;
-                    case SortFields.Keyword:
-                        sort = new Sort(new SortField(Constants.KeywordsPrefixTag + query.CustomSortField, SortField.STRING, reverse));
-                        break;
-                    case SortFields.CustomStringField:
-                        sort = new Sort(new SortField(query.CustomSortField, SortField.STRING, reverse));
-                        break;
-                    case SortFields.CustomNumericField:
-                        sort = new Sort(new SortField(query.CustomSortField, SortField.INT, reverse));
-                        break;
-                    default:
-                        sort = Sort.RELEVANCE;
-                        break;
-                }
-            }
-
-            return sort;
         }
 
         private void ApplySearchTypeIdFilter(BooleanQuery query, SearchQuery searchQuery)

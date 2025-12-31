@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     using System.Drawing.Imaging;
     using System.Runtime.InteropServices;
 
-    /// <summary>Abstarct class for Quantizers.</summary>
+    /// <summary>Abstract class for Quantizers.</summary>
     public abstract class Quantizer
     {
         /// <summary>Flag used to indicate whether a single pass or two passes are needed for quantization.</summary>
@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         public Quantizer(bool singlePass)
         {
             this.singlePass = singlePass;
-            this.pixelSize = Marshal.SizeOf(typeof(Color32));
+            this.pixelSize = Marshal.SizeOf<Color32>();
         }
 
         /// <summary>Quantize an image and return the resulting output bitmap.</summary>
@@ -250,7 +250,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             /// <param name="pSourcePixel">A pointer to the value.</param>
             public Color32(IntPtr pSourcePixel)
             {
-                this = (Color32)Marshal.PtrToStructure(pSourcePixel, typeof(Color32));
+                this = Marshal.PtrToStructure<Color32>(pSourcePixel);
             }
 
             /// <summary>Gets return the color for this Color32 object.</summary>

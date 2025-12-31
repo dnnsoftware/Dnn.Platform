@@ -14,6 +14,7 @@
     "/web.*.config",
     "/App_Data/RadSpell/en-US.tdf",
     "/bin/Dnn.AuthServices.Jwt.*",
+    "/bin/Dnn.ContactList.*",
     "/bin/Dnn.EditBar.*",
     "/bin/Dnn.Modules.*",
     "/bin/Dnn.PersonaBar.*",
@@ -68,8 +69,10 @@
     "/web.config",
     "/App_Data/Database.mdf",
     "/App_Data/Database_log.LDF",
-    "/bin/Providers/DotNetNuke.Providers.AspNetClientCapabilityProvider.dll",
     "/bin/Newtonsoft.Json.dll",
+    "/bin/System.Collections.Immutable.dll",
+    "/bin/System.Text.Encoding.CodePages.dll",
+    "/bin/Providers/DotNetNuke.Providers.AspNetClientCapabilityProvider.dll",
     "/bin/System.Runtime.CompilerServices.Unsafe.dll",
     "/Config/DotNetNuke.config",
     "/Install/InstallWizard.aspx"
@@ -84,6 +87,7 @@
     "/bin/Providers/*.xml"
   ],
   "symbolsExclude": [
+    "/bin/Dnn.ContactList.*",
     "/bin/DotNetNuke.log4net*",
     "/bin/HtmlAgilityPack*",
     "/bin/Lucene*",

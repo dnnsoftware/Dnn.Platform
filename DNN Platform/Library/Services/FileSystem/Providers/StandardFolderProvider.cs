@@ -9,6 +9,7 @@ namespace DotNetNuke.Services.FileSystem
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
 
@@ -424,6 +425,7 @@ namespace DotNetNuke.Services.FileSystem
             return folder.PhysicalPath;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected Stream GetFileStreamInternal(string filePath)
         {
             Stream stream = null;
