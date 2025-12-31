@@ -60,6 +60,8 @@ namespace Dnn.EditBar.UI.Items
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal bool HasDraftPermission => PermissionProvider.Instance().CanAddContentToPage(TabController.CurrentPage);
 
+        internal bool IsDirectPublishWorkflow => this.Workflow?.WorkflowKey == SystemWorkflowManager.DirectPublishWorkflowKey;
+
         private static ContentItem ContentItem => Util.GetContentController().GetContentItem(TabController.CurrentPage.ContentItemId);
 
         private static bool IsVersioningEnabled => TabVersionSettings.Instance.IsVersioningEnabled(PortalSettings.Current.PortalId, TabController.CurrentPage.TabID);

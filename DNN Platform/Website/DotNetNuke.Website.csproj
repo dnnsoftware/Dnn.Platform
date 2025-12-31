@@ -1230,6 +1230,7 @@
     <Content Include="Views\Default\ModuleActions.cshtml" />
     <Content Include="Views\web.config" />
     <Content Include="Install\Config\10.02.00.config" />
+    <Content Include="Install\Config\10.02.01.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
