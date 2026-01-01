@@ -1892,7 +1892,7 @@ __metadata:
     "@babel/preset-typescript": "npm:^7.28.5"
     "@eslint/compat": "npm:^1.4.0"
     "@storybook/addon-docs": "npm:9.1.13"
-    "@storybook/addon-onboarding": "npm:9.1.13"
+    "@storybook/addon-onboarding": "npm:10.1.11"
     "@storybook/addon-webpack5-compiler-swc": "npm:4.0.1"
     "@storybook/react-webpack5": "npm:9.1.13"
     "@svgr/webpack": "npm:^8.1.0"
@@ -4456,12 +4456,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-onboarding@npm:9.1.13":
-  version: 9.1.13
-  resolution: "@storybook/addon-onboarding@npm:9.1.13"
+"@storybook/addon-onboarding@npm:10.1.11":
+  version: 10.1.11
+  resolution: "@storybook/addon-onboarding@npm:10.1.11"
   peerDependencies:
-    storybook: ^9.1.13
-  checksum: 10/ee7f2300ba3df320b638c0d7205dd1bc8c821b2ba87fa4a4653be2731af8386e38bd75dfb308b5e7ff6de9f5e2f3d222040858522eeaff81f1d6f1946de21506
+    storybook: ^10.1.11
+  checksum: 10/3077451b1eb4834a1f6727e055491e380009977c666fcb0608d9e55921a69c65b837859d4cb653280847f09f69ad18469f2af43c002668b4eb8ad7697d261109
   languageName: node
   linkType: hard
 
