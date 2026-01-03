@@ -1,0 +1,26 @@
+@using DotNetNuke.Web.MvcPipeline.Models
+@using DotNetNuke.Web.MvcPipeline.Skins
+@using DotNetNuke.Web.NewDDRMenu
+
+@model PageModel
+
+<footer class="aperture-footer">
+  <div class="aperture-container">
+        <div class="footer-left">
+            <div class="footer-menu">
+                @Html.DDRMenu(clientID: "menu_footer", 
+                             cssClass: "aperture-d-none aperture-d-md-block", 
+                             menuStyle: "menus/footer",
+                             nodeSelector: "*,0,0")
+            </div>
+            <div class="footer-terms-privacy">
+                @Html.Terms(cssClass: "aperture-terms")@Html.Privacy()
+            </div>
+            <div class="footer-copyright">
+                @Html.Copyright()
+            </div>
+        </div>
+        @Html.Pane(id: "FooterPane", cssClass: "footer-right")
+    </div>
+</footer> 
+

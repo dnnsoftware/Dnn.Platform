@@ -1308,7 +1308,13 @@ namespace DotNetNuke.Data
                 lastModifiedByUserID);
         }
 
+        [Obsolete("Deprecated in DotNetNuke 10.99.0. Scheduled removal in v12.0.0.")]
         public virtual int AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, int controlType, int viewOrder, string helpUrl, bool supportsPartialRendering, bool supportsPopUps, int createdByUserID)
+        {
+            return this.AddModuleControl(moduleDefId, controlKey, controlTitle, controlSrc, null, iconFile, controlType, viewOrder, helpUrl, supportsPartialRendering, supportsPopUps, createdByUserID);
+        }
+
+        public virtual int AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string mvcControlClass, string iconFile, int controlType, int viewOrder, string helpUrl, bool supportsPartialRendering, bool supportsPopUps, int createdByUserID)
         {
             return this.ExecuteScalar<int>(
                 "AddModuleControl",
@@ -1316,6 +1322,7 @@ namespace DotNetNuke.Data
                 this.GetNull(controlKey),
                 this.GetNull(controlTitle),
                 controlSrc,
+                this.GetNull(mvcControlClass),
                 this.GetNull(iconFile),
                 controlType,
                 this.GetNull(viewOrder),
@@ -1335,7 +1342,7 @@ namespace DotNetNuke.Data
             return this.ExecuteReader("GetModuleControls");
         }
 
-        public virtual void UpdateModuleControl(int moduleControlId, int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, int controlType, int viewOrder, string helpUrl, bool supportsPartialRendering, bool supportsPopUps, int lastModifiedByUserID)
+        public virtual void UpdateModuleControl(int moduleControlId, int moduleDefId, string controlKey, string controlTitle, string controlSrc, string mvcControlClass, string iconFile, int controlType, int viewOrder, string helpUrl, bool supportsPartialRendering, bool supportsPopUps, int lastModifiedByUserID)
         {
             this.ExecuteNonQuery(
                 "UpdateModuleControl",
@@ -1344,6 +1351,7 @@ namespace DotNetNuke.Data
                 this.GetNull(controlKey),
                 this.GetNull(controlTitle),
                 controlSrc,
+                this.GetNull(mvcControlClass),
                 this.GetNull(iconFile),
                 controlType,
                 this.GetNull(viewOrder),

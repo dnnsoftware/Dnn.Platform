@@ -1220,4 +1220,10 @@ Common issues with bad installation files:
   <data name="Loading.Tooltip" xml:space="preserve">
     <value>Your extensions will be here in a just a moment</value>
   </data>
+  <data name="AddModuleControl_MvcControl.HelpText" xml:space="preserve">
+    <value>The fully qualified class name of this mvc control required to suporting the Mvc Pipeline.</value>
+  </data>
+  <data name="AddModuleControl_MvcControl.Label" xml:space="preserve">
+    <value>Mvc Control class</value>
+  </data>
 </root>

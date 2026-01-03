@@ -1,0 +1,30 @@
+node_modules/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.DS_Store
+.idea/
+.vscode/
+.gitignore
+.git/
+.gitignore
+
+.vs/
+
+build/
+build.*
+.yarn/
+Artifacts/
+DotNetNuke.Internal.SourceGenerators/
+Install/
+tools/
+Website/
+.nuget/
+.github/
+Packages/
+Refs/
+tools/
+Dnn Platform/node_modules/
+Dnn Platform/Tests

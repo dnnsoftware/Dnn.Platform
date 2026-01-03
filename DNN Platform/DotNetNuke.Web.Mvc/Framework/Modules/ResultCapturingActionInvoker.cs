@@ -8,6 +8,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
     using System.Collections.Generic;
     using System.Web.Mvc;
 
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+    using DotNetNuke.Web.Mvc.Routing;
+
     public class ResultCapturingActionInvoker : ControllerActionInvoker
     {
         public ActionResult ResultOfLastInvoke { get; set; }
@@ -35,6 +41,11 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             if (this.ResultOfLastInvoke == null)
             {
                 this.ResultOfLastInvoke = actionResult;
+            }
+
+            if (controllerContext.RouteData.Values.ContainsKey("mvcpage"))
+            {
+                base.InvokeActionResult(controllerContext, actionResult);
             }
         }
     }

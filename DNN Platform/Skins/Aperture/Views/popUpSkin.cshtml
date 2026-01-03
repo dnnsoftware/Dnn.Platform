@@ -1,0 +1,12 @@
+@using DotNetNuke.Web.MvcPipeline.Models
+@using DotNetNuke.Web.MvcPipeline.Skins
+
+@model PageModel
+
+@section head {
+    @* CSS & JS includes *@
+    @Html.SkinPartial("partials/_includes-popUpSkin")
+}
+
+
+@Html.Pane(id: "ContentPane", cssClass: "aperture-content-pane")

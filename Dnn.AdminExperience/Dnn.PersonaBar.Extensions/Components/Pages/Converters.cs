@@ -59,6 +59,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 TabOrder = tab.TabOrder,
                 WorkflowId = WorkflowHelper.GetTabWorkflowId(tab),
                 WorkflowName = WorkflowHelper.GetTabWorkflowName(tab),
+                PagePipeline = tab.PagePipeline,
             };
         }
 
@@ -138,6 +139,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 ParentId = tab.ParentId,
                 IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current),
                 PagePermissions = SecurityService.Instance.GetPagePermissions(tab),
+                PagePipeline = (string)tab.TabSettings["PagePipeline"],
             };
         }
 

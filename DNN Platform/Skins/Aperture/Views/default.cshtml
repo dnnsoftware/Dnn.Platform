@@ -1,0 +1,29 @@
+@using DotNetNuke.Web.MvcPipeline.Models
+@using DotNetNuke.Web.MvcPipeline.Skins
+@using DotNetNuke.Web.DDRMenu
+@model PageModel
+
+@{
+    
+}
+
+
+@section head {    
+    @* CSS & JS includes *@
+    @Html.SkinPartial("partials/_includes")
+}
+
+<div class="aperture-theme">
+    <!-- Header/NavBar -->
+    @Html.SkinPartial("partials/_header")
+    
+    <!-- Main Content -->
+	<main class="aperture-main">
+        @Html.Pane(id: "BannerPane")
+        @Html.Pane(id: "ContentPane", cssClass: "aperture-content-pane")
+        @Html.Pane(id: "FluidPane")
+    </main>
+
+    <!-- Footer -->
+    @Html.SkinPartial("partials/_footer")
+</div>

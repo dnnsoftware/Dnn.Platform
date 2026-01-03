@@ -1,0 +1,109 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="NewDDRMenu" type="Module" isSystem="true" version="10.01.00">
+      <friendlyName>New DDR Menu</friendlyName>
+      <description>DotNetNuke Navigation Provider.</description>
+      <owner>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt" />
+      <releaseNotes src="ReleaseNotes.txt" />
+      <dependencies>
+        <dependency type="CoreVersion">07.00.00</dependency>
+      </dependencies>
+      <components>
+        <component type="Cleanup" fileName="02.00.03.txt" version="02.00.03" />
+        <component type="Module">
+          <desktopModule>
+            <moduleName>NewDDRMenu</moduleName>
+            <foldername>NewDDRMenu</foldername>
+            <businessControllerClass>DotNetNuke.Web.NewDDRMenu.Controller,DotNetNuke.Web.NewDDRMenu</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Portable" />
+              <supportedFeature type="Upgradeable" />
+            </supportedFeatures>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>New DDR Menu</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey/>
+                    <controlSrc>DesktopModules/NewDDRMenu/MenuView.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>DDR menu</controlTitle>
+                    <controlType>View</controlType>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlSrc>DesktopModules/NewDDRMenu/MenuSettings.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <supportsPopUps>True</supportsPopUps>
+                    <controlTitle>DDR menu settings</controlTitle>
+                    <controlType>Edit</controlType>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <businessControllerClass>DotNetNuke.Web.NewDDRMenu.Controller,DotNetNuke.Web.NewDDRMenu</businessControllerClass>
+              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+              <upgradeVersionsList>00.00.01</upgradeVersionsList>
+            </attributes>
+          </eventMessage>
+        </component>
+        <component type="SkinObject">
+          <moduleControl>
+            <controlKey>NewDDRMenu</controlKey>
+            <controlSrc>DesktopModules/NewDDRMenu/Menu.ascx</controlSrc>
+          </moduleControl>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <basePath>bin</basePath>
+            <assembly>
+              <name>DotNetNuke.Web.NewDDRMenu.dll</name>
+              <sourceFileName>bin\DotNetNuke.Web.NewDDRMenu.dll</sourceFileName>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules\NewDDRMenu</basePath>
+            <resourceFile>
+              <name>resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/navigationControl/providers" action="update" key="name" collision="overwrite">
+                    <add name="NewDDRMenuNavigationProvider" type="DotNetNuke.Web.NewDDRMenu.NewDDRMenuNavigationProvider, DotNetNuke.Web.NewDDRMenu" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/navigationControl/providers/add[@name='NewDDRMenuNavigationProvider']" action="remove" />
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

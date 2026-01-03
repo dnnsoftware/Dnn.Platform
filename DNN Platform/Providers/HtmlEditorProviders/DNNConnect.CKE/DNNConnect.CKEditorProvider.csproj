@@ -79,6 +79,9 @@
       <HintPath>..\..\..\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.JScript" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -93,7 +96,31 @@
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.AspNet.WebApi.Core.5.3.0\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.3.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.AspNet.Mvc.5.3.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.AspNet.Razor.3.3.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -177,11 +204,13 @@
     <Compile Include="Objects\Toolbar.cs" />
     <Compile Include="Objects\ToolbarRoles.cs" />
     <Compile Include="Utilities\EditorController.cs" />
+    <Compile Include="Utilities\SettingsLoader.cs" />
     <Compile Include="Utilities\SettingsUtil.cs" />
     <Compile Include="Utilities\ToolbarUtil.cs" />
     <Compile Include="Utilities\Utility.cs" />
     <Compile Include="Web\EditorControl.cs">
     </Compile>
+    <Compile Include="Web\CKEditorHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -401,6 +430,10 @@
     <ProjectReference Include="..\..\..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
       <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
       <Name>DotNetNuke.Web.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DotNetNuke.Web.MvcPipeline\DotNetNuke.Web.MvcPipeline.csproj">
+      <Project>{0d777a63-4f7b-379f-e937-d5f28f4aa6ef}</Project>
+      <Name>DotNetNuke.Web.MvcPipeline</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
       <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>

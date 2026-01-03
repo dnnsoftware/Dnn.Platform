@@ -1,0 +1,43 @@
+@using DotNetNuke.Web.MvcPipeline.Models
+@using DotNetNuke.Web.MvcPipeline.Skins
+
+@model PageModel
+
+@{
+    @Html.Meta(name: "viewport", content: "width=device-width, initial-scale=1.0")
+    
+    @* Include skin CSS and JS *@
+    @Html.DnnCssInclude(filePath: "css/skin.min.css", pathNameAlias: "SkinPath", priority: 110)
+    @Html.DnnJsInclude(filePath: "js/skin.min.js", pathNameAlias: "SkinPath", priority: 110, defer: true)
+    
+    @* Preload fonts *@
+    var fonts = new string[]
+    {
+        "fonts/Ubuntu-Bold",
+        "fonts/Ubuntu-BoldItalic",
+        "fonts/Ubuntu-Italic",
+        "fonts/Ubuntu-Light",
+        "fonts/Ubuntu-LightItalic",
+        "fonts/Ubuntu-Medium",
+        "fonts/Ubuntu-MediumItalic",
+        "fonts/Ubuntu-Regular"
+    };
+
+    var types = new Dictionary<string, string>
+    {
+        { "woff2", "font/woff2" },
+        { "woff", "font/woff" }
+    };
+
+    foreach (var type in types)
+    {
+        foreach (var font in fonts)
+        {
+            <link rel="preload" 
+                  as="font"
+                  href="@(Model.Skin.SkinPath + font + "." + type.Key)"
+                  type="@type.Value"
+                  crossorigin="anonymous" />
+        }
+    }
+} 

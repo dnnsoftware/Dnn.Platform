@@ -6,21 +6,33 @@
 namespace DotNetNuke.Services.Tokens
 {
     using System;
+    using System.Net.Configuration;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Services.ClientDependency;
+    using DotNetNuke.Web.Client.ResourceManager;
+    using Microsoft.Extensions.DependencyInjection;
 
     public class CssPropertyAccess : JsonPropertyAccess<StylesheetDto>
     {
-        private readonly Page page;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>Initializes a new instance of the <see cref="CssPropertyAccess"/> class.</summary>
         /// <param name="page">The page to which the CSS should be registered.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public CssPropertyAccess(Page page)
+            : this((IClientResourceController)null)
         {
-            this.page = page;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CssPropertyAccess"/> class.</summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        public CssPropertyAccess(IClientResourceController clientResourceController)
+        {
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
         /// <inheritdoc/>
@@ -38,11 +50,15 @@ namespace DotNetNuke.Services.Tokens
 
             if (string.IsNullOrEmpty(model.Provider))
             {
-                ClientResourceManager.RegisterStyleSheet(this.page, model.Path, model.Priority);
+                this.clientResourceController.RegisterStylesheet(model.Path, (FileOrder.Css)model.Priority);
             }
             else
             {
-                ClientResourceManager.RegisterStyleSheet(this.page, model.Path, model.Priority, model.Provider);
+                this.clientResourceController
+                    .CreateStylesheet(model.Path)
+                    .SetPriority((FileOrder.Css)model.Priority)
+                    .SetProvider(model.Provider)
+                    .Register();
             }
 
             return string.Empty;

@@ -365,5 +365,8 @@ namespace DotNetNuke.Abstractions.Portals
 
         /// <summary>Gets a value indicating whether to display the dropdowns to quickly add a moduel to the page in the edit bar.</summary>
         bool ShowQuickModuleAddMenu { get; }
+
+        /// <summary>Gets the pipeline type for the portal.</summary>
+        string PagePipeline { get; }
     }
 }

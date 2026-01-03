@@ -1,0 +1,38 @@
+@using DotNetNuke.Modules.Html.Models
+@using DotNetNuke.Entities.Modules
+@using DotNetNuke.Services.Localization
+@model MyWorkModel
+@{}
+
+
+<div class="dnnForm dnnMyWork dnnClear">
+    @if (Model.HtmlTextUsers.Any())
+    {
+       <table class="dnn-grid">
+           <thead>
+               <tr>
+                   <th>@Localization.GetString("Page", Model.LocalResourceFile)</th>
+               </tr>
+           </thead>
+           <tbody>
+               @foreach (var item in Model.HtmlTextUsers)
+               {
+                   <tr>
+                       <td>
+                           <a href="@(item.Url + "#" + item.ModuleID)">@item.ModuleTitle ( @item.StateName )</a>
+                       </td>
+                   </tr>
+               }
+           </tbody>
+       </table>
+    }
+    else
+    {
+        <div class="dnnFormMessage dnnFormWarning">
+            @Localization.GetString("lblNoRecords", Model.LocalResourceFile)
+        </div>
+    }
+    <ul class="dnnActions dnnClear">
+        <li><a href="@Model.RedirectUrl" class="dnnPrimaryAction">@Localization.GetString("cmdCancel", Model.LocalResourceFile)</a></li>
+    </ul>
+</div>

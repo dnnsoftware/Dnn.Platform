@@ -1,0 +1,44 @@
+@using DotNetNuke.Modules.Html.Models
+@using DotNetNuke.Web.MvcPipeline.Modules
+@using DotNetNuke.Services.Localization
+@using DotNetNuke.Web.MvcPipeline.Containers
+@using DNNConnect.CKEditorProvider.Web
+@model EditHtmlViewModel
+
+<fieldset>
+    <div class="dnnFormItem">
+        @if (Model.ShowMasterContent)
+        {
+            <div class="ehmContent dnnClear" id="ehmContent">
+                <div class="html_preview">
+                    @Html.Raw(Model.MasterContent)
+                </div>
+            </div>
+        }
+        @* Html.TextAreaFor(x => x.EditorContent, new { @class = "dnnTextEditor", rows = "10", cols = "100" })*@
+        @*@Html.TextEditorFor(x => x.EditorContent)*@
+        @Html.CKEditorEditorFor(x => x.EditorContent, Model.ModuleId)
+    </div>
+
+    @if (Model.ShowCurrentVersion)
+    {
+        <div class="divCurrentVersion">
+            <div class="dnnFormItem" id="divCurrentWorkflowState">
+                <div class="dnnLabel" style="position:relative">
+                    <label>@Localization.GetString("plCurrentWorkflowState", Model.LocalResourceFile) :</label>
+                </div>
+                <span>@Localization.GetString(Model.CurrentWorkflowState, Model.LocalResourceFile)</span>
+                <span>(@Localization.GetString("plCurrentWorkVersion", Model.LocalResourceFile) @Model.CurrentVersion) (@Localization.GetString(Model.CurrentWorkflowInUse, Model.LocalResourceFile))</span>
+            </div>
+            @if (Model.ShowPublishOption)
+            {
+                <div class="dnnFormItem" id="divPublish">
+                    <div class="dnnLabel" style="position:relative">
+                        <label>@Localization.GetString("plActionOnSave", Model.LocalResourceFile)</label>
+                    </div>
+                    @Html.CheckBoxFor(m => m.Publish) @Localization.GetString("chkPublish", Model.LocalResourceFile)
+                </div>
+            }
+        </div>
+    }
+</fieldset>

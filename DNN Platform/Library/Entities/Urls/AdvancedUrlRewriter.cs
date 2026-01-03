@@ -2194,6 +2194,49 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
+        private static bool IsMvc(UrlAction result, NameValueCollection queryStringCol, HttpContext context, int tabId, int portalId)
+        {
+            var mvcCtls = new[] { "Terms", "Privacy" };
+
+            bool mvcCtl = false;
+            if (result.RewritePath.Contains("&ctl="))
+            {
+                var portalPipeline = PortalSettingsController.Instance().GetPortalPagePipeline(portalId);
+                if (portalPipeline == PagePipelineConstants.Mvc)
+                {
+                    foreach (var item in mvcCtls)
+                    {
+                        mvcCtl = mvcCtl || result.RewritePath.Contains("&ctl=" + item);
+                    }
+                }
+            }
+            else
+            {
+                TabInfo tab = null;
+                if (tabId > 0 && portalId > -1)
+                {
+                    tab = TabController.Instance.GetTab(tabId, portalId, false);
+                    if (tab != null)
+                    {
+                        var tabPipeline = tab.PagePipeline;
+                        if (!string.IsNullOrEmpty(tabPipeline))
+                        {
+                            mvcCtl = tabPipeline == PagePipelineConstants.Mvc;
+                        }
+                        else
+                        {
+                            var portalPipeline = PortalSettingsController.Instance().GetPortalPagePipeline(portalId);
+                            mvcCtl = portalPipeline == PagePipelineConstants.Mvc;
+                        }
+                    }
+                }
+            }
+
+            mvcCtl = mvcCtl && !result.RewritePath.Contains($"{PagePipelineConstants.QueryStringKey}={PagePipelineConstants.QueryStringWebForms}") && queryStringCol[PagePipelineConstants.QueryStringKey] != PagePipelineConstants.QueryStringWebForms;
+            mvcCtl = mvcCtl || result.RewritePath.Contains($"{PagePipelineConstants.QueryStringKey}={PagePipelineConstants.QueryStringMvc}") || queryStringCol[PagePipelineConstants.QueryStringKey] == PagePipelineConstants.QueryStringMvc;
+            return mvcCtl;
+        }
+
         private void ProcessRequest(
             HttpContext context,
             Uri requestUri,
@@ -2445,7 +2488,14 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
+                        if (IsMvc(result, queryStringCol, context, result.TabId, result.PortalId))
+                        {
+                            RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath.Replace(Globals.glbDefaultPage, "DesktopModules/Default/Page/" + result.TabId + "/" + result.CultureCode));
+                        }
+                        else
+                        {
+                            RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
+                        }
                     }
                 }
 

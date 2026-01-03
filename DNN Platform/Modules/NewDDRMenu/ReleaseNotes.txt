@@ -1,0 +1,181 @@
+<h1>NewDDRMenu Release Notes</h1>
+<p>
+NewDDRMenu - DotNetNuke navigation provider.
+</p>
+<h2>Change list</h2>
+<h3>02.01.00 (2014-02-28)</h3>
+<ul>
+<li>fixed exception if template wasn't xslt</li>
+<li>fixed all build warnings for obsolute calls</li>
+<li>updated to 7.2+</li>
+<li>added to dnn platform solution and git</li>
+</ul>
+<h3>02.00.03 (2013-02-22)</h3>
+<ul>
+<li>Fixed rendering of Razor Templates</li>
+<li>Added [=TARGET] token to allow opening of menu links in new window</li>
+    <li>NewDDRMenu only supports DotNetNuke 7+ from now on</li>
+</ul>
+<h3>02.00.01 (2011-07-31)</h3>
+<ul>
+<li>Fix for exception caused by duplicate action menu items.</li>
+<li>Page title returned when no localisation present.</li>
+</ul>
+<h3>02.00.00 (2011-07-18)</h3>
+<ul>
+<li>Razor model object is now an expando to allow easy global variables.</li>
+<li>Razor compilation errors returned in exception detail.</li>
+<li>Page description and keywords returned when no localisation present.</li>
+<li>Fix for blank script paths in manifest.</li>
+<li>Fix for concurrency issue creating XML serialisers.</li>
+<li>Fix for problem passing through ClientOptions.</li>
+</ul>
+<h3>01.99.04 (DNN 6 beta 1, 2011-06-22)</h3>
+<ul>
+<li>Fixed concurrency issue with ClientOptions.</li>
+<li>Page icon paths corrected when not in dnn:NAV control.</li>
+<li>Token templates now recognise template arguments.</li>
+<li>Check added for duplicate script blocks.</li>
+<li>Localisation performance improvements (host pages now cached correctly, action menu not localised).</li>
+<li>Action menu command name and argument made available.</li>
+<li>Navigation provider added to web.config via manifest in DNN 5 onwards.</li>
+</ul>
+<h3>01.99.03 (aka 2.0 RC1) (2011-05-17)</h3>
+<ul>
+<li>DNN 6.0.0 version added with support for including hidden nodes.</li>
+<li>Added support for DNN 6 pages with associated large images.</li>
+<li>Support for Razor dynamically detected, allowing single install to support both .NET 3.5 and .NET 4.0.</li>
+<li>Added aliases to token parser - PAGE for NODE and NAME for TEXT.</li>
+<li>Added aliases to NodeSelector - RootOnly, RootChildren and CurrentChildren.</li>
+<li>On versions of DNN that support it, uses the DNN API to instantiate jQuery.</li>
+<li>GetString method added to XSL extension functions for localisation.</li>
+<li>Fixed bug resulting in blank path parameters being provided to XSL templates.</li>
+<li>On upgrade, tidies up old assemblies and updates namespace and assembly references in skin ASCX files.</li>
+</ul>
+<h3>01.99.02 (aka 2.0 beta 3) (2011-04-04)</h3>
+<ul>
+<li>Sub-templates added to token based template parser.</li>
+</ul>
+<h3>01.99.01 (aka 2.0 beta 2) (2011-04-01)</h3>
+<ul>
+<li>Token based template parser added.</li>
+<li>DNN 5.6.0 version added with Razor template parser.</li>
+<li>Namespace changed from DNNGarden to DotNetNuke.Web.</li>
+<li>License and attribution changed to DotNetNuke Corporation.</li>
+</ul>
+<h3>01.99.00 (aka 2.0 beta 1) (2011-03-03)</h3>
+<ul>
+<li>Namespace changed from DNNDoneRight to DNNGarden.</li>
+<li>Fixed problem with Ealo internationalisation.</li>
+<li>Internationalisation providers can add hooks to their own assemblies.</li>
+<li>Templating updated to allow alternatives to XSLT (e.g. tokens, Razor).</li>
+</ul>
+<h3>01.02.02 (2010-09-16)</h3>
+<ul>
+<li>Skin objects added to manifests for use by HTML skins.</li>
+<li>Fixed loss of defaultClientOptions in some templates.</li>
+</ul>
+<h3>01.02.01 (2010-08-12)</h3>
+<ul>
+<li>Templates can now be located in the container folder for action menus.</li>
+<li>Workround for WebKit bug when using SolPart template.</li>
+</ul>
+<h3>01.02.00 (2010-08-04)</h3>
+<ul>
+<li>IPortable interface supported.</li>
+<li>Loading jQuery from Google CDN uses same protocol as hosting page (http/https).</li>
+<li>More tolerant parsing of XML supplied via NodeXMLPath.</li>
+<li>New XSLT library functions for provision of login and register links in a menu.</li>
+<li>Fix for text encoding in DumpXML template.</li>
+<li>Fixes for DNNMenu/Solpart in Webkit.</li>
+</ul>
+<h3>01.01.01 (2010-07-04)</h3>
+<ul>
+<li>Page title now available in XML.</li>
+<li>Fixed another bug in DNNMenu and SolPart menus when browser window resized.</li>
+</ul>
+<h3>01.01.00 (2010-06-23)</h3>
+<ul>
+<li>Can now be used for module actions menu.</li>
+<li>Significant performance improvements in DNNMenu and SolPart templates.</li>
+<li>Fixed bug in DNNMenu and SolPart menus when browser window resized.</li>
+<li>DumpXML template layout improved, now included in core distribution.</li>
+<li>Script instantiation changed to get round bug in XHTML validator.</li>
+<li>User information now optionally available in XML (use IncludeContext="true").</li>
+<li>XSLT updated to work when user information is included.</li>
+<li>CLSCompliant attribute added to avoid warnings when using INodeManipulator.</li>
+<li>XSLT function library introduced, initially with only UserIsInRole method.</li>
+</ul>
+<h3>01.00.06 (2009-12-14)</h3>
+<ul>
+<li>Fixed problem working with DNN 4.x language packs.</li>
+<li>Module settings now takes multiple template arguments and client options split one per line in multi-line text box.</li>
+</ul>
+<h3>01.00.05 (2009-12-10)</h3>
+<ul>
+<li>Viewstate disabled since not used.</li>
+<li>Fixed problem with SolPart hover classes.</li>
+<li>Fixed issue with IDs when menu embedded inside another control.</li>
+</ul>
+<h3>01.00.04 (2009-12-05)</h3>
+<ul>
+<li>Uses Adequation localisation extensions if installed.</li>
+<li>Added new DNNMenu classes icn, txt, mi[n], id[n], m[n] and mid[n].</li>
+<li>IncludeNodes and ExcludeNodes can now filter by role, e.g. IncludeNodes="[All users]" only shows those pages visible to all users.</li>
+<li>Fixed issue with vertical SolPart menus.</li>
+<li>Fixed issue using NodeSelector with page IDs.</li>
+</ul>
+<h3>01.00.03 (2009-12-02)</h3>
+<ul>
+<li>Uses Ealo page localisation if installed.</li>
+<li>Uses localised page names from language settings if DNN version supports it.</li>
+</ul>
+<h3>01.00.02 (2009-12-01)</h3>
+<ul>
+<li>Changed shim ClientOption from "noShim" to "shim" (thus defaulting to no shimming unless required).</li>
+<li>Upgrade cleanup code modified to retain existing modules.</li>
+</ul>
+<h3>01.00.01 (2009-11-23)</h3>
+<ul>
+<li>When adding as a module, now lets user choose style.</li>
+<li>Issue fixed with MenuAlignment in SolPart template.</li>
+<li>Fixed errors when adding ClientOptions to ddr:MENU skinobject.</li>
+<li>Missing text added to module resource files.</li>
+<li>Fixed DNN 5 installation package - module now installed correctly.</li>
+</ul>
+<h3>01.00.00 (2009-11-18)</h3>
+<ul>
+<li>Uses Apollo page localisation if installed.</li>
+<li>True hyperlinks added to DNNMenu and SolPart templates.</li>
+<li>NodeSelector now processed before IncludeNodes and ExcludeNodes.</li>
+<li>Settings in module version now processed correctly.</li>
+<li>Separator HTML fixed in DNNMenu template.</li>
+<li>SolPart spacer images in FireFox should now always show.</li>
+<li>Menu alignment fixed for DNNMenu with zero-height container.</li>
+<li>Scripts added to head rather than registered with script manager to prevent conflicts with ClientAPI.</li>
+<li>Fixed problem with indication of active nodes in SolPart template.</li>
+<li>Fixed submenu positioning problem in Opera.</li>
+<li>Improved chances of peaceful coexistence with other modules also loading jQuery.</li>
+<li>Menus appear over windowed objects in IE (but not necessarily in other browsers, so beware!).</li>
+<li>Floating menus relocate, shrink and scroll as appropriate when screen estate is low.</li>
+<li>Added IncludeNodes etc to SolPartMenu.ascx.</li>
+</ul>
+<h3>0.9.03 (2009-06-28)</h3>
+<ul>
+<li>Changed node XML format to include more page information, e.g. description.</li>
+<li>Changed INodeManipulator to use custom node type rather than DNNNode, to include page details.</li>
+<li>New templating system, now used for all menu types.</li>
+<li>Minor threading and caching fixes.</li>
+<li>Added "first", "last" and "only" CSS classes to Classic and Mega1 menus.</li>
+<li>Added keyboard support to Classic and Mega1 menus (using tab key).</li>
+<li>Added "IncludeNodes" and "ExcludeNodes" options to select which pages to show.</li>
+</ul>
+<h3>0.9.02 (2009-06-12)</h3>
+<ul>
+<li>Changed Snapsis templates to use breadcrumb for IsActive token.</li>
+<li>Fixed HTML encoding issue in non-templated menus.</li>
+</ul>
+<h3>0.9.01 (2009-06-11)</h3>
+<ul>
+<li>First beta release.</li>
+</ul>

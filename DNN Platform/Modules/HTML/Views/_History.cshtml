@@ -1,0 +1,72 @@
+@using DotNetNuke.Modules.Html.Models
+@using DotNetNuke.Web.MvcPipeline
+@using DotNetNuke.Services.Localization
+@model EditHtmlViewModel
+
+
+@if (Model.ShowHistoryView)
+{
+    <fieldset>
+        <div class="ehvContent">
+            <div class="dnnFormItem">
+                <div class="dnnLabel" style="position: relative;">
+                    <label>@Localization.GetString("plMaxVersions", Model.LocalResourceFile)</label>
+                </div>
+                <span>@Model.MaxVersions</span>
+            </div>
+            <table class="dnn-grid">
+                <thead>
+                    <tr>
+                        <th>
+                            Version @Localization.GetString("Version", Model.LocalResourceFile)
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            User
+                        </th>
+                        <th>
+                            State
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model.VersionItems)
+                {
+                    <tr>
+                        <td>
+                            @item.Version
+                        </td>
+                        <td>
+                            @item.LastModifiedOnDate
+                        </td>
+                        <td>
+                            @item.DisplayName
+                        </td>
+                        <td>
+                            @item.StateName
+                        </td>
+                        <td>
+                            <table cellpadding="0" cellspacing="0" class="DnnGridNestedTable">
+                                <tr style="vertical-align: top;">
+                                    <td>
+                                        <input data-itemid="@item.ItemID" data-action="@Url.Action("HistoryRemove", new {area= "HTML"})" class="js-history-remove" type="image" title="@Localization.GetString("VersionsRemove", Model.LocalResourceFile)" text="Delete" src="/icons/sigma/ActionDelete_16X16_Standard.png" alt="@Localization.GetString("VersionsRemove", Model.LocalResourceFile)">
+                                    </td>
+                                    <td>
+                                        <input data-itemid="@item.ItemID" data-action="@Url.Action("HistoryPreview", new {area= "HTML"})" class="js-history-preview" type="image" title="@Localization.GetString("VersionsPreview", Model.LocalResourceFile)" text="Preview" src="/icons/sigma/View_16X16_Standard.png" alt="@Localization.GetString("VersionsPreview", Model.LocalResourceFile)">
+                                    </td>
+                                    <td>
+                                        <input data-itemid="@item.ItemID" data-action="@Url.Action("HistoryRollback", new {area= "HTML"})" class="js-history-rollback" type="image" title="@Localization.GetString("VersionsRollback")" text="Rollback" src="/icons/sigma/Restore_16X16_Standard.png" alt="@Localization.GetString("VersionsRollback")">
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </fieldset>
+}

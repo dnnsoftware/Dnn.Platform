@@ -1,0 +1,28 @@
+@using DotNetNuke.Web.MvcPipeline.Models
+@using DotNetNuke.Web.MvcPipeline.Skins
+@using DotNetNuke.Web.NewDDRMenu @* this namespace will change in the future *@
+
+@model PageModel
+
+<header class="aperture-header">
+  <div class="eyebrow-bar">
+    <div class="aperture-container">
+            @Html.Login()
+            @Html.User()
+        </div>
+    </div>
+    <div class="logo-menu-bar">
+        <div class="aperture-container">
+            @Html.Logo(injectSvg: true)
+            @Html.DDRMenu(clientID: "menu_desktop", 
+                         cssClass: "aperture-d-none aperture-d-md-block", 
+                         menuStyle: "menus/desktop",
+                         nodeSelector: "*,0,2")
+            @Html.DDRMenu(clientID: "menu_mobile", 
+                         cssClass: "aperture-d-flex aperture-d-md-none", 
+                         menuStyle: "menus/mobile",
+                         nodeSelector: "*,0,2")
+						 
+        </div>
+    </div>
+</header> 

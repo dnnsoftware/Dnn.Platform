@@ -91,7 +91,7 @@
     <ProjectReference Include="..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj" />
     <ProjectReference Include="..\Syndication\DotNetNuke.Syndication.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
     <Compile Include="..\..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />

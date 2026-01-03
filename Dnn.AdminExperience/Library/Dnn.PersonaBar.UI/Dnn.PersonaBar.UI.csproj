@@ -40,9 +40,11 @@
   <ItemGroup>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Web.MvcPipeline\DotNetNuke.Web.MvcPipeline.csproj" />
     <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj" />

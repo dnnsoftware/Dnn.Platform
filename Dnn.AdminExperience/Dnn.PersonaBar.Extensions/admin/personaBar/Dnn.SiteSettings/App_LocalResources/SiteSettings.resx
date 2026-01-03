@@ -1548,4 +1548,19 @@
   <data name="plDefaultTabWorkflowId.Help" xml:space="preserve">
     <value>Select the default content workflow to be applied.</value>
   </data>
+  <data name="PipelineSettings.Text" xml:space="preserve">
+    <value>Pipeline Settings</value>
+  </data>
+  <data name="PagePipeline.Text" xml:space="preserve">
+    <value>Page rendering pipeline</value>
+  </data>
+  <data name="PagePipeline_tooltip.Text" xml:space="preserve">
+    <value>The type of pipeline to use for the site. Can be overridden for each page.</value>
+  </data>
+  <data name="WebForms.Text" xml:space="preserve">
+    <value>WebForms</value>
+  </data>
+  <data name="Mvc.Text" xml:space="preserve">
+    <value>Mvc</value>
+  </data> 
 </root>

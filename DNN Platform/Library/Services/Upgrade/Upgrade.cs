@@ -212,13 +212,14 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name="controlKey">The key for this control in the Definition.</param>
         /// <param name="controlTitle">The title of this control.</param>
         /// <param name="controlSrc">The source of ths control.</param>
+        /// <param name="mvcControlClass">The mvc control class of ths control.</param>
         /// <param name="iconFile">The icon file.</param>
         /// <param name="controlType">The type of control.</param>
         /// <param name="viewOrder">The vieworder for this module.</param>
-        public static void AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, SecurityAccessLevel controlType, int viewOrder)
+        public static void AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string mvcControlClass, string iconFile, SecurityAccessLevel controlType, int viewOrder)
         {
             // Call Overload with HelpUrl = Null.NullString
-            AddModuleControl(moduleDefId, controlKey, controlTitle, controlSrc, iconFile, controlType, viewOrder, Null.NullString);
+            AddModuleControl(moduleDefId, controlKey, controlTitle, controlSrc, mvcControlClass, iconFile, controlType, viewOrder, Null.NullString);
         }
 
         /// <summary>AddModuleDefinition adds a new Core Module Definition to the system.</summary>
@@ -2101,37 +2102,36 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name="controlType">The type of control.</param>
         /// <param name="viewOrder">The vieworder for this module.</param>
         /// <param name="helpURL">The Help Url.</param>
-        private static void AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, SecurityAccessLevel controlType, int viewOrder, string helpURL)
+        private static void AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string mvcControlClass, string iconFile, SecurityAccessLevel controlType, int viewOrder, string helpURL)
         {
-            AddModuleControl(moduleDefId, controlKey, controlTitle, controlSrc, iconFile, controlType, viewOrder, helpURL, false);
+            AddModuleControl(moduleDefId, controlKey, controlTitle, controlSrc, mvcControlClass, iconFile, controlType, viewOrder, helpURL, false);
         }
 
-        private static void AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, SecurityAccessLevel controlType, int viewOrder, string helpURL, bool supportsPartialRendering)
+        private static void AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string mvcControlClass, string iconFile, SecurityAccessLevel controlType, int viewOrder, string helpURL, bool supportsPartialRendering)
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddModuleControl:" + moduleDefId);
 
             // check if module control exists
             var moduleControl = ModuleControlController.GetModuleControlByControlKey(controlKey, moduleDefId);
-            if (moduleControl != null)
+            if (moduleControl == null)
             {
-                return;
+                moduleControl = new ModuleControlInfo
+                {
+                    ModuleControlID = Null.NullInteger,
+                    ModuleDefID = moduleDefId,
+                    ControlKey = controlKey,
+                    ControlTitle = controlTitle,
+                    ControlSrc = controlSrc,
+                    MvcControlClass = mvcControlClass,
+                    ControlType = controlType,
+                    ViewOrder = viewOrder,
+                    IconFile = iconFile,
+                    HelpURL = helpURL,
+                    SupportsPartialRendering = supportsPartialRendering,
+                };
+
+                ModuleControlController.AddModuleControl(moduleControl);
             }
-
-            moduleControl = new ModuleControlInfo
-            {
-                ModuleControlID = Null.NullInteger,
-                ModuleDefID = moduleDefId,
-                ControlKey = controlKey,
-                ControlTitle = controlTitle,
-                ControlSrc = controlSrc,
-                ControlType = controlType,
-                ViewOrder = viewOrder,
-                IconFile = iconFile,
-                HelpURL = helpURL,
-                SupportsPartialRendering = supportsPartialRendering,
-            };
-
-            ModuleControlController.AddModuleControl(moduleControl);
         }
 
         /// <summary>AddModuleDefinition adds a new Core Module Definition to the system.</summary>

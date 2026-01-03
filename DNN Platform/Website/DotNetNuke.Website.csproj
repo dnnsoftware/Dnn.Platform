@@ -193,6 +193,8 @@
     <Compile Include="admin\Modules\viewsource.ascx.designer.cs">
       <DependentUpon>viewsource.ascx</DependentUpon>
     </Compile>
+    <Compile Include="admin\Portal\Controls\PrivacyControl.cs" />
+    <Compile Include="admin\Portal\Controls\TermsControl.cs" />
     <Compile Include="admin\Portal\Message.ascx.cs">
       <DependentUpon>message.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -494,6 +496,8 @@
     <Compile Include="admin\Users\ViewProfile.ascx.designer.cs">
       <DependentUpon>ViewProfile.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\DefaultController.cs" />
+    <Compile Include="Controllers\ModuleActionsController.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -525,6 +529,7 @@
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <Content Include="Install\InstallWizard.aspx" />
+    <Content Include="js\mvc.js" />
     <Content Include="Licenses\Castle Core %28Apache%29.txt.resources" />
     <Content Include="Licenses\LiteDB %28MIT%29.txt.resources" />
     <Content Include="Licenses\Microsoft Data Access Application Block %28Custom%29.txt.resources" />
@@ -541,7 +546,9 @@
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <Content Include="admin\Portal\Views\web.config" />
     <Content Include="App_Data\Upgrade\upgrade.json" />
+    <Content Include="admin\Portal\Views\Privacy.cshtml" />
     <None Include="compilerconfig.json" />
     <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
       <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
@@ -733,6 +740,7 @@
     <Compile Include="KeepAlive.aspx.designer.cs">
       <DependentUpon>KeepAlive.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ModuleActionsDeleteModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="admin\Skins\DnnJsInclude.xml">
       <SubType>Designer</SubType>
@@ -763,6 +771,12 @@
     <Content Include="Licenses\Cake %28MIT%29.txt.resources" />
     <Content Include="Licenses\Cake LongPath Module %28MIT%29.txt.resources" />
     <Content Include="Licenses\CodeMirror %28MIT%29.txt.resources" />
+    <Content Include="Licenses\Effority Ealo %28Ms-RL%29.txt.resources" />
+    <None Include="Portals\_default\Containers\_default\Views\No Container.cshtml" />
+    <None Include="Portals\_default\Containers\_default\Views\popUpContainer.cshtml" />
+    <Content Include="Portals\_default\Containers\_default\Views\web.config" />
+    <None Include="Portals\_default\Skins\_default\Views\No Skin.cshtml" />
+    <None Include="Portals\_default\Skins\_default\Views\popUpSkin.cshtml" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
     <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
@@ -1202,6 +1216,24 @@
     <Content Include="Install\Config\09.13.04.config" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.04.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.08.SqlDataProvider" />
+    <Content Include="Views\Default\Layout.cshtml" />
+    <Content Include="Views\PersonaBarContainer\Index.cshtml" />
+    <Content Include="admin\Portal\Views\Terms.cshtml" />
+    <Content Include="Views\web.config" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.00.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.01.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.12.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.13.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.13.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.13.03.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.13.09.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.00.00.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.00.00.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.00.00.03.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.99.00.SqlDataProvider" />
+    <Content Include="Portals\_default\Skins\_default\Views\web.config" />
+    <Content Include="Views\Default\ModuleActions.cshtml" />
+    <Content Include="Views\web.config" />
     <Content Include="Install\Config\10.02.00.config" />
     <Content Include="Install\Config\10.02.01.config" />
     <None Include="web.Debug.config">
@@ -3278,6 +3310,10 @@
     <None Include="Resources\Shared\scripts\jquery\jquery.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Install\Provider\" />
+    <Folder Include="Install\Temp\" />
+  </ItemGroup>
+  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
@@ -3295,6 +3331,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Dnn.AdminExperience\EditBar\Dnn.EditBar.UI\Dnn.EditBar.UI.csproj">
+      <Project>{9d9b15dd-e7ce-476c-bd3b-ff44e64efb67}</Project>
+      <Name>Dnn.EditBar.UI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer">
       <Project>{5fe5d021-9c8d-47a6-bd34-f328ba3e709c}</Project>
       <Name>DotNetNuke.Internal.SourceGenerators</Name>
@@ -3318,6 +3358,10 @@
     <ProjectReference Include="..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
       <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
       <Name>DotNetNuke.Web.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Web.MvcPipeline\DotNetNuke.Web.MvcPipeline.csproj">
+      <Project>{0d777a63-4f7b-379f-e937-d5f28f4aa6ef}</Project>
+      <Name>DotNetNuke.Web.MvcPipeline</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
       <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
@@ -3405,5 +3449,17 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Website.dll" DestinationFolder="$(WebsitePath)\bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Website.pdb" DestinationFolder="$(WebsitePath)\bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Website.xml" DestinationFolder="$(WebsitePath)\bin" />
+  </Target>
+  <Target Name="GetFiles">
+    <ItemGroup>
+      <ViewFiles Include="$(MSBuildProjectDirectory)\Views\**\*.*" />
+    </ItemGroup>
+  </Target>
+  <Target Name="DebugProject">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Website.dll" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Website.pdb" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Website.xml" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="@(ViewFiles)" DestinationFiles="@(ViewFiles->'$(WebsitePath)\Views\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\js\mvc.js" DestinationFolder="$(WebsitePath)\js" />
   </Target>
 </Project>

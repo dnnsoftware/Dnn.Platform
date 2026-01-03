@@ -6,10 +6,10 @@ namespace DotNetNuke.UI.Modules.Html5
     using System;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
-
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Module control factory for HTML modules.</summary>

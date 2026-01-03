@@ -1,0 +1,121 @@
+@using ClientDependency.Core
+@using DotNetNuke.Web.MvcPipeline
+
+@using DotNetNuke.Common
+@using DotNetNuke.Abstractions.ClientResources
+@using DotNetNuke.Web.MvcPipeline.Pages;
+
+@model DotNetNuke.Web.MvcPipeline.Models.PageModel
+@{
+    var SkinPath = Path.GetDirectoryName(Model.Skin.SkinSrc).Replace("\\", "/");
+    DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries.MvcJavaScript.Register();
+    var controlPanel = new System.Web.Mvc.MvcHtmlString(string.Empty);
+    if (!string.IsNullOrEmpty(Model.Skin.ControlPanelRazor))
+    {
+        controlPanel = Html.Action("Index", Model.Skin.ControlPanelRazor, Model);
+    }
+
+    //DotNetNuke.Framework.Controllers.DefaultController.RegisterAjaxScript(this.ViewContext.Controller.ControllerContext);
+}
+<!DOCTYPE html>
+<html lang="@Model.Language">
+<head>
+    @if (!string.IsNullOrEmpty(Model.PortalHeadText))
+    {
+        @Html.Raw(Model.PortalHeadText)
+    }
+    @foreach (var item in Model.PageService.GetHeadTags())
+    {
+        @Html.Raw(item.Value)
+    }
+    @foreach (var item in Model.PageService.GetMetaTags())
+    {
+        <meta name="@item.Name" content="@item.Content" />
+    }
+    @if (!string.IsNullOrEmpty(Model.MetaRefresh))
+    {
+        <meta id="MetaRefresh" http-equiv="Refresh" name="Refresh" content="@Model.MetaRefresh" />
+    }
+    @if (!string.IsNullOrEmpty(Model.PageService.GetDescription()))
+    {
+        <meta id="MetaDescription" name="description" content="@Model.PageService.GetDescription()" />
+    }
+    @if (!string.IsNullOrEmpty(Model.PageService.GetKeyWords()))
+    {
+        <meta id="MetaKeywords" name="keywords" content="@Model.PageService.GetKeyWords()" />
+    }
+    @if (!string.IsNullOrEmpty(Model.Copyright))
+    {
+        <meta id="MetaCopyright" name="copyright" content="@Model.Copyright" />
+    }
+    @if (!string.IsNullOrEmpty(Model.Generator))
+    {
+        <meta id="MetaGenerator" name="generator" Visible="@Model.Generator" />
+    }
+    @*<meta id="MetaAuthor" name="author" Visible="" />*@
+    @if (!string.IsNullOrEmpty(Model.MetaRobots))
+    {
+        <meta id="MetaRobots" name="robots" Visible="@Model.MetaRobots" />
+    }
+    @if (!string.IsNullOrEmpty(Model.PageService.GetCanonicalLinkUrl()))
+    {
+        <link rel="canonical" href="@Model.PageService.GetCanonicalLinkUrl()" />
+    }
+    @if (!string.IsNullOrEmpty(Model.FavIconLink))
+    {
+        @Html.Raw(Model.FavIconLink)
+    }
+    <title>[MVC] @Model.PageService.GetTitle()</title>
+    @if (!string.IsNullOrEmpty(Model.PageHeadText))
+    {
+        @Html.Raw(Model.PageHeadText)
+    }
+    @Html.RegisterAjaxScriptIfRequired()
+    @RenderSection("head", required: false)
+    @RenderSection("stylesheets", required: false)
+    @RenderSection("scripts", required: false)
+    @Html.Raw(Model.ClientResourceController.RenderDependencies(ResourceType.All, "DnnPageHeaderProvider", Globals.ApplicationPath))
+</head>
+<body class="@(Model.Skin.BodyCssClass)">
+    @Html.Raw(Model.ClientResourceController.RenderDependencies(ResourceType.All, "DnnBodyProvider", Globals.ApplicationPath))
+    <form id="Form">
+        <div class="aspNetHidden">
+            <input name="ScrollTop" type="hidden" id="ScrollTop" />
+            <input name="__dnnVariable" type="hidden" id="__dnnVariable" autocomplete="off" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.ClientVariables)">
+            @Html.AntiForgeryIfRequired()
+        </div>
+    </form>
+    @controlPanel
+    @if (!string.IsNullOrEmpty(Model.Skin.SkinError))
+    {
+        <div class="NormalRed">@Model.Skin.SkinError</div>
+    }
+    @Html.RenderPageMessages()
+    @RenderBody()
+    @if (Model.IsEditMode)
+    {
+        <script @*nonce="@Model.ContentSecurityPolicy.Nonce"*@>
+            var dnn = dnn || {};
+            dnn.panes = [];
+            dnn.panesClientIds = [];
+            $(".dnnPane").each(function () {
+                //$(this).removeClass('DNNEmptyPane').addClass('dnnDropEmptyPanes');
+                dnn.panes.push($(this).attr("data-name"));
+                dnn.panesClientIds.push($(this).attr("id"));
+            });
+        </script>
+    }
+    @if (Model.StartupScripts.Any())
+    {
+        <script @*nonce="@Model.ContentSecurityPolicy.Nonce"*@>
+        // startup scripts
+        @foreach (var s in Model.StartupScripts)
+        {
+            <text>// @s.Key </text>
+	        @Html.Raw(s.Value)
+        }
+        </script>
+    }
+    @Html.Raw(Model.ClientResourceController.RenderDependencies(ResourceType.All, "DnnFormBottomProvider", Globals.ApplicationPath))
+</body>
+</html>

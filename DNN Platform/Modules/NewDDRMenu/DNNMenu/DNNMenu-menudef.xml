@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+	<template relativeTo="NewDDRMenu">[NewDDRMenu]/DefaultTemplate.xslt</template>
+	<scripts>
+		<script jsObject="DDRjQuery" />
+		<script jsObject="DDR.Menu.Providers.DNNMenu">DNNMenu.min.js</script>
+	</scripts>
+	<defaultClientOptions>
+		<clientOption name="MenuStyle" type="string" value="DNNMenu" />
+	</defaultClientOptions>
+</manifest>

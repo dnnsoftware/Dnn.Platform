@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<!-- WARNING, WARNING, WARNING -->
+<!-- REMEMBER THAT IF YOU MODIFY THE TARGETS FILE YOU NEED TO CLOSE/OPEN THE PROJECT FOR THE CHANGES TO TAKE EFFECT -->
+
+
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" Condition="Exists('$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets')"/>
+
+  
+  <PropertyGroup>
+    <DNNFileName>NewDDRMenu.dnn</DNNFileName>
+    <PackageName>NewDDRMenu</PackageName>
+    <InstallDir>$(MSBuildProjectDirectory)\Install</InstallDir>
+    <BinDir>$(MSBuildProjectDirectory)\bin</BinDir>
+    <DotNetNukeDir>E:\websites\DotNetNuke_Enterprise_07.00.00_Install</DotNetNukeDir>
+    <DotNetNukeUrl>http://dnndev.me</DotNetNukeUrl>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <AssemblyInfoFile Include="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <Target Name="BeforeBuild">
+    <CallTarget Targets="SetVersionInfo" />
+  </Target>
+  
+  <Target Name="AfterBuild">
+    <!-- we are currently only packaging, may change to do autoinstall as well-->
+    <!--<CallTarget Targets="CopyFilesToDotNetNuke" />-->
+    <CallTarget Targets="PackageModule" />
+    <!--<CallTarget Targets="InstallModule" />-->
+  </Target>
+
+  <!-- Set the version numbers in DNN file and Assembly -->
+  <Target Name="SetVersionInfo">
+    <Message Text="MSBUILD: getting version from $(MSBuildProjectDirectory)\BuildScripts\version.txt ..." Importance="high"></Message>
+    <!-- Obtain Version information from version.txt -->
+    <Version BuildType="None" RevisionType="None" VersionFile="$(MSBuildProjectDirectory)\BuildScripts\version.txt">
+      <Output TaskParameter="Major" PropertyName="Major" />
+      <Output TaskParameter="Minor" PropertyName="Minor" />
+      <Output TaskParameter="Build" PropertyName="Build" />
+      <Output TaskParameter="Revision" PropertyName="Revision" />
+    </Version>
+    <!-- DNN requires single digits to be prefixed with a zero -->
+    <CreateProperty Value="0$(Major)" Condition="$(Major) &lt;= 9" >
+      <Output TaskParameter="Value" PropertyName="Major" />
+    </CreateProperty>
+    <CreateProperty Value="0$(Minor)" Condition="$(Minor) &lt;= 9" >
+      <Output TaskParameter="Value" PropertyName="Minor" />
+    </CreateProperty>
+    <CreateProperty Value="0$(Build)" Condition="$(Build) &lt;= 9" >
+      <Output TaskParameter="Value" PropertyName="Build" />
+    </CreateProperty>
+    <CreateProperty Value="0$(Revision)" Condition="$(Revision) &lt;= 9" >
+      <Output TaskParameter="Value" PropertyName="Revision" />
+    </CreateProperty>
+
+    <!-- Write new version to assemblyinfo.vb -->
+    <Message Text="MSBUILD: Updating @(AssemblyInfoFile) and $(DNNFileName) with new version: $(Major).$(Minor).$(Build).$(Revision)" Importance="high"></Message>
+    <FileUpdate Files="@(AssemblyInfoFile)" Encoding="ASCII" Regex="AssemblyVersion\(&quot;.*&quot;\)" ReplacementText="AssemblyVersion(&quot;$(Major).$(Minor).$(Build).$(Revision)&quot;)" />
+    <FileUpdate Files="@(AssemblyInfoFile)" Encoding="ASCII" Regex="AssemblyFileVersion\(&quot;.*&quot;\)" ReplacementText="AssemblyFileVersion(&quot;$(Major).$(Minor).$(Build).$(Revision)&quot;)" />
+    <!-- update dnn 5 style version in dnn file -->
+    <FileUpdate Files="$(DNNFileName)" Regex="&quot;Module&quot; version=&quot;.*&quot;"
+                ReplacementText="&quot;Module&quot; version=&quot;$(Major).$(Minor).$(Build)&quot;" />
+  </Target>
+  
+  <Target Name="PackageModule" Condition="('$(ConfigurationName)'=='Release') Or ('$(ConfigurationName)'=='DebugDeploy')">
+    <XmlRead Prefix="n"
+                    Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+                    XPath="dotnetnuke/packages/package[1]/@version"
+                    XmlFileName="$(DNNFileName)">
+      <Output TaskParameter="Value" PropertyName="Version" />
+    </XmlRead>
+    
+    <!--in VS 2012 we exclude the packages folder -->
+    <ItemGroup>     
+      <InstallInclude Include="**\*.ascx" Exclude="packages\**" />
+      <InstallInclude Include="**\*.asmx" Exclude="packages\**" />
+      <InstallInclude Include="**\*.css" Exclude="packages\**" />
+      <InstallInclude Include="**\*.html" Exclude="packages\**" />
+      <InstallInclude Include="**\*.htm" Exclude="packages\**;License.htm;ReleaseNotes.htm" />
+      <InstallInclude Include="**\*.resx" Exclude="packages\**" />
+      <InstallInclude Include="**\*.aspx" Exclude="packages\**" />
+      <InstallInclude Include="**\*.min.js" Exclude="packages\**" />
+      <InstallInclude Include="**\*.xslt" Exclude="packages\**" />
+      <InstallInclude Include="**\*.xml" Exclude="**\obj\**;**\bin\**\;**\_ReSharper*\**;packages\**;" />
+      <InstallInclude Include="**\images\*.*" Exclude="packages\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <SourceInclude Include="**\*.ascx" />
+      <SourceInclude Include="**\*.asmx" />
+      <SourceInclude Include="**\*.css" />
+      <SourceInclude Include="**\*.xsl" />
+      <SourceInclude Include="**\*.html" />
+      <SourceInclude Include="**\*.htm" />
+      <SourceInclude Include="**\*.resx" />
+      <SourceInclude Include="**\*.xml" Exclude="**\obj\**;**\_ReSharper*\**;" />
+      <SourceInclude Include="**\*.xslt" />
+      <SourceInclude Include="**\*.aspx" />
+      <SourceInclude Include="**\*.js" />
+      <SourceInclude Include="**\*.txt" Exclude="**\obj\**;**\_ReSharper*\**;" />
+      <SourceInclude Include="**\images\*.*" />
+      <SourceInclude Include="**\*.cs" />
+	    <SourceInclude Include="**\Packages\**" />
+      <SourceInclude Include="**\*.csproj" />
+      <SourceInclude Include="**\*.targets" />
+      <SourceInclude Include="**\*.sln" />
+    </ItemGroup>
+    
+    <CreateItem Include="$(DNNFileName)">
+      <Output TaskParameter="Include" ItemName="PackageManifestFiles" />
+    </CreateItem>
+
+    <CreateItem Include="License.htm;ReleaseNotes.htm">
+      <Output TaskParameter="Include" ItemName="PackageReleaseNotes" />
+    </CreateItem>
+
+    <!--<CreateItem Include="**\ReleaseNotes.htm">
+      <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
+    </CreateItem>-->
+
+    <CreateItem Include="*.txt">
+      <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
+    </CreateItem>
+    
+    <CreateItem Include="**\*.sqldataprovider">
+      <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
+    </CreateItem>
+
+    <Copy SourceFiles="$(BinDir)\$(AssemblyName).dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(RecursiveDir)" />
+    <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Copy SourceFiles="@(PackageReleaseNotes)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Copy SourceFiles="@(PackageTxtFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+
+
+    <!-- create the INSTALL RESOURCES.ZIP file -->
+    <Copy SourceFiles="@(InstallInclude)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\%(RecursiveDir)" />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\ResourcesZip\**\*.*">
+      <Output TaskParameter="Include" ItemName="ResourcesContent" />
+    </CreateItem>
+    
+    <Zip Files="@(ResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\ResourcesZip" ZipFileName="Resources.zip" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Resources.zip" DestinationFolder="package/" />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="OutputContent" />
+    </CreateItem>
+    <!-- Create the Install package -->    
+    <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.zip" />
+    <!-- Copy the Install package to the Packages folder -->
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.zip" DestinationFolder="$(InstallDir)/$(Major).$(Minor).$(Build)/" />
+    
+    <!--<RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" />
+    <RemoveDir Directories ="$(MSBuildProjectDirectory)\ResourcesZip" />-->
+
+    
+    <!--<Copy SourceFiles="$(BinDir)\$(AssemblyName).dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(RecursiveDir)" />
+    <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Copy SourceFiles="@(PackageReleaseNotes)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Copy SourceFiles="@(PackageTxtFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+
+     --><!--create the SOURCE RESOURCES.ZIP file--><!-- 
+    <Copy SourceFiles="@(SourceInclude)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\%(RecursiveDir)" />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\ResourcesZip\**\*.*">
+      <Output TaskParameter="Include" ItemName="SourceContent" />
+    </CreateItem>
+
+    <Zip Files="@(SourceContent)" WorkingDirectory="$(MSBuildProjectDirectory)\ResourcesZip" ZipFileName="Resources.zip" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Resources.zip" DestinationFolder="package/" />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="OutputSource" />
+    </CreateItem>
+
+    <Zip Files="@(OutputSource)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Source.zip" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Source.zip" DestinationFolder="$(InstallDir)/$(Major).$(Minor).$(Build)/" />-->
+
+    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.zip" />
+    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Source.zip" />
+
+    <Delete Files="$(MSBuildProjectDirectory)\Resources.Zip" />
+    <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" />
+    <RemoveDir Directories ="$(MSBuildProjectDirectory)\ResourcesZip" />
+    
+  </Target>
+
+  <!--<Target Name="CopyFilesToDotNetNuke">
+    --><!-- Copy assemblies and Debug Info to DNN Bin Dir --><!--
+    <CreateItem Include="$(BinDir)\*.pdb;$(BinDir)\*.dll">
+      <Output TaskParameter="Include" ItemName="Assemblies" />
+    </CreateItem>
+    <Copy SourceFiles="@(Assemblies)" DestinationFolder="$(DotNetNukeDir)\bin\" SkipUnchangedFiles="false" ContinueOnError="true" />
+    <Message Text="MSBUILD: Copied @(Assemblies) to $(DotNetNukeDir)\bin\" Importance="high"></Message>
+  </Target>
+
+  <Target Name="InstallModule" Condition="'$(ConfigurationName)'=='DebugDeploy'">
+    --><!-- Copy assemblies and Debug Info to DNN Bin Dir --><!--
+    <CreateItem Include="$(InstallDir)\$(Major).$(Minor).$(Build)\$(PackageName)_$(Version)_Install.zip">
+      <Output TaskParameter="Include" ItemName="InstallZip" />
+    </CreateItem>
+    <Copy SourceFiles="@(InstallZip)" DestinationFolder="$(DotNetNukeDir)\Install\Module" SkipUnchangedFiles="false" ContinueOnError="true" />
+    <HttpRequest Url="$(DotNetNukeUrl)/install/install.aspx?mode=installresources"
+                EnsureResponseContains="Click Here To Access Your Site"
+                FailOnNon2xxResponse="true" />
+    <Message Text="MSBUILD: $(DotNetNukeUrl)/install/install.aspx?mode=installresources" Importance="high"></Message>    
+    <Message Text="MSBUILD: Installed the module to $(DotNetNukeUrl)" Importance="high"></Message>
+    <HttpRequest Url="$(DotNetNukeUrl)" FailOnNon2xxResponse="true" />
+    <Message Text="MSBUILD: restarted site: $(DotNetNukeUrl)" Importance="high"></Message>
+
+  </Target>-->
+</Project>

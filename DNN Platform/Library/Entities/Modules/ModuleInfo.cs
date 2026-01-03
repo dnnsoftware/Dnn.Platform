@@ -837,6 +837,11 @@ namespace DotNetNuke.Entities.Modules
                     propertyNotFound = false;
                     result = PropertyAccess.FormatString(this.ModuleControl.ControlSrc, format);
                     break;
+                case "mvcControlClass":
+                    isPublic = false;
+                    propertyNotFound = false;
+                    result = PropertyAccess.FormatString(this.ModuleControl.MvcControlClass, format);
+                    break;
                 case "controltitle":
                     propertyNotFound = false;
                     result = PropertyAccess.FormatString(this.ModuleControl.ControlTitle, format);

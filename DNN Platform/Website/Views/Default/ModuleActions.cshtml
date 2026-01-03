@@ -1,0 +1,204 @@
+@model DotNetNuke.Web.MvcPipeline.Models.ModuleActionsModel
+
+@using DotNetNuke.Web.MvcPipeline
+@using DotNetNuke.UI.Modules
+@using DotNetNuke.Services.Localization
+
+@{
+
+}
+
+<a href="#" id="moduleActions-@(Model.ModuleContext.ModuleID)-Menu" class="dnnModuleActions-actionButton" aria-label="Actions"></a>
+
+@if (Model.SupportsQuickSettings)
+{
+    <div id="moduleActions-@(Model.ModuleContext.ModuleID)-QuickSettings" style="display:none">
+        <div>
+            <div class="qsHeader">@Localization.GetString("QuickSettings", Localization.SharedResourceFile)</div>
+            <div class="qsContainer">
+                Html.Partial("_QuickSettings", Model.QuickSettingsModel)
+            </div>
+            <div class="qsFooter">
+                <a class="secondarybtn">@Localization.GetString("Cancel", Localization.SharedResourceFile)</a>
+                <a class="primarybtn">@Localization.GetString("Save", Localization.SharedResourceFile)</a>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript" nonce="@Html.CspNonce()">
+    (function ($) {
+        var moduleId = @Model.ModuleContext.ModuleID;
+        var displayQuickSettings = @Json.Encode(Model.DisplayQuickSettings);
+        var supportsQuickSettings = @Json.Encode(Model.SupportsQuickSettings);
+
+        function setUpActions() {
+            var tabId = @Model.ModuleContext.TabID;
+
+            var panes = $('div.dnnSortable').map(function () {
+                return $(this).attr('data-name');
+            }).get();
+
+            $('#moduleActions-@(Model.ModuleContext.ModuleID)-Menu').dnnModuleActions({
+                actionButton: "moduleActions-@(Model.ModuleContext.ModuleID)-Menu",
+                moduleId: moduleId,
+                tabId: tabId,
+                customActions: @Html.Raw(Model.CustomActionsJSON),
+                adminActions: @Html.Raw(Model.AdminActionsJSON),
+                //panes: @Html.Raw(Model.Panes),
+                panes: panes,
+                customText: "@Model.CustomText",
+                adminText: "@Model.AdminText",
+                moveText: "@Model.MoveText",
+                topText: '@Localization.GetSafeJSString(Localization.GetString("MoveTop.Action",Localization.GlobalResourceFile))',
+                upText: '@Localization.GetSafeJSString(Localization.GetString("MoveUp.Action", Localization.GlobalResourceFile))',
+                downText: '@Localization.GetSafeJSString(Localization.GetString("MoveDown.Action", Localization.GlobalResourceFile))',
+                bottomText: '@Localization.GetSafeJSString(Localization.GetString("MoveBottom.Action", Localization.GlobalResourceFile))',
+                movePaneText: '@Localization.GetSafeJSString(Localization.GetString("MoveToPane.Action", Localization.GlobalResourceFile))',
+                deleteText: '@Localization.GetSafeJSString(Localization.GetString("DeleteItem.Text", Localization.SharedResourceFile))',
+                yesText: '@Localization.GetSafeJSString(Localization.GetString("Yes.Text", Localization.SharedResourceFile))',
+                noText: '@Localization.GetSafeJSString(Localization.GetString("No.Text", Localization.SharedResourceFile))',
+                confirmTitle: '@Localization.GetSafeJSString(Localization.GetString("Confirm.Text", Localization.SharedResourceFile))',
+                sharedText: '@Localization.GetSafeJSString(Localization.GetString("ModuleShared.Text", Localization.SharedResourceFile))',
+                rootFolder: '@Url.Content("~/")',
+                supportsMove: @Json.Encode(Model.SupportsMove),
+                supportsQuickSettings: supportsQuickSettings,
+                displayQuickSettings: displayQuickSettings,
+                isShared: @Json.Encode(Model.IsShared),
+                moduleTitle: '@Html.Raw(Json.Encode(Model.ModuleTitle))'
+            });
+
+            setTimeout(() => {
+
+                var menu = $('#moduleActions-' + moduleId);
+                menu.find("#moduleActions-" + moduleId + "-Delete a").attr('href', '#');
+                menu.find("#moduleActions-" + moduleId + "-Delete a").off('click');
+                menu.find("#moduleActions-" + moduleId + "-Delete a").dnnConfirm({
+                    text: '@Localization.GetSafeJSString(Localization.GetString("DeleteItem.Text", Localization.SharedResourceFile))',
+                    yesText: '@Localization.GetSafeJSString(Localization.GetString("Yes.Text", Localization.SharedResourceFile))',
+                    noText: '@Localization.GetSafeJSString(Localization.GetString("No.Text", Localization.SharedResourceFile))',
+                    title: '@Localization.GetSafeJSString(Localization.GetString("Confirm.Text", Localization.SharedResourceFile))',
+                    callbackTrue: function () {
+
+                        var token = '@Html.AntiForgeryToken()';
+                        token = $(token).val();
+
+                        $.post('/DesktopModules/ModuleActions/Delete', {
+                            moduleId: moduleId,
+                            tabId: @Model.ModuleContext.TabID,
+                            __RequestVerificationToken: token,
+                        }).done(function (data) {
+                            window.location.reload();
+                        })
+                    }
+                });
+           
+                menu.find('a').each(function () {
+                    var $this = $(this);
+                    var href = $this.attr('href');
+                    if (href.indexOf('javascript:') == 0) {
+                        $this.click(function () {
+                            actionScripts[href]();
+                        });
+                        $this.attr('href','#');
+                    }
+                });
+
+            }, "200");
+        }
+        var actionScripts = {}
+        @foreach (var a in Model.ActionScripts)
+        {
+            <text>
+            actionScripts["@Html.Raw(a.Key)"] =
+                function () {
+                @Html.Raw(a.Value)
+                }
+            </text>
+        }
+
+        var resizeThrottle;
+        $(window).on('resize scroll', function () {
+            if (resizeThrottle) {
+                clearTimeout(resizeThrottle);
+                resizeThrottle = null;
+            }
+            resizeThrottle = setTimeout(
+                function () {
+                    var menu = $('.actionMenu');
+                    menu.each(function () {
+                        var $this = $(this);
+                        var id = $this.attr('id');
+                        if (id) {
+                            var mId = id.split('-')[1];
+                            if (moduleId == mId) {
+                                var container = $(".DnnModule-" + mId);
+                                var root = $('ul.dnn_mact', $this);
+                                var containerPosition = container.offset();
+                                var containerWidth = container.width();
+
+                                var rootMenuWidth = (supportsQuickSettings) ? 85 : 65;
+
+                                var $body = $(document.body);
+                                var positionCss = $body.css('position');
+                                var marginLeft = parseInt($body.css('margin-left'));
+
+                                root.css({
+                                    position: "absolute",
+                                    marginLeft: 0,
+                                    marginTop: 0,
+                                    top: containerPosition.top,
+                                    left: containerPosition.left + containerWidth - rootMenuWidth - (positionCss === "relative" ? marginLeft : 0)
+                                });
+
+                                if (displayQuickSettings) {
+                                    var ul = $('#moduleActions-' + mId + ' .dnn_mact > li.actionQuickSettings > ul');
+                                    var $self = ul.parent();
+                                    if ($self.length > 0) {
+                                        var windowHeight = $(window).height();
+                                        var windowScroll = $(window).scrollTop();
+                                        var thisTop = $self.offset().top;
+                                        var atViewPortTop = (thisTop - windowScroll) < windowHeight / 2;
+
+                                        var ulHeight = ul.height();
+
+                                        if (!atViewPortTop) {
+                                            ul.css({
+                                                top: -ulHeight,
+                                                right: 0
+                                            }).show('slide', { direction: 'down' }, 80, function () {
+                                                dnn.addIframeMask(ul[0]);
+                                                displayQuickSettings = false;
+                                            });
+                                        }
+                                        else {
+                                            ul.css({
+                                                top: 20,
+                                                right: 0
+                                            }).show('slide', { direction: 'up' }, 80, function () {
+                                                dnn.addIframeMask(ul[0]);
+                                                displayQuickSettings = false;
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    resizeThrottle = null;
+                },
+                100
+            );
+        });
+
+        $(window).on('load', function () {
+            setUpActions();
+
+            $(document).ajaxComplete(function () {
+                $(window).resize();
+            });
+            $(window).resize();
+        });
+
+    }(jQuery));
+</script>

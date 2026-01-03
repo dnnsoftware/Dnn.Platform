@@ -79,6 +79,11 @@ namespace DotNetNuke.Web.Mvc.Routing
                 route = MapRouteWithNamespace(fullRouteName, routeUrl, defaults, constraints, namespaces);
                 this.routes.Add(route);
                 Logger.Trace("Mapping route: " + fullRouteName + " @ " + routeUrl);
+                fullRouteName = "mvcpipeline" + fullRouteName;
+                routeUrl = routeUrl.Replace("/MVC/", "/");
+                route = MapRouteWithNamespaceAndArea(fullRouteName, moduleFolderName, routeUrl, defaults, constraints, namespaces);
+                this.routes.Add(route);
+                Logger.Trace("Mapping route for mvcpipeline: " + fullRouteName + " Area=" + moduleFolderName + " @ " + routeUrl);
             }
 
             return route;
@@ -126,6 +131,29 @@ namespace DotNetNuke.Web.Mvc.Routing
                 route.DataTokens = new RouteValueDictionary();
             }
 
+            ConstraintValidation.Validate(route);
+            if ((namespaces != null) && (namespaces.Length > 0))
+            {
+                route.SetNameSpaces(namespaces);
+            }
+
+            route.SetName(name);
+            return route;
+        }
+
+        private static Route MapRouteWithNamespaceAndArea(string name, string area, string url, object defaults, object constraints, string[] namespaces)
+        {
+            var route = new Route(url, new DnnMvcRouteHandler())
+            {
+                Defaults = CreateRouteValueDictionaryUncached(defaults),
+                Constraints = CreateRouteValueDictionaryUncached(constraints),
+            };
+            if (route.DataTokens == null)
+            {
+                route.DataTokens = new RouteValueDictionary();
+            }
+
+            route.DataTokens.Add("area", area);
             ConstraintValidation.Validate(route);
             if ((namespaces != null) && (namespaces.Length > 0))
             {

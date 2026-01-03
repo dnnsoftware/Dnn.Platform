@@ -104,7 +104,7 @@
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>10.00.02.SqlDataProvider</name>
               <version>10.00.02</version>
-            </script>
+            </script>           
             <script type="UnInstall">
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>Uninstall.SqlDataProvider</name>
@@ -131,6 +131,7 @@
                   <moduleControl>
                     <controlKey/>
                     <controlSrc>DesktopModules/HTML/HtmlModule.ascx</controlSrc>
+                    <mvcControlClass>DotNetNuke.Modules.Html.Controls.HtmlModuleControl, DotNetNuke.Modules.Html</mvcControlClass>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle/>
                     <controlType>View</controlType>
@@ -141,6 +142,7 @@
                   <moduleControl>
                     <controlKey>Edit</controlKey>
                     <controlSrc>DesktopModules/HTML/EditHTML.ascx</controlSrc>
+                      <mvcControlClass>DotNetNuke.Modules.Html.Controls.EditHTMLControl, DotNetNuke.Modules.Html</mvcControlClass>
                     <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>Edit Content</controlTitle>
                     <controlType>Edit</controlType>
@@ -152,6 +154,7 @@
                   <moduleControl>
                     <controlKey>MyWork</controlKey>
                     <controlSrc>DesktopModules/HTML/MyWork.ascx</controlSrc>
+                      <mvcControlClass>DotNetNuke.Modules.Html.Controls.MyWorkControl, DotNetNuke.Modules.Html</mvcControlClass>
                     <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>My Work</controlTitle>
                     <controlType>View</controlType>
