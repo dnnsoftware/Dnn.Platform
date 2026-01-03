@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.Html.Controls
             this.htmlTextController = new HtmlTextController(this.navigationManager);
         }
 
-        public override string ControlName => "HtmlEdit";
+        public override string ControlName => "EditHtml";
 
         public override string ResourceName => this.ControlName + ".ascx.resx";
 

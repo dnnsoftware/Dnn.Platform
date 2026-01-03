@@ -120,10 +120,10 @@ GO
 
 UPDATE {databaseOwner}{objectQualifier}ModuleControls
 	SET    
-		MvcControlClass = 'DotNetNuke.Web.MvcWebsite.Controls.PrivacyControl, DotNetNuke.Web.MvcWebsite'
+		MvcControlClass = 'DotNetNuke.Common.Controls.PrivacyControl, DotNetNuke.Website'
 	WHERE ControlSrc = 'Admin/Portal/Privacy.ascx'
 
 UPDATE {databaseOwner}{objectQualifier}ModuleControls
 	SET    
-		MvcControlClass = 'DotNetNuke.Web.MvcWebsite.Controls.TermsControl, DotNetNuke.Web.MvcWebsite'
+		MvcControlClass = 'DotNetNuke.Common.Controls.TermsControl, DotNetNuke.Website'
 	WHERE ControlSrc = 'Admin/Portal/Terms.ascx'        

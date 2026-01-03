@@ -432,7 +432,7 @@
       <Name>DotNetNuke.Web.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DotNetNuke.Web.MvcPipeline\DotNetNuke.Web.MvcPipeline.csproj">
-      <Project>{aa3ee19b-81a0-3766-e8f4-424c2425a8d3}</Project>
+      <Project>{0d777a63-4f7b-379f-e937-d5f28f4aa6ef}</Project>
       <Name>DotNetNuke.Web.MvcPipeline</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">

@@ -7,6 +7,4 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: InternalsVisibleTo("DotNetNuke.Web.MvcPipeline")]
-[assembly: InternalsVisibleTo("DotNetNuke.Web.MvcWebsite")]
-[assembly: InternalsVisibleTo("DotNetNuke.Web.MvcUrlRewriter")]
 [assembly: InternalsVisibleTo("DotNetNuke.Web.NewDDRMenu")] // Once Globals is refactored to Dependency Injection we should be able to remove this

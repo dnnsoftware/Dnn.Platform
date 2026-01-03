@@ -20,12 +20,7 @@
               <name>DotNetNuke.Web.MvcPipeline.dll</name>
               <version>0.0.1.0</version>
             </assembly>
-			<assembly>
-              <path>bin</path>
-              <name>DotNetNuke.Web.MvcWebsite.dll</name>
-              <version>0.0.1.0</version>
-            </assembly>
-			<assembly>
+			      <assembly>
               <path>bin</path>
               <name>DotNetNuke.Web.Mvc.dll</name>
               <version>9.10.0</version>

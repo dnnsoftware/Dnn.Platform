@@ -2197,12 +2197,17 @@ namespace DotNetNuke.Entities.Urls
         private static bool IsMvc(UrlAction result, NameValueCollection queryStringCol, HttpContext context, int tabId, int portalId)
         {
             var mvcCtls = new[] { "Terms", "Privacy" };
+
             bool mvcCtl = false;
             if (result.RewritePath.Contains("&ctl="))
             {
-                foreach (var item in mvcCtls)
+                var portalPipeline = PortalSettingsController.Instance().GetPortalPagePipeline(portalId);
+                if (portalPipeline == PagePipelineConstants.Mvc)
                 {
-                    mvcCtl = mvcCtl || result.RewritePath.Contains("&ctl=" + item);
+                    foreach (var item in mvcCtls)
+                    {
+                        mvcCtl = mvcCtl || result.RewritePath.Contains("&ctl=" + item);
+                    }
                 }
             }
             else
@@ -2227,8 +2232,8 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
 
-            mvcCtl = mvcCtl && !result.RewritePath.Contains("mvcpage=no") && queryStringCol["mvcpage"] != "no";
-            mvcCtl = mvcCtl || result.RewritePath.Contains("mvcpage=yes") || queryStringCol["mvcpage"] == "yes";
+            mvcCtl = mvcCtl && !result.RewritePath.Contains($"{PagePipelineConstants.QueryStringKey}={PagePipelineConstants.QueryStringWebForms}") && queryStringCol[PagePipelineConstants.QueryStringKey] != PagePipelineConstants.QueryStringWebForms;
+            mvcCtl = mvcCtl || result.RewritePath.Contains($"{PagePipelineConstants.QueryStringKey}={PagePipelineConstants.QueryStringMvc}") || queryStringCol[PagePipelineConstants.QueryStringKey] == PagePipelineConstants.QueryStringMvc;
             return mvcCtl;
         }
 

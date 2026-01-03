@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.MvcWebsite.Controllers
+namespace DotNetNuke.Website.Controllers
 {
     using System.Web.Mvc;
 
@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.MvcWebsite.Models;
+    using DotNetNuke.Website.Models;
 
     /// <summary>
     /// Handles module-related actions for the MVC website.

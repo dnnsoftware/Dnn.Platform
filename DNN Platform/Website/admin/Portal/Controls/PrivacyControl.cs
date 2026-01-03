@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.MvcWebsite.Controls
+namespace DotNetNuke.Common.Controls
 {
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Localization;
@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
         /// <returns>A razor module result containing the localized privacy policy message.</returns>
         public override IRazorModuleResult Invoke()
         {
-            return this.View(Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_PORTAL_PRIVACY"));
+            return this.View(null, Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_PORTAL_PRIVACY"));
         }
     }
 }

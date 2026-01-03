@@ -14,5 +14,14 @@ namespace DotNetNuke.Abstractions.Portals
 
         /// <summary>MVC.</summary>
         public const string Mvc = "mvc";
+
+        /// <summary>QueryString key.</summary>
+        public const string QueryStringKey = "pipeline";
+
+        /// <summary>QueryString WebForms.</summary>
+        public const string QueryStringWebForms = "webforms";
+
+        /// <summary>QueryString MVC.</summary>
+        public const string QueryStringMvc = "mvc";
     }
 }

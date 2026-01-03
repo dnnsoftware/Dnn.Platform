@@ -193,6 +193,8 @@
     <Compile Include="admin\Modules\viewsource.ascx.designer.cs">
       <DependentUpon>viewsource.ascx</DependentUpon>
     </Compile>
+    <Compile Include="admin\Portal\Controls\PrivacyControl.cs" />
+    <Compile Include="admin\Portal\Controls\TermsControl.cs" />
     <Compile Include="admin\Portal\Message.ascx.cs">
       <DependentUpon>message.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -494,6 +496,8 @@
     <Compile Include="admin\Users\ViewProfile.ascx.designer.cs">
       <DependentUpon>ViewProfile.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\DefaultController.cs" />
+    <Compile Include="Controllers\ModuleActionsController.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -544,7 +548,7 @@
     </AdditionalFiles>
     <Content Include="admin\Portal\Views\web.config" />
     <Content Include="App_Data\Upgrade\upgrade.json" />
-    <Content Include="admin\Portal\Views\Pricacy.cshtml" />
+    <Content Include="admin\Portal\Views\Privacy.cshtml" />
     <None Include="compilerconfig.json" />
     <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
       <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
@@ -736,6 +740,7 @@
     <Compile Include="KeepAlive.aspx.designer.cs">
       <DependentUpon>KeepAlive.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ModuleActionsDeleteModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="admin\Skins\DnnJsInclude.xml">
       <SubType>Designer</SubType>
@@ -3325,6 +3330,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Dnn.AdminExperience\EditBar\Dnn.EditBar.UI\Dnn.EditBar.UI.csproj">
+      <Project>{9d9b15dd-e7ce-476c-bd3b-ff44e64efb67}</Project>
+      <Name>Dnn.EditBar.UI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer">
       <Project>{5fe5d021-9c8d-47a6-bd34-f328ba3e709c}</Project>
       <Name>DotNetNuke.Internal.SourceGenerators</Name>
@@ -3350,12 +3359,8 @@
       <Name>DotNetNuke.Web.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Web.MvcPipeline\DotNetNuke.Web.MvcPipeline.csproj">
-      <Project>{aa3ee19b-81a0-3766-e8f4-424c2425a8d3}</Project>
+      <Project>{0d777a63-4f7b-379f-e937-d5f28f4aa6ef}</Project>
       <Name>DotNetNuke.Web.MvcPipeline</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.Web.MvcWebsite\DotNetNuke.Web.MvcWebsite.csproj">
-      <Project>{78ca212d-b471-a777-9c3d-b4e43280181e}</Project>
-      <Name>DotNetNuke.Web.MvcWebsite</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
       <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>

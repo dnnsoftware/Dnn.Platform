@@ -5,7 +5,7 @@
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 {
     using System;
-
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Services.Localization;
 
     /// <summary>
@@ -83,7 +83,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 throw new ArgumentNullException(nameof(moduleControl));
             }
 
-            return EditUrl(moduleControl, controlKey, string.Empty, string.Empty);
+            return EditUrl(moduleControl, string.Empty, string.Empty, controlKey);
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 if (!string.IsNullOrEmpty(editModuleControl.MvcControlClass))
                 {
                     var parameters = new string[1 + additionalParameters.Length];
-                    parameters[0] = "mvcpage=yes";
+                    parameters[0] = $"{PagePipelineConstants.QueryStringKey}={PagePipelineConstants.QueryStringMvc}";
                     Array.Copy(additionalParameters, 0, parameters, 1, additionalParameters.Length);
                     return parameters;
                 }

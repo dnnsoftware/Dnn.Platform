@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.MvcWebsite.Controllers
+namespace DotNetNuke.Website.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Mvc;
 
@@ -15,9 +14,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Pages;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.ClientDependency;
@@ -54,13 +51,13 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
         /// <param name="serviceProvider">The service provider for dependency resolution.</param>
         /// <param name="hostSettings">The host settings configuration.</param>
         public DefaultController(
-                                INavigationManager navigationManager, 
-                                IPageModelFactory pageModelFactory, 
+                                INavigationManager navigationManager,
+                                IPageModelFactory pageModelFactory,
                                 IClientResourceController clientResourceController,
                                 IPageService pageService,
                                 IServiceProvider serviceProvider,
                                 IHostSettings hostSettings)
-            :base(serviceProvider)
+            : base(serviceProvider)
         {
             this.navigationManager = navigationManager;
             this.pageModelFactory = pageModelFactory;
