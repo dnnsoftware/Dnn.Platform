@@ -1,16 +1,29 @@
 ﻿{
   Diagnostics: [
     {
-      Id: DNN1001,
-      Title: Must be partial,
-      Severity: Error,
-      WarningLevel: 0,
-      Location: : (4,0)-(7,1),
-      Description: ,
-      HelpLink: ,
-      MessageFormat: The member that the DnnDeprecated attribute is applied to must be partial,
+      Location: /*
+
+[DnnDeprecated(10, 0, 0, "Please resolve B via dependency injection.")]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+public class D
+^^^^^^^^^^^^^^
+{
+^
+}
+^
+
+*/
+ : (4,0)-(7,1),
       Message: The member that the DnnDeprecated attribute is applied to must be partial,
-      Category: Usage
+      Severity: Error,
+      Descriptor: {
+        Id: DNN1001,
+        Title: Must be partial,
+        MessageFormat: The member that the DnnDeprecated attribute is applied to must be partial,
+        Category: Usage,
+        DefaultSeverity: Error,
+        IsEnabledByDefault: true
+      }
     }
   ]
 }
