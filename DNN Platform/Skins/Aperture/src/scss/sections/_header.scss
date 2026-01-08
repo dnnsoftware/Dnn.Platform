@@ -5,6 +5,7 @@
     position: sticky;
     top: 0;
     z-index: 1000;
+    box-shadow: .4rem .2rem .3rem 0rem var(--dnn-color-foreground-dark);
     .eyebrow-bar {
         background-color: colors.color('tertiary');
         padding: .5rem 0;
