@@ -12,6 +12,7 @@ tr.dnnGridHeader th{
     border-bottom: 1px solid var(--dnn-color-foreground-light, #c9c9c9);
     border-right: 1px solid var(--dnn-color-foreground-light, #c9c9c9);
     background: var(--dnn-color-background-dark, #f0f2f1);
+    text-align:center;
 }
 .dnnGridItem,
 .dnnGridAltItem {
@@ -36,9 +37,14 @@ tr.dnnGridHeader th{
 td.dnnGridHeaderTD-NoBorder {
     border-right: none !important;
 }
+tr.dnnGridAltItem td.permissionHeader, tr.dnnGridItem td.permissionHeader{
+    text-align:start
+}
 tr.dnnGridItem td, tr.dnnGridAltItem td {
     border-right: none;
+    text-align:center;
 }
 tr.dnnGridItem td input {
     margin-bottom: 0;
+
 }
