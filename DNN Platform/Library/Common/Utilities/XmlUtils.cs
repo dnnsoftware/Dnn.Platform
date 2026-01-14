@@ -78,59 +78,57 @@ namespace DotNetNuke.Common.Utilities
 
         public static object Deserialize(Stream objStream, Type type)
         {
-            object obj = Activator.CreateInstance(type);
-            var tabDic = obj as Dictionary<int, TabInfo>;
-            if (tabDic != null)
+            var obj = Activator.CreateInstance(type);
+            if (obj is Dictionary<int, TabInfo>)
             {
                 obj = DeSerializeDictionary<TabInfo>(objStream, "dictionary");
                 return obj;
             }
 
-            var moduleDic = obj as Dictionary<int, ModuleInfo>;
-            if (moduleDic != null)
+            if (obj is Dictionary<int, ModuleInfo>)
             {
                 obj = DeSerializeDictionary<ModuleInfo>(objStream, "dictionary");
                 return obj;
             }
 
-            var tabPermDic = obj as Dictionary<int, TabPermissionCollection>;
-            if (tabPermDic != null)
+            if (obj is Dictionary<int, TabPermissionCollection>)
             {
                 obj = DeSerializeDictionary<TabPermissionCollection>(objStream, "dictionary");
                 return obj;
             }
 
-            var modPermDic = obj as Dictionary<int, ModulePermissionCollection>;
-            if (modPermDic != null)
+            if (obj is Dictionary<int, ModulePermissionCollection>)
             {
                 obj = DeSerializeDictionary<ModulePermissionCollection>(objStream, "dictionary");
                 return obj;
             }
 
             var serializer = new XmlSerializer(type);
-            using (TextReader tr = new StreamReader(objStream))
-            {
-                obj = serializer.Deserialize(tr);
-                tr.Close();
-                return obj;
-            }
+            using var tr = new StreamReader(objStream);
+            using var xmlReader = XmlReader.Create(tr);
+            obj = serializer.Deserialize(xmlReader);
+            tr.Close();
+            return obj;
         }
 
         public static Dictionary<int, TValue> DeSerializeDictionary<TValue>(Stream objStream, string rootname)
         {
             var xmlDoc = new XmlDocument { XmlResolver = null };
-            xmlDoc.Load(objStream);
+            using (var xmlReader = XmlReader.Create(objStream, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                xmlDoc.Load(xmlReader);
+            }
 
             var objDictionary = new Dictionary<int, TValue>();
 
             foreach (XmlElement xmlItem in xmlDoc.SelectNodes(rootname + "/item"))
             {
-                int key = Convert.ToInt32(xmlItem.GetAttribute("key"));
+                int key = Convert.ToInt32(xmlItem.GetAttribute("key"), CultureInfo.InvariantCulture);
 
                 var objValue = Activator.CreateInstance<TValue>();
 
                 // Create the XmlSerializer
-                var xser = new XmlSerializer(objValue.GetType());
+                var xmlSerializer = new XmlSerializer(objValue.GetType());
 
                 // A reader is needed to read the XML document.
                 var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml))
@@ -141,7 +139,7 @@ namespace DotNetNuke.Common.Utilities
 
                 // Use the Deserialize method to restore the object's state, and store it
                 // in the Hashtable
-                objDictionary.Add(key, (TValue)xser.Deserialize(reader));
+                objDictionary.Add(key, (TValue)xmlSerializer.Deserialize(reader));
             }
 
             return objDictionary;
@@ -156,7 +154,10 @@ namespace DotNetNuke.Common.Utilities
                 try
                 {
                     var xmlDoc = new XmlDocument { XmlResolver = null };
-                    xmlDoc.LoadXml(xmlSource);
+                    using (var xmlReader = XmlReader.Create(new StringReader(xmlSource), new XmlReaderSettings { XmlResolver = null, }))
+                    {
+                        xmlDoc.Load(xmlReader);
+                    }
 
                     foreach (XmlElement xmlItem in xmlDoc.SelectNodes(rootname + "/item"))
                     {
@@ -164,7 +165,7 @@ namespace DotNetNuke.Common.Utilities
                         string typeName = xmlItem.GetAttribute("type");
 
                         // Create the XmlSerializer
-                        var xser = new XmlSerializer(Type.GetType(typeName));
+                        var serializer = new XmlSerializer(Type.GetType(typeName));
 
                         // A reader is needed to read the XML document.
                         var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml))
@@ -175,7 +176,7 @@ namespace DotNetNuke.Common.Utilities
 
                         // Use the Deserialize method to restore the object's state, and store it
                         // in the Hashtable
-                        hashTable.Add(key, xser.Deserialize(reader));
+                        hashTable.Add(key, serializer.Deserialize(reader));
                     }
                 }
                 catch (Exception)
@@ -214,7 +215,7 @@ namespace DotNetNuke.Common.Utilities
             string strValue = GetAttributeValue(navigator, attributeName);
             if (!string.IsNullOrEmpty(strValue))
             {
-                intValue = Convert.ToInt32(strValue);
+                intValue = Convert.ToInt32(strValue, CultureInfo.InvariantCulture);
             }
 
             return intValue;
@@ -227,7 +228,7 @@ namespace DotNetNuke.Common.Utilities
             string strValue = GetAttributeValue(navigator, attributeName);
             if (!string.IsNullOrEmpty(strValue))
             {
-                intValue = Convert.ToInt64(strValue);
+                intValue = Convert.ToInt64(strValue, CultureInfo.InvariantCulture);
             }
 
             return intValue;
@@ -331,7 +332,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>Gets the value of a child node as a <see cref="bool"/>.</summary>
         /// <param name="navigator">A navigator pointing to the parent node.</param>
         /// <param name="path">An XPath expression to find the child node.</param>
-        /// <returns>The value of the node or <c>false</c> if the node doesn't exist or doesn't have a value.</returns>
+        /// <returns>The value of the node or <see langword="false"/> if the node doesn't exist or doesn't have a value.</returns>
         /// <seealso cref="Convert.ToBoolean(string)"/>
         public static bool GetNodeValueBoolean(XPathNavigator navigator, string path)
         {
@@ -366,7 +367,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="nodeName">Child node to look for.</param>
         /// <param name="defaultValue">Default value to return.</param>
         /// <returns>The node value parsed as a <see cref="DateTime"/> or <paramref name="defaultValue"/>.</returns>
-        /// <remarks>If the node does not exist or it causes any error the default value will be returned.</remarks>
+        /// <remarks>If the node does not exist, or it causes any error the default value will be returned.</remarks>
         /// <seealso cref="Convert.ToDateTime(string)"/>
         public static DateTime GetNodeValueDate(XmlNode objNode, string nodeName, DateTime defaultValue)
         {
@@ -376,7 +377,7 @@ namespace DotNetNuke.Common.Utilities
                 string strValue = objNode[nodeName].InnerText;
                 if (!string.IsNullOrEmpty(strValue))
                 {
-                    dateValue = Convert.ToDateTime(strValue);
+                    dateValue = Convert.ToDateTime(strValue, CultureInfo.InvariantCulture);
                     if (dateValue.Date.Equals(Null.NullDate.Date))
                     {
                         dateValue = Null.NullDate;
@@ -407,7 +408,7 @@ namespace DotNetNuke.Common.Utilities
                 return defaultValue;
             }
 
-            var dateValue = Convert.ToDateTime(strValue);
+            var dateValue = Convert.ToDateTime(strValue, CultureInfo.InvariantCulture);
             if (dateValue.Date.Equals(Null.NullDate.Date))
             {
                 return Null.NullDate;
@@ -420,7 +421,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="node">Parent node.</param>
         /// <param name="nodeName">Child node to look for.</param>
         /// <returns>The node value parsed as an <see cref="int"/> or <c>0</c>.</returns>
-        /// <remarks>If the node does not exist or it causes any error the default value (0) will be returned.</remarks>
+        /// <remarks>If the node does not exist, or it causes any error the default value (0) will be returned.</remarks>
         /// <seealso cref="Convert.ToInt32(string)"/>
         public static int GetNodeValueInt(XmlNode node, string nodeName)
         {
@@ -432,7 +433,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="nodeName">Child node to look for.</param>
         /// <param name="defaultValue">Default value to return.</param>
         /// <returns>The node value parsed as an <see cref="int"/> or <paramref name="defaultValue"/>.</returns>
-        /// <remarks>If the node does not exist or it causes any error the default value will be returned.</remarks>
+        /// <remarks>If the node does not exist, or it causes any error the default value will be returned.</remarks>
         /// <seealso cref="Convert.ToInt32(string)"/>
         public static int GetNodeValueInt(XmlNode node, string nodeName, int defaultValue)
         {
@@ -442,7 +443,7 @@ namespace DotNetNuke.Common.Utilities
                 string strValue = node[nodeName].InnerText;
                 if (!string.IsNullOrEmpty(strValue))
                 {
-                    intValue = Convert.ToInt32(strValue);
+                    intValue = Convert.ToInt32(strValue, CultureInfo.InvariantCulture);
                 }
             }
 
@@ -479,14 +480,14 @@ namespace DotNetNuke.Common.Utilities
                 return defaultValue;
             }
 
-            return Convert.ToInt32(strValue);
+            return Convert.ToInt32(strValue, CultureInfo.InvariantCulture);
         }
 
         /// <summary>Gets the value of node.</summary>
         /// <param name="node">Parent node.</param>
         /// <param name="nodeName">Child node to look for.</param>
         /// <returns>The value of the node or <c>0</c> if the node doesn't exist or doesn't have a value.</returns>
-        /// <remarks>If the node does not exist or it causes any error the default value (0) will be returned.</remarks>
+        /// <remarks>If the node does not exist, or it causes any error the default value (0) will be returned.</remarks>
         /// <seealso cref="Convert.ToSingle(string)"/>
         public static float GetNodeValueSingle(XmlNode node, string nodeName)
         {
@@ -565,9 +566,6 @@ namespace DotNetNuke.Common.Utilities
             string strString;
             if (source.Count != 0)
             {
-                XmlSerializer xser;
-                StringWriter sw;
-
                 var xmlDoc = new XmlDocument { XmlResolver = null };
                 XmlElement xmlRoot = xmlDoc.CreateElement(rootName);
                 xmlDoc.AppendChild(xmlRoot);
@@ -578,15 +576,18 @@ namespace DotNetNuke.Common.Utilities
                     XmlElement xmlItem = xmlDoc.CreateElement("item");
 
                     // Save the key name and the object type
-                    xmlItem.SetAttribute("key", Convert.ToString(key));
+                    xmlItem.SetAttribute("key", Convert.ToString(key, CultureInfo.InvariantCulture));
                     xmlItem.SetAttribute("type", source[key].GetType().AssemblyQualifiedName);
 
                     // Serialize the object
                     var xmlObject = new XmlDocument { XmlResolver = null };
-                    xser = new XmlSerializer(source[key].GetType());
-                    sw = new StringWriter();
-                    xser.Serialize(sw, source[key]);
-                    xmlObject.LoadXml(sw.ToString());
+                    var xmlSerializer = new XmlSerializer(source[key].GetType());
+                    var sw = new StringWriter();
+                    xmlSerializer.Serialize(sw, source[key]);
+                    using (var xmlReader = XmlReader.Create(new StringReader(sw.ToString()), new XmlReaderSettings { XmlResolver = null, }))
+                    {
+                        xmlObject.Load(xmlReader);
+                    }
 
                     // import and append the node to the root
                     xmlItem.AppendChild(xmlDoc.ImportNode(xmlObject.DocumentElement, true));
@@ -675,21 +676,24 @@ namespace DotNetNuke.Common.Utilities
         public static string Serialize(object obj)
         {
             string xmlObject;
-            var dic = obj as IDictionary;
-            if (dic != null)
+            if (obj is IDictionary dic)
             {
                 xmlObject = SerializeDictionary(dic, "dictionary");
             }
             else
             {
                 var xmlDoc = new XmlDocument { XmlResolver = null };
-                var xser = new XmlSerializer(obj.GetType());
+                var serializer = new XmlSerializer(obj.GetType());
                 var sw = new StringWriter();
 
-                xser.Serialize(sw, obj);
+                serializer.Serialize(sw, obj);
 
-                xmlDoc.LoadXml(sw.GetStringBuilder().ToString());
-                XmlNode xmlDocEl = xmlDoc.DocumentElement;
+                using (var xmlReader = XmlReader.Create(new StringReader(sw.GetStringBuilder().ToString()), new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xmlDoc.Load(xmlReader);
+                }
+
+                var xmlDocEl = xmlDoc.DocumentElement;
                 xmlDocEl.Attributes.Remove(xmlDocEl.Attributes["xmlns:xsd"]);
                 xmlDocEl.Attributes.Remove(xmlDocEl.Attributes["xmlns:xsi"]);
 
@@ -743,9 +747,9 @@ namespace DotNetNuke.Common.Utilities
                         sb.Append(", ");
                     }
 
-                    sb.Append("\"");
+                    sb.Append('\"');
                     sb.Append(substrings[i]);
-                    sb.Append("\"");
+                    sb.Append('\"');
                     needComma = true;
                 }
 
@@ -760,14 +764,17 @@ namespace DotNetNuke.Common.Utilities
                 }
             }
 
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
 
+        /// <summary>Load an XML document from a URL.</summary>
+        /// <param name="contentUrl">The URL to the XML document.</param>
+        /// <returns>An XML document.</returns>
         [DnnDeprecated(7, 0, 0, "Use XmlDocument.Load instead", RemovalVersion = 11)]
         public static partial XmlDocument GetXMLContent(string contentUrl)
         {
-            // This function reads an Xml document via a Url and returns it as an XmlDocument object
+            // This function reads an XML document via a URL and returns it as an XmlDocument object
             var functionReturnValue = new XmlDocument { XmlResolver = null };
             var req = WebRequest.Create(contentUrl);
             var result = req.GetResponse();

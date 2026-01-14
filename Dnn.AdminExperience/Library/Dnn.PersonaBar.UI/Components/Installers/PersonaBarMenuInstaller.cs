@@ -6,12 +6,15 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Xml.XPath;
 
     using Dnn.PersonaBar.Library.Model;
     using Dnn.PersonaBar.Library.Permissions;
     using Dnn.PersonaBar.Library.Repository;
+
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Installer;
@@ -20,12 +23,12 @@ namespace Dnn.PersonaBar.UI.Components.Installers
     /// <summary>Installer for persona bar menus.</summary>
     public class PersonaBarMenuInstaller : ComponentInstallerBase
     {
-        private readonly IList<MenuItem> menuItems = new List<MenuItem>();
-        private readonly IList<PersonaBarExtension> extensions = new List<PersonaBarExtension>();
-        private readonly IList<PermissionDefinition> permissionDefinitions = new List<PermissionDefinition>();
-        private readonly IDictionary<string, string> extensionMenus = new Dictionary<string, string>();
-        private readonly IDictionary<string, string> menuRoles = new Dictionary<string, string>();
-        private readonly IDictionary<string, string> parentMaps = new Dictionary<string, string>();
+        private readonly List<MenuItem> menuItems = [];
+        private readonly List<PersonaBarExtension> extensions = [];
+        private readonly List<PermissionDefinition> permissionDefinitions = [];
+        private readonly Dictionary<string, string> extensionMenus = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> menuRoles = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> parentMaps = new Dictionary<string, string>();
 
         /// <inheritdoc/>
         public override void Commit()
@@ -43,7 +46,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
                 this.SavePermissionDefinitions();
 
-                if (this.menuItems.Any())
+                if (this.menuItems.Count != 0)
                 {
                     foreach (var menuItem in this.menuItems)
                     {
@@ -90,13 +93,28 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             this.DeleteMenus();
         }
 
+        private static void SaveMenuPermission(MenuItem menuItem, string roleName)
+        {
+            var portals = PortalController.Instance.GetPortals();
+            foreach (IPortalInfo portal in portals)
+            {
+                var portalId = portal.PortalId;
+
+                // when default permission already initialized, then package need to save default permission immediately.
+                if (MenuPermissionController.PermissionAlreadyInitialized(portalId))
+                {
+                    MenuPermissionController.SaveMenuDefaultPermissions(portalId, menuItem, roleName);
+                }
+            }
+        }
+
         private void SaveMenuItems()
         {
             foreach (var menuItem in this.menuItems.Where(x => !string.IsNullOrEmpty(x.Identifier) && !string.IsNullOrEmpty(x.ModuleName)))
             {
-                if (this.parentMaps.ContainsKey(menuItem.Identifier))
+                if (this.parentMaps.TryGetValue(menuItem.Identifier, out var parentId))
                 {
-                    var parentItem = PersonaBarRepository.Instance.GetMenuItem(this.parentMaps[menuItem.Identifier]);
+                    var parentItem = PersonaBarRepository.Instance.GetMenuItem(parentId);
                     if (parentItem != null)
                     {
                         menuItem.ParentId = parentItem.MenuId;
@@ -124,7 +142,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
         private void SavePermissionDefinitions()
         {
-            if (!this.menuItems.Any())
+            if (this.menuItems.Count == 0)
             {
                 return;
             }
@@ -159,8 +177,8 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 CssClass = Util.ReadElement(menuNavigator, "css"),
                 IconFile = Util.ReadElement(menuNavigator, "icon"),
                 ParentId = Null.NullInteger,
-                Order = Convert.ToInt32(Util.ReadElement(menuNavigator, "order", "0")),
-                AllowHost = Util.ReadElement(menuNavigator, "allowHost", "true").ToLowerInvariant() == "true",
+                Order = Convert.ToInt32(Util.ReadElement(menuNavigator, "order", "0"), CultureInfo.InvariantCulture),
+                AllowHost = Util.ReadElement(menuNavigator, "allowHost", "true").Equals("true", StringComparison.OrdinalIgnoreCase),
                 Enabled = true,
             };
 
@@ -188,7 +206,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 Controller = Util.ReadElement(menuNavigator, "controller"),
                 Container = Util.ReadElement(menuNavigator, "container"),
                 Path = Util.ReadElement(menuNavigator, "path"),
-                Order = Convert.ToInt32(Util.ReadElement(menuNavigator, "order", "0")),
+                Order = Convert.ToInt32(Util.ReadElement(menuNavigator, "order", "0"), CultureInfo.InvariantCulture),
                 Enabled = true,
             };
 
@@ -208,40 +226,27 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             this.permissionDefinitions.Add(permission);
         }
 
-        private void SaveMenuPermission(MenuItem menuItem, string roleName)
-        {
-            var portals = PortalController.Instance.GetPortals();
-            foreach (PortalInfo portal in portals)
-            {
-                var portalId = portal.PortalID;
-
-                // when default permission already initialized, then package need to save default permission immediately.
-                if (MenuPermissionController.PermissionAlreadyInitialized(portalId))
-                {
-                    MenuPermissionController.SaveMenuDefaultPermissions(portalId, menuItem, roleName);
-                }
-            }
-        }
-
         private void SaveMenuPermissions(MenuItem menuItem)
         {
-            if (this.menuRoles.ContainsKey(menuItem.Identifier))
+            if (!this.menuRoles.TryGetValue(menuItem.Identifier, out var role))
             {
-                var defaultPermissions = this.menuRoles[menuItem.Identifier].Split(',');
-                if (menuItem?.MenuId <= 0)
-                {
-                    menuItem = PersonaBarRepository.Instance.GetMenuItem(menuItem.Identifier);
-                }
+                return;
+            }
 
-                PersonaBarRepository.Instance.GetMenuDefaultPermissions(menuItem.MenuId);
-                PersonaBarRepository.Instance.SaveMenuDefaultPermissions(menuItem, this.menuRoles[menuItem.Identifier]);
+            var defaultPermissions = role.Split(',');
+            if (menuItem.MenuId <= 0)
+            {
+                menuItem = PersonaBarRepository.Instance.GetMenuItem(menuItem.Identifier);
+            }
 
-                foreach (var roleName in defaultPermissions)
+            PersonaBarRepository.Instance.GetMenuDefaultPermissions(menuItem.MenuId);
+            PersonaBarRepository.Instance.SaveMenuDefaultPermissions(menuItem, this.menuRoles[menuItem.Identifier]);
+
+            foreach (var roleName in defaultPermissions)
+            {
+                if (!string.IsNullOrEmpty(roleName.Trim()))
                 {
-                    if (!string.IsNullOrEmpty(roleName.Trim()))
-                    {
-                        this.SaveMenuPermission(menuItem, roleName.Trim());
-                    }
+                    SaveMenuPermission(menuItem, roleName.Trim());
                 }
             }
         }

@@ -13,7 +13,7 @@ namespace DotNetNuke.Web.Api
         /// status code is inappropriate) but was unable to process the contained instructions.
         /// <see>
         ///     <cref>http://tools.ietf.org/html/rfc4918</cref>
-        /// </see>
+        /// </see>.
         /// </summary>
         UnprocessableEntity = 422,
     }

@@ -4,17 +4,13 @@ import ExtensionsActions from "../actions/extensionsActions";
 import PageActions from "../actions/pageActions";
 import utils from "../utils";
 import { languagesActions } from "../actions/index";
+import "../less/style.less";
 
 const application = {
     init(initCallback) {
 
         const options = window.dnn[initCallback]();
         utilities.init(options);
-
-        // delay the styles loading after the __webpack_public_path__ is set
-        // this allows the fonts associated to be loaded properly in production
-        require("../less/style.less");
-
         if (window.dnn.pages.itemTemplate) {
             application.dispatch(PageHierarchyActions.setItemTemplate(window.dnn.pages.itemTemplate));
         }

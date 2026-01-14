@@ -4,6 +4,8 @@
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
+    using System.Globalization;
+
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
     using Dnn.PersonaBar.Library.Prompt.Models;
@@ -18,7 +20,6 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     public class RestoreUser : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_RestoreUser_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         private IUserValidator userValidator;
@@ -31,8 +32,8 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         }
 
         /// <summary>Initializes a new instance of the <see cref="RestoreUser"/> class.</summary>
-        /// <param name="userValidator"></param>
-        /// <param name="instance"></param>
+        /// <param name="userValidator">The user validator.</param>
+        /// <param name="instance">The recycle bin controller.</param>
         public RestoreUser(IUserValidator userValidator, IRecyclebinController instance)
         {
             this.userValidator = userValidator;
@@ -53,12 +54,11 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
-            UserInfo userInfo;
-            this.userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo);
+            this.userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out var userInfo);
 
             if (userInfo == null)
             {
-                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("UserNotFound"), this.UserId));
+                return new ConsoleErrorResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("UserNotFound"), this.UserId));
             }
 
             if (!userInfo.IsDeleted)
@@ -66,10 +66,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_RestoreNotRequired"));
             }
 
-            string message;
-            var restoredUser = this.recyclebinController.RestoreUser(userInfo, out message);
+            var restoredUser = this.recyclebinController.RestoreUser(userInfo, out var message);
             return restoredUser
-                ? new ConsoleResultModel(this.LocalizeString("UserRestored")) { Records = 1 }
+                ? new ConsoleResultModel(this.LocalizeString("UserRestored")) { Records = 1, }
                 : new ConsoleErrorResultModel(message);
         }
     }

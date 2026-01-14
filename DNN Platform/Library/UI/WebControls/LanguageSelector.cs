@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -20,28 +21,43 @@ namespace DotNetNuke.UI.WebControls
 
         public enum LanguageItemStyle
         {
+            /// <summary>Display only the flag.</summary>
             FlagOnly = 1,
+
+            /// <summary>Display the flag and a caption.</summary>
             FlagAndCaption = 2,
+
+            /// <summary>Display only the caption.</summary>
             CaptionOnly = 3,
         }
 
         public enum LanguageListDirection
         {
+            /// <summary>Horizontal language list.</summary>
             Horizontal = 1,
+
+            /// <summary>Vertical language list.</summary>
             Vertical = 2,
         }
 
         /// <summary>Language Selection mode, offered to the user: single select or multiple select.</summary>
         public enum LanguageSelectionMode
         {
+            /// <summary>Multiple select.</summary>
             Multiple = 1,
+
+            /// <summary>Single select.</summary>
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
             Single = 2,
         }
 
         /// <summary>Selection object: Language ("de", "en") or Locale ("de-DE", "en-US").</summary>
         public enum LanguageSelectionObject
         {
+            /// <summary>A language without a culture, e.g. "de" or "en".</summary>
             NeutralCulture = 1,
+
+            /// <summary>A langauge/culture pair, e.g. "de-DE" or "en-US".</summary>
             SpecificCulture = 2,
         }
 
@@ -164,7 +180,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.EnsureChildControls();
                 var a = new ArrayList();
-                if (this.GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture).Length < 2)
+                if (GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture).Length < 2)
                 {
                     // return single language
                     PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
@@ -176,7 +192,7 @@ namespace DotNetNuke.UI.WebControls
                 else
                 {
                     // create list of selected languages
-                    foreach (CultureInfo c in this.GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture))
+                    foreach (CultureInfo c in GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture))
                     {
                         if (this.SelectionMode == LanguageSelectionMode.Single)
                         {
@@ -206,7 +222,7 @@ namespace DotNetNuke.UI.WebControls
                     throw new ArgumentException("Selection mode 'single' cannot have more than one selected item.");
                 }
 
-                foreach (CultureInfo c in this.GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture))
+                foreach (CultureInfo c in GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture))
                 {
                     if (this.SelectionMode == LanguageSelectionMode.Single)
                     {
@@ -250,7 +266,7 @@ namespace DotNetNuke.UI.WebControls
             this.Controls.Add(this.pnlControl);
             this.pnlControl.Controls.Add(new LiteralControl("<ul>"));
 
-            foreach (var c in this.GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture))
+            foreach (var c in GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture))
             {
                 this.pnlControl.Controls.Add(new LiteralControl("<li>"));
 
@@ -297,7 +313,7 @@ namespace DotNetNuke.UI.WebControls
             this.pnlControl.Controls.Add(new LiteralControl("</ul>"));
 
             // Hide if not more than one language
-            if (this.GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture).Length < 2)
+            if (GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture).Length < 2)
             {
                 this.Visible = false;
             }
@@ -306,7 +322,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>retrieve the cultures, currently supported by the portal.</summary>
         /// <param name="specific">true: locales, false: neutral languages.</param>
         /// <returns>Array of cultures.</returns>
-        private CultureInfo[] GetCultures(bool specific)
+        private static CultureInfo[] GetCultures(bool specific)
         {
             var a = new ArrayList();
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();

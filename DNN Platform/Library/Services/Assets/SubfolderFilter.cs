@@ -6,8 +6,13 @@ namespace DotNetNuke.Services.Assets
 {
     public enum SubfolderFilter
     {
+        /// <summary>Exclude subfolders.</summary>
         ExcludeSubfolders = 0,
+
+        /// <summary>Include files of the subfolder only.</summary>
         IncludeSubfoldersFilesOnly = 1,
+
+        /// <summary>Include folders within the subfolder.</summary>
         IncludeSubfoldersFolderStructure = 2,
     }
 }

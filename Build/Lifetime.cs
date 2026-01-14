@@ -7,15 +7,16 @@ namespace DotNetNuke.Build
     using Cake.Common;
     using Cake.Common.Diagnostics;
     using Cake.Core;
-    using Cake.Core.Diagnostics;
     using Cake.Core.IO;
     using Cake.Frosting;
 
     /// <inheritdoc/>
     public sealed class Lifetime : FrostingLifetime<Context>
     {
+        private static readonly string[] CorepackToolNames = ["corepack", "corepack.cmd",];
+
         /// <inheritdoc/>
-        public override void Setup(Context context, ISetupContext setupContext)
+        public override void Setup(Context context, ISetupContext info)
         {
             context.IsRunningInCI = context.HasEnvironmentVariable("TF_BUILD");
             context.Information("Is Running in CI : {0}", context.IsRunningInCI);
@@ -26,7 +27,7 @@ namespace DotNetNuke.Build
                 Git(context, "commit --allow-empty -m 'backup'");
             }
 
-            if (context.Tools.Resolve(new[] { "corepack", "corepack.cmd", }) is null)
+            if (context.Tools.Resolve(CorepackToolNames) is null)
             {
                 throw new CakeException("Could not find corepack, Node.js 18 or later must be installed.");
             }

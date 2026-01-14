@@ -17,24 +17,24 @@ namespace DotNetNuke.Data.PetaPoco
         }
 
         /// <summary>Initializes a new instance of the <see cref="FluentColumnMap"/> class.</summary>
-        /// <param name="columnInfo"></param>
+        /// <param name="columnInfo">Information about the column.</param>
         public FluentColumnMap(ColumnInfo columnInfo)
             : this(columnInfo, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="FluentColumnMap"/> class.</summary>
-        /// <param name="columnInfo"></param>
-        /// <param name="fromDbConverter"></param>
+        /// <param name="columnInfo">Information about the column.</param>
+        /// <param name="fromDbConverter">A function to convert the database value to the class value.</param>
         public FluentColumnMap(ColumnInfo columnInfo, Func<object, object> fromDbConverter)
             : this(columnInfo, fromDbConverter, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="FluentColumnMap"/> class.</summary>
-        /// <param name="columnInfo"></param>
-        /// <param name="fromDbConverter"></param>
-        /// <param name="toDbConverter"></param>
+        /// <param name="columnInfo">Information about the column.</param>
+        /// <param name="fromDbConverter">A function to convert the database value to the class value.</param>
+        /// <param name="toDbConverter">A function to convert the class value to the database value.</param>
         public FluentColumnMap(ColumnInfo columnInfo, Func<object, object> fromDbConverter, Func<object, object> toDbConverter)
         {
             this.ColumnInfo = columnInfo;

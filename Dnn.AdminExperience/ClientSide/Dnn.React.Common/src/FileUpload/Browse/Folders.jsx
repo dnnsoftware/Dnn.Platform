@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-const folderIcon = require("!raw-loader!./img/folder.svg").default;
+import FolderIcon from "./img/folder.svg";
 
 export default class Folders extends Component {
 
@@ -54,13 +54,13 @@ export default class Folders extends Component {
             return false;
         }
         const children = folder.children.map((child) => {
-            /* eslint-disable react/no-danger */
+             
             const isOpen = this.state.openFolders.some(id => id === child.data.key);
             const className = isOpen ? "open" : "";
             return <li className={className} key={child.data.key}>
                 {child.data.hasChildren && <div className="has-children" onClick={this.onParentClick.bind(this, child) }></div>}
                 <div onClick={this.onFolderNameClick.bind(this, child)}>
-                    <div className="icon" dangerouslySetInnerHTML={{ __html: folderIcon }} />
+                    <div className="icon"><FolderIcon /></div>
                     <div className="item-name">{child.data.value}</div>
                 </div>
                 {child.data.hasChildren && this.getFolders(child) }
@@ -70,7 +70,7 @@ export default class Folders extends Component {
     }
 
     render() {
-        /* eslint-disable react/no-danger */
+         
         const folders = this.getFolders(this.props.folders);
         return <div className="item-picker">
             {folders}

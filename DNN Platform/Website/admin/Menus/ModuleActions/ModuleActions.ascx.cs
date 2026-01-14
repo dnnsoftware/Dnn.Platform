@@ -15,6 +15,7 @@ namespace DotNetNuke.Admin.Containers
     using System.Web.Script.Serialization;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
@@ -24,16 +25,38 @@ namespace DotNetNuke.Admin.Containers
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Containers;
     using DotNetNuke.UI.Modules;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A control which renders module actions.</summary>
     public partial class ModuleActions : ActionBase
     {
         private readonly List<int> validIDs = new List<int>();
+        private readonly IModuleControlPipeline moduleControlPipeline;
+        private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IClientResourceController clientResourceController;
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleActions"/> class.</summary>
+        public ModuleActions()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleActions"/> class.</summary>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public ModuleActions(IModuleControlPipeline moduleControlPipeline, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
+        {
+            this.moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
+            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+        }
 
         protected string AdminText
         {
@@ -80,11 +103,11 @@ namespace DotNetNuke.Admin.Containers
 
             this.actionButton.Click += this.ActionButton_Click;
 
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
-            ClientResourceManager.RegisterScript(this.Page, "~/admin/menus/ModuleActions/ModuleActions.js");
+            this.clientResourceController.RegisterStylesheet("~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
+            this.clientResourceController.RegisterScript("~/admin/menus/ModuleActions/ModuleActions.js");
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
@@ -108,7 +131,7 @@ namespace DotNetNuke.Admin.Containers
                 if (quickSettingsControl != null)
                 {
                     this.SupportsQuickSettings = true;
-                    var control = ModuleControlFactory.LoadModuleControl(this.Page, this.ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
+                    var control = this.moduleControlPipeline.LoadModuleControl(this.Page, this.ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
                     control.ID += this.ModuleContext.ModuleId;
                     this.quickSettings.Controls.Add(control);
 
@@ -120,7 +143,7 @@ namespace DotNetNuke.Admin.Containers
                         ModuleController.Instance.UpdateModuleSetting(this.ModuleContext.ModuleId, "QS_FirstLoad", "False");
                     }
 
-                    ClientResourceManager.RegisterScript(this.Page, "~/admin/menus/ModuleActions/dnnQuickSettings.js");
+                    this.clientResourceController.RegisterScript("~/admin/menus/ModuleActions/dnnQuickSettings.js");
                 }
 
                 if (this.ActionRoot.Visible)
@@ -138,13 +161,13 @@ namespace DotNetNuke.Admin.Containers
                                     (action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View))
                                 {
                                     if (!action.Icon.Contains("://")
-                                            && !action.Icon.StartsWith("/")
-                                            && !action.Icon.StartsWith("~/"))
+                                            && !action.Icon.StartsWith("/", StringComparison.Ordinal)
+                                            && !action.Icon.StartsWith("~/", StringComparison.Ordinal))
                                     {
                                         action.Icon = "~/images/" + action.Icon;
                                     }
 
-                                    if (action.Icon.StartsWith("~/"))
+                                    if (action.Icon.StartsWith("~/", StringComparison.Ordinal))
                                     {
                                         action.Icon = Globals.ResolveUrl(action.Icon);
                                     }

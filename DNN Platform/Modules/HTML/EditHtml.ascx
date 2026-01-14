@@ -28,17 +28,11 @@
                         </div>
                     </div>
                     <asp:PlaceHolder ID="phCurrentVersion" runat="server">
-
                         <div class="divCurrentVersion">
                             <div class="dnnFormItem" id="divCurrentWorkflowState" runat="server">
                                 <dnn:label id="plCurrentWorkflowState" runat="server" controlname="lblCurrentWorkflowState" text="Workflow State" suffix=":" />
                                 <asp:Label ID="lblCurrentWorkflowState" runat="server" /> ( <asp:label id="plCurrentWorkVersion" runat="server" text="Version" ResourceKey="plCurrentWorkVersion"  /> <asp:Label ID="lblCurrentVersion" runat="server" /> ) (  <asp:Label ID="lblCurrentWorkflowInUse" runat="server" /> )
                             </div>
-                            <div class="dnnFormItem" id="divPublish" runat="server">
-                                <dnn:label id="plActionOnSave" runat="server" text="On Save" suffix="?" />
-                                <asp:CheckBox ID="chkPublish" runat="server" resourcekey="chkPublish" AutoPostBack="true" />
-                            </div>
-                               
                         </div>
                     </asp:PlaceHolder>
 

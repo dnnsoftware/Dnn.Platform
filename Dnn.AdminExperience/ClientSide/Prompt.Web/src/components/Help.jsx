@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Parser from "html-react-parser";
+import Html from "./Html";
 import Localization from "../localization/Localization";
 import DataTable from "../components/DataTable";
 import TextLine from "../components/TextLine";
@@ -26,7 +26,7 @@ const Help = ({ style, isError, error, name, description, options, IsPaging, res
         {paragraphDescription}
         {options && options.length > 0 && <h4>{Localization.get("Help_Options")}</h4>}
         {options && options.length > 0 && <div><DataTable rows={options} columns={fields} cssClass="table" /></div>}
-        {resultHtml && <div>{Parser(stripWhiteSpaces(resultHtml))}</div>}
+        {resultHtml && <div><Html html={stripWhiteSpaces(resultHtml)}/></div>}
     </section>);
 
     return out;

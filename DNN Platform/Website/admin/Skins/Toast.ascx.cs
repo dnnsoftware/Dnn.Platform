@@ -9,6 +9,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using System.Xml;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -17,10 +18,11 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A skin/theme object which allows the display of toast messages.</summary>
     public partial class Toast : SkinObjectBase
     {
         private const string MyFileName = "Toast.ascx";
@@ -28,10 +30,19 @@ namespace DotNetNuke.UI.Skins.Controls
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Toast));
         private static readonly string ToastCacheKey = "DNN_Toast_Config";
         private readonly INavigationManager navigationManager;
+        private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IClientResourceController clientResourceController;
 
         public Toast()
+            : this(null, null, null)
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        public Toast(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
+        {
+            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
         protected string ServiceModuleName { get; private set; }
@@ -69,11 +80,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnLoad(e);
 
-            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            this.javaScript.RequestRegistration(CommonJs.jQueryUI);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.js", DotNetNuke.Web.Client.FileOrder.Js.jQuery);
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.css", DotNetNuke.Web.Client.FileOrder.Css.DefaultCss);
+            this.clientResourceController.RegisterScript("~/Resources/Shared/components/Toast/jquery.toastmessage.js", FileOrder.Js.jQuery);
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/components/Toast/jquery.toastmessage.css", FileOrder.Css.DefaultCss);
 
             this.InitializeConfig();
         }
@@ -139,7 +150,11 @@ namespace DotNetNuke.UI.Skins.Controls
                     if (File.Exists(configFile))
                     {
                         var xmlDocument = new XmlDocument { XmlResolver = null };
-                        xmlDocument.Load(configFile);
+                        using (var configReader = XmlReader.Create(configFile, new XmlReaderSettings { XmlResolver = null, }))
+                        {
+                            xmlDocument.Load(configReader);
+                        }
+
                         var moduleNameNode = xmlDocument.DocumentElement?.SelectSingleNode("moduleName");
                         var actionNode = xmlDocument.DocumentElement?.SelectSingleNode("action");
                         var scriptsNode = xmlDocument.DocumentElement?.SelectSingleNode("scripts");

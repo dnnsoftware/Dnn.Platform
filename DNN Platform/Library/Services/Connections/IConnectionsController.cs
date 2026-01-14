@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.Connections
     public interface IConnectionsController
     {
         /// <summary>Get Connection Settings for a Site.</summary>
+        /// <param name="portalId">The portal ID.</param>
         /// <returns>A list of <see cref="IConnector"/> instances.</returns>
         IList<IConnector> GetConnections(int portalId);
 

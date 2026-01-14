@@ -57,8 +57,7 @@ namespace DotNetNuke.Services.Search.Internals
         public IEnumerable<string> GetSynonyms(int portalId, string cultureCode, string term)
         {
             var terms = this.GetSynonymTerms(portalId, cultureCode);
-            IList<string> synonyms;
-            if (terms == null || !terms.TryGetValue((term ?? string.Empty).ToLowerInvariant(), out synonyms))
+            if (terms == null || !terms.TryGetValue((term ?? string.Empty).ToLowerInvariant(), out var synonyms))
             {
                 synonyms = this.emptySynonums;
             }
@@ -69,9 +68,9 @@ namespace DotNetNuke.Services.Search.Internals
         /// <inheritdoc/>
         public IEnumerable<SynonymsGroup> GetSynonymsGroups(int portalId, string cultureCode)
         {
-            var cacheKey = string.Format(CacheKeyFormat, SynonymGroupsCacheKey, portalId, cultureCode);
-            var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<IList<SynonymsGroup>>(cachArg, this.GetSynonymsGroupsCallBack);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SynonymGroupsCacheKey, portalId, cultureCode);
+            var cacheArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
+            return CBO.GetCachedObject<IList<SynonymsGroup>>(cacheArg, GetSynonymsGroupsCallBack);
         }
 
         /// <inheritdoc/>
@@ -92,7 +91,7 @@ namespace DotNetNuke.Services.Search.Internals
             var list = this.GetSynonymsGroups(portalId, cultureCode);
             var tags = synonymsTags.ToLowerInvariant().Split(',');
 
-            if (!tags.Any())
+            if (tags.Length == 0)
             {
                 return 0;
             }
@@ -108,10 +107,10 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             var newId = DataProvider.Instance().AddSynonymsGroup(synonymsTags, userId, portalId, cultureCode);
-            var cacheKey = string.Format(CacheKeyFormat, SynonymGroupsCacheKey, portalId, cultureCode);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SynonymGroupsCacheKey, portalId, cultureCode);
             DataCache.ClearCache(cacheKey);
 
-            cacheKey = string.Format(CacheKeyFormat, SynonymTermsCacheKey, portalId, cultureCode);
+            cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SynonymTermsCacheKey, portalId, cultureCode);
             DataCache.ClearCache(cacheKey);
 
             return newId;
@@ -135,7 +134,7 @@ namespace DotNetNuke.Services.Search.Internals
             var list = this.GetSynonymsGroups(portalId, cultureCode);
             var tags = synonymsTags.ToLowerInvariant().Split(',');
 
-            if (!tags.Any())
+            if (tags.Length == 0)
             {
                 return 0;
             }
@@ -154,10 +153,10 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             DataProvider.Instance().UpdateSynonymsGroup(synonymsGroupId, synonymsTags, userId);
-            var cacheKey = string.Format(CacheKeyFormat, SynonymGroupsCacheKey, portalId, cultureCode);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SynonymGroupsCacheKey, portalId, cultureCode);
             DataCache.ClearCache(cacheKey);
 
-            cacheKey = string.Format(CacheKeyFormat, SynonymTermsCacheKey, portalId, cultureCode);
+            cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SynonymTermsCacheKey, portalId, cultureCode);
             DataCache.ClearCache(cacheKey);
             return synonymsGroupId;
         }
@@ -171,20 +170,20 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             DataProvider.Instance().DeleteSynonymsGroup(synonymsGroupId);
-            var cacheKey = string.Format(CacheKeyFormat, SynonymGroupsCacheKey, portalId, cultureCode);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SynonymGroupsCacheKey, portalId, cultureCode);
             DataCache.ClearCache(cacheKey);
 
-            cacheKey = string.Format(CacheKeyFormat, SynonymTermsCacheKey, portalId, cultureCode);
+            cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SynonymTermsCacheKey, portalId, cultureCode);
             DataCache.ClearCache(cacheKey);
         }
 
         /// <inheritdoc/>
         public SearchStopWords GetSearchStopWords(int portalId, string cultureCode)
         {
-            var cacheKey = string.Format(CacheKeyFormat, SearchStopWordsCacheKey, portalId, cultureCode);
-            var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
-            var list = CBO.GetCachedObject<IList<SearchStopWords>>(cachArg, this.GetSearchStopWordsCallBack);
-            return list == null ? null : list.FirstOrDefault();
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SearchStopWordsCacheKey, portalId, cultureCode);
+            var cacheArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
+            var list = CBO.GetCachedObject<IList<SearchStopWords>>(cacheArg, this.GetSearchStopWordsCallBack);
+            return list?.FirstOrDefault();
         }
 
         /// <inheritdoc/>
@@ -206,14 +205,14 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             var tags = stopWords.ToLowerInvariant().Split(',');
-            if (!tags.Any())
+            if (tags.Length == 0)
             {
                 return 0;
             }
 
             var userId = PortalSettings.Current.UserId;
             var newId = DataProvider.Instance().AddSearchStopWords(stopWords, userId, portalId, cultureCode);
-            var cacheKey = string.Format(CacheKeyFormat, SearchStopWordsCacheKey, portalId, cultureCode);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SearchStopWordsCacheKey, portalId, cultureCode);
             DataCache.ClearCache(cacheKey);
             return newId;
         }
@@ -242,14 +241,14 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             var tags = stopWords.ToLowerInvariant().Split(',');
-            if (!tags.Any())
+            if (tags.Length == 0)
             {
                 return 0;
             }
 
             var userId = PortalSettings.Current.UserId;
             DataProvider.Instance().UpdateSearchStopWords(stopWordsId, stopWords, userId);
-            var cacheKey = string.Format(CacheKeyFormat, SearchStopWordsCacheKey, portalId, cultureCode);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SearchStopWordsCacheKey, portalId, cultureCode);
             DataCache.ClearCache(cacheKey);
             return stopWordsId;
         }
@@ -263,7 +262,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             DataProvider.Instance().DeleteSearchStopWords(stopWordsId);
-            var cacheKey = string.Format(CacheKeyFormat, SearchStopWordsCacheKey, portalId, cultureCode);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SearchStopWordsCacheKey, portalId, cultureCode);
             DataCache.ClearCache(cacheKey);
         }
 
@@ -288,7 +287,7 @@ namespace DotNetNuke.Services.Search.Internals
         public DateTime SetSearchReindexRequestTime(int portalId)
         {
             var now = DateTime.Now;
-            var text = now.ToString(Constants.ReindexDateTimeFormat);
+            var text = now.ToString(Constants.ReindexDateTimeFormat, CultureInfo.InvariantCulture);
 
             if (portalId < 0)
             {
@@ -316,8 +315,7 @@ namespace DotNetNuke.Services.Search.Internals
             HostController.Instance.Update(Constants.SearchOptimizeFlagName, turnOn ? "1" : "0", true);
         }
 
-        /// <summary>Determines whether there was a request to re-index the site since a specific date/time.</summary>
-        /// <returns><see langword="true"/> if a reindex has been requested since <paramref name="startDate"/>, otherwise <see langword="false"/>.</returns>
+        /// <inheritdoc />
         public bool IsReindexRequested(int portalId, DateTime startDate)
         {
             var reindexDateTime = this.GetSearchReindexRequestTime(portalId);
@@ -325,7 +323,7 @@ namespace DotNetNuke.Services.Search.Internals
         }
 
         /// <summary>Returns a collection of portal ID's to reindex if it was requested since last indexing.</summary>
-        /// <param name="startDate"></param>
+        /// <param name="startDate">The date of the last index.</param>
         /// <returns>A sequence of portal IDs.</returns>
         public IEnumerable<int> GetPortalsToReindex(DateTime startDate)
         {
@@ -342,12 +340,7 @@ namespace DotNetNuke.Services.Search.Internals
             return portals2Reindex.ToArray();
         }
 
-        /// <summary>
-        /// Returns the last time search indexing was completed successfully.
-        /// The returned value in local server time (not UTC).
-        /// Beware that the value stored in the database is converted to UTC time.
-        /// </summary>
-        /// <returns>A local <see cref="DateTime"/>.</returns>
+        /// <inheritdoc />
         public DateTime GetLastSuccessfulIndexingDateTime(int scheduleId)
         {
             var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
@@ -356,13 +349,12 @@ namespace DotNetNuke.Services.Search.Internals
             if (string.IsNullOrEmpty(lastValue))
             {
                 // try to fallback to old location where this was stored
-                var name = string.Format(LastIndexKeyFormat, Constants.SearchLastSuccessIndexName, scheduleId);
+                var name = string.Format(CultureInfo.InvariantCulture, LastIndexKeyFormat, Constants.SearchLastSuccessIndexName, scheduleId);
                 lastValue = HostController.Instance.GetString(name, Null.NullString);
             }
 
-            DateTime lastTime;
             if (!string.IsNullOrEmpty(lastValue) &&
-                DateTime.TryParseExact(lastValue, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out lastTime))
+                DateTime.TryParseExact(lastValue, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out var lastTime))
             {
                 // retrieves the date as UTC but returns to caller as local
                 lastTime = FixSqlDateTime(lastTime).ToLocalTime().ToLocalTime();
@@ -379,18 +371,14 @@ namespace DotNetNuke.Services.Search.Internals
             return lastTime;
         }
 
-        /// <summary>
-        /// Stores the last successful time of the system search indexer.
-        /// The passed value should be in local system time; not UTC time.
-        /// Beware that the value stored in the database is converted to UTC time.
-        /// </summary>
+        /// <inheritdoc />
         public void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal)
         {
             SchedulingProvider.Instance()
                 .AddScheduleItemSetting(
                     scheduleId,
                     Constants.SearchLastSuccessIndexName,
-                    startDateLocal.ToUniversalTime().ToString(Constants.ReindexDateTimeFormat));
+                    startDateLocal.ToUniversalTime().ToString(Constants.ReindexDateTimeFormat, CultureInfo.InvariantCulture));
         }
 
         /// <inheritdoc/>
@@ -399,9 +387,8 @@ namespace DotNetNuke.Services.Search.Internals
             var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
             var lastValue = settings[indexerKey] as string;
 
-            DateTime lastUtcTime;
             if (!string.IsNullOrEmpty(lastValue) &&
-                DateTime.TryParseExact(lastValue, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out lastUtcTime))
+                DateTime.TryParseExact(lastValue, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out var lastUtcTime))
             {
                 lastUtcTime = FixSqlDateTime(lastUtcTime);
             }
@@ -416,7 +403,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <inheritdoc/>
         public void SetIndexerCheckpointUtcTime(int scheduleId, string indexerKey, DateTime lastUtcTime)
         {
-            SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId, indexerKey, lastUtcTime.ToString(Constants.ReindexDateTimeFormat));
+            SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId, indexerKey, lastUtcTime.ToString(Constants.ReindexDateTimeFormat, CultureInfo.InvariantCulture));
         }
 
         /// <inheritdoc/>
@@ -463,20 +450,20 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 var exceptionMessage = Localization.GetExceptionMessage("SearchAnalyzerMinWordLength", "Search Analyzer: min word length ({0}) is greater than max word length ({1}) value");
                 throw new InvalidDataException(
-                    string.Format(exceptionMessage, minWordLength, maxWordLength));
+                    string.Format(CultureInfo.InvariantCulture, exceptionMessage, minWordLength, maxWordLength));
             }
 
             return new Tuple<int, int>(minWordLength, maxWordLength);
         }
 
         /// <summary>Processes and re-phrases the search text by looking into exact-match and wildcard option.</summary>
-        /// <param name="searchPhrase"></param>
-        /// <param name="useWildCard"></param>
-        /// <param name="allowLeadingWildcard"></param>
+        /// <param name="searchPhrase">The original search phrase.</param>
+        /// <param name="useWildCard">Whether to use wildcards.</param>
+        /// <param name="allowLeadingWildcard">Whether to allow a leading wildcard.</param>
         /// <returns>cleaned and pre-processed search phrase.</returns>
         public string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false)
         {
-            searchPhrase = this.CleanSearchPhrase(HttpUtility.HtmlDecode(searchPhrase));
+            searchPhrase = CleanSearchPhrase(HttpUtility.HtmlDecode(searchPhrase));
 
             if (!useWildCard && !searchPhrase.Contains("\""))
             {
@@ -484,7 +471,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             // we have a quotation marks and/or wildcard search, adjust accordingly
-            var chars = this.FoldToASCII(searchPhrase).ToCharArray();
+            var chars = FoldToAscii(searchPhrase).ToCharArray();
             var insideQuote = false;
             var newPhraseBulder = new StringBuilder();
             var currentWord = new StringBuilder();
@@ -507,7 +494,7 @@ namespace DotNetNuke.Services.Search.Internals
                         if (!insideQuote && useWildCard)
                         {
                             // end of a word; we need to append a wild card to search when needed
-                            newPhraseBulder.Append(this.FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard) + " ");
+                            newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard) + " ");
                             currentWord.Clear();
                         }
 
@@ -523,7 +510,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
             else if (useWildCard)
             {
-                newPhraseBulder.Append(this.FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard));
+                newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard));
             }
             else
             {
@@ -558,21 +545,14 @@ namespace DotNetNuke.Services.Search.Internals
             return datim;
         }
 
-        private IDictionary<string, IList<string>> GetSynonymTerms(int portalId, string cultureCode)
-        {
-            var cacheKey = string.Format("{0}_{1}_{2}", SynonymTermsCacheKey, portalId, cultureCode);
-            var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<IDictionary<string, IList<string>>>(cachArg, this.SynonymTermsCallBack);
-        }
-
-        private string FixLastWord(string lastWord, bool allowLeadingWildcard)
+        private static string FixLastWord(string lastWord, bool allowLeadingWildcard)
         {
             if (string.IsNullOrEmpty(lastWord))
             {
                 return string.Empty;
             }
 
-            if (lastWord.IndexOfAny(new[] { '~', '*' }) < 0)
+            if (lastWord.IndexOfAny(['~', '*',]) < 0)
             {
                 var beginIsGroup = false;
                 var endIsGroup = false;
@@ -582,13 +562,13 @@ namespace DotNetNuke.Services.Search.Internals
                 var c1 = lastWord[0];
                 var c2 = lastWord[wordEndPos - 1];
 
-                if (c1 == '(' || c1 == '{' || c1 == '[')
+                if (c1 is '(' or '{' or '[')
                 {
                     wordStartPos++;
                     beginIsGroup = true;
                 }
 
-                if (c2 == ')' || c2 == '}' || c2 == ']')
+                if (c2 is ')' or '}' or ']')
                 {
                     wordEndPos--;
                     endIsGroup = true;
@@ -602,8 +582,8 @@ namespace DotNetNuke.Services.Search.Internals
                 if (lastWord.Length > 0 && lastWord != "AND" && lastWord != "OR")
                 {
                     lastWord = (beginIsGroup && endIsGroup)
-                        ? string.Format("{0} OR {1}{0}*", lastWord, allowLeadingWildcard ? "*" : string.Empty)
-                        : string.Format("({0} OR {1}{0}*)", lastWord, allowLeadingWildcard ? "*" : string.Empty);
+                        ? string.Format(CultureInfo.InvariantCulture, "{0} OR {1}{0}*", lastWord, allowLeadingWildcard ? "*" : string.Empty)
+                        : string.Format(CultureInfo.InvariantCulture, "({0} OR {1}{0}*)", lastWord, allowLeadingWildcard ? "*" : string.Empty);
                 }
 
                 if (beginIsGroup)
@@ -620,7 +600,7 @@ namespace DotNetNuke.Services.Search.Internals
             return lastWord;
         }
 
-        private string CleanSearchPhrase(string searchPhrase)
+        private static string CleanSearchPhrase(string searchPhrase)
         {
             var chars = searchPhrase.ToCharArray();
             var hasExactMatch = false;
@@ -672,11 +652,103 @@ namespace DotNetNuke.Services.Search.Internals
             return cleaned;
         }
 
+        private static void EnsurePortalDefaultsAreSet(int portalId)
+        {
+            const string setting = "SearchAdminInitialization";
+
+            // check portal settings first
+            if (PortalController.GetPortalSetting(setting, portalId, "false") != "false")
+            {
+                return;
+            }
+
+            // Portal may not be present, especially during installation
+            if (PortalController.Instance.GetPortal(portalId) == null)
+            {
+                return;
+            }
+
+            foreach (var locale in LocaleController.Instance.GetLocales(portalId).Values)
+            {
+                var resourceFile = GetResourceFile(locale.Code);
+
+                var currentStopWords = CBO.FillCollection<SearchStopWords>(DataProvider.Instance().GetSearchStopWords(portalId, locale.Code));
+                if (currentStopWords == null || currentStopWords.Count == 0)
+                {
+                    // Add Default StopWord
+                    var defaultStopWords = Localization.GetString("DefaultStopwordGroup", resourceFile);
+                    if (!string.IsNullOrEmpty(defaultStopWords))
+                    {
+                        DataProvider.Instance().AddSearchStopWords(defaultStopWords, 1, portalId, locale.Code);
+                    }
+                }
+
+                var currentSynonymGroups = CBO.FillCollection<SynonymsGroup>(DataProvider.Instance().GetAllSynonymsGroups(portalId, locale.Code));
+                if (currentSynonymGroups == null || currentSynonymGroups.Count == 0)
+                {
+                    // Add Default Synonym
+                    var defaultSynonymsGroup = Localization.GetString("DefaultSynonymGroup", resourceFile);
+                    if (!string.IsNullOrEmpty(defaultSynonymsGroup))
+                    {
+                        DataProvider.Instance().AddSynonymsGroup(defaultSynonymsGroup, 1, portalId, locale.Code);
+                    }
+                }
+            }
+
+            // Update Portal Settings
+            PortalController.UpdatePortalSetting(portalId, setting, "true", true);
+        }
+
+        private static string GetResourceFile(string cultureCode)
+        {
+            var cultureRelativePath = "~" + ResourceFileRelativePathWithoutExt + "." + cultureCode + ".resx";
+            const string regularRelativePath = "~" + ResourceFileRelativePathWithoutExt + ".resx";
+            return File.Exists(Path.Combine(Globals.ApplicationMapPath, ResourceFileRelativePathWithoutExt + "." + cultureCode + ".resx")) ? cultureRelativePath : regularRelativePath;
+        }
+
+        private static object GetSynonymsGroupsCallBack(CacheItemArgs cacheItem)
+        {
+            var portalId = int.Parse(cacheItem.CacheKey.Split('_')[1], CultureInfo.InvariantCulture);
+            var cultureCode = cacheItem.CacheKey.Split('_')[2];
+
+            EnsurePortalDefaultsAreSet(portalId);
+
+            return CBO.FillCollection<SynonymsGroup>(DataProvider.Instance().GetAllSynonymsGroups(portalId, cultureCode));
+        }
+
+        private static string FoldToAscii(string searchPhrase)
+        {
+            var sb = new StringBuilder();
+
+            var cleanedPhrase = searchPhrase.Trim('\0');
+
+            var asciiFilter = new ASCIIFoldingFilter(new WhitespaceTokenizer((TextReader)new StringReader(cleanedPhrase)));
+
+            string space = string.Empty;
+            while (asciiFilter.IncrementToken())
+            {
+                sb.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}", space, asciiFilter.GetAttribute<ITermAttribute>().Term);
+                if (string.IsNullOrEmpty(space))
+                {
+                    space = " ";
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        private IDictionary<string, IList<string>> GetSynonymTerms(int portalId, string cultureCode)
+        {
+            var cacheKey = $"{SynonymTermsCacheKey}_{portalId}_{cultureCode}";
+            var cacheArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
+            return CBO.GetCachedObject<IDictionary<string, IList<string>>>(cacheArg, this.SynonymTermsCallBack);
+        }
+
         private object SynonymTermsCallBack(CacheItemArgs cacheItem)
         {
             var parts = cacheItem.CacheKey.Split('_');
             var allTerms = new Dictionary<string, IList<string>>();
-            var portalId = int.Parse(parts[1]);
+            var portalId = int.Parse(parts[1], CultureInfo.InvariantCulture);
             var cultureCode = parts[2];
             var groups = this.GetSynonymsGroups(portalId, cultureCode);
             if (groups == null)
@@ -722,97 +794,12 @@ namespace DotNetNuke.Services.Search.Internals
         private object GetSearchStopWordsCallBack(CacheItemArgs cacheItem)
         {
             var splittedKeys = cacheItem.CacheKey.Split('_');
-            var portalId = int.Parse(splittedKeys[1]);
+            var portalId = int.Parse(splittedKeys[1], CultureInfo.InvariantCulture);
             var cultureCode = splittedKeys[2];
 
-            this.EnsurePortalDefaultsAreSet(portalId);
+            EnsurePortalDefaultsAreSet(portalId);
 
             return CBO.FillCollection<SearchStopWords>(DataProvider.Instance().GetSearchStopWords(portalId, cultureCode));
-        }
-
-        private void EnsurePortalDefaultsAreSet(int portalId)
-        {
-            const string setting = "SearchAdminInitialization";
-
-            // check portal settings first
-            if (PortalController.GetPortalSetting(setting, portalId, "false") != "false")
-            {
-                return;
-            }
-
-            // Portal may not be present, especially during installation
-            if (PortalController.Instance.GetPortal(portalId) == null)
-            {
-                return;
-            }
-
-            foreach (var locale in LocaleController.Instance.GetLocales(portalId).Values)
-            {
-                var resourceFile = this.GetResourceFile(locale.Code);
-
-                var currentStopWords = CBO.FillCollection<SearchStopWords>(DataProvider.Instance().GetSearchStopWords(portalId, locale.Code));
-                if (currentStopWords == null || currentStopWords.Count == 0)
-                {
-                    // Add Default StopWord
-                    var defaultStopWords = Localization.GetString("DefaultStopwordGroup", resourceFile);
-                    if (!string.IsNullOrEmpty(defaultStopWords))
-                    {
-                        DataProvider.Instance().AddSearchStopWords(defaultStopWords, 1, portalId, locale.Code);
-                    }
-                }
-
-                var currentSynonymGroups = CBO.FillCollection<SynonymsGroup>(DataProvider.Instance().GetAllSynonymsGroups(portalId, locale.Code));
-                if (currentSynonymGroups == null || currentSynonymGroups.Count == 0)
-                {
-                    // Add Default Synonym
-                    var defaultSynonymsGroup = Localization.GetString("DefaultSynonymGroup", resourceFile);
-                    if (!string.IsNullOrEmpty(defaultSynonymsGroup))
-                    {
-                        DataProvider.Instance().AddSynonymsGroup(defaultSynonymsGroup, 1, portalId, locale.Code);
-                    }
-                }
-            }
-
-            // Update Portal Settings
-            PortalController.UpdatePortalSetting(portalId, setting, "true", true);
-        }
-
-        private string GetResourceFile(string cultureCode)
-        {
-            var cultureRelativePath = "~" + ResourceFileRelativePathWithoutExt + "." + cultureCode + ".resx";
-            const string regularRelativePath = "~" + ResourceFileRelativePathWithoutExt + ".resx";
-            return File.Exists(Path.Combine(Globals.ApplicationMapPath, ResourceFileRelativePathWithoutExt + "." + cultureCode + ".resx")) ? cultureRelativePath : regularRelativePath;
-        }
-
-        private object GetSynonymsGroupsCallBack(CacheItemArgs cacheItem)
-        {
-            var portalId = int.Parse(cacheItem.CacheKey.Split('_')[1]);
-            var cultureCode = cacheItem.CacheKey.Split('_')[2];
-
-            this.EnsurePortalDefaultsAreSet(portalId);
-
-            return CBO.FillCollection<SynonymsGroup>(DataProvider.Instance().GetAllSynonymsGroups(portalId, cultureCode));
-        }
-
-        private string FoldToASCII(string searchPhrase)
-        {
-            var sb = new StringBuilder();
-
-            var cleanedPhrase = searchPhrase.Trim('\0');
-
-            var asciiFilter = new ASCIIFoldingFilter(new WhitespaceTokenizer((TextReader)new StringReader(cleanedPhrase)));
-
-            string space = string.Empty;
-            while (asciiFilter.IncrementToken())
-            {
-                sb.AppendFormat("{0}{1}", space ?? string.Empty, asciiFilter.GetAttribute<ITermAttribute>().Term);
-                if (string.IsNullOrEmpty(space))
-                {
-                    space = " ";
-                }
-            }
-
-            return sb.ToString();
         }
     }
 }

@@ -5,18 +5,34 @@ namespace Dnn.ExportImport.Components.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
 
     using Dnn.ExportImport.Components.Common;
     using Dnn.ExportImport.Components.Dto;
     using Dnn.ExportImport.Components.Providers;
+    using Dnn.ExportImport.Components.Services;
     using Dnn.ExportImport.Repository;
     using Newtonsoft.Json;
 
     /// <summary>The import controller.</summary>
     public class ImportController : BaseController
     {
+        /// <summary>Initializes a new instance of the <see cref="ImportController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IEnumerable<BasePortableService>. Scheduled removal in v12.0.0.")]
+        public ImportController()
+            : base(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ImportController"/> class.</summary>
+        /// <param name="portableServices">The portable service implementations.</param>
+        public ImportController(IEnumerable<BasePortableService> portableServices)
+            : base(portableServices)
+        {
+        }
+
         /// <summary>Queues an import operation.</summary>
         /// <param name="userId">The user ID.</param>
         /// <param name="importDto">The import DTO.</param>
@@ -52,6 +68,7 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="pageIndex">Page index to get.</param>
         /// <param name="pageSize">Page size. Should not be more than 100.</param>
         /// <returns>A sequence of <seealso cref="ImportPackageInfo"/> instances.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<ImportPackageInfo> GetImportPackages(
             out int total,
             string keyword,
@@ -67,12 +84,12 @@ namespace Dnn.ExportImport.Components.Controllers
             var importPackagesList = importPackages as IList<ImportPackageInfo> ?? importPackages.ToList();
 
             importPackages = !string.IsNullOrEmpty(keyword)
-                ? importPackagesList.Where(this.GetImportPackageFilterFunc(keyword))
+                ? importPackagesList.Where(GetImportPackageFilterFunc(keyword))
                 : importPackagesList;
 
             total = importPackages.Count();
             string sortOrder;
-            var orderByFunc = this.GetImportPackageOrderByFunc(order, out sortOrder);
+            var orderByFunc = GetImportPackageOrderByFunc(order, out sortOrder);
             importPackages = sortOrder == "asc"
                 ? importPackages.OrderBy(orderByFunc)
                 : importPackages.OrderByDescending(orderByFunc);
@@ -83,12 +100,12 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="packageId">The package ID.</param>
         /// <param name="summary">The summary.</param>
         /// <param name="errorMessage">An error message.</param>
-        /// <returns><c>true</c> if the package is value, otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the package is value, otherwise <see langword="false"/>.</returns>
         public bool VerifyImportPackage(string packageId, ImportExportSummary summary, out string errorMessage)
         {
             bool isValid;
             errorMessage = string.Empty;
-            var importFolder = Path.Combine(ExportFolder, packageId);
+            var importFolder = Path.Combine(ExportFolder, Path.GetFileName(packageId));
             if (!IsValidImportFolder(importFolder))
             {
                 return false;
@@ -101,7 +118,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 {
                     if (summary != null)
                     {
-                        BuildJobSummary(packageId, ctx, summary);
+                        BuildJobSummary(this.PortableServices, packageId, ctx, summary);
                     }
 
                     isValid = true;
@@ -147,7 +164,7 @@ namespace Dnn.ExportImport.Components.Controllers
                    File.Exists(Path.Combine(folderPath, Constants.ExportZipDbName)));
         }
 
-        private Func<ImportPackageInfo, bool> GetImportPackageFilterFunc(string keyword)
+        private static Func<ImportPackageInfo, bool> GetImportPackageFilterFunc(string keyword)
         {
             Func<ImportPackageInfo, bool> keywordFunc =
                 packageInfo =>
@@ -156,7 +173,7 @@ namespace Dnn.ExportImport.Components.Controllers
             return keywordFunc;
         }
 
-        private Func<ImportPackageInfo, object> GetImportPackageOrderByFunc(string orderBy, out string order)
+        private static Func<ImportPackageInfo, object> GetImportPackageOrderByFunc(string orderBy, out string order)
         {
             orderBy = orderBy.ToLowerInvariant();
             order = orderBy == "newest" ? "desc" : "asc";

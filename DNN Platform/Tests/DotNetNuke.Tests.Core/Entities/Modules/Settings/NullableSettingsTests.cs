@@ -10,15 +10,11 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     using System.Globalization;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules.Settings;
+    using DotNetNuke.Tests.Utilities.Fakes;
 
     using Microsoft.Extensions.DependencyInjection;
-
-    using Moq;
 
     using NUnit.Framework;
 
@@ -32,28 +28,14 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             new object[] { "lorem ipsum", 456, DateTime.Now, DateTime.Today - DateTime.Now, },
         };
 
-        [SetUp]
-
-        public void Setup()
+        protected override void SetupServiceProvider(IServiceCollection services)
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            serviceCollection.AddTransient<ISerializationManager, SerializationManager>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            Globals.DependencyProvider = null;
+            services.AddSingleton<ISerializationManager, SerializationManager>();
         }
 
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("ar-JO")]
-
         public void SaveSettings_CallsUpdateSetting_WithRightParameters_ar_JO(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.SaveSettings_CallsUpdateSetting_WithRightParameters(stringValue, integerValue, datetimeValue, timeSpanValue);
@@ -62,7 +44,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("ca-ES")]
-
         public void SaveSettings_CallsUpdateSetting_WithRightParameters_ca_ES(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.SaveSettings_CallsUpdateSetting_WithRightParameters(stringValue, integerValue, datetimeValue, timeSpanValue);
@@ -71,7 +52,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("zh-CN")]
-
         public void SaveSettings_CallsUpdateSetting_WithRightParameters_zh_CN(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.SaveSettings_CallsUpdateSetting_WithRightParameters(stringValue, integerValue, datetimeValue, timeSpanValue);
@@ -80,7 +60,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("en-US")]
-
         public void SaveSettings_CallsUpdateSetting_WithRightParameters_en_US(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.SaveSettings_CallsUpdateSetting_WithRightParameters(stringValue, integerValue, datetimeValue, timeSpanValue);
@@ -89,7 +68,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("fr-FR")]
-
         public void SaveSettings_CallsUpdateSetting_WithRightParameters_fr_FR(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.SaveSettings_CallsUpdateSetting_WithRightParameters(stringValue, integerValue, datetimeValue, timeSpanValue);
@@ -98,7 +76,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("he-IL")]
-
         public void SaveSettings_CallsUpdateSetting_WithRightParameters_he_IL(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.SaveSettings_CallsUpdateSetting_WithRightParameters(stringValue, integerValue, datetimeValue, timeSpanValue);
@@ -107,7 +84,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("ru-RU")]
-
         public void SaveSettings_CallsUpdateSetting_WithRightParameters_ru_RU(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.SaveSettings_CallsUpdateSetting_WithRightParameters(stringValue, integerValue, datetimeValue, timeSpanValue);
@@ -116,14 +92,12 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("tr-TR")]
-
         public void SaveSettings_CallsUpdateSetting_WithRightParameters_tr_TR(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.SaveSettings_CallsUpdateSetting_WithRightParameters(stringValue, integerValue, datetimeValue, timeSpanValue);
         }
 
         [Test]
-
         public void SaveSettings_UpdatesCache()
         {
             // Arrange
@@ -143,7 +117,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         [Test]
-
         public void GetSettings_CallsGetCachedObject()
         {
             // Arrange
@@ -162,7 +135,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("ar-JO")]
-
         public void GetSettings_GetsValues_FromCorrectSettings_ar_JO(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.GetSettings_GetsValues_FromCorrectSettings(stringValue, integerValue, datetimeValue, timeSpanValue);
@@ -171,7 +143,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("ca-ES")]
-
         public void GetSettings_GetsValues_FromCorrectSettings_ca_ES(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.GetSettings_GetsValues_FromCorrectSettings(stringValue, integerValue, datetimeValue, timeSpanValue);
@@ -180,7 +151,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("zh-CN")]
-
         public void GetSettings_GetsValues_FromCorrectSettings_zh_CN(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.GetSettings_GetsValues_FromCorrectSettings(stringValue, integerValue, datetimeValue, timeSpanValue);
@@ -189,7 +159,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("en-US")]
-
         public void GetSettings_GetsValues_FromCorrectSettings_en_US(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.GetSettings_GetsValues_FromCorrectSettings(stringValue, integerValue, datetimeValue, timeSpanValue);
@@ -198,7 +167,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("fr-FR")]
-
         public void GetSettings_GetsValues_FromCorrectSettings_fr_FR(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.GetSettings_GetsValues_FromCorrectSettings(stringValue, integerValue, datetimeValue, timeSpanValue);
@@ -207,7 +175,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("he-IL")]
-
         public void GetSettings_GetsValues_FromCorrectSettings_he_IL(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.GetSettings_GetsValues_FromCorrectSettings(stringValue, integerValue, datetimeValue, timeSpanValue);
@@ -216,7 +183,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("ru-RU")]
-
         public void GetSettings_GetsValues_FromCorrectSettings_ru_RU(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.GetSettings_GetsValues_FromCorrectSettings(stringValue, integerValue, datetimeValue, timeSpanValue);
@@ -225,7 +191,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(NullableCases))]
         [SetCulture("tr-TR")]
-
         public void GetSettings_GetsValues_FromCorrectSettings_tr_TR(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
             this.GetSettings_GetsValues_FromCorrectSettings(stringValue, integerValue, datetimeValue, timeSpanValue);

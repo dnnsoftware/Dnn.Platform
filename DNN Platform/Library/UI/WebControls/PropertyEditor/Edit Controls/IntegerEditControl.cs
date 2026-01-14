@@ -4,18 +4,13 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      IntegerEditControl
-    /// <summary>
-    /// The IntegerEditControl control provides a standard UI component for editing
-    /// integer properties.
-    /// </summary>
+    /// <summary>The IntegerEditControl control provides a standard UI component for editing integer properties.</summary>
     [ToolboxData("<{0}:IntegerEditControl runat=server></{0}:IntegerEditControl>")]
     public class IntegerEditControl : EditControl
     {
@@ -42,7 +37,10 @@ namespace DotNetNuke.UI.WebControls
                     // Try and cast the value to an Integer
                     if (this.Value != null)
                     {
-                        int.TryParse(this.Value.ToString(), out intValue);
+                        if (!int.TryParse(this.Value.ToString(), out intValue))
+                        {
+                            intValue = Null.NullInteger;
+                        }
                     }
                 }
                 catch (Exception exc)
@@ -64,7 +62,10 @@ namespace DotNetNuke.UI.WebControls
                 try
                 {
                     // Try and cast the value to an Integer
-                    int.TryParse(this.OldValue.ToString(), out intValue);
+                    if (!int.TryParse(this.OldValue.ToString(), out intValue))
+                    {
+                        intValue = Null.NullInteger;
+                    }
                 }
                 catch (Exception exc)
                 {
@@ -81,20 +82,18 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this.IntegerValue.ToString();
+                return this.IntegerValue.ToString(CultureInfo.InvariantCulture);
             }
 
             set
             {
-                int setValue = int.Parse(value);
+                int setValue = int.Parse(value, CultureInfo.InvariantCulture);
                 this.Value = setValue;
             }
         }
 
-        /// <summary>
-        /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event.
-        /// </summary>
+        /// <summary>OnDataChanged runs when the PostbackData has changed.  It raises the <see cref="EditControl.ValueChanged"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnDataChanged(EventArgs e)
         {
             var args = new PropertyEditorEventArgs(this.Name);

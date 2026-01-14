@@ -10,14 +10,46 @@ namespace DotNetNuke.Prompt
     using System.Text.RegularExpressions;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Prompt;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>The repository handles retrieving of commands from the entire DNN installation.</summary>
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
+        private readonly IServiceScopeFactory serviceScopeFactory;
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="CommandRepository"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public CommandRepository()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CommandRepository"/> class.</summary>
+        /// <param name="serviceScopeFactory">The service scope factory.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public CommandRepository(IServiceScopeFactory serviceScopeFactory)
+        {
+            this.serviceScopeFactory = serviceScopeFactory ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServiceScopeFactory>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CommandRepository"/> class.</summary>
+        /// <param name="serviceScopeFactory">The service scope factory.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public CommandRepository(IServiceScopeFactory serviceScopeFactory, IHostSettings hostSettings)
+        {
+            this.serviceScopeFactory = serviceScopeFactory ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServiceScopeFactory>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
+
         /// <inheritdoc/>
         public IEnumerable<ICommand> GetCommands()
         {
@@ -25,13 +57,12 @@ namespace DotNetNuke.Prompt
         }
 
         /// <inheritdoc/>
-        public IConsoleCommand GetCommand(string commandName)
+        public IConsoleCommand GetCommand(IServiceProvider serviceProvider, string commandName)
         {
-            commandName = commandName.ToUpper();
             var allCommands = this.CommandList();
-            if (allCommands.ContainsKey(commandName))
+            if (allCommands.TryGetValue(commandName, out var command))
             {
-                return (IConsoleCommand)Activator.CreateInstance(Type.GetType(allCommands[commandName].TypeFullName));
+                return (IConsoleCommand)ActivatorUtilities.CreateInstance(serviceProvider, Type.GetType(command.TypeFullName));
             }
 
             return null;
@@ -42,46 +73,15 @@ namespace DotNetNuke.Prompt
         {
             var cacheKey = $"{consoleCommand.GetType().Name}-{System.Threading.Thread.CurrentThread.CurrentUICulture.Name}";
             return DataCache.GetCachedData<ICommandHelp>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, CacheItemPriority.Low),
-                c => this.GetCommandHelpInternal(consoleCommand));
+                _ => GetCommandHelpInternal(consoleCommand));
         }
 
         /// <inheritdoc/>
         protected override Func<ICommandRepository> GetFactory()
         {
-            return () => new CommandRepository();
-        }
-
-        private static SortedDictionary<string, ICommand> GetCommandsInternal()
-        {
-            var commands = new SortedDictionary<string, ICommand>();
-            var typeLocator = new TypeLocator();
-            var allCommandTypes = typeLocator.GetAllMatchingTypes(
-                t => t != null &&
-                     t.IsClass &&
-                     !t.IsAbstract &&
-                     t.IsVisible &&
-                     typeof(IConsoleCommand).IsAssignableFrom(t));
-            foreach (var cmd in allCommandTypes)
-            {
-                var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault() ?? new ConsoleCommandAttribute(CreateCommandFromClass(cmd.Name), Constants.CommandCategoryKeys.General, $"Prompt_{cmd.Name}_Description");
-                var assemblyName = cmd.Assembly.GetName();
-                var version = assemblyName.Version.ToString();
-                var commandAttribute = (ConsoleCommandAttribute)attr;
-                var key = commandAttribute.Name.ToUpper();
-                var localResourceFile = ((IConsoleCommand)Activator.CreateInstance(cmd))?.LocalResourceFile;
-                commands.Add(key, new Command
-                {
-                    Category = LocalizeString(commandAttribute.CategoryKey, localResourceFile),
-                    Description = LocalizeString(commandAttribute.DescriptionKey, localResourceFile),
-                    Key = key,
-                    Name = commandAttribute.Name,
-                    Version = version,
-                    TypeFullName = cmd.AssemblyQualifiedName,
-                });
-            }
-
-            return commands;
+            return Globals.DependencyProvider.GetRequiredService<ICommandRepository>;
         }
 
         private static string LocalizeString(string key, string resourcesFile = Constants.DefaultPromptResourceFile)
@@ -93,7 +93,7 @@ namespace DotNetNuke.Prompt
         private static string CreateCommandFromClass(string className)
         {
             var camelCasedParts = SplitCamelCase(className);
-            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
+            return string.Join("-", camelCasedParts.Select(x => x.ToLowerInvariant()));
         }
 
         private static string[] SplitCamelCase(string source)
@@ -101,15 +101,7 @@ namespace DotNetNuke.Prompt
             return Regex.Split(source, @"(?<!^)(?=[A-Z])");
         }
 
-        private SortedDictionary<string, ICommand> CommandList()
-        {
-            return
-                DataCache.GetCachedData<SortedDictionary<string, ICommand>>(
-                    new CacheItemArgs("DnnPromptCommandList", CacheItemPriority.Default),
-                    c => GetCommandsInternal());
-        }
-
-        private ICommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
+        private static CommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
         {
             var commandHelp = new CommandHelp();
             if (consoleCommand != null)
@@ -121,7 +113,7 @@ namespace DotNetNuke.Prompt
                 var commandParameters = cmd.GetFields(BindingFlags.NonPublic | BindingFlags.Static)
                     .Select(x => x.GetCustomAttributes(typeof(ConsoleCommandParameterAttribute), false).FirstOrDefault())
                     .Cast<ConsoleCommandParameterAttribute>().ToList();
-                if (commandParameters.Any())
+                if (commandParameters.Count != 0)
                 {
                     var options = commandParameters.Where(attribute => attribute != null).Select(attribute => new CommandOption
                     {
@@ -142,6 +134,49 @@ namespace DotNetNuke.Prompt
             }
 
             return commandHelp;
+        }
+
+        private SortedDictionary<string, ICommand> GetCommandsInternal()
+        {
+            var commands = new SortedDictionary<string, ICommand>(StringComparer.OrdinalIgnoreCase);
+            var typeLocator = new TypeLocator();
+            var allCommandTypes = typeLocator.GetAllMatchingTypes(
+                t => t is { IsClass: true, IsAbstract: false, IsVisible: true, } &&
+                     typeof(IConsoleCommand).IsAssignableFrom(t));
+
+            using var serviceScope = this.serviceScopeFactory.CreateScope();
+            foreach (var cmd in allCommandTypes)
+            {
+                var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault() ?? new ConsoleCommandAttribute(CreateCommandFromClass(cmd.Name), Constants.CommandCategoryKeys.General, $"Prompt_{cmd.Name}_Description");
+                var assemblyName = cmd.Assembly.GetName();
+                var version = assemblyName.Version.ToString();
+                var commandAttribute = (ConsoleCommandAttribute)attr;
+                var key = commandAttribute.Name;
+
+                var command = (IConsoleCommand)ActivatorUtilities.CreateInstance(serviceScope.ServiceProvider, cmd);
+                var localResourceFile = command?.LocalResourceFile;
+
+                commands.Add(key, new Command
+                {
+                    Category = LocalizeString(commandAttribute.CategoryKey, localResourceFile),
+                    Description = LocalizeString(commandAttribute.DescriptionKey, localResourceFile),
+                    Key = key,
+                    Name = commandAttribute.Name,
+                    Version = version,
+                    TypeFullName = cmd.AssemblyQualifiedName,
+                });
+            }
+
+            return commands;
+        }
+
+        private SortedDictionary<string, ICommand> CommandList()
+        {
+            return
+                DataCache.GetCachedData<SortedDictionary<string, ICommand>>(
+                    this.hostSettings,
+                    new CacheItemArgs("DnnPromptCommandList", CacheItemPriority.Default),
+                    _ => this.GetCommandsInternal());
         }
     }
 }

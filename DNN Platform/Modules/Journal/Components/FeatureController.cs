@@ -27,9 +27,17 @@ namespace DotNetNuke.Modules.Journal.Components
     public class FeatureController : ModuleSearchBase, IModuleSearchResultController
     {
         /// <summary>Initializes a new instance of the <see cref="FeatureController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public FeatureController()
+            : this(null)
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="FeatureController"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        public FeatureController(INavigationManager navigationManager)
+        {
+            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         protected INavigationManager NavigationManager { get; }

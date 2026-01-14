@@ -27,7 +27,7 @@ const StepTwo = ({packageManifest, onCancel, onNext, onBasePathChange, onPreviou
                 onChange={onFileOrAssemblyChange.bind(this, "files")} />
         </GridCell>
         <GridCell className="modal-footer">
-            <Button type="secondary" onClick={onCancel}>{Localization.get("Cancel.Button")}</Button>
+            <Button type="neutral" onClick={onCancel}>{Localization.get("Cancel.Button")}</Button>
             <Button type="secondary" onClick={onPrevious}>{Localization.get("Previous.Button")}</Button>
             <Button type="primary" onClick={onNext}>{Localization.get("Next.Button")}</Button>
         </GridCell>

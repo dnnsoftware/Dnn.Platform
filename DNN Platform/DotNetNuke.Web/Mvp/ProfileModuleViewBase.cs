@@ -17,6 +17,8 @@ namespace DotNetNuke.Web.Mvp
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>Represents a class that is a view for a profile module with a strongly typed view model in a Web Forms Model-View-Presenter application.</summary>
+    /// <typeparam name="TModel">The type of the model.</typeparam>
     [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public abstract partial class ProfileModuleViewBase<TModel> : ModuleView<TModel>, IProfileModule
         where TModel : class, new()
@@ -24,7 +26,7 @@ namespace DotNetNuke.Web.Mvp
         /// <summary>Initializes a new instance of the <see cref="ProfileModuleViewBase{TModel}"/> class.</summary>
         public ProfileModuleViewBase()
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         /// <inheritdoc/>
@@ -38,15 +40,17 @@ namespace DotNetNuke.Web.Mvp
                 int userId = Null.NullInteger;
                 if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
                 {
-                    userId = int.Parse(this.Request.Params["UserId"]);
+                    userId = int.Parse(this.Request.Params["UserId"], CultureInfo.InvariantCulture);
                 }
 
                 return userId;
             }
         }
 
+        /// <summary>Gets the navigation manager.</summary>
         protected INavigationManager NavigationManager { get; }
 
+        /// <summary>Gets a value indicating whether the profile is for the current user.</summary>
         protected bool IsUser
         {
             get
@@ -55,6 +59,7 @@ namespace DotNetNuke.Web.Mvp
             }
         }
 
+        /// <summary>Gets the info about the user displayed in the profile.</summary>
         protected UserInfo ProfileUser
         {
             get { return UserController.GetUserById(this.ModuleContext.PortalId, this.ProfileUserId); }
@@ -68,10 +73,10 @@ namespace DotNetNuke.Web.Mvp
                                 || this.ModuleContext.PortalSettings.ActiveTab.ParentId == this.ModuleContext.PortalSettings.UserTabId))
             {
                 // Clicked on breadcrumb - don't know which user
-                this.Response.Redirect(
-                    this.Request.IsAuthenticated
-                                      ? this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, string.Empty, "UserId=" + this.ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
-                                      : this.GetRedirectUrl(), true);
+                var redirectUrl = this.Request.IsAuthenticated
+                    ? this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, string.Empty, "UserId=" + this.ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
+                    : this.GetRedirectUrl();
+                this.Response.Redirect(redirectUrl, true);
             }
 
             base.OnInit(e);

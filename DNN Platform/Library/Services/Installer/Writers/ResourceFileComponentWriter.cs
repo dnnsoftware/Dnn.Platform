@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// </summary>
         /// <param name="basePath">The Base Path for the files.</param>
         /// <param name="files">A Dictionary of files.</param>
-        /// <param name="package"></param>
+        /// <param name="package">The package info.</param>
         public ResourceFileComponentWriter(string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
             : base(basePath, files, package)
         {

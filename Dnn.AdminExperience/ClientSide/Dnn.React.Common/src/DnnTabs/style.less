@@ -12,7 +12,7 @@
     &.primary {
         > ul {
             padding: 0;
-            background-color: @mercury;
+            background-color: var(--dnn-color-surface, @mercury);
             border: none;
             margin: 0;
             li {
@@ -21,7 +21,7 @@
                 padding: 17px 44px;
                 font-size: 10pt;
                 bottom: 0px;
-                color: @bulgarianRose;
+                color: var(--dnn-color-surface-contrast, @bulgarianRose);
                 display: inline-block;
                 &:focus {
                     box-shadow: none;
@@ -36,14 +36,15 @@
                 }
                 &[aria-selected=true] {
                     border: none;
-                    background: @white;
+                    background: var(--dnn-color-background, @white);
                 }
             }
         }
     }
     &.secondary {
+        --soft-foreground: rgba(var(--dnn-color-foreground-r, 0), var(--dnn-color-foreground-g, 0), var(--dnn-color-foreground-b, 0), 0.6);
         > ul {
-            border-bottom: 1px solid @alto;
+            border-bottom: 1px solid var(--soft-foreground);
             margin: 0;
             li {
                 display: inline-block;
@@ -56,19 +57,19 @@
                 bottom: 0;
                 border: none;
                 border-bottom: 3px solid transparent;
-                color: @mountainMist;
+                color: var(--soft-foreground);
                 &:last-child {
                     margin-right: 0;
                 }
                 &[aria-selected=true] {
                     background-color: transparent;
                     border: none;
-                    border-bottom: 3px solid @curiousBlue;
+                    border-bottom: 3px solid var(--dnn-color-primary, @curiousBlue);
                     color: @curiousBlue !important;
                     &:focus {
                         box-shadow: none;
                         outline: medium;
-                        border-color: @curiousBlue !important;
+                        border-color: var(--dnn-color-primary, @curiousBlue) !important;
                         border: none;
                         border-bottom: 3px solid;
                         &:after {

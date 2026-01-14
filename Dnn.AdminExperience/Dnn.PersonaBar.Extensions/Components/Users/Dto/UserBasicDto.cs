@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         }
 
         /// <summary>Initializes a new instance of the <see cref="UserBasicDto"/> class.</summary>
-        /// <param name="user"></param>
+        /// <param name="user">The user info.</param>
         public UserBasicDto(UserInfo user)
         {
             this.UserId = user.UserID;
@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             this.HasAgreedToTerms = user.HasAgreedToTerms;
             this.RequestsRemoval = user.RequestsRemoval;
             this.IsSuperUser = user.IsSuperUser;
-            this.IsAdmin = user.Roles.Contains(this.PortalSettings.AdministratorRoleName);
+            this.IsAdmin = user.Roles.Contains(PortalSettings.AdministratorRoleName);
             this.AvatarUrl = Utilities.GetProfileAvatar(this.UserId);
         }
 
@@ -80,7 +80,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "isAdmin")]
         public bool IsAdmin { get; set; }
 
-        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         public static UserBasicDto FromUserInfo(UserInfo user)
         {

@@ -4,10 +4,12 @@
 namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
     using System.Threading;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -25,13 +27,27 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 
         private readonly int executionTimeout = 5000; // Limit timeout to 5 seconds as cache operations should be quick
 
+        /// <summary>Initializes a new instance of the <see cref="SimpleWebFarmCachingProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public SimpleWebFarmCachingProvider()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SimpleWebFarmCachingProvider"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public SimpleWebFarmCachingProvider(IHostSettings hostSettings)
+            : base(hostSettings)
+        {
+        }
+
         /// <inheritdoc/>
         public override void Clear(string type, string data)
         {
             // Clear the local cache
             this.ClearCacheInternal(type, data, true);
 
-            // Per API implementation standards only notify others if expiration has not been desabled
+            // Per API implementation standards only notify others if expiration has not been disabled
             if (CacheExpirationDisable)
             {
                 return;
@@ -42,6 +58,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void Remove(string key)
         {
             // Remove from local cache
@@ -122,7 +139,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
                 var detailParameter = Host.DebugMode ? detail : UrlUtils.EncryptParameter(detail, Host.GUID);
                 var protocol = HostController.Instance.GetBoolean("UseSSLForCacheSync", false) ? "https://" : "http://";
                 var notificationUrl =
-                    $"{protocol}{server.Url}/SimpleWebFarmSync.aspx?command={commandParameter}&detail={detailParameter}";
+                    $"{protocol}{server.Url}/SimpleWebFarmSync.axd?command={commandParameter}&detail={detailParameter}";
 
                 // Build a webrequest
                 var notificationRequest = WebRequest.CreateHttp(notificationUrl);
@@ -156,7 +173,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
                     }
 
                     // Otherwise log the failure
-                    Exceptions.LogException(new ApplicationException(
+                    Exceptions.LogException(new SyncException(
                         $"Error sending cache server notification.  Url: {request.RequestUri.AbsoluteUri} with a status code {response.StatusCode}"));
                 }
             }
@@ -164,7 +181,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             {
                 if (e.Status != WebExceptionStatus.RequestCanceled)
                 {
-                    Exceptions.LogException(new Exception("Synchronization Error in Request: " + request.RequestUri.AbsoluteUri, e));
+                    Exceptions.LogException(new SyncException("Synchronization Error in Request: " + request.RequestUri.AbsoluteUri, e));
                 }
             }
         }

@@ -11,6 +11,7 @@ namespace DotNetNuke.UI.WebControls
         private readonly string format;
 
         /// <summary>Initializes a new instance of the <see cref="FormatAttribute"/> class.</summary>
+        /// <param name="format">The format string to use to format the corresponding date/time.</param>
         public FormatAttribute(string format)
         {
             this.format = format;

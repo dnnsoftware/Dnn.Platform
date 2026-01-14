@@ -27,8 +27,5 @@ namespace DotNetNuke.Modules.Html.Components
 
         [ModuleSetting(Prefix = "HtmlText_")]
         public int SearchDescLength { get; set; } = 100;
-
-        [ModuleSetting]
-        public int WorkFlowID { get; set; } = -1;
     }
 }

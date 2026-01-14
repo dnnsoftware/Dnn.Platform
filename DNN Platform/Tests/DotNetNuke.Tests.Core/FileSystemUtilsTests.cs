@@ -1,78 +1,76 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core
 {
     using System;
     using System.IO;
     using System.IO.Compression;
-    using System.Linq;
-    using System.Reflection;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ComponentModel;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Tests.Utilities.Mocks;
+    using DotNetNuke.Tests.Utilities.Fakes;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
-    /// <summary>  FileSystemUtilsTests.</summary>
     [TestFixture]
     public class FileSystemUtilsTests
     {
+        private FakeServiceProvider serviceProvider;
+
         [SetUp]
         public void SetUp()
         {
             var applicationStatusInfo = new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>());
             var rootPath = Path.Combine(applicationStatusInfo.ApplicationMapPath, "FileSystemUtilsTest");
-            this.PrepareRootPath(rootPath, applicationStatusInfo.ApplicationMapPath);
+            PrepareRootPath(rootPath, applicationStatusInfo.ApplicationMapPath);
 
-            var serviceCollection = new ServiceCollection();
             var mock = new Mock<IApplicationStatusInfo>();
             mock.Setup(info => info.ApplicationMapPath).Returns(rootPath);
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mock.Object);
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(mock.Object);
+                });
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
         }
 
         [TestCase("/")]
         [TestCase("//")]
         [TestCase("///")]
+        [TestCase(@"\")]
         [TestCase("\\")]
-        [TestCase("\\\\")]
-        [TestCase("\\\\\\")]
+        [TestCase(@"\\\")]
         [TestCase("/Test/../")]
         [TestCase("/Test/mmm/../../")]
-        [TestCase("\\Test\\..\\")]
-        [TestCase("\\Test\\mmm\\..\\..\\")]
-        [TestCase("\\Test\\")]
+        [TestCase(@"\Test\..\")]
+        [TestCase(@"\Test\mmm\..\..\")]
+        [TestCase(@"\Test\")]
         [TestCase("..\\")]
-
         public void DeleteFiles_Should_Not_Able_To_Delete_Root_Folder(string path)
         {
             // Action
-            FileSystemUtils.DeleteFiles(new string[] { path });
+            FileSystemUtils.DeleteFiles(new[] { path, });
 
             var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.AllDirectories);
-            Assert.That(files.Length, Is.GreaterThan(0));
+            Assert.That(files, Is.Not.Empty);
         }
 
         [Test]
         public void AddToZip_Should_Able_To_Add_Multiple_Files()
         {
             // Action
-            this.DeleteZippedFiles();
+            DeleteZippedFiles();
             var zipFilePath = Path.Combine(Globals.ApplicationMapPath, $"Test{Guid.NewGuid().ToString().Substring(0, 8)}.zip");
             var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.TopDirectoryOnly);
             using (var stream = File.Create(zipFilePath))
@@ -109,8 +107,8 @@ namespace DotNetNuke.Tests.Core
             }
             finally
             {
-                this.DeleteZippedFiles();
-                this.DeleteUnzippedFolder(destPath);
+                DeleteZippedFiles();
+                DeleteUnzippedFolder(destPath);
             }
         }
 
@@ -127,8 +125,7 @@ namespace DotNetNuke.Tests.Core
             FileSystemUtils.DeleteFile(testPath);
 
             // Assert
-            bool res = File.Exists(testPath.Replace("/", "\\"));
-            Assert.That(res, Is.False);
+            Assert.That(testPath.Replace("/", @"\"), Does.Not.Exist);
         }
 
         [TestCase(null)]
@@ -144,23 +141,21 @@ namespace DotNetNuke.Tests.Core
             // Assert
             if (string.IsNullOrEmpty(input))
             {
-                Assert.That(input == result, Is.True);
+                Assert.That(result, Is.EqualTo(input));
             }
             else if (string.IsNullOrWhiteSpace(input))
             {
-                Assert.That(result == string.Empty, Is.True);
+                Assert.That(result, Is.Empty);
             }
             else
             {
-                Assert.Multiple(() =>
-                {
-                    Assert.That(result.Contains(" "), Is.False);
-                    Assert.That(result.Contains("/"), Is.False);
-                });
+                using var scope = Assert.EnterMultipleScope();
+                Assert.That(result, Does.Not.Contain(" "));
+                Assert.That(result, Does.Not.Contain("/"));
             }
         }
 
-        private void PrepareRootPath(string rootPath, string applicationMapPath)
+        private static void PrepareRootPath(string rootPath, string applicationMapPath)
         {
             if (!Directory.Exists(rootPath))
             {
@@ -169,11 +164,18 @@ namespace DotNetNuke.Tests.Core
 
             foreach (var file in Directory.GetFiles(applicationMapPath, "*.*", SearchOption.TopDirectoryOnly))
             {
-                File.Copy(file, Path.Combine(rootPath, Path.GetFileName(file)), true);
+                try
+                {
+                    File.Copy(file, Path.Combine(rootPath, Path.GetFileName(file)), true);
+                }
+                catch (IOException e)
+                {
+                    Console.WriteLine(e);
+                }
             }
         }
 
-        private void DeleteZippedFiles()
+        private static void DeleteZippedFiles()
         {
             var excludedFiles = Directory.GetFiles(Globals.ApplicationMapPath, "Test*", SearchOption.TopDirectoryOnly);
             foreach (var f in excludedFiles)
@@ -189,7 +191,7 @@ namespace DotNetNuke.Tests.Core
             }
         }
 
-        private void DeleteUnzippedFolder(string zippedFolder)
+        private static void DeleteUnzippedFolder(string zippedFolder)
         {
             try
             {

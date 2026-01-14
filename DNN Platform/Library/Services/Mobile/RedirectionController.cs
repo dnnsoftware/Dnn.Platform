@@ -8,7 +8,10 @@ namespace DotNetNuke.Services.Mobile
     using System.Globalization;
     using System.Linq;
     using System.Web;
+    using System.Web.Services.Description;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -19,6 +22,8 @@ namespace DotNetNuke.Services.Mobile
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.ClientCapability;
     using DotNetNuke.Services.Log.EventLog;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class RedirectionController : IRedirectionController
     {
@@ -32,13 +37,26 @@ namespace DotNetNuke.Services.Mobile
         private const string MobileSiteUrlCacheKey = "MobileSiteUrl_{0}_{1}";
         private const int UrlsCacheTimeout = 60;
 
-        private string AllRedirectionsCacheKey
+        private readonly IEventLogger eventLogger;
+        private readonly IPortalController portalController;
+
+        /// <summary>Initializes a new instance of the <see cref="RedirectionController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public RedirectionController()
+            : this(null, null)
         {
-            get
-            {
-                return string.Format(DataCache.RedirectionsCacheKey, "All");
-            }
         }
+
+        /// <summary>Initializes a new instance of the <see cref="RedirectionController"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public RedirectionController(IPortalController portalController, IEventLogger eventLogger)
+        {
+            this.portalController = portalController ?? Globals.DependencyProvider.GetRequiredService<IPortalController>();
+            this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
+        }
+
+        private static string AllRedirectionsCacheKey => string.Format(CultureInfo.InvariantCulture, DataCache.RedirectionsCacheKey, "All");
 
         /// <summary>
         /// Is Redirection Allowed for the session. Method analyzes the query string for special parameters to enable / disable redirects.
@@ -119,11 +137,11 @@ namespace DotNetNuke.Services.Mobile
         /// <param name="userAgent">User Agent - used for client capability detection.</param>
         public string GetRedirectUrl(string userAgent)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (portalSettings != null && portalSettings.ActiveTab != null)
+            var portalSettings = this.portalController.GetCurrentPortalSettings();
+            if (portalSettings is { ActiveTab: not null, })
             {
                 string redirectUrl = this.GetRedirectUrl(userAgent, portalSettings.PortalId, portalSettings.ActiveTab.TabID);
-                if (!string.IsNullOrEmpty(redirectUrl) && string.Compare(redirectUrl, portalSettings.ActiveTab.FullUrl, true, CultureInfo.InvariantCulture) != 0)
+                if (!string.IsNullOrEmpty(redirectUrl) && !string.Equals(redirectUrl, portalSettings.ActiveTab.FullUrl, StringComparison.OrdinalIgnoreCase))
                 {
                     return redirectUrl;
                 }
@@ -132,11 +150,11 @@ namespace DotNetNuke.Services.Mobile
             return string.Empty;
         }
 
-        /// <summary>Get Redirection Url based on Http Context and Portal Id.</summary>
+        /// <summary>Get Redirection Url based on Http Context and Portal ID.</summary>
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         /// <param name="userAgent">User Agent - used for client capability detection.</param>
-        /// <param name="portalId">Portal Id from which Redirection Rules should be applied.</param>
-        /// <param name="currentTabId">Current Tab Id that needs to be evaluated.</param>
+        /// <param name="portalId">Portal ID from which Redirection Rules should be applied.</param>
+        /// <param name="currentTabId">Current Tab ID that needs to be evaluated.</param>
         public string GetRedirectUrl(string userAgent, int portalId, int currentTabId)
         {
             Requires.NotNullOrEmpty("userAgent", userAgent);
@@ -152,8 +170,8 @@ namespace DotNetNuke.Services.Mobile
             }
 
             // try to get content from cache
-            var cacheKey = string.Format(RedirectionUrlCacheKey, userAgent, portalId, currentTabId);
-            redirectUrl = this.GetUrlFromCache(cacheKey);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, RedirectionUrlCacheKey, userAgent, portalId, currentTabId);
+            redirectUrl = GetUrlFromCache(cacheKey);
             if (!string.IsNullOrEmpty(redirectUrl))
             {
                 return redirectUrl;
@@ -205,13 +223,13 @@ namespace DotNetNuke.Services.Mobile
                         }
 
                         // check if client capability matches with this rule
-                        if (this.DoesCapabilityMatchWithRule(clientCapability, redirection))
+                        if (DoesCapabilityMatchWithRule(clientCapability, redirection))
                         {
                             // find the redirect url
                             redirectUrl = this.GetRedirectUrlFromRule(redirection, portalId, currentTabId);
 
                             // update cache content
-                            this.SetUrlInCache(cacheKey, redirectUrl);
+                            SetUrlInCache(cacheKey, redirectUrl);
                             break;
                         }
                     }
@@ -225,11 +243,11 @@ namespace DotNetNuke.Services.Mobile
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         public string GetFullSiteUrl()
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (portalSettings != null && portalSettings.ActiveTab != null)
+            var portalSettings = this.portalController.GetCurrentPortalSettings();
+            if (portalSettings is { ActiveTab: not null, })
             {
                 string fullSiteUrl = this.GetFullSiteUrl(portalSettings.PortalId, portalSettings.ActiveTab.TabID);
-                if (!string.IsNullOrEmpty(fullSiteUrl) && string.Compare(fullSiteUrl, portalSettings.ActiveTab.FullUrl, true, CultureInfo.InvariantCulture) != 0)
+                if (!string.IsNullOrEmpty(fullSiteUrl) && !string.Equals(fullSiteUrl, portalSettings.ActiveTab.FullUrl, StringComparison.OrdinalIgnoreCase))
                 {
                     return fullSiteUrl;
                 }
@@ -240,8 +258,8 @@ namespace DotNetNuke.Services.Mobile
 
         /// <summary>Get Url for the equivalent full site based on the current page of the mobile site.</summary>
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
-        /// <param name="portalId">Portal Id from which Redirection Rules should be applied.</param>
-        /// <param name="currentTabId">Current Tab Id that needs to be evaluated.</param>
+        /// <param name="portalId">Portal ID from which Redirection Rules should be applied.</param>
+        /// <param name="currentTabId">Current Tab ID that needs to be evaluated.</param>
         public string GetFullSiteUrl(int portalId, int currentTabId)
         {
             string fullSiteUrl = string.Empty;
@@ -255,8 +273,8 @@ namespace DotNetNuke.Services.Mobile
             }
 
             // try to get content from cache
-            var cacheKey = string.Format(FullSiteUrlCacheKey, portalId, currentTabId);
-            fullSiteUrl = this.GetUrlFromCache(cacheKey);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, FullSiteUrlCacheKey, portalId, currentTabId);
+            fullSiteUrl = GetUrlFromCache(cacheKey);
             if (!string.IsNullOrEmpty(fullSiteUrl))
             {
                 return fullSiteUrl;
@@ -270,7 +288,7 @@ namespace DotNetNuke.Services.Mobile
                     if (redirection.TargetType == TargetType.Tab)
                     {
                         // page within same site
-                        int targetTabId = int.Parse(redirection.TargetValue.ToString());
+                        int targetTabId = int.Parse(redirection.TargetValue.ToString(), CultureInfo.InvariantCulture);
                         if (targetTabId == currentTabId)
                         {
                             // target tab is same as current tab
@@ -280,7 +298,7 @@ namespace DotNetNuke.Services.Mobile
                     else if (redirection.TargetType == TargetType.Portal)
                     {
                         // home page of another portal
-                        int targetPortalId = int.Parse(redirection.TargetValue.ToString());
+                        int targetPortalId = int.Parse(redirection.TargetValue.ToString(), CultureInfo.InvariantCulture);
                         if (targetPortalId == portalId)
                         {
                             // target portal is same as current portal
@@ -305,7 +323,7 @@ namespace DotNetNuke.Services.Mobile
                             // ensure it's not redirecting to itself
                             if (portalSettings.HomeTabId != Null.NullInteger && portalSettings.HomeTabId != currentTabId)
                             {
-                                fullSiteUrl = this.GetPortalHomePageUrl(portalSettings);
+                                fullSiteUrl = GetPortalHomePageUrl(portalSettings);
                             }
                         }
 
@@ -317,11 +335,11 @@ namespace DotNetNuke.Services.Mobile
             // append special query string
             if (!string.IsNullOrEmpty(fullSiteUrl))
             {
-                fullSiteUrl += string.Format("{0}{1}=1", fullSiteUrl.Contains("?") ? "&" : "?", DisableMobileRedirectQueryStringName);
+                fullSiteUrl += $"{(fullSiteUrl.Contains("?") ? "&" : "?")}{DisableMobileRedirectQueryStringName}=1";
             }
 
             // update cache content
-            this.SetUrlInCache(cacheKey, fullSiteUrl);
+            SetUrlInCache(cacheKey, fullSiteUrl);
 
             return fullSiteUrl;
         }
@@ -330,11 +348,11 @@ namespace DotNetNuke.Services.Mobile
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         public string GetMobileSiteUrl()
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (portalSettings != null && portalSettings.ActiveTab != null)
+            var portalSettings = this.portalController.GetCurrentPortalSettings();
+            if (portalSettings is { ActiveTab: not null })
             {
                 string fullSiteUrl = this.GetMobileSiteUrl(portalSettings.PortalId, portalSettings.ActiveTab.TabID);
-                if (!string.IsNullOrEmpty(fullSiteUrl) && string.Compare(fullSiteUrl, portalSettings.ActiveTab.FullUrl, true, CultureInfo.InvariantCulture) != 0)
+                if (!string.IsNullOrEmpty(fullSiteUrl) && !string.Equals(fullSiteUrl, portalSettings.ActiveTab.FullUrl, StringComparison.OrdinalIgnoreCase))
                 {
                     return fullSiteUrl;
                 }
@@ -345,8 +363,8 @@ namespace DotNetNuke.Services.Mobile
 
         /// <summary>Get Url for the equivalent mobile site based on the current page of the full site.</summary>
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
-        /// <param name="portalId">Portal Id from which Redirection Rules should be applied.</param>
-        /// <param name="currentTabId">Current Tab Id that needs to be evaluated.</param>
+        /// <param name="portalId">Portal ID from which Redirection Rules should be applied.</param>
+        /// <param name="currentTabId">Current Tab ID that needs to be evaluated.</param>
         public string GetMobileSiteUrl(int portalId, int currentTabId)
         {
             string mobileSiteUrl = string.Empty;
@@ -359,14 +377,14 @@ namespace DotNetNuke.Services.Mobile
             }
 
             // try to get content from cache
-            var cacheKey = string.Format(MobileSiteUrlCacheKey, portalId, currentTabId);
-            mobileSiteUrl = this.GetUrlFromCache(cacheKey);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, MobileSiteUrlCacheKey, portalId, currentTabId);
+            mobileSiteUrl = GetUrlFromCache(cacheKey);
             if (!string.IsNullOrEmpty(mobileSiteUrl))
             {
                 return mobileSiteUrl;
             }
 
-            // let's try to find if this tab has any specifc rules
+            // let's try to find if this tab has any specific rules
             foreach (var redirection in redirections)
             {
                 if (redirection.Enabled)
@@ -392,11 +410,11 @@ namespace DotNetNuke.Services.Mobile
             // append special query string
             if (!string.IsNullOrEmpty(mobileSiteUrl))
             {
-                mobileSiteUrl += string.Format("{0}{1}=0", mobileSiteUrl.Contains("?") ? "&" : "?", DisableMobileRedirectQueryStringName);
+                mobileSiteUrl += $"{(mobileSiteUrl.Contains("?") ? "&" : "?")}{DisableMobileRedirectQueryStringName}=0";
             }
 
             // update cache content
-            this.SetUrlInCache(cacheKey, mobileSiteUrl);
+            SetUrlInCache(cacheKey, mobileSiteUrl);
 
             return mobileSiteUrl;
         }
@@ -431,41 +449,41 @@ namespace DotNetNuke.Services.Mobile
                 DataProvider.Instance().SaveRedirectionRule(rule.Id, id, rule.Capability, rule.Expression);
             }
 
-            var logContent = string.Format("'{0}' {1}", redirection.Name, redirection.Id == Null.NullInteger ? "Added" : "Updated");
+            var logContent = $"'{redirection.Name}' {(redirection.Id == Null.NullInteger ? "Added" : "Updated")}";
             this.AddLog(logContent);
 
-            this.ClearCache(redirection.PortalId);
+            ClearCache(redirection.PortalId);
         }
 
         /// <summary>Deletes all redirection rules that were set for pages that have been soft or hard deleted.</summary>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
         public void PurgeInvalidRedirections(int portalId)
         {
             var allTabs = TabController.Instance.GetTabsByPortal(portalId);
             var redirects = this.GetRedirectionsByPortal(portalId);
 
             // remove rules for deleted source tabs
-            foreach (var r in redirects.Where(r => r.SourceTabId != Null.NullInteger && allTabs.Where(t => t.Key == r.SourceTabId).Count() < 1))
+            foreach (var r in redirects.Where(r => r.SourceTabId != Null.NullInteger && allTabs.All(t => t.Key != r.SourceTabId)))
             {
                 this.Delete(portalId, r.Id);
             }
 
             // remove rules for deleted target tabs
             redirects = this.GetRedirectionsByPortal(portalId); // fresh get of rules in case some were deleted above
-            foreach (var r in redirects.Where(r => r.TargetType == TargetType.Tab && allTabs.Where(t => t.Key == int.Parse(r.TargetValue.ToString())).Count() < 1))
+            foreach (var r in redirects.Where(r => r.TargetType == TargetType.Tab && allTabs.All(t => t.Key != int.Parse(r.TargetValue.ToString(), CultureInfo.InvariantCulture))))
             {
                 this.Delete(portalId, r.Id);
             }
 
             // remove rules for deleted target portals
             redirects = this.GetRedirectionsByPortal(portalId); // fresh get of rules in case some were deleted above
-            var allPortals = PortalController.Instance.GetPortals();
+            var allPortals = this.portalController.GetPortals();
             foreach (var r in redirects.Where(r => r.TargetType == TargetType.Portal))
             {
                 bool found = false;
                 foreach (PortalInfo portal in allPortals)
                 {
-                    if (portal.PortalID == int.Parse(r.TargetValue.ToString()))
+                    if (portal.PortalID == int.Parse(r.TargetValue.ToString(), CultureInfo.InvariantCulture))
                     {
                         found = true;
                         break;
@@ -488,17 +506,19 @@ namespace DotNetNuke.Services.Mobile
             if (delRedirection != null)
             {
                 // update the list order
-                this.GetRedirectionsByPortal(portalId).Where(p => p.SortOrder > delRedirection.SortOrder).ToList().ForEach(p =>
-                                                                                                                {
-                                                                                                                    p.SortOrder--;
-                                                                                                                    this.Save(p);
-                                                                                                                });
+                this.GetRedirectionsByPortal(portalId)
+                    .Where(p => p.SortOrder > delRedirection.SortOrder)
+                    .ToList()
+                    .ForEach(p =>
+                    {
+                        p.SortOrder--;
+                        this.Save(p);
+                    });
                 DataProvider.Instance().DeleteRedirection(id);
 
-                var logContent = string.Format("Id '{0}' Deleted", id);
-                this.AddLog(logContent);
+                this.AddLog(string.Format(CultureInfo.InvariantCulture, "Id '{0}' Deleted", id));
 
-                this.ClearCache(portalId);
+                ClearCache(portalId);
             }
         }
 
@@ -510,18 +530,18 @@ namespace DotNetNuke.Services.Mobile
         {
             DataProvider.Instance().DeleteRedirectionRule(ruleId);
 
-            var logContent = string.Format("Id '{0}' Removed from Redirection Id '{1}'", ruleId, redirectionId);
+            var logContent = $"Id '{ruleId}' Removed from Redirection Id '{redirectionId}'";
             this.AddLog(logContent);
 
-            this.ClearCache(portalId);
+            ClearCache(portalId);
         }
 
         /// <summary>get all redirections defined in system.</summary>
         /// <returns>List of redirection.</returns>
         public IList<IRedirection> GetAllRedirections()
         {
-            var cacheArg = new CacheItemArgs(this.AllRedirectionsCacheKey, DataCache.RedirectionsCacheTimeOut, DataCache.RedirectionsCachePriority, string.Empty);
-            return CBO.GetCachedObject<IList<IRedirection>>(cacheArg, this.GetAllRedirectionsCallBack);
+            var cacheArg = new CacheItemArgs(AllRedirectionsCacheKey, DataCache.RedirectionsCacheTimeOut, DataCache.RedirectionsCachePriority, string.Empty);
+            return CBO.GetCachedObject<IList<IRedirection>>(cacheArg, GetAllRedirectionsCallBack);
         }
 
         /// <summary>get a redirection list for portal.</summary>
@@ -529,9 +549,9 @@ namespace DotNetNuke.Services.Mobile
         /// <returns>List of redirection.</returns>
         public IList<IRedirection> GetRedirectionsByPortal(int portalId)
         {
-            string cacheKey = string.Format(DataCache.RedirectionsCacheKey, portalId);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.RedirectionsCacheKey, portalId);
             var cacheArg = new CacheItemArgs(cacheKey, DataCache.RedirectionsCacheTimeOut, DataCache.RedirectionsCachePriority, portalId);
-            return CBO.GetCachedObject<IList<IRedirection>>(cacheArg, this.GetRedirectionsByPortalCallBack);
+            return CBO.GetCachedObject<IList<IRedirection>>(cacheArg, GetRedirectionsByPortalCallBack);
         }
 
         /// <summary>get a specific redirection by id.</summary>
@@ -544,9 +564,9 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>returns a target URL for the specific redirection.</summary>
-        /// <param name="redirection"></param>
-        /// <param name="portalId"></param>
-        /// <param name="currentTabId"></param>
+        /// <param name="redirection">The redirection rule.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="currentTabId">The tab ID.</param>
         /// <returns>The URL (or <see cref="string.Empty"/> if there's no redirect).</returns>
         public string GetRedirectUrlFromRule(IRedirection redirection, int portalId, int currentTabId)
         {
@@ -560,13 +580,13 @@ namespace DotNetNuke.Services.Mobile
             else if (redirection.TargetType == TargetType.Tab)
             {
                 // page within same site
-                int targetTabId = int.Parse(redirection.TargetValue.ToString());
+                int targetTabId = int.Parse(redirection.TargetValue.ToString(), CultureInfo.InvariantCulture);
 
                 // ensure it's not redirecting to itself
                 if (targetTabId != currentTabId)
                 {
                     var tab = TabController.Instance.GetTab(targetTabId, portalId, false);
-                    if (tab != null && !tab.IsDeleted)
+                    if (tab is { IsDeleted: false, })
                     {
                         redirectUrl = TestableGlobals.Instance.NavigateURL(targetTabId);
                     }
@@ -575,19 +595,19 @@ namespace DotNetNuke.Services.Mobile
             else if (redirection.TargetType == TargetType.Portal)
             {
                 // home page of another portal
-                int targetPortalId = int.Parse(redirection.TargetValue.ToString());
+                int targetPortalId = int.Parse(redirection.TargetValue.ToString(), CultureInfo.InvariantCulture);
 
                 // ensure it's not redirecting to itself
                 if (targetPortalId != portalId)
                 {
-                    // check whethter the target portal still exists
-                    if (PortalController.Instance.GetPortals().Cast<PortalInfo>().Any(p => p.PortalID == targetPortalId))
+                    // check whether the target portal still exists
+                    if (this.portalController.GetPortals().Cast<IPortalInfo>().Any(p => p.PortalId == targetPortalId))
                     {
                         var portalSettings = new PortalSettings(targetPortalId);
                         if (portalSettings.HomeTabId != Null.NullInteger && portalSettings.HomeTabId != currentTabId)
                         {
                             // ensure it's not redirecting to itself
-                            redirectUrl = this.GetPortalHomePageUrl(portalSettings);
+                            redirectUrl = GetPortalHomePageUrl(portalSettings);
                         }
                     }
                 }
@@ -596,30 +616,30 @@ namespace DotNetNuke.Services.Mobile
             return redirectUrl;
         }
 
-        private string GetPortalHomePageUrl(PortalSettings portalSettings)
+        private static string GetPortalHomePageUrl(PortalSettings portalSettings)
         {
             return Globals.AddHTTP(portalSettings.DefaultPortalAlias);
         }
 
-        private IList<IRedirection> GetAllRedirectionsCallBack(CacheItemArgs cacheItemArgs)
+        private static IList<IRedirection> GetAllRedirectionsCallBack(CacheItemArgs cacheItemArgs)
         {
             return CBO.FillCollection<Redirection>(DataProvider.Instance().GetAllRedirections()).Cast<IRedirection>().ToList();
         }
 
-        private IList<IRedirection> GetRedirectionsByPortalCallBack(CacheItemArgs cacheItemArgs)
+        private static IList<IRedirection> GetRedirectionsByPortalCallBack(CacheItemArgs cacheItemArgs)
         {
             int portalId = (int)cacheItemArgs.ParamList[0];
             return CBO.FillCollection<Redirection>(DataProvider.Instance().GetRedirections(portalId)).Cast<IRedirection>().ToList();
         }
 
-        private void ClearCache(int portalId)
+        private static void ClearCache(int portalId)
         {
-            DataCache.RemoveCache(string.Format(DataCache.RedirectionsCacheKey, portalId));
-            DataCache.RemoveCache(this.AllRedirectionsCacheKey);
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.RedirectionsCacheKey, portalId));
+            DataCache.RemoveCache(AllRedirectionsCacheKey);
             DataCache.RemoveCache(UrlsCacheKey);
         }
 
-        private string GetUrlFromCache(string cacheKey)
+        private static string GetUrlFromCache(string cacheKey)
         {
             var cachedUrls = DataCache.GetCache<SharedDictionary<string, string>>(UrlsCacheKey);
 
@@ -627,9 +647,9 @@ namespace DotNetNuke.Services.Mobile
             {
                 using (cachedUrls.GetReadLock())
                 {
-                    if (cachedUrls.ContainsKey(cacheKey))
+                    if (cachedUrls.TryGetValue(cacheKey, out var url))
                     {
-                        return cachedUrls[cacheKey];
+                        return url;
                     }
                 }
             }
@@ -637,7 +657,7 @@ namespace DotNetNuke.Services.Mobile
             return string.Empty;
         }
 
-        private void SetUrlInCache(string cacheKey, string url)
+        private static void SetUrlInCache(string cacheKey, string url)
         {
             if (string.IsNullOrEmpty(cacheKey))
             {
@@ -659,12 +679,7 @@ namespace DotNetNuke.Services.Mobile
             DataCache.SetCache(UrlsCacheKey, cachedUrls, TimeSpan.FromMinutes(UrlsCacheTimeout));
         }
 
-        private void AddLog(string logContent)
-        {
-            EventLogController.Instance.AddLog("Site Redirection Rule", logContent, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.ADMIN_ALERT);
-        }
-
-        private bool DoesCapabilityMatchWithRule(IClientCapability clientCapability, IRedirection redirection)
+        private static bool DoesCapabilityMatchWithRule(IClientCapability clientCapability, IRedirection redirection)
         {
             bool match = false;
             if (redirection.Type == RedirectionType.Tablet && clientCapability.IsTablet)
@@ -687,7 +702,7 @@ namespace DotNetNuke.Services.Mobile
                 {
                     if (!string.IsNullOrEmpty(clientCapability[rule.Capability]))
                     {
-                        if (clientCapability[rule.Capability].Equals(rule.Expression, StringComparison.InvariantCultureIgnoreCase))
+                        if (clientCapability[rule.Capability].Equals(rule.Expression, StringComparison.OrdinalIgnoreCase))
                         {
                             matchCount++;
                         }
@@ -701,6 +716,11 @@ namespace DotNetNuke.Services.Mobile
             }
 
             return match;
+        }
+
+        private void AddLog(string logContent)
+        {
+            this.eventLogger.AddLog("Site Redirection Rule", logContent, this.portalController.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogType.ADMIN_ALERT);
         }
     }
 }

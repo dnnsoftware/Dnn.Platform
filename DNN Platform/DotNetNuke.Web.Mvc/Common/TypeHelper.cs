@@ -14,6 +14,8 @@ namespace DotNetNuke.Web.Mvc.Common
         /// This helper will cache accessors and types, and is intended when the anonymous object is accessed multiple
         /// times throughout the lifetime of the web application.
         /// </summary>
+        /// <param name="value">The object to convert.</param>
+        /// <returns>The route value dictionary containing each property from <paramref name="value"/>.</returns>
         public static RouteValueDictionary ObjectToDictionary(object value)
         {
             RouteValueDictionary dictionary = new RouteValueDictionary();

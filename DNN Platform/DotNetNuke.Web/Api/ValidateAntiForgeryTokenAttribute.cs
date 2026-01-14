@@ -14,13 +14,15 @@ namespace DotNetNuke.Web.Api
 
     using DotNetNuke.Web.Api.Internal;
 
+    /// <summary>A web API action filter which validates the anti-forgery token.</summary>
     public class ValidateAntiForgeryTokenAttribute : ActionFilterAttribute
     {
+        /// <summary>The success result.</summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
-        protected static Tuple<bool, string> SuccessResult = new Tuple<bool, string>(true, null);
+        protected static readonly Tuple<bool, string> SuccessResult = new Tuple<bool, string>(true, null);
 
         private static readonly List<string> BypassedAuthTypes = new List<string>();
 
@@ -40,6 +42,8 @@ namespace DotNetNuke.Web.Api
             }
         }
 
+        /// <summary>Appends the given <paramref name="authType"/> to the bypassed auth types.</summary>
+        /// <param name="authType">The auth type to add.</param>
         internal static void AppendToBypassAuthTypes(string authType)
         {
             var text = (authType ?? string.Empty).Trim();
@@ -49,14 +53,16 @@ namespace DotNetNuke.Web.Api
             }
         }
 
+        /// <summary>Gets the value of the anti-forgery cookie.</summary>
+        /// <param name="actionContext">The request context.</param>
+        /// <returns>The cookie value or <see cref="string.Empty"/>.</returns>
         protected static string GetAntiForgeryCookieValue(HttpActionContext actionContext)
         {
-            IEnumerable<string> cookies;
-            if (actionContext?.Request != null && actionContext.Request.Headers.TryGetValues("Cookie", out cookies))
+            if (actionContext?.Request != null && actionContext.Request.Headers.TryGetValues("Cookie", out var cookies))
             {
                 foreach (var cookieValue in cookies)
                 {
-                    var nameIndex = cookieValue.IndexOf(AntiForgery.Instance.CookieName, StringComparison.InvariantCultureIgnoreCase);
+                    var nameIndex = cookieValue.IndexOf(AntiForgery.Instance.CookieName, StringComparison.OrdinalIgnoreCase);
                     if (nameIndex > -1)
                     {
                         var valueIndex = nameIndex + AntiForgery.Instance.CookieName.Length + 1;
@@ -69,6 +75,9 @@ namespace DotNetNuke.Web.Api
             return string.Empty;
         }
 
+        /// <summary>Whether the request is authorized.</summary>
+        /// <param name="actionContext">The request context.</param>
+        /// <returns>A <see cref="Tuple"/> where the first value is whether the request is authorized, and the second value is a message.</returns>
         protected virtual Tuple<bool, string> IsAuthorized(HttpActionContext actionContext)
         {
             try
@@ -102,7 +111,7 @@ namespace DotNetNuke.Web.Api
 
         private static bool BypassTokenCheck()
         {
-            // bypass anti-forgery for those handllers that request so.
+            // bypass anti-forgery for those handlers that request so.
             var authType = Thread.CurrentPrincipal?.Identity?.AuthenticationType;
             return !string.IsNullOrEmpty(authType) && BypassedAuthTypes.Contains(authType);
         }

@@ -15,7 +15,7 @@ Button.propTypes = {
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
     size: PropTypes.oneOf(["small", "large"]),
-    type: PropTypes.oneOf(["primary", "secondary"]).isRequired,
+    type: PropTypes.oneOf(["primary", "secondary", "neutral", "danger"]).isRequired,
     onClick: PropTypes.func,
     disabled: PropTypes.bool,
     style: PropTypes.object

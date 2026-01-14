@@ -7,8 +7,12 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class JavaScriptLibraryController
                         : ServiceLocator<IJavaScriptLibraryController, JavaScriptLibraryController>,
@@ -19,7 +23,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         public void DeleteLibrary(JavaScriptLibrary library)
         {
             DataProvider.Instance().ExecuteNonQuery("DeleteJavaScriptLibrary", library.JavaScriptLibraryID);
-            this.ClearCache();
+            ClearCache();
         }
 
         /// <summary>Get information about the latest version of a <see cref="JavaScriptLibrary"/> that matches the given <paramref name="predicate"/>.</summary>
@@ -70,16 +74,16 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 library.ObjectName,
                 library.PreferredScriptLocation,
                 library.CDNPath);
-            this.ClearCache();
+            ClearCache();
         }
 
         /// <inheritdoc/>
         protected override Func<IJavaScriptLibraryController> GetFactory()
         {
-            return () => new JavaScriptLibraryController();
+            return () => Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryController>();
         }
 
-        private void ClearCache()
+        private static void ClearCache()
         {
             DataCache.RemoveCache(DataCache.JavaScriptLibrariesCacheKey);
         }

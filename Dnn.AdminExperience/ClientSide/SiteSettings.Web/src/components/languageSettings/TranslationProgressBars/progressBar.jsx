@@ -7,7 +7,7 @@ class ProgressBar extends Component {
         super(props);
         this.percentageValue = this.props.percentageValue;
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
 
         let transition = "1s linear";

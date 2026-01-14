@@ -6,7 +6,10 @@ namespace DotNetNuke.Services.Localization
 {
     public enum LanguagePackType
     {
+        /// <summary>A language pack for DNN's core functionality.</summary>
         Core = 0,
+
+        /// <summary>A language pack for a specific extension.</summary>
         Extension = 1,
     }
 }

@@ -34,44 +34,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="folderpath"></param>
-        /// <param name="storageLocation"></param>
-        /// <param name="isProtected"></param>
-        /// <param name="isCached"></param>
-        /// <param name="lastUpdated"></param>
-        [Obsolete("Deprecated in DotNetNuke 7.1.0. Use the parameterless constructor and object initializers. Scheduled for removal in v10.0.0.")]
-        public FolderInfo(int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
-            : this(Guid.NewGuid(), portalId, folderpath, storageLocation, isProtected, isCached, lastUpdated)
-        {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>
-        /// <param name="uniqueId"></param>
-        /// <param name="portalId"></param>
-        /// <param name="folderpath"></param>
-        /// <param name="storageLocation"></param>
-        /// <param name="isProtected"></param>
-        /// <param name="isCached"></param>
-        /// <param name="lastUpdated"></param>
-        [Obsolete("Deprecated in DotNetNuke 7.1.0. Use the parameterless constructor and object initializers. Scheduled for removal in v10.0.0.")]
-        public FolderInfo(Guid uniqueId, int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
-        {
-            this.FolderID = Null.NullInteger;
-            this.UniqueId = uniqueId;
-            this.VersionGuid = Guid.NewGuid();
-            this.WorkflowID = Null.NullInteger;
-
-            this.PortalID = portalId;
-            this.FolderPath = folderpath;
-            this.StorageLocation = storageLocation;
-            this.IsProtected = isProtected;
-            this.IsCached = isCached;
-            this.LastUpdated = lastUpdated;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>
-        /// <param name="initialiseEmptyPermissions"></param>
+        /// <param name="initialiseEmptyPermissions">Whether to initialize the permissions to an empty collection.</param>
         internal FolderInfo(bool initialiseEmptyPermissions)
         {
             this.FolderID = Null.NullInteger;
@@ -158,7 +121,7 @@ namespace DotNetNuke.Services.FileSystem
                     }
                 }
 
-                return physicalPath.Replace("/", "\\");
+                return physicalPath.Replace("/", @"\");
             }
         }
 

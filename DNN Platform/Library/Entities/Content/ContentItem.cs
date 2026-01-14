@@ -167,7 +167,7 @@ namespace DotNetNuke.Entities.Content
 
         /// <summary>Gets or sets a value indicating whether this <see cref="ContentItem"/> is indexed.</summary>
         /// <value>
-        ///   <c>true</c> if indexed; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if indexed; otherwise, <see langword="false"/>.
         /// </value>
         [XmlIgnore]
         [ScriptIgnore]

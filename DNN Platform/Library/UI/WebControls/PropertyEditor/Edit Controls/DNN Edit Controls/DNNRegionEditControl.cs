@@ -5,6 +5,8 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -18,9 +20,6 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DNNRegionEditControl
     /// <summary>
     /// The DNNRegionEditControl control provides a standard UI component for editing
     /// Regions.
@@ -43,7 +42,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
-        /// <param name="type"></param>
+        /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
         public DNNRegionEditControl(string type)
         {
             this.Init += this.DnnRegionControl_Init;
@@ -55,10 +54,10 @@ namespace DotNetNuke.UI.WebControls
 
         protected string OldStringValue
         {
-            get { return Convert.ToString(this.OldValue); }
+            get { return Convert.ToString(this.OldValue, CultureInfo.InvariantCulture); }
         }
 
-        /// <summary>Gets the ListEntryInfo objects associated witht the control.</summary>
+        /// <summary>Gets the ListEntryInfo objects associated with the control.</summary>
         protected IEnumerable<ListEntryInfo> ListEntries
         {
             get
@@ -73,13 +72,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        protected int PortalId
-        {
-            get
-            {
-                return PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected int PortalId => PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
 
         /// <inheritdoc/>
         protected override string StringValue
@@ -89,7 +83,7 @@ namespace DotNetNuke.UI.WebControls
                 string strValue = Null.NullString;
                 if (this.Value != null)
                 {
-                    strValue = Convert.ToString(this.Value);
+                    strValue = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
                 }
 
                 return strValue;
@@ -146,7 +140,7 @@ namespace DotNetNuke.UI.WebControls
             bool dataChanged = false;
             string presentValue = this.StringValue;
             string postedValue = postCollection[postDataKey + "_value"];
-            if (!presentValue.Equals(postedValue))
+            if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
             {
                 this.Value = postedValue;
                 dataChanged = true;
@@ -227,7 +221,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 foreach (ListEntryInfo item in this.ListEntries)
                 {
-                    this.Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.EntryID.ToString() });
+                    this.Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.EntryID.ToString(CultureInfo.InvariantCulture), });
                 }
             }
 

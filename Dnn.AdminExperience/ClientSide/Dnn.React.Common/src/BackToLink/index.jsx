@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import { ArrowBack } from "../SvgIcons";
 import "./style.less";
 
-/*eslint-disable react/no-danger*/
+ 
 const BackToLink = ({text, children, className, onClick, style, arrowStyle}) => { 
     return (
         <a className={"dnn-back-to-link" + (className ? (" " + className) : "")} style={style} onClick={onClick}>
-            <div style={arrowStyle} className="dnn-back-to-arrow" dangerouslySetInnerHTML={{__html: ArrowBack }} />
+            <div style={arrowStyle} className="dnn-back-to-arrow"><ArrowBack /></div>
             <span>{text}</span>
             {children}
         </a> 

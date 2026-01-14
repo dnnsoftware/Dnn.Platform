@@ -66,7 +66,7 @@ div.RadComboBox_Default .rcbArrowCell a {
     background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%) !important; /* Chrome10+,Safari5.1+ */
 	background: -o-linear-gradient(top,  #fff 1%,#f0f2f1 100%); /* Opera 11.10+ */
 	background: -ms-linear-gradient(top, #fff 0%,#f0f2f1 100%) !important; /* IE10+ */
-    background: linear-gradient(top, #fff 0%,#f0f2f1 100%) !important; /* W3C */
+    background: linear-gradient(to bottom, #fff 0%,#f0f2f1 100%) !important; /* W3C */
     color: #999;
     text-decoration: none;
     margin: 0 !important;
@@ -114,7 +114,7 @@ div.RadComboBox_Default .rcbArrowCell a {
     background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%) !important; /* Chrome10+,Safari5.1+ */
 	background: -o-linear-gradient(top,  #fff 1%,#f0f2f1 100%); /* Opera 11.10+ */
 	background: -ms-linear-gradient(top, #fff 0%,#f0f2f1 100%) !important; /* IE10+ */
-    background: linear-gradient(top, #fff 0%,#f0f2f1 100%) !important; /* W3C */
+    background: linear-gradient(to bottom, #fff 0%,#f0f2f1 100%) !important; /* W3C */
     color: #333;
     text-decoration: none;
     vertical-align: middle !important;

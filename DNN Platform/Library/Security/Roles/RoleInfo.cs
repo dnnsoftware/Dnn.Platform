@@ -80,7 +80,7 @@ namespace DotNetNuke.Security.Roles
                     if (!string.IsNullOrEmpty(this.IconFile))
                     {
                         IFileInfo fileInfo =
-                            FileManager.Instance.GetFile(int.Parse(this.IconFile.Replace("FileID=", string.Empty)));
+                            FileManager.Instance.GetFile(int.Parse(this.IconFile.Replace("FileID=", string.Empty), CultureInfo.InvariantCulture));
                         if (fileInfo != null)
                         {
                             photoURL = FileManager.Instance.GetUrl(fileInfo);
@@ -282,9 +282,9 @@ namespace DotNetNuke.Security.Roles
             switch (propName)
             {
                 case "roleid":
-                    return PropertyAccess.FormatString(this.RoleID.ToString(), format);
+                    return PropertyAccess.FormatString(this.RoleID.ToString(formatProvider), format);
                 case "groupid":
-                    return PropertyAccess.FormatString(this.RoleID.ToString(), format);
+                    return PropertyAccess.FormatString(this.RoleID.ToString(formatProvider), format);
                 case "status":
                     return PropertyAccess.FormatString(this.Status.ToString(), format);
                 case "groupname":
@@ -296,7 +296,7 @@ namespace DotNetNuke.Security.Roles
                 case "description":
                     return PropertyAccess.FormatString(this.Description, format);
                 case "usercount":
-                    return PropertyAccess.FormatString(this.UserCount.ToString(), format);
+                    return PropertyAccess.FormatString(this.UserCount.ToString(formatProvider), format);
                 case "street":
                     return PropertyAccess.FormatString(this.GetString("Street", string.Empty), format);
                 case "city":
@@ -310,9 +310,9 @@ namespace DotNetNuke.Security.Roles
                 case "website":
                     return PropertyAccess.FormatString(this.GetString("Website", string.Empty), format);
                 case "datecreated":
-                    return PropertyAccess.FormatString(this.CreatedOnDate.ToString(), format);
+                    return PropertyAccess.FormatString(this.CreatedOnDate.ToString(formatProvider), format);
                 case "photourl":
-                    return PropertyAccess.FormatString(this.FormatUrl(this.PhotoURL), format);
+                    return PropertyAccess.FormatString(FormatUrl(this.PhotoURL), format);
                 case "stat_status":
                     return PropertyAccess.FormatString(this.GetString("stat_status", string.Empty), format);
                 case "stat_photo":
@@ -320,7 +320,7 @@ namespace DotNetNuke.Security.Roles
                 case "stat_file":
                     return PropertyAccess.FormatString(this.GetString("stat_file", string.Empty), format);
                 case "url":
-                    return PropertyAccess.FormatString(this.FormatUrl(this.GetString("URL", string.Empty)), format);
+                    return PropertyAccess.FormatString(FormatUrl(this.GetString("URL", string.Empty)), format);
                 case "issystemrole":
                     return PropertyAccess.Boolean2LocalizedYesNo(this.IsSystemRole, formatProvider);
                 case "grouptype":
@@ -562,6 +562,17 @@ namespace DotNetNuke.Security.Roles
             writer.WriteEndElement();
         }
 
+        private static string FormatUrl(string url)
+        {
+            if (url.StartsWith("/", StringComparison.Ordinal) && HttpContext.Current != null)
+            {
+                // server absolute path
+                return Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
+            }
+
+            return url;
+        }
+
         private void GetRoleType()
         {
             var portal = PortalController.Instance.GetPortal(this.PortalID);
@@ -590,23 +601,12 @@ namespace DotNetNuke.Security.Roles
                 return defaultValue;
             }
 
-            if (this.Settings.ContainsKey(keyName))
+            if (this.Settings.TryGetValue(keyName, out var settingValue))
             {
-                return this.Settings[keyName];
+                return settingValue;
             }
 
             return defaultValue;
-        }
-
-        private string FormatUrl(string url)
-        {
-            if (url.StartsWith("/") && HttpContext.Current != null)
-            {
-                // server absolute path
-                return Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
-            }
-
-            return url;
         }
     }
 }

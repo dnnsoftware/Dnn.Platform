@@ -13,9 +13,6 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Personalization;
 
-    /// Project  : DotNetNuke
-    /// Class    : Containers.Icon
-    ///
     /// <summary>
     /// Contains the attributes of an Icon.
     /// These are read into the PortalModuleBase collection as attributes for the icons within the module controls.
@@ -64,7 +61,7 @@ namespace DotNetNuke.UI.Containers
                             var moduleActionIcon = new ImageButton();
                             if (!string.IsNullOrEmpty(this.PrintIcon))
                             {
-                                moduleActionIcon.ImageUrl = this.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + this.PrintIcon;
+                                moduleActionIcon.ImageUrl = this.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleContext.Configuration.ContainerPath.LastIndexOf("/", StringComparison.Ordinal) + 1) + this.PrintIcon;
                             }
                             else
                             {

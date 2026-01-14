@@ -5,11 +5,12 @@ namespace DotNetNuke.Services.Syndication
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Web;
     using System.Xml;
 
     /// <summary>A helper class for handling RSS XML.</summary>
-    internal class RssXmlHelper
+    internal sealed class RssXmlHelper
     {
         /// <summary>Internal helper class for XML to RSS conversion (and for generating XML from RSS).</summary>
         /// <param name="doc">The XML document.</param>
@@ -22,15 +23,15 @@ namespace DotNetNuke.Services.Syndication
 
             try
             {
-                XmlNode root = doc.DocumentElement;
+                var root = doc.DocumentElement;
                 if (root.Name == "rss")
                 {
                     // RSS
-                    for (XmlNode c = root.FirstChild; c != null; c = c.NextSibling)
+                    for (var c = root.FirstChild; c != null; c = c.NextSibling)
                     {
                         if (c.NodeType == XmlNodeType.Element && c.Name == "channel")
                         {
-                            for (XmlNode n = c.FirstChild; n != null; n = n.NextSibling)
+                            for (var n = c.FirstChild; n != null; n = n.NextSibling)
                             {
                                 if (n.NodeType == XmlNodeType.Element)
                                 {
@@ -96,10 +97,14 @@ namespace DotNetNuke.Services.Syndication
         /// <returns>A new <see cref="XmlDocument"/>.</returns>
         internal static XmlDocument CreateEmptyRssXml()
         {
+            const string EmptyRssXml = """
+                                       <?xml version="1.0" encoding="utf-8"?>
+                                       <rss version="2.0">
+                                       </rss>
+                                       """;
             var doc = new XmlDocument { XmlResolver = null };
-            doc.LoadXml(@"<?xml version=""1.0"" encoding=""utf-8""?>
-<rss version=""2.0"">
-</rss>");
+            using var xmlReader = XmlReader.Create(new StringReader(EmptyRssXml), new XmlReaderSettings { XmlResolver = null, });
+            doc.Load(xmlReader);
             return doc;
         }
 
@@ -110,13 +115,13 @@ namespace DotNetNuke.Services.Syndication
         /// <returns>The new XML element.</returns>
         internal static XmlNode SaveRssElementAsXml(XmlNode parentNode, RssElementBase element, string elementName)
         {
-            XmlDocument doc = parentNode.OwnerDocument;
-            XmlNode node = doc.CreateElement(elementName);
+            var doc = parentNode.OwnerDocument;
+            var node = doc.CreateElement(elementName);
             parentNode.AppendChild(node);
 
-            foreach (KeyValuePair<string, string> attr in element.Attributes)
+            foreach (var attr in element.Attributes)
             {
-                XmlNode attrNode = doc.CreateElement(attr.Key);
+                var attrNode = doc.CreateElement(attr.Key);
                 attrNode.InnerText = ResolveAppRelativeLinkToUrl(attr.Value);
                 node.AppendChild(attrNode);
             }
@@ -128,13 +133,13 @@ namespace DotNetNuke.Services.Syndication
         {
             var attributes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-            for (XmlNode n = node.FirstChild; n != null; n = n.NextSibling)
+            for (var n = node.FirstChild; n != null; n = n.NextSibling)
             {
                 if (n.NodeType == XmlNodeType.Element && !NodeHasSubElements(n))
                 {
-                    if (attributes.ContainsKey(n.Name))
+                    if (attributes.TryGetValue(n.Name, out var attribute))
                     {
-                        attributes[n.Name] = attributes[n.Name] + ", " + n.InnerText.Trim();
+                        attributes[n.Name] = $"{attribute}, {n.InnerText.Trim()}";
                     }
                     else
                     {
@@ -161,7 +166,7 @@ namespace DotNetNuke.Services.Syndication
 
         private static string ResolveAppRelativeLinkToUrl(string link)
         {
-            if (!string.IsNullOrEmpty(link) && link.StartsWith("~/"))
+            if (!string.IsNullOrEmpty(link) && link.StartsWith("~/", StringComparison.Ordinal))
             {
                 HttpContext context = HttpContext.Current;
 

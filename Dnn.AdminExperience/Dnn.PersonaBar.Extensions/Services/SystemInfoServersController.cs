@@ -22,12 +22,11 @@ namespace Dnn.PersonaBar.Servers.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoServersController));
 
         [HttpGet]
-
         public HttpResponseMessage GetServers()
         {
             try
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, this.GetServerList());
+                return this.Request.CreateResponse(HttpStatusCode.OK, GetServerList());
             }
             catch (Exception exc)
             {
@@ -53,7 +52,6 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [HttpPost]
-
         public HttpResponseMessage EditServerUrl(EditServerUrlDTO data)
         {
             try
@@ -72,7 +70,6 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [HttpPost]
-
         public HttpResponseMessage DeleteNonActiveServers()
         {
             try
@@ -91,7 +88,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
-        private IEnumerable<WebServer> GetServerList()
+        private static IEnumerable<WebServer> GetServerList()
         {
             return DotNetNuke.Entities.Host.ServerController.GetServers().Select(s => new WebServer()
             {

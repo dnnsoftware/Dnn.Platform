@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.IO;
     using System.Xml.XPath;
 
@@ -16,6 +17,7 @@ namespace DotNetNuke.Services.Installer.Installers
     /// <summary>The SkinInstaller installs Skin Components to a DotNetNuke site.</summary>
     public class SkinInstaller : FileInstaller
     {
+        private static readonly string[] MessageSeparator = ["<br />",];
         private readonly ArrayList skinFiles = new ArrayList();
 
         private SkinPackageInfo skinPackage;
@@ -58,13 +60,13 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                string physicalBasePath = this.RootPath + this.SkinRoot + "\\" + this.skinPackage.SkinName;
-                if (!physicalBasePath.EndsWith("\\"))
+                string physicalBasePath = this.RootPath + this.SkinRoot + @"\" + this.skinPackage.SkinName;
+                if (!physicalBasePath.EndsWith(@"\", StringComparison.Ordinal))
                 {
-                    physicalBasePath += "\\";
+                    physicalBasePath += @"\";
                 }
 
-                return physicalBasePath.Replace("/", "\\");
+                return physicalBasePath.Replace("/", @"\");
             }
         }
 
@@ -168,7 +170,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     SkinController.UpdateSkinPackage(this.skinPackage);
                 }
 
-                this.Log.AddInfo(string.Format(Util.SKIN_Registered, this.skinPackage.SkinName));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.SKIN_Registered, this.skinPackage.SkinName));
 
                 // install (copy the files) by calling the base class
                 base.Install();
@@ -182,22 +184,22 @@ namespace DotNetNuke.Services.Installer.Installers
                     foreach (string skinFile in this.SkinFiles)
                     {
                         strMessage += newSkin.ProcessFile(skinFile, SkinParser.Portable);
-                        skinFile.Replace(Globals.HostMapPath + "\\", "[G]");
+                        var skinSrc = skinFile.Replace($@"{Globals.HostMapPath}\", "[G]");
                         switch (Path.GetExtension(skinFile))
                         {
                             case ".htm":
-                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinFile.Replace("htm", "ascx"));
+                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinSrc.Replace("htm", "ascx"));
                                 break;
                             case ".html":
-                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinFile.Replace("html", "ascx"));
+                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinSrc.Replace("html", "ascx"));
                                 break;
                             case ".ascx":
-                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinFile);
+                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinSrc);
                                 break;
                         }
                     }
 
-                    Array arrMessage = strMessage.Split(new[] { "<br />" }, StringSplitOptions.None);
+                    Array arrMessage = strMessage.Split(MessageSeparator, StringSplitOptions.None);
                     foreach (string strRow in arrMessage)
                     {
                         this.Log.AddInfo(HtmlUtils.StripTags(strRow, true));
@@ -313,7 +315,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     SkinController.DeleteSkinPackage(skinPackage);
                 }
 
-                this.Log.AddInfo(string.Format(Util.SKIN_UnRegistered, skinPackage.SkinName));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.SKIN_UnRegistered, skinPackage.SkinName));
             }
             catch (Exception ex)
             {

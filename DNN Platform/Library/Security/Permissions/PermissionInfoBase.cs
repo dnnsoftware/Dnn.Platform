@@ -5,15 +5,13 @@ namespace DotNetNuke.Security.Permissions
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml.Serialization;
 
     using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : PermissionInfoBase
     /// <summary>PermissionInfoBase provides a base class for PermissionInfo classes.</summary>
     /// <remarks>All Permission classes have  a common set of properties
     ///   - AllowAccess
@@ -38,7 +36,7 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>Initializes a new instance of the <see cref="PermissionInfoBase"/> class.</summary>
         public PermissionInfoBase()
         {
-            this.roleId = int.Parse(Globals.glbRoleNothing);
+            this.roleId = int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
             this.allowAccess = false;
             this.roleName = Null.NullString;
             this.userId = Null.NullInteger;
@@ -79,6 +77,7 @@ namespace DotNetNuke.Security.Permissions
         /// <inheritdoc cref="IPermissionInfo.RoleId" />
         [XmlElement("roleid")]
         [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IPermissionInfo)}.{nameof(IPermissionInfo.RoleId)} instead. Scheduled for removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int RoleID
         {
             get
@@ -91,6 +90,7 @@ namespace DotNetNuke.Security.Permissions
                 ((IPermissionInfo)this).RoleId = value;
             }
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc />
         [XmlElement("rolename")]
@@ -110,6 +110,7 @@ namespace DotNetNuke.Security.Permissions
         /// <inheritdoc cref="IPermissionInfo.UserId" />
         [XmlElement("userid")]
         [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IPermissionInfo)}.{nameof(IPermissionInfo.UserId)} instead. Scheduled for removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int UserID
         {
             get
@@ -122,6 +123,7 @@ namespace DotNetNuke.Security.Permissions
                 ((IPermissionInfo)this).UserId = value;
             }
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc />
         [XmlElement("username")]
@@ -159,7 +161,7 @@ namespace DotNetNuke.Security.Permissions
             // Call the base classes fill method to populate base class properties
             base.FillInternal(dr);
 
-            var @this = (IPermissionInfo)this;
+            IPermissionInfo @this = this;
             @this.UserId = Null.SetNullInteger(dr["UserID"]);
             @this.Username = Null.SetNullString(dr["Username"]);
             @this.DisplayName = Null.SetNullString(dr["DisplayName"]);
@@ -170,7 +172,7 @@ namespace DotNetNuke.Security.Permissions
             }
             else
             {
-                @this.RoleId = int.Parse(Globals.glbRoleNothing);
+                @this.RoleId = int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
                 @this.RoleName = string.Empty;
             }
 

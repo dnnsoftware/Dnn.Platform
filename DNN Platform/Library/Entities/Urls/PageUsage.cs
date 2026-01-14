@@ -6,7 +6,10 @@ namespace DotNetNuke.Entities.Urls
 {
     public enum PageUsage
     {
+        /// <summary>No tabs.</summary>
         NoTabs = -1,
+
+        /// <summary>This tab.</summary>
         ThisTab = 0,
 
         // AnotherTab = 1,

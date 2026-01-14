@@ -19,8 +19,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.dll" target="lib\net45\"/>
-    <file src="..\..\..\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.pdb" target="lib\net45\"/>
+    <file src="..\..\..\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.dll" target="lib\net48\"/>
+    <file src="..\..\..\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.pdb" target="lib\net48\"/>
     <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

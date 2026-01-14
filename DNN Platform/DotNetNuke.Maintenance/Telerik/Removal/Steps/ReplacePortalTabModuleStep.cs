@@ -15,8 +15,8 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Maintenance.Shims;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
-    /// <inheritdoc />
-    internal class ReplacePortalTabModuleStep : StepBase, IReplacePortalTabModuleStep
+    /// <inheritdoc cref="IReplacePortalTabModuleStep" />
+    internal sealed class ReplacePortalTabModuleStep : StepBase, IReplacePortalTabModuleStep
     {
         private readonly IModuleController moduleController;
         private readonly ITabController tabController;

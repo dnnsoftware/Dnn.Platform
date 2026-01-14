@@ -161,6 +161,9 @@
   <data name="NoInstallationLog.Text" xml:space="preserve">
     <value>Nessun Log di Installazione</value>
   </data>
+  <data name="LoadingInstallationLog.Text" xml:space="preserve">
+    <value>Caricamento dei log di installazione, attendere...</value>
+  </data>
   <data name="Password.Help" xml:space="preserve">
     <value>La password per l'account utente amministratore.</value>
   </data>
@@ -172,6 +175,9 @@
   </data>
   <data name="SeeLogs.Text" xml:space="preserve">
     <value>Vedi Logs</value>
+  </data>
+  <data name="NoErrorsLogged.Text" xml:space="preserve">
+    <value>Non sono stati registrati errori di aggiornamento</value>
   </data>
   <data name="TimerMinutes.Text" xml:space="preserve">
     <value>Minuti</value>

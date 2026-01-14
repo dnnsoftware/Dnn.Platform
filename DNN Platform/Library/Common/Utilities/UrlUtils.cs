@@ -11,17 +11,19 @@ namespace DotNetNuke.Common.Utilities
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Provides utilities for dealing with DNN's URLs. Consider using <see cref="System.Uri"/> if applicable.</summary>
-    public static class UrlUtils
+    public static partial class UrlUtils
     {
-        private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        private static INavigationManager NavigationManager => Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         /// <summary>Combines two URLs, trimming any slashes between them.</summary>
         /// <param name="baseUrl">The base URL.</param>
@@ -166,7 +168,7 @@ namespace DotNetNuke.Common.Utilities
                             // skip parameter
                             break;
                         default:
-                            if (keys[i].Equals("portalid", StringComparison.InvariantCultureIgnoreCase) && Globals.GetPortalSettings().ActiveTab.IsSuperTab)
+                            if (keys[i].Equals("portalid", StringComparison.OrdinalIgnoreCase) && Globals.GetPortalSettings().ActiveTab.IsSuperTab)
                             {
                                 // skip parameter
                                 // navigateURL adds portalid to querystring if tab is superTab
@@ -202,37 +204,53 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise.</returns>
         public static bool IsSecureConnectionOrSslOffload(HttpRequest request)
         {
+            return IsSecureConnectionOrSslOffload(new HttpRequestWrapper(request));
+        }
+
+        /// <summary>
+        /// check if connection is HTTPS
+        /// or is HTTP but with ssloffload enabled on a secure page.
+        /// </summary>
+        /// <param name="request">current request.</param>
+        /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise.</returns>
+        public static bool IsSecureConnectionOrSslOffload(HttpRequestBase request)
+        {
             return request.IsSecureConnection || IsSslOffloadEnabled(request);
         }
 
         public static bool IsSslOffloadEnabled(HttpRequest request)
         {
-            var ssloffloadheader = HostController.Instance.GetString("SSLOffloadHeader", string.Empty);
+            return IsSslOffloadEnabled(new HttpRequestWrapper(request));
+        }
 
-            // if the ssloffloadheader variable has been set check to see if a request header with that type exists
-            if (!string.IsNullOrEmpty(ssloffloadheader))
+        public static bool IsSslOffloadEnabled(HttpRequestBase request)
+        {
+            var sslOffloadHeader = HostController.Instance.GetString("SSLOffloadHeader", string.Empty);
+
+            // if the sslOffloadHeader variable has been set check to see if a request header with that type exists
+            if (string.IsNullOrEmpty(sslOffloadHeader))
             {
-                var ssloffloadValue = string.Empty;
-                if (ssloffloadheader.Contains(":"))
-                {
-                    var settingParts = ssloffloadheader.Split(':');
-                    ssloffloadheader = settingParts[0];
-                    ssloffloadValue = settingParts[1];
-                }
-
-                string ssloffload = request.Headers[ssloffloadheader];
-                if (!string.IsNullOrEmpty(ssloffload) && (string.IsNullOrWhiteSpace(ssloffloadValue) || ssloffloadValue == ssloffload))
-                {
-                    return true;
-                }
+                return false;
             }
 
-            return false;
+            var sslOffloadValue = string.Empty;
+            if (sslOffloadHeader.Contains(":"))
+            {
+                var settingParts = sslOffloadHeader.Split(':');
+                sslOffloadHeader = settingParts[0];
+                sslOffloadValue = settingParts[1];
+            }
+
+            var sslOffload = request.Headers[sslOffloadHeader];
+            return !string.IsNullOrEmpty(sslOffload) && (string.IsNullOrWhiteSpace(sslOffloadValue) || sslOffloadValue == sslOffload);
         }
 
         public static void OpenNewWindow(Page page, Type type, string url)
         {
-            page.ClientScript.RegisterStartupScript(type, "DotNetNuke.NewWindow", string.Format("<script>window.open('{0}','new')</script>", url));
+            page.ClientScript.RegisterStartupScript(
+                type,
+                "DotNetNuke.NewWindow",
+                $"<script>window.open({HttpUtility.JavaScriptStringEncode(url, addDoubleQuotes: true)},'new')</script>");
         }
 
         public static string PopUpUrl(string url, Control control, PortalSettings portalSettings, bool onClickEvent, bool responseRedirect)
@@ -267,22 +285,20 @@ namespace DotNetNuke.Common.Utilities
                 popUpUrl = popUpUrl.Replace("'", string.Empty);
             }
 
-            var delimiter = popUpUrl.Contains("?") ? "&" : "?";
-            var popUpScriptFormat = string.Empty;
+            var delimiter = popUpUrl.Contains("?") ? '&' : '?';
 
-            // create a the querystring for use on a Response.Redirect
+            // create the querystring for use on a Response.Redirect
             if (responseRedirect)
             {
-                popUpScriptFormat = "{0}{1}popUp=true";
-                popUpUrl = string.Format(popUpScriptFormat, popUpUrl, delimiter);
+                popUpUrl = $"{popUpUrl}{delimiter}popUp=true";
             }
             else
             {
                 if (!popUpUrl.Contains("dnnModal.show"))
                 {
-                    popUpScriptFormat = "dnnModal.show('{0}{1}popUp=true',/*showReturn*/{2},{3},{4},{5},'{6}')";
                     closingUrl = (closingUrl != Null.NullString) ? closingUrl : string.Empty;
-                    popUpUrl = "javascript:" + string.Format(popUpScriptFormat, popUpUrl, delimiter, onClickEvent.ToString().ToLowerInvariant(), windowHeight, windowWidth, refresh.ToString().ToLower(), closingUrl);
+                    popUpUrl =
+                        $"javascript:dnnModal.show('{HttpUtility.JavaScriptStringEncode(popUpUrl)}{delimiter}popUp=true',/*showReturn*/{onClickEvent.ToString().ToLowerInvariant()},{windowHeight},{windowWidth},{refresh.ToString().ToLowerInvariant()},'{HttpUtility.JavaScriptStringEncode(closingUrl)}')";
                 }
                 else
                 {
@@ -299,7 +315,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             // Removes the javascript txt for onClick scripts
-            if (onClickEvent && popUpUrl.StartsWith("javascript:"))
+            if (onClickEvent && popUpUrl.StartsWith("javascript:", StringComparison.OrdinalIgnoreCase))
             {
                 popUpUrl = popUpUrl.Replace("javascript:", string.Empty);
             }
@@ -316,8 +332,8 @@ namespace DotNetNuke.Common.Utilities
         {
             var protocol = onClickEvent ? string.Empty : "javascript:";
             var refreshBool = refresh.ToString().ToLowerInvariant();
-            var urlString = HttpUtility.JavaScriptStringEncode(url, addDoubleQuotes: true);
-            return $"{protocol}dnnModal.closePopUp({refreshBool}, {urlString})";
+            var urlString = HttpUtility.JavaScriptStringEncode(url);
+            return $"{protocol}dnnModal.closePopUp({refreshBool}, '{urlString}')";
         }
 
         /// <summary>Replaces a query string parameter's value in a URL.</summary>
@@ -325,9 +341,19 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="param">The parameter name.</param>
         /// <param name="newValue">The parameter value.</param>
         /// <returns>The updated URL.</returns>
-        public static string ReplaceQSParam(string url, string param, string newValue)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial string ReplaceQSParam(string url, string param, string newValue)
+            => ReplaceQSParam(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), url, param, newValue);
+
+        /// <summary>Replaces a query string parameter's value in a URL.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="url">The URL.</param>
+        /// <param name="param">The parameter name.</param>
+        /// <param name="newValue">The parameter value.</param>
+        /// <returns>The updated URL.</returns>
+        public static string ReplaceQSParam(IHostSettings hostSettings, string url, string param, string newValue)
         {
-            if (Host.UseFriendlyUrls)
+            if (hostSettings.UseFriendlyUrls)
             {
                 var escapedReplacementValue = newValue.Replace("$1", "$$1").Replace("$2", "$$2").Replace("$3", "$$3").Replace("$4", "$$4");
                 return Regex.Replace(url, $@"(.*)({Regex.Escape(param)}/)([^/]+)(/.*)", $"$1$2{escapedReplacementValue}$4", RegexOptions.IgnoreCase);
@@ -343,9 +369,18 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="url">The URL.</param>
         /// <param name="param">The parameter name.</param>
         /// <returns>The updated URL.</returns>
-        public static string StripQSParam(string url, string param)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial string StripQSParam(string url, string param)
+            => StripQSParam(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), url, param);
+
+        /// <summary>Removes the query string parameter with the given name from the URL.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="url">The URL.</param>
+        /// <param name="param">The parameter name.</param>
+        /// <returns>The updated URL.</returns>
+        public static string StripQSParam(IHostSettings hostSettings, string url, string param)
         {
-            if (Host.UseFriendlyUrls)
+            if (hostSettings.UseFriendlyUrls)
             {
                 return Regex.Replace(url, $"(.*)({Regex.Escape(param)}/[^/]+/)(.*)", "$1$3", RegexOptions.IgnoreCase);
             }
@@ -396,7 +431,7 @@ namespace DotNetNuke.Common.Utilities
                     var uri2 = new Uri(aliasWithHttp);
 
                     // protocol switching (HTTP <=> HTTPS) is allowed by not being checked here
-                    if (!string.Equals(uri1.DnsSafeHost, uri2.DnsSafeHost, StringComparison.CurrentCultureIgnoreCase))
+                    if (!string.Equals(uri1.DnsSafeHost, uri2.DnsSafeHost, StringComparison.OrdinalIgnoreCase))
                     {
                         return string.Empty;
                     }

@@ -6,9 +6,16 @@ namespace DotNetNuke.Services.Messaging.Data
 {
     public enum MessageStatusType
     {
+        /// <summary>Drafted message.</summary>
         Draft = 0,
+
+        /// <summary>Unread message.</summary>
         Unread = 1,
+
+        /// <summary>Read message.</summary>
         Read = 2,
+
+        /// <summary>Deleted message.</summary>
         Deleted = 3,
     }
 }

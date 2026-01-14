@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Localization from "../../localization";
-import utils from "../../utils";
 import cloneDeep from "lodash/cloneDeep";
 import securityService from "../../services/securityService";
 import { TextOverflowWrapper, GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
@@ -93,16 +92,16 @@ class SearchResultCard extends Component {
         this.thumbRendered = true;                             
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         let visibleMenus = [];
-        this.props.item.canViewPage && visibleMenus.push(<li key={"visible-menu-item-can-view-page"} onClick={() => this.props.onViewPage(this.props.item)}><div title={Localization.get("View")} dangerouslySetInnerHTML={{ __html: SvgIcons.EyeIcon }} /></li>);
-        this.props.item.canAddContentToPage && visibleMenus.push(<li key={"visible-menu-item-can-add-content"} onClick={() => this.props.onViewEditPage(this.props.item)}><div title={Localization.get("Edit")} dangerouslySetInnerHTML={{ __html: SvgIcons.TreeEdit }} /></li>);
-        if (this.props.pageInContextComponents && securityService.isSuperUser() && !utils.isPlatform()) {
+        this.props.item.canViewPage && visibleMenus.push(<li key={"visible-menu-item-can-view-page"} onClick={() => this.props.onViewPage(this.props.item)}><div title={Localization.get("View")}><SvgIcons.EyeIcon /></div></li>);
+        this.props.item.canAddContentToPage && visibleMenus.push(<li key={"visible-menu-item-can-add-content"} onClick={() => this.props.onViewEditPage(this.props.item)}><div title={Localization.get("Edit")}><SvgIcons.TreeEdit /></div></li>);
+        if (this.props.pageInContextComponents && securityService.isSuperUser()) {
             let additionalMenus = cloneDeep(this.props.pageInContextComponents || []);
             additionalMenus && additionalMenus.map((additionalMenu, index) => {
                 visibleMenus.push(<li key={"visible-menu-item-additinal-" + index} onClick={() => (additionalMenu.OnClickAction && typeof additionalMenu.OnClickAction === "function")
-                    && this.props.CallCustomAction(additionalMenu.OnClickAction)}><div title={additionalMenu.title} dangerouslySetInnerHTML={{ __html: additionalMenu.icon }} /></li>);
+                    && this.props.CallCustomAction(additionalMenu.OnClickAction)}><div title={additionalMenu.title}><additionalMenu.icon /></div></li>);
             });
         }
 
@@ -113,7 +112,7 @@ class SearchResultCard extends Component {
             <GridCell columnSize={100}>
                 <div className="search-item-card">
                     {this.renderCustomComponent()}
-                    <div className={`search-item-details${utils.isPlatform() ? " full" : ""}`}>
+                    <div className={"search-item-details"}>
                         <div className="search-item-details-left">
                             <h1 onClick={() => this.onNameClick(this.props.item)}><TextOverflowWrapper text={this.props.item ? this.props.item.name : ""} /></h1>
                             <div title={tabPath}>{tabPath}</div>
@@ -134,19 +133,18 @@ class SearchResultCard extends Component {
                                     <p title={this.props.getPublishStatusLabel(this.props.item.publishStatus)} onClick={this.handlePagePublishStatus.bind(this)} >{this.props.getPublishStatusLabel(this.props.item.publishStatus)}</p>
                                 </li>
                                 <li>
-                                    <p >{Localization.get(utils.isPlatform() ? "lblModifiedDate" : "lblPublishDate")}:</p>
+                                    <p >{Localization.get("lblPublishDate")}:</p>
                                     <p title={this.props.item.publishDate} onClick={this.handlePublishDate.bind(this)}>{this.props.item.publishDate.split(" ")[0]}</p>
                                 </li>
                             </ul>
                         </div>
                         <div className="search-item-details-list">
                             <ul>
-                                {!utils.isPlatform() && <li>
+                                <li>
                                     <p >{Localization.get("WorkflowTitle")}:</p>    
                                     <p title={this.props.item.workflowName} onClick={this.handleWorkflow.bind(this)}>{this.props.item.workflowName}</p>
                                 </li>
-                                }
-                                <li style={{ width: !utils.isPlatform() ? "64%" : "99%" }}>
+                                <li style={{ width: "64%" }}>
                                     <p>{Localization.get("Tags")}:</p>
                                     <p title={this.props.item.tags.join(",").trim(",")}>{
                                         this.props.item.tags.map((tag, count) => {

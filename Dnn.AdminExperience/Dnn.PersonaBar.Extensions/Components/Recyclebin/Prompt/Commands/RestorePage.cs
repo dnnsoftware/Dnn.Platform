@@ -4,6 +4,8 @@
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
+    using System.Globalization;
+
     using Dnn.PersonaBar.Library.Helper;
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -17,15 +19,12 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     public class RestorePage : ConsoleCommandBase
     {
         [FlagParameter("name", "Prompt_RestorePage_FlagName", "String")]
-
         private const string FlagName = "name";
 
         [FlagParameter("parentid", "Prompt_RestorePage_FlagParentId", "Integer")]
-
         private const string FlagParentId = "parentid";
 
         [FlagParameter("id", "Prompt_RestorePage_FlagId", "Integer")]
-
         private const string FlagId = "id";
 
         private readonly ITabController tabController;
@@ -39,9 +38,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         }
 
         /// <summary>Initializes a new instance of the <see cref="RestorePage"/> class.</summary>
-        /// <param name="tabController"></param>
-        /// <param name="recyclebinController"></param>
-        /// <param name="contentVerifier"></param>
+        /// <param name="tabController">The tab controller.</param>
+        /// <param name="recyclebinController">The recycle bin controller.</param>
+        /// <param name="contentVerifier">The content verifier.</param>
         public RestorePage(ITabController tabController, IRecyclebinController recyclebinController, IContentVerifier contentVerifier)
         {
             this.tabController = tabController;
@@ -74,7 +73,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         public override ConsoleResultModel Run()
         {
             TabInfo tab;
-            string message = string.Format(this.LocalizeString("PageNotFound"), this.PageId);
+            string message = string.Format(CultureInfo.CurrentCulture, this.LocalizeString("PageNotFound"), this.PageId);
 
             if (this.PageId > 0)
             {
@@ -92,7 +91,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
                 if (tab == null)
                 {
-                    message = string.Format(this.LocalizeString("PageNotFoundWithName"), this.PageName);
+                    message = string.Format(CultureInfo.CurrentCulture, this.LocalizeString("PageNotFoundWithName"), this.PageName);
                     return new ConsoleErrorResultModel(message);
                 }
             }
@@ -111,6 +110,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             if (string.IsNullOrEmpty(message))
             {
                 var successMessage = string.Format(
+                    CultureInfo.CurrentCulture,
                     this.LocalizeString("Prompt_PageRestoredSuccessfully"),
                     tab.TabID,
                     tab.TabName);

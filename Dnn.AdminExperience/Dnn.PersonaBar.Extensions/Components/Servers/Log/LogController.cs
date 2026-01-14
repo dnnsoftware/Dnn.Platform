@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Servers.Components.Log
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
 
@@ -16,12 +17,14 @@ namespace Dnn.PersonaBar.Servers.Components.Log
 
     public class LogController
     {
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public List<LogFile> GetLogFilesList()
         {
             var logPath = Globals.ApplicationMapPath + @"\portals\_default\logs";
             return GetLogList(logPath, "*.resources");
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public List<LogFile> GetUpgradeLogList()
         {
             var objProviderConfiguration = ProviderConfiguration.GetProviderConfiguration("data");

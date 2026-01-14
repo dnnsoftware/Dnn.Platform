@@ -6,18 +6,17 @@ namespace DotNetNuke.Entities.Modules
 {
     using System;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Entities.Modules
-    /// Class    : DesktopModuleSupportedFeature
-    /// <summary>
-    /// The DesktopModuleSupportedFeature enum provides an enumeration of Supported
-    /// Features.
-    /// </summary>
+    /// <summary>The DesktopModuleSupportedFeature enum provides an enumeration of Supported Features.</summary>
     [Flags]
     public enum DesktopModuleSupportedFeature
     {
+        /// <summary>The module supports import and export.</summary>
         IsPortable = 1,
+
+        /// <summary>The module supports indexing module content.</summary>
         IsSearchable = 2,
+
+        /// <summary>The module supports running custom logic on installs and upgrades of the module.</summary>
         IsUpgradeable = 4,
     }
 }

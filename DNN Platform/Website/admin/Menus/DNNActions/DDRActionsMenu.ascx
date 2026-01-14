@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" %>
+<%@ Import Namespace="DotNetNuke.Framework.JavaScriptLibraries" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnn" TagName="ACTIONS" src="~/DesktopModules/DDRMenu/Actions.ascx" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 <dnn:DnnJsInclude runat="server" FilePath="~/admin/menus/dnnactions/dnnactions.debug.js" />
@@ -49,7 +50,11 @@
 		{
 			confirmScript.Visible = false;
 		}
-		
-		jQuery.RegisterDnnJQueryPlugins(Page);
+
+	    JavaScript.RequestRegistration(CommonJs.jQuery);
+	    JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
+	    JavaScript.RequestRegistration(CommonJs.jQueryUI);
+	    JavaScript.RequestRegistration(CommonJs.HoverIntent);
+	    JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 	}
 </script>

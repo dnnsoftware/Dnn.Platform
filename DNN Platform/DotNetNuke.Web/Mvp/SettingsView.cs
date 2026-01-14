@@ -8,6 +8,8 @@ namespace DotNetNuke.Web.Mvp
 
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>Represents a class that is a view for a settings control with a strongly typed view model in a Web Forms Model-View-Presenter application.</summary>
+    /// <typeparam name="TModel">The type of the model.</typeparam>
     [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public abstract partial class SettingsView<TModel> : SettingsViewBase, ISettingsView<TModel>
         where TModel : SettingsModel, new()
@@ -34,25 +36,33 @@ namespace DotNetNuke.Web.Mvp
             }
         }
 
+        /// <summary>Gets the module setting.</summary>
+        /// <param name="key">The setting name.</param>
+        /// <param name="defaultValue">The default setting value.</param>
+        /// <returns>The setting value or <paramref name="defaultValue"/>.</returns>
         protected string GetModuleSetting(string key, string defaultValue)
         {
             var value = defaultValue;
 
-            if (this.Model.ModuleSettings.ContainsKey(key))
+            if (this.Model.ModuleSettings.TryGetValue(key, out var settingValue))
             {
-                value = this.Model.ModuleSettings[key];
+                value = settingValue;
             }
 
             return value;
         }
 
+        /// <summary>Gets the tab-module setting.</summary>
+        /// <param name="key">The setting name.</param>
+        /// <param name="defaultValue">The default setting value.</param>
+        /// <returns>The setting value or <paramref name="defaultValue"/>.</returns>
         protected string GetTabModuleSetting(string key, string defaultValue)
         {
             var value = defaultValue;
 
-            if (this.Model.TabModuleSettings.ContainsKey(key))
+            if (this.Model.TabModuleSettings.TryGetValue(key, out var settingValue))
             {
-                value = this.Model.TabModuleSettings[key];
+                value = settingValue;
             }
 
             return value;

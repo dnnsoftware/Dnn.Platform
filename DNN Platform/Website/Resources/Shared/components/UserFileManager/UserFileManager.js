@@ -123,7 +123,7 @@
             });
 
             $wrap.dialog({
-                dialogClass: opts.dialogClass,
+                classes: opts.classes,
                 width: opts.width,
                 minHeight: opts.minHeight,
                 title: opts.title,
@@ -181,7 +181,7 @@
     $.fn.userFileManager.defaultOptions = {
         openTriggerScope: 'body', // defines parent scope for openTriggerSelector, allows for event delegation
         openTriggerSelector: '#photoFromSite', // defined in template, opens dialog
-        dialogClass: 'dnnFormPopup fileManagerPopup',
+        classes: { "ui-dialog": "dnnFormPopup fileManagerPopup" },
         width: '700px', // dialog width
         minHeight: '400px', // dialog height
         getItemsServiceUrl: '/API/Journal/UserFile/GetItems',

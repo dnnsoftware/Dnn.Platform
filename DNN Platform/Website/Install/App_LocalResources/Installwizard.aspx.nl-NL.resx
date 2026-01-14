@@ -153,8 +153,8 @@
   <data name="DeletingOldFiles.Text" xml:space="preserve">
     <value>Verwijderen van oudere bestanden voor</value>
   </data>
-  <data name="DotNetVersion472Required.Text" xml:space="preserve">
-    <value>.Net Framework 4.7.2 of hoger is vereist. Controleer de Windows updates voordat je verder gaat.</value>
+  <data name="DotNetVersion48Required.Text" xml:space="preserve">
+    <value>.Net Framework 4.8 of hoger is vereist. Controleer de Windows updates voordat je verder gaat.</value>
   </data>
   <data name="Email.Help" xml:space="preserve">
     <value>Vul een e-mailadres in voor deze gebruiker</value>
@@ -270,10 +270,10 @@ Bij gebruik van Windows Explorer, browse naar de folders van uw website ( {0} ).
     <value>De door jou opgegeven databasegebruiker heeft geen dbo rechten</value>
   </data>
   <data name="IsValidSqlServerVersion.Text" xml:space="preserve">
-    <value>DNNPlatform heeft SQL 2008 R2 (Express of volledig produkt) nodig om te kunnen werken.</value>
+    <value>DNNPlatform heeft SQL 2017 (Express of volledig produkt) nodig om te kunnen werken.</value>
   </data>
   <data name="IsValidSqlServerVersionCheck.Text" xml:space="preserve">
-    <value>Controleren of database versie SQL 2008 R2 (express of volledig product) of hoger is</value>
+    <value>Controleren of database versie SQL 2017 (express of volledig product) of hoger is</value>
   </data>
   <data name="Language.Help" xml:space="preserve">
     <value>De taal die je wilt gebruiken voor je website.</value>
@@ -313,6 +313,9 @@ Bij gebruik van Windows Explorer, browse naar de folders van uw website ( {0} ).
   </data>
   <data name="NoInstallationLog.Text" xml:space="preserve">
     <value>Geen installatielog</value>
+  </data>
+  <data name="LoadingInstallationLog.Text" xml:space="preserve">
+    <value>Installatielogboeken laden, even geduld...</value>
   </data>
   <data name="PageTitle.Text" xml:space="preserve">
     <value>Installatie</value>

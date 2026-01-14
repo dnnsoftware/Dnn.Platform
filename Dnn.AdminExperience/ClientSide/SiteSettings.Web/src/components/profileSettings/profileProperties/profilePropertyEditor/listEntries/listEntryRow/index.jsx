@@ -20,7 +20,7 @@ class ListEntryRow extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props } = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
@@ -36,17 +36,17 @@ class ListEntryRow extends Component {
                         </div>
                         <div className="list-item item-row-actionButtons">
                             {props.enableSortOrder &&
-                                <div className={opened ? "order-icon-hidden" : "order-icon"}
-                                    dangerouslySetInnerHTML={{ __html: SvgIcons.DragRowIcon }} >
+                                <div className={opened ? "order-icon-hidden" : "order-icon"}>
+                                    <SvgIcons.DragRowIcon />
                                 </div>
                             }
                             <div className={opened ? "delete-icon-hidden" : "delete-icon"}
-                                dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }}
                                 onClick={props.onDelete.bind(this, props.entryId)}>
+                                <SvgIcons.TrashIcon />
                             </div>
                             <div className={opened ? "edit-icon-active" : "edit-icon"}
-                                dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}
                                 onClick={this.toggle.bind(this)}>
+                                <SvgIcons.EditIcon />
                             </div>
                         </div>
                     </div>

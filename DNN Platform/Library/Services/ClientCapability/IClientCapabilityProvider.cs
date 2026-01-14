@@ -10,10 +10,12 @@ namespace DotNetNuke.Services.ClientCapability
     public interface IClientCapabilityProvider
     {
         /// <summary>Returns ClientCapability based on userAgent.</summary>
+        /// <param name="userAgent">The user agent.</param>
         /// <returns>An <see cref="IClientCapability"/> instance.</returns>
         IClientCapability GetClientCapability(string userAgent);
 
         /// <summary>Returns ClientCapability based on ClientCapabilityId.</summary>
+        /// <param name="clientId">The client ID.</param>
         /// <returns>An <see cref="IClientCapability"/> instance.</returns>
         IClientCapability GetClientCapabilityById(string clientId);
 
@@ -27,6 +29,7 @@ namespace DotNetNuke.Services.ClientCapability
         IQueryable<IClientCapability> GetAllClientCapabilities();
 
         /// <summary>Returns ClientCapability based on HttpRequest.</summary>
+        /// <param name="httpRequest">The HTTP request.</param>
         /// <returns>An <see cref="IClientCapability"/> instance.</returns>
         IClientCapability GetClientCapability(HttpRequest httpRequest);
     }

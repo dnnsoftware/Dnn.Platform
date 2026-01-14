@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Localization
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
@@ -21,6 +22,7 @@ namespace DotNetNuke.Services.Localization
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Roles;
@@ -177,24 +179,12 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>Gets the current Culture being used.</summary>
-        public string CurrentCulture
-        {
-            get
-            {
-                // _CurrentCulture
-                return Thread.CurrentThread.CurrentCulture.ToString();
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public string CurrentCulture => Thread.CurrentThread.CurrentCulture.ToString();
 
         /// <summary>Gets the CurrentUICulture for the Thread.</summary>
-        public string CurrentUICulture
-        {
-            // _CurrentCulture
-            get
-            {
-                return Thread.CurrentThread.CurrentUICulture.ToString();
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public string CurrentUICulture => Thread.CurrentThread.CurrentUICulture.ToString();
 
         public static int ActiveLanguagesByPortalID(int portalID)
         {
@@ -232,7 +222,7 @@ namespace DotNetNuke.Services.Localization
                     }
 
                     DataProvider.Instance().AddPortalLanguage(portalID, languageID, false, UserController.Instance.GetCurrentUserInfo().UserID);
-                    string cacheKey = string.Format(DataCache.LocalesCacheKey, portalID);
+                    string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.LocalesCacheKey, portalID);
                     DataCache.RemoveCache(cacheKey);
 
                     EventLogController.Instance.AddLog(
@@ -273,7 +263,7 @@ namespace DotNetNuke.Services.Localization
                 AddLanguageToPortal(portalID, language.LanguageId, false);
             }
 
-            DataCache.RemoveCache(string.Format(DataCache.LocalesCacheKey, portalID));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.LocalesCacheKey, portalID));
         }
 
         public static void AddLanguageToPortals(int languageID)
@@ -283,31 +273,30 @@ namespace DotNetNuke.Services.Localization
                 // Add Portal/Language to PortalLanguages
                 AddLanguageToPortal(portal.PortalID, languageID, false);
 
-                DataCache.RemoveCache(string.Format(DataCache.LocalesCacheKey, portal.PortalID));
+                DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.LocalesCacheKey, portal.PortalID));
             }
         }
 
         public static void AddTranslatorRole(int portalID, Locale language)
         {
             // Create new Translator Role
-            string roleName = string.Format("Translator ({0})", language.Code);
+            string roleName = $"Translator ({language.Code})";
             RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
 
             if (role == null)
             {
-                role = new RoleInfo();
-                role.RoleGroupID = Null.NullInteger;
-                role.PortalID = portalID;
-                role.RoleName = roleName;
-                role.Description = string.Format("A role for {0} translators", language.EnglishName);
-                role.SecurityMode = SecurityMode.SecurityRole;
-                role.Status = RoleStatus.Approved;
+                role = new RoleInfo
+                {
+                    RoleGroupID = Null.NullInteger, PortalID = portalID, RoleName = roleName, Description = $"A role for {language.EnglishName} translators",
+                    SecurityMode = SecurityMode.SecurityRole,
+                    Status = RoleStatus.Approved,
+                };
                 RoleController.Instance.AddRole(role);
             }
 
-            string roles = string.Format("Administrators;{0}", string.Format("Translator ({0})", language.Code));
+            string roles = $"Administrators;Translator ({language.Code})";
 
-            PortalController.UpdatePortalSetting(portalID, string.Format("DefaultTranslatorRoles-{0}", language.Code), roles);
+            PortalController.UpdatePortalSetting(portalID, $"DefaultTranslatorRoles-{language.Code}", roles);
         }
 
         /// <summary>Converts old TimeZoneOffset to new <see cref="TimeZoneInfo"/>.</summary>
@@ -477,17 +466,17 @@ namespace DotNetNuke.Services.Localization
         {
             if (HttpContext.Current == null)
             {
-                return string.Format(defaultValue, @params);
+                return string.Format(CultureInfo.CurrentCulture, defaultValue, @params);
             }
 
             var content = GetString(key, ExceptionsResourceFile);
-            return string.Format(string.IsNullOrEmpty(content) ? defaultValue : GetString(key, ExceptionsResourceFile), @params);
+            return string.Format(CultureInfo.CurrentCulture, string.IsNullOrEmpty(content) ? defaultValue : GetString(key, ExceptionsResourceFile), @params);
         }
 
         public static string GetLanguageDisplayMode(int portalId)
         {
             string viewTypePersonalizationKey = "ViewType" + portalId;
-            string viewType = Convert.ToString(Personalization.Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
+            string viewType = Convert.ToString(Personalization.Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey), CultureInfo.InvariantCulture);
             if (string.IsNullOrEmpty(viewType))
             {
                 viewType = "NATIVE";
@@ -510,7 +499,7 @@ namespace DotNetNuke.Services.Localization
                     name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(info.EnglishName);
                     break;
                 case CultureDropDownTypes.Lcid:
-                    name = info.LCID.ToString();
+                    name = info.LCID.ToString(CultureInfo.CurrentCulture);
                     break;
                 case CultureDropDownTypes.Name:
                     name = info.Name;
@@ -640,30 +629,30 @@ namespace DotNetNuke.Services.Localization
 
         public static string GetResourceFileName(string resourceFileName, string language, string mode, int portalId)
         {
-            if (!resourceFileName.EndsWith(".resx"))
+            if (!resourceFileName.EndsWith(".resx", StringComparison.OrdinalIgnoreCase))
             {
                 resourceFileName += ".resx";
             }
 
             if (language != SystemLocale)
             {
-                if (resourceFileName.ToLowerInvariant().EndsWith(".en-us.resx"))
+                if (resourceFileName.EndsWith(".en-us.resx", StringComparison.OrdinalIgnoreCase))
                 {
-                    resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 11) + "." + language + ".resx";
+                    resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 11)}.{language}.resx";
                 }
                 else
                 {
-                    resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + language + ".resx";
+                    resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 5)}.{language}.resx";
                 }
             }
 
             if (mode == "Host")
             {
-                resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + "Host.resx";
+                resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 5)}.Host.resx";
             }
             else if (mode == "Portal")
             {
-                resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + "Portal-" + portalId + ".resx";
+                resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 5)}.Portal-{portalId}.resx";
             }
 
             return resourceFileName;
@@ -1071,7 +1060,7 @@ namespace DotNetNuke.Services.Localization
 
         /// <summary>LoadCultureDropDownList loads a DropDownList with the list of supported cultures based on the languages defined in the supported locales file, for the current portal.</summary>
         /// <param name="list">DropDownList to load.</param>
-        /// <param name="displayType">Format of the culture to display. Must be one the CultureDropDownTypes values. <see cref="CultureDropDownTypes" /> for list of allowable values.</param>
+        /// <param name="displayType">Format of the culture to display. Must be one of the <see cref="CultureDropDownTypes"/>> values. <see cref="CultureDropDownTypes" /> for list of allowable values.</param>
         /// <param name="selectedValue">Name of the default culture to select.</param>
         public static void LoadCultureDropDownList(DropDownList list, CultureDropDownTypes displayType, string selectedValue)
         {
@@ -1128,10 +1117,10 @@ namespace DotNetNuke.Services.Localization
         /// <para>This overload allows us to filter a language from the dropdown. To do so pass a language code to the Filter parameter.</para>
         /// <para>This overload allows us to display all installed languages. To do so, pass the value True to the Host parameter.</para>
         /// </summary>
-        /// <param name="displayType"></param>
-        /// <param name="selectedValue"></param>
-        /// <param name="filter"></param>
-        /// <param name="host"></param>
+        /// <param name="displayType">The <see cref="CultureDropDownTypes"/>.</param>
+        /// <param name="selectedValue">The selected value.</param>
+        /// <param name="filter">The value to exclude from the list.</param>
+        /// <param name="host">Whether to get host-level locales or the locales for the current portal.</param>
         /// <returns>A sequence of new <see cref="ListItem"/> instances.</returns>
         public static IEnumerable<ListItem> LoadCultureInListItems(CultureDropDownTypes displayType, string selectedValue, string filter, bool host)
         {
@@ -1191,9 +1180,9 @@ namespace DotNetNuke.Services.Localization
                 // we should be checking that the tab path matches //Admin//pagename or //admin
                 // in this way we should avoid partial matches (ie //Administrators
                 if (PortalSettings.Current.ActiveTab.TabPath.StartsWith("//Admin//", StringComparison.CurrentCultureIgnoreCase) ||
-                    string.Compare(PortalSettings.Current.ActiveTab.TabPath, "//Admin", StringComparison.OrdinalIgnoreCase) == 0 ||
+                    string.Equals(PortalSettings.Current.ActiveTab.TabPath, "//Admin", StringComparison.OrdinalIgnoreCase) ||
                     PortalSettings.Current.ActiveTab.TabPath.StartsWith("//Host//", StringComparison.CurrentCultureIgnoreCase) ||
-                    string.Compare(PortalSettings.Current.ActiveTab.TabPath, "//Host", StringComparison.OrdinalIgnoreCase) == 0)
+                    string.Equals(PortalSettings.Current.ActiveTab.TabPath, "//Host", StringComparison.OrdinalIgnoreCase))
                 {
                     isAdminPage = true;
                 }
@@ -1273,8 +1262,8 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        /// <summary>Localizes headers and fields on a DetailsView control.</summary>
-        /// <param name="detailsView"></param>
+        /// <summary>Localizes headers and fields on a <see cref="DetailsView"/> control.</summary>
+        /// <param name="detailsView">The <see cref="DetailsView"/> to localize.</param>
         /// <param name="resourceFile">The root name of the resource file where the localized texts can be found.</param>
         public static void LocalizeDetailsView(ref DetailsView detailsView, string resourceFile)
         {
@@ -1297,29 +1286,41 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>Localizes the "Built In" Roles.</summary>
-        /// <remarks>
-        /// Localizes:
-        /// -DesktopTabs
-        /// -BreadCrumbs.
-        /// </remarks>
+        /// <remarks>This function looks for [Rolename.Role] key in GlobalResources.resx to see if this exists and
+        /// if it does, it returns the localized description. Otherwise the role parameter is returned. I.e. it falls back
+        /// to its original value.</remarks>
+        /// <param name="role">The role name to localize.</param>
         /// <returns>The role name, potentially localized.</returns>
         public static string LocalizeRole(string role)
         {
             string localRole;
-            switch (role)
+            string roleKey = role + ".Role";
+            localRole = GetString(roleKey, GlobalResourceFile);
+            if (string.IsNullOrEmpty(localRole))
             {
-                case Globals.glbRoleAllUsersName:
-                case Globals.glbRoleSuperUserName:
-                case Globals.glbRoleUnauthUserName:
-                    string roleKey = role.Replace(" ", string.Empty);
-                    localRole = GetString(roleKey);
-                    break;
-                default:
-                    localRole = role;
-                    break;
+                return role;
             }
 
             return localRole;
+        }
+
+        /// <summary>Gets the localized description for the "Built In" Roles.</summary>
+        /// <remarks>This function looks for [Rolename.RoleDescription] key in GlobalResources.resx to see if this exists and
+        /// if it does, it returns the localized description.</remarks>
+        /// <param name="role">The role name to localize the description for.</param>
+        /// <param name="fallback">The fallback description to use if the localized description is not found.</param>
+        /// <returns>The localized description or null if not found.</returns>
+        public static string LocalizeRoleDescription(string role, string fallback)
+        {
+            string roleDescription;
+            string roleKey = role + ".RoleDescription";
+            roleDescription = GetString(roleKey, GlobalResourceFile);
+            if (string.IsNullOrEmpty(roleDescription))
+            {
+                return fallback;
+            }
+
+            return roleDescription;
         }
 
         public static void RemoveLanguageFromPortal(int portalID, int languageID)
@@ -1334,7 +1335,7 @@ namespace DotNetNuke.Services.Localization
                 var portalLocales = GetPortalLocalizations(portalID);
                 if (portalLocales.Count <= 1)
                 {
-                    throw new Exception("You are trying to delete the only Portal localization entry in the system. This is NOT allowd!");
+                    throw new PortalLocalizationRequiredException("You are trying to delete the only Portal localization entry in the system. This is NOT allowed!");
                 }
             }
 
@@ -1378,7 +1379,7 @@ namespace DotNetNuke.Services.Localization
                 }
 
                 // Get Translator Role
-                string roleName = string.Format("Translator ({0})", language.Code);
+                string roleName = $"Translator ({language.Code})";
                 RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
 
                 if (role != null)
@@ -1488,7 +1489,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="portalSettings">The current portal settings.</param>
         /// <remarks>
         ///   This method will configure the Thread culture codes.  Any page which does not derive from <see cref="PageBase" /> should
-        ///   be sure to call this method in <see cref="Control.OnInit" /> to ensure localization works correctly.  See the <see cref="TelerikDialogHandler" /> for an example.
+        ///   be sure to call this method in <see cref="Control.OnInit" /> to ensure localization works correctly.
         /// </remarks>
         [DnnDeprecated(9, 8, 0, "Use overload taking IPortalSettings instead")]
         public static partial void SetThreadCultures(CultureInfo cultureInfo, PortalSettings portalSettings)
@@ -1501,7 +1502,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="portalSettings">The current portal settings.</param>
         /// <remarks>
         ///   This method will configure the Thread culture codes.  Any page which does not derive from <see cref="PageBase" /> should
-        ///   be sure to call this method in <see cref="Control.OnInit" /> to ensure localization works correctly.  See the <see cref="TelerikDialogHandler" /> for an example.
+        ///   be sure to call this method in <see cref="Control.OnInit" /> to ensure localization works correctly.
         /// </remarks>
         public static void SetThreadCultures(CultureInfo cultureInfo, IPortalSettings portalSettings)
         {
@@ -1547,7 +1548,7 @@ namespace DotNetNuke.Services.Localization
             string oldCurrentCulture = this.CurrentUICulture;
             var newCulture = new CultureInfo(culture);
             Thread.CurrentThread.CurrentUICulture = newCulture;
-            string currencyStr = expression.ToString(newCulture.NumberFormat.CurrencySymbol);
+            string currencyStr = expression.ToString(newCulture.NumberFormat.CurrencySymbol, newCulture);
             var oldCulture = new CultureInfo(oldCurrentCulture);
             Thread.CurrentThread.CurrentUICulture = oldCulture;
             return currencyStr;
@@ -1558,7 +1559,7 @@ namespace DotNetNuke.Services.Localization
             string oldCurrentCulture = this.CurrentUICulture;
             var newCulture = new CultureInfo(culture);
             Thread.CurrentThread.CurrentUICulture = newCulture;
-            string dateStr = expression.ToString(newCulture.DateTimeFormat.FullDateTimePattern);
+            string dateStr = expression.ToString(newCulture.DateTimeFormat.FullDateTimePattern, newCulture);
             var oldCulture = new CultureInfo(oldCurrentCulture);
             Thread.CurrentThread.CurrentUICulture = oldCulture;
             return dateStr;
@@ -1569,7 +1570,7 @@ namespace DotNetNuke.Services.Localization
         /// If an exact match is not found (language-region), it will try to find a match for the language only.
         /// Ex: requested locale is "en-GB", requested language is "en", enabled locale is "en-US", so "en" is a match for "en-US".
         /// </summary>
-        /// <param name="portalId">Id of current portal.</param>
+        /// <param name="portalId">ID of current portal.</param>
         /// <param name="language">Language to be parsed.</param>
         /// <returns>A valid and enabled CultureInfo that matches the language passed if any.</returns>
         internal static CultureInfo GetCultureFromString(int portalId, string language)
@@ -1742,14 +1743,14 @@ namespace DotNetNuke.Services.Localization
                         }
                     }
 
-                    var alias = GetValidLanguageURL(portalId, httpAlias, locale.Code.ToLowerInvariant());
+                    var alias = GetValidLanguageUrl(portalId, httpAlias, locale.Code.ToLowerInvariant());
                     if (!string.IsNullOrEmpty(alias))
                     {
                         var newAlias = new PortalAliasInfo(currentAlias)
                         {
                             IsPrimary = true,
                             CultureCode = locale.Code,
-                            HTTPAlias = GetValidLanguageURL(portalId, httpAlias, locale.Code.ToLowerInvariant()),
+                            HTTPAlias = GetValidLanguageUrl(portalId, httpAlias, locale.Code.ToLowerInvariant()),
                         };
 
                         PortalAliasController.Instance.AddPortalAlias(newAlias);
@@ -1758,21 +1759,21 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        private static string GetValidLanguageURL(int portalId, string httpAlias, string locale)
+        private static string GetValidLanguageUrl(int portalId, string httpAlias, string locale)
         {
             string alias;
 
             bool isValid;
-            int counter = 0;
+            var counter = 0;
             do
             {
-                string modifiedLocale = locale;
+                var modifiedLocale = locale;
                 if (counter > 0)
                 {
                     modifiedLocale += counter.ToString(CultureInfo.InvariantCulture);
                 }
 
-                alias = string.Format("{0}/{1}", httpAlias, modifiedLocale);
+                alias = $"{httpAlias}/{modifiedLocale}";
 
                 var tab = TabController.Instance.GetTabByName(modifiedLocale, portalId);
                 isValid = tab == null;
@@ -1897,14 +1898,14 @@ namespace DotNetNuke.Services.Localization
             return culture;
         }
 
-        private static IList<object> GetPortalLocalizations(int portalID)
+        private static List<object> GetPortalLocalizations(int portalId)
         {
-            return CBO.FillCollection<object>(DataProvider.Instance().GetPortalLocalizations(portalID));
+            return CBO.FillCollection<object>(DataProvider.Instance().GetPortalLocalizations(portalId));
         }
 
         /// <summary>
         /// When portal allows users to select their preferred UI language, this method
-        /// will return the user UI preferred language if defined. Otherwise defaults
+        /// will return the user UI preferred language if defined; otherwise, defaults
         /// to the current culture.
         /// </summary>
         /// <param name="currentCulture">Current culture.</param>

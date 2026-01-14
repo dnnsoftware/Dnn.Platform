@@ -36,6 +36,11 @@ namespace Dnn.Modules.ResourceManager.Components.Common
         public static int GetFolderGroupId(int folderId)
         {
             var folder = FolderManager.Instance.GetFolder(folderId);
+            if (folder is null)
+            {
+                return -1;
+            }
+
             var folderPath = folder.DisplayPath;
 
             if (!folderPath.StartsWith(Constants.GroupFolderPathStart))
@@ -45,7 +50,7 @@ namespace Dnn.Modules.ResourceManager.Components.Common
 
             var prefixLength = Constants.GroupFolderPathStart.Length;
             var folderGroupIdString = folderPath.Substring(prefixLength - 1);
-            folderGroupIdString = folderGroupIdString.Substring(0, folderGroupIdString.IndexOf("/"));
+            folderGroupIdString = folderGroupIdString.Substring(0, folderGroupIdString.IndexOf("/", StringComparison.Ordinal));
 
             if (!int.TryParse(folderGroupIdString, out var folderGroupId))
             {

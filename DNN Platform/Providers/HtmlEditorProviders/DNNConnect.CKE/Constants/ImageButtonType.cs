@@ -10,7 +10,7 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// <summary>The standard button.</summary>
         StandardButton = 0,
 
-        /// <summary>easy image button</summary>
+        /// <summary>easy image button.</summary>
         EasyImageButton = 1,
     }
 }

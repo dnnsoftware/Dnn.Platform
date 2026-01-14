@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.FileSystem
 {
     using System;
     using System.Collections.Specialized;
+    using System.Globalization;
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -20,18 +21,17 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
             var portalId = file.PortalId;
-            var linkClickPortalSettigns = this.GetPortalSettingsForLinkClick(portalId);
+            var linkClickPortalSettings = GetPortalSettingsForLinkClick(portalId);
 
-            return TestableGlobals.Instance.LinkClick(string.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger, true, false, portalId, linkClickPortalSettigns.EnableUrlLanguage, linkClickPortalSettigns.PortalGUID);
+            return TestableGlobals.Instance.LinkClick(string.Format(CultureInfo.InvariantCulture, "fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger, true, false, portalId, linkClickPortalSettings.EnableUrlLanguage, linkClickPortalSettings.PortalGUID);
         }
 
         /// <inheritdoc/>
         public int GetFileIdFromLinkClick(NameValueCollection queryParams)
         {
-            var linkClickPortalSettings = this.GetPortalSettingsForLinkClick(this.GetPortalIdFromLinkClick(queryParams));
+            var linkClickPortalSettings = GetPortalSettingsForLinkClick(GetPortalIdFromLinkClick(queryParams));
             var strFileId = UrlUtils.DecryptParameter(queryParams["fileticket"], linkClickPortalSettings.PortalGUID);
-            int fileId;
-            return int.TryParse(strFileId, out fileId) ? fileId : -1;
+            return int.TryParse(strFileId, out var fileId) ? fileId : -1;
         }
 
         /// <inheritdoc/>
@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.FileSystem
             return () => new FileLinkClickController();
         }
 
-        private LinkClickPortalSettings GetPortalSettingsForLinkClick(int portalId)
+        private static LinkClickPortalSettings GetPortalSettingsForLinkClick(int portalId)
         {
             if (portalId == Null.NullInteger)
             {
@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.FileSystem
             };
         }
 
-        private int GetPortalIdFromLinkClick(NameValueCollection queryParams)
+        private static int GetPortalIdFromLinkClick(NameValueCollection queryParams)
         {
             if (queryParams["hf"] != null && queryParams["hf"] == "1")
             {

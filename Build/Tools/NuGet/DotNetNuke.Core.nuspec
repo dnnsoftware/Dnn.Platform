@@ -19,9 +19,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\Website\bin\DotNetNuke.dll" target="lib\net45\" />
-    <file src="..\..\..\Website\bin\DotNetNuke.pdb" target="lib\net45\" />
-    <file src="..\..\..\Website\bin\Microsoft.ApplicationBlocks.Data.dll" target="lib\net45\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.dll" target="lib\net48\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.pdb" target="lib\net48\" />
+    <file src="..\..\..\Website\bin\Microsoft.ApplicationBlocks.Data.dll" target="lib\net48\" />
     <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

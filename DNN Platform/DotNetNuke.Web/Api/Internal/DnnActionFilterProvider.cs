@@ -14,9 +14,11 @@ namespace DotNetNuke.Web.Api.Internal
     using DotNetNuke.Common;
     using DotNetNuke.DependencyInjection.Extensions;
 
+    /// <summary>Gets action filters for web API actions.</summary>
+    /// <remarks>Replaces <see cref="ActionDescriptorFilterProvider"/>.</remarks>
     internal class DnnActionFilterProvider : IFilterProvider
     {
-        private IServiceProvider container;
+        private readonly IServiceProvider container;
 
         /// <summary>Initializes a new instance of the <see cref="DnnActionFilterProvider"/> class.</summary>
         /// <param name="container">The dependency injection container.</param>

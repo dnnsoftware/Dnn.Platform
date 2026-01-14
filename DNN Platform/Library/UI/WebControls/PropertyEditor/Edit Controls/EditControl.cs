@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -23,23 +24,11 @@ namespace DotNetNuke.UI.WebControls
 
         public event PropertyChangedEventHandler ValueChanged;
 
-        /// <summary>Gets a value indicating whether returns whether the.</summary>
+        /// <summary>Gets a value indicating whether the control is valid.</summary>
         /// <value>A boolean.</value>
-        public virtual bool IsValid
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool IsValid => true;
 
-        public virtual string EditControlClientId
-        {
-            get
-            {
-                return this.ClientID;
-            }
-        }
+        public virtual string EditControlClientId => this.ClientID;
 
         /// <summary>Gets or sets the Custom Attributes for this Control.</summary>
         /// <value>An array of Attributes.</value>
@@ -110,7 +99,7 @@ namespace DotNetNuke.UI.WebControls
             bool dataChanged = false;
             string presentValue = this.StringValue;
             string postedValue = postCollection[postDataKey];
-            if (!presentValue.Equals(postedValue))
+            if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
             {
                 this.Value = postedValue;
                 dataChanged = true;
@@ -119,13 +108,14 @@ namespace DotNetNuke.UI.WebControls
             return dataChanged;
         }
 
-        /// <summary>RaisePostDataChangedEvent runs when the PostBackData has changed.  It triggers a ValueChanged Event.</summary>
+        /// <summary>RaisePostDataChangedEvent runs when the PostBackData has changed.  It triggers a <see cref="ValueChanged"/> Event.</summary>
         public void RaisePostDataChangedEvent()
         {
             this.OnDataChanged(EventArgs.Empty);
         }
 
-        /// <summary>OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged Event.</summary>
+        /// <summary>OnDataChanged runs when the PostbackData has changed.  It raises the <see cref="ValueChanged"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected abstract void OnDataChanged(EventArgs e);
 
         /// <summary>OnAttributesChanged runs when the CustomAttributes property has changed.</summary>
@@ -133,7 +123,8 @@ namespace DotNetNuke.UI.WebControls
         {
         }
 
-        /// <summary>Runs when an item is added to a collection type property.</summary>
+        /// <summary>Runs when an item is added to a collection type property. It raises the <see cref="ItemAdded"/> event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnItemAdded(PropertyEditorEventArgs e)
         {
             if (this.ItemAdded != null)
@@ -142,7 +133,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Runs when an item is deleted from a collection type property.</summary>
+        /// <summary>Runs when an item is deleted from a collection type property. It raises the <see cref="ItemDeleted"/> event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
         {
             if (this.ItemDeleted != null)
@@ -151,7 +143,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>OnValueChanged runs when the Value has changed.  It raises the ValueChanged Event.</summary>
+        /// <summary>OnValueChanged runs when the Value has changed.  It raises the <see cref="ValueChanged"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnValueChanged(PropertyEditorEventArgs e)
         {
             if (this.ValueChanged != null)
@@ -164,7 +157,7 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="writer">A HtmlTextWriter.</param>
         protected virtual void RenderViewMode(HtmlTextWriter writer)
         {
-            string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value));
+            string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value, CultureInfo.InvariantCulture));
 
             this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
@@ -177,7 +170,7 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="writer">A HtmlTextWriter.</param>
         protected virtual void RenderEditMode(HtmlTextWriter writer)
         {
-            string propValue = Convert.ToString(this.Value);
+            string propValue = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
 
             this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");

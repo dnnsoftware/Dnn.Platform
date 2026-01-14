@@ -7,16 +7,16 @@ namespace DNNConnect.CKEditorProvider.Constants
     public enum LinkType
     {
 #pragma warning disable SA1300 // Element should begin with upper-case letter
-        /// <summary>Link Type URL</summary>
+        /// <summary>Link Type URL.</summary>
         url = 0,
 
-        /// <summary>Link Type local Page</summary>
+        /// <summary>Link Type local Page.</summary>
         localPage = 1,
 
-        /// <summary>Link Type anchor</summary>
+        /// <summary>Link Type anchor.</summary>
         anchor = 2,
 
-        /// <summary>Link Type email</summary>
+        /// <summary>Link Type email.</summary>
         email = 3,
 #pragma warning restore SA1300 // Element should begin with upper-case letter
     }

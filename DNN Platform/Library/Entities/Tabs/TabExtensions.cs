@@ -11,12 +11,12 @@ namespace DotNetNuke.Entities.Tabs
     {
         public static bool ContainsAlias(this List<TabAliasSkinInfo> aliases, string httpAlias)
         {
-            return aliases.Any(tas => string.Compare(httpAlias, tas.HttpAlias, System.StringComparison.OrdinalIgnoreCase) == 0);
+            return aliases.Any(tas => string.Equals(httpAlias, tas.HttpAlias, System.StringComparison.OrdinalIgnoreCase));
         }
 
         public static TabAliasSkinInfo FindByHttpAlias(this List<TabAliasSkinInfo> aliases, string httpAlias)
         {
-            return aliases.FirstOrDefault(tas => string.Compare(httpAlias, tas.HttpAlias, System.StringComparison.OrdinalIgnoreCase) == 0);
+            return aliases.FirstOrDefault(tas => string.Equals(httpAlias, tas.HttpAlias, System.StringComparison.OrdinalIgnoreCase));
         }
 
         public static int GetNextAvailableSeqNum(this List<TabUrlInfo> redirects, bool positive)

@@ -1,23 +1,26 @@
 import React from "react";
-import { storiesOf } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
+import { action } from "storybook/actions";
 import EditableField from "./index";
 
-storiesOf("EditableField", module).add("with single line input", () => (
-  <EditableField
-    label="Test"
-    value="Content"
-    onFocus={action("focus")}
-    onEnter={action("enter")}
-  />
-));
+export default {
+    component: EditableField,
+};
 
-storiesOf("EditableField", module).add("with multi-line input", () => (
-  <EditableField
-    label="Test"
-    value="Content"
-    inputType="textArea"
-    onFocus={action("focus")}
-    onEnter={action("enter")}
-  />
-));
+export const WithSingleLineInput =  () => (
+    <EditableField
+        label="Test"
+        value="Content"
+        onFocus={action("focus")}
+        onEnter={action("enter")}
+    />
+);
+
+export const WithMultiLineInput =  () => (
+    <EditableField
+        label="Test"
+        value="Content"
+        inputType="textArea"
+        onFocus={action("focus")}
+        onEnter={action("enter")}
+    />
+);

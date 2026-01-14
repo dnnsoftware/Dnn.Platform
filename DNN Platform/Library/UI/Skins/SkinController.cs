@@ -6,10 +6,13 @@ namespace DotNetNuke.UI.Skins
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Text.RegularExpressions;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -18,14 +21,14 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// Project  : DotNetNuke
-    /// Class    : SkinController
-    ///
-    /// <summary>    Handles the Business Control Layer for Skins.</summary>
-    public class SkinController
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>Handles the Business Control Layer for Skins.</summary>
+    public partial class SkinController
     {
         private const string GlobalSkinPrefix = "[G]";
         private const string PortalSystemSkinPrefix = "[S]";
@@ -34,22 +37,12 @@ namespace DotNetNuke.UI.Skins
         private static readonly Regex GdirRegex = new Regex("\\[g]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex SdirRegex = new Regex("\\[s]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex LdirRegex = new Regex("\\[l]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly string[] MessageSeparator = ["<br />",];
+        private static readonly List<string> LegacySkinExtensions = [".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS",];
 
-        public static string RootSkin
-        {
-            get
-            {
-                return "Skins";
-            }
-        }
+        public static string RootSkin => "Skins";
 
-        public static string RootContainer
-        {
-            get
-            {
-                return "Containers";
-            }
-        }
+        public static string RootContainer => "Containers";
 
         public static int AddSkin(int skinPackageID, string skinSrc)
         {
@@ -62,34 +55,49 @@ namespace DotNetNuke.UI.Skins
             return DataProvider.Instance().AddSkinPackage(skinPackage.PackageID, skinPackage.PortalID, skinPackage.SkinName, skinPackage.SkinType, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
-        public static bool CanDeleteSkin(string folderPath, string portalHomeDirMapPath)
+        /// <summary>Determines whether the given theme folder can be deleted.</summary>
+        /// <param name="folderPath">The folder path.</param>
+        /// <param name="portalHomeDirMapPath">The physical path to the portal's home directory.</param>
+        /// <returns><see langword="true"/> if the folder can be deleted, <see langword="false"/> otherwise.</returns>
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial bool CanDeleteSkin(string folderPath, string portalHomeDirMapPath)
+            => CanDeleteSkin(null, folderPath, portalHomeDirMapPath);
+
+        /// <summary>Determines whether the given theme folder can be deleted.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="folderPath">The folder path.</param>
+        /// <param name="portalHomeDirMapPath">The physical path to the portal's home directory.</param>
+        /// <returns><see langword="true"/> if the folder can be deleted, <see langword="false"/> otherwise.</returns>
+        public static bool CanDeleteSkin(IHostSettings hostSettings, string folderPath, string portalHomeDirMapPath)
         {
+            hostSettings ??= Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
             string skinType;
             string skinFolder;
             bool canDelete = true;
             if (folderPath.IndexOf(Globals.HostMapPath, StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 skinType = "G";
-                skinFolder = folderPath.ToLowerInvariant().Replace(Globals.HostMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(Globals.HostMapPath.ToLowerInvariant(), string.Empty).Replace(@"\", "/");
             }
             else if (folderPath.IndexOf(PortalSettings.Current.HomeSystemDirectoryMapPath, StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 skinType = "S";
-                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace(@"\", "/");
             }
             else
             {
                 // to be compliant with all versions
                 skinType = "L";
-                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace(@"\", "/");
             }
 
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
 
             string skin = "[" + skinType.ToLowerInvariant() + "]" + skinFolder.ToLowerInvariant();
             if (skinFolder.ToLowerInvariant().Contains("skins"))
             {
-                if (Host.DefaultAdminSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || Host.DefaultPortalSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) ||
+                if (hostSettings.DefaultAdminSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || hostSettings.DefaultPortalSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) ||
                     portalSettings.DefaultAdminSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || portalSettings.DefaultPortalSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase))
                 {
                     canDelete = false;
@@ -97,7 +105,7 @@ namespace DotNetNuke.UI.Skins
             }
             else
             {
-                if (Host.DefaultAdminContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || Host.DefaultPortalContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) ||
+                if (hostSettings.DefaultAdminContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || hostSettings.DefaultPortalContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) ||
                     portalSettings.DefaultAdminContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || portalSettings.DefaultPortalContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase))
                 {
                     canDelete = false;
@@ -156,7 +164,7 @@ namespace DotNetNuke.UI.Skins
             string strSkinSrc = skinSrc;
             if (!string.IsNullOrEmpty(strSkinSrc))
             {
-                strSkinSrc = strSkinSrc.Substring(0, strSkinSrc.LastIndexOf("/") + 1);
+                strSkinSrc = strSkinSrc.Substring(0, strSkinSrc.LastIndexOf("/", StringComparison.Ordinal) + 1);
             }
 
             return strSkinSrc;
@@ -335,56 +343,51 @@ namespace DotNetNuke.UI.Skins
 
             string strExtension;
             string strFileName;
-            FileStream objFileStream;
+            FileStream fileStream;
             var arrData = new byte[2048];
             string strMessage = string.Empty;
             var arrSkinFiles = new ArrayList();
 
             // Localized Strings
             PortalSettings resourcePortalSettings = Globals.GetPortalSettings();
-            string bEGIN_MESSAGE = Localization.GetString("BeginZip", resourcePortalSettings);
-            string cREATE_DIR = Localization.GetString("CreateDir", resourcePortalSettings);
-            string wRITE_FILE = Localization.GetString("WriteFile", resourcePortalSettings);
-            string fILE_ERROR = Localization.GetString("FileError", resourcePortalSettings);
-            string eND_MESSAGE = Localization.GetString("EndZip", resourcePortalSettings);
-            string fILE_RESTICTED = Localization.GetString("FileRestricted", resourcePortalSettings);
+            string beginMessage = Localization.GetString("BeginZip", resourcePortalSettings);
+            string createDir = Localization.GetString("CreateDir", resourcePortalSettings);
+            string writeFile = Localization.GetString("WriteFile", resourcePortalSettings);
+            string fileError = Localization.GetString("FileError", resourcePortalSettings);
+            string endMessage = Localization.GetString("EndZip", resourcePortalSettings);
+            string fileRestricted = Localization.GetString("FileRestricted", resourcePortalSettings);
 
-            strMessage += FormatMessage(bEGIN_MESSAGE, skinName, -1, false);
+            strMessage += FormatMessage(beginMessage, skinName, -1, false);
 
             foreach (var objZipEntry in objZipInputStream.FileEntries())
             {
                 // validate file extension
-                strExtension = objZipEntry.FullName.Substring(objZipEntry.FullName.LastIndexOf(".") + 1);
-                var extraExtensions = new List<string> { ".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS" };
-                if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
+                strExtension = objZipEntry.FullName.Substring(objZipEntry.FullName.LastIndexOf(".", StringComparison.Ordinal) + 1);
+                if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, LegacySkinExtensions))
                 {
                     // process embedded zip files
-                    if (objZipEntry.FullName.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
+                    if (objZipEntry.FullName.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.OrdinalIgnoreCase))
                     {
-                        using (var objMemoryStream = new MemoryStream())
-                        {
-                            objZipEntry.Open().CopyToStream(objMemoryStream, 25000);
-                            objMemoryStream.Seek(0, SeekOrigin.Begin);
-                            strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
-                        }
+                        using var objMemoryStream = new MemoryStream();
+                        objZipEntry.Open().CopyToStream(objMemoryStream, 25000);
+                        objMemoryStream.Seek(0, SeekOrigin.Begin);
+                        strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
                     }
-                    else if (objZipEntry.FullName.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
+                    else if (objZipEntry.FullName.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.OrdinalIgnoreCase))
                     {
-                        using (var objMemoryStream = new MemoryStream())
-                        {
-                            objZipEntry.Open().CopyToStream(objMemoryStream, 25000);
-                            objMemoryStream.Seek(0, SeekOrigin.Begin);
-                            strMessage += UploadLegacySkin(rootPath, RootContainer, skinName, objMemoryStream);
-                        }
+                        using var objMemoryStream = new MemoryStream();
+                        objZipEntry.Open().CopyToStream(objMemoryStream, 25000);
+                        objMemoryStream.Seek(0, SeekOrigin.Begin);
+                        strMessage += UploadLegacySkin(rootPath, RootContainer, skinName, objMemoryStream);
                     }
                     else
                     {
-                        strFileName = rootPath + skinRoot + "\\" + skinName + "\\" + objZipEntry.FullName;
+                        strFileName = $@"{rootPath}{skinRoot}\{skinName}\{objZipEntry.FullName}";
 
                         // create the directory if it does not exist
                         if (!Directory.Exists(Path.GetDirectoryName(strFileName)))
                         {
-                            strMessage += FormatMessage(cREATE_DIR, Path.GetDirectoryName(strFileName), 2, false);
+                            strMessage += FormatMessage(createDir, Path.GetDirectoryName(strFileName), 2, false);
                             Directory.CreateDirectory(Path.GetDirectoryName(strFileName));
                         }
 
@@ -396,12 +399,12 @@ namespace DotNetNuke.UI.Skins
                         }
 
                         // create the new file
-                        objFileStream = File.Create(strFileName);
+                        fileStream = File.Create(strFileName);
 
                         // unzip the file
-                        strMessage += FormatMessage(wRITE_FILE, Path.GetFileName(strFileName), 2, false);
-                        objZipEntry.Open().CopyToStream(objFileStream, 25000);
-                        objFileStream.Close();
+                        strMessage += FormatMessage(writeFile, Path.GetFileName(strFileName), 2, false);
+                        objZipEntry.Open().CopyToStream(fileStream, 25000);
+                        fileStream.Close();
 
                         // save the skin file
                         switch (Path.GetExtension(strFileName))
@@ -410,7 +413,7 @@ namespace DotNetNuke.UI.Skins
                             case ".html":
                             case ".ascx":
                             case ".css":
-                                if (strFileName.ToLowerInvariant().IndexOf(Globals.glbAboutPage.ToLowerInvariant()) < 0)
+                                if (strFileName.IndexOf(Globals.glbAboutPage, StringComparison.InvariantCultureIgnoreCase) < 0)
                                 {
                                     arrSkinFiles.Add(strFileName);
                                 }
@@ -423,11 +426,11 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    strMessage += string.Format(fILE_RESTICTED, objZipEntry.FullName, Host.AllowedExtensionWhitelist.ToStorageString(), ",", ", *.").Replace("2", "true");
+                    strMessage += string.Format(CultureInfo.CurrentCulture, fileRestricted, objZipEntry.FullName, Host.AllowedExtensionWhitelist.ToStorageString(), ",", ", *.").Replace("2", "true");
                 }
             }
 
-            strMessage += FormatMessage(eND_MESSAGE, skinName + ".zip", 1, false);
+            strMessage += FormatMessage(endMessage, skinName + ".zip", 1, false);
             objZipInputStream.Dispose();
 
             // process the list of skin files
@@ -437,9 +440,9 @@ namespace DotNetNuke.UI.Skins
             // log installation event
             try
             {
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = nameof(EventLogType.HOST_ALERT), };
                 log.LogProperties.Add(new LogDetailInfo("Install Skin:", skinName));
-                Array arrMessage = strMessage.Split(new[] { "<br />" }, StringSplitOptions.None);
+                Array arrMessage = strMessage.Split(MessageSeparator, StringSplitOptions.None);
                 foreach (string strRow in arrMessage)
                 {
                     log.LogProperties.Add(new LogDetailInfo("Info:", HtmlUtils.StripTags(strRow, true)));
@@ -459,11 +462,11 @@ namespace DotNetNuke.UI.Skins
         {
             foreach (string skinFile in Directory.GetFiles(skinFolder, "*.ascx"))
             {
-                string folder = skinFolder.Substring(skinFolder.LastIndexOf("\\") + 1);
+                string folder = skinFolder.Substring(skinFolder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
 
-                string key = (skinPrefix == PortalSystemSkinPrefix || skinPrefix == PortalSkinPrefix ? "Site: " : "Host: ")
+                string key = (skinPrefix is PortalSystemSkinPrefix or PortalSkinPrefix ? "Site: " : "Host: ")
                                 + FormatSkinName(folder, Path.GetFileNameWithoutExtension(skinFile));
-                string value = skinPrefix + skinRoot + "/" + folder + "/" + Path.GetFileName(skinFile);
+                string value = $"{skinPrefix}{skinRoot}/{folder}/{Path.GetFileName(skinFile)}";
                 skins.Add(new KeyValuePair<string, string>(key, value));
             }
         }
@@ -477,7 +480,7 @@ namespace DotNetNuke.UI.Skins
             {
                 foreach (string skinFolder in Directory.GetDirectories(root))
                 {
-                    if (!skinFolder.EndsWith(Globals.glbHostSkinFolder))
+                    if (!skinFolder.EndsWith(Globals.glbHostSkinFolder, StringComparison.OrdinalIgnoreCase))
                     {
                         AddSkinFiles(skins, skinRoot, skinFolder, GlobalSkinPrefix);
                     }
@@ -516,7 +519,7 @@ namespace DotNetNuke.UI.Skins
         /// <param name="skinFile">The File Name without extension.</param>
         private static string FormatSkinName(string skinFolder, string skinFile)
         {
-            if (skinFolder.Equals("_default", StringComparison.InvariantCultureIgnoreCase))
+            if (skinFolder.Equals("_default", StringComparison.OrdinalIgnoreCase))
             {
                 // host folder
                 return skinFile;

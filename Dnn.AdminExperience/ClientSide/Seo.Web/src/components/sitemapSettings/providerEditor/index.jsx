@@ -63,7 +63,7 @@ class ProviderEditor extends Component {
         this.props.onUpdate(state.settings);
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {state} = this;
         if (state.settings) {
@@ -97,14 +97,14 @@ class ProviderEditor extends Component {
                 </InputGroup>
             </div>;
 
-            /* eslint-disable react/no-danger */
+             
             return (
                 <div className={styles.providerSettingEditor}>
                     <div style={{ height: "15px" }} />
                     <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                     <div className="buttons-box-secondary">
                         <Button
-                            type="secondary"
+                            type="neutral"
                             onClick={this.props.Collapse.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>

@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common;
@@ -13,9 +14,6 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Containers
-    /// Class    : ActionsMenu
     /// <summary>ActionsMenu provides a menu for a collection of actions.</summary>
     /// <remarks>
     /// ActionsMenu inherits from CompositeControl, and implements the IActionControl
@@ -23,11 +21,26 @@ namespace DotNetNuke.UI.Containers
     /// </remarks>
     public class ActionsMenu : Control, IActionControl
     {
+        private readonly IServiceProvider serviceProvider;
         private ActionManager actionManager;
         private ModuleAction actionRoot;
         private int expandDepth = -1;
         private NavigationProvider providerControl;
         private string providerName = "DNNMenuNavigationProvider";
+
+        /// <summary>Initializes a new instance of the <see cref="ActionsMenu"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public ActionsMenu()
+            : this(Globals.DependencyProvider)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ActionsMenu"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        public ActionsMenu(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
+        }
 
         /// <inheritdoc/>
         public event ActionEventHandler Action;
@@ -125,7 +138,8 @@ namespace DotNetNuke.UI.Containers
             this.BindMenu(Navigation.GetActionNodes(this.ActionRoot, this, this.ExpandDepth));
         }
 
-        /// <summary>OnAction raises the Action Event.</summary>
+        /// <summary>OnAction raises the <see cref="Action"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnAction(ActionEventArgs e)
         {
             if (this.Action != null)
@@ -135,9 +149,10 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnInit runs during the controls initialisation phase.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnInit(EventArgs e)
         {
-            this.providerControl = NavigationProvider.Instance(this.ProviderName);
+            this.providerControl = NavigationProvider.Instance(this.serviceProvider, this.ProviderName);
             this.ProviderControl.PopulateOnDemand += this.ProviderControl_PopulateOnDemand;
             base.OnInit(e);
             this.ProviderControl.ControlID = "ctl" + this.ID;
@@ -146,6 +161,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnLoad runs during the controls load phase.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -158,6 +174,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnPreRender runs during the controls pre-render phase.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -182,13 +199,14 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>ProcessNodes proceses a single node and its children.</summary>
+        /// <summary>ProcessNodes processes a single node and its children.</summary>
         /// <param name="objParent">The Node to process.</param>
         private void ProcessNodes(DNNNode objParent)
         {
             if (!string.IsNullOrEmpty(objParent.JSFunction))
             {
-                objParent.JSFunction = string.Format("if({0}){{{1}}};", objParent.JSFunction, this.Page.ClientScript.GetPostBackEventReference(this.ProviderControl.NavigationControl, objParent.ID));
+                var postBackEventReference = this.Page.ClientScript.GetPostBackEventReference(this.ProviderControl.NavigationControl, objParent.ID);
+                objParent.JSFunction = $"if({objParent.JSFunction}){{{postBackEventReference}}};";
             }
 
             foreach (DNNNode objNode in objParent.DNNNodes)
@@ -237,7 +255,7 @@ namespace DotNetNuke.UI.Containers
         {
             if (Globals.NumberMatchRegex.IsMatch(args.ID))
             {
-                ModuleAction action = this.ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
+                var action = this.ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID, CultureInfo.InvariantCulture));
                 if (!this.ActionManager.ProcessAction(action))
                 {
                     this.OnAction(new ActionEventArgs(action, this.ModuleControl.ModuleContext.Configuration));
@@ -251,10 +269,10 @@ namespace DotNetNuke.UI.Containers
             this.SetMenuDefaults();
             this.ActionRoot.Actions.AddRange(this.ModuleControl.ModuleContext.Actions); // Modules how add custom actions in control lifecycle will not have those actions populated...
 
-            ModuleAction objAction = this.ActionRoot;
-            if (this.ActionRoot.ID != Convert.ToInt32(args.ID))
+            var objAction = this.ActionRoot;
+            if (this.ActionRoot.ID != Convert.ToInt32(args.ID, CultureInfo.InvariantCulture))
             {
-                objAction = this.ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
+                objAction = this.ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID, CultureInfo.InvariantCulture));
             }
 
             if (args.Node == null)

@@ -1,20 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Services.Mobile
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.Mobile;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -28,19 +24,13 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
     public class PreviewProfileControllerTests
     {
         private Mock<DataProvider> dataProvider;
+        private FakeServiceProvider serviceProvider;
 
         private DataTable dtProfiles;
 
         [SetUp]
-
         public void SetUp()
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             ComponentFactory.Container = new SimpleContainer();
             this.dataProvider = MockComponentProvider.CreateDataProvider();
             this.dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
@@ -119,17 +109,22 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                                                                                                     this.dtProfiles.Rows.Remove(rows[0]);
                                                                                                 }
                                                                                             });
+
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.dataProvider.Object);
+                });
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             this.dtProfiles?.Dispose();
         }
 
         [Test]
-
         public void PreviewProfileController_Save_Valid_Profile()
         {
             var profile = new PreviewProfile { Name = "Test R", PortalId = 0, Width = 800, Height = 480 };
@@ -146,7 +141,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         }
 
         [Test]
-
         public void PreviewProfileController_GetProfilesByPortal_With_Valid_PortalID()
         {
             this.PrepareData();
@@ -157,7 +151,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         }
 
         [Test]
-
         public void PreviewProfileController_Delete_With_ValidID()
         {
             this.PrepareData();

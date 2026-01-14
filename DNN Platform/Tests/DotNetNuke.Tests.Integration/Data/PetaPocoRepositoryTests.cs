@@ -78,7 +78,6 @@ namespace DotNetNuke.Tests.Data
         [TestCase(0)]
         [TestCase(1)]
         [TestCase(5)]
-
         public void PetaPocoRepository_Get_Returns_All_Rows(int count)
         {
             // Arrange
@@ -97,7 +96,6 @@ namespace DotNetNuke.Tests.Data
         }
 
         [Test]
-
         public void PetaPocoRepository_Get_Returns_List_Of_Models()
         {
             // Arrange
@@ -119,7 +117,6 @@ namespace DotNetNuke.Tests.Data
         }
 
         [Test]
-
         public void PetaPocoRepository_Get_Returns_Models_With_Correct_Properties()
         {
             // Arrange
@@ -143,7 +140,6 @@ namespace DotNetNuke.Tests.Data
         }
 
         [Test]
-
         public void PetaPocoRepository_Get_Returns_Models_With_Correct_Properties_Using_FluentMapper()
         {
             // Arrange
@@ -170,7 +166,6 @@ namespace DotNetNuke.Tests.Data
         }
 
         [Test]
-
         public void PetaPocoRepository_GetById_Returns_Instance_Of_Model_If_Valid_Id()
         {
             // Arrange
@@ -189,7 +184,6 @@ namespace DotNetNuke.Tests.Data
         }
 
         [Test]
-
         public void PetaPocoRepository_GetById_Returns_Null_If_InValid_Id()
         {
             // Arrange
@@ -208,7 +202,6 @@ namespace DotNetNuke.Tests.Data
         }
 
         [Test]
-
         public void PetaPocoRepository_GetById_Returns_Null_If_InValid_Id_Using_FluentMapper()
         {
             // Arrange
@@ -232,7 +225,6 @@ namespace DotNetNuke.Tests.Data
         }
 
         [Test]
-
         public void PetaPocoRepository_GetById_Returns_Model_With_Correct_Properties()
         {
             // Arrange
@@ -255,7 +247,6 @@ namespace DotNetNuke.Tests.Data
         }
 
         [Test]
-
         public void PetaPocoRepository_GetById_Returns_Model_With_Correct_Properties_Using_FluentMapper()
         {
             // Arrange
@@ -637,7 +628,6 @@ namespace DotNetNuke.Tests.Data
         [TestCase(Constants.PAGE_First, Constants.PAGE_RecordCount)]
         [TestCase(Constants.PAGE_Second, Constants.PAGE_RecordCount)]
         [TestCase(Constants.PAGE_Last, Constants.PAGE_RecordCount)]
-
         public void PetaPocoRepository_GetPage_Overload_Returns_Page_Of_Rows(int pageIndex, int pageSize)
         {
             // Arrange
@@ -656,7 +646,6 @@ namespace DotNetNuke.Tests.Data
         }
 
         [Test]
-
         public void PetaPocoRepository_GetPage_Overload_Returns_List_Of_Models()
         {
             // Arrange
@@ -678,7 +667,6 @@ namespace DotNetNuke.Tests.Data
         }
 
         [Test]
-
         public void PetaPocoRepository_GetPage_Overload_Returns_Models_With_Correct_Properties()
         {
             // Arrange
@@ -705,7 +693,6 @@ namespace DotNetNuke.Tests.Data
         [TestCase(Constants.PAGE_First, Constants.PAGE_RecordCount, 1)]
         [TestCase(Constants.PAGE_Second, Constants.PAGE_RecordCount, 6)]
         [TestCase(2, 4, 9)]
-
         public void PetaPocoRepository_GetPage_Overload_Returns_Correct_Page(int pageIndex, int pageSize, int firstId)
         {
             // Arrange

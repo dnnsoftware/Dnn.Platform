@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.Razor
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.UI.Modules;
 
+    /// <summary>A base class for razor modules.</summary>
     [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class RazorModuleBase : ModuleUserControlBase
     {
@@ -39,8 +40,7 @@ namespace DotNetNuke.Web.Razor
         }
 
         /// <inheritdoc/>
-        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
-        protected override partial void OnPreRender(EventArgs e)
+        protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
             try

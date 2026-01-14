@@ -29,7 +29,7 @@ export default class SiteGroupRow extends React.Component {
         this.submitted = false;
     }
 
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         this.resetState(newProps);
     }
 

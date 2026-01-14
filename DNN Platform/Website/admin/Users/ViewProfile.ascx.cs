@@ -12,6 +12,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Exceptions;
 
+    /// <summary>A control which displays a user's profile.</summary>
     public partial class ViewProfile : UserModuleBase
     {
         /// <inheritdoc/>

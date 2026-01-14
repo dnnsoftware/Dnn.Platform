@@ -5,20 +5,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Web;
 
+[SuppressMessage("Microsoft.Design", "CA1050:DeclareTypesInNamespaces", Justification = "Breaking change")]
+[SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
 public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, string>>
 {
-    private OrderedDictionary dictionary = null;
+    private OrderedDictionary dictionary;
 
-    internal OrderedDictionary Dictionary
-    {
-        get
-        {
-            return this.dictionary ?? (this.dictionary = new OrderedDictionary());
-        }
-    }
+    internal OrderedDictionary Dictionary => this.dictionary ??= new OrderedDictionary();
 
     public static string ToJavaScriptArrayString(IEnumerable<KeyValuePair<string, string>> methods)
     {

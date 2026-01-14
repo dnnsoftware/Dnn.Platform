@@ -7,12 +7,14 @@ namespace DotNetNuke.Web.Api
     using System.Web.Http.Routing;
     using System.Web.Routing;
 
+    /// <summary>Extension methods for <see cref="Route"/> and <see cref="IHttpRoute"/>.</summary>
     public static class RouteExtensions
     {
         private const string NamespaceKey = "namespaces";
         private const string NameKey = "name";
 
         /// <summary>Get the name of the route.</summary>
+        /// <param name="route">The route.</param>
         /// <returns>Route name.</returns>
         public static string GetName(this Route route)
         {
@@ -20,23 +22,31 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>Get the name of the route.</summary>
+        /// <param name="route">The route.</param>
         /// <returns>Route name.</returns>
         public static string GetName(this IHttpRoute route)
         {
             return (string)route.DataTokens[NameKey];
         }
 
+        /// <summary>Set the namespaces for the route.</summary>
+        /// <param name="route">The route.</param>
+        /// <param name="namespaces">The namespaces.</param>
         internal static void SetNameSpaces(this Route route, string[] namespaces)
         {
             route.DataTokens[NamespaceKey] = namespaces;
         }
 
+        /// <summary>Set the namespaces for the route.</summary>
+        /// <param name="route">The route.</param>
+        /// <param name="namespaces">The namespaces.</param>
         internal static void SetNameSpaces(this IHttpRoute route, string[] namespaces)
         {
             route.DataTokens[NamespaceKey] = namespaces;
         }
 
         /// <summary>Get Namespaces that are searched for controllers for this route.</summary>
+        /// <param name="route">The route.</param>
         /// <returns>Namespaces.</returns>
         internal static string[] GetNameSpaces(this Route route)
         {
@@ -44,17 +54,24 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>Get Namespaces that are searched for controllers for this route.</summary>
+        /// <param name="route">The route.</param>
         /// <returns>Namespaces.</returns>
         internal static string[] GetNameSpaces(this IHttpRoute route)
         {
             return (string[])route.DataTokens[NamespaceKey];
         }
 
+        /// <summary>Set the name for the route.</summary>
+        /// <param name="route">The route.</param>
+        /// <param name="name">The name.</param>
         internal static void SetName(this Route route, string name)
         {
             route.DataTokens[NameKey] = name;
         }
 
+        /// <summary>Set the name for the route.</summary>
+        /// <param name="route">The route.</param>
+        /// <param name="name">The name.</param>
         internal static void SetName(this IHttpRoute route, string name)
         {
             route.DataTokens[NameKey] = name;

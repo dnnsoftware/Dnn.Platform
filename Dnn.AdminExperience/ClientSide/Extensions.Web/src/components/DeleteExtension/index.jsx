@@ -64,8 +64,8 @@ class DeleteExtension extends Component {
                                 tooltipMessage={Localization.get("DeleteFiles.HelpText")} />
                         </GridCell>
                         <GridCell className="modal-footer">
-                            <Button type="secondary" onClick={this.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
-                            <Button type="primary" onClick={this.onDelete.bind(this)}>{Localization.get("Delete.Button")}</Button>
+                            <Button type="neutral" onClick={this.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
+                            <Button type="danger" onClick={this.onDelete.bind(this)}>{Localization.get("Delete.Button")}</Button>
                         </GridCell>
                     </GridCell>
                 </PersonaBarPageBody>

@@ -200,7 +200,7 @@ class SiteLanguageSelector extends Component {
         else return (<div />);
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         return <div className={styles.sitesHeader}>
             {(this.props.languages && this.props.languages.length > 1) && this.renderLanguagesList()}

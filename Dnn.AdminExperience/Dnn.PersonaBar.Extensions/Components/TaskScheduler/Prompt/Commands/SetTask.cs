@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -17,15 +18,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
     using DotNetNuke.Services.Scheduling;
 
     [ConsoleCommand("set-task", Constants.SchedulerCategory, "Prompt_SetTask_Description")]
-
     public class SetTask : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_SetTask_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("enabled", "Prompt_SetTask_FlagEnabled", "Boolean", true)]
-
         private const string FlagEnabled = "enabled";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetTask));
@@ -51,7 +49,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 
                 if (taskToUpdate == null)
                 {
-                    return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_TaskNotFound"), this.TaskId));
+                    return new ConsoleErrorResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Prompt_TaskNotFound"), this.TaskId));
                 }
 
                 if (taskToUpdate.Enabled == this.Enabled)

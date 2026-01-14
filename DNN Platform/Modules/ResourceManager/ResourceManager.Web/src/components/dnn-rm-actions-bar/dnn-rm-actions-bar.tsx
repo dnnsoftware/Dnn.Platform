@@ -1,6 +1,7 @@
 import { Component, Host, h, State } from '@stencil/core';
 import state from '../../store/store';
 import { sortField, SortFieldInfo } from "../../enums/SortField";
+import { sortOrder } from "../../enums/SortOrder";
 import { InternalServicesClient } from '../../services/InternalServicesClient';
 import { ItemsClient } from '../../services/ItemsClient';
 @Component({
@@ -55,42 +56,54 @@ export class DnnRmActionsBar {
     }
   }
 
-  private syncFolderContent(recursive: boolean = false): void {
-    this.itemsClient.syncFolderContent(
-      state.currentItems.folder.folderId,
-      0,
-      state.sortField,
-      recursive)
-      .then(() => {
-        this.getFolderContent();
-      })
-      .catch(error => console.log(error));
+  private renderSortOrderButtonIcon(){
+    if (state.sortOrder.sortOrderKey == sortOrder.ascending.sortOrderKey) {
+      return <path d="M10 6h4v2h-4v-2zm-2 5h8v2h-8v-2zm-2 5h12v2h-12v-2z"/>
+    }
+    else {
+      return <path d="M6 6h12v2h-12v-2zm2 5h8v2h-8v-2zm2 5h4v2h-4v-2z"/>
+    }
+  }
+
+  private async syncFolderContent(recursive: boolean = false) {
+    try {
+      await this.itemsClient.syncFolderContent(
+        state.currentItems.folder.folderId,
+        0,
+        state.sortField,
+        recursive);
+      await this.getFolderContent();
+    } catch (error) {
+      alert(error);
+    }
   }
 
 
-  private getFolderContent() {
-    this.getFolders()
-    .then(() => {
-      this.itemsClient.getFolderContent(
+  private async getFolderContent() {
+    try {
+      await this.getFolders();
+      state.currentItems = await this.itemsClient.getFolderContent(
         state.currentItems.folder.folderId,
         0,
         state.pageSize,
-        state.sortField)
-      .then(data => state.currentItems = data)
-      .catch(error => console.error(error));
-    })
-    .catch(error => alert(error.Message));
+        state.sortField,
+        state.sortOrder);
+      
+    } catch (error) {
+      alert(error);
+    }
   }
 
-  private getFolders() {
-    return new Promise((resolve, reject) => {
-      this.internalServicesClient.getFolders(state.settings.HomeFolderId)
-      .then(data => {
-        state.rootFolders = data;
-        resolve(data);
-      })
-      .catch(reason => reject(reason));
-    });
+  private async getFolders() {
+    try {
+      state.rootFolders = await this.internalServicesClient.getFolders(state.settings.HomeFolderId);
+    } catch (error) {
+      alert(error);
+    }
+  }
+
+  private toggleSortOrder() {
+    state.sortOrder = (state.sortOrder.sortOrderKey == sortOrder.ascending.sortOrderKey) ? sortOrder.descending : sortOrder.ascending;
   }
 
   render() {
@@ -152,6 +165,20 @@ export class DnnRmActionsBar {
               <span>{state.localization.Sort}</span>
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M7 10l5 5 5-5z"/></svg>
             </button>
+            <button id="sort-order-button"
+              title={`Order: ${state.sortOrder.localizedName}`}
+              onClick={() =>
+                {
+                     this.toggleSortOrder();
+                     void this.getFolderContent();
+                }
+              }
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+                  <path d="M0 0h24v24H0z" fill="none"/>
+                  {this.renderSortOrderButtonIcon()}
+              </svg>
+            </button>
             <dnn-collapsible expanded={this.sortDropdownExpanded}>
               <div class="dropdown">
                 {this.renderSortButton(sortField.itemName)}
@@ -179,7 +206,7 @@ export class DnnRmActionsBar {
                 <button
                   onClick={() =>
                   {
-                    this.getFolderContent();
+                    void this.getFolderContent();
                     this.syncDropdownExpanded = !this.syncDropdownExpanded;
                   }}
                 >
@@ -188,7 +215,7 @@ export class DnnRmActionsBar {
                 <button
                   onClick={() =>
                   {
-                    this.syncFolderContent();
+                    void this.syncFolderContent();
                     this.syncDropdownExpanded = !this.syncDropdownExpanded;
                   }}
                 >
@@ -197,7 +224,7 @@ export class DnnRmActionsBar {
                 <button
                   onClick={() =>
                   {
-                    this.syncFolderContent(true);
+                    void this.syncFolderContent(true);
                     this.syncDropdownExpanded = !this.syncDropdownExpanded;
                   }}
                 >

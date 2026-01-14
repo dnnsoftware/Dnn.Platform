@@ -1,0 +1,16 @@
+div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
+    display: block;
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    height: 24px;
+    width: 24px;
+    margin: 0px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #585858 url(../../../../../images/closeBtn.png) no-repeat;
+    background-position: 4px 4px;
+    border: 3px solid #fff;
+    text-indent: -9999em;
+	min-width: 0 !important;
+}

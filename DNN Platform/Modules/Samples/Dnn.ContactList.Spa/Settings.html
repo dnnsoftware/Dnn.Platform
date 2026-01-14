@@ -1,0 +1,27 @@
+﻿[JavaScript:{ jsname: "JQuery" }]
+[JavaScript:{ jsname: "Knockout" }]
+[JavaScript:{ path: "~/Resources/Shared/scripts/dnn.jquery.js"}]
+[JavaScript:{ path: "~/DesktopModules/Dnn/ContactList/ClientScripts/QuickSettingsDispatcher.js"}]
+[JavaScript:{ path: "~/DesktopModules/Dnn/ContactList/ClientScripts/QuickSettings.js"}]
+[JavaScript:{ path: "~/DesktopModules/Dnn/ContactList/ClientScripts/util.js"}]
+
+<div id="QuickSettings-[ModuleContext:ModuleId]" class="dnnForm">
+    <div class="contactSpa settings">
+        <label>[Resx:{key:"AllowNewContacts"}] </label> <input type="checkbox" data-bind="checked: isFormEnabled" />
+    </div>
+</div>
+<script language="javascript" type="text/javascript">
+    jQuery(document).ready(function ($) {
+        var moduleId = parseInt("[ModuleContext:ModuleId]");
+
+        // identifier needed to initialize the quicksettings.
+        var element = 'QuickSettings-'+moduleId;
+        var config = {
+            isFormEnabled: [contactsettings:IsFormEnabled],
+            quickSettingsDispatcher: dnn.modules.spa.dnnContactListSpa.quickSettingsDispatcher
+        };
+
+        var quickSettings = new dnn.modules.spa.dnnContactListSpa.quickSettings(config, element, moduleId, ko);
+        quickSettings.init();
+    });
+</script>

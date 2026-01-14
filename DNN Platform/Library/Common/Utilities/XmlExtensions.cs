@@ -24,16 +24,16 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="node">The node to add the element to.</param>
         /// <param name="elementName">Name of the element.</param>
         /// <param name="elementValue">The element value.</param>
-        /// <param name="useCData">if set to <c>true</c> use a CData encapsulation.</param>
+        /// <param name="useCData">if set to <see langword="true"/> use a CData encapsulation.</param>
         /// <returns>
         /// The added element.
         /// </returns>
         public static XmlNode AddElement(this XmlNode node, string elementName, string elementValue, bool useCData)
         {
-            XmlNode newElement = node.OwnerDocument.CreateElement(elementName);
+            var newElement = node.OwnerDocument.CreateElement(elementName);
             if (useCData)
             {
-                XmlCDataSection cData = node.OwnerDocument.CreateCDataSection(elementValue);
+                var cData = node.OwnerDocument.CreateCDataSection(elementValue);
                 newElement.AppendChild(cData);
             }
             else
@@ -49,7 +49,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="node">The node to add the element to.</param>
         /// <param name="elementName">Name of the element (without the abbreviated prefix).</param>
         /// <param name="elementValue">The element value.</param>
-        /// <param name="useCData">if set to <c>true</c> use a CData encapsulation.</param>
+        /// <param name="useCData">if set to <see langword="true"/> use a CData encapsulation.</param>
         /// <param name="namespaceUri">The namespace URI.</param>
         /// <param name="namespaceAbbr">The namespace abbreviation.</param>
         /// <returns>
@@ -57,10 +57,10 @@ namespace DotNetNuke.Common.Utilities
         /// </returns>
         public static XmlNode AddElement(this XmlNode node, string elementName, string elementValue, bool useCData, string namespaceUri, string namespaceAbbr)
         {
-            XmlNode newElement = node.OwnerDocument.CreateElement(namespaceAbbr + ":" + elementName, namespaceUri);
+            var newElement = node.OwnerDocument.CreateElement(namespaceAbbr + ":" + elementName, namespaceUri);
             if (useCData)
             {
-                XmlCDataSection cData = node.OwnerDocument.CreateCDataSection(elementValue);
+                var cData = node.OwnerDocument.CreateCDataSection(elementValue);
                 newElement.AppendChild(cData);
             }
             else

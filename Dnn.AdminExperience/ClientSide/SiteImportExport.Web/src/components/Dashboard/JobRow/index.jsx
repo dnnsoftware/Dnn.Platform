@@ -4,7 +4,7 @@ import Localization from "localization";
 import "./style.less";
 import { Collapsible, SvgIcons, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 
-/*eslint-disable eqeqeq*/
+ 
 class JobRow extends Component {
     constructor() {
         super();
@@ -35,7 +35,7 @@ class JobRow extends Component {
         return props.jobType.indexOf("Import") >= 0 ? <div className="jobIndicator-import"></div> : <div className="jobIndicator-export"></div>;
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props, state } = this;
         let opened = (props.openId !== "" && this.props.jobId === props.openId);
@@ -73,14 +73,14 @@ class JobRow extends Component {
                                 <span className={"job-status" + (props.jobCancelled ? 4 : props.jobStatus)}>
                                     <TextOverflowWrapper text={Localization.get("JobStatus" + (props.jobCancelled ? 4 : props.jobStatus))} maxWidth={80} />                                    
                                     {props.jobStatus === 1 && ! props.jobCancelled &&
-                                        <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
+                                        <div className="cycle-icon"><SvgIcons.CycleIcon /></div>
                                     }
                                 </span>
                             </div>
                         </div>
                         <div className="term-label-arrow" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
-                                <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowDownIcon }} />
+                                <div className="arrow-icon"><SvgIcons.ArrowDownIcon /></div>
                             </div>
                         </div>
                     </div>

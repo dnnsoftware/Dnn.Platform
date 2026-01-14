@@ -25,10 +25,7 @@ namespace DotNetNuke.Tests.Core.Collections
             IQueryable<int> list = Util.CreateIntegerList(totalCount).AsQueryable();
 
             // Act
-            new PagedList<int>(list, pageIndex, Constants.PAGE_RecordCount);
-
-            // Assert
-            // asserted by no exception :)
+            Assert.DoesNotThrow(() => new PagedList<int>(list, pageIndex, Constants.PAGE_RecordCount));
         }
 
         [Test]
@@ -41,11 +38,7 @@ namespace DotNetNuke.Tests.Core.Collections
             // Arrange
             IQueryable<int> list = Util.CreateIntegerList(Constants.PAGE_RecordCount).AsQueryable();
 
-            // Act
-            new PagedList<int>(list, totalCount, pageIndex, Constants.PAGE_RecordCount);
-
-            // Assert
-            // asserted by no exception :)
+            Assert.DoesNotThrow(() => new PagedList<int>(list, totalCount, pageIndex, Constants.PAGE_RecordCount));
         }
 
         [Test]
@@ -57,7 +50,7 @@ namespace DotNetNuke.Tests.Core.Collections
             // Arrange
             IQueryable<int> list = Util.CreateIntegerList(totalCount).AsQueryable();
 
-            Assert.Throws<IndexOutOfRangeException>(() => new PagedList<int>(list, pageIndex, Constants.PAGE_RecordCount));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PagedList<int>(list, pageIndex, Constants.PAGE_RecordCount));
         }
 
         [Test]
@@ -69,7 +62,7 @@ namespace DotNetNuke.Tests.Core.Collections
             // Arrange
             IQueryable<int> list = Util.CreateIntegerList(Constants.PAGE_RecordCount).AsQueryable();
 
-            Assert.Throws<IndexOutOfRangeException>(() => new PagedList<int>(list, totalCount, pageIndex, Constants.PAGE_RecordCount));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PagedList<int>(list, totalCount, pageIndex, Constants.PAGE_RecordCount));
         }
 
         [Test]
@@ -81,7 +74,7 @@ namespace DotNetNuke.Tests.Core.Collections
             // Arrange
             IQueryable<int> list = Util.CreateIntegerList(totalCount).AsQueryable();
 
-            Assert.Throws<IndexOutOfRangeException>(() => new PagedList<int>(list, pageIndex, -1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PagedList<int>(list, pageIndex, -1));
         }
 
         [Test]
@@ -93,7 +86,7 @@ namespace DotNetNuke.Tests.Core.Collections
             // Arrange
             IQueryable<int> list = Util.CreateIntegerList(Constants.PAGE_RecordCount).AsQueryable();
 
-            Assert.Throws<IndexOutOfRangeException>(() => new PagedList<int>(list, totalCount, pageIndex, -1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PagedList<int>(list, totalCount, pageIndex, -1));
         }
 
         [Test]
@@ -103,7 +96,7 @@ namespace DotNetNuke.Tests.Core.Collections
             List<int> list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
 
             // Act, Assert
-            Assert.Throws<IndexOutOfRangeException>(() => new PagedList<int>(list, Constants.PAGE_NegativeIndex, Constants.PAGE_RecordCount));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PagedList<int>(list, Constants.PAGE_NegativeIndex, Constants.PAGE_RecordCount));
         }
 
         [Test]
@@ -113,7 +106,7 @@ namespace DotNetNuke.Tests.Core.Collections
             List<int> list = Util.CreateIntegerList(Constants.PAGE_RecordCount);
 
             // Act, Assert
-            Assert.Throws<IndexOutOfRangeException>(() => new PagedList<int>(list, Constants.PAGE_TotalCount, Constants.PAGE_NegativeIndex, Constants.PAGE_RecordCount));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PagedList<int>(list, Constants.PAGE_TotalCount, Constants.PAGE_NegativeIndex, Constants.PAGE_RecordCount));
         }
 
         [Test]

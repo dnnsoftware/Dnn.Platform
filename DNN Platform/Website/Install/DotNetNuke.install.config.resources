@@ -4,7 +4,7 @@
     <script name="Schema">DotNetNuke.Schema</script>
     <script name="Data">DotNetNuke.Data</script>
   </scripts>
-  <version>08.00.04</version>
+  <version>10.00.00</version>
   <supportLocalization>true</supportLocalization>
   <installCulture>en-US</installCulture>
   <superuser>
@@ -24,8 +24,8 @@
     <invoiceNumber></invoiceNumber>
   </license>
   <settings>
-    <AuthenticatedCacheability>4</AuthenticatedCacheability>
-    <UnauthenticatedCacheability>4</UnauthenticatedCacheability>
+    <AuthenticatedCacheability>ServerAndNoCache</AuthenticatedCacheability>
+    <UnauthenticatedCacheability>ServerAndNoCache</UnauthenticatedCacheability>
     <AutoAccountUnlockDuration>10</AutoAccountUnlockDuration>
     <AutoAddPortalAlias>N</AutoAddPortalAlias>
     <CheckUpgrade>Y</CheckUpgrade>

@@ -13,6 +13,7 @@ namespace DotNetNuke.Services.Search.Internals
     using System.Web;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -74,6 +75,7 @@ namespace DotNetNuke.Services.Search.Internals
         {
             var searchableModuleDefsCacheArgs = new CacheItemArgs(
                 string.Format(
+                    CultureInfo.InvariantCulture,
                     SearchableModuleDefsKey,
                     SearchableModuleDefsCacheKey,
                     portalId,
@@ -91,11 +93,11 @@ namespace DotNetNuke.Services.Search.Internals
         public string GetSearchDocumentTypeDisplayName(SearchResult searchResult)
         {
             // ModuleDefId will be zero for non-module
-            var key = string.Format("{0}-{1}-{2}", searchResult.SearchTypeId, searchResult.ModuleDefId, Thread.CurrentThread.CurrentCulture);
+            var key = $"{searchResult.SearchTypeId}-{searchResult.ModuleDefId}-{Thread.CurrentThread.CurrentCulture}";
             var keys = CBO.Instance.GetCachedObject<IDictionary<string, string>>(
                             new CacheItemArgs(key, 120, CacheItemPriority.Default), this.SearchDocumentTypeDisplayNameCallBack, false);
 
-            return keys.ContainsKey(key) ? keys[key] : string.Empty;
+            return keys.TryGetValue(key, out var documentTypeDisplayName) ? documentTypeDisplayName : string.Empty;
         }
 
         /// <inheritdoc/>
@@ -124,7 +126,7 @@ namespace DotNetNuke.Services.Search.Internals
                     }
                     catch (Exception ex)
                     {
-                        Logger.ErrorFormat("Search Document error: {0}{1}{2}", searchDoc, Environment.NewLine, ex);
+                        Logger.ErrorFormat(CultureInfo.InvariantCulture, "Search Document error: {0}{1}{2}", searchDoc, Environment.NewLine, ex);
                     }
                 }
 
@@ -201,16 +203,13 @@ namespace DotNetNuke.Services.Search.Internals
                     case "module": // module crawler
 
                         // get searchable module definition list
-                        var portalId = int.Parse(cacheItem.CacheKey.Split('-')[1]);
+                        var portalId = int.Parse(cacheItem.CacheKey.Split('-')[1], CultureInfo.InvariantCulture);
                         var modules = ModuleController.Instance.GetSearchModules(portalId);
                         var modDefIds = new HashSet<int>();
 
                         foreach (ModuleInfo module in modules)
                         {
-                            if (!modDefIds.Contains(module.ModuleDefID))
-                            {
-                                modDefIds.Add(module.ModuleDefID);
-                            }
+                            modDefIds.Add(module.ModuleDefID);
                         }
 
                         var list = modDefIds.Select(ModuleDefinitionController.GetModuleDefinitionByID).ToList();
@@ -258,7 +257,7 @@ namespace DotNetNuke.Services.Search.Internals
             return results;
         }
 
-        private static Query NumericValueQuery(string numericName, int numericVal)
+        private static NumericRangeQuery<int> NumericValueQuery(string numericName, int numericVal)
         {
             return NumericRangeQuery.NewIntRange(numericName, numericVal, numericVal, true, true);
         }
@@ -332,12 +331,12 @@ namespace DotNetNuke.Services.Search.Internals
         private object SearchDocumentTypeDisplayNameCallBack(CacheItemArgs cacheItem)
         {
             var data = new Dictionary<string, string>();
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
+            foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
             {
-                var searchContentSources = this.GetSearchContentSourceList(portal.PortalID);
+                var searchContentSources = this.GetSearchContentSourceList(portal.PortalId);
                 foreach (var searchContentSource in searchContentSources)
                 {
-                    var key = string.Format("{0}-{1}-{2}", searchContentSource.SearchTypeId, searchContentSource.ModuleDefinitionId, Thread.CurrentThread.CurrentCulture);
+                    var key = $"{searchContentSource.SearchTypeId}-{searchContentSource.ModuleDefinitionId}-{Thread.CurrentThread.CurrentCulture}";
                     if (!data.ContainsKey(key))
                     {
                         data.Add(key, searchContentSource.LocalizedName);
@@ -569,7 +568,7 @@ namespace DotNetNuke.Services.Search.Internals
                 }
 
                 doc.Add(field);
-                sb.Append(SearchHelper.Instance.StripTagsNoAttributes(kvp.Value, true)).Append(" ");
+                sb.Append(SearchHelper.Instance.StripTagsNoAttributes(kvp.Value, true)).Append(' ');
             }
 
             foreach (var kvp in searchDocument.NumericKeys)

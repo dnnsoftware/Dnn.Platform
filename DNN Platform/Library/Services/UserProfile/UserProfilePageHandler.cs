@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.UserProfile
 {
     using System;
+    using System.Globalization;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -26,7 +27,7 @@ namespace DotNetNuke.Services.UserProfile
         }
 
         /// <summary>
-        ///   This handler handles requests for LinkClick.aspx, but only those specifc
+        ///   This handler handles requests for LinkClick.aspx, but only those specific
         ///   to file serving.
         /// </summary>
         /// <param name="context">System.Web.HttpContext).</param>
@@ -41,7 +42,7 @@ namespace DotNetNuke.Services.UserProfile
                 // try UserId
                 if (!string.IsNullOrEmpty(context.Request.QueryString["UserId"]))
                 {
-                    userId = int.Parse(context.Request.QueryString["UserId"]);
+                    userId = int.Parse(context.Request.QueryString["UserId"], CultureInfo.InvariantCulture);
                     if (UserController.GetUserById(portalId, userId) == null)
                     {
                         // The user cannot be found (potential DOS)

@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Portals
 {
     using System;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Security.Cryptography;
     using System.Xml.Serialization;
 
@@ -87,32 +88,17 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc />
         [XmlElement("homesystemdirectory")]
-        public string HomeSystemDirectory
-        {
-            get { return string.Format("{0}-System", this.HomeDirectory); }
-        }
+        public string HomeSystemDirectory => $"{this.HomeDirectory}-System";
 
         /// <inheritdoc />
         [XmlIgnore]
         [JsonIgnore]
-        public string HomeDirectoryMapPath
-        {
-            get
-            {
-                return string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, this.HomeDirectory.Replace("/", "\\"));
-            }
-        }
+        public string HomeDirectoryMapPath => $@"{Globals.ApplicationMapPath}\{this.HomeDirectory.Replace("/", @"\")}\";
 
         /// <inheritdoc />
         [XmlIgnore]
         [JsonIgnore]
-        public string HomeSystemDirectoryMapPath
-        {
-            get
-            {
-                return string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, this.HomeSystemDirectory.Replace("/", "\\"));
-            }
-        }
+        public string HomeSystemDirectoryMapPath => $@"{Globals.ApplicationMapPath}\{this.HomeSystemDirectory.Replace("/", @"\")}\";
 
         /// <inheritdoc />
         [XmlElement("administratorid")]
@@ -171,6 +157,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         [XmlIgnore]
         [JsonIgnore]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
         public Guid GUID { get; set; }
 
         /// <inheritdoc />
@@ -214,11 +201,13 @@ namespace DotNetNuke.Entities.Portals
         int IPortalInfo.PortalId { get; set; }
 
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalInfo.PortalId instead. Scheduled removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int PortalID
         {
             get => this.ThisAsInterface.PortalId;
             set => this.ThisAsInterface.PortalId = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <summary>Gets the permissions collection for the portal.</summary>
         [XmlArray("portalpermissions")]
@@ -235,11 +224,13 @@ namespace DotNetNuke.Entities.Portals
         int IPortalInfo.PortalGroupId { get; set; }
 
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalInfo.PortalGroupId instead. Scheduled removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int PortalGroupID
         {
             get => this.ThisAsInterface.PortalGroupId;
             set => this.ThisAsInterface.PortalGroupId = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc />
         [XmlElement("portalname")]
@@ -411,11 +402,6 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        [XmlIgnore]
-        [JsonIgnore]
-        [Obsolete("Deprecated in DotNetNuke 6.0.0. No replacement. Scheduled removal in v10.0.0.")]
-        public int TimeZoneOffset { get; set; }
-
         /// <inheritdoc />
         public int KeyID
         {
@@ -515,9 +501,6 @@ namespace DotNetNuke.Entities.Portals
             this.PrivacyTabId = Null.SetNullInteger(dr["PrivacyTabId"]);
 
             this.DefaultLanguage = Null.SetNullString(dr["DefaultLanguage"]);
-#pragma warning disable 612,618 //needed for upgrades and backwards compatibility
-            this.TimeZoneOffset = Null.SetNullInteger(dr["TimeZoneOffset"]);
-#pragma warning restore 612,618
             this.AdminTabId = Null.SetNullInteger(dr["AdminTabID"]);
             this.HomeDirectory = Null.SetNullString(dr["HomeDirectory"]);
             this.SuperTabId = Null.SetNullInteger(dr["SuperTabId"]);

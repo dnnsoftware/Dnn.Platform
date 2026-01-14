@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Pages.Components
 {
     using System;
@@ -27,7 +26,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
     public static class Converters
     {
-        private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        private static INavigationManager NavigationManager => Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         public static T ConvertToPageItem<T>(TabInfo tab, IEnumerable<TabInfo> portalTabs)
             where T : PageItem, new()
@@ -53,11 +52,13 @@ namespace Dnn.PersonaBar.Pages.Components
                 CanAddContentToPage = TabPermissionController.CanAddContentToPage(tab),
                 CanNavigateToPage = TabPermissionController.CanNavigateToPage(tab),
                 LastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")),
-                FriendlyLastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt"),
+                FriendlyLastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CurrentCulture),
                 PublishDate = tab.HasBeenPublished ? WorkflowHelper.GetTabLastPublishedOn(tab).ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")) : string.Empty,
                 PublishStatus = GetTabPublishStatus(tab),
                 Tags = tab.Terms.Select(t => t.Name).ToArray(),
                 TabOrder = tab.TabOrder,
+                WorkflowId = WorkflowHelper.GetTabWorkflowId(tab),
+                WorkflowName = WorkflowHelper.GetTabWorkflowName(tab),
             };
         }
 
@@ -177,13 +178,12 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private static IFileInfo GetFileRedirection(string tabUrl)
         {
-            if (tabUrl == null || !tabUrl.StartsWith("FileId="))
+            if (tabUrl == null || !tabUrl.StartsWith("FileId=", StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }
 
-            int fileRedirectionId;
-            if (int.TryParse(tabUrl.Substring(7), out fileRedirectionId))
+            if (int.TryParse(tabUrl.Substring(7), out var fileRedirectionId))
             {
                 return FileManager.Instance.GetFile(fileRedirectionId);
             }
@@ -229,13 +229,12 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private static bool AllowIndex(TabInfo tab)
         {
-            bool allowIndex;
-            return !tab.TabSettings.ContainsKey("AllowIndex") || !bool.TryParse(tab.TabSettings["AllowIndex"].ToString(), out allowIndex) || allowIndex;
+            return !tab.TabSettings.ContainsKey("AllowIndex") || !bool.TryParse(tab.TabSettings["AllowIndex"].ToString(), out var allowIndex) || allowIndex;
         }
 
         private static string GetPageType(string tabUrl)
         {
-            return Globals.GetURLType(tabUrl).ToString().ToLower();
+            return Globals.GetURLType(tabUrl).ToString().ToLowerInvariant();
         }
 
         // TODO: Refactor to use enum

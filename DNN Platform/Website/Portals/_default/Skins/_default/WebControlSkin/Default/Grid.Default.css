@@ -413,7 +413,7 @@
 	background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); /* Chrome,Safari4+ */
 	background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); /* Chrome10+,Safari5.1+ */
-	background: linear-gradient(top, #fff 0%,#f0f2f1 100%); /* W3C */
+	background: linear-gradient(to bottom, #fff 0%,#f0f2f1 100%); /* W3C */
 }
 
 .RadGrid_Default .rgHeader:last-child, .RadGrid_Default th.rgResizeCol:last-child{

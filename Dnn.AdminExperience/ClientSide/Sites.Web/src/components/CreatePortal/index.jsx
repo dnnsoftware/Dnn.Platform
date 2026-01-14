@@ -70,7 +70,7 @@ class CreatePortal extends Component {
         });
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { props, state } = this;
         props.dispatch(CommonPortalListActions.getPortalTemplates((data) => {
             let {newPortal} = state;
@@ -396,7 +396,7 @@ class CreatePortal extends Component {
                             </Collapse>
                         </GridCell>
                         <GridCell className="site-action-buttons">
-                            <Button type="secondary" onClick={this.onCancel.bind(this)}>{Localization.get("cmdCancel")}</Button>
+                            <Button type="neutral" onClick={this.onCancel.bind(this)}>{Localization.get("cmdCancel")}</Button>
                             <Button type="primary" disabled={this.state.creatingPortal} onClick={this.createPortal.bind(this)}>{Localization.get("cmdCreateSite")}</Button>
                         </GridCell>
                     </GridCell>
@@ -408,7 +408,8 @@ class CreatePortal extends Component {
 
 CreatePortal.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    onCancel: PropTypes.func
+    onCancel: PropTypes.func,
+    portalTemplates: PropTypes.array,
 };
 
 

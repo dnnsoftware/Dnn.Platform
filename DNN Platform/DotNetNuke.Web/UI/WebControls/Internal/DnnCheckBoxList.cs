@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     using System;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common;
@@ -11,9 +12,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls.Extensions;
 
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
+    /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnCheckBoxList : CheckBoxList
     {
         private string initValue;
@@ -52,21 +51,33 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <summary>Adds an item to the list.</summary>
+        /// <param name="text">The item text.</param>
+        /// <param name="value">The item value.</param>
         public void AddItem(string text, string value)
         {
             this.Items.Add(new ListItem(text, value));
         }
 
+        /// <summary>Inserts an item into the list.</summary>
+        /// <param name="index">The location in the collection to insert the item.</param>
+        /// <param name="text">The item text.</param>
+        /// <param name="value">The item value.</param>
         public void InsertItem(int index, string text, string value)
         {
             this.Items.Insert(index, new ListItem(text, value));
         }
 
+        /// <summary>Binds a data source to the invoked server control and all its child controls.</summary>
+        /// <param name="initialValue">The initial value.</param>
         public void DataBind(string initialValue)
         {
             this.DataBind(initialValue, false);
         }
 
+        /// <summary>Binds a data source to the invoked server control and all its child controls.</summary>
+        /// <param name="initial">The initial value or text.</param>
+        /// <param name="findByText">Whether <paramref name="initial"/> is the text or value.</param>
         public void DataBind(string initial, bool findByText)
         {
             base.DataBind();
@@ -74,6 +85,9 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.Select(initial, findByText);
         }
 
+        /// <summary>Selects an item.</summary>
+        /// <param name="initial">The item's value or text.</param>
+        /// <param name="findByText">Whether <paramref name="initial"/> is the text or value.</param>
         public void Select(string initial, bool findByText)
         {
             if (findByText)
@@ -92,16 +106,27 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <summary>Finds an item by its text.</summary>
+        /// <param name="text">The item's text.</param>
+        /// <param name="ignoreCase">Whether to do a case-insensitive search.</param>
+        /// <returns>The list item or <see langword="null"/>.</returns>
         public ListItem FindItemByText(string text, bool ignoreCase = false)
         {
             return ignoreCase ? this.Items.FindByText(text) : this.Items.FindByTextWithIgnoreCase(text);
         }
 
+        /// <summary>Finds an item by its value.</summary>
+        /// <param name="value">The item's value.</param>
+        /// <param name="ignoreCase">Whether to do a case-insensitive search.</param>
+        /// <returns>The list item or <see langword="null"/>.</returns>
         public ListItem FindItemByValue(string value, bool ignoreCase = false)
         {
             return ignoreCase ? this.Items.FindByValue(value) : this.Items.FindByValueWithIgnoreCase(value);
         }
 
+        /// <summary>Finds an item's index by its value.</summary>
+        /// <param name="value">The item's value.</param>
+        /// <returns>The index or <c>-1</c>.</returns>
         public int FindItemIndexByValue(string value)
         {
             return this.Items.IndexOf(this.FindItemByValue(value));
@@ -117,7 +142,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
-            Utilities.ApplySkin(this);
+            Utilities.ApplyControlSkin(this, string.Empty, string.Empty);
             this.RegisterRequestResources();
 
             base.OnPreRender(e);

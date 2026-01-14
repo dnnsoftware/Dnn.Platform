@@ -113,7 +113,7 @@ class Body extends Component {
                     }
                     {
                         appSettings.applicationSettings.settings.isAdmin &&  
-                    <Button type="secondary" size="large" onClick={() => {this.onRemoveDeletedUsers();}} title={Localization.get("RemoveDeleted.Btn")}>
+                    <Button type="danger" size="large" onClick={() => {this.onRemoveDeletedUsers();}} title={Localization.get("RemoveDeleted.Btn")}>
                         {Localization.get("RemoveDeleted.Btn") }
                     </Button>
                     }

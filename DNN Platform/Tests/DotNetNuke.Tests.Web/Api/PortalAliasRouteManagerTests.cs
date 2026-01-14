@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Web.Api
 {
     using System;
@@ -9,12 +8,10 @@ namespace DotNetNuke.Tests.Web.Api
     using System.Collections.Generic;
     using System.Linq;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Web.Api;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -27,30 +24,25 @@ namespace DotNetNuke.Tests.Web.Api
     public class PortalAliasRouteManagerTests
     {
         private Mock<IPortalAliasService> mockPortalAliasService;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
         public void SetUp()
         {
-            var services = new ServiceCollection();
-            var navigationManagerMock = new Mock<INavigationManager>();
-
-            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
-            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
-
             this.mockPortalAliasService = new Mock<IPortalAliasService>();
             this.mockPortalAliasService.As<IPortalAliasController>();
 
-            services.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
-            services.AddScoped(typeof(INavigationManager), (x) => navigationManagerMock.Object);
-            services.AddScoped<IPortalAliasService>(_ => this.mockPortalAliasService.Object);
-
-            Globals.DependencyProvider = services.BuildServiceProvider();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockPortalAliasService.Object);
+                });
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
 
             this.mockPortalAliasService = null;
 
@@ -100,7 +92,6 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-
         public void ParentPortalOnVirtualDirReturnsAnEmptyPrefix()
         {
             // Arrange
@@ -130,7 +121,6 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-
         public void SingleParentPortalReturnsAnEmptyPrefix()
         {
             // Arrange
@@ -160,7 +150,6 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-
         public void PrefixCountsAreCached()
         {
             // Arrange
@@ -186,7 +175,6 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-
         public void PrefixCountsCacheCanBeCleared()
         {
             // Arrange
@@ -213,7 +201,6 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-
         public void VirtralDirWithChildPortalHasABlankAndASinglePrefix()
         {
             // Arrange
@@ -264,7 +251,6 @@ namespace DotNetNuke.Tests.Web.Api
         [TestCase("mfn", "name", "ce.lvh.me", "mfn-name-0")]
         [TestCase("mfn", "", "ce.lvh.me/child", "mfn--1")]
         [TestCase("first", "second", "ce.lvh.me/child1/child2/child3/child4/child5", "first-second-5")]
-
         public void GetRouteNameWithPortalAliasInfoHashesNameInCorrectFormat(string moduleFolderName, string routeName, string httpAlias, string expected)
         {
             // Arrange
@@ -301,7 +287,6 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-
         public void GetAllRouteValuesWorksWithNullRouteValues()
         {
             // Arrange
@@ -314,7 +299,6 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-
         public void GetAllRouteValuesPreservesPassedInRouteValues()
         {
             // Arrange
@@ -330,7 +314,6 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-
         public void GetAllRouteValuesExtractsChildPortalParams()
         {
             // Arrange
@@ -347,7 +330,6 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-
         public void GetAllRouteValuesExtractsManyChildPortalParamsAndPreservesRouteValues()
         {
             // Arrange

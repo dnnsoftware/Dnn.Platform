@@ -11,8 +11,13 @@ namespace DotNetNuke.UI.WebControls
     /// </remarks>
     public enum ListBoundField
     {
+        /// <summary>Display the ID.</summary>
         Id = 0,
+
+        /// <summary>Display the value.</summary>
         Value = 1,
+
+        /// <summary>Display the text.</summary>
         Text = 2,
     }
 }

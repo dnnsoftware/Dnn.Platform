@@ -6,6 +6,7 @@ namespace DotNetNuke.Security.Permissions.Controls
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
 
@@ -16,9 +17,10 @@ namespace DotNetNuke.Security.Permissions.Controls
 
     public class DesktopModulePermissionsGrid : PermissionsGrid
     {
+        private static readonly string[] PermissionKeySeparator = ["##",];
         private DesktopModulePermissionCollection desktopModulePermissions;
         private List<PermissionInfoBase> permissionsList;
-        private int portalDesktopModuleID = -1;
+        private int portalDesktopModuleId = -1;
 
         /// <summary>Gets the Permissions Collection.</summary>
         public DesktopModulePermissionCollection Permissions
@@ -38,13 +40,13 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                return this.portalDesktopModuleID;
+                return this.portalDesktopModuleId;
             }
 
             set
             {
-                int oldValue = this.portalDesktopModuleID;
-                this.portalDesktopModuleID = value;
+                int oldValue = this.portalDesktopModuleId;
+                this.portalDesktopModuleId = value;
                 if (this.desktopModulePermissions == null || oldValue != value)
                 {
                     this.GetDesktopModulePermissions();
@@ -114,7 +116,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     if (objPermission.PermissionKey == "DEPLOY")
                     {
-                        this.AddPermission(objPermission, int.Parse(Globals.glbRoleNothing), Null.NullString, user.UserID, user.DisplayName, true);
+                        this.AddPermission(objPermission, int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture), Null.NullString, user.UserID, user.DisplayName, true);
                     }
                 }
             }
@@ -162,18 +164,18 @@ namespace DotNetNuke.Security.Permissions.Controls
                 // Load DesktopModuleId
                 if (myState[1] != null)
                 {
-                    this.PortalDesktopModuleID = Convert.ToInt32(myState[1]);
+                    this.PortalDesktopModuleID = Convert.ToInt32(myState[1], CultureInfo.InvariantCulture);
                 }
 
                 // Load DesktopModulePermissions
                 if (myState[2] != null)
                 {
                     this.desktopModulePermissions = new DesktopModulePermissionCollection();
-                    string state = Convert.ToString(myState[2]);
+                    string state = Convert.ToString(myState[2], CultureInfo.InvariantCulture);
                     if (!string.IsNullOrEmpty(state))
                     {
                         // First Break the String into individual Keys
-                        string[] permissionKeys = state.Split(new[] { "##" }, StringSplitOptions.None);
+                        string[] permissionKeys = state.Split(PermissionKeySeparator, StringSplitOptions.None);
                         foreach (string key in permissionKeys)
                         {
                             string[] settings = key.Split('|');
@@ -261,7 +263,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
             else
             {
-                objDesktopModulePermission.DesktopModulePermissionID = Convert.ToInt32(settings[2]);
+                objDesktopModulePermission.DesktopModulePermissionID = Convert.ToInt32(settings[2], CultureInfo.InvariantCulture);
             }
 
             objDesktopModulePermission.PortalDesktopModuleID = this.PortalDesktopModuleID;

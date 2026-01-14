@@ -5,13 +5,14 @@ namespace DotNetNuke.Prompt
 {
     using System;
 
+    /// <summary>An attribute decorating a Prompt command.</summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class ConsoleCommandAttribute : Attribute
     {
         /// <summary>Initializes a new instance of the <see cref="ConsoleCommandAttribute"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="categoryKey"></param>
-        /// <param name="descriptionKey"></param>
+        /// <param name="name">The command name.</param>
+        /// <param name="categoryKey">The resource key for the command category.</param>
+        /// <param name="descriptionKey">The resource key for the command description.</param>
         public ConsoleCommandAttribute(string name, string categoryKey, string descriptionKey)
         {
             this.Name = name;

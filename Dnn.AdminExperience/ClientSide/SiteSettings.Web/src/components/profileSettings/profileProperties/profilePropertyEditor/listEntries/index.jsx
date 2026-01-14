@@ -87,7 +87,7 @@ class ListEntriesPanel extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderedListEntries() {
         let i = 0;
         return this.props.entries.map((item, index) => {
@@ -144,7 +144,7 @@ class ListEntriesPanel extends Component {
                         </div>
                         <div className={opened ? "AddItemBox-active" : "AddItemBox"}
                             onClick={this.toggle.bind(this, opened ? "" : "add")}>
-                            <div className="add-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
+                            <div className="add-icon"><SvgIcons.AddIcon />
                             </div> {resx.get("cmdAddEntry")}
                         </div>
                     </div>

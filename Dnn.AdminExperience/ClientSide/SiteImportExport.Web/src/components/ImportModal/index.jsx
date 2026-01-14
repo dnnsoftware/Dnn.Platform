@@ -13,10 +13,10 @@ import FiltersBar from "./FiltersBar";
 import ProgressBar from "./ProgressBar";
 import styles from "./style.module.less";
 import util from "utils";
+import NoDataIcon from "./img/nodata.svg";
 
 import { Button, GridCell, Pager } from "@dnnsoftware/dnn-react-common";
 
-const noDataImg = require("!raw-loader!./img/nodata.svg").default;
 
 class ImportModal extends Component {
     constructor() {
@@ -208,14 +208,14 @@ class ImportModal extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderPackageVerification() {
         const { props } = this;
         return <div>
             {props.selectedPackage && !props.packageVerified &&
                 <div className="package-analyzing">
                     <div className="noDataText">{Localization.get("VerifyPackage")}</div>
-                    <div className="noDataImage" dangerouslySetInnerHTML={{ __html: noDataImg }}></div>
+                    <div className="noDataImage"><NoDataIcon /></div>
                     <ProgressBar className="progressCards" visible={true} loaded={props.importSummary} />
                 </div>}
         </div>;
@@ -277,7 +277,7 @@ class ImportModal extends Component {
                     }
                 </div>
                 <GridCell className="action-buttons">
-                    <Button type="secondary" onClick={this.cancelImport.bind(this)}>{Localization.get("Cancel")}</Button>
+                    <Button type="neutral" onClick={this.cancelImport.bind(this)}>{Localization.get("Cancel")}</Button>
                     {props.wizardStep === 0 &&
                         <Button type="primary"
                             disabled={props.selectedPackage ? false : true}

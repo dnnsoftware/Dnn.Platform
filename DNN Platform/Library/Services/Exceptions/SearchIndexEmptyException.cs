@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.Exceptions
     public class SearchIndexEmptyException : Exception
     {
         /// <summary>Initializes a new instance of the <see cref="SearchIndexEmptyException"/> class.</summary>
-        /// <param name="message"></param>
+        /// <param name="message">The message that describes the error.</param>
         public SearchIndexEmptyException(string message)
             : base(message)
         {

@@ -8,6 +8,7 @@
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
 {
     using System;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.PersonaBar.Library.Prompt;
@@ -18,7 +19,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
     using DotNetNuke.Instrumentation;
 
     [ConsoleCommand("list-commands", Constants.GeneralCategory, "Prompt_ListCommands_Description")]
-
     public class ListCommands : ConsoleCommandBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListCommands));
@@ -40,14 +40,11 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
                     Version = c.Version,
                 });
                 var lstOut = CommandRepository.Instance.GetCommands().Values.Concat(lstNewCommands).OrderBy(c => c.Name + '.' + c.Name).ToList();
-                return new ConsoleResultModel(string.Format(this.LocalizeString("Prompt_ListCommands_Found"), lstOut.Count))
+                return new ConsoleResultModel(string.Format(CultureInfo.InvariantCulture, this.LocalizeString("Prompt_ListCommands_Found"), lstOut.Count))
                 {
                     Records = lstOut.Count,
                     Data = lstOut,
-                    FieldOrder = new[]
-                    {
-                    "Name", "Description", "Version", "Category",
-                    },
+                    FieldOrder = ["Name", "Description", "Version", "Category",],
                 };
             }
             catch (Exception ex)

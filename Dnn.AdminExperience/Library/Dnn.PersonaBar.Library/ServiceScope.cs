@@ -4,9 +4,7 @@
 
 namespace Dnn.PersonaBar.Library
 {
-    /// <summary>
-    ///
-    /// </summary>
+    /// <summary>The scope of a menu item.</summary>
     public enum ServiceScope
     {
         /// <summary>the service available for all users.</summary>

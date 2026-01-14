@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Content.Data
 {
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content.Common;
@@ -99,6 +100,7 @@ namespace DotNetNuke.Entities.Content.Data
         }
 
         /// <summary>Retrieve all content items associated with a articular Module ID, <paramref name="moduleId"/>.</summary>
+        /// <param name="moduleId">The module ID.</param>
         /// <returns>A data reader containing the content items.</returns>
         public IDataReader GetContentItemsByModuleId(int moduleId)
         {
@@ -106,6 +108,7 @@ namespace DotNetNuke.Entities.Content.Data
         }
 
         /// <summary>Retrieve a list of content items containing terms from the specified Vocabulary ID.</summary>
+        /// <param name="vocabularyId">The vocabulary ID.</param>
         /// <returns>A data reader containing the content items.</returns>
         public IDataReader GetContentItemsByVocabularyId(int vocabularyId)
         {
@@ -122,6 +125,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// <summary>Updates the content item.</summary>
         /// <param name="contentItem">The content item.</param>
         /// <param name="createdByUserId">The created by user id.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void UpdateContentItem(ContentItem contentItem, int createdByUserId)
         {
             this.provider.ExecuteNonQuery(
@@ -311,6 +315,7 @@ namespace DotNetNuke.Entities.Content.Data
         }
 
         /// <summary>Retrieve term usage data for the specified Term ID, <paramref name="termId"/>.</summary>
+        /// <param name="termId">The term ID.</param>
         /// <returns>A data reader with the term usage.</returns>
         public IDataReader GetTermUsage(int termId)
         {

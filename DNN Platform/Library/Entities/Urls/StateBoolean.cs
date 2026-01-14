@@ -6,8 +6,13 @@ namespace DotNetNuke.Entities.Urls
 {
     public enum StateBoolean
     {
+        /// <summary>The value is not set.</summary>
         NotSet = -1,
+
+        /// <summary>The value is <see langword="false"/>.</summary>
         False = 0,
+
+        /// <summary>The value is <see langword="true"/>.</summary>
         True = 1,
     }
 }

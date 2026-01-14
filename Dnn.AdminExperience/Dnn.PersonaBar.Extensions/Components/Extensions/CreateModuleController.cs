@@ -1,10 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Extensions.Components
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -29,15 +29,15 @@ namespace Dnn.PersonaBar.Extensions.Components
         /// <summary>Initializes a new instance of the <see cref="CreateModuleController"/> class.</summary>
         public CreateModuleController()
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         protected INavigationManager NavigationManager { get; }
 
         /// <summary>create new module.</summary>
-        /// <param name="createModuleDto"></param>
-        /// <param name="newPageUrl"></param>
-        /// <param name="errorMessage"></param>
+        /// <param name="createModuleDto">Information about the module to create.</param>
+        /// <param name="newPageUrl">The new page URL or <see cref="string.Empty"/>.</param>
+        /// <param name="errorMessage">The error message or <see cref="string.Empty"/>.</param>
         /// <returns>return the new package id.</returns>
         public int CreateModule(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
         {
@@ -70,6 +70,69 @@ namespace Dnn.PersonaBar.Extensions.Components
         {
             var invalidFilenameChars = RegexUtils.GetCachedRegex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
             return invalidFilenameChars.IsMatch(fileName);
+        }
+
+        private static string CreateControl(CreateModuleDto createModuleDto)
+        {
+            var folder = PathUtils.Instance.RemoveTrailingSlash(GetSourceFolder(createModuleDto));
+            var className = GetClassName(createModuleDto);
+            var moduleControlPath = Path.Combine(Globals.ApplicationMapPath, $"DesktopModules/{folder}/{createModuleDto.FileName}");
+            var message = Null.NullString;
+
+            var source = string.Format(CultureInfo.InvariantCulture, LoadControlTemplate(), createModuleDto.Language, className);
+
+            // reset attributes
+            if (File.Exists(moduleControlPath))
+            {
+                message = "FileExists";
+            }
+            else
+            {
+                using var stream = File.CreateText(moduleControlPath);
+                stream.WriteLine(source);
+            }
+
+            return message;
+        }
+
+        private static string LoadControlTemplate()
+        {
+            var personaBarFolder = Library.Constants.PersonaBarRelativePath.Replace("~/", string.Empty);
+            var filePath = Path.Combine(Globals.ApplicationMapPath, personaBarFolder, "Modules/Dnn.Extensions/data/ModuleControlTemplate.resources");
+            return File.ReadAllText(filePath, Encoding.UTF8);
+        }
+
+        private static string GetSourceFolder(CreateModuleDto createModuleDto)
+        {
+            var folder = Null.NullString;
+            if (!string.IsNullOrEmpty(createModuleDto.OwnerFolder))
+            {
+                folder += createModuleDto.OwnerFolder + "/";
+            }
+
+            if (!string.IsNullOrEmpty(createModuleDto.ModuleFolder))
+            {
+                folder += createModuleDto.ModuleFolder + "/";
+            }
+
+            return folder;
+        }
+
+        private static string GetClassName(CreateModuleDto createModuleDto)
+        {
+            var className = Null.NullString;
+            if (!string.IsNullOrEmpty(createModuleDto.OwnerFolder))
+            {
+                className += createModuleDto.OwnerFolder + ".";
+            }
+
+            if (!string.IsNullOrEmpty(createModuleDto.ModuleFolder))
+            {
+                className += createModuleDto.ModuleFolder;
+            }
+
+            // return class and remove any spaces that might appear in folder structure
+            return className.Replace(" ", string.Empty);
         }
 
         private int CreateNewModule(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
@@ -108,7 +171,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 return Null.NullInteger;
             }
 
-            if (!controlSrc.EndsWith(".ascx"))
+            if (!controlSrc.EndsWith(".ascx", StringComparison.Ordinal))
             {
                 controlSrc += ".ascx";
             }
@@ -132,7 +195,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             // First create the control
             createModuleDto.FileName = controlSrc;
-            var message = this.CreateControl(createModuleDto);
+            var message = CreateControl(createModuleDto);
             if (string.IsNullOrEmpty(message))
             {
                 // Next import the control
@@ -154,7 +217,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             try
             {
-                var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
+                var folder = PathUtils.Instance.RemoveTrailingSlash(GetSourceFolder(createModuleDto));
                 var friendlyName = createModuleDto.ModuleName;
                 var name = createModuleDto.ModuleName;
                 var moduleControl = "DesktopModules/" + folder + "/" + createModuleDto.FileName;
@@ -256,7 +319,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             try
             {
-                var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
+                var folder = PathUtils.Instance.RemoveTrailingSlash(GetSourceFolder(createModuleDto));
                 var manifest = Path.Combine(Globals.ApplicationMapPath, "DesktopModules", folder, createModuleDto.Manifest);
                 var installer = new Installer(manifest, Globals.ApplicationMapPath, true);
 
@@ -341,71 +404,6 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
 
             return string.Empty;
-        }
-
-        private string CreateControl(CreateModuleDto createModuleDto)
-        {
-            var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
-            var className = this.GetClassName(createModuleDto);
-            var moduleControlPath = Path.Combine(Globals.ApplicationMapPath, "DesktopModules/" + folder + "/" + createModuleDto.FileName);
-            var message = Null.NullString;
-
-            var source = string.Format(this.LoadControlTemplate(), createModuleDto.Language, className);
-
-            // reset attributes
-            if (File.Exists(moduleControlPath))
-            {
-                message = "FileExists";
-            }
-            else
-            {
-                using (var stream = File.CreateText(moduleControlPath))
-                {
-                    stream.WriteLine(source);
-                }
-            }
-
-            return message;
-        }
-
-        private string LoadControlTemplate()
-        {
-            var personaBarFolder = Library.Constants.PersonaBarRelativePath.Replace("~/", string.Empty);
-            var filePath = Path.Combine(Globals.ApplicationMapPath, personaBarFolder, "Modules/Dnn.Extensions/data/ModuleControlTemplate.resources");
-            return File.ReadAllText(filePath, Encoding.UTF8);
-        }
-
-        private string GetSourceFolder(CreateModuleDto createModuleDto)
-        {
-            var folder = Null.NullString;
-            if (!string.IsNullOrEmpty(createModuleDto.OwnerFolder))
-            {
-                folder += createModuleDto.OwnerFolder + "/";
-            }
-
-            if (!string.IsNullOrEmpty(createModuleDto.ModuleFolder))
-            {
-                folder += createModuleDto.ModuleFolder + "/";
-            }
-
-            return folder;
-        }
-
-        private string GetClassName(CreateModuleDto createModuleDto)
-        {
-            var className = Null.NullString;
-            if (!string.IsNullOrEmpty(createModuleDto.OwnerFolder))
-            {
-                className += createModuleDto.OwnerFolder + ".";
-            }
-
-            if (!string.IsNullOrEmpty(createModuleDto.ModuleFolder))
-            {
-                className += createModuleDto.ModuleFolder;
-            }
-
-            // return class and remove any spaces that might appear in folder structure
-            return className.Replace(" ", string.Empty);
         }
     }
 }

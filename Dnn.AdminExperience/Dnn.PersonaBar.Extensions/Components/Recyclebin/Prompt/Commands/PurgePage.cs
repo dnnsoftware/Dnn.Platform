@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Text;
 
     using Dnn.PersonaBar.Library.Helper;
@@ -20,11 +21,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     public class PurgePage : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_PurgePage_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("deletechildren", "Prompt_PurgePage_FlagDeleteChildren", "Boolean", "false")]
-
         private const string FlagDeleteChildren = "deletechildren";
 
         private readonly ITabController tabController;
@@ -41,9 +40,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         }
 
         /// <summary>Initializes a new instance of the <see cref="PurgePage"/> class.</summary>
-        /// <param name="tabController"></param>
-        /// <param name="recyclebinController"></param>
-        /// <param name="contentVerifier"></param>
+        /// <param name="tabController">The tab controller.</param>
+        /// <param name="recyclebinController">The recycle bin controller.</param>
+        /// <param name="contentVerifier">The content verifier.</param>
         public PurgePage(ITabController tabController, IRecyclebinController recyclebinController, IContentVerifier contentVerifier)
         {
             this.tabController = tabController;
@@ -72,15 +71,15 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             if (tabInfo == null ||
                 !this.contentVerifier.IsContentExistsForRequestedPortal(tabInfo.PortalID, this.PortalSettings))
             {
-                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("PageNotFound"), this.PageId));
+                return new ConsoleErrorResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("PageNotFound"), this.PageId));
             }
 
             var errors = new StringBuilder();
             this.recyclebinController.DeleteTabs(new List<TabInfo> { tabInfo }, errors, this.DeleteChildren);
 
             return errors.Length > 0
-                ? new ConsoleErrorResultModel(string.Format(this.LocalizeString("Service_RemoveTabError"), errors))
-                : new ConsoleResultModel(string.Format(this.LocalizeString("Prompt_PagePurgedSuccessfully"), this.PageId)) { Records = 1 };
+                ? new ConsoleErrorResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Service_RemoveTabError"), errors))
+                : new ConsoleResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Prompt_PagePurgedSuccessfully"), this.PageId)) { Records = 1 };
         }
     }
 }

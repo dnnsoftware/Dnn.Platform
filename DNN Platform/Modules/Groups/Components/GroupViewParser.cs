@@ -1,11 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Modules.Groups.Components
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web;
 
@@ -20,11 +17,11 @@ namespace DotNetNuke.Modules.Groups.Components
     public class GroupViewParser
     {
         /// <summary>Initializes a new instance of the <see cref="GroupViewParser"/> class.</summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="roleInfo"></param>
-        /// <param name="currentUser"></param>
-        /// <param name="template"></param>
-        /// <param name="groupViewTabId"></param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="roleInfo">The role info.</param>
+        /// <param name="currentUser">The current user.</param>
+        /// <param name="template">The template.</param>
+        /// <param name="groupViewTabId">The tab ID of the group view module.</param>
         public GroupViewParser(PortalSettings portalSettings, RoleInfo roleInfo, UserInfo currentUser, string template, int groupViewTabId)
         {
             this.PortalSettings = portalSettings;
@@ -32,7 +29,7 @@ namespace DotNetNuke.Modules.Groups.Components
             this.CurrentUser = currentUser;
             this.Template = template;
             this.GroupViewTabId = groupViewTabId;
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         public string Template { get; set; }

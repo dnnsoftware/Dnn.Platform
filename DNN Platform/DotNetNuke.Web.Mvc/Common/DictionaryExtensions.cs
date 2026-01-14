@@ -14,6 +14,10 @@ namespace DotNetNuke.Web.Mvc.Common
     internal static class DictionaryExtensions
     {
         /// <summary>Remove entries from dictionary that match the removeCondition.</summary>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="removeCondition">A function determining whether to remove the <see cref="KeyValuePair{TKey,TValue}"/>.</param>
+        /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+        /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
         public static void RemoveFromDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, Func<KeyValuePair<TKey, TValue>, bool> removeCondition)
         {
             // Pass the delegate as the state to avoid a delegate and closure
@@ -26,6 +30,12 @@ namespace DotNetNuke.Web.Mvc.Common
         }
 
         /// <summary>Remove entries from dictionary that match the removeCondition.</summary>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="removeCondition">A function determining whether to remove the <see cref="KeyValuePair{TKey,TValue}"/>.</param>
+        /// <param name="state">State to pass to <paramref name="removeCondition"/> to avoid closures.</param>
+        /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+        /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+        /// <typeparam name="TState">The type of state passed to <paramref name="removeCondition"/>.</typeparam>
         public static void RemoveFromDictionary<TKey, TValue, TState>(this IDictionary<TKey, TValue> dictionary, Func<KeyValuePair<TKey, TValue>, TState, bool> removeCondition, TState state)
         {
             Contract.Assert(dictionary != null);
@@ -58,7 +68,7 @@ namespace DotNetNuke.Web.Mvc.Common
         /// <param name="collection">The <see cref="IDictionary{TKey,TValue}"/> instance where <c>TValue</c> is <c>object</c>.</param>
         /// <param name="key">The key whose value to get.</param>
         /// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter.</param>
-        /// <returns><c>true</c> if key was found, value is non-null, and value is of type <typeparamref name="T"/>; otherwise false.</returns>
+        /// <returns><see langword="true"/> if key was found, value is non-null, and value is of type <typeparamref name="T"/>; otherwise false.</returns>
         public static bool TryGetValue<T>(this IDictionary<string, object> collection, string key, out T value)
         {
             Contract.Assert(collection != null);

@@ -24,6 +24,12 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
     {
         private const int UserId = 400;
 
+        [OneTimeSetUp]
+        public override void OneTimeSetUp()
+        {
+            base.OneTimeSetUp();
+        }
+
         [TearDown]
         public void TearDown()
         {

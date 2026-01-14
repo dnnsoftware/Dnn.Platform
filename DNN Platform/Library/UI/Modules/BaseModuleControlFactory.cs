@@ -13,6 +13,12 @@ namespace DotNetNuke.UI.Modules
     public abstract class BaseModuleControlFactory : IModuleControlFactory
     {
         /// <inheritdoc/>
+        public abstract int Priority { get; }
+
+        /// <inheritdoc/>
+        public abstract bool SupportsControl(ModuleInfo moduleConfiguration, string controlSrc);
+
+        /// <inheritdoc/>
         public abstract Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc);
 
         /// <inheritdoc/>

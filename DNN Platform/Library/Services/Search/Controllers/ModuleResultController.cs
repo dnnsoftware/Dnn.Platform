@@ -5,10 +5,14 @@ namespace DotNetNuke.Services.Search.Controllers
 {
     using System;
     using System.Collections;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -22,6 +26,8 @@ namespace DotNetNuke.Services.Search.Controllers
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Search.Entities;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>Search Result Controller for Module Crawler.</summary>
@@ -34,8 +40,21 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleResultController));
 
-        private static Hashtable moduleSearchControllers = new Hashtable();
-        private static object threadLock = new object();
+        private readonly ConcurrentDictionary<string, IModuleSearchResultController> moduleSearchControllers = new ConcurrentDictionary<string, IModuleSearchResultController>();
+        private readonly IBusinessControllerProvider businessControllerProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleResultController"/> class.</summary>
+        public ModuleResultController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleResultController"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        public ModuleResultController(IBusinessControllerProvider businessControllerProvider)
+        {
+            this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+        }
 
         /// <inheritdoc/>
         public override bool HasViewPermission(SearchResult searchResult)
@@ -53,7 +72,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 foreach (ModuleInfo module in tabModules)
                 {
                     var tab = TabController.Instance.GetTab(module.TabID, searchResult.PortalId, false);
-                    if (this.ModuleIsAvailable(tab, module) && !tab.IsDeleted && !tab.DisableLink && TabPermissionController.CanViewPage(tab))
+                    if (ModuleIsAvailable(tab, module) && !tab.IsDeleted && !tab.DisableLink && TabPermissionController.CanViewPage(tab))
                     {
                         // Check If authorised to View Module
                         if (ModulePermissionController.CanViewModule(module) && this.HasModuleSearchPermission(module, searchResult))
@@ -129,13 +148,29 @@ namespace DotNetNuke.Services.Search.Controllers
             return url;
         }
 
-        private static ArrayList GetModuleTabs(int moduleID)
+        private static ArrayList GetModuleTabs(int moduleId)
         {
-            // no manual clearing of the cache exists; let is just expire
-            var cacheKey = string.Format(ModuleByIdCacheKey, moduleID);
+            // no manual clearing of the cache exists; let it just expire
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, ModuleByIdCacheKey, moduleId);
             return CBO.GetCachedObject<ArrayList>(
-                new CacheItemArgs(cacheKey, ModuleByIdCacheTimeOut, ModuleByIdCachePriority, moduleID),
-                (args) => CBO.FillCollection(DataProvider.Instance().GetModule(moduleID, Null.NullInteger), typeof(ModuleInfo)));
+                new CacheItemArgs(cacheKey, ModuleByIdCacheTimeOut, ModuleByIdCachePriority, moduleId),
+                (args) => CBO.FillCollection(DataProvider.Instance().GetModule(moduleId, Null.NullInteger), typeof(ModuleInfo)));
+        }
+
+        private static bool ModuleIsAvailable(TabInfo tab, ModuleInfo module)
+        {
+            return GetModules(tab).Any(m => m.ModuleID == module.ModuleID && !m.IsDeleted);
+        }
+
+        private static IEnumerable<ModuleInfo> GetModules(TabInfo tab)
+        {
+            int urlVersion;
+            if (TabVersionUtils.TryGetUrlVersion(out urlVersion))
+            {
+                return TabVersionBuilder.Instance.GetVersionModules(tab.TabID, urlVersion);
+            }
+
+            return TabVersionBuilder.Instance.GetCurrentModules(tab.TabID);
         }
 
         private bool HasModuleSearchPermission(ModuleInfo module, SearchResult searchResult)
@@ -165,40 +200,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private IModuleSearchResultController GetModuleSearchController(ModuleInfo module)
         {
-            if (string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
-            {
-                return null;
-            }
-
-            if (!moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
-            {
-                lock (threadLock)
-                {
-                    if (!moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
-                    {
-                        var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass) as IModuleSearchResultController;
-                        moduleSearchControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
-                    }
-                }
-            }
-
-            return moduleSearchControllers[module.DesktopModule.BusinessControllerClass] as IModuleSearchResultController;
-        }
-
-        private bool ModuleIsAvailable(TabInfo tab, ModuleInfo module)
-        {
-            return this.GetModules(tab).Any(m => m.ModuleID == module.ModuleID && !m.IsDeleted);
-        }
-
-        private IEnumerable<ModuleInfo> GetModules(TabInfo tab)
-        {
-            int urlVersion;
-            if (TabVersionUtils.TryGetUrlVersion(out urlVersion))
-            {
-                return TabVersionBuilder.Instance.GetVersionModules(tab.TabID, urlVersion);
-            }
-
-            return TabVersionBuilder.Instance.GetCurrentModules(tab.TabID);
+            return this.businessControllerProvider.GetInstance<IModuleSearchResultController>(module);
         }
     }
 }

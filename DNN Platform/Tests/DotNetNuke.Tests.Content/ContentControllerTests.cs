@@ -1,29 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Content
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
-    using System.Web;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Content.Data;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Tests.Content.Mocks;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -41,12 +36,12 @@ namespace DotNetNuke.Tests.Content
         private Mock<CachingProvider> mockCache;
         private Mock<DataProvider> mockDataProvider;
         private Mock<Services.Search.Internals.ISearchHelper> mockSearchHelper;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
-
         public void SetUp()
         {
-            this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            this.mockCache = MockComponentProvider.CreateDataCacheProvider();
             this.mockDataProvider = MockComponentProvider.CreateDataProvider();
             this.mockSearchHelper = new Mock<Services.Search.Internals.ISearchHelper>();
 
@@ -55,21 +50,19 @@ namespace DotNetNuke.Tests.Content
             this.mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(
                 (string searchTypeName) => new SearchType { SearchTypeName = searchTypeName, SearchTypeId = ModuleSearchTypeId });
 
-            var serviceCollection = new ServiceCollection();
-            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
-            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
-
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockCache.Object);
+                    services.AddSingleton(this.mockDataProvider.Object);
+                    services.AddSingleton(this.mockSearchHelper.Object);
+                });
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             MockComponentProvider.ResetContainer();
         }
 
@@ -245,7 +238,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentController_GetContentItem_Throws_On_Negative_ContentItemId()
         {
             // Arrange
@@ -257,7 +249,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentController_GetContentItem_Returns_Null_On_InValid_ContentItemId()
         {
             // Arrange
@@ -273,7 +264,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentController_GetContentItem_Calls_DataService_On_Valid_ContentItemId()
         {
             // Arrange
@@ -289,7 +279,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentController_GetContentItem_Returns_ContentItem_On_Valid_ContentItemId()
         {
             // Arrange
@@ -310,7 +299,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentController_GetContentItemsByTerm_Throws_On_Null_Term()
         {
             // Arrange
@@ -322,7 +310,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentController_GetContentItemsByTerm_Calls_DataService()
         {
             // Arrange
@@ -338,7 +325,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentController_GetContentItemsByTerm_Returns_Empty_List_If_Term_Not_Used()
         {
             // Arrange
@@ -354,7 +340,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentController_GetContentItemsByTerm_Returns_List_Of_ContentItems()
         {
             // Arrange
@@ -374,7 +359,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentController_GetContentItemsByContentType_Returns_Results()
         {
             var mock = new Mock<IDataService>();
@@ -389,7 +373,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentController_GetContentItemsByContentType_Invalid_Id_Returns_No_Elements()
         {
             var mock = new Mock<IDataService>();
@@ -403,7 +386,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void GetContentItemsByModuleId_With_Negative_ModuleId_Returns_ContentItems()
         {
             var mock = new Mock<IDataService>();
@@ -423,7 +405,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentController_GetUnIndexedContentItems_Calls_DataService()
         {
             // Arrange
@@ -439,7 +420,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentController_GetUnIndexedContentItems_Returns_EmptyList_If_No_UnIndexed_Items()
         {
             // Arrange
@@ -456,7 +436,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentController_GetUnIndexedContentItems_Returns_List_Of_UnIndexedContentItems()
         {
             // Arrange

@@ -5,12 +5,14 @@
 namespace DotNetNuke.Entities.Modules.Settings
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Base class for attributes that are used to decorate properties (parameters) related to
     /// application settings (storage) or parameters (control) like query string parameters.
     /// </summary>
     [Serializable]
+    [SuppressMessage("Microsoft.Design", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "Breaking change")]
     public abstract class ParameterAttributeBase : Attribute
     {
         /// <summary>Gets or sets the prefix to use when naming the setting in the settings table.</summary>
@@ -36,6 +38,6 @@ namespace DotNetNuke.Entities.Modules.Settings
         public string Serializer { get; set; }
 
         /// <summary>Gets or sets a value indicating whether the settings should be stored securely. This encrypts the value of the parameter.</summary>
-        public bool IsSecure { get; set; } = false;
+        public bool IsSecure { get; set; }
     }
 }

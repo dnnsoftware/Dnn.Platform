@@ -7,6 +7,7 @@ namespace DotNetNuke.Common.Utilities
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -14,19 +15,36 @@ namespace DotNetNuke.Common.Utilities
     using System.Xml;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Scheduling;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The CBO class generates objects.</summary>
     public partial class CBO : ServiceLocator<ICBO, CBO>, ICBO
     {
         private const string DefaultPrimaryKey = "ItemID";
-
         private const string ObjectMapCacheKey = "ObjectMap_";
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="CBO"/> class.</summary>
+        public CBO()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CBO"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public CBO(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
 
         /// <summary>CloneObject clones an object.</summary>
         /// <param name="objObject">The Object to Clone.</param>
@@ -113,22 +131,27 @@ namespace DotNetNuke.Common.Utilities
 
         public static TObject DeserializeObject<TObject>(string fileName)
         {
-            return DeserializeObject<TObject>(XmlReader.Create(new FileStream(fileName, FileMode.Open, FileAccess.Read)));
+            using var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            using var xmlReader = XmlReader.Create(fileStream);
+            return DeserializeObject<TObject>(xmlReader);
         }
 
         public static TObject DeserializeObject<TObject>(XmlDocument document)
         {
-            return DeserializeObject<TObject>(XmlReader.Create(new StringReader(document.OuterXml)));
+            using var xmlReader = XmlReader.Create(new StringReader(document.OuterXml));
+            return DeserializeObject<TObject>(xmlReader);
         }
 
         public static TObject DeserializeObject<TObject>(Stream stream)
         {
-            return DeserializeObject<TObject>(XmlReader.Create(stream));
+            using var xmlReader = XmlReader.Create(stream);
+            return DeserializeObject<TObject>(xmlReader);
         }
 
         public static TObject DeserializeObject<TObject>(TextReader reader)
         {
-            return DeserializeObject<TObject>(XmlReader.Create(reader));
+            using var xmlReader = XmlReader.Create(reader);
+            return DeserializeObject<TObject>(xmlReader);
         }
 
         public static TObject DeserializeObject<TObject>(XmlReader reader)
@@ -401,14 +424,47 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="cacheItemExpired">A CacheItemExpiredCallback delegate that is used to repopulate
         /// the cache if the item has expired.</param>
         /// <returns>The cached object.</returns>
-        public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
+            => GetCachedObject<TObject>(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), cacheItemArgs, cacheItemExpired);
+
+        /// <summary>GetCachedObject gets an object from the Cache.</summary>
+        /// <typeparam name="TObject">The type of the object to fetch.</typeparam>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="cacheItemArgs">A CacheItemArgs object that provides parameters to manage the
+        /// cache AND to fetch the item if the cache has expired.</param>
+        /// <param name="cacheItemExpired">A CacheItemExpiredCallback delegate that is used to repopulate
+        /// the cache if the item has expired.</param>
+        /// <returns>The cached object.</returns>
+        public static TObject GetCachedObject<TObject>(IHostSettings hostSettings, CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
         {
-            return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired);
+            return DataCache.GetCachedData<TObject>(hostSettings, cacheItemArgs, cacheItemExpired);
         }
 
-        public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
+        /// <summary>GetCachedObject gets an object from the Cache.</summary>
+        /// <typeparam name="TObject">The type of the object to fetch.</typeparam>
+        /// <param name="cacheItemArgs">A CacheItemArgs object that provides parameters to manage the
+        /// cache AND to fetch the item if the cache has expired.</param>
+        /// <param name="cacheItemExpired">A CacheItemExpiredCallback delegate that is used to repopulate
+        /// the cache if the item has expired.</param>
+        /// <param name="saveInDictionary">Whether to bypass the caching provider and use an in-memory dictionary as the cache.</param>
+        /// <returns>The cached object.</returns>
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
+            => GetCachedObject<TObject>(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), cacheItemArgs, cacheItemExpired, saveInDictionary);
+
+        /// <summary>GetCachedObject gets an object from the Cache.</summary>
+        /// <typeparam name="TObject">The type of the object to fetch.</typeparam>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="cacheItemArgs">A CacheItemArgs object that provides parameters to manage the
+        /// cache AND to fetch the item if the cache has expired.</param>
+        /// <param name="cacheItemExpired">A CacheItemExpiredCallback delegate that is used to repopulate
+        /// the cache if the item has expired.</param>
+        /// <param name="saveInDictionary">Whether to bypass the caching provider and use an in-memory dictionary as the cache.</param>
+        /// <returns>The cached object.</returns>
+        public static TObject GetCachedObject<TObject>(IHostSettings hostSettings, CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
         {
-            return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
+            return DataCache.GetCachedData<TObject>(hostSettings.PerformanceSetting, cacheItemArgs, cacheItemExpired, saveInDictionary);
         }
 
         /// <summary>GetProperties gets a Dictionary of the Properties for an object.</summary>
@@ -460,44 +516,39 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>SerializeObject serializes an Object.</summary>
-        /// <param name="objObject">The object to Initialise.</param>
-        /// <param name="fileName">A filename for the resulting serialized xml.</param>
+        /// <param name="objObject">The object to initialize.</param>
+        /// <param name="fileName">A filename for the resulting serialized XML.</param>
         public static void SerializeObject(object objObject, string fileName)
         {
-            using (
-                XmlWriter writer = XmlWriter.Create(fileName, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
-            {
-                SerializeObject(objObject, writer);
-                writer.Flush();
-            }
+            using var writer = XmlWriter.Create(fileName, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment));
+            SerializeObject(objObject, writer);
+            writer.Flush();
         }
 
         /// <summary>SerializeObject serializes an Object.</summary>
-        /// <param name="objObject">The object to Initialise.</param>
+        /// <param name="objObject">The object to initialize.</param>
         /// <param name="document">An XmlDocument to serialize to.</param>
         public static void SerializeObject(object objObject, XmlDocument document)
         {
             var sb = new StringBuilder();
-            using (var writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Document)))
-            {
-                // Serialize the object
-                SerializeObject(objObject, writer);
+            using var writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Document));
 
-                // Load XmlDocument
-                document.LoadXml(sb.ToString());
-            }
+            // Serialize the object
+            SerializeObject(objObject, writer);
+
+            // Load XmlDocument
+            using var xmlReader = XmlReader.Create(new StringReader(sb.ToString()), new XmlReaderSettings { XmlResolver = null, });
+            document.Load(xmlReader);
         }
 
         /// <summary>SerializeObject serializes an Object.</summary>
-        /// <param name="objObject">The object to Initialise.</param>
+        /// <param name="objObject">The object to initialize.</param>
         /// <param name="stream">A Stream to serialize to.</param>
         public static void SerializeObject(object objObject, Stream stream)
         {
-            using (XmlWriter writer = XmlWriter.Create(stream, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
-            {
-                SerializeObject(objObject, writer);
-                writer.Flush();
-            }
+            using var writer = XmlWriter.Create(stream, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment));
+            SerializeObject(objObject, writer);
+            writer.Flush();
         }
 
         /// <summary>SerializeObject serializes an Object.</summary>
@@ -505,12 +556,9 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="textWriter">A TextWriter to serialize to.</param>
         public static void SerializeObject(object objObject, TextWriter textWriter)
         {
-            using (
-                XmlWriter writer = XmlWriter.Create(textWriter, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
-            {
-                SerializeObject(objObject, writer);
-                writer.Flush();
-            }
+            using var writer = XmlWriter.Create(textWriter, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment));
+            SerializeObject(objObject, writer);
+            writer.Flush();
         }
 
         /// <summary>SerializeObject serializes an Object.</summary>
@@ -548,13 +596,13 @@ namespace DotNetNuke.Common.Utilities
         /// <inheritdoc/>
         TObject ICBO.GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
         {
-            return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
+            return DataCache.GetCachedData<TObject>(this.hostSettings.PerformanceSetting, cacheItemArgs, cacheItemExpired, saveInDictionary);
         }
 
         /// <inheritdoc/>
         protected override Func<ICBO> GetFactory()
         {
-            return () => new CBO();
+            return () => Globals.GetCurrentServiceProvider().GetRequiredService<ICBO>();
         }
 
         private static object CreateObjectInternal(Type objType, bool initialise)
@@ -630,26 +678,26 @@ namespace DotNetNuke.Common.Utilities
                 {
                     // Create the Object
                     objObject = (TValue)CreateObjectFromReader(typeof(TValue), dr, false);
-                    if (keyField == "KeyID" && objObject is IHydratable)
+                    if (keyField == "KeyID" && objObject is IHydratable hydratable)
                     {
                         // Get the value of the key field from the KeyID
-                        keyValue = (TKey)Null.SetNull(((IHydratable)objObject).KeyID, keyValue);
+                        keyValue = (TKey)Null.SetNull(hydratable.KeyID, keyValue);
                     }
                     else
                     {
                         // Get the value of the key field from the DataReader
                         if (typeof(TKey).Name == "Int32" && dr[keyField].GetType().Name == "Decimal")
                         {
-                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], keyValue), typeof(TKey));
+                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], keyValue), typeof(TKey), CultureInfo.InvariantCulture);
                         }
                         else if (typeof(TKey).Name.Equals("string", StringComparison.OrdinalIgnoreCase) &&
                                  dr[keyField].GetType().Name.Equals("dbnull", StringComparison.OrdinalIgnoreCase))
                         {
-                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], string.Empty), typeof(TKey));
+                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], string.Empty), typeof(TKey), CultureInfo.InvariantCulture);
                         }
                         else
                         {
-                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], string.Empty), typeof(TKey));
+                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], string.Empty), typeof(TKey), CultureInfo.InvariantCulture);
                         }
                     }
 
@@ -779,16 +827,16 @@ namespace DotNetNuke.Common.Utilities
         {
             PropertyInfo objPropertyInfo = null;
             Type propType = null;
-            object coloumnValue;
+            object columnValue;
             Type objDataType;
             int intIndex;
 
             // get cached object mapping for type
             ObjectMappingInfo objMappingInfo = GetObjectMapping(hydratedObject.GetType());
-            if (hydratedObject is BaseEntityInfo && !(hydratedObject is ScheduleItem))
+            if (hydratedObject is BaseEntityInfo info and not ScheduleItem)
             {
                 // Call the base classes fill method to populate base class properties
-                ((BaseEntityInfo)hydratedObject).FillBaseProperties(dr);
+                info.FillBaseProperties(dr);
             }
 
             // fill object with values from datareader
@@ -804,19 +852,19 @@ namespace DotNetNuke.Common.Utilities
                     if (objPropertyInfo.CanWrite)
                     {
                         // Get the Data Value from the data reader
-                        coloumnValue = dr.GetValue(intIndex);
+                        columnValue = dr.GetValue(intIndex);
 
                         // Get the Data Value's type
-                        objDataType = coloumnValue.GetType();
-                        if (coloumnValue == null || coloumnValue == DBNull.Value)
+                        objDataType = columnValue.GetType();
+                        if (columnValue == DBNull.Value)
                         {
                             // set property value to Null
                             objPropertyInfo.SetValue(hydratedObject, Null.SetNull(objPropertyInfo), null);
                         }
-                        else if (propType.Equals(objDataType))
+                        else if (propType == objDataType)
                         {
                             // Property and data objects are the same type
-                            objPropertyInfo.SetValue(hydratedObject, coloumnValue, null);
+                            objPropertyInfo.SetValue(hydratedObject, columnValue, null);
                         }
                         else
                         {
@@ -825,38 +873,38 @@ namespace DotNetNuke.Common.Utilities
                             if (propType.BaseType.Equals(typeof(Enum)))
                             {
                                 // check if value is numeric and if not convert to integer ( supports databases like Oracle )
-                                if (Globals.NumberMatchRegex.IsMatch(coloumnValue.ToString()))
+                                if (Globals.NumberMatchRegex.IsMatch(columnValue.ToString()))
                                 {
                                     objPropertyInfo.SetValue(
                                         hydratedObject,
-                                        Enum.ToObject(propType, Convert.ToInt32(coloumnValue)),
+                                        Enum.ToObject(propType, Convert.ToInt32(columnValue, CultureInfo.InvariantCulture)),
                                         null);
                                 }
                                 else
                                 {
-                                    objPropertyInfo.SetValue(hydratedObject, Enum.ToObject(propType, coloumnValue), null);
+                                    objPropertyInfo.SetValue(hydratedObject, Enum.ToObject(propType, columnValue), null);
                                 }
                             }
                             else if (propType == typeof(Guid))
                             {
-                                // guid is not a datatype common across all databases ( ie. Oracle )
+                                // guid is not a datatype common across all databases (e.g. Oracle)
                                 objPropertyInfo.SetValue(
                                     hydratedObject,
-                                    Convert.ChangeType(new Guid(coloumnValue.ToString()), propType),
+                                    Convert.ChangeType(new Guid(columnValue.ToString()), propType, CultureInfo.InvariantCulture),
                                     null);
                             }
                             else if (propType == typeof(Version))
                             {
-                                objPropertyInfo.SetValue(hydratedObject, new Version(coloumnValue.ToString()), null);
+                                objPropertyInfo.SetValue(hydratedObject, new Version(columnValue.ToString()), null);
                             }
-                            else if (coloumnValue is IConvertible)
+                            else if (columnValue is IConvertible)
                             {
-                                objPropertyInfo.SetValue(hydratedObject, ChangeType(coloumnValue, propType), null);
+                                objPropertyInfo.SetValue(hydratedObject, ChangeType(columnValue, propType, CultureInfo.InvariantCulture), null);
                             }
                             else
                             {
                                 // try explicit conversion
-                                objPropertyInfo.SetValue(hydratedObject, coloumnValue, null);
+                                objPropertyInfo.SetValue(hydratedObject, columnValue, null);
                             }
                         }
                     }
@@ -864,7 +912,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        private static object ChangeType(object obj, Type type)
+        private static object ChangeType(object obj, Type type, IFormatProvider formatProvider)
         {
             Type u = Nullable.GetUnderlyingType(type);
 
@@ -875,10 +923,10 @@ namespace DotNetNuke.Common.Utilities
                     return GetDefault(type);
                 }
 
-                return Convert.ChangeType(obj, u);
+                return Convert.ChangeType(obj, u, formatProvider);
             }
 
-            return Convert.ChangeType(obj, type);
+            return Convert.ChangeType(obj, type, formatProvider);
         }
 
         private static object GetDefault(Type type)
@@ -928,22 +976,21 @@ namespace DotNetNuke.Common.Utilities
 
         private static string GetPrimaryKey(Type objType)
         {
-            string primaryKey = DefaultPrimaryKey;
-            return primaryKey;
+            return DefaultPrimaryKey;
         }
 
         private static string GetTableName(Type objType)
         {
-            string tableName = string.Empty;
+            var tableName = string.Empty;
 
-            // If no attrubute then use Type Name
+            // If no attribute then use Type Name
             if (string.IsNullOrEmpty(tableName))
             {
                 tableName = objType.Name;
-                if (tableName.EndsWith("Info"))
+                if (tableName.EndsWith("Info", StringComparison.Ordinal))
                 {
                     // Remove Info ending
-                    tableName.Replace("Info", string.Empty);
+                    tableName = tableName.Replace("Info", string.Empty);
                 }
             }
 

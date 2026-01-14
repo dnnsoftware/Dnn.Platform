@@ -81,7 +81,7 @@ describe("Breadcrumbs",()=>{
         expect(countChildren).toBe(5);
     });
 
-    it('Click on start point breadcrumb',()=>{
+    it("Click on start point breadcrumb",()=>{
         let onSelectedItemCallback = jest.fn();
         let breadcrumbs = shallow(<Breadcrumbs items={itemsMax} onSelectedItem={onSelectedItem}/>);
 

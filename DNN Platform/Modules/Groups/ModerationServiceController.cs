@@ -43,7 +43,6 @@ namespace DotNetNuke.Modules.Groups
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage ApproveGroup(NotificationDTO postData)
         {
             try
@@ -90,7 +89,6 @@ namespace DotNetNuke.Modules.Groups
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage RejectGroup(NotificationDTO postData)
         {
             try
@@ -134,7 +132,6 @@ namespace DotNetNuke.Modules.Groups
         [ValidateAntiForgeryToken]
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
         [SupportedModules("Social Groups")]
-
         public HttpResponseMessage JoinGroup(RoleDTO postData)
         {
             try
@@ -183,7 +180,6 @@ namespace DotNetNuke.Modules.Groups
         [ValidateAntiForgeryToken]
         [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
         [SupportedModules("Social Groups")]
-
         public HttpResponseMessage LeaveGroup(RoleDTO postData)
         {
             var success = false;
@@ -221,7 +217,6 @@ namespace DotNetNuke.Modules.Groups
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage ApproveMember(NotificationDTO postData)
         {
             try
@@ -271,7 +266,6 @@ namespace DotNetNuke.Modules.Groups
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage RejectMember(NotificationDTO postData)
         {
             try

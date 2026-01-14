@@ -9,7 +9,7 @@
   <title></title>
   <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
   <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs"></asp:PlaceHolder>
-  <link rel="stylesheet" type="text/css" class="needVer" href="../Resources/Shared/stylesheets/dnndefault/7.0.0/default.css?refresh" />
+  <link rel="stylesheet" type="text/css" class="needVer" href="../Resources/Shared/stylesheets/dnndefault/10.0.0/default.css?refresh" />
   <link rel="stylesheet" type="text/css" class="needVer" href="Install.css?refresh" />
   <script type="text/javascript" src="../Resources/Shared/scripts/jquery/jquery.min.js?ver=<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>"></script>
   <script type="text/javascript" src="../Resources/Shared/scripts/jquery/jquery-migrate.min.js?ver=<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>"></script>
@@ -26,7 +26,7 @@
       <script type="text/javascript" src="../Resources/Shared/Scripts/dnn.jquery.js?ver=<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>"></script>
     </asp:PlaceHolder>
 
-    <div id="languageFlags" style="float: right;">
+    <div id="languageFlags">
       <asp:LinkButton ID="lang_en_US" class="flag" runat="server" value="en-US" OnClientClick="upgradeWizard.changePageLocale('lang_en_US','en-US');"><img src="../images/flags/en-US.gif" alt="en-US" class="flagimage"/></asp:LinkButton>
       <asp:LinkButton ID="lang_de_DE" class="flag" runat="server" value="de-DE" OnClientClick="upgradeWizard.changePageLocale('lang_de_DE','de-DE');"><img src="../images/flags/de-DE.gif" alt="de-DE" class="flagimage"/></asp:LinkButton>
       <asp:LinkButton ID="lang_es_ES" class="flag" runat="server" value="es-ES" OnClientClick="upgradeWizard.changePageLocale('lang_es_ES','es-ES');"><img src="../images/flags/es-ES.gif" alt="es-ES" class="flagimage"/></asp:LinkButton>
@@ -100,10 +100,6 @@
           <ul class="dnnForm dnnActions dnnClear">
             <li>
               <asp:LinkButton ID="continueLink" runat="server" CssClass="dnnPrimaryAction dnnDisabledAction" resourcekey="NextStep" />
-            </li>
-            <li id="pnlAcceptTerms" runat="server" class="accept-terms">
-              <asp:CheckBox ID="chkAcceptTerms" runat="server" />
-              <asp:Label runat="server" ResourceKey="AcceptTerms" />
             </li>
           </ul>
         </div>
@@ -297,27 +293,17 @@
       //****************************************************************************************
       // EVENT HANDLER FUNCTIONS
       //****************************************************************************************
-      var $acceptTerms = $('#<%= chkAcceptTerms.ClientID %>');
-      if ($acceptTerms.length) {
-        $acceptTerms.click(function () {
-          if (!$(this).is(':checked')) {
-            disable("#<%= continueLink.ClientID %>");
-              } else {
-                enable("#<%= continueLink.ClientID %>");
-              }
-            });
-          } else {
-            enable("#<%= continueLink.ClientID %>");
-      }
+
+      enable("#<%= continueLink.ClientID %>");
+
       //Next Step
       $('#<%= continueLink.ClientID %>').click(function () {
 
         if (!$(this).hasClass('dnnDisabledAction')) {
           upgradeWizard.accountInfo = {
             username: $('#<%= txtUsername.ClientID %>')[0].value,
-                password: $('#<%= txtPassword.ClientID %>')[0].value,
-                acceptTerms: $acceptTerms.length === 0 || $acceptTerms.is(":checked") ? "<%= OptionYes %>" : "<%= OptionNo %>"
-              };
+            password: $('#<%= txtPassword.ClientID %>')[0].value
+          };
 
               disable("#<%= continueLink.ClientID %>");
               disable('#seeLogs, #visitSite, #retry');
@@ -502,6 +488,8 @@
         if (!$(this).hasClass('dnnDisabledAction')) {
           disable(this);
           $('#installation-log-container').show();
+          var loading = '<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("LoadingInstallationLog"))%>';
+          $('#installation-log').html(loading);
           getInstallationLog();
         }
       });

@@ -125,7 +125,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("Apache log4net for Shared Source CLI")]
 #else
 [assembly: AssemblyInformationalVersionAttribute("2.0.14.0")]
-[assembly: AssemblyTitle("DotNetNuke.log4net")]
+[assembly: AssemblyTitle("DotNetNuke.Log4Net")]
 #endif
 
 #if DEBUG

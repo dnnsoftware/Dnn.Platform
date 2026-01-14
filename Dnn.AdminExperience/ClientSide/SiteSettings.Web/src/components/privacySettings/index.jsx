@@ -169,7 +169,7 @@ class PrivacySettingsPanelBody extends Component {
         );
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props, state } = this;
         const TabParameters = {
@@ -382,7 +382,7 @@ class PrivacySettingsPanelBody extends Component {
                 <div className="buttons-box">
                     <Button
                         disabled={!props.privacySettingsClientModified}
-                        type="secondary"
+                        type="neutral"
                         onClick={this.onCancel.bind(this)}
                     >
                         {resx.get("Cancel")}

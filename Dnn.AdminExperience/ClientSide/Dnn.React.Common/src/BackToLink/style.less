@@ -1,7 +1,7 @@
 @import "../../styles/index";
 a.dnn-back-to-link {
     font-weight: bold;
-    color: @thunder;
+    color: var(--dnn-color-foreground, @thunder);
     cursor: pointer;
     display: inline-block;
     > span {
@@ -15,14 +15,14 @@ a.dnn-back-to-link {
         > svg {
             width: 16px;
             height: 16px;
-            fill: @thunder;
+            fill: var(--dnn-color-foreground, @thunder);
         }
     }
     &:hover {
         color: @mountainMist;
         .dnn-back-to-arrow {
             > svg {
-                fill: @mountainMist;
+                fill: var(--dnn-color-foreground-light, @mountainMist);
             }
         }
     }

@@ -93,7 +93,7 @@ class ProfileSettingsPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         if (state.profileSettings) {
@@ -165,7 +165,7 @@ class ProfileSettingsPanelBody extends Component {
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.profileSettingsClientModified}
-                            type="secondary"
+                            type="neutral"
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>

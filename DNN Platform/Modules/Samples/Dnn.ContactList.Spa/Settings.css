@@ -1,0 +1,8 @@
+﻿.contactSpa.settings {
+    padding: 15px;
+}
+.contactSpa.settings label {
+    font-weight: bold;
+    font-style: italic;
+    padding-right: 10px;
+}

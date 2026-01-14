@@ -28,7 +28,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
         /// </returns>
-        /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the object that contains the properties to display.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="T:System.Web.Mvc.ViewDataDictionary`1"/> instance that is created for the template.</param>
+        /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the object that contains the properties to display.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="ViewDataDictionary{TModel}"/> instance that is created for the template.</param>
         public static MvcHtmlString Editor(this DnnHtmlHelper html, string expression, object additionalViewData)
         {
             return html.HtmlHelper.Editor(expression, additionalViewData);
@@ -50,7 +50,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
         /// </returns>
-        /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the object that contains the properties to display.</param><param name="templateName">The name of the template to use to render the object.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="T:System.Web.Mvc.ViewDataDictionary`1"/> instance that is created for the template.</param>
+        /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the object that contains the properties to display.</param><param name="templateName">The name of the template to use to render the object.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="ViewDataDictionary{TModel}"/> instance that is created for the template.</param>
         public static MvcHtmlString Editor(this DnnHtmlHelper html, string expression, string templateName, object additionalViewData)
         {
             return html.HtmlHelper.Editor(expression, templateName, additionalViewData);
@@ -72,13 +72,13 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
         /// </returns>
-        /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the object that contains the properties to display.</param><param name="templateName">The name of the template to use to render the object.</param><param name="htmlFieldName">A string that is used to disambiguate the names of HTML input elements that are rendered for properties that have the same name.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="T:System.Web.Mvc.ViewDataDictionary`1"/> instance that is created for the template.</param>
+        /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the object that contains the properties to display.</param><param name="templateName">The name of the template to use to render the object.</param><param name="htmlFieldName">A string that is used to disambiguate the names of HTML input elements that are rendered for properties that have the same name.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="ViewDataDictionary{TModel}"/> instance that is created for the template.</param>
         public static MvcHtmlString Editor(this DnnHtmlHelper html, string expression, string templateName, string htmlFieldName, object additionalViewData)
         {
             return html.HtmlHelper.Editor(expression, templateName, htmlFieldName, additionalViewData);
         }
 
-        /// <summary>Returns an HTML input element for each property in the object that is represented by the <see cref="T:System.Linq.Expressions.Expression"/> expression.</summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the <see cref="System.Linq.Expressions.Expression"/> expression.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -94,13 +94,13 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
         /// </returns>
-        /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the object that contains the properties to display.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="T:System.Web.Mvc.ViewDataDictionary`1"/> instance that is created for the template.</param><typeparam name="TModel">The type of the model.</typeparam><typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the object that contains the properties to display.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="ViewDataDictionary{TModel}"/> instance that is created for the template.</param><typeparam name="TModel">The type of the model.</typeparam><typeparam name="TValue">The type of the value.</typeparam>
         public static MvcHtmlString EditorFor<TModel, TValue>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object additionalViewData)
         {
             return html.HtmlHelper.EditorFor(expression, additionalViewData);
         }
 
-        /// <summary>Returns an HTML input element for each property in the object that is represented by the <see cref="T:System.Linq.Expressions.Expression"/> expression, using the specified template.</summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the <see cref="System.Linq.Expressions.Expression"/> expression, using the specified template.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -116,13 +116,13 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
         /// </returns>
-        /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the object that contains the properties to display.</param><param name="templateName">The name of the template to use to render the object.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="T:System.Web.Mvc.ViewDataDictionary`1"/> instance that is created for the template.</param><typeparam name="TModel">The type of the model.</typeparam><typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the object that contains the properties to display.</param><param name="templateName">The name of the template to use to render the object.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="ViewDataDictionary{TModel}"/> instance that is created for the template.</param><typeparam name="TModel">The type of the model.</typeparam><typeparam name="TValue">The type of the value.</typeparam>
         public static MvcHtmlString EditorFor<TModel, TValue>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string templateName, object additionalViewData)
         {
             return html.HtmlHelper.EditorFor(expression, templateName, additionalViewData);
         }
 
-        /// <summary>Returns an HTML input element for each property in the object that is represented by the <see cref="T:System.Linq.Expressions.Expression"/> expression, using the specified template and HTML field name.</summary>
+        /// <summary>Returns an HTML input element for each property in the object that is represented by the <see cref="System.Linq.Expressions.Expression"/> expression, using the specified template and HTML field name.</summary>
         ///
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
@@ -138,7 +138,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <returns>
         /// An HTML input element for each property in the object that is represented by the expression.
         /// </returns>
-        /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the object that contains the properties to display.</param><param name="templateName">The name of the template to use to render the object.</param><param name="htmlFieldName">A string that is used to disambiguate the names of HTML input elements that are rendered for properties that have the same name.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="T:System.Web.Mvc.ViewDataDictionary`1"/> instance that is created for the template.</param><typeparam name="TModel">The type of the model.</typeparam><typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the object that contains the properties to display.</param><param name="templateName">The name of the template to use to render the object.</param><param name="htmlFieldName">A string that is used to disambiguate the names of HTML input elements that are rendered for properties that have the same name.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="ViewDataDictionary{TModel}"/> instance that is created for the template.</param><typeparam name="TModel">The type of the model.</typeparam><typeparam name="TValue">The type of the value.</typeparam>
         public static MvcHtmlString EditorFor<TModel, TValue>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string templateName, string htmlFieldName, object additionalViewData)
         {
             return html.HtmlHelper.EditorFor(expression, templateName, htmlFieldName, additionalViewData);
@@ -160,7 +160,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <returns>
         /// An HTML input element for each property in the model.
         /// </returns>
-        /// <param name="html">The HTML helper instance that this method extends.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="T:System.Web.Mvc.ViewDataDictionary`1"/> instance that is created for the template.</param>
+        /// <param name="html">The HTML helper instance that this method extends.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="ViewDataDictionary{TModel}"/> instance that is created for the template.</param>
         public static MvcHtmlString EditorForModel(this DnnHtmlHelper html, object additionalViewData)
         {
             return html.HtmlHelper.EditorForModel(additionalViewData);
@@ -182,7 +182,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <returns>
         /// An HTML input element for each property in the model.
         /// </returns>
-        /// <param name="html">The HTML helper instance that this method extends.</param><param name="templateName">The name of the template to use to render the object.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="T:System.Web.Mvc.ViewDataDictionary`1"/> instance that is created for the template.</param>
+        /// <param name="html">The HTML helper instance that this method extends.</param><param name="templateName">The name of the template to use to render the object.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="ViewDataDictionary{TModel}"/> instance that is created for the template.</param>
         public static MvcHtmlString EditorForModel(this DnnHtmlHelper html, string templateName, object additionalViewData)
         {
             return html.HtmlHelper.EditorForModel(templateName, additionalViewData);
@@ -204,7 +204,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <returns>
         /// An HTML input element for each property in the model.
         /// </returns>
-        /// <param name="html">The HTML helper instance that this method extends.</param><param name="templateName">The name of the template to use to render the object.</param><param name="htmlFieldName">A string that is used to disambiguate the names of HTML input elements that are rendered for properties that have the same name.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="T:System.Web.Mvc.ViewDataDictionary`1"/> instance that is created for the template.</param>
+        /// <param name="html">The HTML helper instance that this method extends.</param><param name="templateName">The name of the template to use to render the object.</param><param name="htmlFieldName">A string that is used to disambiguate the names of HTML input elements that are rendered for properties that have the same name.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="ViewDataDictionary{TModel}"/> instance that is created for the template.</param>
         public static MvcHtmlString EditorForModel(this DnnHtmlHelper html, string templateName, string htmlFieldName, object additionalViewData)
         {
             return html.HtmlHelper.EditorForModel(templateName, htmlFieldName, additionalViewData);

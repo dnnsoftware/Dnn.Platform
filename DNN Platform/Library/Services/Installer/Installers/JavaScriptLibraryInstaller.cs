@@ -5,6 +5,7 @@
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Xml.XPath;
 
@@ -39,7 +40,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 JavaScriptLibraryController.Instance.SaveLibrary(this.library);
 
                 this.Completed = true;
-                this.Log.AddInfo(string.Format(Util.LIBRARY_Registered, this.library.LibraryName));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.LIBRARY_Registered, this.library.LibraryName));
             }
             catch (Exception ex)
             {
@@ -93,7 +94,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     JavaScriptLibraryController.Instance.DeleteLibrary(library);
 
-                    this.Log.AddInfo(string.Format(Util.LIBRARY_UnRegistered, library.LibraryName));
+                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.LIBRARY_UnRegistered, library.LibraryName));
                 }
             }
             catch (Exception ex)

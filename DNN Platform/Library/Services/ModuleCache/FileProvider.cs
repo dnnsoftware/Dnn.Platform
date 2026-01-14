@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.ModuleCache
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Security.Cryptography;
@@ -66,7 +67,7 @@ namespace DotNetNuke.Services.ModuleCache
         /// <inheritdoc/>
         public override void PurgeCache(int portalId)
         {
-            this.PurgeCache(GetCacheFolder(portalId));
+            PurgeCache(GetCacheFolder(portalId));
         }
 
         /// <inheritdoc/>
@@ -79,14 +80,14 @@ namespace DotNetNuke.Services.ModuleCache
                 string cacheFolder = GetCacheFolder(portalId);
                 if (Directory.Exists(cacheFolder) && IsPathInApplication(cacheFolder))
                 {
-                    foreach (string file in Directory.GetFiles(cacheFolder, string.Format("*{0}", AttribFileExtension)))
+                    foreach (string file in Directory.GetFiles(cacheFolder, $"*{AttribFileExtension}"))
                     {
-                        if (this.IsFileExpired(file))
+                        if (IsFileExpired(file))
                         {
                             string fileToDelete = file.Replace(AttribFileExtension, DataFileExtension);
                             if (!FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
                             {
-                                filesNotDeleted.Append(string.Format("{0};", fileToDelete));
+                                filesNotDeleted.Append($"{fileToDelete};");
                             }
                             else
                             {
@@ -98,7 +99,7 @@ namespace DotNetNuke.Services.ModuleCache
 
                 if (filesNotDeleted.Length > 0)
                 {
-                    throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
+                    throw new IOException(string.Format(CultureInfo.InvariantCulture, "Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
                 }
             }
             catch (Exception ex)
@@ -108,6 +109,7 @@ namespace DotNetNuke.Services.ModuleCache
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void SetModule(int tabModuleId, string cacheKey, TimeSpan duration, byte[] output)
         {
             try
@@ -176,7 +178,7 @@ namespace DotNetNuke.Services.ModuleCache
 
         private static int GetCachedItemCount(int tabModuleId)
         {
-            return Directory.GetFiles(GetCacheFolder(), string.Format("*{0}", DataFileExtension)).Length;
+            return Directory.GetFiles(GetCacheFolder(), $"*{DataFileExtension}").Length;
         }
 
         private static string GetCachedOutputFileName(int tabModuleId, string cacheKey)
@@ -231,17 +233,7 @@ namespace DotNetNuke.Services.ModuleCache
             return cacheFolder.Contains(Globals.ApplicationMapPath);
         }
 
-        private string GenerateCacheKeyHash(int tabModuleId, string cacheKey)
-        {
-            byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
-            using (var sha256 = new SHA256CryptoServiceProvider())
-            {
-                hash = sha256.ComputeHash(hash);
-                return tabModuleId + "_" + this.ByteArrayToString(hash);
-            }
-        }
-
-        private bool IsFileExpired(string file)
+        private static bool IsFileExpired(string file)
         {
             StreamReader oRead = null;
             try
@@ -264,14 +256,11 @@ namespace DotNetNuke.Services.ModuleCache
             }
             finally
             {
-                if (oRead != null)
-                {
-                    oRead.Close();
-                }
+                oRead?.Close();
             }
         }
 
-        private void PurgeCache(string folder)
+        private static void PurgeCache(string folder)
         {
             var filesNotDeleted = new StringBuilder();
             int i = 0;
@@ -279,7 +268,7 @@ namespace DotNetNuke.Services.ModuleCache
             {
                 if (!FileSystemUtils.DeleteFileWithWait(file, 100, 200))
                 {
-                    filesNotDeleted.Append(string.Format("{0};", file));
+                    filesNotDeleted.Append($"{file};");
                 }
                 else
                 {
@@ -289,7 +278,17 @@ namespace DotNetNuke.Services.ModuleCache
 
             if (filesNotDeleted.Length > 0)
             {
-                throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
+                throw new IOException($"Deleted {i} files, however, some files are locked.  Could not delete the following files: {filesNotDeleted}");
+            }
+        }
+
+        private string GenerateCacheKeyHash(int tabModuleId, string cacheKey)
+        {
+            byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
+            using (var sha256 = new SHA256CryptoServiceProvider())
+            {
+                hash = sha256.ComputeHash(hash);
+                return tabModuleId + "_" + this.ByteArrayToString(hash);
             }
         }
     }

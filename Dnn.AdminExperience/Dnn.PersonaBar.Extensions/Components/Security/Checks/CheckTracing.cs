@@ -27,31 +27,29 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);
 
-            result.Severity = this.EnableTrace() ? SeverityEnum.Failure : SeverityEnum.Pass;
+            result.Severity = EnableTrace() ? SeverityEnum.Failure : SeverityEnum.Pass;
 
             return result;
         }
 
-        private bool EnableTrace()
+        private static bool EnableTrace()
         {
-            return this.PageLevelTraceEnabled() || this.AppLevelTraceEnabled();
+            return PageLevelTraceEnabled() || AppLevelTraceEnabled();
         }
 
-        private bool PageLevelTraceEnabled()
+        private static bool PageLevelTraceEnabled()
         {
             try
             {
                 var defaultPagePath = Path.Combine(Globals.ApplicationMapPath, "Default.aspx");
-                using (var reader = new StreamReader(File.OpenRead(defaultPagePath)))
+                using var reader = new StreamReader(File.OpenRead(defaultPagePath));
+                var pageDefine = reader.ReadLine();
+                if (!string.IsNullOrEmpty(pageDefine))
                 {
-                    var pageDefine = reader.ReadLine();
-                    if (!string.IsNullOrEmpty(pageDefine))
-                    {
-                        return pageDefine.ToLowerInvariant().Contains("trace=\"true\"");
-                    }
-
-                    return false;
+                    return pageDefine.ToLowerInvariant().Contains("trace=\"true\"");
                 }
+
+                return false;
             }
             catch (Exception)
             {
@@ -59,11 +57,10 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             }
         }
 
-        private bool AppLevelTraceEnabled()
+        private static bool AppLevelTraceEnabled()
         {
             const string outputCacheSettingsKey = "system.web/trace";
-            var section = WebConfigurationManager.GetSection(outputCacheSettingsKey) as TraceSection;
-            if (section != null)
+            if (WebConfigurationManager.GetSection(outputCacheSettingsKey) is TraceSection section)
             {
                 return section.Enabled;
             }

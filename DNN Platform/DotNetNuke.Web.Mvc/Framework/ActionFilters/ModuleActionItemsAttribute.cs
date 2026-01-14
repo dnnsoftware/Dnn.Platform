@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
     using System;
+    using System.Globalization;
     using System.Reflection;
     using System.Web.Mvc;
 
@@ -47,29 +48,28 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
             if (string.IsNullOrEmpty(this.MethodName))
             {
-                methodName = string.Format(MethodNameTemplate, filterContext.ActionDescriptor.ActionName);
+                methodName = string.Format(CultureInfo.InvariantCulture, MethodNameTemplate, filterContext.ActionDescriptor.ActionName);
             }
             else
             {
                 methodName = this.MethodName;
             }
 
-            var method = this.GetMethod(type, methodName);
+            var method = GetMethod(type, methodName);
 
             controller.ModuleActions = method.Invoke(instance, null) as ModuleActionCollection;
         }
 
-        private MethodInfo GetMethod(Type type, string methodName)
+        private static MethodInfo GetMethod(Type type, string methodName)
         {
             var method = type.GetMethod(methodName);
 
             if (method == null)
             {
-                throw new NotImplementedException(string.Format("The expected method to get the module actions cannot be found. Type: {0}, Method: {1}", type.FullName, methodName));
+                throw new NotImplementedException($"The expected method to get the module actions cannot be found. Type: {type.FullName}, Method: {methodName}");
             }
 
             var returnType = method.ReturnType.FullName;
-
             if (returnType != "DotNetNuke.Entities.Modules.Actions.ModuleActionCollection")
             {
                 throw new InvalidOperationException("The method must return an object of type ModuleActionCollection");

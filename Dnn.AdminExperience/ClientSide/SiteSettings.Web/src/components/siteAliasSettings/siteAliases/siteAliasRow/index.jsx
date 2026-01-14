@@ -20,18 +20,18 @@ class SiteAliasRow extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     getBooleanDisplay(prop) {
         if (this.props.id !== "add") {
             if (prop) {
-                return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: SvgIcons.CheckMarkIcon }}></div>;
+                return <div className="checkMarkIcon"><SvgIcons.CheckMarkIcon /></div>;
             }
             else return <span>&nbsp; </span>;
         }
         else return <span>-</span>;
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
@@ -53,10 +53,10 @@ class SiteAliasRow extends Component {
                             {this.getBooleanDisplay(props.isPrimary)}</div>
                         <div className="alias-item item-row-actionButtons">
                             {props.deletable &&
-                                <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} onClick={props.onDelete.bind(this)}></div>
+                                <div className={opened ? "delete-icon-hidden" : "delete-icon"} onClick={props.onDelete.bind(this)}><SvgIcons.TrashIcon /></div>
                             }
                             {props.editable &&
-                                <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this)}></div>
+                                <div className={opened ? "edit-icon-active" : "edit-icon"} onClick={this.toggle.bind(this)}><SvgIcons.EditIcon /></div>
                             }
                         </div>
                     </div>

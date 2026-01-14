@@ -18,7 +18,7 @@ class LogSettingRow extends Component {
         document.removeEventListener("click", this.handleClick);
         this._isMounted = false;
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         this.setState({
             opened
@@ -49,7 +49,7 @@ class LogSettingRow extends Component {
             this.props.OpenCollapse(this.props.id);
         }
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
@@ -68,7 +68,8 @@ class LogSettingRow extends Component {
                         {props.fileName}&nbsp; </GridCell>
                     {!props.readOnly &&
                         <GridCell columnSize={5} >
-                            <div className={"edit-icon " + !opened} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this) }>
+                            <div className={"edit-icon " + !opened} onClick={this.toggle.bind(this) }>
+                                <SvgIcons.EditIcon />
                             </div>
                         </GridCell>
                     }
@@ -92,7 +93,8 @@ LogSettingRow.propTypes = {
     id: PropTypes.string,
     openId: PropTypes.string,
     visible: PropTypes.bool,
-    readOnly: PropTypes.bool
+    readOnly: PropTypes.bool,
+    children: PropTypes.bool,
 };
 
 LogSettingRow.defaultProps = {

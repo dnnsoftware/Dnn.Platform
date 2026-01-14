@@ -1,9 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -11,48 +11,55 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     using Dnn.PersonaBar.Library.Prompt.Attributes;
     using Dnn.PersonaBar.Library.Prompt.Models;
     using Dnn.PersonaBar.Pages.Components.Prompt.Models;
+
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("list-pages", Constants.PagesCategory, "Prompt_ListPages_Description")]
-
     public class ListPages : ConsoleCommandBase
     {
         [FlagParameter("parentid", "Prompt_ListPages_FlagParentId", "Integer")]
-
         private const string FlagParentId = "parentid";
 
         [FlagParameter("deleted", "Prompt_ListPages_FlagDeleted", "Boolean")]
-
         private const string FlagDeleted = "deleted";
 
         [FlagParameter("name", "Prompt_ListPages_FlagName", "String")]
-
         private const string FlagName = "name";
 
         [FlagParameter("title", "Prompt_ListPages_FlagTitle", "String")]
-
         private const string FlagTitle = "title";
 
         [FlagParameter("path", "Prompt_ListPages_FlagPath", "String")]
-
         private const string FlagPath = "path";
 
         [FlagParameter("skin", "Prompt_ListPages_FlagSkin", "String")]
-
         private const string FlagSkin = "skin";
 
         [FlagParameter("visible", "Prompt_ListRoles_FlagVisible", "Boolean")]
-
         private const string FlagVisible = "visible";
 
         [FlagParameter("page", "Prompt_ListRoles_FlagPage", "Integer", "1")]
-
         private const string FlagPage = "page";
 
         [FlagParameter("max", "Prompt_ListRoles_FlagMax", "Integer", "10")]
-
         private const string FlagMax = "max";
+
+        private readonly IPagesController pagesController;
+
+        /// <summary>Initializes a new instance of the <see cref="ListPages"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IPagesController. Scheduled removal in v12.0.0.")]
+        public ListPages()
+            : this(PagesController.Instance)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ListPages"/> class.</summary>
+        /// <param name="pagesController">The pages controller.</param>
+        public ListPages(IPagesController pagesController)
+        {
+            this.pagesController = pagesController;
+        }
 
         /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourceFile;
@@ -100,7 +107,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
             IEnumerable<DotNetNuke.Entities.Tabs.TabInfo> lstTabs;
 
-            lstTabs = PagesController.Instance.GetPageList(this.PortalSettings, this.Deleted, this.PageName, this.PageTitle, this.PagePath, this.PageSkin, this.PageVisible, this.ParentId ?? -1, out total, string.Empty, this.Page > 0 ? this.Page - 1 : 0, max, this.ParentId == null);
+            lstTabs = this.pagesController.GetPageList(this.PortalSettings, this.Deleted, this.PageName, this.PageTitle, this.PagePath, this.PageSkin, this.PageVisible, this.ParentId ?? -1, out total, string.Empty, this.Page > 0 ? this.Page - 1 : 0, max, this.ParentId == null);
             var totalPages = (total / max) + (total % max == 0 ? 0 : 1);
             var pageNo = this.Page > 0 ? this.Page : 1;
             lstOut.AddRange(lstTabs.Select(tab => new PageModelBase(tab)));

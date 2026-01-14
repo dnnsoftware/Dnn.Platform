@@ -5,6 +5,7 @@
 namespace DotNetNuke.Entities.Content.Workflow
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Entities.Content.Workflow.Repositories;
@@ -18,17 +19,20 @@ namespace DotNetNuke.Entities.Content.Workflow
     {
         private const string ReviewPermissionKey = "REVIEW";
         private const string ReviewPermissionCode = "SYSTEM_CONTENTWORKFLOWSTATE";
+        private const string ContentManagers = "Content Managers";
         private readonly IUserController userController = UserController.Instance;
         private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
         private readonly IWorkflowStatePermissionsRepository statePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public bool HasStateReviewerPermission(PortalSettings settings, UserInfo user, int stateId)
         {
             var permissions = this.statePermissionsRepository.GetWorkflowStatePermissionByState(stateId);
 
             return user.IsSuperUser ||
                 PortalSecurity.IsInRoles(user, settings, settings.AdministratorRoleName) ||
+                PortalSecurity.IsInRoles(user, settings, ContentManagers) ||
                 PortalSecurity.IsInRoles(user, settings, PermissionController.BuildPermissions(permissions.ToList(), ReviewPermissionKey));
         }
 

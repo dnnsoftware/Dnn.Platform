@@ -5,6 +5,8 @@ namespace DotNetNuke.UI.Modules
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -35,9 +37,6 @@ namespace DotNetNuke.UI.Modules
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Modules
-    /// Class    : ModuleHost
     /// <summary>ModuleHost hosts a Module Control (or its cached Content).</summary>
     public sealed class ModuleHost : Panel
     {
@@ -50,15 +49,17 @@ namespace DotNetNuke.UI.Modules
             @"<\!--CDF\((?<type>JAVASCRIPT|CSS|JS-LIBRARY)\|(?<path>.+?)(\|(?<provider>.+?)\|(?<priority>\d+?))?\)-->",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        private static readonly char[] ArgsSeparator = [',',];
+
         private readonly ModuleInfo moduleConfiguration;
-        private readonly IModuleControlPipeline moduleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
+        private readonly IModuleControlPipeline moduleControlPipeline = Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
         private Control control;
         private bool isCached;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleHost"/> class.
-        /// Creates a Module Host control using the ModuleConfiguration for the Module.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleHost"/> class using the ModuleConfiguration for the Module.</summary>
+        /// <param name="moduleConfiguration">The module info.</param>
+        /// <param name="skin">The skin for the page.</param>
+        /// <param name="container">The container for the module.</param>
         public ModuleHost(ModuleInfo moduleConfiguration, Skins.Skin skin, Containers.Container container)
         {
             this.ID = "ModuleContent";
@@ -79,20 +80,17 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>Gets the current POrtal Settings.</summary>
-        public PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
+        /// <summary>Gets the current Portal Settings.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         public Containers.Container Container { get; private set; }
 
         public Skins.Skin Skin { get; private set; }
 
         /// <summary>Gets a flag that indicates whether the Module is in View Mode.</summary>
+        /// <param name="moduleInfo">The module information.</param>
+        /// <param name="settings">The portal settings.</param>
         /// <returns>A Boolean.</returns>
         internal static bool IsViewMode(ModuleInfo moduleInfo, PortalSettings settings)
         {
@@ -152,11 +150,11 @@ namespace DotNetNuke.UI.Modules
                     moduleName = Globals.CleanName(moduleName);
                 }
 
-                this.Attributes.Add("class", string.Format("DNNModuleContent Mod{0}C", moduleName));
+                this.Attributes.Add("class", $"DNNModuleContent Mod{moduleName}C");
             }
         }
 
-        /// <summary>RenderContents renders the contents of the control to the output stream.</summary>
+        /// <inheritdoc />
         protected override void RenderContents(HtmlTextWriter writer)
         {
             if (this.isCached)
@@ -166,7 +164,7 @@ namespace DotNetNuke.UI.Modules
             }
             else
             {
-                if (this.SupportsCaching() && IsViewMode(this.moduleConfiguration, this.PortalSettings) && !Globals.IsAdminControl() && !this.IsVersionRequest())
+                if (this.SupportsCaching() && IsViewMode(this.moduleConfiguration, this.PortalSettings) && !Globals.IsAdminControl() && !IsVersionRequest())
                 {
                     // Render to cache
                     var tempWriter = new StringWriter();
@@ -204,75 +202,22 @@ namespace DotNetNuke.UI.Modules
             container.Controls.Add(messagePlaceholder);
         }
 
-        private bool IsVersionRequest()
-        {
-            int version;
-            return TabVersionUtils.TryGetUrlVersion(out version);
-        }
+        private static bool IsVersionRequest() => TabVersionUtils.TryGetUrlVersion(out _);
 
         private void InjectVersionToTheModuleIfSupported()
         {
-            if (!(this.control is IVersionableControl))
+            if (this.control is not IVersionableControl versionableControl)
             {
                 return;
             }
 
-            var versionableControl = this.control as IVersionableControl;
             if (this.moduleConfiguration.ModuleVersion != Null.NullInteger)
             {
                 versionableControl.SetModuleVersion(this.moduleConfiguration.ModuleVersion);
             }
         }
 
-        private void InjectModuleContent(Control content)
-        {
-            if (this.moduleConfiguration.IsWebSlice && !Globals.IsAdminControl())
-            {
-                // Assign the class - hslice to the Drag-N-Drop Panel
-                this.CssClass = "hslice";
-                var titleLabel = new Label
-                {
-                    CssClass = "entry-title Hidden",
-                    Text = !string.IsNullOrEmpty(this.moduleConfiguration.WebSliceTitle) ? this.moduleConfiguration.WebSliceTitle : this.moduleConfiguration.ModuleTitle,
-                };
-                this.Controls.Add(titleLabel);
-
-                var websliceContainer = new Panel { CssClass = "entry-content" };
-                websliceContainer.Controls.Add(content);
-
-                var expiry = new HtmlGenericControl { TagName = "abbr" };
-                expiry.Attributes["class"] = "endtime";
-                if (!Null.IsNull(this.moduleConfiguration.WebSliceExpiryDate))
-                {
-                    expiry.Attributes["title"] = this.moduleConfiguration.WebSliceExpiryDate.ToString("o");
-                    websliceContainer.Controls.Add(expiry);
-                }
-                else if (this.moduleConfiguration.EndDate < DateTime.MaxValue)
-                {
-                    expiry.Attributes["title"] = this.moduleConfiguration.EndDate.ToString("o");
-                    websliceContainer.Controls.Add(expiry);
-                }
-
-                var ttl = new HtmlGenericControl { TagName = "abbr" };
-                ttl.Attributes["class"] = "ttl";
-                if (this.moduleConfiguration.WebSliceTTL > 0)
-                {
-                    ttl.Attributes["title"] = this.moduleConfiguration.WebSliceTTL.ToString();
-                    websliceContainer.Controls.Add(ttl);
-                }
-                else if (this.moduleConfiguration.CacheTime > 0)
-                {
-                    ttl.Attributes["title"] = (this.moduleConfiguration.CacheTime / 60).ToString();
-                    websliceContainer.Controls.Add(ttl);
-                }
-
-                this.Controls.Add(websliceContainer);
-            }
-            else
-            {
-                this.Controls.Add(content);
-            }
-        }
+        private void InjectModuleContent(Control content) => this.Controls.Add(content);
 
         /// <summary>Gets a flag that indicates whether the Module Content should be displayed.</summary>
         /// <returns>A Boolean.</returns>
@@ -311,7 +256,7 @@ namespace DotNetNuke.UI.Modules
                 if (this.DisplayContent())
                 {
                     // if the module supports caching and caching is enabled for the instance and the user does not have Edit rights or is currently in View mode
-                    if (this.SupportsCaching() && IsViewMode(this.moduleConfiguration, this.PortalSettings) && !this.IsVersionRequest())
+                    if (this.SupportsCaching() && IsViewMode(this.moduleConfiguration, this.PortalSettings) && !IsVersionRequest())
                     {
                         // attempt to load the cached content
                         this.isCached = this.TryLoadCached();
@@ -486,7 +431,7 @@ namespace DotNetNuke.UI.Modules
 
                 if (match.Groups["priority"].Success)
                 {
-                    priority = Convert.ToInt32(match.Groups["priority"].Value);
+                    priority = Convert.ToInt32(match.Groups["priority"].Value, CultureInfo.InvariantCulture);
                 }
 
                 switch (dependencyType)
@@ -518,7 +463,7 @@ namespace DotNetNuke.UI.Modules
                         ClientResourceManager.RegisterStyleSheet(this.Page, filePath, priority, forceProvider);
                         break;
                     case "JS-LIBRARY":
-                        var args = filePath.Split(new[] { ',', }, StringSplitOptions.None);
+                        var args = filePath.Split(ArgsSeparator, StringSplitOptions.None);
                         if (string.IsNullOrEmpty(args[1]))
                         {
                             JavaScript.RequestRegistration(args[0]);

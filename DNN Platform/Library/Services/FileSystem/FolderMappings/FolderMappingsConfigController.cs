@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <inheritdoc/>
         public IList<FolderTypeConfig> FolderTypes { get; internal set; }
 
-        private IDictionary<string, string> FolderMappings { get; set; }
+        private Dictionary<string, string> FolderMappings { get; set; }
 
         /// <inheritdoc/>
         public void LoadConfig()
@@ -48,7 +48,11 @@ namespace DotNetNuke.Services.FileSystem
                 if (File.Exists(DefaultConfigFilePath))
                 {
                     var configDocument = new XmlDocument { XmlResolver = null };
-                    configDocument.Load(DefaultConfigFilePath);
+                    using (var configReader = XmlReader.Create(DefaultConfigFilePath, new XmlReaderSettings { XmlResolver = null, }))
+                    {
+                        configDocument.Load(configReader);
+                    }
+
                     this.FillFolderMappings(configDocument);
                     this.FillFolderTypes(configDocument);
                 }
@@ -67,7 +71,11 @@ namespace DotNetNuke.Services.FileSystem
                 var folderMappingsConfigContent = "<" + this.ConfigNode + ">" + folderMappinsSettings + "</" + this.ConfigNode + ">";
                 File.AppendAllText(DefaultConfigFilePath, folderMappingsConfigContent);
                 var configDocument = new XmlDocument { XmlResolver = null };
-                configDocument.LoadXml(folderMappingsConfigContent);
+                using (var configReader = XmlReader.Create(new StringReader(folderMappingsConfigContent), new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    configDocument.Load(configReader);
+                }
+
                 this.FillFolderMappings(configDocument);
                 this.FillFolderTypes(configDocument);
             }
@@ -76,18 +84,47 @@ namespace DotNetNuke.Services.FileSystem
         /// <inheritdoc/>
         public FolderMappingInfo GetFolderMapping(int portalId, string folderPath)
         {
-            if (!this.FolderMappings.ContainsKey(folderPath))
+            if (!this.FolderMappings.TryGetValue(folderPath, out var mapping))
             {
                 return null;
             }
 
-            return FolderMappingController.Instance.GetFolderMapping(portalId, this.FolderMappings[folderPath]);
+            return FolderMappingController.Instance.GetFolderMapping(portalId, mapping);
         }
 
         /// <inheritdoc/>
         protected override Func<IFolderMappingsConfigController> GetFactory()
         {
             return () => new FolderMappingsConfigController();
+        }
+
+        private static FolderTypeConfig GetFolderMappingFromConfigNode(XmlNode node)
+        {
+            var nodeNavigator = node.CreateNavigator();
+            var folderType = new FolderTypeConfig()
+            {
+                Name = XmlUtils.GetAttributeValue(nodeNavigator, "name"),
+                Provider = XmlUtils.GetNodeValue(nodeNavigator, "provider"),
+            };
+            XmlNodeList settingsNode = node.SelectNodes("settings/setting");
+            if (settingsNode != null)
+            {
+                var settings = new List<FolderTypeSettingConfig>();
+                foreach (XmlNode settingNode in settingsNode)
+                {
+                    var encryptValue = XmlUtils.GetAttributeValue(settingNode.CreateNavigator(), "encrypt");
+                    settings.Add(new FolderTypeSettingConfig
+                    {
+                        Name = XmlUtils.GetAttributeValue(settingNode.CreateNavigator(), "name"),
+                        Value = settingNode.InnerText,
+                        Encrypt = !string.IsNullOrEmpty(encryptValue) && bool.Parse(encryptValue),
+                    });
+                }
+
+                folderType.Settings = settings;
+            }
+
+            return folderType;
         }
 
         private void FillFolderMappings(XmlDocument configDocument)
@@ -116,37 +153,8 @@ namespace DotNetNuke.Services.FileSystem
             this.FolderTypes.Clear();
             foreach (XmlNode folderTypeNode in folderTypesNode)
             {
-                this.FolderTypes.Add(this.GetFolderMappingFromConfigNode(folderTypeNode));
+                this.FolderTypes.Add(GetFolderMappingFromConfigNode(folderTypeNode));
             }
-        }
-
-        private FolderTypeConfig GetFolderMappingFromConfigNode(XmlNode node)
-        {
-            var nodeNavigator = node.CreateNavigator();
-            var folderType = new FolderTypeConfig()
-            {
-                Name = XmlUtils.GetAttributeValue(nodeNavigator, "name"),
-                Provider = XmlUtils.GetNodeValue(nodeNavigator, "provider"),
-            };
-            XmlNodeList settingsNode = node.SelectNodes("settings/setting");
-            if (settingsNode != null)
-            {
-                var settings = new List<FolderTypeSettingConfig>();
-                foreach (XmlNode settingNode in settingsNode)
-                {
-                    var encryptValue = XmlUtils.GetAttributeValue(settingNode.CreateNavigator(), "encrypt");
-                    settings.Add(new FolderTypeSettingConfig
-                    {
-                        Name = XmlUtils.GetAttributeValue(settingNode.CreateNavigator(), "name"),
-                        Value = settingNode.InnerText,
-                        Encrypt = !string.IsNullOrEmpty(encryptValue) && bool.Parse(encryptValue),
-                    });
-                }
-
-                folderType.Settings = settings;
-            }
-
-            return folderType;
         }
     }
 }

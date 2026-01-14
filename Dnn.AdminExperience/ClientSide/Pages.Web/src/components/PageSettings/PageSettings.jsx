@@ -37,7 +37,7 @@ class PageSettings extends Component {
 
         let buttons = [<Button
             key="cancelButton"
-            type="secondary"
+            type="neutral"
             onClick={onCancel}>
             {Localization.get("Cancel")}
         </Button>,
@@ -54,7 +54,7 @@ class PageSettings extends Component {
             && securityService.userHasPermission(permissionTypes.DELETE_PAGE, selectedPage)) {
             buttons.unshift(<Button
                 key="delete"
-                type="secondary"
+                type="danger"
                 onClick={onDelete.bind(this, selectedPage)} >
                 {Localization.get("Delete")}
             </Button>);

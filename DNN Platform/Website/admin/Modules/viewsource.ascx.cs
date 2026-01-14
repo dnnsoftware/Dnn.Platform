@@ -4,6 +4,7 @@
 namespace DotNetNuke.Modules.Admin.Modules
 {
     using System;
+    using System.Globalization;
     using System.IO;
 
     using DotNetNuke.Abstractions;
@@ -15,6 +16,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A control which displays the source code for a module.</summary>
     public partial class ViewSource : PortalModuleBase
     {
         private readonly INavigationManager navigationManager;
@@ -159,7 +161,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 if (displaySource)
                 {
                     srcFile = this.GetSourceFileName(srcVirtualPath);
-                    this.lblSourceFile.Text = string.Format(Localization.GetString("SourceFile", this.LocalResourceFile), srcFile);
+                    this.lblSourceFile.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("SourceFile", this.LocalResourceFile), srcFile);
 
                     var objStreamReader = File.OpenText(srcFile);
                     this.txtSource.Text = objStreamReader.ReadToEnd();

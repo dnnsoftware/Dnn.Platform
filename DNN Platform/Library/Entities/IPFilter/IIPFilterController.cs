@@ -37,11 +37,6 @@ namespace DotNetNuke.Entities.Host
 
         /// <summary>Gets a value indicating whether a given IP address is banned.</summary>
         /// <param name="ipAddress">A string representation of an IP address.</param>
-        [Obsolete("Deprecated in DotNetNuke 7.1.0. Please use IsIPBanned instead. Scheduled removal in v10.0.0.")]
-        void IsIPAddressBanned(string ipAddress);
-
-        /// <summary>Gets a value indicating whether a given IP address is banned.</summary>
-        /// <param name="ipAddress">A string representation of an IP address.</param>
         /// <returns>A value indicating wheter the provided IP address is banned.</returns>
         bool IsIPBanned(string ipAddress);
 

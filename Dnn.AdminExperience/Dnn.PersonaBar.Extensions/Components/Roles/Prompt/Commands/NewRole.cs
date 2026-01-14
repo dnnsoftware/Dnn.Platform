@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Net;
 
     using Dnn.PersonaBar.Library.Prompt;
@@ -20,27 +21,21 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Security.Roles;
 
     [ConsoleCommand("new-role", Constants.RolesCategory, "Prompt_NewRole_Description")]
-
     public class NewRole : ConsoleCommandBase
     {
         [FlagParameter("public", "Prompt_NewRole_FlagIsPublic", "Boolean", "false")]
-
         private const string FlagIsPublic = "public";
 
         [FlagParameter("autoassign", "Prompt_NewRole_FlagAutoAssign", "Boolean", "false")]
-
         private const string FlagAutoAssign = "autoassign";
 
         [FlagParameter("name", "Prompt_NewRole_FlagRoleName", "String", true)]
-
         private const string FlagRoleName = "name";
 
         [FlagParameter("description", "Prompt_NewRole_FlagDescription", "String")]
-
         private const string FlagDescription = "description";
 
         [FlagParameter("status", "Prompt_NewRole_FlagStatus", "Boolean", "approved")]
-
         private const string FlagStatus = "status";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewRole));
@@ -78,7 +73,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                     this.Status = RoleStatus.Disabled;
                     break;
                 default:
-                    this.AddMessage(string.Format(this.LocalizeString("Prompt_InvalidRoleStatus"), FlagStatus));
+                    this.AddMessage(string.Format(CultureInfo.InvariantCulture, this.LocalizeString("Prompt_InvalidRoleStatus"), FlagStatus));
                     break;
             }
         }

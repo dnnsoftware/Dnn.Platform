@@ -11,7 +11,7 @@ namespace DotNetNuke.UI.Skins.EventListeners
         private readonly Skin skin;
 
         /// <summary>Initializes a new instance of the <see cref="SkinEventArgs"/> class.</summary>
-        /// <param name="skin"></param>
+        /// <param name="skin">The skin.</param>
         public SkinEventArgs(Skin skin)
         {
             this.skin = skin;

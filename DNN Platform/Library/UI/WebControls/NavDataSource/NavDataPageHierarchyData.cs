@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
     using System.Web.UI;
 
     using DotNetNuke.Entities.Portals;
@@ -24,96 +25,48 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (string.IsNullOrEmpty(this.objNode.Image) || this.objNode.Image.StartsWith("/"))
+                if (string.IsNullOrEmpty(this.objNode.Image) || this.objNode.Image.StartsWith("/", StringComparison.Ordinal))
                 {
                     return this.objNode.Image;
                 }
                 else
                 {
-                    return PortalController.Instance.GetCurrentPortalSettings().HomeDirectory + this.objNode.Image;
+                    return PortalController.Instance.GetCurrentSettings().HomeDirectory + this.objNode.Image;
                 }
             }
         }
 
-        /// <summary>Gets a value indicating whether indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.</summary>
+        /// <summary>Gets a value indicating whether the hierarchical data node that the IHierarchyData object represents has any child nodes.</summary>
         /// <value>Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.</value>
-        public virtual bool HasChildren
-        {
-            get
-            {
-                return this.objNode.HasNodes;
-            }
-        }
+        public virtual bool HasChildren => this.objNode.HasNodes;
 
         /// <summary>Gets the hierarchical path of the node.</summary>
         /// <value>The hierarchical path of the node.</value>
-        public virtual string Path
-        {
-            get
-            {
-                return this.GetValuePath(this.objNode);
-            }
-        }
+        public virtual string Path => GetValuePath(this.objNode);
 
         /// <summary>Gets the hierarchical data node that the IHierarchyData object represents.</summary>
         /// <value>The hierarchical data node that the IHierarchyData object represents.</value>
-        public virtual object Item
-        {
-            get
-            {
-                return this.objNode;
-            }
-        }
+        public virtual object Item => this.objNode;
 
         /// <summary>Gets the name of the type of Object contained in the Item property.</summary>
         /// <value>The name of the type of Object contained in the Item property.</value>
-        public virtual string Type
-        {
-            get
-            {
-                return "NavDataPageHierarchyData";
-            }
-        }
+        public virtual string Type => "NavDataPageHierarchyData";
 
         /// <summary>Gets node name.</summary>
         /// <value>Returns node name.</value>
-        public virtual string Name
-        {
-            get
-            {
-                return this.GetSafeValue(this.objNode.Text, string.Empty);
-            }
-        }
+        public virtual string Name => GetSafeValue(this.objNode.Text, string.Empty);
 
         /// <summary>Gets value path of node.</summary>
         /// <value>Returns value path of node.</value>
-        public virtual string Value
-        {
-            get
-            {
-                return this.GetValuePath(this.objNode);
-            }
-        }
+        public virtual string Value => GetValuePath(this.objNode);
 
         /// <summary>Gets node navigation url.</summary>
         /// <value>Returns node navigation url.</value>
-        public virtual string NavigateUrl
-        {
-            get
-            {
-                return this.GetSafeValue(this.objNode.NavigateURL, string.Empty);
-            }
-        }
+        public virtual string NavigateUrl => GetSafeValue(this.objNode.NavigateURL, string.Empty);
 
         /// <summary>Gets node description.</summary>
         /// <value>Returns Node description.</value>
-        public virtual string Description
-        {
-            get
-            {
-                return this.GetSafeValue(this.objNode.ToolTip, string.Empty);
-            }
-        }
+        public virtual string Description => GetSafeValue(this.objNode.ToolTip, string.Empty);
 
         /// <summary>Gets an enumeration object that represents all the child nodes of the current hierarchical node.</summary>
         /// <returns>A collection of nodes.</returns>
@@ -155,7 +108,7 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="value">Value to evaluate for <see langword="null"/>.</param>
         /// <param name="def">If <see langword="null"/>, return this default.</param>
         /// <returns><paramref name="value"/> or <paramref name="def"/> if <paramref name="value"/> is <see langword="null"/>.</returns>
-        private string GetSafeValue(string value, string def)
+        private static string GetSafeValue(string value, string def)
         {
             if (value != null)
             {
@@ -168,13 +121,13 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Computes valuepath necessary for ASP.NET controls to guarantee uniqueness.</summary>
-        /// <param name="objNode"></param>
+        /// <param name="objNode">The nav node.</param>
         /// <returns>ValuePath.</returns>
         /// <remarks>Not sure if it is ok to hardcode the "\" separator, but also not sure where I would get it from.</remarks>
-        private string GetValuePath(DNNNode objNode)
+        private static string GetValuePath(DNNNode objNode)
         {
             DNNNode objParent = objNode.ParentNode;
-            string strPath = this.GetSafeValue(objNode.Key, string.Empty);
+            string strPath = GetSafeValue(objNode.Key, string.Empty);
             do
             {
                 if (objParent == null || objParent.Level == -1)
@@ -182,7 +135,7 @@ namespace DotNetNuke.UI.WebControls
                     break;
                 }
 
-                strPath = this.GetSafeValue(objParent.Key, string.Empty) + "\\" + strPath;
+                strPath = GetSafeValue(objParent.Key, string.Empty) + @"\" + strPath;
                 objParent = objParent.ParentNode;
             }
             while (true);

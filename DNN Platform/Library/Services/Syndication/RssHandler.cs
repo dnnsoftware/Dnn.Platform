@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Syndication
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -16,14 +17,31 @@ namespace DotNetNuke.Services.Syndication
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>An HTTP handler for serving an RSS feed.</summary>
     public class RssHandler : SyndicationHandlerBase
     {
+        private readonly ISearchController searchController;
+
+        /// <summary>Initializes a new instance of the <see cref="RssHandler"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ISearchController. Scheduled removal in v12.0.0.")]
+        public RssHandler()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="RssHandler"/> class.</summary>
+        /// <param name="searchController">The search controller.</param>
+        public RssHandler(ISearchController searchController)
+        {
+            this.searchController = searchController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ISearchController>();
+        }
+
         /// <inheritdoc />
         protected override void PopulateChannel(string channelName, string userName)
         {
-            ModuleInfo objModule;
-            if (this.Request == null || this.Settings == null || this.Settings.ActiveTab == null || this.ModuleId == Null.NullInteger)
+            if (this.Request == null || this.Settings?.ActiveTab == null || this.ModuleId == Null.NullInteger)
             {
                 return;
             }
@@ -40,19 +58,21 @@ namespace DotNetNuke.Services.Syndication
             }
 
             this.Channel["language"] = this.Settings.DefaultLanguage;
-            this.Channel["copyright"] = !string.IsNullOrEmpty(this.Settings.FooterText) ? this.Settings.FooterText.Replace("[year]", DateTime.Now.Year.ToString()) : string.Empty;
+            this.Channel["copyright"] = !string.IsNullOrEmpty(this.Settings.FooterText) ? this.Settings.FooterText.Replace("[year]", DateTime.Now.Year.ToString(CultureInfo.CurrentCulture)) : string.Empty;
             this.Channel["webMaster"] = this.Settings.Email;
 
             IList<SearchResult> searchResults = null;
-            var query = new SearchQuery();
-            query.PortalIds = new[] { this.Settings.PortalId };
-            query.TabId = this.TabId;
-            query.ModuleId = this.ModuleId;
-            query.SearchTypeIds = new[] { SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId };
+            var query = new SearchQuery
+            {
+                PortalIds = [this.Settings.PortalId,],
+                TabId = this.TabId,
+                ModuleId = this.ModuleId,
+                SearchTypeIds = [SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,],
+            };
 
             try
             {
-                searchResults = SearchController.Instance.ModuleSearch(query).Results;
+                searchResults = this.searchController.ModuleSearch(query).Results;
             }
             catch (Exception ex)
             {
@@ -63,19 +83,19 @@ namespace DotNetNuke.Services.Syndication
             {
                 foreach (var result in searchResults)
                 {
-                    if (!result.UniqueKey.StartsWith(Constants.ModuleMetaDataPrefixTag) && TabPermissionController.CanViewPage())
+                    if (!result.UniqueKey.StartsWith(Constants.ModuleMetaDataPrefixTag, StringComparison.Ordinal) && TabPermissionController.CanViewPage())
                     {
                         if (this.Settings.ActiveTab.StartDate < DateTime.Now && this.Settings.ActiveTab.EndDate > DateTime.Now)
                         {
-                            objModule = ModuleController.Instance.GetModule(result.ModuleId, query.TabId, false);
-                            if (objModule != null && objModule.DisplaySyndicate && objModule.IsDeleted == false)
+                            var objModule = ModuleController.Instance.GetModule(result.ModuleId, query.TabId, false);
+                            if (objModule is { DisplaySyndicate: true, IsDeleted: false, })
                             {
                                 if (ModulePermissionController.CanViewModule(objModule))
                                 {
                                     if (Convert.ToDateTime(objModule.StartDate == Null.NullDate ? DateTime.MinValue : objModule.StartDate) < DateTime.Now &&
                                         Convert.ToDateTime(objModule.EndDate == Null.NullDate ? DateTime.MaxValue : objModule.EndDate) > DateTime.Now)
                                     {
-                                        this.Channel.Items.Add(this.GetRssItem(result));
+                                        this.Channel.Items.Add(GetRssItem(result));
                                     }
                                 }
                             }
@@ -102,7 +122,7 @@ namespace DotNetNuke.Services.Syndication
         /// <summary>Creates an RSS Item.</summary>
         /// <param name="searchResult">The search result to convert to an RSS item.</param>
         /// <returns>A new <see cref="GenericRssElement"/> instance.</returns>
-        private GenericRssElement GetRssItem(SearchResult searchResult)
+        private static GenericRssElement GetRssItem(SearchResult searchResult)
         {
             var item = new GenericRssElement();
             var url = searchResult.Url;

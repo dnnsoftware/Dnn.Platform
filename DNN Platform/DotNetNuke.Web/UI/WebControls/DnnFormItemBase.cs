@@ -7,6 +7,8 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
@@ -17,12 +19,14 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A base class for a control that is an item in a form.</summary>
     public abstract class DnnFormItemBase : WebControl, INamingContainer
     {
         private object value;
         private string requiredMessageSuffix = ".Required";
         private string validationMessageSuffix = ".RegExError";
 
+        /// <summary>Initializes a new instance of the <see cref="DnnFormItemBase"/> class.</summary>
         protected DnnFormItemBase()
         {
             this.FormMode = DnnFormMode.Inherit;
@@ -31,28 +35,38 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Validators = new List<IValidator>();
         }
 
+        /// <summary>Gets or sets the value.</summary>
         public object Value
         {
             get { return this.value; }
             set { this.value = value; }
         }
 
+        /// <summary>Gets or sets the data field.</summary>
         public string DataField { get; set; }
 
+        /// <summary>Gets or sets the data member.</summary>
         public string DataMember { get; set; }
 
+        /// <summary>Gets or sets the form mode.</summary>
         public DnnFormMode FormMode { get; set; }
 
+        /// <summary>Gets a value indicating whether the item is valid.</summary>
         public bool IsValid { get; private set; }
 
+        /// <summary>Gets or sets the client click event handler.</summary>
         public string OnClientClicked { get; set; }
 
+        /// <summary>Gets or sets the path to the local resource file.</summary>
         public string LocalResourceFile { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether the item is required.</summary>
         public bool Required { get; set; }
 
+        /// <summary>Gets or sets the resource key for the label.</summary>
         public string ResourceKey { get; set; }
 
+        /// <summary>Gets or sets the suffix to the message indicating the field is required.</summary>
         public string RequiredMessageSuffix
         {
             get
@@ -66,6 +80,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the suffix to the validation message.</summary>
         public string ValidationMessageSuffix
         {
             get
@@ -79,15 +94,19 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets the validators.</summary>
         [Category("Behavior")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<IValidator> Validators { get; private set; }
 
+        /// <summary>Gets or sets the validation expression.</summary>
         public string ValidationExpression { get; set; }
 
+        /// <summary>Gets or sets the data source.</summary>
         internal object DataSource { get; set; }
 
+        /// <summary>Gets the property of <see cref="Property"/> specified by <see cref="DataField"/>.</summary>
         protected PropertyInfo ChildProperty
         {
             get
@@ -98,11 +117,11 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        protected PortalSettings PortalSettings
-        {
-            get { return PortalController.Instance.GetCurrentPortalSettings(); }
-        }
+        /// <summary>Gets the current portal settings.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
+        /// <summary>Gets the property from the <see cref="DataSource"/> matching the <see cref="DataMember"/> (or falling back to <see cref="DataField"/>).</summary>
         protected PropertyInfo Property
         {
             get
@@ -124,6 +143,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Checks whether this item is valid, setting <see cref="IsValid"/>.</summary>
         public void CheckIsValid()
         {
             this.IsValid = true;
@@ -138,6 +158,8 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Data-binds the item.</summary>
+        /// <param name="useDataSource">Whether to use the data source.</param>
         public void DataBindItem(bool useDataSource)
         {
             if (useDataSource)
@@ -161,6 +183,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Creates the control hierarchy.</summary>
         protected virtual void CreateControlHierarchy()
         {
             // Load Item Style
@@ -194,7 +217,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>Use container to add custom control hierarchy to.</summary>
-        /// <param name="container"></param>
+        /// <param name="container">The container in which to render this control.</param>
         /// <returns>An "input" control that can be used for attaching validators.</returns>
         protected virtual WebControl CreateControlInternal(Control container)
         {
@@ -212,6 +235,9 @@ namespace DotNetNuke.Web.UI.WebControls
             this.CreateControlHierarchy();
         }
 
+        /// <summary>Does the data binding.</summary>
+        /// <param name="dataField">The data field.</param>
+        /// <param name="value">The value.</param>
         protected void DataBindInternal(string dataField, ref object value)
         {
             var dictionary = this.DataSource as IDictionary;
@@ -254,11 +280,16 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Does the data binding.</summary>
         protected virtual void DataBindInternal()
         {
             this.DataBindInternal(this.DataField, ref this.value);
         }
 
+        /// <summary>Updates the data source.</summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        /// <param name="dataField">The data field.</param>
         protected void UpdateDataSource(object oldValue, object newValue, string dataField)
         {
             this.CheckIsValid();
@@ -269,11 +300,15 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void LoadControlState(object state)
         {
             this.value = state;
         }
 
+        /// <summary>Gets the localized string corresponding to the <paramref name="key"/>.</summary>
+        /// <param name="key">The resource key to find.</param>
+        /// <returns>The localized text.</returns>
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, this.LocalResourceFile);
@@ -342,17 +377,15 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (this.DataSource != null)
             {
-                if (this.DataSource is IDictionary<string, string>)
+                if (this.DataSource is IDictionary<string, string> dict)
                 {
-                    var dictionary = this.DataSource as IDictionary<string, string>;
-                    if (dictionary.ContainsKey(dataField) && !ReferenceEquals(newValue, oldValue))
+                    if (dict.ContainsKey(dataField) && !ReferenceEquals(newValue, oldValue))
                     {
-                        dictionary[dataField] = newValue as string;
+                        dict[dataField] = newValue as string;
                     }
                 }
-                else if (this.DataSource is IIndexable)
+                else if (this.DataSource is IIndexable indexer)
                 {
-                    var indexer = this.DataSource as IIndexable;
                     indexer[dataField] = newValue;
                 }
                 else
@@ -369,7 +402,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                 }
                                 else
                                 {
-                                    this.Property.SetValue(this.DataSource, Convert.ChangeType(newValue, this.Property.PropertyType), null);
+                                    this.Property.SetValue(this.DataSource, Convert.ChangeType(newValue, this.Property.PropertyType, CultureInfo.InvariantCulture), null);
                                 }
                             }
                         }
@@ -381,18 +414,16 @@ namespace DotNetNuke.Web.UI.WebControls
                             object parentValue = this.Property.GetValue(this.DataSource, null);
                             if (parentValue != null)
                             {
-                                if (parentValue is IDictionary<string, string>)
+                                if (parentValue is IDictionary<string, string> parentDict)
                                 {
-                                    var dictionary = parentValue as IDictionary<string, string>;
-                                    if (dictionary.ContainsKey(dataField) && !ReferenceEquals(newValue, oldValue))
+                                    if (parentDict.ContainsKey(dataField) && !ReferenceEquals(newValue, oldValue))
                                     {
-                                        dictionary[dataField] = newValue as string;
+                                        parentDict[dataField] = newValue as string;
                                     }
                                 }
-                                else if (parentValue is IIndexable)
+                                else if (parentValue is IIndexable parentIndexer)
                                 {
-                                    var indexer = parentValue as IIndexable;
-                                    indexer[dataField] = newValue;
+                                    parentIndexer[dataField] = newValue;
                                 }
                                 else if (this.ChildProperty != null)
                                 {
@@ -402,7 +433,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                     }
                                     else
                                     {
-                                        this.ChildProperty.SetValue(parentValue, Convert.ChangeType(newValue, this.ChildProperty.PropertyType), null);
+                                        this.ChildProperty.SetValue(parentValue, Convert.ChangeType(newValue, this.ChildProperty.PropertyType, CultureInfo.InvariantCulture), null);
                                     }
                                 }
                             }

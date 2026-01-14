@@ -12,9 +12,6 @@ namespace Dnn.PersonaBar.Library.Model
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : MenuPermissionInfo
     /// <summary>MenuPermissionInfo provides the Entity Layer for Module Permissions.</summary>
     [Serializable]
     public class PermissionInfo : BaseEntityInfo, IHydratable

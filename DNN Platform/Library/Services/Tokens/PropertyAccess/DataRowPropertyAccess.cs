@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Tokens
         private readonly DataRow dr;
 
         /// <summary>Initializes a new instance of the <see cref="DataRowPropertyAccess"/> class.</summary>
-        /// <param name="row"></param>
+        /// <param name="row">The data row with token values.</param>
         public DataRowPropertyAccess(DataRow row)
         {
             this.dr = row;
@@ -49,9 +49,9 @@ namespace DotNetNuke.Services.Tokens
                 switch (valueObject.GetType().Name)
                 {
                     case "String":
-                        return PropertyAccess.FormatString(Convert.ToString(valueObject), format);
+                        return PropertyAccess.FormatString(Convert.ToString(valueObject, CultureInfo.InvariantCulture), format);
                     case "Boolean":
-                        return PropertyAccess.Boolean2LocalizedYesNo(Convert.ToBoolean(valueObject), formatProvider);
+                        return PropertyAccess.Boolean2LocalizedYesNo(Convert.ToBoolean(valueObject, CultureInfo.InvariantCulture), formatProvider);
                     case "DateTime":
                     case "Double":
                     case "Single":

@@ -11,7 +11,7 @@ namespace DotNetNuke.UI.Containers.EventListeners
         private readonly Container container;
 
         /// <summary>Initializes a new instance of the <see cref="ContainerEventArgs"/> class.</summary>
-        /// <param name="container"></param>
+        /// <param name="container">The container.</param>
         public ContainerEventArgs(Container container)
         {
             this.container = container;

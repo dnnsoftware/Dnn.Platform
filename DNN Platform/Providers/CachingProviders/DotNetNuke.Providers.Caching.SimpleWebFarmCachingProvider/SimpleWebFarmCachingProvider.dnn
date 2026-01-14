@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider" type="Provider" isSystem="true" version="09.13.06">
+    <package name="DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider" type="Provider" isSystem="true" version="10.01.00">
       <friendlyName>DotNetNuke Simple Web Farm Caching Provider</friendlyName>
       <description>DotNetNuke Simple Web Farm Caching Provider</description>
       <dependencies/>
@@ -36,7 +36,7 @@
 				          <node path="/configuration/system.webServer/handlers" action="update" key="name" collision="overwrite">
                     <add name="SimpleWebFarmSynchronizationHandler"
                          verb="*"
-                         path="SimpleWebFarmSync.aspx"
+                         path="SimpleWebFarmSync.axd"
                          type="DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider.SimpleWebFarmSynchronizationHandler, DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider"
                          preCondition="integratedMode" />
                   </node>

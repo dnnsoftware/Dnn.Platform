@@ -37,7 +37,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
                 var scopeType = Util.GetScopeTypeController().GetScopeTypes().SingleOrDefault(s => s.ScopeType == "Portal");
                 if (scopeType == null)
                 {
-                    throw new Exception("Can't create default vocabulary as scope type 'Portal' can't finded.");
+                    throw new ScopeNotFoundException("Can't create default vocabulary as scope type 'Portal' can't be found.");
                 }
 
                 vocabularyId = vocabularyController.AddVocabulary(

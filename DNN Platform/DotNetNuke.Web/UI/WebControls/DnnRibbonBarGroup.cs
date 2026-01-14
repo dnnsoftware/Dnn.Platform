@@ -7,12 +7,14 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    /// <summary>A group in the <see cref="DnnRibbonBar"/>.</summary>
     [ParseChildren(true)]
     public class DnnRibbonBarGroup : WebControl
     {
         private bool checkToolVisibility = true;
         private HtmlGenericControl contentContainer;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnRibbonBarGroup"/> class.</summary>
         public DnnRibbonBarGroup()
             : base("div")
         {
@@ -29,12 +31,15 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the footer template.</summary>
         [TemplateInstance(TemplateInstance.Single)]
         public virtual ITemplate Footer { get; set; }
 
+        /// <summary>Gets or sets the content template.</summary>
         [TemplateInstance(TemplateInstance.Single)]
         public virtual ITemplate Content { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether the check tool is visible.</summary>
         public virtual bool CheckToolVisibility
         {
             get
@@ -105,21 +110,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        private bool CheckVisibility()
-        {
-            bool returnValue = true;
-            if (this.Visible && this.CheckToolVisibility)
-            {
-                // Hide group if all tools are invisible
-                bool foundTool = false;
-                ControlCollection controls = this.contentContainer.Controls;
-                returnValue = this.AreChildToolsVisible(ref controls, ref foundTool);
-            }
-
-            return returnValue;
-        }
-
-        private bool AreChildToolsVisible(ref ControlCollection children, ref bool foundTool)
+        private static bool AreChildToolsVisible(ref ControlCollection children, ref bool foundTool)
         {
             bool returnValue = false;
 
@@ -137,7 +128,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 else
                 {
                     ControlCollection controls = ctrl.Controls;
-                    if (this.AreChildToolsVisible(ref controls, ref foundTool))
+                    if (AreChildToolsVisible(ref controls, ref foundTool))
                     {
                         if (foundTool)
                         {
@@ -151,6 +142,20 @@ namespace DotNetNuke.Web.UI.WebControls
             if (!foundTool)
             {
                 return true;
+            }
+
+            return returnValue;
+        }
+
+        private bool CheckVisibility()
+        {
+            bool returnValue = true;
+            if (this.Visible && this.CheckToolVisibility)
+            {
+                // Hide group if all tools are invisible
+                bool foundTool = false;
+                ControlCollection controls = this.contentContainer.Controls;
+                returnValue = AreChildToolsVisible(ref controls, ref foundTool);
             }
 
             return returnValue;

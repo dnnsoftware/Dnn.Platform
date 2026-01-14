@@ -46,7 +46,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <param name="sortExpression">The sort expression in the form [Description|SubscriptionType] [Asc|Desc].</param>
         /// <returns>The sorted and paged list of subscriptions.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetSubscriptions(int pageIndex, int pageSize, string sortExpression)
         {
             try
@@ -105,7 +104,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <returns><see cref="UserPreference"/>.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateSystemSubscription(InboxSubscriptionViewModel post)
         {
             try
@@ -135,7 +133,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <returns>"unsubscribed" or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage DeleteContentSubscription(Subscription subscription)
         {
             try
@@ -162,7 +159,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <returns>A dictionnary of localization keys and their localized values.</returns>
         [HttpGet]
         [AllowAnonymous]
-
         public HttpResponseMessage GetLocalizationTable(string culture)
         {
             try
@@ -251,28 +247,29 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
         private static IEnumerable<KeyValuePair<string, string>> GetLocalizationValues(string fullPath, string culture)
         {
-            using (var stream = new FileStream(System.Web.HttpContext.Current.Server.MapPath(fullPath), FileMode.Open, FileAccess.Read))
+            using var stream = new FileStream(System.Web.HttpContext.Current.Server.MapPath(fullPath), FileMode.Open, FileAccess.Read);
+            var document = new XmlDocument { XmlResolver = null };
+            using (var xmlReader = XmlReader.Create(stream, new XmlReaderSettings { XmlResolver = null, }))
             {
-                var document = new XmlDocument { XmlResolver = null };
-                document.Load(stream);
+                document.Load(xmlReader);
+            }
 
-                var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
+            var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
 
-                AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
+            AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
 
-                foreach (var xmlNode in document.SelectNodes("/root/data").Cast<XmlNode>())
+            foreach (var xmlNode in document.SelectNodes("/root/data").Cast<XmlNode>())
+            {
+                var name = GetNameAttribute(xmlNode).Replace(".Text", string.Empty);
+
+                if (string.IsNullOrEmpty(name))
                 {
-                    var name = GetNameAttribute(xmlNode).Replace(".Text", string.Empty);
-
-                    if (string.IsNullOrEmpty(name))
-                    {
-                        continue;
-                    }
-
-                    var value = Localization.GetString(string.Format("{0}.Text", name), fullPath, culture);
-
-                    yield return new KeyValuePair<string, string>(name, value);
+                    continue;
                 }
+
+                var value = Localization.GetString(string.Format("{0}.Text", name), fullPath, culture);
+
+                yield return new KeyValuePair<string, string>(name, value);
             }
         }
 

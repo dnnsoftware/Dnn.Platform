@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Connections
         /// <summary>Gets category of the connector. It can be used to sort similar type resources.</summary>
         ConnectorCategories Type { get; }
 
-        /// <summary>Gets a value indicating whether determines whether this connector supports multiple connections or not.</summary>
+        /// <summary>Gets a value indicating whether this connector supports multiple connections or not.</summary>
         bool SupportsMultiple { get; }
 
         /// <summary>Gets icon URL of the connector.</summary>

@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Content
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -65,14 +66,14 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
 
-            var searrchDoc = new SearchDocumentToDelete
+            var searchDoc = new SearchDocumentToDelete
             {
-                UniqueKey = contentItem.ContentItemId.ToString("D"),
+                UniqueKey = contentItem.ContentItemId.ToString("D", CultureInfo.InvariantCulture),
                 ModuleId = contentItem.ModuleID,
                 TabId = contentItem.TabID,
                 SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
             };
-            DotNetNuke.Data.DataProvider.Instance().AddSearchDeletedItems(searrchDoc);
+            DotNetNuke.Data.DataProvider.Instance().AddSearchDeletedItems(searchDoc);
 
             this.dataService.DeleteContentItem(contentItem.ContentItemId);
 
@@ -143,7 +144,7 @@ namespace DotNetNuke.Entities.Content
             union = terms.Aggregate(
                 union,
                 (current, term) =>
-                    !current.Any()
+                    current.Count == 0
                         ? this.GetContentItemsByTerm(term).ToList()
                         : current.Intersect(this.GetContentItemsByTerm(term), new ContentItemEqualityComparer()).ToList());
 
@@ -279,7 +280,7 @@ namespace DotNetNuke.Entities.Content
 
         private static string GetContentItemCacheKey(int contetnItemId)
         {
-            return string.Format(DataCache.ContentItemsCacheKey, contetnItemId);
+            return string.Format(CultureInfo.InvariantCulture, DataCache.ContentItemsCacheKey, contetnItemId);
         }
 
         private void SaveMetadataDelta(ContentItem contentItem)

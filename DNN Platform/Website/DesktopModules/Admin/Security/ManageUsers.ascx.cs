@@ -6,6 +6,7 @@ namespace DotNetNuke.Modules.Admin.Users
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web;
 
     using DotNetNuke.Abstractions;
@@ -33,11 +34,21 @@ namespace DotNetNuke.Modules.Admin.Users
     public partial class ManageUsers : UserModuleBase, IActionable
     {
         private readonly INavigationManager navigationManager;
+        private readonly IJavaScriptLibraryHelper javaScript;
 
         /// <summary>Initializes a new instance of the <see cref="ManageUsers"/> class.</summary>
         public ManageUsers()
+            : this(null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ManageUsers"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public ManageUsers(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
         /// <inheritdoc/>
@@ -217,6 +228,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Page_Init runs when the control is initialised.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -241,7 +253,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.ctlMembership.MembershipDemoteFromSuperuser += this.MembershipDemoteFromSuperuser;
             this.ctlMembership.MembershipPromoteToSuperuser += this.MembershipPromoteToSuperuser;
 
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             // Set the Membership Control Properties
             this.ctlMembership.ID = "Membership";
@@ -287,6 +299,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -321,6 +334,8 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>cmdRegister_Click runs when the Register button is clicked.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -345,6 +360,8 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>MembershipPasswordUpdateChanged runs when the Admin has forced the User to update their password.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void MembershipPasswordUpdateChanged(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -393,7 +410,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         }
                         else
                         {
-                            this.lblTitle.Text = string.Format(Localization.GetString("UserTitle", this.LocalResourceFile), this.User.Username, this.User.UserID);
+                            this.lblTitle.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserTitle", this.LocalResourceFile), this.User.Username, this.User.UserID);
                         }
                     }
                 }
@@ -487,7 +504,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this.ctlMembership.DataBind();
             this.AddModuleMessage("UserLockedOut", ModuleMessage.ModuleMessageType.YellowWarning, this.ctlMembership.UserMembership.LockedOut && (!this.Page.IsPostBack));
             this.imgLockedOut.Visible = this.ctlMembership.UserMembership.LockedOut;
-            this.imgOnline.Visible = this.ctlMembership.UserMembership.IsOnLine;
         }
 
         private void BindUser()
@@ -809,11 +825,11 @@ namespace DotNetNuke.Modules.Admin.Users
             string message = Null.NullString;
             if (e.Cancel)
             {
-                message = string.Format(Localization.GetString("UserUnSubscribed", this.LocalResourceFile), e.RoleName);
+                message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserUnSubscribed", this.LocalResourceFile), e.RoleName);
             }
             else
             {
-                message = string.Format(Localization.GetString("UserSubscribed", this.LocalResourceFile), e.RoleName);
+                message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserSubscribed", this.LocalResourceFile), e.RoleName);
             }
 
             this.AddLocalizedModuleMessage(message, ModuleMessage.ModuleMessageType.GreenSuccess, true);

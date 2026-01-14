@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Analytics
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
@@ -21,6 +22,7 @@ namespace DotNetNuke.Services.Analytics
 
         /// <summary>Handles module upgrades includes a new Google Analytics Asynchronous script.</summary>
         /// <param name="version">The upgrade version.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void UpgradeModule(string version)
         {
             // MD5 Hash value of the old synchronous script config file (from previous module versions)
@@ -30,7 +32,7 @@ namespace DotNetNuke.Services.Analytics
             {
                 case "05.06.00":
                     // previous module versions
-                    using (StreamReader fileReader = this.GetConfigFile())
+                    using (StreamReader fileReader = GetConfigFile())
                     {
                         if (fileReader != null)
                         {
@@ -62,13 +64,13 @@ namespace DotNetNuke.Services.Analytics
 
         /// <summary>Retrieves the Google Analytics config file, "SiteAnalytics.config".</summary>
         /// <returns>A <see cref="StreamReader"/> to read the config file or <see langword="null"/>.</returns>
-        private StreamReader GetConfigFile()
+        private static StreamReader GetConfigFile()
         {
             StreamReader fileReader = null;
             string filePath = string.Empty;
             try
             {
-                filePath = Globals.ApplicationMapPath + "\\SiteAnalytics.config";
+                filePath = $@"{Globals.ApplicationMapPath}\SiteAnalytics.config";
 
                 if (File.Exists(filePath))
                 {

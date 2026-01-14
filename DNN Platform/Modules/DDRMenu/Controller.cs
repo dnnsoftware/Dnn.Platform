@@ -18,22 +18,6 @@ namespace DotNetNuke.Web.DDRMenu
     /// <summary>Implements the Dnn interfaces for the module.</summary>
     public class Controller : IUpgradeable, IPortable
     {
-        /// <summary>Regex for replacement of DNNDoneRight.DDRMenu.</summary>
-        [Obsolete("Deprecated in DotNetNuke 9.8.1. This should not have been public. Scheduled removal in v10.0.0.")]
-        public static readonly Regex AscxText1Regex = new Regex(Regex.Escape(@"Namespace=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        /// <summary>Regex for replacement of DNNGarden.TemplateEngine.</summary>
-        [Obsolete("Deprecated in DotNetNuke 9.8.1. This should not have been public. Scheduled removal in v10.0.0.")]
-        public static readonly Regex AscxText2Regex = new Regex(Regex.Escape(@"Namespace=""DNNGarden.TemplateEngine"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        /// <summary>Regex for replacement of DNNDoneRight.DDRMenu.</summary>
-        [Obsolete("Deprecated in DotNetNuke 9.8.1. This should not have been public. Scheduled removal in v10.0.0.")]
-        public static readonly Regex AscxText3Regex = new Regex(Regex.Escape(@"Assembly=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        /// <summary>Regex for replacement of DNNGarden.DDRMenu.</summary>
-        [Obsolete("Deprecated in DotNetNuke 9.8.1. This should not have been public. Scheduled removal in v10.0.0.")]
-        public static readonly Regex AscxText4Regex = new Regex(Regex.Escape(@"Assembly=""DNNGarden.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
         private const string DdrMenuModuleName = "DDRMenu";
         private const string DdrMenuMmoduleDefinitionName = "DDR Menu";
 
@@ -100,7 +84,11 @@ namespace DotNetNuke.Web.DDRMenu
             var webConfig = server.MapPath("~/web.config");
 
             var configXml = new XmlDocument { XmlResolver = null };
-            configXml.Load(webConfig);
+            using (var configReader = XmlReader.Create(webConfig, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                configXml.Load(configReader);
+            }
+
             var navProviders = configXml.SelectSingleNode("/configuration/dotnetnuke/navigationControl/providers") as XmlElement;
 
             // ReSharper disable PossibleNullReferenceException

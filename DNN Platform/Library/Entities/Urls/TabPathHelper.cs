@@ -57,14 +57,14 @@ namespace DotNetNuke.Entities.Urls
             }
 
             string result = sb.ToString();
-            replacedDiacritic = string.CompareOrdinal(tabPath, result) != 0;
+            replacedDiacritic = !string.Equals(tabPath, result, StringComparison.Ordinal);
             return sb.ToString();
         }
 
         /// <summary>Get the tab path for the supplied Tab.</summary>
-        /// <param name="tab"></param>
-        /// <param name="options"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="tab">The tab info.</param>
+        /// <param name="options">The friendly URL options.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns>The friendly URL path.</returns>
         internal static string GetFriendlyUrlTabPath(TabInfo tab, FriendlyUrlOptions options, Guid parentTraceId)
         {
@@ -88,15 +88,15 @@ namespace DotNetNuke.Entities.Urls
 
         /// <summary>Finds a culture-specific homepage tab ID for a non-default language.</summary>
         /// <param name="defaultCulture">The default culture of the portal.</param>
-        /// <param name="cultureCode"></param>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
         /// <param name="defaultHomeTabId">The default home page tab id.</param>
         /// <returns>The valid home page tab ID for the portal ID and culture.</returns>
         /// <remarks>Note if no specific home page found for the culture, will return defaultHomeTabId back.</remarks>
         internal static int GetHomePageTabIdForCulture(string defaultCulture, int portalId, string cultureCode, int defaultHomeTabId)
         {
             int homeTabId = defaultHomeTabId;
-            if (string.Compare(defaultCulture, cultureCode, StringComparison.OrdinalIgnoreCase) != 0)
+            if (!string.Equals(defaultCulture, cultureCode, StringComparison.OrdinalIgnoreCase))
             {
                 // not the default culture, so there could be a different home page for the different culture in 5.5+ builds
                 var cultureLocale = new Locale { Code = cultureCode, Fallback = cultureCode, Text = cultureCode };
@@ -135,17 +135,17 @@ namespace DotNetNuke.Entities.Urls
         /// <summary>For the supplied options, return a tab path for the specified tab.</summary>
         /// <param name="tab">TabInfo object of selected tab.</param>
         /// <param name="settings">FriendlyUrlSettings.</param>
-        /// <param name="options"></param>
+        /// <param name="options">The friendly URL options.</param>
         /// <param name="ignoreCustomRedirects">Whether to add in the customised Tab redirects or not.</param>
-        /// <param name="homePageSiteRoot"></param>
-        /// <param name="isHomeTab"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="isDefaultCultureCode"></param>
-        /// <param name="hasPath"></param>
-        /// <param name="dropLangParms"></param>
-        /// <param name="customHttpAlias"></param>
-        /// <param name="isCustomPath"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="homePageSiteRoot">Whether the home page is the site root.</param>
+        /// <param name="isHomeTab">Whether it's the home tab.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="isDefaultCultureCode">Whether it's the default culture code.</param>
+        /// <param name="hasPath">Whether there's a path….</param>
+        /// <param name="dropLangParms">Whether the language parameters were removed.</param>
+        /// <param name="customHttpAlias">The custom HTTP alias that was used, if any.</param>
+        /// <param name="isCustomPath">Whether it's a custom path.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <remarks>751 : include isDefaultCultureCode flag to determine when using the portal default language
         /// 770 : include custom http alias output for when the Url uses a specific alias due to custom Url rules
         ///  : include new out parameter 'isCustomPath' to return whether the Url was generated from Url-Master custom url.
@@ -207,32 +207,31 @@ namespace DotNetNuke.Entities.Urls
                     urlDict = new SharedDictionary<int, SharedDictionary<string, string>>();
                 }
 
-                if (ignoreCustomRedirects == false)
+                if (!ignoreCustomRedirects)
                 {
                     // if not ignoring the custom redirects, look for the Url of the page in this list
                     // this will be used as the page path if there is one.
                     using (urlDict.GetReadLock())
                     {
-                        if (urlDict.ContainsKey(tab.TabID))
+                        if (urlDict.TryGetValue(tab.TabID, out var tabPaths))
                         {
                             // we want the custom value
                             string customTabPath = null;
-                            SharedDictionary<string, string> tabpaths = urlDict[tab.TabID];
 
-                            using (tabpaths.GetReadLock())
+                            using (tabPaths.GetReadLock())
                             {
-                                if (tabpaths.ContainsKey(cultureCodeKey))
+                                if (tabPaths.TryGetValue(cultureCodeKey, out var tabPath))
                                 {
-                                    customTabPath = tabpaths[cultureCodeKey];
+                                    customTabPath = tabPath;
                                     dropLangParms = true;
 
                                     // the url is based on a custom value which has embedded language parms, therefore don't need them in the url
                                 }
                                 else
                                 {
-                                    if (isDefaultCultureCode && tabpaths.ContainsKey(string.Empty))
+                                    if (isDefaultCultureCode && tabPaths.TryGetValue(string.Empty, out tabPath))
                                     {
-                                        customTabPath = tabpaths[string.Empty];
+                                        customTabPath = tabPath;
 
                                         // dropLangParms = true;//drop the language parms if they exist, because this is the default language
                                     }
@@ -280,13 +279,13 @@ namespace DotNetNuke.Entities.Urls
                 // 770 : check for custom alias in these tabs
                 if (checkForCustomHttpAlias && customAliasForTabs != null)
                 {
-                    string key = tab.TabID.ToString() + ":" + cultureCodeKey;
+                    string key = tab.TabID.ToString(CultureInfo.InvariantCulture) + ":" + cultureCodeKey;
                     using (customAliasForTabs.GetReadLock())
                     {
-                        if (customAliasForTabs.ContainsKey(key))
+                        if (customAliasForTabs.TryGetValue(key, out var alias))
                         {
                             // this tab uses a custom alias
-                            customHttpAlias = customAliasForTabs[key];
+                            customHttpAlias = alias;
                             isCustomPath = true; // using custom alias
                         }
                     }
@@ -342,7 +341,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // check if this tab belongs to the default language, in which case it is already the default language tab
                         string cultureCode = tab.CultureCode;
-                        if (string.Compare(cultureCode, portalSettings.DefaultLanguage, StringComparison.OrdinalIgnoreCase) == 0)
+                        if (string.Equals(cultureCode, portalSettings.DefaultLanguage, StringComparison.OrdinalIgnoreCase))
                         {
                             // get the localized versions and see if this matches
                             Dictionary<string, TabInfo> localizedTabs = tab.LocalizedTabs;

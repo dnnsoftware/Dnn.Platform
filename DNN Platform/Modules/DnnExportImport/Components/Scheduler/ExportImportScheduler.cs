@@ -5,17 +5,23 @@
 namespace Dnn.ExportImport.Components.Scheduler
 {
     using System;
+    using System.Globalization;
     using System.Text;
     using System.Threading;
 
     using Dnn.ExportImport.Components.Common;
     using Dnn.ExportImport.Components.Controllers;
     using Dnn.ExportImport.Components.Engines;
+    using Dnn.ExportImport.Components.Interfaces;
     using Dnn.ExportImport.Components.Models;
+
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Scheduling;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Implements a SchedulerClient for the Exporting/Importing of site items.</summary>
     public class ExportImportScheduler : SchedulerClient
@@ -35,11 +41,26 @@ namespace Dnn.ExportImport.Components.Scheduler
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportScheduler));
 
+        private readonly ExportImportEngine engine;
+        private readonly IEntitiesController entitiesController;
+
         /// <summary>Initializes a new instance of the <see cref="ExportImportScheduler"/> class.</summary>
-        /// <param name="objScheduleHistoryItem"></param>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ExportImportEngine. Scheduled removal in v12.0.0.")]
         public ExportImportScheduler(ScheduleHistoryItem objScheduleHistoryItem)
+            : this(objScheduleHistoryItem, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ExportImportScheduler"/> class.</summary>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
+        /// <param name="entitiesController">The entities controller.</param>
+        /// <param name="engine">The export/import engine.</param>
+        public ExportImportScheduler(ScheduleHistoryItem objScheduleHistoryItem, IEntitiesController entitiesController, ExportImportEngine engine)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
+            this.entitiesController = entitiesController ?? Globals.DependencyProvider.GetRequiredService<IEntitiesController>();
+            this.engine = engine ?? Globals.DependencyProvider.GetRequiredService<ExportImportEngine>();
         }
 
         /// <inheritdoc/>
@@ -48,7 +69,7 @@ namespace Dnn.ExportImport.Components.Scheduler
             try
             {
                 // TODO: do some clean-up for very old import/export jobs/logs
-                var job = EntitiesController.Instance.GetFirstActiveJob();
+                var job = this.entitiesController.GetFirstActiveJob();
                 if (job == null)
                 {
                     this.ScheduleHistoryItem.Succeeded = true;
@@ -57,19 +78,18 @@ namespace Dnn.ExportImport.Components.Scheduler
                 else if (job.IsCancelled)
                 {
                     job.JobStatus = JobStatus.Cancelled;
-                    EntitiesController.Instance.UpdateJobStatus(job);
+                    this.entitiesController.UpdateJobStatus(job);
                     this.ScheduleHistoryItem.Succeeded = true;
                     this.ScheduleHistoryItem.AddLogNote("<br/>Site Export/Import jobs was previously cancelled.");
                 }
                 else
                 {
                     job.JobStatus = JobStatus.InProgress;
-                    EntitiesController.Instance.UpdateJobStatus(job);
+                    this.entitiesController.UpdateJobStatus(job);
                     var result = new ExportImportResult
                     {
                         JobId = job.JobId,
                     };
-                    var engine = new ExportImportEngine();
                     var succeeded = true;
 
                     switch (job.JobType)
@@ -77,21 +97,21 @@ namespace Dnn.ExportImport.Components.Scheduler
                         case JobType.Export:
                             try
                             {
-                                engine.Export(job, result, this.ScheduleHistoryItem);
+                                this.engine.Export(job, result, this.ScheduleHistoryItem);
                             }
                             catch (Exception ex)
                             {
                                 result.AddLogEntry("EXCEPTION exporting job #" + job.JobId, ex.Message, ReportLevel.Error);
-                                engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
+                                this.engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
                                 throw;
                             }
 
-                            EntitiesController.Instance.UpdateJobStatus(job);
+                            this.entitiesController.UpdateJobStatus(job);
                             break;
                         case JobType.Import:
                             try
                             {
-                                engine.Import(job, result, this.ScheduleHistoryItem);
+                                this.engine.Import(job, result, this.ScheduleHistoryItem);
                             }
                             catch (ThreadAbortException)
                             {
@@ -105,18 +125,18 @@ namespace Dnn.ExportImport.Components.Scheduler
 
                                 SchedulingController.PurgeScheduleHistory();
 
-                                Logger.Error("The Schduler item stopped because main thread stopped, set schedule into emergency mode so it will start after app restart.");
+                                Logger.Error("The Scheduler item stopped because main thread stopped, set schedule into emergency mode so it will start after app restart.");
                                 succeeded = false;
                             }
                             catch (Exception ex)
                             {
                                 result.AddLogEntry("EXCEPTION importing job #" + job.JobId, ex.Message, ReportLevel.Error);
-                                engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
+                                this.engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
                                 throw;
                             }
 
-                            EntitiesController.Instance.UpdateJobStatus(job);
-                            if (job.JobStatus == JobStatus.Successful || job.JobStatus == JobStatus.Cancelled)
+                            this.entitiesController.UpdateJobStatus(job);
+                            if (job.JobStatus is JobStatus.Successful or JobStatus.Cancelled)
                             {
                                 // clear everything to be sure imported items take effect
                                 DataCache.ClearCache();
@@ -124,7 +144,7 @@ namespace Dnn.ExportImport.Components.Scheduler
 
                             break;
                         default:
-                            throw new Exception("Unknown job type: " + job.JobType);
+                            throw new InvalidOperationException("Unknown job type: " + job.JobType);
                     }
 
                     this.ScheduleHistoryItem.Succeeded = true;
@@ -146,7 +166,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                     var sb = new StringBuilder();
                     var jobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources);
                     var jobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources);
-                    sb.AppendFormat("<br/><b>{0} {1}</b>", jobType, jobStatus);
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "<br/><b>{0} {1}</b>", jobType, jobStatus);
                     var summary = result.Summary;
                     if (summary.Count > 0)
                     {
@@ -160,7 +180,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                     }
 
                     this.ScheduleHistoryItem.AddLogNote(sb.ToString());
-                    engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
+                    this.engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
 
                     Logger.Trace("Site Export/Import: Job Finished");
                 }

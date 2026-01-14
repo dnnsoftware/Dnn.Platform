@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using System.Web.UI;
 
@@ -24,6 +25,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A control for a tool in a <see cref="DnnRibbonBar"/>.</summary>
     [ParseChildren(true)]
     public class DnnRibbonBarTool : Control, IDnnRibbonBarTool
     {
@@ -31,11 +33,21 @@ namespace DotNetNuke.Web.UI.WebControls
         private DnnTextLink dnnLink;
         private DnnTextButton dnnLinkButton;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnRibbonBarTool"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public DnnRibbonBarTool()
+            : this(null)
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <summary>Initializes a new instance of the <see cref="DnnRibbonBarTool"/> class.</summary>
+        /// <param name="navigationManager">A navigation manager.</param>
+        public DnnRibbonBarTool(INavigationManager navigationManager)
+        {
+            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Gets or sets the tool info.</summary>
         public virtual RibbonBarToolInfo ToolInfo
         {
             get
@@ -54,6 +66,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the URL.</summary>
         public virtual string NavigateUrl
         {
             get
@@ -67,6 +80,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the CSS class.</summary>
         public virtual string ToolCssClass
         {
             get
@@ -80,6 +94,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the text.</summary>
         public virtual string Text
         {
             get
@@ -93,6 +108,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the tooltip text.</summary>
         public virtual string ToolTip
         {
             get
@@ -116,19 +132,21 @@ namespace DotNetNuke.Web.UI.WebControls
 
             set
             {
-                if (this.AllTools.ContainsKey(value))
+                if (this.AllTools.TryGetValue(value, out var toolInfo))
                 {
-                    this.ToolInfo = this.AllTools[value];
+                    this.ToolInfo = toolInfo;
                 }
                 else
                 {
-                    throw new NotSupportedException("Tool not found [" + value + "]");
+                    throw new NotSupportedException($"Tool not found [{value}]");
                 }
             }
         }
 
+        /// <summary>Gets the navigation manager.</summary>
         protected INavigationManager NavigationManager { get; }
 
+        /// <summary>Gets the link button.</summary>
         protected virtual DnnTextButton DnnLinkButton
         {
             get
@@ -143,6 +161,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets the link.</summary>
         protected virtual DnnTextLink DnnLink
         {
             get
@@ -156,6 +175,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets the tools.</summary>
         protected virtual IDictionary<string, RibbonBarToolInfo> AllTools
         {
             get
@@ -190,6 +210,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets the current portal settings.</summary>
         private static PortalSettings PortalSettings
         {
             get
@@ -198,6 +219,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Handles a click event on the tool.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public virtual void ControlPanelTool_OnClick(object sender, EventArgs e)
         {
             switch (this.ToolInfo.ToolName)
@@ -269,6 +294,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnPreRender(e);
         }
 
+        /// <summary>Processes the tool.</summary>
         protected virtual void ProcessTool()
         {
             this.DnnLink.Visible = false;
@@ -332,6 +358,8 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Enable the tool.</summary>
+        /// <returns>Whether it was successfully enabled.</returns>
         protected virtual bool EnableTool()
         {
             bool returnValue = true;
@@ -362,6 +390,9 @@ namespace DotNetNuke.Web.UI.WebControls
             return returnValue;
         }
 
+        /// <summary>Whether the current user has the required permissions for the tool.</summary>
+        /// <param name="toolName">The tool name.</param>
+        /// <returns>Whether the user can access the tool.</returns>
         protected virtual bool HasToolPermissions(string toolName)
         {
             bool isHostTool = false;
@@ -369,9 +400,9 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 isHostTool = this.ToolInfo.IsHostTool;
             }
-            else if (this.AllTools.ContainsKey(toolName))
+            else if (this.AllTools.TryGetValue(toolName, out var tool))
             {
-                isHostTool = this.AllTools[toolName].IsHostTool;
+                isHostTool = tool.IsHostTool;
             }
 
             if (isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
@@ -422,9 +453,9 @@ namespace DotNetNuke.Web.UI.WebControls
                     {
                         friendlyName = this.ToolInfo.ModuleFriendlyName;
                     }
-                    else if (this.AllTools.ContainsKey(toolName))
+                    else if (this.AllTools.TryGetValue(toolName, out var toolInfo))
                     {
-                        friendlyName = this.AllTools[toolName].ModuleFriendlyName;
+                        friendlyName = toolInfo.ModuleFriendlyName;
                     }
 
                     if (!string.IsNullOrEmpty(friendlyName))
@@ -453,6 +484,8 @@ namespace DotNetNuke.Web.UI.WebControls
             return returnValue;
         }
 
+        /// <summary>Build the tool URL.</summary>
+        /// <returns>The URL.</returns>
         protected virtual string BuildToolUrl()
         {
             if (this.ToolInfo.IsHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
@@ -516,16 +549,20 @@ namespace DotNetNuke.Web.UI.WebControls
             return returnValue;
         }
 
+        /// <summary>Gets the tool text.</summary>
+        /// <returns>The text.</returns>
         protected virtual string GetText()
         {
             if (string.IsNullOrEmpty(this.Text))
             {
-                return this.GetString(string.Format("Tool.{0}.Text", this.ToolInfo.ToolName));
+                return this.GetString($"Tool.{this.ToolInfo.ToolName}.Text");
             }
 
             return this.Text;
         }
 
+        /// <summary>Gets the tooltip for the tool.</summary>
+        /// <returns>The tooltip text.</returns>
         protected virtual string GetToolTip()
         {
             if (this.ToolInfo.ToolName == "DeletePage")
@@ -538,10 +575,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
             if (string.IsNullOrEmpty(this.Text))
             {
-                string tip = this.GetString(string.Format("Tool.{0}.ToolTip", this.ToolInfo.ToolName));
+                string tip = this.GetString($"Tool.{this.ToolInfo.ToolName}.ToolTip");
                 if (string.IsNullOrEmpty(tip))
                 {
-                    tip = this.GetString(string.Format("Tool.{0}.Text", this.ToolInfo.ToolName));
+                    tip = this.GetString($"Tool.{this.ToolInfo.ToolName}.Text");
                 }
 
                 return tip;
@@ -550,6 +587,9 @@ namespace DotNetNuke.Web.UI.WebControls
             return this.ToolTip;
         }
 
+        /// <summary>Gets the tab URL.</summary>
+        /// <param name="additionalParams">Additional parameters.</param>
+        /// <returns>The URL.</returns>
         protected virtual string GetTabURL(List<string> additionalParams)
         {
             int portalId = this.ToolInfo.IsHostTool ? Null.NullInteger : PortalSettings.PortalId;
@@ -582,6 +622,8 @@ namespace DotNetNuke.Web.UI.WebControls
             return strURL;
         }
 
+        /// <summary>Gets a value indicating whether the current page has children.</summary>
+        /// <returns>Whether the page has children.</returns>
         protected virtual bool ActiveTabHasChildren()
         {
             var children = TabController.GetTabsByParent(PortalSettings.ActiveTab.TabID, PortalSettings.ActiveTab.PortalID);
@@ -594,16 +636,21 @@ namespace DotNetNuke.Web.UI.WebControls
             return true;
         }
 
+        /// <summary>Gets the localized string corresponding to the <paramref name="key"/>.</summary>
+        /// <param name="key">The resource key to find.</param>
+        /// <returns>The localized text.</returns>
         protected virtual string GetString(string key)
         {
             return Utilities.GetLocalizedStringFromParent(key, this);
         }
 
+        /// <summary>Clears the cache.</summary>
         protected virtual void ClearCache()
         {
             DataCache.ClearCache();
         }
 
+        /// <summary>Restarts the application.</summary>
         protected virtual void RestartApplication()
         {
             var log = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };

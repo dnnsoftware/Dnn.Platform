@@ -13,7 +13,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Maintenance.Telerik.Removal;
 
     /// <summary>Deletes files.</summary>
-    internal class DeleteFilesStep : StepBase, IDeleteFilesStep
+    internal sealed class DeleteFilesStep : StepBase, IDeleteFilesStep
     {
         private readonly IFileSystemProvider fileSystemProvider;
         private readonly IApplicationStatusInfo applicationStatusInfo;
@@ -53,7 +53,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         protected override void ExecuteInternal()
         {
             var count = 0;
-            var appPath = this.applicationStatusInfo.ApplicationMapPath + "\\";
+            var appPath = this.applicationStatusInfo.ApplicationMapPath + @"\";
             var fullPath = Path.GetFullPath(Path.Combine(appPath, this.RelativePath));
             var files = this.fileSystemProvider.EnumerateFiles(fullPath, this.SearchPattern, this.SearchOption);
 

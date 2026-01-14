@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import GridCell from "../GridCell";
 
 class GridHeader extends Component {
     constructor(props) {
@@ -10,27 +9,41 @@ class GridHeader extends Component {
         };
     }
 
-    getLocaliztion(key) {
+    getLocalization(key) {
         let localized = this.props.localization[key.replace(" ", "")];
         return localized || key;
     }
 
+    getName(type) {
+        const key = `Permission${type.replace(" ", "")}`;
+        const localized = this.props.localization[key];
+        return localized || type;
+    }
+
+    getDescription(type) {
+        const key = `Permission${type.replace(" ", "")}Description`;
+        const localized = this.props.localization[key];
+        return localized || type;
+    }
+
     renderHeader() {
         const {props} = this;
-        const {roleColumnWidth, columnWidth, actionsWidth} = props;
+        const {roleColumnWidth, actionsWidth} = props;
 
-        return <GridCell className="grid-header">
-            <GridCell columnSize={roleColumnWidth}><span title={props.type}>{this.getLocaliztion(props.type)}</span></GridCell>
+        return <tr className="grid-header">
+            <th columnSize={roleColumnWidth}><span title={props.type}>{this.getLocalization(props.type)}</span></th>
             {props.definitions.map((def) => {
-                return <GridCell key={def.permissionName} columnSize={columnWidth}><span title={def.permissionName}>{this.getLocaliztion(def.permissionName)}</span></GridCell>;
+                return <th key={def.permissionName}>
+                    <span title={this.getDescription(def.permissionName)}>
+                        {this.getName(def.permissionName)}
+                    </span>
+                </th>;
             }) }
-            <GridCell columnSize={actionsWidth} />
-        </GridCell>;
+            <th columnSize={actionsWidth} />
+        </tr>;
     }
 
     render() {
-        const {props, state} = this;
-
         return (
             this.renderHeader()
         );

@@ -6,8 +6,13 @@ namespace Dnn.PersonaBar.Pages.Components
 {
     public enum PublishStatus
     {
+        /// <summary>Both published and draft.</summary>
         All = 0,
+
+        /// <summary>Only published pages.</summary>
         Published = 1,
+
+        /// <summary>Only draft pages.</summary>
         Draft = 2,
     }
 }

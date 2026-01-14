@@ -6,6 +6,7 @@ namespace Dnn.ExportImport.Components.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.ExportImport.Components.Common;
@@ -18,6 +19,7 @@ namespace Dnn.ExportImport.Components.Services
 
     using Util = DotNetNuke.Entities.Content.Common.Util;
 
+    /// <summary>An export service for vocabularies.</summary>
     public class VocabularyService : BasePortableService
     {
         /// <inheritdoc/>
@@ -93,7 +95,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 this.Repository.CreateItems(taxonomyTerms);
-                this.Result.AddSummary("Exported Vocabularies", taxonomyTerms.Count.ToString());
+                this.Result.AddSummary("Exported Vocabularies", taxonomyTerms.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 75;
                 this.CheckPoint.ProcessedItems += taxonomyTerms.Count;
                 this.CheckPoint.Stage++;
@@ -108,7 +110,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 this.Repository.CreateItems(taxonomyVocabularies);
-                this.Result.AddSummary("Exported Terms", taxonomyVocabularies.Count.ToString());
+                this.Result.AddSummary("Exported Terms", taxonomyVocabularies.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 100;
                 this.CheckPoint.ProcessedItems += taxonomyVocabularies.Count;
                 this.CheckPoint.Stage++;
@@ -146,14 +148,14 @@ namespace Dnn.ExportImport.Components.Services
                 var otherVocabularies = this.Repository.GetAllItems<TaxonomyVocabulary>().ToList();
                 this.ProcessVocabularies(importJob, importDto, otherScopeTypes, otherVocabularies);
                 this.Repository.UpdateItems(otherVocabularies);
-                this.Result.AddSummary("Imported Vocabularies", otherVocabularies.Count.ToString());
+                this.Result.AddSummary("Imported Vocabularies", otherVocabularies.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 60;
                 this.CheckPoint.ProcessedItems += otherVocabularies.Count;
 
                 var otherTaxonomyTerms = this.Repository.GetAllItems<TaxonomyTerm>().ToList();
                 this.ProcessTaxonomyTerms(importJob, importDto, otherVocabularies, otherTaxonomyTerms);
                 this.Repository.UpdateItems(otherTaxonomyTerms);
-                this.Result.AddSummary("Imported Terms", otherTaxonomyTerms.Count.ToString());
+                this.Result.AddSummary("Imported Terms", otherTaxonomyTerms.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 100;
                 this.CheckPoint.ProcessedItems += otherTaxonomyTerms.Count;
                 this.CheckPoint.Stage++;
@@ -191,11 +193,11 @@ namespace Dnn.ExportImport.Components.Services
                 var scope = otherScopeTypes.FirstOrDefault(s => s.ScopeTypeID == other.ScopeTypeID);
 
                 var scopeId = other.ScopeID ?? Null.NullInteger;
-                if (scope != null && scope.ScopeType.Equals("Application", StringComparison.InvariantCultureIgnoreCase))
+                if (scope != null && scope.ScopeType.Equals("Application", StringComparison.OrdinalIgnoreCase))
                 {
                     scopeId = Null.NullInteger;
                 }
-                else if (scope != null && scope.ScopeType.Equals("Portal", StringComparison.InvariantCultureIgnoreCase))
+                else if (scope != null && scope.ScopeType.Equals("Portal", StringComparison.OrdinalIgnoreCase))
                 {
                     scopeId = importDto.PortalId;
                 }
@@ -289,7 +291,7 @@ namespace Dnn.ExportImport.Components.Services
                                 dataService.UpdateSimpleTerm(term, modifiedBy);
                             }
 
-                            DataCache.ClearCache(string.Format(DataCache.TermCacheKey, term.TermId));
+                            DataCache.ClearCache(string.Format(CultureInfo.InvariantCulture, DataCache.TermCacheKey, term.TermId));
                             this.Result.AddLogEntry("Updated taxonomy", other.Name);
                             break;
                         default:

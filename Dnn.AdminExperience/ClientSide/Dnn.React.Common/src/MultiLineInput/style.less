@@ -3,23 +3,23 @@
     resize: none;
     width: 100%;
     margin-bottom: 10px;
-    border-radius: 3px;
-    background-color: @white;
-    border: 1px solid @mountainMist;
+    background-color: var(--dnn-color-background, @white);
+    border: 1px solid var(--dnn-color-foreground-light, @mountainMist);
+    border-radius: var(--dnn-controls-radius, 0);
     box-sizing: border-box;
     padding: 8px 16px 8px !important;
     min-height: 142px;
-    color: @bulgarianRose;
+    color: var(--dnn-color-foreground, @bulgarianRose);
     &:focus {
-        border: 1px solid @curiousBlue;
+        border: 1px solid var(--dnn-color-primary, @curiousBlue);
         outline: none;
     }
     &:disabled {
-        background: @mercury;
-        border-color: @mercury;
+        background: var(--dnn-color-neutral, @mercury);
+        border-color: var(--dnn-color-neutral, @mercury);
     }
 }
 
 ::-webkit-input-placeholder, :-moz-placeholder, ::-moz-placeholder, :-ms-input-placeholder {
-    color: @alto;
+    color: var(--dnn-color-foreground-light, @alto);
 }

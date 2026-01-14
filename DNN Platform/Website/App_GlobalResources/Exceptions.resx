@@ -460,7 +460,7 @@
     <value>The property '{1}' in object '{0}' cannot be empty (count = 0).</value>
   </data>
   <data name="ErrorMessageCannotBeNullOrEmpty.Text" xml:space="preserve">
-    <value>Both the ErorrKey and the ErrorMessage cannot be null or empty.</value>
+    <value>Both the ErrorKey and the ErrorMessage cannot be null or empty.</value>
   </data>
   <data name="JsonContentTypeInvalid.Text" xml:space="preserve">
     <value>The contentTypeId specified in the json document - {0} - does not exist.</value>

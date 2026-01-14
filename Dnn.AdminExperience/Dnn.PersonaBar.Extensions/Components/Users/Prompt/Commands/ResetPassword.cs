@@ -15,11 +15,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     public class ResetPassword : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_ResetPassword_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("notify", "Prompt_ResetPassword_FlagNotify", "Boolean", "false")]
-
         private const string FlagNotify = "notify";
 
         private IUserValidator userValidator;
@@ -31,7 +29,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         }
 
         /// <summary>Initializes a new instance of the <see cref="ResetPassword"/> class.</summary>
-        /// <param name="userValidator"></param>
+        /// <param name="userValidator">The user validator.</param>
         public ResetPassword(IUserValidator userValidator)
         {
             this.userValidator = userValidator;

@@ -5,6 +5,7 @@
 namespace Dnn.ExportImport.Components.Services
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -20,6 +21,7 @@ namespace Dnn.ExportImport.Components.Services
     using DotNetNuke.Services.Installer.Packages;
     using Newtonsoft.Json;
 
+    /// <summary>An export service for extension packages.</summary>
     public class PackagesExportService : BasePortableService
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PackagesExportService));
@@ -57,8 +59,8 @@ namespace Dnn.ExportImport.Components.Services
             var totalPackagesExported = 0;
             try
             {
-                var packagesZipFileFormat = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipPackages}";
-                var packagesZipFile = string.Format(packagesZipFileFormat, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
+                var packagesZipFileFormat = $@"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\{Constants.ExportZipPackages}";
+                var packagesZipFile = string.Format(CultureInfo.InvariantCulture, packagesZipFileFormat, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
                 if (this.CheckPoint.Stage == 0)
                 {
@@ -67,7 +69,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     // export skin packages.
                     var extensionPackagesBackupFolder = Path.Combine(Globals.ApplicationMapPath, DotNetNuke.Services.Installer.Util.BackupInstallPackageFolder);
-                    var skinPackageFiles = Directory.GetFiles(extensionPackagesBackupFolder).Where(f => this.IsValidPackage(f, fromDate, toDate)).ToList();
+                    var skinPackageFiles = Directory.GetFiles(extensionPackagesBackupFolder).Where(f => IsValidPackage(f, fromDate, toDate)).ToList();
                     var totalPackages = skinPackageFiles.Count;
 
                     // Update the total items count in the check points. This should be updated only once.
@@ -81,7 +83,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         foreach (var file in skinPackageFiles)
                         {
-                            var exportPackage = this.GenerateExportPackage(file);
+                            var exportPackage = GenerateExportPackage(file);
                             if (exportPackage != null)
                             {
                                 this.Repository.CreateItem(exportPackage, null);
@@ -111,9 +113,9 @@ namespace Dnn.ExportImport.Components.Services
             }
             finally
             {
-                this.CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
+                this.CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex, }) : null;
                 this.CheckPointStageCallback(this);
-                this.Result.AddSummary("Exported Packages", totalPackagesExported.ToString());
+                this.Result.AddSummary("Exported Packages", totalPackagesExported.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -142,6 +144,8 @@ namespace Dnn.ExportImport.Components.Services
             return this.Repository.GetCount<ExportPackage>();
         }
 
+        /// <summary>Install the package.</summary>
+        /// <param name="filePath">The file path to the installer.</param>
         public void InstallPackage(string filePath)
         {
             using (var stream = new FileStream(filePath, FileMode.Open))
@@ -189,18 +193,7 @@ namespace Dnn.ExportImport.Components.Services
             return installer;
         }
 
-        private int GetCurrentSkip()
-        {
-            if (!string.IsNullOrEmpty(this.CheckPoint.StageData))
-            {
-                dynamic stageData = JsonConvert.DeserializeObject(this.CheckPoint.StageData);
-                return Convert.ToInt32(stageData.skip) ?? 0;
-            }
-
-            return 0;
-        }
-
-        private bool IsValidPackage(string filePath, DateTime fromDate, DateTime toDate)
+        private static bool IsValidPackage(string filePath, DateTime fromDate, DateTime toDate)
         {
             var fileInfo = new FileInfo(filePath);
             if (string.IsNullOrEmpty(fileInfo.Name) || fileInfo.LastWriteTimeUtc < fromDate || fileInfo.LastWriteTimeUtc > toDate)
@@ -208,10 +201,10 @@ namespace Dnn.ExportImport.Components.Services
                 return false;
             }
 
-            return fileInfo.Name.StartsWith("Skin_") || fileInfo.Name.StartsWith("Container_");
+            return fileInfo.Name.StartsWith("Skin_", StringComparison.OrdinalIgnoreCase) || fileInfo.Name.StartsWith("Container_", StringComparison.OrdinalIgnoreCase);
         }
 
-        private ExportPackage GenerateExportPackage(string filePath)
+        private static ExportPackage GenerateExportPackage(string filePath)
         {
             var fileName = Path.GetFileName(filePath);
             if (string.IsNullOrEmpty(fileName))
@@ -230,6 +223,17 @@ namespace Dnn.ExportImport.Components.Services
             var version = new Version(match.Groups[3].Value);
 
             return new ExportPackage { PackageFileName = fileName, PackageName = packageName, PackageType = packageType, Version = version };
+        }
+
+        private int GetCurrentSkip()
+        {
+            if (!string.IsNullOrEmpty(this.CheckPoint.StageData))
+            {
+                dynamic stageData = JsonConvert.DeserializeObject(this.CheckPoint.StageData);
+                return Convert.ToInt32(stageData.skip) ?? 0;
+            }
+
+            return 0;
         }
 
         private void ProcessImportModulePackage(ExportPackage exportPackage, string tempFolder, CollisionResolution collisionResolution)

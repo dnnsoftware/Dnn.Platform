@@ -5,6 +5,7 @@
 namespace DotNetNuke.Common.Utilities.Internal
 {
     using System;
+    using System.Globalization;
     using System.Threading;
 
     using DotNetNuke.Instrumentation;
@@ -23,26 +24,26 @@ namespace DotNetNuke.Common.Utilities.Internal
         }
 
         /// <summary>Initializes a new instance of the <see cref="RetryableAction"/> class.</summary>
-        /// <param name="action"></param>
-        /// <param name="description"></param>
-        /// <param name="maxRetries"></param>
-        /// <param name="delay"></param>
+        /// <param name="action">The action to execute.</param>
+        /// <param name="description">A description of the action (for logging).</param>
+        /// <param name="maxRetries">The maximum number of retries.</param>
+        /// <param name="delay">The delay between retries.</param>
         public RetryableAction(Action action, string description, int maxRetries, TimeSpan delay)
             : this(action, description, maxRetries, delay, 1)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="RetryableAction"/> class.</summary>
-        /// <param name="action"></param>
-        /// <param name="description"></param>
-        /// <param name="maxRetries"></param>
-        /// <param name="delay"></param>
-        /// <param name="delayMultiplier"></param>
+        /// <param name="action">The action to execute.</param>
+        /// <param name="description">A description of the action (for logging).</param>
+        /// <param name="maxRetries">The maximum number of retries.</param>
+        /// <param name="delay">The initial delay between retries.</param>
+        /// <param name="delayMultiplier">The amount to adjust the delay for each subsequent retry.</param>
         public RetryableAction(Action action, string description, int maxRetries, TimeSpan delay, float delayMultiplier)
         {
             if (delay.TotalMilliseconds > int.MaxValue)
             {
-                throw new ArgumentException(string.Format("delay must be less than {0} milliseconds", int.MaxValue));
+                throw new ArgumentException($"delay must be less than {int.MaxValue} milliseconds");
             }
 
             this.Action = action;
@@ -90,7 +91,7 @@ namespace DotNetNuke.Common.Utilities.Internal
         public void TryIt()
         {
             var currentDelay = (int)this.Delay.TotalMilliseconds;
-            int retrysRemaining = this.MaxRetries;
+            var retriesRemaining = this.MaxRetries;
 
             do
             {
@@ -99,22 +100,22 @@ namespace DotNetNuke.Common.Utilities.Internal
                     this.Action();
                     if (Logger.IsTraceEnabled)
                     {
-                        Logger.TraceFormat("Action succeeded - {0}", this.Description);
+                        Logger.TraceFormat(CultureInfo.InvariantCulture, "Action succeeded - {0}", this.Description);
                     }
 
                     return;
                 }
                 catch (Exception)
                 {
-                    if (retrysRemaining <= 0)
+                    if (retriesRemaining <= 0)
                     {
-                        Logger.WarnFormat("All retries of action failed - {0}", this.Description);
+                        Logger.WarnFormat(CultureInfo.InvariantCulture, "All retries of action failed - {0}", this.Description);
                         throw;
                     }
 
                     if (Logger.IsTraceEnabled)
                     {
-                        Logger.TraceFormat("Retrying action {0} - {1}", retrysRemaining, this.Description);
+                        Logger.TraceFormat(CultureInfo.InvariantCulture, "Retrying action {0} - {1}", retriesRemaining, this.Description);
                     }
 
                     SleepAction.Invoke(currentDelay);
@@ -126,7 +127,7 @@ namespace DotNetNuke.Common.Utilities.Internal
                     }
                 }
 
-                retrysRemaining--;
+                retriesRemaining--;
             }
             while (true);
         }

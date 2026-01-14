@@ -5,6 +5,8 @@ namespace DotNetNuke.Security
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
@@ -12,6 +14,7 @@ namespace DotNetNuke.Security
     using System.Web;
     using System.Web.Security;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
@@ -22,7 +25,8 @@ namespace DotNetNuke.Security
     using DotNetNuke.Security.Cookies;
     using DotNetNuke.Services.Cryptography;
 
-    public class PortalSecurity
+    /// <summary>A variety of security-related utility functions.</summary>
+    public partial class PortalSecurity
     {
         public static readonly PortalSecurity Instance = new PortalSecurity();
         private const string RoleFriendPrefix = "FRIEND:";
@@ -81,7 +85,7 @@ namespace DotNetNuke.Security
             new Regex("javascript:", RxOptions),
             new Regex("vbscript:", RxOptions),
             new Regex("unescape", RxOptions),
-            new Regex("alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?", RxOptions),
+            new Regex(@"alert[\s(&nbsp;)]*\([\s(&nbsp;)]*'?[\s(&nbsp;)]*[""(&quot;)]?", RxOptions),
             new Regex(@"eval*.\(", RxOptions),
         };
 
@@ -95,36 +99,43 @@ namespace DotNetNuke.Security
         /// together.
         /// </summary>
         [Flags]
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public enum FilterFlag
         {
+            /// <summary>Replaces line breaks with <c>&lt;br&gt;</c> tags.</summary>
             MultiLine = 1,
 
+            /// <summary>Removes text which could be interpreted as HTML markup.</summary>
             [Obsolete("Deprecated in DotNetNuke 9.8.1. A direct call to WebUtility.HtmlEncode should be used. Scheduled for removal in v11.0.0.")]
             NoMarkup = 2,
 
+            /// <summary>Removes text which could be interpreted as JavaScript commands.</summary>
             [Obsolete("Deprecated in DotNetNuke 9.8.1. A direct call to WebUtility.HtmlEncode should be used. Scheduled for removal in v11.0.0.")]
             NoScripting = 4,
 
+            /// <summary>Removes text which could be interpreted as SQL commands.</summary>
             [Obsolete("Deprecated in DotNetNuke 9.8.1. Parameterized SQL should be preferred for SQL Injection protection. Scheduled for removal in v11.0.0.")]
             NoSQL = 8,
 
+            /// <summary>Removes angle brackets from the text.</summary>
             [Obsolete("Deprecated in DotNetNuke 9.8.1. Individual string replacement should be completed. Scheduled for removal in v11.0.0.")]
             NoAngleBrackets = 16,
+
+            /// <summary>Removes matches with the site's profanity filter.</summary>
             NoProfanity = 32,
 
-            /// <summary>
-            /// Removes all unicode control characters (like \0, \t, \n, \r, etc.) from the string.
-            /// </summary>
-            /// <remarks>
-            /// The control characters \r\n, \r, \n, and \t are replaced with a single space instead of being removed.
-            /// </remarks>
+            /// <summary>Removes all Unicode control characters (like \0, \t, \n, \r, etc.) from the string.</summary>
+            /// <remarks>The control characters \r\n, \r, \n, and \t are replaced with a single space instead of being removed.</remarks>
             NoControlCharacters = 64,
         }
 
         /// <summary>Determines the configuration source for the remove and replace functions.</summary>
         public enum ConfigType
         {
+            /// <summary>Retrieve configuration via <see cref="DotNetNuke.Common.Lists.ListController"/>.</summary>
             ListController = 0,
+
+            /// <summary>Retrieve configuration from an external file.</summary>
             ExternalFile = 1,
         }
 
@@ -134,8 +145,13 @@ namespace DotNetNuke.Security
         /// </summary>
         public enum FilterScope
         {
+            /// <summary>Use the host-level list.</summary>
             SystemList = 0,
+
+            /// <summary>Use a portal-specific list.</summary>
             PortalList = 1,
+
+            /// <summary>Combine both lists.</summary>
             SystemAndPortalList = 2,
         }
 
@@ -216,7 +232,7 @@ namespace DotNetNuke.Security
         /// </summary>
         /// <param name="roles">The semicolon separated list of roles.</param>
         /// <returns>
-        ///   <c>true</c> if the current user is denied from the provided specified roles; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the current user is denied from the provided specified roles; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsDenied(string roles)
         {
@@ -232,7 +248,7 @@ namespace DotNetNuke.Security
         /// <param name="settings">The settings.</param>
         /// <param name="roles">The semicolon separated list of roles.</param>
         /// <returns>
-        ///   <c>true</c> if the specified user is denied; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the specified user is denied; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsDenied(UserInfo objUserInfo, PortalSettings settings, string roles)
         {
@@ -247,12 +263,12 @@ namespace DotNetNuke.Security
             if (roles != null)
             {
                 // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
-                foreach (string role in roles.Split(new[] { ';' }))
+                foreach (string role in roles.Split(';'))
                 {
                     if (!string.IsNullOrEmpty(role))
                     {
                         // Deny permission
-                        if (role.StartsWith("!"))
+                        if (role.StartsWith("!", StringComparison.Ordinal))
                         {
                             // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
                             if (settings != null && !(settings.PortalId == objUserInfo.PortalID && objUserInfo.IsInRole(settings.AdministratorRoleName)))
@@ -272,13 +288,9 @@ namespace DotNetNuke.Security
             return isDenied;
         }
 
-        /// <summary>
-        /// Determines whether the current user belonds to the specified role.
-        /// </summary>
+        /// <summary>Determines whether the current user belongs to the specified role.</summary>
         /// <param name="role">The role name.</param>
-        /// <returns>
-        ///   <c>true</c> if user belongs to the specified role; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns><see langword="true"/> if user belongs to the specified role; otherwise, <see langword="false"/>.</returns>
         public static bool IsInRole(string role)
         {
             if (!string.IsNullOrEmpty(role) && role == Globals.glbRoleUnauthUserName && !HttpContext.Current.Request.IsAuthenticated)
@@ -294,7 +306,7 @@ namespace DotNetNuke.Security
         /// </summary>
         /// <param name="roles">The semicolon separated list of roles.</param>
         /// <returns>
-        ///   <c>true</c> if user belongs to the specified roles; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if user belongs to the specified roles; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsInRoles(string roles)
         {
@@ -310,31 +322,43 @@ namespace DotNetNuke.Security
         /// <param name="settings">The settings.</param>
         /// <param name="roles">The semicolon separated list of roles.</param>
         /// <returns>
-        ///   <c>true</c> if the provided user belongs to the specific roles; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the provided user belongs to the specific roles; otherwise, <see langword="false"/>.
         /// </returns>
-        public static bool IsInRoles(UserInfo objUserInfo, PortalSettings settings, string roles)
-        {
-            // super user always has full access
-            bool isInRoles = objUserInfo.IsSuperUser;
+        [DnnDeprecated(10, 0, 2, "Use overload taking IPortalSettings")]
+        public static partial bool IsInRoles(UserInfo objUserInfo, PortalSettings settings, string roles)
+            => IsInRoles(objUserInfo, (IPortalSettings)settings, roles);
 
-            if (!isInRoles)
+        /// <summary>
+        /// Determines whether the provided user belongs to the specified roles.
+        /// </summary>
+        /// <param name="objUserInfo">The user information.</param>
+        /// <param name="settings">The settings.</param>
+        /// <param name="roles">The semicolon separated list of roles.</param>
+        /// <returns>
+        ///   <see langword="true"/> if the provided user belongs to the specific roles; otherwise, <see langword="false"/>.
+        /// </returns>
+        public static bool IsInRoles(UserInfo objUserInfo, IPortalSettings settings, string roles)
+        {
+            if (objUserInfo.IsSuperUser)
             {
-                if (roles != null)
+                return true;
+            }
+
+            if (roles == null)
+            {
+                return false;
+            }
+
+            foreach (var role in roles.Split(';'))
+            {
+                ProcessRole(objUserInfo, settings, role, out var roleAllowed);
+                if (roleAllowed.HasValue)
                 {
-                    foreach (string role in roles.Split(new[] { ';' }))
-                    {
-                        bool? roleAllowed;
-                        ProcessRole(objUserInfo, settings, role, out roleAllowed);
-                        if (roleAllowed.HasValue)
-                        {
-                            isInRoles = roleAllowed.Value;
-                            break;
-                        }
-                    }
+                    return roleAllowed.Value;
                 }
             }
 
-            return isInRoles;
+            return false;
         }
 
         /// <summary>
@@ -342,7 +366,7 @@ namespace DotNetNuke.Security
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>
-        ///   <c>true</c> if the specified user is a friend of the current user; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the specified user is a friend of the current user; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsFriend(int userId)
         {
@@ -356,7 +380,7 @@ namespace DotNetNuke.Security
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>
-        ///   <c>true</c> if the specified user is a follower of the current user; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the specified user is a follower of the current user; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsFollower(int userId)
         {
@@ -370,7 +394,7 @@ namespace DotNetNuke.Security
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>
-        ///   <c>true</c> if the specified user is an owner; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the specified user is an owner; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsOwner(int userId)
         {
@@ -383,14 +407,13 @@ namespace DotNetNuke.Security
         /// <param name="numBytes">This is the number of bytes for the key.</param>
         /// <returns>A random string.</returns>
         /// <remarks>This is a public function used for generating SHA1 keys.</remarks>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string CreateKey(int numBytes)
         {
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                var buff = new byte[numBytes];
-                rng.GetBytes(buff);
-                return BytesToHexString(buff);
-            }
+            using var rng = new RNGCryptoServiceProvider();
+            var buff = new byte[numBytes];
+            rng.GetBytes(buff);
+            return BytesToHexString(buff);
         }
 
         /// <summary>
@@ -399,6 +422,7 @@ namespace DotNetNuke.Security
         /// <param name="strKey">The encryption key.</param>
         /// <param name="strData">The encrypted data.</param>
         /// <returns>The decrypted string.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string Decrypt(string strKey, string strData)
         {
             return CryptographyProvider.Instance().DecryptParameter(strData, strKey);
@@ -410,6 +434,7 @@ namespace DotNetNuke.Security
         /// <param name="message">The encrypted message.</param>
         /// <param name="passphrase">The passphrase.</param>
         /// <returns>The decrypted string.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string DecryptString(string message, string passphrase)
         {
             return CryptographyProvider.Instance().DecryptString(message, passphrase);
@@ -421,6 +446,7 @@ namespace DotNetNuke.Security
         /// <param name="key">The key.</param>
         /// <param name="data">The data.</param>
         /// <returns>The encrypted string.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string Encrypt(string key, string data)
         {
             return CryptographyProvider.Instance().EncryptParameter(data, key);
@@ -432,6 +458,7 @@ namespace DotNetNuke.Security
         /// <param name="message">The message.</param>
         /// <param name="passphrase">The passphrase.</param>
         /// <returns>The encrypted string.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string EncryptString(string message, string passphrase)
         {
             return CryptographyProvider.Instance().EncryptString(message, passphrase);
@@ -504,6 +531,7 @@ namespace DotNetNuke.Security
         /// <param name="configSource">The external file to search the words. Ignored when configType is ListController.</param>
         /// <param name="filterScope">When using ListController configType, this parameter indicates which list(s) to use.</param>
         /// <returns>The original text with the profanity words replaced.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string Replace(string inputString, ConfigType configType, string configSource, FilterScope filterScope)
         {
             switch (configType)
@@ -543,7 +571,7 @@ namespace DotNetNuke.Security
                 case ConfigType.ExternalFile:
                     throw new NotImplementedException();
                 default:
-                    throw new ArgumentOutOfRangeException("configType");
+                    throw new ArgumentOutOfRangeException(nameof(configType));
             }
 
             return inputString;
@@ -562,6 +590,7 @@ namespace DotNetNuke.Security
         /// <param name="configSource">The external file to search the words. Ignored when configType is ListController.</param>
         /// <param name="filterScope">When using ListController configType, this parameter indicates which list(s) to use.</param>
         /// <returns>The original text with the profanity words removed.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string Remove(string inputString, ConfigType configType, string configSource, FilterScope filterScope)
         {
             switch (configType)
@@ -601,7 +630,7 @@ namespace DotNetNuke.Security
                 case ConfigType.ExternalFile:
                     throw new NotImplementedException();
                 default:
-                    throw new ArgumentOutOfRangeException("configType");
+                    throw new ArgumentOutOfRangeException(nameof(configType));
             }
 
             return inputString;
@@ -611,7 +640,8 @@ namespace DotNetNuke.Security
         /// Signs the provided user in and sets a persistent login cookie if needed.
         /// </summary>
         /// <param name="user">The user info.</param>
-        /// <param name="createPersistentCookie">if set to <c>true</c> [create persistent cookie].</param>
+        /// <param name="createPersistentCookie">if set to <see langword="true"/> [create persistent cookie].</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void SignIn(UserInfo user, bool createPersistentCookie)
         {
             if (PortalController.IsMemberOfPortalGroup(user.PortalID) || createPersistentCookie)
@@ -689,6 +719,7 @@ namespace DotNetNuke.Security
         /// <summary>
         /// Signs the current user out.
         /// </summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void SignOut()
         {
             InvalidateAspNetSession(HttpContext.Current);
@@ -774,11 +805,11 @@ namespace DotNetNuke.Security
                 cookie.Expires = DateTime.Now.AddYears(-30);
             }
 
-            // clear any authentication provider tokens that match *UserToken convention e.g FacebookUserToken ,TwitterUserToken, LiveUserToken and GoogleUserToken
+            // clear any authentication provider tokens that match *UserToken convention e.g. FacebookUserToken ,TwitterUserToken, LiveUserToken and GoogleUserToken
             var authCookies = HttpContext.Current.Request.Cookies.AllKeys;
             foreach (var authCookie in authCookies)
             {
-                if (authCookie.EndsWith("UserToken"))
+                if (authCookie.EndsWith("UserToken", StringComparison.OrdinalIgnoreCase))
                 {
                     var auth = HttpContext.Current.Response.Cookies[authCookie];
                     if (auth != null)
@@ -809,6 +840,7 @@ namespace DotNetNuke.Security
         /// The only time we should call this is if the host allowed extensions list has changed.
         /// </summary>
         /// <param name="newMasterList">Comma separated list of extensions that govern all users on this installation.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void CheckAllPortalFileExtensionWhitelists(string newMasterList)
         {
             var masterList = new FileExtensionWhitelist(newMasterList);
@@ -827,7 +859,7 @@ namespace DotNetNuke.Security
             }
         }
 
-        private static void ProcessRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
+        private static void ProcessRole(UserInfo user, IPortalSettings settings, string roleName, out bool? roleAllowed)
         {
             var roleType = GetRoleType(roleName);
             switch (roleType)
@@ -891,7 +923,7 @@ namespace DotNetNuke.Security
             return Null.NullInteger;
         }
 
-        private static void ProcessSecurityRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
+        private static void ProcessSecurityRole(UserInfo user, IPortalSettings settings, string roleName, out bool? roleAllowed)
         {
             roleAllowed = null;
 
@@ -899,7 +931,7 @@ namespace DotNetNuke.Security
             if (!string.IsNullOrEmpty(roleName))
             {
                 // Deny permission
-                if (roleName.StartsWith("!"))
+                if (roleName.StartsWith("!", StringComparison.Ordinal))
                 {
                     // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
                     if (settings != null && !(settings.PortalId == user.PortalID && user.IsInRole(settings.AdministratorRoleName)))
@@ -948,7 +980,7 @@ namespace DotNetNuke.Security
             var hexString = new StringBuilder();
             foreach (var b in bytes)
             {
-                hexString.Append(string.Format("{0:X2}", b));
+                hexString.Append(string.Format(CultureInfo.InvariantCulture, "{0:X2}", b));
             }
 
             return hexString.ToString();

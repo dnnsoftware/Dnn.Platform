@@ -1,0 +1,36 @@
+{
+  "name": "dnn.clientside",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "build": "tsx build.ts",
+    "watch": "tsx build.ts --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type": "module",
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "devDependencies": {
+    "@types/node": "^24.9.0",
+    "@types/postcss-import": "^14.0.3",
+    "autoprefixer": "^10.4.21",
+    "chokidar": "^4.0.3",
+    "cssnano": "^7.1.1",
+    "esbuild": "^0.25.11",
+    "eslint": "^9.38.0",
+    "modern-normalize": "^3.0.1",
+    "postcss": "^8.5.6",
+    "postcss-banner": "^4.0.1",
+    "postcss-cli": "^11.0.1",
+    "postcss-import": "^16.1.1",
+    "sass": "^1.93.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

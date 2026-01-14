@@ -6,19 +6,31 @@ namespace DotNetNuke.UI.WebControls
     using System;
     using System.Collections;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      SettingsEditorControl
-    /// <summary>
-    /// The SettingsEditorControl control provides an Editor to edit DotNetNuke
-    /// Settings.
-    /// </summary>
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
+
+    /// <summary>The SettingsEditorControl control provides an Editor to edit DotNetNuke Settings.</summary>
     [ToolboxData("<{0}:SettingsEditorControl runat=server></{0}:SettingsEditorControl>")]
     public class SettingsEditorControl : PropertyEditorControl
     {
+        /// <summary>Initializes a new instance of the <see cref="SettingsEditorControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public SettingsEditorControl()
+            : this(Globals.GetCurrentServiceProvider())
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SettingsEditorControl"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        public SettingsEditorControl(IServiceProvider serviceProvider)
+            : base(serviceProvider)
+        {
+        }
+
         /// <summary>Gets or sets the CustomEditors that are used by this control.</summary>
         /// <value>The CustomEditors object.</value>
         [Browsable(false)]
@@ -65,10 +77,10 @@ namespace DotNetNuke.UI.WebControls
         protected override bool GetRowVisibility(object obj)
         {
             var info = (SettingInfo)obj;
-            bool isVisible = true;
-            if ((this.Visibility != null) && (this.Visibility[info.Name] != null))
+            var isVisible = true;
+            if (this.Visibility?[info.Name] != null)
             {
-                isVisible = Convert.ToBoolean(this.Visibility[info.Name]);
+                isVisible = Convert.ToBoolean(this.Visibility[info.Name], CultureInfo.InvariantCulture);
             }
 
             return isVisible;
@@ -79,13 +91,13 @@ namespace DotNetNuke.UI.WebControls
         {
             var settings = (Hashtable)this.DataSource;
             var arrSettings = new ArrayList();
-            IDictionaryEnumerator settingsEnumerator = settings.GetEnumerator();
+            var settingsEnumerator = settings.GetEnumerator();
             while (settingsEnumerator.MoveNext())
             {
                 var info = new SettingInfo(settingsEnumerator.Key, settingsEnumerator.Value);
-                if ((this.CustomEditors != null) && (this.CustomEditors[settingsEnumerator.Key] != null))
+                if (this.CustomEditors?[settingsEnumerator.Key] != null)
                 {
-                    info.Editor = Convert.ToString(this.CustomEditors[settingsEnumerator.Key]);
+                    info.Editor = Convert.ToString(this.CustomEditors[settingsEnumerator.Key], CultureInfo.InvariantCulture);
                 }
 
                 arrSettings.Add(info);

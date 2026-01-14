@@ -1,0 +1,58 @@
+/* Styles the DnnFileEditControl and DnnFilePicker webforms controls */
+
+span[id$="FileControl"] {
+    display: block;
+    float: left;
+}
+.dnnFilePicker {
+    display: block;
+    float: left;
+    background-color: var(--dnn-color-background, #f0f0f0);
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding: 0 15px 0 15px;
+    width: 450px;
+    .dnnLeft {
+        margin: 0;
+        padding: 0;
+        margin-top: -30px;
+        img {
+            max-width: 135px;
+            max-height: 100px;
+        }
+        .dnnFilePickerImageHolder {
+            width: 135px;
+            height: 100px;
+            background-color: #ccc;
+            margin: 20px 15px;
+        }
+        a.dnnSecondaryAction {
+            margin: 10px 10px 0 0;
+            display: inline-block;
+        }
+        img {
+            display: block;
+            margin: 20px 15px;
+        }
+    }
+    .dnnFormItem {
+        margin: 0;
+        margin-top: -10px;
+        padding: 0;
+        position: static;
+        span {
+            display: block;
+            float: left;
+            width: 40px;
+            margin-top: 8px;
+            padding-left: 5px;
+            text-align: left;
+        }
+    }
+    select, input {
+        width: 200px;
+        margin: 0;
+        margin-right: 10px;
+        float: none;
+    }
+}

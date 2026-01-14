@@ -4,6 +4,7 @@
 namespace DotNetNuke.Entities.Users.Social
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Logging;
@@ -25,7 +26,7 @@ namespace DotNetNuke.Entities.Users.Social
 
         /// <summary>Initializes a new instance of the <see cref="RelationshipControllerImpl"/> class.</summary>
         public RelationshipControllerImpl()
-            : this(DataService.Instance, Globals.DependencyProvider.GetRequiredService<IEventLogger>())
+            : this(DataService.Instance, Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>())
         {
         }
 
@@ -52,6 +53,7 @@ namespace DotNetNuke.Entities.Users.Social
             // log event
             string logContent =
                 string.Format(
+                    CultureInfo.InvariantCulture,
                     Localization.GetString("RelationshipType_Deleted", Localization.GlobalResourceFile),
                     relationshipType.Name,
                     relationshipType.RelationshipTypeId);
@@ -96,6 +98,7 @@ namespace DotNetNuke.Entities.Users.Social
 
             // log event
             string logContent = string.Format(
+                CultureInfo.CurrentCulture,
                 Localization.GetString(localizationKey, Localization.GlobalResourceFile),
                 relationshipType.Name);
             this.AddLog(logContent);
@@ -114,13 +117,14 @@ namespace DotNetNuke.Entities.Users.Social
             // log event
             string logContent =
                 string.Format(
+                    CultureInfo.InvariantCulture,
                     Localization.GetString("Relationship_Deleted", Localization.GlobalResourceFile),
                     relationship.Name,
                     relationship.RelationshipId);
             this.AddLog(logContent);
 
             // clear cache
-            this.ClearRelationshipCache(relationship);
+            ClearRelationshipCache(relationship);
         }
 
         /// <inheritdoc/>
@@ -145,7 +149,7 @@ namespace DotNetNuke.Entities.Users.Social
             }
 
             var cacheArgs = new CacheItemArgs(
-                string.Format(DataCache.RelationshipByPortalIDCacheKey, pid),
+                string.Format(CultureInfo.InvariantCulture, DataCache.RelationshipByPortalIDCacheKey, pid),
                 DataCache.RelationshipByPortalIDCacheTimeOut,
                 DataCache.RelationshipByPortalIDCachePriority,
                 pid);
@@ -172,12 +176,13 @@ namespace DotNetNuke.Entities.Users.Social
 
             // log event
             string logContent = string.Format(
+                CultureInfo.CurrentCulture,
                 Localization.GetString(localizationKey, Localization.GlobalResourceFile),
                 relationship.Name);
             this.AddLog(logContent);
 
             // clear cache
-            this.ClearRelationshipCache(relationship);
+            ClearRelationshipCache(relationship);
         }
 
         /// <inheritdoc/>
@@ -190,6 +195,7 @@ namespace DotNetNuke.Entities.Users.Social
             // log event
             string logContent =
                 string.Format(
+                    CultureInfo.InvariantCulture,
                     Localization.GetString("UserRelationship_Deleted", Localization.GlobalResourceFile),
                     userRelationship.UserRelationshipId,
                     userRelationship.UserId,
@@ -197,7 +203,7 @@ namespace DotNetNuke.Entities.Users.Social
             this.AddLog(logContent);
 
             // cache clear
-            this.ClearUserCache(userRelationship);
+            ClearUserCache(userRelationship);
         }
 
         /// <inheritdoc/>
@@ -244,6 +250,7 @@ namespace DotNetNuke.Entities.Users.Social
 
             // log event
             string logContent = string.Format(
+                CultureInfo.InvariantCulture,
                 Localization.GetString(localizationKey, Localization.GlobalResourceFile),
                 userRelationship.UserRelationshipId,
                 userRelationship.UserId,
@@ -251,7 +258,7 @@ namespace DotNetNuke.Entities.Users.Social
             this.AddLog(logContent);
 
             // cache clear
-            this.ClearUserCache(userRelationship);
+            ClearUserCache(userRelationship);
         }
 
         /// <inheritdoc/>
@@ -264,6 +271,7 @@ namespace DotNetNuke.Entities.Users.Social
             // log event
             string logContent =
                 string.Format(
+                    CultureInfo.InvariantCulture,
                     Localization.GetString("UserRelationshipPreference_Deleted", Localization.GlobalResourceFile),
                     userRelationshipPreference.PreferenceId,
                     userRelationshipPreference.UserId,
@@ -303,6 +311,7 @@ namespace DotNetNuke.Entities.Users.Social
 
             // log event
             string logContent = string.Format(
+                CultureInfo.InvariantCulture,
                 Localization.GetString(localizationKey, Localization.GlobalResourceFile),
                 userRelationshipPreference.PreferenceId,
                 userRelationshipPreference.UserId,
@@ -565,20 +574,15 @@ namespace DotNetNuke.Entities.Users.Social
             return this.GetRelationshipsByPortalId(portalId).FirstOrDefault(re => re.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers);
         }
 
-        private void AddLog(string logContent)
-        {
-            this.eventLogger.AddLog("Message", logContent, EventLogType.ADMIN_ALERT);
-        }
-
-        private void ClearRelationshipCache(Relationship relationship)
+        private static void ClearRelationshipCache(Relationship relationship)
         {
             if (relationship.UserId == Null.NullInteger)
             {
-                DataCache.RemoveCache(string.Format(DataCache.RelationshipByPortalIDCacheKey, relationship.PortalId));
+                DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.RelationshipByPortalIDCacheKey, relationship.PortalId));
             }
         }
 
-        private void ClearUserCache(UserRelationship userRelationship)
+        private static void ClearUserCache(UserRelationship userRelationship)
         {
             // Get Portal
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
@@ -601,6 +605,11 @@ namespace DotNetNuke.Entities.Users.Social
                     DataCache.ClearUserCache(settings.PortalId, relatedUser.Username);
                 }
             }
+        }
+
+        private void AddLog(string logContent)
+        {
+            this.eventLogger.AddLog("Message", logContent, EventLogType.ADMIN_ALERT);
         }
 
         private void ManageUserRelationshipStatus(int userRelationshipId, RelationshipStatus newStatus)

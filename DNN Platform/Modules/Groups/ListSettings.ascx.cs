@@ -12,7 +12,6 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Modules.Groups.Components;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 

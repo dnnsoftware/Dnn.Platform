@@ -115,7 +115,7 @@ class DefaultPagesSettingsPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         const noneSpecifiedText = "<" + resx.get("NoneSpecified") + ">";
@@ -369,7 +369,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.defaultPagesSettingsClientModified}
-                            type="secondary"
+                            type="neutral"
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>

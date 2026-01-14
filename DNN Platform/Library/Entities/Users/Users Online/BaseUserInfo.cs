@@ -7,9 +7,6 @@ namespace DotNetNuke.Entities.Users
 
     using DotNetNuke.Internal.SourceGenerators;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Users
-    /// Class:      BaseUserInfo
     /// <summary>The BaseUserInfo class provides a base Entity for an online user.</summary>
     [Serializable]
     [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]

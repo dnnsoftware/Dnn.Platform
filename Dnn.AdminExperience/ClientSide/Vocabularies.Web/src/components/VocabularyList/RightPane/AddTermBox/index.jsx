@@ -74,8 +74,8 @@ const AddTermBox = ({
                 </InputGroup>
             }
             <div className="add-term-footer">
-                {editMode && <Button type="secondary" onClick={deleteTerm}>{LocalizedResources.get("DeleteTerm") }</Button>}
-                <Button type="secondary" onClick={closeAddTerm}>{LocalizedResources.get("cancelCreate") }</Button>
+                {editMode && <Button type="danger" onClick={deleteTerm}>{LocalizedResources.get("DeleteTerm") }</Button>}
+                <Button type="neutral" onClick={closeAddTerm}>{LocalizedResources.get("cancelCreate") }</Button>
                 <Button type="primary" onClick={onUpdateTerm}>{LocalizedResources.get("SaveTerm") }</Button>
             </div>
         </div>

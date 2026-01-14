@@ -1,0 +1,56 @@
+@using DotNetNuke.Web.DDRMenu;
+@using System.Dynamic;
+@inherits DotNetNuke.Web.Razor.DotNetNukeWebPage<dynamic>
+
+<span class="mobile-menu" id="nav-mobile">
+    <div id="menuToggle">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <span></span>
+        <nav role="navigation" class="nav-drill" id="nav-mobile">
+            <ul class="nav-items">
+                @RenderPages(Model.Source.root.Children)
+            </ul>
+        </nav>
+    </div>
+</span>
+
+
+@helper RenderPages(IEnumerable<MenuNode> pages)
+{
+    if (!pages.Any())
+    {
+        return;
+    }
+
+    foreach (var page in pages)
+    {
+        var hasChildren = page.HasChildren();
+        var attrTarget = !string.IsNullOrEmpty(page.Target) ? ("target=\"" + page.Target + "\"") :string.Empty;
+
+        <li class="nav-item @(hasChildren ? "nav-expand aperture-d-flex aperture-align-items-center" : string.Empty)@(page.Selected ? "selected" : string.Empty)">
+            @if (page.Enabled)
+            {
+                <a class="nav-link" href="@page.Url" @attrTarget>@page.Text</a>
+            }
+            else
+            {
+                <a href="javascript:void(0);" @attrTarget>@page.Text</a>
+            }
+
+            @if (hasChildren)
+            {
+                <a href="javascript:void(0);" class="nav-link nav-expand-link">&gt;</a>
+                <ul class="nav-items nav-expand-content">
+                    <li class="nav-item">
+                        <a class="nav-link nav-back-link" href="javascript:void(0);">
+                            &lt;&nbsp; Back to @page.Text
+                        </a>
+                    </li>
+                    @RenderPages(page.Children)
+                </ul>
+            }
+        </li>
+    }    
+}

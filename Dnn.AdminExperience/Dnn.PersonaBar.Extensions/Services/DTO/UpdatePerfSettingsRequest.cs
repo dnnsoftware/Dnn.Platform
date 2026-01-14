@@ -26,12 +26,6 @@ namespace Dnn.PersonaBar.Servers.Services.Dto
 
         public string CurrentHostVersion { get; set; }
 
-        public bool HostEnableCompositeFiles { get; set; }
-
-        public bool HostMinifyCss { get; set; }
-
-        public bool HostMinifyJs { get; set; }
-
         public string CurrentPortalVersion { get; set; }
 
         public bool PortalEnableCompositeFiles { get; set; }

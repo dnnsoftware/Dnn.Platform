@@ -24,7 +24,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         public StandardModuleRoutingProvider()
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         protected INavigationManager NavigationManager { get; }

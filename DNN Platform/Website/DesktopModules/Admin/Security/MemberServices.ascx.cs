@@ -8,6 +8,7 @@ namespace DotNetNuke.Modules.Admin.Security
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
@@ -15,7 +16,6 @@ namespace DotNetNuke.Modules.Admin.Security
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
@@ -41,6 +41,7 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         /// <summary>Raises the SubscriptionUpdated Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnSubscriptionUpdated(SubscriptionUpdatedEventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -102,7 +103,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         formatPrice = this.FormatPrice(price);
                         break;
                     default:
-                        formatPrice = string.Format(Localization.GetString("Fee", this.LocalResourceFile), this.FormatPrice(price), period, Localization.GetString("Frequency_" + frequency, this.LocalResourceFile));
+                        formatPrice = string.Format(CultureInfo.CurrentCulture, Localization.GetString("Fee", this.LocalResourceFile), this.FormatPrice(price), period, Localization.GetString("Frequency_" + frequency, this.LocalResourceFile));
                         break;
                 }
             }
@@ -158,7 +159,7 @@ namespace DotNetNuke.Modules.Admin.Security
             try
             {
                 string serverPath = this.Request.ApplicationPath;
-                if (!serverPath.EndsWith("/"))
+                if (!serverPath.EndsWith("/", StringComparison.Ordinal))
                 {
                     serverPath += "/";
                 }
@@ -208,22 +209,8 @@ namespace DotNetNuke.Modules.Admin.Security
 
         protected bool ShowSubscribe(int roleID)
         {
-            bool showSubscribe = Null.NullBoolean;
-            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
-            if (objRole.IsPublic)
-            {
-                PortalInfo objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
-                if (objRole.ServiceFee == 0.0)
-                {
-                    showSubscribe = true;
-                }
-                else if (objPortal != null && !string.IsNullOrEmpty(objPortal.ProcessorUserId))
-                {
-                    showSubscribe = true;
-                }
-            }
-
-            return showSubscribe;
+            var objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
+            return objRole.IsPublic && objRole.ServiceFee == 0.0;
         }
 
         protected bool ShowTrial(int roleID)
@@ -248,6 +235,7 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

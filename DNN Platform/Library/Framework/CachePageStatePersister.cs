@@ -11,18 +11,13 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Cache;
 
-    /// Namespace:  DotNetNuke.Framework
-    /// Project:    DotNetNuke
-    /// Class:      CachePageStatePersister
-    /// <summary>CachePageStatePersister provides a cache based page state peristence mechanism.</summary>
+    /// <summary>CachePageStatePersister provides a cache based page state persistence mechanism.</summary>
     public class CachePageStatePersister : PageStatePersister
     {
         private const string ViewStateCacheKey = "__VIEWSTATE_CACHEKEY";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CachePageStatePersister"/> class.
-        /// Creates the CachePageStatePersister.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CachePageStatePersister"/> class.</summary>
+        /// <param name="page">The <see cref="Page"/> that the view state persistence mechanism is created for.</param>
         public CachePageStatePersister(Page page)
             : base(page)
         {
@@ -35,9 +30,9 @@ namespace DotNetNuke.Framework
             string key = this.Page.Request.Params[ViewStateCacheKey];
 
             // Abort if cache key is not available or valid
-            if (string.IsNullOrEmpty(key) || !key.StartsWith("VS_"))
+            if (string.IsNullOrEmpty(key) || !key.StartsWith("VS_", StringComparison.OrdinalIgnoreCase))
             {
-                throw new ApplicationException("Missing valid " + ViewStateCacheKey);
+                throw new InvalidViewStateCacheKeyException("Missing valid " + ViewStateCacheKey);
             }
 
             var state = DataCache.GetCache<Pair>(key);
@@ -69,8 +64,8 @@ namespace DotNetNuke.Framework
             {
                 key.Append("VS_");
                 key.Append(this.Page.Session == null ? Guid.NewGuid().ToString() : this.Page.Session.SessionID);
-                key.Append("_");
-                key.Append(DateTime.Now.Ticks.ToString());
+                key.Append('_');
+                key.Append(DateTime.Now.Ticks);
             }
 
             // Save view state and control state separately

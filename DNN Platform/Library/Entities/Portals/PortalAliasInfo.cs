@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Portals
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml;
     using System.Xml.Schema;
     using System.Xml.Serialization;
@@ -27,14 +28,14 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalAliasInfo"/> class.</summary>
-        /// <param name="alias"></param>
+        /// <param name="alias">The alias to clone.</param>
         public PortalAliasInfo(PortalAliasInfo alias)
             : this((IPortalAliasInfo)alias)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalAliasInfo"/> class.</summary>
-        /// <param name="alias"></param>
+        /// <param name="alias">The alias to clone.</param>
         public PortalAliasInfo(IPortalAliasInfo alias)
         {
             this.ThisAsInterface.HttpAlias = alias.HttpAlias;
@@ -51,31 +52,37 @@ namespace DotNetNuke.Entities.Portals
         string IPortalAliasInfo.HttpAlias { get; set; }
 
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.HttpAlias instead. Scheduled removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public string HTTPAlias
         {
             get => this.ThisAsInterface.HttpAlias;
             set => this.ThisAsInterface.HttpAlias = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc />
         int IPortalAliasInfo.PortalAliasId { get; set; }
 
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.PortalAliasId instead. Scheduled removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int PortalAliasID
         {
             get => this.ThisAsInterface.PortalAliasId;
             set => this.ThisAsInterface.PortalAliasId = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc />
         int IPortalAliasInfo.PortalId { get; set; }
 
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.PortalId instead. Scheduled removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int PortalID
         {
             get => this.ThisAsInterface.PortalId;
             set => this.ThisAsInterface.PortalId = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc />
         public bool IsPrimary { get; set; }
@@ -168,7 +175,7 @@ namespace DotNetNuke.Entities.Portals
                         break;
                     case "browserType":
                         string type = reader.ReadElementContentAsString();
-                        this.BrowserType = type.Equals("mobile", StringComparison.InvariantCultureIgnoreCase) ? BrowserTypes.Mobile : BrowserTypes.Normal;
+                        this.BrowserType = type.Equals("mobile", StringComparison.OrdinalIgnoreCase) ? BrowserTypes.Mobile : BrowserTypes.Normal;
                         break;
                     case "primary":
                         this.IsPrimary = reader.ReadElementContentAsBoolean();
@@ -187,12 +194,12 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public void WriteXml(XmlWriter writer)
         {
-            // Write start of main elemenst
+            // Write start of main elements
             writer.WriteStartElement("portalAlias");
 
             // write out properties
-            writer.WriteElementString("portalID", this.ThisAsInterface.PortalId.ToString());
-            writer.WriteElementString("portalAliasID", this.ThisAsInterface.PortalAliasId.ToString());
+            writer.WriteElementString("portalID", this.ThisAsInterface.PortalId.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("portalAliasID", this.ThisAsInterface.PortalAliasId.ToString(CultureInfo.InvariantCulture));
             writer.WriteElementString("HTTPAlias", this.ThisAsInterface.HttpAlias);
             writer.WriteElementString("skin", this.Skin);
             writer.WriteElementString("cultureCode", this.CultureCode);

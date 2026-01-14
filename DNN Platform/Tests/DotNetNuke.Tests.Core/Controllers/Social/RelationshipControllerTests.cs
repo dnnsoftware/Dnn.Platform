@@ -1,17 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Controllers.Social
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
@@ -20,8 +18,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
     using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Entities.Users.Social.Data;
     using DotNetNuke.Services.Cache;
-    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -35,26 +33,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
     public class RelationshipControllerTests
     {
         private Mock<CachingProvider> mockCachingProvider;
-        private Mock<IPortalController> _portalController;
-        private Mock<IPortalGroupController> _portalGroupController;
+        private Mock<IPortalController> portalController;
+        private Mock<IPortalGroupController> portalGroupController;
 
         private DataTable dtRelationshipTypes;
         private DataTable dtRelationships;
         private DataTable dtUserRelationships;
         private DataTable dtUserRelationshipPreferences;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
-
         public void SetUp()
         {
-            var serviceCollection = new ServiceCollection();
-            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
-            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             ComponentFactory.Container = new SimpleContainer();
             var mockDataProvider = MockComponentProvider.CreateDataProvider();
             mockDataProvider.Setup(dp => dp.GetProviderPath()).Returns(string.Empty);
@@ -62,14 +52,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.mockCachingProvider = MockComponentProvider.CreateDataCacheProvider();
             MockComponentProvider.CreateEventLogController();
 
-            this._portalController = new Mock<IPortalController>();
-            PortalController.SetTestableInstance(this._portalController.Object);
+            this.portalController = new Mock<IPortalController>();
+            PortalController.SetTestableInstance(this.portalController.Object);
 
-            this._portalGroupController = new Mock<IPortalGroupController>();
-            PortalGroupController.RegisterInstance(this._portalGroupController.Object);
+            this.portalGroupController = new Mock<IPortalGroupController>();
+            PortalGroupController.RegisterInstance(this.portalGroupController.Object);
 
             var mockHostController = new Mock<IHostController>();
             mockHostController.Setup(c => c.GetString("PerformanceSetting")).Returns("0");
+            mockHostController.As<IHostSettingsService>();
             HostController.RegisterInstance(mockHostController.Object);
 
             var mockUserController = new Mock<IUserController>();
@@ -79,12 +70,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.CreateLocalizationProvider();
 
             this.SetupDataTables();
+
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(mockDataProvider.Object);
+                    services.AddSingleton(this.mockCachingProvider.Object);
+                    services.AddSingleton(this.portalController.Object);
+                    services.AddSingleton(this.portalGroupController.Object);
+                    services.AddSingleton(mockHostController.Object);
+                    services.AddSingleton((IHostSettingsService)mockHostController.Object);
+                    services.AddSingleton(mockUserController.Object);
+                });
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
             UserController.ClearInstance();
@@ -183,7 +186,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_GetAllRelationshipTypes_Calls_DataService()
         {
             // Arrange
@@ -198,7 +200,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_GetRelationshipType_Calls_DataService_If_Not_Cached()
         {
             // Arrange
@@ -215,7 +216,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         [Test]
         [TestCase(Constants.SOCIAL_FriendRelationshipTypeID)]
         [TestCase(Constants.SOCIAL_FollowerRelationshipTypeID)]
-
         public void RelationshipController_GetRelationshipType_Returns_RelationshipType_For_Valid_ID(int relationshipTypeId)
         {
             // Arrange
@@ -230,7 +230,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_GetRelationshipType_Returns_Null_For_InValid_ID()
         {
             // Arrange
@@ -370,7 +369,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             // Arrange
             var portalId = 1;
             var relationshipController = this.CreateRelationshipController();
-            var cacheKey = CachingProvider.GetCacheKey(string.Format(DataCache.RelationshipByPortalIDCacheKey, portalId));
+            var cacheKey = CachingProvider.GetCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.RelationshipByPortalIDCacheKey, portalId));
             var relationship = new Relationship()
             {
                 RelationshipId = Constants.SOCIAL_FollowerRelationshipID,
@@ -388,7 +387,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         [Test]
         [TestCase(Constants.SOCIAL_FriendRelationshipID, DefaultRelationshipTypes.Friends)]
         [TestCase(Constants.SOCIAL_FollowerRelationshipID, DefaultRelationshipTypes.Followers)]
-
         public void RelationshipController_GetRelationship_Returns_Relationship_For_Valid_ID(int relationshipId, DefaultRelationshipTypes defaultType)
         {
             // Arrange
@@ -406,7 +404,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_GetRelationship_Returns_Null_For_InValid_ID()
         {
             // Arrange
@@ -423,7 +420,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_GetRelationshipsByUserID_Returns_List_Of_Relationships_For_Valid_User()
         {
             // Arrange
@@ -450,7 +446,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_GetRelationshipsByUserID_Returns_EmptyList_Of_Relationships_For_InValid_User()
         {
             // Arrange
@@ -468,7 +463,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_GetRelationshipsByPortalID_Returns_List_Of_Relationships_For_Valid_Portal()
         {
             // Arrange
@@ -487,7 +481,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
             // Act
             var relationships = relationshipController.GetRelationshipsByPortalId(Constants.PORTAL_Zero);
@@ -498,7 +492,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_GetRelationshipsByPortalID_Returns_List_Of_Relationships_For_Valid_Portal_When_Portal_Is_In_Group()
         {
             // Arrange
@@ -517,10 +510,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Constants.PORTALGROUP_ValidPortalGroupId);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
             List<PortalGroupInfo> portalGroups = new List<PortalGroupInfo>() { CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero) }; // CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero);
-            this._portalGroupController.Setup(pgc => pgc.GetPortalGroups()).Returns(portalGroups);
+            this.portalGroupController.Setup(pgc => pgc.GetPortalGroups()).Returns(portalGroups);
 
             // Act
             var relationships = relationshipController.GetRelationshipsByPortalId(Constants.PORTAL_Zero);
@@ -531,7 +524,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_GetRelationshipsByPortalID_Returns_EmptyList_Of_Relationships_For_InValid_Portal()
         {
             // Arrange
@@ -541,7 +533,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Null, Null.NullInteger);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Null)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Null)).Returns(mockPortalInfo);
 
             // Act
             var relationships = relationshipController.GetRelationshipsByPortalId(Constants.PORTAL_Null);
@@ -621,7 +613,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_DeleteUserRelationship_Throws_On_Null_UserRelationship()
         {
             // Arrange
@@ -632,7 +623,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_DeleteUserRelationship_Calls_DataService()
         {
             // Arrange
@@ -651,7 +641,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_DeleteUserRelationship_Calls_EventLogController_AddLog()
         {
             // Arrange
@@ -678,7 +667,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         [Test]
         [TestCase(Constants.SOCIAL_UserRelationshipIDUser10User11, Constants.USER_TenId, Constants.USER_ElevenId)]
         [TestCase(Constants.SOCIAL_UserRelationshipIDUser12User13, 12, 13)]
-
         public void RelationshipController_GetUserRelationship_Returns_Relationship_For_Valid_ID(int userRelationshipId, int userId, int relatedUserId)
         {
             // Arrange
@@ -696,7 +684,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_GetUserRelationship_Returns_Null_For_InValid_ID()
         {
             // Arrange
@@ -713,7 +700,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_GetUserRelationships_Returns_List_Of_UserRelationships_For_Valid_User()
         {
             // Arrange
@@ -738,7 +724,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_GetUserRelationships_Returns_EmptyList_Of_UserRelationships_For_InValid_User()
         {
             // Arrange
@@ -758,7 +743,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_SaveUserRelationship_Throws_On_Null_UserRelationship()
         {
             // Arrange
@@ -769,7 +753,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_SaveUserRelationship_Calls_DataService()
         {
             // Arrange
@@ -788,7 +771,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_SaveUserRelationship_Calls_EventLogController_AddLog()
         {
             // Arrange
@@ -868,7 +850,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_GetUserRelationshipPreference_Calls_DataService()
         {
             // Arrange
@@ -885,7 +866,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_GetUserRelationshipPreference_Overload_Calls_DataService()
         {
             // Arrange
@@ -959,7 +939,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_InitiateUserRelationship_Throws_On_Negative_RelationshipID()
         {
             // Arrange
@@ -973,7 +952,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_InitiateUserRelationship_Returns_Status_Accepted_When_Default_Relationship_Action_Is_Accepted()
         {
             // Arrange
@@ -1000,7 +978,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_InitiateUserRelationship_Returns_Status_Initiated_When_Default_Relationship_Action_Is_None()
         {
             // Arrange
@@ -1027,7 +1004,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_InitiateUserRelationship_Returns_Status_Accepted_When_TargetUsers_Relationship_Action_Is_Accepted()
         {
             // Arrange
@@ -1055,7 +1031,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_InitiateUserRelationship_Returns_Status_Initiated_When_TargetUsers_Relationship_Action_Is_None()
         {
             // Arrange
@@ -1083,7 +1058,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_RemoveUserRelationship_Throws_On_NonExistent_Relationship()
         {
             // Arrange
@@ -1102,7 +1076,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_AcceptRelationship_Throws_On_NonExistent_Relationship()
         {
             // Arrange
@@ -1121,7 +1094,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_AcceptUserRelationship_Calls_DataService_On_Valid_RelationshipID()
         {
             // Arrange
@@ -1145,7 +1117,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-
         public void RelationshipController_RemoveUserRelationship_Calls_DataService_On_Valid_RelationshipID()
         {
             // Arrange

@@ -5,6 +5,7 @@
 namespace DotNetNuke.UI.WebControls.Internal
 {
     using System;
+    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -65,29 +66,19 @@ namespace DotNetNuke.UI.WebControls.Internal
 
         public static string GetInitScript(Control ctl)
         {
-            string grantImagePath, denyImagePath, nullImagePath, lockImagePath, grantAltText, denyAltText, nullAltText;
+            LookupScriptValues(ctl, out var grantImagePath, out var denyImagePath, out var nullImagePath, out _, out var grantAltText, out var denyAltText, out var nullAltText);
 
-            LookupScriptValues(ctl, out grantImagePath, out denyImagePath, out nullImagePath, out lockImagePath, out grantAltText, out denyAltText, out nullAltText);
-
-            string script =
-                    string.Format(
-                        @"jQuery(document).ready(
-                            function() {{
-                                var images = {{ 'True': '{0}', 'False': '{1}', 'Null': '{2}' }};
-                                var toolTips = {{ 'True': '{3}', 'False': '{4}', 'Null': '{5}' }};
-                                var tsm = dnn.controls.triStateManager(images, toolTips);
-                                jQuery('.tristate').each( function(i, elem) {{
-                                  tsm.initControl( elem );
-                                }});
-                             }});",
-                        grantImagePath,
-                        denyImagePath,
-                        nullImagePath,
-                        grantAltText,
-                        denyAltText,
-                        nullAltText);
-
-            return script;
+            return $$"""
+                     jQuery(document).ready(
+                     function() {
+                         var images = { 'True': '{{HttpUtility.JavaScriptStringEncode(grantImagePath)}}', 'False': '{{HttpUtility.JavaScriptStringEncode(denyImagePath)}}', 'Null': '{{HttpUtility.JavaScriptStringEncode(nullImagePath)}}' };
+                         var toolTips = { 'True': '{{HttpUtility.JavaScriptStringEncode(grantAltText)}}', 'False': '{{HttpUtility.JavaScriptStringEncode(denyAltText)}}', 'Null': '{{HttpUtility.JavaScriptStringEncode(nullAltText)}}' };
+                         var tsm = dnn.controls.triStateManager(images, toolTips);
+                         jQuery('.tristate').each( function(i, elem) {
+                           tsm.initControl( elem );
+                         });
+                      });
+                     """;
         }
 
         /// <inheritdoc/>

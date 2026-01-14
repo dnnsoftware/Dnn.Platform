@@ -209,24 +209,24 @@ namespace DotNetNuke.Services.Authentication
 
         /// <summary>Determines whether the current portal has any Non-DNN authentication providers enabled.</summary>
         /// <param name="control">The control.</param>
-        /// <returns><c>true</c> if the portal has any Non-DNN authentication enabled, Otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the portal has any Non-DNN authentication enabled, Otherwise <see langword="false"/>.</returns>
         public static bool HasSocialAuthenticationEnabled(UserControl control = null)
         {
             return (from a in GetEnabledAuthenticationServices()
-                    let enabled = (a.AuthenticationType.Equals("Facebook")
-                                     || a.AuthenticationType.Equals("Google")
-                                     || a.AuthenticationType.Equals("Live")
-                                     || a.AuthenticationType.Equals("Twitter"))
+                    let enabled = (a.AuthenticationType.Equals("Facebook", StringComparison.Ordinal)
+                                     || a.AuthenticationType.Equals("Google", StringComparison.Ordinal)
+                                     || a.AuthenticationType.Equals("Live", StringComparison.Ordinal)
+                                     || a.AuthenticationType.Equals("Twitter", StringComparison.Ordinal))
                                   ? IsEnabledForPortal(a, PortalSettings.Current.PortalId)
                                   : !string.IsNullOrEmpty(a.LoginControlSrc) && ((control?.LoadControl("~/" + a.LoginControlSrc) as AuthenticationLoginBase)?.Enabled ?? true)
-                    where !a.AuthenticationType.Equals("DNN") && enabled
+                    where !a.AuthenticationType.Equals("DNN", StringComparison.Ordinal) && enabled
                     select a).Any();
         }
 
         /// <summary>Determines whether the authentication is enabled for the specified portal.</summary>
         /// <param name="authentication">The authentication.</param>
         /// <param name="portalId">The portal ID.</param>
-        /// <returns><c>true</c> if OAuth Provider and it is enabled for the portal, Otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if OAuth Provider and it is enabled for the portal, Otherwise <see langword="false"/>.</returns>
         public static bool IsEnabledForPortal(AuthenticationInfo authentication, int portalId)
         {
             return !string.IsNullOrEmpty(PortalController.GetPortalSetting(authentication.AuthenticationType + "_Enabled", portalId, string.Empty))

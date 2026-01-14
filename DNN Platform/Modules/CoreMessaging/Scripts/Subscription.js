@@ -110,7 +110,9 @@
                 .dialog({
                     modal: true,
                     autoOpen: true,
-                    dialogClass: "dnnFormPopup",
+                    classes: {
+                        'ui-dialog': 'dnnFormPopup',
+                    },
                     width: 400,
                     height: 200,
                     resizable: false,

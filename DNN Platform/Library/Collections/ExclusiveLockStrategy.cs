@@ -70,9 +70,8 @@ namespace DotNetNuke.Collections.Internal
         /// <inheritdoc/>
         public void Dispose()
         {
-            this.isDisposed = true;
-
-            // todo remove disposable from interface?
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>Releases the exclusive lock.</summary>
@@ -83,7 +82,13 @@ namespace DotNetNuke.Collections.Internal
             this.lockedThread = null;
         }
 
-        private ISharedCollectionLock GetLock(TimeSpan timeout)
+        protected virtual void Dispose(bool disposing)
+        {
+            // todo remove disposable from interface?
+            this.isDisposed = true;
+        }
+
+        private MonitorLock GetLock(TimeSpan timeout)
         {
             this.EnsureNotDisposed();
             if (this.IsThreadLocked())
@@ -98,7 +103,7 @@ namespace DotNetNuke.Collections.Internal
             }
             else
             {
-                throw new ApplicationException("ExclusiveLockStrategy.GetLock timed out");
+                throw new LockTimeoutException("ExclusiveLockStrategy.GetLock timed out");
             }
         }
 

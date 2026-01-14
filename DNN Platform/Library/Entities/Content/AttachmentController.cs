@@ -7,6 +7,7 @@ namespace DotNetNuke.Entities.Content
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common.Utilities;
@@ -33,7 +34,7 @@ namespace DotNetNuke.Entities.Content
         }
 
         /// <summary>Initializes a new instance of the <see cref="AttachmentController"/> class.</summary>
-        /// <param name="contentController"></param>
+        /// <param name="contentController">The content controller.</param>
         public AttachmentController(IContentController contentController)
         {
             this.contentController = contentController;
@@ -113,12 +114,12 @@ namespace DotNetNuke.Entities.Content
                 yield break;
             }
 
-            foreach (var file in content.FromJson<int[]>().ToArray())
+            foreach (var fileId in content.FromJson<int[]>().ToArray())
             {
                 IFileInfo fileInfo = null;
                 try
                 {
-                    fileInfo = FileManager.Instance.GetFile(file);
+                    fileInfo = FileManager.Instance.GetFile(fileId);
                 }
                 catch
                 {
@@ -127,7 +128,7 @@ namespace DotNetNuke.Entities.Content
                     // On second thought, I don't know how much sense it makes to be throwing an exception here.  If the file
                     // has been deleted or is otherwise unavailable, there's really no reason we can't continue on handling the
                     // ContentItem without its attachment.  Better than the yellow screen of death? --cbond
-                    Logger.WarnFormat("Unable to load file properties for File ID {0}", file);
+                    Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to load file properties for File ID {0}", fileId);
                 }
 
                 if (fileInfo != null)
@@ -180,19 +181,19 @@ namespace DotNetNuke.Entities.Content
             this.contentController.UpdateContentItem(contentItem);
         }
 
-        private IEnumerable<int> GetFilesByContent(int contentItemId, string type)
+        private int[] GetFilesByContent(int contentItemId, string type)
         {
             var contentItem = this.contentController.GetContentItem(contentItemId);
             if (contentItem == null)
             {
-                throw new ApplicationException(string.Format("Cannot find ContentItem ID {0}", contentItemId));
+                throw new ContentItemNotFoundException($"Cannot find ContentItem ID {contentItemId}");
             }
 
             var serialized = contentItem.Metadata[type];
 
             if (string.IsNullOrEmpty(serialized))
             {
-                return new int[0];
+                return [];
             }
 
             try
@@ -201,8 +202,7 @@ namespace DotNetNuke.Entities.Content
             }
             catch (FormatException ex)
             {
-                throw new ApplicationException(
-                    string.Format("ContentItem metadata has become corrupt (ID {0}): invalid file ID", contentItemId), ex);
+                throw new CorruptMetadataException($"ContentItem metadata has become corrupt (ID {contentItemId}): invalid file ID", ex);
             }
         }
     }

@@ -23,6 +23,7 @@ namespace DotNetNuke.UI.WebControls
 
     public class RolesSelectionGrid : Control, INamingContainer
     {
+        private static readonly string[] RoleSeparator = ["##",];
         private readonly DataTable dtRoleSelections = new DataTable();
         private IList<RoleInfo> roles;
         private IList<string> selectedRoles;
@@ -144,7 +145,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>Gets or sets the ResourceFile to localize permissions.</summary>
         public string ResourceFile { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether enable ShowAllUsers to display the virtuell "Unauthenticated Users" role.</summary>
+        /// <summary>Gets or sets a value indicating whether enable ShowAllUsers to display the virtual "Unauthenticated Users" role.</summary>
         public bool ShowUnauthenticatedUsers
         {
             get
@@ -154,7 +155,7 @@ namespace DotNetNuke.UI.WebControls
                     return false;
                 }
 
-                return Convert.ToBoolean(this.ViewState["ShowUnauthenticatedUsers"]);
+                return Convert.ToBoolean(this.ViewState["ShowUnauthenticatedUsers"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -163,7 +164,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether enable ShowAllUsers to display the virtuell "All Users" role.</summary>
+        /// <summary>Gets or sets a value indicating whether enable ShowAllUsers to display the virtual "All Users" role.</summary>
         public bool ShowAllUsers
         {
             get
@@ -173,7 +174,7 @@ namespace DotNetNuke.UI.WebControls
                     return false;
                 }
 
-                return Convert.ToBoolean(this.ViewState["ShowAllUsers"]);
+                return Convert.ToBoolean(this.ViewState["ShowAllUsers"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -221,9 +222,9 @@ namespace DotNetNuke.UI.WebControls
                 // Load TabPermissions
                 if (myState[1] != null)
                 {
-                    string state = Convert.ToString(myState[1]);
+                    string state = Convert.ToString(myState[1], CultureInfo.InvariantCulture);
                     this.CurrentRoleSelection = state != string.Empty
-                                        ? new List<string>(state.Split(new[] { "##" }, StringSplitOptions.None))
+                                        ? new List<string>(state.Split(RoleSeparator, StringSplitOptions.None))
                                         : new List<string>();
                 }
             }
@@ -300,6 +301,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Overrides the base OnPreRender method to Bind the Grid to the Permissions.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             this.BindData();
@@ -307,7 +309,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>Updates a Selection.</summary>
         /// <param name="roleName">The name of the role.</param>
-        /// <param name="selected"></param>
+        /// <param name="selected">Whether it's selected.</param>
         protected virtual void UpdateSelection(string roleName, bool selected)
         {
             var isMatch = false;
@@ -412,25 +414,25 @@ namespace DotNetNuke.UI.WebControls
         private void GetRoles()
         {
             int roleGroupId = -2;
-            if ((this.cboRoleGroups != null) && (this.cboRoleGroups.SelectedValue != null))
+            if (this.cboRoleGroups is { SelectedValue: not null, })
             {
-                roleGroupId = int.Parse(this.cboRoleGroups.SelectedValue);
+                roleGroupId = int.Parse(this.cboRoleGroups.SelectedValue, CultureInfo.InvariantCulture);
             }
 
             this.roles = roleGroupId > -2
-                    ? RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
-                    : RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
+                    ? RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentSettings().PortalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
+                    : RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
 
             if (roleGroupId < 0)
             {
                 if (this.ShowUnauthenticatedUsers)
                 {
-                    this.roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleUnauthUser), RoleName = Globals.glbRoleUnauthUserName });
+                    this.roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture), RoleName = Globals.glbRoleUnauthUserName });
                 }
 
                 if (this.ShowAllUsers)
                 {
-                    this.roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName });
+                    this.roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture), RoleName = Globals.glbRoleAllUsersName });
                 }
             }
 
@@ -442,7 +444,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this.dgRoleSelection.Columns.Clear();
             var textCol = new BoundColumn { HeaderText = "&nbsp;", DataField = "RoleName" };
-            textCol.ItemStyle.Width = Unit.Parse("150px");
+            textCol.ItemStyle.Width = Unit.Parse("150px", CultureInfo.InvariantCulture);
             this.dgRoleSelection.Columns.Add(textCol);
             var idCol = new BoundColumn { HeaderText = string.Empty, DataField = "roleid", Visible = false };
             this.dgRoleSelection.Columns.Add(idCol);

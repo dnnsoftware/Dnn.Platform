@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Social.Notifications
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml.Serialization;
 
     using DotNetNuke.Common.Utilities;
@@ -13,9 +14,6 @@ namespace DotNetNuke.Services.Social.Notifications
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Notifications
-    /// Class:      Notification
     /// <summary>The Notification class describes the a notification received by a user as a consecuence of an action.</summary>
     [Serializable]
     public class Notification : BaseEntityInfo, IHydratable
@@ -122,14 +120,14 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            this.NotificationID = Convert.ToInt32(dr["MessageID"]);
-            this.NotificationTypeID = Convert.ToInt32(dr["NotificationTypeID"]);
+            this.NotificationID = Convert.ToInt32(dr["MessageID"], CultureInfo.InvariantCulture);
+            this.NotificationTypeID = Convert.ToInt32(dr["NotificationTypeID"], CultureInfo.InvariantCulture);
             this.To = Null.SetNullString(dr["To"]);
             this.From = Null.SetNullString(dr["From"]);
             this.Subject = Null.SetNullString(dr["Subject"]);
             this.Body = Null.SetNullString(dr["Body"]);
             this.Context = Null.SetNullString(dr["Context"]);
-            this.SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
+            this.SenderUserID = Convert.ToInt32(dr["SenderUserID"], CultureInfo.InvariantCulture);
             this.ExpirationDate = Null.SetNullDateTime(dr["ExpirationDate"]);
             this.IncludeDismissAction = Null.SetNullBoolean(dr["IncludeDismissAction"]);
 

@@ -4,19 +4,10 @@
 namespace DotNetNuke.Services.ClientCapability
 {
     using System;
-    using System.Collections.Generic;
 
     /// <summary>Default Implementation of IClientCapability.</summary>
     public class ClientCapability : IClientCapability
     {
-        private IDictionary<string, string> capabilities;
-
-        /// <summary>Initializes a new instance of the <see cref="ClientCapability"/> class.</summary>
-        public ClientCapability()
-        {
-            this.capabilities = new Dictionary<string, string>();
-        }
-
         /// <inheritdoc />
         public string ID { get; set; }
 
@@ -43,21 +34,6 @@ namespace DotNetNuke.Services.ClientCapability
 
         /// <inheritdoc />
         public bool SupportsFlash { get; set; }
-
-        /// <inheritdoc />
-        [Obsolete("Deprecated in DotNetNuke 8.0.0. This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name. Scheduled for removal in v10.0.0.")]
-        public IDictionary<string, string> Capabilities
-        {
-            get
-            {
-                return this.capabilities;
-            }
-
-            set
-            {
-                this.capabilities = value;
-            }
-        }
 
         /// <inheritdoc />
         public string BrowserName { get; set; }

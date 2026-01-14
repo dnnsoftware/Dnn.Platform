@@ -6,11 +6,22 @@ namespace DotNetNuke.Security.Membership
 {
     public enum UserValidStatus
     {
+        /// <summary>The user is valid.</summary>
         VALID = 0,
+
+        /// <summary>The user's password is expired.</summary>
         PASSWORDEXPIRED = 1,
+
+        /// <summary>The user's password will expire soon.</summary>
         PASSWORDEXPIRING = 2,
+
+        /// <summary>The user's profile is not complete.</summary>
         UPDATEPROFILE = 3,
+
+        /// <summary>The user is updating their password.</summary>
         UPDATEPASSWORD = 4,
+
+        /// <summary>The user needs to address to the site terms.</summary>
         MUSTAGREETOTERMS = 5,
     }
 }

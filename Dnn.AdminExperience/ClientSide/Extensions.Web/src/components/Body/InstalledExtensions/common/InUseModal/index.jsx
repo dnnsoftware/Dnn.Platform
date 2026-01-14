@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Modal, Button, Dropdown, Label } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
+import Html from "../../../../Html";
 import resx from "localization";
 import { ExtensionActions } from "actions";
 
@@ -117,19 +118,19 @@ class InUseModal extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderUsageDetail() {
         const {props} = this;
         if (props.tabUrls) {
             return props.tabUrls.map((item, i) => {
                 return (
-                    <div key={i} className="usage-detail-taburl" dangerouslySetInnerHTML={{ __html: item.TabUrl }}></div>
+                    <div key={i} className="usage-detail-taburl"><Html html={item.TabUrl} /></div>
                 );
             });
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         return (

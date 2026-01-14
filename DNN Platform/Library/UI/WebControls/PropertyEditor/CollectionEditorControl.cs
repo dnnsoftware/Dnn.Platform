@@ -6,16 +6,33 @@ namespace DotNetNuke.UI.WebControls
     using System;
     using System.Collections;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Reflection;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
 
     /// <summary>The CollectionEditorControl control provides a Control to display Collection Properties.</summary>
     [ToolboxData("<{0}:CollectionEditorControl runat=server></{0}:CollectionEditorControl>")]
     public class CollectionEditorControl : PropertyEditorControl
     {
+        /// <summary>Initializes a new instance of the <see cref="CollectionEditorControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public CollectionEditorControl()
+            : this(Globals.GetCurrentServiceProvider())
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CollectionEditorControl"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        public CollectionEditorControl(IServiceProvider serviceProvider)
+            : base(serviceProvider)
+        {
+        }
+
         /// <summary>Gets or sets the value of the Category.</summary>
         /// <value>A string representing the Category of the Field.</value>
         [Browsable(true)]
@@ -128,19 +145,19 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>GetCategory gets the Category of an object.</summary>
+        /// <param name="obj">The object from which to get the category.</param>
         /// <returns>The category name or <see cref="Null.NullString"/>.</returns>
         protected override string GetCategory(object obj)
         {
-            PropertyInfo objProperty;
             string category = Null.NullString;
 
             // Get Category Field
             if (!string.IsNullOrEmpty(this.CategoryDataField))
             {
-                objProperty = obj.GetType().GetProperty(this.CategoryDataField);
+                var objProperty = obj.GetType().GetProperty(this.CategoryDataField);
                 if (!(objProperty == null || (objProperty.GetValue(obj, null) == null)))
                 {
-                    category = Convert.ToString(objProperty.GetValue(obj, null));
+                    category = Convert.ToString(objProperty.GetValue(obj, null), CultureInfo.InvariantCulture);
                 }
             }
 
@@ -148,21 +165,21 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>GetGroups gets an array of Groups/Categories from the DataSource.</summary>
+        /// <param name="arrObjects">The objects from which to get the categories.</param>
         /// <returns>An array of group/category names.</returns>
         protected override string[] GetGroups(IEnumerable arrObjects)
         {
             var arrGroups = new ArrayList();
-            PropertyInfo objProperty;
 
             foreach (object obj in arrObjects)
             {
                 // Get Category Field
                 if (!string.IsNullOrEmpty(this.CategoryDataField))
                 {
-                    objProperty = obj.GetType().GetProperty(this.CategoryDataField);
+                    var objProperty = obj.GetType().GetProperty(this.CategoryDataField);
                     if (!((objProperty == null) || (objProperty.GetValue(obj, null) == null)))
                     {
-                        string category = Convert.ToString(objProperty.GetValue(obj, null));
+                        string category = Convert.ToString(objProperty.GetValue(obj, null), CultureInfo.InvariantCulture);
 
                         if (!arrGroups.Contains(category))
                         {
@@ -175,7 +192,7 @@ namespace DotNetNuke.UI.WebControls
             var strGroups = new string[arrGroups.Count];
             for (int i = 0; i <= arrGroups.Count - 1; i++)
             {
-                strGroups[i] = Convert.ToString(arrGroups[i]);
+                strGroups[i] = Convert.ToString(arrGroups[i], CultureInfo.InvariantCulture);
             }
 
             return strGroups;
@@ -187,11 +204,10 @@ namespace DotNetNuke.UI.WebControls
         protected override bool GetRowVisibility(object obj)
         {
             bool isVisible = true;
-            PropertyInfo objProperty;
-            objProperty = obj.GetType().GetProperty(this.VisibleDataField);
+            var objProperty = obj.GetType().GetProperty(this.VisibleDataField);
             if (!(objProperty == null || (objProperty.GetValue(obj, null) == null)))
             {
-                isVisible = Convert.ToBoolean(objProperty.GetValue(obj, null));
+                isVisible = Convert.ToBoolean(objProperty.GetValue(obj, null), CultureInfo.InvariantCulture);
             }
 
             if (!isVisible && this.EditMode == PropertyEditorMode.Edit)
@@ -200,7 +216,7 @@ namespace DotNetNuke.UI.WebControls
                 objProperty = obj.GetType().GetProperty(this.RequiredDataField);
                 if (!(objProperty == null || (objProperty.GetValue(obj, null) == null)))
                 {
-                    isVisible = Convert.ToBoolean(objProperty.GetValue(obj, null));
+                    isVisible = Convert.ToBoolean(objProperty.GetValue(obj, null), CultureInfo.InvariantCulture);
                 }
             }
 

@@ -12,6 +12,7 @@ namespace Dnn.PersonaBar.Pages.Components
         /// as part of the process of cloning a module or not.
         /// F.i: when creating a page from a template, duplicating, etc.
         /// </summary>
+        /// <param name="cloneModule">The value to set in the context.</param>
         void SetCloneModuleContext(bool cloneModule);
     }
 }

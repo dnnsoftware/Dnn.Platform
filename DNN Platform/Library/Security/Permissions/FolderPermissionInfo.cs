@@ -62,6 +62,7 @@ namespace DotNetNuke.Security.Permissions
         [XmlIgnore]
         [JsonIgnore]
         [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IFolderPermissionInfo)}.{nameof(IFolderPermissionInfo.FolderPermissionId)} instead. Scheduled for removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int FolderPermissionID
         {
             get
@@ -74,6 +75,7 @@ namespace DotNetNuke.Security.Permissions
                 ((IFolderPermissionInfo)this).FolderPermissionId = value;
             }
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         [XmlIgnore]
         [JsonIgnore]
@@ -93,6 +95,7 @@ namespace DotNetNuke.Security.Permissions
         [XmlIgnore]
         [JsonIgnore]
         [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IFolderPermissionInfo)}.{nameof(IFolderPermissionInfo.FolderId)} instead. Scheduled for removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int FolderID
         {
             get
@@ -105,6 +108,7 @@ namespace DotNetNuke.Security.Permissions
                 ((IFolderPermissionInfo)this).FolderId = value;
             }
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         [XmlIgnore]
         [JsonIgnore]
@@ -125,6 +129,7 @@ namespace DotNetNuke.Security.Permissions
         [XmlIgnore]
         [JsonIgnore]
         [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IFolderPermissionInfo)}.{nameof(IFolderPermissionInfo.PortalId)} instead. Scheduled for removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int PortalID
         {
             get
@@ -137,6 +142,7 @@ namespace DotNetNuke.Security.Permissions
                 ((IFolderPermissionInfo)this).PortalId = value;
             }
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         [XmlIgnore]
         [JsonIgnore]

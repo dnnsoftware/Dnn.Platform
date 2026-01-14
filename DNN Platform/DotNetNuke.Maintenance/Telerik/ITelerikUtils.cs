@@ -19,7 +19,7 @@ namespace DotNetNuke.Maintenance.Telerik
         IEnumerable<string> GetAssembliesThatDependOnTelerik();
 
         /// <summary>Checks whether Telerik is installed on this site or not.</summary>
-        /// <returns><c>True</c> if Telerik is found in this site, or <c>False</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if Telerik is found in this site, or <see langword="false"/> otherwise.</returns>
         bool TelerikIsInstalled();
 
         /// <summary>Loads the Telerik assembly and returns its version number.</summary>
@@ -30,5 +30,10 @@ namespace DotNetNuke.Maintenance.Telerik
         /// The <see cref="Exception.InnerException"/> property contains the cause of the error.
         /// </exception>
         Version GetTelerikVersion();
+
+        /// <summary>Checks whether the version number of the Telerik assembly is older than a known-safe version.</summary>
+        /// <param name="version">The version number to validate.</param>
+        /// <returns><see langword="true"/> if the version is known to be vulnerable, otherwise <see langword="false"/>.</returns>
+        bool IsTelerikVersionVulnerable(Version version);
     }
 }

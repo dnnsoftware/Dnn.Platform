@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.Mvc.Framework
             var name = cacheItem.Params[0] as string;
             var target = cacheItem.Params[1];
             var parameters = cacheItem.Params[2] as object[];
-            var result = factoryType.InvokeMember(name, BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic, null, target, parameters);
+            var result = factoryType.InvokeMember(name, BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic, null, target, parameters, CultureInfo.InvariantCulture);
             return result as ViewEngineResult;
         }
 

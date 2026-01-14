@@ -22,7 +22,6 @@ namespace Dnn.PersonaBar.Servers.Services
         private readonly DatabaseController databaseController = new DatabaseController();
 
         [HttpGet]
-
         public HttpResponseMessage GetDatabaseServerInfo()
         {
             try

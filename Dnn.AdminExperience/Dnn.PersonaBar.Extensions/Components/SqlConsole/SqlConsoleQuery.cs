@@ -9,6 +9,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
     using DotNetNuke.ComponentModel.DataAnnotations;
     using Newtonsoft.Json;
 
+    /// <summary>A stored SQL query.</summary>
     [TableName("SQLQueries")]
     [PrimaryKey("QueryId")]
     public partial class SqlQuery

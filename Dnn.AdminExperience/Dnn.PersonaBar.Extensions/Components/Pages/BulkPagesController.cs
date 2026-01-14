@@ -1,12 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Pages.Components
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -14,6 +14,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
     using Dnn.PersonaBar.Pages.Components.Exceptions;
     using Dnn.PersonaBar.Pages.Services.Dto;
+    using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -23,17 +25,33 @@ namespace Dnn.PersonaBar.Pages.Components
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.UI;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
 
     public class BulkPagesController : ServiceLocator<IBulkPagesController, BulkPagesController>, IBulkPagesController
     {
         private const string DefaultPageTemplate = "Default.page.template";
         private static readonly Regex TabNameRegex = new Regex(">*(.*)", RegexOptions.Compiled);
+        private readonly IBusinessControllerProvider businessControllerProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="BulkPagesController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public BulkPagesController()
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="BulkPagesController"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        public BulkPagesController(IBusinessControllerProvider businessControllerProvider)
+        {
+            this.businessControllerProvider = businessControllerProvider;
+        }
 
         /// <inheritdoc/>
         public BulkPageResponse AddBulkPages(BulkPage page, bool validateOnly)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var portalId = portalSettings.PortalId;
             var response = new BulkPageResponse();
             var parentId = page.ParentId;
@@ -42,10 +60,9 @@ namespace Dnn.PersonaBar.Pages.Components
             var strValue = page.BulkPages;
             strValue = strValue.Replace("\r", "\n").Replace("\n\n", "\n").Trim();
 
-            string invalidType;
-            if (!TabController.IsValidTabName(strValue, out invalidType))
+            if (!TabController.IsValidTabName(strValue, out var invalidType))
             {
-                throw new BulkPagesException("bulkPages", string.Format(Localization.GetString(invalidType), strValue));
+                throw new BulkPagesException("bulkPages", string.Format(CultureInfo.CurrentCulture, Localization.GetString(invalidType), strValue));
             }
 
             if (page.StartDate.HasValue && page.EndDate.HasValue && page.StartDate > page.EndDate)
@@ -97,7 +114,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     {
                         if (string.IsNullOrWhiteSpace(oTab.TabName))
                         {
-                            errorMessage = string.Format(Localization.GetString("EmptyTabName"), oTab.TabName);
+                            errorMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("EmptyTabName"), oTab.TabName);
                         }
                         else
                         {
@@ -129,13 +146,13 @@ namespace Dnn.PersonaBar.Pages.Components
         /// <inheritdoc/>
         protected override Func<IBulkPagesController> GetFactory()
         {
-            return () => new BulkPagesController();
+            return Globals.DependencyProvider.GetRequiredService<IBulkPagesController>;
         }
 
         /// <summary>Checks whether there is a duplicate tab exists.</summary>
         /// <param name="pageIndex">Page index to check the duplicate for.</param>
         /// <param name="pages">Page list to check the duplicates from.</param>
-        /// <returns>True in case there is a tab with the same name and path and with the index of greater than the first occurence; false otherwise.</returns>
+        /// <returns>True in case there is a tab with the same name and path and with the index of greater than the first occurrence; false otherwise.</returns>
         private static bool DuplicateExists(int pageIndex, string[] pages)
         {
             var pageName = pages[pageIndex];
@@ -215,7 +232,47 @@ namespace Dnn.PersonaBar.Pages.Components
             return Null.NullInteger;
         }
 
-        private int CreateTabFromParent(PortalSettings portalSettings, TabInfo objRoot, TabInfo oTab, int parentId, bool validateOnly, out string errorMessage)
+        private static bool IsValidTabPath(TabInfo tab, string newTabPath, out string errorMessage)
+        {
+            var valid = true;
+            errorMessage = null;
+
+            // get default culture if the tab's culture is null
+            var cultureCode = tab.CultureCode;
+            if (string.IsNullOrEmpty(cultureCode))
+            {
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
+                cultureCode = portalSettings.DefaultLanguage;
+            }
+
+            // Validate Tab Path
+            var tabId = TabController.GetTabByTabPath(tab.PortalID, newTabPath, cultureCode);
+            if (tabId != Null.NullInteger && tabId != tab.TabID)
+            {
+                var existingTab = TabController.Instance.GetTab(tabId, tab.PortalID, false);
+                if (existingTab is { IsDeleted: true, })
+                {
+                    errorMessage = Localization.GetString("TabRecycled");
+                }
+                else
+                {
+                    errorMessage = Localization.GetString("TabExists");
+                }
+
+                valid = false;
+            }
+
+            // check whether there are conflicts between tab path and portal alias.
+            if (TabController.IsDuplicateWithPortalAlias(tab.PortalID, newTabPath))
+            {
+                errorMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("PathDuplicateWithAlias"), tab.TabName, newTabPath);
+                valid = false;
+            }
+
+            return valid;
+        }
+
+        private int CreateTabFromParent(IPortalSettings portalSettings, TabInfo objRoot, TabInfo oTab, int parentId, bool validateOnly, out string errorMessage)
         {
             var tab = new TabInfo
             {
@@ -271,15 +328,14 @@ namespace Dnn.PersonaBar.Pages.Components
             tab.TabPath = Globals.GenerateTabPath(tab.ParentId, tab.TabName);
 
             // Check for invalid
-            string invalidType;
-            if (!TabController.IsValidTabName(tab.TabName, out invalidType))
+            if (!TabController.IsValidTabName(tab.TabName, out var invalidType))
             {
-                errorMessage = string.Format(Localization.GetString(invalidType), tab.TabName);
+                errorMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString(invalidType), tab.TabName);
                 return Null.NullInteger;
             }
 
             // Validate Tab Path
-            if (!this.IsValidTabPath(tab, tab.TabPath, out errorMessage))
+            if (!IsValidTabPath(tab, tab.TabPath, out errorMessage))
             {
                 return Null.NullInteger;
             }
@@ -342,8 +398,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private void ApplyDefaultTabTemplate(TabInfo tab)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var templateFile = Path.Combine(portalSettings.HomeDirectoryMapPath, "Templates\\" + DefaultPageTemplate);
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
+            var templateFile = Path.Combine(portalSettings.HomeDirectoryMapPath, $@"Templates\{DefaultPageTemplate}");
 
             if (!File.Exists(templateFile))
             {
@@ -353,53 +409,17 @@ namespace Dnn.PersonaBar.Pages.Components
             var xmlDoc = new XmlDocument { XmlResolver = null };
             try
             {
-                xmlDoc.Load(templateFile);
-                TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
+                using (var xmlReader = XmlReader.Create(templateFile, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xmlDoc.Load(xmlReader);
+                }
+
+                TabController.DeserializePanes(this.businessControllerProvider, xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
             }
             catch (Exception ex)
             {
                 throw new DotNetNukeException("Unable to process page template.", ex, DotNetNukeErrorCode.DeserializePanesFailed);
             }
-        }
-
-        private bool IsValidTabPath(TabInfo tab, string newTabPath, out string errorMessage)
-        {
-            var valid = true;
-            errorMessage = null;
-
-            // get default culture if the tab's culture is null
-            var cultureCode = tab.CultureCode;
-            if (string.IsNullOrEmpty(cultureCode))
-            {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                cultureCode = portalSettings.DefaultLanguage;
-            }
-
-            // Validate Tab Path
-            var tabId = TabController.GetTabByTabPath(tab.PortalID, newTabPath, cultureCode);
-            if (tabId != Null.NullInteger && tabId != tab.TabID)
-            {
-                var existingTab = TabController.Instance.GetTab(tabId, tab.PortalID, false);
-                if (existingTab != null && existingTab.IsDeleted)
-                {
-                    errorMessage = Localization.GetString("TabRecycled");
-                }
-                else
-                {
-                    errorMessage = Localization.GetString("TabExists");
-                }
-
-                valid = false;
-            }
-
-            // check whether have conflict between tab path and portal alias.
-            if (TabController.IsDuplicateWithPortalAlias(tab.PortalID, newTabPath))
-            {
-                errorMessage = string.Format(Localization.GetString("PathDuplicateWithAlias"), tab.TabName, newTabPath);
-                valid = false;
-            }
-
-            return valid;
         }
     }
 }

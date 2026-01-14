@@ -17,23 +17,18 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
     using ModulesControllerLibrary = Dnn.PersonaBar.Library.Controllers.ModulesController;
 
     [ConsoleCommand("move-module", Constants.ModulesCategory, "Prompt_MoveModule_Description")]
-
     public class MoveModule : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_MoveModule_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("pageid", "Prompt_MoveModule_FlagPageId", "Integer", true)]
-
         private const string FlagPageId = "pageid";
 
         [FlagParameter("topageid", "Prompt_MoveModule_FlagToPageId", "Integer", true)]
-
         private const string FlagToPageId = "topageid";
 
         [FlagParameter("pane", "Prompt_MoveModule_FlagPane", "String", "ContentPane")]
-
         private const string FlagPane = "pane";
 
         /// <inheritdoc/>

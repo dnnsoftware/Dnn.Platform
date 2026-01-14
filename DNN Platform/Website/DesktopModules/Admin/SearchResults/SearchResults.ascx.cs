@@ -8,17 +8,20 @@ namespace DotNetNuke.Modules.SearchResults
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Threading;
-    using System.Web;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Search.Internals;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A control which displays search results.</summary>
     public partial class SearchResults : PortalModuleBase
     {
         private const int DefaultPageIndex = 1;
@@ -27,8 +30,25 @@ namespace DotNetNuke.Modules.SearchResults
 
         private const string MyFileName = "SearchResults.ascx";
 
+        private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IClientResourceController clientResourceController;
         private IList<string> searchContentSources;
         private IList<int> searchPortalIds;
+
+        /// <summary>Initializes a new instance of the <see cref="SearchResults"/> class.</summary>
+        public SearchResults()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SearchResults"/> class.</summary>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public SearchResults(IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
+        {
+            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+        }
 
         protected string SearchTerm
         {
@@ -50,7 +70,7 @@ namespace DotNetNuke.Modules.SearchResults
             get
             {
                 var searchScopeParam = this.SearchScopeParam;
-                return string.IsNullOrEmpty(searchScopeParam) ? new string[0] : searchScopeParam.Split(',');
+                return string.IsNullOrEmpty(searchScopeParam) ? [] : searchScopeParam.Split(',');
             }
         }
 
@@ -341,10 +361,10 @@ namespace DotNetNuke.Modules.SearchResults
             base.OnLoad(e);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.searchBox.js");
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.searchBox.css", FileOrder.Css.ModuleCss);
-            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/admin/SearchResults/dnn.searchResult.js");
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.searchBox.js");
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnn.searchBox.css", Abstractions.ClientResources.FileOrder.Css.ModuleCss);
+            this.clientResourceController.RegisterScript("~/DesktopModules/admin/SearchResults/dnn.searchResult.js");
 
             this.CultureCode = Thread.CurrentThread.CurrentCulture.ToString();
 

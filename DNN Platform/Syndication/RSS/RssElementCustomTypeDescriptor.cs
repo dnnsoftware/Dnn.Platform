@@ -8,7 +8,7 @@ namespace DotNetNuke.Services.Syndication
     using System.ComponentModel;
 
     /// <summary>  Helper class to enable the data binding logic generate column names at runtime.</summary>
-    internal class RssElementCustomTypeDescriptor : ICustomTypeDescriptor
+    internal sealed class RssElementCustomTypeDescriptor : ICustomTypeDescriptor
     {
         private readonly Dictionary<string, string> attributes;
 
@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.Syndication
             return new PropertyDescriptorCollection(propertyDescriptors);
         }
 
-        private class RssElementCustomPropertyDescriptor : PropertyDescriptor
+        private sealed class RssElementCustomPropertyDescriptor : PropertyDescriptor
         {
             public RssElementCustomPropertyDescriptor(string propertyName)
                 : base(propertyName, null)

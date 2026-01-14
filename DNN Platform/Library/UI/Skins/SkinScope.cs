@@ -6,8 +6,13 @@ namespace DotNetNuke.UI.Skins
 {
     public enum SkinScope
     {
+        /// <summary>Both scopes.</summary>
         All = 0,
+
+        /// <summary>Host-level skins.</summary>
         Host = 1,
+
+        /// <summary>Portal-level skins.</summary>
         Site = 2,
     }
 }

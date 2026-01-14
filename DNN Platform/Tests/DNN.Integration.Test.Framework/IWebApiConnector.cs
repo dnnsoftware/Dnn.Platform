@@ -8,6 +8,7 @@ namespace DNN.Integration.Test.Framework
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
 
     public interface IWebApiConnector
     {
@@ -33,11 +34,11 @@ namespace DNN.Integration.Test.Framework
 
         bool Login(string password);
 
-        HttpResponseMessage UploadUserFile(string fileName, bool waitHttpResponse = true, int userId = -1);
+        Task<HttpResponseMessage> UploadUserFile(string fileName, bool waitHttpResponse = true, int userId = -1);
 
         HttpResponseMessage ActivityStreamUploadUserFile(IDictionary<string, string> headers, string fileName);
 
-        bool UploadCmsFile(string fileName, string portalFolder);
+        Task<bool> UploadCmsFile(string fileName, string portalFolder);
 
         HttpResponseMessage PostJson(
             string relativeUrl,

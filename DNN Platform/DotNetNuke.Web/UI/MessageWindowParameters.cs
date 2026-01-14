@@ -3,8 +3,10 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI
 {
+    using System.Globalization;
     using System.Web.UI.WebControls;
 
+    /// <summary>Information about a message displayed in a window.</summary>
     public class MessageWindowParameters
     {
         private string message = string.Empty;
@@ -37,10 +39,11 @@ namespace DotNetNuke.Web.UI
         {
             this.message = message;
             this.title = title;
-            this.windowWidth = Unit.Parse(windowWidth);
-            this.windowHeight = Unit.Parse(windowHeight);
+            this.windowWidth = Unit.Parse(windowWidth, CultureInfo.InvariantCulture);
+            this.windowHeight = Unit.Parse(windowHeight, CultureInfo.InvariantCulture);
         }
 
+        /// <summary>Gets or sets the message text.</summary>
         public string Message
         {
             get
@@ -57,6 +60,7 @@ namespace DotNetNuke.Web.UI
             }
         }
 
+        /// <summary>Gets or sets the message title.</summary>
         public string Title
         {
             get
@@ -73,6 +77,7 @@ namespace DotNetNuke.Web.UI
             }
         }
 
+        /// <summary>Gets or sets the width of the window in which to display the message.</summary>
         public Unit WindowWidth
         {
             get
@@ -86,6 +91,7 @@ namespace DotNetNuke.Web.UI
             }
         }
 
+        /// <summary>Gets or sets the height of the window in which to display the message.</summary>
         public Unit WindowHeight
         {
             get

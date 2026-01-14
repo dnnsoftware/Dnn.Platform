@@ -7,6 +7,7 @@ namespace Dnn.ExportImport.Components.Services
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.ExportImport.Components.Common;
@@ -255,17 +256,17 @@ namespace Dnn.ExportImport.Components.Services
             finally
             {
                 this.CheckPointStageCallback(this);
-                this.Result.AddSummary("Exported Users", totalUsersExported.ToString());
-                this.Result.AddSummary("Exported User Portals", totalPortalsExported.ToString());
-                this.Result.AddSummary("Exported User Roles", totalUserRolesExported.ToString());
+                this.Result.AddSummary("Exported Users", totalUsersExported.ToString(CultureInfo.InvariantCulture));
+                this.Result.AddSummary("Exported User Portals", totalPortalsExported.ToString(CultureInfo.InvariantCulture));
+                this.Result.AddSummary("Exported User Roles", totalUserRolesExported.ToString(CultureInfo.InvariantCulture));
                 if (includeProfile)
                 {
-                    this.Result.AddSummary("Exported User Profiles", totalProfilesExported.ToString());
+                    this.Result.AddSummary("Exported User Profiles", totalProfilesExported.ToString(CultureInfo.InvariantCulture));
                 }
 
-                this.Result.AddSummary("Exported User Authentication", totalAuthenticationExported.ToString());
-                this.Result.AddSummary("Exported Aspnet User", totalAspnetUserExported.ToString());
-                this.Result.AddSummary("Exported Aspnet Membership", totalAspnetMembershipExported.ToString());
+                this.Result.AddSummary("Exported User Authentication", totalAuthenticationExported.ToString(CultureInfo.InvariantCulture));
+                this.Result.AddSummary("Exported Aspnet User", totalAspnetUserExported.ToString(CultureInfo.InvariantCulture));
+                this.Result.AddSummary("Exported Aspnet Membership", totalAspnetMembershipExported.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -403,7 +404,7 @@ namespace Dnn.ExportImport.Components.Services
                                 if (aspNetUser != null)
                                 {
                                     tempAspUserCount += 1;
-                                    row["ApplicationId"] = this.GetApplicationId();
+                                    row["ApplicationId"] = GetApplicationId();
                                     row["AspUserId"] = aspNetUser.UserId;
                                     row["MobileAlias"] = aspNetUser.MobileAlias;
                                     row["IsAnonymous"] = aspNetUser.IsAnonymous;
@@ -480,11 +481,11 @@ namespace Dnn.ExportImport.Components.Services
             finally
             {
                 this.CheckPointStageCallback(this);
-                this.Result.AddSummary("Imported Users", totalUsersImported.ToString());
-                this.Result.AddSummary("Imported User Portals", totalPortalsImported.ToString());
-                this.Result.AddSummary("Import User Authentications", totalUserAuthenticationCount.ToString());
-                this.Result.AddSummary("Imported Aspnet Users", totalAspnetUserImported.ToString());
-                this.Result.AddSummary("Imported Aspnet Memberships", totalAspnetMembershipImported.ToString());
+                this.Result.AddSummary("Imported Users", totalUsersImported.ToString(CultureInfo.InvariantCulture));
+                this.Result.AddSummary("Imported User Portals", totalPortalsImported.ToString(CultureInfo.InvariantCulture));
+                this.Result.AddSummary("Import User Authentications", totalUserAuthenticationCount.ToString(CultureInfo.InvariantCulture));
+                this.Result.AddSummary("Imported Aspnet Users", totalAspnetUserImported.ToString(CultureInfo.InvariantCulture));
+                this.Result.AddSummary("Imported Aspnet Memberships", totalAspnetMembershipImported.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -494,17 +495,15 @@ namespace Dnn.ExportImport.Components.Services
             return this.Repository.GetCount<ExportUser>();
         }
 
-        private Guid GetApplicationId()
+        private static Guid GetApplicationId()
         {
-            using (var db =
+            using var db =
                 new PetaPocoDataContext(
                     DotNetNuke.Data.DataProvider.Instance().Settings["connectionStringName"],
-                    "aspnet_"))
-            {
-                return db.ExecuteScalar<Guid>(
-                    CommandType.Text,
-                    "SELECT TOP 1 ApplicationId FROM aspnet_Applications");
-            }
+                    "aspnet_");
+            return db.ExecuteScalar<Guid>(
+                CommandType.Text,
+                "SELECT TOP 1 ApplicationId FROM aspnet_Applications");
         }
     }
 }

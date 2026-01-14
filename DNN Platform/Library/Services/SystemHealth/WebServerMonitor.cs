@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.SystemHealth
 {
     using System;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Entities.Host;
@@ -12,7 +13,7 @@ namespace DotNetNuke.Services.SystemHealth
     using DotNetNuke.Services.Scheduling;
 
     /// <summary>
-    /// When run on each server it updates the last activity date for the server and removes any servers that havent been seen in 24 hours.
+    /// When run on each server it updates the last activity date for the server and removes any servers that haven't been seen in 24 hours.
     /// </summary>
     public class WebServerMonitor : SchedulerClient
     {
@@ -22,7 +23,7 @@ namespace DotNetNuke.Services.SystemHealth
         /// Initializes a new instance of the <see cref="WebServerMonitor"/> class.
         /// Constructs a WebServerMonitor SchedulerClient.
         /// </summary>
-        /// <param name="objScheduleHistoryItem">A SchedulerHistiryItem.</param>
+        /// <param name="objScheduleHistoryItem">A SchedulerHistoryItem.</param>
         /// <remarks>
         /// This must be run on all servers.
         /// </remarks>
@@ -40,9 +41,9 @@ namespace DotNetNuke.Services.SystemHealth
             {
                 Logger.Info("Starting WebServerMonitor");
 
-                this.UpdateCurrentServerActivity();
-                this.DisableServersWithoutRecentActivity();
-                this.RemoveInActiveServers();
+                UpdateCurrentServerActivity();
+                DisableServersWithoutRecentActivity();
+                RemoveInActiveServers();
 
                 Logger.Info("Finished WebServerMonitor");
                 this.ScheduleHistoryItem.Succeeded = true;
@@ -50,14 +51,14 @@ namespace DotNetNuke.Services.SystemHealth
             catch (Exception exc)
             {
                 this.ScheduleHistoryItem.Succeeded = false;
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Updating server health failed: {0}.", exc.ToString()));
+                this.ScheduleHistoryItem.AddLogNote($"Updating server health failed: {exc}.");
                 this.Errored(ref exc);
-                Logger.ErrorFormat("Error in WebServerMonitor: {0}. {1}", exc.Message, exc.StackTrace);
+                Logger.ErrorFormat(CultureInfo.InvariantCulture, "Error in WebServerMonitor: {0}. {1}", exc.Message, exc.StackTrace);
                 Exceptions.LogException(exc);
             }
         }
 
-        private void UpdateCurrentServerActivity()
+        private static void UpdateCurrentServerActivity()
         {
             Logger.Info("Starting UpdateCurrentServerActivity");
 
@@ -68,7 +69,7 @@ namespace DotNetNuke.Services.SystemHealth
             Logger.Info("Finished UpdateCurrentServerActivity");
         }
 
-        private void DisableServersWithoutRecentActivity()
+        private static void DisableServersWithoutRecentActivity()
         {
             var serversWithActivity = ServerController.GetEnabledServersWithActivity();
             var newServer = serversWithActivity.FirstOrDefault();
@@ -86,7 +87,7 @@ namespace DotNetNuke.Services.SystemHealth
             }
         }
 
-        private void RemoveInActiveServers()
+        private static void RemoveInActiveServers()
         {
             Logger.Info("Starting RemoveInActiveServers");
             var serversWithActivity = ServerController.GetEnabledServersWithActivity();

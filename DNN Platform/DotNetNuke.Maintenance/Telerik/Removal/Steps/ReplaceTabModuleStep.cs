@@ -14,11 +14,11 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
-    /// <inheritdoc />
-    internal partial class ReplaceTabModuleStep : StepBase, IReplaceTabModuleStep, IStepArray
+    /// <inheritdoc cref="IReplaceTabModuleStep" />
+    internal sealed class ReplaceTabModuleStep : StepBase, IReplaceTabModuleStep, IStepArray
     {
         private readonly IServiceProvider serviceProvider;
-        private readonly IList<IReplacePortalTabModuleStep> steps;
+        private readonly List<IReplacePortalTabModuleStep> steps;
 
         /// <summary>Initializes a new instance of the <see cref="ReplaceTabModuleStep"/> class.</summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
@@ -30,7 +30,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
             this.serviceProvider = serviceProvider ??
                 throw new ArgumentNullException(nameof(serviceProvider));
 
-            this.steps = new List<IReplacePortalTabModuleStep>();
+            this.steps = [];
         }
 
         /// <inheritdoc />

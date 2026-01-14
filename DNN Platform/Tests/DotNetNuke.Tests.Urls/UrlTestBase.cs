@@ -16,11 +16,6 @@ namespace DotNetNuke.Tests.Urls
 
     public class UrlTestBase : DnnWebTest
     {
-        public UrlTestBase(int portalId)
-            : base(portalId)
-        {
-        }
-
         protected virtual string TestType
         {
             get { return string.Empty; }
@@ -30,22 +25,23 @@ namespace DotNetNuke.Tests.Urls
 
         public virtual void SetUp()
         {
-            this.ExecuteScriptFile(string.Format("{0}\\{1}\\{2}", this.TestType, this.GetTestFolder(), "SetUp.sql"));
+            this.ExecuteScriptFile($@"{this.TestType}\{this.GetTestFolder()}\SetUp.sql");
         }
 
-        public virtual void TestFixtureSetUp()
+        public override void OneTimeSetUp()
         {
-            this.ExecuteScriptFile(string.Format("{0}\\{1}", this.TestType, "SetUp.sql"));
+            this.ExecuteScriptFile($@"{this.TestType}\SetUp.sql");
+            base.OneTimeSetUp();
         }
 
         public virtual void TearDown()
         {
-            this.ExecuteScriptFile(string.Format("{0}\\{1}\\{2}", this.TestType, this.GetTestFolder(), "TearDown.sql"));
+            this.ExecuteScriptFile($@"{this.TestType}\{this.GetTestFolder()}\TearDown.sql");
         }
 
-        public virtual void TestFixtureTearDown()
+        public virtual void OneTimeTearDown()
         {
-            this.ExecuteScriptFile(string.Format("{0}\\{1}", this.TestType, "TearDown.sql"));
+            this.ExecuteScriptFile($@"{this.TestType}\TearDown.sql");
         }
 
         protected void CreateTab(string tabName)

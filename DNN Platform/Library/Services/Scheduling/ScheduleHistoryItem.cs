@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Scheduling
         }
 
         /// <summary>Initializes a new instance of the <see cref="ScheduleHistoryItem"/> class.</summary>
-        /// <param name="objScheduleItem"></param>
+        /// <param name="objScheduleItem">The schedule item.</param>
         public ScheduleHistoryItem(ScheduleItem objScheduleItem)
         {
             this.AttachToEvent = objScheduleItem.AttachToEvent;

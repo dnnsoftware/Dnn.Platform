@@ -6,10 +6,11 @@ namespace DotNetNuke.ComponentModel
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Collections.Internal;
 
-    public class SimpleContainer : AbstractContainer
+    public class SimpleContainer : AbstractContainer, IDisposable
     {
         private readonly string name;
         private readonly ComponentBuilderCollection componentBuilders = new ComponentBuilderCollection();
@@ -22,12 +23,12 @@ namespace DotNetNuke.ComponentModel
 
         /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
         public SimpleContainer()
-            : this(string.Format("Container_{0}", Guid.NewGuid()))
+            : this($"Container_{Guid.NewGuid()}")
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
-        /// <param name="name"></param>
+        /// <param name="name">The container name.</param>
         public SimpleContainer(string name)
         {
             this.name = name;
@@ -43,6 +44,7 @@ namespace DotNetNuke.ComponentModel
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void RegisterComponent(string name, Type type)
         {
             using (this.registeredComponents.GetWriteLock())
@@ -56,7 +58,7 @@ namespace DotNetNuke.ComponentModel
         {
             IComponentBuilder builder = this.GetComponentBuilder(name);
 
-            return this.GetComponent(builder);
+            return GetComponent(builder);
         }
 
         /// <inheritdoc/>
@@ -76,9 +78,9 @@ namespace DotNetNuke.ComponentModel
 
                 if (builderCount > 0)
                 {
-                    IComponentBuilder builder = this.GetDefaultComponentBuilder(componentType);
+                    IComponentBuilder builder = GetDefaultComponentBuilder(componentType);
 
-                    component = this.GetComponent(builder);
+                    component = GetComponent(builder);
                 }
             }
 
@@ -95,7 +97,7 @@ namespace DotNetNuke.ComponentModel
             {
                 IComponentBuilder builder = this.GetComponentBuilder(name);
 
-                component = this.GetComponent(builder);
+                component = GetComponent(builder);
             }
 
             return component;
@@ -133,6 +135,7 @@ namespace DotNetNuke.ComponentModel
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void RegisterComponent(string name, Type contractType, Type type, ComponentLifeStyleType lifestyle)
         {
             this.AddComponentType(contractType);
@@ -172,6 +175,51 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.componentBuilders?.Dispose();
+                this.componentDependencies?.Dispose();
+                this.componentTypes?.Dispose();
+                this.registeredComponents?.Dispose();
+            }
+        }
+
+        private static object GetComponent(IComponentBuilder builder)
+        {
+            object component;
+            if (builder == null)
+            {
+                component = null;
+            }
+            else
+            {
+                component = builder.BuildComponent();
+            }
+
+            return component;
+        }
+
+        private static IComponentBuilder GetDefaultComponentBuilder(ComponentType componentType)
+        {
+            IComponentBuilder builder;
+
+            using (componentType.ComponentBuilders.GetReadLock())
+            {
+                builder = componentType.ComponentBuilders.DefaultBuilder;
+            }
+
+            return builder;
+        }
+
         private void AddBuilder(Type contractType, IComponentBuilder builder)
         {
             ComponentType componentType = this.GetComponentType(contractType);
@@ -206,21 +254,6 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
-        private object GetComponent(IComponentBuilder builder)
-        {
-            object component;
-            if (builder == null)
-            {
-                component = null;
-            }
-            else
-            {
-                component = builder.BuildComponent();
-            }
-
-            return component;
-        }
-
         private IComponentBuilder GetComponentBuilder(string name)
         {
             IComponentBuilder builder;
@@ -228,18 +261,6 @@ namespace DotNetNuke.ComponentModel
             using (this.componentBuilders.GetReadLock())
             {
                 this.componentBuilders.TryGetValue(name, out builder);
-            }
-
-            return builder;
-        }
-
-        private IComponentBuilder GetDefaultComponentBuilder(ComponentType componentType)
-        {
-            IComponentBuilder builder;
-
-            using (componentType.ComponentBuilders.GetReadLock())
-            {
-                builder = componentType.ComponentBuilders.DefaultBuilder;
             }
 
             return builder;

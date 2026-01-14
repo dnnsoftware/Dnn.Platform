@@ -173,7 +173,7 @@ class RolesPanel extends Component {
                 return (
                     <RoleRow
                         key={"role-" + index}
-                        roleName={role.name}
+                        roleName={role.localizedName}
                         groupName={this.GetGroupName(role.groupId)}
                         userCount={role.usersCount}
                         auto={role.autoAssign}

@@ -9,18 +9,14 @@ namespace DotNetNuke.Security.Permissions
     using System.Linq;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
+    using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : PortalPermissionCollection
-    /// <summary>
-    /// PortalPermissionCollection provides the a custom collection for PortalPermissionInfo
-    /// objects.
-    /// </summary>
+    /// <summary>PortalPermissionCollection provides a custom collection for <see cref="PortalPermissionInfo"/> objects.</summary>
     [Serializable]
     [XmlRoot("portalpermissions")]
-    public class PortalPermissionCollection : CollectionBase
+    public class PortalPermissionCollection : GenericCollectionBase<PortalPermissionInfo>
     {
         /// <summary>Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.</summary>
         public PortalPermissionCollection()
@@ -28,22 +24,22 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.</summary>
-        /// <param name="portalPermissions"></param>
+        /// <param name="portalPermissions">An <see cref="ArrayList"/> of <see cref="PortalPermissionInfo"/> instances.</param>
         public PortalPermissionCollection(ArrayList portalPermissions)
         {
             this.AddRange(portalPermissions);
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.</summary>
-        /// <param name="portalPermissions"></param>
+        /// <param name="portalPermissions">A collection of <see cref="PortalPermissionInfo"/> instances.</param>
         public PortalPermissionCollection(PortalPermissionCollection portalPermissions)
         {
             this.AddRange(portalPermissions);
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.</summary>
-        /// <param name="portalPermissions"></param>
-        /// <param name="portalId"></param>
+        /// <param name="portalPermissions">An <see cref="ArrayList"/> of <see cref="PortalPermissionInfo"/> instances.</param>
+        /// <param name="portalId">The ID of the portal by which to filter <paramref name="portalPermissions"/>.</param>
         public PortalPermissionCollection(ArrayList portalPermissions, int portalId)
         {
             foreach (PortalPermissionInfo permission in portalPermissions)
@@ -53,24 +49,6 @@ namespace DotNetNuke.Security.Permissions
                     this.Add(permission);
                 }
             }
-        }
-
-        public PortalPermissionInfo this[int index]
-        {
-            get
-            {
-                return (PortalPermissionInfo)this.List[index];
-            }
-
-            set
-            {
-                this.List[index] = value;
-            }
-        }
-
-        public int Add(PortalPermissionInfo value)
-        {
-            return this.List.Add(value);
         }
 
         public int Add(PortalPermissionInfo value, bool checkForDuplicates)
@@ -84,9 +62,9 @@ namespace DotNetNuke.Security.Permissions
             else
             {
                 bool isMatch = false;
-                foreach (PermissionInfoBase permission in this.List)
+                foreach (IPermissionInfo permission in this.List)
                 {
-                    if (permission.PermissionID == value.PermissionID && permission.UserID == value.UserID && permission.RoleID == value.RoleID)
+                    if (permission.PermissionId == value.PermissionID && permission.UserId == value.UserID && permission.RoleId == value.RoleID)
                     {
                         isMatch = true;
                         break;
@@ -150,26 +128,6 @@ namespace DotNetNuke.Security.Permissions
             return true;
         }
 
-        public bool Contains(PortalPermissionInfo value)
-        {
-            return this.List.Contains(value);
-        }
-
-        public int IndexOf(PortalPermissionInfo value)
-        {
-            return this.List.IndexOf(value);
-        }
-
-        public void Insert(int index, PortalPermissionInfo value)
-        {
-            this.List.Insert(index, value);
-        }
-
-        public void Remove(PortalPermissionInfo value)
-        {
-            this.List.Remove(value);
-        }
-
         public void Remove(int permissionID, int roleID, int userID)
         {
             foreach (PermissionInfoBase permission in this.List)
@@ -184,13 +142,7 @@ namespace DotNetNuke.Security.Permissions
 
         public List<PermissionInfoBase> ToList()
         {
-            var list = new List<PermissionInfoBase>();
-            foreach (PermissionInfoBase permission in this.List)
-            {
-                list.Add(permission);
-            }
-
-            return list;
+            return [..this.List.Cast<PermissionInfoBase>()];
         }
 
         public string ToString(string key)

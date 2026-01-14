@@ -14,10 +14,10 @@ namespace DotNetNuke.Services.Search.Entities
         /// <summary>Initializes a new instance of the <see cref="SearchQuery"/> class.</summary>
         public SearchQuery()
         {
-            this.Tags = new string[0];
-            this.PortalIds = new int[0];
-            this.SearchTypeIds = new int[0];
-            this.ModuleDefIds = new int[0];
+            this.Tags = [];
+            this.PortalIds = [];
+            this.SearchTypeIds = [];
+            this.ModuleDefIds = [];
             this.TitleSnippetLength = 60;
             this.BodySnippetLength = 100;
             this.PageSize = 10;

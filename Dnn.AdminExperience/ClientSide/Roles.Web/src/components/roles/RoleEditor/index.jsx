@@ -190,7 +190,7 @@ class RolesEditor extends Component {
     doNothing() {
 
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
         let { state, props } = this;
         const columnOne = <div key="editor-container-columnOne" className="editor-container">
@@ -219,6 +219,7 @@ class RolesEditor extends Component {
                     tooltipPlace={"top"} />
                 <MultiLineInput
                     value={state.roleDetails.description}
+                    enabled={!state.roleDetails.isSystem}
                     onChange={this.onTextChange.bind(this, "description")}
                     maxLength={500} />
             </div>
@@ -353,7 +354,7 @@ class RolesEditor extends Component {
         let children = [];
         children.push(columnOne);
         children.push(columnTwo);
-        /* eslint-disable react/no-danger */
+         
         return (
             <div className="role-details-editor">
                 <Grid numberOfColumns={2}>{children}</Grid>
@@ -361,19 +362,21 @@ class RolesEditor extends Component {
                     {
                         this.props.roleId > 0 && (!state.roleDetails.isSystem && state.roleDetails.id > -1) ?
                             <Button
-                                type="secondary"
+                                type="danger"
                                 onClick={this.deleteRole.bind(this)}>
                                 {resx.get("Delete")}
                             </Button>
                             : null
                     }
                     <Button
-                        type="secondary"
+                        type="neutral"
+                        disabled={state.roleDetails.isSystem}
                         onClick={this.props.Collapse.bind(this)}>
                         {resx.get("Cancel")}
                     </Button>
                     <Button
                         type="primary"
+                        disabled={state.roleDetails.isSystem}
                         onClick={this.addUpdateRoleDetails.bind(this)}>
                         {resx.get("Save")}
                     </Button>

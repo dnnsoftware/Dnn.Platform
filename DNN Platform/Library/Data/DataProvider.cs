@@ -11,6 +11,7 @@ namespace DotNetNuke.Data
     using System.Data.Common;
     using System.Data.SqlClient;
     using System.Data.SqlTypes;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Text;
@@ -29,6 +30,7 @@ namespace DotNetNuke.Data
     using DotNetNuke.Services.Search.Entities;
     using Microsoft.ApplicationBlocks.Data;
 
+    /// <summary>Base implementation of a provider of core database activities.</summary>
     public abstract partial class DataProvider
     {
         private const int DuplicateKey = 2601;
@@ -56,7 +58,7 @@ namespace DotNetNuke.Data
             get
             {
                 string databaseOwner = this.Settings["databaseOwner"];
-                if (!string.IsNullOrEmpty(databaseOwner) && databaseOwner.EndsWith(".") == false)
+                if (!string.IsNullOrEmpty(databaseOwner) && !databaseOwner.EndsWith(".", StringComparison.Ordinal))
                 {
                     databaseOwner += ".";
                 }
@@ -65,10 +67,8 @@ namespace DotNetNuke.Data
             }
         }
 
-        public string DefaultProviderName
-        {
-            get { return Instance().ProviderName; }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public string DefaultProviderName => Instance().ProviderName;
 
         public abstract bool IsConnectionValid { get; }
 
@@ -77,7 +77,7 @@ namespace DotNetNuke.Data
             get
             {
                 string objectQualifier = this.Settings["objectQualifier"];
-                if (!string.IsNullOrEmpty(objectQualifier) && objectQualifier.EndsWith("_") == false)
+                if (!string.IsNullOrEmpty(objectQualifier) && !objectQualifier.EndsWith("_", StringComparison.Ordinal))
                 {
                     objectQualifier += "_";
                 }
@@ -184,7 +184,7 @@ namespace DotNetNuke.Data
             }
             finally
             {
-                if (transaction != null && transaction.Connection != null)
+                if (transaction is { Connection: not null, })
                 {
                     transaction.Connection.Close();
                 }
@@ -193,7 +193,7 @@ namespace DotNetNuke.Data
 
         public virtual object GetNull(object field)
         {
-            return Null.GetNull(field, DBNull.Value);
+            return Null.GetNull(field, DBNull.Value, CultureInfo.CurrentCulture);
         }
 
         public virtual IDataReader FindDatabaseVersion(int major, int minor, int build)
@@ -276,6 +276,9 @@ namespace DotNetNuke.Data
         }
 
         /// <summary>Tests the Database Connection using the database connection config.</summary>
+        /// <param name="builder">The <see cref="SqlConnectionStringBuilder"/>.</param>
+        /// <param name="owner">The database owner/schema.</param>
+        /// <param name="qualifier">The object qualifier.</param>
         /// <returns>The connection string, or an error message (prefixed with <c>"ERROR:"</c>), or <see cref="Null.NullString"/> if <paramref name="builder"/> is <see langword="null"/>.</returns>
         public virtual string TestDatabaseConnection(DbConnectionStringBuilder builder, string owner, string qualifier)
         {
@@ -404,24 +407,6 @@ namespace DotNetNuke.Data
             return this.ExecuteScalar<int>("UpdateServerActivity", serverName, iisAppName, createdDate, lastActivityDate, pingFailureCount, enabled);
         }
 
-        [DnnDeprecated(7, 4, 0, "Please use CreatePortal overload with cultureCode", RemovalVersion = 10)]
-        public virtual partial int CreatePortal(string portalname, string currency, DateTime expiryDate, double hostFee, double hostSpace, int pageQuota, int userQuota, int siteLogHistory, string homeDirectory, int createdByUserID)
-        {
-            return
-                this.CreatePortal(
-                                            PortalSecurity.Instance.InputFilter(portalname, PortalSecurity.FilterFlag.NoMarkup),
-                                            currency,
-                                            expiryDate,
-                                            hostFee,
-                                            hostSpace,
-                                            pageQuota,
-                                            userQuota,
-                                            siteLogHistory,
-                                            homeDirectory,
-                                            "en-US",
-                                            createdByUserID);
-        }
-
         public virtual int CreatePortal(string portalname, string currency, DateTime expiryDate, double hostFee, double hostSpace, int pageQuota, int userQuota, int siteLogHistory, string homeDirectory, string cultureCode, int createdByUserID)
         {
             return
@@ -501,8 +486,8 @@ namespace DotNetNuke.Data
         }
 
         /// <summary>Updates the portal information.Saving basic portal settings at Admin - Site settings / Host - Portals - Edit Portal.</summary>
-        /// <param name="portalId">The portal identifier.</param>
-        /// <param name="portalGroupId">The portal group identifier.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="portalGroupId">The portal group ID or <see cref="Null.NullInteger"/>.</param>
         /// <param name="portalName">Name of the portal.</param>
         /// <param name="logoFile">The logo file.</param>
         /// <param name="footerText">The footer text.</param>
@@ -510,29 +495,31 @@ namespace DotNetNuke.Data
         /// <param name="userRegistration">The user registration.</param>
         /// <param name="bannerAdvertising">The banner advertising.</param>
         /// <param name="currency">The currency.</param>
-        /// <param name="administratorId">The administrator identifier.</param>
+        /// <param name="administratorId">The ID of the administrator user.</param>
         /// <param name="hostFee">The host fee.</param>
         /// <param name="hostSpace">The host space.</param>
         /// <param name="pageQuota">The page quota.</param>
         /// <param name="userQuota">The user quota.</param>
         /// <param name="paymentProcessor">The payment processor.</param>
-        /// <param name="processorUserId">The processor user identifier.</param>
+        /// <param name="processorUserId">The processor user ID.</param>
         /// <param name="processorPassword">The processor password.</param>
         /// <param name="description">The description.</param>
         /// <param name="keyWords">The key words.</param>
         /// <param name="backgroundFile">The background file.</param>
         /// <param name="siteLogHistory">The site log history.</param>
-        /// <param name="splashTabId">The splash tab identifier.</param>
-        /// <param name="homeTabId">The home tab identifier.</param>
-        /// <param name="loginTabId">The login tab identifier.</param>
-        /// <param name="registerTabId">The register tab identifier.</param>
-        /// <param name="userTabId">The user tab identifier.</param>
-        /// <param name="searchTabId">The search tab identifier.</param>
-        /// <param name="custom404TabId">The custom404 tab identifier.</param>
-        /// <param name="custom500TabId">The custom500 tab identifier.</param>
+        /// <param name="splashTabId">The ID of the splash tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="homeTabId">The ID of the home tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="loginTabId">The ID of the login tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="registerTabId">The ID of the register tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="userTabId">The ID of the user tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="searchTabId">The ID of the search tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="custom404TabId">The ID of the 404 error tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="custom500TabId">The ID of the 500 error tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="termsTabId">The ID of the terms tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="privacyTabId">The ID of the privacy tab, or <see cref="Null.NullInteger"/>.</param>
         /// <param name="defaultLanguage">The default language.</param>
         /// <param name="homeDirectory">The home directory.</param>
-        /// <param name="lastModifiedByUserID">The last modified by user identifier.</param>
+        /// <param name="lastModifiedByUserID">The ID of the user that last modified the portal.</param>
         /// <param name="cultureCode">The culture code.</param>
         public virtual void UpdatePortalInfo(int portalId, int portalGroupId, string portalName, string logoFile, string footerText, DateTime expiryDate, int userRegistration, int bannerAdvertising, string currency, int administratorId, double hostFee, double hostSpace, int pageQuota, int userQuota, string paymentProcessor, string processorUserId, string processorPassword, string description, string keyWords, string backgroundFile, int siteLogHistory, int splashTabId, int homeTabId, int loginTabId, int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, string defaultLanguage, string homeDirectory, int lastModifiedByUserID, string cultureCode)
         {
@@ -958,7 +945,7 @@ namespace DotNetNuke.Data
                 createdByUserID);
         }
 
-        public virtual void AddTabModule(int tabId, int moduleId, string moduleTitle, string header, string footer, int moduleOrder, string paneName, int cacheTime, string cacheMethod, string alignment, string color, string border, string iconFile, int visibility, string containerSrc, bool displayTitle, bool displayPrint, bool displaySyndicate, bool isWebSlice, string webSliceTitle, DateTime webSliceExpiryDate, int webSliceTTL, Guid uniqueId, Guid versionGuid, Guid defaultLanguageGuid, Guid localizedVersionGuid, string cultureCode, int createdByUserID)
+        public virtual void AddTabModule(int tabId, int moduleId, string moduleTitle, string header, string footer, int moduleOrder, string paneName, int cacheTime, string cacheMethod, string alignment, string color, string border, string iconFile, int visibility, string containerSrc, bool displayTitle, bool displayPrint, bool displaySyndicate, Guid uniqueId, Guid versionGuid, Guid defaultLanguageGuid, Guid localizedVersionGuid, string cultureCode, int createdByUserID)
         {
             this.ExecuteNonQuery(
                 "AddTabModule",
@@ -980,10 +967,6 @@ namespace DotNetNuke.Data
                 displayTitle,
                 displayPrint,
                 displaySyndicate,
-                isWebSlice,
-                webSliceTitle,
-                this.GetNull(webSliceExpiryDate),
-                webSliceTTL,
                 uniqueId,
                 versionGuid,
                 this.GetNull(defaultLanguageGuid),
@@ -1159,7 +1142,7 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery("UpdateModuleSetting", moduleId, settingName, settingValue, lastModifiedByUserID);
         }
 
-        public virtual void UpdateTabModule(int tabModuleId, int tabId, int moduleId, string moduleTitle, string header, string footer, int moduleOrder, string paneName, int cacheTime, string cacheMethod, string alignment, string color, string border, string iconFile, int visibility, string containerSrc, bool displayTitle, bool displayPrint, bool displaySyndicate, bool isWebSlice, string webSliceTitle, DateTime webSliceExpiryDate, int webSliceTTL, Guid versionGuid, Guid defaultLanguageGuid, Guid localizedVersionGuid, string cultureCode, int lastModifiedByUserID)
+        public virtual void UpdateTabModule(int tabModuleId, int tabId, int moduleId, string moduleTitle, string header, string footer, int moduleOrder, string paneName, int cacheTime, string cacheMethod, string alignment, string color, string border, string iconFile, int visibility, string containerSrc, bool displayTitle, bool displayPrint, bool displaySyndicate, Guid versionGuid, Guid defaultLanguageGuid, Guid localizedVersionGuid, string cultureCode, int lastModifiedByUserID)
         {
             this.ExecuteNonQuery(
                 "UpdateTabModule",
@@ -1182,10 +1165,6 @@ namespace DotNetNuke.Data
                 displayTitle,
                 displayPrint,
                 displaySyndicate,
-                isWebSlice,
-                webSliceTitle,
-                this.GetNull(webSliceExpiryDate),
-                webSliceTTL,
                 versionGuid,
                 this.GetNull(defaultLanguageGuid),
                 localizedVersionGuid,
@@ -1642,7 +1621,7 @@ namespace DotNetNuke.Data
                 moduleId,
                 portalId,
                 permissionId,
-                this.GetRoleNull(roleId),
+                GetRoleNull(roleId),
                 allowAccess,
                 this.GetNull(userId),
                 createdByUserId);
@@ -1691,7 +1670,7 @@ namespace DotNetNuke.Data
                 moduleId,
                 portalId,
                 permissionId,
-                this.GetRoleNull(roleId),
+                GetRoleNull(roleId),
                 allowAccess,
                 this.GetNull(userId),
                 lastModifiedByUserId);
@@ -1703,7 +1682,7 @@ namespace DotNetNuke.Data
                 "AddTabPermission",
                 tabId,
                 permissionId,
-                this.GetRoleNull(roleID),
+                GetRoleNull(roleID),
                 allowAccess,
                 this.GetNull(userId),
                 createdByUserID);
@@ -1741,7 +1720,7 @@ namespace DotNetNuke.Data
                 tabPermissionId,
                 tabId,
                 permissionId,
-                this.GetRoleNull(roleID),
+                GetRoleNull(roleID),
                 allowAccess,
                 this.GetNull(userId),
                 lastModifiedByUserID);
@@ -1753,7 +1732,7 @@ namespace DotNetNuke.Data
                 "AddFolderPermission",
                 folderId,
                 permissionId,
-                this.GetRoleNull(roleID),
+                GetRoleNull(roleID),
                 allowAccess,
                 this.GetNull(userId),
                 createdByUserID);
@@ -1770,7 +1749,7 @@ namespace DotNetNuke.Data
                 "SaveTabPermission",
                 portalId,
                 permissionId,
-                this.GetRoleNull(roleId),
+                GetRoleNull(roleId),
                 allowAccess,
                 this.GetNull(userId),
                 createdByUserId);
@@ -1833,7 +1812,7 @@ namespace DotNetNuke.Data
                 folderPermissionID,
                 folderID,
                 permissionID,
-                this.GetRoleNull(roleID),
+                GetRoleNull(roleID),
                 allowAccess,
                 this.GetNull(userID),
                 lastModifiedByUserID);
@@ -1845,7 +1824,7 @@ namespace DotNetNuke.Data
                 "AddDesktopModulePermission",
                 portalDesktopModuleID,
                 permissionID,
-                this.GetRoleNull(roleID),
+                GetRoleNull(roleID),
                 allowAccess,
                 this.GetNull(userID),
                 createdByUserID);
@@ -1888,7 +1867,7 @@ namespace DotNetNuke.Data
                 desktopModulePermissionID,
                 portalDesktopModuleID,
                 permissionID,
-                this.GetRoleNull(roleID),
+                GetRoleNull(roleID),
                 allowAccess,
                 this.GetNull(userID),
                 lastModifiedByUserID);
@@ -2303,24 +2282,34 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery("UpdateUserRole", userRoleId, status, isOwner, this.GetNull(effectiveDate), this.GetNull(expiryDate), lastModifiedByUserID);
         }
 
+        /// <summary>Delete outdated users online.</summary>
+        /// <param name="timeWindow">The time window in which to delete.</param>
         [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
         public virtual partial void DeleteUsersOnline(int timeWindow)
         {
             this.ExecuteNonQuery("DeleteUsersOnline", timeWindow);
         }
 
+        /// <summary>Get the online user record.</summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>A data reader.</returns>
         [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
         public virtual partial IDataReader GetOnlineUser(int userId)
         {
             return this.ExecuteReader("GetOnlineUser", userId);
         }
 
+        /// <summary>Get the online user records for a portal.</summary>
+        /// <param name="portalId">The ID of the portal.</param>
+        /// <returns>A data reader.</returns>
         [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
         public virtual partial IDataReader GetOnlineUsers(int portalId)
         {
             return this.ExecuteReader("GetOnlineUsers", portalId);
         }
 
+        /// <summary>Update the online user records.</summary>
+        /// <param name="userList">The users.</param>
         [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
         public virtual partial void UpdateUsersOnline(Hashtable userList)
         {
@@ -2346,6 +2335,7 @@ namespace DotNetNuke.Data
             }
         }
 
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         public virtual int AddPropertyDefinition(int portalId, int moduleDefId, int dataType, string defaultValue, string propertyCategory, string propertyName, bool readOnly, bool required, string validationExpression, int viewOrder, bool visible, int length, int defaultVisibility, int createdByUserId)
         {
             int retValue;
@@ -2421,6 +2411,7 @@ namespace DotNetNuke.Data
                 lastUpdatedDate);
         }
 
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         public virtual void UpdatePropertyDefinition(int propertyDefinitionId, int dataType, string defaultValue, string propertyCategory, string propertyName, bool readOnly, bool required, string validation, int viewOrder, bool visible, int length, int defaultVisibility, int lastModifiedByUserId)
         {
             this.ExecuteNonQuery(
@@ -2824,8 +2815,8 @@ namespace DotNetNuke.Data
                 createdByUserID);
         }
 
-        /// <summary>Get a User Authentication record from slq database. DNN-4016.</summary>
-        /// <param name="userID"></param>
+        /// <summary>Get a User Authentication record from SQL database. DNN-4016.</summary>
+        /// <param name="userID">The ID of the user.</param>
         /// <returns>UserAuthentication record.</returns>
         public virtual IDataReader GetUserAuthentication(int userID)
         {
@@ -3129,6 +3120,7 @@ namespace DotNetNuke.Data
                 lastModifiedByUserID);
         }
 
+        /// <inheritdoc cref="GetPasswordHistory(int,int,int)" />
         [DnnDeprecated(9, 2, 0, "Please use the overload that takes passwordsRetained and daysRetained")]
         public virtual partial IDataReader GetPasswordHistory(int userId)
         {
@@ -3140,6 +3132,7 @@ namespace DotNetNuke.Data
             return this.ExecuteReader("GetPasswordHistory", this.GetNull(userId), passwordsRetained, daysRetained);
         }
 
+        /// <inheritdoc cref="AddPasswordHistory(int,string,string,int,int)" />
         [DnnDeprecated(9, 2, 0, "Please use the overload that takes daysRetained")]
         public virtual partial void AddPasswordHistory(int userId, string password, string passwordHistory, int retained)
         {
@@ -3357,7 +3350,7 @@ namespace DotNetNuke.Data
             }
             else
             {
-                portalID = Convert.ToInt32(logTypePortalID);
+                portalID = Convert.ToInt32(logTypePortalID, CultureInfo.InvariantCulture);
             }
 
             this.ExecuteNonQuery(
@@ -3456,26 +3449,26 @@ namespace DotNetNuke.Data
 
         public virtual void UpdateLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, int keepMostRecent, bool emailNotificationIsActive, int threshold, int notificationThresholdTime, int notificationThresholdTimeType, string mailFromAddress, string mailToAddress)
         {
-            int portalID;
             if (logTypeKey == "*")
             {
                 logTypeKey = string.Empty;
             }
 
+            int portalId;
             if (logTypePortalID == "*")
             {
-                portalID = -1;
+                portalId = -1;
             }
             else
             {
-                portalID = Convert.ToInt32(logTypePortalID);
+                portalId = Convert.ToInt32(logTypePortalID, CultureInfo.CurrentCulture);
             }
 
             this.ExecuteNonQuery(
                 "UpdateEventLogConfig",
                 id,
                 this.GetNull(logTypeKey),
-                this.GetNull(portalID),
+                this.GetNull(portalId),
                 loggingIsActive,
                 keepMostRecent,
                 emailNotificationIsActive,
@@ -3797,124 +3790,6 @@ namespace DotNetNuke.Data
             return this.ExecuteScalar<int>("GetContentWorkflowStateUsageCount", stateId);
         }
 
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial int AddContentWorkflow(int portalId, string workflowName, string description, bool isDeleted, bool startAfterCreating, bool startAfterEditing, bool dispositionEnabled)
-        {
-            return this.ExecuteScalar<int>(
-                "AddContentWorkflow",
-                this.GetNull(portalId),
-                workflowName,
-                description,
-                isDeleted,
-                startAfterCreating,
-                startAfterEditing,
-                dispositionEnabled);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial IDataReader GetContentWorkflow(int workflowId)
-        {
-            return this.ExecuteReader("GetContentWorkflow", workflowId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial IDataReader GetContentWorkflows(int portalId)
-        {
-            return this.ExecuteReader("GetContentWorkflows", portalId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial void UpdateContentWorkflow(int workflowId, string workflowName, string description, bool isDeleted, bool startAfterCreating, bool startAfterEditing, bool dispositionEnabled)
-        {
-            this.ExecuteNonQuery(
-                "UpdateContentWorkflow",
-                workflowId,
-                workflowName,
-                description,
-                isDeleted,
-                startAfterCreating,
-                startAfterEditing,
-                dispositionEnabled);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial int AddContentWorkflowState(int workflowId, string stateName, int order, bool isActive, bool sendEmail, bool sendMessage, bool isDisposalState, string onCompleteMessageSubject, string onCompleteMessageBody, string onDiscardMessageSubject, string onDiscardMessageBody)
-        {
-            return this.ExecuteScalar<int>(
-                "AddContentWorkflowState",
-                workflowId,
-                stateName,
-                order,
-                isActive,
-                sendEmail,
-                sendMessage,
-                isDisposalState,
-                onCompleteMessageSubject,
-                onCompleteMessageBody,
-                onDiscardMessageSubject,
-                onDiscardMessageBody);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial void DeleteContentWorkflowState(int stateId)
-        {
-            this.ExecuteNonQuery("DeleteContentWorkflowState", stateId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial void UpdateContentWorkflowState(int stateId, string stateName, int order, bool isActive, bool sendEmail, bool sendMessage, bool isDisposalState, string onCompleteMessageSubject, string onCompleteMessageBody, string onDiscardMessageSubject, string onDiscardMessageBody)
-        {
-            this.ExecuteNonQuery(
-                "UpdateContentWorkflowState",
-                stateId,
-                stateName,
-                order,
-                isActive,
-                sendEmail,
-                sendMessage,
-                isDisposalState,
-                onCompleteMessageSubject,
-                onCompleteMessageBody,
-                onDiscardMessageSubject,
-                onDiscardMessageBody);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial IDataReader GetContentWorkflowState(int stateId)
-        {
-            return this.ExecuteReader("GetContentWorkflowState", stateId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial IDataReader GetContentWorkflowStates(int workflowId)
-        {
-            return this.ExecuteReader("GetContentWorkflowStates", workflowId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use instead IWorkflowLogger.AddWorkflowLog", RemovalVersion = 10)]
-        public virtual partial int AddContentWorkflowLog(string action, string comment, int user, int workflowId, int contentItemId)
-        {
-            return this.ExecuteScalar<int>(
-                "AddContentWorkflowLog",
-                action,
-                comment,
-                user,
-                workflowId,
-                contentItemId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowLogger.GetWorkflowLogs", RemovalVersion = 10)]
-        public virtual partial IDataReader GetContentWorkflowLogs(int contentItemId, int workflowId)
-        {
-            return this.ExecuteReader("GetContentWorkflowLogs", contentItemId, workflowId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial int DeleteContentWorkflowLogs(int contentItemId, int workflowId)
-        {
-            return this.ExecuteScalar<int>("DeleteContentWorkflowLogs", contentItemId, workflowId);
-        }
-
         public virtual int AddContentWorkflowStatePermission(int stateId, int permissionId, int roleId, bool allowAccess, int userId, int createdByUserId)
         {
             return this.ExecuteScalar<int>(
@@ -3958,18 +3833,6 @@ namespace DotNetNuke.Data
         public virtual IDataReader GetContentWorkflowStatePermissionsByStateID(int stateId)
         {
             return this.ExecuteReader("GetContentWorkflowStatePermissionsByStateID", stateId);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial IDataReader GetContentWorkflowSource(int workflowId, string sourceName)
-        {
-            return this.ExecuteReader("GetContentWorkflowSource", workflowId, sourceName);
-        }
-
-        [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-        public virtual partial int AddContentWorkflowSource(int workflowId, string sourceName, string sourceType)
-        {
-            return this.ExecuteScalar<int>("AddContentWorkflowSource", workflowId, sourceName, sourceType);
         }
 
         public virtual IDataReader GetAllSearchTypes()
@@ -4144,12 +4007,6 @@ namespace DotNetNuke.Data
             return Globals.ConvertDataReaderToDataSet(this.ExecuteReader(procedureName, commandParameters));
         }
 
-        [DnnDeprecated(7, 0, 0, "0.  This method is unnecessary.  Use the generic version ExecuteScalar<T>.", RemovalVersion = 10)]
-        public virtual partial object ExecuteScalar(string procedureName, params object[] commandParameters)
-        {
-            return this.ExecuteScalar<object>(procedureName, commandParameters);
-        }
-
         public virtual IDataReader ExecuteSQL(string sql, params IDataParameter[] commandParameters)
         {
             SqlParameter[] sqlCommandParameters = null;
@@ -4174,6 +4031,7 @@ namespace DotNetNuke.Data
             }
         }
 
+        /// <inheritdoc cref="GetFiles(int,bool,bool)" />
         [DnnDeprecated(9, 3, 0, "Please use GetFiles(int, bool, bool) instead")]
 #pragma warning disable CS1066
         public virtual partial IDataReader GetFiles(int folderId, bool retrieveUnpublishedFiles = false)
@@ -4212,7 +4070,7 @@ namespace DotNetNuke.Data
             return dateToFix;
         }
 
-        private object GetRoleNull(int roleID)
+        private static object GetRoleNull(int roleID)
         {
             if (roleID.ToString(CultureInfo.InvariantCulture) == Globals.glbRoleNothing)
             {
@@ -4232,9 +4090,9 @@ namespace DotNetNuke.Data
                 if (dr.Read())
                 {
                     version = new Version(
-                        Convert.ToInt32(dr["Major"]),
-                        Convert.ToInt32(dr["Minor"]),
-                        Convert.ToInt32(dr["Build"]));
+                        Convert.ToInt32(dr["Major"], CultureInfo.InvariantCulture),
+                        Convert.ToInt32(dr["Minor"], CultureInfo.InvariantCulture),
+                        Convert.ToInt32(dr["Build"], CultureInfo.InvariantCulture));
                 }
             }
             catch (SqlException ex)

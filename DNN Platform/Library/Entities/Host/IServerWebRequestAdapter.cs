@@ -26,6 +26,7 @@ namespace DotNetNuke.Entities.Host
 
         /// <summary>Check whether response is return from correct server.</summary>
         /// <param name="response">The Http Response Object.</param>
+        /// <param name="server">The server info.</param>
         /// <param name="statusCode">Out status code if you think the status need change.</param>
         void CheckResponse(HttpWebResponse response, ServerInfo server, ref HttpStatusCode statusCode);
     }

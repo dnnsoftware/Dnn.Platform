@@ -8,6 +8,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Exceptions;
 
+    /// <summary>A settings control for DNN authentication.</summary>
     public partial class Settings : AuthenticationSettingsBase
     {
         /// <inheritdoc/>

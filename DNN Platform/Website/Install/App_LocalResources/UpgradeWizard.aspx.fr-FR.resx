@@ -156,6 +156,9 @@
   <data name="NoInstallationLog.Text" xml:space="preserve">
     <value>Aucun journal d'installation</value>
   </data>
+  <data name="LoadingInstallationLog.Text" xml:space="preserve">
+    <value>Chargement des journaux d'installation, veuillez patienter...</value>
+  </data>
   <data name="Password.Help" xml:space="preserve">
     <value>Le mot de passe pour le compte de super utilisateur (hôte).</value>
   </data>
@@ -167,6 +170,9 @@
   </data>
   <data name="SeeLogs.Text" xml:space="preserve">
     <value>Afficher les journaux</value>
+  </data>
+  <data name="NoErrorsLogged.Text" xml:space="preserve">
+    <value>Aucune erreur de mise-à-jour n'a été enregistrée</value>
   </data>
   <data name="TimerMinutes.Text" xml:space="preserve">
     <value>Minutes</value>

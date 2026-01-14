@@ -156,9 +156,9 @@ class SiteAliasEditor extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
-        /* eslint-disable react/no-danger */
+         
         if (this.state.aliasDetail !== undefined || this.props.id === "add") {
             const columnOne = <div key="column-one" className="left-column">
                 <InputGroup>
@@ -215,7 +215,7 @@ class SiteAliasEditor extends Component {
                     <GridSystem numberOfColumns={2}>{[columnOne, columnTwo]}</GridSystem>
                     <div className="editor-buttons-box">
                         <Button
-                            type="secondary"
+                            type="neutral"
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>

@@ -1,13 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Security.Components.Checks
 {
     using System;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.PersonaBar.Pages.Components;
+
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
@@ -44,8 +45,16 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         private readonly Lazy<IPortalSettings> portalSettings;
 
         /// <summary>Initializes a new instance of the <see cref="CheckUserProfilePage"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IPagesController. Scheduled removal in v12.0.0.")]
         public CheckUserProfilePage()
             : this(PortalController.Instance, TabController.Instance, PagesController.Instance)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CheckUserProfilePage"/> class.</summary>
+        /// <param name="pagesController">An instance of the <see cref="IPagesController"/> interface.</param>
+        public CheckUserProfilePage(IPagesController pagesController)
+            : this(PortalController.Instance, TabController.Instance, pagesController)
         {
         }
 
@@ -57,20 +66,16 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             IPortalController portalController,
             ITabController tabController,
             IPagesController pagesController)
-            : base()
         {
-            this.tabController = tabController
-                ?? throw new ArgumentNullException(nameof(tabController));
-
-            this.pagesController = pagesController
-                ?? throw new ArgumentNullException(nameof(pagesController));
+            this.tabController = tabController ?? throw new ArgumentNullException(nameof(tabController));
+            this.pagesController = pagesController ?? throw new ArgumentNullException(nameof(pagesController));
 
             if (portalController == null)
             {
                 throw new ArgumentNullException(nameof(portalController));
             }
 
-            this.portalSettings = new Lazy<IPortalSettings>(() => portalController.GetCurrentSettings());
+            this.portalSettings = new Lazy<IPortalSettings>(portalController.GetCurrentSettings);
         }
 
         private int PortalId => this.portalSettings.Value.PortalId;
@@ -138,7 +143,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         private bool PageIsPublic(TabInfo tabInfo)
         {
-            var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
+            var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
 
             var permissions = this.pagesController.GetPermissionsData(tabInfo.TabID);
 

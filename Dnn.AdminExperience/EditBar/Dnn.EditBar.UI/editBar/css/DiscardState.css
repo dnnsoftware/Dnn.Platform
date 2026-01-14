@@ -1,0 +1,9 @@
+﻿#menu-DiscardState button {
+    width: auto;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    background-color: transparent;
+    border-style: solid;
+    border-width: 1px;
+    text-indent: 0;
+}

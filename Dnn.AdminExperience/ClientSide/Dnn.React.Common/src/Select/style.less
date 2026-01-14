@@ -2,16 +2,17 @@
 .dnn-uicommon-select {
     resize: none;       
     border-radius: 3px;       
-    background-color: @white;
-    border: 1px solid @alto;
+    background-color: var(--dnn-color-background, white);
+    border: 1px solid var(--dnn-color-foreground-light, @alto);
+    border-radius: var(--dnn-controls-radius, 0);
     box-sizing: border-box;
     padding: 8px 16px;
     &:focus {
-        background: @white;
-        border: 1px solid @curiousBlue;
+        background: var(--dnn-color-background, white);
+        border: 1px solid var(--dnn-color-primary, @curiousBlue);
     }
     &:disabled {
-        background: @mercury;
-        border: 1px solid @mercury;
+        background: var(--dnn-color-neutral-light, @mercury);
+        border: 1px solid var(--dnn-color-neutral-light, @mercury);
     }
 }

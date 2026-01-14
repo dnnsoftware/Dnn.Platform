@@ -189,5 +189,38 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "iconFileLarge")]
         public FileDto IconFileLarge { get; set; }
+
+        [DataMember(Name = "enabledVersioning")]
+        public bool? EnabledVersioning { get; set; }
+
+        [DataMember(Name = "workflowEnabled")]
+        public bool? WorkflowEnabled { get; set; }
+
+        [DataMember(Name = "hasAVisibleVersion")]
+        public bool HasAVisibleVersion { get; set; }
+
+        [DataMember(Name = "hasBeenPublished")]
+        public bool HasBeenPublished { get; set; }
+
+        [DataMember(Name = "isWorkflowCompleted")]
+        public bool IsWorkflowCompleted { get; set; }
+
+        [DataMember(Name = "isWorkflowOnDraft")]
+        public bool IsWorkflowOnDraft { get; set; }
+
+        [DataMember(Name = "workflowId")]
+        public int WorkflowId { get; set; }
+
+        [DataMember(Name = "workflowName")]
+        public string WorkflowName { get; set; }
+
+        [DataMember(Name = "stateId")]
+        public int StateId { get; set; }
+
+        [DataMember(Name = "stateName")]
+        public string StateName { get; set; }
+
+        [DataMember(Name = "publishStatus")]
+        public string PublishStatus { get; set; }
     }
 }

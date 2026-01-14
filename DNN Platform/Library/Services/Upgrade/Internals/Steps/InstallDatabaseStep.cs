@@ -138,6 +138,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 this.Percentage += percentForMiniStep;
             }
 
+            Web.Client.ClientResourceManagement.ClientResourceManager.RemoveConfiguration();
             this.Percentage = percentForEachStep * counter++;
 
             // Step 5 - Delete files which are no longer used

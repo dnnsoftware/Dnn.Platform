@@ -4,7 +4,6 @@
 namespace DotNetNuke.Build.Tasks
 {
     using System;
-    using System.Data.SqlClient;
     using System.IO;
     using System.Linq;
 
@@ -12,6 +11,8 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Core;
     using Cake.FileHelpers;
     using Cake.Frosting;
+
+    using Microsoft.Data.SqlClient;
 
     /// <summary>A cake task to reset the local dev database.</summary>
     public sealed class ResetDatabase : FrostingTask<Context>

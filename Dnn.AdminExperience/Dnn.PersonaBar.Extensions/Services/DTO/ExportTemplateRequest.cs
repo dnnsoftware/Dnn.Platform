@@ -8,7 +8,7 @@ namespace Dnn.PersonaBar.Sites.Services.Dto
     using System.Data;
     using System.Runtime.Serialization;
 
-    using Dnn.PersonaBar.Library.DTO.Tabs;
+    using Dnn.PersonaBar.Library.Dto.Tabs;
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Services.Localization;
     using Newtonsoft.Json;

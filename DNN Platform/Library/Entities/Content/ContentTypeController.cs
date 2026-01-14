@@ -36,7 +36,7 @@ namespace DotNetNuke.Entities.Content
         }
 
         /// <summary>Initializes a new instance of the <see cref="ContentTypeController"/> class.</summary>
-        /// <param name="dataService"></param>
+        /// <param name="dataService">The data service.</param>
         public ContentTypeController(IDataService dataService)
         {
             this.dataService = dataService;

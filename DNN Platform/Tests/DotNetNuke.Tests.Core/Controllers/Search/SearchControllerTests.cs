@@ -12,16 +12,21 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Application;
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -45,7 +50,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int PortalId0 = 0;
         private const int PortalId12 = 12;
         private const int IdeasModuleDefId = 201;
-        private const int BlogsoduleDefId = 202;
+        private const int BlogsModuleDefId = 202;
         private const int AnswersModuleDefId = 203;
         private const int HtmlModuleDefId = 20;
         private const int HtmlModuleId = 25;
@@ -121,6 +126,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private Mock<ILocaleController> mockLocaleController;
         private Mock<ISearchHelper> mockSearchHelper;
         private Mock<IUserController> mockUserController;
+        private FakeServiceProvider serviceProvider;
 
         private SearchControllerImpl searchController;
         private IInternalSearchController internalSearchController;
@@ -137,33 +143,39 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [SetUp]
-
         public void SetUp()
         {
             ComponentFactory.Container = new SimpleContainer();
             MockComponentProvider.ResetContainer();
 
+            this.mockUserController = new Mock<IUserController>();
+            this.mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => this.GetUserByIdCallback(portalId, userId));
+            UserController.SetTestableInstance(this.mockUserController.Object);
             this.mockDataProvider = MockComponentProvider.CreateDataProvider();
             this.mockLocaleController = MockComponentProvider.CreateLocaleController();
             this.mockCachingProvider = MockComponentProvider.CreateDataCacheProvider();
-
-            this.mockUserController = new Mock<IUserController>();
-            this.mockHostController = new Mock<IHostController>();
             this.mockSearchHelper = new Mock<ISearchHelper>();
-
-            this.SetupDataProvider();
-            this.SetupHostController();
             this.SetupSearchHelper();
+            this.SetupDataProvider();
             this.SetupLocaleController();
+            this.mockHostController = new Mock<IHostController>();
+            this.SetupHostController();
+            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>(), Mock.Of<IHostSettings>(), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IEventLogger>()));
 
-            this.mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => this.GetUserByIdCallback(portalId, userId));
-            UserController.SetTestableInstance(this.mockUserController.Object);
-
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockHostController.Object);
+                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                    services.AddSingleton(this.mockCachingProvider.Object);
+                    services.AddSingleton(this.mockDataProvider.Object);
+                    services.AddSingleton(this.mockLocaleController.Object);
+                    services.AddSingleton(this.mockSearchHelper.Object);
+                    services.AddSingleton(this.mockUserController.Object);
+                    services.AddSingleton<IApplicationStatusInfo>(new ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+                    services.AddTransient<FakeResultController>();
+                    services.AddTransient<NoPermissionFakeResultController>();
+                });
 
             this.CreateNewLuceneControllerInstance();
         }
@@ -171,19 +183,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
-            this.luceneController.Dispose();
             this.DeleteIndexFolder();
             InternalSearchController.ClearInstance();
             UserController.ClearInstance();
             SearchHelper.ClearInstance();
             LuceneController.ClearInstance();
+            this.luceneController.Dispose();
             this.luceneController = null;
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
         }
 
         [Test]
-
         public void SearchController_Search_Throws_On_Null_Query()
         {
             // Arrange
@@ -193,7 +203,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Search_Throws_On_Empty_TypeId_Collection()
         {
             // Arrange
@@ -228,7 +237,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Added_Item_IsRetrieved()
         {
             // Arrange
@@ -249,7 +257,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_EnsureIndexIsAppended_When_Index_Is_NotDeleted_InBetween()
         {
             // Arrange
@@ -286,7 +293,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Getsearch_TwoTermsSearch()
         {
             // Arrange
@@ -312,7 +318,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_TwoTermsSearch()
         {
             // Arrange
@@ -338,7 +343,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_PortalIdSearch()
         {
             // Arrange
@@ -353,7 +357,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_SearchTypeIdSearch()
         {
             // Arrange
@@ -368,7 +371,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_SearchFindsAnalyzedVeryLongWords()
         {
             // Arrange
@@ -395,12 +397,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 // Assert
                 Assert.That(search.Results, Has.Count.EqualTo(1));
-                Assert.That(this.StipEllipses(search.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + veryLongWord + "</b>"));
+                Assert.That(StripEllipses(search.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + veryLongWord + "</b>"));
             });
         }
 
         [Test]
-
         public void SearchController_SecurityTrimmedTest_ReturnsNoResultsWhenHavingNoPermission()
         {
             // Arrange
@@ -415,7 +416,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_SecurityTrimmedTest_ReturnsExpectedResultsForPage1A()
         {
             // Arrange
@@ -445,7 +445,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_SecurityTrimmedTest_ReturnsExpectedResultsForPage1B()
         {
             // Arrange
@@ -475,7 +474,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_SecurityTrimmedTest_ReturnsExpectedResultsForPage1C()
         {
             // Arrange
@@ -505,7 +503,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_SecurityTrimmedTest_ReturnsExpectedResultsForPage1D()
         {
             // Arrange
@@ -535,7 +532,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_SecurityTrimmedTest_ReturnsExpectedResultsForPage1E()
         {
             // Arrange
@@ -565,7 +561,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_SecurityTrimmedTest_ReturnsExpectedResultsForPage1F()
         {
             // Arrange
@@ -595,7 +590,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_SecurityTrimmedTest_ReturnsExpectedResultsForPage2A()
         {
             // Arrange
@@ -625,7 +619,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_SecurityTrimmedTest_ReturnsExpectedResultsForPage2B()
         {
             // Arrange
@@ -655,7 +648,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_SecurityTrimmedTest_ReturnsExpectedResultsForPage2C()
         {
             // Arrange
@@ -685,7 +677,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_SecurityTrimmedTest_ReturnsExpectedResultsForPage3A()
         {
             // Arrange
@@ -715,7 +706,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_SecurityTrimmedTest_ReturnsExpectedResultsForPage3B()
         {
             // Arrange
@@ -745,7 +735,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_SecurityTrimmedTest_ReturnsExpectedResultsForPage3C()
         {
             // Arrange
@@ -775,7 +764,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_SecurityTrimmedTest_ReturnsExpectedResultsForPage5()
         {
             // Arrange
@@ -805,7 +793,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Returns_Correct_SuppliedData_When_Optionals_Are_Supplied()
         {
             // Arrange
@@ -874,7 +861,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Returns_EmptyData_When_Optionals_Are_Not_Supplied()
         {
             // Arrange
@@ -915,18 +901,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetsHighlightedDesc()
         {
             // Arrange
             string[] docs =
-            {
+            [
                 Line1,
                 Line2,
                 Line3,
                 Line4,
-                Line5,
-                };
+                Line5
+            ];
             this.AddLinesAsSearchDocs(docs);
 
             // Act
@@ -937,21 +922,21 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 // Assert
                 Assert.That(search.Results, Has.Count.EqualTo(docs.Length));
                 Assert.That(
-                    new[]
-                    {
-                  "brown <b>fox</b> jumps over the lazy dog",
-                  "quick <b>fox</b> jumps over the black dog - Italian",
-                  "gold <b>fox</b> jumped over the lazy black dog",
-                  "e red <b>fox</b> jumped over the lazy dark gray dog",
-                  "quick <b>fox</b> jumps over the white dog - los de el Espana",
-                    }.SequenceEqual(search.Results.Select(r => this.StipEllipses(r.Snippet))),
-                    Is.True,
+                    search.Results.Select(r => StripEllipses(r.Snippet)),
+                    Is.EqualTo(
+                        [
+                            "brown <b>fox</b> jumps over the lazy dog",
+                            "quick <b>fox</b> jumps over the black dog - Italian",
+                            "gold <b>fox</b> jumped over the lazy black dog",
+                            "e red <b>fox</b> jumped over the lazy dark gray dog",
+                            "quick <b>fox</b> jumps over the white dog - los de el Espana",
+                        ])
+                        .AsCollection,
                     "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Snippet)));
             });
         }
 
         [Test]
-
         public void SearchController_CorrectDocumentCultureIsUsedAtIndexing()
         {
             // Arrange
@@ -995,7 +980,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_TimeRangeSearch_Ignores_When_Only_BeginDate_Specified()
         {
             // Arrange
@@ -1010,7 +994,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_TimeRangeSearch_Resturns_Scoped_Results_When_BeginDate_Is_After_End_Date()
         {
             // Arrange
@@ -1030,7 +1013,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_TimeRangeSearch_Resturns_Scoped_Results_When_Both_Dates_Specified()
         {
             // Arrange
@@ -1091,7 +1073,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_TagSearch_Single_Tag_Returns_Single_Result()
         {
             // Arrange
@@ -1106,7 +1087,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_TagSearch_Single_Tag_With_Space_Returns_Single_Result()
         {
             // Arrange
@@ -1121,7 +1101,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_TagSearch_Lowercase_Search_Returns_PropercaseTag_Single_Result()
         {
             // Arrange
@@ -1136,7 +1115,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_TagSearch_Single_Tag_Returns_Two_Results()
         {
             // Arrange
@@ -1158,7 +1136,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_TagSearch_Two_Tags_Returns_Nothing()
         {
             // Arrange
@@ -1173,7 +1150,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_TagSearch_Two_Tags_Returns_Single_Results()
         {
             // Arrange
@@ -1193,7 +1169,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_TagSearch_With_Vowel_Tags_Returns_Data()
         {
             // Arrange
@@ -1210,7 +1185,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Throws_When_CustomNumericField_Is_Specified_And_CustomSortField_Is_Not()
         {
             // Act
@@ -1224,7 +1198,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Throws_When_CustomStringField_Is_Specified_And_CustomSortField_Is_Not()
         {
             // Act
@@ -1238,7 +1211,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Throws_When_NumericKey_Is_Specified_And_CustomSortField_Is_Not()
         {
             // Act
@@ -1252,7 +1224,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Throws_When_Keyword_Is_Specified_And_CustomSortField_Is_Not()
         {
             // Act
@@ -1266,7 +1237,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sorty_By_Date_Returns_Latest_Docs_First()
         {
             // Arrange
@@ -1296,7 +1266,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sorty_By_Date_Ascending_Returns_Earliest_Docs_First()
         {
             // Arrange
@@ -1329,7 +1298,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sorty_By_NumericKeys_Ascending_Returns_Smaller_Numers_First()
         {
             var added = this.AddDocumentsWithNumericKeys();
@@ -1355,7 +1323,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sorty_By_NumericKeys_Descending_Returns_Bigger_Numbers_First()
         {
             var added = this.AddDocumentsWithNumericKeys();
@@ -1381,7 +1348,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sorty_By_Title_Ascending_Returns_Alphabetic_Ascending()
         {
             var titles = new List<string> { "cat", "ant", "dog", "antelope", "zebra", "yellow", " " };
@@ -1409,7 +1375,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sorty_By_Title_Descending_Returns_Alphabetic_Descending()
         {
             var titles = new List<string> { "cat", "ant", "dog", "antelope", "zebra", "yellow", " " };
@@ -1437,7 +1402,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sorty_By_Keyword_Ascending_Returns_Alphabetic_Ascending()
         {
             var titles = new List<string> { "cat", "ant", "dog", "antelope", "zebra", "yellow", " " };
@@ -1466,7 +1430,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sorty_By_Keyword_Descending_Returns_Alphabetic_Descending()
         {
             var titles = new List<string> { "cat", "ant", "dog", "antelope", "zebra", "yellow", " " };
@@ -1495,7 +1458,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sort_By_Unknown_StringField_In_Descending_Order_Does_Not_Throw()
         {
             // Arrange
@@ -1513,7 +1475,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sort_By_Unknown_StringField_In_Ascending_Order_Does_Not_Throw()
         {
             // Arrange
@@ -1531,7 +1492,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sort_By_Unknown_NumericField_In_Descending_Order_Does_Not_Throw()
         {
             // Arrange
@@ -1549,7 +1509,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sort_By_Unknown_NumericField_In_Ascending_Order_Does_Not_Throw()
         {
             // Arrange
@@ -1567,7 +1526,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sorty_By_Relevance_Returns_TopHit_Docs_First()
         {
             // Arrange
@@ -1588,7 +1546,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sorty_By_RelevanceAndTitleKeyword_Returns_TopHit_Docs_First()
         {
             this.mockHostController.Setup(c => c.GetInteger(Constants.SearchTitleBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
@@ -1612,7 +1569,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sorty_By_RelevanceAndSubjectKeyword_Returns_TopHit_Docs_First()
         {
             this.mockHostController.Setup(c => c.GetInteger(Constants.SearchContentBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
@@ -1636,7 +1592,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sorty_By_RelevanceAndCommentKeyword_Returns_TopHit_Docs_First()
         {
             this.mockHostController.Setup(c => c.GetInteger(Constants.SearchDescriptionBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
@@ -1660,7 +1615,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sorty_By_RelevanceAndAuthorKeyword_Returns_TopHit_Docs_First()
         {
             this.mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
@@ -1684,7 +1638,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Sorty_By_Relevance_Ascending_Does_Not_Change_Sequence_Of_Results()
         {
             // Arrange
@@ -1706,7 +1659,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_By_Locale_Returns_Specific_And_Neutral_Locales()
         {
             // Arrange
@@ -1731,7 +1683,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_EnsureOldDocument_Deleted_Upon_Second_Index_Content_With_Same_Key()
         {
             // Arrange
@@ -1789,7 +1740,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_EnsureOldDocument_Deleted_Upon_Second_Index_When_IsActive_Is_False()
         {
             // Arrange
@@ -1820,7 +1770,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         // Note: these tests needs to pass through the analyzer which is utilized
         //       in SearchControllerImpl but not LuceneControllerImpl.
         [Test]
-
         public void SearchController_SearchFindsAccentedAndNonAccentedWords()
         {
             // Arrange
@@ -1841,17 +1790,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 // Assert
                 Assert.That(searches1.TotalHits, Is.EqualTo(2));
-                Assert.That(this.StipEllipses(searches1.Results[0].Snippet).Trim(), Is.EqualTo("<b>z&#232;bre</b> or panth&#232;re"));
-                Assert.That(this.StipEllipses(searches1.Results[1].Snippet).Trim(), Is.EqualTo("<b>zebre</b> without accent"));
+                Assert.That(StripEllipses(searches1.Results[0].Snippet).Trim(), Is.EqualTo("<b>z&#232;bre</b> or panth&#232;re"));
+                Assert.That(StripEllipses(searches1.Results[1].Snippet).Trim(), Is.EqualTo("<b>zebre</b> without accent"));
 
                 Assert.That(searches2.TotalHits, Is.EqualTo(2));
-                Assert.That(this.StipEllipses(searches2.Results[0].Snippet).Trim(), Is.EqualTo("<b>z&#232;bre</b> or panth&#232;re"));
-                Assert.That(this.StipEllipses(searches2.Results[1].Snippet).Trim(), Is.EqualTo("<b>zebre</b> without accent"));
+                Assert.That(StripEllipses(searches2.Results[0].Snippet).Trim(), Is.EqualTo("<b>z&#232;bre</b> or panth&#232;re"));
+                Assert.That(StripEllipses(searches2.Results[1].Snippet).Trim(), Is.EqualTo("<b>zebre</b> without accent"));
             });
         }
 
         [Test]
-
         public void SearchController_PorterFilterTest()
         {
             // Arrange
@@ -1873,13 +1821,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Assert.That(search1.TotalHits, Is.EqualTo(1));
                 Assert.That(search2.TotalHits, Is.EqualTo(1));
 
-                Assert.That(this.StipEllipses(search1.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + lines[0] + "</b>"));
-                Assert.That(this.StipEllipses(search2.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + lines[1] + "</b>"));
+                Assert.That(StripEllipses(search1.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + lines[0] + "</b>"));
+                Assert.That(StripEllipses(search2.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + lines[1] + "</b>"));
             });
         }
 
         [Test]
-
         public void SearchController_SearchFindsStemmedWords()
         {
             // Arrange
@@ -1900,14 +1847,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 // Assert
                 Assert.That(search.TotalHits, Is.EqualTo(3));
-                Assert.That(this.StipEllipses(search.Results[0].Snippet), Is.EqualTo("I <b>ride</b> my bike to work"));
-                Assert.That(this.StipEllipses(search.Results[1].Snippet), Is.EqualTo("m are <b>riding</b> their bikes"));
-                Assert.That(this.StipEllipses(search.Results[2].Snippet), Is.EqualTo("e boy <b>rides</b> his bike to school"));
+                Assert.That(StripEllipses(search.Results[0].Snippet), Is.EqualTo("I <b>ride</b> my bike to work"));
+                Assert.That(StripEllipses(search.Results[1].Snippet), Is.EqualTo("m are <b>riding</b> their bikes"));
+                Assert.That(StripEllipses(search.Results[2].Snippet), Is.EqualTo("e boy <b>rides</b> his bike to school"));
             });
         }
 
         [Test]
-
         public void SearchController_Search_Synonym_Works()
         {
             // Arrange
@@ -1919,7 +1865,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             Assert.That(search.TotalHits, Is.EqualTo(added));
 
-            var snippets = search.Results.Select(result => this.StipEllipses(result.Snippet)).OrderBy(s => s).ToArray();
+            var snippets = search.Results.Select(result => StripEllipses(result.Snippet)).OrderBy(s => s).ToArray();
             Assert.Multiple(() =>
             {
                 Assert.That(snippets[0], Is.EqualTo("brown <b>fox</b> jumps over the lazy dog"));
@@ -1930,7 +1876,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Title_Ranked_Higher_Than_Body()
         {
             // Arrange
@@ -1956,7 +1901,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Title_Ranked_Higher_Than_Body_Regardless_Of_Document_Sequence()
         {
             // Arrange
@@ -1982,7 +1926,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Title_Ranked_Higher_Than_Tag()
         {
             // Arrange
@@ -2009,7 +1952,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_RankingTest_With_Vowel()
         {
             // Arrange
@@ -2047,7 +1989,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_FileNameTest_With_WildCard()
         {
             // Arrange
@@ -2069,7 +2010,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Full_FileNameTest_Without_WildCard()
         {
             // Arrange
@@ -2091,7 +2031,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Full_FileNameTest_With_WildCard()
         {
             // Arrange
@@ -2113,7 +2052,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Scope_By_FolderName()
         {
             // Arrange
@@ -2134,7 +2072,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Scope_By_FolderName_With_Spaces()
         {
             // Arrange
@@ -2158,7 +2095,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_EmailTest_With_WildCard()
         {
             // Arrange
@@ -2220,7 +2156,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Search_For_ModuleId_Must_Have_Only_One_Search_Type_Id_Specified()
         {
             // Arrange
@@ -2233,7 +2168,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Search_For_ModuleId_Must_Have_Only_Module_Search_Type_Id_Specified()
         {
             // Arrange
@@ -2246,7 +2180,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Search_For_Unknown_SearchTypeId_Does_Not_Throw_Exception()
         {
             // Arrange
@@ -2267,7 +2200,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Search_For_GroupId_Zero_Ignores_GroupId()
         {
             // Arrange
@@ -2286,7 +2218,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Search_For_GroupId_Returns_Records_With_GroupIds_Only()
         {
             // Arrange
@@ -2309,7 +2240,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Search_For_GroupId_Returns_Records_With_GroupIds_Only_Even_In_Multi_SearchTypeId()
         {
             // Arrange
@@ -2335,7 +2265,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Search_For_Two_ModuleDefinitions_Returns_Two_Only()
         {
             // Arrange
@@ -2343,7 +2272,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = IdeasModuleDefId, ModuleId = IdeasModuleId };
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = AnswersModuleDefId, ModuleId = AnswersModuleId };
-            var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsoduleDefId, ModuleId = BlogsModuleId };
+            var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsModuleDefId, ModuleId = BlogsModuleId };
 
             // Act
             this.internalSearchController.AddSearchDocument(doc1);
@@ -2364,7 +2293,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Search_For_ModuleId_Returns_from_that_module_Only()
         {
             // Arrange
@@ -2373,7 +2301,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = IdeasModuleDefId, ModuleId = IdeasModuleId };
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = IdeasModuleDefId, ModuleId = IdeasModuleId };
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = AnswersModuleDefId, ModuleId = AnswersModuleId };
-            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsoduleDefId, ModuleId = BlogsModuleId };
+            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsModuleDefId, ModuleId = BlogsModuleId };
 
             // Act
             this.internalSearchController.AddSearchDocument(doc1);
@@ -2395,7 +2323,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Search_For_Module_Search_Type_And_Multiple_ModuleDefIds_Should_Return_From_Those_ModuleDefinitions_Only()
         {
             // Arrange
@@ -2404,7 +2331,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = IdeasModuleDefId, ModuleId = IdeasModuleId };
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = IdeasModuleDefId, ModuleId = IdeasModuleId };
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = AnswersModuleDefId, ModuleId = AnswersModuleId };
-            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsoduleDefId, ModuleId = BlogsModuleId };
+            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsModuleDefId, ModuleId = BlogsModuleId };
 
             // Act
             this.internalSearchController.AddSearchDocument(doc1);
@@ -2427,7 +2354,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Search_For_Multiple_Search_Types_Should_Return_Result_from_All_Sources()
         {
             // Arrange
@@ -2436,7 +2362,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = IdeasModuleDefId, ModuleId = IdeasModuleId };
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = IdeasModuleDefId, ModuleId = IdeasModuleId };
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = AnswersModuleDefId, ModuleId = AnswersModuleId };
-            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsoduleDefId, ModuleId = BlogsModuleId };
+            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsModuleDefId, ModuleId = BlogsModuleId };
             var doc5 = new SearchDocument { UniqueKey = "key05", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act
@@ -2462,7 +2388,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Search_For_ModuleSearchTypeId_With_Two_ModuleDefinitions_And_OtherSearchTypeId_Returns_Correct_Results()
         {
             // Arrange
@@ -2471,7 +2396,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId, ModuleId = HtmlModuleId };
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId, ModuleId = HtmlModuleId };
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = AnswersModuleDefId, ModuleId = AnswersModuleId };
-            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsoduleDefId, ModuleId = BlogsModuleId };
+            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsModuleDefId, ModuleId = BlogsModuleId };
             var doc5 = new SearchDocument { UniqueKey = "key05", Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act
@@ -2496,7 +2421,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Works_With_Custom_Numeric_Querirs()
         {
             this.AddDocumentsWithNumericKeys();
@@ -2516,7 +2440,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_GetResult_Works_With_CustomKeyword_Querirs()
         {
             this.AddDocumentsWithKeywords();
@@ -2536,7 +2459,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_EnableLeadingWildcard_Should_Not_Return_Results_When_Property_Is_False()
         {
             this.mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("N");
@@ -2559,7 +2481,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_EnableLeadingWildcard_Should_Return_Results_When_Property_Is_True()
         {
             this.mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("N");
@@ -2586,7 +2507,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_EnableLeadingWildcard_Should_Return_Results_When_Property_Is_False_But_Host_Setting_Is_True()
         {
             this.mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("Y");
@@ -2613,7 +2533,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_Search_StopWords_Works()
         {
             // Arrange
@@ -2700,6 +2619,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             }
 
             return r; // ah!
+        }
+
+        private static string StripEllipses(string text)
+        {
+            return text.Replace("...", string.Empty).Trim();
         }
 
         private void CreateNewLuceneControllerInstance(bool reCreate = false)
@@ -3178,11 +3102,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId } };
             return this.searchController.SiteSearch(query);
-        }
-
-        private string StipEllipses(string text)
-        {
-            return text.Replace("...", string.Empty).Trim();
         }
 
         /// <summary>

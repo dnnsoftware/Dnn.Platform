@@ -9,6 +9,8 @@ namespace DotNetNuke.Entities.Urls
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Configuration;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Threading;
     using System.Web.Caching;
@@ -43,6 +45,7 @@ namespace DotNetNuke.Entities.Urls
         private const string AlwaysCallProviderTabsKey = "url_AlwaysCallProviderTabs_{0}";
         private const string HomePageSkinsKey = "url_HomePageSkins_{0}";
         private const string TabPathsKey = "url_TabPathsKey_{0}";
+        private static readonly string[] PortalCacheDependencyKeys = ["DNN_PortalDictionary",];
         private static CacheItemRemovedReason cacheItemRemovedReason;
         private static bool logRemovedReason;
         private CacheItemRemovedCallback onRemovePageIndex;
@@ -65,8 +68,8 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Returns a portal info object for the portal.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="exceptionOnNull"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="exceptionOnNull">Whether to throw an exception if the portal is not found.</param>
         /// <remarks>This method wraps the PortalController.GetPortal method, and adds a check if the result is null.</remarks>.
         /// <returns>A <see cref="PortalInfo"/> instance or <see langword="null"/> if the portal isn't found and <paramref name="exceptionOnNull"/> is <see langword="false"/>.</returns>
         public static PortalInfo GetPortal(int portalId, bool exceptionOnNull)
@@ -79,10 +82,10 @@ namespace DotNetNuke.Entities.Urls
 
             using (portals.GetWriteLock())
             {
-                if (portals.ContainsKey(portalId))
+                if (portals.TryGetValue(portalId, out var portal))
                 {
                     // portal found, return
-                    pi = portals[portalId];
+                    pi = portal;
                 }
                 else
                 {
@@ -104,8 +107,7 @@ namespace DotNetNuke.Entities.Urls
                             // Home page redirect loop when using default language not en-US and first request with secondary language
                             // check for correct, default language code in portal object
                             string portalCultureCode = pi.CultureCode;
-                            if (portalCultureCode != null &&
-                                string.CompareOrdinal(portalCultureCode, pi.DefaultLanguage) != 0)
+                            if (portalCultureCode != null && !string.Equals(portalCultureCode, pi.DefaultLanguage, StringComparison.Ordinal))
                             {
                                 // portal culture code and default culture code are not the same.
                                 // this means we will get the incorrect home page tab id
@@ -131,26 +133,27 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // 912: capture as fall back any exception resulting from doing a portal lookup in 6.x
                         // this happens when portalId = -1
-                        // no long, no handling, just passonwards with null portal
+                        // no long, no handling, just pass onwards with null portal
                     }
                 }
             }
 
             if (exceptionOnNull && pi == null)
             {
-                throw new NullReferenceException("No Portal Found for portalid : " + portalId.ToString());
+                throw new PortalNotFoundException($"No Portal Found for portalid : {portalId}");
             }
 
             return pi;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void RemovedPageIndexCallBack(string k, object v, CacheItemRemovedReason r)
         {
             cacheItemRemovedReason = r;
 #if DEBUG
             if (logRemovedReason)
             {
-                var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
+                var log = new LogInfo { LogTypeKey = "HOST_ALERT", };
 
                 string itemName;
                 string count;
@@ -171,9 +174,9 @@ namespace DotNetNuke.Entities.Urls
                             // was cleared.
                         }
 
-                        if (v != null && v.GetType() == typeof(SharedDictionary<string, string>))
+                        if (v is SharedDictionary<string, string> stringDict)
                         {
-                            count = "Item Count: " + ((SharedDictionary<string, string>)v).Values.Count.ToString();
+                            count = "Item Count: " + stringDict.Values.Count;
                         }
                         else
                         {
@@ -183,20 +186,18 @@ namespace DotNetNuke.Entities.Urls
                         break;
                     case "DNN_" + UrlDictKey:
                         itemName = "Friendly Url List";
-                        if (v != null &&
-                            v.GetType() == typeof(SharedDictionary<int, SharedDictionary<string, string>>))
+                        if (v is SharedDictionary<int, SharedDictionary<string, string>> friendlyUrls)
                         {
-                            var friendlyUrls = (SharedDictionary<int, SharedDictionary<string, string>>)v;
-                            portalCounts = new List<string>();
+                            portalCounts = [];
                             using (friendlyUrls.GetReadLock())
                             {
-                                count = "Portal Count: " + friendlyUrls.Count.ToString();
+                                count = $"Portal Count: {friendlyUrls.Count}";
                                 foreach (int key in friendlyUrls.Keys)
                                 {
-                                    SharedDictionary<string, string> portalUrls = friendlyUrls[key];
+                                    var portalUrls = friendlyUrls[key];
                                     using (portalUrls.GetReadLock())
                                     {
-                                        portalCounts.Add("Portal " + key.ToString() + " Item Count :" + portalUrls.Count.ToString());
+                                        portalCounts.Add($"Portal {key} Item Count :{portalUrls.Count}");
                                     }
                                 }
                             }
@@ -223,7 +224,7 @@ namespace DotNetNuke.Entities.Urls
                     int i = 0;
                     foreach (string item in portalCounts)
                     {
-                        log.AddProperty("Item " + i.ToString(), item);
+                        log.AddProperty($"Item {i}", item);
                         i++;
                     }
                 }
@@ -236,7 +237,7 @@ namespace DotNetNuke.Entities.Urls
 
         /// <summary>Finds the best match friendlyurlparms.config file path.</summary>
         /// <param name="portalId">The portalId to search for. -1 if all portals required.</param>
-        /// <param name="portalSpecificFound"></param>
+        /// <param name="portalSpecificFound">Whether a portal specific config file was found.</param>
         /// <returns>If a non-zero length string, a valid file path.  If a zero length string, no file was found.</returns>
         /// <remarks>
         /// First priority is a file called n.friendlyurlparms.config, in the root path
@@ -249,14 +250,14 @@ namespace DotNetNuke.Entities.Urls
             string result = string.Empty;
             portalSpecificFound = false;
             const string fileName = "friendlyUrlParms.config";
-            string rootPath = Globals.ApplicationMapPath + "\\";
+            string rootPath = $@"{Globals.ApplicationMapPath}\";
 
             string filePath;
             if (portalId > -1)
             {
                 // specific portal
                 // first look in the root folder with the portalid as a prefix
-                filePath = rootPath + portalId.ToString() + "." + fileName;
+                filePath = $"{rootPath}{portalId.ToString(CultureInfo.InvariantCulture)}.{fileName}";
             }
             else
             {
@@ -311,7 +312,7 @@ namespace DotNetNuke.Entities.Urls
         internal static List<int> GetAlwaysCallProviderTabs(int portalId)
         {
             List<int> result = null;
-            string key = string.Format(AlwaysCallProviderTabsKey, portalId);
+            string key = string.Format(CultureInfo.InvariantCulture, AlwaysCallProviderTabsKey, portalId);
             var tabIdsToAlwaysCall = (int[])DataCache.GetCache(key);
             if (tabIdsToAlwaysCall != null)
             {
@@ -325,7 +326,7 @@ namespace DotNetNuke.Entities.Urls
         internal static List<string> GetCustomAliasesFromCache()
         {
             object raw = DataCache.GetCache(CustomPortalAliasesKey);
-            return (raw != null) ? (List<string>)raw : null;
+            return (List<string>)raw;
         }
 
         internal static void ClearCustomAliasesCache()
@@ -335,15 +336,14 @@ namespace DotNetNuke.Entities.Urls
 
         internal static Hashtable GetHomePageSkinsFromCache(int portalId)
         {
-            string key = string.Format(HomePageSkinsKey, portalId);
-            var result = (Hashtable)DataCache.GetCache(key);
-            return result;
+            string key = string.Format(CultureInfo.InvariantCulture, HomePageSkinsKey, portalId);
+            return (Hashtable)DataCache.GetCache(key);
         }
 
         internal static List<int> GetListOfTabsWithProviders(int portalId, FriendlyUrlSettings settings)
         {
             List<int> result = null;
-            string key = string.Format(PortalModuleProviderTabsKey, portalId);
+            string key = string.Format(CultureInfo.InvariantCulture, PortalModuleProviderTabsKey, portalId);
             var tabIdsForPortal = (int[])DataCache.GetCache(key);
             if (tabIdsForPortal != null)
             {
@@ -355,10 +355,10 @@ namespace DotNetNuke.Entities.Urls
 
         internal static Dictionary<int, List<ParameterRedirectAction>> GetParameterRedirects(FriendlyUrlSettings settings, int portalId, ref List<string> messages)
         {
-            string redirectActionKey = string.Format(RedirectActionsKey, portalId); // cached one portal at a time
+            string redirectActionKey = string.Format(CultureInfo.InvariantCulture, RedirectActionsKey, portalId); // cached one portal at a time
             if (messages == null)
             {
-                messages = new List<string>();
+                messages = [];
             }
 
             var redirectActions = (Dictionary<int, List<ParameterRedirectAction>>)DataCache.GetCache(redirectActionKey);
@@ -369,8 +369,7 @@ namespace DotNetNuke.Entities.Urls
                     redirectActions = new Dictionary<int, List<ParameterRedirectAction>>();
 
                     // 807 : look for portal specific files
-                    bool portalSpecific;
-                    string fileName = FindFriendlyUrlParmsConfigFilePath(portalId, out portalSpecific);
+                    string fileName = FindFriendlyUrlParmsConfigFilePath(portalId, out var portalSpecific);
                     if (fileName != string.Empty)
                     {
                         redirectActions.LoadFromXmlFile(fileName, portalId, portalSpecific, ref messages);
@@ -405,7 +404,7 @@ namespace DotNetNuke.Entities.Urls
 
         internal static Dictionary<int, List<ParameterReplaceAction>> GetParameterReplacements(FriendlyUrlSettings settings, int portalId, ref List<string> messages)
         {
-            string replaceActionKey = "replaceActions:" + portalId.ToString();
+            string replaceActionKey = "replaceActions:" + portalId.ToString(CultureInfo.InvariantCulture);
             var replaceActions = (Dictionary<int, List<ParameterReplaceAction>>)DataCache.GetCache(replaceActionKey);
             if (messages == null)
             {
@@ -446,10 +445,10 @@ namespace DotNetNuke.Entities.Urls
 
         internal static Dictionary<int, SharedList<ParameterRewriteAction>> GetParameterRewrites(int portalId, ref List<string> messages, Guid parentTraceId)
         {
-            string rewriteActionKey = string.Format(RewriteActionsKey, portalId.ToString());
+            string rewriteActionKey = string.Format(CultureInfo.InvariantCulture, RewriteActionsKey, portalId);
             if (messages == null)
             {
-                messages = new List<string>();
+                messages = [];
             }
 
             var rewriteActions = (Dictionary<int, SharedList<ParameterRewriteAction>>)DataCache.GetCache(rewriteActionKey);
@@ -458,10 +457,9 @@ namespace DotNetNuke.Entities.Urls
                 try
                 {
                     rewriteActions = new Dictionary<int, SharedList<ParameterRewriteAction>>();
-                    bool portalSpecific;
 
                     // 807 : new change to look for portal rule files in portal specific locations
-                    string filename = FindFriendlyUrlParmsConfigFilePath(portalId, out portalSpecific);
+                    string filename = FindFriendlyUrlParmsConfigFilePath(portalId, out var portalSpecific);
                     if (!string.IsNullOrEmpty(filename))
                     {
                         rewriteActions.LoadFromXmlFile(filename, portalId, portalSpecific, ref messages);
@@ -519,11 +517,11 @@ namespace DotNetNuke.Entities.Urls
             if (checkAllTabs)
             {
                 // the portal has an 'all tabs' provider in it
-                string allTabsKey = string.Format(PortalModuleProvidersAllTabsKey, portalId);
+                string allTabsKey = string.Format(CultureInfo.InvariantCulture, PortalModuleProvidersAllTabsKey, portalId);
                 var cachedAllTabsProviders = (List<ExtensionUrlProvider>)DataCache.GetCache(allTabsKey);
                 if (cachedAllTabsProviders != null)
                 {
-                    allCachedProviders = new List<ExtensionUrlProvider>();
+                    allCachedProviders = [];
                     allCachedProviders.AddRange(cachedAllTabsProviders);
                 }
             }
@@ -532,7 +530,7 @@ namespace DotNetNuke.Entities.Urls
             if (checkThisTab)
             {
                 // tab exists, get the providers for this tab
-                string key = string.Format(PortalModuleProvidersForTabKey, portalId, tabId);
+                string key = string.Format(CultureInfo.InvariantCulture, PortalModuleProvidersForTabKey, portalId, tabId);
                 var cachedTabProviders = (List<ExtensionUrlProvider>)DataCache.GetCache(key);
                 if (cachedTabProviders != null)
                 {
@@ -550,14 +548,14 @@ namespace DotNetNuke.Entities.Urls
 
         internal static SharedDictionary<string, string> GetTabPathsFromCache(int portalId)
         {
-            return (SharedDictionary<string, string>)DataCache.GetCache(string.Format(TabPathsKey, portalId));
+            return (SharedDictionary<string, string>)DataCache.GetCache(string.Format(CultureInfo.InvariantCulture, TabPathsKey, portalId));
         }
 
-        internal static void StoreAlwaysCallProviderTabs(int portalId, List<int> alwaysCallTabids, FriendlyUrlSettings settings)
+        internal static void StoreAlwaysCallProviderTabs(int portalId, List<int> alwaysCallTabIds, FriendlyUrlSettings settings)
         {
-            if (alwaysCallTabids != null)
+            if (alwaysCallTabIds != null)
             {
-                SetPageCache(string.Format(AlwaysCallProviderTabsKey, portalId), alwaysCallTabids.ToArray(), settings);
+                SetPageCache(string.Format(CultureInfo.InvariantCulture, AlwaysCallProviderTabsKey, portalId), alwaysCallTabIds.ToArray(), settings);
             }
         }
 
@@ -574,9 +572,9 @@ namespace DotNetNuke.Entities.Urls
 
         internal static void StoreHomePageSkinsInCache(int portalId, Hashtable homePageSkins)
         {
-            if (homePageSkins != null && homePageSkins.Count > 0)
+            if (homePageSkins is { Count: > 0, })
             {
-                DataCache.SetCache(string.Format(HomePageSkinsKey, portalId), homePageSkins);
+                DataCache.SetCache(string.Format(CultureInfo.InvariantCulture, HomePageSkinsKey, portalId), homePageSkins);
             }
         }
 
@@ -587,9 +585,9 @@ namespace DotNetNuke.Entities.Urls
         /// If a tab doesn't appear on this cached list, then the cache isn't checked
         /// for that particular tabid/portalId combination.
         /// </summary>
-        /// <param name="providers"></param>
-        /// <param name="portalId"></param>
-        /// <param name="settings"></param>
+        /// <param name="providers">A list of extension providers.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settings">The friendly URL settings.</param>
         internal static void StoreListOfTabsWithProviders(List<ExtensionUrlProvider> providers, int portalId, FriendlyUrlSettings settings)
         {
             // go through the list of providers and store all the tabs that they are configured for
@@ -617,25 +615,25 @@ namespace DotNetNuke.Entities.Urls
 
                 foreach (int providerTabId in provider.ProviderConfig.TabIds)
                 {
-                    if (providersWithTabs.Contains(providerTabId) == false)
+                    if (!providersWithTabs.Contains(providerTabId))
                     {
                         providersWithTabs.Add(providerTabId);
-                        providersWithTabsStr.Add(providerTabId.ToString());
+                        providersWithTabsStr.Add(providerTabId.ToString(CultureInfo.InvariantCulture));
                     }
                 }
             }
 
             // store list as array in cache
-            string key = string.Format(PortalModuleProviderTabsKey, portalId);
+            string key = string.Format(CultureInfo.InvariantCulture, PortalModuleProviderTabsKey, portalId);
             SetPageCache(key, providersWithTabs.ToArray(), settings);
             if (settings.LogCacheMessages)
             {
                 var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
                 log.AddProperty("Url Rewriting Caching Message", "Portal Module Providers Tab List stored in cache");
                 log.AddProperty("Cache Item Key", key);
-                log.AddProperty("PortalId", portalId.ToString());
+                log.AddProperty("PortalId", portalId.ToString(CultureInfo.InvariantCulture));
                 log.AddProperty("Provider With Tabs", string.Join(",", providersWithTabsStr.ToArray()));
-                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString(CultureInfo.InvariantCulture));
                 LogController.Instance.AddLog(log);
             }
         }
@@ -643,7 +641,7 @@ namespace DotNetNuke.Entities.Urls
         internal static void StoreModuleProvidersForPortal(int portalId, FriendlyUrlSettings settings, List<ExtensionUrlProvider> providers)
         {
             // get the key for the portal module providers
-            string allTabsKey = string.Format(PortalModuleProvidersAllTabsKey, portalId);
+            string allTabsKey = string.Format(CultureInfo.InvariantCulture, PortalModuleProvidersAllTabsKey, portalId);
 
             // get the providers that are on all tabs
             var allTabsProviders = new List<ExtensionUrlProvider>();
@@ -663,17 +661,17 @@ namespace DotNetNuke.Entities.Urls
                     foreach (int tabId in provider.ProviderConfig.TabIds)
                     {
                         List<ExtensionUrlProvider> thisTabProviders;
-                        if (tabsProviders.ContainsKey(tabId))
+                        if (tabsProviders.TryGetValue(tabId, out var tabProviders))
                         {
-                            thisTabProviders = tabsProviders[tabId];
+                            thisTabProviders = tabProviders;
                             thisTabProviders.Add(provider);
                             tabsProviders[tabId] = thisTabProviders; // assign back to position in tabs
                         }
                         else
                         {
-                            thisTabProviders = new List<ExtensionUrlProvider> { provider };
+                            thisTabProviders = [provider,];
                             tabsProviders.Add(tabId, thisTabProviders);
-                            tabIdStr.Add(tabId.ToString());
+                            tabIdStr.Add(tabId.ToString(CultureInfo.InvariantCulture));
                         }
                     }
 
@@ -683,14 +681,14 @@ namespace DotNetNuke.Entities.Urls
                 // store the list of providers where the provider might be called with no valid TabId, because
                 // the provider allows for Urls with no DNN Page path, which means the TabId can't be identified
                 // by the Url Rewriter.  This identifies the Provider as using a 'siteRootRewrite'
-                if (provider.AlwaysUsesDnnPagePath(portalId) == false)
+                if (!provider.AlwaysUsesDnnPagePath(portalId))
                 {
                     List<ExtensionUrlProvider> noPathProviders;
 
                     // add this one
-                    if (tabsProviders.ContainsKey(RewriteController.SiteRootRewrite))
+                    if (tabsProviders.TryGetValue(RewriteController.SiteRootRewrite, out var pathProviders))
                     {
-                        noPathProviders = tabsProviders[RewriteController.SiteRootRewrite];
+                        noPathProviders = pathProviders;
                         noPathProviders.Add(provider);
                         tabsProviders[RewriteController.SiteRootRewrite] = noPathProviders;
 
@@ -698,7 +696,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        noPathProviders = new List<ExtensionUrlProvider> { provider };
+                        noPathProviders = [provider,];
                         tabsProviders.Add(RewriteController.SiteRootRewrite, noPathProviders);
                         tabIdStr.Add("NoPath");
                     }
@@ -715,7 +713,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 foreach (int tabId in tabsProviders.Keys)
                 {
-                    SetPageCache(string.Format(PortalModuleProvidersForTabKey, portalId, tabId), tabsProviders[tabId], settings);
+                    SetPageCache(string.Format(CultureInfo.InvariantCulture, PortalModuleProvidersForTabKey, portalId, tabId), tabsProviders[tabId], settings);
                 }
             }
 
@@ -723,10 +721,10 @@ namespace DotNetNuke.Entities.Urls
             {
                 var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
                 log.AddProperty("Url Rewriting Caching Message", "Extension Url Providers stored in cache");
-                log.AddProperty("PortalId/TabIds", portalId.ToString() + "/" + string.Join(",", tabIdStr.ToArray()));
-                log.AddProperty("All Tabs Providers Count", allTabsProviders.Count.ToString());
-                log.AddProperty("Portal Tabs Providers Count", providerCount.ToString());
-                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                log.AddProperty("PortalId/TabIds", portalId.ToString(CultureInfo.InvariantCulture) + "/" + string.Join(",", tabIdStr.ToArray()));
+                log.AddProperty("All Tabs Providers Count", allTabsProviders.Count.ToString(CultureInfo.InvariantCulture));
+                log.AddProperty("Portal Tabs Providers Count", providerCount.ToString(CultureInfo.InvariantCulture));
+                log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString(CultureInfo.InvariantCulture));
                 LogController.Instance.AddLog(log);
             }
         }
@@ -742,9 +740,10 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Retrieve the Url Dictionary for the installation.</summary>
-        /// <param name="urlDict"></param>
-        /// <param name="urlPortals"></param>
-        /// <param name="customAliasTabs"></param>
+        /// <param name="urlDict">A dictionary of tabs for all portals.</param>
+        /// <param name="urlPortals">The portal IDs.</param>
+        /// <param name="customAliasTabs">A dictionary of portals for which we've retrieved the tabs.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void GetFriendlyUrlIndexFromCache(
             out SharedDictionary<int, SharedDictionary<string, string>> urlDict,
             out ConcurrentBag<int> urlPortals,
@@ -776,6 +775,7 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void GetPageIndexFromCache(
             out SharedDictionary<string, string> dict,
             out SharedDictionary<int, PathSizes> portalDepthInfo,
@@ -796,11 +796,11 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Store the Url Dictionary (all tab urls / tabids) for the installation.</summary>
-        /// <param name="urlDict"></param>
-        /// <param name="urlPortals"></param>
-        /// <param name="customAliasTabs"></param>
-        /// <param name="settings"></param>
-        /// <param name="reason"></param>
+        /// <param name="urlDict">A dictionary of tabs for all portals.</param>
+        /// <param name="urlPortals">The portal IDs.</param>
+        /// <param name="customAliasTabs">A dictionary of portals for which we've retrieved the tabs.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="reason">The reason for rebuilding the index (for logging).</param>
         internal void StoreFriendlyUrlIndexInCache(
             SharedDictionary<int, SharedDictionary<string, string>> urlDict,
             ConcurrentBag<int> urlPortals,
@@ -819,7 +819,7 @@ namespace DotNetNuke.Entities.Urls
 
             logRemovedReason = settings.LogCacheMessages;
 
-            SetPageCache(UrlDictKey, urlDict, new DNNCacheDependency(this.GetTabsCacheDependency(urlPortals)), settings, this.onRemovePageIndex);
+            SetPageCache(UrlDictKey, urlDict, new DNNCacheDependency(GetTabsCacheDependency(urlPortals)), settings, this.onRemovePageIndex);
             SetPageCache(UrlPortalsKey, urlPortals, settings);
             SetPageCache(CustomAliasTabsKey, customAliasTabs, settings);
 
@@ -831,14 +831,14 @@ namespace DotNetNuke.Entities.Urls
                 log.AddProperty("Cache Key", UrlDictKey);
                 using (urlDict.GetReadLock())
                 {
-                    log.AddProperty("Item Count", urlDict.Values.Count.ToString());
+                    log.AddProperty("Item Count", urlDict.Values.Count.ToString(CultureInfo.InvariantCulture));
                 }
 
-                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
-                log.AddProperty("Item added to cache", "Url Portals object added to cache.  Key:" + UrlPortalsKey + "  Items: " + urlPortals.Count.ToString());
+                log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString(CultureInfo.InvariantCulture));
+                log.AddProperty("Item added to cache", "Url Portals object added to cache.  Key:" + UrlPortalsKey + "  Items: " + urlPortals.Count.ToString(CultureInfo.InvariantCulture));
                 using (customAliasTabs.GetReadLock())
                 {
-                    log.AddProperty("Item added to cache", "Custom Alias Tabs added to cache.  Key:" + CustomAliasTabsKey + " Items: " + customAliasTabs.Count.ToString());
+                    log.AddProperty("Item added to cache", "Custom Alias Tabs added to cache.  Key:" + CustomAliasTabsKey + " Items: " + customAliasTabs.Count.ToString(CultureInfo.InvariantCulture));
                 }
 
                 LogController.Instance.AddLog(log);
@@ -861,7 +861,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             // 783 : use cache dependency to manage page index instead of triggerDictionaryRebuild regex.
-            SetPageCache(PageIndexKey, tabDictionary, new DNNCacheDependency(this.GetTabsCacheDependency(portalIds)), settings, this.onRemovePageIndex);
+            SetPageCache(PageIndexKey, tabDictionary, new DNNCacheDependency(GetTabsCacheDependency(portalIds)), settings, this.onRemovePageIndex);
 
             SetPageCache(PageIndexDepthKey, portalDepthInfo, settings);
 
@@ -876,29 +876,28 @@ namespace DotNetNuke.Entities.Urls
                 log.AddProperty("Cache Item Key", PageIndexKey);
                 using (tabDictionary.GetReadLock())
                 {
-                    log.AddProperty("Item Count", tabDictionary.Count.ToString());
+                    log.AddProperty("Item Count", tabDictionary.Count.ToString(CultureInfo.InvariantCulture));
                 }
 
-                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString(CultureInfo.InvariantCulture));
                 LogController.Instance.AddLog(log);
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void StoreTabPathsInCache(int portalId, SharedDictionary<string, string> tabPathDictionary, FriendlyUrlSettings settings)
         {
             SetPageCache(
-                string.Format(TabPathsKey, portalId),
+                string.Format(CultureInfo.InvariantCulture, TabPathsKey, portalId),
                 tabPathDictionary,
-                new DNNCacheDependency(this.GetTabsCacheDependency(new List<int> { portalId })),
+                new DNNCacheDependency(GetTabsCacheDependency([portalId,])),
                 settings,
                 null);
         }
 
         private static CacheDependency GetPortalsCacheDependency()
         {
-            var keys = new List<string> { "DNN_PortalDictionary" };
-            var portalsDepedency = new CacheDependency(null, keys.ToArray());
-            return portalsDepedency;
+            return new CacheDependency(null, PortalCacheDependencyKeys);
         }
 
         private static void SetPageCache(string key, object value, FriendlyUrlSettings settings)
@@ -943,13 +942,13 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        private CacheDependency GetTabsCacheDependency(IEnumerable<int> portalIds)
+        private static CacheDependency GetTabsCacheDependency(IEnumerable<int> portalIds)
         {
             var keys = new List<string>();
             foreach (int portalId in portalIds)
             {
                 const string cacheKey = DataCache.TabCacheKey;
-                string key = string.Format(cacheKey, portalId);
+                string key = string.Format(CultureInfo.InvariantCulture, cacheKey, portalId);
                 key = "DNN_" + key; // add on the DNN_ prefix
                 keys.Add(key);
             }

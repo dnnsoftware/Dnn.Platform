@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Syndication
     using DotNetNuke.Instrumentation;
 
     /// <summary>Helper class that provides memory and disk caching of the downloaded feeds.</summary>
-    internal class OpmlDownloadManager
+    internal sealed class OpmlDownloadManager
     {
         private const string OPMLDir = "/OPML/";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OpmlDownloadManager));
@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.Syndication
         {
             try
             {
-                return string.Format("{0}_{1:x8}", uri.Host.Replace('.', '_'), uri.AbsolutePath.GetHashCode());
+                return $"{uri.Host.Replace('.', '_')}_{uri.AbsolutePath.GetHashCode():x8}";
             }
             catch
             {
@@ -125,7 +125,11 @@ namespace DotNetNuke.Services.Syndication
                 byte[] feed = new WebClient().DownloadData(uri.AbsoluteUri);
 
                 var opmlDoc = new XmlDocument { XmlResolver = null };
-                opmlDoc.Load(new MemoryStream(feed));
+                using (var opmlReader = XmlReader.Create(new MemoryStream(feed), new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    opmlDoc.Load(opmlReader);
+                }
+
                 opmlFeed = Opml.LoadFromXml(opmlDoc);
 
                 opmlFeed.UtcExpiry = DateTime.UtcNow.AddMinutes(this.defaultTtlMinutes);
@@ -164,7 +168,10 @@ namespace DotNetNuke.Services.Syndication
                 try
                 {
                     opmlDoc = new XmlDocument { XmlResolver = null };
-                    opmlDoc.Load(opmlFilename);
+                    using (var opmlReader = XmlReader.Create(opmlFilename, new XmlReaderSettings { XmlResolver = null, }))
+                    {
+                        opmlDoc.Load(opmlReader);
+                    }
 
                     // look for special XML comment (before the root tag)'
                     // containing expiration and url
@@ -226,9 +233,9 @@ namespace DotNetNuke.Services.Syndication
                 return;
             }
 
-            doc.InsertBefore(doc.CreateComment(string.Format("{0}@{1}", utcExpiry.ToBinary(), uri.AbsoluteUri)), doc.DocumentElement);
+            doc.InsertBefore(doc.CreateComment($"{utcExpiry.ToBinary()}@{uri.AbsoluteUri}"), doc.DocumentElement);
 
-            string fileName = string.Format("{0}_{1:x8}.opml.resources", GetTempFileNamePrefixFromUrl(uri), Guid.NewGuid().ToString().GetHashCode());
+            string fileName = $"{GetTempFileNamePrefixFromUrl(uri)}_{Guid.NewGuid().ToString().GetHashCode():x8}.opml.resources";
 
             try
             {

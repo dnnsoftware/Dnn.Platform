@@ -1,5 +1,5 @@
 ﻿const webpack = require("webpack");
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require("eslint-webpack-plugin");
 const path = require("path");
 const packageJson = require("./package.json");
 const moduleName = "vocabulary";
@@ -29,7 +29,7 @@ module.exports = (env, argv) => {
             disableHostCheck: !isProduction,
         },
         resolve: {
-            extensions: ["*", ".js", ".json", ".jsx"],
+            extensions: ["*", ".js", ".json", ".jsx", ".ts", ".tsx"],
             modules: [
                 path.resolve("./src"), // Look in src first
                 path.resolve("./node_modules"), // Try local node_modules
@@ -64,12 +64,12 @@ module.exports = (env, argv) => {
                     ],
                 },
                 {
-                    test: /\.(js|jsx)$/,
+                    test: /\.(js|jsx|ts|tsx)$/,
                     exclude: /node_modules/,
                     use: {
                         loader: "babel-loader",
                         options: {
-                            presets: ["@babel/preset-env", "@babel/preset-react"],
+                            presets: ["@babel/preset-env", "@babel/preset-react", "@babel/preset-typescript"],
                         },
                     },
                 },
@@ -79,6 +79,27 @@ module.exports = (env, argv) => {
                         loader: "url-loader?limit=8192",
                     },
                 },
+                {
+                    test: /\.svg$/i,
+                    issuer: /\.[jt]sx?$/,
+                    use: ["@svgr/webpack"],
+                },
+                {
+                    test: /\.json$/,
+                    type: "javascript/auto",
+                    loader: "json-loader",
+                },
+                {
+                    test: /\.html$/,
+                    use: [
+                        {
+                            loader: "html-loader",
+                            options: {
+                                esModule: false,
+                            },
+                        },
+                    ],
+                }
             ],
         },
 

@@ -5,9 +5,7 @@ import { security as SecurityActions } from "../../actions";
 import BulletinItemRow from "./bulletinItemRow";
 import resx from "../../resources";
 import styles from "./style.module.less";
-
-/*eslint-disable quotes*/
-const warningIcon = require(`!raw-loader!./../svg/error.svg`).default;
+import WarningIcon from "./../svg/error.svg";
 
 class SecurityBulletinsPanelBody extends Component {
     constructor() {
@@ -77,14 +75,14 @@ class SecurityBulletinsPanelBody extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         if (state.error) {
             return (
                 <div className={styles.bulletins}>
                     <div className="warning-container">
-                        <div className="warning-icon" dangerouslySetInnerHTML={{ __html: warningIcon }} />
+                        <div className="warning-icon"><WarningIcon /></div>
                         <div className="warning-msg">{state.error}</div>
                     </div>
                 </div>

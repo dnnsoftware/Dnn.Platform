@@ -41,8 +41,8 @@ namespace DotNetNuke.Entities.Tabs
         // The special constructor is used to deserialize values.
 
         /// <summary>Initializes a new instance of the <see cref="TabCollection"/> class.</summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
+        /// <param name="info">The serialization info.</param>
+        /// <param name="context">The streaming context.</param>
         public TabCollection(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>Initializes a new instance of the <see cref="TabCollection"/> class.</summary>
-        /// <param name="tabs"></param>
+        /// <param name="tabs">The tabs.</param>
         public TabCollection(IEnumerable<TabInfo> tabs)
             : this()
         {
@@ -140,7 +140,7 @@ namespace DotNetNuke.Entities.Tabs
                     {
                         collection = !includeNeutral
                                         ? new TabCollection(from t in tabs
-                                                            where t.CultureCode.ToLowerInvariant() == cultureCode
+                                                            where t.CultureCode.Equals(cultureCode, StringComparison.OrdinalIgnoreCase)
                                                             select t)
                                         : new TabCollection(tabs);
                     }
@@ -179,12 +179,12 @@ namespace DotNetNuke.Entities.Tabs
 
         public TabInfo WithTabNameAndParentId(string tabName, int parentId)
         {
-            return (from t in this.list where t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) && t.ParentId == parentId select t).SingleOrDefault();
+            return (from t in this.list where t.TabName.Equals(tabName, StringComparison.OrdinalIgnoreCase) && t.ParentId == parentId select t).SingleOrDefault();
         }
 
         public TabInfo WithTabName(string tabName)
         {
-            return (from t in this.list where !string.IsNullOrEmpty(t.TabName) && t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) select t).FirstOrDefault();
+            return (from t in this.list where !string.IsNullOrEmpty(t.TabName) && t.TabName.Equals(tabName, StringComparison.OrdinalIgnoreCase) select t).FirstOrDefault();
         }
 
         internal void RefreshCache(int tabId, TabInfo updatedTab)
@@ -225,13 +225,13 @@ namespace DotNetNuke.Entities.Tabs
 
         private static bool IsLocalizationEnabled()
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return (portalSettings != null) ? portalSettings.ContentLocalizationEnabled : Null.NullBoolean;
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
+            return portalSettings?.ContentLocalizationEnabled ?? Null.NullBoolean;
         }
 
         private static bool IsLocalizationEnabled(int portalId)
         {
-            return PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalId, false);
+            return PortalController.GetPortalSettingAsBoolean(PortalController.Instance, "ContentLocalizationEnabled", portalId, false);
         }
 
         private void AddInternal(TabInfo tab)

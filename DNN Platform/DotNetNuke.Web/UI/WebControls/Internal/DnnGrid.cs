@@ -4,27 +4,33 @@
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     using System;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework.JavaScriptLibraries;
 
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
+    /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnGrid : GridView
     {
+        /// <summary>Gets the item style.</summary>
         public TableItemStyle ItemStyle => this.RowStyle;
 
+        /// <summary>Gets the alternating item style.</summary>
         public TableItemStyle AlternatingItemStyle => this.AlternatingRowStyle;
 
+        /// <summary>Gets the edit item style.</summary>
         public TableItemStyle EditItemStyle => this.EditRowStyle;
 
+        /// <summary>Gets the selected item style.</summary>
         public TableItemStyle SelectedItemStyle => this.SelectedRowStyle;
 
+        /// <summary>Gets or sets the screen row number.</summary>
         public int ScreenRowNumber { get; set; }
 
+        /// <summary>Gets or sets the row height.</summary>
         public int RowHeight { get; set; }
 
+        /// <summary>Gets or sets the current page index.</summary>
         public int CurrentPageIndex
         {
             get
@@ -43,7 +49,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             base.OnInit(e);
             this.CssClass = "dnn-grid";
-            Utilities.ApplySkin(this);
+            Utilities.ApplyControlSkin(this, string.Empty, string.Empty);
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }

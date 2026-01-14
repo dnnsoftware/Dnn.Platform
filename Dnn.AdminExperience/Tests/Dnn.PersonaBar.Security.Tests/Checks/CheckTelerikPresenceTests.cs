@@ -1,18 +1,36 @@
-﻿namespace Dnn.PersonaBar.Security.Tests.Checks
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+namespace Dnn.PersonaBar.Security.Tests.Checks
 {
     using System;
     using System.Linq;
 
     using Dnn.PersonaBar.Security.Components;
     using Dnn.PersonaBar.Security.Components.Checks;
-    using DotNetNuke.Common.Internal;
     using DotNetNuke.Maintenance.Telerik;
+    using DotNetNuke.Tests.Utilities.Fakes;
+
     using Moq;
     using NUnit.Framework;
 
     [TestFixture]
     public class CheckTelerikPresenceTests
     {
+        private FakeServiceProvider serviceProvider;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.serviceProvider = FakeServiceProvider.Setup();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
+        }
+
         [Test]
         public void Execute_WhenError_ReturnsUnverified()
         {
@@ -32,8 +50,8 @@
             {
                 // assert
                 Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Unverified));
-                Assert.That(result.Notes.Count(), Is.EqualTo(1));
-                Assert.That(result.Notes.First() == "An internal error occurred. See logs for details.", Is.True);
+                Assert.That(result.Notes.Count, Is.EqualTo(1));
+                Assert.That(result.Notes.First(), Is.EqualTo("An internal error occurred. See logs for details."));
             });
         }
 
@@ -65,7 +83,7 @@
                 // assert
                 Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Failure));
                 Assert.That(result.Notes.Count(), Is.EqualTo(1));
-                Assert.That(result.Notes.First().Contains("* DotNetNuke.Modules.Mod3.dll"), Is.True);
+                Assert.That(result.Notes.First(), Does.Contain("* DotNetNuke.Modules.Mod3.dll"));
             });
         }
 
@@ -81,7 +99,7 @@
 
             telerikUtilsMock
                 .Setup(x => x.GetAssembliesThatDependOnTelerik())
-                .Returns(() => new string[0]);
+                .Returns(() => []);
 
             var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
 

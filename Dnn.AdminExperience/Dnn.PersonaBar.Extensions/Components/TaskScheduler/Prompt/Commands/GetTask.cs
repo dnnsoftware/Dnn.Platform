@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -17,11 +18,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
     using DotNetNuke.Services.Scheduling;
 
     [ConsoleCommand("get-task", Constants.SchedulerCategory, "Prompt_GetTask_Description")]
-
     public class GetTask : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_GetTask_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(GetTask));
@@ -45,11 +44,23 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
                 var task = SchedulingProvider.Instance().GetSchedule(this.TaskId);
                 if (task == null)
                 {
-                    return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_TaskNotFound"), this.TaskId));
+                    return new ConsoleErrorResultModel(
+                        string.Format(
+                            CultureInfo.CurrentCulture,
+                            this.LocalizeString("Prompt_TaskNotFound"),
+                            this.TaskId));
                 }
 
                 var tasks = new List<TaskModel> { new TaskModel(task) };
-                return new ConsoleResultModel { Data = tasks, Records = tasks.Count, Output = string.Format(this.LocalizeString("Prompt_TaskFound"), this.TaskId) };
+                return new ConsoleResultModel
+                {
+                    Data = tasks,
+                    Records = tasks.Count,
+                    Output = string.Format(
+                        CultureInfo.CurrentCulture,
+                        this.LocalizeString("Prompt_TaskFound"),
+                        this.TaskId),
+                };
             }
             catch (Exception exc)
             {

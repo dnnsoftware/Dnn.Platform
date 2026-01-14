@@ -12,11 +12,7 @@
     <iconUrl>https://dnncommunity.org/favicon.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DNN EditBar Common Library</description>
-    <releaseNotes>
-      Version 1.6.1:
-      - Stabilization Release for Dnn v9.2.2
-    </releaseNotes>
-    <copyright>Copyright (c) 2016, DNN Corporation</copyright>
+    <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
     <tags>DNN EditBar</tags>
     <!--
     <dependencies>
@@ -26,9 +22,9 @@
     -->
   </metadata>
   <files>
-    <file src="bin\Dnn.EditBar.Library.dll" target="lib\net45"/>
-    <file src="bin\Dnn.EditBar.Library.pdb" target="lib\net45"/>
-    <file src="bin\Dnn.EditBar.Library.xml" target="lib\net45"/>
+    <file src="bin\Dnn.EditBar.Library.dll" target="lib\net48"/>
+    <file src="bin\Dnn.EditBar.Library.pdb" target="lib\net48"/>
+    <file src="bin\Dnn.EditBar.Library.xml" target="lib\net48"/>
     <file src="..\..\..\Build\Tools\NuGet\logo-for-nuget.png" target="images\"/>
   </files>
 </package>

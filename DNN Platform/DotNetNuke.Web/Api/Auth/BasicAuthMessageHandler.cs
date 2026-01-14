@@ -19,6 +19,7 @@ namespace DotNetNuke.Web.Api.Auth
     /// <summary>Basic authentication message handler.</summary>
     public class BasicAuthMessageHandler : AuthMessageHandlerBase
     {
+        private static readonly char[] CredentialSeparator = [':',];
         private readonly Encoding encoding = Encoding.GetEncoding("iso-8859-1");
 
         /// <summary>Initializes a new instance of the <see cref="BasicAuthMessageHandler"/> class.</summary>
@@ -50,7 +51,7 @@ namespace DotNetNuke.Web.Api.Auth
         /// <inheritdoc/>
         public override HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
-            if (response.StatusCode == HttpStatusCode.Unauthorized && this.SupportsBasicAuth(response.RequestMessage))
+            if (response.StatusCode == HttpStatusCode.Unauthorized && SupportsBasicAuth(response.RequestMessage))
             {
                 response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(this.AuthScheme, "realm=\"DNNAPI\""));
             }
@@ -58,7 +59,7 @@ namespace DotNetNuke.Web.Api.Auth
             return base.OnOutboundResponse(response, cancellationToken);
         }
 
-        private bool SupportsBasicAuth(HttpRequestMessage request)
+        private static bool SupportsBasicAuth(HttpRequestMessage request)
         {
             return !IsXmlHttpRequest(request);
         }
@@ -98,7 +99,7 @@ namespace DotNetNuke.Web.Api.Auth
                 return null;
             }
 
-            if (request?.Headers.Authorization.Scheme.ToLower() != this.AuthScheme.ToLower())
+            if (!request.Headers.Authorization.Scheme.Equals(this.AuthScheme, StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }
@@ -111,7 +112,7 @@ namespace DotNetNuke.Web.Api.Auth
 
             string decoded = this.encoding.GetString(Convert.FromBase64String(authorization));
 
-            string[] parts = decoded.Split(new[] { ':' }, 2);
+            string[] parts = decoded.Split(CredentialSeparator, 2);
             if (parts.Length < 2)
             {
                 return null;

@@ -25,7 +25,7 @@ class EmailPanel extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.SetErrorState();
     }
 
@@ -88,7 +88,7 @@ class EmailPanel extends Component {
         props.onCloseEmailPanel();
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         return (
@@ -149,11 +149,12 @@ class EmailPanel extends Component {
     }
 }
 
-EmailPanel.PropTypes = {
+EmailPanel.propTypes = {
     label: PropTypes.string,
     className: PropTypes.string,
     collapsibleWidth: PropTypes.number,
     collapsibleHeight: PropTypes.number,
+    dispatch: PropTypes.func.isRequired,
     scrollAreaStyle: PropTypes.object,
     isOpened: PropTypes.bool,
     logIds: PropTypes.array,

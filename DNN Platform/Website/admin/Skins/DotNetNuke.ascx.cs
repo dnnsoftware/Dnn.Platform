@@ -5,21 +5,31 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Common;
 
-    /// <summary></summary>
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A skin/theme object which displays a link to the DNN website.</summary>
     public partial class DotNetNukeControl : SkinObjectBase
     {
-        public string CssClass { get; set; }
+        private readonly IHostSettingsService hostSettingsService;
 
-        /// <inheritdoc/>
-        protected override void OnInit(EventArgs e)
+        /// <summary>Initializes a new instance of the <see cref="DotNetNukeControl"/> class.</summary>
+        public DotNetNukeControl()
+            : this(null)
         {
-            base.OnInit(e);
-
-            this.InitializeComponent();
         }
+
+        /// <summary>Initializes a new instance of the <see cref="DotNetNukeControl"/> class.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public DotNetNukeControl(IHostSettingsService hostSettingsService)
+        {
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+        }
+
+        public string CssClass { get; set; }
 
         /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
@@ -35,11 +45,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.hypDotNetNuke.NavigateUrl = DotNetNukeContext.Current.Application.Url;
 
             // show copyright credits?
-            this.Visible = Host.DisplayCopyright;
-        }
-
-        private void InitializeComponent()
-        {
+            this.Visible = this.hostSettingsService.GetBoolean("Copyright", true);
         }
     }
 }

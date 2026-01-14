@@ -1,5 +1,5 @@
 ﻿const webpack = require("webpack");
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require("eslint-webpack-plugin");
 const packageJson = require("./package.json");
 const path = require("path");
 const webpackExternals = require("@dnnsoftware/dnn-react-common/WebpackExternals");
@@ -29,7 +29,7 @@ module.exports = (env, argv) => {
             disableHostCheck: !isProduction,
         },
         resolve: {
-            extensions: ["*", ".js", ".json", ".jsx"],
+            extensions: ["*", ".js", ".json", ".jsx", ".ts", ".tsx"],
             modules: [
                 path.resolve("./src"), // Look in src first
                 path.resolve("./node_modules"), // Try local node_modules
@@ -68,12 +68,12 @@ module.exports = (env, argv) => {
                     ],
                 },
                 {
-                    test: /\.(js|jsx)$/,
+                    test: /\.(js|jsx|ts|tsx)$/,
                     exclude: /node_modules/,
                     use: {
                         loader: "babel-loader",
                         options: {
-                            presets: ["@babel/preset-env", "@babel/preset-react"],
+                            presets: ["@babel/preset-env", "@babel/preset-react", "@babel/preset-typescript"],
                             plugins: [
                                 "@babel/plugin-transform-react-jsx",
                                 "@babel/plugin-proposal-object-rest-spread",
@@ -88,9 +88,9 @@ module.exports = (env, argv) => {
                     },
                 },
                 {
-                    test: /\.(svg)$/,
-                    exclude: /node_modules/,
-                    use: ["raw-loader"],
+                    test: /\.svg$/i,
+                    issuer: /\.[jt]sx?$/,
+                    use: [{ loader: "@svgr/webpack", options: { svgo: false } }],
                 },
             ],
         },

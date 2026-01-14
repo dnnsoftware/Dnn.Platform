@@ -12,13 +12,13 @@ class DropdownDayPicker extends Component  {
     }
 
     componentDidMount() {
-        document.addEventListener('click', this.handleClick.bind(this), false);
+        document.addEventListener("click", this.handleClick.bind(this), false);
         this._isMounted = true;
     }
 
 
     componentWillUnmount() {
-        document.removeEventListener('click', this.handleClick.bind(this), false);
+        document.removeEventListener("click", this.handleClick.bind(this), false);
         this._isMounted = false;
     }
 
@@ -30,10 +30,10 @@ class DropdownDayPicker extends Component  {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
-        const {dropdownIsActive, onDayClick, applyChanges, clearChanges, startDate, endDate, CalendarIcon, toggleDropdownCalendar} = this.props;
-
+        const {dropdownIsActive, onDayClick, applyChanges, clearChanges, startDate, endDate, toggleDropdownCalendar} = this.props;
+        const CalendarIcon = this.props.calendarIcon;
         return (
             <div className="date-picker" ref={node => this.node = node}>
                 <GridCell className="calendar-dropdown-container" columnSize={100} style={{padding: "0px 5px"}}>
@@ -41,14 +41,13 @@ class DropdownDayPicker extends Component  {
                         <p>{this.props.label}</p>
                     </GridCell>
                     <GridCell columnSize={10}>
-                        <div    id="calendar-icon"
+                        <div id="calendar-icon"
                             className="calendar-icon"
-                            dangerouslySetInnerHTML={{__html:CalendarIcon}}
-                            onClick={()=>toggleDropdownCalendar() }/>
+                            onClick={()=>toggleDropdownCalendar() }><CalendarIcon /></div>
                     </GridCell>
                     <div
                         id="calendar-dropdown"
-                        className={dropdownIsActive ? "calendar-dropdown expand-down" : `calendar-dropdown ${dropdownIsActive !== null ? 'expand-up' : ''} ` } >
+                        className={dropdownIsActive ? "calendar-dropdown expand-down" : `calendar-dropdown ${dropdownIsActive !== null ? "expand-up" : ""} ` } >
                         <GridCell columnSize={100} style={{padding:"20px"}}>
                             <GridCell columnSize={50}  className="calendar">
                                 <DayPicker
@@ -89,7 +88,7 @@ DropdownDayPicker.propTypes = {
     onDayClick: PropTypes.func.isRequired,
     startDate: PropTypes.instanceOf(Date).isRequired,
     endDate: PropTypes.instanceOf(Date).isRequired,
-    CalendarIcon: PropTypes.node.isRequired,
+    calendarIcon: PropTypes.node.isRequired,
     toggleDropdownCalendar: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired
 };

@@ -273,7 +273,7 @@ class SitemapSettingsPanelBody extends Component {
         props.dispatch(SeoActions.createVerification(state.verification));
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         if (state.sitemapSettings) {
@@ -326,7 +326,7 @@ class SitemapSettingsPanelBody extends Component {
                             onSelect={this.onSettingChange.bind(this, "SitemapCacheDays")} />
                         <Button
                             className="clearCacheBtn"
-                            type="secondary"
+                            type="danger"
                             onClick={this.onClearCache.bind(this)}>
                             {resx.get("lnkResetCache")}
                         </Button>
@@ -413,7 +413,7 @@ class SitemapSettingsPanelBody extends Component {
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.clientModified}
-                            type="secondary"
+                            type="neutral"
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>

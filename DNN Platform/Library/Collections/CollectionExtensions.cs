@@ -72,7 +72,7 @@ namespace DotNetNuke.Collections
 
         /// <summary>
         /// Gets a converter function which parses a <see cref="string"/> value into a <see cref="bool"/>.
-        /// Considers the value <c>true</c> if it is one of the following (case-insensitive):
+        /// Considers the value <see langword="true"/> if it is one of the following (case-insensitive):
         /// <list type="bullet">
         /// <item><term>true</term></item>
         /// <item><term>on</term></item>
@@ -83,11 +83,11 @@ namespace DotNetNuke.Collections
         /// <returns>A <see cref="Func{String,Boolean}" /> instance.</returns>
         public static Func<string, bool> GetFlexibleBooleanParsingFunction()
         {
-            return GetFlexibleBooleanParsingFunction(new[] { "true", "on", "1", "yes" });
+            return GetFlexibleBooleanParsingFunction("true", "on", "1", "yes");
         }
 
         /// <summary>Gets a converter function which parses a <see cref="string"/> value into a <see cref="bool"/>.</summary>
-        /// <param name="trueValues">The <see cref="string"/> values (case-insensitive) which should be parsed as <c>true</c>.</param>
+        /// <param name="trueValues">The <see cref="string"/> values (case-insensitive) which should be parsed as <see langword="true"/>.</param>
         /// <returns>A <see cref="Func{String,Boolean}" /> instance.</returns>
         public static Func<string, bool> GetFlexibleBooleanParsingFunction(params string[] trueValues)
         {
@@ -196,7 +196,7 @@ namespace DotNetNuke.Collections
 
             if (!dictionary.Contains(key))
             {
-                throw new ArgumentException("dictionary does not contain a value for the given key", "key");
+                throw new ArgumentException("dictionary does not contain a value for the given key", nameof(key));
             }
 
             return converter(dictionary[key]);
@@ -756,7 +756,7 @@ namespace DotNetNuke.Collections
             }
             catch (Exception)
             {
-                Logger.ErrorFormat("Error loading portal setting: {0} Default value {1} was used instead", key + ":" + dictionary[key], defaultValue.ToString());
+                Logger.Error($"Error loading portal setting: {key}:{dictionary[key]} Default value {defaultValue} was used instead");
             }
 
             return value;
@@ -822,7 +822,7 @@ namespace DotNetNuke.Collections
 
         /// <summary>Converts the <paramref name="collection" /> to an <see cref="ILookup{TKey,TElement}" />.</summary>
         /// <param name="collection">The collection.</param>
-        /// <param name="splitValues">If <c>true</c>, treats values in the <paramref name="collection"/> as comma-delimited lists of items (e.g. from a <see cref="NameValueCollection"/>).</param>
+        /// <param name="splitValues">If <see langword="true"/>, treats values in the <paramref name="collection"/> as comma-delimited lists of items (e.g. from a <see cref="NameValueCollection"/>).</param>
         /// <returns>An <see cref="ILookup{TKey,TElement}" /> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection" /> is <c>null</c>.</exception>
         public static ILookup<string, string> ToLookup(this NameValueCollection collection, bool splitValues)
@@ -846,6 +846,46 @@ namespace DotNetNuke.Collections
             }
 
             return source;
+        }
+
+        /// <summary>
+        /// Converts the specified IPagedList to a Serializable Paged List.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list.</typeparam>
+        /// <param name="list">The IPagedList results from the database.</param>
+        /// <returns>A serializable list of type T.</returns>
+        public static SerializablePagedList<T> Serialize<T>(this IPagedList<T> list)
+        {
+            var res = new SerializablePagedList<T>();
+            res.PageIndex = list.PageIndex;
+            res.PageSize = list.PageSize;
+            res.IsFirstPage = list.IsFirstPage;
+            res.IsLastPage = list.IsLastPage;
+            res.PageCount = list.PageCount;
+            res.TotalCount = list.TotalCount;
+            res.Data = list;
+            return res;
+        }
+
+        /// <summary>
+        /// Converts the specified IPagedList to a Serializable Paged List.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list.</typeparam>
+        /// <typeparam name="TU">The type of items in the serialized list.</typeparam>
+        /// <param name="list">The IPagedList results from the database.</param>
+        /// <param name="cast">A function to convert from type T to type U.</param>
+        /// <returns>A serialized list of type U.</returns>
+        public static SerializablePagedList<TU> Serialize<T, TU>(this IPagedList<T> list, Func<T, TU> cast)
+        {
+            var res = new SerializablePagedList<TU>();
+            res.PageIndex = list.PageIndex;
+            res.PageSize = list.PageSize;
+            res.IsFirstPage = list.IsFirstPage;
+            res.IsLastPage = list.IsLastPage;
+            res.PageCount = list.PageCount;
+            res.TotalCount = list.TotalCount;
+            res.Data = list.Select(x => cast(x));
+            return res;
         }
 
         /// <summary>Converts the <paramref name="value"/> into a <typeparamref name="T"/> instance.</summary>
@@ -916,7 +956,7 @@ namespace DotNetNuke.Collections
         /// <summary>Wraps the <paramref name="values"/> into <see cref="KeyValuePair{TKey,TValue}"/> instances.</summary>
         /// <param name="key">The key.</param>
         /// <param name="values">The values.</param>
-        /// <param name="splitSingleValue">If <c>true</c>, treats a single item in <paramref name="values"/> as a comma-delimited list of items (e.g. from a <see cref="NameValueCollection"/>).</param>
+        /// <param name="splitSingleValue">If <see langword="true"/>, treats a single item in <paramref name="values"/> as a comma-delimited list of items (e.g. from a <see cref="NameValueCollection"/>).</param>
         /// <returns>A sequence of <see cref="KeyValuePair{TKey,TValue}"/> instances.</returns>
         private static IEnumerable<KeyValuePair<string, string>> ParseValues(string key, string[] values, bool splitSingleValue)
         {

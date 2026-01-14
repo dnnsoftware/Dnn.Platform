@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Social.Notifications
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml.Serialization;
 
     using DotNetNuke.Common.Utilities;
@@ -13,9 +14,6 @@ namespace DotNetNuke.Services.Social.Notifications
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Services.Social.Notifications
-    /// Class:      NotificationTypeAction
     /// <summary>The NotificationTypeAction class describes a single notification type action that can be associated to a message.</summary>
     [Serializable]
     public class NotificationTypeAction : BaseEntityInfo, IHydratable
@@ -74,12 +72,12 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            this.NotificationTypeActionId = Convert.ToInt32(dr["NotificationTypeActionID"]);
-            this.NotificationTypeId = Convert.ToInt32(dr["NotificationTypeID"]);
+            this.NotificationTypeActionId = Convert.ToInt32(dr["NotificationTypeActionID"], CultureInfo.InvariantCulture);
+            this.NotificationTypeId = Convert.ToInt32(dr["NotificationTypeID"], CultureInfo.InvariantCulture);
             this.NameResourceKey = dr["NameResourceKey"].ToString();
             this.DescriptionResourceKey = Null.SetNullString(dr["DescriptionResourceKey"]);
             this.ConfirmResourceKey = Null.SetNullString(dr["ConfirmResourceKey"]);
-            this.Order = Convert.ToInt32(dr["Order"]);
+            this.Order = Convert.ToInt32(dr["Order"], CultureInfo.InvariantCulture);
             this.APICall = dr["APICall"].ToString();
 
             // add audit column data

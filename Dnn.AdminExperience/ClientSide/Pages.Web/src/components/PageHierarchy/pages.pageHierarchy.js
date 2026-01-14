@@ -1,11 +1,11 @@
-/* eslint-disable no-var, id-match, quotes, no-mixed-spaces-and-tabs, comma-dangle */ // errors
+/* eslint-disable no-var, id-match, quotes */ // errors
 /* eslint-disable no-unused-vars, space-before-function-paren, indent, eqeqeq */ // warnings
 /* global $, jQuery, ko */
 
 window.dnn.pages = window.dnn.pages || {};
 
     var OVER_TIME_TO_OPEN_PAGE_CHILDS;
-    var pageHierarchyManager, pageHierarchyDefaultOptions;
+    var PageHierarchyManager, pageHierarchyDefaultOptions;
     var draggingJqObj, pageDropped, dropOnDroppable, uiOnDragStart;
 
     OVER_TIME_TO_OPEN_PAGE_CHILDS = 700;
@@ -22,12 +22,12 @@ window.dnn.pages = window.dnn.pages || {};
     // preventing duplicates pages
     dropOnDroppable = false;
 
-    pageHierarchyManager = function(options) {
+    PageHierarchyManager = function(options) {
         this.options = options;
     };
 
-    pageHierarchyManager.prototype = {
-        constructor: pageHierarchyManager,
+    PageHierarchyManager.prototype = {
+        constructor: PageHierarchyManager,
 
         _initialized: false,
 
@@ -1221,7 +1221,5 @@ window.dnn.pages = window.dnn.pages || {};
         requestTimeout: 4000
     };
 
-window.dnn.pages.pageHierarchyManager = new pageHierarchyManager(window.dnn.pages.pageHierarchyManagerOptions);
-module.exports = {
-    pageHierarchyManager: window.dnn.pages.pageHierarchyManager
-};
+window.dnn.pages.pageHierarchyManager = new PageHierarchyManager(window.dnn.pages.pageHierarchyManagerOptions);
+export const pageHierarchyManager = window.dnn.pages.pageHierarchyManager;

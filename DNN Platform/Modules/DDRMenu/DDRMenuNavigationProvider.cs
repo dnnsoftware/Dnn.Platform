@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.DDRMenu
 {
     using System;
@@ -9,16 +8,35 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Reflection;
     using System.Web.UI;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Modules.NavigationProvider;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.WebControls;
     using DotNetNuke.Web.DDRMenu.Localisation;
     using DotNetNuke.Web.DDRMenu.TemplateEngine;
 
-    /// <summary>Implementes the DDR Menu navigation profider.</summary>
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>Implements the DDR Menu navigation provider.</summary>
     public class DDRMenuNavigationProvider : NavigationProvider
     {
+        private readonly ILocaliser localiser;
         private DDRMenuControl menuControl;
+
+        /// <summary>Initializes a new instance of the <see cref="DDRMenuNavigationProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ILocaliser. Scheduled removal in v12.0.0.")]
+        public DDRMenuNavigationProvider()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DDRMenuNavigationProvider"/> class.</summary>
+        /// <param name="localiser">The localizer.</param>
+        public DDRMenuNavigationProvider(ILocaliser localiser)
+        {
+            this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
+        }
 
         /// <inheritdoc/>
         public override Control NavigationControl
@@ -278,7 +296,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <inheritdoc/>
         public override void Initialize()
         {
-            this.menuControl = new DDRMenuControl { ID = this.ControlID, EnableViewState = false };
+            this.menuControl = new DDRMenuControl(this.localiser) { ID = this.ControlID, EnableViewState = false };
             this.menuControl.NodeClick += this.RaiseEvent_NodeClick;
         }
 
@@ -346,7 +364,7 @@ namespace DotNetNuke.Web.DDRMenu
 
             if (localise)
             {
-                objNodes = Localiser.LocaliseDNNNodeCollection(objNodes);
+                objNodes = this.localiser.LocaliseDNNNodeCollection(objNodes);
             }
 
             this.menuControl.RootNode = new MenuNode(objNodes);

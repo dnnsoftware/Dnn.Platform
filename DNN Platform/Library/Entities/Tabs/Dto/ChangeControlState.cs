@@ -28,13 +28,13 @@ namespace DotNetNuke.Entities.Tabs.Dto
         /// </value>
         public int TabId { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets if versioning is enabled for the tab.</summary>
+        /// <summary>Gets or sets a value indicating whether versioning is enabled for the tab.</summary>
         /// <value>
         /// True if versioning is enabled, false otherwise.
         /// </value>
         public bool IsVersioningEnabledForTab { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets if workflow is enabled for the tab.</summary>
+        /// <summary>Gets or sets a value indicating whether workflow is enabled for the tab.</summary>
         /// <value>
         /// True if workflow is enabled, false otherwise.
         /// </value>

@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import GridCell from "../GridCell";
-import Button from "../Button";
-import Label from "../Label";
 import Grid from "./Grid";
 import "./style.less";
 

@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Tabs
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -47,6 +48,12 @@ namespace DotNetNuke.Entities.Tabs
 
             foreach (ModuleInfo module in configuredModules)
             {
+                if (PortalSettings.Current != null)
+                {
+                    module.Header = HtmlUtils.SanitizeHtmlIfNeeded(module.Header, PortalSettings.Current.AllowJsInModuleHeaders);
+                    module.Footer = HtmlUtils.SanitizeHtmlIfNeeded(module.Footer, PortalSettings.Current.AllowJsInModuleFooters);
+                }
+
                 module.PaneModuleCount = objPaneModules[module.PaneName];
             }
 
@@ -58,7 +65,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             var portalId = PortalSettings.Current.PortalId;
             var dataProvider = DataProvider.Instance();
-            var cacheKey = string.Format(DataCache.TabModuleSettingsNameCacheKey, portalId, settingName);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TabModuleSettingsNameCacheKey, portalId, settingName);
             var cachedItems = CBO.GetCachedObject<Dictionary<int, string>>(
                 new CacheItemArgs(cacheKey, DataCache.TabModuleCacheTimeOut, DataCache.TabModuleCachePriority),
                 c =>
@@ -82,9 +89,9 @@ namespace DotNetNuke.Entities.Tabs
         public IList<int> GetTabModuleIdsBySetting(string settingName, string expectedValue)
         {
             var items = this.GetTabModuleSettingsByName(settingName);
-            var matches = items.Where(e => e.Value.Equals(expectedValue, StringComparison.CurrentCultureIgnoreCase));
+            var matches = items.Where(e => e.Value.Equals(expectedValue, StringComparison.OrdinalIgnoreCase));
             var keyValuePairs = matches as KeyValuePair<int, string>[] ?? matches.ToArray();
-            if (keyValuePairs.Any())
+            if (keyValuePairs.Length != 0)
             {
                 return keyValuePairs.Select(kpv => kpv.Key).ToList();
             }

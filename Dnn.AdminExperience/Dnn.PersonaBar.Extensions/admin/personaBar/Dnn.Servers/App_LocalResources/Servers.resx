@@ -555,38 +555,14 @@
   <data name="PerformanceTab_ClientResourceManagementTitle.Text" xml:space="preserve">
     <value>Client Resource Management</value>
   </data>
-  <data name="PerformanceTab_ClientResourcesManagementMode.Help" xml:space="preserve">
-    <value>Host mode utilizes all Client Resources Management settings set at the application level. Site level allows you to select your own Client Resources Management settings.</value>
-  </data>
-  <data name="PerformanceTab_ClientResourcesManagementMode.Text" xml:space="preserve">
-    <value>Client Resources Management Mode</value>
-  </data>
   <data name="PerformanceTab_CurrentHostVersion.Text" xml:space="preserve">
     <value>Current Host Version:</value>
-  </data>
-  <data name="PerformanceTab_EnableCompositeFiles.Help" xml:space="preserve">
-    <value>Composite files are combinations of resources (JavaScript and CSS) created to reduce the number of file requests by the browser. This will significantly increase the page loading speed.</value>
-  </data>
-  <data name="PerformanceTab_EnableCompositeFiles.Text" xml:space="preserve">
-    <value>Enable Composite Files</value>
   </data>
   <data name="PerformanceTab_GlobalClientResourcesManagementMode.Text" xml:space="preserve">
     <value>Global</value>
   </data>
   <data name="PerformanceTab_IncrementVersion.Text" xml:space="preserve">
     <value>Increment Version</value>
-  </data>
-  <data name="PerformanceTab_MinifyCss.Help" xml:space="preserve">
-    <value>CSS minification will reduce the size of the CSS code by using regular expressions to remove comments, whitespace and "dead CSS". It is only available when composite files are enabled.</value>
-  </data>
-  <data name="PerformanceTab_MinifyCss.Text" xml:space="preserve">
-    <value>Minify CSS</value>
-  </data>
-  <data name="PerformanceTab_MinifyJs.Help" xml:space="preserve">
-    <value>JS minification will reduce the size of the JavaScript code using JSMin. It is only available when composite files are enabled.</value>
-  </data>
-  <data name="PerformanceTab_MinifyJs.Text" xml:space="preserve">
-    <value>Minify JS</value>
   </data>
   <data name="PerformanceTab_ModuleCacheProviders.Help" xml:space="preserve">
     <value>Select the default module caching provider. This setting can be overridden by each individual module.</value>
@@ -635,10 +611,6 @@
   </data>
   <data name="PerformanceTab_AjaxWarning.Text" xml:space="preserve">
     <value>Warning: Memory page state persistence can cause Ajax issues.</value>
-  </data>
-  <data name="PerformanceTab_MinifactionWarning.Text" xml:space="preserve">
-    <value>Important note regarding minification settings.&lt;br/&gt;
-If minification settings are changed when composite files are enabled, you must first save the minification settings by clicking Save and then increment the version number. This will issue new composite files using the new minification settings.</value>
   </data>
   <data name="PerformanceTab_PortalVersionConfirmMessage.Text" xml:space="preserve">
     <value>This action will force all site visitors to download new versions of CSS and JavaScript files. You should only do this if you are certain that the files have changed and you want those changes to be reflected on the client's browser.
@@ -746,5 +718,101 @@ Are you sure you want to increment the version number for your site?</value>
   </data>
   <data name="OAuthConfigurationNotSaved.Text" xml:space="preserve">
     <value>Please save the settings and complete the authorization process before testing when OAuth authentication mode is enabled in host or website level.</value>
+  </data>
+  <data name="plAvailableUpgrades.Text" xml:space="preserve">
+    <value>Available Upgrades</value>
+  </data>
+  <data name="plCurrentVersion.Help" xml:space="preserve">
+    <value>The current version of this application.</value>
+  </data>
+  <data name="plCurrentVersion.Text" xml:space="preserve">
+    <value>Current Version:</value>
+  </data>
+  <data name="Backup.Confirm" xml:space="preserve">
+    <value>Please confirm you have made a backup of this installation before upgrading.</value>
+  </data>
+  <data name="IsOutdated.Text" xml:space="preserve">
+    <value>Outdated</value>
+  </data>
+  <data name="IsValid.Text" xml:space="preserve">
+    <value>Valid</value>
+  </data>
+  <data name="Version.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="UploadPackage.Text" xml:space="preserve">
+    <value>Upload Package</value>
+  </data>
+  <data name="DeleteUpgradePackage.Confirm" xml:space="preserve">
+    <value>Delete this upgrade package?</value>
+  </data>
+  <data name="UploadPackage_FileUploadDefault.Text" xml:space="preserve">
+    <value>Drag and Drop a File or Click Icon To Browse</value>
+  </data>
+  <data name="TryAgain.Text" xml:space="preserve">
+    <value>[Try Again]</value>
+  </data>
+  <data name="UploadPackage_FileUploadDragOver.Text" xml:space="preserve">
+    <value>Drag and Drop a File</value>
+  </data>
+  <data name="UploadPackage_UploadAFile.Text" xml:space="preserve">
+    <value>Upload a DNN Package Zip</value>
+  </data>
+  <data name="UploadPackage_UploadComplete.Text" xml:space="preserve">
+    <value>Upload Complete</value>
+  </data>
+  <data name="UploadPackage_UploadFailedUnknown.Text" xml:space="preserve">
+    <value>An unknown error occurred uploading this file</value>
+  </data>
+  <data name="UploadPackage_Uploading.Text" xml:space="preserve">
+    <value>Uploading</value>
+  </data>
+  <data name="Install.Text" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="tabUpgrades.Text" xml:space="preserve">
+    <value>Upgrades</value>
+  </data>
+  <data name="UpgradeDoneLink.Text" xml:space="preserve">
+    <value>Please click here to start the upgrade process</value>
+  </data>
+  <data name="UpgradeDone.Text" xml:space="preserve">
+    <value>File Copying Complete</value>
+  </data>
+  <data name="Upgrading.Help" xml:space="preserve">
+    <value>Please wait while we prepare to upgrade your server.</value>
+  </data>
+  <data name="Upgrading.Text" xml:space="preserve">
+    <value>Upgrading ...</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Upgrade_InvalidPackage.Text" xml:space="preserve">
+    <value>The uploaded file {0} is not a valid DNN package.</value>
+  </data>
+  <data name="Upgrade_NoUpgrade.Text" xml:space="preserve">
+    <value>There are no upgrades to apply</value>
+  </data>
+  <data name="Upgrade_NoValidUpgrade.Text" xml:space="preserve">
+    <value>There is no valid upgrade for package {0}</value>
+  </data>
+  <data name="Upgrade_OutdatedPackage.Text" xml:space="preserve">
+    <value>The uploaded file {0} is an outdated DNN package.</value>
+  </data>
+  <data name="Upgrade_UploadNotAllowed.Text" xml:space="preserve">
+    <value>Uploading DNN upgrade packages has been disabled.</value>
+  </data>
+  <data name="Upgrade_NoUpgradesAvailable.Text" xml:space="preserve">
+    <value>There are no upgrades available.</value>
+  </data>
+  <data name="CanInstall.Text" xml:space="preserve">
+    <value>Can Install</value>
+  </data>
+  <data name="MinDnnVersion.Text" xml:space="preserve">
+    <value>Req DNN Version</value>
   </data>
 </root>

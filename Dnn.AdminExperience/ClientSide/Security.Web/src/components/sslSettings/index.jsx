@@ -111,7 +111,7 @@ class SslSettingsPanelBody extends Component {
         );
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { state } = this;
         if (state.sslSettings) {
@@ -252,7 +252,7 @@ class SslSettingsPanelBody extends Component {
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.sslSettingsClientModified}
-                            type="secondary"
+                            type="neutral"
                             onClick={this.onCancel.bind(this)}
                         >
                             {resx.get("Cancel")}

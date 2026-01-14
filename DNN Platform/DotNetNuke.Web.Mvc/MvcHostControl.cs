@@ -11,28 +11,35 @@ namespace DotNetNuke.Web.Mvc
     using System.Web.Routing;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Collections;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
-    using DotNetNuke.Framework;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Mvc.Common;
     using DotNetNuke.Web.Mvc.Framework.Modules;
     using DotNetNuke.Web.Mvc.Routing;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>WebForms control for hosting an MVC module control.</summary>
     public class MvcHostControl : ModuleControlBase, IActionable
     {
         private ModuleRequestResult result;
         private string controlKey;
 
+        /// <summary>Initializes a new instance of the <see cref="MvcHostControl"/> class.</summary>
         public MvcHostControl()
         {
             this.controlKey = string.Empty;
         }
 
+        /// <summary>Initializes a new instance of the <see cref="MvcHostControl"/> class.</summary>
+        /// <param name="controlKey">The module control key.</param>
         public MvcHostControl(string controlKey)
         {
             this.controlKey = controlKey;
@@ -41,15 +48,17 @@ namespace DotNetNuke.Web.Mvc
         /// <inheritdoc/>
         public ModuleActionCollection ModuleActions { get; private set; }
 
+        /// <summary>Gets or sets a value indicating whether the module controller should execute immediately (i.e. during <see cref="Control.OnInit"/> rather than <see cref="ISettingsControl.LoadSettings"/>).</summary>
         protected bool ExecuteModuleImmediately { get; set; } = true;
 
+        /// <summary>Runs and renders the MVC action.</summary>
         protected void ExecuteModule()
         {
             try
             {
                 HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
 
-                var moduleExecutionEngine = this.GetModuleExecutionEngine();
+                var moduleExecutionEngine = GetModuleExecutionEngine();
 
                 this.result = moduleExecutionEngine.ExecuteModule(this.GetModuleRequestContext(httpContext));
 
@@ -85,10 +94,10 @@ namespace DotNetNuke.Web.Mvc
                     return;
                 }
 
-                var mvcString = this.RenderModule(this.result);
-                if (!string.IsNullOrEmpty(Convert.ToString(mvcString)))
+                var mvcString = RenderModule(this.result);
+                if (!string.IsNullOrEmpty(Convert.ToString(mvcString, CultureInfo.InvariantCulture)))
                 {
-                    this.Controls.Add(new LiteralControl(Convert.ToString(mvcString)));
+                    this.Controls.Add(new LiteralControl(Convert.ToString(mvcString, CultureInfo.InvariantCulture)));
                 }
             }
             catch (Exception exc)
@@ -97,47 +106,36 @@ namespace DotNetNuke.Web.Mvc
             }
         }
 
-        private ModuleApplication GetModuleApplication(DesktopModuleInfo desktopModule, RouteData defaultRouteData)
+        private static ModuleApplication GetModuleApplication(
+            IBusinessControllerProvider businessControllerProvider,
+            DesktopModuleInfo desktopModule,
+            RouteData defaultRouteData)
         {
-            ModuleApplication moduleApplication = null;
-
             // Check if the MVC Module overrides the base ModuleApplication class.
-            var businessControllerClass = desktopModule.BusinessControllerClass;
-            if (!string.IsNullOrEmpty(businessControllerClass))
+            var moduleApplication = businessControllerProvider.GetInstance<ModuleApplication>(desktopModule);
+            if (moduleApplication != null)
             {
-                var moduleApplicationType = Reflection.CreateType(businessControllerClass);
-                if (moduleApplicationType != null)
-                {
-                    moduleApplication = Reflection.CreateInstance(moduleApplicationType) as ModuleApplication;
-                    if (moduleApplication != null)
-                    {
-                        defaultRouteData.Values["controller"] = moduleApplication.DefaultControllerName;
-                        defaultRouteData.Values["action"] = moduleApplication.DefaultActionName;
-                        defaultRouteData.DataTokens["namespaces"] = moduleApplication.DefaultNamespaces;
-                    }
-                }
+                defaultRouteData.Values["controller"] = moduleApplication.DefaultControllerName;
+                defaultRouteData.Values["action"] = moduleApplication.DefaultActionName;
+                defaultRouteData.DataTokens["namespaces"] = moduleApplication.DefaultNamespaces;
+                return moduleApplication;
             }
 
-            if (moduleApplication == null)
+            var defaultControllerName = (string)defaultRouteData.Values["controller"];
+            var defaultActionName = (string)defaultRouteData.Values["action"];
+            var defaultNamespaces = (string[])defaultRouteData.DataTokens["namespaces"];
+
+            return new ModuleApplication
             {
-                var defaultControllerName = (string)defaultRouteData.Values["controller"];
-                var defaultActionName = (string)defaultRouteData.Values["action"];
-                var defaultNamespaces = (string[])defaultRouteData.DataTokens["namespaces"];
-
-                moduleApplication = new ModuleApplication
-                {
-                    DefaultActionName = defaultControllerName,
-                    DefaultControllerName = defaultActionName,
-                    DefaultNamespaces = defaultNamespaces,
-                    ModuleName = desktopModule.ModuleName,
-                    FolderPath = desktopModule.FolderName,
-                };
-            }
-
-            return moduleApplication;
+                DefaultActionName = defaultControllerName,
+                DefaultControllerName = defaultActionName,
+                DefaultNamespaces = defaultNamespaces,
+                ModuleName = desktopModule.ModuleName,
+                FolderPath = desktopModule.FolderName,
+            };
         }
 
-        private IModuleExecutionEngine GetModuleExecutionEngine()
+        private static IModuleExecutionEngine GetModuleExecutionEngine()
         {
             var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
 
@@ -150,6 +148,16 @@ namespace DotNetNuke.Web.Mvc
             return moduleExecutionEngine;
         }
 
+        private static MvcHtmlString RenderModule(ModuleRequestResult moduleResult)
+        {
+            using var writer = new StringWriter(CultureInfo.CurrentCulture);
+            var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
+
+            moduleExecutionEngine.ExecuteModuleResult(moduleResult, writer);
+
+            return MvcHtmlString.Create(writer.ToString());
+        }
+
         private ModuleRequestContext GetModuleRequestContext(HttpContextBase httpContext)
         {
             var module = this.ModuleContext.Configuration;
@@ -160,7 +168,10 @@ namespace DotNetNuke.Web.Mvc
 
             var defaultRouteData = ModuleRoutingProvider.Instance().GetRouteData(null, defaultControl);
 
-            var moduleApplication = this.GetModuleApplication(desktopModule, defaultRouteData);
+            var moduleApplication = GetModuleApplication(
+                httpContext.GetScope().ServiceProvider.GetRequiredService<IBusinessControllerProvider>(),
+                desktopModule,
+                defaultRouteData);
 
             RouteData routeData;
 
@@ -174,7 +185,10 @@ namespace DotNetNuke.Web.Mvc
             var moduleId = Null.NullInteger;
             if (queryString["moduleid"] != null)
             {
-                int.TryParse(queryString["moduleid"], out moduleId);
+                if (!int.TryParse(queryString["moduleid"], out moduleId))
+                {
+                    moduleId = Null.NullInteger;
+                }
             }
 
             if (moduleId != this.ModuleContext.ModuleId && string.IsNullOrEmpty(this.controlKey))
@@ -200,13 +214,13 @@ namespace DotNetNuke.Web.Mvc
             return moduleRequestContext;
         }
 
-        private ModuleActionCollection LoadActions(ModuleRequestResult result)
+        private ModuleActionCollection LoadActions(ModuleRequestResult requestResult)
         {
             var actions = new ModuleActionCollection();
 
-            if (result.ModuleActions != null)
+            if (requestResult.ModuleActions != null)
             {
-                foreach (ModuleAction action in result.ModuleActions)
+                foreach (ModuleAction action in requestResult.ModuleActions)
                 {
                     action.ID = this.ModuleContext.GetNextActionID();
                     actions.Add(action);
@@ -214,21 +228,6 @@ namespace DotNetNuke.Web.Mvc
             }
 
             return actions;
-        }
-
-        private MvcHtmlString RenderModule(ModuleRequestResult moduleResult)
-        {
-            MvcHtmlString moduleOutput;
-
-            using (var writer = new StringWriter(CultureInfo.CurrentCulture))
-            {
-                var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
-
-                moduleExecutionEngine.ExecuteModuleResult(moduleResult, writer);
-                moduleOutput = MvcHtmlString.Create(writer.ToString());
-            }
-
-            return moduleOutput;
         }
     }
 }

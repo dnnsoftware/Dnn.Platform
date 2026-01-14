@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="containerName">The name of the Container.</param>
         /// <param name="basePath">The Base Path for the files.</param>
         /// <param name="files">A Dictionary of files.</param>
-        /// <param name="package"></param>
+        /// <param name="package">The package info.</param>
         public ContainerComponentWriter(string containerName, string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
             : base(containerName, basePath, files, package)
         {

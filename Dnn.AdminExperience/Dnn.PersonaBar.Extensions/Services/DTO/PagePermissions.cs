@@ -6,7 +6,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 {
     using System;
 
-    using Dnn.PersonaBar.Library.DTO;
+    using Dnn.PersonaBar.Library.Dto;
     using Dnn.PersonaBar.Library.Helper;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
     public class PagePermissions : Permissions
     {
         /// <summary>Initializes a new instance of the <see cref="PagePermissions"/> class.</summary>
-        /// <param name="needDefinitions"></param>
+        /// <param name="needDefinitions">Whether to load the permission definitions.</param>
         public PagePermissions(bool needDefinitions)
             : base(needDefinitions)
         {

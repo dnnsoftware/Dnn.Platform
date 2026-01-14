@@ -18,6 +18,8 @@ namespace Dnn.PersonaBar.Library.Attributes
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
     public class AdvancedPermissionAttribute : AuthorizeAttributeBase
     {
+        private static readonly char[] PermissionCombiner = ['&',];
+
         /// <summary>Gets or sets the menu identifier.</summary>
         public string MenuName { get; set; }
 
@@ -43,9 +45,9 @@ namespace Dnn.PersonaBar.Library.Attributes
                 return true;
             }
 
-            // Permissions seperated by & should be treated with AND operand.
-            // Permissions seperated by , are internally treated with OR operand.
-            var allPermissionGroups = this.Permission.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
+            // Permissions separated by & should be treated with AND operand.
+            // Permissions separated by , are internally treated with OR operand.
+            var allPermissionGroups = this.Permission.Split(PermissionCombiner, StringSplitOptions.RemoveEmptyEntries);
             return allPermissionGroups.All(allPermissions => MenuPermissionController.HasMenuPermission(portalSettings.PortalId, menuItem, allPermissions));
         }
 

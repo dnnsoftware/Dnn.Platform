@@ -5,11 +5,13 @@ namespace DotNetNuke.Services.Cache
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Security.Cryptography;
     using System.Text;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
@@ -21,6 +23,20 @@ namespace DotNetNuke.Services.Cache
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal static string CachingDirectory = "Cache\\";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FBCachingProvider));
+
+        /// <summary>Initializes a new instance of the <see cref="FBCachingProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public FBCachingProvider()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="FBCachingProvider"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public FBCachingProvider(IHostSettings hostSettings)
+            : base(hostSettings)
+        {
+        }
 
         /// <inheritdoc/>
         public override void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,                                    CacheItemRemovedCallback onRemoveCallback)
@@ -62,10 +78,11 @@ namespace DotNetNuke.Services.Cache
         public override string PurgeCache()
         {
             // called by scheduled job to remove cache files which are no longer active
-            return this.PurgeCacheFiles(Globals.HostMapPath + CachingDirectory);
+            return PurgeCacheFiles(Globals.HostMapPath + CachingDirectory);
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void Remove(string key)
         {
             base.Remove(key);
@@ -87,7 +104,7 @@ namespace DotNetNuke.Services.Cache
             var sOutput = new StringBuilder(arrInput.Length);
             for (i = 0; i <= arrInput.Length - 1; i++)
             {
-                sOutput.Append(arrInput[i].ToString("X2"));
+                sOutput.Append(arrInput[i].ToString("X2", CultureInfo.InvariantCulture));
             }
 
             return sOutput.ToString();
@@ -153,7 +170,7 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        private string PurgeCacheFiles(string folder)
+        private static string PurgeCacheFiles(string folder)
         {
             // declare counters
             int purgedFiles = 0;
@@ -198,7 +215,7 @@ namespace DotNetNuke.Services.Cache
             }
 
             // return a summary message for the job
-            return string.Format("Cache Synchronization Files Processed: " + f.Length + ", Purged: " + purgedFiles + ", Errors: " + purgeErrors);
+            return $"Cache Synchronization Files Processed: {f.Length}, Purged: {purgedFiles}, Errors: {purgeErrors}";
         }
     }
 }

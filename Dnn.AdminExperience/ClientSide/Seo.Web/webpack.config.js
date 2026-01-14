@@ -1,5 +1,5 @@
 ﻿const webpack = require("webpack");
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require("eslint-webpack-plugin");
 const packageJson = require("./package.json");
 const path = require("path");
 const webpackExternals = require("@dnnsoftware/dnn-react-common/WebpackExternals");
@@ -14,6 +14,7 @@ module.exports = (env, argv) => {
         },
         output: {
             path:
+            // eslint-disable-next-line eqeqeq -- Types as any, so let's be safe, could just be undefined or null.
         isProduction || settings.WebsitePath == ""
             ? path.resolve(
                 "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Seo/scripts/bundles/"

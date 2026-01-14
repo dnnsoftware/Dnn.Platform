@@ -16,7 +16,7 @@
         $(".importButton").button({ icons: { primary: "ui-icon-arrowreturnthick-1-s" } });
         $(".exportButton").button({ icons: { primary: "ui-icon-disk" } });
         $(".DefaultButton").button();
-        $(".Toolbar").buttonset();
+        $(".Toolbar").controlgroup();
 
         EnableSorting();
 
@@ -61,7 +61,9 @@
         $('#ExportDialog').dialog({
             autoOpen: false,
             width: 350,
-            dialogClass: 'dnnFormPopup',
+            classes: {
+                'ui-dialog': 'dnnFormPopup',
+            },
             resizable: false,
             buttons: {
                 "Cancel": function () {
@@ -79,7 +81,9 @@
         $('#ImportDialog').dialog({
             autoOpen: false,
             width: 350,
-            dialogClass: 'dnnFormPopup',
+            classes: {
+                'ui-dialog': 'dnnFormPopup',
+            },
             resizable: false,
             buttons: {
                  "Cancel": function() {
@@ -115,7 +119,7 @@
         }
 
         $("#CKEditor_Options_rBlSetMode input").button();
-        $("#CKEditor_Options_rBlSetMode").buttonset();
+        $("#CKEditor_Options_rBlSetMode").controlgroup();
     }
 
     win.showDialog = function (id) {

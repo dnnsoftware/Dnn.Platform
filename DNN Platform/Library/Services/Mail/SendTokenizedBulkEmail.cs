@@ -70,11 +70,11 @@ namespace DotNetNuke.Services.Mail
         }
 
         /// <summary>Initializes a new instance of the <see cref="SendTokenizedBulkEmail"/> class.</summary>
-        /// <param name="addressedRoles"></param>
-        /// <param name="addressedUsers"></param>
-        /// <param name="removeDuplicates"></param>
-        /// <param name="subject"></param>
-        /// <param name="body"></param>
+        /// <param name="addressedRoles">The names of the roles to which the email is addressed.</param>
+        /// <param name="addressedUsers">The users to which the email is addressed.</param>
+        /// <param name="removeDuplicates">Whether to remove duplicate recipients.</param>
+        /// <param name="subject">The email's subject.</param>
+        /// <param name="body">The email's body.</param>
         public SendTokenizedBulkEmail(List<string> addressedRoles, List<UserInfo> addressedUsers, bool removeDuplicates, string subject, string body)
         {
             this.ReportRecipients = true;
@@ -86,7 +86,6 @@ namespace DotNetNuke.Services.Mail
             this.RemoveDuplicates = removeDuplicates;
             this.Subject = subject;
             this.Body = body;
-            this.SuppressTokenReplace = this.SuppressTokenReplace;
             this.Initialize();
         }
 
@@ -101,9 +100,16 @@ namespace DotNetNuke.Services.Mail
         // Existing public API
         public enum AddressMethods
         {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
+            /// <summary>Put the recipient's email address in the TO field.</summary>
             Send_TO = 1,
+
+            /// <summary>Put the recipient's email address in the BCC field.</summary>
             Send_BCC = 2,
+
+            /// <summary>Send via an email relay address.</summary>
             Send_Relay = 3,
+#pragma warning restore CA1707
         }
 
         /// <summary>Gets or sets priority of emails to be sent.</summary>
@@ -179,15 +185,15 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether shall duplicate email addresses be ignored? (default value: false).</summary>
+        /// <summary>Gets or sets a value indicating whether duplicate email addresses shall be ignored? (default value: false).</summary>
         /// <remarks>Duplicate Users (e.g. from multiple role selections) will always be ignored.</remarks>
         public bool RemoveDuplicates { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether shall automatic TokenReplace be prohibited?.</summary>
+        /// <summary>Gets or sets a value indicating whether automatic TokenReplace shall be prohibited?.</summary>
         /// <remarks>default value: false.</remarks>
         public bool SuppressTokenReplace { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether shall List of recipients appended to confirmation report?.</summary>
+        /// <summary>Gets or sets a value indicating whether List of recipients shall be appended to confirmation report?.</summary>
         /// <remarks>enabled by default.</remarks>
         public bool ReportRecipients { get; set; }
 
@@ -561,7 +567,7 @@ namespace DotNetNuke.Services.Mail
             };
             this.tokenReplace.User = this.sendingUser;
             string body = this.tokenReplace.ReplaceEnvironmentTokens(this.BodyFormat == MailFormat.Html ? this.confirmBodyHTML : this.confirmBodyText, parameters, "Custom");
-            string strSubject = string.Format(this.confirmSubject, subject);
+            string strSubject = string.Format(CultureInfo.CurrentCulture, this.confirmSubject, subject);
             if (!this.SuppressTokenReplace)
             {
                 strSubject = this.tokenReplace.ReplaceEnvironmentTokens(strSubject);
@@ -574,7 +580,7 @@ namespace DotNetNuke.Services.Mail
 
         /// <summary>check, if the user's language matches the current language filter.</summary>
         /// <param name="userLanguage">Language of the user.</param>
-        /// <returns>userlanguage matches current languageFilter.</returns>
+        /// <returns><paramref name="userLanguage"></paramref> matches current <see cref="LanguageFilter"/>.</returns>
         /// <remarks>if filter not set, true is returned.</remarks>
         private bool MatchLanguageFilter(string userLanguage)
         {

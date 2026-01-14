@@ -166,7 +166,7 @@ class IgnoreWordsPanel extends Component {
         return options;
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderedIgnoreWords() {
         const {props} = this;
         if (props.ignoreWords && props.ignoreWords.StopWords) {
@@ -206,7 +206,7 @@ class IgnoreWordsPanel extends Component {
                             <div className="sectionTitle">{resx.get("IgnoreWords")}</div>
                             {!props.ignoreWords.StopWords &&
                                 <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
-                                    <div className="add-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
+                                    <div className="add-icon"><SvgIcons.AddIcon />
                                     </div> {resx.get("cmdAddWord")}
                                 </div>
                             }

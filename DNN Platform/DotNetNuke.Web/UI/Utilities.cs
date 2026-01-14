@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Reflection;
     using System.Web;
@@ -20,6 +21,7 @@ namespace DotNetNuke.Web.UI
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
+    /// <summary>Provides utility methods for UI elements within DNN.</summary>
     public partial class Utilities
     {
         /// <summary>Applies a custom CSS file for a control using a consistent naming pattern.</summary>
@@ -28,33 +30,7 @@ namespace DotNetNuke.Web.UI
         /// <param name="controlName">An optional control name that might differ from the type.</param>
         public static void ApplyControlSkin(Control targetControl, string controlSubSkinName = "", string controlName = "")
         {
-            ApplySkin(targetControl, string.Empty, controlName, controlSubSkinName);
-        }
-
-        [DnnDeprecated(9, 8, 0, "Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.", RemovalVersion = 10)]
-        public static partial void ApplySkin(Control targetControl)
-        {
-            ApplySkin(targetControl, string.Empty, string.Empty, string.Empty);
-        }
-
-        [DnnDeprecated(9, 8, 0, "Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.", RemovalVersion = 10)]
-        public static partial void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName)
-        {
-            ApplySkin(targetControl, string.Empty, string.Empty, fallBackEmbeddedSkinName);
-        }
-
-        [DnnDeprecated(9, 8, 0, "Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.", RemovalVersion = 10)]
-        public static partial void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName, string controlName)
-        {
-            ApplySkin(targetControl, string.Empty, controlName, fallBackEmbeddedSkinName);
-        }
-
-        // Use selected skin's webcontrol skin if one exists
-        // or use _default skin's webcontrol skin if one exists
-        // or use embedded skin
-        [DnnDeprecated(9, 8, 0, "Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.", RemovalVersion = 10)]
-        public static partial void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName, string controlName, string webControlSkinSubFolderName)
-        {
+            string fallBackEmbeddedSkinName = string.Empty;
             PropertyInfo skinProperty = null;
             PropertyInfo enableEmbeddedSkinsProperty = null;
             bool skinApplied = false;
@@ -67,7 +43,7 @@ namespace DotNetNuke.Web.UI
                 if (string.IsNullOrEmpty(controlName))
                 {
                     controlName = targetControl.GetType().BaseType.Name;
-                    if (controlName.StartsWith("Rad") || controlName.StartsWith("Dnn"))
+                    if (controlName.StartsWith("Rad", StringComparison.Ordinal) || controlName.StartsWith("Dnn", StringComparison.Ordinal))
                     {
                         controlName = controlName.Substring(3);
                     }
@@ -99,15 +75,15 @@ namespace DotNetNuke.Web.UI
                     webControlSkinName = "default";
                 }
 
-                if (skinVirtualFolder.EndsWith("/"))
+                if (skinVirtualFolder.EndsWith("/", StringComparison.Ordinal))
                 {
                     skinVirtualFolder = skinVirtualFolder.Substring(0, skinVirtualFolder.Length - 1);
                 }
 
-                int lastIndex = skinVirtualFolder.LastIndexOf("/");
+                int lastIndex = skinVirtualFolder.LastIndexOf("/", StringComparison.Ordinal);
                 if (lastIndex > -1 && skinVirtualFolder.Length > lastIndex)
                 {
-                    skinName = skinVirtualFolder.Substring(skinVirtualFolder.LastIndexOf("/") + 1);
+                    skinName = skinVirtualFolder.Substring(skinVirtualFolder.LastIndexOf("/", StringComparison.Ordinal) + 1);
                 }
 
                 string systemWebControlSkin = string.Empty;
@@ -116,8 +92,8 @@ namespace DotNetNuke.Web.UI
                     systemWebControlSkin = HttpContext.Current.Server.MapPath(skinVirtualFolder);
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, "WebControlSkin");
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, skinName);
-                    systemWebControlSkin = Path.Combine(systemWebControlSkin, webControlSkinSubFolderName);
-                    systemWebControlSkin = Path.Combine(systemWebControlSkin, string.Format("{0}.{1}.css", controlName, webControlSkinName));
+                    systemWebControlSkin = Path.Combine(systemWebControlSkin, controlSubSkinName);
+                    systemWebControlSkin = Path.Combine(systemWebControlSkin, $"{controlName}.{webControlSkinName}.css");
 
                     // Check if the selected skin has the webcontrol skin
                     if (!File.Exists(systemWebControlSkin))
@@ -131,7 +107,7 @@ namespace DotNetNuke.Web.UI
                         skinVirtualFolder = targetControl.ResolveUrl("~/Portals/_default/Skins/_default");
                         skinName = "Default";
 
-                        if (skinVirtualFolder.EndsWith("/"))
+                        if (skinVirtualFolder.EndsWith("/", StringComparison.Ordinal))
                         {
                             skinVirtualFolder = skinVirtualFolder.Substring(0, skinVirtualFolder.Length - 1);
                         }
@@ -141,8 +117,8 @@ namespace DotNetNuke.Web.UI
                             systemWebControlSkin = HttpContext.Current.Server.MapPath(skinVirtualFolder);
                             systemWebControlSkin = Path.Combine(systemWebControlSkin, "WebControlSkin");
                             systemWebControlSkin = Path.Combine(systemWebControlSkin, skinName);
-                            systemWebControlSkin = Path.Combine(systemWebControlSkin, webControlSkinSubFolderName);
-                            systemWebControlSkin = Path.Combine(systemWebControlSkin, string.Format("{0}.{1}.css", controlName, webControlSkinName));
+                            systemWebControlSkin = Path.Combine(systemWebControlSkin, controlSubSkinName);
+                            systemWebControlSkin = Path.Combine(systemWebControlSkin, $"{controlName}.{webControlSkinName}.css");
 
                             if (!File.Exists(systemWebControlSkin))
                             {
@@ -156,8 +132,8 @@ namespace DotNetNuke.Web.UI
                 {
                     string filePath = Path.Combine(skinVirtualFolder, "WebControlSkin");
                     filePath = Path.Combine(filePath, skinName);
-                    filePath = Path.Combine(filePath, webControlSkinSubFolderName);
-                    filePath = Path.Combine(filePath, string.Format("{0}.{1}.css", controlName, webControlSkinName));
+                    filePath = Path.Combine(filePath, controlSubSkinName);
+                    filePath = Path.Combine(filePath, $"{controlName}.{webControlSkinName}.css");
                     filePath = filePath.Replace('\\', '/').Replace("//", "/").TrimEnd('/');
 
                     if (HttpContext.Current != null && HttpContext.Current.Handler is Page)
@@ -191,6 +167,11 @@ namespace DotNetNuke.Web.UI
             }
         }
 
+        /// <summary>Create a thumbnail of an image.</summary>
+        /// <param name="image">The image file.</param>
+        /// <param name="img">The image to resize.</param>
+        /// <param name="maxWidth">The maximum width in pixels.</param>
+        /// <param name="maxHeight">The maximum height in pixels.</param>
         public static void CreateThumbnail(FileInfo image, Image img, int maxWidth, int maxHeight)
         {
             if (image.Width > image.Height)
@@ -223,27 +204,45 @@ namespace DotNetNuke.Web.UI
             }
         }
 
+        /// <summary>Gets a script to display an alert.</summary>
+        /// <param name="ctrl">The control.</param>
+        /// <param name="message">The message.</param>
+        /// <returns>A script.</returns>
         public static string GetClientAlert(Control ctrl, string message)
         {
             return GetClientAlert(ctrl, new MessageWindowParameters(message));
         }
 
+        /// <summary>Gets a script to display an alert.</summary>
+        /// <param name="ctrl">The control.</param>
+        /// <param name="message">The message.</param>
+        /// <returns>A script.</returns>
         public static string GetClientAlert(Control ctrl, MessageWindowParameters message)
         {
             return "jQuery(document).ready(function($){$.dnnAlert({ okText: '" + GetLocalizedString("Ok.Text") + "', text: '" + message.Message + "', title: '" + message.Title + "'});});";
         }
 
+        /// <summary>Gets the localized string corresponding to the <paramref name="key"/>.</summary>
+        /// <param name="key">The resource key to find.</param>
+        /// <returns>The localized text.</returns>
         public static string GetLocalizedString(string key)
         {
             string resourceFile = "/App_GlobalResources/WebControls.resx";
             return Localization.GetString(key, resourceFile);
         }
 
+        /// <summary>Gets the path to the local resource file associated to the control.</summary>
+        /// <param name="ctrl">The control.</param>
+        /// <returns>The path to the resource file.</returns>
         public static string GetLocalResourceFile(Control ctrl)
         {
             return UIUtilities.GetLocalResourceFile(ctrl);
         }
 
+        /// <summary>Gets the localized string corresponding to the <paramref name="key"/>, using the resource file of the <paramref name="control"/>.</summary>
+        /// <param name="key">The resource key to find.</param>
+        /// <param name="control">The control use to find the resource file.</param>
+        /// <returns>The localized text.</returns>
         public static string GetLocalizedStringFromParent(string key, Control control)
         {
             string returnValue = key;
@@ -257,34 +256,58 @@ namespace DotNetNuke.Web.UI
             return returnValue;
         }
 
+        /// <summary>Gets a script for a click confirmation.</summary>
+        /// <param name="ctrl">The control.</param>
+        /// <param name="message">The message.</param>
+        /// <returns>A script.</returns>
         public static string GetOnClientClickConfirm(Control ctrl, string message)
         {
             return GetOnClientClickConfirm(ctrl, new MessageWindowParameters(message));
         }
 
+        /// <summary>Gets a script for a click confirmation.</summary>
+        /// <param name="ctrl">The control.</param>
+        /// <param name="message">The message.</param>
+        /// <returns>A script.</returns>
         public static string GetOnClientClickConfirm(Control ctrl, MessageWindowParameters message)
         {
             AddMessageWindow(ctrl);
 
             // function(text, mozEvent, oWidth, oHeight, callerObj, oTitle)
-            return string.Format("return postBackConfirm('{0}', event, '{1}', '{2}', '', '{3}');", message.Message, message.WindowWidth, message.WindowHeight, message.Title);
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                "return postBackConfirm('{0}', event, '{1}', '{2}', '', '{3}');",
+                HttpUtility.JavaScriptStringEncode(message.Message),
+                HttpUtility.JavaScriptStringEncode(message.WindowWidth.ToString(CultureInfo.InvariantCulture)),
+                HttpUtility.JavaScriptStringEncode(message.WindowHeight.ToString(CultureInfo.InvariantCulture)),
+                HttpUtility.JavaScriptStringEncode(message.Title));
         }
 
+        /// <summary>Gets the <paramref name="value"/> as a <see cref="string"/>.</summary>
+        /// <param name="value">The view state object.</param>
+        /// <param name="defaultValue">The default value is <paramref name="value"/> is <see langword="null"/>.</param>
+        /// <returns>The string.</returns>
         public static string GetViewStateAsString(object value, string defaultValue)
         {
             if (value != null)
             {
-                return Convert.ToString(value);
+                return Convert.ToString(value, CultureInfo.InvariantCulture);
             }
 
             return defaultValue;
         }
 
+        /// <summary>Register a client script to display an alert.</summary>
+        /// <param name="ctrl">The control.</param>
+        /// <param name="message">The message.</param>
         public static void RegisterAlertOnPageLoad(Control ctrl, string message)
         {
             RegisterAlertOnPageLoad(ctrl, new MessageWindowParameters(message));
         }
 
+        /// <summary>Register a client script to display an alert.</summary>
+        /// <param name="ctrl">The control.</param>
+        /// <param name="message">The message.</param>
         public static void RegisterAlertOnPageLoad(Control ctrl, MessageWindowParameters message)
         {
             ctrl.Page.ClientScript.RegisterClientScriptBlock(ctrl.GetType(), ctrl.ID + "_AlertOnPageLoad", GetClientAlert(ctrl, message), true);

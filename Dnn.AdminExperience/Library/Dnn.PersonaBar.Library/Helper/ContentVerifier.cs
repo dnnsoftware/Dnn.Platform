@@ -20,8 +20,8 @@ namespace Dnn.PersonaBar.Library.Helper
         }
 
         /// <summary>Initializes a new instance of the <see cref="ContentVerifier"/> class.</summary>
-        /// <param name="portalController"></param>
-        /// <param name="portalGroupController"></param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
         public ContentVerifier(IPortalController portalController, IPortalGroupController portalGroupController)
         {
             this.portalController = portalController;

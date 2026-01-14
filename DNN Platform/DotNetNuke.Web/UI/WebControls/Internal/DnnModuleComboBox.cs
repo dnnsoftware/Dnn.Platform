@@ -15,9 +15,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
+    /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnModuleComboBox : DnnComboBox
     {
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
@@ -25,8 +23,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         private DnnComboBox moduleCombo;
         private string originalValue;
 
+        /// <summary>An event which triggers when the item changes.</summary>
         public event EventHandler ItemChanged;
 
+        /// <summary>Gets the item count.</summary>
         public int ItemCount
         {
             get
@@ -35,6 +35,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <summary>Gets the client ID of the <see cref="DnnComboBox"/>.</summary>
         public string RadComboBoxClientId
         {
             get
@@ -43,6 +44,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <summary>Gets or sets the filter.</summary>
         public Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter { get; set; }
 
         /// <inheritdoc/>
@@ -68,22 +70,27 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <summary>Binds the portal desktop modules to the list.</summary>
         public void BindAllPortalDesktopModules()
         {
             this.moduleCombo.SelectedValue = null;
             this.moduleCombo.DataSource = this.GetPortalDesktopModules();
             this.moduleCombo.DataBind();
-            this.BindPortalDesktopModuleImages();
+            BindPortalDesktopModuleImages();
         }
 
+        /// <summary>Binds the modules from the page to the list.</summary>
+        /// <param name="tabID">The tab ID.</param>
         public void BindTabModulesByTabID(int tabID)
         {
             this.moduleCombo.SelectedValue = null;
             this.moduleCombo.DataSource = GetTabModules(tabID);
             this.moduleCombo.DataBind();
-            this.BindTabModuleImages(tabID);
+            BindTabModuleImages(tabID);
         }
 
+        /// <summary>Sets the module.</summary>
+        /// <param name="code">The item's value.</param>
         public void SetModule(string code)
         {
             this.moduleCombo.SelectedIndex = this.moduleCombo.FindItemIndexByValue(code);
@@ -106,6 +113,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.originalValue = this.SelectedValue;
         }
 
+        /// <summary>A method which triggers the <see cref="ItemChanged"/> event.</summary>
         protected virtual void OnItemChanged()
         {
             if (this.ItemChanged != null)
@@ -150,6 +158,43 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        private static void BindPortalDesktopModuleImages()
+        {
+            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
+            var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
+
+            ////foreach (var item in _moduleCombo.Items)
+            ////{
+            ////   string imageUrl =
+            ////       (from pkgs in packages
+            ////        join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
+            ////        where portMods.Value.DesktopModuleID.ToString() == item.Value
+            ////        select pkgs.IconFile).FirstOrDefault();
+            ////
+            ////item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            ////}
+        }
+
+        private static void BindTabModuleImages(int tabID)
+        {
+            var tabModules = ModuleController.Instance.GetTabModules(tabID);
+            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
+            var moduleDefinitions = ModuleDefinitionController.GetModuleDefinitions();
+            var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
+
+            ////foreach (RadComboBoxItem item in _moduleCombo.Items)
+            ////{
+            ////   string imageUrl = (from pkgs in packages
+            ////                      join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
+            ////                      join modDefs in moduleDefinitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
+            ////                      join tabMods in tabModules on modDefs.Value.DesktopModuleID equals tabMods.Value.DesktopModuleID
+            ////                      where tabMods.Value.ModuleID.ToString() == item.Value
+            ////                      select pkgs.IconFile).FirstOrDefault();
+            ////
+            ////item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            ////}
+        }
+
         private Dictionary<int, string> GetPortalDesktopModules()
         {
             IOrderedEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> portalModulesList;
@@ -169,43 +214,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             return portalModulesList.ToDictionary(
                 portalModule => portalModule.Value.DesktopModuleID,
                 portalModule => portalModule.Key);
-        }
-
-        private void BindPortalDesktopModuleImages()
-        {
-            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
-            var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
-
-            // foreach (var item in _moduleCombo.Items)
-            // {
-            //    string imageUrl =
-            //        (from pkgs in packages
-            //         join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
-            //         where portMods.Value.DesktopModuleID.ToString() == item.Value
-            //         select pkgs.IconFile).FirstOrDefault();
-
-            // item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
-            // }
-        }
-
-        private void BindTabModuleImages(int tabID)
-        {
-            var tabModules = ModuleController.Instance.GetTabModules(tabID);
-            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
-            var moduleDefnitions = ModuleDefinitionController.GetModuleDefinitions();
-            var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
-
-            // foreach (RadComboBoxItem item in _moduleCombo.Items)
-            // {
-            //    string imageUrl = (from pkgs in packages
-            //                       join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
-            //                       join modDefs in moduleDefnitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
-            //                       join tabMods in tabModules on modDefs.Value.DesktopModuleID equals tabMods.Value.DesktopModuleID
-            //                       where tabMods.Value.ModuleID.ToString() == item.Value
-            //                       select pkgs.IconFile).FirstOrDefault();
-
-            // item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
-            // }
         }
     }
 }

@@ -367,7 +367,7 @@ class UserSettings extends Component {
             {canEditSettings(this.props.appSettings.applicationSettings.settings) &&
                 <GridCell className="buttons">
                     <GridCell columnSize={50} className="leftBtn">
-                        <Button id="cancelbtn"  type="secondary" onClick={this.props.collapse.bind(this) }>{Localization.get("btnCancel") }</Button>
+                        <Button id="cancelbtn"  type="neutral" onClick={this.props.collapse.bind(this) }>{Localization.get("btnCancel") }</Button>
                     </GridCell>
                     <GridCell columnSize={50} className="rightBtn">
                         <Button id="confirmbtn" disabled={this.state.loading} type="primary" onClick={this.save.bind(this) }>{Localization.get("btnSave") }</Button>

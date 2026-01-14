@@ -66,7 +66,7 @@
                 background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); /* FF3.6+ */
                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); /* Chrome,Safari4+ */
                 background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); /* Chrome10+,Safari5.1+ */
-                background: linear-gradient(top, #fff 0%,#f0f2f1 100%); /* W3C */
+                background: linear-gradient(to bottom, #fff 0%,#f0f2f1 100%); /* W3C */
             }
 
             .dnnSearchResultPanel .dnnSearchResultSortOptions > li.active > a,
@@ -75,7 +75,7 @@
                 background: -moz-linear-gradient(top, #ccc 0%, #fff 100%); /* FF3.6+ */
                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ccc), color-stop(100%,#fff)); /* Chrome,Safari4+ */
                 background: -webkit-linear-gradient(top, #ccc 0%,#fff 100%); /* Chrome10+,Safari5.1+ */
-                background: linear-gradient(top, #ccc 0%,#fff 100%); /* W3C */
+                background: linear-gradient(to bottom, #ccc 0%,#fff 100%); /* W3C */
                 color: #333;
             }
 
@@ -205,7 +205,7 @@
         background: -webkit-linear-gradient(top, #fff 0%, #eee6e5 100%); /* Chrome10+,Safari5.1+ */
         background: -o-linear-gradient(top, #fff 0%, #eee6e5 100%); /* Opera 11.10+ */
         background: -ms-linear-gradient(top, #fff 0%,#eee6e5 100%); /* IE10+ */
-        background: linear-gradient(top, #fff 0%,#eee6e5 100%); /* W3C */
+        background: linear-gradient(to bottom, #fff 0%,#eee6e5 100%); /* W3C */
         border: 1px solid #dddddd;
         box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
         color: #555;

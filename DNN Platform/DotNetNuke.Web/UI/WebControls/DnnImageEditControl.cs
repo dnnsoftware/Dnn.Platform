@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     using DotNetNuke.Common;
 
+    /// <summary>An image edit control.</summary>
     public class DnnImageEditControl : DnnFileEditControl
     {
         /// <summary>Initializes a new instance of the <see cref="DnnImageEditControl"/> class.</summary>

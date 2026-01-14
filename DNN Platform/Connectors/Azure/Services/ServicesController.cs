@@ -12,6 +12,7 @@ namespace Dnn.AzureConnector.Services
 
     using DotNetNuke.Providers.FolderProviders.AzureFolderProvider;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.Api;
     using Microsoft.WindowsAzure.Storage;
 
@@ -19,6 +20,15 @@ namespace Dnn.AzureConnector.Services
     [DnnAuthorize]
     public class ServicesController : DnnApiController
     {
+        private readonly IFolderMappingController folderMappingController;
+
+        /// <summary>Initializes a new instance of the <see cref="ServicesController"/> class.</summary>
+        /// <param name="folderMappingController">The folder mapping controller.</param>
+        public ServicesController(IFolderMappingController folderMappingController)
+        {
+            this.folderMappingController = folderMappingController;
+        }
+
         /// <summary>Gets all containers.</summary>
         /// <param name="id">The folder mapping ID.</param>
         /// <returns>An <see cref="HttpResponseMessage"/> wrapping a <see cref="List{T}"/> of <see cref="string"/>.</returns>
@@ -29,7 +39,7 @@ namespace Dnn.AzureConnector.Services
             {
                 var containers = new List<string>();
                 var folderProvider = new AzureFolderProvider();
-                var folderMapping = Components.AzureConnector.FindAzureFolderMappingStatic(this.PortalSettings.PortalId, id, false);
+                var folderMapping = Components.AzureConnector.FindAzureFolderMappingStatic(this.folderMappingController, this.PortalSettings.PortalId, id, false);
                 if (folderMapping != null)
                 {
                     containers = folderProvider.GetAllContainers(folderMapping);
@@ -58,7 +68,7 @@ namespace Dnn.AzureConnector.Services
         {
             return this.Request.CreateResponse(
                 HttpStatusCode.OK,
-                Components.AzureConnector.FindAzureFolderMappingStatic(this.PortalSettings.PortalId).FolderMappingID);
+                Components.AzureConnector.FindAzureFolderMappingStatic(this.folderMappingController, this.PortalSettings.PortalId).FolderMappingID);
         }
     }
 }

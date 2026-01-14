@@ -61,8 +61,8 @@ namespace DotNetNuke.Framework
         ///   requires users to be authenticated.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if authentication is required
-        ///   otherwise, <c>false</c>.
+        ///   <see langword="true"/> if authentication is required
+        ///   otherwise, <see langword="false"/>.
         /// </value>
         public virtual bool RequiresAuthentication
         {
@@ -78,11 +78,11 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         ///   By default all authenticated users have permssions.
-        ///   This property is only enforced if <see cref = "RequiresAuthentication" /> is <c>true</c>.
+        ///   This property is only enforced if <see cref = "RequiresAuthentication" /> is <see langword="true"/>.
         /// </remarks>
         /// <value>
-        ///   <c>true</c> if the user has the appropriate permissions
-        ///   otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the user has the appropriate permissions
+        ///   otherwise, <see langword="false"/>.
         /// </value>
         public virtual bool HasPermission
         {
@@ -184,13 +184,13 @@ namespace DotNetNuke.Framework
         ///   implement this and return true if the parameters are
         ///   valid, otherwise false.
         /// </summary>
-        /// <returns><c>true</c> if the parameters are valid,
-        ///   otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the parameters are valid,
+        ///   otherwise <see langword="false"/>.</returns>
         public abstract bool ValidateParameters();
 
         /// <summary>
         ///   Sets the cache policy.  Unless a handler overrides
-        ///   this method, handlers will not allow a respons to be
+        ///   this method, handlers will not allow a response to be
         ///   cached.
         /// </summary>
         /// <param name="cache">Cache.</param>
@@ -207,7 +207,7 @@ namespace DotNetNuke.Framework
         /// </summary>
         protected void RespondFileNotFound()
         {
-            this.Response.StatusCode = Convert.ToInt32(HttpStatusCode.NotFound);
+            this.Response.StatusCode = (int)HttpStatusCode.NotFound;
             this.Response.End();
         }
 
@@ -219,7 +219,7 @@ namespace DotNetNuke.Framework
         {
             // It's really too bad that StatusCode property
             // is not of type HttpStatusCode.
-            this.Response.StatusCode = Convert.ToInt32(HttpStatusCode.InternalServerError);
+            this.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             this.Response.End();
         }
 
@@ -230,7 +230,7 @@ namespace DotNetNuke.Framework
         /// </summary>
         protected void RespondForbidden()
         {
-            this.Response.StatusCode = Convert.ToInt32(HttpStatusCode.Forbidden);
+            this.Response.StatusCode = (int)HttpStatusCode.Forbidden;
             this.Response.End();
         }
     }

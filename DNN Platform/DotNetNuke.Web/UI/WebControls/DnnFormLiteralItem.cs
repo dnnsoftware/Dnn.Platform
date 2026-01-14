@@ -4,11 +4,14 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    /// <summary>A literal control.</summary>
     public class DnnFormLiteralItem : DnnFormItemBase
     {
+        /// <summary>Initializes a new instance of the <see cref="DnnFormLiteralItem"/> class.</summary>
         public DnnFormLiteralItem()
             : base()
         {
@@ -18,7 +21,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <inheritdoc/>
         protected override WebControl CreateControlInternal(Control container)
         {
-            var literal = new Label { ID = this.ID + "_Label", Text = Convert.ToString(this.Value) };
+            var literal = new Label { ID = this.ID + "_Label", Text = Convert.ToString(this.Value, CultureInfo.InvariantCulture), };
             container.Controls.Add(literal);
             return literal;
         }

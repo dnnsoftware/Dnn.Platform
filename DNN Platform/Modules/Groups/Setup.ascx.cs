@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Skins;
 
+    /// <summary>Display the group setup view.</summary>
     public partial class Setup : GroupsModuleBase
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]

@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Web;
@@ -29,13 +30,8 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         private Dictionary<string, InstallFile> files;
         private string manifest = Null.NullString;
 
-        protected string BasePath
-        {
-            get
-            {
-                return HttpContext.Current.Server.MapPath("~/Install/Language");
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected string BasePath => HttpContext.Current.Server.MapPath("~/Install/Language");
 
         public void SaveLocalizedKeys(int portalId, string propertyName, string propertyCategory, string cultureCode, string propertyNameString, string propertyHelpString, string propertyRequiredString, string propertyValidationString, string categoryNameString)
         {
@@ -43,23 +39,29 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             var defaultResources = new XmlDocument { XmlResolver = null };
             XmlNode parent;
 
-            defaultResources.Load(this.GetResourceFile(string.Empty, Localization.SystemLocale, portalId));
+            using (var defaultResourcesReader = XmlReader.Create(this.GetResourceFile(string.Empty, Localization.SystemLocale, portalId), new XmlReaderSettings { XmlResolver = null, }))
+            {
+                defaultResources.Load(defaultResourcesReader);
+            }
+
             string filename = this.GetResourceFile("Portal", cultureCode, portalId);
 
             if (File.Exists(filename))
             {
-                portalResources.Load(filename);
+                using var portalResourcesReader = XmlReader.Create(filename, new XmlReaderSettings { XmlResolver = null, });
+                portalResources.Load(portalResourcesReader);
             }
             else
             {
-                portalResources.Load(this.GetResourceFile(string.Empty, Localization.SystemLocale, portalId));
+                using var portalResourcesReader = XmlReader.Create(this.GetResourceFile(string.Empty, Localization.SystemLocale, portalId), new XmlReaderSettings { XmlResolver = null, });
+                portalResources.Load(portalResourcesReader);
             }
 
-            this.UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Text", propertyNameString);
-            this.UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Help", propertyHelpString);
-            this.UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Required", propertyRequiredString);
-            this.UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Validation", propertyValidationString);
-            this.UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyCategory + ".Header", categoryNameString);
+            UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Text", propertyNameString);
+            UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Help", propertyHelpString);
+            UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Required", propertyRequiredString);
+            UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Validation", propertyValidationString);
+            UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyCategory + ".Header", categoryNameString);
 
             // remove unmodified keys
             foreach (XmlNode node in portalResources.SelectNodes("//root/data"))
@@ -97,6 +99,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IList<string> GetAvailableAnalyzers()
         {
             var analyzers = new List<string>();
@@ -104,7 +107,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             {
                 try
                 {
-                    analyzers.AddRange(from t in assembly.GetTypes() where this.IsAnalyzerType(t) && this.IsAllowType(t) select string.Format("{0}, {1}", t.FullName, assembly.GetName().Name));
+                    analyzers.AddRange(from t in assembly.GetTypes() where IsAnalyzerType(t) && IsAllowType(t) select $"{t.FullName}, {assembly.GetName().Name}");
                 }
                 catch (Exception)
                 {
@@ -127,7 +130,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             var fileName = Path.Combine(this.BasePath, "ResourcePack." + package.Name);
             var authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(authPackage.PackageID);
             var authPath = authSystem.LoginControlSrc.Substring(0, authSystem.LoginControlSrc.LastIndexOf("/", StringComparison.Ordinal));
-            return this.CreatePackage(cultureCode, package, authPackage.PackageID, authPath.Replace("/", "\\"), fileName, createZip);
+            return this.CreatePackage(cultureCode, package, authPackage.PackageID, authPath.Replace("/", @"\"), fileName, createZip);
         }
 
         public bool CreateCorePackage(string cultureCode, string fileName, bool createZip)
@@ -155,7 +158,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
 
             this.files = new Dictionary<string, InstallFile>();
             this.CreateCorePackage(cultureCode, fileName, false);
-            foreach (var desktopModule in DesktopModuleController.GetDesktopModules(Null.NullInteger).Values.Where(desktopModule => !desktopModule.FolderName.StartsWith("Admin/")))
+            foreach (var desktopModule in DesktopModuleController.GetDesktopModules(Null.NullInteger).Values.Where(desktopModule => !desktopModule.FolderName.StartsWith("Admin/", StringComparison.OrdinalIgnoreCase)))
             {
                 this.CreateModulePackage(cultureCode, desktopModule, false);
             }
@@ -266,7 +269,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     cultureCode,
                     package,
                     providerPackage.PackageID,
-                    providerPath.Substring(2, providerPath.Length - 2).Replace("/", "\\"),
+                    providerPath.Substring(2).Replace("/", @"\"),
                     fileName,
                     createZip);
             }
@@ -276,24 +279,52 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string GetResourceFile(string type, string language, int portalId)
         {
-            string resourcefilename = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
+            string resourceFilename = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
             if (language != Localization.SystemLocale)
             {
-                resourcefilename = resourcefilename + "." + language;
+                resourceFilename = resourceFilename + "." + language;
             }
 
             if (type == "Portal")
             {
-                resourcefilename = resourcefilename + "." + "Portal-" + portalId;
+                resourceFilename = resourceFilename + "." + "Portal-" + portalId;
             }
             else if (type == "Host")
             {
-                resourcefilename = resourcefilename + "." + "Host";
+                resourceFilename = resourceFilename + "." + "Host";
             }
 
-            return HttpContext.Current.Server.MapPath(resourcefilename + ".resx");
+            return HttpContext.Current.Server.MapPath(resourceFilename + ".resx");
+        }
+
+        private static bool IsAnalyzerType(Type type)
+        {
+            return type is { FullName: not null } && (type.FullName.Contains("Lucene.Net.Analysis.Analyzer") || IsAnalyzerType(type.BaseType));
+        }
+
+        private static bool IsAllowType(Type type)
+        {
+            return !type.FullName.Contains("Lucene.Net.Analysis.Analyzer") && !type.FullName.Contains("DotNetNuke");
+        }
+
+        private static void UpdateResourceFileNode(XmlDocument xmlDoc, string key, string text)
+        {
+            var node = xmlDoc.SelectSingleNode("//root/data[@name='" + key + "']/value");
+            if (node == null)
+            {
+                // missing entry
+                var nodeData = xmlDoc.CreateElement("data");
+                var attr = xmlDoc.CreateAttribute("name");
+                attr.Value = key;
+                nodeData.Attributes.Append(attr);
+                xmlDoc.SelectSingleNode("//root").AppendChild(nodeData);
+                node = nodeData.AppendChild(xmlDoc.CreateElement("value"));
+            }
+
+            node.InnerXml = HttpUtility.HtmlEncode(text);
         }
 
         private bool CreatePackage(string cultureCode, PackageInfo package, int dependentPackageId, string basePath, string fileName, bool createZip)
@@ -347,36 +378,6 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             {
                 return false;
             }
-        }
-
-        private bool IsAnalyzerType(Type type)
-        {
-            return type != null && type.FullName != null && (type.FullName.Contains("Lucene.Net.Analysis.Analyzer") || this.IsAnalyzerType(type.BaseType));
-        }
-
-        private bool IsAllowType(Type type)
-        {
-            return !type.FullName.Contains("Lucene.Net.Analysis.Analyzer") && !type.FullName.Contains("DotNetNuke");
-        }
-
-        private void UpdateResourceFileNode(XmlDocument xmlDoc, string key, string text)
-        {
-            XmlNode node;
-            XmlNode nodeData;
-            XmlAttribute attr;
-            node = xmlDoc.SelectSingleNode("//root/data[@name='" + key + "']/value");
-            if (node == null)
-            {
-                // missing entry
-                nodeData = xmlDoc.CreateElement("data");
-                attr = xmlDoc.CreateAttribute("name");
-                attr.Value = key;
-                nodeData.Attributes.Append(attr);
-                xmlDoc.SelectSingleNode("//root").AppendChild(nodeData);
-                node = nodeData.AppendChild(xmlDoc.CreateElement("value"));
-            }
-
-            node.InnerXml = HttpUtility.HtmlEncode(text);
         }
     }
 }

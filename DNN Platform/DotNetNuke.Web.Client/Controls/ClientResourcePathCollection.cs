@@ -4,10 +4,10 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
-    using ClientDependency.Core.Controls;
+    using System.Collections.Generic;
 
     /// <summary>Represents a collection of client resource paths.</summary>
-    public class ClientResourcePathCollection : ClientDependencyPathCollection
+    public class ClientResourcePathCollection : List<ClientResourcePath>
     {
     }
 }

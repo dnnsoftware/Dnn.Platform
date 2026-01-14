@@ -10,7 +10,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
     using DotNetNuke.Services.Localization;
 
     /// <summary>Utility class to support simple localization.</summary>
-    internal class Localizer : ILocalizer
+    internal sealed class Localizer : ILocalizer
     {
         /// <summary>The relative path to the resources file for localization.</summary>
         public static readonly string ResourceFile =

@@ -7,13 +7,32 @@ namespace DotNetNuke.UI.Skins.Controls
     using System;
     using System.Diagnostics.CodeAnalysis;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Framework.JavaScriptLibraries;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A control which requests the inclusion of jQuery on the page.</summary>
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
     // ReSharper disable once InconsistentNaming
     public partial class jQuery : SkinObjectBase
     {
+        private readonly IJavaScriptLibraryHelper javaScript;
+
+        /// <summary>Initializes a new instance of the <see cref="jQuery"/> class.</summary>
+        public jQuery()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="jQuery"/> class.</summary>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public jQuery(IJavaScriptLibraryHelper javaScript)
+        {
+            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+        }
+
         public bool DnnjQueryPlugins { get; set; }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
@@ -29,22 +48,22 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
-            JavaScript.RequestRegistration(CommonJs.jQuery);
-            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
+            this.javaScript.RequestRegistration(CommonJs.jQuery);
+            this.javaScript.RequestRegistration(CommonJs.jQueryMigrate);
 
             if (this.jQueryUI)
             {
-                JavaScript.RequestRegistration(CommonJs.jQueryUI);
+                this.javaScript.RequestRegistration(CommonJs.jQueryUI);
             }
 
             if (this.DnnjQueryPlugins)
             {
-                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
             }
 
             if (this.jQueryHoverIntent)
             {
-                JavaScript.RequestRegistration(CommonJs.HoverIntent);
+                this.javaScript.RequestRegistration(CommonJs.HoverIntent);
             }
         }
     }

@@ -8,10 +8,10 @@ namespace DotNetNuke.Services.Search.Entities
     /// <remarks>Does not apply when SortFields.Relevance is specified in SearchQuery.SortField.</remarks>
     public enum SortDirections
     {
-        /// <summary>Sort by descending [default] order</summary>
+        /// <summary>Sort by descending [default] order.</summary>
         Descending = 0,
 
-        /// <summary>Sort by ascending order</summary>
+        /// <summary>Sort by ascending order.</summary>
         Ascending = 1,
     }
 }

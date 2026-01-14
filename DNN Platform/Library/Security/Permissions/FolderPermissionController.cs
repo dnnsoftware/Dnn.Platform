@@ -5,6 +5,7 @@ namespace DotNetNuke.Security.Permissions
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
@@ -12,6 +13,7 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
 
+    /// <summary>The default <see cref="IFolderPermissionController"/> implementation.</summary>
     public partial class FolderPermissionController : ServiceLocator<IFolderPermissionController, FolderPermissionController>, IFolderPermissionController
     {
         private static readonly PermissionProvider Provider = PermissionProvider.Instance();
@@ -101,9 +103,9 @@ namespace DotNetNuke.Security.Permissions
             bool hasPermission = Provider.HasFolderPermission(objFolderPermissions, "WRITE");
             if (!hasPermission)
             {
-                if (permissionKey.Contains(","))
+                if (permissionKey.Contains(",", StringComparison.Ordinal))
                 {
-                    foreach (string permission in permissionKey.Split(','))
+                    foreach (var permission in permissionKey.Split(','))
                     {
                         if (Provider.HasFolderPermission(objFolderPermissions, permission))
                         {
@@ -178,11 +180,11 @@ namespace DotNetNuke.Security.Permissions
             return () => new FolderPermissionController();
         }
 
-        private static void ClearPermissionCache(int portalID)
+        private static void ClearPermissionCache(int portalId)
         {
-            DataCache.ClearFolderPermissionsCache(portalID);
-            DataCache.ClearCache(string.Format("Folders|{0}|", portalID));
-            DataCache.ClearFolderCache(portalID);
+            DataCache.ClearFolderPermissionsCache(portalId);
+            DataCache.ClearCache(string.Format(CultureInfo.CurrentCulture, "Folders|{0}|", portalId));
+            DataCache.ClearFolderCache(portalId);
         }
 
         private static bool CopyPermissionsToSubfoldersRecursive(IFolderInfo folder, FolderPermissionCollection newPermissions)

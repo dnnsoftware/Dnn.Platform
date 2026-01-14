@@ -8,15 +8,18 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
     public class ResponseModel
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public bool IsError;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public string Message;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public string Data;
 
         /// <summary>Initializes a new instance of the <see cref="ResponseModel"/> class.</summary>
-        /// <param name="err"></param>
-        /// <param name="msg"></param>
+        /// <param name="err">Whether the response is an error.</param>
+        /// <param name="msg">The message.</param>
         public ResponseModel(bool err, string msg)
         {
             this.IsError = err;
@@ -25,9 +28,9 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
         }
 
         /// <summary>Initializes a new instance of the <see cref="ResponseModel"/> class.</summary>
-        /// <param name="err"></param>
-        /// <param name="msg"></param>
-        /// <param name="data"></param>
+        /// <param name="err">Whether the response is an error.</param>
+        /// <param name="msg">The message.</param>
+        /// <param name="data">The data.</param>
         public ResponseModel(bool err, string msg, string data)
         {
             this.IsError = err;

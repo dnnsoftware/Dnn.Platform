@@ -56,7 +56,7 @@ class ListEntryEditor extends Component {
         props.Collapse();
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         if (this.state.entryDetail !== undefined || this.props.id === "add") {
             const columnOne = <div className="left-column">
@@ -110,7 +110,7 @@ class ListEntryEditor extends Component {
                     <GridSystem numberOfColumns={2}>{[columnOne, columnTwo]}</GridSystem>
                     <div className="editor-buttons-box">
                         <Button
-                            type="secondary"
+                            type="neutral"
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>

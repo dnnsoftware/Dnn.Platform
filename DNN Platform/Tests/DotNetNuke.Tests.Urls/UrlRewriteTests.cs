@@ -38,13 +38,7 @@ namespace DotNetNuke.Tests.Urls
         private bool sslEnforced;
         private bool sslEnabled;
 
-        public UrlRewriteTests()
-            : base(0)
-        {
-        }
-
         [SetUp]
-
         public override void SetUp()
         {
             base.SetUp();
@@ -64,14 +58,13 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [TearDown]
-
         public override void TearDown()
         {
             base.TearDown();
 
             this.DeleteTab(TestPage);
             this.UpdateTabName(this.tabId, "About Us");
-            this.UpdateTabSkin(this.tabId, "[G]Skins/Xcillion/Inner.ascx");
+            this.UpdateTabSkin(this.tabId, "[G]Skins/Aperture/default.ascx");
 
             if (!string.IsNullOrEmpty(this.securePageName))
             {
@@ -107,10 +100,9 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [OneTimeSetUp]
-
-        public override void TestFixtureSetUp()
+        public override void OneTimeSetUp()
         {
-            base.TestFixtureSetUp();
+            base.OneTimeSetUp();
 
             var tab = TabController.Instance.GetTabByName(AboutUsPageName, this.PortalId);
             if (tab == null)
@@ -144,10 +136,9 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [OneTimeTearDown]
-
-        public override void TestFixtureTearDown()
+        public override void OneTimeTearDown()
         {
-            base.TestFixtureTearDown();
+            base.OneTimeTearDown();
 
             var aliasController = Globals.DependencyProvider.GetRequiredService<IPortalAliasService>();
             TestUtil.ReadStream("Aliases", (line, header) =>
@@ -166,7 +157,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.UrlRewrite_BasicTestCases))]
-
         public void AdvancedUrlRewriter_BasicTest(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
@@ -176,7 +166,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.UrlRewrite_DeletedTabHandlingTestCases))]
-
         public void AdvancedUrlRewriter_DeletedTabHandling(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
@@ -222,7 +211,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.UrlRewrite_DoNotRedirect))]
-
         public void AdvancedUrlRewriter_DoNotRedirect(Dictionary<string, string> testFields)
         {
             var tabName = testFields["Page Name"];
@@ -240,7 +228,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.UrlRewrite_ForwardExternalUrlTestCases))]
-
         public void AdvancedUrlRewriter_ForwardExternalUrls(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
@@ -254,7 +241,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.UrlRewrite_ForceLowerCaseTestCases))]
-
         public void AdvancedUrlRewriter_ForceLowerCase(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
@@ -271,7 +257,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.UrlRewrite_RegexTestCases))]
-
         public void AdvancedUrlRewriter_Regex(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
@@ -320,7 +305,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.UrlRewrite_ReplaceCharsTestCases))]
-
         public void AdvancedUrlRewriter_ReplaceChars(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
@@ -354,7 +338,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.UrlRewrite_ReplaceSpaceTestCases))]
-
         public void AdvancedUrlRewriter_ReplaceSpace(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
@@ -370,7 +353,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.UrlRewrite_SiteRootRedirectTestCases))]
-
         public void AdvancedUrlRewriter_SiteRootRedirect(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", "SiteRootRedirect", this.PortalId);
@@ -389,7 +371,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.UrlRewrite_PrimaryPortalAliasTestCases))]
-
         public void AdvancedUrlRewriter_0_PrimaryPortalAlias(Dictionary<string, string> testFields)
         {
             var defaultAlias = testFields["DefaultAlias"];
@@ -442,7 +423,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.UrlRewrite_VanityUrlTestCases))]
-
         public void AdvancedUrlRewriter_VanityUrl(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
@@ -472,7 +452,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.UrlRewrite_SecureRedirectTestCases))]
-
         public void AdvancedUrlRewriter_SecureRedirect(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
@@ -500,7 +479,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.UrlRewrite_JiraTests))]
-
         public void AdvancedUrlRewriter_JiraTests(Dictionary<string, string> testFields)
         {
             var testName = testFields.GetValue("Test File", string.Empty);
@@ -639,7 +617,7 @@ namespace DotNetNuke.Tests.Urls
                 case 301:
                 case 302:
                     // Test for final Url if redirected
-                    Assert.That(expectedRedirectUrl.Equals(testHelper.Result.FinalUrl.TrimStart('/'), StringComparison.InvariantCultureIgnoreCase), Is.True);
+                    Assert.That(testHelper.Result.FinalUrl.TrimStart('/'), Is.EqualTo(expectedRedirectUrl).IgnoreCase);
                     Assert.That(testHelper.Result.Reason.ToString(), Is.EqualTo(redirectReason), "Redirect reason incorrect");
                     break;
             }

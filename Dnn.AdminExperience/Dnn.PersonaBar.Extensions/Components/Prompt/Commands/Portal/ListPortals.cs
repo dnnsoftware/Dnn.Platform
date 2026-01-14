@@ -4,6 +4,7 @@
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
 {
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.PersonaBar.Library.Prompt;
@@ -14,7 +15,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("list-portals", Constants.PortalCategory, "Prompt_ListPortals_Description")]
-
     public class ListPortals : ConsoleCommandBase
     {
         /// <inheritdoc/>
@@ -40,9 +40,14 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
 
             var alPortals = pc.GetPortals();
             var lst = (from PortalInfo portal in alPortals select new PortalModelBase(portal)).ToList();
-            var count = lst.Count() > 0 ? lst.Count().ToString() : "No";
-            var pluralSuffix = lst.Count() > 1 ? "s" : string.Empty;
-            return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_ListPortals_Results"), count, pluralSuffix) };
+            var count = lst.Count > 0 ? lst.Count.ToString(CultureInfo.CurrentCulture) : "No";
+            var pluralSuffix = lst.Count > 1 ? "s" : string.Empty;
+            return new ConsoleResultModel(string.Empty)
+            {
+                Data = lst,
+                Records = lst.Count,
+                Output = string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Prompt_ListPortals_Results"), count, pluralSuffix),
+            };
         }
     }
 }

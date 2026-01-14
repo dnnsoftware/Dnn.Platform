@@ -6,11 +6,22 @@ namespace DotNetNuke.Entities.Tabs
     /// <summary>Identifies common tab move types.</summary>
     public enum TabMoveType
     {
+        /// <summary>Move up.</summary>
         Up = 0,
+
+        /// <summary>Move down.</summary>
         Down = 1,
+
+        /// <summary>Move to the top.</summary>
         Top = 2,
+
+        /// <summary>Move to the bottom.</summary>
         Bottom = 3,
+
+        /// <summary>Promote.</summary>
         Promote = 4,
+
+        /// <summary>Demote.</summary>
         Demote = 5,
     }
 }

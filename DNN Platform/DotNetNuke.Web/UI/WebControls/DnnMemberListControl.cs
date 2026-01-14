@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI;
     using System.Web.UI.WebControls;
@@ -78,13 +79,13 @@ namespace DotNetNuke.Web.UI.WebControls
         [DefaultValue("UserId")]
         public string SortBy { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets the sort direction.</summary>
+        /// <summary>Gets or sets a value indicating whether the sort is ascending.</summary>
         [DefaultValue(true)]
         public bool SortAscending { get; set; }
 
         /// <summary>Gets or sets the collection of filters to apply when getting the list of members.</summary>
         /// <remarks>
-        /// Posible keys are: RoleId, RelationshipTypeId, UserId, Profile:PropertyName, FirstName, LastName, DisplayName, Username, Email.
+        /// Possible keys are: RoleId, RelationshipTypeId, UserId, Profile:PropertyName, FirstName, LastName, DisplayName, Username, Email.
         /// </remarks>
         public IDictionary<string, string> Filters { get; set; }
 
@@ -114,16 +115,16 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             var additionalFilters = new Dictionary<string, string>();
-            additionalFilters.Add("Records", this.PageSize.ToString());
-            additionalFilters.Add("PageIndex", this.PageIndex.ToString());
-            additionalFilters.Add("Rowsize", this.RowSize.ToString());
+            additionalFilters.Add("Records", this.PageSize.ToString(CultureInfo.InvariantCulture));
+            additionalFilters.Add("PageIndex", this.PageIndex.ToString(CultureInfo.InvariantCulture));
+            additionalFilters.Add("Rowsize", this.RowSize.ToString(CultureInfo.InvariantCulture));
             additionalFilters.Add("SortBy", this.SortBy);
             additionalFilters.Add("SortAscending", this.SortAscending.ToString());
 
             // Currently Not Used by the SPROC
-            var filterUser = this.Filters.ContainsKey("UserId") && this.Filters["UserId"] != null ? new UserInfo() { UserID = int.Parse(this.Filters["UserId"]) } : new UserInfo() { PortalID = this.currentUser.PortalID };
-            var role = this.Filters.ContainsKey("RoleId") && this.Filters["RoleId"] != null ? new UserRoleInfo() { RoleID = int.Parse(this.Filters["RoleId"]) } : null;
-            var relationship = this.Filters.ContainsKey("RelationshipTypeId") && this.Filters["RelationshipTypeId"] != null ? new RelationshipType() { RelationshipTypeId = int.Parse(this.Filters["RelationshipTypeId"]) } : null;
+            var filterUser = this.Filters.TryGetValue("UserId", out var userId) && userId != null ? new UserInfo { UserID = int.Parse(userId, CultureInfo.InvariantCulture) } : new UserInfo() { PortalID = this.currentUser.PortalID };
+            var role = this.Filters.TryGetValue("RoleId", out var roleId) && roleId != null ? new UserRoleInfo { RoleID = int.Parse(roleId, CultureInfo.InvariantCulture) } : null;
+            var relationship = this.Filters.TryGetValue("RelationshipTypeId", out var relationshipTypeId) && relationshipTypeId != null ? new RelationshipType { RelationshipTypeId = int.Parse(relationshipTypeId, CultureInfo.InvariantCulture), } : null;
 
             foreach (var filter in this.Filters.Where(filter => !additionalFilters.ContainsKey(filter.Key)))
             {

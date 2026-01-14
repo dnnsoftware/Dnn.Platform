@@ -77,15 +77,15 @@ namespace Dnn.Modules.TelerikRemoval
         }
 
         /// <summary>
-        /// Converts a boolean value into a check mark if <c>True</c>,
-        /// a cross mark if <c>False</c>, or an empty string if null.
+        /// Converts a boolean value into a check mark if <see langword="true"/>,
+        /// a cross mark if <see langword="false"/>, or an empty string if null.
         /// If the input value is not of <c>Boolean</c> type or <c>Null</c>,
         /// the unmodified input value is returned.
         /// </summary>
         /// <param name="value">The input value to convert.</param>
         /// <returns>
-        /// The check mark button icon ✅ (&amp;#9989;) if <c>value</c> is <c>True</c>,
-        /// the cross mark icon ❌ (&amp;#10060;) if <c>value</c> is <c>False</c>,
+        /// The check mark button icon ✅ (&amp;#9989;) if <c>value</c> is <see langword="true"/>,
+        /// the cross mark icon ❌ (&amp;#10060;) if <c>value</c> is <see langword="false"/>,
         /// an empty <c>String</c> if <c>value</c> is <c>Null</c>,
         /// or the unmodified input value otherwise.
         /// </returns>

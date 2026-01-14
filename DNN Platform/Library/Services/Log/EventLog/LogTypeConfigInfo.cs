@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.Log.EventLog
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
 
-    /// <inheritdoc />
+    /// <inheritdoc cref="ILogTypeConfigInfo" />
     [Serializable]
     public partial class LogTypeConfigInfo : LogTypeInfo, ILogTypeConfigInfo
     {
@@ -17,10 +17,19 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public enum NotificationThresholdTimeTypes
         {
+            /// <summary>No notification threshold.</summary>
             None = 0,
+
+            /// <summary>Seconds.</summary>
             Seconds = 1,
+
+            /// <summary>Minutes.</summary>
             Minutes = 2,
+
+            /// <summary>Hours.</summary>
             Hours = 3,
+
+            /// <summary>Days.</summary>
             Days = 4,
         }
 

@@ -4,28 +4,66 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
+    using System;
     using System.Web.UI;
 
-    using ClientDependency.Core.Controls;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Web.Client.Cdf;
+    using DotNetNuke.Web.Client.ResourceManager;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Registers a JavaScript resource.</summary>
-    public class DnnJsInclude : JsInclude
+    public class DnnJsInclude : ClientResourceInclude
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnJsInclude"/> class.
-        /// Sets up default settings for the control.
-        /// </summary>
+        private readonly IClientResourceController clientResourceController;
+
+        /// <summary>Initializes a new instance of the <see cref="DnnJsInclude"/> class with default settings.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.1. Use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public DnnJsInclude()
+            : this(null)
         {
-            this.ForceProvider = ClientResourceManager.DefaultJsProvider;
         }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnJsInclude"/> class with default settings.</summary>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public DnnJsInclude(IClientResourceController clientResourceController)
+        {
+            this.clientResourceController = clientResourceController ?? DependencyInjection.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.ForceProvider = ClientResourceProviders.DefaultJsProvider;
+            this.DependencyType = ClientDependencyType.Javascript;
+        }
+
+        /// <inheritdoc cref="IScriptResource.Async" />
+        public bool Async { get; set; }
+
+        /// <inheritdoc cref="IScriptResource.Defer" />
+        public bool Defer { get; set; }
+
+        /// <inheritdoc cref="IScriptResource.NoModule" />
+        public bool NoModule { get; set; }
 
         /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
-            base.OnLoad(e);
+            var script = this.clientResourceController.CreateScript(this.FilePath, this.PathNameAlias);
+            if (this.Async)
+            {
+                script = script.SetAsync();
+            }
 
-            this.PathNameAlias = this.PathNameAlias.ToLowerInvariant();
+            if (this.Defer)
+            {
+                script = script.SetDefer();
+            }
+
+            if (this.NoModule)
+            {
+                script = script.SetNoModule();
+            }
+
+            this.RegisterResource(script);
+            base.OnLoad(e);
         }
 
         /// <inheritdoc/>
@@ -33,7 +71,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         {
             if (this.AddTag || this.Context.IsDebuggingEnabled)
             {
-                writer.Write("<!--CDF({0}|{1}|{2}|{3})-->", this.DependencyType, this.FilePath, this.ForceProvider, this.Priority);
+                writer.Write("<!--CDF(Javascript|{0}|{1}|{2})-->", this.FilePath, this.ForceProvider, this.Priority);
             }
         }
     }

@@ -183,7 +183,7 @@
     <value>Email Address</value>
   </data>
   <data name="plEmailAddress.Help" xml:space="preserve">
-    <value>Please enter the email address of the person you want to receive the log entries. Multipe email addresses should be separated by comma or semicolon.</value>
+    <value>Please enter the email address of the person you want to receive the log entries. Multiple email addresses should be separated by comma or semicolon.</value>
   </data>
   <data name="SendMessage.Text" xml:space="preserve">
     <value>Message (optional)</value>
@@ -372,7 +372,7 @@
     <value> Occurence</value>
   </data>
   <data name="Occurences.Text" xml:space="preserve">
-    <value> Occurences</value>
+    <value> Occurrences</value>
   </data>
   <data name="In.Text" xml:space="preserve">
     <value>in</value>

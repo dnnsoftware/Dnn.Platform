@@ -7,9 +7,6 @@ namespace DotNetNuke.Common.Utilities
     using System.Collections.Generic;
     using System.Reflection;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Common.Utilities
-    /// Class:      ObjectMappingInfo
     /// <summary>
     /// The ObjectMappingInfo class is a helper class that holds the mapping information
     /// for a particular type.  This information is in two parts:

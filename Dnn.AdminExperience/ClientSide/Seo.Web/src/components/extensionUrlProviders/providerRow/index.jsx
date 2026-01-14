@@ -28,7 +28,7 @@ class ProviderRow extends Component {
         this.props.onUpdateStatus(props.providerId, event);
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         let opened = (this.props.openId !== "" && this.props.name === this.props.openId);
@@ -44,7 +44,7 @@ class ProviderRow extends Component {
                                 <Checkbox value={props.enabled} onChange={this.updateStatus.bind(this) } />
                             </div>
                             <div className="provider-item item-row-editButton">
-                                <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this)} />
+                                <div className={opened ? "edit-icon-active" : "edit-icon"}onClick={this.toggle.bind(this)}><SvgIcons.EditIcon /></div>
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,8 @@ ProviderRow.propTypes = {
     id: PropTypes.string,
     openId: PropTypes.string,
     visible: PropTypes.bool,
-    onUpdateStatus: PropTypes.func
+    onUpdateStatus: PropTypes.func,
+    children: PropTypes.node,
 };
 
 ProviderRow.defaultProps = {

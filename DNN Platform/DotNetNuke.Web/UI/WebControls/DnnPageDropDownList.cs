@@ -19,27 +19,29 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.UI.WebControls.Extensions;
 
+    /// <summary>A page dropdown control.</summary>
     [ToolboxData("<{0}:DnnPageDropDownList runat='server'></{0}:DnnPageDropDownList>")]
     public class DnnPageDropDownList : DnnDropDownList
     {
         /// <summary>
-        /// Gets or sets a value indicating whether whether disabled pages are not selectable
+        /// Gets or sets a value indicating whether disabled pages are not selectable
         /// Please note: IncludeDisabledTabs needs also be set to true to include disabled pages.
         /// </summary>
         public bool DisabledNotSelectable { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether include active page.</summary>
+        /// <summary>Gets or sets a value indicating whether include active page.</summary>
         public bool IncludeActiveTab { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether include pages which are disabled.</summary>
+        /// <summary>Gets or sets a value indicating whether include pages which are disabled.</summary>
         public bool IncludeDisabledTabs { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether include pages which tab type is not normal.</summary>
+        /// <summary>Gets or sets a value indicating whether include pages which tab type is not normal.</summary>
         public bool IncludeAllTabTypes { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether include Host Pages.</summary>
+        /// <summary>Gets or sets a value indicating whether include Host Pages.</summary>
         public bool IncludeHostPages { get; set; }
 
+        /// <summary>Gets or sets the portal ID.</summary>
         public int PortalId
         {
             get
@@ -133,7 +135,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var parentTab = TabController.Instance.GetTab(selectedPage.ParentId, this.PortalId, false);
                 while (parentTab != null)
                 {
-                    tabLevel = string.Format("{0},{1}", parentTab.TabID, tabLevel);
+                    tabLevel = string.Format(CultureInfo.InvariantCulture, "{0},{1}", parentTab.TabID, tabLevel);
                     parentTab = TabController.Instance.GetTab(parentTab.ParentId, this.PortalId, false);
                 }
 

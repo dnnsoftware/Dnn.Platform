@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
 
@@ -18,27 +19,21 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("list-users", Constants.UsersCategory, "Prompt_ListUsers_Description")]
-
     public class ListUsers : ConsoleCommandBase
     {
         [FlagParameter("email", "Prompt_ListUsers_FlagEmail", "String")]
-
         private const string FlagEmail = "email";
 
         [FlagParameter("username", "Prompt_ListUsers_FlagUsername", "String")]
-
         private const string FlagUsername = "username";
 
         [FlagParameter("role", "Prompt_ListUsers_FlagRole", "String")]
-
         private const string FlagRole = "role";
 
         [FlagParameter("page", "Prompt_ListUsers_FlagPage", "Integer", "0")]
-
         private const string FlagPage = "page";
 
         [FlagParameter("max", "Prompt_ListUsers_FlagMax", "Integer", "10")]
-
         private const string FlagMax = "max";
 
         /// <inheritdoc/>
@@ -99,7 +94,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
                     if (numFilters != 1)
                     {
-                        this.AddMessage(string.Format(this.LocalizeString("Prompt_OnlyOneFlagRequired"), FlagEmail, FlagUsername, FlagRole));
+                        this.AddMessage(string.Format(CultureInfo.InvariantCulture, this.LocalizeString("Prompt_OnlyOneFlagRequired"), FlagEmail, FlagUsername, FlagRole));
                     }
                 }
             }

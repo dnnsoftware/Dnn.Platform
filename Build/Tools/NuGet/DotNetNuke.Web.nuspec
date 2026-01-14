@@ -16,14 +16,14 @@
     <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
     <dependencies>
       <dependency id="DotNetNuke.Core" version="$version$" />
-      <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.9" />
+      <dependency id="Microsoft.AspNet.WebApi.Core" version="5.3.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\Website\bin\DotNetNuke.Web.dll" target="lib\net45\" />
-    <file src="..\..\..\Website\bin\DotNetNuke.Web.pdb" target="lib\net45\" />
-    <file src="..\..\..\Website\bin\DotNetNuke.WebUtility.dll" target="lib\net45\" />
-    <file src="..\..\..\Website\bin\DotNetNuke.WebUtility.pdb" target="lib\net45\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Web.dll" target="lib\net48\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Web.pdb" target="lib\net48\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.WebUtility.dll" target="lib\net48\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.WebUtility.pdb" target="lib\net48\" />
     <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

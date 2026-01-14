@@ -10,9 +10,6 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : PortalPermissionInfo
     /// <summary>PortalPermissionInfo provides the Entity Layer for Portal Permissions.</summary>
     [Serializable]
     [XmlRoot("permission")]

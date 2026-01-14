@@ -24,8 +24,8 @@ namespace DotNetNuke.Entities.Profile
         }
 
         /// <summary>Initializes a new instance of the <see cref="ProfileVisibility"/> class.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="extendedVisibility"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="extendedVisibility">The extended visibility string, a semicolon-delimited list of comma-delimited lists of role IDs and relationship IDs.</param>
         public ProfileVisibility(int portalId, string extendedVisibility)
             : this()
         {
@@ -40,7 +40,7 @@ namespace DotNetNuke.Entities.Profile
                     var roles = lists[0].Substring(2).TrimEnd(',').Split(',');
                     foreach (var role in roles)
                     {
-                        int roleId = int.Parse(role);
+                        int roleId = int.Parse(role, CultureInfo.InvariantCulture);
                         RoleInfo userRole = RoleController.Instance.GetRole(portalId, r => r.RoleID == roleId);
                         this.RoleVisibilities.Add(userRole);
                     }
@@ -51,7 +51,7 @@ namespace DotNetNuke.Entities.Profile
                     var relationships = lists[1].Substring(2).TrimEnd(',').Split(',');
                     foreach (var relationship in relationships)
                     {
-                        Relationship userRelationship = RelationshipController.Instance.GetRelationship(int.Parse(relationship));
+                        Relationship userRelationship = RelationshipController.Instance.GetRelationship(int.Parse(relationship, CultureInfo.InvariantCulture));
                         this.RelationshipVisibilities.Add(userRelationship);
                     }
                 }

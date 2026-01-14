@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Exceptions
 {
     using System;
     using System.Diagnostics;
+    using System.Globalization;
     using System.Reflection;
     using System.Threading;
     using System.Web;
@@ -61,16 +62,16 @@ namespace DotNetNuke.Services.Exceptions
             }
 
             var st = new StackTrace(e, true);
-            StackFrame sf = st.GetFrame(0);
+            var sf = st.GetFrame(0);
             if (sf != null)
             {
                 try
                 {
                     // Get the corresponding method for that stack frame.
-                    MemberInfo mi = sf.GetMethod();
+                    var mi = sf.GetMethod();
 
                     // Get the namespace where that method is defined.
-                    string res = mi.DeclaringType.Namespace + ".";
+                    var res = mi.DeclaringType.Namespace + ".";
 
                     // Append the type name.
                     res += mi.DeclaringType.Name + ".";
@@ -134,7 +135,7 @@ namespace DotNetNuke.Services.Exceptions
         /// <summary>Processes the module load exception.</summary>
         /// <param name="objPortalModuleBase">The control.</param>
         /// <param name="exc">The exception.</param>
-        /// <param name="displayErrorMessage">if set to <c>true</c> display error message.</param>
+        /// <param name="displayErrorMessage">if set to <see langword="true"/> display error message.</param>
         public static void ProcessModuleLoadException(PortalModuleBase objPortalModuleBase, Exception exc, bool displayErrorMessage)
         {
             ProcessModuleLoadException((Control)objPortalModuleBase, exc, displayErrorMessage);
@@ -144,7 +145,7 @@ namespace DotNetNuke.Services.Exceptions
         /// <param name="friendlyMessage">The friendly message.</param>
         /// <param name="objPortalModuleBase">The control.</param>
         /// <param name="exc">The exception.</param>
-        /// <param name="displayErrorMessage">if set to <c>true</c> display error message.</param>
+        /// <param name="displayErrorMessage">if set to <see langword="true"/> display error message.</param>
         public static void ProcessModuleLoadException(string friendlyMessage, PortalModuleBase objPortalModuleBase, Exception exc, bool displayErrorMessage)
         {
             ProcessModuleLoadException(friendlyMessage, (Control)objPortalModuleBase, exc, displayErrorMessage);
@@ -167,7 +168,7 @@ namespace DotNetNuke.Services.Exceptions
         /// <summary>Processes the module load exception.</summary>
         /// <param name="ctrl">The control.</param>
         /// <param name="exc">The exception.</param>
-        /// <param name="displayErrorMessage">if set to <c>true</c> displays an error message.</param>
+        /// <param name="displayErrorMessage">if set to <see langword="true"/> displays an error message.</param>
         public static void ProcessModuleLoadException(Control ctrl, Exception exc, bool displayErrorMessage)
         {
             // Exit Early if ThreadAbort Exception
@@ -192,7 +193,7 @@ namespace DotNetNuke.Services.Exceptions
                     moduleTitle = ctrlModule.ModuleContext.Configuration.ModuleTitle;
                 }
 
-                friendlyMessage = string.Format(Localization.GetString("ModuleUnavailable"), moduleTitle);
+                friendlyMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("ModuleUnavailable"), moduleTitle);
             }
 
             ProcessModuleLoadException(friendlyMessage, ctrl, exc, displayErrorMessage);
@@ -217,7 +218,7 @@ namespace DotNetNuke.Services.Exceptions
         /// <param name="friendlyMessage">The friendly message.</param>
         /// <param name="ctrl">The control.</param>
         /// <param name="exc">The exception.</param>
-        /// <param name="displayErrorMessage">if set to <c>true</c> display error message.</param>
+        /// <param name="displayErrorMessage">if set to <see langword="true"/> display error message.</param>
         public static void ProcessModuleLoadException(string friendlyMessage, Control ctrl, Exception exc, bool displayErrorMessage)
         {
             // Exit Early if ThreadAbort Exception
@@ -289,7 +290,7 @@ namespace DotNetNuke.Services.Exceptions
                 ProcessPageLoadException(exc2);
             }
 
-            Logger.ErrorFormat("FriendlyMessage=\"{0}\" ctrl=\"{1}\" exc=\"{2}\"", friendlyMessage, ctrl, exc);
+            Logger.ErrorFormat(CultureInfo.InvariantCulture, "FriendlyMessage=\"{0}\" ctrl=\"{1}\" exc=\"{2}\"", friendlyMessage, ctrl, exc);
         }
 
         /// <summary>Processes the page load exception.</summary>
@@ -298,7 +299,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string appURL = Globals.ApplicationURL();
-            if (appURL.IndexOf("?") == Null.NullInteger)
+            if (appURL.IndexOf("?", StringComparison.Ordinal) == Null.NullInteger)
             {
                 appURL += "?def=ErrorMessage";
             }
@@ -336,7 +337,7 @@ namespace DotNetNuke.Services.Exceptions
                 if (!string.IsNullOrEmpty(url))
                 {
                     // redirect
-                    if (url.IndexOf("error=terminate") != -1)
+                    if (url.Contains("error=terminate", StringComparison.OrdinalIgnoreCase))
                     {
                         HttpContext.Current.Response.Clear();
                         HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");

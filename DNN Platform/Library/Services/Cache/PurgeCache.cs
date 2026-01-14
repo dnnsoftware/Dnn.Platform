@@ -4,13 +4,14 @@
 namespace DotNetNuke.Services.Cache
 {
     using System;
+    using System.Globalization;
 
     using DotNetNuke.Services.Scheduling;
 
     public class PurgeCache : SchedulerClient
     {
         /// <summary>Initializes a new instance of the <see cref="PurgeCache"/> class.</summary>
-        /// <param name="objScheduleHistoryItem"></param>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
         public PurgeCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
@@ -30,7 +31,7 @@ namespace DotNetNuke.Services.Cache
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging cache task failed: {0}.", exc.ToString()));
+                this.ScheduleHistoryItem.AddLogNote(string.Format(CultureInfo.InvariantCulture, "Purging cache task failed: {0}.", exc.ToString()));
 
                 // notification that we have errored
                 this.Errored(ref exc); // REQUIRED

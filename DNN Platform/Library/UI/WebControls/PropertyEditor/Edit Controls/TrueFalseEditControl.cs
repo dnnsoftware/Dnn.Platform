@@ -4,19 +4,14 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      TrueFalseEditControl
-    /// <summary>
-    /// The TrueFalseEditControl control provides a standard UI component for editing
-    /// true/false (boolean) properties.
-    /// </summary>
+    /// <summary>The TrueFalseEditControl control provides a standard UI component for editing true/false (boolean) properties.</summary>
     [ToolboxData("<{0}:TrueFalseEditControl runat=server></{0}:TrueFalseEditControl>")]
     public class TrueFalseEditControl : EditControl
     {
@@ -40,8 +35,8 @@ namespace DotNetNuke.UI.WebControls
                 bool boolValue = Null.NullBoolean;
                 try
                 {
-                    // Try and cast the value to an Boolean
-                    boolValue = Convert.ToBoolean(this.Value);
+                    // Try and cast the value to a Boolean
+                    boolValue = Convert.ToBoolean(this.Value, CultureInfo.InvariantCulture);
                 }
                 catch (Exception exc)
                 {
@@ -62,7 +57,7 @@ namespace DotNetNuke.UI.WebControls
                 try
                 {
                     // Try and cast the value to an Boolean
-                    boolValue = Convert.ToBoolean(this.OldValue);
+                    boolValue = Convert.ToBoolean(this.OldValue, CultureInfo.InvariantCulture);
                 }
                 catch (Exception exc)
                 {
@@ -89,10 +84,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event.
-        /// </summary>
+        /// <summary>OnDataChanged runs when the PostbackData has changed.  It raises the <see cref="EditControl.ValueChanged"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnDataChanged(EventArgs e)
         {
             var args = new PropertyEditorEventArgs(this.Name);

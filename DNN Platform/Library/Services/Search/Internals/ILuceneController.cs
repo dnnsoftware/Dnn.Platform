@@ -15,9 +15,11 @@ namespace DotNetNuke.Services.Search.Internals
         LuceneResults Search(LuceneSearchContext luceneSearchContext);
 
         /// <summary>Adds Lucene Document in Lucene Index.</summary>
+        /// <param name="doc">The document to add.</param>
         void Add(Document doc);
 
         /// <summary>Delete a Search Document from the Search Index.</summary>
+        /// <param name="query">A query to identify the document to delete.</param>
         void Delete(Query query);
 
         /// <summary>Commits the added search documents into the search database.</summary>
@@ -26,7 +28,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <summary>Optimize the search index files by compacting and removing previously deleted search documents.</summary>
         /// <remarks>
         /// This is a costly operation which consumes substantial CPU and I/O resources, therefore use it
-        /// judiciously. If your site has a a single server that performs both indexing and searching, then
+        /// judiciously. If your site has a single server that performs both indexing and searching, then
         /// you should consider running the optimize operation after hours or over the weekend so that it
         /// does not interfere with ongoing search activities.
         /// <para>This means you should expect the size of your index to roughly triple (temporarily)

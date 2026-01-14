@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
 
     using DotNetNuke.Entities.Modules.Actions;
@@ -22,14 +23,9 @@ namespace DotNetNuke.UI.Containers
     {
         /// <summary>Defines if the action supports icons.</summary>
         [Obsolete("Deprecated in DotNetNuke 9.8.1. Use SupportsIcons property. Scheduled for removal in v11.0.0.")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "StyleCop.CSharp.NamingRules",
-            "SA1308:Variable names should not be prefixed",
-            Justification = "Keeping the name to prevent a breaking change, will be removed in v11.")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "StyleCop.CSharp.MaintainabilityRules",
-            "SA1401:Fields should be private",
-            Justification = "In v11, we will make this private and rename.")]
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1308:Variable names should not be prefixed", Justification = "Keeping the name to prevent a breaking change, will be removed in v11.")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "In v11, we will make this private and rename.")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected bool m_supportsIcons = true;
 
         private ActionManager actionManager;
@@ -39,22 +35,11 @@ namespace DotNetNuke.UI.Containers
         public event ActionEventHandler Action;
 
         /// <summary>Gets a value indicating whether the page is in edit mode.</summary>
-        public bool EditMode
-        {
-            get
-            {
-                return Personalization.GetUserMode() != PortalSettings.Mode.View;
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public bool EditMode => Personalization.GetUserMode() != PortalSettings.Mode.View;
 
         /// <summary>Gets a value indicating whether the action supports icons.</summary>
-        public bool SupportsIcons
-        {
-            get
-            {
-                return this.m_supportsIcons;
-            }
-        }
+        public bool SupportsIcons => this.m_supportsIcons;
 
         /// <summary>Gets the ActionManager instance for this Action control.</summary>
         /// <returns>An ActionManager object.</returns>

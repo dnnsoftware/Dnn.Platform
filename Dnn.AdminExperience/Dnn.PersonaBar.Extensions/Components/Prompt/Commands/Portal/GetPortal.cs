@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
 {
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -14,11 +15,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("get-portal", Constants.PortalCategory, "Prompt_GetPortal_Description")]
-
     public class GetPortal : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_GetPortal_FlagId", "Integer")]
-
         private const string FlagId = "id";
 
         /// <inheritdoc/>
@@ -58,11 +57,23 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             var portal = pc.GetPortal((int)this.PortalIdFlagValue);
             if (portal == null)
             {
-                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_GetPortal_NotFound"), this.PortalIdFlagValue));
+                return new ConsoleErrorResultModel(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        this.LocalizeString("Prompt_GetPortal_NotFound"),
+                        this.PortalIdFlagValue));
             }
 
             lst.Add(new PortalModel(portal));
-            return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_GetPortal_Found"), this.PortalIdFlagValue) };
+            return new ConsoleResultModel(string.Empty)
+            {
+                Data = lst,
+                Records = lst.Count,
+                Output = string.Format(
+                    CultureInfo.CurrentCulture,
+                    this.LocalizeString("Prompt_GetPortal_Found"),
+                    this.PortalIdFlagValue),
+            };
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Themes.MenuControllers
         {
             return new Dictionary<string, object>
             {
-                { "previewUrl", Globals.DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL() },
+                { "previewUrl", Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>().NavigateURL() },
             };
         }
     }

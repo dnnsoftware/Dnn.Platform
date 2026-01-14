@@ -1,0 +1,51 @@
+:host {
+  display: block;
+  --columns: 1;
+}
+
+:host(.medium),
+:host(.large) {
+  --columns: 3;
+}
+
+p {
+  margin-top: 0;
+}
+
+h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #666;
+}
+
+.sections {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(var(--columns), 1fr);
+  .section {
+    display: flex;
+    flex-direction: column;
+    dnn-color-input{
+      height: 6rem;
+    }
+  }
+}
+
+.permissions-section{
+  label{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+dnn-color-input, dnn-input{
+  --background-color: var(--dnn-color-surface-light, #eee);
+}

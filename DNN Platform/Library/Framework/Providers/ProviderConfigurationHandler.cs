@@ -8,6 +8,7 @@ namespace DotNetNuke.Framework.Providers
 
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>Configuration section for a provider.</summary>
     [DnnDeprecated(7, 0, 0, "It is no longer used to load provider configurations, as there are medium trust issues", RemovalVersion = 10)]
     internal partial class ProviderConfigurationHandler : IConfigurationSectionHandler
     {

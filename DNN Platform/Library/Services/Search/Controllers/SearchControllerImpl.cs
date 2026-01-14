@@ -10,6 +10,7 @@ namespace DotNetNuke.Services.Search.Controllers
     using System.Text;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -22,12 +23,29 @@ namespace DotNetNuke.Services.Search.Controllers
     using Lucene.Net.QueryParsers;
     using Lucene.Net.Search;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>  The Impl Controller class for Search.</summary>
     internal class SearchControllerImpl : ISearchController
     {
         private const string SeacrchContollersCacheKey = "SearchControllers";
 
+        private readonly IServiceProvider serviceProvider;
         private readonly int moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
+
+        /// <summary>Initializes a new instance of the <see cref="SearchControllerImpl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public SearchControllerImpl()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SearchControllerImpl"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        public SearchControllerImpl(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider ?? Globals.DependencyProvider;
+        }
 
         /// <inheritdoc/>
         public SearchResults SiteSearch(SearchQuery searchQuery)
@@ -134,12 +152,11 @@ namespace DotNetNuke.Services.Search.Controllers
 
                         break;
                     case Constants.ModifiedTimeTag:
-                        DateTime modifiedTimeUtc;
-                        DateTime.TryParseExact(field.StringValue, Constants.DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out modifiedTimeUtc);
+                        DateTime.TryParseExact(field.StringValue, Constants.DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var modifiedTimeUtc);
                         result.ModifiedTimeUtc = modifiedTimeUtc;
                         break;
                     default:
-                        if (field.Name.StartsWith(Constants.NumericKeyPrefixTag))
+                        if (field.Name.StartsWith(Constants.NumericKeyPrefixTag, StringComparison.Ordinal))
                         {
                             var key = field.Name.Substring(Constants.NumericKeyPrefixTag.Length);
                             if (int.TryParse(field.StringValue, out intField))
@@ -150,7 +167,7 @@ namespace DotNetNuke.Services.Search.Controllers
                                 }
                             }
                         }
-                        else if (field.Name.StartsWith(Constants.KeywordsPrefixTag))
+                        else if (field.Name.StartsWith(Constants.KeywordsPrefixTag, StringComparison.Ordinal))
                         {
                             var key = field.Name.Substring(Constants.KeywordsPrefixTag.Length);
                             if (!result.Keywords.ContainsKey(key))
@@ -223,6 +240,45 @@ namespace DotNetNuke.Services.Search.Controllers
             return result;
         }
 
+        private static Sort GetSort(SearchQuery query)
+        {
+            var sort = Sort.RELEVANCE; // default sorting - relevance is always descending.
+            if (query.SortField != SortFields.Relevance)
+            {
+                var reverse = query.SortDirection != SortDirections.Ascending;
+
+                switch (query.SortField)
+                {
+                    case SortFields.LastModified:
+                        sort = new Sort(new SortField(Constants.ModifiedTimeTag, SortField.LONG, reverse));
+                        break;
+                    case SortFields.Title:
+                        sort = new Sort(new SortField(Constants.TitleTag, SortField.STRING, reverse));
+                        break;
+                    case SortFields.Tag:
+                        sort = new Sort(new SortField(Constants.Tag, SortField.STRING, reverse));
+                        break;
+                    case SortFields.NumericKey:
+                        sort = new Sort(new SortField(Constants.NumericKeyPrefixTag + query.CustomSortField, SortField.INT, reverse));
+                        break;
+                    case SortFields.Keyword:
+                        sort = new Sort(new SortField(Constants.KeywordsPrefixTag + query.CustomSortField, SortField.STRING, reverse));
+                        break;
+                    case SortFields.CustomStringField:
+                        sort = new Sort(new SortField(query.CustomSortField, SortField.STRING, reverse));
+                        break;
+                    case SortFields.CustomNumericField:
+                        sort = new Sort(new SortField(query.CustomSortField, SortField.INT, reverse));
+                        break;
+                    default:
+                        sort = Sort.RELEVANCE;
+                        break;
+                }
+            }
+
+            return sort;
+        }
+
         private Tuple<int, IList<SearchResult>> GetResults(SearchQuery searchQuery)
         {
             Requires.NotNull("Query", searchQuery);
@@ -234,7 +290,7 @@ namespace DotNetNuke.Services.Search.Controllers
             }
 
             if (searchQuery.SortField == SortFields.CustomStringField || searchQuery.SortField == SortFields.CustomNumericField
-                || searchQuery.SortField == SortFields.NumericKey || searchQuery.SortField == SortFields.Keyword)
+                                                                      || searchQuery.SortField == SortFields.NumericKey || searchQuery.SortField == SortFields.Keyword)
             {
                 Requires.NotNullOrEmpty("CustomSortField", searchQuery.CustomSortField);
             }
@@ -285,7 +341,18 @@ namespace DotNetNuke.Services.Search.Controllers
 
             if (searchQuery.BeginModifiedTimeUtc > DateTime.MinValue && searchQuery.EndModifiedTimeUtc >= searchQuery.BeginModifiedTimeUtc)
             {
-                query.Add(NumericRangeQuery.NewLongRange(Constants.ModifiedTimeTag, long.Parse(searchQuery.BeginModifiedTimeUtc.ToString(Constants.DateTimeFormat)), long.Parse(searchQuery.EndModifiedTimeUtc.ToString(Constants.DateTimeFormat)), true, true), Occur.MUST);
+                query.Add(
+                    NumericRangeQuery.NewLongRange(
+                        Constants.ModifiedTimeTag,
+                        long.Parse(
+                            searchQuery.BeginModifiedTimeUtc.ToString(Constants.DateTimeFormat, CultureInfo.InvariantCulture),
+                            CultureInfo.CurrentCulture),
+                        long.Parse(
+                            searchQuery.EndModifiedTimeUtc.ToString(Constants.DateTimeFormat, CultureInfo.InvariantCulture),
+                            CultureInfo.CurrentCulture),
+                        true,
+                        true),
+                    Occur.MUST);
             }
 
             if (searchQuery.RoleId > 0)
@@ -306,9 +373,8 @@ namespace DotNetNuke.Services.Search.Controllers
 
             foreach (var kvp in searchQuery.CustomKeywords)
             {
-                query.Add(
-                    new TermQuery(new Term(
-                    SearchHelper.Instance.StripTagsNoAttributes(Constants.KeywordsPrefixTag + kvp.Key, true), kvp.Value)), Occur.MUST);
+                var field = SearchHelper.Instance.StripTagsNoAttributes(Constants.KeywordsPrefixTag + kvp.Key, true);
+                query.Add(new TermQuery(new Term(field, kvp.Value)), Occur.MUST);
             }
 
             foreach (var kvp in searchQuery.NumericKeys)
@@ -329,7 +395,7 @@ namespace DotNetNuke.Services.Search.Controllers
             var luceneQuery = new LuceneQuery
             {
                 Query = query,
-                Sort = this.GetSort(searchQuery),
+                Sort = GetSort(searchQuery),
                 PageIndex = searchQuery.PageIndex,
                 PageSize = searchQuery.PageSize,
                 TitleSnippetLength = searchQuery.TitleSnippetLength,
@@ -337,45 +403,6 @@ namespace DotNetNuke.Services.Search.Controllers
             };
 
             return this.GetSecurityTrimmedResults(searchQuery, luceneQuery);
-        }
-
-        private Sort GetSort(SearchQuery query)
-        {
-            var sort = Sort.RELEVANCE; // default sorting - relevance is always descending.
-            if (query.SortField != SortFields.Relevance)
-            {
-                var reverse = query.SortDirection != SortDirections.Ascending;
-
-                switch (query.SortField)
-                {
-                    case SortFields.LastModified:
-                        sort = new Sort(new SortField(Constants.ModifiedTimeTag, SortField.LONG, reverse));
-                        break;
-                    case SortFields.Title:
-                        sort = new Sort(new SortField(Constants.TitleTag, SortField.STRING, reverse));
-                        break;
-                    case SortFields.Tag:
-                        sort = new Sort(new SortField(Constants.Tag, SortField.STRING, reverse));
-                        break;
-                    case SortFields.NumericKey:
-                        sort = new Sort(new SortField(Constants.NumericKeyPrefixTag + query.CustomSortField, SortField.INT, reverse));
-                        break;
-                    case SortFields.Keyword:
-                        sort = new Sort(new SortField(Constants.KeywordsPrefixTag + query.CustomSortField, SortField.STRING, reverse));
-                        break;
-                    case SortFields.CustomStringField:
-                        sort = new Sort(new SortField(query.CustomSortField, SortField.STRING, reverse));
-                        break;
-                    case SortFields.CustomNumericField:
-                        sort = new Sort(new SortField(query.CustomSortField, SortField.INT, reverse));
-                        break;
-                    default:
-                        sort = Sort.RELEVANCE;
-                        break;
-                }
-            }
-
-            return sort;
         }
 
         private void ApplySearchTypeIdFilter(BooleanQuery query, SearchQuery searchQuery)
@@ -462,12 +489,6 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private Dictionary<int, BaseResultController> GetSearchResultControllers()
         {
-            var cachArg = new CacheItemArgs(SeacrchContollersCacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<Dictionary<int, BaseResultController>>(cachArg, this.GetSearchResultsControllersCallBack);
-        }
-
-        private Dictionary<int, BaseResultController> GetSearchResultsControllersCallBack(CacheItemArgs cacheItem)
-        {
             var searchTypes = SearchHelper.Instance.GetSearchTypes();
             var resultControllers = new Dictionary<int, BaseResultController>();
 
@@ -476,7 +497,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 try
                 {
                     var searchControllerType = Reflection.CreateType(searchType.SearchResultClass);
-                    var searchController = Reflection.CreateObject(searchControllerType);
+                    var searchController = Reflection.CreateObject(this.serviceProvider, searchControllerType);
 
                     resultControllers.Add(searchType.SearchTypeId, (BaseResultController)searchController);
                 }
@@ -526,7 +547,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private bool HasPermissionToViewDoc(Document document, SearchQuery searchQuery)
         {
-            // others LuceneResult fields are not impotrant at this moment
+            // others LuceneResult fields are not important at this moment
             var result = GetPartialSearchResult(document, searchQuery);
             var resultController = this.GetSearchResultControllers().SingleOrDefault(sc => sc.Key == result.SearchTypeId).Value;
             return resultController != null && resultController.HasViewPermission(result);

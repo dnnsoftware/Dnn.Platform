@@ -1,0 +1,49 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+/* Fix Cacheability Settings */
+/************************************************************/
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+SET SettingValue='NoCache'
+WHERE SettingName IN ('AuthenticatedCacheability', 'UnauthenticatedCacheability')
+AND SettingValue='0'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+SET SettingValue='Private'
+WHERE SettingName IN ('AuthenticatedCacheability', 'UnauthenticatedCacheability')
+AND SettingValue='1'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+SET SettingValue='Public'
+WHERE SettingName IN ('AuthenticatedCacheability', 'UnauthenticatedCacheability')
+AND SettingValue='2'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+SET SettingValue='ServerAndNoCache'
+WHERE SettingName IN ('AuthenticatedCacheability', 'UnauthenticatedCacheability')
+AND SettingValue='3'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+SET SettingValue='ServerAndNoCache'
+WHERE SettingName IN ('AuthenticatedCacheability', 'UnauthenticatedCacheability')
+AND SettingValue='4'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+SET SettingValue='ServerAndPrivate'
+WHERE SettingName IN ('AuthenticatedCacheability', 'UnauthenticatedCacheability')
+AND SettingValue='5'
+GO

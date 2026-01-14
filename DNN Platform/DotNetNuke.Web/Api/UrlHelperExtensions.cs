@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.Api
 
     using DotNetNuke.Entities.Portals;
 
+    /// <summary>Extension methods on <see cref="UrlHelper"/> for generating web API links.</summary>
     public static class UrlHelperExtensions
     {
         /// <summary>Generate WebAPI Links compatible with DNN Services Framework.</summary>
@@ -18,7 +19,7 @@ namespace DotNetNuke.Web.Api
         /// <returns>a url.</returns>
         public static string DnnLink(this UrlHelper urlHelper, string moduleFolderName, string routeName, object routeValues)
         {
-            return DnnLink(urlHelper, moduleFolderName, routeName, routeValues, PortalController.Instance.GetCurrentPortalSettings().PortalAlias);
+            return urlHelper.DnnLink(moduleFolderName, routeName, routeValues, PortalController.Instance.GetCurrentPortalSettings().PortalAlias);
         }
 
         /// <summary>Generate WebAPI Links compatible with DNN Services Framework.</summary>
@@ -32,7 +33,7 @@ namespace DotNetNuke.Web.Api
         {
             var parm = new PortalAliasRouteManager();
             var fullName = parm.GetRouteName(moduleFolderName, routeName, PortalController.Instance.GetCurrentPortalSettings().PortalAlias);
-            HttpRouteValueDictionary allRouteValues = parm.GetAllRouteValues(portalAliasInfo, routeValues);
+            var allRouteValues = parm.GetAllRouteValues(portalAliasInfo, routeValues);
 
             return urlHelper.Link(fullName, allRouteValues);
         }

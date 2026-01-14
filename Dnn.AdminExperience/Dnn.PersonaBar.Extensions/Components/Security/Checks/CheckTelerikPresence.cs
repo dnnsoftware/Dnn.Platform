@@ -26,7 +26,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         /// <summary>Initializes a new instance of the <see cref="CheckTelerikPresence"/> class.</summary>
         public CheckTelerikPresence()
-            : this(Globals.DependencyProvider.GetRequiredService<ITelerikUtils>())
+            : this(Globals.GetCurrentServiceProvider().GetRequiredService<ITelerikUtils>())
         {
         }
 

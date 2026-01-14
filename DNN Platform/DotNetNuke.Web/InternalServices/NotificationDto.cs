@@ -4,8 +4,10 @@
 
 namespace DotNetNuke.Web.InternalServices
 {
+    /// <summary>A data transfer object with information about a notification.</summary>
     public class NotificationDTO
     {
+        /// <summary>Gets or sets the ID of the notification.</summary>
         public int NotificationId { get; set; }
     }
 }

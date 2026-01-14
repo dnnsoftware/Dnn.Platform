@@ -4,14 +4,13 @@
 namespace DotNetNuke.Entities.Modules
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Membership;
 
-    /// Project  :  DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Modules
-    /// Class    :  UserUserControlBase
     /// <summary>The UserUserControlBase class defines a custom base class for the User Control.</summary>
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class UserUserControlBase : UserModuleBase
     {
         public delegate void UserCreatedEventHandler(object sender, UserCreatedEventArgs e);
@@ -49,7 +48,8 @@ namespace DotNetNuke.Entities.Modules
         /// <inheritdoc/>
         protected override bool AddUser => !this.Request.IsAuthenticated || base.AddUser;
 
-        /// <summary>Raises the UserCreateCompleted Event.</summary>
+        /// <summary>Raises the <see cref="UserCreateCompleted"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserCreateCompleted(UserCreatedEventArgs e)
         {
             if (this.UserCreateCompleted != null)
@@ -58,7 +58,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>Raises the UserCreated Event.</summary>
+        /// <summary>Raises the <see cref="UserCreated"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserCreated(UserCreatedEventArgs e)
         {
             if (this.UserCreated != null)
@@ -67,7 +68,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>Raises the UserDeleted Event.</summary>
+        /// <summary>Raises the <see cref="UserDeleted"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserDeleted(UserDeletedEventArgs e)
         {
             if (this.UserDeleted != null)
@@ -76,7 +78,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>Raises the UserDeleteError Event.</summary>
+        /// <summary>Raises the <see cref="UserDeleteError"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserDeleteError(UserUpdateErrorArgs e)
         {
             if (this.UserDeleteError != null)
@@ -85,6 +88,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <summary>Raises the <see cref="UserRestored"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserRestored(UserRestoredEventArgs e)
         {
             if (this.UserRestored != null)
@@ -93,6 +98,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <summary>Raises the <see cref="UserRestoreError"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserRestoreError(UserUpdateErrorArgs e)
         {
             if (this.UserRestoreError != null)
@@ -101,6 +108,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <summary>Raises the <see cref="UserRemoved"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserRemoved(UserRemovedEventArgs e)
         {
             if (this.UserRemoved != null)
@@ -109,6 +118,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <summary>Raises the <see cref="UserRemoveError"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserRemoveError(UserUpdateErrorArgs e)
         {
             if (this.UserRemoveError != null)
@@ -117,7 +128,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>Raises the UserUpdated Event.</summary>
+        /// <summary>Raises the <see cref="UserUpdated"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserUpdated(EventArgs e)
         {
             if (this.UserUpdated != null)
@@ -126,7 +138,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>Raises the UserUpdated Event.</summary>
+        /// <summary>Raises the <see cref="UserUpdateCompleted"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserUpdateCompleted(EventArgs e)
         {
             if (this.UserUpdateCompleted != null)
@@ -135,7 +148,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>Raises the UserUpdateError Event.</summary>
+        /// <summary>Raises the <see cref="UserUpdateError"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserUpdateError(UserUpdateErrorArgs e)
         {
             if (this.UserUpdateError != null)
@@ -145,12 +159,13 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>The BaseUserEventArgs class provides a base for User EventArgs classes.</summary>
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public class BaseUserEventArgs
         {
-            /// <summary>Gets or sets the Id of the User.</summary>
+            /// <summary>Gets or sets the ID of the User.</summary>
             public int UserId { get; set; }
 
-            /// <summary>Gets or sets the Id of the User.</summary>
+            /// <summary>Gets or sets the ID of the User.</summary>
             public string UserName { get; set; }
         }
 
@@ -189,7 +204,7 @@ namespace DotNetNuke.Entities.Modules
             /// <summary>Gets or sets the New User.</summary>
             public UserInfo NewUser { get; set; }
 
-            /// <summary>Gets or sets a value indicating whether gets and sets a flag whether to Notify the new User of the Creation.</summary>
+            /// <summary>Gets or sets a value indicating whether to Notify the new User of the Creation.</summary>
             public bool Notify { get; set; }
         }
 

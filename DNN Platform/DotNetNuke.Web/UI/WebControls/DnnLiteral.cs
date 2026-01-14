@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A literal control.</summary>
     public class DnnLiteral : Literal, ILocalizable
     {
         private bool localize = true;

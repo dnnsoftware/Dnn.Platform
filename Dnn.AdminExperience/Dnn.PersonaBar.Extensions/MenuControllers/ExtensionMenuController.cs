@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Extensions.MenuControllers
         /// <summary>Initializes a new instance of the <see cref="ExtensionMenuController"/> class.</summary>
         public ExtensionMenuController()
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         /// <summary>Gets an <see cref="INavigationManager"/> instance to provide navigation services.</summary>

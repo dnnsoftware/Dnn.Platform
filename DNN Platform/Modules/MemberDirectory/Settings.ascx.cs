@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.MemberDirectory
     using DotNetNuke.Web.UI.WebControls.Extensions;
     using WebFormsMvp;
 
+    /// <summary>Display member directory settings.</summary>
     [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     [PresenterBinding(typeof(ModuleSettingsPresenter))]
     public partial class Settings : SettingsView<MemberDirectorySettingsModel>

@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.Razor.Helpers
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A razor helper for URL generation.</summary>
     [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class UrlHelper
     {
@@ -21,17 +22,22 @@ namespace DotNetNuke.Web.Razor.Helpers
         public UrlHelper(ModuleInstanceContext context)
         {
             this.context = context;
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         protected INavigationManager NavigationManager { get; }
 
+        /// <summary>Generates a URL to the main view of this module.</summary>
+        /// <returns>A URL.</returns>
         [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
         public partial string NavigateToControl()
         {
             return this.NavigationManager.NavigateURL(this.context.TabId);
         }
 
+        /// <summary>Generates a URL for a control within this module.</summary>
+        /// <param name="controlKey">The control key.</param>
+        /// <returns>A URL.</returns>
         [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
         public partial string NavigateToControl(string controlKey)
         {

@@ -5,14 +5,12 @@ namespace DotNetNuke.Entities.Users
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml.Serialization;
 
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Users
-    /// Class:      RelationshipType
     /// <summary>The RelationshipType defines the core relationship types (Friend (2-way), Follower (1-way)).</summary>
     [Serializable]
     public class RelationshipType : BaseEntityInfo, IHydratable
@@ -66,10 +64,10 @@ namespace DotNetNuke.Entities.Users
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            this.RelationshipTypeId = Convert.ToInt32(dr["RelationshipTypeID"]);
+            this.RelationshipTypeId = Convert.ToInt32(dr["RelationshipTypeID"], CultureInfo.InvariantCulture);
             this.Name = dr["Name"].ToString();
             this.Description = dr["Description"].ToString();
-            this.Direction = (RelationshipDirection)Convert.ToInt32(dr["Direction"]);
+            this.Direction = (RelationshipDirection)Convert.ToInt32(dr["Direction"], CultureInfo.InvariantCulture);
 
             // add audit column data
             this.FillInternal(dr);

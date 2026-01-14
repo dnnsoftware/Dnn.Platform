@@ -9,10 +9,14 @@ namespace DotNetNuke.Services.Exceptions
     using System.Web;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security;
     using DotNetNuke.Services.FileSystem;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
@@ -25,6 +29,21 @@ namespace DotNetNuke.Services.Exceptions
     /// </remarks>
     public partial class ErrorPage : Page
     {
+        private readonly IApplicationStatusInfo appStatus;
+
+        /// <summary>Initializes a new instance of the <see cref="ErrorPage"/> class.</summary>
+        public ErrorPage()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ErrorPage"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        public ErrorPage(IApplicationStatusInfo appStatus)
+        {
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        }
+
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
@@ -38,7 +57,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             base.OnLoad(e);
 
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             if (portalSettings != null && !string.IsNullOrEmpty(portalSettings.LogoFile))
             {
                 IFileInfo fileInfo = FileManager.Instance.GetFile(portalSettings.PortalId, portalSettings.LogoFile);
@@ -51,10 +70,7 @@ namespace DotNetNuke.Services.Exceptions
             this.headerImage.Visible = !string.IsNullOrEmpty(this.headerImage.ImageUrl);
 
             string localizedMessage;
-            var security = PortalSecurity.Instance;
-            var status = security.InputFilter(
-                this.Request.QueryString["status"],
-                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
+            var status = this.Request.QueryString["status"];
             if (!string.IsNullOrEmpty(status))
             {
                 this.ManageError(status);
@@ -74,7 +90,7 @@ namespace DotNetNuke.Services.Exceptions
                         var lex = new PageLoadException(exc.Message, exc);
                         Exceptions.LogException(lex);
                         localizedMessage = Localization.GetString("Error.Text", Localization.GlobalResourceFile);
-                        this.ErrorPlaceHolder.Controls.Add(new ErrorContainer(portalSettings, localizedMessage, lex).Container);
+                        this.ErrorPlaceHolder.Controls.Add(new ErrorContainer(localizedMessage, lex).Container);
                     }
                 }
                 catch
@@ -95,7 +111,7 @@ namespace DotNetNuke.Services.Exceptions
 
         private void ManageError(string status)
         {
-            string errorMode = Config.GetCustomErrorMode();
+            string errorMode = Config.GetCustomErrorMode(this.appStatus);
 
             string errorMessage = HttpUtility.HtmlEncode(this.Request.QueryString["error"]);
             string errorMessage2 = HttpUtility.HtmlEncode(this.Request.QueryString["error2"]);

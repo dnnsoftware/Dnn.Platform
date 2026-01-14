@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.Mvc.Framework.Controllers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -83,6 +84,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected internal RedirectToRouteResult RedirectToDefaultRoute()
         {
             return new DnnRedirecttoRouteResult(string.Empty, string.Empty, string.Empty, null, false);

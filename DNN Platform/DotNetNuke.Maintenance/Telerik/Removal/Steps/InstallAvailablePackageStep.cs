@@ -16,8 +16,8 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// <inheritdoc />
-    internal class InstallAvailablePackageStep : StepBase, IInstallAvailablePackageStep
+    /// <inheritdoc cref="IInstallAvailablePackageStep" />
+    internal sealed class InstallAvailablePackageStep : StepBase, IInstallAvailablePackageStep
     {
         private readonly IApplicationStatusInfo appStatusInfo;
         private readonly IFileSystemProvider fsProvider;

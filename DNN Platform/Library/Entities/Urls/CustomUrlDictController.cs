@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Urls
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Collections.Internal;
@@ -15,12 +16,12 @@ namespace DotNetNuke.Entities.Urls
     internal static class CustomUrlDictController
     {
         /// <summary>returns a tabId indexed dictionary of Friendly Urls.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="forceRebuild"></param>
-        /// <param name="bypassCache"></param>
-        /// <param name="settings"></param>
-        /// <param name="customAliasForTabs"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="forceRebuild">Whether to force a rebuild of the dictionary.</param>
+        /// <param name="bypassCache">Whether to bypass the cache for the dictionary.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="customAliasForTabs">A collection of custom alises for each tab.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns>A <see cref="SharedDictionary{TKey,TValue}"/> where the key is a tab ID and the value is a <see cref="SharedDictionary{TKey,TValue}"/> with keys of URL culture and values of URLs.</returns>
         internal static SharedDictionary<int, SharedDictionary<string, string>> FetchCustomUrlDictionary(
             int portalId,
@@ -61,7 +62,7 @@ namespace DotNetNuke.Entities.Urls
                         urlPortals,
                         customAliasForTabs,
                         settings,
-                        "Portal Id " + portalId.ToString() + " added to index.");
+                        "Portal Id " + portalId.ToString(CultureInfo.InvariantCulture) + " added to index.");
                 }
             }
             else
@@ -69,10 +70,10 @@ namespace DotNetNuke.Entities.Urls
                 // either values are null (Not in cache) or we want to force the rebuild, or we want to bypass the cache
                 // rebuild the dictionary for this portal
                 urlDict = BuildUrlDictionary(urlDict, portalId, settings, ref customAliasForTabs);
-                urlPortals = new ConcurrentBag<int> { portalId }; // always rebuild the portal list
+                urlPortals = [portalId,]; // always rebuild the portal list
 
                 // if we are to cache this item (byPassCache = false)
-                if (bypassCache == false)
+                if (!bypassCache)
                 {
                     // cache these items
                     string reason = forceRebuild ? "Force Rebuild of Index" : "Index not in cache";
@@ -93,10 +94,10 @@ namespace DotNetNuke.Entities.Urls
         /// Assumes that the dictionary should have any existing items replaced if the portal ID is specified
         /// and the portal tabs already exist in the dictionary.
         /// </summary>
-        /// <param name="existingTabs"></param>
-        /// <param name="portalId"></param>
-        /// <param name="settings"></param>
-        /// <param name="customAliasTabs"></param>
+        /// <param name="existingTabs">The collection of tab URLs.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="customAliasTabs">A collection of custom aliases for the tabs.</param>
         /// <remarks>
         ///    Each dictionary entry in the return value is a complex data type of another dictionary that is indexed by the url culture.  If there is
         ///    only one culture for the Url, it will be that culture.
@@ -126,10 +127,10 @@ namespace DotNetNuke.Entities.Urls
                 // check the custom alias tabs collection and add to the dictionary where necessary
                 foreach (var customAlias in tab.CustomAliases)
                 {
-                    string key = tab.TabID.ToString() + ":" + customAlias.Key;
+                    string key = tab.TabID.ToString(CultureInfo.InvariantCulture) + ":" + customAlias.Key;
                     using (customAliasTabs.GetWriteLock()) // obtain write lock on custom alias Tabs
                     {
-                        if (customAliasTabs.ContainsKey(key) == false)
+                        if (!customAliasTabs.ContainsKey(key))
                         {
                             customAliasTabs.Add(key, customAlias.Value);
                         }

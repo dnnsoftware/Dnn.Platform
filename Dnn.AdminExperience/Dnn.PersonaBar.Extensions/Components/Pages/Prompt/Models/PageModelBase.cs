@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
         }
 
         /// <summary>Initializes a new instance of the <see cref="PageModelBase"/> class.</summary>
-        /// <param name="tab"></param>
+        /// <param name="tab">The tab information.</param>
         public PageModelBase(DotNetNuke.Entities.Tabs.TabInfo tab)
         {
             this.Name = tab.TabName;
@@ -29,15 +29,19 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
 
         // ReSharper disable InconsistentNaming
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public string __TabId => $"get-page {this.TabId}";
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public string __ParentId => $"list-pages --parentid {this.ParentId}";
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public string __IncludeInMenu => $"list-pages --visible{(this.IncludeInMenu ? string.Empty : " false")}";
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public string __IsDeleted => $"list-pages --deleted{(this.IsDeleted ? string.Empty : " false")}";
 
         // ReSharper restore InconsistentNaming

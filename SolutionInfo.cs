@@ -11,8 +11,8 @@ using System.Reflection;
 // Review the values of the assembly attributes
 [assembly: AssemblyCompany(".NET Foundation")]
 [assembly: AssemblyProduct("https://dnncommunity.org")]
-[assembly: AssemblyCopyright("DNN Platform is copyright 2002-2020 by .NET Foundation. All Rights Reserved.")]
+[assembly: AssemblyCopyright("DNN Platform is copyright 2002-2025 by .NET Foundation. All Rights Reserved.")]
 [assembly: AssemblyTrademark("DNN")]
-[assembly: AssemblyVersion("9.13.6")]
-[assembly: AssemblyFileVersion("9.13.6.0")]
-[assembly: AssemblyInformationalVersion("9.13.6 Custom build")]
+[assembly: AssemblyVersion("10.1.0")]
+[assembly: AssemblyFileVersion("10.1.0.0")]
+[assembly: AssemblyInformationalVersion("10.1.0 Custom build")]

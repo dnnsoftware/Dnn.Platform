@@ -20,11 +20,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
     public class DeleteModule : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_DeleteModule_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("pageid", "Prompt_DeleteModule_FlagPageId", "Integer", true)]
-
         private const string FlagPageId = "pageid";
 
         /// <inheritdoc/>

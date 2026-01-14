@@ -49,7 +49,7 @@ namespace DotNetNuke.Tests.Web.Mvc
         {
             if (string.IsNullOrEmpty(expected))
             {
-                Assert.That(string.IsNullOrEmpty(actual), Is.True);
+                Assert.That(actual, Is.Null.Or.Empty);
             }
             else
             {

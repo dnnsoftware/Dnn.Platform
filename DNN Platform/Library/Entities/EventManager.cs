@@ -4,6 +4,7 @@
 namespace DotNetNuke.Entities
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
@@ -36,7 +37,7 @@ namespace DotNetNuke.Entities
         /// <param name="eventLogger">An event logger.</param>
         public EventManager(IEventLogger eventLogger)
         {
-            this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
 
             foreach (var handler in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
             {
@@ -102,6 +103,10 @@ namespace DotNetNuke.Entities
                 this.RoleDeleted += handler.Value.RoleDeleted;
                 this.RoleJoined += handler.Value.RoleJoined;
                 this.RoleLeft += handler.Value.RoleLeft;
+                if (handler.Value is IRoleUpdateEventHandlers updateHandler)
+                {
+                    this.RoleUpdated += updateHandler.RoleUpdated;
+                }
             }
 
             foreach (var handler in EventHandlersContainer<ITabEventHandler>.Instance.EventHandlers)
@@ -183,6 +188,8 @@ namespace DotNetNuke.Entities
 
         private event EventHandler<RoleEventArgs> RoleCreated;
 
+        private event EventHandler<RoleEventArgs> RoleUpdated;
+
         private event EventHandler<RoleEventArgs> RoleDeleted;
 
         private event EventHandler<RoleEventArgs> RoleJoined;
@@ -262,6 +269,7 @@ namespace DotNetNuke.Entities
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public virtual void OnFileDownloaded(FileDownloadedEventArgs args)
         {
             if (this.FileDownloaded != null)
@@ -459,6 +467,12 @@ namespace DotNetNuke.Entities
         }
 
         /// <inheritdoc/>
+        public virtual void OnRoleUpdated(RoleEventArgs args)
+        {
+            this.RoleUpdated?.Invoke(this, args);
+        }
+
+        /// <inheritdoc/>
         public virtual void OnRoleDeleted(RoleEventArgs args)
         {
             if (this.RoleDeleted != null)
@@ -633,7 +647,7 @@ namespace DotNetNuke.Entities
         /// <inheritdoc/>
         protected override Func<IEventManager> GetFactory()
         {
-            return () => new EventManager(Globals.DependencyProvider.GetRequiredService<IEventLogger>());
+            return () => new EventManager(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>());
         }
 
         private void AddLog(IFileInfo fileInfo, int userId, EventLogType logType)

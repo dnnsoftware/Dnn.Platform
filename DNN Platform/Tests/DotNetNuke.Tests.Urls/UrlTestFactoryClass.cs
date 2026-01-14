@@ -300,7 +300,7 @@ namespace DotNetNuke.Tests.Urls
             var settings = new FriendlyUrlSettings(portalId);
 
             // Read Test Settings
-            TestUtil.ReadStream(string.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
+            TestUtil.ReadStream($@"{testType}\{testName}\{settingsFile}", (line, header) =>
             {
                 string[] fields = line.Split(',');
                 string key = fields[0].Trim();
@@ -336,7 +336,7 @@ namespace DotNetNuke.Tests.Urls
             var dictionary = new Dictionary<string, string>();
 
             // Read Test Settings
-            TestUtil.ReadStream(string.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
+            TestUtil.ReadStream($@"{testType}\{testName}\{settingsFile}", (line, header) =>
             {
                 string[] fields = line.Split(',');
                 string key = fields[0].Trim();
@@ -349,9 +349,9 @@ namespace DotNetNuke.Tests.Urls
 
         private static void GetTestsWithAliases(string testType, string testName, ArrayList testData)
         {
-            TestUtil.ReadStream(string.Format("{0}", "Aliases"), (line, header) =>
+            TestUtil.ReadStream("Aliases", (line, header) =>
             {
-                string[] fields = line.Split(',');
+                var fields = line.Split(',');
                 GetTests(fields[1].Trim(), fields[0].Trim(), testType, testName, testData);
             });
         }
@@ -361,11 +361,13 @@ namespace DotNetNuke.Tests.Urls
             try
             {
                 // Read Test File Data
-                TestUtil.ReadStream(string.Format("{0}\\{1}\\{2}", testType, testName, "TestFile"), (line, header) =>
+                TestUtil.ReadStream($@"{testType}\{testName}\TestFile", (line, header) =>
                             {
-                                var fieldList = new Dictionary<string, string>();
-                                fieldList["TestName"] = testName;
-                                fieldList["Alias"] = alias;
+                                var fieldList = new Dictionary<string, string>
+                                {
+                                    ["TestName"] = testName,
+                                    ["Alias"] = alias,
+                                };
                                 string[] headers = header.Split(',');
                                 string[] fields = line.Split(',');
                                 for (int i = 0; i < fields.Length; i++)

@@ -11,6 +11,8 @@ namespace DotNetNuke.Modules.Admin.Tabs
     using System.Xml;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -24,16 +26,39 @@ namespace DotNetNuke.Modules.Admin.Tabs
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>The view for the global import page action.</summary>
     public partial class Import : PortalModuleBase
     {
+        private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly INavigationManager navigationManager;
+        private readonly IEventLogger eventLogger;
 
         private TabInfo tab;
 
         /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
         public Import()
+            : this(null, null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public Import(IBusinessControllerProvider businessControllerProvider, INavigationManager navigationManager)
+            : this(businessControllerProvider, navigationManager, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public Import(IBusinessControllerProvider businessControllerProvider, INavigationManager navigationManager, IEventLogger eventLogger)
+        {
+            this.businessControllerProvider = businessControllerProvider ?? this.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
         }
 
         public TabInfo Tab
@@ -127,11 +152,12 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     return;
                 }
 
-                var selectedFile = Services.FileSystem.FileManager.Instance.GetFile(Convert.ToInt32(this.cboTemplate.SelectedValue));
+                var selectedFile = FileManager.Instance.GetFile(Convert.ToInt32(this.cboTemplate.SelectedValue));
                 var xmlDoc = new XmlDocument { XmlResolver = null };
-                using (var content = Services.FileSystem.FileManager.Instance.GetFileContent(selectedFile))
+                using (var content = FileManager.Instance.GetFileContent(selectedFile))
+                using (var xmlReader = XmlReader.Create(content, new XmlReaderSettings { XmlResolver = null, }))
                 {
-                    xmlDoc.Load(content);
+                    xmlDoc.Load(xmlReader);
                 }
 
                 var tabNodes = new List<XmlNode>();
@@ -154,7 +180,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     string invalidType;
                     if (!TabController.IsValidTabName(this.txtTabName.Text, out invalidType))
                     {
-                        var warningMessage = string.Format(Localization.GetString(invalidType, this.LocalResourceFile), this.txtTabName.Text);
+                        var warningMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString(invalidType, this.LocalResourceFile), this.txtTabName.Text);
                         UI.Skins.Skin.AddModuleMessage(this, warningMessage, ModuleMessage.ModuleMessageType.RedError);
                         return;
                     }
@@ -201,9 +227,9 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         objTab.TabID = TabController.Instance.AddTab(objTab);
                     }
 
-                    EventLogController.Instance.AddLog(objTab, this.PortalSettings, this.UserId, string.Empty, EventLogController.EventLogType.TAB_CREATED);
+                    this.eventLogger.AddLog(objTab, this.PortalSettings, this.UserId, string.Empty, EventLogType.TAB_CREATED);
 
-                    objTab = TabController.DeserializeTab(tabNodes[0], objTab, this.PortalId, PortalTemplateModuleAction.Replace);
+                    objTab = TabController.DeserializeTab(this.businessControllerProvider, tabNodes[0], objTab, this.PortalId, PortalTemplateModuleAction.Replace);
 
                     var exceptions = string.Empty;
 
@@ -212,7 +238,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     {
                         try
                         {
-                            TabController.DeserializeTab(tabNodes[tab], null, this.PortalId, PortalTemplateModuleAction.Replace);
+                            TabController.DeserializeTab(this.businessControllerProvider, tabNodes[tab], null, this.PortalId, PortalTemplateModuleAction.Replace);
                         }
                         catch (Exception ex)
                         {
@@ -230,7 +256,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 else
                 {
                     // Replace Existing Tab
-                    objTab = TabController.DeserializeTab(tabNodes[0], this.Tab, this.PortalId, PortalTemplateModuleAction.Replace);
+                    objTab = TabController.DeserializeTab(this.businessControllerProvider, tabNodes[0], this.Tab, this.PortalId, PortalTemplateModuleAction.Replace);
                 }
 
                 switch (this.optRedirect.SelectedValue)
@@ -260,22 +286,24 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 if (this.cboTemplate.SelectedIndex > 0 && this.cboFolders.SelectedItem != null)
                 {
-                    var selectedFile = Services.FileSystem.FileManager.Instance.GetFile(Convert.ToInt32(this.cboTemplate.SelectedValue));
+                    var selectedFile = FileManager.Instance.GetFile(Convert.ToInt32(this.cboTemplate.SelectedValue));
                     var xmldoc = new XmlDocument { XmlResolver = null };
-                    using (var fileContent = Services.FileSystem.FileManager.Instance.GetFileContent(selectedFile))
+                    using (var fileContent = FileManager.Instance.GetFileContent(selectedFile))
+                    using (var xmlReader = XmlReader.Create(fileContent, new XmlReaderSettings { XmlResolver = null, }))
                     {
-                        xmldoc.Load(fileContent);
-                        var node = xmldoc.SelectSingleNode("//portal/description");
-                        if (node != null && !string.IsNullOrEmpty(node.InnerXml))
-                        {
-                            this.lblTemplateDescription.Visible = true;
-                            this.lblTemplateDescription.Text = this.Server.HtmlDecode(node.InnerXml);
-                            this.txtTabName.Text = this.cboTemplate.SelectedItem.Text;
-                        }
-                        else
-                        {
-                            this.lblTemplateDescription.Visible = false;
-                        }
+                        xmldoc.Load(xmlReader);
+                    }
+
+                    var node = xmldoc.SelectSingleNode("//portal/description");
+                    if (node != null && !string.IsNullOrEmpty(node.InnerXml))
+                    {
+                        this.lblTemplateDescription.Visible = true;
+                        this.lblTemplateDescription.Text = this.Server.HtmlDecode(node.InnerXml);
+                        this.txtTabName.Text = this.cboTemplate.SelectedItem.Text;
+                    }
+                    else
+                    {
+                        this.lblTemplateDescription.Visible = false;
                     }
                 }
                 else

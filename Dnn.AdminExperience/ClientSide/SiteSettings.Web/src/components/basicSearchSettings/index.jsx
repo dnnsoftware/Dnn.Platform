@@ -155,7 +155,7 @@ class BasicSearchSettingsPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {state} = this;
         if (this.isHost()) {
@@ -485,7 +485,7 @@ class BasicSearchSettingsPanelBody extends Component {
                         <div className="buttons-box">
                             <Button
                                 disabled={!this.props.basicSearchSettingsClientModified}
-                                type="secondary"
+                                type="neutral"
                                 onClick={this.onCancel.bind(this)}>
                                 {resx.get("Cancel")}
                             </Button>

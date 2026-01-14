@@ -1,5 +1,5 @@
 const webpack = require("webpack");
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require("eslint-webpack-plugin");
 const packageJson = require("./package.json");
 const path = require("path");
 const settings = require("../../../settings.local.json");
@@ -28,7 +28,7 @@ module.exports = (env, argv) => {
             disableHostCheck: !isProduction,
         },
         resolve: {
-            extensions: ["*", ".js", ".json", ".jsx"],
+            extensions: ["*", ".js", ".json", ".jsx", ".ts", ".tsx"],
             modules: [
                 path.resolve("./src"), // Look in src first
                 path.resolve("./node_modules"), // Try local node_modules
@@ -62,12 +62,12 @@ module.exports = (env, argv) => {
                     ],
                 },
                 {
-                    test: /\.(js|jsx)$/,
+                    test: /\.(js|jsx|ts|tsx)$/,
                     exclude: /node_modules/,
                     use: {
                         loader: "babel-loader",
                         options: {
-                            presets: ["@babel/preset-env", "@babel/preset-react"],
+                            presets: ["@babel/preset-env", "@babel/preset-react", "@babel/preset-typescript"],
                         },
                     },
                 },

@@ -10,9 +10,6 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Localization;
 
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Project:    DotNetNuke
-    /// Class:      CommandButton
     /// <summary>The CommandButton Class provides an enhanced Button control for DotNetNuke.</summary>
     [ToolboxData("<{0}:CommandButton runat=server></{0}:CommandButton>")]
     public class CommandButton : WebControl, INamingContainer
@@ -43,7 +40,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets whether the control causes Validation to occur.</summary>
+        /// <summary>Gets or sets a value indicating whether the control causes Validation to occur.</summary>
         /// <remarks>Defaults to True.</remarks>
         /// <value>A Boolean.</value>
         public bool CausesValidation
@@ -98,7 +95,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets whether the link is displayed.</summary>
+        /// <summary>Gets or sets a value indicating whether the link is displayed.</summary>
         /// <remarks>Defaults to True.</remarks>
         /// <value>A Boolean.</value>
         public bool DisplayLink
@@ -116,7 +113,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets whether the icon is displayed.</summary>
+        /// <summary>Gets or sets a value indicating whether the icon is displayed.</summary>
         /// <remarks>Defaults to True.</remarks>
         /// <value>A Boolean.</value>
         public bool DisplayIcon
@@ -324,7 +321,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>OnButtonClick raises the CommandButton control's Click event.</summary>
+        /// <summary>OnButtonClick raises the CommandButton control's <see cref="Click"/> event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnButtonClick(EventArgs e)
         {
             if (this.Click != null)
@@ -333,7 +331,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>OnCommand raises the CommandButton control's Command event.</summary>
+        /// <summary>OnCommand raises the CommandButton control's <see cref="Command"/> event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnCommand(CommandEventArgs e)
         {
             if (this.Command != null)
@@ -343,6 +342,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>OnPreRender runs just before the Render phase of the Page Life Cycle.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

@@ -23,8 +23,8 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         private PortalSettings settings;
 
         /// <summary>Initializes a new instance of the <see cref="Member"/> class.</summary>
-        /// <param name="user"></param>
-        /// <param name="settings"></param>
+        /// <param name="user">The user.</param>
+        /// <param name="settings">The portal settings.</param>
         public Member(UserInfo user, PortalSettings settings)
         {
             this.user = user;

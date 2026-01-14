@@ -17,6 +17,8 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(OtherPackages))]
     public sealed class CreateDeploy : FrostingTask<Context>
     {
+        private static readonly string[] IncludeAll = ["**/*",];
+
         /// <inheritdoc/>
         public override void Run(Context context)
         {
@@ -26,7 +28,7 @@ namespace DotNetNuke.Build.Tasks
             const string deployFolder = "./DotNetNuke/";
             var deployDir = context.Directory(deployFolder);
             Directory.Move(context.WebsiteDir.Path.FullPath, deployDir.Path.FullPath);
-            var files = context.GetFilesByPatterns(deployFolder, new[] { "**/*" }, context.PackagingPatterns.InstallExclude);
+            var files = context.GetFilesByPatterns(deployFolder, IncludeAll, context.PackagingPatterns.InstallExclude);
             files.Add(context.GetFilesByPatterns(deployFolder, context.PackagingPatterns.InstallInclude));
             context.Zip(string.Empty, packageZip, files);
             context.AddFilesToZip(packageZip, "./Build/Deploy", context.GetFiles("./Build/Deploy/*"), append: true);

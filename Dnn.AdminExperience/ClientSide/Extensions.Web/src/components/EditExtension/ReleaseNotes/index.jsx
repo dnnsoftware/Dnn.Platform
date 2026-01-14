@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { GridCell, MultiLineInputWithError, Button } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
+import Html from "../../Html";
 import "./style.less";
 
 const inputStyle = { width: "100%" };
@@ -16,7 +17,7 @@ class ReleaseNotes extends Component {
     render() {
         const {props} = this;
         const {value} = props;
-        /* eslint-disable react/no-danger */
+         
         return (
             <GridCell className="release-notes extension-form">
                 {props.installationMode && <h6>{Localization.get("InstallExtension_ReleaseNotes.Header")}</h6>}
@@ -29,11 +30,11 @@ class ReleaseNotes extends Component {
                     onChange={props.onChange && props.onChange.bind(this, "releaseNotes")} />}
                 {props.readOnly &&
                     <Scrollbars style={releaseBoxStyle}>
-                        <div className="read-only-release-notes" dangerouslySetInnerHTML={{ __html: value }}></div>
+                        <div className="read-only-release-notes"><Html html={value } /></div>
                     </Scrollbars>
                 }
                 {!props.buttonsAreHidden && <GridCell columnSize={100} className="modal-footer">
-                    <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
+                    <Button type="neutral" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
                     {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>}
                     {(!props.disabled || props.installationMode) && <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>}
                 </GridCell>}

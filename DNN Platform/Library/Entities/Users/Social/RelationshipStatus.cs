@@ -3,13 +3,10 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Users.Social
 {
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Users
-    /// Enum:      RelationshipStatus
     /// <summary>The RelationshipStatus enum describes various UserRelationship statuses. E.g. Accepted, Pending.</summary>
     public enum RelationshipStatus
     {
-        /// <summary>Relationship Request is not present (lack of any other status)</summary>
+        /// <summary>Relationship Request is not present (lack of any other status).</summary>
         None = 0,
 
         /// <summary>Relationship Request is Initiated. E.g. User 1 sent a friend request to User 2.</summary>

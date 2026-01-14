@@ -1,0 +1,33 @@
+@use "../variables/breakpoints";
+@use "../variables/colors";
+
+// Text Mixin
+@mixin text($alignment, $important: false) {
+    text-align: #{$alignment} if($important, !important, null);
+}
+
+// Responsive Text Mixin
+@mixin responsive-text($alignment) {
+    .aperture-text-#{$alignment} {
+        @include text($alignment);
+    }
+    @each $breakpoint, $min-width in breakpoints.$breakpoints {
+        @media (min-width: $min-width) {
+            .aperture-text-#{$breakpoint}-#{$alignment} {
+                @include text($alignment, true);
+            }
+        }
+    }
+}
+
+// Generate text classes
+@include responsive-text('start');
+@include responsive-text('center');
+@include responsive-text('end');
+
+// text classes from current color scheme
+@each $color, $value in colors.$colors {
+    .aperture-text-#{$color} {
+        color: colors.color($color);
+    }
+}

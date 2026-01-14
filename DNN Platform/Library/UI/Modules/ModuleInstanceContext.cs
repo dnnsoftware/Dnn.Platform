@@ -5,6 +5,8 @@ namespace DotNetNuke.UI.Modules
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web;
     using System.Web.UI;
 
@@ -42,23 +44,15 @@ namespace DotNetNuke.UI.Modules
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleInstanceContext"/> class.</summary>
-        /// <param name="moduleControl"></param>
+        /// <param name="moduleControl">The module control.</param>
         public ModuleInstanceContext(IModuleControl moduleControl)
         {
             this.moduleControl = moduleControl;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the EditMode property is used to determine whether the user is in the
-        /// Administrator role.
-        /// </summary>
-        public bool EditMode
-        {
-            get
-            {
-                return TabPermissionController.CanAdminPage();
-            }
-        }
+        /// <summary>Gets a value indicating whether the user is in the Administrator role.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public bool EditMode => TabPermissionController.CanAdminPage();
 
         /// <summary>Gets a value indicating whether the module is Editable (in Admin mode).</summary>
         public bool IsEditable
@@ -95,37 +89,14 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        public bool IsHostMenu
-        {
-            get
-            {
-                return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
-            }
-        }
+        public bool IsHostMenu => Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
 
-        public PortalAliasInfo PortalAlias
-        {
-            get
-            {
-                return this.PortalSettings.PortalAlias;
-            }
-        }
+        public PortalAliasInfo PortalAlias => this.PortalSettings.PortalAlias;
 
-        public int PortalId
-        {
-            get
-            {
-                return this.PortalSettings.PortalId;
-            }
-        }
+        public int PortalId => this.PortalSettings.PortalId;
 
-        public PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         /// <summary>Gets the settings for this context.</summary>
         public Hashtable Settings
@@ -259,7 +230,7 @@ namespace DotNetNuke.UI.Modules
 
         public string EditUrl(string keyName, string keyValue, string controlKey)
         {
-            var parameters = new string[] { };
+            var parameters = Array.Empty<string>();
             return this.EditUrl(keyName, keyValue, controlKey, parameters);
         }
 
@@ -274,7 +245,7 @@ namespace DotNetNuke.UI.Modules
             string moduleIdParam = string.Empty;
             if (this.Configuration != null)
             {
-                moduleIdParam = string.Format("mid={0}", this.Configuration.ModuleID);
+                moduleIdParam = $"mid={this.Configuration.ModuleID}";
             }
 
             string[] parameters;
@@ -282,7 +253,7 @@ namespace DotNetNuke.UI.Modules
             {
                 parameters = new string[2 + additionalParameters.Length];
                 parameters[0] = moduleIdParam;
-                parameters[1] = string.Format("{0}={1}", keyName, keyValue);
+                parameters[1] = $"{keyName}={keyValue}";
                 Array.Copy(additionalParameters, 0, parameters, 2, additionalParameters.Length);
             }
             else
@@ -331,8 +302,8 @@ namespace DotNetNuke.UI.Modules
         }
 
         /// <summary>GetActionsCount gets the current number of actions.</summary>
-        /// <param name="actions">The actions collection to count.</param>
         /// <param name="count">The current count.</param>
+        /// <param name="actions">The actions collection to count.</param>
         private static int GetActionsCount(int count, ModuleActionCollection actions)
         {
             foreach (ModuleAction action in actions)
@@ -349,6 +320,18 @@ namespace DotNetNuke.UI.Modules
             return count;
         }
 
+        private static bool SupportShowInPopup(string url)
+        {
+            if (HttpContext.Current == null || !url.Contains("://"))
+            {
+                return true;
+            }
+
+            var isSecureConnection = UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request);
+            return (isSecureConnection && url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
+                   || (!isSecureConnection && url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase));
+        }
+
         /// <summary>AddHelpActions Adds the Help actions to the Action Menu.</summary>
         private void AddHelpActions()
         {
@@ -356,7 +339,7 @@ namespace DotNetNuke.UI.Modules
             var showInNewWindow = false;
             if (!string.IsNullOrEmpty(this.Configuration.ModuleControl.HelpURL) && Host.EnableModuleOnLineHelp && this.PortalSettings.EnablePopUps)
             {
-                var supportInPopup = this.SupportShowInPopup(this.Configuration.ModuleControl.HelpURL);
+                var supportInPopup = SupportShowInPopup(this.Configuration.ModuleControl.HelpURL);
                 if (supportInPopup)
                 {
                     url = UrlUtils.PopUpUrl(this.Configuration.ModuleControl.HelpURL, this.PortalSettings, false, false, 550, 950);
@@ -494,7 +477,7 @@ namespace DotNetNuke.UI.Modules
             foreach (object obj in this.PortalSettings.ActiveTab.Panes)
             {
                 var pane = obj as string;
-                if (!string.IsNullOrEmpty(pane) && this.Configuration != null && !this.Configuration.PaneName.Equals(pane, StringComparison.InvariantCultureIgnoreCase))
+                if (!string.IsNullOrEmpty(pane) && this.Configuration != null && !this.Configuration.PaneName.Equals(pane, StringComparison.OrdinalIgnoreCase))
                 {
                     this.moduleMoveActions.Actions.Add(
                         this.GetNextActionID(),
@@ -703,7 +686,7 @@ namespace DotNetNuke.UI.Modules
                         this.GetNextActionID(),
                         Localization.GetString(ModuleActionType.DeleteModule, Localization.GlobalResourceFile),
                         ModuleActionType.DeleteModule,
-                        this.Configuration.ModuleID.ToString(),
+                        this.Configuration.ModuleID.ToString(CultureInfo.InvariantCulture),
                         "action_delete.gif",
                         string.Empty,
                         confirmText,
@@ -719,7 +702,7 @@ namespace DotNetNuke.UI.Modules
                         this.GetNextActionID(),
                         Localization.GetString(ModuleActionType.ClearCache, Localization.GlobalResourceFile),
                         ModuleActionType.ClearCache,
-                        this.Configuration.ModuleID.ToString(),
+                        this.Configuration.ModuleID.ToString(CultureInfo.InvariantCulture),
                         "action_refresh.gif",
                         string.Empty,
                         false,
@@ -752,18 +735,6 @@ namespace DotNetNuke.UI.Modules
                     action.ClientScript = UrlUtils.PopUpUrl(action.Url, this.moduleControl as Control, this.PortalSettings, true, false);
                 }
             }
-        }
-
-        private bool SupportShowInPopup(string url)
-        {
-            if (HttpContext.Current == null || !url.Contains("://"))
-            {
-                return true;
-            }
-
-            var isSecureConnection = UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request);
-            return (isSecureConnection && url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
-                   || (!isSecureConnection && url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

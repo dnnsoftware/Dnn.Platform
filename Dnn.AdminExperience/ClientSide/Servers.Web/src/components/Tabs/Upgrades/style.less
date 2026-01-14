@@ -1,0 +1,130 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+
+.dnn-servers-info-panel {
+  .warningBox {
+    border: 1px solid @alto;
+    background-color: @gallery;
+    width: 100%;
+    padding: 15px;
+    .warningText {
+      font-weight: bolder;
+      color: @thunder;
+    }
+    .warningButton {
+      width: 100%;
+      .dnn-ui-common-button {
+        width: 100%;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        &:first-child {
+          margin-top: 15px;
+        }
+      }
+    }
+  }
+}
+
+.dnn-servers-grid-panel {
+  .dnn-servers-grid-panel-actions {
+    text-align: right;
+    button {
+      margin-top: 20px;
+    }
+    .dnn-servers-grid-panel-upload {
+      width: 714px;
+      margin-top: 20px;
+    }
+  }
+  .dnn-upgrades-grid-row {
+    display: table;
+    width: 100%;
+    border-bottom: 1px solid @alto;
+    color: @rollingStone;
+    float: left;
+    position: relative;
+    padding: 15px 18px;
+    box-sizing: border-box;
+    cursor: auto;
+    > div {
+      float: left;
+      width: 100%;
+      > div {
+        float: left;
+        width: 100%;
+      }
+    }
+    .ellipsis {
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .edit-icon {
+      margin-left: 5px;
+      float: right;
+      cursor: pointer;
+      svg {
+        width: 18px;
+        float: left;
+        height: 18px;
+      }
+      &.false {
+        svg {
+          fill: @curiousBlue;
+        }
+        svg:hover {
+          fill: @thunder;
+        }
+      }
+    }
+    .icon-flat {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      vertical-align: middle;
+      &.active {
+        svg {
+          fill: @thunder;
+        }
+      }
+    }
+  }
+  .dnn-servers-grid-panel-upgrading {
+    width: 100%;
+    padding: 60px;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: 1px solid @alizarinCrimson;
+    background-color: @gallery;
+    .upgrading-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: @alizarinCrimson;
+      margin-bottom: 10px;
+    }
+    .upgrading-help {
+      font-size: 14px;
+      color: @alizarinCrimson;
+    }
+  }
+  .dnn-servers-grid-panel-done {
+    width: 100%;
+    padding: 60px;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: 1px solid @curiousBlue;
+    background-color: @gallery;
+    .done-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: @curiousBlue;
+    }
+    .done-link {
+      margin-top: 20px;
+    }
+  }
+}

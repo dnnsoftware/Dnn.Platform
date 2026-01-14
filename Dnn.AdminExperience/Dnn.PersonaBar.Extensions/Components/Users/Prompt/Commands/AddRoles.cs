@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.PersonaBar.Library.Prompt;
@@ -20,28 +21,23 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     using Constants = Dnn.PersonaBar.Users.Components.Constants;
 
     [ConsoleCommand("add-roles", Constants.UsersCategory, "Prompt_AddRoles_Description")]
-
     public class AddRoles : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_AddRoles_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("roles", "Prompt_AddRoles_FlagRoles", "String", true)]
-
         private const string FlagRoles = "roles";
 
         [FlagParameter("start", "Prompt_AddRoles_FlagStart", "DateTime")]
-
         private const string FlagStart = "start";
 
         [FlagParameter("end", "Prompt_AddRoles_FlagEnd", "DateTime")]
-
         private const string FlagEnd = "end";
 
-        private IUserValidator userValidator;
-        private IUsersController usersController;
-        private IRolesController rolesController;
+        private readonly IUserValidator userValidator;
+        private readonly IUsersController usersController;
+        private readonly IRolesController rolesController;
 
         /// <summary>Initializes a new instance of the <see cref="AddRoles"/> class.</summary>
         public AddRoles()
@@ -50,9 +46,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         }
 
         /// <summary>Initializes a new instance of the <see cref="AddRoles"/> class.</summary>
-        /// <param name="userValidator"></param>
-        /// <param name="userController"></param>
-        /// <param name="rolesController"></param>
+        /// <param name="userValidator">The user validator.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="rolesController">The roles controller.</param>
         public AddRoles(IUserValidator userValidator, IUsersController userController, IRolesController rolesController)
         {
             this.userValidator = userValidator;
@@ -117,24 +113,28 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         private void CheckRoles()
         {
-            IList<string> rolesFilter = new List<string>();
+            var rolesFilter = new List<string>();
             if (!string.IsNullOrWhiteSpace(this.Roles))
             {
-                this.Roles.Split(',').ToList().ForEach((role) => rolesFilter.Add(role.Trim()));
+                this.Roles.Split(',').ToList().ForEach(role => rolesFilter.Add(role.Trim()));
             }
 
-            if (rolesFilter.Count() > 0)
+            if (rolesFilter.Count > 0)
             {
-                IList<RoleInfo> foundRoles = this.rolesController.GetRolesByNames(this.PortalSettings, -1, rolesFilter);
-                HashSet<string> foundRolesNames = new HashSet<string>(foundRoles.Select(role => role.RoleName));
-                HashSet<string> roleFiltersSet = new HashSet<string>(rolesFilter);
+                var foundRoles = this.rolesController.GetRolesByNames(this.PortalSettings, -1, rolesFilter);
+                var foundRolesNames = new HashSet<string>(foundRoles.Select(role => role.RoleName));
+                var roleFiltersSet = new HashSet<string>(rolesFilter);
                 roleFiltersSet.ExceptWith(foundRolesNames);
 
-                int notFoundCount = roleFiltersSet.Count();
-
+                int notFoundCount = roleFiltersSet.Count;
                 if (notFoundCount > 0)
                 {
-                    throw new Exception(string.Format(this.LocalizeString("Prompt_AddRoles_NotFound"), notFoundCount > 1 ? "s" : string.Empty, string.Join(",", roleFiltersSet)));
+                    var message = string.Format(
+                        CultureInfo.CurrentCulture,
+                        this.LocalizeString("Prompt_AddRoles_NotFound"),
+                        notFoundCount > 1 ? "s" : string.Empty,
+                        string.Join(",", roleFiltersSet));
+                    throw new RoleNotFoundException(message);
                 }
             }
         }

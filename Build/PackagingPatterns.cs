@@ -15,6 +15,9 @@ namespace DotNetNuke.Build
         /// <summary>Gets or sets a set of files to exclude from the upgrade package.</summary>
         public string[] UpgradeExclude { get; set; }
 
+        /// <summary>Gets or sets a set of files to include from the upgrade package.</summary>
+        public string[] UpgradeInclude { get; set; }
+
         /// <summary>Gets or sets a set of files to include from the symbols package.</summary>
         public string[] SymbolsInclude { get; set; }
 

@@ -22,6 +22,16 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <returns>A <see cref="ContentPage"/> with the items in the folder.</returns>
         ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sorting, int moduleMode);
 
+        /// <summary>Get the items contained on the folder.</summary>
+        /// <param name="folderId">Container folder id.</param>
+        /// <param name="startIndex">Index of the first item to be returned.</param>
+        /// <param name="numItems">Max number of items to return.</param>
+        /// <param name="sorting">Sorting option.</param>
+        /// <param name="sortingOrder">Sorting order.</param>
+        /// <param name="moduleMode">Current mode of module instance.</param>
+        /// <returns>A <see cref="ContentPage"/> with the items in the folder.</returns>
+        ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sorting, string sortingOrder, int moduleMode);
+
         /// <summary>Get the content of a file.</summary>
         /// <param name="fileId">Id of the file.</param>
         /// <param name="fileName">Name of the file.</param>

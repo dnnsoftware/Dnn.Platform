@@ -226,7 +226,7 @@ class NewExtensionModal extends Component {
                             actionButtonsDisabled={true}
                             isAddMode={true} />
                         <GridCell columnSize={100} className="modal-footer">
-                            <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("CreateExtension_Cancel.Button")}</Button>
+                            <Button type="neutral" onClick={props.onCancel.bind(this)}>{Localization.get("CreateExtension_Cancel.Button")}</Button>
                             <Button type="primary" onClick={this.onSave.bind(this)}>{Localization.get("CreateExtension_Save.Button")}</Button>
                         </GridCell>
                     </GridCell>

@@ -20,8 +20,8 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <summary>Initializes a new instance of the <see cref="LogDetailInfo"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
         public LogDetailInfo(string name, string value)
         {
             this.PropertyName = name;

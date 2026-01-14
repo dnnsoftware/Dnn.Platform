@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
     using System;
     using System.Data.Common;
     using System.Data.SqlClient;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Net;
     using System.Threading;
@@ -23,11 +24,10 @@ namespace DotNetNuke.Services.Upgrade.Internals
     /// <summary>The Controller class for Installer.</summary>
     internal class InstallControllerImpl : IInstallController
     {
+        private static readonly string[] VersionSeparator = [".",];
+
         /// <inheritdoc/>
-        public string InstallerLogName
-        {
-            get { return "InstallerLog" + DateTime.Now.ToString("yyyyMMdd") + ".resources"; }
-        }
+        public string InstallerLogName => "InstallerLog" + DateTime.Now.ToString("yyyyMMdd", CultureInfo.InvariantCulture) + ".resources";
 
         /// <summary>GetConnectionFromWebConfig - Returns Connection Configuration in web.config file.</summary>
         /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             string connection = Config.GetConnectionString();
             foreach (string connectionParam in connection.Split(';'))
             {
-                int index = connectionParam.IndexOf("=");
+                int index = connectionParam.IndexOf("=", StringComparison.Ordinal);
                 if (index > 0)
                 {
                     string key = connectionParam.Substring(0, index);
@@ -66,7 +66,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             connectionConfig.Password = value;
                             break;
                         case "integrated security":
-                            connectionConfig.Integrated = value.ToLowerInvariant() == "true";
+                            connectionConfig.Integrated = value.Equals("true", StringComparison.OrdinalIgnoreCase);
                             break;
                         case "attachdbfilename":
                             connectionConfig.File = value.Replace("|DataDirectory|", string.Empty);
@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return connectionConfig;
         }
 
-        /// <summary>SetInstallConfig - Saves configuration in <c>DotNetNuke.Install.Config</c>.</summary>
+        /// <inheritdoc />
         public void SetInstallConfig(InstallConfig installConfig)
         {
             if (installConfig == null)
@@ -308,10 +308,10 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 connectionConfig.Server = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "server");
                 connectionConfig.Database = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "database");
                 connectionConfig.File = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "file");
-                connectionConfig.Integrated = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "integrated").ToLowerInvariant() == "true";
+                connectionConfig.Integrated = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "integrated").Equals("true", StringComparison.OrdinalIgnoreCase);
                 connectionConfig.User = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "user");
                 connectionConfig.Password = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "password");
-                connectionConfig.RunAsDbowner = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "runasdbowner").ToLowerInvariant() == "true";
+                connectionConfig.RunAsDbowner = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "runasdbowner").Equals("true", StringComparison.OrdinalIgnoreCase);
                 connectionConfig.Qualifier = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "qualifier");
                 connectionConfig.UpgradeConnectionString = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "upgradeconnectionstring");
 
@@ -330,28 +330,9 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 superUserConfig.Password = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "password");
                 superUserConfig.Email = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "email");
                 superUserConfig.Locale = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "locale");
-                superUserConfig.UpdatePassword = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "updatepassword").ToLowerInvariant() == "true";
+                superUserConfig.UpdatePassword = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "updatepassword").Equals("true", StringComparison.OrdinalIgnoreCase);
 
                 installConfig.SuperUser = superUserConfig;
-            }
-
-            // Parse the license node
-            XmlNode licenseNode = installTemplate.SelectSingleNode("//dotnetnuke/license");
-            if (licenseNode != null)
-            {
-                var licenseConfig = new LicenseConfig();
-
-                licenseConfig.AccountEmail = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "accountEmail");
-                licenseConfig.InvoiceNumber = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "invoiceNumber");
-                licenseConfig.WebServer = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "webServer");
-                licenseConfig.LicenseType = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "licenseType");
-
-                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "trial")))
-                {
-                    licenseConfig.TrialRequest = bool.Parse(XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "trial"));
-                }
-
-                installConfig.License = licenseConfig;
             }
 
             // Parse the settings node
@@ -368,7 +349,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             XmlAttribute secureAttrib = settingNode.Attributes["Secure"];
                             if (secureAttrib != null)
                             {
-                                if (secureAttrib.Value.ToLowerInvariant() == "true")
+                                if (secureAttrib.Value.Equals("true", StringComparison.OrdinalIgnoreCase))
                                 {
                                     settingIsSecure = true;
                                 }
@@ -408,18 +389,18 @@ namespace DotNetNuke.Services.Upgrade.Internals
                         portalConfig.Description = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "description");
                         portalConfig.Keywords = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "keywords");
                         portalConfig.TemplateFileName = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "templatefile");
-                        portalConfig.IsChild = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "ischild").ToLowerInvariant() == "true";
+                        portalConfig.IsChild = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "ischild").Equals("true", StringComparison.OrdinalIgnoreCase);
                         portalConfig.HomeDirectory = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "homedirectory");
 
                         // Get the Portal Alias
                         XmlNodeList portalAliases = portalNode.SelectNodes("portalaliases/portalalias");
                         if (portalAliases != null)
                         {
-                            foreach (XmlNode portalAliase in portalAliases)
+                            foreach (XmlNode portalAlias in portalAliases)
                             {
-                                if (!string.IsNullOrEmpty(portalAliase.InnerText))
+                                if (!string.IsNullOrEmpty(portalAlias.InnerText))
                                 {
-                                    portalConfig.PortAliases.Add(portalAliase.InnerText);
+                                    portalConfig.PortAliases.Add(portalAlias.InnerText);
                                 }
                             }
                         }
@@ -436,39 +417,30 @@ namespace DotNetNuke.Services.Upgrade.Internals
         public bool IsValidSqlServerVersion(string connectionString)
         {
             // todo: check if we can use globals.DatabaseEngineVersion instead
-            bool isValidVersion = false;
-            var sqlConnection = new SqlConnection(connectionString);
+            var isValidVersion = false;
+            using var sqlConnection = new SqlConnection(connectionString);
             try
             {
                 sqlConnection.Open();
 
-                string serverVersion = sqlConnection.ServerVersion;
+                var serverVersion = sqlConnection.ServerVersion;
                 if (serverVersion != null)
                 {
-                    string[] serverVersionDetails = serverVersion.Split(new[] { "." }, StringSplitOptions.None);
+                    var serverVersionDetails = serverVersion.Split(VersionSeparator, StringSplitOptions.None);
 
-                    int versionNumber = int.Parse(serverVersionDetails[0]);
+                    var versionNumber = int.Parse(serverVersionDetails[0], CultureInfo.InvariantCulture);
 
-                    switch (versionNumber)
+                    // SQL Server 2017 and up, traditional version numbers are ok
+                    if (versionNumber >= 14)
                     {
-                        case 8:
-                        // sql 2000
-                        case 9:
-                            // sql 2005
-                            isValidVersion = false;
-                            break;
-                        case 10:
-                        // sql 2008
-                        case 11:
-                        // sql 2010
-                        case 12:
-                            // sql 2012
-                            isValidVersion = true;
-                            break;
-                        default:
-                            // covers unknown versions and later releases
-                            isValidVersion = true;
-                            break;
+                        isValidVersion = true;
+                    }
+                    else if (versionNumber == 12)
+                    {
+                        // We need to check to see if this is actually Azure SQL, as it is compatible with DNN as well
+                        using var testCommand = new SqlCommand("select serverproperty('Edition')", sqlConnection);
+                        var result = testCommand.ExecuteScalar();
+                        isValidVersion = result.ToString().Equals("SQL Azure", StringComparison.OrdinalIgnoreCase);
                     }
                 }
             }
@@ -488,11 +460,11 @@ namespace DotNetNuke.Services.Upgrade.Internals
         /// <inheritdoc/>
         public bool IsAbleToPerformDatabaseActions(string connectionString)
         {
-            var fakeName = "{databaseOwner}[{objectQualifier}FakeTable_" + DateTime.Now.Ticks.ToString("x16") + "]";
-            var databaseActions = string.Format(@"CREATE TABLE {0}([fakeColumn] [int] NULL); SELECT * FROM {0}; DROP TABLE {0};", fakeName);
+            var fakeName = "{databaseOwner}[{objectQualifier}FakeTable_" + DateTime.Now.Ticks.ToString("x16", CultureInfo.InvariantCulture) + "]";
+            var databaseActions = $"CREATE TABLE {fakeName}([fakeColumn] [int] NULL); SELECT * FROM {fakeName}; DROP TABLE {fakeName};";
             var strExceptions = DataProvider.Instance().ExecuteScript(connectionString, databaseActions);
 
-            // if no exceptions we have necessary drop etc permissions
+            // if no exceptions we have necessary drop etc. permissions
             return string.IsNullOrEmpty(strExceptions);
         }
 
@@ -507,14 +479,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
         public bool IsSqlServerDbo()
         {
             string dbo = DataProvider.Instance().Settings["databaseOwner"];
-            if (dbo.Trim().ToLowerInvariant() != "dbo.")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return !dbo.Trim().Equals("dbo.", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <inheritdoc/>
@@ -527,11 +492,11 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 string installFolder = HttpContext.Current.Server.MapPath("~/Install/language");
 
                 // no need to download english, always there
-                if (cultureCode != "en-us" && string.IsNullOrEmpty(downloadUrl) != true)
+                if (cultureCode != "en-us" && !string.IsNullOrEmpty(downloadUrl))
                 {
                     var newCulture = new CultureInfo(cultureCode);
                     Thread.CurrentThread.CurrentCulture = newCulture;
-                    this.GetLanguagePack(downloadUrl, installFolder);
+                    GetLanguagePack(downloadUrl, installFolder);
                     return true;
                 }
 
@@ -549,7 +514,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             CultureInfo pageCulture = null;
 
             // 1. querystring
-            pageCulture = this.GetCultureFromQs();
+            pageCulture = GetCultureFromQs();
 
             // 2. cookie
             pageCulture = this.GetCultureFromCookie();
@@ -561,6 +526,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
         }
 
         /// <summary>Tests the Database Connection using the database connection config.</summary>
+        /// <param name="config">The connection config.</param>
         /// <returns>The connection string, or an error message (prefixed with <c>"ERROR:"</c>).</returns>
         public string TestDatabaseConnection(ConnectionConfig config)
         {
@@ -600,6 +566,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return culture;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public CultureInfo GetCultureFromBrowser()
         {
             CultureInfo culture = null;
@@ -625,7 +592,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return newNode;
         }
 
-        private CultureInfo GetCultureFromQs()
+        private static CultureInfo GetCultureFromQs()
         {
             if (HttpContext.Current == null || HttpContext.Current.Request["language"] == null)
             {
@@ -637,7 +604,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return culture;
         }
 
-        private void GetLanguagePack(string downloadUrl, string installFolder)
+        private static void GetLanguagePack(string downloadUrl, string installFolder)
         {
             string myfile = string.Empty;
             WebResponse wr = Util.GetExternalRequest(

@@ -4,12 +4,16 @@
     .modal-header {
         width: 100%;
         height: 50px;
-        border-bottom: 1px solid @alto;
+        border-bottom: 1px solid rgba(
+            var(--dnn-color-foreground-r, 0),
+            var(--dnn-color-foreground-g, 0),
+            var(--dnn-color-foreground-b, 0),
+            0.5);
         h3 {
             font-size: 18px;
             padding: 15px 30px;
             float: left;
-            color: @bulgarianRose;
+            color: var(--dnn-color-foreground, @bulgarianRose);
         }
         .close-modal-button{
             width: 16px;

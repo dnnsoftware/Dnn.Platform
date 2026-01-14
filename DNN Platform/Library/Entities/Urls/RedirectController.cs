@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Urls
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Text.RegularExpressions;
     using System.Web;
 
@@ -17,10 +18,10 @@ namespace DotNetNuke.Entities.Urls
     internal class RedirectController
     {
         /// <summary>Cancels a redirect.</summary>
-        /// <param name="result"></param>
-        /// <param name="context"></param>
-        /// <param name="settings"></param>
-        /// <param name="message"></param>
+        /// <param name="result">The URL action to update.</param>
+        /// <param name="context">The HTTP context.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="message">The message to add to <see cref="UrlAction.DebugMessages"/>.</param>
         internal static void CancelRedirect(ref UrlAction result, HttpContext context, FriendlyUrlSettings settings, string message)
         {
             result.Action = ActionType.Continue;
@@ -48,11 +49,11 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Checks for a redirect based on a module friendly url provider rule.</summary>
-        /// <param name="requestUri"></param>
-        /// <param name="result"></param>
-        /// <param name="queryStringCol"></param>
-        /// <param name="settings"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="requestUri">The request URI.</param>
+        /// <param name="result">The URL action to update.</param>
+        /// <param name="queryStringCol">The query string.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns><see langword="true"/> if the <paramref name="result"/> is a redirect, otherwise <see langword="false"/>.</returns>
         internal static bool CheckForModuleProviderRedirect(
             Uri requestUri,
@@ -112,58 +113,49 @@ namespace DotNetNuke.Entities.Urls
                     int tabId = result.TabId;
                     if (tabId > -1)
                     {
-                        if (redirectActions.ContainsKey(tabId))
+                        if (redirectActions.TryGetValue(tabId, out var parameterRedirectActions))
                         {
                             // find the right set of replaced actions for this tab
-                            parmRedirects = redirectActions[tabId];
+                            parmRedirects = parameterRedirectActions;
                         }
                     }
 
                     // check for 'all tabs' redirections
-                    if (redirectActions.ContainsKey(-1))
+                    if (redirectActions.TryGetValue(-1, out var allRedirects))
                     {
                         // -1 means 'all tabs' - rewriting across all tabs
                         // initialise to empty collection if there are no specific tab redirects
                         if (parmRedirects == null)
                         {
-                            parmRedirects = new List<ParameterRedirectAction>();
+                            parmRedirects = [];
                         }
 
                         // add in the all redirects
-                        List<ParameterRedirectAction> allRedirects = redirectActions[-1];
                         parmRedirects.AddRange(allRedirects); // add the 'all' range to the tab range
                         tabId = result.TabId;
                     }
 
-                    if (redirectActions.ContainsKey(-2) && result.OriginalPath.ToLowerInvariant().Contains("default.aspx"))
+                    if (redirectActions.TryGetValue(-2, out var defaultRedirects) && result.OriginalPath.ToLowerInvariant().Contains("default.aspx"))
                     {
                         // for the default.aspx page
-                        if (parmRedirects == null)
-                        {
-                            parmRedirects = new List<ParameterRedirectAction>();
-                        }
+                        parmRedirects ??= [];
 
-                        List<ParameterRedirectAction> defaultRedirects = redirectActions[-2];
                         parmRedirects.AddRange(defaultRedirects); // add the default.aspx redirects to the list
                         tabId = result.TabId;
                     }
 
                     // 726 : allow for site-root redirects, ie redirects where no page match
-                    if (redirectActions.ContainsKey(-3))
+                    if (redirectActions.TryGetValue(-3, out var siteRootRedirects))
                     {
                         // request is for site root
-                        if (parmRedirects == null)
-                        {
-                            parmRedirects = new List<ParameterRedirectAction>();
-                        }
+                        parmRedirects ??= [];
 
-                        List<ParameterRedirectAction> siteRootRedirects = redirectActions[-3];
                         parmRedirects.AddRange(siteRootRedirects); // add the site root redirects to the collection
                     }
 
                     // OK what we have now is a list of redirects for the currently requested tab (either because it was specified by tab id,
                     // or because there is a replaced for 'all tabs'
-                    if (parmRedirects != null && parmRedirects.Count > 0 && rewrittenUrl != null)
+                    if (parmRedirects is { Count: > 0 } && rewrittenUrl != null)
                     {
                         foreach (ParameterRedirectAction parmRedirect in parmRedirects)
                         {
@@ -227,14 +219,16 @@ namespace DotNetNuke.Entities.Urls
                                         if (tabIdNext)
                                         {
                                             // changes the tabid of page, effects a page redirect along with a parameter redirect
-                                            int.TryParse(parmPart, out tabId);
-                                            parms = parms.Replace("tabid/" + tabId.ToString(), string.Empty);
+                                            if (int.TryParse(parmPart, out tabId))
+                                            {
+                                                parms = parms.Replace("tabid/" + tabId.ToString(CultureInfo.InvariantCulture), string.Empty);
+                                            }
 
                                             // remove the tabid/xx from the path
                                             break; // that's it, we're finished
                                         }
 
-                                        if (parmPart.Equals("tabid", StringComparison.InvariantCultureIgnoreCase))
+                                        if (parmPart.Equals("tabid", StringComparison.OrdinalIgnoreCase))
                                         {
                                             tabIdNext = true;
                                         }
@@ -271,7 +265,7 @@ namespace DotNetNuke.Entities.Urls
                                                 false,
                                                 settings,
                                                 Guid.Empty);
-                                            if (friendlyUrlNoParms.EndsWith("/") == false)
+                                            if (!friendlyUrlNoParms.EndsWith("/", StringComparison.Ordinal))
                                             {
                                                 friendlyUrlNoParms += "/";
                                             }
@@ -283,34 +277,34 @@ namespace DotNetNuke.Entities.Urls
                                         {
                                             result.DebugMessages.Add(parmRedirect.Name +
                                                                      " tabId in redirect rule (tabId:" +
-                                                                     tabId.ToString() + ", portalId:" +
-                                                                     result.PortalId.ToString() +
+                                                                     tabId.ToString(CultureInfo.InvariantCulture) + ", portalId:" +
+                                                                     result.PortalId.ToString(CultureInfo.InvariantCulture) +
                                                                      " ), tab was not found");
                                         }
                                         else
                                         {
                                             result.DebugMessages.Add(parmRedirect.Name +
                                                                      " tabId in redirect rule (tabId:" +
-                                                                     tabId.ToString() + ", portalId:" +
-                                                                     result.PortalId.ToString() + " ), tab found : " +
+                                                                     tabId.ToString(CultureInfo.InvariantCulture) + ", portalId:" +
+                                                                     result.PortalId.ToString(CultureInfo.InvariantCulture) + " ), tab found : " +
                                                                      tab.TabName);
                                         }
                                     }
                                 }
 
-                                if (parms.StartsWith("//"))
+                                if (parms.StartsWith("//", StringComparison.Ordinal))
                                 {
                                     parms = parms.Substring(2);
                                 }
 
-                                if (parms.StartsWith("/"))
+                                if (parms.StartsWith("/", StringComparison.Ordinal))
                                 {
                                     parms = parms.Substring(1);
                                 }
 
                                 if (settings.PageExtensionUsageType != PageExtensionUsageType.Never)
                                 {
-                                    if (parms.EndsWith("/"))
+                                    if (parms.EndsWith("/", StringComparison.Ordinal))
                                     {
                                         parms = parms.TrimEnd('/');
                                     }
@@ -390,12 +384,12 @@ namespace DotNetNuke.Entities.Urls
         /// Gets a redirect Url for when the tab has a specified external Url that is of type 'TabType.Tab'.  This covers both
         /// 'PermanentRedirect' and 'ExternalUrl' scenarios, where the settings are to redirect the value.
         /// </summary>
-        /// <param name="tab"></param>
-        /// <param name="settings"></param>
-        /// <param name="cleanPath"></param>
-        /// <param name="result"></param>
-        /// <param name="permRedirect"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="tab">The tab info.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="cleanPath">The cleaned path.</param>
+        /// <param name="result">The URL action.</param>
+        /// <param name="permRedirect">Whether it's a permanent redirect.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns>The friendly URL or <see langword="null"/>.</returns>
         /// <remarks>823 : Moved from CheckForRedirects to allow call earlier in pipeline.</remarks>
         internal static string GetTabRedirectUrl(

@@ -92,12 +92,18 @@ namespace DotNetNuke.UI
             int moduleId = -1;
             if (request.QueryString["mid"] != null)
             {
-                int.TryParse(request.QueryString["mid"], out moduleId);
+                if (!int.TryParse(request.QueryString["mid"], out moduleId))
+                {
+                    moduleId = -1;
+                }
             }
 
-            if (request.QueryString["moduleid"] != null && (key.Equals("module", StringComparison.InvariantCultureIgnoreCase) || key.Equals("help", StringComparison.InvariantCultureIgnoreCase)))
+            if (request.QueryString["moduleid"] != null && (key.Equals("module", StringComparison.OrdinalIgnoreCase) || key.Equals("help", StringComparison.OrdinalIgnoreCase)))
             {
-                int.TryParse(request.QueryString["moduleid"], out moduleId);
+                if (!int.TryParse(request.QueryString["moduleid"], out moduleId))
+                {
+                    moduleId = -1;
+                }
             }
 
             return moduleId;
@@ -135,7 +141,7 @@ namespace DotNetNuke.UI
                 slaveModule = new ModuleInfo { ModuleID = moduleId, ModuleDefID = -1, TabID = tabId, InheritViewPermissions = true };
             }
 
-            if (request.QueryString["moduleid"] != null && (key.ToLowerInvariant() == "module" || key.ToLowerInvariant() == "help"))
+            if (request.QueryString["moduleid"] != null && (key.Equals("module", StringComparison.OrdinalIgnoreCase) || key.Equals("help", StringComparison.OrdinalIgnoreCase)))
             {
                 slaveModule.ModuleDefID = -1;
             }
@@ -159,6 +165,9 @@ namespace DotNetNuke.UI
             return slaveModule;
         }
 
+        /// <summary>Gets the path to the local resource file associated to the control.</summary>
+        /// <param name="ctrl">The control.</param>
+        /// <returns>The path to the resource file.</returns>
         internal static string GetLocalResourceFile(Control ctrl)
         {
             string resourceFileName = Null.NullString;
@@ -167,28 +176,28 @@ namespace DotNetNuke.UI
             {
                 if (ctrl is UserControl)
                 {
-                    resourceFileName = string.Format("{0}/{1}/{2}.ascx.resx", ctrl.TemplateSourceDirectory, Localization.LocalResourceDirectory, ctrl.GetType().BaseType.Name);
+                    resourceFileName = $"{ctrl.TemplateSourceDirectory}/{Localization.LocalResourceDirectory}/{ctrl.GetType().BaseType.Name}.ascx.resx";
                     if (File.Exists(ctrl.Page.Server.MapPath(resourceFileName)))
                     {
                         break;
                     }
                 }
 
-                if (ctrl is IModuleControl)
+                if (ctrl is IModuleControl moduleControl)
                 {
-                    resourceFileName = ((IModuleControl)ctrl).LocalResourceFile;
+                    resourceFileName = moduleControl.LocalResourceFile;
                     break;
                 }
 
-                if (ctrl is ControlPanelBase)
+                if (ctrl is ControlPanelBase controlPanel)
                 {
-                    resourceFileName = ((ControlPanelBase)ctrl).LocalResourceFile;
+                    resourceFileName = controlPanel.LocalResourceFile;
                     break;
                 }
 
                 if (ctrl is Page)
                 {
-                    resourceFileName = string.Format("{0}/{1}/{2}.aspx.resx", ctrl.TemplateSourceDirectory, Localization.LocalResourceDirectory, ctrl.GetType().BaseType.Name);
+                    resourceFileName = $"{ctrl.TemplateSourceDirectory}/{Localization.LocalResourceDirectory}/{ctrl.GetType().BaseType.Name}.aspx.resx";
                 }
 
                 ctrl = ctrl.Parent;

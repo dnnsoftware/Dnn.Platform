@@ -23,9 +23,14 @@
     var cdv = personaBarSettings['buildNumber'];
     var version = (cdv ? '?cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random(): '');
     var styles = [];
+    var cssVariables = personaBarSettings['cssVariablesPath'];
     var mainJs = 'scripts/main.js';
     var themeCss = 'css/theme.css';
     var mainCss = 'css/main.css';
+
+    if (cssVariables) {
+        styles.push(cssVariables);
+    }
 
     var hasCustomPersonaBarTheme = personaBarSettings['personaBarTheme'];
     if (hasCustomPersonaBarTheme){

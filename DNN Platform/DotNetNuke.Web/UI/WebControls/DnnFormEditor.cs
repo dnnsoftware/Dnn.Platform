@@ -6,22 +6,24 @@ namespace DotNetNuke.Web.UI.WebControls
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using ClientDependency.Core;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A web control for editing a form.</summary>
     [ParseChildren(true)]
     public partial class DnnFormEditor : WebControl, INamingContainer
     {
         private object dataSource;
         private int itemCount;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnFormEditor"/> class.</summary>
         public DnnFormEditor()
         {
             this.Items = new List<DnnFormItemBase>();
@@ -32,6 +34,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ViewStateMode = ViewStateMode.Disabled;
         }
 
+        /// <summary>Gets a value indicating whether the editor is valid.</summary>
         public bool IsValid
         {
             get
@@ -51,6 +54,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the data source.</summary>
         public object DataSource
         {
             get
@@ -71,25 +75,31 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the form mode.</summary>
         public DnnFormMode FormMode { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether to encrypt IDs.</summary>
         public bool EncryptIds { get; set; }
 
+        /// <summary>Gets the items.</summary>
         [Category("Behavior")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<DnnFormItemBase> Items { get; private set; }
 
+        /// <summary>Gets the sections.</summary>
         [Category("Behavior")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<DnnFormSection> Sections { get; private set; }
 
+        /// <summary>Gets the tabs.</summary>
         [Category("Behavior")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<DnnFormTab> Tabs { get; private set; }
 
+        /// <summary>Gets the local resource file path.</summary>
         protected string LocalResourceFile
         {
             get
@@ -118,12 +128,11 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ChildControlsCreated = true;
         }
 
-        [DnnDeprecated(7, 4, 1, "Please add encryptIds")]
-        internal static partial void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile)
-        {
-            SetUpItems(items, parentControl, localResourceFile, false);
-        }
-
+        /// <summary>Sets the items up.</summary>
+        /// <param name="items">The items.</param>
+        /// <param name="parentControl">The parent control.</param>
+        /// <param name="localResourceFile">The local resource file.</param>
+        /// <param name="encryptIds">Whether to encrypt the IDs.</param>
         internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile, bool encryptIds)
         {
             foreach (DnnFormItemBase item in items)
@@ -153,9 +162,15 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Creates the control hierarchy.</summary>
+        /// <param name="useDataSource">Whether to use the data source.</param>
         protected virtual void CreateControlHierarchy(bool useDataSource)
         {
-            this.CssClass = string.IsNullOrEmpty(this.CssClass) ? "dnnForm" : this.CssClass.Contains("dnnForm") ? this.CssClass : string.Format("dnnForm {0}", this.CssClass);
+            this.CssClass = string.IsNullOrEmpty(this.CssClass)
+                ? "dnnForm"
+                : this.CssClass.Contains("dnnForm")
+                    ? this.CssClass
+                    : $"dnnForm {this.CssClass}";
 
             this.SetUpTabs();
 
@@ -167,6 +182,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void LoadControlState(object state)
         {
             if (state != null)

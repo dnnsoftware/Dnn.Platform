@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.ConfigConsole.Tests
 {
     using System;
@@ -9,11 +8,14 @@ namespace Dnn.PersonaBar.ConfigConsole.Tests
     using System.Linq;
 
     using Dnn.PersonaBar.ConfigConsole.Components;
-    using DotNetNuke.Abstractions;
+
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
+    using DotNetNuke.Tests.Utilities.Fakes;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     /// <summary><see cref="ConfigConsoleController"/> unit tests.</summary>
@@ -24,21 +26,28 @@ namespace Dnn.PersonaBar.ConfigConsole.Tests
         private const string BadConfigXml = "<configuration1></configuration1>";
         private const string BadXml = "<configuration></configuration1>";
 
+        private FakeServiceProvider serviceProvider;
+
         /// <summary>Method that is called immediately before each test is run.</summary>
         [SetUp]
-        public static void Setup()
+        public void Setup()
         {
             var applicationStatusInfoMock = new Mock<IApplicationStatusInfo>();
 
             applicationStatusInfoMock
                 .Setup(info => info.ApplicationMapPath)
                 .Returns(Environment.CurrentDirectory);
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(applicationStatusInfoMock.Object);
+                });
+        }
 
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient(container => applicationStatusInfoMock.Object);
-            serviceCollection.AddTransient(container => Mock.Of<INavigationManager>());
-
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
         }
 
         /// <summary>Unit test for <see cref="ConfigConsoleController.ValidateConfigFile(string, string)"/>.</summary>
@@ -54,31 +63,23 @@ namespace Dnn.PersonaBar.ConfigConsole.Tests
         [TestCase("Random.config", BadConfigXml, 0, false)]
         [TestCase("Random.config", BadXml, 0, false)]
         [TestCase("Random.file", "Random content", 0, false)]
-
         public void ValidateConfigFile(string fileName, string fileContent, int expectedErrorCount, bool shouldThrow)
         {
-            // arrange
-            var sut = new ConfigConsoleController();
-
             Exception exception = null;
-            IEnumerable<string> errors = new string[0];
+            IEnumerable<string> errors = [];
 
-            // act
             try
             {
-                errors = sut.ValidateConfigFile(fileName, fileContent);
+                errors = new ConfigConsoleController().ValidateConfigFile(fileName, fileContent);
             }
             catch (Exception ex)
             {
                 exception = ex;
             }
 
-            Assert.Multiple(() =>
-            {
-                // assert
-                Assert.That(exception != null, Is.EqualTo(shouldThrow));
-                Assert.That(errors.Count(), Is.EqualTo(expectedErrorCount));
-            });
+            using var scope = Assert.EnterMultipleScope();
+            Assert.That(exception, shouldThrow ? Is.Not.Null : Is.Null);
+            Assert.That(errors.ToList(), Has.Count.EqualTo(expectedErrorCount));
         }
     }
 }

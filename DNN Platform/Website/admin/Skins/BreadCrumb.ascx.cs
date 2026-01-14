@@ -8,12 +8,13 @@ namespace DotNetNuke.UI.Skins.Controls
     using System.Text.RegularExpressions;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Tabs;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays the hierarchy of the current page.</summary>
     public partial class BreadCrumb : SkinObjectBase
     {
         private const string UrlRegex = "(href|src)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)";
@@ -21,14 +22,14 @@ namespace DotNetNuke.UI.Skins.Controls
         private readonly INavigationManager navigationManager;
         private string separator = "<img alt=\"breadcrumb separator\" src=\"" + Globals.ApplicationPath + "/images/breadcrumb.gif\">";
         private string cssClass = "SkinObject";
-        private int rootLevel = 0;
-        private bool showRoot = false;
+        private int rootLevel;
+        private bool showRoot;
         private string homeUrl = string.Empty;
         private string homeTabName = "Root";
 
         public BreadCrumb()
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.CleanerMarkup = false;
         }
 
@@ -94,6 +95,8 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>Gets or sets a value indicating whether to take advantage of the enhanced markup (remove extra wrapping elements).</summary>
         public bool CleanerMarkup { get; set; }
 
+        private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
+
         /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
@@ -114,8 +117,8 @@ namespace DotNetNuke.UI.Skins.Controls
             // Without checking if the current tab is the home tab, we would duplicate the root tab
             if (this.showRoot && this.PortalSettings.ActiveTab.TabID != this.PortalSettings.HomeTabId)
             {
-                // Add the current protocal to the current URL
-                this.homeUrl = Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias);
+                // Add the current protocol to the current URL
+                this.homeUrl = Globals.AddHTTP(this.CurrentPortalAlias.HttpAlias);
 
                 // Make sure we have a home tab ID set
                 if (this.PortalSettings.HomeTabId != -1)
@@ -218,7 +221,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     var url = match.Groups[3].Value;
                     var changed = false;
 
-                    if (url.StartsWith("/"))
+                    if (url.StartsWith("/", StringComparison.Ordinal))
                     {
                         if (!string.IsNullOrEmpty(Globals.ApplicationPath))
                         {
@@ -226,7 +229,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             changed = true;
                         }
                     }
-                    else if (url.StartsWith("~/"))
+                    else if (url.StartsWith("~/", StringComparison.Ordinal))
                     {
                         url = Globals.ResolveUrl(url);
                         changed = true;

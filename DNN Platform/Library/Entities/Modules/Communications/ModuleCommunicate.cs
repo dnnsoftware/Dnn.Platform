@@ -5,65 +5,40 @@ namespace DotNetNuke.Entities.Modules.Communications
 {
     using System.Web.UI;
 
-    /// <summary>
-    /// Specifies communications between modules.
-    /// There are listeners and communicators.
-    /// </summary>
+    /// <summary>Specifies communications between modules. There are listeners and communicators.</summary>
     public class ModuleCommunicate
     {
-        private readonly ModuleCommunicators moduleCommunicators = new ModuleCommunicators();
-
-        private readonly ModuleListeners moduleListeners = new ModuleListeners();
-
         /// <summary>Gets the module communicators.</summary>
-        /// <value>
-        /// The module communicators.
-        /// </value>
-        public ModuleCommunicators ModuleCommunicators
-        {
-            get
-            {
-                return this.moduleCommunicators;
-            }
-        }
+        public ModuleCommunicators ModuleCommunicators { get; } = new ModuleCommunicators();
 
         /// <summary>Gets the module listeners.</summary>
-        /// <value>
-        /// The module listeners.
-        /// </value>
-        public ModuleListeners ModuleListeners
-        {
-            get
-            {
-                return this.moduleListeners;
-            }
-        }
+        public ModuleListeners ModuleListeners { get; } = new ModuleListeners();
 
         /// <summary>Loads the communicator.</summary>
         /// <param name="ctrl">The control.</param>
         public void LoadCommunicator(Control ctrl)
         {
             // Check and see if the module implements IModuleCommunicator
-            if (ctrl is IModuleCommunicator)
+            if (ctrl is IModuleCommunicator communicator)
             {
-                this.Add((IModuleCommunicator)ctrl);
+                this.Add(communicator);
             }
 
             // Check and see if the module implements IModuleListener
-            if (ctrl is IModuleListener)
+            if (ctrl is IModuleListener listener)
             {
-                this.Add((IModuleListener)ctrl);
+                this.Add(listener);
             }
         }
 
         private int Add(IModuleCommunicator item)
         {
-            int returnData = this.moduleCommunicators.Add(item);
+            int returnData = this.ModuleCommunicators.Add(item);
 
             int i = 0;
-            for (i = 0; i <= this.moduleListeners.Count - 1; i++)
+            for (i = 0; i <= this.ModuleListeners.Count - 1; i++)
             {
-                item.ModuleCommunication += this.moduleListeners[i].OnModuleCommunication;
+                item.ModuleCommunication += this.ModuleListeners[i].OnModuleCommunication;
             }
 
             return returnData;
@@ -71,12 +46,12 @@ namespace DotNetNuke.Entities.Modules.Communications
 
         private int Add(IModuleListener item)
         {
-            int returnData = this.moduleListeners.Add(item);
+            int returnData = this.ModuleListeners.Add(item);
 
             int i = 0;
-            for (i = 0; i <= this.moduleCommunicators.Count - 1; i++)
+            for (i = 0; i <= this.ModuleCommunicators.Count - 1; i++)
             {
-                this.moduleCommunicators[i].ModuleCommunication += item.OnModuleCommunication;
+                this.ModuleCommunicators[i].ModuleCommunication += item.OnModuleCommunication;
             }
 
             return returnData;

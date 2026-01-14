@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
-const upload = require("!raw-loader!./img/upload.svg").default;
-const checkmark = require("!raw-loader!./img/checkmark.svg").default;
-const errorIcon = require("!raw-loader!./img/x.svg").default;
+import Upload from "./img/upload.svg";
+import Checkmark from "./img/checkmark.svg";
+import ErrorIcon from "./img/x.svg";
 
 export default class UploadBar extends Component {
     constructor() {
@@ -52,18 +51,18 @@ export default class UploadBar extends Component {
 
     render() {
         const { props } = this;
-        /* eslint-disable react/no-danger */
+         
         let percent = props.errorText ? 0 : this.state.percent;
         let text = props.uploadComplete ? props.uploadCompleteText : props.uploadingText;
         text = props.errorText ? props.errorText : text;
-        let svg = props.uploadComplete ? checkmark : upload;
-        svg = props.errorText ? errorIcon : svg;
+        let UploadIcon = props.uploadComplete ? Checkmark : Upload;
+        UploadIcon = props.errorText ? ErrorIcon : UploadIcon;
         const className = "file-upload-container dnn-upload-bar" + (props.uploadComplete ? " complete" : "") + (props.errorText ? " upload-error" : "");
 
         return <div className={className}>
             <div className="upload-bar-container">
                 <div className="upload-file-name">{this.props.fileName || "myImage.jpg"}</div>
-                <div className="upload-icon" dangerouslySetInnerHTML={{ __html: svg }} />
+                <div className="upload-icon"><UploadIcon /></div>
                 <h4>{text}</h4>
                 {props.errorInPackage &&
                     <p className="view-log-or-try-again">

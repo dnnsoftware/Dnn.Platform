@@ -8,18 +8,14 @@ namespace DotNetNuke.Security.Permissions
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
+    using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : ModulePermissionCollection
-    /// <summary>
-    /// ModulePermissionCollection provides the a custom collection for ModulePermissionInfo
-    /// objects.
-    /// </summary>
+    /// <summary>ModulePermissionCollection provides a custom collection for <see cref="ModulePermissionInfo"/> objects.</summary>
     [Serializable]
-    public class ModulePermissionCollection : CollectionBase
+    public class ModulePermissionCollection : GenericCollectionBase<ModulePermissionInfo>
     {
         /// <summary>Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.</summary>
         public ModulePermissionCollection()
@@ -27,22 +23,22 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.</summary>
-        /// <param name="modulePermissions"></param>
+        /// <param name="modulePermissions">An <see cref="ArrayList"/> of <see cref="ModulePermissionInfo"/> instances.</param>
         public ModulePermissionCollection(ArrayList modulePermissions)
         {
             this.AddRange(modulePermissions);
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.</summary>
-        /// <param name="modulePermissions"></param>
+        /// <param name="modulePermissions">A collection of <see cref="ModulePermissionInfo"/> instances.</param>
         public ModulePermissionCollection(ModulePermissionCollection modulePermissions)
         {
             this.AddRange(modulePermissions);
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.</summary>
-        /// <param name="modulePermissions"></param>
-        /// <param name="moduleID"></param>
+        /// <param name="modulePermissions">An <see cref="ArrayList"/> of <see cref="ModulePermissionInfo"/> instances.</param>
+        /// <param name="moduleID">The ID of the module by which to filter <paramref name="modulePermissions"/>.</param>
         public ModulePermissionCollection(ArrayList modulePermissions, int moduleID)
         {
             foreach (ModulePermissionInfo permission in modulePermissions)
@@ -55,7 +51,7 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.</summary>
-        /// <param name="objModule"></param>
+        /// <param name="objModule">A module from which to copy <see cref="ModuleInfo.ModulePermissions"/>.</param>
         public ModulePermissionCollection(ModuleInfo objModule)
         {
             foreach (ModulePermissionInfo permission in objModule.ModulePermissions)
@@ -65,24 +61,6 @@ namespace DotNetNuke.Security.Permissions
                     this.Add(permission);
                 }
             }
-        }
-
-        public ModulePermissionInfo this[int index]
-        {
-            get
-            {
-                return (ModulePermissionInfo)this.List[index];
-            }
-
-            set
-            {
-                this.List[index] = value;
-            }
-        }
-
-        public int Add(ModulePermissionInfo value)
-        {
-            return this.List.Add(value);
         }
 
         public int Add(ModulePermissionInfo value, bool checkForDuplicates)
@@ -95,9 +73,9 @@ namespace DotNetNuke.Security.Permissions
             else
             {
                 bool isMatch = false;
-                foreach (PermissionInfoBase permission in this.List)
+                foreach (IPermissionInfo permission in this.List)
                 {
-                    if (permission.PermissionID == value.PermissionID && permission.UserID == value.UserID && permission.RoleID == value.RoleID)
+                    if (permission.PermissionId == value.PermissionID && permission.UserId == value.UserID && permission.RoleId == value.RoleID)
                     {
                         isMatch = true;
                         break;
@@ -149,26 +127,6 @@ namespace DotNetNuke.Security.Permissions
             return true;
         }
 
-        public bool Contains(ModulePermissionInfo value)
-        {
-            return this.List.Contains(value);
-        }
-
-        public int IndexOf(ModulePermissionInfo value)
-        {
-            return this.List.IndexOf(value);
-        }
-
-        public void Insert(int index, ModulePermissionInfo value)
-        {
-            this.List.Insert(index, value);
-        }
-
-        public void Remove(ModulePermissionInfo value)
-        {
-            this.List.Remove(value);
-        }
-
         public void Remove(int permissionID, int roleID, int userID)
         {
             var idx = 0;
@@ -186,13 +144,7 @@ namespace DotNetNuke.Security.Permissions
 
         public List<PermissionInfoBase> ToList()
         {
-            var list = new List<PermissionInfoBase>();
-            foreach (PermissionInfoBase permission in this.List)
-            {
-                list.Add(permission);
-            }
-
-            return list;
+            return [..this.List.Cast<PermissionInfoBase>()];
         }
 
         public string ToString(string key)

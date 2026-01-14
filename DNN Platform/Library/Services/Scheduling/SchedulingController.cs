@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Scheduling
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -18,27 +19,9 @@ namespace DotNetNuke.Services.Scheduling
 
     using Globals = DotNetNuke.Common.Globals;
 
+    /// <summary>Provides the ability to manage scheduled tasks.</summary>
     public partial class SchedulingController
     {
-        [DnnDeprecated(7, 3, 0, "Use alternate overload", RemovalVersion = 10)]
-        public static partial int AddSchedule(string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName)
-        {
-            return AddSchedule(
-                typeFullName,
-                timeLapse,
-                timeLapseMeasurement,
-                retryTimeLapse,
-                retryTimeLapseMeasurement,
-                retainHistoryNum,
-                attachToEvent,
-                catchUpEnabled,
-                enabled,
-                objectDependencies,
-                servers,
-                friendlyName,
-                DateTime.Now);
-        }
-
         public static int AddSchedule(string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
         {
             EventLogController.Instance.AddLog("TypeFullName", typeFullName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_CREATED);
@@ -74,7 +57,7 @@ namespace DotNetNuke.Services.Scheduling
             DataProvider.Instance().DeleteSchedule(scheduleID);
             EventLogController.Instance.AddLog(
                 "ScheduleID",
-                scheduleID.ToString(),
+                scheduleID.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentPortalSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.SCHEDULE_DELETED);
@@ -190,29 +173,7 @@ namespace DotNetNuke.Services.Scheduling
 #pragma warning restore 618
         }
 
-        public static void UpdateSchedule(int scheduleID, string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName)
-        {
-#pragma warning disable 618
-            UpdateSchedule(
-                scheduleID,
-                typeFullName,
-                timeLapse,
-                timeLapseMeasurement,
-                retryTimeLapse,
-                retryTimeLapseMeasurement,
-                retainHistoryNum,
-                attachToEvent,
-                catchUpEnabled,
-                enabled,
-                objectDependencies,
-                servers,
-                friendlyName,
-                DateTime.Now);
-#pragma warning restore 618
-        }
-
-        [DnnDeprecated(7, 3, 0, "Use alternate overload", RemovalVersion = 10)]
-        public static partial void UpdateSchedule(int scheduleID, string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
+        public static void UpdateSchedule(int scheduleID, string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
         {
             DataProvider.Instance().UpdateSchedule(
                 scheduleID,

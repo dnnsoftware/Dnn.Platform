@@ -5,6 +5,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Text;
@@ -21,8 +22,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class UserDetailDto : UserBasicDto
     {
-        private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-
         public UserDetailDto()
         {
         }
@@ -96,6 +95,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "hasAgreedToTermsOn")]
         public DateTime HasAgreedToTermsOn { get; set; }
 
+        private static INavigationManager NavigationManager => Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+
         private static string GetSettingUrl(int portalId, int userId)
         {
             var module = ModuleController.Instance.GetModulesByDefinition(UserController.Instance.GetUserById(portalId, userId).IsSuperUser ? -1 : portalId, "User Accounts")
@@ -116,9 +117,9 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             var containerSrc = Globals.HostPath + "Containers/_default/popUpContainer";
             extraParams.Add("SkinSrc", skinSrc);
             extraParams.Add("ContainerSrc", containerSrc);
-            extraParams.Add("mid", module.ModuleID.ToString());
+            extraParams.Add("mid", module.ModuleID.ToString(CultureInfo.InvariantCulture));
             extraParams.Add("popUp", "true");
-            extraParams.Add("UserId", userId.ToString());
+            extraParams.Add("UserId", userId.ToString(CultureInfo.InvariantCulture));
             extraParams.Add("editprofile", "true");
 
             // ctl/Edit/mid/345/packageid/52

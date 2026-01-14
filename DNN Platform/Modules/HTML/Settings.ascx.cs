@@ -4,8 +4,6 @@
 namespace DotNetNuke.Modules.Html
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Entities.Modules;
@@ -21,7 +19,6 @@ namespace DotNetNuke.Modules.Html
     public partial class Settings : ModuleSettingsBase
     {
         private readonly INavigationManager navigationManager;
-
         private HtmlModuleSettings moduleSettings;
 
         /// <summary>Initializes a new instance of the <see cref="Settings"/> class.</summary>
@@ -46,36 +43,9 @@ namespace DotNetNuke.Modules.Html
                 if (!this.Page.IsPostBack)
                 {
                     var htmlTextController = new HtmlTextController(this.navigationManager);
-                    var workflowStateController = new WorkflowStateController();
 
                     this.chkReplaceTokens.Checked = this.ModuleSettings.ReplaceTokens;
                     this.cbDecorate.Checked = this.ModuleSettings.UseDecorate;
-
-                    // get workflow/version settings
-                    var workflows = new ArrayList();
-                    foreach (WorkflowStateInfo state in workflowStateController.GetWorkflows(this.PortalId))
-                    {
-                        if (!state.IsDeleted)
-                        {
-                            workflows.Add(state);
-                        }
-                    }
-
-                    this.cboWorkflow.DataSource = workflows;
-                    this.cboWorkflow.DataBind();
-                    var workflow = htmlTextController.GetWorkflow(this.ModuleId, this.TabId, this.PortalId);
-                    if (this.cboWorkflow.FindItemByValue(workflow.Value.ToString()) != null)
-                    {
-                        this.cboWorkflow.FindItemByValue(workflow.Value.ToString()).Selected = true;
-                    }
-
-                    this.DisplayWorkflowDetails();
-
-                    if (this.rblApplyTo.Items.FindByValue(workflow.Key) != null)
-                    {
-                        this.rblApplyTo.Items.FindByValue(workflow.Key).Selected = true;
-                    }
-
                     this.txtSearchDescLength.Text = this.ModuleSettings.SearchDescLength.ToString();
                 }
 
@@ -112,58 +82,11 @@ namespace DotNetNuke.Modules.Html
                     }
                 }
 
-                // update workflow/version settings
-                switch (this.rblApplyTo.SelectedValue)
-                {
-                    case "Module":
-                        htmlTextController.UpdateWorkflow(this.ModuleId, this.rblApplyTo.SelectedValue, int.Parse(this.cboWorkflow.SelectedValue), this.chkReplace.Checked);
-                        break;
-                    case "Page":
-                        htmlTextController.UpdateWorkflow(this.TabId, this.rblApplyTo.SelectedValue, int.Parse(this.cboWorkflow.SelectedValue), this.chkReplace.Checked);
-                        break;
-                    case "Site":
-                        htmlTextController.UpdateWorkflow(this.PortalId, this.rblApplyTo.SelectedValue, int.Parse(this.cboWorkflow.SelectedValue), this.chkReplace.Checked);
-                        break;
-                }
-
                 // Module failed to load
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        /// <inheritdoc/>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            this.cboWorkflow.SelectedIndexChanged += this.OnWorkflowSelectedIndexChanged;
-        }
-
-        protected void OnWorkflowSelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.DisplayWorkflowDetails();
-        }
-
-        private void DisplayWorkflowDetails()
-        {
-            if (this.cboWorkflow.SelectedValue != null)
-            {
-                var objWorkflow = new WorkflowStateController();
-                var strDescription = string.Empty;
-                var arrStates = objWorkflow.GetWorkflowStates(int.Parse(this.cboWorkflow.SelectedValue));
-                if (arrStates.Count > 0)
-                {
-                    foreach (WorkflowStateInfo objState in arrStates)
-                    {
-                        strDescription = strDescription + " >> " + "<strong>" + objState.StateName + "</strong>";
-                    }
-
-                    strDescription = strDescription + "<br />" + ((WorkflowStateInfo)arrStates[0]).Description;
-                }
-
-                this.lblDescription.Text = strDescription;
             }
         }
     }

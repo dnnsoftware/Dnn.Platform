@@ -2,6 +2,19 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import resx from "resources";
+import Html from "../../Html";
+import Undo from "./icons/undo.svg";
+import Redo from "./icons/redo.svg";
+import Bold from "./icons/bold.svg";
+import Italic from "./icons/italic.svg";
+import Underline from "./icons/underline.svg";
+import StrikeThrough from "./icons/strikeThrough.svg";
+import JustifyLeft from "./icons/justifyLeft.svg";
+import JustifyCenter from "./icons/justifyCenter.svg";
+import JustifyRight from "./icons/justifyRight.svg";
+import JustifyFull from "./icons/justifyFull.svg";
+import InsertUnorderedList from "./icons/insertUnorderedList.svg";
+import InsertOrderedList from "./icons/insertOrderedList.svg";
 import "./fullEditor.less";
 
 class FullEditor extends Component {
@@ -11,10 +24,26 @@ class FullEditor extends Component {
         };
 
         this.editorToolbar = [
-            ["undo", "redo"],
-            ["bold", "italic", "underline", "strikeThrough"],
-            ["justifyLeft", "justifyCenter", "justifyRight", "justifyFull"],
-            ["insertUnorderedList", "insertOrderedList"]
+            [
+                { name: "undo", icon: Undo, },
+                { name: "redo", icon: Redo, }
+            ],
+            [
+                { name: "bold", icon: Bold, },
+                { name: "italic", icon: Italic, },
+                { name: "underline", icon: Underline, },
+                { name: "strikeThrough", icon: StrikeThrough, }
+            ],
+            [
+                { name: "justifyLeft", icon: JustifyLeft, },
+                { name: "justifyCenter", icon: JustifyCenter, },
+                { name: "justifyRight", icon: JustifyRight, },
+                { name: "justifyFull", icon: JustifyFull, }
+            ],
+            [
+                { name: "insertUnorderedList", icon: InsertUnorderedList, },
+                { name: "insertOrderedList", icon: InsertOrderedList, }
+            ]
         ];
     }
 
@@ -44,7 +73,7 @@ class FullEditor extends Component {
         props.onCancel();
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderToolbar() {
         return (
             <div className='fulleditor-controls'>
@@ -53,14 +82,15 @@ class FullEditor extends Component {
                         return <div className='btn-group' key={i}>
                             {
                                 group.map((button, i) => {
+                                    const ButtonIcon = button.icon;
                                     return (
                                         <a 
-                                            className='btn' 
-                                            data-role={button} 
+                                            className='btn'
+                                            data-role={button.name} 
                                             href='#'
-                                            onClick={this.execCommand.bind(this, button)}
-                                            dangerouslySetInnerHTML={{ __html: require("./icons/" + button + ".svg").default }}
+                                            onClick={this.execCommand.bind(this, button.name)}
                                             key={i}>
+                                            <ButtonIcon />
                                         </a>
                                     );
                                 })
@@ -72,21 +102,21 @@ class FullEditor extends Component {
         );
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderEditor() {
         const { props } = this;
         return (
             <div className='fulleditor-editor' 
                 contentEditable
-                ref={(e) => { this.editorControl = e; }}
-                dangerouslySetInnerHTML={{ __html: props.value }}>
+                ref={(e) => { this.editorControl = e; }}>
+                    <Html html={props.value } />
             </div>
         );
     }
 
     renderButtons() {
         return [
-            <Button type="secondary" onClick={this.onCancel.bind(this)} key="first">
+            <Button type="neutral" onClick={this.onCancel.bind(this)} key="first">
                 <TextOverflowWrapper text={resx.get("Cancel") } maxWidth={100} />
             </Button>,
             <Button type="primary" onClick={this.onSave.bind(this)} key="second">

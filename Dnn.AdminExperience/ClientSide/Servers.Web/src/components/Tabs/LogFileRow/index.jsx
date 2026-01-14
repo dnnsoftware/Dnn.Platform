@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Collapsible as Collapse } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import * as dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 
 /*eslint-disable eqeqeq*/
 class LogFileRow extends Component {
@@ -17,12 +18,12 @@ class LogFileRow extends Component {
         this.timeout = 0;
         this.handleClick = this.handleClick.bind(this);
 
-        const localizedFormat = require('dayjs/plugin/localizedFormat');
         dayjs.extend(localizedFormat);
-        require('dayjs/locale/' + window.dnn.utility.getCulture().substring(0,2));
+        /* eslint-disable-next-line no-undef */
+        require("dayjs/locale/" + window.dnn.utility.getCulture().substring(0,2));
     }
 
-    componentWillReceiveProps() {
+    getDerivedStateFromProps() {
         this.setState({});
     }
 

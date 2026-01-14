@@ -22,15 +22,15 @@
         position: absolute;
         width: 256px;
         left: 0px;
-        border: 1px solid @alto;
-        box-shadow: 0px 0px 17px 2px rgba(0, 0, 0, .2);
+        border: 1px solid var(--dnn-color-foreground-light, @alto);
+        box-shadow: 0px 0px 17px 2px rgba(var(--dnn-color-foreground-r, 0), var(--dnn-color-foreground-g, 0), var(--dnn-color-foreground-b, 0), .2);
         opacity: 0;
         pointer-events: none;
         transition: 300ms;
         transform-origin: 100% 0% 0px;
         transform: scale(1);
         z-index: 10;
-        background: white;
+        background: var(--dnn-color-background, white);
         text-align: center;
 
         &.show-above-input {
@@ -62,17 +62,14 @@
         cursor: pointer;
         float: left;
         padding-top: 1px;
-        color: @alto;
+        color: var(--dnn-color-neutral, @alto);
         margin-left: 7px;
-        &:hover {
-            color: @rollingStone;
-        }
-        &.active, &.active:hover {
-            color: @curiousBlue;
+        &:hover, &:active {
+            color: var(--dnn-color-primary, @curiousBlue);
         }
     }
     .clear-button {
-        color: @alto;
+        color: var(--dnn-color-neutral, @alto);
         cursor: pointer;
         height: 9px;
         position: absolute;
@@ -80,11 +77,12 @@
         top: 3px;
         font-size: 26px;
         &:hover {
-            color: @rollingStone;
+            color: var(--dnn-color-neutral-dark, @rollingStone);
         }
     }
     .calendar-text {
-        border: 1px solid #b0afae;
+        border: 1px solid var(--dnn-color-foreground-light, #b0afae);
+        border-radius: var(--dnn-controls-radius, 0);
         padding: 8px 12px;
         cursor: pointer;
         min-height: 16px;
@@ -118,7 +116,7 @@
             position: absolute;
             display: block;
             cursor: pointer;
-            border: 1px solid #ccc;
+            border: 1px solid var(--dnn-color-neutral, #ccc);
             padding: 0;
             width: 28px;
             height: 28px;
@@ -148,7 +146,7 @@
             text-transform: uppercase;
             padding: 10px 0;
             font-weight: 600;
-            color: @bulgarianRose;
+            color: var(--dnn-color-foreground, @bulgarianRose);
         }
         .DayPicker-Weekdays {
             width: 100%;
@@ -157,14 +155,14 @@
                 width: 100%;
                 float: left;
                 .DayPicker-Weekday {
-                    color: #fff;
+                    color: var(--dnn-color-background, #fff);
                     line-height: 30px;
                     text-align: center;
                     background-color: @alto;
                     width: 14.28%;
                     box-sizing: border-box;
                     float: left;
-                    border: 2px solid #fff;
+                    border: 2px solid var(--dnn-color-background, #fff);
                 }
             }
         }
@@ -179,18 +177,18 @@
             cursor: pointer;
             display: block;
             padding: 6px 0 6px 0;
-            color: @rollingStone;
+            color: var(--dnn-color-neutral, @rollingStone);
             font-size: 11px;
             font-family: inherit;
             line-height: 15px;
             text-align: center;
-            background: @mercury;
+            background: var(--dnn-color-background, @mercury);
             box-sizing: border-box;
-            border: 2px solid #fff;
+            border: 2px solid var(--dnn-color-background, #fff);
             outline: 0 !important;
             &.DayPicker-Day--selected {
-                background: @curiousBlue !important;
-                color: #fff;
+                background: var(--dnn-color-primary, @curiousBlue) !important;
+                color: var(--dnn-color-primary-contrast, #fff);
             }
             &.DayPicker-Day--outside {
                 opacity: 0;
@@ -199,50 +197,40 @@
             &.DayPicker-Day--disabled {
                 pointer-events: none;
                 cursor: default;
-                color: #999;
+                color: var(--dnn-color-neutral, #999);
                 opacity: .3;
             }
             &:hover {
-                background: @alto;
+                background: var(--dnn-color-neutral-light, @alto);
             }
         }
     }
     button[role="primary"] {
         float: right;
         margin: 10px;
-        background: @curiousBlue;
-        color: white;
+        background: var(--dnn-color-primary, @curiousBlue);
+        color: var(--dnn-color-primary-contrast, white);
         padding: 9px 20px;
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        &:hover {
-            background: @cerulean;
-        }
-        &:active {
-            background: @matisse;
+        &:hover, &:active {
+            background: var(--dnn-color-primary-light, @cerulean);
         }
     }
     button[role="secondary"] {
         float: right;
         height: 34px;
         margin: 10px;
-        background: @white;
-        color: @curiousBlue;
+        background: var(--dnn-color-primary-contrast, @white);
+        color: var(--dnn-color-primary, @curiousBlue);
         padding: 0 22px;
-        border: 1px solid @curiousBlue;        
+        border: 1px solid var(--dnn-color-primary, @curiousBlue);
         border-radius: 4px;
         cursor: pointer;
-        &:hover {
-            color: @cerulean;
-            border-color: @cerulean;
-        }
-        &:focus{
-            outline: none;
-        }
-        &:active {
-            color: @matisse;
-            border-color: @matisse;
+        &:hover, &:active {
+            color: var(--dnn-collor-primary-light, @cerulean);
+            border-color: var(--dnn-collor-primary-light, @cerulean);
         }
     }
     .date-input {
@@ -268,7 +256,7 @@
                 height: 0;
                 border-left: 4.88px solid transparent;
                 border-right: 4.88px solid transparent;
-                border-top: 4.34px solid #6f7273;
+                border-top: 4.34px solid var(--dnn-color-neutral, #6f7273);
                 z-index: 2;
                 pointer-events: none;
             }
@@ -344,12 +332,12 @@
         
         
         float: left;
-        border-top: 1px solid @mercury;
+        border-top: 1px solid var(--dnn-color-neutral-light, @mercury);
         margin-left: 10px;
         pointer-events: none;
         .time-text {
             position: relative;
-            color: @curiousBlue;
+            color: var(--dnn-color-primary, @curiousBlue);
             font-weight: 600;
             letter-spacing: 1px;
             height: 16px;
@@ -363,17 +351,17 @@
                 height: 0;
                 border-left: 3px solid transparent;
                 border-right: 3px solid transparent;
-                border-top: 4px solid @curiousBlue;
+                border-top: 4px solid var(--dnn-color-primary, @curiousBlue);
             }
             .time-selector {
                 height: 132px;
                 overflow: hidden;
-                background: white;
+                background: var(--dnn-color-background, white);
                 position: absolute;
                 left: 50%;
                 transform: translate(-50%);
                 top: 31px;
-                border: 1px solid @alto;
+                border: 1px solid var(--dnn-color-neutral, @alto);
                 padding: 5px 0px;
                 box-sizing: border-box;
                 box-shadow: 0px 0px 17px 2px rgba(0, 0, 0, .2);
@@ -387,12 +375,12 @@
                     overflow-x: auto;
                     height: 100%;
                     .time-option {
-                        color: @rollingStone;
+                        color: var(--dnn-color-neutral, @rollingStone);
                         padding: 5px;
                         cursor: pointer;
                         &:hover {
-                            background: @gallery;
-                            color: @curiousBlue;
+                            background: var(--dnn-color-primary-contrast, @gallery);
+                            color: var(--dnn-color-primary, @curiousBlue);
                         }
                     }
                 }

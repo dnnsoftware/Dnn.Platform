@@ -91,7 +91,7 @@ class RoleRow extends Component {
                 onIconClick={this.onExpiresTimeClick.bind(this, props.roleDetails, props.index) }             />
         </span> : null;
         let deleteAction = props.roleDetails.allowDelete ?
-            <a className={"extension-action"} dangerouslySetInnerHTML={{ __html: SvgIcons.XIcon }} onClick={this.onDeleteClick.bind(this, props.roleDetails, props.index) }></a>
+            <a className={"extension-action"} onClick={this.onDeleteClick.bind(this, props.roleDetails, props.index) }><SvgIcons.XIcon /></a>
             : null;
         return <div className={state.editIndex === props.index ? "edit-row" : null}>
             {startTimeAction}

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Mail
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -177,7 +178,7 @@ namespace DotNetNuke.Services.Mail
                     var needUpdateSender = false;
                     if (smtpInfo.Username.Contains("@")
                         && senderAddress == Host.HostEmail
-                        && !senderAddress.Equals(smtpInfo.Username, StringComparison.InvariantCultureIgnoreCase))
+                        && !senderAddress.Equals(smtpInfo.Username, StringComparison.OrdinalIgnoreCase))
                     {
                         senderAddress = smtpInfo.Username;
                         needUpdateSender = true;
@@ -226,7 +227,7 @@ namespace DotNetNuke.Services.Mail
             return mailMessage;
         }
 
-        private static (string host, int? port, string errorMessage) ParseSmtpServer(ref SmtpInfo smtpInfo)
+        private static (string Host, int? Port, string ErrorMessage) ParseSmtpServer(ref SmtpInfo smtpInfo)
         {
             var errorMessage = ValidateSmtpInfo(smtpInfo);
             if (errorMessage != null)
@@ -250,8 +251,8 @@ namespace DotNetNuke.Services.Mail
             }
 
             // port is guaranteed to be of max 5 digits numeric by the RegEx check
-            var port = int.Parse(smtpHostParts[1]);
-            if (port < 1 || port > 65535)
+            var port = int.Parse(smtpHostParts[1], CultureInfo.InvariantCulture);
+            if (port is < 1 or > 65535)
             {
                 return (null, null, Localize.GetString("SmtpInvalidPort"));
             }

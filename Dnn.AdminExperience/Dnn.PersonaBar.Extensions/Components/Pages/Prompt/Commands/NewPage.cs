@@ -1,10 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
+    using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -12,41 +13,50 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     using Dnn.PersonaBar.Pages.Components.Exceptions;
     using Dnn.PersonaBar.Pages.Components.Prompt.Models;
     using Dnn.PersonaBar.Pages.Components.Security;
+
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("new-page", Constants.PagesCategory, "Prompt_NewPage_Description")]
-
     public class NewPage : ConsoleCommandBase
     {
         [FlagParameter("parentid", "Prompt_NewPage_FlagParentId", "Integer")]
-
         private const string FlagParentId = "parentid";
 
         [FlagParameter("title", "Prompt_NewPage_FlagTitle", "String")]
-
         private const string FlagTitle = "title";
 
         [FlagParameter("name", "Prompt_NewPage_FlagName", "String", true)]
-
         private const string FlagName = "name";
 
         [FlagParameter("url", "Prompt_NewPage_FlagUrl", "String")]
-
         private const string FlagUrl = "url";
 
         [FlagParameter("description", "Prompt_NewPage_FlagDescription", "String")]
-
         private const string FlagDescription = "description";
 
         [FlagParameter("keywords", "Prompt_NewPage_FlagKeywords", "String")]
-
         private const string FlagKeywords = "keywords";
 
         [FlagParameter("visible", "Prompt_NewPage_FlagVisible", "Boolean", "true")]
-
         private const string FlagVisible = "visible";
+
+        private readonly IPagesController pagesController;
+
+        /// <summary>Initializes a new instance of the <see cref="NewPage"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IPagesController. Scheduled removal in v12.0.0.")]
+        public NewPage()
+            : this(PagesController.Instance)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="NewPage"/> class.</summary>
+        /// <param name="pagesController">The pages controller.</param>
+        public NewPage(IPagesController pagesController)
+        {
+            this.pagesController = pagesController;
+        }
 
         /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourceFile;
@@ -85,7 +95,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             var testTab = TabController.Instance.GetTab((int)this.ParentId, this.PortalId);
             if (testTab == null)
             {
-                this.AddMessage(string.Format(this.LocalizeString("Prompt_UnableToFindSpecified"), FlagParentId, this.ParentId));
+                this.AddMessage(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Prompt_UnableToFindSpecified"), FlagParentId, this.ParentId));
             }
         }
 
@@ -94,7 +104,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         {
             try
             {
-                var pageSettings = PagesController.Instance.GetDefaultSettings();
+                var pageSettings = this.pagesController.GetDefaultSettings();
                 pageSettings.Name = !string.IsNullOrEmpty(this.Name) ? this.Name : pageSettings.Name;
                 pageSettings.Title = !string.IsNullOrEmpty(this.Title) ? this.Title : pageSettings.Title;
                 pageSettings.Url = !string.IsNullOrEmpty(this.Url) ? this.Url : pageSettings.Url;
@@ -106,7 +116,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                 pageSettings.IncludeInMenu = this.Visible ?? true;
                 if (pageSettings.ParentId != null)
                 {
-                    var parentTab = PagesController.Instance.GetPageSettings(pageSettings.ParentId.Value);
+                    var parentTab = this.pagesController.GetPageSettings(pageSettings.ParentId.Value);
                     if (parentTab != null)
                     {
                         pageSettings.Permissions = parentTab.Permissions;
@@ -118,7 +128,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                     return new ConsoleErrorResultModel(this.LocalizeString("MethodPermissionDenied"));
                 }
 
-                var newTab = PagesController.Instance.SavePageDetails(this.PortalSettings, pageSettings);
+                var newTab = this.pagesController.SavePageDetails(this.PortalSettings, pageSettings);
 
                 // create the tab
                 var lstResults = new List<PageModel>();

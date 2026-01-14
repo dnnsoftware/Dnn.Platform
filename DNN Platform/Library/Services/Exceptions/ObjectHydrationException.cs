@@ -14,18 +14,18 @@ namespace DotNetNuke.Services.Exceptions
         private Type type;
 
         /// <summary>Initializes a new instance of the <see cref="ObjectHydrationException"/> class.</summary>
-        /// <param name="message"></param>
-        /// <param name="innerException"></param>
+        /// <param name="message">The message that describes the error.</param>
+        /// <param name="innerException">The exception that is the cause of the current exception. If the <paramref name="innerException"/> is not a <see langword="null" /> reference, the current exception is raised in a catch block that handles the inner exception.</param>
         public ObjectHydrationException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ObjectHydrationException"/> class.</summary>
-        /// <param name="message"></param>
-        /// <param name="innerException"></param>
-        /// <param name="type"></param>
-        /// <param name="dr"></param>
+        /// <param name="message">The message that describes the error.</param>
+        /// <param name="innerException">The exception that is the cause of the current exception. If the <paramref name="innerException"/> is not a <see langword="null" /> reference, the current exception is raised in a catch block that handles the inner exception.</param>
+        /// <param name="type">The type being hydrated.</param>
+        /// <param name="dr">The data reader (for getting column names).</param>
         public ObjectHydrationException(string message, Exception innerException, Type type, IDataReader dr)
             : base(message, innerException)
         {
@@ -38,8 +38,8 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         /// <summary>Initializes a new instance of the <see cref="ObjectHydrationException"/> class.</summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
+        /// <param name="info">The serialization info.</param>
+        /// <param name="context">The streaming context.</param>
         protected ObjectHydrationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

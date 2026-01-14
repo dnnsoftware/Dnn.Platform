@@ -6,6 +6,7 @@ namespace DotNetNuke.Data
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web.Caching;
 
@@ -62,7 +63,7 @@ namespace DotNetNuke.Data
 
             if (this.IsCacheable)
             {
-                this.CacheArgs.CacheKey = string.Format(this.CacheArgs.CacheKey, scopeValue);
+                this.CacheArgs.CacheKey = string.Format(CultureInfo.InvariantCulture, this.CacheArgs.CacheKey, scopeValue);
             }
 
             return this.IsCacheable
@@ -199,7 +200,7 @@ namespace DotNetNuke.Data
             if (this.IsCacheable)
             {
                 DataCache.RemoveCache(this.IsScoped
-                                          ? string.Format(this.CacheArgs.CacheKey, this.GetScopeValue<object>(item))
+                                          ? string.Format(CultureInfo.InvariantCulture, this.CacheArgs.CacheKey, this.GetScopeValue<object>(item))
                                           : this.CacheArgs.CacheKey);
             }
         }
@@ -226,13 +227,13 @@ namespace DotNetNuke.Data
                 this.IsCacheable = true;
                 var cacheKey = !string.IsNullOrEmpty(cacheableAttribute.CacheKey)
                                 ? cacheableAttribute.CacheKey
-                                : string.Format("OR_{0}", type.Name);
+                                : $"OR_{type.Name}";
                 var cachePriority = cacheableAttribute.CachePriority;
                 var cacheTimeOut = cacheableAttribute.CacheTimeOut;
 
                 if (this.IsScoped)
                 {
-                    cacheKey += "_" + this.Scope + "_{0}";
+                    cacheKey += $"_{this.Scope}_{{0}}";
                 }
 
                 this.CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);

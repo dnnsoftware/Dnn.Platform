@@ -16,8 +16,8 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            var testAssemblies = context.GetFiles($@"**\bin\{context.BuildConfiguration}\DotNetNuke.Tests.*.dll");
-            testAssemblies += context.GetFiles($@"**\bin\{context.BuildConfiguration}\Dnn.PersonaBar.*.Tests.dll");
+            var testAssemblies = context.GetFiles(@"**\bin\**\DotNetNuke.Tests.*.dll");
+            testAssemblies += context.GetFiles(@"**\bin\**\Dnn.PersonaBar.*.Tests.dll");
             testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Utilities.dll");
 
             // TODO: address issues to allow these tests to run

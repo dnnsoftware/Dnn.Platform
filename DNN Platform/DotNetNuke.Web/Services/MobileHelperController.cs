@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -20,12 +21,15 @@ namespace DotNetNuke.Web.Services
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Models;
 
+    /// <summary>A web API controller for getting information about modules in the site.</summary>
     [AllowAnonymous]
     public class MobileHelperController : DnnApiController
     {
+        private static readonly char[] ModuleSeparator = [',',];
         private readonly string dnnVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
 
         /// <summary>Gets the various defined monikers for the various tab modules in the system.</summary>
+        /// <param name="moduleList">A comma-delimited list of module names.</param>
         /// <returns>A response with a list of objects containing <c>tabModuleId</c> and <c>moniker</c> fields.</returns>
         [HttpGet]
         public IHttpActionResult Monikers(string moduleList)
@@ -34,6 +38,9 @@ namespace DotNetNuke.Web.Services
             return this.Ok(monikers.Select(kpv => new { tabModuleId = kpv.Key, moniker = kpv.Value }));
         }
 
+        /// <summary>Gets the details about the modules in the site.</summary>
+        /// <param name="moduleList">A comma-delimited list of module names.</param>
+        /// <returns>A response with a <see cref="SiteDetail"/> object.</returns>
         [HttpGet]
         public HttpResponseMessage ModuleDetails(string moduleList)
         {
@@ -52,9 +59,9 @@ namespace DotNetNuke.Web.Services
             var modules = modulesController.GetAllTabsModules(portalId, false).OfType<ModuleInfo>()
                 .Where(tabmodule => monikers.ContainsKey(tabmodule.TabModuleID)).ToArray();
 
-            if (modules.Any())
+            if (modules.Length != 0)
             {
-                foreach (var moduleName in (moduleList ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var moduleName in (moduleList ?? string.Empty).Split(ModuleSeparator, StringSplitOptions.RemoveEmptyEntries))
                 {
                     var dtmRecord = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
                     if (dtmRecord != null)
@@ -76,11 +83,11 @@ namespace DotNetNuke.Web.Services
 
         private static IEnumerable<TabModule> GetTabModules(string moduleName)
         {
-            var portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
+            var portalId = PortalController.Instance.GetCurrentSettings().PortalId;
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
             if (desktopModule != null)
             {
-                var cacheKey = string.Format(DataCache.DesktopModuleCacheKey, portalId) + "_" +
+                var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.DesktopModuleCacheKey, portalId) + "_" +
                                desktopModule.DesktopModuleID;
                 var args = new CacheItemArgs(cacheKey, DataCache.DesktopModuleCacheTimeOut, DataCache.DesktopModuleCachePriority, portalId, desktopModule);
 
@@ -149,7 +156,7 @@ namespace DotNetNuke.Web.Services
                 IsAdmin = this.UserInfo.IsInRole("Administrators"),
             };
 
-            foreach (var moduleName in (moduleList ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var moduleName in (moduleList ?? string.Empty).Split(ModuleSeparator, StringSplitOptions.RemoveEmptyEntries))
             {
                 var modulesCollection = GetTabModules((moduleName ?? string.Empty).Trim())
                     .Where(tabmodule => TabPermissionController.CanViewPage(tabmodule.TabInfo) &&

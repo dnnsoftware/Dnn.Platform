@@ -5,6 +5,8 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Xml.XPath;
 
@@ -22,76 +24,29 @@ namespace DotNetNuke.Services.Installer.Installers
         private InstallFile installScript;
 
         /// <inheritdoc />
-        public override string AllowableFiles
-        {
-            get
-            {
-                return "*dataprovider, sql";
-            }
-        }
+        public override string AllowableFiles => "*dataprovider, sql";
 
         /// <summary>Gets the base Install Script (if present).</summary>
-        protected InstallFile InstallScript
-        {
-            get
-            {
-                return this.installScript;
-            }
-        }
+        protected InstallFile InstallScript => this.installScript;
 
         /// <summary>Gets the collection of versioned Install Scripts.</summary>
-        protected SortedList<Version, InstallFile> InstallScripts
-        {
-            get
-            {
-                return this.installScripts;
-            }
-        }
+        protected SortedList<Version, InstallFile> InstallScripts => this.installScripts;
 
         /// <summary>Gets the collection of UnInstall Scripts.</summary>
-        protected SortedList<Version, InstallFile> UnInstallScripts
-        {
-            get
-            {
-                return this.unInstallScripts;
-            }
-        }
+        protected SortedList<Version, InstallFile> UnInstallScripts => this.unInstallScripts;
 
         /// <summary>Gets the name of the Collection Node (<c>scripts</c>).</summary>
-        protected override string CollectionNodeName
-        {
-            get
-            {
-                return "scripts";
-            }
-        }
+        protected override string CollectionNodeName => "scripts";
 
         /// <summary>Gets the name of the Item Node (<c>script</c>).</summary>
-        protected override string ItemNodeName
-        {
-            get
-            {
-                return "script";
-            }
-        }
+        protected override string ItemNodeName => "script";
 
-        protected ProviderConfiguration ProviderConfiguration
-        {
-            get
-            {
-                return ProviderConfiguration.GetProviderConfiguration("data");
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected ProviderConfiguration ProviderConfiguration => ProviderConfiguration.GetProviderConfiguration("data");
 
         /// <summary>Gets a list of Pre-Upgrade Scripts (if present) - these scripts will always run before any upgrade scripts but not upon initial installation.</summary>
         /// <value>A list of <see cref="InstallFile"/> instances.</value>
-        protected IList<InstallFile> PreUpgradeScripts
-        {
-            get
-            {
-                return this.preUpgradeScripts;
-            }
-        }
+        protected IList<InstallFile> PreUpgradeScripts => this.preUpgradeScripts;
 
         [Obsolete("Deprecated in DotNetNuke 9.9.0. This is now the first of the PostUpgrade scripts. Scheduled for removal in v11.0.0.")]
         protected InstallFile UpgradeScript => this.PostUpgradeScripts[0];
@@ -231,22 +186,22 @@ namespace DotNetNuke.Services.Installer.Installers
                     // This is the initial script when installing
                     this.installScript = file;
                 }
-                else if (type.Equals("preupgrade", StringComparison.InvariantCultureIgnoreCase))
+                else if (type.Equals("preupgrade", StringComparison.OrdinalIgnoreCase))
                 {
                     this.preUpgradeScripts.Add(file);
                 }
                 else if (file.Name.StartsWith("upgrade.", StringComparison.InvariantCultureIgnoreCase)
-                    || type.Equals("postupgrade", StringComparison.InvariantCultureIgnoreCase))
+                    || type.Equals("postupgrade", StringComparison.OrdinalIgnoreCase))
                 {
                     this.postUpgradeScripts.Add(file);
                 }
-                else if (type.Equals("install", StringComparison.InvariantCultureIgnoreCase))
+                else if (type.Equals("install", StringComparison.OrdinalIgnoreCase))
                 {
                     // These are the Install/Upgrade scripts
                     this.InstallScripts[file.Version] = file;
                 }
                 else if (file.Name.StartsWith("uninstall.", StringComparison.InvariantCultureIgnoreCase)
-                    || type.Equals("uninstall", StringComparison.InvariantCultureIgnoreCase))
+                    || type.Equals("uninstall", StringComparison.OrdinalIgnoreCase))
                 {
                     // These are the Uninstall scripts
                     this.UnInstallScripts[file.Version] = file;
@@ -254,7 +209,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 else
                 {
                     // we couldn't determine the file type
-                    this.Log.AddFailure(string.Format(Util.SQL_Manifest_BadFile, file.Name));
+                    this.Log.AddFailure(string.Format(CultureInfo.InvariantCulture, Util.SQL_Manifest_BadFile, file.Name));
                     return;
                 }
             }
@@ -270,6 +225,7 @@ namespace DotNetNuke.Services.Installer.Installers
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void UnInstallFile(InstallFile scriptFile)
         {
             // Process the file if it is an UnInstall Script
@@ -291,33 +247,33 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             bool bSuccess = true;
 
-            this.Log.AddInfo(string.Format(Util.SQL_BeginFile, scriptFile.Name));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.SQL_BeginFile, scriptFile.Name));
 
             // read script file for installation
             string strScript = FileSystemUtils.ReadFile(this.PhysicalBasePath + scriptFile.FullName);
 
-            // This check needs to be included because the unicode Byte Order mark results in an extra character at the start of the file
+            // This check needs to be included because the Unicode Byte Order mark results in an extra character at the start of the file
             // The extra character - '?' - causes an error with the database.
-            if (strScript.StartsWith("?"))
+            if (strScript.StartsWith("?", StringComparison.Ordinal))
             {
                 strScript = strScript.Substring(1);
             }
 
-            string strSQLExceptions = DataProvider.Instance().ExecuteScript(strScript);
-            if (!string.IsNullOrEmpty(strSQLExceptions))
+            string strSqlExceptions = DataProvider.Instance().ExecuteScript(strScript);
+            if (!string.IsNullOrEmpty(strSqlExceptions))
             {
                 if (this.Package.InstallerInfo.IsLegacyMode)
                 {
-                    this.Log.AddWarning(string.Format(Util.SQL_Exceptions, Environment.NewLine, strSQLExceptions));
+                    this.Log.AddWarning(string.Format(CultureInfo.InvariantCulture, Util.SQL_Exceptions, Environment.NewLine, strSqlExceptions));
                 }
                 else
                 {
-                    this.Log.AddFailure(string.Format(Util.SQL_Exceptions, Environment.NewLine, strSQLExceptions));
+                    this.Log.AddFailure(string.Format(CultureInfo.InvariantCulture, Util.SQL_Exceptions, Environment.NewLine, strSqlExceptions));
                     bSuccess = false;
                 }
             }
 
-            this.Log.AddInfo(string.Format(Util.SQL_EndFile, scriptFile.Name));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.SQL_EndFile, scriptFile.Name));
             return bSuccess;
         }
 
@@ -327,7 +283,7 @@ namespace DotNetNuke.Services.Installer.Installers
             if (fileExtension != null)
             {
                 fileExtension = fileExtension.Substring(1);
-                return this.ProviderConfiguration.DefaultProvider.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase) || fileExtension.Equals("sql", StringComparison.InvariantCultureIgnoreCase);
+                return this.ProviderConfiguration.DefaultProvider.Equals(fileExtension, StringComparison.OrdinalIgnoreCase) || fileExtension.Equals("sql", StringComparison.OrdinalIgnoreCase);
             }
             else
             {

@@ -7,9 +7,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
     using System;
 
     /// <summary>The MessageFileView class contains details about the attachment.</summary>
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Messaging.Views
-    /// Class:      MessageFileView
     public class MessageFileView
     {
         /// <summary>The _size.</summary>
@@ -34,8 +31,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
 
             set
             {
-                long bytes;
-                if (!long.TryParse(value, out bytes))
+                if (!long.TryParse(value, out var bytes))
                 {
                     return;
                 }
@@ -47,7 +43,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
                 {
                     if (bytes > max)
                     {
-                        this.size = string.Format("{0:##.##} {1}", decimal.Divide(bytes, max), order);
+                        this.size = $"{decimal.Divide(bytes, max):##.##} {order}";
                         return;
                     }
 

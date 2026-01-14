@@ -223,7 +223,7 @@
     <value>Icon Set</value>
   </data>
   <data name="plIconSet.Help" xml:space="preserve">
-    <value>The selected iconset will be applied to all icons on the site.</value>
+    <value>The selected icon set will be applied to all icons on the site.</value>
   </data>
   <data name="Save.Text" xml:space="preserve">
     <value>Save</value>
@@ -427,7 +427,7 @@
     <value>Property Category</value>
   </data>
   <data name="ProfilePropertyDefinition_PropertyCategory.Help" xml:space="preserve">
-    <value>Enter the category for this property.  This will allow the related properties to be grouped when dislayed to the user.</value>
+    <value>Enter the category for this property.  This will allow the related properties to be grouped when displayed to the user.</value>
   </data>
   <data name="ProfilePropertyDefinition_Length.Text" xml:space="preserve">
     <value>Length</value>
@@ -484,7 +484,7 @@
     <value>The field name is required.</value>
   </data>
   <data name="ProfilePropertyDefinition_PropertyName.NoSpecialCharacters" xml:space="preserve">
-    <value>The field name does not acccept special or space characters.</value>
+    <value>The field name does not accept special or space characters.</value>
   </data>
   <data name="ProfilePropertyDefinition_DataType.Required" xml:space="preserve">
     <value>The data type is required.</value>
@@ -544,7 +544,7 @@
     <value>Could not delete the profile field. Please try later.</value>
   </data>
   <data name="NoSpecialCharacterName.Text" xml:space="preserve">
-    <value>This property does not acccept special characters.</value>
+    <value>This property does not accept special characters.</value>
   </data>
   <data name="DuplicateName.Text" xml:space="preserve">
     <value>This property already exists.  Property names must be unique.  Please select a different name for this property.</value>
@@ -1488,6 +1488,18 @@
   <data name="plInjectModuleHyperLink.Text" xml:space="preserve">
     <value>Inject Module Anchor</value>
   </data>
+  <data name="plAllowJsInModuleHeaders.Help" xml:space="preserve">
+    <value>When switched on, no javascript will be allowed in the value set for a module header.</value>
+  </data>
+  <data name="plAllowJsInModuleHeaders.Text" xml:space="preserve">
+    <value>Allow Javascript in Module Header</value>
+  </data>
+  <data name="plAllowJsInModuleFooters.Help" xml:space="preserve">
+    <value>When switched on, no javascript will be allowed in the value set for a module footer.</value>
+  </data>
+  <data name="plAllowJsInModuleFooters.Text" xml:space="preserve">
+    <value>Allow Javascript in Module Footer</value>
+  </data>
   <data name="plInlineEditorEnabled.Help" xml:space="preserve">
     <value>When switched on DNN allows editors to edit HTML module content directly on the page instead of having to go through the edit control.</value>
   </data>
@@ -1508,5 +1520,32 @@
   </data>
   <data name="valMaxResultPerPageRequired.Error" xml:space="preserve">
     <value>Maximum result per page is required. Integer must be greater than 0.</value>
+  </data>
+  <data name="WorkflowSettings.Text" xml:space="preserve">
+    <value>Workflow Settings</value>
+  </data>
+  <data name="plEnabledVersioning.Text" xml:space="preserve">
+    <value>Enable Versioning</value>
+  </data>
+  <data name="plEnabledVersioning.Help" xml:space="preserve">
+    <value>When enabled, DNN will create a new version of the published page during editing and retain several older versions in the history.</value>
+  </data>
+  <data name="plMaxNumberOfVersions.Text" xml:space="preserve">
+    <value>Max Number of Versions</value>
+  </data>
+  <data name="plMaxNumberOfVersions.Help" xml:space="preserve">
+    <value>Select the maximum number of page versions to retain in history.</value>
+  </data>
+  <data name="plWorkflowEnabled.Text" xml:space="preserve">
+    <value>Enable Content Workflow</value>
+  </data>
+  <data name="plWorkflowEnabled.Help" xml:space="preserve">
+    <value>When enabled, DNN will enforce the selected content workflow during the publishing process of page edits.</value>
+  </data>
+  <data name="plDefaultTabWorkflowId.Text" xml:space="preserve">
+    <value>Default Content Workflow</value>
+  </data>
+  <data name="plDefaultTabWorkflowId.Help" xml:space="preserve">
+    <value>Select the default content workflow to be applied.</value>
   </data>
 </root>

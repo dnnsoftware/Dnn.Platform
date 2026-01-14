@@ -17,15 +17,12 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Instrumentation;
 
     [ConsoleCommand("list-roles", Constants.RolesCategory, "Prompt_ListRoles_Description")]
-
     public class ListRoles : ConsoleCommandBase
     {
         [FlagParameter("page", "Prompt_ListRoles_FlagPage", "Integer", "1")]
-
         private const string FlagPage = "page";
 
         [FlagParameter("max", "Prompt_ListRoles_FlagMax", "Integer", "10")]
-
         private const string FlagMax = "max";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListRoles));

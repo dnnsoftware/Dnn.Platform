@@ -11,6 +11,7 @@ namespace Dnn.ExportImport.Components.Entities
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Modules;
 
+    /// <summary>A table of checkpoints in an import/export job.</summary>
     [Serializable]
     [TableName("ExportImportCheckpoints")]
     [PrimaryKey("CheckpointId")]
@@ -18,24 +19,35 @@ namespace Dnn.ExportImport.Components.Entities
     {
         private double progress;
 
+        /// <summary>Gets or sets the ID of the checkpoint.</summary>
         public int CheckpointId { get; set; }
 
+        /// <summary>Gets or sets the job ID.</summary>
         public int JobId { get; set; }
 
+        /// <summary>Gets or sets the assembly name.</summary>
         public string AssemblyName { get; set; }
 
+        /// <summary>Gets or sets the category.</summary>
         public string Category { get; set; }
 
-        public int Stage { get; set; } // all stages start from 0 and increase
+        /// <summary>Gets or sets the stage index.</summary>
+        /// <remarks>all stages start from 0 and increase.</remarks>
+        public int Stage { get; set; }
 
-        public string StageData { get; set; } // discretionary data
+        /// <summary>Gets or sets any discretionary data for the stage.</summary>
+        public string StageData { get; set; }
 
+        /// <summary>Gets or sets the start date.</summary>
         public DateTime StartDate { get; set; }
 
+        /// <summary>Gets or sets the last update date.</summary>
         public DateTime LastUpdateDate { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether the checkpoint is complete.</summary>
         public bool Completed { get; set; }
 
+        /// <summary>Gets or sets the progress (from <c>0</c> to <c>100</c>).</summary>
         public double Progress
         {
             get
@@ -58,18 +70,20 @@ namespace Dnn.ExportImport.Components.Entities
             }
         }
 
+        /// <summary>Gets or sets the total item count.</summary>
         public int TotalItems { get; set; }
 
+        /// <summary>Gets or sets the processed item count.</summary>
         public int ProcessedItems { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID
         {
             get { return this.CheckpointId; }
             set { this.CheckpointId = value; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
             this.CheckpointId = Null.SetNullInteger(dr[nameof(this.CheckpointId)]);

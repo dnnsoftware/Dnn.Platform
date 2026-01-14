@@ -24,13 +24,13 @@ class ProviderRow extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     getEnabledDisplay() {
         const {props} = this;
         if (props.enabled) {
             return (
                 <div className="item-row-enabled-display">
-                    <div className="enabled-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CheckMarkIcon }} />
+                    <div className="enabled-icon"><SvgIcons.CheckMarkIcon /></div>
                 </div>
             );
         }
@@ -41,7 +41,7 @@ class ProviderRow extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         let opened = (this.props.openId !== "" && this.props.name === this.props.openId);
@@ -60,7 +60,7 @@ class ProviderRow extends Component {
                                 {props.overridePriority ? props.priority : resx.get("None")}
                             </div>
                             <div className="provider-item item-row-editButton">
-                                <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this)} />
+                                <div className={opened ? "edit-icon-active" : "edit-icon"}onClick={this.toggle.bind(this)}><SvgIcons.EditIcon /></div>
                             </div>
                         </div>
                     </div>
@@ -83,7 +83,8 @@ ProviderRow.propTypes = {
     Collapse: PropTypes.func,
     id: PropTypes.string,
     openId: PropTypes.string,
-    visible: PropTypes.bool
+    visible: PropTypes.bool,
+    children: PropTypes.node,
 };
 
 ProviderRow.defaultProps = {

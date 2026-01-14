@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         }
 
         /// <summary>Initializes a new instance of the <see cref="ScopeType"/> class.</summary>
-        /// <param name="scopeType"></param>
+        /// <param name="scopeType">The name of the scope type.</param>
         public ScopeType(string scopeType)
         {
             this.ScopeTypeId = Null.NullInteger;

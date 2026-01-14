@@ -1,0 +1,16 @@
+@use "sass:map";
+$fonts: (
+    'base-font-size': var(--dnn-base-font-size, 18px),
+);
+
+$var-base-font-size: #{map.get($fonts, 'base-font-size')};
+$lineheight: 1.5;
+$base-line-height: calc($var-base-font-size * 1.5);
+$defaultlineheight: calc($var-base-font-size * 1.5);
+
+$ubuntu: 'Ubuntu', Helvetica, sans-serif;
+
+// Font function
+@function font($font-name) {
+    @return map.get($fonts, $font-name);
+}

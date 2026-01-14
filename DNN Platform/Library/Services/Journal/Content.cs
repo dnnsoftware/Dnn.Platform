@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Journal
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Common.Utilities;
@@ -12,6 +13,7 @@ namespace DotNetNuke.Services.Journal
     public class Content
     {
         /// <summary>This is used to determine the ContentTypeID (part of the Core API) based on this module's content type. If the content type doesn't exist yet for the module, it is created.</summary>
+        /// <param name="contentTypeName">The name of the content type.</param>
         /// <returns>The primary key value (ContentTypeID) from the core API's Content Types table.</returns>
         internal static int GetContentTypeID(string contentTypeName)
         {
@@ -19,10 +21,10 @@ namespace DotNetNuke.Services.Journal
             var colContentTypes = from t in typeController.GetContentTypes() where t.ContentType == contentTypeName select t;
             int contentTypeId;
 
-            if (colContentTypes.Count() > 0)
+            if (colContentTypes.Any())
             {
                 var contentType = colContentTypes.Single();
-                contentTypeId = contentType == null ? CreateContentType(contentTypeName) : contentType.ContentTypeId;
+                contentTypeId = contentType?.ContentTypeId ?? CreateContentType(contentTypeName);
             }
             else
             {
@@ -33,8 +35,12 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <summary>This should only run after the Post exists in the data store.</summary>
+        /// <param name="objJournalItem">The journal item.</param>
+        /// <param name="tabId">The tab ID.</param>
+        /// <param name="moduleId">The module ID.</param>
         /// <returns>The newly created ContentItemID from the data store.</returns>
         /// <remarks>This is for the first question in the thread. Not for replies or items with ParentID > 0.</remarks>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal ContentItem CreateContentItem(JournalItem objJournalItem, int tabId, int moduleId)
         {
             var typeController = new ContentTypeController();
@@ -47,10 +53,10 @@ namespace DotNetNuke.Services.Journal
             var colContentTypes = from t in typeController.GetContentTypes() where t.ContentType == contentTypeName select t;
             int contentTypeID;
 
-            if (colContentTypes.Count() > 0)
+            if (colContentTypes.Any())
             {
                 var contentType = colContentTypes.Single();
-                contentTypeID = contentType == null ? CreateContentType(contentTypeName) : contentType.ContentTypeId;
+                contentTypeID = contentType?.ContentTypeId ?? CreateContentType(contentTypeName);
             }
             else
             {
@@ -76,6 +82,10 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <summary>This is used to update the content in the ContentItems table. Should be called when a question is updated.</summary>
+        /// <param name="objJournalItem">The journal item.</param>
+        /// <param name="tabId">The tab ID.</param>
+        /// <param name="moduleId">The module ID.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void UpdateContentItem(JournalItem objJournalItem, int tabId, int moduleId)
         {
             var objContent = Util.GetContentController().GetContentItem(objJournalItem.ContentItemId);
@@ -104,6 +114,7 @@ namespace DotNetNuke.Services.Journal
 
         /// <summary>This removes a content item associated with a question/thread from the data store. Should run every time an entire thread is deleted.</summary>
         /// <param name="contentItemID">The content item ID.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void DeleteContentItem(int contentItemID)
         {
             if (contentItemID <= Null.NullInteger)
@@ -134,7 +145,7 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <summary>Creates the content text.</summary>
-        /// <param name="objJournalItem"></param>
+        /// <param name="objJournalItem">The journal item.</param>
         /// <returns>The content body or <see langword="null"/>.</returns>
         private static string GetContentBody(JournalItem objJournalItem)
         {

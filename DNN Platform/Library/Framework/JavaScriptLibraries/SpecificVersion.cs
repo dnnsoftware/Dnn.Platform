@@ -7,16 +7,16 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     /// <summary>determine which version of a script is to be used.</summary>
     public enum SpecificVersion
     {
-        /// <summary>The most recent version</summary>
+        /// <summary>The most recent version.</summary>
         Latest = 0,
 
-        /// <summary>Match the major version</summary>
+        /// <summary>Match the major version.</summary>
         LatestMajor = 1,
 
-        /// <summary>Match the major and minor versions</summary>
+        /// <summary>Match the major and minor versions.</summary>
         LatestMinor = 2,
 
-        /// <summary>Match version exactly</summary>
+        /// <summary>Match version exactly.</summary>
         Exact = 3,
     }
 }

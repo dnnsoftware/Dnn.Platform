@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
     using System;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Extensions.Components.Dto;
     using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
@@ -24,7 +25,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         /// <summary>Initializes a new instance of the <see cref="ExtensionLanguagePackageEditor"/> class.</summary>
         public ExtensionLanguagePackageEditor()
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         protected INavigationManager NavigationManager { get; }
@@ -59,20 +60,19 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
             try
             {
-                string value;
                 var changed = false;
                 var languagePack = LanguagePackController.GetLanguagePackByPackage(packageSettings.PackageId);
-                if (packageSettings.EditorActions.TryGetValue("languageId", out value)
-                    && !string.IsNullOrEmpty(value) && value != languagePack.LanguageID.ToString())
+                if (packageSettings.EditorActions.TryGetValue("languageId", out var value)
+                    && !string.IsNullOrEmpty(value) && value != languagePack.LanguageID.ToString(CultureInfo.InvariantCulture))
                 {
-                    languagePack.LanguageID = Convert.ToInt32(value);
+                    languagePack.LanguageID = Convert.ToInt32(value, CultureInfo.InvariantCulture);
                     changed = true;
                 }
 
                 if (packageSettings.EditorActions.TryGetValue("dependentPackageId", out value)
-                    && !string.IsNullOrEmpty(value) && value != languagePack.DependentPackageID.ToString())
+                    && !string.IsNullOrEmpty(value) && value != languagePack.DependentPackageID.ToString(CultureInfo.InvariantCulture))
                 {
-                    languagePack.DependentPackageID = Convert.ToInt32(value);
+                    languagePack.DependentPackageID = Convert.ToInt32(value, CultureInfo.InvariantCulture);
                     changed = true;
                 }
 

@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.FileSystem
     public class SynchronizeFileSystem : SchedulerClient
     {
         /// <summary>Initializes a new instance of the <see cref="SynchronizeFileSystem"/> class.</summary>
-        /// <param name="objScheduleHistoryItem"></param>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
         public SynchronizeFileSystem(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.FileSystem
                 // notification that the event is progressing
                 this.Progressing(); // OPTIONAL
 
-                this.Synchronize();
+                Synchronize();
 
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
 
@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void Synchronize()
+        private static void Synchronize()
         {
             var folderManager = FolderManager.Instance;
 

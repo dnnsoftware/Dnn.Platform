@@ -6,8 +6,13 @@ namespace DotNetNuke.Security.Membership
 {
     public enum PasswordFormat
     {
+        /// <summary>Passwords stored in plaintext.</summary>
         Clear = 0,
+
+        /// <summary>Passwords stored via irreversible hashing.</summary>
         Hashed = 1,
+
+        /// <summary>Passwords stored via reversible encrypted.</summary>
         Encrypted = 2,
     }
 }

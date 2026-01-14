@@ -20,7 +20,7 @@ class ModuleRow extends Component {
         const { module, onDelete, onEditing, onSetting, isEditingModule, showCopySettings, onCopyChange } = this.props;
         const editClassName = "extension-action" + (isEditingModule ? " selected" : "");
         return (
-            /* eslint-disable react/no-danger */
+             
             <div className={styles.moduleRow} >
                 {showCopySettings &&
                     <GridCell columnSize={10}>
@@ -36,16 +36,16 @@ class ModuleRow extends Component {
                 </GridCell>
                 {!showCopySettings &&
                     <GridCell columnSize={10} >
-                        <div className="extension-action" dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} onClick={onDelete.bind(this, module)}></div>
+                        <div className="extension-action" onClick={onDelete.bind(this, module)}><SvgIcons.TrashIcon /></div>
                         <div 
                             className={editClassName} 
                             onClick={onSetting.bind(this, module)} 
-                            dangerouslySetInnerHTML={{ __html: SvgIcons.SettingsIcon }}></div>
+                        ><SvgIcons.SettingsIcon /></div>
                         {module.allTabs === false && module.editContentUrl &&
                             <div 
                                 className={editClassName} 
                                 onClick={onEditing.bind(this, module)} 
-                                dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}></div>}
+                            ><SvgIcons.EditIcon /></div>}
                     </GridCell>
                 }
                 {showCopySettings &&
@@ -58,7 +58,7 @@ class ModuleRow extends Component {
                     </GridCell>
                 }
             </div>
-            /* eslint-enable react/no-danger */
+             
         );
     }
 }

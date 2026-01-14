@@ -61,7 +61,7 @@ class ExportPortal extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { props } = this;
         props.dispatch(
             CommonExportPortalActions.getPortalLocales(
@@ -384,7 +384,7 @@ class ExportPortal extends Component {
                                 )}
                             </GridSystem>
                             <GridCell className="site-action-buttons">
-                                <Button type="secondary" onClick={props.onCancel.bind(this)}>
+                                <Button type="neutral" onClick={props.onCancel.bind(this)}>
                                     {Localization.get("cmdCancel")}
                                 </Button>
                                 <Button type="primary" onClick={this.onExportPortal.bind(this)}>

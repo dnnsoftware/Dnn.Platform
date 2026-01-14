@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
     using System;
@@ -17,6 +16,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -39,44 +39,44 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const string TermHop = "Hop";
         private const int PortalId0 = 0;
         private const string CultureEnUs = "en-US";
-        private Mock<DataProvider> _dataProvider;
-        private Mock<CachingProvider> _cachingProvider;
-        private SearchHelperImpl _searchHelper;
+        private Mock<DataProvider> dataProvider;
+        private Mock<CachingProvider> cachingProvider;
+        private SearchHelperImpl searchHelper;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
-
         public void SetUp()
         {
-            var serviceCollection = new ServiceCollection();
-            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
-            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             ComponentFactory.Container = new SimpleContainer();
-            this._cachingProvider = MockComponentProvider.CreateDataCacheProvider();
-            this._dataProvider = MockComponentProvider.CreateDataProvider();
+            this.cachingProvider = MockComponentProvider.CreateDataCacheProvider();
+            this.dataProvider = MockComponentProvider.CreateDataProvider();
             this.SetupDataProvider();
-            this._searchHelper = new SearchHelperImpl();
+            this.searchHelper = new SearchHelperImpl();
+
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.cachingProvider.Object);
+                    services.AddSingleton(this.dataProvider.Object);
+                    services.AddSingleton(this.searchHelper);
+                });
+
             DataCache.ClearCache();
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
         }
 
         [Test]
-
         public void SearchHelper_GetSynonyms_Two_Terms_Returns_Correct_Results()
         {
             // Arrange
 
             // Act
-            var synonyms = this._searchHelper.GetSynonyms(PortalId0, CultureEnUs, TermDNN).ToArray();
+            var synonyms = this.searchHelper.GetSynonyms(PortalId0, CultureEnUs, TermDNN).ToArray();
 
             Assert.Multiple(() =>
             {
@@ -87,13 +87,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchHelper_GetSynonyms_Three_Terms_Returns_Correct_Results()
         {
             // Arrange
 
             // Act
-            var synonyms = this._searchHelper.GetSynonyms(PortalId0, CultureEnUs, TermHop).ToArray();
+            var synonyms = this.searchHelper.GetSynonyms(PortalId0, CultureEnUs, TermHop).ToArray();
 
             Assert.Multiple(() =>
             {
@@ -112,7 +111,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = inPhrase;
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, false);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, false);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -126,7 +125,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = inPhrase;
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, false);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, false);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -140,7 +139,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = inPhrase;
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, false);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, false);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -154,7 +153,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = "(fox OR fox*) (dog OR dog*)";
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -168,7 +167,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = "(lazy-dog OR lazy-dog*)";
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -182,7 +181,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = "(fox OR fox*) (dog OR dog*)";
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -196,7 +195,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = "(dog OR dog*) (fox OR fox*)";
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -210,7 +209,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = "(brown OR brown*) (fox OR fox*) (lazy OR lazy*) (dog OR dog*)";
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -224,7 +223,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = "((brown OR brown*) (fox OR fox*)) (lazy OR lazy*) (dog OR dog*)";
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -238,7 +237,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = "(brown OR brown*) (fox OR fox*) ((lazy OR lazy*) (dog OR dog*))";
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -252,7 +251,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = "(brown OR brown*) (fox OR fox*) ((lazy OR lazy*) AND (dog OR dog*))";
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -266,7 +265,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = "(brown OR brown*) (fox OR fox*) ((lazy OR lazy*) (and OR and*) (dog OR dog*))";
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -280,7 +279,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = inPhrase;
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -294,7 +293,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = "\"brown fox\" (dog OR dog*)";
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -308,7 +307,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = "(The OR The*) +\"brown fox\" -\"Lazy dog\" (jumps OR jumps*)";
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -322,7 +321,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expected = "(dog OR dog*) jump~2";
 
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -337,7 +336,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void SearchHelper_Rephrase_AccentedCharsReplaced_Replaced(string inPhrase, string expected)
         {
             // Act
-            var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
+            var analyzed = this.searchHelper.RephraseSearchText(inPhrase, true);
 
             // Assert
             Assert.That(analyzed, Is.EqualTo(expected));
@@ -346,11 +345,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private void SetupDataProvider()
         {
             // Standard DataProvider Path for Logging
-            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
+            this.dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
 
-            this._dataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
+            this.dataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
 
-            this._dataProvider.Setup(d => d.GetPortalSettings(It.IsAny<int>(), It.IsAny<string>())).Returns<int, string>(this.GetPortalSettingsCallBack);
+            this.dataProvider.Setup(d => d.GetPortalSettings(It.IsAny<int>(), It.IsAny<string>())).Returns<int, string>(this.GetPortalSettingsCallBack);
 
             var dataTable = new DataTable("SynonymsGroups");
             var pkId = dataTable.Columns.Add("SynonymsGroupID", typeof(int));
@@ -369,7 +368,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             dataTable.Rows.Add(2, string.Join(",", new[] { TermLaptop, TermNotebook }), 1, now, 1, now, 0);
             dataTable.Rows.Add(3, string.Join(",", new[] { TermJump, TermLeap, TermHop }), 1, now, 1, now, 0);
 
-            this._dataProvider.Setup(x => x.GetAllSynonymsGroups(0, It.IsAny<string>())).Returns(dataTable.CreateDataReader());
+            this.dataProvider.Setup(x => x.GetAllSynonymsGroups(0, It.IsAny<string>())).Returns(dataTable.CreateDataReader());
         }
 
         private IDataReader GetPortalSettingsCallBack(int portalId, string culture)

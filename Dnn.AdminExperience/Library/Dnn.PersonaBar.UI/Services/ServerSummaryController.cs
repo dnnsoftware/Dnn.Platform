@@ -5,57 +5,69 @@
 namespace Dnn.PersonaBar.UI.Services
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Security.Cryptography;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Web;
-    using System.Web.Caching;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Web.Http;
 
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.UI.Services.DTO;
-    using DotNetNuke.Application;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Upgrade;
+    using DotNetNuke.Services.Installer;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A Persona Bar API controller for the server summary.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class ServerSummaryController : PersonaBarApiController
     {
-        private enum UpdateType
+        private readonly IHostSettings hostSettings;
+        private readonly IApplicationInfo application;
+
+        /// <summary>Initializes a new instance of the <see cref="ServerSummaryController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public ServerSummaryController()
+            : this(null, null)
         {
-            None = 0,
-            Normal = 1,
-            Critical = 2,
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ServerSummaryController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="application">The application.</param>
+        public ServerSummaryController(IHostSettings hostSettings, IApplicationInfo application)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.application = application ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>();
         }
 
         /// <summary>Return server info.</summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A response with server info.</returns>
         [HttpGet]
-        public HttpResponseMessage GetServerInfo()
+        public HttpResponseMessage GetServerInfo(CancellationToken cancellationToken)
         {
             try
             {
                 var isHost = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
                 var response = new
                 {
-                    ProductName = DotNetNukeContext.Current.Application.Description,
-                    ProductVersion = "v. " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, true),
+                    ProductName = this.application.Description,
+                    ProductVersion = "v. " + Globals.FormatVersion(this.application.Version, true),
                     FrameworkVersion = isHost ? Globals.FormattedNetFrameworkVersion : string.Empty,
                     ServerName = isHost ? Globals.ServerName : string.Empty,
                     LicenseVisible = isHost && this.GetVisibleSetting("LicenseVisible"),
                     DocCenterVisible = this.GetVisibleSetting("DocCenterVisible"),
-                    Update = this.UpdateInfo(),
+                    Update = this.UpdateInfo(cancellationToken),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -68,12 +80,12 @@ namespace Dnn.PersonaBar.UI.Services
         }
 
         /// <summary>Returns update information about current framework version.</summary>
-        /// <returns>A serialized FrameworkQueryDTO object.</returns>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A serialized <see cref="FrameworkQueryDTO"/> object.</returns>
         [HttpGet]
-
-        public HttpResponseMessage GetUpdateInfo()
+        public HttpResponseMessage GetUpdateInfo(CancellationToken cancellationToken)
         {
-            return this.Request.CreateResponse(HttpStatusCode.OK, this.UpdateInfo());
+            return this.Request.CreateResponse(HttpStatusCode.OK, this.UpdateInfo(cancellationToken));
         }
 
         private bool GetVisibleSetting(string settingName)
@@ -84,30 +96,36 @@ namespace Dnn.PersonaBar.UI.Services
                    || portalSettings[settingName] == "true";
         }
 
-        private FrameworkQueryDTO UpdateInfo()
+        private FrameworkQueryDTO UpdateInfo(CancellationToken cancellationToken)
         {
-            if (HttpContext.Current == null || !Host.CheckUpgrade || !this.UserInfo.IsSuperUser)
+            var updateInfo = new FrameworkQueryDTO();
+            if (HttpContextSource.Current == null || !this.UserInfo.IsSuperUser)
             {
-                return new FrameworkQueryDTO();
+                return updateInfo;
             }
 
-            return CBO.GetCachedObject<FrameworkQueryDTO>(new CacheItemArgs("DnnUpdateUrl"), this.RetrieveUpdateUrl);
+            if (!this.hostSettings.CheckUpgrade)
+            {
+                return updateInfo;
+            }
+
+            return CBO.GetCachedObject<FrameworkQueryDTO>(
+                this.hostSettings,
+                new CacheItemArgs("DnnUpdateUrl") { ParamList = { updateInfo, }, },
+                this.RetrieveUpdateUrl);
         }
 
         private FrameworkQueryDTO RetrieveUpdateUrl(CacheItemArgs args)
         {
             try
             {
-                var url = $"{DotNetNukeContext.Current.Application.UpgradeUrl}/Update/FrameworkStatus";
-                url += "?core=" + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, string.Empty);
-                url += "&type=" + DotNetNukeContext.Current.Application.Type;
-                url += "&name=" + DotNetNukeContext.Current.Application.Name;
-                url += "&id=" + Host.GUID;
-                url += "&no=" + PortalController.Instance.GetPortals().Count;
-                url += "&os=" + Globals.FormatVersion(Globals.OperatingSystemVersion, "00", 2, string.Empty);
-                url += "&net=" + Globals.FormatVersion(Globals.NETFrameworkVersion, "00", 2, string.Empty);
-                url += "&db=" + Globals.FormatVersion(Globals.DatabaseEngineVersion, "00", 2, string.Empty);
-                var response = this.GetJsonObject<FrameworkQueryDTO>(url);
+                var coreVersion = Globals.FormatVersion(this.application.Version, "00", 3, string.Empty);
+                var portalCount = PortalController.Instance.GetPortals().Count;
+                var osVersion = Globals.FormatVersion(Globals.OperatingSystemVersion, "00", 2, string.Empty);
+                var netVersion = Globals.FormatVersion(Globals.NETFrameworkVersion, "00", 2, string.Empty);
+                var dbVersion = Globals.FormatVersion(Globals.DatabaseEngineVersion, "00", 2, string.Empty);
+                var url = $"{this.application.UpgradeUrl}/Update/FrameworkStatus?core={coreVersion}&type={this.application.Type}&name={this.application.Name}&id={this.hostSettings.Guid}&no={portalCount}&os={osVersion}&net={netVersion}&db={dbVersion}";
+                var response = this.GetJsonObject((FrameworkQueryDTO)args.ParamList[0], url);
                 if (response.Version.Length == 6)
                 {
                     response.Version = $"v. {response.Version.Substring(0, 2)}.{response.Version.Substring(2, 2)}.{response.Version.Substring(4, 2)}";
@@ -123,28 +141,20 @@ namespace Dnn.PersonaBar.UI.Services
             return new FrameworkQueryDTO();
         }
 
-        private T GetJsonObject<T>(string url)
+        private T GetJsonObject<T>(T initial, string url)
         {
-            var request = Globals.GetExternalRequest(url);
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            var request = Globals.GetExternalRequest(this.hostSettings, url);
+            using var response = (HttpWebResponse)request.GetResponse();
+            if (response.StatusCode != HttpStatusCode.OK)
             {
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    var dataStream = response.GetResponseStream();
-                    var reader = new StreamReader(dataStream);
-                    var responseFromServer = reader.ReadToEnd();
-                    return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseFromServer);
-                }
+                return initial;
             }
 
-            return default(T);
-        }
-
-        private string UpdateUrl()
-        {
-            var url = DotNetNukeContext.Current.Application.UpgradeUrl;
-
-            return url;
+            using var dataStream = response.GetResponseStream();
+            using var reader = new StreamReader(dataStream);
+            var responseFromServer = reader.ReadToEnd();
+            Newtonsoft.Json.JsonConvert.PopulateObject(responseFromServer, initial);
+            return initial;
         }
     }
 }

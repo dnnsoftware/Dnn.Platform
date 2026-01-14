@@ -10,6 +10,7 @@ namespace Dnn.PersonaBar.Prompt.Components
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <inheritdoc cref="Dnn.PersonaBar.Library.Controllers.IModulesController"/>
     [DnnDeprecated(9, 2, 1, "Moved to Dnn.PersonaBar.Library.Controllers because of multiple dependency.")]
     public partial interface IModulesController
     {

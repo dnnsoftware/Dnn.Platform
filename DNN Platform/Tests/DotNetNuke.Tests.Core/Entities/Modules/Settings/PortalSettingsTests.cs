@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 {
     using System;
@@ -9,43 +8,26 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     using System.Globalization;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules.Settings;
+    using DotNetNuke.Tests.Utilities.Fakes;
 
     using Microsoft.Extensions.DependencyInjection;
-
-    using Moq;
 
     using NUnit.Framework;
 
     [TestFixture]
     public class PortalSettingsTests : BaseSettingsTests
     {
-        [SetUp]
-
-        public void Setup()
+        /// <inheritdoc />
+        protected override void SetupServiceProvider(IServiceCollection services)
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            serviceCollection.AddTransient<ISerializationManager, SerializationManager>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            Globals.DependencyProvider = null;
+            services.AddSingleton<ISerializationManager, SerializationManager>();
         }
 
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ar-JO")]
-
         public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_ar_JO(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -54,7 +36,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ca-ES")]
-
         public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_ca_ES(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -63,7 +44,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("zh-CN")]
-
         public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_zh_CN(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -72,7 +52,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("en-US")]
-
         public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_en_US(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -81,7 +60,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("fr-FR")]
-
         public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_fr_FR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -90,7 +68,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("he-IL")]
-
         public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_he_IL(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -99,7 +76,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ru-RU")]
-
         public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_ru_RU(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -108,14 +84,12 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("tr-TR")]
-
         public void SaveSettings_CallsUpdatePortalSetting_WithRightParameters_tr_TR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.SaveSettings_CallsUpdatePortalSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
         }
 
         [Test]
-
         public void SaveSettings_UpdatesCache()
         {
             // Arrange
@@ -133,7 +107,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         [Test]
-
         public void GetSettings_CallsGetCachedObject()
         {
             // Arrange
@@ -152,7 +125,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ar-JO")]
-
         public void GetSettings_GetsValuesFrom_PortalSettings_ar_JO(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -161,7 +133,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ca-ES")]
-
         public void GetSettings_GetsValuesFrom_PortalSettings_ca_ES(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -170,7 +141,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("zh-CN")]
-
         public void GetSettings_GetsValuesFrom_PortalSettings_zh_CN(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -179,7 +149,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("en-US")]
-
         public void GetSettings_GetsValuesFrom_PortalSettings_en_US(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -188,7 +157,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("fr-FR")]
-
         public void GetSettings_GetsValuesFrom_PortalSettings_fr_FR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -197,7 +165,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("he-IL")]
-
         public void GetSettings_GetsValuesFrom_PortalSettings_he_IL(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -206,7 +173,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("ru-RU")]
-
         public void GetSettings_GetsValuesFrom_PortalSettings_ru_RU(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
@@ -215,7 +181,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
         [SetCulture("tr-TR")]
-
         public void GetSettings_GetsValuesFrom_PortalSettings_tr_TR(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             this.GetSettings_GetsValuesFrom_PortalSettings(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);

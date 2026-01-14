@@ -108,7 +108,7 @@ class AddPages extends Component {
                     <div style={{clear: "both"}}></div>
                     <div className="buttons-box">
                         <Button
-                            type="secondary"
+                            type="neutral"
                             onClick={onCancel}>
                             {Localization.get("Cancel")}
                         </Button>

@@ -735,7 +735,7 @@ body > .RadCalendarPopupShadows {
     background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); /* Chrome10+,Safari5.1+ */
-    background: linear-gradient(top, #fff 0%,#f0f2f1 100%); /* W3C */
+    background: linear-gradient(to bottom, #fff 0%,#f0f2f1 100%); /* W3C */
     color: rgba(0,0,0,0.75);
 }
 
@@ -781,7 +781,7 @@ body > .RadCalendarPopupShadows {
     background: -webkit-linear-gradient(top, #d9d9d9 0%,#c7c7c7 100%); /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, #d9d9d9 0%,#c7c7c7 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #d9d9d9 0%,#c7c7c7 100%); /* IE10+ */
-    background: linear-gradient(top, #d9d9d9 0%,#c7c7c7 100%); /* W3C */
+    background: linear-gradient(to bottom, #d9d9d9 0%,#c7c7c7 100%); /* W3C */
 }
 
 .RadCalendar_Default .rcMainTable .rcWeek th {
@@ -816,7 +816,7 @@ body > .RadCalendarPopupShadows {
     background: -webkit-linear-gradient(top, #d9d9d9 0%,#c7c7c7 100%); /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, #d9d9d9 0%,#c7c7c7 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #d9d9d9 0%,#c7c7c7 100%); /* IE10+ */
-    background: linear-gradient(top, #d9d9d9 0%,#c7c7c7 100%); /* W3C */
+    background: linear-gradient(to bottom, #d9d9d9 0%,#c7c7c7 100%); /* W3C */
 }
 
 /* hover on day */
@@ -859,7 +859,7 @@ body > .RadCalendarPopupShadows {
     background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); /* Chrome10+,Safari5.1+ */
-    background: linear-gradient(top, #fff 0%,#f0f2f1 100%); /* W3C */
+    background: linear-gradient(to bottom, #fff 0%,#f0f2f1 100%); /* W3C */
     color: rgba(0,0,0,0.75);
     font-size: 12px !important;
     font-weight: bold;

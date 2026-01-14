@@ -12,8 +12,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
         }
 
         /// <summary>Initializes a new instance of the <see cref="TemplateArgument"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
+        /// <param name="name">The template argument name.</param>
+        /// <param name="value">The template argument value.</param>
         public TemplateArgument(string name, string value)
         {
             this.Name = name;

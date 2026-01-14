@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Reflection;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -24,27 +25,43 @@ namespace DotNetNuke.Services.GeneratedImage
     using DotNetNuke.Services.GeneratedImage.StartTransform;
     using DotNetNuke.Services.Localization.Internal;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using Assembly = System.Reflection.Assembly;
 
+    /// <summary>An <see cref="IHttpHandler"/> for serving images.</summary>
     public class DnnImageHandler : ImageHandler
     {
         /// <summary>
-        /// While list of server folders where the system allow the dnn image handler to
+        /// Allow list of server folders where the system allow the dnn image handler to
         /// read to serve image files from it and its subfolders.
         /// </summary>
-        private static readonly string[] WhiteListFolderPaths =
+        private static readonly string[] AllowListFolderPaths =
         {
             Globals.DesktopModulePath,
             Globals.ImagePath,
             Globals.ApplicationPath + "/Portals/",
         };
 
-        private static readonly int DefaultDimension = 0;
+        private readonly IServiceProvider serviceProvider;
+        private readonly IApplicationStatusInfo appStatus;
         private string defaultImageFile = string.Empty;
 
         /// <summary>Initializes a new instance of the <see cref="DnnImageHandler"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public DnnImageHandler()
+            : this(Globals.GetCurrentServiceProvider(), null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnImageHandler"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="appStatus">The application status.</param>
+        public DnnImageHandler(IServiceProvider serviceProvider, IApplicationStatusInfo appStatus)
+        {
+            this.serviceProvider = serviceProvider;
+            this.appStatus = appStatus ?? serviceProvider.GetRequiredService<IApplicationStatusInfo>();
+
             // Set default settings here
             this.EnableClientCache = true;
             this.EnableServerCache = true;
@@ -105,7 +122,7 @@ namespace DotNetNuke.Services.GeneratedImage
         /// <inheritdoc/>
         public override ImageInfo GenerateImage(NameValueCollection parameters)
         {
-            this.SetupCulture();
+            SetupCulture();
 
             // which type of image should be generated ?
             string mode = string.IsNullOrEmpty(parameters["mode"]) ? "profilepic" : parameters["mode"].ToLowerInvariant();
@@ -114,11 +131,11 @@ namespace DotNetNuke.Services.GeneratedImage
             string format = string.IsNullOrEmpty(parameters["format"]) ? "jpg" : parameters["format"].ToLowerInvariant();
 
             // Lets retrieve the color
-            Color color = string.IsNullOrEmpty(parameters["color"]) ? Color.White : (parameters["color"].StartsWith("#") ? ColorTranslator.FromHtml(parameters["color"]) : Color.FromName(parameters["color"]));
-            Color backColor = string.IsNullOrEmpty(parameters["backcolor"]) ? Color.White : (parameters["backcolor"].StartsWith("#") ? ColorTranslator.FromHtml(parameters["backcolor"]) : Color.FromName(parameters["backcolor"]));
+            Color color = string.IsNullOrEmpty(parameters["color"]) ? Color.White : (parameters["color"].StartsWith("#", StringComparison.Ordinal) ? ColorTranslator.FromHtml(parameters["color"]) : Color.FromName(parameters["color"]));
+            Color backColor = string.IsNullOrEmpty(parameters["backcolor"]) ? Color.White : (parameters["backcolor"].StartsWith("#", StringComparison.Ordinal) ? ColorTranslator.FromHtml(parameters["backcolor"]) : Color.FromName(parameters["backcolor"]));
 
             // Do we have a border ?
-            int border = string.IsNullOrEmpty(parameters["border"]) ? 0 : Convert.ToInt32(parameters["border"]);
+            int border = string.IsNullOrEmpty(parameters["border"]) ? 0 : Convert.ToInt32(parameters["border"], CultureInfo.InvariantCulture);
 
             // Do we have a resizemode defined ?
             var resizeMode = string.IsNullOrEmpty(parameters["resizemode"]) ? ImageResizeMode.Fit : (ImageResizeMode)Enum.Parse(typeof(ImageResizeMode), parameters["ResizeMode"], true);
@@ -167,9 +184,11 @@ namespace DotNetNuke.Services.GeneratedImage
                         break;
 
                     case "placeholder":
-                        var placeHolderTrans = new PlaceholderTransform();
-                        placeHolderTrans.Width = ParseDimension(parameters["w"]);
-                        placeHolderTrans.Height = ParseDimension(parameters["h"]);
+                        var placeHolderTrans = new PlaceholderTransform
+                        {
+                            Width = ParseDimension(parameters["w"]),
+                            Height = ParseDimension(parameters["h"]),
+                        };
 
                         if (!string.IsNullOrEmpty(parameters["Color"]))
                         {
@@ -178,8 +197,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
                         if (!string.IsNullOrEmpty(parameters["Text"]))
                         {
-                            bool.TryParse(Config.GetSetting("AllowDnnImagePlaceholderText"), out bool allowDnnImagePlaceholderText);
-                            if (allowDnnImagePlaceholderText)
+                            if (bool.TryParse(Config.GetSetting("AllowDnnImagePlaceholderText"), out var allowDnnImagePlaceholderText) && allowDnnImagePlaceholderText)
                             {
                                 placeHolderTrans.Text = text;
                             }
@@ -197,7 +215,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         var secureFileTrans = new SecureFileTransform();
                         if (!string.IsNullOrEmpty(parameters["FileId"]))
                         {
-                            var fileId = Convert.ToInt32(parameters["FileId"]);
+                            var fileId = Convert.ToInt32(parameters["FileId"], CultureInfo.InvariantCulture);
                             var file = FileManager.Instance.GetFile(fileId);
                             if (file == null)
                             {
@@ -240,7 +258,9 @@ namespace DotNetNuke.Services.GeneratedImage
                             var url = parameters["Url"];
 
                             // allow only site resources when using the url parameter
-                            if (!url.StartsWith("http") || !UriBelongsToSite(new Uri(url)))
+                            IPortalAliasController portalAliasController = PortalAliasController.Instance;
+                            var uriValidator = new UriValidator(portalAliasController);
+                            if (!url.StartsWith("http", StringComparison.OrdinalIgnoreCase) || !uriValidator.UriBelongsToSite(new Uri(url)))
                             {
                                 return this.GetEmptyImageInfo();
                             }
@@ -272,10 +292,9 @@ namespace DotNetNuke.Services.GeneratedImage
                     default:
                         string imageTransformClass = ConfigurationManager.AppSettings["DnnImageHandler." + mode];
                         string[] imageTransformClassParts = imageTransformClass.Split(',');
-                        var asm = Assembly.LoadFrom(Globals.ApplicationMapPath + @"\bin\" +
-                                                         imageTransformClassParts[1].Trim() + ".dll");
+                        var asm = Assembly.LoadFrom($@"{this.appStatus.ApplicationMapPath}\bin\{imageTransformClassParts[1].Trim()}.dll");
                         var t = asm.GetType(imageTransformClassParts[0].Trim());
-                        var imageTransform = (ImageTransform)Activator.CreateInstance(t);
+                        var imageTransform = (ImageTransform)ActivatorUtilities.GetServiceOrCreateInstance(this.serviceProvider, t);
 
                         foreach (var key in parameters.AllKeys)
                         {
@@ -297,7 +316,7 @@ namespace DotNetNuke.Services.GeneratedImage
                                         switch (pi.PropertyType.Name)
                                         {
                                             case "Int32":
-                                                pi.SetValue(imageTransform, Convert.ToInt32(parameters[key]), null);
+                                                pi.SetValue(imageTransform, Convert.ToInt32(parameters[key], CultureInfo.InvariantCulture), null);
                                                 break;
                                             case "String":
                                                 pi.SetValue(imageTransform, parameters[key], null);
@@ -460,19 +479,19 @@ namespace DotNetNuke.Services.GeneratedImage
             var normalizeFilePath = NormalizeFilePath(filePath.Trim());
 
             // Resources file cannot be served
-            if (filePath.EndsWith(".resources"))
+            if (filePath.EndsWith(".resources", StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
 
             // File outside the white list cannot be served
-            return WhiteListFolderPaths.Any(s => normalizeFilePath.StartsWith(s, StringComparison.InvariantCultureIgnoreCase));
+            return AllowListFolderPaths.Any(s => normalizeFilePath.StartsWith(s, StringComparison.InvariantCultureIgnoreCase));
         }
 
         private static string NormalizeFilePath(string filePath)
         {
-            var normalizeFilePath = filePath.Replace("\\", "/");
-            if (!normalizeFilePath.StartsWith("/"))
+            var normalizeFilePath = filePath.Replace(@"\", "/");
+            if (!normalizeFilePath.StartsWith("/", StringComparison.Ordinal))
             {
                 normalizeFilePath = "/" + normalizeFilePath;
             }
@@ -482,25 +501,23 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private static int ParseDimension(string value)
         {
+            const int DefaultDimension = 0;
             if (string.IsNullOrEmpty(value))
             {
                 return DefaultDimension;
             }
 
-            int dimension = DefaultDimension;
-            if (!int.TryParse(value, out dimension))
+            if (!int.TryParse(value, out var dimension))
             {
-                double doubleDimension;
-                if (double.TryParse(value, out doubleDimension))
+                if (double.TryParse(value, out var doubleDimension))
                 {
                     dimension = (int)Math.Round(doubleDimension, 0);
                 }
             }
 
             // The system won't allow a resize for an image bigger than 4K pixels
-            const int maxDimension = 4000;
-
-            if (dimension > maxDimension || dimension < 0)
+            const int MaxDimension = 4000;
+            if (dimension is > MaxDimension or < 0)
             {
                 dimension = DefaultDimension;
             }
@@ -528,19 +545,19 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
-        // checks whether the uri belongs to any of the site-wide aliases
-        private static bool UriBelongsToSite(Uri uri)
+        private static void SetupCulture()
         {
-            IEnumerable<string> hostAliases =
-                from PortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliases().Values
-                select alias.HTTPAlias.ToLowerInvariant();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            if (settings == null)
+            {
+                return;
+            }
 
-            // if URI, for example, = "http(s)://myDomain:80/DNNDev/myPage?var=name" , then the two strings will be
-            // uriNoScheme1 = "mydomain/dnndev/mypage"  -- lower case
-            // uriNoScheme2 = "mydomain:80/dnndev/mypage"  -- lower case
-            var uriNoScheme1 = (uri.DnsSafeHost + uri.LocalPath).ToLowerInvariant();
-            var uriNoScheme2 = (uri.Authority + uri.LocalPath).ToLowerInvariant();
-            return hostAliases.Any(alias => uriNoScheme1.StartsWith(alias) || uriNoScheme2.StartsWith(alias));
+            var pageLocale = TestableLocalization.Instance.GetPageLocale(settings);
+            if (pageLocale != null)
+            {
+                TestableLocalization.Instance.SetThreadCultures(pageLocale, settings);
+            }
         }
 
         private ImageInfo GetEmptyImageInfo()
@@ -567,54 +584,39 @@ namespace DotNetNuke.Services.GeneratedImage
                 switch (name)
                 {
                     case "enableclientcache":
-                        this.EnableClientCache = Convert.ToBoolean(setting[1]);
+                        this.EnableClientCache = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "clientcacheexpiration":
-                        this.ClientCacheExpiration = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        this.ClientCacheExpiration = TimeSpan.FromSeconds(Convert.ToInt32(setting[1], CultureInfo.InvariantCulture));
                         break;
                     case "enableservercache":
-                        this.EnableServerCache = Convert.ToBoolean(setting[1]);
+                        this.EnableServerCache = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "servercacheexpiration":
-                        DiskImageStore.PurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        DiskImageStore.PurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1], CultureInfo.InvariantCulture));
                         break;
                     case "allowstandalone":
-                        this.AllowStandalone = Convert.ToBoolean(setting[1]);
+                        this.AllowStandalone = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "logsecurity":
-                        this.LogSecurity = Convert.ToBoolean(setting[1]);
+                        this.LogSecurity = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "imagecompression":
-                        this.ImageCompression = Convert.ToInt32(setting[1]);
+                        this.ImageCompression = Convert.ToInt32(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "alloweddomains":
                         this.AllowedDomains = setting[1].Split(',');
                         break;
                     case "enableipcount":
-                        this.EnableIPCount = Convert.ToBoolean(setting[1]);
+                        this.EnableIPCount = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "ipcountmax":
-                        this.IPCountMaxCount = Convert.ToInt32(setting[1]);
+                        this.IPCountMaxCount = Convert.ToInt32(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "ipcountpurgeinterval":
-                        this.IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        this.IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1], CultureInfo.InvariantCulture));
                         break;
                 }
-            }
-        }
-
-        private void SetupCulture()
-        {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-            if (settings == null)
-            {
-                return;
-            }
-
-            var pageLocale = TestableLocalization.Instance.GetPageLocale(settings);
-            if (pageLocale != null)
-            {
-                TestableLocalization.Instance.SetThreadCultures(pageLocale, settings);
             }
         }
     }

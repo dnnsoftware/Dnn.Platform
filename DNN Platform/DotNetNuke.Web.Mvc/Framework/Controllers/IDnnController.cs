@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Web.Mvc.Framework.Controllers
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.Mvc;
     using System.Web.UI;
 
@@ -27,6 +28,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
 
         bool ValidateRequest { get; set; }
 
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         ViewEngineCollection ViewEngineCollectionEx { get; set; }
 
         DnnUrlHelper Url { get; set; }

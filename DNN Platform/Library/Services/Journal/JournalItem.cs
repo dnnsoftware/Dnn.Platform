@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Journal
 {
     using System;
     using System.Data;
+    using System.IO;
     using System.Xml;
     using System.Xml.Serialization;
 
@@ -110,7 +111,11 @@ namespace DotNetNuke.Services.Journal
             if (!string.IsNullOrEmpty(Null.SetNullString(dr["JournalXML"])))
             {
                 this.JournalXML = new XmlDocument { XmlResolver = null };
-                this.JournalXML.LoadXml(dr["JournalXML"].ToString());
+                using (var journalReader = XmlReader.Create(new StringReader(dr["JournalXML"].ToString()), new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    this.JournalXML.Load(journalReader);
+                }
+
                 XmlNode xRoot = this.JournalXML.DocumentElement;
                 XmlNode xNode = xRoot.SelectSingleNode("//items/item/body");
                 if (xNode != null)
@@ -160,15 +165,15 @@ namespace DotNetNuke.Services.Journal
             switch (propertyName)
             {
                 case "journalid":
-                    return PropertyAccess.FormatString(this.JournalId.ToString(), format);
+                    return PropertyAccess.FormatString(this.JournalId.ToString(formatProvider), format);
                 case "journaltypeid":
-                    return PropertyAccess.FormatString(this.JournalTypeId.ToString(), format);
+                    return PropertyAccess.FormatString(this.JournalTypeId.ToString(formatProvider), format);
                 case "profileid":
-                    return PropertyAccess.FormatString(this.ProfileId.ToString(), format);
+                    return PropertyAccess.FormatString(this.ProfileId.ToString(formatProvider), format);
                 case "socialgroupid":
-                    return PropertyAccess.FormatString(this.SocialGroupId.ToString(), format);
+                    return PropertyAccess.FormatString(this.SocialGroupId.ToString(formatProvider), format);
                 case "datecreated":
-                    return PropertyAccess.FormatString(this.DateCreated.ToString(), format);
+                    return PropertyAccess.FormatString(this.DateCreated.ToString(formatProvider), format);
                 case "title":
                     return PropertyAccess.FormatString(this.Title, format);
                 case "summary":

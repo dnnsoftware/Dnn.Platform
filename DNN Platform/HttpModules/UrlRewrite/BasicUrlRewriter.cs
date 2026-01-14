@@ -10,10 +10,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
     using System.Threading;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Urls;
@@ -22,12 +22,34 @@ namespace DotNetNuke.HttpModules.UrlRewrite
     using DotNetNuke.Services.EventQueue;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>The basic URL rewriter.</summary>
     internal class BasicUrlRewriter : UrlRewriterBase
     {
+        /// <summary>A regular expression matching a tab ID query string parameter.</summary>
         public static readonly Regex TabIdRegex = new Regex("&?tabid=\\d+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        /// <summary>A regular expression matching a portal ID query string parameter.</summary>
         public static readonly Regex PortalIdRegex = new Regex("&?portalid=\\d+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasicUrlRewriter));
+
+        private readonly IPortalAliasService portalAliasService;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IServiceProvider serviceProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="BasicUrlRewriter"/> class.</summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public BasicUrlRewriter(IServiceProvider serviceProvider, IHostSettings hostSettings, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController)
+            : base(hostSettings, portalAliasService, hostSettingsService, portalController)
+        {
+            this.portalAliasService = portalAliasService;
+            this.hostSettingsService = hostSettingsService;
+            this.serviceProvider = serviceProvider;
+        }
 
         /// <inheritdoc/>
         internal override void RewriteUrl(object sender, EventArgs e)
@@ -64,7 +86,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             try
             {
                 // fix for ASP.NET canonicalization issues http://support.microsoft.com/?kbid=887459
-                if (request.Path.IndexOf("\\", StringComparison.Ordinal) >= 0 || Path.GetFullPath(request.PhysicalPath) != request.PhysicalPath)
+                if (request.Path.IndexOf(@"\", StringComparison.Ordinal) >= 0 || Path.GetFullPath(request.PhysicalPath) != request.PhysicalPath)
                 {
                     DotNetNuke.Services.Exceptions.Exceptions.ProcessHttpException(request);
                 }
@@ -88,11 +110,11 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             }
 
             // from this point on we are dealing with a "standard" querystring ( ie. http://www.domain.com/default.aspx?tabid=## )
-            // if the portal/url was succesfully identified
+            // if the portal/url was successfully identified
             int tabId = Null.NullInteger;
             int portalId = Null.NullInteger;
             string portalAlias = null;
-            PortalAliasInfo portalAliasInfo = null;
+            IPortalAliasInfo portalAliasInfo = null;
             bool parsingError = false;
 
             // get TabId from querystring ( this is mandatory for maintaining portal context for child portals )
@@ -133,7 +155,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         childAlias = childAlias.Replace(":" + request.Url.Port, string.Empty);
                     }
 
-                    if (PortalAliasController.Instance.GetPortalAlias(childAlias) != null)
+                    if (this.portalAliasService.GetPortalAlias(childAlias) != null)
                     {
                         // check if the domain name contains the alias
                         if (childAlias.IndexOf(domainName, StringComparison.OrdinalIgnoreCase) == -1)
@@ -154,7 +176,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 {
                     if (portalId != Null.NullInteger)
                     {
-                        portalAlias = PortalAliasController.GetPortalAliasByPortal(portalId, domainName);
+                        portalAlias = this.portalAliasService.GetPortalAliasByPortal(portalId, domainName);
                     }
                 }
 
@@ -164,24 +186,24 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     if (tabId != Null.NullInteger)
                     {
                         // get the alias from the tabid, but only if it is for a tab in that domain
-                        portalAlias = PortalAliasController.GetPortalAliasByTab(tabId, domainName);
+                        portalAlias = this.portalAliasService.GetPortalAliasByTab(tabId, domainName);
                         if (string.IsNullOrEmpty(portalAlias))
                         {
                             // if the TabId is not for the correct domain
                             // see if the correct domain can be found and redirect it
-                            portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(domainName);
-                            if (portalAliasInfo != null && !request.Url.LocalPath.ToLowerInvariant().EndsWith("/linkclick.aspx"))
+                            portalAliasInfo = this.portalAliasService.GetPortalAlias(domainName);
+                            if (portalAliasInfo != null && !request.Url.LocalPath.EndsWith("/linkclick.aspx", StringComparison.OrdinalIgnoreCase))
                             {
-                                if (app.Request.Url.AbsoluteUri.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
+                                if (app.Request.Url.AbsoluteUri.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
                                 {
-                                    strURL = "https://" + portalAliasInfo.HTTPAlias.Replace("*.", string.Empty);
+                                    strURL = "https://" + portalAliasInfo.HttpAlias.Replace("*.", string.Empty);
                                 }
                                 else
                                 {
-                                    strURL = "http://" + portalAliasInfo.HTTPAlias.Replace("*.", string.Empty);
+                                    strURL = "http://" + portalAliasInfo.HttpAlias.Replace("*.", string.Empty);
                                 }
 
-                                if (strURL.IndexOf(domainName, StringComparison.InvariantCultureIgnoreCase) == -1)
+                                if (!strURL.Contains(domainName, StringComparison.OrdinalIgnoreCase))
                                 {
                                     strURL += app.Request.Url.PathAndQuery;
                                 }
@@ -200,10 +222,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                 // using the DomainName above will find that alias that is the domainname portion of the Url
                 // ie. dotnetnuke.com will be found even if zzz.dotnetnuke.com was entered on the Url
-                portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(portalAlias);
+                portalAliasInfo = this.portalAliasService.GetPortalAlias(portalAlias);
                 if (portalAliasInfo != null)
                 {
-                    portalId = portalAliasInfo.PortalID;
+                    portalId = portalAliasInfo.PortalId;
                 }
 
                 // if the portalid is not known
@@ -240,13 +262,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             if (portalId != -1)
             {
                 // load the PortalSettings into current context
-                var portalSettings = new PortalSettings(tabId, portalAliasInfo);
+                var portalSettings = new PortalSettings(tabId, portalAliasInfo as PortalAliasInfo);
                 app.Context.Items.Add("PortalSettings", portalSettings);
 
                 // load PortalSettings and HostSettings dictionaries into current context
                 // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way
                 app.Context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalId));
-                app.Context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
+                app.Context.Items.Add("HostSettingsDictionary", this.hostSettingsService.GetSettingsDictionary());
 
                 // don't redirect if no primary alias is defined
                 if (portalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.Redirect
@@ -257,7 +279,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     response.StatusCode = 301;
 
                     var redirectAlias = Globals.AddHTTP(portalSettings.DefaultPortalAlias);
-                    var checkAlias = Globals.AddHTTP(portalAliasInfo.HTTPAlias);
+                    var checkAlias = Globals.AddHTTP(portalAliasInfo.HttpAlias);
                     var redirectUrl = string.Concat(redirectAlias, request.RawUrl);
                     if (redirectUrl.StartsWith(checkAlias, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -311,7 +333,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 // switch to secure connection
                                 strURL = requestedPath.Replace("http://", "https://");
-                                strURL = this.FormatDomain(strURL, portalSettings.STDURL, portalSettings.SSLURL);
+                                strURL = FormatDomain(strURL, portalSettings.STDURL, portalSettings.SSLURL);
                             }
 
                             if (portalSettings.SSLEnforced)
@@ -323,7 +345,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                     if (request.QueryString["ssl"] == null)
                                     {
                                         strURL = requestedPath.Replace("https://", "http://");
-                                        strURL = this.FormatDomain(strURL, portalSettings.SSLURL, portalSettings.STDURL);
+                                        strURL = FormatDomain(strURL, portalSettings.SSLURL, portalSettings.STDURL);
                                     }
                                 }
                             }
@@ -375,12 +397,12 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 app.Context.Items.Remove("FirstRequest");
 
                 // Process any messages in the EventQueue for the Application_Start_FirstRequest event
-                EventQueueController.ProcessMessages("Application_Start_FirstRequest");
+                EventQueueController.ProcessMessages(this.serviceProvider, "Application_Start_FirstRequest");
             }
         }
 
         // Note these formerly lived in the 'UrlRewriteModule.cs' class
-        private string FormatDomain(string url, string replaceDomain, string withDomain)
+        private static string FormatDomain(string url, string replaceDomain, string withDomain)
         {
             if (!string.IsNullOrEmpty(replaceDomain) && !string.IsNullOrEmpty(withDomain))
             {
@@ -403,10 +425,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
             // determine portal alias looking for longest possible match
             string myAlias = Globals.GetDomainName(app.Request, true);
-            PortalAliasInfo objPortalAlias;
+            IPortalAliasInfo objPortalAlias;
             do
             {
-                objPortalAlias = PortalAliasController.Instance.GetPortalAlias(myAlias);
+                objPortalAlias = this.portalAliasService.GetPortalAlias(myAlias);
 
                 if (objPortalAlias != null)
                 {
@@ -468,7 +490,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     if (parameters.Trim().Length > 0)
                     {
                         // split the value into an array based on "/" ( ie. /tabid/##/ )
-                        parameters = parameters.Replace("\\", "/");
+                        parameters = parameters.Replace(@"\", "/");
                         string[] splitParameters = parameters.Split('/');
 
                         // icreate a well formed querystring based on the array of parameters
@@ -555,7 +577,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             // if a match was found to the urlrewrite rules
             if (matchIndex != -1)
             {
-                if (rules[matchIndex].SendTo.StartsWith("~"))
+                if (rules[matchIndex].SendTo.StartsWith("~", StringComparison.Ordinal))
                 {
                     // rewrite the URL for internal processing
                     RewriterUtils.RewriteUrl(app.Context, sendTo);
@@ -585,17 +607,17 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 {
                     if (objPortalAlias != null)
                     {
-                        int portalID = objPortalAlias.PortalID;
+                        int portalId = objPortalAlias.PortalId;
 
                         // Identify Tab Name
                         string tabPath = url;
-                        if (tabPath.StartsWith(myAlias))
+                        if (tabPath.StartsWith(myAlias, StringComparison.OrdinalIgnoreCase))
                         {
                             tabPath = url.Remove(0, myAlias.Length);
                         }
 
                         // Default Page has been Requested
-                        if (tabPath == "/" + Globals.glbDefaultPage.ToLowerInvariant())
+                        if (string.Equals(tabPath, "/" + Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
                         {
                             return;
                         }
@@ -603,18 +625,18 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         // Start of patch
                         string cultureCode = string.Empty;
 
-                        Dictionary<string, Locale> dicLocales = LocaleController.Instance.GetLocales(portalID);
+                        var dicLocales = LocaleController.Instance.GetLocales(portalId);
                         if (dicLocales.Count > 1)
                         {
-                            string[] splitUrl = app.Request.Url.ToString().Split('/');
+                            var splitUrl = app.Request.Url.ToString().Split('/');
 
-                            foreach (string culturePart in splitUrl)
+                            foreach (var culturePart in splitUrl)
                             {
                                 if (culturePart.IndexOf("-", StringComparison.Ordinal) > -1)
                                 {
-                                    foreach (KeyValuePair<string, Locale> key in dicLocales)
+                                    foreach (var key in dicLocales)
                                     {
-                                        if (key.Key.ToLower().Equals(culturePart.ToLower()))
+                                        if (key.Key.Equals(culturePart, StringComparison.OrdinalIgnoreCase))
                                         {
                                             cultureCode = key.Value.Code;
                                             tabPath = tabPath.Replace("/" + culturePart, string.Empty);
@@ -625,26 +647,26 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             }
                         }
 
-                        // Check to see if the tab exists (if localization is enable, check for the specified culture)
-                        int tabID = TabController.GetTabByTabPath(
-                            portalID,
+                        // Check to see if the tab exists (if localization is enabled, check for the specified culture)
+                        int tabId = TabController.GetTabByTabPath(
+                            portalId,
                             tabPath.Replace("/", "//").Replace(".aspx", string.Empty),
                             cultureCode);
 
                         // Check to see if neutral culture tab exists
-                        if (tabID == Null.NullInteger && cultureCode.Length > 0)
+                        if (tabId == Null.NullInteger && cultureCode.Length > 0)
                         {
-                            tabID = TabController.GetTabByTabPath(
-                                portalID,
+                            tabId = TabController.GetTabByTabPath(
+                                portalId,
                                 tabPath.Replace("/", "//").Replace(".aspx", string.Empty),
                                 string.Empty);
                         }
 
                         // End of patch
-                        if (tabID != Null.NullInteger)
+                        if (tabId != Null.NullInteger)
                         {
-                            string sendToUrl = "~/" + Globals.glbDefaultPage + "?TabID=" + tabID;
-                            if (!cultureCode.Equals(string.Empty))
+                            string sendToUrl = "~/" + Globals.glbDefaultPage + "?TabID=" + tabId;
+                            if (!cultureCode.Equals(string.Empty, StringComparison.Ordinal))
                             {
                                 sendToUrl = sendToUrl + "&language=" + cultureCode;
                             }
@@ -665,7 +687,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         }
 
                         // Get the Portal
-                        PortalInfo portal = PortalController.Instance.GetPortal(portalID);
+                        PortalInfo portal = PortalController.Instance.GetPortal(portalId);
                         string requestQuery = app.Request.Url.Query;
                         if (!string.IsNullOrEmpty(requestQuery))
                         {
@@ -697,13 +719,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=login&{requestQuery}");
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalId}&ctl=login&{requestQuery}");
                                 }
                                 else
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=login");
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalId}&ctl=login");
                                 }
                             }
 
@@ -718,13 +740,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        $"~/{Globals.glbDefaultPage}?TabID={portal.RegisterTabId}&portalid={portalID}&{requestQuery}");
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.RegisterTabId}&portalid={portalId}&{requestQuery}");
                                 }
                                 else
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        $"~/{Globals.glbDefaultPage}?TabID={portal.RegisterTabId}&portalid={portalID}");
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.RegisterTabId}&portalid={portalId}");
                                 }
                             }
                             else
@@ -733,13 +755,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Register&{requestQuery}");
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalId}&ctl=Register&{requestQuery}");
                                 }
                                 else
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Register");
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalId}&ctl=Register");
                                 }
                             }
 
@@ -752,13 +774,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 RewriterUtils.RewriteUrl(
                                     app.Context,
-                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Terms&{requestQuery}");
+                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalId}&ctl=Terms&{requestQuery}");
                             }
                             else
                             {
                                 RewriterUtils.RewriteUrl(
                                     app.Context,
-                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Terms");
+                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalId}&ctl=Terms");
                             }
 
                             return;
@@ -770,13 +792,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 RewriterUtils.RewriteUrl(
                                     app.Context,
-                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Privacy&{requestQuery}");
+                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalId}&ctl=Privacy&{requestQuery}");
                             }
                             else
                             {
                                 RewriterUtils.RewriteUrl(
                                     app.Context,
-                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Privacy");
+                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalId}&ctl=Privacy");
                             }
 
                             return;
@@ -784,10 +806,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                         tabPath = tabPath.Replace("/", "//");
                         tabPath = tabPath.Replace(".aspx", string.Empty);
-                        TabCollection objTabs = TabController.Instance.GetTabsByPortal(tabPath.StartsWith("//host") ? Null.NullInteger : portalID);
-                        foreach (KeyValuePair<int, TabInfo> kvp in objTabs)
+                        var objTabs = TabController.Instance.GetTabsByPortal(tabPath.StartsWith("//host", StringComparison.OrdinalIgnoreCase) ? Null.NullInteger : portalId);
+                        foreach (var kvp in objTabs)
                         {
-                            if (kvp.Value.IsDeleted == false && kvp.Value.TabPath.ToLowerInvariant() == tabPath)
+                            if (!kvp.Value.IsDeleted && kvp.Value.TabPath.Equals(tabPath, StringComparison.OrdinalIgnoreCase))
                             {
                                 if (!string.IsNullOrEmpty(app.Request.Url.Query))
                                 {

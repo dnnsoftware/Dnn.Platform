@@ -32,20 +32,16 @@ namespace Dnn.EditBar.UI.Services
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentEditorController));
 
-        private string LocalResourcesFile
-        {
-            get { return Path.Combine(ContentEditorManager.ControlFolder, "ContentEditorManager/App_LocalResources/SharedResources.resx"); }
-        }
+        private static string LocalResourcesFile => Path.Combine(ContentEditorManager.ControlFolder, "ContentEditorManager/App_LocalResources/SharedResources.resx");
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage DeleteModule([FromUri] int moduleId)
         {
             var module = ModuleController.Instance.GetModule(moduleId, this.PortalSettings.ActiveTab.TabID, false);
             if (module == null)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, Message = this.LocalizeString("Service_ModuleNotExist") });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, Message = LocalizeString("Service_ModuleNotExist") });
             }
 
             var tabId = this.PortalSettings.ActiveTab.TabID;
@@ -63,7 +59,6 @@ namespace Dnn.EditBar.UI.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetRecommendedModules()
         {
             var recommendedModuleNames = new List<string>();
@@ -98,7 +93,6 @@ namespace Dnn.EditBar.UI.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage LoadModuleScript(int desktopModuleId)
         {
             var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
@@ -107,14 +101,14 @@ namespace Dnn.EditBar.UI.Services
                 throw new ArgumentException("Can't find the desktop module");
             }
 
-            var moduleScriptPath = string.Format("{0}/DesktopModules/{1}/ClientScripts/ModuleEditor.js", Globals.ApplicationMapPath, desktopModule.FolderName);
+            var moduleScriptPath = $"{Globals.ApplicationMapPath}/DesktopModules/{desktopModule.FolderName}/ClientScripts/ModuleEditor.js";
             var moduleScriptContent = string.Empty;
             if (File.Exists(moduleScriptPath))
             {
                 moduleScriptContent = File.ReadAllText(moduleScriptPath);
             }
 
-            var moduleStylePath = string.Format("/DesktopModules/{0}/Css/ModuleEditor.css", desktopModule.FolderName);
+            var moduleStylePath = $"/DesktopModules/{desktopModule.FolderName}/Css/ModuleEditor.css";
             if (File.Exists(Globals.ApplicationMapPath + moduleStylePath))
             {
                 moduleStylePath = Globals.ApplicationPath + moduleStylePath;
@@ -124,13 +118,10 @@ namespace Dnn.EditBar.UI.Services
                 moduleStylePath = string.Empty;
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Script = moduleScriptContent, StyleFile = moduleStylePath });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Script = moduleScriptContent, StyleFile = moduleStylePath, });
         }
 
-        private string LocalizeString(string key)
-        {
-            return Localization.GetString(key, this.LocalResourcesFile);
-        }
+        private static string LocalizeString(string key) => Localization.GetString(key, LocalResourcesFile);
 
         private string GetDeskTopModuleImage(int moduleId)
         {

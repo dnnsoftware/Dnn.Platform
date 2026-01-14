@@ -5,13 +5,11 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      SettingsEditorInfoAdapter
     /// <summary>
     /// The SettingsEditorInfoAdapter control provides a factory for creating the
     /// appropriate EditInfo object.
@@ -23,9 +21,9 @@ namespace DotNetNuke.UI.WebControls
         private string fieldName;
 
         /// <summary>Initializes a new instance of the <see cref="SettingsEditorInfoAdapter"/> class.</summary>
-        /// <param name="dataSource"></param>
-        /// <param name="dataMember"></param>
-        /// <param name="fieldName"></param>
+        /// <param name="dataSource">The data source <see cref="Hashtable"/>.</param>
+        /// <param name="dataMember">The <see cref="SettingInfo"/> instance.</param>
+        /// <param name="fieldName">The field name.</param>
         public SettingsEditorInfoAdapter(object dataSource, object dataMember, string fieldName)
         {
             this.dataMember = dataMember;
@@ -74,19 +72,17 @@ namespace DotNetNuke.UI.WebControls
         /// <inheritdoc/>
         public bool UpdateValue(PropertyEditorEventArgs e)
         {
-            string key;
             string name = e.Name;
             bool changed = e.Changed;
             object oldValue = e.OldValue;
             object newValue = e.Value;
-            object stringValue = e.StringValue;
             bool isDirty = Null.NullBoolean;
 
             var settings = (Hashtable)this.dataSource;
-            IDictionaryEnumerator settingsEnumerator = settings.GetEnumerator();
+            var settingsEnumerator = settings.GetEnumerator();
             while (settingsEnumerator.MoveNext())
             {
-                key = Convert.ToString(settingsEnumerator.Key);
+                var key = Convert.ToString(settingsEnumerator.Key, CultureInfo.InvariantCulture);
 
                 // Do we have the item in the Hashtable being changed
                 if (key == name)

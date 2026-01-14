@@ -7,20 +7,25 @@ namespace DotNetNuke.Services.Log.EventLog
 
     using DotNetNuke.Abstractions.Logging;
 
+    /// <content>The obsolete properties for <see cref="LogTypeConfigInfo"/>.</content>
     public partial class LogTypeConfigInfo
     {
         [Obsolete("Deprecated in DotNetNuke 9.8.0. Use 'DotNetNuke.Abstractions.Logging.ILogTypeConfigInfo.Id' instead. Scheduled removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public string ID
         {
             get => ((ILogTypeConfigInfo)this).Id;
             set => ((ILogTypeConfigInfo)this).Id = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         [Obsolete("Deprecated in DotNetNuke 9.8.0. Use 'DotNetNuke.Abstractions.Logging.ILogTypeConfigInfo.LogTypePortalId' instead. Scheduled removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public string LogTypePortalID
         {
             get => ((ILogTypeConfigInfo)this).LogTypePortalId;
             set => ((ILogTypeConfigInfo)this).LogTypePortalId = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
     }
 }

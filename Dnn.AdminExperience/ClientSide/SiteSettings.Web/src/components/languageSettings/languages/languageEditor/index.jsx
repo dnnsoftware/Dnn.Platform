@@ -272,7 +272,7 @@ class LanguageEditor extends Component {
                 <GridSystem numberOfColumns={2}>{[columnOne, columnTwo]}</GridSystem>
                 <div className="editor-buttons-box">
                     <Button
-                        type="secondary"
+                        type="neutral"
                         onClick={this.onCancel.bind(this)}>
                         {resx.get("Cancel")}
                     </Button>
@@ -334,7 +334,7 @@ class LanguageEditor extends Component {
                 <GridSystem numberOfColumns={2}>{[columnOne, columnTwo]}</GridSystem>
                 <div className="editor-buttons-box">
                     <Button
-                        type="secondary"
+                        type="neutral"
                         onClick={this.onCancel.bind(this)}>
                         {resx.get("Cancel")}
                     </Button>
@@ -359,7 +359,7 @@ class LanguageEditor extends Component {
                 }
                 <div className="editor-buttons-box-roles">
                     <Button
-                        type="secondary"
+                        type="neutral"
                         onClick={this.onCancel.bind(this)}>
                         {resx.get("Cancel")}
                     </Button>
@@ -374,10 +374,10 @@ class LanguageEditor extends Component {
         );
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         let {state, props} = this;
-        /* eslint-disable react/no-danger */
+         
         if (state.languageDetail !== undefined || props.id === "add") {
             if (props.openMode === 1) {
                 if (props.id === "add") {

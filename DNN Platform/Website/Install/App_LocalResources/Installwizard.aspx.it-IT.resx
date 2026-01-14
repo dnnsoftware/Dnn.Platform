@@ -346,10 +346,10 @@
     <value>Il tuo utente del database non possiede le autorizzazioni dbo</value>
   </data>
   <data name="IsValidSqlServerVersion.Text" xml:space="preserve">
-    <value>DotNetNuke richiede SQL 2008 R2 (express o prodotto completo) per lavorare</value>
+    <value>DotNetNuke richiede SQL 2017 (express o prodotto completo) per lavorare</value>
   </data>
   <data name="IsValidSqlServerVersionCheck.Text" xml:space="preserve">
-    <value>Controllo se la versione del database è SQL 2008 R2 (express o prodotto completo) o superiore per funzionare</value>
+    <value>Controllo se la versione del database è SQL 2017 (express o prodotto completo) o superiore per funzionare</value>
   </data>
   <data name="Language.Help" xml:space="preserve">
     <value>La lingua che si desidera utilizzare sul sito.</value>
@@ -389,6 +389,9 @@
   </data>
   <data name="NoInstallationLog.Text" xml:space="preserve">
     <value>Nessuna installazione Log</value>
+  </data>
+  <data name="LoadingInstallationLog.Text" xml:space="preserve">
+    <value>Caricamento dei log di installazione, attendere...</value>
   </data>
   <data name="PageTitle.Text" xml:space="preserve">
     <value>Installazione</value>
@@ -520,7 +523,7 @@ L'opzione per impostare il Database Standard  non è disponibile</value>
   <data name="AcceptTerms.Text" xml:space="preserve">
     <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>
   </data>
-  <data name="DotNetVersion472Required.Text" xml:space="preserve">
-    <value>È richiesto .Net Framework 4.7.2. Controlla gli aggiornamenti di Windows prima di procedere.</value>
+  <data name="DotNetVersion48Required.Text" xml:space="preserve">
+    <value>È richiesto .Net Framework 4.8 Controlla gli aggiornamenti di Windows prima di procedere.</value>
   </data>
 </root>

@@ -10,6 +10,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
+    using System.Web;
     using System.Xml.Serialization;
 
     using DNNConnect.CKEditorProvider.Constants;
@@ -113,7 +114,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
         /// <summary>Converts the toolbar set to string.</summary>
         /// <param name="toolbarSet">The toolbar set.</param>
-        /// <param name="convertRowBreak">if set to <c>true</c> [convert row break].</param>
+        /// <param name="convertRowBreak">if set to <see langword="true"/> [convert row break].</param>
         /// <returns>
         /// Returns the Toolbar set as string.
         /// </returns>
@@ -133,7 +134,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 {
                     stringBuilder.Append("{");
 
-                    stringBuilder.AppendFormat("name:'{0}',items:", t.name);
+                    stringBuilder.AppendFormat("name:'{0}',items:", HttpUtility.JavaScriptStringEncode(t.name));
 
                     stringBuilder.Append("[");
 
@@ -141,7 +142,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
                     foreach (var button in buttons)
                     {
-                        stringBuilder.AppendFormat("'{0}',", button);
+                        stringBuilder.AppendFormat("'{0}',", HttpUtility.JavaScriptStringEncode(button));
                     }
 
                     stringBuilder.Remove(stringBuilder.Length - 1, 1);

@@ -3,12 +3,11 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Containers
 {
+    using System.Globalization;
+
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Internal.SourceGenerators;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Containers
-    /// Class    : ActionButton
     /// <summary>  ActionButton provides a button (or group of buttons) for action(s).</summary>
     /// <remarks>
     ///   ActionBase inherits from UserControl, and implements the IActionControl Interface.
@@ -58,7 +57,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>  Gets or sets a value indicating whether gets or sets whether the link is displayed.</summary>
+        /// <summary>  Gets or sets a value indicating whether the link is displayed.</summary>
         /// <remarks>
         ///   Defaults to True.
         /// </remarks>
@@ -78,7 +77,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>  Gets or sets a value indicating whether gets or sets whether the icon is displayed.</summary>
+        /// <summary>  Gets or sets a value indicating whether the icon is displayed.</summary>
         /// <remarks>
         ///   Defaults to False.
         /// </remarks>
@@ -152,7 +151,7 @@ namespace DotNetNuke.UI.Containers
         /// <summary>  Action_Click responds to an Action Event in the contained actionButtonList.</summary>
         private void Action_Click(object sender, ActionEventArgs e)
         {
-            this.ProcessAction(e.Action.ID.ToString());
+            this.ProcessAction(e.Action.ID.ToString(CultureInfo.InvariantCulture));
         }
     }
 }

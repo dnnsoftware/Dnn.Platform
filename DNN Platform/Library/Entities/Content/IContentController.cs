@@ -46,11 +46,13 @@ namespace DotNetNuke.Entities.Content
         ContentItem GetContentItem(int contentItemId);
 
         /// <summary>Return ContentItems that have the specified term attached.</summary>
+        /// <param name="term">The term name.</param>
         /// <exception cref="System.ArgumentException">Term name is empty.</exception>
         /// <returns>A queryable sequence of <see cref="ContentItem"/> instances.</returns>
         IQueryable<ContentItem> GetContentItemsByTerm(string term);
 
         /// <summary>Return ContentItems that have the specified term attached.</summary>
+        /// <param name="term">The term.</param>
         /// <exception cref="System.ArgumentException">Term name is empty.</exception>
         /// <returns>A queryable sequence of <see cref="ContentItem"/> instances.</returns>
         IQueryable<ContentItem> GetContentItemsByTerm(Term term);
@@ -65,12 +67,13 @@ namespace DotNetNuke.Entities.Content
         /// <returns>A queryable sequence of <see cref="ContentItem"/> instances.</returns>
         IQueryable<ContentItem> GetContentItemsByContentType(ContentType contentType);
 
-        /// <summary>Return a list of ContentItems that have all of the specified terms attached.</summary>
+        /// <summary>Return a list of ContentItems that have all the specified terms attached.</summary>
         /// <param name="terms">A list of terms that should be attached to the ContentItems returned.</param>
         /// <returns>A queryable sequence of <see cref="ContentItem"/> instances.</returns>
         IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms);
 
-        /// <summary>Return a list of ContentItems that have all of the specified terms attached.</summary>
+        /// <summary>Return a list of ContentItems that have all the specified terms attached.</summary>
+        /// <param name="terms">An array of terms that should be attached to the ContentItems returned.</param>
         /// <returns>A queryable sequence of <see cref="ContentItem"/> instances.</returns>
         IQueryable<ContentItem> GetContentItemsByTerms(string[] terms);
 
@@ -89,6 +92,7 @@ namespace DotNetNuke.Entities.Content
         IQueryable<ContentItem> GetContentItemsByTabId(int tabId);
 
         /// <summary>Get a list of content items tagged with terms from the specified Vocabulary ID.</summary>
+        /// <param name="vocabularyId">The vocabulary ID.</param>
         /// <returns>A queryable sequence of <see cref="ContentItem"/> instances.</returns>
         IQueryable<ContentItem> GetContentItemsByVocabularyId(int vocabularyId);
 
@@ -117,9 +121,11 @@ namespace DotNetNuke.Entities.Content
         void DeleteMetaData(ContentItem contentItem, string name, string value);
 
         /// <summary>Similar to DeleteMetaData that requires a value, but this one looks it up for you.</summary>
+        /// <param name="contentItem">The content item.</param>
+        /// <param name="name">The name.</param>
         void DeleteMetaData(ContentItem contentItem, string name);
 
-        /// <summary>Gets the meta data.</summary>
+        /// <summary>Gets the metadata.</summary>
         /// <param name="contentItemId">The content item id.</param>
         /// <returns>A <see cref="NameValueCollection"/> containing the content item's metadata.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">content item's id less than 0.</exception>

@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Portals.Internal
     using DotNetNuke.Framework;
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <inheritdoc cref="IPortalTemplateIO" />
     [DnnDeprecated(9, 11, 1, "No replacement")]
     public partial class PortalTemplateIO : ServiceLocator<IPortalTemplateIO, PortalTemplateIO>, IPortalTemplateIO
     {
@@ -27,7 +28,7 @@ namespace DotNetNuke.Entities.Portals.Internal
                 return Directory.GetFiles(path, "*.template").Where(x => Path.GetFileNameWithoutExtension(x) != "admin");
             }
 
-            return new string[0];
+            return [];
         }
 
         /// <inheritdoc/>
@@ -39,7 +40,7 @@ namespace DotNetNuke.Entities.Portals.Internal
                 return Directory.GetFiles(path, "*.template.??-??.resx");
             }
 
-            return new string[0];
+            return [];
         }
 
         /// <inheritdoc/>
@@ -51,7 +52,7 @@ namespace DotNetNuke.Entities.Portals.Internal
         /// <inheritdoc/>
         public string GetLanguageFilePath(string templateFilePath, string cultureCode)
         {
-            return CheckFilePath(string.Format("{0}.{1}.resx", templateFilePath, cultureCode));
+            return CheckFilePath($"{templateFilePath}.{cultureCode}.resx");
         }
 
         /// <inheritdoc/>
@@ -75,8 +76,12 @@ namespace DotNetNuke.Entities.Portals.Internal
         {
             var defaultLanguage = string.Empty;
             var locales = new List<string>();
-            var templateXml = new XmlDocument() { XmlResolver = null };
-            templateXml.Load(templateFilePath);
+            var templateXml = new XmlDocument { XmlResolver = null };
+            using (var templateReader = XmlReader.Create(templateFilePath, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                templateXml.Load(templateReader);
+            }
+
             var node = templateXml.SelectSingleNode("//settings/defaultlanguage");
             if (node != null)
             {

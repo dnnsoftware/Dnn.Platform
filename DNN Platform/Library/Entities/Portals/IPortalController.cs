@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Portals
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Portals.Templates;
@@ -18,7 +19,7 @@ namespace DotNetNuke.Entities.Portals
     public interface IPortalController
     {
         /// <summary>Creates a new portal alias.</summary>
-        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="portalId">ID of the portal.</param>
         /// <param name="portalAlias">Portal Alias to be created.</param>
         void AddPortalAlias(int portalId, string portalAlias);
 
@@ -37,9 +38,10 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <param name="isChildPortal">if set to <see langword="true"/> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         [Obsolete("Deprecated in DotNetNuke 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo template argument instead. Scheduled removal in v11.0.0.")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalController.PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// <summary>Creates the portal.</summary>
@@ -52,8 +54,9 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <param name="isChildPortal">if set to <see langword="true"/> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         int CreatePortal(string portalName, int adminUserId, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// <summary>Creates the portal.</summary>
@@ -66,9 +69,10 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <param name="isChildPortal">if set to <see langword="true"/> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         [Obsolete("Deprecated in DotNetNuke 9.11.1. Use IPortalTemplateInfo template argument instead. Scheduled removal in v11.0.0.")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalController.PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// <summary>Creates the portal.</summary>
@@ -81,8 +85,9 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
-        /// <returns>Portal id.</returns>
+        /// <param name="isChildPortal">if set to <see langword="true"/> means the portal is child portal.</param>
+        /// <returns>Portal ID.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// <summary>Get all the available portal templates grouped by culture.</summary>
@@ -99,13 +104,13 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>portal settings.</returns>
         IPortalSettings GetCurrentSettings();
 
-        /// <summary>  Gets information of a portal.</summary>
-        /// <param name="portalId">Id of the portal.</param>
+        /// <summary>Gets information of a portal.</summary>
+        /// <param name="portalId">ID of the portal.</param>
         /// <returns>PortalInfo object with portal definition.</returns>
         PortalInfo GetPortal(int portalId);
 
-        /// <summary>  Gets information of a portal.</summary>
-        /// <param name="portalId">Id of the portal.</param>
+        /// <summary>Gets information of a portal.</summary>
+        /// <param name="portalId">ID of the portal.</param>
         /// <param name="cultureCode">The culture code.</param>
         /// <returns>PortalInfo object with portal definition.</returns>
         PortalInfo GetPortal(int portalId, string cultureCode);
@@ -148,7 +153,7 @@ namespace DotNetNuke.Entities.Portals
         PortalController.PortalTemplateInfo GetPortalTemplate(string templateFileName, string cultureCode);
 
         /// <summary>Verifies if there's enough space to upload a new file on the given portal.</summary>
-        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="portalId">ID of the portal.</param>
         /// <param name="fileSizeBytes">Size of the file being uploaded.</param>
         /// <returns>True if there's enough space available to upload the file.</returns>
         bool HasSpaceAvailable(int portalId, long fileSizeBytes);
@@ -157,15 +162,17 @@ namespace DotNetNuke.Entities.Portals
         ///   Remaps the Special Pages such as Home, Profile, Search
         ///   to their localized versions.
         /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
         void MapLocalizedSpecialPages(int portalId, string cultureCode);
 
         /// <summary>Removes the related PortalLocalization record from the database, adds optional clear cache.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="clearCache"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="clearCache">Whether to clear the portal cache.</param>
         void RemovePortalLocalization(int portalId, string cultureCode, bool clearCache = true);
 
-        /// <summary>Processess a template file for the new portal.</summary>
+        /// <summary>Processes a template file for the new portal.</summary>
         /// <param name="portalId">PortalId of the new portal.</param>
         /// <param name="template">The template.</param>
         /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user.</param>
@@ -175,6 +182,7 @@ namespace DotNetNuke.Entities.Portals
         /// The roles and settings nodes will only be processed on the portal template file.
         /// </remarks>
         [Obsolete("Deprecated in DotNetNuke 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.ApplyPortalTemplate instead. Scheduled removal in v11.0.0.")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         void ParseTemplate(int portalId, PortalController.PortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal);
 
         /// <summary>Processes the resource file for the template file selected.</summary>
@@ -193,13 +201,25 @@ namespace DotNetNuke.Entities.Portals
         void UpdatePortalExpiry(int portalId, string cultureCode);
 
         /// <summary>Updates basic portal information.</summary>
-        /// <param name="portal"></param>
+        /// <param name="portal">The portal info.</param>
         void UpdatePortalInfo(PortalInfo portal);
 
+        /// <summary>Adds or Updates or Deletes a portal setting value.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="settingName">The setting name.</param>
+        /// <param name="settingValue">The setting value.</param>
+        /// <param name="clearCache">Whether to clear the cache.</param>
+        /// <param name="cultureCode">The culture code.</param>
         [Obsolete("Deprecated in DotNetNuke 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode);
 
         /// <summary>Adds or Updates or Deletes a portal setting value.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="settingName">The setting name.</param>
+        /// <param name="settingValue">The setting value.</param>
+        /// <param name="clearCache">Whether to clear the cache.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="isSecure">Whether the value should be encrypted.</param>
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure);
     }
 }

@@ -15,6 +15,7 @@ namespace Dnn.PersonaBar.Security.Components
         public const string MemberManagementEdit = "MEMBER_MANAGEMENT_EDIT";
         public const string RegistrationSettingsView = "REGISTRATION_SETTINGS_VIEW";
         public const string RegistrationSettingsEdit = "REGISTRATION_SETTINGS_EDIT";
+        public const string ManageApiTokens = "MANAGE_API_TOKENS";
         public const string UserNotMemberOfRole = "UserNotMemberOfRole";
         public const string NotValid = "NotValid";
         public const string EmptyValue = "Empty";

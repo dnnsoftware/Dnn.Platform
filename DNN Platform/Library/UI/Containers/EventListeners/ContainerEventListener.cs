@@ -10,8 +10,8 @@ namespace DotNetNuke.UI.Containers.EventListeners
         private readonly ContainerEventType type;
 
         /// <summary>Initializes a new instance of the <see cref="ContainerEventListener"/> class.</summary>
-        /// <param name="type"></param>
-        /// <param name="e"></param>
+        /// <param name="type">The event type.</param>
+        /// <param name="e">The event handler.</param>
         public ContainerEventListener(ContainerEventType type, ContainerEventHandler e)
         {
             this.type = type;

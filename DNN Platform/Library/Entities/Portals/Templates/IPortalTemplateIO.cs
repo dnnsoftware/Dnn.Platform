@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Portals.Internal
 
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>An interface for dealing for portal template files.</summary>
     [DnnDeprecated(9, 11, 1, "No replacement")]
     public partial interface IPortalTemplateIO
     {
@@ -22,6 +23,6 @@ namespace DotNetNuke.Entities.Portals.Internal
 
         TextReader OpenTextReader(string filePath);
 
-        (string, List<string>) GetTemplateLanguages(string templateFilePath);
+        (string DefaultLanguage, List<string> Locales) GetTemplateLanguages(string templateFilePath);
     }
 }

@@ -24,11 +24,14 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Services.Social.Messaging.Internal;
     using DotNetNuke.Web.Api;
 
+    /// <summary>A web API for messaging.</summary>
     [DnnAuthorize]
     public class MessagingServiceController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MessagingServiceController));
 
+        /// <summary>Gets how long a user needs to wait before being allowed to send a message.</summary>
+        /// <returns>A response with an object containing a <c>Value</c> field with the number of seconds.</returns>
         [HttpGet]
         public HttpResponseMessage WaitTimeForNextMessage()
         {
@@ -43,6 +46,9 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
+        /// <summary>Creates a message.</summary>
+        /// <param name="postData">Information about the new message.</param>
+        /// <returns>A response with an object containing the ID of the new message.</returns>
         [ValidateAntiForgeryToken]
         [HttpPost]
         public HttpResponseMessage Create(CreateDTO postData)
@@ -77,6 +83,9 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
+        /// <summary>Searches users and roles.</summary>
+        /// <param name="q">The search query.</param>
+        /// <returns>A response with a list of results (containing <c>id</c>, <c>name</c>, and <c>iconfile</c> fields) or <c>null</c> if there was no search query.</returns>
         [HttpGet]
         public HttpResponseMessage Search(string q)
         {
@@ -125,17 +134,32 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
+        /// <summary>A data transfer object with information to create a message.</summary>
         public class CreateDTO
         {
+            /// <summary>Gets or sets the message subject.</summary>
             [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string Subject;
+
+            /// <summary>Gets or sets the message body.</summary>
             [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string Body;
+
+            /// <summary>Gets or sets the IDs of the roles which are recipients of the message.</summary>
             [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string RoleIds;
+
+            /// <summary>Gets or sets the IDs of the users which are recipients of the message.</summary>
             [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string UserIds;
+
+            /// <summary>Gets or sets the IDs of the files which are attached to the message.</summary>
             [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string FileIds;
         }
     }

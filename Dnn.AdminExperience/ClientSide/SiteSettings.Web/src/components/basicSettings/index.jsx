@@ -156,7 +156,7 @@ class BasicSettingsPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         if (state.basicSettings) {
@@ -357,7 +357,7 @@ class BasicSettingsPanelBody extends Component {
                     {canEdit && <div className="buttons-box">
                         <Button
                             disabled={!this.props.clientModified}
-                            type="secondary"
+                            type="neutral"
                             onClick={this.onCancel.bind(this) }>
                             {resx.get("Cancel") }
                         </Button>

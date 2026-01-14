@@ -1,25 +1,24 @@
-﻿// 
+﻿//
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+//
+namespace DotNetNuke.Tests.Core;
+
 using DotNetNuke.Tests.Utilities.Mocks;
 
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Core
+[SetUpFixture]
+internal class TestSetup
 {
-    [SetUpFixture]
-    internal class TestSetup
+    [OneTimeSetUp]
+    public void SetUp()
     {
-        [SetUp]
-        public void SetUp()
-        {
-        }
+    }
 
-        [TearDown]
-        public void TearDown()
-        {
-            MockComponentProvider.ResetContainer();
-        }
+    [OneTimeTearDown]
+    public void TearDown()
+    {
+        MockComponentProvider.ResetContainer();
     }
 }

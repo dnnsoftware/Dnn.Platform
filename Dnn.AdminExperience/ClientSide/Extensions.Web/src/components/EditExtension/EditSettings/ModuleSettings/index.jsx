@@ -54,7 +54,7 @@ class ModuleSettings extends Component {
                     service={utils.utilities.sf}
                     onPermissionsChanged={this.onPermissionsChanged.bind(this)} />
                 <GridCell className="actions-row">
-                    <Button onClick={props.onCancel.bind(this)}>{Localization.get("Cancel")}</Button>
+                    <Button type="neutral" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel")}</Button>
                     <Button type="primary" onClick={this.savePermissions.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>
                     <Button type="primary" onClick={this.savePermissions.bind(this, false)}>{Localization.get("Save")}</Button>
                 </GridCell>

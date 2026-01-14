@@ -4,6 +4,7 @@
 namespace Dnn.PersonaBar.Prompt.Services
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -11,11 +12,12 @@ namespace Dnn.PersonaBar.Prompt.Services
     using System.Web.Http;
 
     using Dnn.PersonaBar.Library.Attributes;
-    using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Models;
     using Dnn.PersonaBar.Prompt.Common;
     using Dnn.PersonaBar.Prompt.Components;
     using Dnn.PersonaBar.Prompt.Components.Models;
+
+    using DotNetNuke.Abstractions.Prompt;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
@@ -24,15 +26,38 @@ namespace Dnn.PersonaBar.Prompt.Services
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    using IConsoleCommand = DotNetNuke.Abstractions.Prompt.IConsoleCommand;
+#pragma warning disable CS0618
+    using IOldConsoleCommand = Dnn.PersonaBar.Library.Prompt.IConsoleCommand;
+#pragma warning restore CS0618
+
     [MenuPermission(MenuName = "Dnn.Prompt")]
     [RequireHost]
     public class CommandController : ControllerBase, IServiceRouteMapper
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CommandController));
-        private static readonly string[] BlackList = { "smtppassword", "password", "pwd", "pass", "apikey" };
+        private static readonly string[] DenyList = ["smtppassword", "password", "pwd", "pass", "apikey",];
+        private static readonly string[] Namespaces = ["Dnn.PersonaBar.Prompt.Services",];
+        private static readonly char[] Separators = [',', '|', ' ',];
 
+        private readonly IServiceProvider serviceProvider;
+        private readonly ICommandRepository commandRepository;
+        private readonly Components.Repositories.ICommandRepository oldCommandRepository;
         private int portalId = -1;
         private PortalSettings portalSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="CommandController"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="commandRepository">The command repository.</param>
+        /// <param name="oldCommandRepository">The obsolete command repository (to be removed in DNN 11).</param>
+        public CommandController(IServiceProvider serviceProvider, ICommandRepository commandRepository, Components.Repositories.ICommandRepository oldCommandRepository)
+        {
+            this.serviceProvider = serviceProvider;
+            this.commandRepository = commandRepository;
+            this.oldCommandRepository = oldCommandRepository;
+        }
 
         private new int PortalId
         {
@@ -78,7 +103,7 @@ namespace Dnn.PersonaBar.Prompt.Services
 
             if (portal == null)
             {
-                var errorMessage = string.Format(Localization.GetString("Prompt_GetPortal_NotFound", Constants.LocalResourcesFile), portalId);
+                var errorMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_GetPortal_NotFound", Constants.LocalResourcesFile), portalId);
                 Logger.Error(errorMessage);
                 return this.AddLogAndReturnResponse(null, null, command, DateTime.Now, errorMessage);
             }
@@ -97,10 +122,10 @@ namespace Dnn.PersonaBar.Prompt.Services
             try
             {
                 var args = command.Args;
-                var isHelpCmd = args.First().ToUpper() == "HELP";
-                var isHelpLearn = isHelpCmd && args.Length > 1 && args[1].ToUpper() == "LEARN";
-                var isHelpSyntax = isHelpCmd && args.Length > 1 && args[1].ToUpper() == "SYNTAX";
-                var cmdName = isHelpCmd ? (args.Length > 1 ? args[1].ToUpper() : string.Empty) : args.First().ToUpper();
+                var isHelpCmd = args.First().Equals("HELP", StringComparison.OrdinalIgnoreCase);
+                var isHelpLearn = isHelpCmd && args.Length > 1 && args[1].Equals("LEARN", StringComparison.OrdinalIgnoreCase);
+                var isHelpSyntax = isHelpCmd && args.Length > 1 && args[1].Equals("SYNTAX", StringComparison.OrdinalIgnoreCase);
+                var cmdName = isHelpCmd ? (args.Length > 1 ? args[1].ToUpperInvariant() : string.Empty) : args.First().ToUpperInvariant();
                 if (isHelpSyntax)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new CommandHelp()
@@ -123,31 +148,32 @@ namespace Dnn.PersonaBar.Prompt.Services
                         command,
                         startTime,
                         string.Format(
+                            CultureInfo.CurrentCulture,
                             Localization.GetString("CommandNotFound", Constants.LocalResourcesFile),
-                            cmdName.ToLower()));
+                            cmdName.ToLowerInvariant()));
                 }
 
                 // first look in new commands, then in the old commands
-                var newCommand = DotNetNuke.Prompt.CommandRepository.Instance.GetCommand(cmdName);
+                var newCommand = this.commandRepository.GetCommand(this.serviceProvider, cmdName);
                 if (newCommand == null)
                 {
-                    var allCommands = Components.Repositories.CommandRepository.Instance.GetCommands();
+                    var allCommands = this.oldCommandRepository.GetCommands();
 
                     // if no command found notify
-                    if (!allCommands.ContainsKey(cmdName))
+                    if (!allCommands.TryGetValue(cmdName, out var oldCommand))
                     {
                         var sbError = new StringBuilder();
                         var suggestion = Utilities.GetSuggestedCommand(cmdName);
-                        sbError.AppendFormat(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile), cmdName.ToLower());
+                        sbError.AppendFormat(CultureInfo.InvariantCulture, Localization.GetString("CommandNotFound", Constants.LocalResourcesFile), cmdName.ToLowerInvariant());
                         if (!string.IsNullOrEmpty(suggestion))
                         {
-                            sbError.AppendFormat(Localization.GetString("DidYouMean", Constants.LocalResourcesFile), suggestion);
+                            sbError.AppendFormat(CultureInfo.InvariantCulture, Localization.GetString("DidYouMean", Constants.LocalResourcesFile), suggestion);
                         }
 
                         return this.AddLogAndReturnResponse(null, null, command, startTime, sbError.ToString());
                     }
 
-                    return this.TryRunOldCommand(command, allCommands[cmdName].CommandType, args, isHelpCmd, startTime);
+                    return this.TryRunOldCommand(command, oldCommand.CommandType, args, isHelpCmd, startTime);
                 }
                 else
                 {
@@ -164,20 +190,20 @@ namespace Dnn.PersonaBar.Prompt.Services
         /// <inheritdoc/>
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
-            mapRouteManager.MapHttpRoute("PersonaBar", "promptwithportalid", "{controller}/{action}/{portalId}", null, new { portalId = "-?\\d+" }, new[] { "Dnn.PersonaBar.Prompt.Services" });
+            mapRouteManager.MapHttpRoute("PersonaBar", "promptwithportalid", "{controller}/{action}/{portalId}", null, new { portalId = "-?\\d+" }, Namespaces);
         }
 
         private static string FilterCommand(string command)
         {
-            var blackList = BlackList;
-            var promptBlackList = HostController.Instance.GetString("PromptBlackList", string.Empty)
-                .Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (promptBlackList.Length > 0)
+            var blackList = DenyList;
+            var promptDenyList = HostController.Instance.GetString("PromptBlackList", string.Empty)
+                .Split(Separators, StringSplitOptions.RemoveEmptyEntries);
+            if (promptDenyList.Length > 0)
             {
-                blackList = blackList.Concat(promptBlackList).Distinct().ToArray();
+                blackList = blackList.Concat(promptDenyList).Distinct().ToArray();
             }
 
-            var args = command.Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).ToList();
+            var args = command.Split(Separators, StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).ToList();
             foreach (var lowerKey in blackList.Select(key => key.ToLowerInvariant())
                         .Where(lowerKey => args.Any(arg => arg.Replace("-", string.Empty) == lowerKey)))
             {
@@ -200,10 +226,10 @@ namespace Dnn.PersonaBar.Prompt.Services
             // Instantiate and run the command
             try
             {
-                var cmdObj = (IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
+                var cmdObj = (IOldConsoleCommand)ActivatorUtilities.GetServiceOrCreateInstance(this.serviceProvider, cmdTypeToRun);
                 if (isHelpCmd)
                 {
-                    return this.Request.CreateResponse(HttpStatusCode.OK, Components.Repositories.CommandRepository.Instance.GetCommandHelp(command.Args, cmdObj));
+                    return this.Request.CreateResponse(HttpStatusCode.OK, this.oldCommandRepository.GetCommandHelp(command.Args, cmdObj));
                 }
 
                 // set env. data for command use
@@ -217,15 +243,14 @@ namespace Dnn.PersonaBar.Prompt.Services
             }
         }
 
-        private HttpResponseMessage TryRunNewCommand(CommandInputModel command, DotNetNuke.Abstractions.Prompt.IConsoleCommand cmdTypeToRun, string[] args, bool isHelpCmd, DateTime startTime)
+        private HttpResponseMessage TryRunNewCommand(CommandInputModel command, IConsoleCommand cmdObj, string[] args, bool isHelpCmd, DateTime startTime)
         {
             // Instantiate and run the command that uses the new interfaces and base class
             try
             {
-                var cmdObj = (DotNetNuke.Abstractions.Prompt.IConsoleCommand)Activator.CreateInstance(cmdTypeToRun.GetType());
                 if (isHelpCmd)
                 {
-                    return this.Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Prompt.CommandRepository.Instance.GetCommandHelp(cmdObj));
+                    return this.Request.CreateResponse(HttpStatusCode.OK, this.commandRepository.GetCommandHelp(cmdObj));
                 }
 
                 // set env. data for command use
@@ -239,7 +264,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             }
         }
 
-        private HttpResponseMessage AddLogAndReturnResponseNewCommands(DotNetNuke.Abstractions.Prompt.IConsoleCommand consoleCommand, CommandInputModel command, DateTime startTime, string error = null)
+        private HttpResponseMessage AddLogAndReturnResponseNewCommands(IConsoleCommand consoleCommand, CommandInputModel command, DateTime startTime, string error = null)
         {
             HttpResponseMessage message;
             var isValid = consoleCommand?.IsValid() ?? false;
@@ -261,17 +286,18 @@ namespace Dnn.PersonaBar.Prompt.Services
                         if (result.PagingInfo.PageNo < result.PagingInfo.TotalPages)
                         {
                             result.Output = string.Format(
+                                CultureInfo.CurrentCulture,
                                 Localization.GetString("Prompt_PagingMessageWithLoad", Constants.LocalResourcesFile),
                                 result.PagingInfo.PageNo,
                                 result.PagingInfo.TotalPages);
 
                             var args = command.Args;
-                            var indexOfPage = args.Any(x => x.ToLowerInvariant() == "--page")
-                                ? args.TakeWhile(arg => arg.ToLowerInvariant() != "--page").Count()
+                            var indexOfPage = args.Any(x => x.Equals("--page", StringComparison.OrdinalIgnoreCase))
+                                ? args.TakeWhile(arg => !arg.Equals("--page", StringComparison.OrdinalIgnoreCase)).Count()
                                 : -1;
                             if (indexOfPage > -1)
                             {
-                                args[indexOfPage + 1] = (result.PagingInfo.PageNo + 1).ToString();
+                                args[indexOfPage + 1] = (result.PagingInfo.PageNo + 1).ToString(CultureInfo.InvariantCulture);
                             }
 
                             var nextPageCommand = string.Join(" ", args);
@@ -285,6 +311,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                         else if (result.Records > 0)
                         {
                             result.Output = string.Format(
+                                CultureInfo.CurrentCulture,
                                 Localization.GetString("Prompt_PagingMessage", Constants.LocalResourcesFile),
                                 result.PagingInfo.PageNo,
                                 result.PagingInfo.TotalPages);
@@ -292,7 +319,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                     }
 
                     message = this.Request.CreateResponse(HttpStatusCode.OK, result);
-                    logInfo.LogProperties.Add(new LogDetailInfo("RecordsAffected", result.Records.ToString()));
+                    logInfo.LogProperties.Add(new LogDetailInfo("RecordsAffected", result.Records.ToString(CultureInfo.InvariantCulture)));
                     logInfo.LogProperties.Add(new LogDetailInfo("Output", result.Output));
                 }
                 else
@@ -307,19 +334,19 @@ namespace Dnn.PersonaBar.Prompt.Services
                 message = this.BadRequestResponse(ex.Message);
             }
 
-            logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff")));
+            logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff", CultureInfo.InvariantCulture)));
             LogController.Instance.AddLog(logInfo);
             return message;
         }
 
         /// <summary>Log every command run by a users.</summary>
-        /// <param name="consoleCommand"></param>
-        /// <param name="cmdTypeToRun"></param>
-        /// <param name="command"></param>
-        /// <param name="startTime"></param>
-        /// <param name="error"></param>
+        /// <param name="consoleCommand">The old command, or <see langword="null"/>.</param>
+        /// <param name="cmdTypeToRun">The type of command to run.</param>
+        /// <param name="command">The command input.</param>
+        /// <param name="startTime">The start time of the command run.</param>
+        /// <param name="error">An error message.</param>
         /// <returns>A <see cref="ConsoleResultModel"/> response.</returns>
-        private HttpResponseMessage AddLogAndReturnResponse(IConsoleCommand consoleCommand, Type cmdTypeToRun, CommandInputModel command, DateTime startTime, string error = null)
+        private HttpResponseMessage AddLogAndReturnResponse(IOldConsoleCommand consoleCommand, Type cmdTypeToRun, CommandInputModel command, DateTime startTime, string error = null)
         {
             HttpResponseMessage message;
             var isValid = consoleCommand?.IsValid() ?? false;
@@ -345,17 +372,18 @@ namespace Dnn.PersonaBar.Prompt.Services
                         if (result.PagingInfo.PageNo < result.PagingInfo.TotalPages)
                         {
                             result.Output = string.Format(
+                                CultureInfo.CurrentCulture,
                                 Localization.GetString("Prompt_PagingMessageWithLoad", Constants.LocalResourcesFile),
                                 result.PagingInfo.PageNo,
                                 result.PagingInfo.TotalPages);
 
                             var args = command.Args;
-                            var indexOfPage = args.Any(x => x.ToLowerInvariant() == "--page")
-                                ? args.TakeWhile(arg => arg.ToLowerInvariant() != "--page").Count()
+                            var indexOfPage = args.Any(x => x.Equals("--page", StringComparison.OrdinalIgnoreCase))
+                                ? args.TakeWhile(arg => !arg.Equals("--page", StringComparison.OrdinalIgnoreCase)).Count()
                                 : -1;
                             if (indexOfPage > -1)
                             {
-                                args[indexOfPage + 1] = (result.PagingInfo.PageNo + 1).ToString();
+                                args[indexOfPage + 1] = (result.PagingInfo.PageNo + 1).ToString(CultureInfo.InvariantCulture);
                             }
 
                             var nextPageCommand = string.Join(" ", args);
@@ -369,6 +397,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                         else if (result.Records > 0)
                         {
                             result.Output = string.Format(
+                                CultureInfo.CurrentCulture,
                                 Localization.GetString("Prompt_PagingMessage", Constants.LocalResourcesFile),
                                 result.PagingInfo.PageNo,
                                 result.PagingInfo.TotalPages);
@@ -376,7 +405,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                     }
 
                     message = this.Request.CreateResponse(HttpStatusCode.OK, result);
-                    logInfo.LogProperties.Add(new LogDetailInfo("RecordsAffected", result.Records.ToString()));
+                    logInfo.LogProperties.Add(new LogDetailInfo("RecordsAffected", result.Records.ToString(CultureInfo.InvariantCulture)));
                     logInfo.LogProperties.Add(new LogDetailInfo("Output", result.Output));
                 }
                 else
@@ -391,7 +420,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                 message = this.BadRequestResponse(ex.Message);
             }
 
-            logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff")));
+            logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff", CultureInfo.InvariantCulture)));
             LogController.Instance.AddLog(logInfo);
             return message;
         }

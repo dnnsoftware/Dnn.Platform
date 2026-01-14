@@ -17,6 +17,8 @@ namespace Dnn.PersonaBar.Themes.Services
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.Themes.Components;
     using Dnn.PersonaBar.Themes.Components.DTO;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -27,14 +29,37 @@ namespace Dnn.PersonaBar.Themes.Services
     using DotNetNuke.UI.Skins;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class ThemesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
-        private IThemesController controller = Components.ThemesController.Instance;
+        private readonly IThemesController controller;
+        private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly ILocaleController localeController;
+
+        /// <summary>Initializes a new instance of the <see cref="ThemesController"/> class.</summary>
+        public ThemesController()
+            : this(null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ThemesController"/> class.</summary>
+        /// <param name="controller">The themes controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="localeController">The locale controller.</param>
+        public ThemesController(IThemesController controller, IHostSettings hostSettings, IApplicationStatusInfo appStatus, ILocaleController localeController)
+        {
+            this.controller = controller ?? Globals.GetCurrentServiceProvider().GetRequiredService<IThemesController>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.localeController = localeController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaleController>();
+        }
 
         [HttpGet]
-
         public HttpResponseMessage GetCurrentTheme(string language)
         {
             try
@@ -49,7 +74,6 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetThemes(ThemeLevel level)
         {
             try
@@ -68,7 +92,6 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetThemeFiles(string themeName, ThemeType type, ThemeLevel level)
         {
             try
@@ -94,7 +117,6 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
-
         public HttpResponseMessage ApplyTheme(ApplyThemeInfo applyTheme, string language)
         {
             try
@@ -112,7 +134,6 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
-
         public HttpResponseMessage ApplyDefaultTheme(ApplyDefaultThemeInfo defaultTheme, string language)
         {
             try
@@ -146,7 +167,6 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
-
         public HttpResponseMessage DeleteThemePackage(ThemeInfo theme)
         {
             try
@@ -172,7 +192,6 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetEditableTokens()
         {
             try
@@ -191,17 +210,20 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetEditableSettings(string token)
         {
             try
             {
-                var strFile = Globals.ApplicationMapPath + "\\" + token.ToLowerInvariant().Replace("/", "\\").Replace(".ascx", ".xml");
+                var strFile = this.appStatus.ApplicationMapPath + @"\" + token.ToLowerInvariant().Replace("/", @"\").Replace(".ascx", ".xml");
                 var settings = new List<ListItemInfo>();
                 if (File.Exists(strFile))
                 {
                     var xmlDoc = new XmlDocument { XmlResolver = null };
-                    xmlDoc.Load(strFile);
+                    using (var xmlReader = XmlReader.Create(strFile, new XmlReaderSettings { XmlResolver = null, }))
+                    {
+                        xmlDoc.Load(xmlReader);
+                    }
+
                     foreach (XmlNode xmlSetting in xmlDoc.SelectNodes("//Settings/Setting"))
                     {
                         settings.Add(new ListItemInfo(xmlSetting.SelectSingleNode("Name").InnerText, xmlSetting.SelectSingleNode("Name").InnerText));
@@ -218,17 +240,20 @@ namespace Dnn.PersonaBar.Themes.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetEditableValues(string token, string setting)
         {
             try
             {
-                var strFile = Globals.ApplicationMapPath + "\\" + token.ToLowerInvariant().Replace("/", "\\").Replace(".ascx", ".xml");
+                var strFile = this.appStatus.ApplicationMapPath + @"\" + token.ToLowerInvariant().Replace("/", @"\").Replace(".ascx", ".xml");
                 var value = string.Empty;
                 if (File.Exists(strFile))
                 {
                     var xmlDoc = new XmlDocument { XmlResolver = null };
-                    xmlDoc.Load(strFile);
+                    using (var xmlReader = XmlReader.Create(strFile, new XmlReaderSettings { XmlResolver = null, }))
+                    {
+                        xmlDoc.Load(xmlReader);
+                    }
+
                     foreach (XmlNode xmlSetting in xmlDoc.SelectNodes("//Settings/Setting"))
                     {
                         if (xmlSetting.SelectSingleNode("Name").InnerText == setting)
@@ -261,7 +286,6 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
-
         public HttpResponseMessage UpdateTheme(UpdateThemeInfo updateTheme)
         {
             try
@@ -272,9 +296,9 @@ namespace Dnn.PersonaBar.Themes.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidParameter");
                 }
 
-                var themeFilePath = updateTheme.Path.ToLowerInvariant();
-                if ((!themeFilePath.StartsWith("[g]") && !themeFilePath.StartsWith("[l]") && !themeFilePath.StartsWith("[s]"))
-                    || (themeFilePath.StartsWith("[g]") && !this.UserInfo.IsSuperUser))
+                var themeFilePath = updateTheme.Path;
+                if ((!themeFilePath.StartsWith("[g]", StringComparison.OrdinalIgnoreCase) && !themeFilePath.StartsWith("[l]", StringComparison.OrdinalIgnoreCase) && !themeFilePath.StartsWith("[s]", StringComparison.OrdinalIgnoreCase))
+                    || (themeFilePath.StartsWith("[g]", StringComparison.OrdinalIgnoreCase) && !this.UserInfo.IsSuperUser))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPermission");
                 }
@@ -293,7 +317,6 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage ParseTheme(ParseThemeInfo parseTheme)
         {
             try
@@ -328,7 +351,6 @@ namespace Dnn.PersonaBar.Themes.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.Edit)]
-
         public HttpResponseMessage RestoreTheme(string language)
         {
             try
@@ -350,21 +372,19 @@ namespace Dnn.PersonaBar.Themes.Services
 
         private object GetCurrentThemeObject()
         {
-            var cultureCode = LocaleController.Instance.GetCurrentLocale(this.PortalId).Code;
-            var siteLayout = PortalController.GetPortalSetting("DefaultPortalSkin", this.PortalId, Host.DefaultPortalSkin, cultureCode);
-            var siteContainer = PortalController.GetPortalSetting("DefaultPortalContainer", this.PortalId, Host.DefaultPortalContainer, cultureCode);
-            var editLayout = PortalController.GetPortalSetting("DefaultAdminSkin", this.PortalId, Host.DefaultAdminSkin, cultureCode);
-            var editContainer = PortalController.GetPortalSetting("DefaultAdminContainer", this.PortalId, Host.DefaultAdminContainer, cultureCode);
+            var cultureCode = this.localeController.GetCurrentLocale(this.PortalId).Code;
+            var siteLayout = PortalController.GetPortalSetting("DefaultPortalSkin", this.PortalId, this.hostSettings.DefaultPortalSkin, cultureCode);
+            var siteContainer = PortalController.GetPortalSetting("DefaultPortalContainer", this.PortalId, this.hostSettings.DefaultPortalContainer, cultureCode);
+            var editLayout = PortalController.GetPortalSetting("DefaultAdminSkin", this.PortalId, this.hostSettings.DefaultAdminSkin, cultureCode);
+            var editContainer = PortalController.GetPortalSetting("DefaultAdminContainer", this.PortalId, this.hostSettings.DefaultAdminContainer, cultureCode);
 
-            var currentTheme = new
+            return new
             {
                 SiteLayout = this.controller.GetThemeFile(this.PortalSettings, siteLayout, ThemeType.Skin),
                 SiteContainer = this.controller.GetThemeFile(this.PortalSettings, siteContainer, ThemeType.Container),
                 EditLayout = this.controller.GetThemeFile(this.PortalSettings, editLayout, ThemeType.Skin),
                 EditContainer = this.controller.GetThemeFile(this.PortalSettings, editContainer, ThemeType.Container),
             };
-
-            return currentTheme;
         }
     }
 }

@@ -1,0 +1,31 @@
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.dnnLeft {
+    float: left;
+}
+
+.dnnRight {
+    float: right;
+}
+
+.dnnClear {
+    clear: both;
+    &:after {
+        clear: both;
+        content: ".";
+        display: block;
+        height: 0;
+        visibility: hidden;
+        font-size: 0;
+    }
+}
+
+*+html .dnnClear {
+    min-height: 1%;
+}

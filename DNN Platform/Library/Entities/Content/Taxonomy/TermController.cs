@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web;
     using System.Web.Caching;
@@ -38,7 +39,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         }
 
         /// <summary>Initializes a new instance of the <see cref="TermController"/> class.</summary>
-        /// <param name="dataService"></param>
+        /// <param name="dataService">The data service.</param>
         public TermController(IDataService dataService)
         {
             this.dataService = dataService;
@@ -69,7 +70,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
 
             // Clear Cache
-            DataCache.RemoveCache(string.Format(DataCache.TermCacheKey, term.VocabularyId));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.TermCacheKey, term.VocabularyId));
 
             return term.TermId;
         }
@@ -88,7 +89,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             this.dataService.AddTermToContent(term, contentItem);
 
             // We have adjusted a content item, remove it from cache
-            DataCache.RemoveCache(string.Format(DataCache.ContentItemsCacheKey, contentItem.ContentTypeId));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.ContentItemsCacheKey, contentItem.ContentTypeId));
         }
 
         /// <summary>Deletes the term.</summary>
@@ -111,7 +112,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
 
             // Clear Cache
-            DataCache.RemoveCache(string.Format(DataCache.TermCacheKey, term.VocabularyId));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.TermCacheKey, term.VocabularyId));
         }
 
         /// <summary>Gets the term.</summary>
@@ -157,7 +158,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             // Argument Contract
             Requires.NotNegative("vocabularyId", vocabularyId);
 
-            return CBO.GetCachedObject<List<Term>>(new CacheItemArgs(string.Format(DataCache.TermCacheKey, vocabularyId), CacheTimeOut, CachePriority, vocabularyId), this.GetTermsCallBack).AsQueryable();
+            return CBO.GetCachedObject<List<Term>>(new CacheItemArgs(string.Format(CultureInfo.InvariantCulture, DataCache.TermCacheKey, vocabularyId), CacheTimeOut, CachePriority, vocabularyId), this.GetTermsCallBack).AsQueryable();
         }
 
         /// <summary>Gets the terms by vocabulary name.</summary>
@@ -176,7 +177,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             if (vocabulary == null)
             {
-                throw new ArgumentException("Vocabulary does not exist.", "vocabularyName");
+                throw new ArgumentException("Vocabulary does not exist.", nameof(vocabularyName));
             }
 
             return this.GetTermsByVocabulary(vocabulary.VocabularyId);
@@ -193,7 +194,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             this.dataService.RemoveTermsFromContent(contentItem);
 
             // We have adjusted a content item, remove it from cache
-            DataCache.RemoveCache(string.Format(DataCache.ContentItemsCacheKey, contentItem.ContentTypeId));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.ContentItemsCacheKey, contentItem.ContentTypeId));
         }
 
         /// <summary>Updates the term.</summary>
@@ -220,7 +221,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
 
             // Clear Cache
-            DataCache.RemoveCache(string.Format(DataCache.TermCacheKey, term.VocabularyId));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.TermCacheKey, term.VocabularyId));
         }
 
         private object GetTermsCallBack(CacheItemArgs cacheItemArgs)

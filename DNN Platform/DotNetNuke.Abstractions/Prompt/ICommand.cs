@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.Prompt
 {
-    /// <summary>This is used to retrieve and keep a list of all commands found in the installation.</summary>
+    /// <summary>This contains information about a Prompt command available in the installation.</summary>
     public interface ICommand
     {
         /// <summary>Gets or sets the name of the command.</summary>
@@ -13,15 +13,10 @@ namespace DotNetNuke.Abstractions.Prompt
         string Description { get; set; }
 
         /// <summary>Gets or sets the category to which this command belongs.</summary>
-        /// <remarks>
-        /// This is used to group the list of commands when a user requests this.
-        /// </remarks>
+        /// <remarks>This is used to group the list of commands when a user requests this.</remarks>
         string Category { get; set; }
 
-        /// <summary>
-        /// Gets or sets the key that is used to lookup the command internally
-        /// (= upper cased command name).
-        /// </summary>
+        /// <summary>Gets or sets the key that is used to look up the command internally (i.e. the upper-cased command name).</summary>
         string Key { get; set; }
 
         /// <summary>Gets or sets the assembly version of the assembly containing the command.</summary>

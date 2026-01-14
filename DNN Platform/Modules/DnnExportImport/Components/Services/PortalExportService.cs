@@ -21,6 +21,8 @@ namespace Dnn.ExportImport.Components.Services
     /// <summary>Service to export/import portal data.</summary>
     public class PortalExportService : BasePortableService
     {
+        private static readonly char[] SettingExportSeparator = [',',];
+
         /// <inheritdoc/>
         public override string Category => Constants.Category_Portal;
 
@@ -50,7 +52,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 var portalSettings = new List<ExportPortalSetting>();
                 var settingToMigrate =
-                    SettingsController.Instance.GetSetting(Constants.PortalSettingExportKey)?.SettingValue?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    SettingsController.Instance.GetSetting(Constants.PortalSettingExportKey)?.SettingValue?.Split(SettingExportSeparator, StringSplitOptions.RemoveEmptyEntries);
 
                 if (settingToMigrate != null)
                 {
@@ -58,7 +60,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     // Migrate only allowed portal settings.
                     portalSettings =
-                        portalSettings.Where(x => settingToMigrate.Any(setting => setting.Trim().Equals(x.SettingName, StringComparison.InvariantCultureIgnoreCase))).ToList();
+                        portalSettings.Where(x => settingToMigrate.Any(setting => setting.Trim().Equals(x.SettingName, StringComparison.OrdinalIgnoreCase))).ToList();
 
                     // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? portalSettings.Count : this.CheckPoint.TotalItems;
@@ -75,7 +77,7 @@ namespace Dnn.ExportImport.Components.Services
                     this.Repository.CreateItems(portalSettings);
                 }
 
-                this.Result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString());
+                this.Result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString(CultureInfo.InvariantCulture));
 
                 this.CheckPoint.Progress = 50;
                 this.CheckPoint.ProcessedItems = portalSettings.Count;
@@ -100,7 +102,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 this.Repository.CreateItems(portalLanguages);
-                this.Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString());
+                this.Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 100;
                 this.CheckPoint.Completed = true;
                 this.CheckPoint.Stage++;
@@ -129,7 +131,7 @@ namespace Dnn.ExportImport.Components.Services
                 var portalSettings = this.Repository.GetAllItems<ExportPortalSetting>().ToList();
                 this.ProcessPortalSettings(importJob, importDto, portalSettings);
                 this.CheckPoint.TotalItems = this.GetImportTotal();
-                this.Result.AddSummary("Imported Portal Settings", portalSettings.Count.ToString());
+                this.Result.AddSummary("Imported Portal Settings", portalSettings.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress += 50;
                 this.CheckPoint.Stage++;
                 this.CheckPoint.ProcessedItems = portalSettings.Count;
@@ -143,7 +145,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 var portalLanguages = this.Repository.GetAllItems<ExportPortalLanguage>().ToList();
                 this.ProcessPortalLanguages(importJob, importDto, portalLanguages);
-                this.Result.AddSummary("Imported Portal Languages", portalLanguages.Count.ToString());
+                this.Result.AddSummary("Imported Portal Languages", portalLanguages.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress += 50;
                 this.CheckPoint.Completed = true;
                 this.CheckPoint.Stage++;

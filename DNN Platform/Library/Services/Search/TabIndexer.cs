@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Search
                 where t.LastModifiedOnDate > startDateLocal && t.AllowIndex
                 select t).OrderBy(t => t.LastModifiedOnDate).ThenBy(t => t.TabID).ToArray();
 
-            if (tabs.Any())
+            if (tabs.Length != 0)
             {
                 foreach (var tab in tabs)
                 {
@@ -79,24 +79,24 @@ namespace DotNetNuke.Services.Search
 
             searchDoc.Keywords.Add("keywords", tab.KeyWords);
 
-            // Using TabName for searchDoc.Title due to higher prevalence and relavency || TabTitle will be stored as a keyword
+            // Using TabName for searchDoc.Title due to higher prevalence and relevancy || TabTitle will be stored as a keyword
             searchDoc.Title = tab.TabName;
             searchDoc.Keywords.Add("title", tab.Title);
 
-            if (tab.Terms != null && tab.Terms.Count > 0)
+            if (tab.Terms is { Count: > 0 })
             {
                 searchDoc.Tags = tab.Terms.Select(t => t.Name);
             }
 
             if (Logger.IsTraceEnabled)
             {
-                Logger.Trace("TabIndexer: Search document for metaData added for page [" + tab.Title + " tid:" + tab.TabID + "]");
+                Logger.Trace($"TabIndexer: Search document for metaData added for page [{tab.Title} tid:{tab.TabID}]");
             }
 
             return searchDoc;
         }
 
-        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, int scheduleId)
+        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer, List<SearchDocument> searchDocuments, int portalId, int scheduleId)
         {
             indexer.Invoke(searchDocuments);
             var total = searchDocuments.Count;

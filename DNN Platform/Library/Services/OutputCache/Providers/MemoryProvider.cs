@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -38,38 +39,23 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        internal static string CachePrefix
-        {
-            get
-            {
-                return cachePrefix;
-            }
-        }
-
         /// <inheritdoc/>
         public override string GenerateCacheKey(int tabId, System.Collections.Specialized.StringCollection includeVaryByKeys, System.Collections.Specialized.StringCollection excludeVaryByKeys, SortedDictionary<string, string> varyBy)
         {
-            return this.GetCacheKey(base.GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy));
+            return GetCacheKey(base.GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy));
         }
 
         /// <inheritdoc/>
         public override int GetItemCount(int tabId)
         {
-            return GetCacheKeys(tabId).Count();
+            return GetCacheKeys(tabId).Count;
         }
 
         /// <inheritdoc/>
         public override byte[] GetOutput(int tabId, string cacheKey)
         {
             object output = Cache[cacheKey];
-            if (output != null)
-            {
-                return (byte[])output;
-            }
-            else
-            {
-                return null;
-            }
+            return (byte[])output;
         }
 
         /// <inheritdoc/>
@@ -126,7 +112,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             IDictionaryEnumerator cacheEnum = Cache.GetEnumerator();
             while (cacheEnum.MoveNext())
             {
-                if (cacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix)))
+                if (cacheEnum.Key.ToString().StartsWith(cachePrefix, StringComparison.Ordinal))
                 {
                     keys.Add(cacheEnum.Key.ToString());
                 }
@@ -141,7 +127,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             IDictionaryEnumerator cacheEnum = Cache.GetEnumerator();
             while (cacheEnum.MoveNext())
             {
-                if (cacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix, tabId.ToString(), "_")))
+                if (cacheEnum.Key.ToString().StartsWith($"{cachePrefix}{tabId.ToString(CultureInfo.InvariantCulture)}_", StringComparison.Ordinal))
                 {
                     keys.Add(cacheEnum.Key.ToString());
                 }
@@ -150,11 +136,11 @@ namespace DotNetNuke.Services.OutputCache.Providers
             return keys;
         }
 
-        private string GetCacheKey(string cacheKey)
+        private static string GetCacheKey(string cacheKey)
         {
             if (string.IsNullOrEmpty(cacheKey))
             {
-                throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
+                throw new ArgumentException("Argument cannot be null or an empty string", nameof(cacheKey));
             }
 
             return string.Concat(cachePrefix, cacheKey);

@@ -5,12 +5,15 @@ namespace Dnn.PersonaBar.Library.Permissions
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web.Caching;
 
     using Dnn.PersonaBar.Library.Data;
     using Dnn.PersonaBar.Library.Model;
     using Dnn.PersonaBar.Library.Repository;
+
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -31,9 +34,10 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MenuPermissionController));
 
-        private static readonly IDataService DataService = new DataService();
+        private static readonly DataService DataService = new DataService();
         private static readonly object ThreadLocker = new object();
         private static readonly object DefaultPermissionLocker = new object();
+        private static readonly char[] RoleSeparator = ['|',];
 
         public static bool CanView(int portalId, MenuItem menu)
         {
@@ -138,9 +142,9 @@ namespace Dnn.PersonaBar.Library.Permissions
             permissionInfo.MenuPermissionId = DataService.SavePersonaBarMenuPermission(
                 portalId,
                 menu.MenuId,
-                permissionInfo.PermissionID,
-                permissionInfo.RoleID,
-                permissionInfo.UserID,
+                ((IPermissionInfo)permissionInfo).PermissionId,
+                ((IPermissionInfo)permissionInfo).RoleId,
+                ((IPermissionInfo)permissionInfo).UserId,
                 permissionInfo.AllowAccess,
                 user.UserID);
 
@@ -244,7 +248,7 @@ namespace Dnn.PersonaBar.Library.Permissions
         {
             try
             {
-                var defaultPermissions = roleName.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                var defaultPermissions = roleName.Split(RoleSeparator, StringSplitOptions.RemoveEmptyEntries).ToList();
                 if (defaultPermissions.Count > 1)
                 {
                     roleName = defaultPermissions[0];
@@ -253,7 +257,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                 defaultPermissions.RemoveAt(0);
                 var administratorRole = PortalController.Instance.GetPortal(portalId).AdministratorRoleName;
 
-                var nullRoleId = Convert.ToInt32(Globals.glbRoleNothing);
+                var nullRoleId = Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
                 var permissions = GetPermissions(menuItem.MenuId)
                     .Where(p => p.MenuId == Null.NullInteger
                                     || (roleName == administratorRole && defaultPermissions.Count == 0) // Administrator gets all granular permissions only if no permission specified explicity.
@@ -263,10 +267,10 @@ namespace Dnn.PersonaBar.Library.Permissions
                 switch (roleName)
                 {
                     case Globals.glbRoleUnauthUserName:
-                        roleId = Convert.ToInt32(Globals.glbRoleUnauthUser);
+                        roleId = Convert.ToInt32(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
                         break;
                     case Globals.glbRoleAllUsersName:
-                        roleId = Convert.ToInt32(Globals.glbRoleAllUsers);
+                        roleId = Convert.ToInt32(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
                         break;
                     default:
                         var role = RoleController.Instance.GetRoleByName(portalId, roleName);
@@ -331,7 +335,7 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         private static string GetCacheKey(int portalId)
         {
-            return string.Format(PersonaBarMenuPermissionsCacheKey, portalId);
+            return string.Format(CultureInfo.InvariantCulture, PersonaBarMenuPermissionsCacheKey, portalId);
         }
 
         private static IList<PermissionInfo> GetAllPermissions()

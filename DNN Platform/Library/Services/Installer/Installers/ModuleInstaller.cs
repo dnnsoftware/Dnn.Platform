@@ -3,22 +3,24 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Installers
 {
-using System;
-using System.IO;
-using System.Xml.XPath;
+    using System;
+    using System.Globalization;
+    using System.IO;
+    using System.Xml.XPath;
 
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.EventQueue;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.EventQueue;
 
     /// <summary>The ModuleInstaller installs Module Components to a DotNetNuke site.</summary>
-public class ModuleInstaller : ComponentInstallerBase
+    public class ModuleInstaller : ComponentInstallerBase
     {
         private DesktopModuleInfo desktopModule;
         private EventMessage eventMessage;
@@ -59,7 +61,7 @@ public class ModuleInstaller : ComponentInstallerBase
 
                 // Add custom Attributes for this message
                 oAppStartMessage.Attributes.Add("BusinessControllerClass", this.desktopModule.BusinessControllerClass);
-                oAppStartMessage.Attributes.Add("desktopModuleID", this.desktopModule.DesktopModuleID.ToString());
+                oAppStartMessage.Attributes.Add("desktopModuleID", this.desktopModule.DesktopModuleID.ToString(CultureInfo.InvariantCulture));
 
                 // send it to occur on next App_Start Event
                 EventQueueController.SendMessage(oAppStartMessage, "Application_Start_FirstRequest");
@@ -70,7 +72,7 @@ public class ModuleInstaller : ComponentInstallerBase
             {
                 if (!string.IsNullOrEmpty(this.eventMessage.Attributes["UpgradeVersionsList"]))
                 {
-                    this.eventMessage.Attributes.Set("desktopModuleID", this.desktopModule.DesktopModuleID.ToString());
+                    this.eventMessage.Attributes.Set("desktopModuleID", this.desktopModule.DesktopModuleID.ToString(CultureInfo.InvariantCulture));
                     EventQueueController.SendMessage(this.eventMessage, "Application_Start");
                 }
             }
@@ -84,19 +86,19 @@ public class ModuleInstaller : ComponentInstallerBase
             // Add DesktopModule to all portals
             if (!string.IsNullOrEmpty(this.desktopModule.AdminPage))
             {
-                foreach (PortalInfo portal in PortalController.Instance.GetPortals())
+                foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
                 {
                     bool createdNewPage = false, addedNewModule = false;
-                    DesktopModuleController.AddDesktopModulePageToPortal(this.desktopModule, this.desktopModule.AdminPage, portal.PortalID, ref createdNewPage, ref addedNewModule);
+                    DesktopModuleController.AddDesktopModulePageToPortal(this.desktopModule, this.desktopModule.AdminPage, portal.PortalId, ref createdNewPage, ref addedNewModule);
 
                     if (createdNewPage)
                     {
-                        this.Log.AddInfo(string.Format(Util.MODULE_AdminPageAdded, this.desktopModule.AdminPage, portal.PortalID));
+                        this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_AdminPageAdded, this.desktopModule.AdminPage, portal.PortalId));
                     }
 
                     if (addedNewModule)
                     {
-                        this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, this.desktopModule.AdminPage, portal.PortalID));
+                        this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_AdminPagemoduleAdded, this.desktopModule.AdminPage, portal.PortalId));
                     }
                 }
             }
@@ -109,12 +111,12 @@ public class ModuleInstaller : ComponentInstallerBase
 
                 if (createdNewPage)
                 {
-                    this.Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, this.desktopModule.HostPage));
+                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_HostPageAdded, this.desktopModule.HostPage));
                 }
 
                 if (addedNewModule)
                 {
-                    this.Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, this.desktopModule.HostPage));
+                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_HostPagemoduleAdded, this.desktopModule.HostPage));
                 }
             }
         }
@@ -135,7 +137,7 @@ public class ModuleInstaller : ComponentInstallerBase
                     this.desktopModule.Category = this.installedDesktopModule.Category;
                 }
 
-                // Clear ModuleControls and Module Definitions caches in case script has modifed the contents
+                // Clear ModuleControls and Module Definitions caches in case script has modified the contents
                 DataCache.RemoveCache(DataCache.ModuleDefinitionCacheKey);
                 DataCache.RemoveCache(DataCache.ModuleControlsCacheKey);
 
@@ -144,7 +146,7 @@ public class ModuleInstaller : ComponentInstallerBase
                 this.desktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(this.desktopModule, true, false);
 
                 this.Completed = true;
-                this.Log.AddInfo(string.Format(Util.MODULE_Registered, this.desktopModule.ModuleName));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_Registered, this.desktopModule.ModuleName));
             }
             catch (Exception ex)
             {
@@ -152,7 +154,8 @@ public class ModuleInstaller : ComponentInstallerBase
             }
         }
 
-        /// <summary>The ReadManifest method reads the manifest file for the Module compoent.</summary>
+        /// <summary>The ReadManifest method reads the manifest file for the Module component.</summary>
+        /// <param name="manifestNav">The XPath navigator for the Module section of the manifest.</param>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             // Load the Desktop Module from the manifest
@@ -250,22 +253,26 @@ public class ModuleInstaller : ComponentInstallerBase
 
                     var controller = new DesktopModuleController();
 
-                    this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
+                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
 
                     // remove admin/host pages
                     if (!string.IsNullOrEmpty(tempDesktopModule.AdminPage))
                     {
-                        string tabPath = "//Admin//" + tempDesktopModule.AdminPage;
-
-                        var portals = PortalController.Instance.GetPortals();
-                        foreach (PortalInfo portal in portals)
+                        foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
                         {
-                            var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
-
-                            TabInfo temp = TabController.Instance.GetTab(tabID, portal.PortalID);
-                            if (temp != null)
+                            var adminTabId = TabController.GetTabByTabPath(portal.PortalId, "//Admin", Null.NullString);
+                            if (adminTabId == Null.NullInteger)
                             {
-                                var mods = TabModulesController.Instance.GetTabModules(temp);
+                                continue;
+                            }
+
+                            var tabPath = Globals.GenerateTabPath(adminTabId, tempDesktopModule.AdminPage);
+                            var moduleAdminTabId = TabController.GetTabByTabPath(portal.PortalId, tabPath, Null.NullString);
+
+                            TabInfo moduleAdminTab = TabController.Instance.GetTab(moduleAdminTabId, portal.PortalId);
+                            if (moduleAdminTab != null)
+                            {
+                                var mods = TabModulesController.Instance.GetTabModules(moduleAdminTab);
                                 bool noOtherTabModule = true;
                                 foreach (ModuleInfo mod in mods)
                                 {
@@ -277,11 +284,11 @@ public class ModuleInstaller : ComponentInstallerBase
 
                                 if (noOtherTabModule)
                                 {
-                                    this.Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalID));
-                                    TabController.Instance.DeleteTab(tabID, portal.PortalID);
+                                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalId));
+                                    TabController.Instance.DeleteTab(moduleAdminTabId, portal.PortalId);
                                 }
 
-                                this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalID));
+                                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalId));
                             }
                         }
                     }
@@ -289,8 +296,8 @@ public class ModuleInstaller : ComponentInstallerBase
                     if (!string.IsNullOrEmpty(tempDesktopModule.HostPage))
                     {
                         Upgrade.Upgrade.RemoveHostPage(tempDesktopModule.HostPage);
-                        this.Log.AddInfo(string.Format(Util.MODULE_HostPageRemoved, tempDesktopModule.HostPage));
-                        this.Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleRemoved, tempDesktopModule.HostPage));
+                        this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_HostPageRemoved, tempDesktopModule.HostPage));
+                        this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_HostPagemoduleRemoved, tempDesktopModule.HostPage));
                     }
 
                     controller.DeleteDesktopModule(tempDesktopModule);
@@ -298,8 +305,7 @@ public class ModuleInstaller : ComponentInstallerBase
                     // Remove all the tab versions related with the module.
                     foreach (var module in modules)
                     {
-                        var moduleInfo = module as ModuleInfo;
-                        if (moduleInfo != null)
+                        if (module is ModuleInfo moduleInfo)
                         {
                             TabVersionController.Instance.DeleteTabVersionDetailByModule(moduleInfo.ModuleID);
                         }

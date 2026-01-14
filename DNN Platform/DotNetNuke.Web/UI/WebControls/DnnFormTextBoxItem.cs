@@ -4,23 +4,30 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
 
+    /// <summary>A text box control.</summary>
     public class DnnFormTextBoxItem : DnnFormItemBase
     {
         private TextBox textBox;
 
+        /// <summary>Gets or sets the autocomplete type.</summary>
         public AutoCompleteType AutoCompleteType { get; set; }
 
+        /// <summary>Gets or sets the max length.</summary>
         public int MaxLength { get; set; }
 
+        /// <summary>Gets or sets the columns (when <see cref="TextMode"/> is <see cref="TextBoxMode.MultiLine"/>).</summary>
         public int Columns { get; set; }
 
+        /// <summary>Gets or sets the rows (when <see cref="TextMode"/> is <see cref="TextBoxMode.MultiLine"/>).</summary>
         public int Rows { get; set; }
 
+        /// <summary>Gets or sets the CSS class for the text box.</summary>
         public string TextBoxCssClass
         {
             get
@@ -34,9 +41,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the input mode.</summary>
         public TextBoxMode TextMode { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether do not output field's value after post back when text mode set to password mode.</summary>
+        /// <summary>Gets or sets a value indicating whether to clear the field's value after post back when text mode set to password mode.</summary>
         public bool ClearContentInPasswordMode { get; set; }
 
         /// <inheritdoc/>
@@ -53,7 +61,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.textBox.Attributes.Add("aria-label", this.DataField);
 
             // Load from ControlState
-            this.textBox.Text = Convert.ToString(this.Value);
+            this.textBox.Text = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
             if (this.TextMode == TextBoxMode.Password)
             {
                 this.textBox.Attributes.Add("autocomplete", "off");
@@ -76,7 +84,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             if (this.TextMode == TextBoxMode.Password && !this.ClearContentInPasswordMode)
             {
-                this.textBox.Attributes.Add("value", Convert.ToString(this.Value));
+                this.textBox.Attributes.Add("value", Convert.ToString(this.Value, CultureInfo.InvariantCulture));
             }
         }
 

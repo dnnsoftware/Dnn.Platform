@@ -12,7 +12,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays a link to the site's privacy page.</summary>
     public partial class Privacy : SkinObjectBase
     {
         private const string MyFileName = "Privacy.ascx";
@@ -21,7 +21,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>Initializes a new instance of the <see cref="Privacy"/> class.</summary>
         public Privacy()
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         public string Text { get; set; }

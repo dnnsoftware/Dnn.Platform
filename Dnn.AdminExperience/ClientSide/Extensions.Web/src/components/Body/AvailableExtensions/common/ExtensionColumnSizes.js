@@ -1,1 +1,1 @@
-module.exports = [4, 50, 11, 35];
+export default [4, 50, 11, 35];

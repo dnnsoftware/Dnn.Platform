@@ -41,19 +41,25 @@ namespace DotNetNuke.Services.FileSystem
                 // get TabId
                 if (context.Request.QueryString["tabid"] != null)
                 {
-                    int.TryParse(context.Request.QueryString["tabid"], out tabId);
+                    if (!int.TryParse(context.Request.QueryString["tabid"], out tabId))
+                    {
+                        tabId = -1;
+                    }
                 }
 
                 // get ModuleId
                 if (context.Request.QueryString["mid"] != null)
                 {
-                    int.TryParse(context.Request.QueryString["mid"], out moduleId);
+                    if (!int.TryParse(context.Request.QueryString["mid"], out moduleId))
+                    {
+                        moduleId = -1;
+                    }
                 }
             }
             catch (Exception)
             {
                 // The TabId or ModuleId are incorrectly formatted (potential DOS)
-                this.Handle404Exception(context, context.Request.RawUrl);
+                Handle404Exception(context, context.Request.RawUrl);
             }
 
             // get Language
@@ -107,10 +113,10 @@ namespace DotNetNuke.Services.FileSystem
                 TabType urlType = Globals.GetURLType(url);
                 if (urlType == TabType.Tab)
                 {
-                    // verify whether the tab is exist, otherwise throw out 404.
-                    if (TabController.Instance.GetTab(int.Parse(url), portalSettings.PortalId, false) == null)
+                    // verify whether the tab exists, otherwise throw out 404.
+                    if (TabController.Instance.GetTab(int.Parse(url, CultureInfo.InvariantCulture), portalSettings.PortalId, false) == null)
                     {
-                        this.Handle404Exception(context, context.Request.RawUrl);
+                        Handle404Exception(context, context.Request.RawUrl);
                     }
                 }
 
@@ -119,7 +125,7 @@ namespace DotNetNuke.Services.FileSystem
                     url = Globals.LinkClick(url, tabId, moduleId, false);
                 }
 
-                if (urlType == TabType.File && url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
+                if (urlType == TabType.File && !url.StartsWith("fileid=", StringComparison.OrdinalIgnoreCase))
                 {
                     // to handle legacy scenarios before the introduction of the FileServerHandler
                     var fileName = Path.GetFileName(url);
@@ -136,7 +142,10 @@ namespace DotNetNuke.Services.FileSystem
                 bool blnForceDownload = false;
                 if ((context.Request.QueryString["forcedownload"] != null) || (context.Request.QueryString["contenttype"] != null))
                 {
-                    bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload);
+                    if (!bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload))
+                    {
+                        blnForceDownload = false;
+                    }
                 }
 
                 var contentDisposition = blnForceDownload ? ContentDisposition.Attachment : ContentDisposition.Inline;
@@ -150,10 +159,10 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         case TabType.File:
                             var download = false;
-                            var file = fileManager.GetFile(int.Parse(UrlUtils.GetParameterValue(url)));
+                            var file = fileManager.GetFile(int.Parse(UrlUtils.GetParameterValue(url), CultureInfo.InvariantCulture));
                             if (file != null)
                             {
-                                if (!file.IsEnabled || !this.HasAPublishedVersion(file))
+                                if (!file.IsEnabled || !HasAPublishedVersion(file))
                                 {
                                     if (context.Request.IsAuthenticated)
                                     {
@@ -209,7 +218,7 @@ namespace DotNetNuke.Services.FileSystem
 
                             if (!download)
                             {
-                                this.Handle404Exception(context, url);
+                                Handle404Exception(context, url);
                             }
 
                             break;
@@ -232,16 +241,16 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 catch (Exception)
                 {
-                    this.Handle404Exception(context, url);
+                    Handle404Exception(context, url);
                 }
             }
             else
             {
-                this.Handle404Exception(context, url);
+                Handle404Exception(context, url);
             }
         }
 
-        private bool HasAPublishedVersion(IFileInfo file)
+        private static bool HasAPublishedVersion(IFileInfo file)
         {
             if (file.HasBeenPublished)
             {
@@ -253,7 +262,7 @@ namespace DotNetNuke.Services.FileSystem
             return user != null && user.UserID == file.CreatedByUserID;
         }
 
-        private void Handle404Exception(HttpContext context, string url)
+        private static void Handle404Exception(HttpContext context, string url)
         {
             try
             {

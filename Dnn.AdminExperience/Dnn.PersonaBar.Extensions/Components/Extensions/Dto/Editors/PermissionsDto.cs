@@ -4,7 +4,7 @@
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 {
-    using Dnn.PersonaBar.Library.DTO;
+    using Dnn.PersonaBar.Library.Dto;
     using Dnn.PersonaBar.Library.Helper;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;

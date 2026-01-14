@@ -1114,7 +1114,7 @@
     <value>Download</value>
   </data>
   <data name="EditExtension_Notify.Success" xml:space="preserve">
-    <value>Extension updated sucessfully.</value>
+    <value>Extension updated successfully.</value>
   </data>
   <data name="EditModule_ModuleSharingSupported.Label" xml:space="preserve">
     <value>Supported</value>

@@ -251,7 +251,7 @@ class InstallExtensionModal extends Component {
                                     />
                                 </GridCell>
                                 <GridCell className="modal-footer">
-                                    <Button onClick={!props.viewingLog ? this.cancelInstallationOnUpload.bind(this) : this.toggleViewLog.bind(this, false)}>{Localization.get("InstallExtension_Cancel.Button")}</Button>
+                                    <Button type="neutral" onClick={!props.viewingLog ? this.cancelInstallationOnUpload.bind(this) : this.toggleViewLog.bind(this, false)}>{Localization.get("InstallExtension_Cancel.Button")}</Button>
                                     <Button onClick={legacyInstalled ? this.setAlreadyInstalled.bind(this, legacyTypeIsInstalled, true) : this.goToStep.bind(this, 1)} type="primary"
                                         disabled={(!props.parsedInstallationPackage || !props.parsedInstallationPackage.success)}>
                                         {Localization.get("InstallExtension_Upload.Button")}

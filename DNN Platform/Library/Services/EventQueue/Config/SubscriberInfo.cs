@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.EventQueue.Config
         }
 
         /// <summary>Initializes a new instance of the <see cref="SubscriberInfo"/> class.</summary>
-        /// <param name="subscriberName"></param>
+        /// <param name="subscriberName">The subscriber name.</param>
         public SubscriberInfo(string subscriberName)
             : this()
         {

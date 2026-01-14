@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Assets
         /// <param name="startIndex">Start index to retrieve items.</param>
         /// <param name="numItems">Max Number of items.</param>
         /// <param name="sortExpression">The sort expression in a SQL format, e.g. FileName ASC.</param>
-        /// <param name="subfolderFilter"></param>
+        /// <param name="subfolderFilter">The <see cref="SubfolderFilter"/>.</param>
         /// <returns>The list of files and folders contained in the specified folder paginated.</returns>
         ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure);
 
@@ -25,6 +25,7 @@ namespace DotNetNuke.Services.Assets
         /// <param name="startIndex">Start index to retrieve items.</param>
         /// <param name="numItems">Max Number of items.</param>
         /// <param name="sortExpression">The sort expression in a SQL format, e.g. FileName ASC.</param>
+        /// <param name="subfolderFilter">The <see cref="SubfolderFilter"/>.</param>
         /// <returns>The list of files and folders contained in the specified folder paginated.</returns>
         ContentPage SearchFolderContent(int folderId, string pattern, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure);
 

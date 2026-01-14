@@ -1,10 +1,10 @@
-Imports System.Web.UI.HtmlControls
+﻿Imports System.Web.UI.HtmlControls
 
 Namespace DotNetNuke.UI.Utilities
     'do not want this control for dnnVariable to ever use a naming container
     'somewhat of a hack here...
     Public Class NonNamingHiddenInput : Inherits HtmlInputHidden
-        Private m_ValueSet As Boolean = False
+        Private m_ValueSet As Boolean
 
         Public Overrides Property Value() As String
             Get

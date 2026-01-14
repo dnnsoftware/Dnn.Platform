@@ -18,19 +18,19 @@
         height: 0;
         border: none;
     }
-    .calendar-container {       
+    .calendar-container {
         position: absolute;
         width: 256px;
         left: 0px;
         border: 1px solid @alto;
-        box-shadow: 0px 0px 17px 2px rgba(0, 0, 0, .2);
+        box-shadow: 0px 0px 17px 2px rgba(var(--dnn-color-foreground-r, 0), var(--dnn-color-foreground-g, 0), var(--dnn-color-foreground-b, 0), .2);
         opacity: 0;
         pointer-events: none;
         transition: 300ms;
         transform-origin: 100% 0% 0px;
         transform: scale(1);
         z-index: 10;
-        background: white;
+        background: var(--dnn-color-background, white);
         text-align: center;
 
         &.show-above-input {
@@ -62,13 +62,13 @@
         cursor: pointer;
         float: left;
         padding-top: 1px;
-        color: @alto;
+        color: var(--dnn-color-foreground-light, @alto);
         margin-left: 7px;
         &:hover {
-            color: @rollingStone;
+            color: var(--dnn-color-neutral, @rollingStone);
         }
         &.active, &.active:hover {
-            color: @curiousBlue;
+            color: var(--dnn-color-primary, @curiousBlue);
         }
     }
     .clear-button {
@@ -80,11 +80,12 @@
         top: 3px;
         font-size: 26px;
         &:hover {
-            color: @rollingStone;
+            color: var(--dnn-color-foreground-light, @rollingStone);
         }
     }
     .calendar-text {
-        border: 1px solid #b0afae;
+        border: 1px solid var(--dnn-color-foreground-light, #b0afae);
+        border-radius: var(--dnn-controls-radius, 0);
         padding: 8px 12px;
         cursor: pointer;
         min-height: 16px;
@@ -118,7 +119,7 @@
             position: absolute;
             display: block;
             cursor: pointer;
-            border: 1px solid #ccc;
+            border: 1px solid var(--dnn-color-foreground-light, #ccc);
             padding: 0;
             width: 28px;
             height: 28px;
@@ -148,7 +149,7 @@
             text-transform: uppercase;
             padding: 10px 0;
             font-weight: 600;
-            color: @bulgarianRose;
+            color: var(--dnn-color-foreground, @bulgarianRose);
         }
         .DayPicker-Weekdays {
             width: 100%;
@@ -157,14 +158,14 @@
                 width: 100%;
                 float: left;
                 .DayPicker-Weekday {
-                    color: #fff;
+                    color: var(--dnn-color-neutral-contrast, #fff);
                     line-height: 30px;
                     text-align: center;
-                    background-color: @alto;
+                    background-color: var(--dnn-color-neutral, @alto);
                     width: 14.28%;
                     box-sizing: border-box;
                     float: left;
-                    border: 2px solid #fff;
+                    border: 2px solid var(--dnn-color-neutral, @alto);
                 }
             }
         }

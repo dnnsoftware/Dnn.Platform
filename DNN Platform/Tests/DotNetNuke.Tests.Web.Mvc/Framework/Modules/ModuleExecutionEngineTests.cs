@@ -1,30 +1,43 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Management.Instrumentation;
-    using System.Web;
     using System.Web.Mvc;
 
-    using DotNetNuke.ComponentModel;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Web.Mvc.Common;
-    using DotNetNuke.Web.Mvc.Framework;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Web.Mvc.Framework.ActionResults;
     using DotNetNuke.Web.Mvc.Framework.Modules;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
     using NUnit.Framework;
 
     [TestFixture]
     public class ModuleExecutionEngineTests
     {
-        [Test]
+        private FakeServiceProvider serviceProvider;
 
+        [SetUp]
+        public void Setup()
+        {
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton<IControllerFactory, DefaultControllerFactory>();
+                });
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
+        }
+
+        [Test]
         public void ExecuteModule_Requires_NonNull_ModuleRequestContext()
         {
             var engine = new ModuleExecutionEngine();
@@ -32,7 +45,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
-
         public void ExecuteModule_Returns_Null_If_Application_Is_Null()
         {
             // Arrange
@@ -47,7 +59,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
-
         public void ExecuteModule_Executes_ModuleApplication_If_Not_Null()
         {
             // Arrange
@@ -64,7 +75,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
-
         public void ExecuteModule_Returns_Result_Of_Executing_ModuleApplication()
         {
             // Arrange

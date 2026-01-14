@@ -1,15 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Web.Mvc.Framework
 {
     using System.Linq;
     using System.Web.Mvc;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Web.Mvc.Framework;
     using DotNetNuke.Web.Mvc.Framework.Controllers;
     using DotNetNuke.Web.Mvc.Framework.Modules;
@@ -24,22 +21,25 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
     [TestFixture]
     public class ModuleDelegatingViewEngineTests
     {
+        private FakeServiceProvider serviceProvider;
+
         [SetUp]
         public void Setup()
         {
-            var services = new ServiceCollection();
-            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
-            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton<IControllerFactory, DefaultControllerFactory>();
+                });
+        }
 
-            services.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
-            services.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            services.AddSingleton<IControllerFactory, DefaultControllerFactory>();
-
-            Globals.DependencyProvider = services.BuildServiceProvider();
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
         }
 
         [Test]
-
         public void Should_Forward_FindPartialView_To_Current_ModuleApplication_ViewEngineCollection()
         {
             // Arrange
@@ -74,7 +74,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         }
 
         [Test]
-
         public void Should_Forward_FindView_To_Current_ModuleApplication_ViewEngineCollection()
         {
             // Arrange
@@ -110,7 +109,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         }
 
         [Test]
-
         public void Should_Track_ViewEngine_View_Pairs_On_FindView_And_Releases_View_Appropriately()
         {
             // Arrange
@@ -143,7 +141,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         }
 
         [Test]
-
         public void Should_Track_ViewEngine_View_Pairs_On_FindPartialView_And_Releases_View_Appropriately()
         {
             // Arrange
@@ -175,7 +172,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         }
 
         [Test]
-
         public void Should_Return_Failed_ViewEngineResult_For_FindView_If_No_Current_Module_Application()
         {
             // Arrange
@@ -198,7 +194,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         }
 
         [Test]
-
         public void Should_Return_Failed_ViewEngineResult_For_FindPartialView_If_No_Current_Module_Application()
         {
             // Arrange

@@ -167,7 +167,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return FileNameCleaner.Replace(fileName, string.Empty);
         }
 
-        /// <summary>Converts the Unicode chars to its to its ASCII equivalent.</summary>
+        /// <summary>Converts the Unicode chars to its ASCII equivalent.</summary>
         /// <param name="input">The <paramref name="input"/>.</param>
         /// <returns>The ASCII equivalent output.</returns>
         public static string ConvertUnicodeChars(string input)
@@ -195,6 +195,8 @@ namespace DNNConnect.CKEditorProvider.Utilities
             Regex regNN = new Regex("[Ñ]");
             Regex regS = new Regex("[š]");
             Regex regSS = new Regex("[Š]");
+            Regex regDot = new Regex("[\uFF0E]");                      // 'U+FF0E' = full-width dot
+            Regex regBackslash = new Regex("[\uFF3C|\u29F5|\uFE68]");  // backslash-like characters
             input = regA.Replace(input, "a");
             input = regAA.Replace(input, "A");
             input = regE.Replace(input, "e");
@@ -218,10 +220,13 @@ namespace DNNConnect.CKEditorProvider.Utilities
             input = regNN.Replace(input, "N");
             input = regS.Replace(input, "s");
             input = regSS.Replace(input, "S");
+            input = regDot.Replace(input, ".");         // full-width dot       -> ASCII period
+            input = regBackslash.Replace(input, @"\");  // backslash-like chars -> ASCII backslash
 
             input = input.Replace("�", string.Empty);
 
-            input = Encoding.ASCII.GetString(Encoding.GetEncoding(1251).GetBytes(input));
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+            input = string.Join("_", input.Split(invalidChars));
 
             input = input.Replace("?", string.Empty); // replace the unknown char which created in above.
             input = input.Replace("�", string.Empty);
@@ -266,11 +271,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
         {
             if (!string.IsNullOrEmpty(portalSettings.HomeDirectoryMapPath) && folderPath.Length >= portalSettings.HomeDirectoryMapPath.Length)
             {
-                folderPath = folderPath.Substring(portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
+                folderPath = folderPath.Substring(portalSettings.HomeDirectoryMapPath.Length).Replace(@"\", "/");
             }
             else
             {
-                folderPath = folderPath.Replace("\\", "/");
+                folderPath = folderPath.Replace(@"\", "/");
             }
 
             return FolderManager.Instance.GetFolder(portalSettings.PortalId, folderPath);
@@ -341,7 +346,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <param name="roles">The roles.</param>
         /// <param name="settings">The settings.</param>
         /// <returns>
-        ///   <c>true</c> if [is in roles] [the specified roles]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [is in roles] [the specified roles]; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsInRoles(string roles, IPortalSettings settings)
         {
@@ -401,7 +406,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             where T : Control
         {
             // this is null by default
-            T found = default(T);
+            T found = null;
 
             int controlCount = startingControl.Controls.Count;
 
@@ -415,7 +420,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     {
                         found = startingControl.Controls[i] as T;
 
-                        if (found.ID.ToLower().Contains(id.ToLower()))
+                        if (found.ID.Contains(id, StringComparison.OrdinalIgnoreCase))
                         {
                             break;
                         }
@@ -438,7 +443,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         }
 
         /// <summary>Gets the size of the max upload.</summary>
-        /// <param name="inkilobytes">if set to <c>true</c> Returns Value as kilo byte otherwise as byte.</param>
+        /// <param name="inkilobytes">if set to <see langword="true"/> Returns Value as kilobyte otherwise as byte.</param>
         /// <returns>
         /// Returns the Max. Upload Size.
         /// </returns>
@@ -519,6 +524,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             {
                 return false;
             }
+        }
+
+        private static bool Contains(this string @this, string value, StringComparison comparisonType)
+        {
+            return @this.IndexOf(value, comparisonType) > -1;
         }
     }
 }

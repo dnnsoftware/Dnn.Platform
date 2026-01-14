@@ -44,6 +44,12 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <inheritdoc />
         public ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sorting, int moduleMode)
         {
+            return this.GetFolderContent(folderId, startIndex, numItems, sorting, "Ascending", moduleMode);
+        }
+
+        /// <inheritdoc />
+        public ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sorting, string sortingOrder, int moduleMode)
+        {
             var noPermissionMessage = Localization.GetExceptionMessage(
                 "UserHasNoPermissionToBrowseFolder",
                 Constants.UserHasNoPermissionToBrowseFolderDefaultMessage);
@@ -53,9 +59,11 @@ namespace Dnn.Modules.ResourceManager.Components
                 throw new FolderPermissionNotMetException(noPermissionMessage);
             }
 
+            string sortingOrderShort = sortingOrder == "Ascending" ? "ASC" : "DESC";
+
             try
             {
-                return AssetManager.Instance.GetFolderContent(folderId, startIndex, numItems, sorting + " ASC");
+                return AssetManager.Instance.GetFolderContent(folderId, startIndex, numItems, sorting + " " + sortingOrderShort);
             }
             catch (AssetManagerException)
             {

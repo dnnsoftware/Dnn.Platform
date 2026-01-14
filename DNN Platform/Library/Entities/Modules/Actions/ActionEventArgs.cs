@@ -5,9 +5,6 @@ namespace DotNetNuke.Entities.Modules.Actions
 {
     using System;
 
-    /// Project     : DotNetNuke
-    /// Namespace   : DotNetNuke.Entities.Modules.Actions
-    /// Class       : ActionEventArgs
     /// <summary>ActionEventArgs provides a custom EventARgs class for Action Events.</summary>
     public class ActionEventArgs : EventArgs
     {
@@ -15,8 +12,8 @@ namespace DotNetNuke.Entities.Modules.Actions
         private readonly ModuleInfo moduleConfiguration;
 
         /// <summary>Initializes a new instance of the <see cref="ActionEventArgs"/> class.</summary>
-        /// <param name="action"></param>
-        /// <param name="moduleConfiguration"></param>
+        /// <param name="action">The action.</param>
+        /// <param name="moduleConfiguration">The module info.</param>
         public ActionEventArgs(ModuleAction action, ModuleInfo moduleConfiguration)
         {
             this.action = action;

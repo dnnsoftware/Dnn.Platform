@@ -19,7 +19,7 @@ class SynonymsGroupRow extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
@@ -31,8 +31,8 @@ class SynonymsGroupRow extends Component {
                             <div className="synonyms-item item-row-tags">
                                 {props.tags}</div>
                             <div className="synonyms-item item-row-editButton">
-                                <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} onClick={props.onDelete.bind(this)}></div>
-                                <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this)}></div>
+                                <div className={opened ? "delete-icon-hidden" : "delete-icon"} onClick={props.onDelete.bind(this)}><SvgIcons.TrashIcon /></div>
+                                <div className={opened ? "edit-icon-active" : "edit-icon"} onClick={this.toggle.bind(this)}><SvgIcons.EditIcon /></div>
                             </div>
                         </div>
                     </div>

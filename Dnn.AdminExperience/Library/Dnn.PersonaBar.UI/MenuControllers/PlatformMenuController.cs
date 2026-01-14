@@ -10,6 +10,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
     using Dnn.PersonaBar.Library.Model;
     using DotNetNuke.Application;
 
+    /// <summary>The <see cref="IMenuItemController"/> for the DNN Platform logout action.</summary>
     public class PlatformMenuController : IMenuItemController
     {
         /// <inheritdoc/>

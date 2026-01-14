@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
+    using System.Globalization;
     using System.Xml.XPath;
 
     using DotNetNuke.Common.Utilities;
@@ -20,7 +21,7 @@ namespace DotNetNuke.Services.Installer.Installers
         private Locale tempLanguage;
 
         /// <summary>Initializes a new instance of the <see cref="LanguageInstaller"/> class.</summary>
-        /// <param name="type"></param>
+        /// <param name="type">The language pack type.</param>
         public LanguageInstaller(LanguagePackType type)
         {
             this.languagePackType = type;
@@ -102,7 +103,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     // Update LanguagePack
                     LanguagePackController.SaveLanguagePack(this.languagePack);
 
-                    this.Log.AddInfo(string.Format(Util.LANGUAGE_Registered, this.language.Text));
+                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.LANGUAGE_Registered, this.language.Text));
 
                     // install (copy the files) by calling the base class
                     base.Install();
@@ -204,7 +205,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 // {
                 //    Localization.DeleteLanguage(language);
                 // }
-                this.Log.AddInfo(string.Format(Util.LANGUAGE_UnRegistered, language.Text));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.LANGUAGE_UnRegistered, language.Text));
             }
             catch (Exception ex)
             {

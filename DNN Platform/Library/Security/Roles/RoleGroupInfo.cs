@@ -30,9 +30,9 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>Initializes a new instance of the <see cref="RoleGroupInfo"/> class.</summary>
-        /// <param name="roleGroupID"></param>
-        /// <param name="portalID"></param>
-        /// <param name="loadRoles"></param>
+        /// <param name="roleGroupID">The role group ID.</param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="loadRoles">Whether to eagerly load the group's roles.</param>
         public RoleGroupInfo(int roleGroupID, int portalID, bool loadRoles)
         {
             this.portalID = portalID;

@@ -8,18 +8,9 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DNNMultiStateBoxColumn
     /// <summary>The DNNMultiStateBoxColumn control provides a DNNMultiState Box column for a Data Grid.</summary>
     public class DNNMultiStateBoxColumn : TemplateColumn
     {
-        private bool mAutoPostBack = true;
-        private string mDataField = Null.NullString;
-        private bool mEnabled = true;
-        private string mEnabledField = Null.NullString;
-        private string mImagePath = string.Empty;
-        private string mSelectedStateKey = string.Empty;
         private DNNMultiStateCollection mStates;
 
         /// <summary>
@@ -44,103 +35,35 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>Gets or sets a value indicating whether the column fires a postback when the control changes.</summary>
         /// <value>A Boolean.</value>
-        public bool AutoPostBack
-        {
-            get
-            {
-                return this.mAutoPostBack;
-            }
-
-            set
-            {
-                this.mAutoPostBack = value;
-            }
-        }
+        public bool AutoPostBack { get; set; } = true;
 
         /// <summary>Gets or sets the selected state of the DNNMultiStateBox (unless DataBound).</summary>
         /// <value>A Boolean.</value>
-        public string SelectedStateKey
-        {
-            get
-            {
-                return this.mSelectedStateKey;
-            }
-
-            set
-            {
-                this.mSelectedStateKey = value;
-            }
-        }
+        public string SelectedStateKey { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets or sets the Data Field that the column should bind to
-        /// changed.
+        /// Gets or sets the Data Field that the column should bind to.
         /// </summary>
         /// <value>A Boolean.</value>
-        public string DataField
-        {
-            get
-            {
-                return this.mDataField;
-            }
-
-            set
-            {
-                this.mDataField = value;
-            }
-        }
+        public string DataField { get; set; } = Null.NullString;
 
         /// <summary>
-        /// Gets or sets a value indicating whether an flag that indicates whether the control is enabled (this is overridden if
-        /// the EnabledField is set)
-        /// changed.
+        /// Gets or sets a value indicating whether the control is enabled (this is overridden if
+        /// the EnabledField is set).
         /// </summary>
         /// <value>A Boolean.</value>
-        public bool Enabled
-        {
-            get
-            {
-                return this.mEnabled;
-            }
-
-            set
-            {
-                this.mEnabled = value;
-            }
-        }
+        public bool Enabled { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the Data Field that determines whether the control is Enabled
         /// changed.
         /// </summary>
         /// <value>A String.</value>
-        public string EnabledField
-        {
-            get
-            {
-                return this.mEnabledField;
-            }
-
-            set
-            {
-                this.mEnabledField = value;
-            }
-        }
+        public string EnabledField { get; set; } = Null.NullString;
 
         /// <summary>Gets or sets the image path of the DNNMultiStateBox.</summary>
         /// <value>A Boolean.</value>
-        public string ImagePath
-        {
-            get
-            {
-                return this.mImagePath;
-            }
-
-            set
-            {
-                this.mImagePath = value;
-            }
-        }
+        public string ImagePath { get; set; } = string.Empty;
 
         /// <summary>Gets or sets the state collection of the DNNMultiStateBox.</summary>
         /// <value>A Boolean.</value>

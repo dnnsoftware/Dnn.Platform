@@ -5,10 +5,11 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 {
     using System;
 
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     public class TableNameAttribute : Attribute
     {
         /// <summary>Initializes a new instance of the <see cref="TableNameAttribute"/> class.</summary>
-        /// <param name="tableName"></param>
+        /// <param name="tableName">The name of the table.</param>
         public TableNameAttribute(string tableName)
         {
             this.TableName = tableName;

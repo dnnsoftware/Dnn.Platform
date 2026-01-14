@@ -19,16 +19,16 @@ namespace Dnn.PersonaBar.Roles.Components
     public class RolesController : ServiceLocator<IRolesController, RolesController>, IRolesController
     {
         /// <summary>Gets a paginated list of Roles matching given search criteria.</summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="groupId"></param>
-        /// <param name="keyword"></param>
-        /// <param name="total"></param>
-        /// <param name="startIndex"></param>
-        /// <param name="pageSize"></param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="groupId">The group ID.</param>
+        /// <param name="keyword">The keyword.</param>
+        /// <param name="total">The total count.</param>
+        /// <param name="startIndex">The index to start the page on.</param>
+        /// <param name="pageSize">The page size.</param>
         /// <returns>A sequence of <see cref="RoleInfo"/> instances.</returns>
         public IEnumerable<RoleInfo> GetRoles(PortalSettings portalSettings, int groupId, string keyword, out int total, int startIndex, int pageSize)
         {
-            var isAdmin = this.IsAdmin(portalSettings);
+            var isAdmin = IsAdmin(portalSettings);
             var roles = (groupId < Null.NullInteger
                 ? RoleController.Instance.GetRoles(portalSettings.PortalId)
                 : RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.RoleGroupID == groupId))
@@ -44,16 +44,16 @@ namespace Dnn.PersonaBar.Roles.Components
         }
 
         /// <summary>Gets a list (not paginated) of Roles given a comma separated list of Roles' names.</summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="groupId"></param>
-        /// <param name="rolesFilter"></param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="groupId">The group ID.</param>
+        /// <param name="rolesFilter">A list of roles to include in the result.</param>
         /// <returns>List of found Roles.</returns>
         public IList<RoleInfo> GetRolesByNames(PortalSettings portalSettings, int groupId, IList<string> rolesFilter)
         {
-            var isAdmin = this.IsAdmin(portalSettings);
+            var isAdmin = IsAdmin(portalSettings);
 
             List<RoleInfo> foundRoles = null;
-            if (rolesFilter.Count() > 0)
+            if (rolesFilter.Count > 0)
             {
                 var allRoles = groupId < Null.NullInteger
                 ? RoleController.Instance.GetRoles(portalSettings.PortalId)
@@ -72,7 +72,7 @@ namespace Dnn.PersonaBar.Roles.Components
         /// <inheritdoc/>
         public RoleInfo GetRole(PortalSettings portalSettings, int roleId)
         {
-            var isAdmin = this.IsAdmin(portalSettings);
+            var isAdmin = IsAdmin(portalSettings);
             var role = RoleController.Instance.GetRoleById(portalSettings.PortalId, roleId);
             if (!isAdmin && role.RoleID == portalSettings.AdministratorRoleId)
             {
@@ -86,7 +86,7 @@ namespace Dnn.PersonaBar.Roles.Components
         public bool SaveRole(PortalSettings portalSettings, RoleDto roleDto, bool assignExistUsers, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = default(KeyValuePair<HttpStatusCode, string>);
-            if (!this.IsAdmin(portalSettings) && roleDto.Id == portalSettings.AdministratorRoleId)
+            if (!IsAdmin(portalSettings) && roleDto.Id == portalSettings.AdministratorRoleId)
             {
                 message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.BadRequest, Localization.GetString("InvalidRequest", Constants.LocalResourcesFile));
                 return false;
@@ -120,12 +120,7 @@ namespace Dnn.PersonaBar.Roles.Components
 
                 if (existingRole.IsSystemRole)
                 {
-                    if (role.Description != existingRole.Description)
-                    {
-                        // In System roles only description can be updated.
-                        existingRole.Description = role.Description;
-                        RoleController.Instance.UpdateRole(existingRole, assignExistUsers);
-                    }
+                    // In system roles nothing can be updated.
                 }
                 else if (RoleController.Instance.GetRole(portalSettings.PortalId, r => rolename.Equals(r.RoleName, StringComparison.OrdinalIgnoreCase) && r.RoleID != roleDto.Id) == null)
                 {
@@ -170,7 +165,7 @@ namespace Dnn.PersonaBar.Roles.Components
                 return string.Empty;
             }
 
-            if (role.RoleID == portalSettings.AdministratorRoleId && !this.IsAdmin(portalSettings))
+            if (role.RoleID == portalSettings.AdministratorRoleId && !IsAdmin(portalSettings))
             {
                 message = new KeyValuePair<HttpStatusCode, string>(
                     HttpStatusCode.BadRequest,
@@ -189,7 +184,7 @@ namespace Dnn.PersonaBar.Roles.Components
             return () => new RolesController();
         }
 
-        private bool IsAdmin(PortalSettings portalSettings)
+        private static bool IsAdmin(PortalSettings portalSettings)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
             return user.IsSuperUser || user.IsInRole(portalSettings.AdministratorRoleName);

@@ -732,10 +732,10 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 string ch = c.ToString(CultureInfo.InvariantCulture);
 
                 // do replacement in pre-defined list?
-                if (replacementChars != null && replacementChars.ContainsKey(ch))
+                if (replacementChars != null && replacementChars.TryGetValue(ch, out var replacement))
                 {
                     // replace with value
-                    ch = replacementChars[ch];
+                    ch = replacement;
                     replacedUnwantedChars = true;
                 }
                 else if (convertDiacritics && CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.NonSpacingMark)
@@ -798,8 +798,8 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         }
 
         /// <summary>Ensures that the path starts with the leading character.</summary>
-        /// <param name="leading"></param>
-        /// <param name="path"></param>
+        /// <param name="leading">The content to ensure is at the beginning of the <paramref name="path"/>.</param>
+        /// <param name="path">The path to ensure starts with <paramref name="leading"/>.</param>
         /// <returns>The <paramref name="path"/> with <paramref name="leading"/> at the start.</returns>
         public static string EnsureLeadingChar(string leading, string path)
         {
@@ -807,7 +807,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 && leading.Length <= path.Length && leading != string.Empty)
             {
                 string start = path.Substring(0, leading.Length);
-                if (string.Compare(start, leading, StringComparison.OrdinalIgnoreCase) != 0)
+                if (!string.Equals(start, leading, StringComparison.OrdinalIgnoreCase))
                 {
                     // not leading with this
                     path = leading + path;
@@ -823,7 +823,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 && leading.Length <= path.Length && leading != string.Empty)
             {
                 string start = path.Substring(0, leading.Length);
-                if (string.Compare(start, leading, StringComparison.OrdinalIgnoreCase) == 0)
+                if (string.Equals(start, leading, StringComparison.OrdinalIgnoreCase))
                 {
                     // matches start, take leading off
                     path = path.Substring(leading.Length);
@@ -961,8 +961,9 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         }
 
         /// <summary>Replaces the core IsAdminTab call which was decommissioned for DNN 5.0.</summary>
-        /// <param name="tabPath">The path of the tab //admin//someothername.</param>
-        /// <param name="settings"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabPath">The path of the tab, e.g. <c>"//admin//someothername"</c>.</param>
+        /// <param name="settings">The friendly URL settings.</param>
         /// <returns><see langword="true"/> if the page is an admin page, otherwise <see langword="false"/>.</returns>
         internal static bool IsAdminTab(int portalId, string tabPath, FriendlyUrlSettings settings)
         {
@@ -1061,13 +1062,13 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
 
                         var tabUrl = path.Replace(Globals.AddHTTP(settings.PortalAlias.HTTPAlias), string.Empty);
 
-                        if (tabUrl.Equals("/" + url, StringComparison.InvariantCultureIgnoreCase))
+                        if (tabUrl.Equals("/" + url, StringComparison.OrdinalIgnoreCase))
                         {
                             isUnique = false;
                             break;
                         }
                     }
-                    else if (tab.TabUrls.Any(u => u.Url.Equals("/" + url, StringComparison.InvariantCultureIgnoreCase)))
+                    else if (tab.TabUrls.Any(u => u.Url.Equals("/" + url, StringComparison.OrdinalIgnoreCase)))
                     {
                         isUnique = false;
                         break;

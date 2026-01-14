@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A label control.</summary>
     public class DnnLabel : Label, ILocalizable
     {
         private bool localize = true;

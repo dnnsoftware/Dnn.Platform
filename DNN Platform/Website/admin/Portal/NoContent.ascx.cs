@@ -7,6 +7,7 @@ namespace DotNetNuke.Common.Controls
 
     using DotNetNuke.Entities.Modules;
 
+    /// <summary>A control which renders nothing.</summary>
     public partial class NoContent : PortalModuleBase
     {
         /// <inheritdoc/>

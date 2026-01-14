@@ -4,10 +4,8 @@ import { Collapsible as Collapse, TextOverflowWrapper, GridCell, Button } from "
 import styles from "./style.module.less";
 import util from "utils";
 import LocalizedResources from "resources";
-
-/* eslint-disable quotes */
-const SimpleType = require(`!raw-loader!./svg/vocabulary_simple.svg`).default;
-const HierarchyType = require(`!raw-loader!./svg/vocabulary_hierarchy.svg`).default;
+import SimpleTypeIcon from "./svg/vocabulary_simple.svg";
+import HierarchyTypeIcon from "./svg/vocabulary_hierarchy.svg";
 
 
 class TermHeader extends Component {
@@ -75,16 +73,15 @@ class TermHeader extends Component {
         const {props} = this;
         props.onDelete(props.term, props.index, () => { this.collapse(); });
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
-        const svgIcon = props.type === 1 ? SimpleType : HierarchyType;
+        const TypeIcon = props.type === 1 ? SimpleTypeIcon : HierarchyTypeIcon;
         return (
             <div ref={node => this.node = node} className={"" + styles.collapsibleComponent + " " + state.collapsed + (props.className ? (" " + props.className) : "")}>
                 <div className={"collapsible-header " + state.collapsed} onClick={this.toggle.bind(this)}>
                     <div className="term-header">
-                        <div className="term-icon" dangerouslySetInnerHTML={{ __html: svgIcon }}>
-                        </div>
+                        <div className="term-icon"><TypeIcon /></div>
                         <div className="term-label">
 
                             <TextOverflowWrapper text={props.header} maxWidth={200} />
@@ -101,7 +98,7 @@ class TermHeader extends Component {
                     isOpened={!this.state.collapsed}>
                     {!state.collapsed && props.children}
                     {!state.collapsed && <GridCell className="vocab-footer">
-                        {!props.term.IsSystem && util.canEdit() && <Button type="secondary" onClick={this.onDelete.bind(this)}>{LocalizedResources.get("DeleteTerm")}</Button>}
+                        {!props.term.IsSystem && util.canEdit() && <Button type="danger" onClick={this.onDelete.bind(this)}>{LocalizedResources.get("DeleteTerm")}</Button>}
                         <Button type="secondary" onClick={this.collapse.bind(this)}>{LocalizedResources.get("Close")}</Button>
                     </GridCell>}
                 </Collapse>

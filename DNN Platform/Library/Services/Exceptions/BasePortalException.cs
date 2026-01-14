@@ -25,28 +25,21 @@ namespace DotNetNuke.Services.Exceptions
         private string source;
         private string stackTrace;
 
-        // default constructor
-
         /// <summary>Initializes a new instance of the <see cref="BasePortalException"/> class.</summary>
         public BasePortalException()
         {
         }
 
-        // constructor with exception message
-
         /// <summary>Initializes a new instance of the <see cref="BasePortalException"/> class.</summary>
-        /// <param name="message"></param>
+        /// <inheritdoc cref="Exception(string)"/>
         public BasePortalException(string message)
             : base(message)
         {
             this.InitializePrivateVariables();
         }
 
-        // constructor with message and inner exception
-
         /// <summary>Initializes a new instance of the <see cref="BasePortalException"/> class.</summary>
-        /// <param name="message"></param>
-        /// <param name="inner"></param>
+        /// <inheritdoc cref="Exception(string, Exception)"/>
         public BasePortalException(string message, Exception inner)
             : base(message, inner)
         {
@@ -54,8 +47,7 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         /// <summary>Initializes a new instance of the <see cref="BasePortalException"/> class.</summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
+        /// <inheritdoc cref="Exception(SerializationInfo, StreamingContext)"/>
         protected BasePortalException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -135,7 +127,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 var context = HttpContext.Current;
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                var innerException = new Exception(this.message, this);
+                Exception innerException = new WrappedException(this.message, this);
                 while (innerException.InnerException != null)
                 {
                     innerException = innerException.InnerException;
@@ -160,7 +152,7 @@ namespace DotNetNuke.Services.Exceptions
                 }
 
                 var currentUserInfo = UserController.Instance.GetCurrentUserInfo();
-                this.UserID = (currentUserInfo != null) ? currentUserInfo.UserID : -1;
+                this.UserID = currentUserInfo?.UserID ?? -1;
 
                 if (this.UserID != -1)
                 {
@@ -275,6 +267,15 @@ namespace DotNetNuke.Services.Exceptions
                 this.message = string.Empty;
                 this.source = string.Empty;
                 Logger.Error(exc);
+            }
+        }
+
+        private class WrappedException : Exception
+        {
+            /// <inheritdoc />
+            public WrappedException(string message, Exception innerException)
+                : base(message, innerException)
+            {
             }
         }
 

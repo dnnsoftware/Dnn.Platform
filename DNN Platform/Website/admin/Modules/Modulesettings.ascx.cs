@@ -14,6 +14,8 @@ namespace DotNetNuke.Modules.Admin.Modules
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
@@ -34,14 +36,15 @@ namespace DotNetNuke.Modules.Admin.Modules
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// <summary>
-    /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a
-    /// module.
-    /// </summary>
+    /// <summary>The ModuleSettingsPage PortalModuleBase is used to edit the settings for a module.</summary>
     public partial class ModuleSettingsPage : PortalModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleSettingsPage));
         private readonly INavigationManager navigationManager;
+        private readonly IPortalAliasService portalAliasService;
+        private readonly IModuleControlPipeline moduleControlPipeline;
+        private readonly IHostSettings hostSettings;
+        private readonly IJavaScriptLibraryHelper javaScript;
 
         private int moduleId = -1;
         private Control control;
@@ -49,8 +52,23 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         /// <summary>Initializes a new instance of the <see cref="ModuleSettingsPage"/> class.</summary>
         public ModuleSettingsPage()
+            : this(null, null, null, null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleSettingsPage"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public ModuleSettingsPage(INavigationManager navigationManager, IPortalAliasService portalAliasService, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.portalAliasService = portalAliasService ?? this.DependencyProvider.GetRequiredService<IPortalAliasService>();
+            this.moduleControlPipeline = moduleControlPipeline ?? this.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+            this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
         private bool HideDeleteButton => this.Request.QueryString["HideDelete"] == "true";
@@ -88,12 +106,12 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 var index = 0;
                 TabController.Instance.PopulateBreadCrumbs(ref tab);
-                var defaultAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(tab.IsSuperTab ? Host.HostPortalID : tab.PortalID)
+                var defaultAlias = this.portalAliasService.GetPortalAliasesByPortalId(tab.IsSuperTab ? this.hostSettings.HostPortalId : tab.PortalID)
                                         .OrderByDescending(a => a.IsPrimary)
                                         .FirstOrDefault();
                 var portalSettings = new PortalSettings(tab.PortalID)
                 {
-                    PortalAlias = defaultAlias,
+                    PortalAlias = defaultAlias as PortalAliasInfo,
                 };
 
                 var tabUrl = this.navigationManager.NavigateURL(tab.TabID, portalSettings, string.Empty);
@@ -111,7 +129,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     }
                     else
                     {
-                        returnValue.AppendFormat("{0}", t.LocalizedTabName);
+                        returnValue.Append(t.LocalizedTabName);
                     }
 
                     index = index + 1;
@@ -124,8 +142,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         protected string GetInstalledOnSite(object dataItem)
         {
             string returnValue = string.Empty;
-            var tab = dataItem as TabInfo;
-            if (tab != null)
+            if (dataItem is TabInfo tab)
             {
                 var portal = PortalController.Instance.GetPortal(tab.PortalID);
                 if (portal != null)
@@ -150,12 +167,11 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 this.chkAllTabs.CheckedChanged += this.OnAllTabsCheckChanged;
                 this.chkInheritPermissions.CheckedChanged += this.OnInheritPermissionsChanged;
-                this.chkWebSlice.CheckedChanged += this.OnWebSliceCheckChanged;
                 this.cboCacheProvider.TextChanged += this.OnCacheProviderIndexChanged;
                 this.cmdDelete.Click += this.OnDeleteClick;
                 this.cmdUpdate.Click += this.OnUpdateClick;
 
-                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 
                 // get ModuleId
                 if (this.Request.QueryString["ModuleId"] != null)
@@ -190,7 +206,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                     if (moduleControlInfo != null)
                     {
-                        this.control = ModuleControlFactory.LoadSettingsControl(this.Page, this.Module, moduleControlInfo.ControlSrc);
+                        this.control = this.moduleControlPipeline.LoadSettingsControl(this.Page, this.Module, moduleControlInfo.ControlSrc);
 
                         var settingsControl = this.control as ISettingsControl;
                         if (settingsControl != null)
@@ -233,7 +249,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                 if (this.Page.IsPostBack == false)
                 {
-                    this.ctlIcon.FileFilter = Globals.glbImageFileTypes;
+                    this.ctlIcon.FileFilter = Globals.ImageFileTypes;
 
                     this.dgPermissions.TabId = this.PortalSettings.ActiveTab.TabID;
                     this.dgPermissions.ModuleID = this.moduleId;
@@ -448,6 +464,23 @@ namespace DotNetNuke.Modules.Admin.Modules
                     }
 
                     this.Module.IsDeleted = false;
+
+                    // If JavaScript is not allowed in module header but changes contain JavaScript, avoid saving the changes
+                    if (!this.PortalSettings.AllowJsInModuleHeaders && HtmlUtils.ContainsJavaScript(this.txtHeader.Text))
+                    {
+                        string message = Localization.GetString("JavaScriptInHeader", this.LocalResourceFile);
+                        Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
+                        return;
+                    }
+
+                    // If JavaScript is not allowed in module footer but changes contain JavaScript, avoid saving the changes
+                    if (!this.PortalSettings.AllowJsInModuleFooters && HtmlUtils.ContainsJavaScript(this.txtFooter.Text))
+                    {
+                        string message = Localization.GetString("JavaScriptInFooter", this.LocalResourceFile);
+                        Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
+                        return;
+                    }
+
                     this.Module.Header = this.txtHeader.Text;
                     this.Module.Footer = this.txtFooter.Text;
 
@@ -475,18 +508,6 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.Module.DisplayTitle = this.chkDisplayTitle.Checked;
                     this.Module.DisplayPrint = this.chkDisplayPrint.Checked;
                     this.Module.DisplaySyndicate = this.chkDisplaySyndicate.Checked;
-                    this.Module.IsWebSlice = this.chkWebSlice.Checked;
-                    this.Module.WebSliceTitle = this.txtWebSliceTitle.Text;
-
-                    this.Module.WebSliceExpiryDate = this.diWebSliceExpiry.SelectedDate != null
-                                                ? this.diWebSliceExpiry.SelectedDate.Value
-                                                : Null.NullDate;
-
-                    if (!string.IsNullOrEmpty(this.txtWebSliceTTL.Text))
-                    {
-                        this.Module.WebSliceTTL = Convert.ToInt32(this.txtWebSliceTTL.Text);
-                    }
-
                     this.Module.IsDefaultModule = this.chkDefault.Checked;
                     this.Module.AllModules = this.chkAllModules.Checked;
                     ModuleController.Instance.UpdateModule(this.Module);
@@ -583,13 +604,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
-        protected void OnWebSliceCheckChanged(object sender, EventArgs e)
-        {
-            this.webSliceTitle.Visible = this.chkWebSlice.Checked;
-            this.webSliceExpiry.Visible = this.chkWebSlice.Checked;
-            this.webSliceTTL.Visible = this.chkWebSlice.Checked;
-        }
-
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -651,7 +665,6 @@ namespace DotNetNuke.Modules.Admin.Modules
                 this.cboAlign.Items.FindByValue(this.Module.Alignment).Selected = true;
                 this.txtColor.Text = this.Module.Color;
                 this.txtBorder.Text = this.Module.Border;
-
                 this.txtHeader.Text = this.Module.Header;
                 this.txtFooter.Text = this.Module.Footer;
 
@@ -670,22 +683,6 @@ namespace DotNetNuke.Modules.Admin.Modules
                 this.chkDisplayTitle.Checked = this.Module.DisplayTitle;
                 this.chkDisplayPrint.Checked = this.Module.DisplayPrint;
                 this.chkDisplaySyndicate.Checked = this.Module.DisplaySyndicate;
-
-                this.chkWebSlice.Checked = this.Module.IsWebSlice;
-                this.webSliceTitle.Visible = this.Module.IsWebSlice;
-                this.webSliceExpiry.Visible = this.Module.IsWebSlice;
-                this.webSliceTTL.Visible = this.Module.IsWebSlice;
-
-                this.txtWebSliceTitle.Text = this.Module.WebSliceTitle;
-                if (!Null.IsNull(this.Module.WebSliceExpiryDate))
-                {
-                    this.diWebSliceExpiry.SelectedDate = this.Module.WebSliceExpiryDate;
-                }
-
-                if (!Null.IsNull(this.Module.WebSliceTTL))
-                {
-                    this.txtWebSliceTTL.Text = this.Module.WebSliceTTL.ToString();
-                }
 
                 if (this.Module.ModuleID == PortalSettings.Current.DefaultModuleId && this.Module.TabID == PortalSettings.Current.DefaultTabId)
                 {

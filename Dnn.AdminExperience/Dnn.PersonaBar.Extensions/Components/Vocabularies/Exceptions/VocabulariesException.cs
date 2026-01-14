@@ -14,15 +14,15 @@ namespace Dnn.PersonaBar.Vocabularies.Exceptions
         }
 
         /// <summary>Initializes a new instance of the <see cref="VocabulariesException"/> class.</summary>
-        /// <param name="message"></param>
+        /// <param name="message">The message that describes the error.</param>
         public VocabulariesException(string message)
             : base(message)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="VocabulariesException"/> class.</summary>
-        /// <param name="message"></param>
-        /// <param name="innerException"></param>
+        /// <param name="message">The message that describes the error.</param>
+        /// <param name="innerException">The exception that is the cause of the current exception. If the <paramref name="innerException"/> is not a <see langword="null" /> reference, the current exception is raised in a catch block that handles the inner exception.</param>
         public VocabulariesException(string message, Exception innerException)
             : base(message, innerException)
         {

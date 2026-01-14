@@ -7,17 +7,19 @@ namespace DotNetNuke.Web.UI.WebControls
 
     using DotNetNuke.Entities.Content.Taxonomy;
 
+    /// <summary>Information about an event related to a <see cref="Term"/> being selected.</summary>
     public class TermsEventArgs : EventArgs
     {
         private readonly Term selectedTerm;
 
         /// <summary>Initializes a new instance of the <see cref="TermsEventArgs"/> class.</summary>
-        /// <param name="selectedTerm"></param>
+        /// <param name="selectedTerm">The selected term.</param>
         public TermsEventArgs(Term selectedTerm)
         {
             this.selectedTerm = selectedTerm;
         }
 
+        /// <summary>Gets the selected term.</summary>
         public Term SelectedTerm
         {
             get

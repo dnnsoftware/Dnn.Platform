@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    /// <summary>A button control.</summary>
     public class DnnButton : Button, ILocalizable
     {
         private bool localize = true;
@@ -19,6 +20,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.DisabledCssClass = "CommandButtonDisabled";
         }
 
+        /// <summary>Gets or sets a message to display upon clicking the button.</summary>
         [Bindable(true)]
         [Category("Appearance")]
         [DefaultValue("")]
@@ -36,6 +38,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the CSS class to use when the control is disabled.</summary>
         [Bindable(true)]
         [Category("Appearance")]
         [DefaultValue("")]

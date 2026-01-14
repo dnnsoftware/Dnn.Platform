@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Search.Controllers
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
 
@@ -24,14 +25,12 @@ namespace DotNetNuke.Services.Search.Controllers
         private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
 
         private static readonly Regex SearchResultMatchRegex = new Regex(@"^(\d+)_", RegexOptions.Compiled);
+        private static readonly char[] RoleSeparator = [',',];
 
         /// <inheritdoc/>
         public override string LocalizedSearchTypeName => Localization.GetString("Crawler_user", LocalizedResxFile);
 
-        private PortalSettings PortalSettings
-        {
-            get { return PortalController.Instance.GetCurrentPortalSettings(); }
-        }
+        private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         /// <inheritdoc/>
         public override bool HasViewPermission(SearchResult searchResult)
@@ -42,13 +41,13 @@ namespace DotNetNuke.Services.Search.Controllers
                 return false;
             }
 
-            var userInSearchResult = UserController.GetUserById(this.PortalSettings.PortalId, userId);
+            var userInSearchResult = UserController.GetUserById(PortalSettings.PortalId, userId);
             if (userInSearchResult == null || userInSearchResult.IsDeleted)
             {
                 return false;
             }
 
-            if (searchResult.UniqueKey.Contains("adminonly"))
+            if (searchResult.UniqueKey.Contains("adminonly", StringComparison.OrdinalIgnoreCase))
             {
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
                 return currentUser.IsSuperUser
@@ -56,24 +55,25 @@ namespace DotNetNuke.Services.Search.Controllers
                         || currentUser.UserID == userId;
             }
 
-            if (searchResult.UniqueKey.Contains("friendsandgroups"))
+            if (searchResult.UniqueKey.Contains("friendsandgroups", StringComparison.OrdinalIgnoreCase))
             {
-                var extendedVisibility = searchResult.UniqueKey.IndexOf("_") != searchResult.UniqueKey.LastIndexOf("_")
-                                             ? searchResult.UniqueKey.Split('_')[2]
-                                             : string.Empty;
-                return this.HasSocialReplationship(userInSearchResult, UserController.Instance.GetCurrentUserInfo(), extendedVisibility);
+                var extendedVisibility =
+                    searchResult.UniqueKey.IndexOf("_", StringComparison.Ordinal) != searchResult.UniqueKey.LastIndexOf("_", StringComparison.Ordinal)
+                        ? searchResult.UniqueKey.Split('_')[2]
+                        : string.Empty;
+                return HasSocialRelationship(userInSearchResult, UserController.Instance.GetCurrentUserInfo(), extendedVisibility);
             }
 
-            if (searchResult.UniqueKey.Contains("membersonly"))
+            if (searchResult.UniqueKey.Contains("membersonly", StringComparison.OrdinalIgnoreCase))
             {
                 return UserController.Instance.GetCurrentUserInfo().UserID != Null.NullInteger;
             }
 
-            if (searchResult.UniqueKey.Contains("allusers"))
+            if (searchResult.UniqueKey.Contains("allusers", StringComparison.OrdinalIgnoreCase))
             {
                 var scopeForRoles =
                     PortalController.GetPortalSetting("SearchResult_ScopeForRoles", searchResult.PortalId, string.Empty)
-                        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                        .Split(RoleSeparator, StringSplitOptions.RemoveEmptyEntries).ToList();
 
                 if (scopeForRoles.Count > 0)
                 {
@@ -94,24 +94,24 @@ namespace DotNetNuke.Services.Search.Controllers
         /// <inheritdoc/>
         public override string GetDocUrl(SearchResult searchResult)
         {
-            var url = TestableGlobals.Instance.NavigateURL(this.PortalSettings.UserTabId, string.Empty, "userid=" + GetUserId(searchResult));
+            var url = TestableGlobals.Instance.NavigateURL(PortalSettings.UserTabId, string.Empty, "userid=" + GetUserId(searchResult));
             return url;
         }
 
         private static int GetUserId(SearchDocumentToDelete searchResult)
         {
             var match = SearchResultMatchRegex.Match(searchResult.UniqueKey);
-            return match.Success ? Convert.ToInt32(match.Groups[1].Value) : Null.NullInteger;
+            return match.Success ? Convert.ToInt32(match.Groups[1].Value, CultureInfo.InvariantCulture) : Null.NullInteger;
         }
 
-        private bool HasSocialReplationship(UserInfo targetUser, UserInfo accessingUser, string extendedVisibility)
+        private static bool HasSocialRelationship(UserInfo targetUser, UserInfo accessingUser, string extendedVisibility)
         {
             if (string.IsNullOrEmpty(extendedVisibility))
             {
                 return false;
             }
 
-            var profileVisibility = new ProfileVisibility(this.PortalSettings.PortalId, extendedVisibility);
+            var profileVisibility = new ProfileVisibility(PortalSettings.PortalId, extendedVisibility);
 
             var isVisible = accessingUser.UserID == targetUser.UserID;
             if (!isVisible)

@@ -7,7 +7,13 @@ namespace Dnn.PersonaBar.Users.Tests
     using Dnn.PersonaBar.Library.Prompt.Models;
     using Dnn.PersonaBar.Users.Components;
     using Dnn.PersonaBar.Users.Components.Prompt.Commands;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Tests.Utilities.Fakes;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
     using NUnit.Framework;
 
@@ -17,11 +23,11 @@ namespace Dnn.PersonaBar.Users.Tests
     {
         private Mock<IUserValidator> _userValidatorMock;
         private Mock<IUserControllerWrapper> _userControllerWrapperMock;
+        private FakeServiceProvider serviceProvider;
 
         protected override string CommandName => "Delete-User";
 
         [Test]
-
         public void Run_DeleteValidUserId_ReturnSuccessResponse()
         {
             // Arrange
@@ -51,7 +57,6 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
-
         public void Run_DeleteAlreadyDeletedUser_ReturnErrorResponse()
         {
             // Arrange
@@ -71,7 +76,6 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
-
         public void Run_DeleteUserFailed_ReturnErrorResponse()
         {
             // Arrange
@@ -98,7 +102,6 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
-
         public void Run_DeleteNullUserId_ReturnErrorResponse()
         {
             // Arrange
@@ -124,6 +127,13 @@ namespace Dnn.PersonaBar.Users.Tests
         {
             this._userValidatorMock = new Mock<IUserValidator>();
             this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
+            this.serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<IHostSettings>()));
+        }
+
+        [TearDown]
+        protected override void ChildTearDown()
+        {
+            this.serviceProvider.Dispose();
         }
     }
 }

@@ -6,8 +6,13 @@ namespace DotNetNuke.Entities.Urls
 {
     public enum PageExtensionUsageType
     {
+        /// <summary>Always use page extension.</summary>
         AlwaysUse = 0,
+
+        /// <summary>Only use page extension for pages.</summary>
         PageOnly = 1,
+
+        /// <summary>Never user the page extension.</summary>
         Never = 2,
     }
 }

@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Web.UI;
@@ -15,6 +16,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Entities.Content.Taxonomy;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A tags control.</summary>
     public class Tags : WebControl, IPostBackEventHandler, IPostBackDataHandler
     {
         private string repeatDirection = "Horizontal";
@@ -22,16 +24,22 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private string tags;
 
+        /// <summary>An event which is triggered when the tags are updated.</summary>
         public event EventHandler<EventArgs> TagsUpdated;
 
+        /// <summary>Gets or sets the URL of the add image.</summary>
         public string AddImageUrl { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether to allow tagging.</summary>
         public bool AllowTagging { get; set; }
 
+        /// <summary>Gets or sets the URL of the cancel image.</summary>
         public string CancelImageUrl { get; set; }
 
+        /// <summary>Gets or sets the content item.</summary>
         public ContentItem ContentItem { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether it's in edit mode.</summary>
         public bool IsEditMode
         {
             get
@@ -39,7 +47,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 bool isEditMode = false;
                 if (this.ViewState["IsEditMode"] != null)
                 {
-                    isEditMode = Convert.ToBoolean(this.ViewState["IsEditMode"]);
+                    isEditMode = Convert.ToBoolean(this.ViewState["IsEditMode"], CultureInfo.InvariantCulture);
                 }
 
                 return isEditMode;
@@ -51,8 +59,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the URL format string.</summary>
         public string NavigateUrlFormatString { get; set; }
 
+        /// <summary>Gets or sets the repeat direction.</summary>
         public string RepeatDirection
         {
             get
@@ -66,8 +76,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the URL of the save image.</summary>
         public string SaveImageUrl { get; set; }
 
+        /// <summary>Gets or sets the separator.</summary>
         public string Separator
         {
             get
@@ -81,11 +93,13 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether to show categories.</summary>
         public bool ShowCategories { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether to show tags.</summary>
         public bool ShowTags { get; set; }
 
-        private Vocabulary TagVocabulary
+        private static Vocabulary TagVocabulary
         {
             get
             {
@@ -110,7 +124,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
                 // Render Category Links
-                var categories = from cat in this.ContentItem.Terms where cat.VocabularyId != this.TagVocabulary.VocabularyId select cat;
+                var categories = from cat in this.ContentItem.Terms where cat.VocabularyId != TagVocabulary.VocabularyId select cat;
 
                 for (int i = 0; i <= categories.Count() - 1; i++)
                 {
@@ -127,7 +141,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-                    this.RenderTerm(writer, categories.ToList()[i], i < categories.Count() - 1 && this.RepeatDirection.ToLowerInvariant() == "horizontal");
+                    this.RenderTerm(writer, categories.ToList()[i], i < categories.Count() - 1 && this.RepeatDirection.Equals("horizontal", StringComparison.OrdinalIgnoreCase));
 
                     writer.RenderEndTag();
                 }
@@ -143,7 +157,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
                 // Render Tag Links
-                var tags = from cat in this.ContentItem.Terms where cat.VocabularyId == this.TagVocabulary.VocabularyId select cat;
+                var tags = from cat in this.ContentItem.Terms where cat.VocabularyId == TagVocabulary.VocabularyId select cat;
 
                 for (int i = 0; i <= tags.Count() - 1; i++)
                 {
@@ -160,7 +174,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-                    this.RenderTerm(writer, tags.ToList()[i], i < tags.Count() - 1 && this.RepeatDirection.ToLowerInvariant() == "horizontal");
+                    this.RenderTerm(writer, tags.ToList()[i], i < tags.Count() - 1 && this.RepeatDirection.Equals("horizontal", StringComparison.OrdinalIgnoreCase));
 
                     writer.RenderEndTag();
                 }
@@ -238,6 +252,8 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>A method which triggers the <see cref="TagsUpdated"/> event.</summary>
+        /// <param name="e">The event args.</param>
         protected void OnTagsUpdate(EventArgs e)
         {
             if (this.TagsUpdated != null)
@@ -258,14 +274,14 @@ namespace DotNetNuke.Web.UI.WebControls
                 sb.Append("<script language='javascript' type='text/javascript' >");
                 sb.Append(Environment.NewLine);
                 sb.Append("function disableEnterKey(e)");
-                sb.Append("{");
+                sb.Append('{');
                 sb.Append("var key;");
                 sb.Append("if(window.event)");
                 sb.Append("key = window.event.keyCode;");
                 sb.Append("else ");
                 sb.Append("key = e.which;");
                 sb.Append("return (key != 13);");
-                sb.Append("}");
+                sb.Append('}');
                 sb.Append("</script>");
 
                 this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), this.UniqueID, sb.ToString());
@@ -290,7 +306,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void RenderButton(HtmlTextWriter writer, string buttonType, string imageUrl)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Title, this.LocalizeString(string.Format("{0}.ToolTip", buttonType)));
+            writer.AddAttribute(HtmlTextWriterAttribute.Title, this.LocalizeString($"{buttonType}.ToolTip"));
             writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackClientHyperlink(this, buttonType));
             writer.RenderBeginTag(HtmlTextWriterTag.A);
 
@@ -308,7 +324,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void RenderTerm(HtmlTextWriter writer, Term term, bool renderSeparator)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Href, string.Format(this.NavigateUrlFormatString, term.Name));
+            writer.AddAttribute(HtmlTextWriterAttribute.Href, string.Format(CultureInfo.InvariantCulture, this.NavigateUrlFormatString, term.Name));
             writer.AddAttribute(HtmlTextWriterAttribute.Title, term.Name);
             writer.AddAttribute(HtmlTextWriterAttribute.Rel, "tag");
             writer.RenderBeginTag(HtmlTextWriterTag.A);
@@ -332,19 +348,19 @@ namespace DotNetNuke.Web.UI.WebControls
                     if (!string.IsNullOrEmpty(t))
                     {
                         string tagName = t.Trim(' ');
-                        Term existingTerm = (from term in this.ContentItem.Terms.AsQueryable() where term.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select term).SingleOrDefault();
+                        Term existingTerm = (from term in this.ContentItem.Terms.AsQueryable() where term.Name.Equals(tagName, StringComparison.OrdinalIgnoreCase) select term).SingleOrDefault();
 
                         if (existingTerm == null)
                         {
                             // Not tagged
                             TermController termController = new TermController();
                             Term term =
-                                (from te in termController.GetTermsByVocabulary(this.TagVocabulary.VocabularyId) where te.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select te).
+                                (from te in termController.GetTermsByVocabulary(TagVocabulary.VocabularyId) where te.Name.Equals(tagName, StringComparison.OrdinalIgnoreCase) select te).
                                     SingleOrDefault();
                             if (term == null)
                             {
                                 // Add term
-                                term = new Term(this.TagVocabulary.VocabularyId);
+                                term = new Term(TagVocabulary.VocabularyId);
                                 term.Name = tagName;
                                 termController.AddTerm(term);
                             }

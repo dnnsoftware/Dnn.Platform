@@ -6,8 +6,8 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
 {
     using System;
 
-    /// <inheritdoc />
-    internal class TelerikUninstaller : UnInstaller, ITelerikUninstaller
+    /// <inheritdoc cref="ITelerikUninstaller" />
+    internal sealed class TelerikUninstaller : UnInstaller, ITelerikUninstaller
     {
         /// <summary>Initializes a new instance of the <see cref="TelerikUninstaller"/> class.</summary>
         /// <param name="serviceProvider">An instance of <see cref="IServiceProvider"/>.</param>
@@ -40,6 +40,9 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
                 this.RemoveUninstalledExtensionFiles("App_Data/ExtensionPackages", "Library_DotNetNuke.Web.Deprecated_*"),
                 this.RemoveUninstalledExtensionFiles("App_Data/ExtensionPackages", "Library_DotNetNuke.Website.Deprecated_*"),
                 this.RemoveUninstalledExtensionFiles("App_Data/ExtensionPackages", "Module_DNNSecurityHotFix*"),
+                this.RemoveFile("bin", "Telerik.Web.UI.dll"),
+                this.RemoveFile("bin", "Telerik.Web.UI.Skins.dll"),
+                this.RemoveExtension("TelerikRemoval"),
             };
 
             var skip = false;

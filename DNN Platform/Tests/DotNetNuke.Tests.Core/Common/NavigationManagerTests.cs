@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Common
 {
     using System.Collections.Generic;
@@ -12,10 +11,10 @@ namespace DotNetNuke.Tests.Core.Common
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using Microsoft.Extensions.DependencyInjection;
 
     using Moq;
@@ -32,13 +31,13 @@ namespace DotNetNuke.Tests.Core.Common
         private const string ControlKeyPattern = "&ctl={0}";
         private const string LanguagePattern = "&language={0}";
         private INavigationManager navigationManager;
+        private FakeServiceProvider serviceProvider;
 
         [OneTimeSetUp]
-
         public void Setup()
         {
             var portalControllerMock = PortalControllerMock();
-            this.navigationManager = new NavigationManager(portalControllerMock);
+            this.navigationManager = new NavigationManager(portalControllerMock, Mock.Of<IHostSettings>());
             PortalController.SetTestableInstance(portalControllerMock);
             TabController.SetTestableInstance(TabControllerMock());
             LocaleController.SetTestableInstance(LocaleControllerMock());
@@ -100,17 +99,19 @@ namespace DotNetNuke.Tests.Core.Common
                 return mockLocaleController.Object;
             }
 
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INavigationManager>(container => this.navigationManager);
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(PortalController.Instance);
+                    services.AddSingleton(TabController.Instance);
+                    services.AddSingleton(LocaleController.Instance);
+                });
         }
 
         [OneTimeTearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             this.navigationManager = null;
             TabController.ClearInstance();
             LocaleController.ClearInstance();
@@ -202,7 +203,7 @@ namespace DotNetNuke.Tests.Core.Common
         {
             var controlKey = "My-Control-Key";
             var expected = string.Format(DefaultURLPattern, TabID) + string.Format(ControlKeyPattern, controlKey);
-            var actual = this.navigationManager.NavigateURL(controlKey, new string[0]);
+            var actual = this.navigationManager.NavigateURL(controlKey, []);
 
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual, Is.EqualTo(expected));

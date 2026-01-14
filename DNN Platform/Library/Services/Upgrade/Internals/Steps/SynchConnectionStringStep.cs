@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
+    using System;
+
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Services.Upgrade.Internals;
@@ -83,9 +85,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
             else
             {
-                dbowner = string.IsNullOrEmpty(this.GetUpgradeConnectionStringUserID())
+                dbowner = string.IsNullOrEmpty(GetUpgradeConnectionStringUserId())
                                            ? connectionConfig.User + "."
-                                           : this.GetUpgradeConnectionStringUserID();
+                                           : GetUpgradeConnectionStringUserId();
             }
 
             var connectionString = builder.ToString();
@@ -96,22 +98,22 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var modified = false;
 
             // save to web.config if different
-            if (appConnectionString.ToLower() != connectionString.ToLower())
+            if (!appConnectionString.Equals(connectionString, System.StringComparison.OrdinalIgnoreCase))
             {
                 Config.UpdateConnectionString(connectionString);
                 modified = true;
             }
 
             // Compare (and overwrite) Owner and Qualifier in Data Provider
-            if (Config.GetDataBaseOwner().ToLower() != dbowner.ToLower() ||
-                (Config.GetObjectQualifer().ToLower() != connectionConfig.Qualifier.ToLower()))
+            if (!Config.GetDataBaseOwner().Equals(dbowner, System.StringComparison.OrdinalIgnoreCase) ||
+                (!Config.GetObjectQualifer().Equals(connectionConfig.Qualifier, System.StringComparison.OrdinalIgnoreCase)))
             {
                 Config.UpdateDataProvider("SqlDataProvider", dbowner, connectionConfig.Qualifier);
                 modified = true;
             }
 
             // Compare (and overwrite) Owner and Qualifier in Data Provider
-            if (!string.IsNullOrEmpty(connectionConfig.UpgradeConnectionString) && Config.GetUpgradeConnectionString().ToLower() != connectionConfig.UpgradeConnectionString.ToLower())
+            if (!string.IsNullOrEmpty(connectionConfig.UpgradeConnectionString) && !Config.GetUpgradeConnectionString().Equals(connectionConfig.UpgradeConnectionString, System.StringComparison.OrdinalIgnoreCase))
             {
                 Config.UpdateUpgradeConnectionString("SqlDataProvider", connectionConfig.UpgradeConnectionString);
                 modified = true;
@@ -120,24 +122,24 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             this.Status = modified ? StepStatus.AppRestart : StepStatus.Done;
         }
 
-        private string GetUpgradeConnectionStringUserID()
+        private static string GetUpgradeConnectionStringUserId()
         {
             string dbUser = string.Empty;
             string connection = Config.GetUpgradeConnectionString();
 
             // If connection string does not use integrated security, then get user id.
-            if (connection.ToLowerInvariant().Contains("user id") || connection.ToLowerInvariant().Contains("uid") || connection.ToLowerInvariant().Contains("user"))
+            if (connection.Contains("user id", StringComparison.OrdinalIgnoreCase) || connection.Contains("uid", StringComparison.OrdinalIgnoreCase) || connection.Contains("user", StringComparison.OrdinalIgnoreCase))
             {
                 string[] connectionParams = connection.Split(';');
 
                 foreach (string connectionParam in connectionParams)
                 {
-                    int index = connectionParam.IndexOf("=");
+                    int index = connectionParam.IndexOf("=", StringComparison.Ordinal);
                     if (index > 0)
                     {
                         string key = connectionParam.Substring(0, index);
                         string value = connectionParam.Substring(index + 1);
-                        if ("user id|uuid|user".Contains(key.Trim().ToLowerInvariant()))
+                        if ("user id|uuid|user".Contains(key.Trim(), StringComparison.OrdinalIgnoreCase))
                         {
                             dbUser = value.Trim();
                         }

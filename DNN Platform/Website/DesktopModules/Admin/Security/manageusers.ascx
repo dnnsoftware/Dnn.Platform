@@ -43,7 +43,6 @@
                 <div id="titleRow" runat="server" class="dnnFormItem">
 				    <h2 class="dnnFormSectionHead"><asp:label id="lblTitle" runat="server" /></h2>
 				    <dnn:DnnImage id="imgLockedOut" IconKey="SecurityRoles" runat="server" visible="False" />
-				    <dnn:DnnImage id="imgOnline" IconKey="UserOnline" runat="server" visible="False" />
                 </div>
                 <div id="helpRow" runat="server" visible="false" class="dnnFormItem">
                     <asp:label id="lblUserHelp" runat="server" />

@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Web;
@@ -100,7 +101,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                         return false;
                     }
 
-                    var expireTime = Convert.ToDateTime(dr["Expiration"]);
+                    var expireTime = Convert.ToDateTime(dr["Expiration"], CultureInfo.InvariantCulture);
                     if (expireTime < DateTime.UtcNow)
                     {
                         DataProvider.Instance().RemoveOutputCacheItem(tabId);
@@ -113,10 +114,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
             finally
             {
-                if (dr != null)
-                {
-                    dr.Close();
-                }
+                dr?.Close();
             }
         }
     }

@@ -13,8 +13,13 @@ namespace DotNetNuke.Services.EventQueue
 
     public enum MessagePriority
     {
+        /// <summary>High priority.</summary>
         High = 0,
+
+        /// <summary>Medium priority.</summary>
         Medium = 1,
+
+        /// <summary>Low priority.</summary>
         Low = 2,
     }
 
@@ -251,7 +256,7 @@ namespace DotNetNuke.Services.EventQueue
             string attValue = Null.NullString;
             var settings = new XmlReaderSettings();
             settings.ConformanceLevel = ConformanceLevel.Fragment;
-            XmlReader reader = XmlReader.Create(new StringReader(configXml));
+            using var reader = XmlReader.Create(new StringReader(configXml));
             reader.ReadStartElement("Attributes");
             if (!reader.IsEmptyElement)
             {

@@ -15,12 +15,14 @@ namespace DotNetNuke.UI.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules.Html5;
 
-    [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory")]
+    /// <inheritdoc cref="IModuleControlPipeline" />
+    [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
     public partial class ModuleControlFactory
     {
         private static readonly ILog TracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
 
-        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory")]
+        /// <inheritdoc cref="IModuleControlPipeline.LoadModuleControl(TemplateControl,ModuleInfo,string,string)" />
+        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
         {
             if (TracelLogger.IsDebugEnabled)
@@ -58,7 +60,8 @@ namespace DotNetNuke.UI.Modules
             return control;
         }
 
-        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory")]
+        /// <inheritdoc cref="IModuleControlPipeline.LoadModuleControl(TemplateControl,ModuleInfo)" />
+        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             if (TracelLogger.IsDebugEnabled)
@@ -96,7 +99,8 @@ namespace DotNetNuke.UI.Modules
             return control;
         }
 
-        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory")]
+        /// <inheritdoc cref="IModuleControlPipeline.LoadSettingsControl" />
+        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control LoadSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             if (TracelLogger.IsDebugEnabled)
@@ -138,7 +142,8 @@ namespace DotNetNuke.UI.Modules
             return control;
         }
 
-        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory")]
+        /// <inheritdoc cref="IModuleControlPipeline.CreateCachedControl" />
+        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control CreateCachedControl(string cachedContent, ModuleInfo moduleConfiguration)
         {
             var moduleControl = new CachedModuleControl(cachedContent);
@@ -146,7 +151,8 @@ namespace DotNetNuke.UI.Modules
             return moduleControl;
         }
 
-        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory")]
+        /// <inheritdoc cref="IModuleControlPipeline.CreateModuleControl" />
+        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control CreateModuleControl(ModuleInfo moduleConfiguration)
         {
             string extension = Path.GetExtension(moduleConfiguration.ModuleControl.ControlSrc.ToLowerInvariant());
@@ -158,11 +164,7 @@ namespace DotNetNuke.UI.Modules
                 case ".mvc":
                     var segments = moduleConfiguration.ModuleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
 
-                    moduleControl.LocalResourceFile = string.Format(
-                        "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                        moduleConfiguration.DesktopModule.FolderName,
-                        Localization.LocalResourceDirectory,
-                        segments[0]);
+                    moduleControl.LocalResourceFile = $"~/DesktopModules/MVC/{moduleConfiguration.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{segments[0]}.resx";
                     break;
                 default:
                     moduleControl.LocalResourceFile = moduleConfiguration.ModuleControl.ControlSrc.Replace(Path.GetFileName(moduleConfiguration.ModuleControl.ControlSrc), string.Empty) +
@@ -174,7 +176,7 @@ namespace DotNetNuke.UI.Modules
             return moduleControl;
         }
 
-        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory")]
+        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         private static partial IModuleControlFactory GetModuleControlFactory(string controlSrc)
         {
             string extension = Path.GetExtension(controlSrc.ToLowerInvariant());

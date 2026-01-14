@@ -4,6 +4,8 @@
 
 namespace DotNetNuke.Entities.Users.Membership
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
     using System.Web.Security;
 
@@ -11,10 +13,8 @@ namespace DotNetNuke.Entities.Users.Membership
 
     public class MembershipPasswordSettings
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MembershipPasswordSettings"/> class.
-        /// Initialiser for MembershipPasswordSettings provider object.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MembershipPasswordSettings"/> class.</summary>
+        /// <param name="portalId">The portal ID.</param>
         public MembershipPasswordSettings(int portalId)
         {
             // portalId not used currently - left in place for potential site specific settings
@@ -41,24 +41,15 @@ namespace DotNetNuke.Entities.Users.Membership
         }
 
         /// <summary>Gets minimum number of non-alphanumeric characters setting for password strength indicator.</summary>
-        public int MinNonAlphanumericCharacters
-        {
-            get
-            {
-                return System.Web.Security.Membership.MinRequiredNonAlphanumericCharacters;
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public int MinNonAlphanumericCharacters => System.Web.Security.Membership.MinRequiredNonAlphanumericCharacters;
 
         /// <summary>Gets minimum length of password setting for password strength indicator.</summary>
-        public int MinPasswordLength
-        {
-            get
-            {
-                return System.Web.Security.Membership.MinRequiredPasswordLength;
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public int MinPasswordLength => System.Web.Security.Membership.MinRequiredPasswordLength;
 
         /// <summary>Gets currently configured password format for installation.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public PasswordFormat PasswordFormat
         {
             get
@@ -76,10 +67,8 @@ namespace DotNetNuke.Entities.Users.Membership
         }
 
         /// <summary>Gets regular Expression to validate password strength.</summary>
-        public string ValidationExpression
-        {
-            get { return System.Web.Security.Membership.PasswordStrengthRegularExpression; }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public string ValidationExpression => System.Web.Security.Membership.PasswordStrengthRegularExpression;
 
         public bool EnableBannedList { get; set; }
 
@@ -99,10 +88,10 @@ namespace DotNetNuke.Entities.Users.Membership
 
         private static bool IsInstallRequest(HttpRequest request)
         {
-            var url = request.Url.LocalPath.ToLowerInvariant();
+            var url = request.Url.LocalPath;
 
-            return url.EndsWith("/install.aspx")
-                   || url.Contains("/installwizard.aspx");
+            return url.EndsWith("/install.aspx", StringComparison.OrdinalIgnoreCase)
+                   || url.Contains("/installwizard.aspx", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

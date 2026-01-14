@@ -20,7 +20,7 @@ class HtmlEditorManagerPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         return (
             <div className="dnn-persona-bar-page-body">

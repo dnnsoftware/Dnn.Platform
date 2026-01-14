@@ -13,21 +13,26 @@ namespace Dnn.PersonaBar.Security.Services
     using System.Net;
     using System.Net.Http;
     using System.Text.RegularExpressions;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
     using System.Xml;
 
     using Dnn.PersonaBar.Extensions.Components.Security.Ssl;
+    using Dnn.PersonaBar.Extensions.Services.Dto;
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Pages.Components;
     using Dnn.PersonaBar.Security.Helper;
     using Dnn.PersonaBar.Security.Services.Dto;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
+    using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Common.Utils;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -37,32 +42,79 @@ namespace Dnn.PersonaBar.Security.Services
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Auth.ApiTokens;
+    using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Constants = Dnn.PersonaBar.Library.Constants;
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
+    /// <summary>Provides REST APIs to manage security settings.</summary>
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class SecurityController : PersonaBarApiController
     {
         private const string BULLETINXMLNODEPATH = "//channel/item";
+        private const string UserRequestIPHeaderSettingName = "UserRequestIPHeader";
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityController));
+
         private readonly Components.SecurityController controller;
-        private readonly IPortalAliasController portalAliasController;
+        private readonly IPagesController pagesController;
+        private readonly IPortalAliasService portalAliasService;
+        private readonly IApiTokenController apiTokenController;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IApplicationStatusInfo applicationStatusInfo;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="SecurityController"/> class.</summary>
-        public SecurityController()
+        /// <param name="pagesController">The pages controller.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="apiTokenController">The API token controller.</param>
+        /// <param name="hostSettingsService">Provides services to manage host settings.</param>
+        /// <param name="applicationStatusInfo">Provides information about the application status.</param>
+        public SecurityController(
+            IPagesController pagesController,
+            IPortalAliasService portalAliasService,
+            IApiTokenController apiTokenController,
+            IHostSettingsService hostSettingsService,
+            IApplicationStatusInfo applicationStatusInfo)
             : this(
                 new Components.SecurityController(),
-                PortalAliasController.Instance)
+                pagesController,
+                portalAliasService,
+                apiTokenController,
+                hostSettingsService,
+                applicationStatusInfo,
+                null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="SecurityController"/> class.</summary>
         /// <param name="controller">The security controller.</param>
-        /// <param name="portalAliasController">The portal alias controller.</param>
+        /// <param name="pagesController">The pages controller.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="apiTokenController">The API token controller.</param>
+        /// <param name="hostSettingsService">Provides services to manage host settings.</param>
+        /// <param name="applicationStatusInfo">Provides information about the application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
         internal SecurityController(
             Components.SecurityController controller,
-            IPortalAliasController portalAliasController)
+            IPagesController pagesController,
+            IPortalAliasService portalAliasService,
+            IApiTokenController apiTokenController,
+            IHostSettingsService hostSettingsService,
+            IApplicationStatusInfo applicationStatusInfo,
+            IHostSettings hostSettings)
         {
+            this.pagesController = pagesController;
             this.controller = controller;
-            this.portalAliasController = portalAliasController;
+            this.portalAliasService = portalAliasService;
+            this.apiTokenController = apiTokenController;
+            this.hostSettingsService = hostSettingsService;
+            this.applicationStatusInfo = applicationStatusInfo;
+            this.applicationStatusInfo = applicationStatusInfo;
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// GET: api/Security/GetBasicLoginSettings
@@ -71,7 +123,6 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns>Portal's basic login settings.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView)]
-
         public HttpResponseMessage GetBasicLoginSettings(string cultureCode)
         {
             try
@@ -88,10 +139,11 @@ namespace Dnn.PersonaBar.Security.Services
                 settings.PrimaryAdministratorId = PortalSettings.Current.AdministratorId;
                 settings.RequireValidProfileAtLogin = PortalController.GetPortalSettingAsBoolean("Security_RequireValidProfileAtLogin", this.PortalId, true);
                 settings.CaptchaLogin = PortalController.GetPortalSettingAsBoolean("Security_CaptchaLogin", this.PortalId, false);
-                settings.CaptchaRetrivePassword = PortalController.GetPortalSettingAsBoolean("Security_CaptchaRetrivePassword", this.PortalId, false);
+                settings.CaptchaRetrievePassword = PortalController.GetPortalSettingAsBoolean("Security_CaptchaRetrivePassword", this.PortalId, false);
                 settings.CaptchaChangePassword = PortalController.GetPortalSettingAsBoolean("Security_CaptchaChangePassword", this.PortalId, false);
                 settings.HideLoginControl = this.PortalSettings.HideLoginControl;
                 settings.cultureCode = cultureCode;
+                settings.userRequestIPHeader = this.hostSettingsService.GetString(UserRequestIPHeaderSettingName, string.Empty);
 
                 var authProviders = this.controller.GetAuthenticationProviders().Select(v => new
                 {
@@ -152,9 +204,15 @@ namespace Dnn.PersonaBar.Security.Services
                 PortalController.UpdatePortalSetting(this.PortalId, "DefaultAuthProvider", request.DefaultAuthProvider);
                 PortalController.UpdatePortalSetting(this.PortalId, "Security_RequireValidProfile", request.RequireValidProfileAtLogin.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Security_CaptchaLogin", request.CaptchaLogin.ToString(), false);
-                PortalController.UpdatePortalSetting(this.PortalId, "Security_CaptchaRetrivePassword", request.CaptchaRetrivePassword.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Security_CaptchaRetrivePassword", request.CaptchaRetrievePassword.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Security_CaptchaChangePassword", request.CaptchaChangePassword.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "HideLoginControl", request.HideLoginControl.ToString(), false);
+
+                var originalUserRequestIPHeader = this.hostSettingsService.GetString(UserRequestIPHeaderSettingName, string.Empty);
+                if (request.UserRequestIPHeader != originalUserRequestIPHeader)
+                {
+                    this.hostSettingsService.Update(UserRequestIPHeaderSettingName, request.UserRequestIPHeader, true);
+                }
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
@@ -187,7 +245,7 @@ namespace Dnn.PersonaBar.Security.Services
                     Results = new
                     {
                         Filters = filters,
-                        Host.EnableIPChecking,
+                        this.hostSettings.EnableIPChecking,
                     },
                 };
 
@@ -252,12 +310,12 @@ namespace Dnn.PersonaBar.Security.Services
 
                 if ((ipf.IPAddress == "127.0.0.1" || ipf.IPAddress == "localhost" || ipf.IPAddress == "::1" || ipf.IPAddress == "*") && ipf.RuleType == 2)
                 {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDeleteLocalhost.Text", Components.Constants.LocalResourcesFile)));
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("CannotDeleteLocalhost.Text", Components.Constants.LocalResourcesFile));
                 }
 
                 if (IPFilterController.Instance.IsAllowableDeny(HttpContext.Current.Request.UserHostAddress, ipf) == false)
                 {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDeleteIPInUse.Text", Components.Constants.LocalResourcesFile)));
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("CannotDeleteIPInUse.Text", Components.Constants.LocalResourcesFile));
                 }
 
                 if (request.IPFilterID > 0)
@@ -300,7 +358,7 @@ namespace Dnn.PersonaBar.Security.Services
 
                 if (IPFilterController.Instance.CanIPStillAccess(HttpContext.Current.Request.UserHostAddress, currentWithDeleteRemoved) == false)
                 {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDelete.Text", Components.Constants.LocalResourcesFile)));
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("CannotDelete.Text", Components.Constants.LocalResourcesFile));
                 }
                 else
                 {
@@ -333,17 +391,17 @@ namespace Dnn.PersonaBar.Security.Services
                     {
                         Settings = new
                         {
-                            Host.MembershipResetLinkValidity,
-                            Host.AdminMembershipResetLinkValidity,
-                            Host.EnablePasswordHistory,
-                            Host.MembershipNumberPasswords,
-                            Host.MembershipDaysBeforePasswordReuse,
-                            Host.EnableBannedList,
-                            Host.EnableStrengthMeter,
-                            Host.EnableIPChecking,
-                            Host.PasswordExpiry,
-                            Host.PasswordExpiryReminder,
-                            ForceLogoutAfterPasswordChanged = HostController.Instance.GetBoolean("ForceLogoutAfterPasswordChanged"),
+                            MembershipResetLinkValidity = this.hostSettings.MembershipResetLinkValidity.TotalMinutes,
+                            AdminMembershipResetLinkValidity = this.hostSettings.AdminMembershipResetLinkValidity.TotalMinutes,
+                            this.hostSettings.EnablePasswordHistory,
+                            this.hostSettings.MembershipNumberPasswords,
+                            this.hostSettings.MembershipDaysBeforePasswordReuse,
+                            this.hostSettings.EnableBannedList,
+                            this.hostSettings.EnableStrengthMeter,
+                            this.hostSettings.EnableIPChecking,
+                            PasswordExpiry = this.hostSettings.PasswordExpiry.TotalDays,
+                            PasswordExpiryReminder = this.hostSettings.PasswordExpiryReminder.TotalDays,
+                            ForceLogoutAfterPasswordChanged = this.hostSettingsService.GetBoolean("ForceLogoutAfterPasswordChanged"),
                         },
                     },
                 };
@@ -368,19 +426,19 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                HostController.Instance.Update("EnableBannedList", request.EnableBannedList ? "Y" : "N", false);
-                HostController.Instance.Update("EnableStrengthMeter", request.EnableStrengthMeter ? "Y" : "N", false);
-                HostController.Instance.Update("EnableIPChecking", request.EnableIPChecking ? "Y" : "N", false);
-                HostController.Instance.Update("EnablePasswordHistory", request.EnablePasswordHistory ? "Y" : "N", false);
-                HostController.Instance.Update("MembershipResetLinkValidity", request.MembershipResetLinkValidity.ToString(), false);
-                HostController.Instance.Update("AdminMembershipResetLinkValidity", request.AdminMembershipResetLinkValidity.ToString(), false);
-                HostController.Instance.Update("MembershipNumberPasswords", request.MembershipNumberPasswords.ToString(), false);
-                HostController.Instance.Update("MembershipDaysBeforePasswordReuse", request.MembershipDaysBeforePasswordReuse.ToString(), false);
-                HostController.Instance.Update("PasswordExpiry", request.PasswordExpiry.ToString());
-                HostController.Instance.Update("PasswordExpiryReminder", request.PasswordExpiryReminder.ToString());
-                HostController.Instance.Update("ForceLogoutAfterPasswordChanged", request.ForceLogoutAfterPasswordChanged ? "Y" : "N", false);
+                this.hostSettingsService.Update("EnableBannedList", request.EnableBannedList ? "Y" : "N", false);
+                this.hostSettingsService.Update("EnableStrengthMeter", request.EnableStrengthMeter ? "Y" : "N", false);
+                this.hostSettingsService.Update("EnableIPChecking", request.EnableIPChecking ? "Y" : "N", false);
+                this.hostSettingsService.Update("EnablePasswordHistory", request.EnablePasswordHistory ? "Y" : "N", false);
+                this.hostSettingsService.Update("MembershipResetLinkValidity", request.MembershipResetLinkValidity.ToString(CultureInfo.InvariantCulture), false);
+                this.hostSettingsService.Update("AdminMembershipResetLinkValidity", request.AdminMembershipResetLinkValidity.ToString(CultureInfo.InvariantCulture), false);
+                this.hostSettingsService.Update("MembershipNumberPasswords", request.MembershipNumberPasswords.ToString(CultureInfo.InvariantCulture), false);
+                this.hostSettingsService.Update("MembershipDaysBeforePasswordReuse", request.MembershipDaysBeforePasswordReuse.ToString(CultureInfo.InvariantCulture), false);
+                this.hostSettingsService.Update("PasswordExpiry", request.PasswordExpiry.ToString(CultureInfo.InvariantCulture));
+                this.hostSettingsService.Update("PasswordExpiryReminder", request.PasswordExpiryReminder.ToString(CultureInfo.InvariantCulture));
+                this.hostSettingsService.Update("ForceLogoutAfterPasswordChanged", request.ForceLogoutAfterPasswordChanged ? "Y" : "N", false);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -413,6 +471,7 @@ namespace Dnn.PersonaBar.Security.Services
                         {
                             portal.UserRegistration,
                             EnableRegisterNotification = PortalController.GetPortalSettingAsBoolean("EnableRegisterNotification", this.PortalId, true),
+                            EnableUnapprovedPasswordReminderNotification = PortalController.GetPortalSettingAsBoolean("EnableUnapprovedPasswordReminderNotification", this.PortalId, true),
                             UseAuthenticationProviders = PortalController.GetPortalSettingAsBoolean("Registration_UseAuthProviders", this.PortalId, false),
                             ExcludedTerms = PortalController.GetPortalSetting("Registration_ExcludeTerms", this.PortalId, string.Empty),
                             UseProfanityFilter = PortalController.GetPortalSettingAsBoolean("Registration_UseProfanityFilter", this.PortalId, false),
@@ -474,7 +533,7 @@ namespace Dnn.PersonaBar.Security.Services
 
                 if (this.UserInfo.IsSuperUser)
                 {
-                    settings.SSLOffloadHeader = HostController.Instance.GetString("SSLOffloadHeader", string.Empty);
+                    settings.SSLOffloadHeader = this.hostSettingsService.GetString("SSLOffloadHeader", string.Empty);
                 }
 
                 var response = new
@@ -513,14 +572,15 @@ namespace Dnn.PersonaBar.Security.Services
             {
                 var setting = request.RegistrationFields;
                 PortalController.UpdatePortalSetting(this.PortalId, "Registration_RegistrationFields", setting);
-                PortalController.UpdatePortalSetting(this.PortalId, "Registration_RegistrationFormType", request.RegistrationFormType.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Registration_RegistrationFormType", request.RegistrationFormType.ToString(CultureInfo.InvariantCulture), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Registration_UseEmailAsUserName", request.UseEmailAsUsername.ToString(), false);
 
                 var portalInfo = PortalController.Instance.GetPortal(this.PortalId);
-                portalInfo.UserRegistration = Convert.ToInt32(request.UserRegistration);
+                portalInfo.UserRegistration = Convert.ToInt32(request.UserRegistration, CultureInfo.InvariantCulture);
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
 
                 PortalController.UpdatePortalSetting(this.PortalId, "EnableRegisterNotification", request.EnableRegisterNotification.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "EnableUnapprovedPasswordReminderNotification", request.EnableUnapprovedPasswordReminderNotification.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Registration_UseAuthProviders", request.UseAuthenticationProviders.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Registration_ExcludeTerms", request.ExcludedTerms, false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Registration_UseProfanityFilter", request.UseProfanityFilter.ToString(), false);
@@ -569,14 +629,14 @@ namespace Dnn.PersonaBar.Security.Services
                         break;
                 }
 
-                PortalController.UpdatePortalSetting(this.PortalId, "SSLSetup", request.SSLSetup.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "SSLSetup", request.SSLSetup.ToString(CultureInfo.InvariantCulture), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "SSLEnforced", request.SSLEnforced.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "SSLURL", this.AddPortalAlias(request.SSLURL, this.PortalId), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "STDURL", this.AddPortalAlias(request.STDURL, this.PortalId), false);
 
                 if (this.UserInfo.IsSuperUser)
                 {
-                    HostController.Instance.Update("SSLOffloadHeader", request.SSLOffloadHeader);
+                    this.hostSettingsService.Update("SSLOffloadHeader", request.SSLOffloadHeader);
                 }
 
                 DataCache.ClearPortalCache(this.PortalId, false);
@@ -619,21 +679,17 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var plartformVersion = System.Reflection.Assembly.LoadFrom(Globals.ApplicationMapPath + @"\bin\DotNetNuke.dll").GetName().Version;
-                string sRequest = string.Format(
-                    "https://dnnplatform.io/security.aspx?type={0}&name={1}&version={2}",
-                    DotNetNukeContext.Current.Application.Type,
-                    "DNNCORP.CE",
-                    Globals.FormatVersion(plartformVersion, "00", 3, string.Empty));
+                var platformVersion = System.Reflection.Assembly.LoadFrom(this.applicationStatusInfo.ApplicationMapPath + @"\bin\DotNetNuke.dll").GetName().Version;
+                string sRequest = $"https://dnnplatform.io/security.aspx?type={DotNetNukeContext.Current.Application.Type}&name=DNNCORP.CE&version={Globals.FormatVersion(platformVersion, "00", 3, string.Empty)}";
 
                 // format for display with "." delimiter
-                string sVersion = Globals.FormatVersion(plartformVersion, "00", 3, ".");
+                string sVersion = Globals.FormatVersion(platformVersion, "00", 3, ".");
 
                 // make remote request
                 Stream oStream = null;
                 try
                 {
-                    HttpWebRequest oRequest = Globals.GetExternalRequest(sRequest);
+                    HttpWebRequest oRequest = Globals.GetExternalRequest(this.hostSettings, sRequest);
                     oRequest.Timeout = 10000; // 10 seconds
                     WebResponse oResponse = oRequest.GetResponse();
                     oStream = oResponse.GetResponseStream();
@@ -641,9 +697,9 @@ namespace Dnn.PersonaBar.Security.Services
                 catch (Exception oExc)
                 {
                     // connectivity issues
-                    if (PortalSecurity.IsInRoles(this.PortalSettings.AdministratorRoleId.ToString()))
+                    if (PortalSecurity.IsInRoles(this.PortalSettings.AdministratorRoleId.ToString(CultureInfo.InvariantCulture)))
                     {
-                        return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("RequestFailed_Admin.Text", Components.Constants.LocalResourcesFile), sRequest));
+                        return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(CultureInfo.CurrentCulture, Localization.GetString("RequestFailed_Admin.Text", Components.Constants.LocalResourcesFile), sRequest));
                     }
                     else
                     {
@@ -653,10 +709,13 @@ namespace Dnn.PersonaBar.Security.Services
 
                 // load XML document
                 StreamReader oReader = new StreamReader(oStream);
-                XmlDocument oDoc = new XmlDocument { XmlResolver = null };
-                oDoc.LoadXml(oReader.ReadToEnd());
+                XmlDocument oDoc = new XmlDocument { XmlResolver = null, };
+                using (var xmlReader = XmlReader.Create(new StringReader(oReader.ReadToEnd()), new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    oDoc.Load(xmlReader);
+                }
 
-                List<object> items = new List<object>();
+                List<object> items = [];
                 foreach (XmlNode selectNode in oDoc.SelectNodes(BULLETINXMLNODEPATH))
                 {
                     items.Add(new
@@ -704,15 +763,17 @@ namespace Dnn.PersonaBar.Security.Services
                     {
                         Settings = new
                         {
-                            Host.ShowCriticalErrors,
-                            Host.DebugMode,
-                            Host.RememberCheckbox,
-                            Host.AutoAccountUnlockDuration,
-                            Host.AsyncTimeout,
-                            MaxUploadSize = Config.GetMaxUploadSize() / 1024 / 1024,
+                            this.hostSettings.ShowCriticalErrors,
+                            this.hostSettings.DebugMode,
+                            this.hostSettings.RememberCheckbox,
+                            this.hostSettings.AllowOverrideThemeViaQueryString,
+                            this.hostSettings.AllowRichTextModuleTitle,
+                            AutoAccountUnlockDuration = this.hostSettings.AutoAccountUnlockDuration.TotalMinutes,
+                            AsyncTimeout = this.hostSettings.AsyncTimeout.TotalMinutes,
+                            MaxUploadSize = Config.GetMaxUploadSize(this.applicationStatusInfo) / 1024 / 1024,
                             RangeUploadSize = 4294967295 / 1024 / 1024, // 4GB (max allowedContentLength supported in IIS7)
-                            AllowedExtensionWhitelist = Host.AllowedExtensionWhitelist.ToStorageString(),
-                            DefaultEndUserExtensionWhitelist = Host.DefaultEndUserExtensionWhitelist.ToStorageString(),
+                            AllowedExtensionWhitelist = this.hostSettings.AllowedExtensionAllowList.ToStorageString(),
+                            DefaultEndUserExtensionWhitelist = this.hostSettings.DefaultEndUserExtensionAllowList.ToStorageString(),
                         },
                     },
                 };
@@ -737,15 +798,17 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                HostController.Instance.Update("ShowCriticalErrors", request.ShowCriticalErrors ? "Y" : "N", false);
-                HostController.Instance.Update("DebugMode", request.DebugMode ? "True" : "False", false);
-                HostController.Instance.Update("RememberCheckbox", request.RememberCheckbox ? "Y" : "N", false);
-                HostController.Instance.Update("AutoAccountUnlockDuration", request.AutoAccountUnlockDuration.ToString(), false);
-                HostController.Instance.Update("AsyncTimeout", request.AsyncTimeout.ToString(), false);
-                var oldExtensionList = Host.AllowedExtensionWhitelist.ToStorageString();
+                this.hostSettingsService.Update("ShowCriticalErrors", request.ShowCriticalErrors ? "Y" : "N", false);
+                this.hostSettingsService.Update("DebugMode", request.DebugMode ? "True" : "False", false);
+                this.hostSettingsService.Update("RememberCheckbox", request.RememberCheckbox ? "Y" : "N", false);
+                this.hostSettingsService.Update("AllowOverrideThemeViaQueryString", request.AllowOverrideThemeViaQueryString ? "Y" : "N", false);
+                this.hostSettingsService.Update("AllowRichTextModuleTitle", request.AllowRichTextModuleTitle ? "Y" : "N", false);
+                this.hostSettingsService.Update("AutoAccountUnlockDuration", request.AutoAccountUnlockDuration.ToString(CultureInfo.InvariantCulture), false);
+                this.hostSettingsService.Update("AsyncTimeout", request.AsyncTimeout.ToString(CultureInfo.InvariantCulture), false);
+                var oldExtensionList = this.hostSettings.AllowedExtensionAllowList.ToStorageString();
                 var fileExtensions = new FileExtensionWhitelist(request.AllowedExtensionWhitelist);
                 var newExtensionList = fileExtensions.ToStorageString();
-                HostController.Instance.Update("FileExtensions", newExtensionList, false);
+                this.hostSettingsService.Update("FileExtensions", newExtensionList, false);
                 if (oldExtensionList != newExtensionList)
                 {
                     PortalSecurity.Instance.CheckAllPortalFileExtensionWhitelists(newExtensionList);
@@ -753,18 +816,18 @@ namespace Dnn.PersonaBar.Security.Services
 
                 var defaultEndUserExtensionWhitelist = new FileExtensionWhitelist(request.DefaultEndUserExtensionWhitelist);
                 defaultEndUserExtensionWhitelist = defaultEndUserExtensionWhitelist.RestrictBy(fileExtensions);
-                HostController.Instance.Update("DefaultEndUserExtensionWhitelist", defaultEndUserExtensionWhitelist.ToStorageString(), false);
+                this.hostSettingsService.Update("DefaultEndUserExtensionWhitelist", defaultEndUserExtensionWhitelist.ToStorageString(), false);
 
-                var maxCurrentRequest = Config.GetMaxUploadSize();
+                var maxCurrentRequest = Config.GetMaxUploadSize(this.applicationStatusInfo);
                 var maxUploadByMb = request.MaxUploadSize * 1024 * 1024;
                 if (maxCurrentRequest != maxUploadByMb)
                 {
-                    Config.SetMaxUploadSize(maxUploadByMb);
+                    Config.SetMaxUploadSize(this.applicationStatusInfo, maxUploadByMb);
                 }
 
                 DataCache.ClearCache();
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -775,6 +838,7 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/GetAuditCheckResults
         /// <summary>Gets audit check results.</summary>
+        /// <param name="checkAll">Whether to run all checks, or only the checks not marked to be lazy loaded.</param>
         /// <returns>audit check results.</returns>
         [HttpGet]
         [RequireHost]
@@ -782,7 +846,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var audit = new Components.AuditChecks();
+                var audit = new Components.AuditChecks(this.pagesController);
                 var results = audit.DoChecks(checkAll);
                 var response = new
                 {
@@ -801,6 +865,7 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/GetAuditCheckResult?id={id}
         /// <summary> Gets audit check result for a specific checker.</summary>
+        /// <param name="id"> The ID of the audit check to perform.</param>
         /// <returns>audit check result.</returns>
         [HttpGet]
         [RequireHost]
@@ -808,7 +873,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var audit = new Components.AuditChecks();
+                var audit = new Components.AuditChecks(this.pagesController);
                 var result = audit.DoCheck(id);
                 var response = new
                 {
@@ -841,9 +906,9 @@ namespace Dnn.PersonaBar.Security.Services
                     u.LastName,
                     u.DisplayName,
                     u.Email,
-                    CreatedDate = this.DisplayDate(u.Membership.CreatedDate),
-                    LastLoginDate = this.DisplayDate(u.Membership.LastLoginDate),
-                    LastActivityDate = this.DisplayDate(u.Membership.LastActivityDate),
+                    CreatedDate = DisplayDate(u.Membership.CreatedDate),
+                    LastLoginDate = DisplayDate(u.Membership.LastLoginDate),
+                    LastActivityDate = DisplayDate(u.Membership.LastActivityDate),
                 }).ToList();
 
                 var response = new
@@ -866,6 +931,7 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/SearchFileSystemAndDatabase
         /// <summary>Searches file system and database.</summary>
+        /// <param name="term">The term to check for.</param>
         /// <returns>The search results from files and database.</returns>
         [HttpGet]
         [RequireHost]
@@ -911,12 +977,12 @@ namespace Dnn.PersonaBar.Security.Services
                 var highRiskFiles = Components.Utility.GetLastModifiedExecutableFiles().Select(f => new
                 {
                     FilePath = this.GetFilePath(f.FullName),
-                    LastWriteTime = this.DisplayDate(f.LastWriteTime),
+                    LastWriteTime = DisplayDate(f.LastWriteTime),
                 });
                 var lowRiskFiles = Components.Utility.GetLastModifiedFiles().Select(f => new
                 {
                     FilePath = this.GetFilePath(f.FullName),
-                    LastWriteTime = this.DisplayDate(f.LastWriteTime),
+                    LastWriteTime = DisplayDate(f.LastWriteTime),
                 });
                 var response = new
                 {
@@ -937,7 +1003,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        /// GET: api/Security/GetRecentlyModifiedSettings
+        /// GET: api/Security/GetLastModifiedSettings
         /// <summary>Gets last modified settings.</summary>
         /// <returns>last modified settings.</returns>
         [HttpGet]
@@ -950,43 +1016,43 @@ namespace Dnn.PersonaBar.Security.Services
                 var portalSettings = (from DataRow dr in settings[0].Rows
                                       select new SettingsDto
                                       {
-                                          PortalId = Convert.ToInt32(dr["PortalID"] != DBNull.Value ? dr["PortalID"] : Null.NullInteger),
-                                          SettingName = Convert.ToString(dr["SettingName"]),
-                                          SettingValue = Convert.ToString(dr["SettingValue"]),
-                                          LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                          LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
+                                          PortalId = Convert.ToInt32(dr["PortalID"] != DBNull.Value ? dr["PortalID"] : Null.NullInteger, CultureInfo.InvariantCulture),
+                                          SettingName = Convert.ToString(dr["SettingName"], CultureInfo.InvariantCulture),
+                                          SettingValue = Convert.ToString(dr["SettingValue"], CultureInfo.InvariantCulture),
+                                          LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"], CultureInfo.InvariantCulture),
+                                          LastModifiedOnDate = DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"], CultureInfo.InvariantCulture)),
                                       }).ToList();
 
                 var hostSettings = (from DataRow dr in settings[1].Rows
                                     select new SettingsDto
                                     {
-                                        SettingName = Convert.ToString(dr["SettingName"]),
-                                        SettingValue = Convert.ToString(dr["SettingValue"]),
-                                        LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                        LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
+                                        SettingName = Convert.ToString(dr["SettingName"], CultureInfo.InvariantCulture),
+                                        SettingValue = Convert.ToString(dr["SettingValue"], CultureInfo.InvariantCulture),
+                                        LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"], CultureInfo.InvariantCulture),
+                                        LastModifiedOnDate = DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"], CultureInfo.InvariantCulture)),
                                     }).ToList();
 
                 var tabSettings = (from DataRow dr in settings[2].Rows
                                    select new SettingsDto
                                    {
-                                       TabId = Convert.ToInt32(dr["TabID"]),
-                                       PortalId = Convert.ToInt32(dr["PortalID"] != DBNull.Value ? dr["PortalID"] : Null.NullInteger),
-                                       SettingName = Convert.ToString(dr["SettingName"]),
-                                       SettingValue = Convert.ToString(dr["SettingValue"]),
-                                       LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                       LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
+                                       TabId = Convert.ToInt32(dr["TabID"], CultureInfo.InvariantCulture),
+                                       PortalId = Convert.ToInt32(dr["PortalID"] != DBNull.Value ? dr["PortalID"] : Null.NullInteger, CultureInfo.InvariantCulture),
+                                       SettingName = Convert.ToString(dr["SettingName"], CultureInfo.InvariantCulture),
+                                       SettingValue = Convert.ToString(dr["SettingValue"], CultureInfo.InvariantCulture),
+                                       LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"], CultureInfo.InvariantCulture),
+                                       LastModifiedOnDate = DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"], CultureInfo.InvariantCulture)),
                                    }).ToList();
 
                 var moduleSettings = (from DataRow dr in settings[3].Rows
                                       select new SettingsDto
                                       {
-                                          ModuleId = Convert.ToInt32(dr["ModuleID"]),
-                                          PortalId = Convert.ToInt32(dr["PortalID"] != DBNull.Value ? dr["PortalID"] : Null.NullInteger),
-                                          Type = Convert.ToString(dr["Type"]),
-                                          SettingName = Convert.ToString(dr["SettingName"]),
-                                          SettingValue = Convert.ToString(dr["SettingValue"]),
-                                          LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                          LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
+                                          ModuleId = Convert.ToInt32(dr["ModuleID"], CultureInfo.InvariantCulture),
+                                          PortalId = Convert.ToInt32(dr["PortalID"] != DBNull.Value ? dr["PortalID"] : Null.NullInteger, CultureInfo.InvariantCulture),
+                                          Type = Convert.ToString(dr["Type"], CultureInfo.InvariantCulture),
+                                          SettingName = Convert.ToString(dr["SettingName"], CultureInfo.InvariantCulture),
+                                          SettingValue = Convert.ToString(dr["SettingValue"], CultureInfo.InvariantCulture),
+                                          LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"], CultureInfo.InvariantCulture),
+                                          LastModifiedOnDate = DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"], CultureInfo.InvariantCulture)),
                                       }).ToList();
 
                 var response = new
@@ -1010,6 +1076,348 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
+        /// GET: api/Security/GetApiTokenSettings
+        /// <summary>Gets settings for API tokens.</summary>
+        /// <returns>API token settings.</returns>
+        [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+        public HttpResponseMessage GetApiTokenSettings()
+        {
+            try
+            {
+                var response = new
+                {
+                    Success = true,
+                    Results = new
+                    {
+                        ApiTokenSettings = ApiTokenSettings.GetSettings(this.PortalId),
+                    },
+                };
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/Security/UpdateApiTokenSettings
+        /// <summary>Updates API Token settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
+        [HttpPost]
+        [RequireAdmin]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateApiTokenSettings(UpdateApiTokenSettingsRequest request)
+        {
+            try
+            {
+                var settings = ApiTokenSettings.GetSettings(this.PortalId);
+                var oldMax = (int)settings.MaximumSiteTimespan;
+                if (this.UserInfo.IsSuperUser)
+                {
+                    settings.MaximumSiteTimespan = (ApiTokenTimespan)request.MaximumSiteTimespan;
+                }
+
+                var newMax = (int)settings.MaximumSiteTimespan;
+                var maxHasBeenReduced = newMax < oldMax;
+
+                settings.UserTokenTimespan = (ApiTokenTimespan)request.UserTokenTimespan;
+                settings.AllowApiTokens = request.AllowApiTokens;
+                settings.SaveSettings(this.PortalId);
+
+                if (maxHasBeenReduced)
+                {
+                    foreach (IPortalInfo p in PortalController.Instance.GetPortalList(Null.NullString))
+                    {
+                        var tokenSettings = ApiTokenSettings.GetSettings(p.PortalId);
+                        var oldValue = (int)tokenSettings.UserTokenTimespan;
+                        if (oldValue > newMax)
+                        {
+                            tokenSettings.UserTokenTimespan = (ApiTokenTimespan)newMax;
+                            tokenSettings.SaveSettings(p.PortalId);
+                        }
+                    }
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a paged list of API tokens for the specified portal and page, with the specified page size.
+        /// </summary>
+        /// <param name="portalId">The ID of the portal for which to retrieve API tokens. Use -2 for all portals.</param>
+        /// <param name="filter">Value indicating which tokens to return based on status.</param>
+        /// <param name="apiKey">API key to filter the results by.</param>
+        /// <param name="scope">Filter the results by scope or use -2 for no scope.</param>
+        /// <param name="pageIndex">The page index (starting from 0) of the API token list to retrieve.</param>
+        /// <param name="pageSize">The number of API tokens per page to retrieve.</param>
+        /// <returns>A paged list of `ApiToken` objects for the specified portal and page.</returns>
+        [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+        public HttpResponseMessage GetApiTokens(int portalId, int filter, string apiKey, int scope, int pageIndex, int pageSize)
+        {
+            if (portalId < 0)
+            {
+                portalId = Null.NullInteger;
+            }
+
+            var noScopeDefined = scope == -2;
+            var requestedScope = ApiTokenScope.User;
+            var user = this.UserInfo;
+            var requestingUser = user.UserID;
+
+            if (user.IsSuperUser)
+            {
+                requestingUser = Null.NullInteger;
+                if (noScopeDefined)
+                {
+                    requestedScope = ApiTokenScope.Host;
+                }
+                else
+                {
+                    requestedScope = (ApiTokenScope)scope;
+                }
+            }
+            else if (user.IsAdmin)
+            {
+                requestingUser = Null.NullInteger;
+                portalId = PortalSettings.Current.PortalId;
+                if (noScopeDefined)
+                {
+                    requestedScope = ApiTokenScope.Portal;
+                }
+                else if (scope > 1)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid scope");
+                }
+                else
+                {
+                    requestedScope = (ApiTokenScope)scope;
+                }
+            }
+            else
+            {
+                portalId = PortalSettings.Current.PortalId;
+                if (scope > 1)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid scope");
+                }
+            }
+
+            var response = this.apiTokenController.GetApiTokens(requestedScope, noScopeDefined, portalId, requestingUser, (ApiTokenFilter)filter, apiKey, pageIndex, pageSize);
+            return this.Request.CreateResponse(HttpStatusCode.OK, response.Serialize());
+        }
+
+        /// <summary>
+        /// Retrieves a dictionary with the API token keyword and its corresponding attribute based on the user scope.
+        /// </summary>
+        /// <returns>A dictionary with the API token keyword and its corresponding attribute.</returns>
+        [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+        public HttpResponseMessage GetApiTokenKeys()
+        {
+            // The response.
+            var response = new SortedDictionary<string, ApiTokenAttribute>();
+
+            // Checks if the user is authorized.
+            var user = this.UserInfo;
+
+            if (user.IsSuperUser)
+            {
+                // If the user is a superuser, sets the API token scope to host.
+                response = this.apiTokenController.ApiTokenKeyList(ApiTokenScope.Host, Thread.CurrentThread.CurrentUICulture.Name);
+            }
+            else if (user.IsAdmin)
+            {
+                // If the user is an admin, sets the API token scope to portal.
+                response = this.apiTokenController.ApiTokenKeyList(ApiTokenScope.Portal, Thread.CurrentThread.CurrentUICulture.Name);
+            }
+            else
+            {
+                // If the user is regular, set the API token scope to user.
+                response = this.apiTokenController.ApiTokenKeyList(ApiTokenScope.User, Thread.CurrentThread.CurrentUICulture.Name);
+            }
+
+            // Returns the response.
+            return this.Request.CreateResponse(HttpStatusCode.OK, response.Values);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ApiToken"/> object with the specified parameters and returns it.
+        /// </summary>
+        /// <param name="data">The parameters for the creation of this token.</param>
+        /// <returns>A new <see cref="ApiToken"/> object.</returns>
+        [HttpPost]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+        public HttpResponseMessage CreateApiToken(CreateApiTokenRequest data)
+        {
+            var settings = ApiTokenSettings.GetSettings(this.PortalId);
+            if (!settings.ApiTokensEnabled || (!settings.AllowApiTokens && data.Scope != (int)ApiTokenScope.Host))
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "API tokens are disabled");
+            }
+
+            var requestedScope = ApiTokenScope.User;
+            var requestedTimespan = data.TokenTimespan;
+
+            // Checks if the user is authorized.
+            var user = this.UserInfo;
+            if (user.IsSuperUser)
+            {
+                requestedScope = (ApiTokenScope)data.Scope;
+            }
+            else if (user.IsAdmin)
+            {
+                if (data.Scope > 1)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid scope");
+                }
+                else
+                {
+                    requestedScope = (ApiTokenScope)data.Scope;
+                }
+
+                requestedTimespan = Math.Min(requestedTimespan, (int)settings.MaximumSiteTimespan);
+            }
+            else
+            {
+                if (data.Scope > 1)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid scope");
+                }
+
+                requestedTimespan = (int)settings.UserTokenTimespan;
+            }
+
+            // Check the expiration time
+            var expirationTime = DateTime.Now;
+            var setTimespan = (ApiTokenTimespan)requestedTimespan;
+            switch (setTimespan)
+            {
+                case ApiTokenTimespan.Days30:
+                    expirationTime = expirationTime.AddDays(30);
+                    break;
+                case ApiTokenTimespan.Days60:
+                    expirationTime = expirationTime.AddDays(60);
+                    break;
+                case ApiTokenTimespan.Days90:
+                    expirationTime = expirationTime.AddDays(90);
+                    break;
+                case ApiTokenTimespan.Days180:
+                    expirationTime = expirationTime.AddDays(180);
+                    break;
+                case ApiTokenTimespan.Years1:
+                    expirationTime = expirationTime.AddYears(1);
+                    break;
+                case ApiTokenTimespan.Years2:
+                    expirationTime = expirationTime.AddYears(2);
+                    break;
+            }
+
+            var token = this.apiTokenController.CreateApiToken(this.PortalId, data.TokenName.Trim(), requestedScope, expirationTime, data.ApiKeys, this.UserInfo.UserID);
+            return this.Request.CreateResponse(HttpStatusCode.OK, token);
+        }
+
+        /// <summary>
+        /// Revokes or deletes the specified API token of the user.
+        /// </summary>
+        /// <param name="data">The `RevokeDeleteApiTokenRequest` object which contains the ID of the API token to revoke or delete.</param>
+        /// <returns>An HTTP response message with a boolean value indicating whether the token was successfully revoked or deleted.</returns>
+        [HttpPost]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+        public HttpResponseMessage RevokeOrDeleteApiToken(RevokeDeleteApiTokenRequest data)
+        {
+            var token = this.apiTokenController.GetApiToken(data.ApiTokenId);
+            if (token == null)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid token");
+            }
+
+            // Checks if the user is authorized.
+            var user = this.UserInfo;
+            var canManage = false;
+            if (user.IsSuperUser)
+            {
+                canManage = true;
+            }
+            else if (user.IsAdmin)
+            {
+                if (token.PortalId != PortalSettings.Current.PortalId)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "You have no access to this token.");
+                }
+                else
+                {
+                    canManage = true;
+                }
+            }
+            else
+            {
+                if (token.PortalId != PortalSettings.Current.PortalId || token.CreatedByUserId != user.UserID)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "You have no access to this token.");
+                }
+                else
+                {
+                    canManage = true;
+                }
+            }
+
+            if (canManage)
+            {
+                this.apiTokenController.RevokeOrDeleteApiToken(token, data.Delete, user.UserID);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, true);
+        }
+
+        /// <summary>
+        /// Deletes expired API tokens.
+        /// </summary>
+        /// <remarks>
+        /// If the user is a SuperUser, all expired API tokens across all portals will be deleted.
+        /// If the user is an Admin, only the expired API tokens for the current portal will be deleted.
+        /// For all other users, only their own expired API tokens will be deleted.
+        /// </remarks>
+        /// <returns>An HTTP response message with a boolean value indicating whether expired API tokens were deleted.</returns>
+        [HttpPost]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+        public HttpResponseMessage DeleteExpiredTokens()
+        {
+            var portalId = this.PortalId;
+            var user = this.UserInfo;
+            var userId = user.UserID;
+
+            if (user.IsSuperUser)
+            {
+                portalId = -1;
+                userId = -1;
+            }
+            else if (user.IsAdmin)
+            {
+                userId = -1;
+            }
+
+            this.apiTokenController.DeleteExpiredAndRevokedApiTokens(portalId, userId);
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, true);
+        }
+
+        /// <summary>
+        /// Adds a portal alias.
+        /// </summary>
+        /// <param name="portalAlias">The portal alias.</param>
+        /// <param name="portalId">The portal identifier.</param>
+        /// <returns>The portalAlias.</returns>
         internal string AddPortalAlias(string portalAlias, int portalId)
         {
             if (!string.IsNullOrEmpty(portalAlias))
@@ -1020,15 +1428,24 @@ namespace Dnn.PersonaBar.Security.Services
                     portalAlias = portalAlias.Remove(0, portalAlias.IndexOf("://", StringComparison.Ordinal) + 3);
                 }
 
-                var alias = this.portalAliasController.GetPortalAlias(portalAlias, portalId);
+                var alias = this.portalAliasService.GetPortalAlias(portalAlias, portalId);
                 if (alias == null)
                 {
-                    alias = new PortalAliasInfo { PortalID = portalId, HTTPAlias = portalAlias };
-                    this.portalAliasController.AddPortalAlias(alias);
+                    alias = new PortalAliasInfo();
+                    alias.PortalId = portalId;
+                    alias.HttpAlias = portalAlias;
+                    this.portalAliasService.AddPortalAlias(alias);
                 }
             }
 
             return portalAlias;
+        }
+
+        private static string DisplayDate(DateTime userDate)
+        {
+            var date = Null.NullString;
+            date = !Null.IsNull(userDate) ? userDate.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            return date;
         }
 
         private int ValidateTabId(int tabId)
@@ -1063,16 +1480,9 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        private string DisplayDate(DateTime userDate)
-        {
-            var date = Null.NullString;
-            date = !Null.IsNull(userDate) ? userDate.ToString(CultureInfo.InvariantCulture) : string.Empty;
-            return date;
-        }
-
         private string GetFilePath(string filePath)
         {
-            var path = Regex.Replace(filePath, Regex.Escape(Globals.ApplicationMapPath), string.Empty, RegexOptions.IgnoreCase);
+            var path = Regex.Replace(filePath, Regex.Escape(this.applicationStatusInfo.ApplicationMapPath), string.Empty, RegexOptions.IgnoreCase);
             return path.TrimStart('\\');
         }
     }

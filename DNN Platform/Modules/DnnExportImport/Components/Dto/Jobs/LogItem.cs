@@ -9,15 +9,20 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
     using Dnn.ExportImport.Components.Common;
     using Newtonsoft.Json;
 
+    /// <summary>A data transfer object with information about a log item.</summary>
     [JsonObject]
     public class LogItem
     {
+        /// <summary>Gets or sets the date the log entry was created.</summary>
         public DateTime CreatedOnDate { get; set; }
 
+        /// <summary>Gets or sets the name.</summary>
         public string Name { get; set; }
 
+        /// <summary>Gets or sets the value.</summary>
         public string Value { get; set; }
 
+        /// <summary>Gets or sets the level.</summary>
         public ReportLevel ReportLevel { get; set; }
     }
 }

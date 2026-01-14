@@ -24,15 +24,17 @@ export default function logList(state = {
             return { ...state,
                 logTypeList: action.data.logTypeList
             };
-        /*eslint-disable eqeqeq*/
+         
         case ActionTypes.SELECTED_ROW:
             return {...state,
                 selectedRowIds: state.selectedRowIds.concat(action.data.rowId),
+                // eslint-disable-next-line eqeqeq
                 excludedRowIds: state.excludedRowIds.filter((id) => id != action.data.rowId)
             };
         case ActionTypes.DESELECTED_ROW:
             return {...state,
                 excludedRowIds: state.excludedRowIds.concat(action.data.rowId),
+                // eslint-disable-next-line eqeqeq
                 selectedRowIds: state.selectedRowIds.filter((id) => id != action.data.rowId)
             };
         case ActionTypes.SELECTED_ALL:

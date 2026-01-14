@@ -4,6 +4,7 @@
 
 namespace DNNConnect.CKEditorProvider
 {
+    using System;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -39,7 +40,7 @@ namespace DNNConnect.CKEditorProvider
 
             pagesArray.Append("var dnnpagesSelectBox = new Array(");
 
-            var domainName = string.Format("http://{0}", Globals.GetDomainName(context.Request, true));
+            var domainName = $"http://{Globals.GetDomainName(context.Request, true)}";
 
             foreach (TabInfo tab in TabController.GetPortalTabs(
                     portalId, -1, false, null, true, false, true, true, true))
@@ -48,7 +49,7 @@ namespace DNNConnect.CKEditorProvider
                                 && !string.IsNullOrEmpty(tab.CultureCode)
                                     ? Globals.FriendlyUrl(
                                         tab,
-                                        string.Format("{0}&language={1}", Globals.ApplicationURL(tab.TabID), tab.CultureCode))
+                                        $"{Globals.ApplicationURL(tab.TabID)}&language={tab.CultureCode}")
                                     : Globals.FriendlyUrl(tab, Globals.ApplicationURL(tab.TabID));
 
                 tabUrl = Globals.ResolveUrl(Regex.Replace(tabUrl, domainName, "~", RegexOptions.IgnoreCase));
@@ -57,7 +58,7 @@ namespace DNNConnect.CKEditorProvider
 
                 if (tab.Level.Equals(0))
                 {
-                    pagesArray.AppendFormat("new Array('| {0}','{1}'),", tabName, tabUrl);
+                    pagesArray.AppendFormat("new Array('| {0}','{1}'),", HttpUtility.JavaScriptStringEncode(tabName), HttpUtility.JavaScriptStringEncode(tabUrl));
                 }
                 else
                 {
@@ -68,11 +69,15 @@ namespace DNNConnect.CKEditorProvider
                         separator.Append("--");
                     }
 
-                    pagesArray.AppendFormat("new Array('|{0} {1}','{2}'),", separator, tabName, tabUrl);
+                    pagesArray.AppendFormat(
+                        "new Array('|{0} {1}','{2}'),",
+                        HttpUtility.JavaScriptStringEncode(separator.ToString()),
+                        HttpUtility.JavaScriptStringEncode(tabName),
+                        HttpUtility.JavaScriptStringEncode(tabUrl));
                 }
             }
 
-            if (pagesArray.ToString().EndsWith(","))
+            if (pagesArray.ToString().EndsWith(",", StringComparison.Ordinal))
             {
                 pagesArray.Remove(pagesArray.Length - 1, 1);
             }

@@ -5,13 +5,13 @@
     &.disabled {
         .dnn-label {
             label {
-                color: @mountainMist;
+                color: var(--dnn-color-neutral, @mountainMist);
                 cursor: not-allowed;
             }
         }
         .dropdown-tooltip-container {
             .dnn-dropdown-input {
-                color: @mountainMist;
+                color: var(--dnn-color-foreground, @mountainMist);
                 cursor: not-allowed;
             }
         }
@@ -24,11 +24,11 @@
         }
     }
     .dnn-dropdown {
-        color: @bulgarianRose;
+        color: var(--dnn-color-foreground, @bulgarianRose);
     }
     &.error {
         .dnn-dropdown {
-            border-bottom: 2px solid @alizarinCrimson;
+            border-bottom: 2px solid var(--dnn-color-danger, @alizarinCrimson);
         }
     }
     .dnn-ui-common-tooltip {

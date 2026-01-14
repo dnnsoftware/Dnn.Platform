@@ -34,7 +34,7 @@ class LogSettingEditor extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (props.logTypeSettingId !== "") {
             props.dispatch(LogSettingActions.getLogSettingById({
@@ -187,7 +187,7 @@ class LogSettingEditor extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const portalList = this.props.portalList !== undefined && this.props.portalList.map(log => {
             return {
@@ -270,12 +270,12 @@ class LogSettingEditor extends Component {
         let children = [];
         children.push(columnOne);
         children.push(columnTwo);
-        /* eslint-disable react/no-danger */
+         
         return (
             <div className="log-setting-editor">
                 <Grid numberOfColumns={2}>{children}</Grid>
                 <div className="buttons-box">
-                    {this.props.logTypeSettingId !== "" && <Button type="secondary" onClick={this.deleteLogSetting.bind(this) }>{Localization.get("ConfigBtnDelete") }</Button>}
+                    {this.props.logTypeSettingId !== "" && <Button type="danger" onClick={this.deleteLogSetting.bind(this) }>{Localization.get("ConfigBtnDelete") }</Button>}
                     <Button type="secondary" onClick={this.props.Collapse.bind(this) }>{Localization.get("ConfigBtnCancel") }</Button>
                     <Button type="primary" onClick={this.addUpdateLogSetting.bind(this) }>{Localization.get("ConfigBtnSave") }</Button>
                 </div>

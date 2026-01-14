@@ -1,10 +1,11 @@
-/* eslint-disable react/no-danger */
+ 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { security as SecurityActions } from "../../actions";
 import { ContentLoadWrapper, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import resx from "../../resources";
+import Html from "../Html";
 import styles from "./style.module.less";
 
 class AuditCheckPanelBody extends Component {
@@ -75,8 +76,7 @@ class AuditCheckPanelBody extends Component {
                         <div className="label-result-severity-fail">
                             {resx.get("Fail")}
                         </div>
-                        <div dangerouslySetInnerHTML={{__html: failureText}}>
-                        </div>
+                        <div><Html html={failureText} /></div>
                     </div>
                 );
             default:
@@ -106,10 +106,10 @@ class AuditCheckPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     getNotesDisplay(notes) {
         if (notes && notes.length > 0) {
-            return <div className="log-detail" dangerouslySetInnerHTML={{ __html: notes }}></div>;
+            return <div className="log-detail"><Html html={notes } /></div>;
         }
         else {
             return "N/A";
@@ -141,13 +141,13 @@ class AuditCheckPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         let contentShouldShow = (props.auditCheckResults && props.auditCheckResults.length > 0) ? true : false;
         return (
             <ContentLoadWrapper loadComplete={contentShouldShow}
-                svgSkeleton={<div dangerouslySetInnerHTML={{ __html: SvgIcons.TableEmptyState }} />}>
+                svgSkeleton={<div><SvgIcons.TableEmptyState /></div>}>
                 <div className={styles.auditCheckResults}>
                     <div className="auditcheck-topbar">
                         {resx.get("AuditExplanation")}

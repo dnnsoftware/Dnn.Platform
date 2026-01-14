@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.OutputCache
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeOutputCache));
 
         /// <summary>Initializes a new instance of the <see cref="PurgeOutputCache"/> class.</summary>
-        /// <param name="objScheduleHistoryItem"></param>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
         public PurgeOutputCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.OutputCache
                         foreach (PortalInfo portal in portals)
                         {
                             kvp.Value.PurgeExpiredItems(portal.PortalID);
-                            this.ScheduleHistoryItem.AddLogNote(string.Format("Purged output cache for {0}.  ", kvp.Key));
+                            this.ScheduleHistoryItem.AddLogNote($"Purged output cache for {kvp.Key}.  ");
                         }
                     }
                     catch (NotSupportedException exc)
@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.OutputCache
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging output cache task failed: {0}.", exc.ToString())); // OPTIONAL
+                this.ScheduleHistoryItem.AddLogNote($"Purging output cache task failed: {exc}."); // OPTIONAL
 
                 // notification that we have errored
                 this.Errored(ref exc);

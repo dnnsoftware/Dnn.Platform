@@ -6,12 +6,15 @@ namespace DotNetNuke.Entities.Modules
     using System;
     using System.Collections;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text.RegularExpressions;
     using System.Threading;
+    using System.Web;
     using System.Web.UI;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -21,9 +24,6 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
 
-    /// Project  : DotNetNuke
-    /// Class    : PortalModuleBase
-    ///
     /// <summary>
     /// The PortalModuleBase class defines a custom base class inherited by all
     /// desktop portal modules within the Portal.
@@ -45,126 +45,50 @@ namespace DotNetNuke.Entities.Modules
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Control ContainerControl
-        {
-            get
-            {
-                return Globals.FindControlRecursive(this, "ctr" + this.ModuleId);
-            }
-        }
+        public Control ContainerControl => Globals.FindControlRecursive(this, "ctr" + this.ModuleId);
 
-        /// <summary>
-        /// Gets a value indicating whether the EditMode property is used to determine whether the user is in the
-        /// Administrator role
-        /// Cache.
-        /// </summary>
-        public bool EditMode
-        {
-            get
-            {
-                return this.ModuleContext.EditMode;
-            }
-        }
+        /// <summary>Gets a value indicating whether the user is in the Administrator role.</summary>
+        public bool EditMode => this.ModuleContext.EditMode;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool IsEditable
-        {
-            get
-            {
-                return this.ModuleContext.IsEditable;
-            }
-        }
+        public bool IsEditable => this.ModuleContext.IsEditable;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int PortalId
-        {
-            get
-            {
-                return this.ModuleContext.PortalId;
-            }
-        }
+        public int PortalId => this.ModuleContext.PortalId;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int TabId
-        {
-            get
-            {
-                return this.ModuleContext.TabId;
-            }
-        }
+        public int TabId => this.ModuleContext.TabId;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public UserInfo UserInfo
-        {
-            get
-            {
-                return this.PortalSettings.UserInfo;
-            }
-        }
+        public UserInfo UserInfo => this.PortalSettings.UserInfo;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int UserId
-        {
-            get
-            {
-                return this.PortalSettings.UserId;
-            }
-        }
+        public int UserId => this.PortalSettings.UserId;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public PortalAliasInfo PortalAlias
-        {
-            get
-            {
-                return this.PortalSettings.PortalAlias;
-            }
-        }
+        public PortalAliasInfo PortalAlias => this.PortalSettings.PortalAlias;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Hashtable Settings
-        {
-            get
-            {
-                return this.ModuleContext.Settings;
-            }
-        }
+        public Hashtable Settings => this.ModuleContext.Settings;
 
         /// <summary>Gets the underlying base control for this ModuleControl.</summary>
         /// <returns>A String.</returns>
-        public Control Control
-        {
-            get
-            {
-                return this;
-            }
-        }
+        public Control Control => this;
 
         /// <summary>Gets the Path for this control (used primarily for UserControls).</summary>
         /// <returns>A String.</returns>
-        public string ControlPath
-        {
-            get
-            {
-                return this.TemplateSourceDirectory + "/";
-            }
-        }
+        public string ControlPath => this.TemplateSourceDirectory + "/";
 
         /// <summary>Gets the Name for this control.</summary>
         /// <returns>A String.</returns>
-        public string ControlName
-        {
-            get
-            {
-                return this.GetType().Name.Replace("_", ".");
-            }
-        }
+        public string ControlName => this.GetType().Name.Replace("_", ".");
 
         /// <summary>Gets the Module Context for this control.</summary>
         /// <returns>A ModuleInstanceContext.</returns>
@@ -208,7 +132,7 @@ namespace DotNetNuke.Entities.Modules
                 string strCacheKey = "TabModule:";
                 strCacheKey += this.TabModuleId + ":";
                 strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
-                return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
+                return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + @"\" + Globals.CleanFileName(strCacheKey) + ".resources";
             }
         }
 
@@ -228,73 +152,38 @@ namespace DotNetNuke.Entities.Modules
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ModuleActionCollection Actions
         {
-            get
-            {
-                return this.ModuleContext.Actions;
-            }
-
-            set
-            {
-                this.ModuleContext.Actions = value;
-            }
+            get => this.ModuleContext.Actions;
+            set => this.ModuleContext.Actions = value;
         }
 
         public string HelpURL
         {
-            get
-            {
-                return this.ModuleContext.HelpURL;
-            }
-
-            set
-            {
-                this.ModuleContext.HelpURL = value;
-            }
+            get => this.ModuleContext.HelpURL;
+            set => this.ModuleContext.HelpURL = value;
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ModuleInfo ModuleConfiguration
         {
-            get
-            {
-                return this.ModuleContext.Configuration;
-            }
-
-            set
-            {
-                this.ModuleContext.Configuration = value;
-            }
+            get => this.ModuleContext.Configuration;
+            set => this.ModuleContext.Configuration = value;
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int TabModuleId
         {
-            get
-            {
-                return this.ModuleContext.TabModuleId;
-            }
-
-            set
-            {
-                this.ModuleContext.TabModuleId = value;
-            }
+            get => this.ModuleContext.TabModuleId;
+            set => this.ModuleContext.TabModuleId = value;
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int ModuleId
         {
-            get
-            {
-                return this.ModuleContext.ModuleId;
-            }
-
-            set
-            {
-                this.ModuleContext.ModuleId = value;
-            }
+            get => this.ModuleContext.ModuleId;
+            set => this.ModuleContext.ModuleId = value;
         }
 
         /// <summary>Gets or sets the local resource file for this control.</summary>
@@ -382,21 +271,27 @@ namespace DotNetNuke.Entities.Modules
         public override void Dispose()
         {
             base.Dispose();
-            if (this.serviceScopeContainer.IsValueCreated)
-            {
-                this.serviceScopeContainer.Value.Dispose();
-            }
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
+        /// <summary>Gets the file name for the module cache.</summary>
+        /// <param name="tabModuleId">The tab-module ID.</param>
+        /// <returns>The absolute file path.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         [DnnDeprecated(7, 0, 0, "Please use ModuleController.CacheFileName(TabModuleID)", RemovalVersion = 11)]
         public partial string GetCacheFileName(int tabModuleId)
         {
             string strCacheKey = "TabModule:";
             strCacheKey += tabModuleId + ":";
             strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
-            return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
+            return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + @"\" + Globals.CleanFileName(strCacheKey) + ".resources";
         }
 
+        /// <summary>Gets the cache key for the module.</summary>
+        /// <param name="tabModuleId">The tab-module ID.</param>
+        /// <returns>The cache key.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         [DnnDeprecated(7, 0, 0, "Please use ModuleController.CacheKey(TabModuleID)", RemovalVersion = 11)]
         public partial string GetCacheKey(int tabModuleId)
         {
@@ -406,10 +301,22 @@ namespace DotNetNuke.Entities.Modules
             return strCacheKey;
         }
 
+        /// <inheritdoc cref="ModuleController.SynchronizeModule" />
         [DnnDeprecated(7, 0, 0, "Please use ModuleController.SynchronizeModule(ModuleId)", RemovalVersion = 11)]
         public partial void SynchronizeModule()
         {
             ModuleController.SynchronizeModule(this.ModuleId);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (this.serviceScopeContainer.IsValueCreated)
+                {
+                    this.serviceScopeContainer.Value.Dispose();
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -442,10 +349,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Helper method that can be used to add an ActionEventHandler to the Skin for this
-        /// Module Control.
-        /// </summary>
+        /// <summary>Helper method that can be used to add an ActionEventHandler to the Skin for this Module Control.</summary>
+        /// <param name="e">The event arguments.</param>
         protected void AddActionHandler(ActionEventHandler e)
         {
             UI.Skins.Skin parentSkin = UI.Skins.Skin.GetParentSkin(this);
@@ -455,14 +360,37 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        protected string LocalizeString(string key)
+        /// <inheritdoc cref="Localization.GetString(string,string)"/>
+        [DnnDeprecated(10, 0, 2, "Use LocalizeText or LocalizeHtml")]
+        protected partial string LocalizeString(string key)
         {
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
-        protected string LocalizeSafeJsString(string key)
+        /// <inheritdoc cref="Localization.GetSafeJSString(string,string)"/>
+        [DnnDeprecated(10, 0, 2, "Use LocalizeJsString")]
+        protected partial string LocalizeSafeJsString(string key)
         {
             return Localization.GetSafeJSString(key, this.LocalResourceFile);
         }
+
+        /// <summary>Gets the text associated with the <paramref name="key"/> in this control's <see cref="LocalResourceFile"/>.</summary>
+        /// <param name="key">The resource key.</param>
+        /// <returns>The localized text.</returns>
+        protected string LocalizeText(string key)
+            => Localization.GetString(key, this.LocalResourceFile);
+
+        /// <summary>Gets the HTML associated with the <paramref name="key"/> in this control's <see cref="LocalResourceFile"/>.</summary>
+        /// <param name="key">The resource key.</param>
+        /// <returns>The localized text as HTML.</returns>
+        protected IHtmlString LocalizeHtml(string key)
+            => new HtmlString(Localization.GetString(key, this.LocalResourceFile));
+
+        /// <summary>Gets the text associated with the <paramref name="key"/> in this control's <see cref="LocalResourceFile"/>.</summary>
+        /// <param name="key">The resource key.</param>
+        /// <param name="addDoubleQuotes">A value that indicates whether double quotation marks will be included around the encoded string.</param>
+        /// <returns>The localized text encoded as a JavaScript string.</returns>
+        protected IHtmlString LocalizeJsString(string key, bool addDoubleQuotes = false)
+            => HtmlUtils.JavaScriptStringEncode(Localization.GetString(key, this.LocalResourceFile), addDoubleQuotes);
     }
 }

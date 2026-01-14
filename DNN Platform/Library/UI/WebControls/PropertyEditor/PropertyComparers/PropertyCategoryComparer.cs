@@ -41,11 +41,11 @@ namespace DotNetNuke.UI.WebControls
 
                 if (xCategoryName == yCategoryName)
                 {
-                    return string.Compare(xProp.Name, yProp.Name);
+                    return string.Compare(xProp.Name, yProp.Name, StringComparison.Ordinal);
                 }
                 else
                 {
-                    return string.Compare(xCategoryName, yCategoryName);
+                    return string.Compare(xCategoryName, yCategoryName, StringComparison.Ordinal);
                 }
             }
             else

@@ -276,7 +276,7 @@ namespace Dnn.PersonaBar.Sites.Services
                 {
                     var item = this.controller.CreateListItem(template);
                     temps.Add(new Tuple<string, string>(item.Text, item.Value));
-                    if (item.Value.StartsWith(defaultTemplate))
+                    if (item.Value.StartsWith(defaultTemplate, StringComparison.OrdinalIgnoreCase))
                     {
                         defaultTemplate = item.Value;
                     }
@@ -335,9 +335,9 @@ namespace Dnn.PersonaBar.Sites.Services
                 strServerPath = httpContext.Request.MapPath(httpContext.Request.ApplicationPath);
             }
 
-            if (!strServerPath.EndsWith("\\"))
+            if (!strServerPath.EndsWith(@"\", StringComparison.OrdinalIgnoreCase))
             {
-                strServerPath += "\\";
+                strServerPath += @"\";
             }
 
             return strServerPath;
@@ -345,8 +345,9 @@ namespace Dnn.PersonaBar.Sites.Services
 
         private string GetDomainName()
         {
-            var httpContext = this.Request.Properties["MS_HttpContext"] as HttpContextWrapper;
-            return httpContext != null ? Globals.GetDomainName(httpContext.Request, true) : string.Empty;
+            return this.Request.Properties["MS_HttpContext"] is HttpContextWrapper httpContext
+                ? Globals.GetDomainName(httpContext.Request, true)
+                : string.Empty;
         }
 
         private object GetPortalDto(PortalInfo portal)

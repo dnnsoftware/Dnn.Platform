@@ -6,7 +6,6 @@
 namespace DotNetNuke.Services.Install
 {
     using System;
-    using System.Data;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
@@ -14,10 +13,12 @@ namespace DotNetNuke.Services.Install
     using System.Web.UI;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik;
     using DotNetNuke.Maintenance.Telerik.Removal;
@@ -31,6 +32,7 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A page which installs or upgrades DNN.</summary>
     public partial class Install : Page
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
@@ -41,6 +43,21 @@ namespace DotNetNuke.Services.Install
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
         private static readonly object InstallLocker = new object();
+
+        private readonly IApplicationStatusInfo appStatus;
+
+        /// <summary>Initializes a new instance of the <see cref="Install"/> class.</summary>
+        public Install()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Install"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        public Install(IApplicationStatusInfo appStatus)
+        {
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        }
 
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
@@ -64,7 +81,7 @@ namespace DotNetNuke.Services.Install
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            Config.AddFCNMode(Config.FcnMode.Single);
+            Config.AddFCNMode(this.appStatus, Config.FcnMode.Single);
 
             // Get current Script time-out
             int scriptTimeOut = this.Server.ScriptTimeout;
@@ -88,21 +105,21 @@ namespace DotNetNuke.Services.Install
                 // Set Script timeout to MAX value
                 this.Server.ScriptTimeout = int.MaxValue;
 
-                switch (Globals.Status)
+                switch (this.appStatus.Status)
                 {
-                    case Globals.UpgradeStatus.Install:
+                    case UpgradeStatus.Install:
                         this.InstallApplication();
 
                         // Force an App Restart
-                        Config.Touch();
+                        Config.Touch(this.appStatus);
                         break;
-                    case Globals.UpgradeStatus.Upgrade:
+                    case UpgradeStatus.Upgrade:
                         this.UpgradeApplication();
 
                         // Force an App Restart
-                        Config.Touch();
+                        Config.Touch(this.appStatus);
                         break;
-                    case Globals.UpgradeStatus.None:
+                    case UpgradeStatus.None:
                         // Check mode
                         switch (mode)
                         {
@@ -118,7 +135,7 @@ namespace DotNetNuke.Services.Install
                         }
 
                         break;
-                    case Globals.UpgradeStatus.Error:
+                    case UpgradeStatus.Error:
                         this.NoUpgrade();
                         break;
                 }
@@ -140,7 +157,21 @@ namespace DotNetNuke.Services.Install
 
         private static ITelerikUtils CreateTelerikUtils()
         {
-            return Globals.DependencyProvider.GetRequiredService<ITelerikUtils>();
+            return Globals.GetCurrentServiceProvider().GetRequiredService<ITelerikUtils>();
+        }
+
+        private static void SetHostSetting(string key, string value, bool isSecure = false)
+        {
+            var setting = new ConfigurationSetting
+            {
+                IsSecure = isSecure,
+                Key = key,
+                Value = value,
+            };
+
+            Globals.GetCurrentServiceProvider()
+                .GetRequiredService<IHostSettingsService>()
+                .Update(setting);
         }
 
         private void ExecuteScripts()
@@ -176,7 +207,7 @@ namespace DotNetNuke.Services.Install
 
             if (installationDate == null || string.IsNullOrEmpty(installationDate))
             {
-                string strError = Config.UpdateMachineKey();
+                string strError = Config.UpdateMachineKey(this.appStatus);
                 if (string.IsNullOrEmpty(strError))
                 {
                     // send a new request to the application to initiate step 2
@@ -193,6 +224,7 @@ namespace DotNetNuke.Services.Install
             }
             else
             {
+                bool cleanupLocker = false;
                 try
                 {
                     var synchConnectionString = new SynchConnectionStringStep();
@@ -228,6 +260,7 @@ namespace DotNetNuke.Services.Install
                                 return;
                             }
 
+                            cleanupLocker = true;
                             RegisterInstallBegining();
                         }
 
@@ -248,26 +281,11 @@ namespace DotNetNuke.Services.Install
                             Localization.RemoveLanguageFromPortal(0, locale.LanguageId, true);
                         }
 
-                        var licenseConfig = installConfig.License;
-                        bool isProOrEnterprise = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) ||
-                                                  File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll"));
-                        if (isProOrEnterprise && licenseConfig != null && !string.IsNullOrEmpty(licenseConfig.AccountEmail) &&
-                            !string.IsNullOrEmpty(licenseConfig.InvoiceNumber))
-                        {
-                            Upgrade.Upgrade.ActivateLicense();
-                        }
-
-                        // Adding ClientDependency Resources config to web.config
-                        if (!ClientResourceManager.IsInstalled())
-                        {
-                            ClientResourceManager.AddConfiguration();
-                        }
-
                         var installVersion = DataProvider.Instance().GetInstallVersion();
-                        string strError = Config.UpdateInstallVersion(installVersion);
+                        string strError = Config.UpdateInstallVersion(this.appStatus, installVersion);
 
                         // Adding FCN mode to web.config
-                        strError += Config.AddFCNMode(Config.FcnMode.Single);
+                        strError += Config.AddFCNMode(this.appStatus, Config.FcnMode.Single);
                         if (!string.IsNullOrEmpty(strError))
                         {
                             Logger.Error(strError);
@@ -298,7 +316,10 @@ namespace DotNetNuke.Services.Install
                 }
                 finally
                 {
-                    RegisterInstallEnd();
+                    if (cleanupLocker)
+                    {
+                        RegisterInstallEnd();
+                    }
                 }
             }
         }
@@ -336,6 +357,7 @@ namespace DotNetNuke.Services.Install
 
         private void UpgradeApplication()
         {
+            bool cleanupLocker = false;
             try
             {
                 if (Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie())
@@ -361,6 +383,7 @@ namespace DotNetNuke.Services.Install
                         return;
                     }
 
+                    cleanupLocker = true;
                     RegisterInstallBegining();
                 }
 
@@ -393,62 +416,73 @@ namespace DotNetNuke.Services.Install
                         Upgrade.Upgrade.InstallPackage(package.Key, package.Value.PackageType, true);
                     }
 
-                    // calling GetInstallVersion after SQL scripts exection to ensure sp GetDatabaseInstallVersion exists
+                    // calling GetInstallVersion after SQL scripts execution to ensure sp GetDatabaseInstallVersion exists
                     var installVersion = DataProvider.Instance().GetInstallVersion();
-                    string strError = Config.UpdateInstallVersion(installVersion);
+                    string strError = Config.UpdateInstallVersion(this.appStatus, installVersion);
 
                     // Adding FCN mode to web.config
-                    strError += Config.AddFCNMode(Config.FcnMode.Single);
+                    strError += Config.AddFCNMode(this.appStatus, Config.FcnMode.Single);
                     if (!string.IsNullOrEmpty(strError))
                     {
                         Logger.Error(strError);
                     }
 
                     HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Replacing Digital Assets Manager with the new Resource Manager: ");
-                    Globals.DependencyProvider.GetService<IDamUninstaller>().Execute();
+                    Globals.GetCurrentServiceProvider().GetService<IDamUninstaller>().Execute();
                     HtmlUtils.WriteSuccessError(HttpContext.Current.Response, true);
 
                     this.Response.Write("<br>");
                     this.Response.Write("<h2>Checking Security Aspects</h2>");
                     var telerikUtils = CreateTelerikUtils();
-                    if (telerikUtils.TelerikIsInstalled())
+                    if (!telerikUtils.TelerikIsInstalled())
                     {
-                        var version = telerikUtils.GetTelerikVersion().ToString();
-                        var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
-                                        .Select(a => Path.GetFileName(a));
-
+                        this.Response.Write(this.LocalizeString("TelerikNotInstalledInfo"));
+                        this.Response.Write("<br>");
+                    }
+                    else
+                    {
+                        var version = telerikUtils.GetTelerikVersion();
                         this.Response.Write("<strong>");
                         this.Response.Write(this.LocalizeString("TelerikInstalledHeading"));
                         this.Response.Write("</strong><br>");
                         this.Response.Write(this.LocalizeString("TelerikInstalledDetected"));
                         this.Response.Write(" ");
-                        this.Response.Write(version);
-                        this.Response.Write("<br>");
-                        this.Response.Write(this.LocalizeString("TelerikInstalledBulletin"));
+                        this.Response.Write(version.ToString());
                         this.Response.Write("<br>");
 
-                        if (!assemblies.Any())
+                        if (!telerikUtils.IsTelerikVersionVulnerable(version))
                         {
-                            this.Response.Write(this.LocalizeString("TelerikInstalledButNotUsedInfoAutoInstall"));
+                            this.Response.Write(this.LocalizeString("TelerikVersionNotKnownToBeVulnerableInfo"));
                             this.Response.Write("<br>");
                         }
                         else
                         {
-                            this.Response.Write(this.LocalizeString("TelerikInstalledAndUsedInfo"));
-                            this.Response.Write("<br>");
-                            foreach (var a in assemblies)
-                            {
-                                this.Response.Write($"{a}<br/>");
-                            }
+                            SetHostSetting(DotNetNuke.Maintenance.Constants.TelerikUninstallOptionSettingKey, DotNetNuke.Maintenance.Constants.TelerikUninstallYesValue);
+                            var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
+                                .Select(a => Path.GetFileName(a));
 
-                            this.Response.Write(this.LocalizeString("TelerikInstalledAndUsedWarning"));
+                            this.Response.Write(this.LocalizeString("TelerikInstalledBulletin"));
                             this.Response.Write("<br>");
+
+                            if (!assemblies.Any())
+                            {
+                                this.Response.Write(this.LocalizeString("TelerikInstalledButNotUsedInfo"));
+                                this.Response.Write("<br>");
+                            }
+                            else
+                            {
+                                this.Response.Write(this.LocalizeString("TelerikInstalledAndUsedInfo"));
+                                this.Response.Write("<br>");
+                                foreach (var a in assemblies)
+                                {
+                                    this.Response.Write($"{a}<br/>");
+                                }
+
+                                this.Response.Write("<br>");
+                                this.Response.Write(this.LocalizeString("TelerikInstalledAndUsedWarning"));
+                                this.Response.Write("<br>");
+                            }
                         }
-                    }
-                    else
-                    {
-                        this.Response.Write(this.LocalizeString("TelerikNotInstalledInfo"));
-                        this.Response.Write("<br>");
                     }
 
                     this.Response.Write("<br>");
@@ -471,7 +505,10 @@ namespace DotNetNuke.Services.Install
             }
             finally
             {
-                RegisterInstallEnd();
+                if (cleanupLocker)
+                {
+                    RegisterInstallEnd();
+                }
             }
         }
 
@@ -486,11 +523,14 @@ namespace DotNetNuke.Services.Install
             this.Response.Flush();
 
             // install new portal(s)
-            string strNewFile = Globals.ApplicationMapPath + "\\Install\\Portal\\Portals.resources";
+            string strNewFile = this.appStatus.ApplicationMapPath + "\\Install\\Portal\\Portals.resources";
             if (File.Exists(strNewFile))
             {
                 XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
-                xmlDoc.Load(strNewFile);
+                using (var xmlReader = XmlReader.Create(strNewFile, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xmlDoc.Load(xmlReader);
+                }
 
                 // parse portal(s) if available
                 var nodes = xmlDoc.SelectNodes("//dotnetnuke/portals/portal");
@@ -500,7 +540,7 @@ namespace DotNetNuke.Services.Install
                     {
                         if (node != null)
                         {
-                            Upgrade.Upgrade.AddPortal(node, true, 0);
+                            Upgrade.Upgrade.AddPortal(node, true, 0, null);
                         }
                     }
                 }

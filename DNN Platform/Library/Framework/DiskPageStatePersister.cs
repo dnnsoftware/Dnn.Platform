@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Framework
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text;
     using System.Web.UI;
@@ -10,16 +11,11 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
 
-    /// Namespace:  DotNetNuke.Framework
-    /// Project:    DotNetNuke
-    /// Class:      DiskPageStatePersister
-    /// <summary>DiskPageStatePersister provides a disk (stream) based page state peristence mechanism.</summary>
+    /// <summary>DiskPageStatePersister provides a disk (stream) based page state persistence mechanism.</summary>
     public class DiskPageStatePersister : PageStatePersister
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DiskPageStatePersister"/> class.
-        /// Creates the DiskPageStatePersister.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DiskPageStatePersister"/> class.</summary>
+        /// <param name="page">The <see cref="Page"/> that the view state persistence mechanism is created for.</param>
         public DiskPageStatePersister(Page page)
             : base(page)
         {
@@ -29,13 +25,8 @@ namespace DotNetNuke.Framework
         /// Gets the CacheDirectory property is used to return the location of the "Cache"
         /// Directory for the Portal.
         /// </summary>
-        public string CacheDirectory
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings().HomeSystemDirectoryMapPath + "Cache";
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public string CacheDirectory => PortalController.Instance.GetCurrentPortalSettings().HomeSystemDirectoryMapPath + "Cache";
 
         /// <summary>Gets the StateFileName property is used to store the FileName for the State.</summary>
         public string StateFileName
@@ -46,11 +37,11 @@ namespace DotNetNuke.Framework
                 {
                     key.Append("VIEWSTATE_");
                     key.Append(this.Page.Session.SessionID);
-                    key.Append("_");
+                    key.Append('_');
                     key.Append(this.Page.Request.RawUrl);
                 }
 
-                return this.CacheDirectory + "\\" + Globals.CleanFileName(key.ToString()) + ".txt";
+                return $@"{this.CacheDirectory}\{Globals.CleanFileName(key.ToString())}.txt";
             }
         }
 

@@ -4,14 +4,12 @@
 namespace DotNetNuke.Security.Membership
 {
     using System.ComponentModel;
+    using System.Globalization;
 
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.UI.WebControls;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Security.Membership
-    /// Class:      PasswordConfig
     /// <summary>The PasswordConfig class provides a wrapper any Portal wide Password Settings.</summary>
     public class PasswordConfig
     {
@@ -28,13 +26,13 @@ namespace DotNetNuke.Security.Membership
 
             set
             {
-                HostController.Instance.Update("PasswordExpiry", value.ToString());
+                HostController.Instance.Update("PasswordExpiry", value.ToString(CultureInfo.InvariantCulture));
             }
         }
 
         /// <summary>
-        /// Gets or sets and sets the a Reminder time in days (to remind the user that theire password
-        /// is about to expire.
+        /// Gets or sets the Reminder time in days (to remind the user that their password
+        /// is about to expire).
         /// </summary>
         /// <returns>An integer.</returns>
         [SortOrder(1)]
@@ -48,7 +46,7 @@ namespace DotNetNuke.Security.Membership
 
             set
             {
-                HostController.Instance.Update("PasswordExpiryReminder", value.ToString());
+                HostController.Instance.Update("PasswordExpiryReminder", value.ToString(CultureInfo.InvariantCulture));
             }
         }
     }

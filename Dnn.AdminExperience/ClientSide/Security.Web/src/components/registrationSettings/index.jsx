@@ -168,7 +168,7 @@ class RegistrationSettingsPanelBody extends Component {
         props.dispatch(SecurityActions.registrationSettingsClientModified(registrationSettings));
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props, state } = this;
         const ToolTipStyle = {
@@ -298,6 +298,20 @@ class RegistrationSettingsPanelBody extends Component {
                                 offText={resx.get("SwitchOff")}
                                 value={state.registrationSettings.EnableRegisterNotification}
                                 onChange={this.onSettingChange.bind(this, "EnableRegisterNotification")}
+                                readOnly={!canEdit} />
+                        </div>
+                    </InputGroup>
+                    <InputGroup>
+                        <div className="registrationSettings-row_switch">
+                            <Label
+                                labelType="inline"
+                                tooltipMessage={resx.get("plEnableUnapprovedPasswordReminderNotification.Help")}
+                                label={resx.get("plEnableUnapprovedPasswordReminderNotification")} />
+                            <Switch
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
+                                value={state.registrationSettings.EnableUnapprovedPasswordReminderNotification}
+                                onChange={this.onSettingChange.bind(this, "EnableUnapprovedPasswordReminderNotification")}
                                 readOnly={!canEdit} />
                         </div>
                     </InputGroup>
@@ -540,7 +554,7 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="buttons-box">
                             <Button
                                 disabled={!this.props.registrationSettingsClientModified}
-                                type="secondary"
+                                type="neutral"
                                 onClick={this.onCancel.bind(this)}>
                                 {resx.get("Cancel")}
                             </Button>

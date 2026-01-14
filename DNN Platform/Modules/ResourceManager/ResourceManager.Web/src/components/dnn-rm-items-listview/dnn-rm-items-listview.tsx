@@ -22,11 +22,11 @@ export class DnnRmItemsListview {
   @Event() dnnRmFileDoubleClicked: EventEmitter<string>;
 
   componentWillLoad() {
-    document.addEventListener("click", this.dismissContextMenu.bind(this));
+    document.addEventListener("click", void this.dismissContextMenu.bind(this));
   }
 
   disconnectedCallback() {
-    document.removeEventListener("click", this.disconnectedCallback.bind(this));
+    document.removeEventListener("click", void this.disconnectedCallback.bind(this));
   }
 
   private dismissContextMenu() {
@@ -68,10 +68,10 @@ export class DnnRmItemsListview {
     state.selectedItems = [item];
     this.dismissContextMenu();
     
-    let contextMenu: HTMLDnnRmFolderContextMenuElement | HTMLDnnRmFileContextMenuElement;
-    contextMenu = item.isFolder
-      ? document.createElement("dnn-rm-folder-context-menu")
-      : document.createElement("dnn-rm-file-context-menu");
+    const contextMenu: HTMLDnnRmFolderContextMenuElement | HTMLDnnRmFileContextMenuElement =
+      item.isFolder
+        ? document.createElement("dnn-rm-folder-context-menu")
+        : document.createElement("dnn-rm-file-context-menu");
     const collapsible = document.createElement("dnn-collapsible");
     contextMenu.item = item;
     collapsible.appendChild(contextMenu);
@@ -126,7 +126,7 @@ export class DnnRmItemsListview {
                       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
                     }
                   </td>
-                  <td><img src={item.iconUrl} /></td>
+                  <td><img src={item.iconUrl} alt={item.itemName} /></td>
                   <td>{item.itemName}</td>
                   <td>{this.getLocalDateString(item.createdOn)}</td>
                   <td>{this.getLocalDateString(item.modifiedOn)}</td>

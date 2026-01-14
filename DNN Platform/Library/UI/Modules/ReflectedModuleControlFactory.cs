@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.UI.Modules
 {
     using System.Web.UI;
@@ -11,6 +10,16 @@ namespace DotNetNuke.UI.Modules
 
     public class ReflectedModuleControlFactory : BaseModuleControlFactory
     {
+        /// <inheritdoc/>
+        public override int Priority => -1;
+
+        /// <inheritdoc/>
+        public override bool SupportsControl(ModuleInfo moduleConfiguration, string controlSrc)
+        {
+            // This factory is used as fallback
+            return true;
+        }
+
         /// <inheritdoc/>
         public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {

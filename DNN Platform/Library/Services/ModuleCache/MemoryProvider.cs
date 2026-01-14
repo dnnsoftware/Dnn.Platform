@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.ModuleCache
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Text;
     using System.Web.Caching;
 
@@ -24,17 +25,17 @@ namespace DotNetNuke.Services.ModuleCache
             {
                 foreach (KeyValuePair<string, string> kvp in varyBy)
                 {
-                    cacheKey.Append(string.Concat(kvp.Key.ToLowerInvariant(), "=", kvp.Value, "|"));
+                    cacheKey.Append($"{kvp.Key.ToLowerInvariant()}={kvp.Value}|");
                 }
             }
 
-            return string.Concat(CachePrefix, "|", tabModuleId.ToString(), "|", cacheKey.ToString());
+            return $"{CachePrefix}|{tabModuleId.ToString(CultureInfo.InvariantCulture)}|{cacheKey}";
         }
 
         /// <inheritdoc/>
         public override int GetItemCount(int tabModuleId)
         {
-            return this.GetCacheKeys(tabModuleId).Count;
+            return GetCacheKeys(tabModuleId).Count;
         }
 
         /// <inheritdoc/>
@@ -52,7 +53,7 @@ namespace DotNetNuke.Services.ModuleCache
         /// <inheritdoc/>
         public override void Remove(int tabModuleId)
         {
-            DataCache.ClearCache(string.Concat(CachePrefix, "|", tabModuleId.ToString()));
+            DataCache.ClearCache($"{CachePrefix}|{tabModuleId.ToString(CultureInfo.InvariantCulture)}");
         }
 
         /// <inheritdoc/>
@@ -68,13 +69,13 @@ namespace DotNetNuke.Services.ModuleCache
             // throw new NotSupportedException();
         }
 
-        private List<string> GetCacheKeys(int tabModuleId)
+        private static List<string> GetCacheKeys(int tabModuleId)
         {
             var keys = new List<string>();
             IDictionaryEnumerator cacheEnum = CachingProvider.Instance().GetEnumerator();
             while (cacheEnum.MoveNext())
             {
-                if (cacheEnum.Key.ToString().StartsWith(string.Concat(CachePrefix, "|", tabModuleId.ToString(), "|")))
+                if (cacheEnum.Key.ToString().StartsWith($"{CachePrefix}|{tabModuleId.ToString(CultureInfo.InvariantCulture)}|", StringComparison.Ordinal))
                 {
                     keys.Add(cacheEnum.Key.ToString());
                 }

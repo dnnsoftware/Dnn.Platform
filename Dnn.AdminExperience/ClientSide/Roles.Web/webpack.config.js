@@ -1,5 +1,5 @@
 ﻿const webpack = require("webpack");
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require("eslint-webpack-plugin");
 const packageJson = require("./package.json");
 const path = require("path");
 const settings = require("../../../settings.local.json");
@@ -61,8 +61,13 @@ module.exports = (env, argv) => {
                     use: ["url-loader?mimetype=application/font-woff"],
                 },
                 {
-                    test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/,
+                    test: /\.(ttf|eot|)(\?v=[0-9].[0-9].[0-9])?$/,
                     use: ["file-loader?name=[name].[ext]"],
+                },
+                {
+                    test: /\.svg$/i,
+                    issuer: /\.[jt]sx?$/,
+                    use: ["@svgr/webpack"],
                 },
             ],
         },

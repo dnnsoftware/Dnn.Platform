@@ -4,10 +4,11 @@
 namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
+    using System.Globalization;
 
     using DotNetNuke.Services.Localization;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays the site's copyright statement.</summary>
     public partial class Copyright : SkinObjectBase
     {
         private const string MyFileName = "Copyright.ascx";
@@ -25,11 +26,15 @@ namespace DotNetNuke.UI.Skins.Controls
 
             if (!string.IsNullOrEmpty(this.PortalSettings.FooterText))
             {
-                this.lblCopyright.Text = this.PortalSettings.FooterText.Replace("[year]", DateTime.Now.ToString("yyyy"));
+                this.lblCopyright.Text = this.PortalSettings.FooterText.Replace("[year]", DateTime.Now.ToString("yyyy", CultureInfo.CurrentCulture));
             }
             else
             {
-                this.lblCopyright.Text = string.Format(Localization.GetString("Copyright", Localization.GetResourceFile(this, MyFileName)), DateTime.Now.Year, this.PortalSettings.PortalName);
+                this.lblCopyright.Text = string.Format(
+                    CultureInfo.CurrentCulture,
+                    Localization.GetString("Copyright", Localization.GetResourceFile(this, MyFileName)),
+                    DateTime.Now.Year,
+                    this.PortalSettings.PortalName);
             }
         }
     }

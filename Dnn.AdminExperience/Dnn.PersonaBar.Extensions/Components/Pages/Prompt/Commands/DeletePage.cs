@@ -1,34 +1,48 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
+    using System;
+
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
     using Dnn.PersonaBar.Library.Prompt.Models;
     using Dnn.PersonaBar.Pages.Components.Exceptions;
     using Dnn.PersonaBar.Pages.Components.Security;
     using Dnn.PersonaBar.Pages.Services.Dto;
+
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("delete-page", Constants.PagesCategory, "Prompt_DeletePage_Description")]
-
     public class DeletePage : ConsoleCommandBase
     {
         [FlagParameter("name", "Prompt_DeletePage_FlagName", "String")]
-
         private const string FlagName = "name";
 
         [FlagParameter("id", "Prompt_DeletePage_FlagId", "Integer")]
-
         private const string FlagId = "id";
 
         [FlagParameter("parentid", "Prompt_DeletePage_FlagParentId", "Integer")]
-
         private const string FlagParentId = "parentid";
+
+        private readonly IPagesController pagesController;
+
+        /// <summary>Initializes a new instance of the <see cref="DeletePage"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IPagesController. Scheduled removal in v12.0.0.")]
+        public DeletePage()
+            : this(PagesController.Instance)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DeletePage"/> class.</summary>
+        /// <param name="pagesController">The pages controller.</param>
+        public DeletePage(IPagesController pagesController)
+        {
+            this.pagesController = pagesController;
+        }
 
         /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourceFile;
@@ -71,7 +85,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
             try
             {
-                PagesController.Instance.DeletePage(new PageItem { Id = this.PageId }, this.PortalSettings);
+                this.pagesController.DeletePage(new PageItem { Id = this.PageId }, this.PortalSettings);
             }
             catch (PageNotFoundException)
             {

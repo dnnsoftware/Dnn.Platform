@@ -17,13 +17,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
     [TestFixture]
     public class PortalInfoTests : DnnWebTest
     {
-        public PortalInfoTests()
-            : base(Constants.PORTAL_Zero)
-        {
-        }
-
         [Test]
-
         public void Processor_Password_In_DB_Must_Be_Encrypted()
         {
             var firstPortal = PortalController.Instance.GetPortals().OfType<PortalInfo>().FirstOrDefault();

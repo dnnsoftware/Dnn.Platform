@@ -19,7 +19,7 @@ namespace DotNetNuke.Entities.Icons
     /// <summary>IconController provides all operation to icons.</summary>
     /// <remarks>
     /// Tab is equal to page in DotNetNuke.
-    /// Tabs will be a sitemap for a poatal, and every request at first need to check whether there is valid tab information
+    /// Tabs will be a sitemap for a portal, and every request at first need to check whether there is valid tab information
     /// include in the url, if not it will use default tab to display information.
     /// </remarks>
     public partial class IconController
@@ -33,6 +33,7 @@ namespace DotNetNuke.Entities.Icons
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IconController));
 
         private static readonly SharedDictionary<string, bool> IconsStatusOnDisk = new SharedDictionary<string, bool>();
+        private static readonly char[] Comma = [',',];
 
         /// <summary>Gets the Icon URL.</summary>
         /// <param name="key">Key to icon, e.g. edit.</param>
@@ -73,7 +74,7 @@ namespace DotNetNuke.Entities.Icons
                 style = DefaultIconStyle;
             }
 
-            string fileName = string.Format("{0}/{1}_{2}_{3}.png", PortalSettings.Current.DefaultIconLocation, key, size, style);
+            string fileName = $"{PortalSettings.Current.DefaultIconLocation}/{key}_{size}_{style}.png";
 
             // In debug mode, we want to warn (only once) if icon is not present on disk
 #if DEBUG
@@ -92,11 +93,12 @@ namespace DotNetNuke.Entities.Icons
             return IconURL("ExtFile", "32x32", "Standard");
         }
 
+        /// <inheritdoc cref="GetIconSets(DotNetNuke.Abstractions.Application.IApplicationStatusInfo)"/>
         [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
         public static partial string[] GetIconSets()
         {
             return GetIconSets(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
         }
 
         public static string[] GetIconSets(IApplicationStatusInfo appStatus)
@@ -113,7 +115,7 @@ namespace DotNetNuke.Entities.Icons
                 }
             }
 
-            return result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            return result.Split(Comma, StringSplitOptions.RemoveEmptyEntries);
         }
 
         private static void CheckIconOnDisk(string path)
@@ -134,7 +136,7 @@ namespace DotNetNuke.Entities.Icons
                     var iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, path.Replace('/', '\\'));
                     if (!File.Exists(iconPhysicalPath))
                     {
-                        Logger.WarnFormat(string.Format("Icon Not Present on Disk {0}", iconPhysicalPath));
+                        Logger.Warn($"Icon Not Present on Disk {iconPhysicalPath}");
                     }
                 }
             }

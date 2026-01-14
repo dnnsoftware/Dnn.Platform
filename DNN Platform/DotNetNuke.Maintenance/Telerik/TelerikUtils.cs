@@ -18,13 +18,13 @@ namespace DotNetNuke.Maintenance.Telerik
         /// <summary>The file name of the Telerik Web UI assembly.</summary>
         public static readonly string TelerikWebUIFileName = "Telerik.Web.UI.dll";
 
-        private static readonly string[] Vendors = new[]
-        {
+        private static readonly string[] Vendors =
+        [
             "Microsoft",
             "System",
-        };
+        ];
 
-        private static readonly string[] WellKnownAssemblies = new[]
+        private static readonly HashSet<string> WellKnownAssemblies = new(StringComparer.OrdinalIgnoreCase)
         {
             "Telerik.Web.UI.Skins.dll",
             "DotNetNuke.Website.Deprecated.dll",
@@ -57,8 +57,8 @@ namespace DotNetNuke.Maintenance.Telerik
             var domain = AppDomain.CreateDomain(nameof(TelerikUtils));
             try
             {
-                return this.DirectoryGetFiles(this.BinPath, "*.dll", SearchOption.AllDirectories)
-                    .Where(this.IsNotWellKnownAssembly)
+                return DirectoryGetFiles(this.BinPath, "*.dll", SearchOption.AllDirectories)
+                    .Where(IsNotWellKnownAssembly)
                     .Where(path => this.AssemblyDependsOnTelerik(path, domain))
                     .ToList();
             }
@@ -71,7 +71,7 @@ namespace DotNetNuke.Maintenance.Telerik
         /// <inheritdoc />
         public bool TelerikIsInstalled()
         {
-            return this.FileExists(Path.Combine(this.BinPath, TelerikWebUIFileName));
+            return FileExists(Path.Combine(this.BinPath, TelerikWebUIFileName));
         }
 
         /// <inheritdoc />
@@ -93,27 +93,18 @@ namespace DotNetNuke.Maintenance.Telerik
             }
         }
 
-        private bool AssemblyDependsOnTelerik(string path, AppDomain domain)
+        /// <inheritdoc />
+        public bool IsTelerikVersionVulnerable(Version version)
         {
-            try
-            {
-                return this.GetReferencedAssemblyNames(path, domain)
-                    .Any(assemblyName => assemblyName.StartsWith("Telerik", StringComparison.OrdinalIgnoreCase));
-            }
-            catch (Exception ex)
-            {
-                // If we can't get the referenced assemblies, then it can't depend on Telerik.
-                this.log.Warn("Could not determine Telerik dependencies on some assemblies.", ex);
-                return false;
-            }
+            return version < new Version(2014, 0);
         }
 
-        private string[] DirectoryGetFiles(string path, string searchPattern, SearchOption searchOption) =>
+        private static string[] DirectoryGetFiles(string path, string searchPattern, SearchOption searchOption) =>
             Directory.GetFiles(path, searchPattern, searchOption);
 
-        private bool FileExists(string path) => File.Exists(path);
+        private static bool FileExists(string path) => File.Exists(path);
 
-        private IEnumerable<string> GetReferencedAssemblyNames(string assemblyFilePath, AppDomain domain)
+        private static IEnumerable<string> GetReferencedAssemblyNames(string assemblyFilePath, AppDomain domain)
         {
             try
             {
@@ -127,11 +118,26 @@ namespace DotNetNuke.Maintenance.Telerik
             }
         }
 
-        private bool IsNotWellKnownAssembly(string path)
+        private static bool IsNotWellKnownAssembly(string path)
         {
             var fileName = Path.GetFileName(path);
             return !WellKnownAssemblies.Contains(fileName) &&
-                !Vendors.Any(vendor => fileName.StartsWith($"{vendor}."));
+                !Vendors.Any(vendor => fileName.StartsWith($"{vendor}.", StringComparison.OrdinalIgnoreCase));
+        }
+
+        private bool AssemblyDependsOnTelerik(string path, AppDomain domain)
+        {
+            try
+            {
+                return GetReferencedAssemblyNames(path, domain)
+                    .Any(assemblyName => assemblyName.StartsWith("Telerik", StringComparison.OrdinalIgnoreCase));
+            }
+            catch (Exception ex)
+            {
+                // If we can't get the referenced assemblies, then it can't depend on Telerik.
+                this.log.Warn("Could not determine Telerik dependencies on some assemblies.", ex);
+                return false;
+            }
         }
     }
 }

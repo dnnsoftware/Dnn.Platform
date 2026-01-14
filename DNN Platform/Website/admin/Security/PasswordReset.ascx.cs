@@ -8,51 +8,65 @@ namespace DotNetNuke.Modules.Admin.Security
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Membership;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Security;
     using DotNetNuke.Security.Membership;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.UserRequest;
     using DotNetNuke.UI.Skins.Controls;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls;
     using Microsoft.Extensions.DependencyInjection;
 
-    using Host = DotNetNuke.Entities.Host.Host;
-
+    /// <summary>A control which allows a user to request a password reset.</summary>
     public partial class PasswordReset : UserModuleBase
     {
         private const int RedirectTimeout = 3000;
-
         private readonly INavigationManager navigationManager;
+        private readonly IEventLogger eventLogger;
+        private readonly IHostSettings hostSettings;
+        private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IPortalController portalController;
+        private readonly IClientResourceController clientResourceController;
+
         private string ipAddress;
 
         /// <summary>Initializes a new instance of the <see cref="PasswordReset"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public PasswordReset()
+            : this(null, null, null, null, null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PasswordReset"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public PasswordReset(INavigationManager navigationManager, IEventLogger eventLogger, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IPortalController portalController, IClientResourceController clientResourceController)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+            this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
+            this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
+            this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
         }
 
         private string ResetToken
         {
-            get
-            {
-                return this.ViewState["ResetToken"] != null ? this.Request.QueryString["resetToken"] : string.Empty;
-            }
-
-            set
-            {
-                this.ViewState.Add("ResetToken", value);
-            }
+            get => this.ViewState["ResetToken"] != null ? this.Request.QueryString["resetToken"] : string.Empty;
+            set => this.ViewState.Add("ResetToken", value);
         }
 
         /// <inheritdoc/>
@@ -61,13 +75,13 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnLoad(e);
             this.ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
 
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.PasswordStrength.js");
+            this.clientResourceController.RegisterScript("~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
             if (this.PortalSettings.LoginTabId != -1 && this.PortalSettings.ActiveTab.TabID != this.PortalSettings.LoginTabId)
             {
@@ -84,7 +98,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.txtUsername.Enabled = false;
             }
 
-            var useEmailAsUserName = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
+            var useEmailAsUserName = PortalController.GetPortalSettingAsBoolean(this.portalController, "Registration_UseEmailAsUserName", this.PortalId, false);
             if (useEmailAsUserName)
             {
                 this.valUsername.Text = Localization.GetString("Email.Required", this.LocalResourceFile);
@@ -99,10 +113,10 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.lblInfo.Text = Localization.GetString("ForcedResetInfo", this.LocalResourceFile);
             }
 
-            this.txtUsername.Attributes.Add("data-default", useEmailAsUserName ? this.LocalizeString("Email") : this.LocalizeString("Username"));
-            this.txtPassword.Attributes.Add("data-default", this.LocalizeString("Password"));
-            this.txtConfirmPassword.Attributes.Add("data-default", this.LocalizeString("Confirm"));
-            this.txtAnswer.Attributes.Add("data-default", this.LocalizeString("Answer"));
+            this.txtUsername.Attributes.Add("data-default", useEmailAsUserName ? this.LocalizeText("Email") : this.LocalizeText("Username"));
+            this.txtPassword.Attributes.Add("data-default", this.LocalizeText("Password"));
+            this.txtConfirmPassword.Attributes.Add("data-default", this.LocalizeText("Confirm"));
+            this.txtAnswer.Attributes.Add("data-default", this.LocalizeText("Answer"));
 
             if (!this.Page.IsPostBack)
             {
@@ -119,14 +133,14 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.resetMessages.Visible = true;
             }
 
-            if (Host.EnableStrengthMeter)
+            if (this.hostSettings.EnableStrengthMeter)
             {
                 this.passwordContainer.CssClass = "password-strength-container";
                 this.txtPassword.CssClass = "password-strength";
 
                 var options = new DnnPaswordStrengthOptions();
                 var optionsAsJsonString = Json.Serialize(options);
-                var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}", "password-strength", optionsAsJsonString, Environment.NewLine);
+                var script = $"dnn.initializePasswordStrength('.password-strength', {optionsAsJsonString});{Environment.NewLine}";
 
                 if (ScriptManager.GetCurrent(this.Page) != null)
                 {
@@ -149,7 +163,7 @@ namespace DotNetNuke.Modules.Admin.Security
             };
 
             var confirmOptionsAsJsonString = Json.Serialize(confirmPasswordOptions);
-            var confirmScript = string.Format("dnn.initializePasswordComparer({0});{1}", confirmOptionsAsJsonString, Environment.NewLine);
+            var confirmScript = $"dnn.initializePasswordComparer({confirmOptionsAsJsonString});{Environment.NewLine}";
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {
@@ -162,7 +176,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// <summary>After a successful password change will redirect the user to requested returnurl OR the login page.</summary>
+        /// <summary>After a successful password change will redirect the user to requested ReturnUrl OR the login page.</summary>
         protected void RedirectAfterPasswordChange()
         {
             var redirectUrl = string.Empty;
@@ -196,7 +210,8 @@ namespace DotNetNuke.Modules.Admin.Security
             this.lblHelp.Text = this.lblInfo.Text = string.Empty;
 
             // redirect page after 5 seconds
-            var script = string.Format("setTimeout(function(){{location.href = '{0}';}}, {1});", redirectUrl, RedirectTimeout);
+            var script =
+                $$"""setTimeout(function(){location.href = {{HttpUtility.JavaScriptStringEncode(redirectUrl, addDoubleQuotes: true)}};}, {{RedirectTimeout}});""";
             if (ScriptManager.GetCurrent(this.Page) != null)
             {
                 // respect MS AJAX
@@ -273,28 +288,26 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
             }
 
-            if (PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false))
+            if (PortalController.GetPortalSettingAsBoolean(this.portalController, "Registration_UseEmailAsUserName", this.PortalId, false))
             {
-                var testUser = UserController.GetUserByEmail(this.PortalId, username); // one additonal call to db to see if an account with that email actually exists
+                var testUser = UserController.GetUserByEmail(this.PortalId, username); // one additional call to db to see if an account with that email actually exists
                 if (testUser != null)
                 {
                     username = testUser.Username; // we need the username of the account in order to change the password in the next step
                 }
             }
 
-            string errorMessage;
             var answer = string.Empty;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {
                 answer = this.txtAnswer.Text;
             }
 
-            if (UserController.ChangePasswordByToken(this.PortalSettings.PortalId, username, newPassword, answer, this.ResetToken, out errorMessage) == false)
+            if (UserController.ChangePasswordByToken(this.PortalSettings.PortalId, username, newPassword, answer, this.ResetToken, out var errorMessage) == false)
             {
                 this.resetMessages.Visible = true;
-                var failed = errorMessage;
-                this.LogFailure(failed);
-                this.lblHelp.Text = failed;
+                this.LogFailure(errorMessage);
+                this.lblHelp.Text = errorMessage;
             }
             else
             {
@@ -328,12 +341,12 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void LogResult(string message)
         {
-            var log = new LogInfo
+            ILogInfo log = new LogInfo
             {
-                LogPortalID = this.PortalSettings.PortalId,
                 LogPortalName = this.PortalSettings.PortalName,
-                LogUserID = this.UserId,
             };
+            log.LogUserId = this.UserId;
+            log.LogPortalId = this.PortalSettings.PortalId;
 
             if (string.IsNullOrEmpty(message))
             {
@@ -347,7 +360,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
             log.AddProperty("IP", this.ipAddress);
 
-            LogController.Instance.AddLog(log);
+            this.eventLogger.AddLog(log);
         }
     }
 }

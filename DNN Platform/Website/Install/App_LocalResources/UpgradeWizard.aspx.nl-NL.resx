@@ -58,6 +58,9 @@ Voordat je verder gaat met het geautomatiseerde upgrade-proces moet je ervoor zo
   <data name="NoInstallationLog.Text" xml:space="preserve">
     <value>Geen installatielog</value>
   </data>
+  <data name="LoadingInstallationLog.Text" xml:space="preserve">
+    <value>Installatielogboeken laden, even geduld...</value>
+  </data>
   <data name="Password.Help" xml:space="preserve">
     <value>Het wachtwoord voor het account van de applicatiebeheerder</value>
   </data>
@@ -69,6 +72,9 @@ Voordat je verder gaat met het geautomatiseerde upgrade-proces moet je ervoor zo
   </data>
   <data name="SeeLogs.Text" xml:space="preserve">
     <value>Logs weergeven</value>
+  </data>
+  <data name="NoErrorsLogged.Text" xml:space="preserve">
+    <value>Er zijn geen upgradefouten geregistreerd</value>
   </data>
   <data name="TimerMinutes.Text" xml:space="preserve">
     <value>Minuten</value>

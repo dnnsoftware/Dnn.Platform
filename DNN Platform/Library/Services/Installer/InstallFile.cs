@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Installer
         /// <remarks>The ZipInputStream is read into a byte array (Buffer), and the ZipEntry is used to
         /// set up the properties of the InstallFile class.</remarks>
         /// <param name="entry">The ZipEntry.</param>
-        /// <param name="info">An INstallerInfo instance.</param>
+        /// <param name="info">An <see cref="InstallerInfo"/> instance.</param>
         public InstallFile(ZipArchiveEntry entry, InstallerInfo info)
         {
             this.Encoding = TextEncoding.UTF8;
@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Installer
         /// This Constructor creates a new InstallFile instance.
         /// </summary>
         /// <param name="fileName">The fileName of the File.</param>
-        /// <param name="info">An INstallerInfo instance.</param>
+        /// <param name="info">An <see cref="InstallerInfo"/> instance.</param>
         public InstallFile(string fileName, InstallerInfo info)
         {
             this.Encoding = TextEncoding.UTF8;
@@ -64,7 +64,7 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="fileName">The fileName of the File.</param>
         /// <param name="sourceFileName">Source file name.</param>
-        /// <param name="info">An INstallerInfo instance.</param>
+        /// <param name="info">An <see cref="InstallerInfo"/> instance.</param>
         public InstallFile(string fileName, string sourceFileName, InstallerInfo info)
         {
             this.Encoding = TextEncoding.UTF8;
@@ -86,8 +86,10 @@ namespace DotNetNuke.Services.Installer
             this.Path = filePath;
         }
 
-        [Obsolete("Deprecated in DotNetNuke 9.11.0. Replaced with .NET compresstion types. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.11.0. Replaced with .NET compression types. Scheduled for removal in v11.0.0.")]
+#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
+#pragma warning restore CS3001
         {
             this.Encoding = TextEncoding.UTF8;
             this.InstallerInfo = info;
@@ -96,23 +98,11 @@ namespace DotNetNuke.Services.Installer
 
         /// <summary>Gets the location of the backup file.</summary>
         /// <value>A string.</value>
-        public string BackupFileName
-        {
-            get
-            {
-                return System.IO.Path.Combine(this.BackupPath, this.Name + ".config");
-            }
-        }
+        public string BackupFileName => System.IO.Path.Combine(this.BackupPath, this.Name + ".config");
 
         /// <summary>Gets the location of the backup folder.</summary>
         /// <value>A string.</value>
-        public virtual string BackupPath
-        {
-            get
-            {
-                return System.IO.Path.Combine(this.InstallerInfo.TempInstallFolder, System.IO.Path.Combine("Backup", this.Path));
-            }
-        }
+        public virtual string BackupPath => System.IO.Path.Combine(this.InstallerInfo.TempInstallFolder, System.IO.Path.Combine("Backup", this.Path));
 
         /// <summary>Gets the File Extension of the file.</summary>
         /// <value>A string.</value>
@@ -132,13 +122,7 @@ namespace DotNetNuke.Services.Installer
 
         /// <summary>Gets the Full Name of the file.</summary>
         /// <value>A string.</value>
-        public string FullName
-        {
-            get
-            {
-                return System.IO.Path.Combine(this.Path, this.Name);
-            }
-        }
+        public string FullName => System.IO.Path.Combine(this.Path, this.Name);
 
         /// <summary>Gets the location of the temporary file.</summary>
         /// <value>A string.</value>
@@ -198,25 +182,25 @@ namespace DotNetNuke.Services.Installer
         /// <param name="fileName">A String representing the file name.</param>
         private void ParseFileName(string fileName)
         {
-            int i = fileName.Replace("\\", "/").LastIndexOf("/", StringComparison.Ordinal);
+            int i = fileName.Replace(@"\", "/").LastIndexOf("/", StringComparison.Ordinal);
             if (i < 0)
             {
-                this.Name = fileName.Substring(0, fileName.Length);
+                this.Name = fileName.Substring(0);
                 this.Path = string.Empty;
             }
             else
             {
-                this.Name = fileName.Substring(i + 1, fileName.Length - (i + 1));
+                this.Name = fileName.Substring(i + 1);
                 this.Path = fileName.Substring(0, i);
             }
 
-            if (string.IsNullOrEmpty(this.Path) && fileName.StartsWith("[app_code]"))
+            if (string.IsNullOrEmpty(this.Path) && fileName.StartsWith("[app_code]", StringComparison.OrdinalIgnoreCase))
             {
-                this.Name = fileName.Substring(10, fileName.Length - 10);
+                this.Name = fileName.Substring(10);
                 this.Path = fileName.Substring(0, 10);
             }
 
-            if (this.Name.Equals("manifest.xml", StringComparison.InvariantCultureIgnoreCase))
+            if (this.Name.Equals("manifest.xml", StringComparison.OrdinalIgnoreCase))
             {
                 this.Type = InstallFileType.Manifest;
             }
@@ -244,11 +228,11 @@ namespace DotNetNuke.Services.Installer
                         this.Type = InstallFileType.Resources;
                         break;
                     default:
-                        if (this.Extension.EndsWith("dataprovider", StringComparison.InvariantCultureIgnoreCase) || this.Extension.Equals("sql", StringComparison.InvariantCultureIgnoreCase))
+                        if (this.Extension.EndsWith("dataprovider", StringComparison.InvariantCultureIgnoreCase) || this.Extension.Equals("sql", StringComparison.OrdinalIgnoreCase))
                         {
                             this.Type = InstallFileType.Script;
                         }
-                        else if (this.Path.StartsWith("[app_code]"))
+                        else if (this.Path.StartsWith("[app_code]", StringComparison.OrdinalIgnoreCase))
                         {
                             this.Type = InstallFileType.AppCode;
                         }
@@ -265,7 +249,7 @@ namespace DotNetNuke.Services.Installer
             this.Path = this.Path.Replace("[app_code]", string.Empty);
 
             // remove starting "\"
-            if (this.Path.StartsWith("\\"))
+            if (this.Path.StartsWith(@"\", StringComparison.Ordinal))
             {
                 this.Path = this.Path.Substring(1);
             }

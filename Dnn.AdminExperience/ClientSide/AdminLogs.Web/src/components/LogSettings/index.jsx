@@ -27,7 +27,7 @@ class LogSettingsPanel extends Component {
         canEdit = util.settings.isHost || util.settings.permissions.LOG_SETTINGS_EDIT;
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         props.dispatch(LogSettingActions.getLogSettings());
         if (canEdit) {
@@ -78,7 +78,7 @@ class LogSettingsPanel extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderedLogSettingList(logTypeOptions, portalOptions) {
         let validLogSettingList = this.props.logSettingList.filter(logSetting => !!logSetting);
         let i = 0;
@@ -122,7 +122,7 @@ class LogSettingsPanel extends Component {
                     {canEdit &&
                         <div className="add-setting-row" onClick={this.toggle.bind(this, opened ? "" : "add") }>
                             <div className={"add-setting-box " + !opened}>
-                                <div className={"add-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
+                                <div className={"add-icon"}><SvgIcons.AddIcon />
                                 </div> {Localization.get("AddContent.Action") }
                             </div>
                         </div>

@@ -121,7 +121,7 @@ class EditLanguagePanel extends Component {
             highlightPendingTranslations: !this.state.highlightPendingTranslations
         });
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props } = this;
         const ModeOptions = [

@@ -23,7 +23,7 @@ namespace DotNetNuke.Build.Tasks
             if (context.Settings.Version == "auto")
             {
                 context.Version = context.GitVersion();
-                context.BuildNumber = context.Version.LegacySemVerPadded;
+                context.BuildNumber = context.Version.FullSemVer;
             }
             else
             {

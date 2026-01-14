@@ -14,9 +14,6 @@ namespace DotNetNuke.Entities.Profile
     using DotNetNuke.UI.WebControls;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Profile
-    /// Class:      ProfilePropertyDefinition
     /// <summary>
     /// The ProfilePropertyDefinition class provides a Business Layer entity for
     /// property Definitions.
@@ -58,7 +55,7 @@ namespace DotNetNuke.Entities.Profile
         }
 
         /// <summary>Initializes a new instance of the <see cref="ProfilePropertyDefinition"/> class.</summary>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
         public ProfilePropertyDefinition(int portalId)
         {
             this.PropertyDefinitionId = Null.NullInteger;
@@ -135,7 +132,7 @@ namespace DotNetNuke.Entities.Profile
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether gets and sets the Deleted.</summary>
+        /// <summary>Gets or sets a value indicating whether the property is Deleted.</summary>
         [Browsable(false)]
         [XmlIgnore]
         [JsonIgnore]
@@ -417,28 +414,6 @@ namespace DotNetNuke.Entities.Profile
                 }
 
                 this.profileVisibility = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.2.0. Use ProfileVisibility. Scheduled removal in v10.0.0.")]
-        [Browsable(false)]
-        [XmlIgnore]
-        [JsonIgnore]
-        public UserVisibilityMode Visibility
-        {
-            get
-            {
-                return this.ProfileVisibility.VisibilityMode;
-            }
-
-            set
-            {
-                if (this.ProfileVisibility.VisibilityMode != value)
-                {
-                    this.IsDirty = true;
-                }
-
-                this.ProfileVisibility.VisibilityMode = value;
             }
         }
 

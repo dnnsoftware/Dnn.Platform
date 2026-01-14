@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 DateTime dteValue = Null.NullDate;
                 try
                 {
-                    var dteString = Convert.ToString(this.Value);
+                    var dteString = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
                     DateTime.TryParse(dteString, CultureInfo.InvariantCulture, DateTimeStyles.None, out dteValue);
                 }
                 catch (Exception exc)
@@ -143,7 +143,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 string stringValue = Null.NullString;
                 if (this.DateValue.ToUniversalTime().Date != (DateTime)SqlDateTime.MinValue && this.DateValue != Null.NullDate)
                 {
-                    stringValue = this.DateValue.ToString(this.Format);
+                    stringValue = this.DateValue.ToString(this.Format, CultureInfo.InvariantCulture);
                 }
 
                 return stringValue;
@@ -151,7 +151,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
 
             set
             {
-                this.Value = DateTime.Parse(value);
+                this.Value = DateTime.Parse(value, CultureInfo.InvariantCulture);
             }
         }
 
@@ -175,7 +175,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             bool dataChanged = false;
             string presentValue = this.StringValue;
             string postedValue = postCollection[postDataKey + "_control"];
-            if (!presentValue.Equals(postedValue))
+            if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
             {
                 if (string.IsNullOrEmpty(postedValue))
                 {
@@ -184,7 +184,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 }
                 else
                 {
-                    this.Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
+                    this.Value = DateTime.Parse(postedValue, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
                     dataChanged = true;
                 }
             }
@@ -204,6 +204,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             this.Controls.Add(this.DateControl);
         }
 
+        /// <summary>Loads the date controls.</summary>
         protected virtual void LoadDateControls()
         {
             if (this.DateValue != Null.NullDate)
@@ -236,15 +237,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             }
         }
 
-        /// <summary>RenderEditMode is called by the base control to render the control in Edit Mode.</summary>
-        /// <param name="writer"></param>
+        /// <inheritdoc cref="EditControl.RenderEditMode"/>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);
         }
 
-        /// <summary>RenderViewMode renders the View (readonly) mode of the control.</summary>
-        /// <param name="writer">A HtmlTextWriter.</param>
+        /// <inheritdoc cref="EditControl.RenderViewMode"/>
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             this.ControlStyle.AddAttributesToRender(writer);

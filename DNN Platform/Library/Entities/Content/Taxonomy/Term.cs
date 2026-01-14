@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.Linq;
     using System.Web.Script.Serialization;
     using System.Xml.Serialization;
@@ -67,31 +68,31 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         }
 
         /// <summary>Initializes a new instance of the <see cref="Term"/> class.</summary>
-        /// <param name="vocabularyId"></param>
+        /// <param name="vocabularyId">The vocabulary ID.</param>
         public Term(int vocabularyId)
             : this(Null.NullString, Null.NullString, vocabularyId)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Term"/> class.</summary>
-        /// <param name="name"></param>
+        /// <param name="name">The term name.</param>
         public Term(string name)
             : this(name, Null.NullString, Null.NullInteger)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Term"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
+        /// <param name="name">The term name.</param>
+        /// <param name="description">The term description.</param>
         public Term(string name, string description)
             : this(name, description, Null.NullInteger)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Term"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        /// <param name="vocabularyId"></param>
+        /// <param name="name">The term name.</param>
+        /// <param name="description">The term description.</param>
+        /// <param name="vocabularyId">The vocabulary ID.</param>
         public Term(string name, string description, int vocabularyId)
         {
             this.Description = description;
@@ -307,17 +308,17 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             if (dr["TermLeft"] != DBNull.Value)
             {
-                this.left = Convert.ToInt32(dr["TermLeft"]);
+                this.left = Convert.ToInt32(dr["TermLeft"], CultureInfo.InvariantCulture);
             }
 
             if (dr["TermRight"] != DBNull.Value)
             {
-                this.right = Convert.ToInt32(dr["TermRight"]);
+                this.right = Convert.ToInt32(dr["TermRight"], CultureInfo.InvariantCulture);
             }
 
             if (dr["ParentTermID"] != DBNull.Value)
             {
-                this.ParentTermId = Convert.ToInt32(dr["ParentTermID"]);
+                this.ParentTermId = Convert.ToInt32(dr["ParentTermID"], CultureInfo.InvariantCulture);
             }
 
             // Fill base class properties
@@ -326,7 +327,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public string GetTermPath()
         {
-            string path = "\\\\" + this.Name;
+            string path = $@"\\{this.Name}";
 
             if (this.ParentTermId.HasValue)
             {

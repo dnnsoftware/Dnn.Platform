@@ -5,10 +5,12 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.UI.WebControls;
 
+    /// <summary>A file edit control.</summary>
     public class DnnFileEditControl : IntegerEditControl
     {
         private DnnFilePickerUploader fileControl;
@@ -33,8 +35,8 @@ namespace DotNetNuke.Web.UI.WebControls
             string presentValue = this.StringValue;
 
             // string postedValue = postCollection[string.Format("{0}FileControl$dnnFileUploadFileId", postDataKey)];
-            string postedValue = this.fileControl.FileID.ToString();
-            if (!presentValue.Equals(postedValue))
+            string postedValue = this.fileControl.FileID.ToString(CultureInfo.InvariantCulture);
+            if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
             {
                 this.Value = postedValue;
                 dataChanged = true;
@@ -54,7 +56,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             if (this.fileControl != null)
             {
-                this.fileControl.ID = string.Format("{0}FileControl", this.ID);
+                this.fileControl.ID = $"{this.ID}FileControl";
                 this.fileControl.FileFilter = this.FileFilter;
                 this.fileControl.FilePath = this.FilePath;
                 this.fileControl.FileID = this.IntegerValue;

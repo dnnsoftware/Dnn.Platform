@@ -6,6 +6,9 @@ import TimePicker from "./TimePicker";
 import TimezonePicker from "./TimezonePicker";
 import timeZones from "./timeZones";
 import DateInput from "./DateInput";
+import CalendarIcon from "./img/calendar.svg";
+import CalendarEndIcon from "./img/calendar_end.svg";
+import CalendarStartIcon from "./img/calendar_start.svg";
 import "./style.less";
 
 const DefaultControllerClassName = "calendar-controller";
@@ -352,10 +355,9 @@ class DatePicker extends Component {
         const showIcon = this.props.showIcon !== false;
         const showInput = this.props.showInput !== false;
 
-        const mode = this.props.mode ? "_" + this.props.mode : "";
-        let icon = require(`./img/calendar${mode}.svg`).default;
+        let Icon = this.props.mode === "start" ? CalendarStartIcon : this.props.mode === "end" ? CalendarEndIcon : CalendarIcon;
         if (this.props.icon) {
-            icon = this.props.icon;
+            Icon = this.props.icon;
         }
 
         const style = this.props.isDateRange && this.props.hasTimePicker ? {width: 380} : {}; 
@@ -365,7 +367,7 @@ class DatePicker extends Component {
         const showClearDates = !!this.props.isDateRange && this.props.showClearDates;
         const clearButtonStyle = (this.state.Date.FirstDate || this.state.Date.SecondDate) ? clearButtonStyleVisible : clearButtonStyleInvisible;            
 
-        /* eslint-disable react/no-danger */
+         
         return <div className="dnn-day-picker" ref={this.dayPickerRef}>
             {showInput && <div className={inputClassName} style={style} onClick={this.showCalendar.bind(this) }>
                 {this.props.prependWith && <span>{this.props.prependWith}</span>}
@@ -380,9 +382,8 @@ class DatePicker extends Component {
                 </div>}
             </div>}
             {showIcon && <div
-                dangerouslySetInnerHTML={{ __html: icon }}
                 className={"calendar-icon" + (this.state.isCalendarVisible ? " active" : "") }
-                onClick={this.toggleCalendar.bind(this) }>
+                onClick={this.toggleCalendar.bind(this) }><Icon />
             </div>}
             <div className={calendarClassName} style={this.getStyle() } ref={element => this.calendarContainer = element}>
                 <div>

@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Installer.Writers
     public class ContainerPackageWriter : SkinPackageWriter
     {
         /// <summary>Initializes a new instance of the <see cref="ContainerPackageWriter"/> class.</summary>
-        /// <param name="package"></param>
+        /// <param name="package">The package info.</param>
         public ContainerPackageWriter(PackageInfo package)
             : base(package)
         {
@@ -20,8 +20,8 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>Initializes a new instance of the <see cref="ContainerPackageWriter"/> class.</summary>
-        /// <param name="skinPackage"></param>
-        /// <param name="package"></param>
+        /// <param name="skinPackage">The skin package info.</param>
+        /// <param name="package">The package info.</param>
         public ContainerPackageWriter(SkinPackageInfo skinPackage, PackageInfo package)
             : base(skinPackage, package)
         {

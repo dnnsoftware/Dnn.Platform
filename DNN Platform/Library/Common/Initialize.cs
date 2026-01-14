@@ -4,6 +4,7 @@
 namespace DotNetNuke.Common
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Reflection;
     using System.Threading;
@@ -18,16 +19,16 @@ namespace DotNetNuke.Common
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Connections;
     using DotNetNuke.Services.EventQueue;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Upgrade;
-    using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Win32;
+
+    using SchedulerMode = DotNetNuke.Abstractions.Application.SchedulerMode;
 
     /// <summary>The Object to initialize application.</summary>
     public class Initialize
@@ -41,7 +42,7 @@ namespace DotNetNuke.Common
         public static void Init(HttpApplication app)
         {
             string redirect;
-            var status = Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>().Status;
+            var status = Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>().Status;
 
             // Check if app is initialised
             if (alreadyInitialized && status == UpgradeStatus.None)
@@ -137,22 +138,21 @@ namespace DotNetNuke.Common
                 var log = new LogInfo
                 {
                     BypassBuffering = true,
-                    LogTypeKey = EventLogType.APPLICATION_SHUTTING_DOWN.ToString(),
+                    LogTypeKey = nameof(EventLogType.APPLICATION_SHUTTING_DOWN),
                 };
                 log.AddProperty("Shutdown Details", shutdownDetail);
                 LogController.Instance.AddLog(log);
 
                 // enhanced shutdown logging
-                var runtime = typeof(HttpRuntime).InvokeMember(
-                    "_theRuntime",
-                    BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
-                    null,
-                    null,
-                    null) as HttpRuntime;
-
-                if (runtime == null)
+                if (typeof(HttpRuntime).InvokeMember(
+                        "_theRuntime",
+                        BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
+                        null,
+                        null,
+                        null,
+                        CultureInfo.InvariantCulture) is not HttpRuntime runtime)
                 {
-                    Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
+                    Logger.InfoFormat(CultureInfo.InvariantCulture, "Application shutting down. Reason: {0}", shutdownDetail);
                 }
                 else
                 {
@@ -161,14 +161,16 @@ namespace DotNetNuke.Common
                         BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
                         null,
                         runtime,
-                        null) as string;
+                        null,
+                        CultureInfo.InvariantCulture) as string;
 
                     var shutDownStack = runtime.GetType().InvokeMember(
                         "_shutDownStack",
                         BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
                         null,
                         runtime,
-                        null) as string;
+                        null,
+                        CultureInfo.InvariantCulture) as string;
 
                     Logger.Info("Application shutting down. Reason: " + shutdownDetail
                                 + Environment.NewLine + "ASP.NET Shutdown Info: " + shutDownMessage
@@ -180,7 +182,7 @@ namespace DotNetNuke.Common
                 Exceptions.LogException(exc);
             }
 
-            var status = Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>().Status;
+            var status = Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>().Status;
             if (status != UpgradeStatus.Install)
             {
                 // purge log buffer
@@ -195,23 +197,22 @@ namespace DotNetNuke.Common
         /// <returns>A value indicating whether the request should be processed in an HttpModule.</returns>
         public static bool ProcessHttpModule(HttpRequest request, bool allowUnknownExtensions, bool checkOmitFromRewriteProcessing)
         {
-            var toLowerLocalPath = request.Url.LocalPath.ToLowerInvariant();
-
-            if (toLowerLocalPath.EndsWith("webresource.axd")
-                    || toLowerLocalPath.EndsWith("scriptresource.axd")
-                    || toLowerLocalPath.EndsWith("captcha.aspx")
-                    || toLowerLocalPath.Contains("upgradewizard.aspx")
-                    || toLowerLocalPath.Contains("installwizard.aspx")
-                    || toLowerLocalPath.EndsWith("install.aspx"))
+            var localPath = request.Url.LocalPath;
+            if (localPath.EndsWith("webresource.axd", StringComparison.OrdinalIgnoreCase)
+                    || localPath.EndsWith("scriptresource.axd", StringComparison.OrdinalIgnoreCase)
+                    || localPath.EndsWith("captcha.aspx", StringComparison.OrdinalIgnoreCase)
+                    || localPath.Contains("upgradewizard.aspx", StringComparison.OrdinalIgnoreCase)
+                    || localPath.Contains("installwizard.aspx", StringComparison.OrdinalIgnoreCase)
+                    || localPath.EndsWith("install.aspx", StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
 
-            if (allowUnknownExtensions == false
-                    && toLowerLocalPath.EndsWith(".aspx") == false
-                    && toLowerLocalPath.EndsWith(".asmx") == false
-                    && toLowerLocalPath.EndsWith(".ashx") == false
-                    && toLowerLocalPath.EndsWith(".svc") == false)
+            if (!allowUnknownExtensions
+                    && !localPath.EndsWith(".aspx", StringComparison.OrdinalIgnoreCase)
+                    && !localPath.EndsWith(".asmx", StringComparison.OrdinalIgnoreCase)
+                    && !localPath.EndsWith(".ashx", StringComparison.OrdinalIgnoreCase)
+                    && !localPath.EndsWith(".svc", StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
@@ -219,7 +220,7 @@ namespace DotNetNuke.Common
             return !checkOmitFromRewriteProcessing || !RewriterUtils.OmitFromRewriteProcessing(request.Url.LocalPath);
         }
 
-        /// <summary>Attemps to run scheduled tasks when "Request Method" is used in the scheduler.</summary>
+        /// <summary>Attempts to run scheduled tasks when "Request Method" is used in the scheduler.</summary>
         /// <param name="request">The http request.</param>
         public static void RunSchedule(HttpRequest request)
         {
@@ -227,9 +228,12 @@ namespace DotNetNuke.Common
             {
                 try
                 {
-                    if (SchedulingProvider.SchedulerMode == SchedulerMode.REQUEST_METHOD && SchedulingProvider.ReadyForPoll)
+                    using var scope = Globals.GetOrCreateServiceScope();
+                    var hostSettings = scope.ServiceProvider.GetRequiredService<IHostSettings>();
+
+                    if (hostSettings.SchedulerMode == SchedulerMode.RequestMethod && SchedulingProvider.ReadyForPoll)
                     {
-                        Logger.Trace("Running Schedule " + SchedulingProvider.SchedulerMode);
+                        Logger.Trace("Running Schedule " + hostSettings.SchedulerMode);
                         var scheduler = SchedulingProvider.Instance();
                         var requestScheduleThread = new Thread(scheduler.ExecuteTasks) { IsBackground = true };
                         requestScheduleThread.Start();
@@ -255,10 +259,13 @@ namespace DotNetNuke.Common
             var scheduler = SchedulingProvider.Instance();
             scheduler.RunEventSchedule(EventName.APPLICATION_START);
 
+            using var scope = Globals.GetOrCreateServiceScope();
+            var hostSettings = scope.ServiceProvider.GetRequiredService<IHostSettings>();
+
             // instantiate APPLICATION_START scheduled jobs
-            if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
+            if (hostSettings.SchedulerMode == SchedulerMode.TimerMethod)
             {
-                Logger.Trace("Running Schedule " + SchedulingProvider.SchedulerMode);
+                Logger.Trace("Running Schedule " + hostSettings.SchedulerMode);
                 var newThread = new Thread(scheduler.Start)
                 {
                     IsBackground = true,
@@ -282,9 +289,9 @@ namespace DotNetNuke.Common
             bool autoUpgrade = Config.GetSetting("AutoUpgrade") == null || bool.Parse(Config.GetSetting("AutoUpgrade"));
             bool useWizard = Config.GetSetting("UseInstallWizard") == null || bool.Parse(Config.GetSetting("UseInstallWizard"));
 
-            // Determine the Upgrade status and redirect as neccessary to InstallWizard.aspx
+            // Determine the Upgrade status and redirect as necessary to InstallWizard.aspx
             string retValue = Null.NullString;
-            var applicationStatusInfo = Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+            var applicationStatusInfo = Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             switch (applicationStatusInfo.Status)
             {
                 case UpgradeStatus.Install:
@@ -425,71 +432,71 @@ namespace DotNetNuke.Common
         private static string InitializeApp(HttpApplication app, ref bool initialized)
         {
             var request = app.Request;
-            var redirect = Null.NullString;
 
             Logger.Trace("Request " + request.Url.LocalPath);
 
             // Don't process some of the AppStart methods if we are installing
-            if (!IsUpgradeOrInstallRequest(app.Request))
+            if (IsUpgradeOrInstallRequest(app.Request))
             {
-                // Check whether the current App Version is the same as the DB Version
-                redirect = CheckVersion(app);
-                if (string.IsNullOrEmpty(redirect) && !InstallBlocker.Instance.IsInstallInProgress())
-                {
-                    Logger.Info("Application Initializing");
-
-                    // Set globals
-                    Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
-                    Globals.OperatingSystemVersion = Environment.OSVersion.Version;
-                    Globals.NETFrameworkVersion = GetNETFrameworkVersion();
-                    Globals.DatabaseEngineVersion = GetDatabaseEngineVersion();
-
-                    Upgrade.CheckFipsCompilanceAssemblies();
-
-                    // Log Server information
-                    ServerController.UpdateServerActivity(new ServerInfo());
-
-                    // Start Scheduler
-                    StartScheduler();
-
-                    // Log Application Start
-                    LogStart();
-
-                    // Process any messages in the EventQueue for the Application_Start event
-                    EventQueueController.ProcessMessages("Application_Start");
-
-                    ServicesRoutingManager.RegisterServiceRoutes();
-
-                    ModuleInjectionManager.RegisterInjectionFilters();
-
-                    ConnectionsManager.Instance.RegisterConnections();
-
-                    // Set Flag so we can determine the first Page Request after Application Start
-                    app.Context.Items.Add("FirstRequest", true);
-
-                    Logger.Info("Application Initialized");
-
-                    initialized = true;
-                }
-            }
-            else
-            {
-                // NET Framework version is neeed by Upgrade
+                // NET Framework version is needed by Upgrade
                 Globals.NETFrameworkVersion = GetNETFrameworkVersion();
                 Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
                 Globals.OperatingSystemVersion = Environment.OSVersion.Version;
+
+                return Null.NullString;
             }
+
+                // Check whether the current App Version is the same as the DB Version
+            var redirect = CheckVersion(app);
+            if (!string.IsNullOrEmpty(redirect) || InstallBlocker.Instance.IsInstallInProgress())
+            {
+                return redirect;
+            }
+
+            Logger.Info("Application Initializing");
+
+            // Set globals
+            Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
+            Globals.OperatingSystemVersion = Environment.OSVersion.Version;
+            Globals.NETFrameworkVersion = GetNETFrameworkVersion();
+            Globals.DatabaseEngineVersion = GetDatabaseEngineVersion();
+
+            Upgrade.CheckFipsCompilanceAssemblies();
+
+            // Log Server information
+            ServerController.UpdateServerActivity(new ServerInfo());
+
+            // Start Scheduler
+            StartScheduler();
+
+            // Log Application Start
+            LogStart();
+
+            // Process any messages in the EventQueue for the Application_Start event
+            using (var scope = Globals.DependencyProvider.CreateScope())
+            {
+                EventQueueController.ProcessMessages(scope.ServiceProvider, "Application_Start");
+            }
+
+            ServicesRoutingManager.RegisterServiceRoutes();
+
+            // Set Flag so we can determine the first Page Request after Application Start
+            app.Context.Items.Add("FirstRequest", true);
+
+            Logger.Info("Application Initialized");
+
+            initialized = true;
 
             return redirect;
         }
 
         private static bool IsUpgradeOrInstallRequest(HttpRequest request)
         {
-            var url = request.Url.LocalPath.ToLowerInvariant();
+            var url = request.Url.LocalPath;
 
-            return url.EndsWith("/install.aspx")
-                || url.Contains("/upgradewizard.aspx")
-                || url.Contains("/installwizard.aspx");
+            return url.EndsWith("/install.aspx", StringComparison.OrdinalIgnoreCase)
+                || url.Contains("/upgradewizard.aspx", StringComparison.OrdinalIgnoreCase)
+                || url.Contains("/installwizard.aspx", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

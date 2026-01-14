@@ -280,7 +280,7 @@ class CreateUserBox extends Component {
                             onChange={this.onChange.bind(this, "notify") }  tabIndex={9}/>
                     </GridCell>
                     <GridCell columnSize={100} className="modal-footer">
-                        <Button id="cancelbtn"  type="secondary" onClick={this.cancel.bind(this) }  tabIndex={10}>{Localization.get("btnCancel") }</Button>
+                        <Button id="cancelbtn"  type="neutral" onClick={this.cancel.bind(this) }  tabIndex={10}>{Localization.get("btnCancel") }</Button>
                         <Button id="confirmbtn" type="primary" onClick={this.save.bind(this) } tabIndex={11}>{Localization.get("btnSave") }</Button>
                     </GridCell>
                 </GridCell>

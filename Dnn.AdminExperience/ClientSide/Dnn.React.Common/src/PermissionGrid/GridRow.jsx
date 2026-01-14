@@ -164,8 +164,8 @@ class GridRow extends Component {
         let self = this;
        
         return (
-            <GridCell className="grid-row" ref={node => this.node = node}>
-                <GridCell columnSize={roleColumnWidth}><span title={this.getHeaderColumnText() }>{this.getHeaderColumnText() }</span></GridCell>
+            <tr className="grid-row" ref={node => this.node = node}>
+                <td columnSize={roleColumnWidth}><span title={this.getHeaderColumnText() }>{this.getHeaderColumnText() }</span></td>
                 {props.definitions.map(function (def) {
                     let permission = props.permission.permissions.filter(p => {
                         return p.permissionId === def.permissionId;
@@ -182,15 +182,15 @@ class GridRow extends Component {
 
                     return (
                         
-                        <GridCell style={{"height":self.columnHeight+"px"}} columnSize={columnWidth} key={def.permissionId} >
+                        <td style={{"height":self.columnHeight+"px"}} key={def.permissionId} >
                             <StatusSwitch permission={permission} status={status} onChange={self.onStatusChanged.bind(self, def) } />
-                        </GridCell>
+                        </td>
                     );
                 }) }
-                <GridCell style={{"height":self.columnHeight+"px"}} columnSize={actionsWidth} className="col-actions">
+                <td style={{"height":self.columnHeight+"px"}} className="col-actions">
                     {!props.permission.default && <IconButton type="trash" onClick={this.onDelete.bind(this) } />}
-                </GridCell>
-            </GridCell>
+                </td>
+            </tr>
         );
     }
 

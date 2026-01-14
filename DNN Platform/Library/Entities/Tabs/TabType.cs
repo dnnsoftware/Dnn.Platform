@@ -6,10 +6,19 @@ namespace DotNetNuke.Entities.Tabs
 {
     public enum TabType
     {
+        /// <summary>Redirect to a file.</summary>
         File = 0,
+
+        /// <summary>A normal tab with its own content.</summary>
         Normal = 1,
+
+        /// <summary>Redirect to another tab.</summary>
         Tab = 2,
+
+        /// <summary>Redirect to an arbitrary URL.</summary>
         Url = 3,
+
+        /// <summary>Redirect to a user's profile page.</summary>
         Member = 4,
     }
 }

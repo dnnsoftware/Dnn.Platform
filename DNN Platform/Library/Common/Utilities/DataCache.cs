@@ -6,32 +6,41 @@ namespace DotNetNuke.Common.Utilities
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Threading;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.OutputCache;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    [Obsolete("Deprecated in DotNetNuke 9.13.8. This type has no known use. Scheduled for removal in v11.0.0.")]
     public enum CoreCacheType
     {
+        /// <summary>Host level.</summary>
         Host = 1,
+
+        /// <summary>Portal level.</summary>
         Portal = 2,
+
+        /// <summary>Tab level.</summary>
         Tab = 3,
     }
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Common.Utilities
-    /// Class:      DataCache
     /// <summary>The DataCache class is a facade class for the CachingProvider Instance's.</summary>
-    public class DataCache
+    public partial class DataCache
     {
         // Host keys
         public const string SecureHostSettingsCacheKey = "SecureHostSettings";
@@ -72,6 +81,9 @@ namespace DotNetNuke.Common.Utilities
         public const string PortalPermissionCacheKey = "PortalPermission{0}";
         public const CacheItemPriority PortalPermissionCachePriority = CacheItemPriority.High;
         public const int PortalPermissionCacheTimeOut = 20;
+
+        /// <summary> The portal styles cache key.</summary>
+        public const string PortalStylesCacheKey = "Dnn_Css_Custom_Properties_{0}";
 
         // Tab cache keys
         public const string TabCacheKey = "Tab_Tabs{0}";
@@ -337,7 +349,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             // log the cache clear event
-            var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.CACHE_REFRESH.ToString() };
+            var log = new LogInfo { LogTypeKey = nameof(EventLogType.CACHE_REFRESH), };
             log.LogProperties.Add(new LogDetailInfo("*", "Refresh"));
             LogController.Instance.AddLog(log);
         }
@@ -349,7 +361,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static void ClearFolderCache(int portalId)
         {
-            CachingProvider.Instance().Clear("Folder", portalId.ToString());
+            CachingProvider.Instance().Clear("Folder", portalId.ToString(CultureInfo.InvariantCulture));
         }
 
         public static void ClearHostCache(bool cascade)
@@ -366,44 +378,40 @@ namespace DotNetNuke.Common.Utilities
 
         public static void ClearModuleCache(int tabId)
         {
-            CachingProvider.Instance().Clear("Module", tabId.ToString());
-            Dictionary<int, int> portals = PortalController.GetPortalDictionary();
-            if (portals.ContainsKey(tabId))
+            CachingProvider.Instance().Clear("Module", tabId.ToString(CultureInfo.InvariantCulture));
+            var portals = PortalController.GetPortalDictionary();
+            if (portals.TryGetValue(tabId, out var portalId))
             {
-                Hashtable tabSettings = TabController.Instance.GetTabSettings(tabId);
+                var tabSettings = TabController.Instance.GetTabSettings(tabId);
                 if (tabSettings["CacheProvider"] != null && tabSettings["CacheProvider"].ToString().Length > 0)
                 {
-                    OutputCachingProvider outputProvider = OutputCachingProvider.Instance(tabSettings["CacheProvider"].ToString());
-                    if (outputProvider != null)
-                    {
-                        outputProvider.Remove(tabId);
-                    }
+                    var outputProvider = OutputCachingProvider.Instance(tabSettings["CacheProvider"].ToString());
+                    outputProvider?.Remove(tabId);
                 }
 
-                var portalId = portals[tabId];
-                RemoveCache(string.Format(SharedModulesByPortalCacheKey, portalId));
-                RemoveCache(string.Format(SharedModulesWithPortalCacheKey, portalId));
+                RemoveCache(string.Format(CultureInfo.InvariantCulture, SharedModulesByPortalCacheKey, portalId));
+                RemoveCache(string.Format(CultureInfo.InvariantCulture, SharedModulesWithPortalCacheKey, portalId));
             }
         }
 
         public static void ClearModulePermissionsCachesByPortal(int portalId)
         {
-            CachingProvider.Instance().Clear("ModulePermissionsByPortal", portalId.ToString());
+            CachingProvider.Instance().Clear("ModulePermissionsByPortal", portalId.ToString(CultureInfo.InvariantCulture));
         }
 
         public static void ClearPortalCache(int portalId, bool cascade)
         {
-            CachingProvider.Instance().Clear(cascade ? "PortalCascade" : "Portal", portalId.ToString());
+            CachingProvider.Instance().Clear(cascade ? "PortalCascade" : "Portal", portalId.ToString(CultureInfo.InvariantCulture));
         }
 
         public static void ClearTabsCache(int portalId)
         {
-            CachingProvider.Instance().Clear("Tab", portalId.ToString());
+            CachingProvider.Instance().Clear("Tab", portalId.ToString(CultureInfo.InvariantCulture));
         }
 
         public static void ClearDefinitionsCache(int portalId)
         {
-            RemoveCache(string.Format(ProfileDefinitionsCacheKey, portalId));
+            RemoveCache(string.Format(CultureInfo.InvariantCulture, ProfileDefinitionsCacheKey, portalId));
         }
 
         public static void ClearDesktopModulePermissionsCache()
@@ -415,54 +423,63 @@ namespace DotNetNuke.Common.Utilities
         {
             PermissionProvider.ResetCacheDependency(
                 portalId,
-                () => RemoveCache(string.Format(FolderPermissionCacheKey, portalId)));
+                () => RemoveCache(string.Format(CultureInfo.InvariantCulture, FolderPermissionCacheKey, portalId)));
         }
 
         public static void ClearListsCache(int portalId)
         {
-            RemoveCache(string.Format(ListsCacheKey, portalId));
+            RemoveCache(string.Format(CultureInfo.InvariantCulture, ListsCacheKey, portalId));
         }
 
         public static void ClearModulePermissionsCache(int tabId)
         {
-            RemoveCache(string.Format(ModulePermissionCacheKey, tabId));
+            RemoveCache(string.Format(CultureInfo.InvariantCulture, ModulePermissionCacheKey, tabId));
         }
 
         public static void ClearTabPermissionsCache(int portalId)
         {
-            RemoveCache(string.Format(TabPermissionCacheKey, portalId));
+            RemoveCache(string.Format(CultureInfo.InvariantCulture, TabPermissionCacheKey, portalId));
         }
 
         public static void ClearPortalPermissionsCache(int portalId)
         {
-            RemoveCache(string.Format(PortalPermissionCacheKey, portalId));
+            RemoveCache(string.Format(CultureInfo.InvariantCulture, PortalPermissionCacheKey, portalId));
         }
 
         public static void ClearUserCache(int portalId, string username)
         {
-            RemoveCache(string.Format(UserCacheKey, portalId, username));
-            RemoveCache(string.Format(UserProfileCacheKey, portalId, username));
+            RemoveCache(string.Format(CultureInfo.InvariantCulture, UserCacheKey, portalId, username));
+            RemoveCache(string.Format(CultureInfo.InvariantCulture, UserProfileCacheKey, portalId, username));
         }
 
         public static void ClearPortalUserCountCache(int portalID)
         {
-            CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, portalID));
+            CachingProvider.Instance().Remove(string.Format(CultureInfo.InvariantCulture, PortalUserCountCacheKey, portalID));
         }
 
         public static void ClearUserPersonalizationCache(int portalId, int userId)
         {
-            RemoveCache(string.Format(UserPersonalizationCacheKey, portalId, userId));
+            RemoveCache(string.Format(CultureInfo.InvariantCulture, UserPersonalizationCacheKey, portalId, userId));
         }
 
         public static void ClearPackagesCache(int portalId)
         {
-            RemoveCache(string.Format(PackagesCacheKey, portalId));
+            RemoveCache(string.Format(CultureInfo.InvariantCulture, PackagesCacheKey, portalId));
         }
 
-        public static TObject GetCachedData<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
+        /// <summary>Get cached data.</summary>
+        /// <param name="cacheItemArgs">Information about the cache item.</param>
+        /// <param name="cacheItemExpired">The callback to supply an item when it's not in the cache.</param>
+        /// <typeparam name="TObject">The type of the object to retrieve from the cache.</typeparam>
+        /// <returns>The <typeparamref name="TObject"/> instance or <see langword="default"/>.</returns>
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial TObject GetCachedData<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
+            => GetCachedData<TObject>(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), cacheItemArgs, cacheItemExpired);
+
+        public static TObject GetCachedData<TObject>(IHostSettings hostSettings, CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
         {
             // declare local object and try and retrieve item from the cache
-            return GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, false);
+            return GetCachedData<TObject>(hostSettings.PerformanceSetting, cacheItemArgs, cacheItemExpired, false);
         }
 
         public static TObject GetCache<TObject>(string cacheKey)
@@ -568,11 +585,11 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        internal static TObject GetCachedData<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool storeInDictionary)
+        internal static TObject GetCachedData<TObject>(PerformanceSettings performance, CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool storeInDictionary)
         {
             object objObject = storeInDictionary
                                    ? GetCachedDataFromDictionary(cacheItemArgs, cacheItemExpired)
-                                   : GetCachedDataFromRuntimeCache(cacheItemArgs, cacheItemExpired);
+                                   : GetCachedDataFromRuntimeCache(performance, cacheItemArgs, cacheItemExpired);
 
             // return the object
             if (objObject == null)
@@ -593,7 +610,7 @@ namespace DotNetNuke.Common.Utilities
             return CachingProvider.CleanCacheKey(cacheKey);
         }
 
-        private static object GetCachedDataFromRuntimeCache(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
+        private static object GetCachedDataFromRuntimeCache(PerformanceSettings performance, CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
         {
             object objObject = GetCache(cacheItemArgs.CacheKey);
 
@@ -624,7 +641,7 @@ namespace DotNetNuke.Common.Utilities
                         }
 
                         // set cache timeout
-                        int timeOut = cacheItemArgs.CacheTimeOut * Convert.ToInt32(Host.PerformanceSetting);
+                        int timeOut = cacheItemArgs.CacheTimeOut * (int)performance;
 
                         // if we retrieved a valid object and we are using caching
                         if (objObject != null && timeOut > 0)
@@ -704,9 +721,9 @@ namespace DotNetNuke.Common.Utilities
                 try
                 {
                     // Try to get lock Object (for key) from Dictionary
-                    if (LockDictionary.ContainsKey(key))
+                    if (LockDictionary.TryGetValue(key, out var value))
                     {
-                        @lock = LockDictionary[key];
+                        @lock = value;
                     }
                 }
                 finally
@@ -722,14 +739,15 @@ namespace DotNetNuke.Common.Utilities
                     try
                     {
                         // Double check dictionary
-                        if (!LockDictionary.ContainsKey(key))
+                        if (!LockDictionary.TryGetValue(key, out var value))
                         {
                             // Create new lock
-                            LockDictionary[key] = new object();
+                            value = new object();
+                            LockDictionary[key] = value;
                         }
 
                         // Retrieve lock
-                        @lock = LockDictionary[key];
+                        @lock = value;
                     }
                     finally
                     {

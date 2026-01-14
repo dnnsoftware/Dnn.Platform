@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -23,10 +24,10 @@ namespace DotNetNuke.Services.Installer
     using DotNetNuke.Services.Log.EventLog;
 
     /// <summary>The Installer class provides a single entrypoint for Package Installation.</summary>
-    public class Installer
+    public class Installer : IDisposable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Installer));
-        private readonly Stream inputStream;
+        private readonly MemoryStream inputStream;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Installer"/> class.
@@ -34,7 +35,7 @@ namespace DotNetNuke.Services.Installer
         /// the physical path to the temporary install folder and a string representing
         /// the physical path to the root of the site.
         /// </summary>
-        /// <param name="tempFolder">The physical path to the zip file containg the package.</param>
+        /// <param name="tempFolder">The physical path to the zip file containing the package.</param>
         /// <param name="manifest">The manifest filename.</param>
         /// <param name="physicalSitePath">The physical path to the root of the site.</param>
         /// <param name="loadManifest">Flag that determines whether the manifest will be loaded.</param>
@@ -113,7 +114,9 @@ namespace DotNetNuke.Services.Installer
             this.InstallerInfo = new InstallerInfo(physicalSitePath, InstallMode.ManifestOnly);
             if (loadManifest)
             {
-                this.ReadManifest(new FileStream(manifest, FileMode.Open, FileAccess.Read));
+                using var fileStream = new FileStream(manifest, FileMode.Open, FileAccess.Read);
+                using var xmlReader = XmlReader.Create(fileStream);
+                this.ReadManifest(xmlReader);
             }
         }
 
@@ -158,13 +161,14 @@ namespace DotNetNuke.Services.Installer
             {
                 packageType = Util.ReadAttribute(rootNav, "type");
             }
-            else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
+            else if (rootNav.Name.Equals("languagepack", StringComparison.OrdinalIgnoreCase))
             {
                 packageType = "LanguagePack";
             }
 
             XPathDocument legacyDoc;
             string legacyManifest;
+            XmlReader legacyManifestReader;
             switch (packageType.ToLowerInvariant())
             {
                 case "module":
@@ -189,7 +193,10 @@ namespace DotNetNuke.Services.Installer
                     }
 
                     // Load manifest into XPathDocument for processing
-                    legacyDoc = new XPathDocument(new StringReader(sb.ToString()));
+                    using (legacyManifestReader = XmlReader.Create(new StringReader(sb.ToString())))
+                    {
+                        legacyDoc = new XPathDocument(legacyManifestReader);
+                    }
 
                     // Parse the package nodes
                     nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
@@ -201,7 +208,10 @@ namespace DotNetNuke.Services.Installer
                     if (string.IsNullOrEmpty(info.LegacyError))
                     {
                         legacyManifest = languageWriter.WriteManifest(false);
-                        legacyDoc = new XPathDocument(new StringReader(legacyManifest));
+                        using (legacyManifestReader = XmlReader.Create(new StringReader(legacyManifest)))
+                        {
+                            legacyDoc = new XPathDocument(legacyManifestReader);
+                        }
 
                         // Parse the package nodes
                         nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
@@ -212,7 +222,10 @@ namespace DotNetNuke.Services.Installer
                     // Legacy Skin Object
                     var skinControlwriter = new SkinControlPackageWriter(rootNav, info);
                     legacyManifest = skinControlwriter.WriteManifest(false);
-                    legacyDoc = new XPathDocument(new StringReader(legacyManifest));
+                    using (legacyManifestReader = XmlReader.Create(new StringReader(legacyManifest)))
+                    {
+                        legacyDoc = new XPathDocument(legacyManifestReader);
+                    }
 
                     // Parse the package nodes
                     nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
@@ -285,18 +298,18 @@ namespace DotNetNuke.Services.Installer
             this.LogInstallEvent("Package", "Install");
 
             // when the installer initialized by file stream, we need save the file stream into backup folder.
-            if (this.inputStream != null && succeeded && this.Packages.Any())
+            if (this.inputStream != null && succeeded && this.Packages.Count != 0)
             {
                 Task.Run(() =>
                 {
-                    this.BackupStreamIntoFile(this.inputStream, this.Packages[0].Package);
+                    BackupStreamIntoFile(this.inputStream, this.Packages[0].Package);
                 });
             }
 
             // Clear Host Cache
             DataCache.ClearHostCache(true);
 
-            if (Config.GetFcnMode() == Config.FcnMode.Disabled.ToString())
+            if (Config.GetFcnMode() == nameof(Config.FcnMode.Disabled))
             {
                 // force application restart after the new changes only when FCN is disabled
                 Config.Touch();
@@ -312,7 +325,9 @@ namespace DotNetNuke.Services.Installer
             this.InstallerInfo.Log.StartJob(Util.DNN_Reading);
             if (this.InstallerInfo.ManifestFile != null)
             {
-                this.ReadManifest(new FileStream(this.InstallerInfo.ManifestFile.TempFileName, FileMode.Open, FileAccess.Read));
+                using var fileStream = new FileStream(this.InstallerInfo.ManifestFile.TempFileName, FileMode.Open, FileAccess.Read);
+                using var xmlReader = XmlReader.Create(fileStream);
+                this.ReadManifest(xmlReader);
             }
 
             if (this.InstallerInfo.Log.Valid)
@@ -353,6 +368,47 @@ namespace DotNetNuke.Services.Installer
             // log installation event
             this.LogInstallEvent("Package", "UnInstall");
             return true;
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.inputStream?.Dispose();
+            }
+        }
+
+        private static void BackupStreamIntoFile(MemoryStream stream, PackageInfo package)
+        {
+            try
+            {
+                var filePath = Util.GetPackageBackupPath(package);
+
+                if (File.Exists(filePath))
+                {
+                    File.SetAttributes(filePath, FileAttributes.Normal);
+                    File.Delete(filePath);
+                }
+
+                using var fileStream = File.Create(filePath);
+                if (stream.CanSeek)
+                {
+                    stream.Seek(0, SeekOrigin.Begin);
+                }
+
+                stream.CopyTo(fileStream);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
         }
 
         /// <summary>The InstallPackages method installs the packages.</summary>
@@ -425,16 +481,16 @@ namespace DotNetNuke.Services.Installer
                 string installOrder = Util.ReadAttribute(nav, "installOrder");
                 if (!string.IsNullOrEmpty(installOrder))
                 {
-                    order = int.Parse(installOrder);
+                    order = int.Parse(installOrder, CultureInfo.InvariantCulture);
                 }
 
                 this.Packages.Add(order, new PackageInstaller(nav.OuterXml, this.InstallerInfo));
             }
         }
 
-        private void ReadManifest(Stream stream)
+        private void ReadManifest(XmlReader reader)
         {
-            var doc = new XPathDocument(stream);
+            var doc = new XPathDocument(reader);
 
             // Read the root node to determine what version the manifest is
             XPathNavigator rootNav = doc.CreateNavigator();
@@ -450,7 +506,7 @@ namespace DotNetNuke.Services.Installer
             {
                 packageType = Util.ReadAttribute(rootNav, "type");
             }
-            else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
+            else if (rootNav.Name.Equals("languagepack", StringComparison.OrdinalIgnoreCase))
             {
                 packageType = "LanguagePack";
             }
@@ -492,34 +548,6 @@ namespace DotNetNuke.Services.Installer
                 {
                     this.InstallerInfo.Log.AddInfo(Util.UNINSTALL_Success + " - " + installer.Package.Name);
                 }
-            }
-        }
-
-        private void BackupStreamIntoFile(Stream stream, PackageInfo package)
-        {
-            try
-            {
-                var filePath = Util.GetPackageBackupPath(package);
-
-                if (File.Exists(filePath))
-                {
-                    File.SetAttributes(filePath, FileAttributes.Normal);
-                    File.Delete(filePath);
-                }
-
-                using (var fileStream = File.Create(filePath))
-                {
-                    if (stream.CanSeek)
-                    {
-                        stream.Seek(0, SeekOrigin.Begin);
-                    }
-
-                    stream.CopyTo(fileStream);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
             }
         }
     }

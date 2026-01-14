@@ -22,10 +22,10 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            this.RevertSqlDataProvider(context);
+            RevertSqlDataProvider(context);
         }
 
-        private void RevertSqlDataProvider(Context context)
+        private static void RevertSqlDataProvider(Context context)
         {
             var fileName = context.GetTwoDigitsVersionNumber() + ".SqlDataProvider";
             var filePath = "./Dnn Platform/Website/Providers/DataProviders/SqlDataProvider/" + fileName;

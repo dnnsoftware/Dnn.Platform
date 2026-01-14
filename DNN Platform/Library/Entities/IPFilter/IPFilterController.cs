@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Host
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
     using System.Web;
@@ -76,20 +77,10 @@ namespace DotNetNuke.Entities.Host
             return CBO.FillObject<IPFilterInfo>(DataProvider.Instance().GetIPFilter(ipFilter));
         }
 
-        /// <inheritdoc cref="IIPFilterController.IsIPAddressBanned"/>
-        [DnnDeprecated(7, 1, 0, "Please use IsIPBanned instead to return the value and apply your own logic", RemovalVersion = 10)]
-        public partial void IsIPAddressBanned(string ipAddress)
-        {
-            if (this.CheckIfBannedIPAddress(ipAddress))
-            {// should throw 403.6
-                throw new HttpException(403, string.Empty);
-            }
-        }
-
         /// <inheritdoc/>
         public bool IsIPBanned(string ipAddress)
         {
-            return this.CheckIfBannedIPAddress(ipAddress);
+            return CheckIfBannedIPAddress(ipAddress);
         }
 
         /// <inheritdoc/>
@@ -150,6 +141,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public bool IsAllowableDeny(string currentIP, IPFilterInfo ipFilter)
         {
             if (ipFilter.RuleType == (int)FilterType.Allow)
@@ -186,7 +178,7 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
-        private bool CheckIfBannedIPAddress(string ipAddress)
+        private static bool CheckIfBannedIPAddress(string ipAddress)
         {
             IList<IPFilterInfo> filterList = Instance.GetIPFilters();
             bool ipAllowed = true;
@@ -198,7 +190,7 @@ namespace DotNetNuke.Entities.Host
                     if (NetworkUtils.IsIPInRange(ipAddress, ipFilterInfo.IPAddress, ipFilterInfo.SubnetMask))
                     {
                         // log
-                        this.LogBannedIPAttempt(ipAddress);
+                        LogBannedIPAttempt(ipAddress);
                         return true;
                     }
                 }
@@ -216,11 +208,11 @@ namespace DotNetNuke.Entities.Host
             return ipAllowed;
         }
 
-        private void LogBannedIPAttempt(string ipAddress)
+        private static void LogBannedIPAttempt(string ipAddress)
         {
             var log = new LogInfo
             {
-                LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.IP_LOGIN_BANNED.ToString(),
+                LogTypeKey = nameof(DotNetNuke.Abstractions.Logging.EventLogType.IP_LOGIN_BANNED),
             };
             log.LogProperties.Add(new LogDetailInfo("HostAddress", ipAddress));
             LogController.Instance.AddLog(log);

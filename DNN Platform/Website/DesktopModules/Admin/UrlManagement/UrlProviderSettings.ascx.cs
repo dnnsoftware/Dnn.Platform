@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.UrlManagement
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A control which displays the settings of a URL provider.</summary>
     public partial class ProviderSettings : ModuleUserControlBase
     {
         private readonly INavigationManager navigationManager;
@@ -23,7 +24,7 @@ namespace DotNetNuke.Modules.UrlManagement
         /// <summary>Initializes a new instance of the <see cref="ProviderSettings"/> class.</summary>
         public ProviderSettings()
         {
-            this.navigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+            this.navigationManager = Globals.GetCurrentServiceProvider().GetService<INavigationManager>();
         }
 
         private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();

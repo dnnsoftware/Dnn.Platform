@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.Client.Providers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Web;
@@ -21,9 +22,10 @@ namespace DotNetNuke.Web.Client.Providers
         /// <summary>The default name of the provider.</summary>
         public const string DefaultName = "DnnPageHeaderProvider";
 
-        /// <summary>The name of the placeholder in which the controls will be rendered.</summary>
+        /// <summary>The name of the placeholder in which CSS will be rendered.</summary>
         public const string CssPlaceHolderName = "ClientDependencyHeadCss";
 
+        /// <summary>The name of the placeholder in which JS will be rendered.</summary>
         public const string JsPlaceHolderName = "ClientDependencyHeadJs";
 
         /// <inheritdoc/>
@@ -70,7 +72,7 @@ namespace DotNetNuke.Web.Client.Providers
         /// <inheritdoc/>
         protected override string RenderSingleJsFile(string js, IDictionary<string, string> htmlAttributes)
         {
-            return string.Format(HtmlEmbedContants.ScriptEmbedWithSource, js, htmlAttributes.ToHtmlAttributes());
+            return string.Format(CultureInfo.InvariantCulture, HtmlEmbedContants.ScriptEmbedWithSource, js, htmlAttributes.ToHtmlAttributes());
         }
 
         /// <inheritdoc/>
@@ -105,13 +107,13 @@ namespace DotNetNuke.Web.Client.Providers
         /// <inheritdoc/>
         protected override string RenderSingleCssFile(string css, IDictionary<string, string> htmlAttributes)
         {
-            return string.Format(HtmlEmbedContants.CssEmbedWithSource, css, htmlAttributes.ToHtmlAttributes());
+            return string.Format(CultureInfo.InvariantCulture, HtmlEmbedContants.CssEmbedWithSource, css, htmlAttributes.ToHtmlAttributes());
         }
 
         /// <summary>Registers the dependencies in the body of default.aspx.</summary>
-        /// <param name="http"></param>
-        /// <param name="js"></param>
-        /// <param name="css"></param>
+        /// <param name="http">The HTTP context.</param>
+        /// <param name="js">The HTML markup to request JavaScript dependencies.</param>
+        /// <param name="css">The HTML markup to request CSS dependencies.</param>
         /// <remarks>
         /// For some reason ampersands that aren't html escaped are not compliant to HTML standards when they exist in 'link' or 'script' tags in URLs,
         /// we need to replace the ampersands with &amp; . This is only required for this one w3c compliancy, the URL itself is a valid URL.
@@ -119,16 +121,14 @@ namespace DotNetNuke.Web.Client.Providers
         /// </remarks>
         protected override void RegisterDependencies(HttpContextBase http, string js, string css)
         {
-            if (!(http.CurrentHandler is Page))
+            if (http.CurrentHandler is not Page page)
             {
                 throw new InvalidOperationException("The current HttpHandler in a WebFormsFileRegistrationProvider must be of type Page");
             }
 
-            var page = (Page)http.CurrentHandler;
-
             if (page.Header == null)
             {
-                throw new NullReferenceException("DnnPageHeaderProvider requires a runat='server' tag in the page's header tag");
+                throw new InvalidOperationException("DnnPageHeaderProvider requires a runat='server' tag in the page's header tag");
             }
 
             var jsScriptBlock = new LiteralControl(js.Replace("&", "&amp;"));
@@ -137,11 +137,11 @@ namespace DotNetNuke.Web.Client.Providers
             page.FindControl(CssPlaceHolderName).Controls.Add(cssStyleBlock);
 
             var scriptManager = ScriptManager.GetCurrent(page);
-            if (scriptManager != null && scriptManager.IsInAsyncPostBack)
+            if (scriptManager is { IsInAsyncPostBack: true })
             {
                 var jsHolder = page.FindControl(JsPlaceHolderName);
                 jsHolder.ID = "$crm_" + jsHolder.ID;
-                scriptManager.RegisterDataItem(jsHolder, string.Format("{0}{1}", jsScriptBlock.Text, cssStyleBlock.Text));
+                scriptManager.RegisterDataItem(jsHolder, $"{jsScriptBlock.Text}{cssStyleBlock.Text}");
             }
         }
     }

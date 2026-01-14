@@ -15,7 +15,7 @@ namespace DotNetNuke.UI.Modules.Html5
         private readonly ModuleInstanceContext moduleContext;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleContextPropertyAccess"/> class.</summary>
-        /// <param name="moduleContext"></param>
+        /// <param name="moduleContext">The module context.</param>
         public ModuleContextPropertyAccess(ModuleInstanceContext moduleContext)
         {
             this.moduleContext = moduleContext;
@@ -33,17 +33,17 @@ namespace DotNetNuke.UI.Modules.Html5
             switch (propertyName.ToLowerInvariant())
             {
                 case "moduleid":
-                    return this.moduleContext.ModuleId.ToString();
+                    return this.moduleContext.ModuleId.ToString(formatProvider);
                 case "tabmoduleid":
-                    return this.moduleContext.TabModuleId.ToString();
+                    return this.moduleContext.TabModuleId.ToString(formatProvider);
                 case "tabid":
-                    return this.moduleContext.TabId.ToString();
+                    return this.moduleContext.TabId.ToString(formatProvider);
                 case "portalid":
-                    return this.moduleContext.Configuration.OwnerPortalID.ToString();
+                    return this.moduleContext.Configuration.OwnerPortalID.ToString(formatProvider);
                 case "issuperuser":
-                    return this.moduleContext.PortalSettings.UserInfo.IsSuperUser.ToString();
+                    return this.moduleContext.PortalSettings.UserInfo.IsSuperUser.ToString(formatProvider);
                 case "editmode":
-                    return this.moduleContext.EditMode.ToString();
+                    return this.moduleContext.EditMode.ToString(formatProvider);
                 default:
                     if (this.moduleContext.Settings.ContainsKey(propertyName))
                     {

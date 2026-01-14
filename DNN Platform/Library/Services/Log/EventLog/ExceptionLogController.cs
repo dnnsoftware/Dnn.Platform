@@ -6,6 +6,8 @@ namespace DotNetNuke.Services.Log.EventLog
     using System;
     using System.Data.SqlClient;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -16,13 +18,28 @@ namespace DotNetNuke.Services.Log.EventLog
     {
         public enum ExceptionLogType
         {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
+            /// <summary>A general exception.</summary>
             GENERAL_EXCEPTION = 0,
+
+            /// <summary>An exception while loading a module.</summary>
             MODULE_LOAD_EXCEPTION = 1,
+
+            /// <summary>An exception while loading a page.</summary>
             PAGE_LOAD_EXCEPTION = 2,
+
+            /// <summary>An exception while running a scheduled task.</summary>
             SCHEDULER_EXCEPTION = 3,
+
+            /// <summary>A security violation.</summary>
             SECURITY_EXCEPTION = 4,
+
+            /// <summary>An exception while running a search indexer.</summary>
             SEARCH_INDEXER_EXCEPTION = 5,
+
+            /// <summary>An exception related to data issues.</summary>
             DATA_EXCEPTION = 6,
+#pragma warning restore CA1707
         }
 
         public void AddLog(Exception objException)
@@ -75,25 +92,16 @@ namespace DotNetNuke.Services.Log.EventLog
             this.AddLog(objException, log, logType);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void AddLog(Exception objException, LogInfo log, ExceptionLogType logType)
         {
             log.LogTypeKey = logType.ToString();
-            if (logType == ExceptionLogType.SEARCH_INDEXER_EXCEPTION)
-            {
-                // Add SearchException Properties
-                var objSearchException = (SearchException)objException;
-                log.LogProperties.Add(new LogDetailInfo("ModuleId", objSearchException.SearchItem.ModuleId.ToString()));
-                log.LogProperties.Add(new LogDetailInfo("SearchItemId", objSearchException.SearchItem.SearchItemId.ToString()));
-                log.LogProperties.Add(new LogDetailInfo("Title", objSearchException.SearchItem.Title));
-                log.LogProperties.Add(new LogDetailInfo("SearchKey", objSearchException.SearchItem.SearchKey));
-                log.LogProperties.Add(new LogDetailInfo("GUID", objSearchException.SearchItem.GUID));
-            }
-            else if (logType == ExceptionLogType.MODULE_LOAD_EXCEPTION)
+            if (logType == ExceptionLogType.MODULE_LOAD_EXCEPTION)
             {
                 // Add ModuleLoadException Properties
                 var objModuleLoadException = (ModuleLoadException)objException;
-                log.LogProperties.Add(new LogDetailInfo("ModuleId", objModuleLoadException.ModuleId.ToString()));
-                log.LogProperties.Add(new LogDetailInfo("ModuleDefId", objModuleLoadException.ModuleDefId.ToString()));
+                log.LogProperties.Add(new LogDetailInfo("ModuleId", objModuleLoadException.ModuleId.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("ModuleDefId", objModuleLoadException.ModuleDefId.ToString(CultureInfo.InvariantCulture)));
                 log.LogProperties.Add(new LogDetailInfo("FriendlyName", objModuleLoadException.FriendlyName));
                 log.LogProperties.Add(new LogDetailInfo("ModuleControlSource", objModuleLoadException.ModuleControlSource));
             }

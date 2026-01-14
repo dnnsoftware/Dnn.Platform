@@ -17,6 +17,7 @@ namespace DotNetNuke.Web.Mvc.Routing
         private const string NameKey = "name";
 
         /// <summary>Get the name of the route.</summary>
+        /// <param name="route">The route.</param>
         /// <returns>Route name.</returns>
         public static string GetName(this Route route)
         {
@@ -29,6 +30,7 @@ namespace DotNetNuke.Web.Mvc.Routing
         }
 
         /// <summary>Get Namespaces that are searched for controllers for this route.</summary>
+        /// <param name="route">The route.</param>
         /// <returns>Namespaces.</returns>
         internal static string[] GetNameSpaces(this Route route)
         {

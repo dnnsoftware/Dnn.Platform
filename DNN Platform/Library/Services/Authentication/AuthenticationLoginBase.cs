@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Authentication
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using DotNetNuke.Common.Utilities;
@@ -25,6 +26,7 @@ namespace DotNetNuke.Services.Authentication
             this.Mode = AuthMode.Login;
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public delegate void UserAuthenticatedEventHandler(object sender, UserAuthenticatedEventArgs e);
 
         public event UserAuthenticatedEventHandler UserAuthenticated;
@@ -34,6 +36,7 @@ namespace DotNetNuke.Services.Authentication
         public abstract bool Enabled { get; }
 
         /// <summary>Gets the IP address associated with the request.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string IPAddress
         {
             get
@@ -61,6 +64,7 @@ namespace DotNetNuke.Services.Authentication
         /// <summary>Gets or sets the Redirect Url for this control.</summary>
         public string RedirectURL { get; set; }
 
+        /// <inheritdoc cref="IUserRequestIPAddressController.GetUserRequestIPAddress(System.Web.HttpRequestBase)"/>
         [DnnDeprecated(9, 2, 0, "Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress")]
         public static partial string GetIPAddress()
         {

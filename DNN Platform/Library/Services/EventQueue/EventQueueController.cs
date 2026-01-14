@@ -5,13 +5,18 @@ namespace DotNetNuke.Services.EventQueue
 {
     using System;
     using System.Data;
+    using System.Globalization;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Framework;
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.EventQueue.Config;
     using DotNetNuke.Services.Log.EventLog;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Globals = DotNetNuke.Common.Globals;
+    using Reflection = DotNetNuke.Framework.Reflection;
 
     /// <summary>EventQueueController provides business layer of event queue.</summary>
     /// <remarks>
@@ -62,39 +67,71 @@ namespace DotNetNuke.Services.EventQueue
         /// <summary>Processes the messages.</summary>
         /// <param name="eventName">Name of the event.</param>
         /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
-        public static bool ProcessMessages(string eventName)
+        [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
+        public static partial bool ProcessMessages(string eventName)
         {
-            return ProcessMessages(GetMessages(eventName));
+            using var scope = Globals.GetOrCreateServiceScope();
+            return ProcessMessages(scope.ServiceProvider, eventName);
+        }
+
+        /// <summary>Processes the messages.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="eventName">Name of the event.</param>
+        /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
+        public static bool ProcessMessages(IServiceProvider serviceProvider, string eventName)
+        {
+            return ProcessMessages(serviceProvider, GetMessages(eventName));
         }
 
         /// <summary>Processes the messages.</summary>
         /// <param name="eventName">Name of the event.</param>
         /// <param name="subscriberId">The subscriber ID.</param>
         /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
-        public static bool ProcessMessages(string eventName, string subscriberId)
+        [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
+        public static partial bool ProcessMessages(string eventName, string subscriberId)
         {
             return ProcessMessages(GetMessages(eventName, subscriberId));
         }
 
         /// <summary>Processes the messages.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="eventName">Name of the event.</param>
+        /// <param name="subscriberId">The subscriber ID.</param>
+        /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
+        public static bool ProcessMessages(IServiceProvider serviceProvider, string eventName, string subscriberId)
+        {
+            return ProcessMessages(serviceProvider, GetMessages(eventName, subscriberId));
+        }
+
+        /// <summary>Processes the messages.</summary>
         /// <param name="eventMessages">The event messages.</param>
         /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
-        public static bool ProcessMessages(EventMessageCollection eventMessages)
+        [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
+        public static partial bool ProcessMessages(EventMessageCollection eventMessages)
+        {
+            using var scope = Globals.GetOrCreateServiceScope();
+            return ProcessMessages(scope.ServiceProvider, eventMessages);
+        }
+
+        /// <summary>Processes the messages.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="eventMessages">The event messages.</param>
+        /// <returns><see langword="true"/> if any message is successfully sent, otherwise <see langword="false"/>.</returns>
+        public static bool ProcessMessages(IServiceProvider serviceProvider, EventMessageCollection eventMessages)
         {
             bool success = Null.NullBoolean;
-            EventMessage message;
             for (int messageNo = 0; messageNo <= eventMessages.Count - 1; messageNo++)
             {
-                message = eventMessages[messageNo];
+                var message = eventMessages[messageNo];
                 try
                 {
-                    object oMessageProcessor = Reflection.CreateObject(message.ProcessorType, message.ProcessorType);
-                    if (!((EventMessageProcessorBase)oMessageProcessor).ProcessMessage(message))
+                    var messageProcessor = (EventMessageProcessorBase)Reflection.CreateObject(serviceProvider, message.ProcessorType, message.ProcessorType);
+                    if (!messageProcessor.ProcessMessage(message))
                     {
-                        throw new Exception();
+                        throw new EventMessageException($"Event message of type {message.ProcessorType} returned false");
                     }
 
-                    // Set Message comlete so it is not run a second time
+                    // Set Message complete so it is not run a second time
                     DataProvider.Instance().SetEventMessageComplete(message.EventMessageID);
 
                     success = true;
@@ -102,7 +139,8 @@ namespace DotNetNuke.Services.EventQueue
                 catch
                 {
                     // log if message could not be processed
-                    var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                    var eventLogger = serviceProvider.GetRequiredService<IEventLogger>();
+                    var log = new LogInfo { LogTypeKey = nameof(EventLogType.HOST_ALERT) };
                     log.AddProperty("EventQueue.ProcessMessage", "Message Processing Failed");
                     log.AddProperty("ProcessorType", message.ProcessorType);
                     log.AddProperty("Body", message.Body);
@@ -117,10 +155,10 @@ namespace DotNetNuke.Services.EventQueue
                         log.AddProperty("ExceptionMessage", message.ExceptionMessage);
                     }
 
-                    LogController.Instance.AddLog(log);
+                    eventLogger.AddLog(log);
                     if (message.ExpirationDate < DateTime.Now)
                     {
-                        // Set Message comlete so it is not run a second time
+                        // Set Message complete so it is not run a second time
                         DataProvider.Instance().SetEventMessageComplete(message.EventMessageID);
                     }
                 }
@@ -175,12 +213,6 @@ namespace DotNetNuke.Services.EventQueue
             return success;
         }
 
-        [DnnDeprecated(7, 0, 0, "Use Sendmessage(message, eventName) instead", RemovalVersion = 10)]
-        public partial bool SendMessage(EventMessage message, string eventName, bool encryptMessage)
-        {
-            return SendMessage(message, eventName);
-        }
-
         private static EventMessage FillMessage(IDataReader dr, bool checkForOpenDataReader)
         {
             EventMessage message;
@@ -199,21 +231,21 @@ namespace DotNetNuke.Services.EventQueue
             if (canContinue)
             {
                 message = new EventMessage();
-                message.EventMessageID = Convert.ToInt32(Null.SetNull(dr["EventMessageID"], message.EventMessageID));
-                message.Priority = (MessagePriority)Enum.Parse(typeof(MessagePriority), Convert.ToString(Null.SetNull(dr["Priority"], message.Priority)));
-                message.ProcessorType = Convert.ToString(Null.SetNull(dr["ProcessorType"], message.ProcessorType));
-                message.ProcessorCommand = Convert.ToString(Null.SetNull(dr["ProcessorCommand"], message.ProcessorCommand));
-                message.Body = Convert.ToString(Null.SetNull(dr["Body"], message.Body));
-                message.Sender = Convert.ToString(Null.SetNull(dr["Sender"], message.Sender));
-                message.Subscribers = Convert.ToString(Null.SetNull(dr["Subscriber"], message.Subscribers));
-                message.AuthorizedRoles = Convert.ToString(Null.SetNull(dr["AuthorizedRoles"], message.AuthorizedRoles));
-                message.ExceptionMessage = Convert.ToString(Null.SetNull(dr["ExceptionMessage"], message.ExceptionMessage));
-                message.SentDate = Convert.ToDateTime(Null.SetNull(dr["SentDate"], message.SentDate));
-                message.ExpirationDate = Convert.ToDateTime(Null.SetNull(dr["ExpirationDate"], message.ExpirationDate));
+                message.EventMessageID = Convert.ToInt32(Null.SetNull(dr["EventMessageID"], message.EventMessageID), CultureInfo.InvariantCulture);
+                message.Priority = (MessagePriority)Enum.Parse(typeof(MessagePriority), Convert.ToString(Null.SetNull(dr["Priority"], message.Priority), CultureInfo.InvariantCulture));
+                message.ProcessorType = Convert.ToString(Null.SetNull(dr["ProcessorType"], message.ProcessorType), CultureInfo.InvariantCulture);
+                message.ProcessorCommand = Convert.ToString(Null.SetNull(dr["ProcessorCommand"], message.ProcessorCommand), CultureInfo.InvariantCulture);
+                message.Body = Convert.ToString(Null.SetNull(dr["Body"], message.Body), CultureInfo.InvariantCulture);
+                message.Sender = Convert.ToString(Null.SetNull(dr["Sender"], message.Sender), CultureInfo.InvariantCulture);
+                message.Subscribers = Convert.ToString(Null.SetNull(dr["Subscriber"], message.Subscribers), CultureInfo.InvariantCulture);
+                message.AuthorizedRoles = Convert.ToString(Null.SetNull(dr["AuthorizedRoles"], message.AuthorizedRoles), CultureInfo.InvariantCulture);
+                message.ExceptionMessage = Convert.ToString(Null.SetNull(dr["ExceptionMessage"], message.ExceptionMessage), CultureInfo.InvariantCulture);
+                message.SentDate = Convert.ToDateTime(Null.SetNull(dr["SentDate"], message.SentDate), CultureInfo.InvariantCulture);
+                message.ExpirationDate = Convert.ToDateTime(Null.SetNull(dr["ExpirationDate"], message.ExpirationDate), CultureInfo.InvariantCulture);
 
                 // Deserialize Attributes
                 string xmlAttributes = Null.NullString;
-                xmlAttributes = Convert.ToString(Null.SetNull(dr["Attributes"], xmlAttributes));
+                xmlAttributes = Convert.ToString(Null.SetNull(dr["Attributes"], xmlAttributes), CultureInfo.InvariantCulture);
                 message.DeserializeAttributes(xmlAttributes);
             }
             else
@@ -255,15 +287,14 @@ namespace DotNetNuke.Services.EventQueue
         private static string[] GetSubscribers(string eventName)
         {
             // Get the subscribers to this event
-            string[] subscribers = null;
-            PublishedEvent publishedEvent = null;
-            if (EventQueueConfiguration.GetConfig().PublishedEvents.TryGetValue(eventName, out publishedEvent))
+            string[] subscribers;
+            if (EventQueueConfiguration.GetConfig().PublishedEvents.TryGetValue(eventName, out var publishedEvent))
             {
                 subscribers = publishedEvent.Subscribers.Split(";".ToCharArray());
             }
             else
             {
-                subscribers = new string[] { };
+                subscribers = [];
             }
 
             return subscribers;

@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Users
 // ReSharper restore CheckNamespace
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Web;
@@ -52,7 +53,7 @@ namespace DotNetNuke.Entities.Users
         /// <param name="property">The property.</param>
         /// <param name="accessingUser">The accessing user.</param>
         /// <param name="targetUser">The target user.</param>
-        /// <returns><c>true</c> if property accessible, otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if property accessible, otherwise <see langword="false"/>.</returns>
         [DnnDeprecated(9, 8, 0, "Use the overload that takes IPortalSettings instead")]
         public static partial bool CheckAccessLevel(PortalSettings portalSettings, ProfilePropertyDefinition property, UserInfo accessingUser, UserInfo targetUser)
         {
@@ -65,7 +66,7 @@ namespace DotNetNuke.Entities.Users
         /// <param name="property">The property.</param>
         /// <param name="accessingUser">The accessing user.</param>
         /// <param name="targetUser">The target user.</param>
-        /// <returns><c>true</c> if property accessible, otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if property accessible, otherwise <see langword="false"/>.</returns>
         public static bool CheckAccessLevel(IPortalSettings portalSettings, ProfilePropertyDefinition property, UserInfo accessingUser, UserInfo targetUser)
         {
             var isAdminUser = IsAdminUser(portalSettings, accessingUser, targetUser);
@@ -132,7 +133,7 @@ namespace DotNetNuke.Entities.Users
         public static string GetRichValue(ProfilePropertyDefinition property, string formatString, CultureInfo formatProvider)
         {
             string result = string.Empty;
-            if (!string.IsNullOrEmpty(property.PropertyValue) || DisplayDataType(property).Equals("image", StringComparison.InvariantCultureIgnoreCase))
+            if (!string.IsNullOrEmpty(property.PropertyValue) || DisplayDataType(property).Equals("image", StringComparison.OrdinalIgnoreCase))
             {
                 switch (DisplayDataType(property).ToLowerInvariant())
                 {
@@ -154,26 +155,24 @@ namespace DotNetNuke.Entities.Users
                             formatString = "g";
                         }
 
-                        result = int.Parse(property.PropertyValue).ToString(formatString, formatProvider);
+                        result = int.Parse(property.PropertyValue, CultureInfo.InvariantCulture).ToString(formatString, formatProvider);
                         break;
                     case "page":
-                        int tabid;
-                        if (int.TryParse(property.PropertyValue, out tabid))
+                        if (int.TryParse(property.PropertyValue, out var tabId))
                         {
-                            TabInfo tab = TabController.Instance.GetTab(tabid, Null.NullInteger, false);
+                            TabInfo tab = TabController.Instance.GetTab(tabId, Null.NullInteger, false);
                             if (tab != null)
                             {
-                                result = string.Format("<a href='{0}'>{1}</a>", TestableGlobals.Instance.NavigateURL(tabid), tab.LocalizedTabName);
+                                result = $"<a href='{TestableGlobals.Instance.NavigateURL(tabId)}'>{tab.LocalizedTabName}</a>";
                             }
                         }
 
                         break;
                     case "image":
                         // File is stored as a FileID
-                        int fileID;
-                        if (int.TryParse(property.PropertyValue, out fileID) && fileID > 0)
+                        if (int.TryParse(property.PropertyValue, out var fileId) && fileId > 0)
                         {
-                            result = Globals.LinkClick(string.Format("fileid={0}", fileID), Null.NullInteger, Null.NullInteger);
+                            result = Globals.LinkClick($"fileid={fileId}", Null.NullInteger, Null.NullInteger);
                         }
                         else
                         {
@@ -199,8 +198,8 @@ namespace DotNetNuke.Entities.Users
         /// <returns>A string representing the data type such as: truefalse, date, datetime, integer, page, image or richtext.</returns>
         public static string DisplayDataType(ProfilePropertyDefinition definition)
         {
-            string cacheKey = string.Format("DisplayDataType:{0}", definition.DataType);
-            string strDataType = Convert.ToString(DataCache.GetCache(cacheKey)) + string.Empty;
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, "DisplayDataType:{0}", definition.DataType);
+            string strDataType = Convert.ToString(DataCache.GetCache(cacheKey), CultureInfo.InvariantCulture) + string.Empty;
             if (strDataType == string.Empty)
             {
                 var objListController = new ListController();
@@ -212,13 +211,13 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
-            if (currentScope >= Scope.DefaultSettings && this.user != null && this.user.Profile != null)
+            if (currentScope >= Scope.DefaultSettings && this.user is { Profile: not null, })
             {
                 var profile = this.user.Profile;
-                var property = profile.ProfileProperties.Cast<ProfilePropertyDefinition>()
-                                                        .SingleOrDefault(p => string.Equals(p.PropertyName, propertyName, StringComparison.CurrentCultureIgnoreCase));
+                var property = profile.ProfileProperties.SingleOrDefault(p => string.Equals(p.PropertyName, propertyName, StringComparison.OrdinalIgnoreCase));
 
                 if (property != null)
                 {
@@ -240,7 +239,7 @@ namespace DotNetNuke.Entities.Users
                 }
 
                 propertyNotFound = true;
-                return property != null && property.PropertyName.Equals("photo", StringComparison.InvariantCultureIgnoreCase)
+                return property != null && property.PropertyName.Equals("photo", StringComparison.OrdinalIgnoreCase)
                     ? Globals.ApplicationPath + "/images/no_avatar.gif" : PropertyAccess.ContentLocked;
             }
 

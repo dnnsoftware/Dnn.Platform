@@ -29,14 +29,19 @@ namespace DotNetNuke.Security.Permissions.Controls
     public abstract class PermissionsGrid : Control, INamingContainer
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected const string PermissionTypeGrant = "True";
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected const string PermissionTypeDeny = "False";
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected const string PermissionTypeNull = "Null";
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected DataGrid rolePermissionsGrid;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected DataGrid userPermissionsGrid;
         private ArrayList permissions;
         private ArrayList users;
@@ -52,9 +57,9 @@ namespace DotNetNuke.Security.Permissions.Controls
         private HiddenField hiddenUserIds;
         private HiddenField roleField;
 
-        private int unAuthUsersRoleId = int.Parse(Globals.glbRoleUnauthUser);
+        private int unAuthUsersRoleId = int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
 
-        private int allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
+        private int allUsersRoleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
 
         /// <summary>Initializes a new instance of the <see cref="PermissionsGrid"/> class.</summary>
         public PermissionsGrid()
@@ -63,81 +68,30 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.dtRolePermissions = new DataTable();
         }
 
-        public TableItemStyle AlternatingItemStyle
-        {
-            get
-            {
-                return this.rolePermissionsGrid.AlternatingItemStyle;
-            }
-        }
+        public TableItemStyle AlternatingItemStyle => this.rolePermissionsGrid.AlternatingItemStyle;
 
-        public DataGridColumnCollection Columns
-        {
-            get
-            {
-                return this.rolePermissionsGrid.Columns;
-            }
-        }
+        public DataGridColumnCollection Columns => this.rolePermissionsGrid.Columns;
 
-        public TableItemStyle FooterStyle
-        {
-            get
-            {
-                return this.rolePermissionsGrid.FooterStyle;
-            }
-        }
+        public TableItemStyle FooterStyle => this.rolePermissionsGrid.FooterStyle;
 
-        public TableItemStyle HeaderStyle
-        {
-            get
-            {
-                return this.rolePermissionsGrid.HeaderStyle;
-            }
-        }
+        public TableItemStyle HeaderStyle => this.rolePermissionsGrid.HeaderStyle;
 
-        public TableItemStyle ItemStyle
-        {
-            get
-            {
-                return this.rolePermissionsGrid.ItemStyle;
-            }
-        }
+        public TableItemStyle ItemStyle => this.rolePermissionsGrid.ItemStyle;
 
-        public DataGridItemCollection Items
-        {
-            get
-            {
-                return this.rolePermissionsGrid.Items;
-            }
-        }
+        public DataGridItemCollection Items => this.rolePermissionsGrid.Items;
 
-        public TableItemStyle SelectedItemStyle
-        {
-            get
-            {
-                return this.rolePermissionsGrid.SelectedItemStyle;
-            }
-        }
+        public TableItemStyle SelectedItemStyle => this.rolePermissionsGrid.SelectedItemStyle;
 
-        /// <summary>Gets the Id of the Administrator Role.</summary>
-        public int AdministratorRoleId
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleId;
-            }
-        }
+        /// <summary>Gets the ID of the Administrator Role.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public int AdministratorRoleId => PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleId;
 
-        /// <summary>Gets the Id of the Registered Users Role.</summary>
-        public int RegisteredUsersRoleId
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleId;
-            }
-        }
+        /// <summary>Gets the ID of the Registered Users Role.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public int RegisteredUsersRoleId => PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleId;
 
-        /// <summary>Gets the Id of the Portal.</summary>
+        /// <summary>Gets the ID of the Portal.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public int PortalId
         {
             get
@@ -307,13 +261,14 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// <summary>Builds the key used to store the "permission" information in the ViewState.</summary>
         /// <param name="allowAccess">The type of permission ( grant / deny ).</param>
-        /// <param name="permissionId">The Id of the permission.</param>
-        /// <param name="objectPermissionId">The Id of the object permission.</param>
+        /// <param name="permissionId">The ID of the permission.</param>
+        /// <param name="objectPermissionId">The ID of the object permission.</param>
         /// <param name="roleId">The role id.</param>
         /// <param name="roleName">The role name.</param>
         /// <param name="userID">The user id.</param>
         /// <param name="displayName">The user display name.</param>
         /// <returns>The permission state key.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected string BuildKey(bool allowAccess, int permissionId, int objectPermissionId, int roleId, string roleName, int userID, string displayName)
         {
             string key;
@@ -326,11 +281,11 @@ namespace DotNetNuke.Security.Permissions.Controls
                 key = "False";
             }
 
-            key += "|" + Convert.ToString(permissionId);
+            key += "|" + Convert.ToString(permissionId, CultureInfo.InvariantCulture);
             key += "|";
             if (objectPermissionId > -1)
             {
-                key += Convert.ToString(objectPermissionId);
+                key += Convert.ToString(objectPermissionId, CultureInfo.InvariantCulture);
             }
 
             key += "|" + roleName;
@@ -578,6 +533,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <summary>Overrides the base OnPreRender method to Bind the Grid to the Permissions.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             this.BindData();
@@ -596,11 +552,11 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         protected virtual void ParsePermissionKeys(PermissionInfoBase permission, string[] settings)
         {
-            permission.PermissionID = Convert.ToInt32(settings[1]);
-            permission.RoleID = Convert.ToInt32(settings[4]);
+            permission.PermissionID = Convert.ToInt32(settings[1], CultureInfo.InvariantCulture);
+            permission.RoleID = Convert.ToInt32(settings[4], CultureInfo.InvariantCulture);
             permission.RoleName = settings[3];
-            permission.AllowAccess = Convert.ToBoolean(settings[0]);
-            permission.UserID = Convert.ToInt32(settings[5]);
+            permission.AllowAccess = Convert.ToBoolean(settings[0], CultureInfo.InvariantCulture);
+            permission.UserID = Convert.ToInt32(settings[5], CultureInfo.InvariantCulture);
             permission.DisplayName = settings[6];
         }
 
@@ -660,14 +616,14 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="stateKey">The permission state.</param>
         protected virtual void UpdatePermission(PermissionInfo permission, string displayName, int userId, string stateKey)
         {
-            this.RemovePermission(permission.PermissionID, int.Parse(Globals.glbRoleNothing), userId);
+            this.RemovePermission(permission.PermissionID, int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture), userId);
             switch (stateKey)
             {
                 case PermissionTypeGrant:
-                    this.AddPermission(permission, int.Parse(Globals.glbRoleNothing), Null.NullString, userId, displayName, true);
+                    this.AddPermission(permission, int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture), Null.NullString, userId, displayName, true);
                     break;
                 case PermissionTypeDeny:
-                    this.AddPermission(permission, int.Parse(Globals.glbRoleNothing), Null.NullString, userId, displayName, false);
+                    this.AddPermission(permission, int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture), Null.NullString, userId, displayName, false);
                     break;
             }
         }
@@ -690,7 +646,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 var rolesList = this.Roles.Cast<RoleInfo>().ToList();
                 foreach (DataGridItem dgi in this.rolePermissionsGrid.Items)
                 {
-                    var roleId = int.Parse(dgi.Cells[1].Text);
+                    var roleId = int.Parse(dgi.Cells[1].Text, CultureInfo.InvariantCulture);
                     if (rolesList.All(r => r.RoleID != roleId))
                     {
                         continue;
@@ -725,7 +681,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 var usersList = this.users.Cast<UserInfo>().ToList();
                 foreach (DataGridItem dgi in this.userPermissionsGrid.Items)
                 {
-                    var userId = int.Parse(dgi.Cells[1].Text);
+                    var userId = int.Parse(dgi.Cells[1].Text, CultureInfo.InvariantCulture);
                     if (usersList.All(u => u.UserID != userId))
                     {
                         continue;
@@ -753,12 +709,16 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <summary>RoleGroupsSelectedIndexChanged runs when the Role Group is changed.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void RoleGroupsSelectedIndexChanged(object sender, EventArgs e)
         {
-            this.FillSelectRoleComboBox(int.Parse(this.cboRoleGroups.SelectedValue));
+            this.FillSelectRoleComboBox(int.Parse(this.cboRoleGroups.SelectedValue, CultureInfo.InvariantCulture));
         }
 
         /// <summary>AddUser runs when the Add user linkbutton is clicked.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void AddUser(object sender, EventArgs e)
         {
             this.UpdatePermissions();
@@ -766,7 +726,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 foreach (var id in this.hiddenUserIds.Value.Split(','))
                 {
-                    var userId = Convert.ToInt32(id);
+                    var userId = Convert.ToInt32(id, CultureInfo.InvariantCulture);
                     var user = UserController.GetUserById(this.PortalId, userId);
                     if (user != null)
                     {
@@ -777,6 +737,28 @@ namespace DotNetNuke.Security.Permissions.Controls
 
                 this.txtUser.Text = this.hiddenUserIds.Value = string.Empty;
             }
+        }
+
+        private static string GetCommandType(string commandName)
+        {
+            var command = commandName.ToLower(CultureInfo.InvariantCulture);
+            if (command.Contains("rolename"))
+            {
+                return "ROLE";
+            }
+
+            if (command.Contains("displayname"))
+            {
+                return "USER";
+            }
+
+            return Null.NullString;
+        }
+
+        private static string GetGridCommand(string commandName)
+        {
+            var commandParts = commandName.Split('/');
+            return commandParts[0].ToUpper(CultureInfo.InvariantCulture);
         }
 
         private void BindData()
@@ -1026,19 +1008,19 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         private void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
-            var entityID = int.Parse(e.CommandArgument.ToString());
-            var command = this.GetGridCommand(e.CommandName);
-            var entityType = this.GetCommandType(e.CommandName);
+            var entityId = int.Parse(e.CommandArgument.ToString(), CultureInfo.InvariantCulture);
+            var command = GetGridCommand(e.CommandName);
+            var entityType = GetCommandType(e.CommandName);
             switch (command)
             {
                 case "DELETE":
                     if (entityType == "ROLE")
                     {
-                        this.DeleteRolePermissions(entityID);
+                        this.DeleteRolePermissions(entityId);
                     }
                     else if (entityType == "USER")
                     {
-                        this.DeleteUserPermissions(entityID);
+                        this.DeleteUserPermissions(entityId);
                     }
 
                     this.BindData();
@@ -1046,13 +1028,13 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        private void DeleteRolePermissions(int entityID)
+        private void DeleteRolePermissions(int entityId)
         {
             // PermissionsList.RemoveAll(p => p.RoleID == entityID);
-            var permissionToDelete = this.PermissionsList.Where(p => p.RoleID == entityID);
+            var permissionToDelete = this.PermissionsList.Where(p => p.RoleID == entityId);
             foreach (PermissionInfoBase permission in permissionToDelete)
             {
-                this.RemovePermission(permission.PermissionID, entityID, permission.UserID);
+                this.RemovePermission(permission.PermissionID, entityId, permission.UserID);
             }
         }
 
@@ -1063,28 +1045,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 this.RemovePermission(permission.PermissionID, permission.RoleID, entityID);
             }
-        }
-
-        private string GetCommandType(string commandName)
-        {
-            var command = commandName.ToLower(CultureInfo.InvariantCulture);
-            if (command.Contains("rolename"))
-            {
-                return "ROLE";
-            }
-
-            if (command.Contains("displayname"))
-            {
-                return "USER";
-            }
-
-            return Null.NullString;
-        }
-
-        private string GetGridCommand(string commandName)
-        {
-            var commandParts = commandName.Split('/');
-            return commandParts[0].ToUpper(CultureInfo.InvariantCulture);
         }
 
         private void SetUpRolesGrid()
@@ -1113,13 +1073,20 @@ namespace DotNetNuke.Security.Permissions.Controls
                 groupRoles.Add(new RoleInfo { RoleID = this.AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });
             }
 
-            foreach (var role in groupRoles.OrderBy(r => r.RoleName))
+            var roleList = new SortedList<string, int>();
+
+            foreach (var role in groupRoles)
             {
-                this.cboSelectRole.Items.Add(new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture)));
+                roleList[Localization.LocalizeRole(role.RoleName)] = role.RoleID;
             }
 
-            int[] defaultRoleIds = { this.AllUsersRoleId, portalSettings.RegisteredRoleId, portalSettings.AdministratorRoleId };
-            var itemToSelect = this.cboSelectRole.Items.Cast<ListItem>().FirstOrDefault(i => !defaultRoleIds.Contains(int.Parse(i.Value)));
+            foreach (var role in roleList)
+            {
+                this.cboSelectRole.Items.Add(new ListItem(role.Key, role.Value.ToString(CultureInfo.InvariantCulture)));
+            }
+
+            int[] defaultRoleIds = [this.AllUsersRoleId, portalSettings.RegisteredRoleId, portalSettings.AdministratorRoleId,];
+            var itemToSelect = this.cboSelectRole.Items.Cast<ListItem>().FirstOrDefault(i => !defaultRoleIds.Contains(int.Parse(i.Value, CultureInfo.InvariantCulture)));
             if (itemToSelect != null)
             {
                 this.cboSelectRole.SelectedValue = itemToSelect.Value;
@@ -1131,7 +1098,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.lblErrorMessage = new Label
             {
                 // TODO Remove DEBUG test
-                Text = "<br />" + (errorKey.StartsWith("DEBUG") ? errorKey : Localization.GetString(errorKey)),
+                Text = "<br />" + (errorKey.StartsWith("DEBUG", StringComparison.Ordinal) ? errorKey : Localization.GetString(errorKey)),
                 CssClass = "NormalRed",
             };
             this.pnlPermissions.Controls.Add(this.lblErrorMessage);
@@ -1141,13 +1108,12 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             var item = e.Item;
 
-            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            if (item.ItemType is ListItemType.Item or ListItemType.AlternatingItem or ListItemType.SelectedItem)
             {
-                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
-                if (roleID == PortalSettings.Current.AdministratorRoleId || roleID == this.AllUsersRoleId || roleID == PortalSettings.Current.RegisteredRoleId)
+                var roleId = int.Parse(((DataRowView)item.DataItem)[0].ToString(), CultureInfo.InvariantCulture);
+                if (roleId == PortalSettings.Current.AdministratorRoleId || roleId == this.AllUsersRoleId || roleId == PortalSettings.Current.RegisteredRoleId)
                 {
-                    var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
-                    if (actionImage != null)
+                    if (item.Controls.Cast<Control>().Last().Controls[0] is ImageButton actionImage)
                     {
                         actionImage.Visible = false;
                     }
@@ -1157,7 +1123,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         private void CreateAddRoleControls()
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var arrGroups = RoleController.GetRoleGroups(portalSettings.PortalId);
 
             var addRoleControls = new Panel { CssClass = "dnnFormItem" };
@@ -1204,8 +1170,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         private void AddRole(object sender, EventArgs e)
         {
             this.UpdatePermissions();
-            int selectedRoleId;
-            if (!int.TryParse(this.roleField.Value, out selectedRoleId))
+            if (!int.TryParse(this.roleField.Value, out var selectedRoleId))
             {
                 // Role not selected
                 this.SetErrorMessage("InvalidRoleId");

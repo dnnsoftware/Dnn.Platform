@@ -124,7 +124,7 @@ class RoleGroupEditor extends Component {
                     <div className="clear"></div>
                 </div>
                 <div className="actions">
-                    <Button onClick={this.onCancel.bind(this) } className="do-not-close">{resx.get("Cancel") }</Button>
+                    <Button type="neutral" onClick={this.onCancel.bind(this) } className="do-not-close">{resx.get("Cancel") }</Button>
                     <Button type="primary" onClick={this.onSave.bind(this) }>{resx.get("Save") }</Button>
                 </div>
             </div>

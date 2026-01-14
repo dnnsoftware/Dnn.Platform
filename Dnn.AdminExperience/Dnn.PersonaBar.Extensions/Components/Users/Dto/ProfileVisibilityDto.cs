@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         }
 
         /// <summary>Initializes a new instance of the <see cref="ProfileVisibilityDto"/> class.</summary>
-        /// <param name="visibility"></param>
+        /// <param name="visibility">The profile visibility.</param>
         public ProfileVisibilityDto(ProfileVisibility visibility)
         {
             this.VisibilityMode = visibility.VisibilityMode;

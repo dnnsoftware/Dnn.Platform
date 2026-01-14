@@ -4,6 +4,7 @@
 namespace DotNetNuke.Data.PetaPoco
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using System.Threading;
 
@@ -17,14 +18,16 @@ namespace DotNetNuke.Data.PetaPoco
         private readonly string tablePrefix;
 
         /// <summary>Initializes a new instance of the <see cref="PetaPocoMapper"/> class.</summary>
-        /// <param name="tablePrefix"></param>
+        /// <param name="tablePrefix">The table prefix.</param>
         public PetaPocoMapper(string tablePrefix)
         {
             this.tablePrefix = tablePrefix;
             defaultMapper = new StandardMapper();
         }
 
+#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public static void SetMapper<T>(IMapper mapper)
+#pragma warning restore CS3001
         {
             @lock.EnterWriteLock();
             try
@@ -41,11 +44,13 @@ namespace DotNetNuke.Data.PetaPoco
         }
 
         /// <inheritdoc/>
+#pragma warning disable CS3002 // Return type is not CLS-compliant
         public ColumnInfo GetColumnInfo(PropertyInfo pocoProperty)
+#pragma warning restore CS3002
         {
             bool includeColumn = true;
 
-            // Check if the class has the ExplictColumnsAttribute
+            // Check if the class has the DeclareColumnsAttribute
             bool declareColumns = pocoProperty.DeclaringType != null
                             && pocoProperty.DeclaringType.GetCustomAttributes(typeof(DeclareColumnsAttribute), true).Length > 0;
 
@@ -77,7 +82,9 @@ namespace DotNetNuke.Data.PetaPoco
         }
 
         /// <inheritdoc/>
+#pragma warning disable CS3002 // Return type is not CLS-compliant
         public TableInfo GetTableInfo(Type pocoType)
+#pragma warning restore CS3002
         {
             TableInfo ti = TableInfo.FromPoco(pocoType);
 
@@ -95,6 +102,7 @@ namespace DotNetNuke.Data.PetaPoco
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public Func<object, object> GetFromDbConverter(PropertyInfo pi, Type sourceType)
         {
             return null;

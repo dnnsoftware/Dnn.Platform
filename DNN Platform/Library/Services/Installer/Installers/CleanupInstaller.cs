@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Xml.XPath;
@@ -32,8 +33,8 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>Initializes a new instance of the <see cref="CleanupInstaller"/> class.</summary>
         public CleanupInstaller()
             : this(
-                Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>(),
-                Globals.DependencyProvider.GetRequiredService<IFileSystemUtils>())
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IFileSystemUtils>())
         {
         }
 
@@ -153,12 +154,12 @@ namespace DotNetNuke.Services.Installer.Installers
                 return false; // no rooted paths
             }
 
-            if (path.StartsWith(Path.DirectorySeparatorChar.ToString()))
+            if (path.StartsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal))
             {
                 return false; // no absolute paths
             }
 
-            if (path.IndexOf("..", StringComparison.InvariantCultureIgnoreCase) >= 0)
+            if (path.Contains("..", StringComparison.Ordinal))
             {
                 return false; // no relative paths outside the app root
             }
@@ -183,7 +184,7 @@ namespace DotNetNuke.Services.Installer.Installers
             validPath = validPath.TrimEnd(Path.DirectorySeparatorChar);
 
             if (!validPath.StartsWith(appPath, StringComparison.InvariantCultureIgnoreCase) ||
-                string.Equals(validPath, appPath, StringComparison.InvariantCultureIgnoreCase))
+                string.Equals(validPath, appPath, StringComparison.OrdinalIgnoreCase))
             {
                 validPath = null;
                 return false; // not the app root or paths outside the app root
@@ -278,7 +279,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         private bool ProcessCleanupFile()
         {
-            this.Log.AddInfo(string.Format(Util.CLEANUP_Processing, this.Version.ToString(3)));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.CLEANUP_Processing, this.Version.ToString(3)));
             try
             {
                 var strListFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this.fileName);
@@ -289,19 +290,19 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             catch (Exception ex)
             {
-                this.Log.AddWarning(string.Format(Util.CLEANUP_ProcessError, ex.Message));
+                this.Log.AddWarning(string.Format(CultureInfo.InvariantCulture, Util.CLEANUP_ProcessError, ex.Message));
 
                 // DNN-9202: MUST NOT fail installation when cleanup files deletion fails
                 // return false;
             }
 
-            this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
         }
 
         private bool ProcessGlob()
         {
-            this.Log.AddInfo(string.Format(Util.CLEANUP_Processing, this.Version.ToString(3)));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.CLEANUP_Processing, this.Version.ToString(3)));
             try
             {
                 if (this.glob.Contains(".."))
@@ -318,10 +319,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             catch (Exception ex)
             {
-                this.Log.AddWarning(string.Format(Util.CLEANUP_ProcessError, ex.Message));
+                this.Log.AddWarning(string.Format(CultureInfo.InvariantCulture, Util.CLEANUP_ProcessError, ex.Message));
             }
 
-            this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
         }
     }

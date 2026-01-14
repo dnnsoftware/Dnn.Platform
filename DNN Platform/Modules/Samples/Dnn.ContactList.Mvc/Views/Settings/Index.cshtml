@@ -1,0 +1,20 @@
+﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<Dnn.ContactList.Mvc.Models.Settings>
+
+@using DotNetNuke.Web.Mvc.Helpers
+
+<h2>Contact List Settings</h2>
+
+<fieldset>
+    <div class="dnnFormItem">
+
+        <div class="dnnLabel" style="position: relative;">
+            @Html.LabelFor(m => Model.PageSize, new { @class = "col-md-2 control-label" })
+        </div>
+        @Html.TextBoxFor(m => Model.PageSize, new { id = "PageSize" })
+        <br/>
+        <div class="dnnLabel" style="position: relative;">
+            @Html.LabelFor(m => Model.AllowContactCreation, new { @class = "col-md-2 control-label" })
+        </div>
+        @Html.CheckBoxFor(m => Model.AllowContactCreation, new { id = "AllowContactCreation" })
+    </div>
+</fieldset>

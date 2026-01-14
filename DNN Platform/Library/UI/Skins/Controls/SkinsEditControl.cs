@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common.Utilities;
@@ -14,9 +15,6 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.UI.WebControls;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.Skins.Controls
-    /// Class:      SkinsEditControl
     /// <summary>
     /// The SkinsEditControl control provides a standard UI component for editing
     /// skins.
@@ -140,7 +138,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     args = new PropertyEditorEventArgs(this.Name);
                     args.Value = this.DictionaryValue;
                     args.OldValue = this.OldDictionaryValue;
-                    args.Key = int.Parse(eventArgument.Substring(7));
+                    args.Key = int.Parse(eventArgument.Substring(7), CultureInfo.InvariantCulture);
                     args.Changed = true;
                     this.OnItemDeleted(args);
                     break;
@@ -163,7 +161,7 @@ namespace DotNetNuke.UI.Skins.Controls
             foreach (KeyValuePair<int, string> kvp in this.DictionaryValue)
             {
                 postedValue = postCollection[this.UniqueID + "_skin" + kvp.Key];
-                if (kvp.Value.Equals(postedValue))
+                if (kvp.Value.Equals(postedValue, StringComparison.Ordinal))
                 {
                     newDictionaryValue[kvp.Key] = kvp.Value;
                 }
@@ -184,10 +182,8 @@ namespace DotNetNuke.UI.Skins.Controls
             return dataChanged;
         }
 
-        /// <summary>
-        /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event.
-        /// </summary>
+        /// <summary>OnDataChanged runs when the PostbackData has changed.  It raises the <see cref="EditControl.ValueChanged"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnDataChanged(EventArgs e)
         {
             var args = new PropertyEditorEventArgs(this.Name);
@@ -199,6 +195,7 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         /// <summary>OnPreRender runs just before the control is due to be rendered.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -251,7 +248,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     writer.AddAttribute(HtmlTextWriterAttribute.Value, kvp.Value);
                     if (length > Null.NullInteger)
                     {
-                        writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
+                        writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString(CultureInfo.InvariantCulture));
                     }
 
                     writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_skin" + kvp.Key);
@@ -285,7 +282,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, Null.NullString);
                 if (length > Null.NullInteger)
                 {
-                    writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
+                    writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString(CultureInfo.InvariantCulture));
                 }
 
                 writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_skinnew");

@@ -7,13 +7,17 @@ namespace DotNetNuke.Tests.Utilities.Fakes
     using System.Collections.Generic;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Services.Cache;
+
+    using Moq;
 
     public class FakeCachingProvider : CachingProvider
     {
         private Dictionary<string, object> _dictionary;
 
         public FakeCachingProvider(Dictionary<string, object> dictionary)
+            : base(Mock.Of<IHostSettings>())
         {
             this._dictionary = dictionary;
         }

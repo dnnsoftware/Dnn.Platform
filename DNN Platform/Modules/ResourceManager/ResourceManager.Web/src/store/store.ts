@@ -1,5 +1,6 @@
 import { createStore } from "@stencil/store";
 import { SortFieldInfo } from "../enums/SortField";
+import { SortOrderInfo } from "../enums/SortOrder";
 import { GetFoldersResponse } from "../services/InternalServicesClient";
 import { GetFolderContentResponse, GetSettingsResponse, Item } from "../services/ItemsClient";
 import { LocalizedStrings } from "../services/LocalizationClient";
@@ -14,6 +15,7 @@ const { state } = createStore<{
     pageSize: number;
     lastSearchRequestedPage: number;
     sortField?: SortFieldInfo;
+    sortOrder?: SortOrderInfo;
     selectedItems: Item[];
     settings?: GetSettingsResponse;
     canManageFolderTypes: boolean;
@@ -24,6 +26,7 @@ const { state } = createStore<{
     lastSearchRequestedPage: 1,
     selectedItems: [],
     canManageFolderTypes: false,
+    sortOrder: new SortOrderInfo()
 });
 
 export default state;

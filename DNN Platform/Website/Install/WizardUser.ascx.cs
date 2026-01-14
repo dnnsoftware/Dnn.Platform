@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Security.Membership;
 
+    /// <summary>A control which collects information about the initial user of a site during installation.</summary>
     public partial class WizardUser : UserControl
     {
         public string FirstName

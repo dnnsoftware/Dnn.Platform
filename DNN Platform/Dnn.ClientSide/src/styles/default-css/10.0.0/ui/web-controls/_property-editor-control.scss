@@ -1,0 +1,69 @@
+/* Styles the webforms PropertyEditor control. */
+.dnnDropdownSettings {
+    position: relative;
+    height: 30px !important;
+}
+.dnnButtonDropdown {
+    width: 50px;
+    height: 30px !important;
+    background: var(--dnn-color-background, #fff);
+    border-radius: var(--dnn-controls-radius, 3px);
+    border: 1px solid var(--dnn-color-foreground-light, #c9c9c9);
+    cursor: pointer;
+}
+.dnnButtonIcon, .dnnButtonArrow {
+    display: inline-block;
+    height: 30px !important;
+}
+.dnnButtonIcon {
+    width: 32px;
+}
+.dnnButtonArrow {
+    width: 10px;
+    background: transparent url(../../../../../images/dnnSpinnerDownArrow.png) no-repeat center;
+}
+.dnnButtonDropdown-clicked {
+    z-index: 100;
+    position: absolute;
+    width: 50px;
+    height: 30px !important;
+    background: var(--dnn-color-background, #fff);
+    border: 1px solid var(--dnn-color-foreground-light, #c9c9c9);
+    border-bottom: 1px solid var(--dnn-color-background, #fff);
+    border-top-left-radius: var(--dnn-controls-radius, 3px);
+    border-top-right-radius: var(--dnn-controls-radius, 3px);
+}
+.dnnButtonDropdown-ul {
+    display: none;
+    position: absolute;
+    z-index: 99;
+    top: 29px;
+    left: 0;
+    width: 200px;
+    margin-left: 0;
+    background: var(--dnn-color-background, #fff);
+    border: 1px solid var(--dnn-color-foreground-light, #c9c9c9);
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    list-style-type: none;
+    > li, > ul > li {
+        padding: 8px;
+        border-bottom: 1px solid var(--dnn-color-foreground-light, #c9c9c9);
+        color: var(--dnn-color-foreground, #333);
+        cursor: pointer;
+        vertical-align: middle;
+        list-style: none;
+        margin: 0;
+    }
+    > ul{ margin: 0;}
+    > ul > li{ padding-left: 16px;}
+    > li{
+        &:last-child {
+            border-bottom: none !important;
+        }
+        &:hover {
+            background-color: var(--dnn-color-background-dark, #e8f1fa);
+            color: var(--dnn-color-foreground-dark, #000);
+        }
+    }
+}

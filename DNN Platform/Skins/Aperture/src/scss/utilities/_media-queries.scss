@@ -1,0 +1,18 @@
+@use "sass:map";
+@use "../variables/type";
+
+// Shorthand for media queries at px width and lower
+@mixin mq-max-width( $width-in-px ) {
+    $var-base-font-size: #{map.get(type.$fonts, 'base-font-size')};
+    @media only screen and (max-width: calc(($width-in-px / $var-base-font-size) * 1em )) {
+      @content;
+    }
+  }
+  
+  // Shorthand for media queries at px width and higher
+  @mixin mq-min-width( $width-in-px ) {
+    $var-base-font-size: #{map.get(type.$fonts, 'base-font-size')};
+    @media only screen and (min-width: calc(($width-in-px / $var-base-font-size) * 1em )) {
+      @content;
+    }
+  }

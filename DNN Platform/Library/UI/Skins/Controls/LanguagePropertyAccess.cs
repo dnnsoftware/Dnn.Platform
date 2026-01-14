@@ -26,6 +26,7 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         public LanguageTokenReplace objParent;
@@ -35,8 +36,8 @@ namespace DotNetNuke.UI.Skins.Controls
         private readonly PortalSettings objPortal;
 
         /// <summary>Initializes a new instance of the <see cref="LanguagePropertyAccess"/> class.</summary>
-        /// <param name="parent"></param>
-        /// <param name="settings"></param>
+        /// <param name="parent">The <see cref="LanguageTokenReplace"/> for the parent language.</param>
+        /// <param name="settings">The portal settings.</param>
         public LanguagePropertyAccess(LanguageTokenReplace parent, PortalSettings settings)
         {
             this.objPortal = settings;
@@ -53,6 +54,7 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             switch (propertyName.ToLowerInvariant())
@@ -80,6 +82,17 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        private static string GetCleanUrl(string url)
+        {
+            var cleanUrl = PortalSecurity.Instance.InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
+            if (url != cleanUrl)
+            {
+                return string.Empty;
+            }
+
+            return url;
+        }
+
         /// <summary>
         /// getQSParams builds up a new querystring. This is necessary
         /// in order to prep for navigateUrl.
@@ -88,7 +101,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// (because NavigateUrl adds the portalId param to the qs).
         /// </summary>
         /// <param name="newLanguage">Language to switch into.</param>
-        /// <param name="isLocalized"></param>
+        /// <param name="isLocalized">Whether it's a localized tab.</param>
         /// <returns>A collection of query string segments, in <c>"key=value"</c> format.</returns>
         private string[] GetQsParams(string newLanguage, bool isLocalized)
         {
@@ -115,26 +128,30 @@ namespace DotNetNuke.UI.Skins.Controls
                             if (isLocalized)
                             {
                                 string moduleIdKey = arrKeys[i].ToLowerInvariant();
-                                int moduleID;
-                                int tabid;
 
-                                int.TryParse(queryStringCollection[moduleIdKey], out moduleID);
-                                int.TryParse(queryStringCollection["tabid"], out tabid);
-                                ModuleInfo localizedModule = ModuleController.Instance.GetModuleByCulture(moduleID, tabid, settings.PortalId, LocaleController.Instance.GetLocale(newLanguage));
-                                if (localizedModule != null)
+                                if (int.TryParse(queryStringCollection[moduleIdKey], out var moduleId) &&
+                                    int.TryParse(queryStringCollection["tabid"], out var tabid))
                                 {
-                                    if (!string.IsNullOrEmpty(returnValue))
+                                    var localizedModule = ModuleController.Instance.GetModuleByCulture(
+                                        moduleId,
+                                        tabid,
+                                        settings.PortalId,
+                                        LocaleController.Instance.GetLocale(newLanguage));
+                                    if (localizedModule != null)
                                     {
-                                        returnValue += "&";
-                                    }
+                                        if (!string.IsNullOrEmpty(returnValue))
+                                        {
+                                            returnValue += "&";
+                                        }
 
-                                    returnValue += moduleIdKey + "=" + localizedModule.ModuleID;
+                                        returnValue += $"{moduleIdKey}={localizedModule.ModuleID}";
+                                    }
                                 }
                             }
 
                             break;
                         default:
-                            if ((arrKeys[i].ToLowerInvariant() == "portalid") && this.objPortal.ActiveTab.IsSuperTab)
+                            if (arrKeys[i].Equals("portalid", StringComparison.OrdinalIgnoreCase) && this.objPortal.ActiveTab.IsSuperTab)
                             {
                                 // skip parameter
                                 // navigateURL adds portalid to querystring if tab is superTab
@@ -205,7 +222,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// newUrl returns the new URL based on the new language.
         /// Basically it is just a call to NavigateUrl, with stripped qs parameters.
         /// </summary>
-        /// <param name="newLanguage"></param>
+        /// <param name="newLanguage">The language for the URL.</param>
         private string NewUrl(string newLanguage)
         {
             var newLocale = LocaleController.Instance.GetLocale(newLanguage);
@@ -234,7 +251,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             break;
                         case TabType.Tab:
                             // alternate tab url
-                            fullurl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(localizedTab.Url));
+                            fullurl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(localizedTab.Url, CultureInfo.InvariantCulture));
                             break;
                         case TabType.File:
                             // file url
@@ -248,7 +265,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                     if (!string.IsNullOrEmpty(fullurl))
                     {
-                        return this.GetCleanUrl(fullurl);
+                        return GetCleanUrl(fullurl);
                     }
                 }
             }
@@ -274,18 +291,7 @@ namespace DotNetNuke.UI.Skins.Controls
             var isSuperTab = this.objPortal.ActiveTab.IsSuperTab;
             var url = $"{TestableGlobals.Instance.NavigateURL(tabId, isSuperTab, this.objPortal, controlKey, newLanguage, queryStrings)}{rawQueryString}";
 
-            return this.GetCleanUrl(url);
-        }
-
-        private string GetCleanUrl(string url)
-        {
-            var cleanUrl = PortalSecurity.Instance.InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
-            if (url != cleanUrl)
-            {
-                return string.Empty;
-            }
-
-            return url;
+            return GetCleanUrl(url);
         }
     }
 }

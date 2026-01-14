@@ -8,6 +8,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
     using System.Collections.Generic;
     using System.Configuration;
     using System.IO;
+    using System.Threading.Tasks;
 
     using DNN.Integration.Test.Framework;
     using DNN.Integration.Test.Framework.Helpers;
@@ -20,14 +21,15 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
         private readonly int PortalId = 0;
 
         [Test]
-        public void File_Url_Should_Update_After_Rename_Folder()
+        [Ignore("Digital Assets module has been replaced by Resource Manager")]
+        public async Task File_Url_Should_Update_After_Rename_Folder()
         {
             var connector = WebApiTestHelper.LoginAdministrator();
 
             var folder = this.CreateNewFolder(connector);
             var folderId = Convert.ToInt32(folder.FolderID);
             var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Files\\Test.png");
-            connector.UploadCmsFile(filePath, folder.FolderPath.ToString());
+            await connector.UploadCmsFile(filePath, folder.FolderPath.ToString());
             var fileId = this.GetFileId(folderId, "Test.png");
 
             var newFolderName = Guid.NewGuid().ToString();
@@ -36,7 +38,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
             var getUrlApi = "API/DigitalAssets/ContentService/GetUrl";
             var fileUrl = connector.PostJson(getUrlApi, new { fileId = fileId }, this.GetRequestHeaders()).Content.ReadAsStringAsync().Result;
 
-            Assert.That(fileUrl.Contains(newFolderName), Is.True);
+            Assert.That(fileUrl, Does.Contain(newFolderName));
         }
 
         private int GetRootFolderId()

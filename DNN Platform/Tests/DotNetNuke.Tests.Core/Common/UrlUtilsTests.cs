@@ -6,16 +6,14 @@ namespace DotNetNuke.Tests.Core.Common;
 
 using System;
 using System.Collections.Generic;
-using System.Web.Caching;
 using DotNetNuke.Abstractions;
 using DotNetNuke.Abstractions.Application;
-using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Abstractions.Settings;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities;
-using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Cryptography;
 using DotNetNuke.Tests.Utilities.Fakes;
@@ -34,11 +32,15 @@ public class UrlUtilsTests
     {
         ComponentFactory.RegisterComponent<CryptographyProvider, CoreCryptographyProvider>();
         MockComponentProvider.CreateDataCacheProvider();
+        var hostController = new FakeHostController(HostSettings);
 
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddSingleton(Mock.Of<IApplicationStatusInfo>());
         serviceCollection.AddSingleton(Mock.Of<INavigationManager>());
-        serviceCollection.AddSingleton<IHostSettingsService>(new FakeHostController(HostSettings));
+        serviceCollection.AddSingleton(Mock.Of<IPortalSettingsController>());
+        serviceCollection.AddSingleton<IHostSettingsService>(hostController);
+        serviceCollection.AddSingleton<IHostSettings>(new HostSettings(hostController));
+
         Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
     }
 
@@ -100,7 +102,7 @@ public class UrlUtilsTests
     public void EncryptParameterReplacesPaddingSymbols()
     {
         var result = UrlUtils.EncryptParameter("D", "key");
-        Assert.That(result.EndsWith("%3d"), Is.True);
+        Assert.That(result, Does.EndWith("%3d"));
     }
 
     [Test]
@@ -149,24 +151,24 @@ public class UrlUtilsTests
     public void ClosePopUpGeneratesAJavaScriptUrlWithValues()
     {
         var result = UrlUtils.ClosePopUp(false, "/hello",  false);
-        Assert.That(result, Is.EqualTo("""javascript:dnnModal.closePopUp(false, "/hello")"""));
+        Assert.That(result, Is.EqualTo("javascript:dnnModal.closePopUp(false, '/hello')"));
 
         result = UrlUtils.ClosePopUp(true, "blah", false);
-        Assert.That(result, Is.EqualTo("""javascript:dnnModal.closePopUp(true, "blah")"""));
+        Assert.That(result, Is.EqualTo("javascript:dnnModal.closePopUp(true, 'blah')"));
     }
 
     [Test]
     public void ClosePopUpGeneratesAScriptWhenOnClickEventIsTrue()
     {
         var result = UrlUtils.ClosePopUp(false, "/somewhere",  true);
-        Assert.That(result, Is.EqualTo("""dnnModal.closePopUp(false, "/somewhere")"""));
+        Assert.That(result, Is.EqualTo("dnnModal.closePopUp(false, '/somewhere')"));
     }
 
     [Test]
     public void ClosePopUpEncodesUrlParameter()
     {
         var result = UrlUtils.ClosePopUp(false, "/somewhere?value=%20hi&two='hey'",  true);
-        Assert.That(result, Is.EqualTo("""dnnModal.closePopUp(false, "/somewhere?value=%20hi\u0026two=\u0027hey\u0027")"""));
+        Assert.That(result, Is.EqualTo("""dnnModal.closePopUp(false, '/somewhere?value=%20hi\u0026two=\u0027hey\u0027')"""));
     }
 
     [Test]
@@ -254,8 +256,6 @@ public class UrlUtilsTests
     [Test]
     public void ValidateReturnUrlDoesNotAcceptAbsoluteUrlWithoutMatchingDomain()
     {
-        ComponentFactory.RegisterComponentInstance<IPortalSettingsController>("PortalSettingsController", Mock.Of<IPortalSettingsController>());
-
         var portalAlias = new PortalAliasInfo { HTTPAlias = "dnncommunity.org", };
         var portalSettings = new PortalSettings(-1, portal: null) { PortalAlias = portalAlias, };
         var portalControllerMock = new Mock<IPortalController>();
@@ -269,8 +269,6 @@ public class UrlUtilsTests
     [Test]
     public void ValidateReturnUrlDoesAcceptAbsoluteUrlWithMatchingDomain()
     {
-        ComponentFactory.RegisterComponentInstance<IPortalSettingsController>("PortalSettingsController", Mock.Of<IPortalSettingsController>());
-
         var portalAlias = new PortalAliasInfo { HTTPAlias = "dnncommunity.org", };
         var portalSettings = new PortalSettings(-1, portal: null) { PortalAlias = portalAlias, };
         var portalControllerMock = new Mock<IPortalController>();
@@ -284,8 +282,6 @@ public class UrlUtilsTests
     [Test]
     public void ValidateReturnUrlDoesNotAcceptAbsoluteUrlWithoutProtocolWhenDomainDoesNotMatch()
     {
-        ComponentFactory.RegisterComponentInstance<IPortalSettingsController>("PortalSettingsController", Mock.Of<IPortalSettingsController>());
-
         var portalAlias = new PortalAliasInfo { HTTPAlias = "dnncommunity.org", };
         var portalSettings = new PortalSettings(-1, portal: null) { PortalAlias = portalAlias, };
         var portalControllerMock = new Mock<IPortalController>();
@@ -299,8 +295,6 @@ public class UrlUtilsTests
     [Test]
     public void ValidateReturnUrlAcceptsAbsoluteUrlWithoutProtocolWhenDomainDoesMatches()
     {
-        ComponentFactory.RegisterComponentInstance<IPortalSettingsController>("PortalSettingsController", Mock.Of<IPortalSettingsController>());
-
         var portalAlias = new PortalAliasInfo { HTTPAlias = "dnncommunity.org", };
         var portalSettings = new PortalSettings(-1, portal: null) { PortalAlias = portalAlias, };
         var portalControllerMock = new Mock<IPortalController>();

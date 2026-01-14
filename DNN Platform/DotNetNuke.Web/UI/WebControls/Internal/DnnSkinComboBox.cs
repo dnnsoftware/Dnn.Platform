@@ -15,9 +15,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using DotNetNuke.Entities.Users;
     using DotNetNuke.UI.Skins;
 
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
+    /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     [ToolboxData("<{0}:DnnSkinComboBox runat='server'></{0}:DnnSkinComboBox>")]
     public class DnnSkinComboBox : DnnComboBox
     {
@@ -27,14 +25,19 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.PortalId = Null.NullInteger;
         }
 
+        /// <summary>Gets or sets the portal ID.</summary>
         public int PortalId { get; set; }
 
+        /// <summary>Gets or sets the root path.</summary>
         public string RootPath { get; set; }
 
+        /// <summary>Gets or sets the skin scope.</summary>
         public SkinScope Scope { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether to include a "None Specified" item.</summary>
         public bool IncludeNoneSpecificItem { get; set; }
 
+        /// <summary>Gets or sets the text of the "None Specified" item.</summary>
         public string NoneSpecificText { get; set; }
 
         private PortalInfo Portal

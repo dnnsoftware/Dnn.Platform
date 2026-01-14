@@ -8,10 +8,8 @@ import {
     task as TaskActions
 } from "../../../actions";
 import util from "../../../utils";
-
-/*eslint-disable quotes*/
-const svgIcon = require(`!raw-loader!./../../svg/checkmark.svg`).default;
-const svgIcon2 = require(`!raw-loader!./../../svg/history.svg`).default;
+import CheckmarkIcon from "./../../svg/checkmark.svg";
+import HistoryIcon from "./../../svg/history.svg";
 
 class SchedulerRow extends Component {
     constructor() {
@@ -61,18 +59,18 @@ class SchedulerRow extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     getEnabledDisplay() {
         if (this.props.id !== "add") {
             if (this.props.enabled) {
-                return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: svgIcon }}></div>;
+                return <div className="checkMarkIcon"><CheckmarkIcon /></div>;
             }
             else return <span>&nbsp; </span>;
         }
         else return <span>-</span>;
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props } = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
@@ -93,12 +91,14 @@ class SchedulerRow extends Component {
                             {this.getEnabledDisplay()}</div>
                         {props.id !== "add" &&
                             <div className="schedule-item item-row-historyButton">
-                                <div className={opened && props.panelIndex === 1 ? "history-icon-active" : "history-icon"} title={resx.get("ControlTitle_history")} dangerouslySetInnerHTML={{ __html: svgIcon2 }} onClick={this.toggle.bind(this, 1)}>
+                                <div className={opened && props.panelIndex === 1 ? "history-icon-active" : "history-icon"} title={resx.get("ControlTitle_history")} onClick={this.toggle.bind(this, 1)}>
+                                    <HistoryIcon />
                                 </div>
                             </div>
                         }
                         <div className="schedule-item item-row-editButton">
-                            <div className={opened && props.panelIndex === 0 ? "edit-icon-active" : "edit-icon"} title={resx.get("ControlTitle_edit")} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this, 0)}>
+                            <div className={opened && props.panelIndex === 0 ? "edit-icon-active" : "edit-icon"} title={resx.get("ControlTitle_edit")} onClick={this.toggle.bind(this, 0)}>
+                                <SvgIcons.EditIcon />
                             </div>
                         </div>
                     </div>

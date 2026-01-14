@@ -4,6 +4,7 @@
 namespace DotNetNuke.Abstractions.Portals
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>Portal Alias APIs for managing the different Portal Alias.</summary>
     public interface IPortalAliasService
@@ -22,8 +23,8 @@ namespace DotNetNuke.Abstractions.Portals
 
         /// <summary>Validates the alias.</summary>
         /// <param name="portalAlias">The portal alias.</param>
-        /// <param name="ischild">if set to <c>true</c>, validate the alias as a child alias (i.e. as a subdirectory of another alias).</param>
-        /// <returns><c>true</c> if the alias is a valid url format; otherwise return <c>false</c>.</returns>
+        /// <param name="ischild">if set to <see langword="true"/>, validate the alias as a child alias (i.e. as a subdirectory of another alias).</param>
+        /// <returns><see langword="true"/> if the alias is a valid url format; otherwise return <see langword="false"/>.</returns>
         bool ValidateAlias(string portalAlias, bool ischild);
 
         /// <summary>Adds a new Portal Alias.</summary>
@@ -38,12 +39,14 @@ namespace DotNetNuke.Abstractions.Portals
         /// <summary>Get a portal alias by name.</summary>
         /// <param name="alias">The name of the portal alias.</param>
         /// <returns>The portal alias.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         IPortalAliasInfo GetPortalAlias(string alias);
 
         /// <summary>Gets the portal alias.</summary>
         /// <param name="alias">The portal alias.</param>
         /// <param name="portalId">The portal ID.</param>
         /// <returns>Portal Alias Info.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         IPortalAliasInfo GetPortalAlias(string alias, int portalId);
 
         /// <summary>Gets the portal alias by portal alias ID.</summary>

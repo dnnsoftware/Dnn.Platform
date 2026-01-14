@@ -83,9 +83,9 @@ class IgnoreWordsEditor extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
-        /* eslint-disable react/no-danger */
+         
         if (this.state.words !== undefined || this.props.id === "add") {  
             return (
                 <div className="words-editor">
@@ -100,7 +100,7 @@ class IgnoreWordsEditor extends Component {
                     </InputGroup>
                     <div className="editor-buttons-box">
                         <Button
-                            type="secondary"
+                            type="neutral"
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>                        

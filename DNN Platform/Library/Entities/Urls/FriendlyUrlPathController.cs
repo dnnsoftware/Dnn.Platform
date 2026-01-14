@@ -15,14 +15,14 @@ namespace DotNetNuke.Entities.Urls
     internal class FriendlyUrlPathController
     {
         /// <summary>This method checks the list of rules for parameter replacement and modifies the parameter path accordingly.</summary>
-        /// <param name="parameterPath"></param>
-        /// <param name="tab"></param>
-        /// <param name="settings"></param>
-        /// <param name="portalId"></param>
-        /// <param name="replacedPath"></param>
-        /// <param name="messages"></param>
-        /// <param name="changeToSiteRoot"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="parameterPath">The path to replace.</param>
+        /// <param name="tab">The tab info.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="replacedPath">The updated path.</param>
+        /// <param name="messages">A list to which debugging messages will be added.</param>
+        /// <param name="changeToSiteRoot">Whether the path was changed to the site root.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns><see langword="true"/> if a replacement was made, otherwise <see langword="false"/>.</returns>
         internal static bool CheckParameterRegexReplacement(
             string parameterPath,
@@ -48,24 +48,22 @@ namespace DotNetNuke.Entities.Urls
                 List<ParameterReplaceAction> parmReplaces = null;
                 int tabId = tab.TabID;
 
-                if (replaceActions.ContainsKey(tabId))
+                if (replaceActions.TryGetValue(tabId, out var parameterReplaceActions))
                 {
                     // find the right set of replaced actions for this tab
-                    parmReplaces = replaceActions[tabId];
+                    parmReplaces = parameterReplaceActions;
                 }
 
                 // check for 'all tabs' replace action
-                if (replaceActions.ContainsKey(-1))
+                if (replaceActions.TryGetValue(-1, out var allReplaces))
                 {
                     // -1 means 'all tabs' - replacing across all tabs
                     // initialise to empty collection if there are no specific tab replaces
                     if (parmReplaces == null)
                     {
-                        parmReplaces = new List<ParameterReplaceAction>();
+                        parmReplaces = [];
                     }
 
-                    // add in the all replaces
-                    List<ParameterReplaceAction> allReplaces = replaceActions[-1];
                     parmReplaces.AddRange(allReplaces); // add the 'all' range to the tab range
                 }
 
@@ -173,7 +171,7 @@ namespace DotNetNuke.Entities.Urls
                     if (user != null && !string.IsNullOrEmpty(user.VanityUrl))
                     {
                         doReplacement = true;
-                        urlName = (!string.IsNullOrEmpty(settings.VanityUrlPrefix)) ? string.Format("{0}/{1}", settings.VanityUrlPrefix, user.VanityUrl) : user.VanityUrl;
+                        urlName = (!string.IsNullOrEmpty(settings.VanityUrlPrefix)) ? $"{settings.VanityUrlPrefix}/{user.VanityUrl}" : user.VanityUrl;
                         urlWasChanged = true;
                     }
 
@@ -184,7 +182,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             // replacing for the parent tab id
                             string childTabPath = TabIndexController.GetTabPath(tab, options, parentTraceId);
-                            if (string.IsNullOrEmpty(childTabPath) == false)
+                            if (!string.IsNullOrEmpty(childTabPath))
                             {
                                 // remove the parent tab path from the child tab path
                                 TabInfo profilePage = TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false);
@@ -205,7 +203,7 @@ namespace DotNetNuke.Entities.Urls
                         // append any extra remaining path value to the end
                         if (!string.IsNullOrEmpty(remainingPath))
                         {
-                            if (remainingPath.StartsWith("/") == false)
+                            if (!remainingPath.StartsWith("/", StringComparison.Ordinal))
                             {
                                 changedPath += "/" + remainingPath;
                             }
@@ -232,11 +230,11 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Splits out the userid value from the supplied Friendly Url Path.</summary>
-        /// <param name="parmName"></param>
-        /// <param name="otherParametersPath">The 'other' parameters which form the total UserProfile Url (if supplied).</param>
-        /// <param name="rawUserId"></param>
-        /// <param name="remainingPath">The remaining path not associated with the user id.</param>
-        /// <param name="urlPath"></param>
+        /// <param name="urlPath">The URL path.</param>
+        /// <param name="parmName">The parameter name.</param>
+        /// <param name="otherParametersPath">The 'other' parameters which form the total UserProfile URL (if supplied).</param>
+        /// <param name="rawUserId">The user ID string or <see langword="null"/>.</param>
+        /// <param name="remainingPath">The remaining path not associated with the user ID.</param>
         private static void SplitUserIdFromFriendlyUrlPath(
             string urlPath,
             string parmName,
@@ -253,7 +251,7 @@ namespace DotNetNuke.Entities.Urls
             if (!string.IsNullOrEmpty(otherParametersPath))
             {
                 // remove the trailing slash from otherParamtersPath if it exists, because the other parameters may be anywhere in the path
-                if (otherParametersPath.EndsWith("/"))
+                if (otherParametersPath.EndsWith("/", StringComparison.Ordinal))
                 {
                     otherParametersPath = otherParametersPath.Substring(0, otherParametersPath.Length - 1);
                 }
@@ -294,17 +292,17 @@ namespace DotNetNuke.Entities.Urls
                 }
 
                 // add back the remainders
-                if (rem1ParmsGp != null && rem1ParmsGp.Success)
+                if (rem1ParmsGp is { Success: true, })
                 {
                     remainingPath = rem1ParmsGp.Value;
                 }
 
-                if (rem2ParmsGp != null && rem2ParmsGp.Success)
+                if (rem2ParmsGp is { Success: true, })
                 {
                     remainingPath += rem2ParmsGp.Value;
                 }
 
-                if (remainingPath.EndsWith("/"))
+                if (remainingPath.EndsWith("/", StringComparison.Ordinal))
                 {
                     remainingPath = remainingPath.Substring(0, remainingPath.Length - 1);
                 }
@@ -327,7 +325,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
 
-                if (remainingPath.Length > 0 && remainingPath.StartsWith("/") == false)
+                if (remainingPath.Length > 0 && !remainingPath.StartsWith("/", StringComparison.Ordinal))
                 {
                     remainingPath = "/" + remainingPath;
                 }

@@ -103,7 +103,7 @@ namespace DotNetNuke.Abstractions.Application
 
         /// <summary>Updates the specified config.</summary>
         /// <param name="config">The config.</param>
-        /// <param name="clearCache">if set to <c>true</c> will clear cache after updating the setting.</param>
+        /// <param name="clearCache">if set to <see langword="true"/> will clear cache after updating the setting.</param>
         void Update(IConfigurationSetting config, bool clearCache);
 
         /// <summary>Updates the specified settings.</summary>
@@ -118,7 +118,7 @@ namespace DotNetNuke.Abstractions.Application
         /// <summary>Updates the specified key.</summary>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
-        /// <param name="clearCache">if set to <c>true</c> will clear cache after update settings.</param>
+        /// <param name="clearCache">if set to <see langword="true"/> will clear cache after update settings.</param>
         void Update(string key, string value, bool clearCache);
 
         /// <summary>Takes in a <see cref="string"/> value, encrypts it with a FIPS compliant algorithm and stores it.</summary>

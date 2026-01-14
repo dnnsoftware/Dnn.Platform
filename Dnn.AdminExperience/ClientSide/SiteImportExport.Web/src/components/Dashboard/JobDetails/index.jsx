@@ -33,7 +33,7 @@ class JobDetails extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     getSummaryItem(category) {
         const { props, state } = this;
         if (props.jobDetail.Summary) {
@@ -44,7 +44,7 @@ class JobDetails extends Component {
                 }
                 else {
                     return <div>
-                        <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
+                        <div className="cycle-icon"><SvgIcons.CycleIcon /></div>
                         <div style={{ float: "right" }}>
                             {detail.ProcessedItemsString + " / " + detail.TotalItemsString + " (" + (detail.ProcessedItems / detail.TotalItems * 100).toFixed(1) + "%)"}
                         </div>
@@ -72,7 +72,7 @@ class JobDetails extends Component {
                         />
                         <div className="import-summary-item users">
                             <div>
-                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
+                                <div className="cycle-icon"><SvgIcons.CycleIcon /></div>
                                 <div style={{ float: "right" }}>
                                     {users.ProcessedItemsString + " / " + users.TotalItemsString + " (" + (users.ProcessedItems / users.TotalItems * 100).toFixed(1) + "%)"}
                                 </div>
@@ -99,7 +99,7 @@ class JobDetails extends Component {
                         />
                         <div className="import-summary-item users">
                             <div>
-                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
+                                <div className="cycle-icon"><SvgIcons.CycleIcon /></div>
                                 <div style={{ float: "right" }}>
                                     {usersData.ProcessedItemsString + " / " + usersData.TotalItemsString + " (" + (usersData.ProcessedItems / usersData.TotalItems * 100).toFixed(1) + "%)"}
                                 </div>
@@ -129,7 +129,7 @@ class JobDetails extends Component {
                         />
                         <div className="import-summary-item">
                             <div>
-                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
+                                <div className="cycle-icon"><SvgIcons.CycleIcon /></div>
                                 <div style={{ float: "right" }}>
                                     {users.ProcessedItemsString + " / " + users.TotalItemsString + " (" + (users.ProcessedItems / users.TotalItems * 100).toFixed(1) + "%)"}
                                 </div>
@@ -306,12 +306,12 @@ class JobDetails extends Component {
                         </div>
                         <GridCell className="action-buttons">
                             {props.jobDetail.Status < 2 && !state.cancelled &&
-                                <Button type="secondary" onClick={this.cancel.bind(this, props.jobId)}>
+                                <Button type="neutral" onClick={this.cancel.bind(this, props.jobId)}>
                                     {props.jobDetail.JobType.indexOf("Export") >= 0 ? Localization.get("CancelExport") : Localization.get("CancelImport")}
                                 </Button>
                             }
                             {(props.jobDetail.Status > 1 || state.cancelled) &&
-                                <Button type="secondary" onClick={this.delete.bind(this, props.jobId)}>{Localization.get("Delete")}</Button>
+                                <Button type="danger" onClick={this.delete.bind(this, props.jobId)}>{Localization.get("Delete")}</Button>
                             }
                         </GridCell>
                     </GridCell>
@@ -320,7 +320,7 @@ class JobDetails extends Component {
         </div>;
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props } = this;
         if (props.jobDetail !== undefined) {

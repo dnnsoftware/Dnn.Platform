@@ -178,7 +178,9 @@
                 $modal.dialog({
                     modal: true,
                     autoOpen: true,
-                    dialogClass: "dnnFormPopup",
+                    classes: {
+                        'ui-dialog': 'dnnFormPopup',
+                    },
                     position: { my: "center", at: "center" },
                     minWidth: width,
                     minHeight: height,
@@ -263,7 +265,9 @@
                 $modal.dialog({
                     modal: true,
                     autoOpen: true,
-                    dialogClass: "dnnFormPopup dnnFormPopupMobileView",
+                    classes: {
+                        'ui-dialog': 'dnnFormPopup dnnFormPopupMobileView'
+                    },
                     resizable: false,
                     closeOnEscape: true,
                     refresh: refresh,

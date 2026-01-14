@@ -324,6 +324,12 @@
   <data name="SortField_CreatedOnDate.Text" xml:space="preserve">
     <value>Date Created</value>
   </data>
+  <data name="SortOrder_Ascending.Text" xml:space="preserve">
+    <value>Ascending</value>
+  </data>
+  <data name="SortOrder_Descending.Text" xml:space="preserve">
+    <value>Descending</value>
+  </data>
   <data name="Sort.Text" xml:space="preserve">
     <value>Sort</value>
   </data>

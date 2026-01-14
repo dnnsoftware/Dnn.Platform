@@ -24,7 +24,6 @@ namespace Dnn.PersonaBar.Servers.Services
         private readonly LogController logController = new LogController();
 
         [HttpGet]
-
         public HttpResponseMessage GetLogs()
         {
             try
@@ -49,7 +48,6 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetLogFile(string fileName)
         {
             try
@@ -70,7 +68,6 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetUpgradeLogFile(string logName)
         {
             try
@@ -92,7 +89,6 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [NonAction]
-
         private static void ValidateFilePath(string physicalPath)
         {
             var fileInfo = new FileInfo(physicalPath);
@@ -103,7 +99,6 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [NonAction]
-
         private HttpResponseMessage CreateLogFileResponse(string logFilePath)
         {
             ValidateFilePath(logFilePath);

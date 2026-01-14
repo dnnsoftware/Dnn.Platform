@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Analytics
 {
     using System;
+    using System.Globalization;
 
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -98,13 +99,21 @@ namespace DotNetNuke.Services.Analytics
                     {
                         case "anonymizeip":
                             {
-                                bool.TryParse(setting.SettingValue, out anonymize);
+                                if (!bool.TryParse(setting.SettingValue, out anonymize))
+                                {
+                                    anonymize = false;
+                                }
+
                                 break;
                             }
 
                         case "trackinguser":
                             {
-                                bool.TryParse(setting.SettingValue, out trackingUserId);
+                                if (!bool.TryParse(setting.SettingValue, out trackingUserId))
+                                {
+                                    trackingUserId = false;
+                                }
+
                                 break;
                             }
                     }
@@ -119,7 +128,7 @@ namespace DotNetNuke.Services.Analytics
 
                 if (trackingUserId)
                 {
-                    customScripts.AppendFormat("ga('set', 'userId', {0});", UserController.Instance.GetCurrentUserInfo().UserID);
+                    customScripts.AppendFormat(CultureInfo.InvariantCulture, "ga('set', 'userId', {0});", UserController.Instance.GetCurrentUserInfo().UserID);
                 }
 
                 return customScripts.ToString();

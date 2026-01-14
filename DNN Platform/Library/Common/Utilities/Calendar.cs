@@ -5,6 +5,7 @@ namespace DotNetNuke.Common.Utilities
 {
     using System.Globalization;
     using System.Text;
+    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -26,7 +27,7 @@ namespace DotNetNuke.Common.Utilities
             var monthBuilder = new StringBuilder();
             foreach (string month in DateTimeFormatInfo.CurrentInfo.MonthNames)
             {
-                monthBuilder.AppendFormat("{0},", month);
+                monthBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0},", month);
             }
 
             var monthNameString = monthBuilder.ToString().TrimEnd(trimChars);
@@ -36,7 +37,7 @@ namespace DotNetNuke.Common.Utilities
             var dayBuilder = new StringBuilder();
             foreach (string day in DateTimeFormatInfo.CurrentInfo.AbbreviatedDayNames)
             {
-                dayBuilder.AppendFormat("{0},", day);
+                dayBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0},", day);
             }
 
             var dayNameString = dayBuilder.ToString().TrimEnd(trimChars);
@@ -52,7 +53,17 @@ namespace DotNetNuke.Common.Utilities
             string strClose = ClientAPI.GetSafeJSString(Localization.GetString("Close"));
             string strCalendar = ClientAPI.GetSafeJSString(Localization.GetString("Calendar"));
             return
-                $"javascript:popupCal('Cal','{field.ClientID}','{formatString}','{monthNameString}','{dayNameString}','{strToday}','{strClose}','{strCalendar}',{(int)DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek});";
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    "javascript:popupCal('Cal','{0}','{1}','{2}','{3}','{4}','{5}','{6}',{7});",
+                    HttpUtility.JavaScriptStringEncode(field.ClientID),
+                    HttpUtility.JavaScriptStringEncode(formatString),
+                    HttpUtility.JavaScriptStringEncode(monthNameString),
+                    HttpUtility.JavaScriptStringEncode(dayNameString),
+                    HttpUtility.JavaScriptStringEncode(strToday),
+                    HttpUtility.JavaScriptStringEncode(strClose),
+                    HttpUtility.JavaScriptStringEncode(strCalendar),
+                    (int)DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek);
         }
     }
 }

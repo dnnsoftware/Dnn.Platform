@@ -162,6 +162,9 @@ Sie wenden Aktualisierungen zuerst auf eine Kopie Ihrer Website (und Datenbank) 
   <data name="NoInstallationLog.Text" xml:space="preserve">
     <value>es gibt kein Aktualisierungsprotokoll.</value>
   </data>
+  <data name="LoadingInstallationLog.Text" xml:space="preserve">
+    <value>Installationsprotokolle werden geladen, bitte warten...</value>
+  </data>
   <data name="Password.Help" xml:space="preserve">
     <value>Geben Sie das Kennword des Systemverwalters ein.</value>
   </data>
@@ -173,6 +176,9 @@ Sie wenden Aktualisierungen zuerst auf eine Kopie Ihrer Website (und Datenbank) 
   </data>
   <data name="SeeLogs.Text" xml:space="preserve">
     <value>Protokoll anzeigen</value>
+  </data>
+  <data name="NoErrorsLogged.Text" xml:space="preserve">
+    <value>Es wurden keine Upgrade-Fehler protokolliert</value>
   </data>
   <data name="TimerMinutes.Text" xml:space="preserve">
     <value>Minuten</value>

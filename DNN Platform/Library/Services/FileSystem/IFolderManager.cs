@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -213,13 +213,5 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="folder">The folder to update.</param>
         /// <returns>The updated folder.</returns>
         IFolderInfo UpdateFolder(IFolderInfo folder);
-
-        /// <summary>Moves the specified folder and its contents to a new location.</summary>
-        /// <param name="folder">The folder to move.</param>
-        /// <param name="newFolderPath">The new folder path.</param>
-        /// <returns>The moved folder.</returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.1.0. It has been replaced by FolderManager.Instance.MoveFolder(IFolderInfo folder, IFolderInfo destinationFolder). Scheduled for removal in v10.0.0.")]
-        IFolderInfo MoveFolder(IFolderInfo folder, string newFolderPath);
     }
 }

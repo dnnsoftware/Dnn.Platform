@@ -139,12 +139,12 @@ namespace DNNConnect.CKEditorProvider.Browser
                     throw new SecurityException("You don't have write permission to save files under this folder.");
                 }
 
-                using (var stream = new MemoryStream())
-                {
-                    var fileName = GenerateName(file, sNewFileName);
-                    imageP.Save(stream, img.RawFormat);
-                    FileManager.Instance.AddFile(sourceFolder, fileName, stream);
-                }
+                using var stream = new MemoryStream();
+                var fileName = GenerateName(file, sNewFileName);
+                imageP.Save(stream, img.RawFormat);
+
+                const bool alreadyCheckedPermissions = true;
+                FileManager.Instance.AddFile(sourceFolder, fileName, stream, false, !alreadyCheckedPermissions, FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)));
             }
             else
             {
@@ -255,7 +255,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
         private static string CleanName(string name)
         {
-            name = name.Replace("\\", "/");
+            name = name.Replace(@"\", "/");
             if (name.Contains("/"))
             {
                 name = name.Substring(name.LastIndexOf('/') + 1);

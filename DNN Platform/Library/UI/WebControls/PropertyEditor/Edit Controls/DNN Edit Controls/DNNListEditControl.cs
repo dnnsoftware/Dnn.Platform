@@ -6,6 +6,8 @@ namespace DotNetNuke.UI.WebControls
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Web;
     using System.Web.UI;
@@ -16,13 +18,7 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DNNListEditControl
-    /// <summary>
-    /// The DNNListEditControl control provides a standard UI component for selecting
-    /// from Lists.
-    /// </summary>
+    /// <summary>The DNNListEditControl control provides a standard UI component for selecting from Lists.</summary>
     [ToolboxData("<{0}:DNNListEditControl runat=server></{0}:DNNListEditControl>")]
     public class DNNListEditControl : EditControl, IPostBackEventHandler
     {
@@ -55,7 +51,7 @@ namespace DotNetNuke.UI.WebControls
 
                 try
                 {
-                    intValue = Convert.ToInt32(this.Value);
+                    intValue = Convert.ToInt32(this.Value, CultureInfo.InvariantCulture);
                 }
                 catch (Exception exc)
                 {
@@ -66,19 +62,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Gets list gets the List associated with the control.</summary>
-        [Obsolete("Deprecated in DotNetNuke 6.0.1. Use ListEntries instead. Scheduled for removal in v10.0.0.")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected ListEntryInfoCollection List
-        {
-            get
-            {
-                var listController = new ListController();
-                return listController.GetListEntryInfoCollection(this.ListName, this.ParentKey, this.PortalId);
-            }
-        }
-
-        /// <summary>Gets the ListEntryInfo objects associated witht the control.</summary>
+        /// <summary>Gets the ListEntryInfo objects associated with the control.</summary>
         protected IEnumerable<ListEntryInfo> ListEntries
         {
             get
@@ -115,7 +99,7 @@ namespace DotNetNuke.UI.WebControls
                 try
                 {
                     // Try and cast the value to an Integer
-                    intValue = Convert.ToInt32(this.OldValue);
+                    intValue = Convert.ToInt32(this.OldValue, CultureInfo.InvariantCulture);
                 }
                 catch (Exception exc)
                 {
@@ -126,25 +110,14 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        protected int PortalId
-        {
-            get
-            {
-                return PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected int PortalId => PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
 
         /// <summary>Gets oldStringValue returns the Boolean representation of the OldValue.</summary>
         /// <value>A String representing the OldValue.</value>
-        protected string OldStringValue
-        {
-            get
-            {
-                return Convert.ToString(this.OldValue);
-            }
-        }
+        protected string OldStringValue => Convert.ToString(this.OldValue, CultureInfo.InvariantCulture);
 
-        /// <summary>Gets or sets a value indicating whether determines whether the List Auto Posts Back.</summary>
+        /// <summary>Gets or sets a value indicating whether the List Auto Posts Back.</summary>
         protected bool AutoPostBack { get; set; }
 
         /// <summary>Gets or sets a value indicating whether if true the list will be sorted on the value of Text before rendering.</summary>
@@ -184,7 +157,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return Convert.ToString(this.Value);
+                return Convert.ToString(this.Value, CultureInfo.InvariantCulture);
             }
 
             set
@@ -192,7 +165,7 @@ namespace DotNetNuke.UI.WebControls
                 if (this.ValueField == ListBoundField.Id)
                 {
                     // Integer type field
-                    this.Value = int.Parse(value);
+                    this.Value = int.Parse(value, CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -232,16 +205,15 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event.
-        /// </summary>
+        /// <summary>OnDataChanged runs when the PostbackData has changed.  It raises the <see cref="EditControl.ValueChanged"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnDataChanged(EventArgs e)
         {
             this.OnValueChanged(this.GetEventArgs());
         }
 
-        /// <summary>OnItemChanged runs when the Item has changed.</summary>
+        /// <summary>OnItemChanged runs when the Item has changed. It raises the <see cref="ItemChanged"/> event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnItemChanged(PropertyEditorEventArgs e)
         {
             if (this.ItemChanged != null)
@@ -260,7 +232,7 @@ namespace DotNetNuke.UI.WebControls
             switch (this.ValueField)
             {
                 case ListBoundField.Id:
-                    entry = objListController.GetListEntryInfo(this.ListName, Convert.ToInt32(this.Value));
+                    entry = objListController.GetListEntryInfo(this.ListName, Convert.ToInt32(this.Value, CultureInfo.InvariantCulture));
                     break;
                 case ListBoundField.Text:
                     entryText = this.StringValue;
@@ -277,7 +249,7 @@ namespace DotNetNuke.UI.WebControls
                 switch (this.TextField)
                 {
                     case ListBoundField.Id:
-                        writer.Write(entry.EntryID.ToString());
+                        writer.Write(entry.EntryID.ToString(CultureInfo.InvariantCulture));
                         break;
                     case ListBoundField.Text:
                         writer.Write(entry.Text);
@@ -344,7 +316,7 @@ namespace DotNetNuke.UI.WebControls
                 switch (this.ValueField)
                 {
                     case ListBoundField.Id:
-                        itemValue = item.EntryID.ToString();
+                        itemValue = item.EntryID.ToString(CultureInfo.InvariantCulture);
                         break;
                     case ListBoundField.Text:
                         itemValue = item.Text;
@@ -366,7 +338,7 @@ namespace DotNetNuke.UI.WebControls
                 switch (this.TextField)
                 {
                     case ListBoundField.Id:
-                        writer.Write(item.EntryID.ToString());
+                        writer.Write(item.EntryID.ToString(CultureInfo.InvariantCulture));
                         break;
                     case ListBoundField.Text:
                         writer.Write(item.Text);

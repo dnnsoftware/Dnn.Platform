@@ -37,7 +37,7 @@ namespace DotNetNuke.Security
         }
 
         /// <summary>Initializes a new instance of the <see cref="RegistrationSettings"/> class.</summary>
-        /// <param name="settings"></param>
+        /// <param name="settings">The settings dictionary.</param>
         public RegistrationSettings(Dictionary<string, string> settings)
             : this()
         {

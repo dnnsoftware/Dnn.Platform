@@ -4,6 +4,7 @@
 namespace DotNetNuke.Entities.Portals
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Web;
@@ -32,15 +33,15 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
         public PortalSettings(int portalId)
             : this(Null.NullInteger, portalId)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
-        /// <param name="tabId"></param>
-        /// <param name="portalId"></param>
+        /// <param name="tabId">The active tab ID.</param>
+        /// <param name="portalId">The portal ID.</param>
         public PortalSettings(int tabId, int portalId)
         {
             this.PortalId = portalId;
@@ -68,24 +69,28 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
-        /// <param name="portal"></param>
+        /// <param name="portal">The portal info.</param>
         public PortalSettings(PortalInfo portal)
             : this(Null.NullInteger, portal)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
-        /// <param name="tabId"></param>
-        /// <param name="portal"></param>
+        /// <param name="tabId">The active tab ID.</param>
+        /// <param name="portal">The portal info.</param>
         public PortalSettings(int tabId, PortalInfo portal)
         {
-            this.PortalId = portal != null ? portal.PortalID : Null.NullInteger;
+            this.PortalId = portal?.PortalID ?? Null.NullInteger;
             this.BuildPortalSettings(tabId, portal);
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public enum ControlPanelPermission
         {
+            /// <summary>A page editor.</summary>
             TabEditor = 0,
+
+            /// <summary>A module editor.</summary>
             ModuleEditor = 1,
         }
 
@@ -104,43 +109,43 @@ namespace DotNetNuke.Entities.Portals
 
         public enum PortalAliasMapping
         {
+            /// <summary>No mapping.</summary>
             None = 0,
+
+            /// <summary>Add a <c>rel="canonical"</c> link for the primary alias.</summary>
             CanonicalUrl = 1,
+
+            /// <summary>Redirect to the primary alias.</summary>
             Redirect = 2,
         }
 
         public enum UserDeleteAction
         {
+            /// <summary>Soft delete without an option to hard delete.</summary>
             Off = 0,
+
+            /// <summary>Soft delete with the option to manually hard delete.</summary>
             Manual = 1,
+
+            /// <summary>Hard delete after a delay.</summary>
             DelayedHardDelete = 2,
+
+            /// <summary>Always hard delete.</summary>
             HardDelete = 3,
         }
 
-        public static PortalSettings Current
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
+        public static PortalSettings Current => PortalController.Instance.GetCurrentPortalSettings();
 
         /// <inheritdoc/>
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
-            }
-        }
+        public CacheLevel Cacheability => CacheLevel.fullyCacheable;
 
         /// <inheritdoc/>
         public bool ControlPanelVisible
         {
             get
             {
-                var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + this.PortalId));
-                return string.IsNullOrEmpty(setting) ? this.DefaultControlPanelVisibility : Convert.ToBoolean(setting);
+                var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + this.PortalId), CultureInfo.InvariantCulture);
+                return string.IsNullOrEmpty(setting) ? this.DefaultControlPanelVisibility : Convert.ToBoolean(setting, CultureInfo.InvariantCulture);
             }
         }
 
@@ -149,22 +154,16 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId).Where(alias => alias.IsPrimary))
+                foreach (IPortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId).Where(alias => alias.IsPrimary))
                 {
-                    return alias.HTTPAlias;
+                    return alias.HttpAlias;
                 }
 
                 return string.Empty;
             }
         }
 
-        public PortalAliasMapping PortalAliasMappingMode
-        {
-            get
-            {
-                return PortalSettingsController.Instance().GetPortalAliasMappingMode(this.PortalId);
-            }
-        }
+        public PortalAliasMapping PortalAliasMappingMode => PortalSettingsController.Instance().GetPortalAliasMappingMode(this.PortalId);
 
         /// <inheritdoc />
         public int UserId
@@ -182,32 +181,18 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Gets the currently logged in user.</summary>
         /// <value>The current user information.</value>
-        public UserInfo UserInfo
-        {
-            get
-            {
-                return UserController.Instance.GetCurrentUserInfo();
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public UserInfo UserInfo => UserController.Instance.GetCurrentUserInfo();
 
         /// <summary>Gets the mode the user is viewing the page in.</summary>
         [Obsolete("Deprecated in DotNetNuke 9.8.1. Use Personalization.GetUserMode() instead. Scheduled removal in v11.0.0.")]
-        public Mode UserMode
-        {
-            get => Personalization.GetUserMode();
-        }
+        public Mode UserMode => Personalization.GetUserMode();
 
         /// <inheritdoc />
-        public bool IsLocked
-        {
-            get { return this.IsThisPortalLocked || Host.Host.IsLocked; }
-        }
+        public bool IsLocked => this.IsThisPortalLocked || Host.Host.IsLocked;
 
         /// <inheritdoc />
-        public bool IsThisPortalLocked
-        {
-            get { return PortalController.GetPortalSettingAsBoolean("IsLocked", this.PortalId, false); }
-        }
+        public bool IsThisPortalLocked => PortalController.GetPortalSettingAsBoolean("IsLocked", this.PortalId, false);
 
         /// <inheritdoc/>
         public string PageHeadText
@@ -327,6 +312,7 @@ namespace DotNetNuke.Entities.Portals
         public string FooterText { get; set; }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
         public Guid GUID { get; set; }
 
         /// <inheritdoc/>
@@ -382,9 +368,6 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc/>
         public int SearchTabId { get; set; }
-
-        [Obsolete("Deprecated in DotNetNuke 8.0.0. No replacement. Scheduled removal in v10.0.0.")]
-        public int SiteLogHistory { get; set; }
 
         /// <inheritdoc/>
         public int SplashTabId { get; set; }
@@ -459,16 +442,14 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public bool EnableCompositeFiles { get; internal set; }
 
-        /// <summary>Gets a value indicating whether gets whether to use the module effect in edit mode.</summary>
-        /// <remarks>Defaults to True.</remarks>
-        [Obsolete("Deprecated in DotNetNuke 7.4.0. No replacement. Scheduled removal in v10.0.0.")]
-        public bool EnableModuleEffect { get; internal set; }
-
         /// <inheritdoc />
         public bool EnablePopUps { get; internal set; }
 
         /// <inheritdoc />
         public bool EnableRegisterNotification { get; internal set; }
+
+        /// <summary>Gets a value indicating whether to send an admin notification when an unapproved user resets their password.</summary>
+        public bool EnableUnapprovedPasswordReminderNotification { get; internal set; }
 
         /// <inheritdoc />
         [Obsolete("Deprecated in DotNetNuke 9.8.1. This setting is no longer relevant as skin widgets are no longer supported. Scheduled removal in v11.0.0.")]
@@ -503,6 +484,12 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc />
         public bool InlineEditorEnabled { get; internal set; }
+
+        /// <summary>Gets a value indicating whether JavaScript is allowed in module headers.</summary>
+        public bool AllowJsInModuleHeaders { get; internal set; }
+
+        /// <summary>Gets a value indicating whether JavaScript is allowed in module footer.</summary>
+        public bool AllowJsInModuleFooters { get; internal set; }
 
         /// <inheritdoc />
         public bool SearchIncludeCommon { get; internal set; }
@@ -643,7 +630,7 @@ namespace DotNetNuke.Entities.Portals
                     break;
                 case "footertext":
                     propertyNotFound = false;
-                    var footerText = this.FooterText.Replace("[year]", DateTime.Now.Year.ToString());
+                    var footerText = this.FooterText.Replace("[year]", DateTime.Now.Year.ToString(formatProvider));
                     result = PropertyAccess.FormatString(footerText, format);
                     break;
                 case "expirydate":
@@ -810,7 +797,7 @@ namespace DotNetNuke.Entities.Portals
 
             PortalSettingsController.Instance().LoadPortal(portal, this);
 
-            var key = string.Join(":", "ActiveTab", portal.PortalID.ToString(), tabId.ToString());
+            var key = string.Join(":", "ActiveTab", portal.PortalID.ToString(CultureInfo.InvariantCulture), tabId.ToString(CultureInfo.InvariantCulture));
             var items = HttpContext.Current != null ? HttpContext.Current.Items : null;
             if (items != null && items.Contains(key))
             {

@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Library.Model
                 if (this.allItems == null)
                 {
                     this.allItems = new List<MenuItem>();
-                    this.FillAllItems(this.allItems, this.MenuItems);
+                    FillAllItems(this.allItems, this.MenuItems);
                 }
 
                 return this.allItems;
@@ -32,12 +32,12 @@ namespace Dnn.PersonaBar.Library.Model
         [DataMember]
         public IList<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
 
-        private void FillAllItems(IList<MenuItem> allItems, IList<MenuItem> menuItems)
+        private static void FillAllItems(IList<MenuItem> allItems, IList<MenuItem> menuItems)
         {
             foreach (var menu in menuItems)
             {
                 allItems.Add(menu);
-                this.FillAllItems(allItems, menu.Children);
+                FillAllItems(allItems, menu.Children);
             }
         }
     }

@@ -21,7 +21,7 @@ class LanguageVerifierRow extends Component {
         }
     }    
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
@@ -32,7 +32,7 @@ class LanguageVerifierRow extends Component {
                         <div className="verifier-item item-row-name">
                             {props.text}
                         </div>     
-                        <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowDownIcon }} onClick={this.toggle.bind(this)} />
+                        <div className="arrow-icon" onClick={this.toggle.bind(this)}><SvgIcons.ArrowDownIcon /></div>
                     </div>
                 </div>
                 <Collapsible isOpened={opened} className="collapsible-body-verifier">{opened && props.children}</Collapsible>

@@ -1,33 +1,41 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <!-- Make sure start same folder .NET Core CLI and Visual Studio -->
     <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
     <RootNamespace>DotNetNuke.Build</RootNamespace>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>Recommended</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CS0618,CA5351</WarningsNotAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Cake.BuildSystems.Module" Version="7.1.0" />
-    <PackageReference Include="Cake.FileHelpers" Version="7.0.0" />
-    <PackageReference Include="Cake.Frosting" Version="5.0.0" />
-    <PackageReference Include="Cake.Frosting.Git" Version="4.0.0" />
-    <PackageReference Include="Cake.Issues" Version="5.0.0" />
-    <PackageReference Include="Cake.Frosting.Issues.MsBuild" Version="5.0.0" />
-    <PackageReference Include="Cake.Json" Version="7.0.1" />
-    <PackageReference Include="Cake.XdtTransform" Version="2.0.0" />
-    <PackageReference Include="Dnn.CakeUtils" Version="2.0.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+    <PackageReference Include="Cake.BuildSystems.Module" />
+    <PackageReference Include="Cake.FileHelpers" />
+    <PackageReference Include="Cake.Frosting" />
+    <PackageReference Include="Cake.Frosting.Git" />
+    <PackageReference Include="Cake.Issues" />
+    <PackageReference Include="Cake.Frosting.Issues.MsBuild" />
+    <PackageReference Include="Cake.Json" />
+    <PackageReference Include="Cake.XdtTransform" />
+    <PackageReference Include="Dnn.CakeUtils" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" VersionOverride="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="10.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" VersionOverride="8.15.0" />
+    <PackageReference Include="Microsoft.Identity.Client" VersionOverride="4.81.0" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="StyleCop.Analyzers">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 </Project>

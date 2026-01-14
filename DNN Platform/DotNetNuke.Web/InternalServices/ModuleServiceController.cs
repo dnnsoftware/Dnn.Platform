@@ -15,11 +15,17 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
 
+    /// <summary>A web API controller for module information.</summary>
     [DnnAuthorize]
     public class ModuleServiceController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleServiceController));
 
+        /// <summary>Gets a value determining whether a module is shareable.</summary>
+        /// <param name="moduleId">The module ID.</param>
+        /// <param name="tabId">The tab ID.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A response with an object containing <c>Shareable</c> and <c>RequiredWarning</c> fields.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = "Registered Users")]
         public HttpResponseMessage GetModuleShareable(int moduleId, int tabId, int portalId = -1)
@@ -51,7 +57,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (desktopModule == null)
             {
-                var message = string.Format("Cannot find module ID {0} (tab ID {1}, portal ID {2})", moduleId, tabId, portalId);
+                var message = $"Cannot find module ID {moduleId} (tab ID {tabId}, portal ID {portalId})";
                 Logger.Error(message);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
             }
@@ -59,6 +65,9 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Shareable = desktopModule.Shareable.ToString(), RequiresWarning = requiresWarning });
         }
 
+        /// <summary>Moves a module.</summary>
+        /// <param name="postData">Information about the move request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnPageEditor]
@@ -86,7 +95,7 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         /// <summary>Web method that deletes a tab module.</summary>
-        /// <remarks>This has been introduced for integration testing purpuses.</remarks>
+        /// <remarks>This has been introduced for integration testing purposes.</remarks>
         /// <param name="deleteModuleDto">delete module dto.</param>
         /// <returns>Http response message.</returns>
         [HttpPost]
@@ -107,23 +116,32 @@ namespace DotNetNuke.Web.InternalServices
                 : this.PortalSettings.PortalId;
         }
 
+        /// <summary>A data transfer object with information about moving a module.</summary>
         public class MoveModuleDTO
         {
+            /// <summary>Gets or sets the module's ID.</summary>
             public int ModuleId { get; set; }
 
+            /// <summary>Gets or sets the module order.</summary>
             public int ModuleOrder { get; set; }
 
+            /// <summary>Gets or sets the pane name.</summary>
             public string Pane { get; set; }
 
+            /// <summary>Gets or sets the tab ID.</summary>
             public int TabId { get; set; }
         }
 
+        /// <summary>A data transfer object with information about a request to delete a module.</summary>
         public class DeleteModuleDto
         {
+            /// <summary>Gets or sets the module ID.</summary>
             public int ModuleId { get; set; }
 
+            /// <summary>Gets or sets the tab ID.</summary>
             public int TabId { get; set; }
 
+            /// <summary>Gets or sets a value indicating whether it is a soft or hard delete.</summary>
             public bool SoftDelete { get; set; }
         }
     }

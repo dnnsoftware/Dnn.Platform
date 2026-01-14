@@ -1,9 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace Dnn.ExportImport.Components.Controllers
 {
     using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
 
@@ -11,8 +15,10 @@ namespace Dnn.ExportImport.Components.Controllers
     using Dnn.ExportImport.Components.Dto;
     using Dnn.ExportImport.Components.Dto.Jobs;
     using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Components.Services;
     using Dnn.ExportImport.Interfaces;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
@@ -20,11 +26,15 @@ namespace Dnn.ExportImport.Components.Controllers
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Newtonsoft.Json;
 
     /// <summary>The import/export controller.</summary>
     public class BaseController
     {
+        /// <summary>The full path to the folder used for import/export.</summary>
         public static readonly string ExportFolder;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BaseController));
@@ -38,10 +48,28 @@ namespace Dnn.ExportImport.Components.Controllers
             }
         }
 
+        /// <summary>Initializes a new instance of the <see cref="BaseController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IEnumerable<BasePortableService>. Scheduled removal in v12.0.0.")]
+        public BaseController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="BaseController"/> class.</summary>
+        /// <param name="portableServices">The portable services.</param>
+        public BaseController(IEnumerable<BasePortableService> portableServices)
+        {
+            this.PortableServices = portableServices ?? Globals.GetCurrentServiceProvider().GetServices<BasePortableService>();
+        }
+
+        /// <summary>Gets the portable services.</summary>
+        protected IEnumerable<BasePortableService> PortableServices { get; }
+
         /// <summary>Cancels the job.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <param name="jobId">The job ID.</param>
         /// <returns>A value indicating whether the job was found.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool CancelJob(int portalId, int jobId)
         {
             var controller = EntitiesController.Instance;
@@ -60,6 +88,7 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="portalId">The portal ID.</param>
         /// <param name="jobId">The job ID.</param>
         /// <returns>A value indicating whether the job was found.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool RemoveJob(int portalId, int jobId)
         {
             var controller = EntitiesController.Instance;
@@ -85,6 +114,7 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="jobType">The job type.</param>
         /// <param name="keywords">Keywords.</param>
         /// <returns>An <see cref="AllJobsResult"/> instance.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public AllJobsResult GetAllJobs(int portalId, int currentPortalId, int? pageSize, int? pageIndex, int? jobType, string keywords)
         {
             if (pageIndex < 0)
@@ -132,7 +162,7 @@ namespace Dnn.ExportImport.Components.Controllers
             }
 
             var jobItem = ToJobItem(job);
-            jobItem.Summary = BuildJobSummary(jobId);
+            jobItem.Summary = BuildJobSummary(this.PortableServices, jobId);
             return jobItem;
         }
 
@@ -144,22 +174,23 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="portalId">The portal ID.</param>
         /// <param name="jobType">The job type.</param>
         /// <returns>The last job time.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public DateTime? GetLastJobTime(int portalId, JobType jobType)
         {
             return EntitiesController.Instance.GetLastJobTime(portalId, jobType);
         }
 
         /// <summary>Builds a job summary.</summary>
+        /// <param name="portableServices">The <see cref="BasePortableService"/> implementations.</param>
         /// <param name="packageId">The package ID.</param>
         /// <param name="repository">The repository.</param>
         /// <param name="summary">The summary to build.</param>
-        protected internal static void BuildJobSummary(string packageId, IExportImportRepository repository, ImportExportSummary summary)
+        protected internal static void BuildJobSummary(IEnumerable<BasePortableService> portableServices, string packageId, IExportImportRepository repository, ImportExportSummary summary)
         {
             var summaryItems = new SummaryList();
-            var implementors = Util.GetPortableImplementors();
             var exportDto = repository.GetSingleItem<ExportDto>();
 
-            foreach (var implementor in implementors)
+            foreach (var implementor in portableServices)
             {
                 implementor.Repository = repository;
                 summaryItems.Add(new SummaryItem
@@ -183,9 +214,10 @@ namespace Dnn.ExportImport.Components.Controllers
         }
 
         /// <summary>Builds a job summary.</summary>
+        /// <param name="portableServices">The portable service implementations.</param>
         /// <param name="jobId">The job ID.</param>
         /// <returns>An <see cref="ImportExportSummary"/> instance.</returns>
-        protected static ImportExportSummary BuildJobSummary(int jobId)
+        protected static ImportExportSummary BuildJobSummary(IEnumerable<BasePortableService> portableServices, int jobId)
         {
             var summaryItems = new SummaryList();
             var controller = EntitiesController.Instance;
@@ -215,15 +247,13 @@ namespace Dnn.ExportImport.Components.Controllers
                 return importExportSummary;
             }
 
-            var implementors = Util.GetPortableImplementors();
-
             summaryItems.AddRange(checkpoints.Select(checkpoint => new SummaryItem
             {
                 TotalItems = checkpoint.TotalItems,
                 ProcessedItems = checkpoint.ProcessedItems <= checkpoint.TotalItems ? checkpoint.ProcessedItems : checkpoint.TotalItems,
                 ProgressPercentage = Convert.ToInt32(checkpoint.Progress),
                 Category = checkpoint.Category,
-                Order = implementors.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0,
+                Order = portableServices.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0,
                 Completed = checkpoint.Completed,
             }));
             importExportSummary.SummaryItems = summaryItems;
@@ -255,6 +285,7 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="userId">The user ID.</param>
         /// <param name="jobId">The job ID.</param>
         /// <param name="logTypeKey">The log type key.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected void AddEventLog(int portalId, int userId, int jobId, string logTypeKey)
         {
             var objSecurity = PortalSecurity.Instance;
@@ -273,7 +304,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 LogUserID = userId,
             };
 
-            log.AddProperty("JobID", jobId.ToString());
+            log.AddProperty("JobID", jobId.ToString(CultureInfo.InvariantCulture));
             LogController.Instance.AddLog(log);
         }
 
@@ -286,7 +317,7 @@ namespace Dnn.ExportImport.Components.Controllers
             {
                 JobId = job.JobId,
                 PortalId = job.PortalId,
-                User = user?.DisplayName ?? user?.Username ?? job.CreatedByUserId.ToString(),
+                User = user?.DisplayName ?? user?.Username ?? job.CreatedByUserId.ToString(CultureInfo.InvariantCulture),
                 JobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources),
                 Status = (int)job.JobStatus,
                 Cancelled = job.IsCancelled,

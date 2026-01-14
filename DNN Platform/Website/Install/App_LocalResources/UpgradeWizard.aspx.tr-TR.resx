@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountInfo.Text" xml:space="preserve">
+    <value>Hesap Bilgileri</value>
+  </data>
+  <data name="BestPractices.Text" xml:space="preserve">
+    <value>Websitesini uygulamanın daha yeni bir sürümüne yükseltmeye hazırlanıyorsunuz. Sürekli olarak güncellemeler yapmak, yatırımınızın bütünlüğünü ve kullanıcılarınızın ve varlıklarınızın güvenliğini korumanın en iyi yoludur. Otomatik yükseltme işlemine devam etmeden önce lütfen şunları sağlayın:
+&lt;ul&gt;
+&lt;li&gt;Bu işlemi önce bir deneme ortamında denemek için planlar yaptınız mı?
+&lt;li&gt;Mevcut kurulum özelliklerinizi belgelediniz mi, kullanıyor olabileceğiniz üçüncü taraf modüllerin uyumluluğunu araştırdınız mı?
+&lt;li&gt;Websitesini beklenmedik bir yükseltme hatası durumunda geri yükleyebileceğiniz şekilde çevrenizin gerekli yedeklerini oluşturdunuz mu?
+&lt;/ul&gt;</value>
+  </data>
+  <data name="VersionsMatch.Text" xml:space="preserve">
+    <value>Veritabanı ve uygulama sürümleri eşleşiyor - uygulanacak bir güncelleme yok.</value>
+  </data>
+  <data name="VersionsMatchButIncrementalExists.Text" xml:space="preserve">
+    <value>Veritabanı ve uygulama sürümleri eşleşiyor - yükseltebileceğiniz bir artımlı sürüm mevcut.</value>
+  </data>
+  <data name="CurrentVersion.Text" xml:space="preserve">
+    <value>Mevcut Sürüm - {0}</value>
+  </data>
+  <data name="DatabaseUpgrade.Text" xml:space="preserve">
+    <value>Veritabanı Güncelleniyor</value>
+  </data>
+  <data name="Error.Text" xml:space="preserve">
+    <value>Hata</value>
+  </data>
+  <data name="ErrorInStep.Text" xml:space="preserve">
+    <value>Hata oluştu - {0}</value>
+  </data>
+  <data name="ExtensionsUpgrade.Text" xml:space="preserve">
+    <value>Uzantılar güncelleniyor</value>
+  </data>
+  <data name="IntroDetail.Text" xml:space="preserve">
+    <value>&lt;p&gt;DNN Yükseltme Sayfasına Hoş Geldiniz.&lt;/p&gt;
+
+&lt;p&gt;İlk adım, yükseltme için kullanmak istediğiniz dili seçmektir.&lt;/p&gt;</value>
+  </data>
+  <data name="InvalidCredentials.Text" xml:space="preserve">
+    <value>Kullanıcı adı ve şifre tanınmadı.</value>
+  </data>
+  <data name="Next.Text" xml:space="preserve">
+    <value>Şimdi Yükselt</value>
+  </data>
+  <data name="NextStep.Text" xml:space="preserve">
+    <value>Sonraki</value>
+  </data>
+  <data name="NoInstallationLog.Text" xml:space="preserve">
+    <value>Kurulum Günlüğü Yok</value>
+  </data>
+  <data name="LoadingInstallationLog.Text" xml:space="preserve">
+    <value>Kurulum günlükleri yükleniyor, lütfen bekleyin...</value>
+  </data>
+  <data name="Password.Help" xml:space="preserve">
+    <value>Süper Kullanıcı hesabının şifresi.</value>
+  </data>
+  <data name="Password.Text" xml:space="preserve">
+    <value>Şifre:</value>
+  </data>
+  <data name="Retry.Text" xml:space="preserve">
+    <value>Yeniden Dene</value>
+  </data>
+  <data name="SeeLogs.Text" xml:space="preserve">
+    <value>Kayıtları Görüntüle</value>
+  </data>
+  <data name="NoErrorsLogged.Text" xml:space="preserve">
+    <value>Güncelleme hataları kaydedilmedi</value>
+  </data>
+  <data name="TimerMinutes.Text" xml:space="preserve">
+    <value>Dakika</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Güncelleme</value>
+  </data>
+  <data name="Upgrade.Text" xml:space="preserve">
+    <value>Yükseltme</value>
+  </data>
+  <data name="UpgradeDone.Text" xml:space="preserve">
+    <value>Yükseltme Tamamlandı</value>
+  </data>
+  <data name="UpgradingDatabase.Text" xml:space="preserve">
+    <value>Veritabanı Güncelleniyor</value>
+  </data>
+  <data name="Username.Help" xml:space="preserve">
+    <value>Süper Kullanıcı hesabı için kullanıcı adı.</value>
+  </data>
+  <data name="Username.Text" xml:space="preserve">
+    <value>Ana Bilgisayar (Süper Kullanıcı) Kullanıcı Adı:</value>
+  </data>
+  <data name="Version.Text" xml:space="preserve">
+    <value>Yükseltme - Sürüm {0}</value>
+  </data>
+  <data name="ViewWebsite.Text" xml:space="preserve">
+    <value>Web Sitesini Görüntüle</value>
+  </data>
+  <data name="VisitWebsite.Text" xml:space="preserve">
+    <value>Web Sitesini Ziyaret Et</value>
+  </data>
+  <data name="UpgradeStarted.Text" xml:space="preserve">
+    <value>Yükseltme Başlangıç Saati</value>
+  </data>
+  <data name="AcceptTerms.Required" xml:space="preserve">
+    <value>Lisans sözleşmesinin şartlarını kabul ederek devam edin.</value>
+  </data>
+  <data name="AcceptTerms.Text" xml:space="preserve">
+    <value>Lisans sözleşmesini kabul ediyorum &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;</value>
+  </data>
+  <data name="Security.Text" xml:space="preserve">
+    <value>Güvenlik</value>
+  </data>
+  <data name="TelerikInstalledAndUsedInfo.Text" xml:space="preserve">
+    <value>Kurulumunuz, aşağıdaki derlemelerde Telerik kullanıyor:</value>
+  </data>
+  <data name="TelerikInstalledAndUsedWarning.Text" xml:space="preserve">
+    <value>Telerik'e bağımlı uzantılarınızın olduğu görünüyor. Tespit ettiğimiz ve yukarıda listelediğimiz bağımlılıkları kaldıramıyoruz. Ancak, bu yükseltme süreci bilinen güvenlik açıklarına sahip Telerik bileşenlerini kaldıracaktır. Yükseltme işlemine devam etmeden önce sitenizin yedeğini aldığınızdan emin olun. Yükseltme tamamlandıktan sonra web sitenizin işlevini durdurabileceği, etkilenen uzantıları kaldırana kadar &lt;code&gt;Telerik.Web.UI.dll&lt;/code&gt;'yi manuel olarak geri yükleyerek işlevi geri yükleyebileceğiniz olasıdır.</value>
+  </data>
+  <data name="TelerikInstalledButNotUsedInfo.Text" xml:space="preserve">
+    <value>Kurulumunuzun bu bileşenleri kullanmadığı görünmüyor, Telerik bileşeni otomatik olarak kaldırılacaktır. Yükseltme işlemine devam etmeden önce sitenizin yedeğini aldığınızdan emin olun.</value>
+  </data>
+  <data name="TelerikInstalledHeading.Text" xml:space="preserve">
+    <value>Telerik Kurulumu Tespit Edildi</value>
+  </data>
+  <data name="TelerikInstalledDetected.Text" xml:space="preserve">
+    <value>Telerik bileşenlerinin varlığını tespit ettik. Tespit edilen Telerik sürümü:</value>
+  </data>
+  <data name="TelerikInstalledBulletin.Text" xml:space="preserve">
+    <value>Ağustos 2021'de yayınlanan bir Güvenlik Bülteni, yüksek düzeyde güvenlik açıklarından dolayı bu bileşenin derhal kaldırılmasını önermektedir. Daha fazlasını &lt;a href="https://dnncommunity.org/security" target="_blank"&gt;DNN Güvenlik Merkezi&lt;/a&gt;nden okuyabilirsiniz.</value>
+  </data>
+  <data name="TelerikNotInstalledHeading.Text" xml:space="preserve">
+    <value>Güvenlik Kontrolü: Başarılı</value>
+  </data>
+  <data name="TelerikNotInstalledInfo.Text" xml:space="preserve">
+    <value>Sitenizin önceden DNN ile dağıtılan savunmasız Telerik bileşenini içermediğini doğruladık.</value>
+  </data>
+  <data name="TelerikUninstallInfo.Text" xml:space="preserve">
+    <value>"Aşağıdan "Evet" seçeneğini seçmeniz durumunda, &lt;a href="https://docs.dnncommunity.org/content/getting-started/setup/telerik-removal/index.html" target="_blank"&gt;bu adımları&lt;/a&gt; otomatik olarak tamamlayacaktır.</value>
+  </data>
+  <data name="TelerikInvalidAntiForgeryToken.Text" xml:space="preserve">
+    <value>Geçersiz Telerik karşıtı sahtekarlık belirteci.</value>
+  </data>
+  <data name="TelerikUninstallOptionMissing.Text" xml:space="preserve">
+    <value>Telerik kaldırma seçeneği eksik.</value>
+  </data>
+  <data name="CheckingSecurity.Text" xml:space="preserve">
+    <value>Bu kurulumun güvenlik yönlerini kontrol etme</value>
+  </data>
+  <data name="TelerikVersionNotKnownToBeVulnerableInfo.Text" xml:space="preserve">
+    <value>Kurulumunuzun, önceden dağıtılan bilinen savunmasız sürümden daha yeni bir Telerik bileşen sürümü kullandığı görünüyor. Bir kaldırma otomatik olarak gerçekleşmeyecek, ancak lütfen tüm savunmasız bileşenlerin kaldırıldığı veya değiştirildiğinden emin olmak için &lt;a href="https://docs.dnncommunity.org/content/getting-started/setup/telerik-removal/index.html" target="_blank"&gt;kaldırma adımlarını&lt;/a&gt; gözden geçirin. Ayrıca, herhangi bir kullanımın bilinen güvenlik açıklarına sahip olmayan bir sürümü kullandığından ve doğru şekilde yapılandırıldığından emin olmak için &lt;a href="https://www.telerik.com/products/aspnet-ajax/documentation/security/security-information#telerik-ajax-control-specific-security-guidelines"&gt;Telerik'in güvenlik rehberine&lt;/a&gt; göz atın.</value>
+  </data>
+</root>

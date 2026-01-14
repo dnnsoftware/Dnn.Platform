@@ -5,9 +5,6 @@ namespace DotNetNuke.Services.Installer.Packages
 {
     using System;
 
-    /// Project     : DotNetNuke
-    /// Namespace   : DotNetNuke.Services.Installer.Packages
-    /// Class       : PackageCreatedEventArgs
     /// <summary>
     /// PackageCreatedEventArgs provides a custom EventArgs class for a
     /// Package Created Event.

@@ -8,6 +8,7 @@ namespace DotNetNuke.UI.WebControls
     using System.ComponentModel;
     using System.Drawing;
     using System.Drawing.Drawing2D;
+    using System.Globalization;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -16,6 +17,7 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
@@ -36,7 +38,18 @@ namespace DotNetNuke.UI.WebControls
         private const string RENDERURLDEFAULT = "ImageChallenge.captcha.aspx";
         private const string CHARSDEFAULT = "abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CaptchaControl));
-        private static readonly string[] FontFamilies = { "Arial", "Comic Sans MS", "Courier New", "Georgia", "Lucida Console", "MS Sans Serif", "Tahoma", "Times New Roman", "Trebuchet MS", "Verdana" };
+        private static readonly string[] FontFamilies =
+        {
+            "Comic Sans MS",
+            "Consolas",
+            "Courier New",
+            "Franklin Gothic Medium",
+            "Georgia",
+            "Impact",
+            "Lucida Console",
+            "MS Sans Serif",
+            "Trebuchet MS",
+        };
 
         private static readonly Random Rand = new Random();
         private static string separator = ":-:";
@@ -63,6 +76,9 @@ namespace DotNetNuke.UI.WebControls
             this.expiration = HostController.Instance.GetInteger("EXPIRATION_DEFAULT", EXPIRATIONDEFAULT);
         }
 
+        /// <summary>
+        /// Occurs when the user has validated the captcha.
+        /// </summary>
         public event ServerValidateEventHandler UserValidated;
 
         /// <summary>Gets and sets the BackGroundColor.</summary>
@@ -71,24 +87,12 @@ namespace DotNetNuke.UI.WebControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Description("Set the Style for the Error Message Control.")]
-        public Style ErrorStyle
-        {
-            get
-            {
-                return this.errorStyle;
-            }
-        }
+        public Style ErrorStyle => this.errorStyle;
 
         /// <summary>Gets a value indicating whether the control is valid.</summary>
         [Category("Validation")]
         [Description("Returns True if the user was CAPTCHA validated after a postback.")]
-        public bool IsValid
-        {
-            get
-            {
-                return this.isValid;
-            }
-        }
+        public bool IsValid => this.isValid;
 
         /// <summary>Gets the Style to use for the Text Box.</summary>
         [Browsable(true)]
@@ -96,28 +100,15 @@ namespace DotNetNuke.UI.WebControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Description("Set the Style for the Text Box Control.")]
-        public Style TextBoxStyle
-        {
-            get
-            {
-                return this.textBoxStyle;
-            }
-        }
+        public Style TextBoxStyle => this.textBoxStyle;
 
         /// <summary>Gets or sets the BackGroundColor.</summary>
         [Category("Appearance")]
         [Description("The Background Color to use for the Captcha Image.")]
         public Color BackGroundColor
         {
-            get
-            {
-                return this.backGroundColor;
-            }
-
-            set
-            {
-                this.backGroundColor = value;
-            }
+            get => this.backGroundColor;
+            set => this.backGroundColor = value;
         }
 
         /// <summary>Gets or sets the BackGround Image.</summary>
@@ -125,15 +116,8 @@ namespace DotNetNuke.UI.WebControls
         [Description("A Background Image to use for the Captcha Image.")]
         public string BackGroundImage
         {
-            get
-            {
-                return this.backGroundImage;
-            }
-
-            set
-            {
-                this.backGroundImage = value;
-            }
+            get => this.backGroundImage;
+            set => this.backGroundImage = value;
         }
 
         /// <summary>Gets or sets the list of characters.</summary>
@@ -142,15 +126,8 @@ namespace DotNetNuke.UI.WebControls
         [Description("Characters used to render CAPTCHA text. A character will be picked randomly from the string.")]
         public string CaptchaChars
         {
-            get
-            {
-                return this.captchaChars;
-            }
-
-            set
-            {
-                this.captchaChars = value;
-            }
+            get => this.captchaChars;
+            set => this.captchaChars = value;
         }
 
         /// <summary>Gets or sets the height of the Captcha image.</summary>
@@ -158,15 +135,8 @@ namespace DotNetNuke.UI.WebControls
         [Description("Height of Captcha Image.")]
         public Unit CaptchaHeight
         {
-            get
-            {
-                return this.captchaHeight;
-            }
-
-            set
-            {
-                this.captchaHeight = value;
-            }
+            get => this.captchaHeight;
+            set => this.captchaHeight = value;
         }
 
         /// <summary>Gets or sets the length of the Captcha string.</summary>
@@ -175,15 +145,8 @@ namespace DotNetNuke.UI.WebControls
         [Description("Number of CaptchaChars used in the CAPTCHA text")]
         public int CaptchaLength
         {
-            get
-            {
-                return this.captchaLength;
-            }
-
-            set
-            {
-                this.captchaLength = value;
-            }
+            get => this.captchaLength;
+            set => this.captchaLength = value;
         }
 
         /// <summary>Gets or sets the width of the Captcha image.</summary>
@@ -191,30 +154,16 @@ namespace DotNetNuke.UI.WebControls
         [Description("Width of Captcha Image.")]
         public Unit CaptchaWidth
         {
-            get
-            {
-                return this.captchaWidth;
-            }
-
-            set
-            {
-                this.captchaWidth = value;
-            }
+            get => this.captchaWidth;
+            set => this.captchaWidth = value;
         }
 
         /// <summary>Gets or sets a value indicating whether the Viewstate is enabled.</summary>
         [Browsable(false)]
         public override bool EnableViewState
         {
-            get
-            {
-                return base.EnableViewState;
-            }
-
-            set
-            {
-                base.EnableViewState = value;
-            }
+            get => base.EnableViewState;
+            set => base.EnableViewState = value;
         }
 
         /// <summary>Gets or sets the ErrorMessage to display if the control is invalid.</summary>
@@ -229,15 +178,8 @@ namespace DotNetNuke.UI.WebControls
         [DefaultValue(EXPIRATIONDEFAULT)]
         public int Expiration
         {
-            get
-            {
-                return this.expiration;
-            }
-
-            set
-            {
-                this.expiration = value;
-            }
+            get => this.expiration;
+            set => this.expiration = value;
         }
 
         /// <summary>Gets or sets the Url to use to render the control.</summary>
@@ -246,15 +188,8 @@ namespace DotNetNuke.UI.WebControls
         [DefaultValue(RENDERURLDEFAULT)]
         public string RenderUrl
         {
-            get
-            {
-                return this.renderUrl;
-            }
-
-            set
-            {
-                this.renderUrl = value;
-            }
+            get => this.renderUrl;
+            set => this.renderUrl = value;
         }
 
         /// <summary>Gets or sets the Help Text to use.</summary>
@@ -263,13 +198,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Instructional text displayed next to CAPTCHA image.")]
         public string Text { get; set; }
 
-        private bool IsDesignMode
-        {
-            get
-            {
-                return HttpContext.Current == null;
-            }
-        }
+        private static bool IsDesignMode => HttpContext.Current == null;
 
         /// <summary>LoadPostData loads the Post Back Data and determines whether the value has change.</summary>
         /// <param name="postDataKey">A key to the PostBack Data to load.</param>
@@ -297,7 +226,7 @@ namespace DotNetNuke.UI.WebControls
         /// <returns><see langword="true"/> if the data is valid, otherwise <see langword="false"/>.</returns>
         public bool Validate(string userData)
         {
-            var cacheKey = string.Format(DataCache.CaptchaCacheKey, userData);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.CaptchaCacheKey, userData);
             var cacheObj = DataCache.GetCache(cacheKey);
 
             if (cacheObj == null)
@@ -344,8 +273,6 @@ namespace DotNetNuke.UI.WebControls
                     }
 
                     g = Graphics.FromImage(bmp);
-
-                    // Create Text
                     GraphicsPath textPath = CreateText(text, width, height, g);
                     if (string.IsNullOrEmpty(backgroundImage))
                     {
@@ -399,7 +326,7 @@ namespace DotNetNuke.UI.WebControls
             // the request might go to another server in the farm. Also, in a system
             // with a single server or web-farm, the cache might be cleared
             // which will cause a problem in such case unless sticky sessions are used.
-            var cacheKey = string.Format(DataCache.CaptchaCacheKey, challenge);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.CaptchaCacheKey, challenge);
             DataCache.SetCache(
                 cacheKey,
                 challenge,
@@ -428,11 +355,11 @@ namespace DotNetNuke.UI.WebControls
                 // Load the CAPTCHA Text from the ViewState
                 if (myState[1] != null)
                 {
-                    this.captchaText = Convert.ToString(myState[1]);
+                    this.captchaText = Convert.ToString(myState[1], CultureInfo.InvariantCulture);
                 }
             }
 
-            // var cacheKey = string.Format(DataCache.CaptchaCacheKey, masterPortalId);
+            // var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.CaptchaCacheKey, masterPortalId);
             // _CaptchaText
         }
 
@@ -449,6 +376,10 @@ namespace DotNetNuke.UI.WebControls
             base.OnPreRender(e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="UserValidated" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="ServerValidateEventArgs"/> instance containing the event data.</param>
         protected virtual void OnUserValidated(ServerValidateEventArgs e)
         {
             ServerValidateEventHandler handler = this.UserValidated;
@@ -494,7 +425,7 @@ namespace DotNetNuke.UI.WebControls
             this.TextBoxStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
             writer.AddAttribute(HtmlTextWriterAttribute.Style, "width:" + this.Width);
-            writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, this.captchaText.Length.ToString());
+            writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, this.captchaText.Length.ToString(CultureInfo.InvariantCulture));
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             if (!string.IsNullOrEmpty(this.AccessKey))
             {
@@ -508,7 +439,7 @@ namespace DotNetNuke.UI.WebControls
 
             if (this.TabIndex > 0)
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, this.TabIndex.ToString());
+                writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, this.TabIndex.ToString(CultureInfo.InvariantCulture));
             }
 
             if (this.userText == this.captchaText)
@@ -572,6 +503,8 @@ namespace DotNetNuke.UI.WebControls
                 false);
             g.FillRectangle(b, rectF);
 
+            AddNoise(g, width, height);
+
             if (Rand.Next(2) == 1)
             {
                 DistortImage(ref bmp, Rand.Next(5, 20));
@@ -584,6 +517,27 @@ namespace DotNetNuke.UI.WebControls
             return bmp;
         }
 
+        private static void AddNoise(Graphics g, int width, int height)
+        {
+            Random rand = new Random();
+            int numDots = rand.Next(width * height / 50, width * height / 25);
+
+            using (Pen pen = new Pen(Color.Black, 1))
+            {
+                for (int i = 0; i < numDots; i++)
+                {
+                    int x = rand.Next(0, width);
+                    int y = rand.Next(0, height);
+
+                    // Choose random brightness for noise
+                    int brightness = rand.Next(40, 240);
+                    pen.Color = Color.FromArgb(rand.Next(40, 100), brightness, brightness, brightness);
+
+                    g.DrawRectangle(pen, x, y, 1, 1); // Draw tiny noise dot
+                }
+            }
+        }
+
         /// <summary>Creates the Text.</summary>
         /// <param name="text">The text to display.</param>
         /// <param name="width">The width of the image.</param>
@@ -592,46 +546,115 @@ namespace DotNetNuke.UI.WebControls
         private static GraphicsPath CreateText(string text, int width, int height, Graphics g)
         {
             var textPath = new GraphicsPath();
-            var ff = GetFont();
-            var emSize = Convert.ToInt32(width * 2 / text.Length);
-            Font f = null;
+            var maxFontSize = height * 1f;
+            var minFontSize = height * 0.8f;
+            float leftMargin = 10;
+            float rightMargin = 10;
+            float availableWidth = width - leftMargin - rightMargin;
+            float xOffset = leftMargin;
+            float charSpacing = availableWidth / text.Length;
+            Random rand = new Random();
+
             try
             {
-                var measured = new SizeF(0, 0);
-                var workingSize = new SizeF(width, height);
-                while (emSize > 2)
+                foreach (char c in text)
                 {
-                    f = new Font(ff, emSize);
-                    measured = g.MeasureString(text, f);
-                    if (!(measured.Width > workingSize.Width || measured.Height > workingSize.Height))
+                    var ff = GetFont(); // Get a random font for each character
+                    var emSize = maxFontSize;
+
+                    Font f;
+                    SizeF charSize;
+
+                    // Find the largest font size that fits within the available space
+                    do
                     {
-                        break;
+                        f = new Font(ff, emSize, FontStyle.Bold);
+                        charSize = g.MeasureString(c.ToString(), f);
+                        emSize -= 1;
+                    }
+                    while ((charSize.Width > charSpacing || charSize.Height > height) && emSize > minFontSize);
+
+                    // Ensure the character doesn't exceed the available width
+                    float jitter = RandomJitter(-3, 3, rand);
+                    if (xOffset + charSize.Width + jitter > width - rightMargin)
+                    {
+                        jitter = -Math.Abs(jitter); // Adjust jitter to avoid overflow
+                    }
+
+                    // Calculate position (centered vertically, random X jitter)
+                    float yOffset = ((height - charSize.Height) / 2) + RandomJitter(-5, 5, rand);
+                    float charX = xOffset + jitter;
+
+                    // Generate a random rotation angle (-15° to 15°)
+                    float rotationAngle = RandomJitter(-15, 15, rand);
+                    float charCenterX = charX + (charSize.Width / 2);
+                    float charCenterY = yOffset + (charSize.Height / 2);
+                    using (Matrix transform = new Matrix())
+                    {
+                        transform.Translate(charCenterX, charCenterY);
+                        transform.Rotate(rotationAngle);
+                        transform.Translate(-charCenterX, -charCenterY);
+
+                        GraphicsPath charPath = new GraphicsPath();
+                        charPath.AddString(
+                            c.ToString(),
+                            f.FontFamily,
+                            (int)f.Style,
+                            f.Size,
+                            new PointF(charX, yOffset),
+                            new StringFormat());
+
+                        // Apply transformation only to the character, not the entire path
+                        charPath.Transform(transform);
+                        textPath.AddPath(charPath, false);
                     }
 
                     f.Dispose();
-                    emSize -= 2;
+
+                    // Move X position for the next character
+                    xOffset += charSpacing;
                 }
 
-                emSize += 8;
-                f = new Font(ff, emSize);
-
-                var fmt = new StringFormat();
-                fmt.Alignment = StringAlignment.Center;
-                fmt.LineAlignment = StringAlignment.Center;
-
-                textPath.AddString(text, f.FontFamily, Convert.ToInt32(f.Style), f.Size, new RectangleF(0, 0, width, height), fmt);
                 WarpText(ref textPath, new Rectangle(0, 0, width, height));
+                DrawRandomLines(g, width, height, rand);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
             }
-            finally
-            {
-                f.Dispose();
-            }
 
             return textPath;
+        }
+
+        private static void DrawRandomLines(Graphics g, int width, int height, Random rand)
+        {
+            int numLines = rand.Next(3, 7);
+            using (Pen pen = new Pen(Color.Empty))
+            {
+                pen.DashStyle = (DashStyle)rand.Next(0, 4);
+                for (int i = 0; i < numLines; i++)
+                {
+                    int x1 = rand.Next(0, width);
+                    int y1 = rand.Next(0, height);
+                    int x2 = rand.Next(0, width);
+                    int y2 = rand.Next(0, height);
+
+                    // Generate a color with random transparency
+                    pen.Color = Color.FromArgb(
+                        rand.Next(100, 200), // Opacity
+                        rand.Next(150, 200), // Red
+                        rand.Next(150, 200), // Green
+                        rand.Next(150, 200)); // Blue
+                    pen.Width = rand.Next(1, 3);
+
+                    g.DrawLine(pen, x1, y1, x2, y2);
+                }
+            }
+        }
+
+        private static float RandomJitter(float min, float max, Random rand)
+        {
+            return (float)((rand.NextDouble() * (max - min)) + min);
         }
 
         /// <summary>Decrypts the CAPTCHA Text.</summary>
@@ -733,7 +756,7 @@ namespace DotNetNuke.UI.WebControls
             int intWarpDivisor;
             var rectF = new RectangleF(0, 0, rect.Width, rect.Height);
 
-            intWarpDivisor = Rand.Next(4, 8);
+            intWarpDivisor = Rand.Next(4, 6);
 
             int intHrange = Convert.ToInt32(rect.Height / intWarpDivisor);
             int intWrange = Convert.ToInt32(rect.Width / intWarpDivisor);
@@ -753,11 +776,12 @@ namespace DotNetNuke.UI.WebControls
         private string GetUrl()
         {
             var url = this.ResolveUrl(this.RenderUrl);
-            url += "?" + KEY + "=" + Encrypt(this.EncodeTicket(), DateTime.Now.AddSeconds(this.Expiration));
+            var encryptedTicket = Encrypt(this.EncodeTicket(), DateTime.Now.AddSeconds(this.Expiration));
+            url += $"?{KEY}={encryptedTicket}";
 
             // Append the Alias to the url so that it doesn't lose track of the alias it's currently on
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            url += "&alias=" + portalSettings.PortalAlias.HTTPAlias;
+            url += "&alias=" + ((IPortalAliasInfo)portalSettings.PortalAlias).HttpAlias;
             return url;
         }
 
@@ -766,7 +790,7 @@ namespace DotNetNuke.UI.WebControls
         {
             var sb = new StringBuilder();
 
-            sb.Append(this.CaptchaWidth.Value.ToString());
+            sb.Append(this.CaptchaWidth.Value);
             sb.Append(separator + this.CaptchaHeight.Value);
             sb.Append(separator + this.captchaText);
             sb.Append(separator + this.BackGroundImage);

@@ -5,6 +5,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -14,6 +15,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
     using Dnn.PersonaBar.Extensions.Components.Dto;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -28,17 +30,55 @@ namespace Dnn.PersonaBar.Extensions.Components
     public class ExtensionsController
     {
         private const string OwnerUpdateService = "DotNetNuke Update Service";
+        private readonly IHostSettings hostSettings;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalAliasController portalAliasController;
+        private readonly IPackageController packageController;
+        private readonly ITabController tabController;
 
+        /// <summary>Initializes a new instance of the <see cref="ExtensionsController"/> class.</summary>
         public ExtensionsController()
+            : this(null, null, null, null, null, null, null, null)
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ExtensionsController"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalAliasController">The portal alias controller.</param>
+        /// <param name="packageController">The package controller.</param>
+        /// <param name="tabController">The tab controller.</param>
+        public ExtensionsController(
+            INavigationManager navigationManager,
+            IApplicationStatusInfo appStatus,
+            IHostSettings hostSettings,
+            IHostSettingsService hostSettingsService,
+            IPortalController portalController,
+            IPortalAliasController portalAliasController,
+            IPackageController packageController,
+            ITabController tabController)
+        {
+            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.portalAliasController = portalAliasController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasController>();
+            this.packageController = packageController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPackageController>();
+            this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
         }
 
         protected INavigationManager NavigationManager { get; }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IDictionary<string, PackageType> GetPackageTypes()
         {
-            IDictionary<string, PackageType> installedPackageTypes = new Dictionary<string, PackageType>();
+            var installedPackageTypes = new Dictionary<string, PackageType>();
             foreach (var packageType in PackageController.Instance.GetExtensionPackageTypes())
             {
                 installedPackageTypes[packageType.PackageType] = packageType;
@@ -54,26 +94,26 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 case "authsystem":
                 case "auth_system":
-                    type = PackageTypes.AuthSystem.ToString();
-                    rootPath = Globals.ApplicationMapPath + "\\Install\\AuthSystem";
+                    type = nameof(PackageTypes.AuthSystem);
+                    rootPath = this.appStatus.ApplicationMapPath + "\\Install\\AuthSystem";
                     break;
                 case "javascriptlibrary":
                 case "javascript_library":
-                    rootPath = Globals.ApplicationMapPath + "\\Install\\JavaScriptLibrary";
+                    rootPath = this.appStatus.ApplicationMapPath + "\\Install\\JavaScriptLibrary";
                     break;
                 case "extensionlanguagepack":
-                    type = PackageTypes.Language.ToString();
-                    rootPath = Globals.ApplicationMapPath + "\\Install\\Language";
+                    type = nameof(PackageTypes.Language);
+                    rootPath = this.appStatus.ApplicationMapPath + "\\Install\\Language";
                     break;
                 case "corelanguagepack":
-                    rootPath = Globals.ApplicationMapPath + "\\Install\\Language";
+                    rootPath = this.appStatus.ApplicationMapPath + "\\Install\\Language";
                     return true; // core languages should always marked as have available packages.
                 case "module":
                 case "skin":
                 case "container":
                 case "provider":
                 case "library":
-                    rootPath = Globals.ApplicationMapPath + "\\Install\\" + packageType;
+                    rootPath = this.appStatus.ApplicationMapPath + "\\Install\\" + packageType;
                     break;
                 default:
                     type = string.Empty;
@@ -99,7 +139,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 case "module":
                     if (portalId == Null.NullInteger)
                     {
-                        typePackages = PackageController.Instance.GetExtensionPackages(
+                        typePackages = this.packageController.GetExtensionPackages(
                             Null.NullInteger, p => "Module".Equals(p.PackageType, StringComparison.OrdinalIgnoreCase)).ToList();
                     }
                     else
@@ -110,43 +150,43 @@ namespace Dnn.PersonaBar.Extensions.Components
                     break;
                 case "skin":
                 case "container":
-                    typePackages = PackageController.Instance.GetExtensionPackages(portalId, p => p.PackageType == packageType).ToList();
+                    typePackages = this.packageController.GetExtensionPackages(portalId, p => p.PackageType == packageType).ToList();
                     break;
                 default:
-                    typePackages = PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == packageType).ToList();
+                    typePackages = this.packageController.GetExtensionPackages(Null.NullInteger, p => p.PackageType == packageType).ToList();
                     break;
             }
 
-            var typePackageDtos = typePackages.Select(p => new PackageInfoSlimDto(portalId, p));
-            return typePackageDtos.ToList();
+            return typePackages
+                .Select(p => new PackageInfoSlimDto(this.hostSettings, this.hostSettingsService, this.portalController, portalId, p))
+                .ToList();
         }
 
         public List<AvailablePackagesDto> GetAvailablePackages(string packageType)
         {
             var packages = new List<AvailablePackagesDto>();
-            string packagePath;
-            if (this.HasAvailablePackage(packageType, out packagePath))
+            if (this.HasAvailablePackage(packageType, out var packagePath))
             {
-                var validpackages = new Dictionary<string, PackageInfo>();
+                var validPackages = new Dictionary<string, PackageInfo>();
                 var invalidPackages = new List<string>();
 
                 foreach (string file in Directory.GetFiles(packagePath))
                 {
-                    if (file.ToLower().EndsWith(".zip") || file.ToLower().EndsWith(".resources"))
+                    if (file.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) || file.EndsWith(".resources", StringComparison.OrdinalIgnoreCase))
                     {
-                        PackageController.ParsePackage(file, packagePath, validpackages, invalidPackages);
+                        PackageController.ParsePackage(file, packagePath, validPackages, invalidPackages);
                     }
                 }
 
-                if (packageType.ToLowerInvariant() == "corelanguagepack")
+                if (packageType.Equals("corelanguagepack", StringComparison.OrdinalIgnoreCase))
                 {
-                    this.GetAvaialableLanguagePacks(validpackages);
+                    GetAvailableLanguagePacks(validPackages);
                 }
 
-                packages.Add(new AvailablePackagesDto()
+                packages.Add(new AvailablePackagesDto
                 {
                     PackageType = packageType,
-                    ValidPackages = validpackages.Values.Select(p => new PackageInfoSlimDto(Null.NullInteger, p)).ToList(),
+                    ValidPackages = validPackages.Values.Select(p => new PackageInfoSlimDto(this.hostSettings, this.hostSettingsService, this.portalController, Null.NullInteger, p)).ToList(),
                     InvalidPackages = invalidPackages,
                 });
             }
@@ -156,7 +196,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
         public List<TabInfo> GetPackageUsage(int portalId, int packageId)
         {
-            IDictionary<int, TabInfo> tabs = BuildData(portalId, packageId);
+            var tabs = BuildData(this.tabController, portalId, packageId);
             if (tabs != null && tabs.Count > 0)
             {
                 return tabs.Values.ToList();
@@ -170,7 +210,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             var returnValue = new StringBuilder();
 
             int index = 0;
-            TabController.Instance.PopulateBreadCrumbs(ref tab);
+            this.tabController.PopulateBreadCrumbs(ref tab);
             foreach (TabInfo t in tab.BreadCrumbs)
             {
                 if (index > 0)
@@ -180,18 +220,18 @@ namespace Dnn.PersonaBar.Extensions.Components
 
                 if (index < tab.BreadCrumbs.Count - 1)
                 {
-                    returnValue.AppendFormat("{0}", t.LocalizedTabName);
+                    returnValue.Append(t.LocalizedTabName);
                 }
                 else
                 {
                     // use the current portal alias for host tabs
                     var alias = t.PortalID == Null.NullInteger || t.PortalID == portalId
                                     ? PortalSettings.Current.PortalAlias
-                                    : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID)
+                                    : this.portalAliasController.GetPortalAliasesByPortalId(t.PortalID)
                                                             .OrderBy(pa => pa.IsPrimary ? 0 : 1)
                                                             .First();
                     var url = this.NavigationManager.NavigateURL(t.TabID, new PortalSettings(t.PortalID, alias), string.Empty);
-                    returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
+                    returnValue.AppendFormat(CultureInfo.InvariantCulture, "<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
                 }
 
                 index = index + 1;
@@ -207,7 +247,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 return string.Empty;
             }
 
-            if (packageInfo.PackageType.ToUpper() == "MODULE")
+            if (packageInfo.PackageType.Equals("MODULE", StringComparison.OrdinalIgnoreCase))
             {
                 if (portalId == Null.NullInteger)
                 {
@@ -227,9 +267,9 @@ namespace Dnn.PersonaBar.Extensions.Components
             return Upgrade.UpgradeRedirect(version, packageType, packageName, string.Empty);
         }
 
-        internal static string UpgradeIndicator(Version version, string packageType, string packageName)
+        internal static string UpgradeIndicator(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IPortalController portalController, Version version, string packageType, string packageName)
         {
-            var url = Upgrade.UpgradeIndicator(version, packageType, packageName, string.Empty, false, false); // last 2 params are unused
+            var url = Upgrade.UpgradeIndicator(hostSettings, hostSettingsService, portalController, version, packageType, packageName, string.Empty, false, false); // last 2 params are unused
             if (string.IsNullOrEmpty(url))
             {
                 url = Globals.ApplicationPath + "/images/spacer.gif";
@@ -268,15 +308,14 @@ namespace Dnn.PersonaBar.Extensions.Components
 
         internal static IDictionary<int, PackageInfo> GetPackagesInUse(bool forHost)
         {
-            return PackageController.GetModulePackagesInUse(PortalController.Instance.GetCurrentPortalSettings().PortalId, forHost);
+            return PackageController.GetModulePackagesInUse(PortalController.Instance.GetCurrentSettings().PortalId, forHost);
         }
 
         private static void AddModulesToList(int portalId, List<PackageInfo> packages)
         {
-            Dictionary<int, PortalDesktopModuleInfo> portalModules = DesktopModuleController.GetPortalDesktopModulesByPortalID(portalId);
             packages.AddRange(from modulePackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module")
                               let desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(modulePackage.PackageID)
-                              from portalModule in portalModules.Values
+                              from portalModule in DesktopModuleController.GetPortalDesktopModulesByPortalID(portalId).Values
                               where desktopModule != null && portalModule.DesktopModuleID == desktopModule.DesktopModuleID
                               select modulePackage);
         }
@@ -288,14 +327,14 @@ namespace Dnn.PersonaBar.Extensions.Components
                 : url;
         }
 
-        private static IDictionary<int, TabInfo> BuildData(int portalId, int packageId)
+        private static IDictionary<int, TabInfo> BuildData(ITabController tabController, int portalId, int packageId)
         {
-            IDictionary<int, TabInfo> tabsWithModule = TabController.Instance.GetTabsByPackageID(portalId, packageId, false);
-            TabCollection allPortalTabs = TabController.Instance.GetTabsByPortal(portalId);
+            var tabsWithModule = tabController.GetTabsByPackageID(portalId, packageId, false);
+            var allPortalTabs = tabController.GetTabsByPortal(portalId);
             IDictionary<int, TabInfo> tabsInOrder = new Dictionary<int, TabInfo>();
 
             // must get each tab, they parent may not exist
-            foreach (TabInfo tab in allPortalTabs.Values)
+            foreach (var tab in allPortalTabs.Values)
             {
                 AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
             }
@@ -311,7 +350,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 tabsInOrder.Add(currentTab.TabID, currentTab);
 
                 // add children of current tab
-                foreach (TabInfo tab in allPortalTabs.WithParentId(currentTab.TabID))
+                foreach (var tab in allPortalTabs.WithParentId(currentTab.TabID))
                 {
                     AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
                 }
@@ -327,7 +366,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             try
             {
-                var path = HttpContext.Current.Server.MapPath(imagePath);
+                var path = HttpContextSource.Current.Server.MapPath(imagePath);
                 return File.Exists(path);
             }
             catch (HttpException)
@@ -336,14 +375,18 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
         }
 
-        private void GetAvaialableLanguagePacks(IDictionary<string, PackageInfo> validPackages)
+        private static void GetAvailableLanguagePacks(IDictionary<string, PackageInfo> validPackages)
         {
             try
             {
-                StreamReader myResponseReader = UpdateService.GetLanguageList();
+                var myResponseReader = UpdateService.GetLanguageList();
                 var xmlDoc = new XmlDocument { XmlResolver = null };
-                xmlDoc.Load(myResponseReader);
-                XmlNodeList languages = xmlDoc.SelectNodes("available/language");
+                using (var xmlReader = XmlReader.Create(myResponseReader, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xmlDoc.Load(xmlReader);
+                }
+
+                var languages = xmlDoc.SelectNodes("available/language");
 
                 if (languages != null)
                 {
@@ -374,14 +417,17 @@ namespace Dnn.PersonaBar.Extensions.Components
                             package.Name = myCIintl.NativeName;
                             package.PackageType = "CoreLanguagePack";
                             package.Description = cultureCode;
-                            Version ver = null;
-                            Version.TryParse(version, out ver);
+                            if (!Version.TryParse(version, out var ver))
+                            {
+                                ver = null;
+                            }
+
                             package.Version = ver;
 
                             if (
                                 installedLanguages.Any(
                                     l =>
-                                        LocaleController.Instance.GetLocale(l.LanguageID).Code.ToLowerInvariant().Equals(cultureCode.ToLowerInvariant())
+                                        LocaleController.Instance.GetLocale(l.LanguageID).Code.ToLowerInvariant().Equals(cultureCode.ToLowerInvariant(), StringComparison.Ordinal)
                                         && installedPackages.First(p => p.PackageID == l.PackageID).Version >= ver))
                             {
                                 continue;

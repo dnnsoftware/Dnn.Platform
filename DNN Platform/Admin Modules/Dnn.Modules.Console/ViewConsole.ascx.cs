@@ -9,10 +9,12 @@ namespace Dnn.Modules.Console
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Web;
     using System.Web.UI.WebControls;
 
     using Dnn.Modules.Console.Components;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
@@ -21,10 +23,10 @@ namespace Dnn.Modules.Console
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Implements the module view logic.</summary>
@@ -32,15 +34,29 @@ namespace Dnn.Modules.Console
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ViewConsole));
         private readonly INavigationManager navigationManager;
+        private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IClientResourceController clientResourceController;
+
         private string defaultSize = string.Empty;
         private string defaultView = string.Empty;
-        private int groupTabID = -1;
+        private int groupTabId = -1;
         private IList<TabInfo> tabs;
 
         /// <summary>Initializes a new instance of the <see cref="ViewConsole"/> class.</summary>
         public ViewConsole()
+            : this(null, null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ViewConsole"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public ViewConsole(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
+            this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
         }
 
         /// <summary>Gets a value indicating whether the module settings allow size change.</summary>
@@ -199,9 +215,9 @@ namespace Dnn.Modules.Console
 
             try
             {
-                JavaScript.RequestRegistration(CommonJs.jQuery);
+                this.javaScript.RequestRegistration(CommonJs.jQuery);
 
-                ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/admin/console/scripts/jquery.console.js");
+                this.clientResourceController.RegisterScript("~/desktopmodules/admin/console/scripts/jquery.console.js");
 
                 this.DetailView.ItemDataBound += this.RepeaterItemDataBound;
 
@@ -312,9 +328,9 @@ namespace Dnn.Modules.Console
         protected string GetHtml(TabInfo tab)
         {
             string returnValue = string.Empty;
-            if (this.groupTabID > -1 && this.groupTabID != tab.ParentId)
+            if (this.groupTabId > -1 && this.groupTabId != tab.ParentId)
             {
-                this.groupTabID = -1;
+                this.groupTabId = -1;
                 if (!tab.DisableLink)
                 {
                     returnValue = "<br style=\"clear:both;\" /><br />";
@@ -325,7 +341,7 @@ namespace Dnn.Modules.Console
             {
                 const string headerHtml = "<br style=\"clear:both;\" /><br /><h1><span class=\"TitleHead\">{0}</span></h1><br style=\"clear:both\" />";
                 returnValue += string.Format(headerHtml, tab.TabName);
-                this.groupTabID = tab.TabID;
+                this.groupTabId = tab.TabID;
             }
             else
             {
@@ -392,8 +408,8 @@ namespace Dnn.Modules.Console
                 "allowIconSizeChange: {0}, allowDetailChange: {1}, selectedSize: '{2}', showDetails: '{3}', tabModuleID: {4}, showTooltip: {5}",
                 this.AllowSizeChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
                 this.AllowViewChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
-                this.DefaultSize,
-                this.DefaultView,
+                HttpUtility.JavaScriptStringEncode(this.DefaultSize),
+                HttpUtility.JavaScriptStringEncode(this.DefaultView),
                 tabModuleId,
                 this.ShowTooltip.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
         }
@@ -534,7 +550,7 @@ namespace Dnn.Modules.Console
 
         private void RepeaterItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            var tab = e.Item.DataItem as TabInfo;
+            var tab = (TabInfo)e.Item.DataItem;
             e.Item.Controls.Add(new Literal() { Text = this.GetHtml(tab) });
             if (this.tabs.Any(t => t.ParentId == tab.TabID))
             {

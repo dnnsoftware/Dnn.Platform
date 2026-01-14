@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -22,6 +23,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using Dnn.PersonaBar.SiteSettings.Components.Constants;
     using Dnn.PersonaBar.SiteSettings.Services.Dto;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -54,6 +56,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));
+
+        private static readonly string[] RootFolders =
+        [
+            "Admin",
+            "Controls",
+            "DesktopModules",
+            "Install",
+            "Providers",
+        ];
 
         private ITabController tabController = TabController.Instance;
         private ILocaleController localeController = LocaleController.Instance;
@@ -132,14 +143,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 if (string.IsNullOrEmpty(currentFolder))
                 {
-                    folders.AddRange(new[]
-                    {
-                        "Admin",
-                        "Controls",
-                        "DesktopModules",
-                        "Install",
-                        "Providers",
-                    }.Select(s => new KeyValuePair<string, string>(s, server.MapPath("~/" + "_/" + s))));
+                    folders.AddRange(RootFolders.Select(s => new KeyValuePair<string, string>(s, server.MapPath("~/" + "_/" + s))));
 
                     const string skins = "Skins";
                     var skinsPath = Path.Combine(Globals.ApplicationMapPath, skins);
@@ -161,19 +165,19 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 else
                 {
                     string foldername = currentFolder;
-                    if (currentFolder.IndexOf("_/", StringComparison.Ordinal) == 0)
+                    if (currentFolder.StartsWith("_/", StringComparison.Ordinal))
                     {
                         foldername = foldername.Substring(2);
                     }
 
                     var directories = GetResxDirectories(server.MapPath("~/" + foldername));
                     var directoryFiles = GetResxFiles(server.MapPath("~/" + foldername));
-                    if (currentFolder.IndexOf("_/", StringComparison.Ordinal) == 0)
+                    if (currentFolder.StartsWith("_/", StringComparison.Ordinal))
                     {
                         folders.AddRange(directories.Select(
-                                s => new KeyValuePair<string, string>(s.Key, s.Value.Replace(foldername.Replace("/", "\\"), currentFolder))));
+                                s => new KeyValuePair<string, string>(s.Key, s.Value.Replace(foldername.Replace("/", @"\"), currentFolder))));
                         files.AddRange(directoryFiles.Select(
-                                f => new KeyValuePair<string, string>(f.Key, f.Value.Replace(foldername.Replace("/", "\\"), currentFolder))));
+                                f => new KeyValuePair<string, string>(f.Key, f.Value.Replace(foldername.Replace("/", @"\"), currentFolder))));
                     }
                     else
                     {
@@ -236,7 +240,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     return this.Request.CreateErrorResponse(
                         HttpStatusCode.BadRequest,
-                        string.Format(LocalizeString("InvalidLocale.ErrorMessage"), locale));
+                        string.Format(CultureInfo.InvariantCulture, LocalizeString("InvalidLocale.ErrorMessage"), locale));
                 }
 
                 this.selectedResourceFile = !string.IsNullOrEmpty(resourceFile)
@@ -247,7 +251,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var defaultTable = this.LoadFile(pid, resourceMode, "Default", locale);
 
                 var fullPath = Path.GetFileName(this.ResourceFile(pid, locale, resourceMode).Replace(Globals.ApplicationMapPath, string.Empty));
-                var folder = this.ResourceFile(pid, locale, resourceMode).Replace(Globals.ApplicationMapPath, string.Empty).Replace("\\" + resourceFile, string.Empty);
+                var folder = this.ResourceFile(pid, locale, resourceMode).Replace(Globals.ApplicationMapPath, string.Empty).Replace(@"\" + resourceFile, string.Empty);
 
                 // check edit table and if empty, just use default
                 if (editTable.Count == 0)
@@ -344,19 +348,19 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     return this.Request.CreateErrorResponse(
                         HttpStatusCode.BadRequest,
-                        string.Format(LocalizeString("InvalidLocale.ErrorMessage"), request.Locale));
+                        string.Format(CultureInfo.InvariantCulture, LocalizeString("InvalidLocale.ErrorMessage"), request.Locale));
                 }
 
                 if (string.IsNullOrEmpty(request.ResourceFile))
                 {
                     return this.Request.CreateErrorResponse(
                         HttpStatusCode.BadRequest,
-                        string.Format(LocalizeString("MissingResourceFileName"), request.Locale));
+                        string.Format(CultureInfo.InvariantCulture, LocalizeString("MissingResourceFileName"), request.Locale));
                 }
 
                 this.selectedResourceFile = HttpContext.Current.Server.MapPath("~/" + request.ResourceFile);
                 var message = this.SaveResourceFileFile(pid, resourceMode, request.Locale, request.Entries);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = message });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = message, });
             }
             catch (Exception ex)
             {
@@ -485,7 +489,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
-                if (this.IsDefaultLanguage(pid, cultureCode))
+                if (IsDefaultLanguage(pid, cultureCode))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
@@ -529,7 +533,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
-                if (this.IsDefaultLanguage(pid, cultureCode))
+                if (IsDefaultLanguage(pid, cultureCode))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
@@ -563,7 +567,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
-                if (this.IsDefaultLanguage(pid, cultureCode))
+                if (IsDefaultLanguage(pid, cultureCode))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
@@ -597,7 +601,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
-                if (this.IsDefaultLanguage(pid, cultureCode))
+                if (IsDefaultLanguage(pid, cultureCode))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
@@ -639,12 +643,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         private static IEnumerable<KeyValuePair<string, string>> GetResxFiles(string path)
         {
-            var sysLocale = Localization.SystemLocale.ToLowerInvariant();
+            var sysLocale = Localization.SystemLocale;
             return
                 from file in Directory.GetFiles(path, "*.resx")
                 select new FileInfo(file) into fileInfo
                 let match = FileInfoRegex.Match(fileInfo.Name)
-                where !match.Success || match.Groups[1].Value.ToLowerInvariant() == sysLocale
+                where !match.Success || match.Groups[1].Value.Equals(sysLocale, StringComparison.OrdinalIgnoreCase)
                 select new KeyValuePair<string, string>(Path.GetFileNameWithoutExtension(fileInfo.Name), fileInfo.FullName);
         }
 
@@ -652,7 +656,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             var folderInfo = new DirectoryInfo(path);
 
-            if (path.ToLowerInvariant().EndsWith(Localization.LocalResourceDirectory))
+            if (path.EndsWith(Localization.LocalResourceDirectory, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -689,13 +693,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         ///   First=>value to be edited
         ///   Second=>default value.
         /// </remarks>
-        private static void LoadResource(IDictionary ht, string filepath)
+        private static void LoadResource(Hashtable ht, string filepath)
         {
             var d = new XmlDocument { XmlResolver = null };
             bool xmlLoaded;
             try
             {
-                d.Load(filepath);
+                using var xmlReader = XmlReader.Create(filepath, new XmlReaderSettings { XmlResolver = null, });
+                d.Load(xmlReader);
                 xmlLoaded = true;
             }
             catch (Exception ex)
@@ -744,7 +749,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private static XmlNode AddResourceKey(XmlDocument resourceDoc, string resourceKey)
         {
             // missing entry
-            XmlNode nodeData = resourceDoc.CreateElement("data");
+            var nodeData = resourceDoc.CreateElement("data");
             var attr = resourceDoc.CreateAttribute("name");
             attr.Value = resourceKey;
             nodeData.Attributes?.Append(attr);
@@ -753,7 +758,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return nodeData.AppendChild(resourceDoc.CreateElement("value"));
         }
 
-        private bool IsDefaultLanguage(int portalId, string cultureCode)
+        private static bool IsDefaultLanguage(int portalId, string cultureCode)
         {
             var portal = PortalController.Instance.GetPortal(portalId);
             var portalSettings = new PortalSettings(portal);
@@ -845,11 +850,16 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             var defDoc = new XmlDocument { XmlResolver = null };
 
             var filename = this.ResourceFile(portalId, locale, mode);
-            resDoc.Load(File.Exists(filename)
-                ? filename :
-                this.ResourceFile(portalId, Localization.SystemLocale, LanguageResourceMode.System));
+            var resourceFile = File.Exists(filename) ? filename : this.ResourceFile(portalId, Localization.SystemLocale, LanguageResourceMode.System);
+            using (var resourceReader = XmlReader.Create(resourceFile, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                resDoc.Load(resourceReader);
+            }
 
-            defDoc.Load(this.ResourceFile(portalId, Localization.SystemLocale, LanguageResourceMode.System));
+            using (var defaultResourceReader = XmlReader.Create(this.ResourceFile(portalId, Localization.SystemLocale, LanguageResourceMode.System), new XmlReaderSettings { XmlResolver = null, }))
+            {
+                defDoc.Load(defaultResourceReader);
+            }
 
             // store all changed resources
             var changedResources = new Dictionary<string, string>();
@@ -960,16 +970,16 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             if (changedResources.Count > 0)
             {
                 var values = string.Join("; ", changedResources.Select(x => x.Key + "=" + x.Value));
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = nameof(EventLogType.ADMIN_ALERT) };
                 log.LogProperties.Add(new LogDetailInfo(LocalizeString("ResourceUpdated"), this.ResourceFile(portalId, locale, mode)));
                 log.LogProperties.Add(new LogDetailInfo("Updated Values", values));
                 LogController.Instance.AddLog(log);
             }
 
-            return string.Format(LocalizeString("Updated"), this.ResourceFile(portalId, locale, mode));
+            return string.Format(CultureInfo.InvariantCulture, LocalizeString("Updated"), this.ResourceFile(portalId, locale, mode));
         }
 
-        private IList<LanguageTabDto> GetTabsForTranslationInternal(int portalId, string cultureCode)
+        private List<LanguageTabDto> GetTabsForTranslationInternal(int portalId, string cultureCode)
         {
             var locale = new LocaleController().GetLocale(portalId, cultureCode);
             var portal = PortalController.Instance.GetPortal(portalId);

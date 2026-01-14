@@ -156,7 +156,7 @@
         resizable: false,
         modal: true,
         title: 'Confirm',
-        dialogClass: 'dnnFormPopup dnnClear',
+        classes: { "ui-dialog": "dnnFormPopup dnnClear" },
         isButton: false
     };
 
@@ -201,7 +201,7 @@
         resizable: false,
         modal: true,
         buttonOkClass: 'dnnPrimaryAction',
-        dialogClass: 'dnnFormPopup dnnClear'
+        classes: { "ui-dialog": "dnnFormPopup dnnClear" },
     };
 
 })(jQuery);

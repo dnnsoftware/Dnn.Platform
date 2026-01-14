@@ -13,6 +13,7 @@ namespace DotNetNuke.Framework
     public class AJAX
     {
         /// <summary>AddScriptManager is used internally by the framework to add a ScriptManager control to the page.</summary>
+        /// <param name="page">The <see cref="Page"/>.</param>
         public static void AddScriptManager(Page page)
         {
             AddScriptManager(page, true);
@@ -88,6 +89,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>Allows a control to be excluded from UpdatePanel async callback.</summary>
+        /// <param name="objControl">The control to register for postback.</param>
         public static void RegisterPostBackControl(Control objControl)
         {
             ScriptManager objScriptManager = GetScriptManager(objControl.Page);
@@ -106,7 +108,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>RemoveScriptManager will remove the ScriptManager control during Page Render if the RegisterScriptManager has not been called.</summary>
+        /// <summary>RemoveScriptManager will remove the <see cref="ScriptManager"/> control during Page Render if the RegisterScriptManager has not been called.</summary>
+        /// <param name="objPage">The page from which to remove the <see cref="ScriptManager"/>.</param>
         public static void RemoveScriptManager(Page objPage)
         {
             if (!IsEnabled())
@@ -120,6 +123,8 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>Wraps a control in an update panel.</summary>
+        /// <param name="objControl">The control to wrap.</param>
+        /// <param name="blnIncludeProgress">Whether to include an <see cref="UpdateProgress"/> control.</param>
         /// <returns>The <see cref="UpdatePanel"/>.</returns>
         public static Control WrapUpdatePanelControl(Control objControl, bool blnIncludeProgress)
         {

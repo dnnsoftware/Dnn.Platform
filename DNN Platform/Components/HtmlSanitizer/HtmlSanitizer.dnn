@@ -1,0 +1,55 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.HtmlSanitizer" type="Library" version="1.0.0">
+      <friendlyName>HtmlSanitizer Components</friendlyName>
+      <description>Provides AngleSharp and HtmlSanitizer assemblies for the platform.</description>
+      <dependencies/>
+      <owner>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt"/>
+      <releaseNotes>
+        This package includes AngleSharp, AngleSharp.Css and HtmlSanitizer assemblies.
+      </releaseNotes>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>AngleSharp.dll</name>
+              <version />
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>AngleSharp.Css.dll</name>
+              <version />
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>HtmlSanitizer.dll</name>
+              <version />
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Collections.Immutable.dll</name>
+              <version />
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Text.Encoding.CodePages.dll</name>
+              <version />
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Runtime.CompilerServices.Unsafe.dll</name>
+              <version/>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

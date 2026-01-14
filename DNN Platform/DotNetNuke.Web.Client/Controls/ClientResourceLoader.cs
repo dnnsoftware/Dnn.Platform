@@ -8,18 +8,57 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using System.Web;
     using System.Web.UI;
 
-    using ClientDependency.Core.Controls;
+    using DotNetNuke.Abstractions.ClientResources;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The central control with which all client resources are registered.</summary>
-    public class ClientResourceLoader : ClientDependencyLoader
+    [ParseChildren(typeof(ClientResourcePath), ChildrenAsProperties = true)]
+    public class ClientResourceLoader : Control
     {
-        private bool AsyncPostBackHandlerEnabled
+        private readonly IClientResourceController clientResourceController;
+
+        /// <summary>Initializes a new instance of the <see cref="ClientResourceLoader"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.1. Use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
+        public ClientResourceLoader()
+            : this(null)
         {
-            get
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ClientResourceLoader"/> class.</summary>
+        /// <param name="clientResourceController">The client resources controller to use for resource registration.</param>
+        public ClientResourceLoader(IClientResourceController clientResourceController)
+        {
+            this.clientResourceController = clientResourceController ?? DependencyInjection.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.Paths = [];
+        }
+
+        /// <summary>Gets the paths collection.</summary>
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        public ClientResourcePathCollection Paths { get; private set; }
+
+        private static bool AsyncPostBackHandlerEnabled =>
+            HttpContext.Current != null && HttpContext.Current.Items.Contains("AsyncPostBackHandlerEnabled");
+
+        /// <inheritdoc />
+        protected override void OnInit(System.EventArgs e)
+        {
+            if (AsyncPostBackHandlerEnabled && ScriptManager.GetCurrent(this.Page) == null)
             {
-                return HttpContext.Current != null
-                       && HttpContext.Current.Items.Contains("AsyncPostBackHandlerEnabled");
+                throw new ScriptManagerRequiredException("The ClientResourceLoader control requires a ScriptManager on the page when AsyncPostBackHandlerEnabled is true.");
             }
+
+            base.OnInit(e);
+        }
+
+        /// <inheritdoc />
+        protected override void OnLoad(System.EventArgs e)
+        {
+            foreach (var path in this.Paths)
+            {
+                this.clientResourceController.RegisterPathNameAlias(path.Name, path.Path);
+            }
+
+            base.OnLoad(e);
         }
 
         /// <inheritdoc/>
@@ -30,7 +69,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 path.Name = path.Name.ToLowerInvariant();
             }
 
-            if (this.AsyncPostBackHandlerEnabled)
+            if (AsyncPostBackHandlerEnabled)
             {
                 const string handlerScript = @"
 var loadScriptInSingleMode = function(){

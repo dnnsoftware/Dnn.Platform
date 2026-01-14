@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Tokens
 
     /// <summary>
     /// The BaseTokenReplace class provides the tokenization of tokens formatted
-    /// [object:property] or [object:property|format|ifEmpty] or [custom:no] within a string
+    /// <c>[object:property]</c> or <c>[object:property|format|ifEmpty]</c> or <c>[custom:no]</c> within a string
     /// with the appropriate current property/custom values.
     /// </summary>
     public abstract class BaseTokenReplace
@@ -102,11 +102,11 @@ namespace DotNetNuke.Services.Tokens
 
                     string propertyName = currentMatch.Result("${property}");
                     string format = currentMatch.Result("${format}");
-                    string ifEmptyReplacment = currentMatch.Result("${ifEmpty}");
+                    string ifEmptyReplacement = currentMatch.Result("${ifEmpty}");
                     string conversion = this.replacedTokenValue(objectName, propertyName, format);
-                    if (!string.IsNullOrEmpty(ifEmptyReplacment) && string.IsNullOrEmpty(conversion))
+                    if (!string.IsNullOrEmpty(ifEmptyReplacement) && string.IsNullOrEmpty(conversion))
                     {
-                        conversion = ifEmptyReplacment;
+                        conversion = ifEmptyReplacement;
                     }
 
                     result.Append(conversion);

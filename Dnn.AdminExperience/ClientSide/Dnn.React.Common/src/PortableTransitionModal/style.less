@@ -51,7 +51,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: #fff;
+        background: var(--dnn-color-background, #fff);
         overflow: hidden;
         .close {
             position: absolute;
@@ -62,13 +62,13 @@
             cursor: pointer;
             width: 37px;
             &:hover {
-                color: #fff;
+                color: var(--dnn-color-background, #fff);
             }
         }
         .header {
             float: left;
             width: 100%;
-            background: #0c3b4f;
+            background: var(--dnn-color-primary-dark, #0c3b4f);
             padding: 20px;
             font-size: 20px;
         }

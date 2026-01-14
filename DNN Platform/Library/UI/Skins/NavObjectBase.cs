@@ -6,6 +6,8 @@ namespace DotNetNuke.UI.Skins
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common;
@@ -14,6 +16,7 @@ namespace DotNetNuke.UI.Skins
 
     public class NavObjectBase : SkinObjectBase
     {
+        private readonly IServiceProvider serviceProvider;
         private readonly List<CustomAttribute> objCustomAttributes = new List<CustomAttribute>();
         private bool blnPopulateNodesFromClient = true;
         private int intExpandDepth = -1;
@@ -97,6 +100,20 @@ namespace DotNetNuke.UI.Skins
         private string strStyleSelectionForeColor;
         private string strToolTip = string.Empty;
         private string strWorkImage;
+
+        /// <summary>Initializes a new instance of the <see cref="NavObjectBase"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public NavObjectBase()
+            : this(Globals.DependencyProvider)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="NavObjectBase"/> class.</summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        public NavObjectBase(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
+        }
 
         // JH - 2/5/07 - support for custom attributes
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -467,7 +484,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    return this.Control.MouseOutHideDelay.ToString();
+                    return this.Control.MouseOutHideDelay.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -479,7 +496,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    this.Control.MouseOutHideDelay = Convert.ToDecimal(value);
+                    this.Control.MouseOutHideDelay = Convert.ToDecimal(value, CultureInfo.InvariantCulture);
                 }
             }
         }
@@ -1960,7 +1977,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    return this.Control.StyleControlHeight.ToString();
+                    return this.Control.StyleControlHeight.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -1972,7 +1989,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    this.Control.StyleControlHeight = Convert.ToDecimal(value);
+                    this.Control.StyleControlHeight = Convert.ToDecimal(value, CultureInfo.InvariantCulture);
                 }
             }
         }
@@ -1987,7 +2004,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    return this.Control.StyleBorderWidth.ToString();
+                    return this.Control.StyleBorderWidth.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -1999,7 +2016,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    this.Control.StyleBorderWidth = Convert.ToDecimal(value);
+                    this.Control.StyleBorderWidth = Convert.ToDecimal(value, CultureInfo.InvariantCulture);
                 }
             }
         }
@@ -2014,7 +2031,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    return this.Control.StyleNodeHeight.ToString();
+                    return this.Control.StyleNodeHeight.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -2026,7 +2043,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    this.Control.StyleNodeHeight = Convert.ToDecimal(value);
+                    this.Control.StyleNodeHeight = Convert.ToDecimal(value, CultureInfo.InvariantCulture);
                 }
             }
         }
@@ -2041,7 +2058,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    return this.Control.StyleIconWidth.ToString();
+                    return this.Control.StyleIconWidth.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -2053,7 +2070,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    this.Control.StyleIconWidth = Convert.ToDecimal(value);
+                    this.Control.StyleIconWidth = Convert.ToDecimal(value, CultureInfo.InvariantCulture);
                 }
             }
         }
@@ -2095,7 +2112,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    return this.Control.StyleFontSize.ToString();
+                    return this.Control.StyleFontSize.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -2107,7 +2124,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    this.Control.StyleFontSize = Convert.ToDecimal(value);
+                    this.Control.StyleFontSize = Convert.ToDecimal(value, CultureInfo.InvariantCulture);
                 }
             }
         }
@@ -2203,7 +2220,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    return this.Control.EffectsShadowStrength.ToString();
+                    return this.Control.EffectsShadowStrength.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -2215,7 +2232,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    this.Control.EffectsShadowStrength = Convert.ToInt32(value);
+                    this.Control.EffectsShadowStrength = Convert.ToInt32(value, CultureInfo.InvariantCulture);
                 }
             }
         }
@@ -2257,7 +2274,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    return this.Control.EffectsDuration.ToString();
+                    return this.Control.EffectsDuration.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -2269,7 +2286,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    this.Control.EffectsDuration = Convert.ToDouble(value);
+                    this.Control.EffectsDuration = Convert.ToDouble(value, CultureInfo.InvariantCulture);
                 }
             }
         }
@@ -2370,7 +2387,7 @@ namespace DotNetNuke.UI.Skins
 
             if (objNode != null)
             {
-                intRootParent = Convert.ToInt32(objNode.ID);
+                intRootParent = Convert.ToInt32(objNode.ID, CultureInfo.InvariantCulture);
                 intNavNodeOptions = (int)Navigation.NavNodeOptions.MarkPendingNodes;
                 objNodes = Navigation.GetNavigationNodes(objNode, eToolTips, intRootParent, intDepth, intNavNodeOptions);
             }
@@ -2382,6 +2399,7 @@ namespace DotNetNuke.UI.Skins
             return objNodes;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected string GetValue(string strVal, string strDefault)
         {
             if (string.IsNullOrEmpty(strVal))
@@ -2401,7 +2419,7 @@ namespace DotNetNuke.UI.Skins
                 this.ProviderName = strDefaultProvider;
             }
 
-            this.objControl = NavigationProvider.Instance(this.ProviderName);
+            this.objControl = NavigationProvider.Instance(this.serviceProvider, this.ProviderName);
             this.Control.ControlID = "ctl" + this.ID;
             this.Control.Initialize();
             this.AssignControlProperties();
@@ -2471,7 +2489,7 @@ namespace DotNetNuke.UI.Skins
             this.Control.ForceDownLevel = this.GetValue(this.strForceDownLevel, "False");
             if (!string.IsNullOrEmpty(this.strMouseOutHideDelay))
             {
-                this.Control.MouseOutHideDelay = Convert.ToDecimal(this.strMouseOutHideDelay);
+                this.Control.MouseOutHideDelay = Convert.ToDecimal(this.strMouseOutHideDelay, CultureInfo.InvariantCulture);
             }
 
             if (!string.IsNullOrEmpty(this.strMouseOverDisplay))
@@ -2747,22 +2765,22 @@ namespace DotNetNuke.UI.Skins
 
             if (!string.IsNullOrEmpty(this.strStyleControlHeight))
             {
-                this.Control.StyleControlHeight = Convert.ToDecimal(this.strStyleControlHeight);
+                this.Control.StyleControlHeight = Convert.ToDecimal(this.strStyleControlHeight, CultureInfo.InvariantCulture);
             }
 
             if (!string.IsNullOrEmpty(this.strStyleBorderWidth))
             {
-                this.Control.StyleBorderWidth = Convert.ToDecimal(this.strStyleBorderWidth);
+                this.Control.StyleBorderWidth = Convert.ToDecimal(this.strStyleBorderWidth, CultureInfo.InvariantCulture);
             }
 
             if (!string.IsNullOrEmpty(this.strStyleNodeHeight))
             {
-                this.Control.StyleNodeHeight = Convert.ToDecimal(this.strStyleNodeHeight);
+                this.Control.StyleNodeHeight = Convert.ToDecimal(this.strStyleNodeHeight, CultureInfo.InvariantCulture);
             }
 
             if (!string.IsNullOrEmpty(this.strStyleIconWidth))
             {
-                this.Control.StyleIconWidth = Convert.ToDecimal(this.strStyleIconWidth);
+                this.Control.StyleIconWidth = Convert.ToDecimal(this.strStyleIconWidth, CultureInfo.InvariantCulture);
             }
 
             if (!string.IsNullOrEmpty(this.strStyleFontNames))
@@ -2772,7 +2790,7 @@ namespace DotNetNuke.UI.Skins
 
             if (!string.IsNullOrEmpty(this.strStyleFontSize))
             {
-                this.Control.StyleFontSize = Convert.ToDecimal(this.strStyleFontSize);
+                this.Control.StyleFontSize = Convert.ToDecimal(this.strStyleFontSize, CultureInfo.InvariantCulture);
             }
 
             if (!string.IsNullOrEmpty(this.strStyleFontBold))
@@ -2792,7 +2810,7 @@ namespace DotNetNuke.UI.Skins
 
             if (!string.IsNullOrEmpty(this.strEffectsShadowStrength))
             {
-                this.Control.EffectsShadowStrength = Convert.ToInt32(this.strEffectsShadowStrength);
+                this.Control.EffectsShadowStrength = Convert.ToInt32(this.strEffectsShadowStrength, CultureInfo.InvariantCulture);
             }
 
             if (!string.IsNullOrEmpty(this.strEffectsTransition))
@@ -2802,7 +2820,7 @@ namespace DotNetNuke.UI.Skins
 
             if (!string.IsNullOrEmpty(this.strEffectsDuration))
             {
-                this.Control.EffectsDuration = Convert.ToDouble(this.strEffectsDuration);
+                this.Control.EffectsDuration = Convert.ToDouble(this.strEffectsDuration, CultureInfo.InvariantCulture);
             }
 
             if (!string.IsNullOrEmpty(this.strEffectsShadowDirection))
@@ -2815,24 +2833,24 @@ namespace DotNetNuke.UI.Skins
 
         private string GetPath(string strPath)
         {
-            if (strPath.IndexOf("[SKINPATH]") > -1)
+            if (strPath.Contains("[SKINPATH]", StringComparison.OrdinalIgnoreCase))
             {
                 return strPath.Replace("[SKINPATH]", this.PortalSettings.ActiveTab.SkinPath);
             }
-            else if (strPath.IndexOf("[APPIMAGEPATH]") > -1)
+
+            if (strPath.Contains("[APPIMAGEPATH]", StringComparison.OrdinalIgnoreCase))
             {
                 return strPath.Replace("[APPIMAGEPATH]", Globals.ApplicationPath + "/images/");
             }
-            else if (strPath.IndexOf("[HOMEDIRECTORY]") > -1)
+
+            if (strPath.Contains("[HOMEDIRECTORY]", StringComparison.OrdinalIgnoreCase))
             {
                 return strPath.Replace("[HOMEDIRECTORY]", this.PortalSettings.HomeDirectory);
             }
-            else
+
+            if (strPath.StartsWith("~", StringComparison.Ordinal))
             {
-                if (strPath.StartsWith("~"))
-                {
-                    return this.ResolveUrl(strPath);
-                }
+                return this.ResolveUrl(strPath);
             }
 
             return strPath;

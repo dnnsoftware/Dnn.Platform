@@ -24,7 +24,7 @@ namespace DotNetNuke.Collections
         public PagedList(IEnumerable<T> source, int pageIndex, int pageSize)
         {
             var enumerable = source as T[] ?? source.ToArray();
-            this.CommonConstruct(enumerable.Skip(pageIndex * pageSize).Take(pageSize).ToList(), enumerable.Count(), pageIndex, pageSize);
+            this.CommonConstruct(enumerable.Skip(pageIndex * pageSize).Take(pageSize).ToList(), enumerable.Length, pageIndex, pageSize);
         }
 
         /// <summary>
@@ -40,16 +40,16 @@ namespace DotNetNuke.Collections
             this.CommonConstruct(items, totalCount, pageIndex, pageSize);
         }
 
-        /// <summary>  Gets a value indicating whether gets a boolean indicating if there is a next page available.</summary>
+        /// <summary>  Gets a value indicating whether there is a next page available.</summary>
         public bool HasNextPage { get; private set; }
 
-        /// <summary>  Gets a value indicating whether gets a boolean indicating if there is a previous page available.</summary>
+        /// <summary>  Gets a value indicating whether there is a previous page available.</summary>
         public bool HasPreviousPage { get; private set; }
 
-        /// <summary>  Gets a value indicating whether gets a boolean indicating if this is the first page.</summary>
+        /// <summary>  Gets a value indicating whether this is the first page.</summary>
         public bool IsFirstPage { get; private set; }
 
-        /// <summary>  Gets a value indicating whether gets a boolean indicating if this is the last page.</summary>
+        /// <summary>  Gets a value indicating whether this is the last page.</summary>
         public bool IsLastPage { get; private set; }
 
         /// <summary>  Gets or sets the number of pages in this list.</summary>
@@ -72,19 +72,19 @@ namespace DotNetNuke.Collections
             {
                 if (pageIndex > 0)
                 {
-                    throw new IndexOutOfRangeException("Invalid Page Index");
+                    throw new ArgumentOutOfRangeException(nameof(pageIndex), pageIndex, "Invalid Page Index");
                 }
             }
             else
             {
                 if (pageIndex < 0)
                 {
-                    throw new IndexOutOfRangeException("Index cannot be negative");
+                    throw new ArgumentOutOfRangeException(nameof(pageIndex), pageIndex, "Index cannot be negative");
                 }
 
                 if (pageIndex >= this.PageCount)
                 {
-                    throw new IndexOutOfRangeException("Invalid Page Index");
+                    throw new ArgumentOutOfRangeException(nameof(pageIndex), pageIndex, "Invalid Page Index");
                 }
             }
 

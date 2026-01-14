@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Search.Internals
         private State current;
 
         /// <summary>Initializes a new instance of the <see cref="SynonymFilter"/> class.</summary>
-        /// <param name="input"></param>
+        /// <param name="input">The token stream.</param>
         public SynonymFilter(TokenStream input)
             : base(input)
         {
@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             var synonyms = SearchHelper.Instance.GetSynonyms(portalId, cultureCode, this.termAtt.Term).ToArray();
-            if (!synonyms.Any())
+            if (synonyms.Length == 0)
             {
                 return false;
             }

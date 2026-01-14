@@ -9,9 +9,6 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : DesktopModulePermissionInfo
     /// <summary>
     /// DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo
     /// Permissions.

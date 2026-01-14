@@ -8,9 +8,6 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      CheckBoxColumn
     /// <summary>The CheckBoxColumn control provides a Check Box column for a Data Grid.</summary>
     public class CheckBoxColumn : TemplateColumn
     {
@@ -18,7 +15,6 @@ namespace DotNetNuke.UI.WebControls
         private string mDataField = Null.NullString;
         private bool mEnabled = true;
         private string mEnabledField = Null.NullString;
-        private bool mHeaderCheckBox = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckBoxColumn"/> class.
@@ -43,7 +39,7 @@ namespace DotNetNuke.UI.WebControls
         public event DNNDataGridCheckedColumnEventHandler CheckedChanged;
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when any check box is
+        /// Gets or sets a value indicating whether the column fires a postback when any check box is
         /// changed.
         /// </summary>
         /// <value>A Boolean.</value>
@@ -83,9 +79,8 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether an flag that indicates whether the checkboxes are enabled (this is overridden if
-        /// the EnabledField is set)
-        /// changed.
+        /// Gets or sets a value indicating whether the checkboxes are enabled (this is overridden if
+        /// the EnabledField is set).
         /// </summary>
         /// <value>A Boolean.</value>
         public bool Enabled
@@ -120,22 +115,11 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether a flag that indicates whether there is a checkbox in the Header that sets all
+        /// Gets or sets a value indicating whether there is a checkbox in the Header that sets all
         /// the checkboxes.
         /// </summary>
         /// <value>A Boolean.</value>
-        public bool HeaderCheckBox
-        {
-            get
-            {
-                return this.mHeaderCheckBox;
-            }
-
-            set
-            {
-                this.mHeaderCheckBox = value;
-            }
-        }
+        public bool HeaderCheckBox { get; set; } = true;
 
         /// <summary>Initialises the Column.</summary>
         public override void Initialize()

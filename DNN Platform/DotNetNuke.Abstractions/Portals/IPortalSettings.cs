@@ -4,6 +4,7 @@
 namespace DotNetNuke.Abstractions.Portals
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// The PortalSettings class encapsulates all of the settings for the Portal,
@@ -145,7 +146,7 @@ namespace DotNetNuke.Abstractions.Portals
         /// <remarks>Defaults to True.</remarks>
         bool EnablePopUps { get; }
 
-        /// <summary>Gets a value indicating whether website Administrator whether receive the notification email when new user register.</summary>
+        /// <summary>Gets a value indicating whether website Administrator will receive the notification email when new user register.</summary>
         bool EnableRegisterNotification { get; }
 
         /// <summary>Gets a value indicating whether the Skin Widgets are enabled/supported.</summary>
@@ -169,15 +170,11 @@ namespace DotNetNuke.Abstractions.Portals
         string FooterText { get; set; }
 
         /// <summary>Gets or sets the portal GUID.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
         Guid GUID { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether folders which are hidden or whose name begins with underscore
-        /// are included in folder synchronization.
-        /// </summary>
-        /// <remarks>
-        /// Defaults to True.
-        /// </remarks>
+        /// <summary>Gets a value indicating whether folders which are hidden or whose name begins with underscore are included in folder synchronization.</summary>
+        /// <remarks>Defaults to True.</remarks>
         bool HideFoldersEnabled { get; }
 
         /// <summary>Gets a value indicating whether hide the login link.</summary>
@@ -226,7 +223,7 @@ namespace DotNetNuke.Abstractions.Portals
         bool InlineEditorEnabled { get; }
 
         /// <summary>
-        /// Gets a value indicating whether get a value indicating whether
+        /// Gets a value indicating whether
         /// the current portal is in maintenance mode (if either this specific
         /// portal or the entire instance is locked). If locked, any actions
         /// which update the database should be disabled.
@@ -234,7 +231,7 @@ namespace DotNetNuke.Abstractions.Portals
         bool IsLocked { get; }
 
         /// <summary>
-        /// Gets a value indicating whether get a value indicating whether
+        /// Gets a value indicating whether
         /// the current portal is in maintenance mode (note, the entire
         /// instance may still be locked, this only indicates whether this
         /// portal is specifically locked). If locked, any actions which

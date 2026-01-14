@@ -15,8 +15,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         }
 
         /// <summary>Initializes a new instance of the <see cref="SkinPackageDetailDto"/> class.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="package"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="package">The package info.</param>
         public SkinPackageDetailDto(int portalId, PackageInfo package)
             : base(portalId, package)
         {

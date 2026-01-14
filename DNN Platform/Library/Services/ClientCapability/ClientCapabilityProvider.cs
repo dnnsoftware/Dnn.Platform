@@ -19,14 +19,8 @@ namespace DotNetNuke.Services.ClientCapability
             }
         }
 
-        /// <summary>Gets a value indicating whether support detect the device whether is a tablet.</summary>
-        public virtual bool SupportsTabletDetection
-        {
-            get
-            {
-                return true;
-            }
-        }
+        /// <summary>Gets a value indicating whether this provider supports detecting if the device is a tablet.</summary>
+        public virtual bool SupportsTabletDetection => true;
 
         public static ClientCapabilityProvider Instance()
         {

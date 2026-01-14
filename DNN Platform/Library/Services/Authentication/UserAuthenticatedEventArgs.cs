@@ -36,13 +36,13 @@ namespace DotNetNuke.Services.Authentication
             this.RememberMe = false;
         }
 
-        /// <summary>Gets or sets a value indicating whether gets and sets a flag that determines whether the User was authenticated.</summary>
+        /// <summary>Gets or sets a value indicating whether the User was authenticated.</summary>
         public bool Authenticated { get; set; }
 
         /// <summary>Gets or sets the Authentication Type.</summary>
         public string AuthenticationType { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets and sets a flag that determines whether the user should be automatically registered.</summary>
+        /// <summary>Gets or sets a value indicating whether the user should be automatically registered.</summary>
         public bool AutoRegister { get; set; }
 
         /// <summary>Gets or sets the Login Status.</summary>
@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.Authentication
         /// <summary>Gets or sets the Profile.</summary>
         public NameValueCollection Profile { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets and sets the RememberMe setting.</summary>
+        /// <summary>Gets or sets a value indicating whether to remember the user.</summary>
         public bool RememberMe { get; set; }
 
         /// <summary>Gets or sets the User.</summary>

@@ -7,6 +7,7 @@ namespace DotNetNuke.Entities.Modules
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Xml.Serialization;
@@ -25,9 +26,6 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Tokens;
     using Newtonsoft.Json;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Entities.Modules
-    /// Class    : ModuleInfo
     /// <summary>ModuleInfo provides the Entity Layer for Modules.</summary>
     [XmlRoot("module", IsNullable = false)]
     [Serializable]
@@ -112,9 +110,12 @@ namespace DotNetNuke.Entities.Modules
                     return false;
                 }
 
-                bool val;
-                bool.TryParse(setting.ToString(), out val);
-                return val;
+                if (bool.TryParse(setting.ToString(), out var val))
+                {
+                    return val;
+                }
+
+                return false;
             }
         }
 
@@ -390,10 +391,6 @@ namespace DotNetNuke.Entities.Modules
         [JsonIgnore]
         public bool IsShareableViewOnly { get; set; }
 
-        [Obsolete("Deprecated in DotNetNuke 9.8.0. WebSlice functionality is no longer used. Scheduled removal in v10.0.0.")]
-        [XmlElement("iswebslice")]
-        public bool IsWebSlice { get; set; }
-
         [XmlIgnore]
         [JsonIgnore]
         public DateTime LastContentModifiedOnDate { get; set; }
@@ -475,18 +472,6 @@ namespace DotNetNuke.Entities.Modules
 
         [XmlElement("visibility")]
         public VisibilityState Visibility { get; set; }
-
-        [Obsolete("Deprecated in DotNetNuke 9.8.0. WebSlice functionality is no longer used. Scheduled removal in v10.0.0.")]
-        [XmlElement("websliceexpirydate")]
-        public DateTime WebSliceExpiryDate { get; set; }
-
-        [Obsolete("Deprecated in DotNetNuke 9.8.0. WebSlice functionality is no longer used. Scheduled removal in v10.0.0.")]
-        [XmlElement("webslicetitle")]
-        public string WebSliceTitle { get; set; }
-
-        [Obsolete("Deprecated in DotNetNuke 9.8.0. WebSlice functionality is no longer used. Scheduled removal in v10.0.0.")]
-        [XmlElement("webslicettl")]
-        public int WebSliceTTL { get; set; }
 
         [XmlElement("cultureCode")]
         public string CultureCode
@@ -623,14 +608,6 @@ namespace DotNetNuke.Entities.Modules
                 this.DisplayTitle = Null.SetNullBoolean(dr["DisplayTitle"]);
                 this.DisplayPrint = Null.SetNullBoolean(dr["DisplayPrint"]);
                 this.DisplaySyndicate = Null.SetNullBoolean(dr["DisplaySyndicate"]);
-                this.IsWebSlice = Null.SetNullBoolean(dr["IsWebSlice"]);
-                if (this.IsWebSlice)
-                {
-                    this.WebSliceTitle = Null.SetNullString(dr["WebSliceTitle"]);
-                    this.WebSliceExpiryDate = Null.SetNullDateTime(dr["WebSliceExpiryDate"]);
-                    this.WebSliceTTL = Null.SetNullInteger(dr["WebSliceTTL"]);
-                }
-
                 this.DesktopModuleID = Null.SetNullInteger(dr["DesktopModuleID"]);
                 this.ModuleControlId = Null.SetNullInteger(dr["ModuleControlID"]);
             }
@@ -641,6 +618,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             string outputFormat = string.Empty;
@@ -771,26 +749,6 @@ namespace DotNetNuke.Entities.Modules
                     isPublic = false;
                     propertyNotFound = false;
                     result = PropertyAccess.Boolean2LocalizedYesNo(this.DisplaySyndicate, formatProvider);
-                    break;
-                case "iswebslice":
-                    isPublic = false;
-                    propertyNotFound = false;
-                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsWebSlice, formatProvider);
-                    break;
-                case "webslicetitle":
-                    isPublic = false;
-                    propertyNotFound = false;
-                    result = PropertyAccess.FormatString(this.WebSliceTitle, format);
-                    break;
-                case "websliceexpirydate":
-                    isPublic = false;
-                    propertyNotFound = false;
-                    result = this.WebSliceExpiryDate.ToString(outputFormat, formatProvider);
-                    break;
-                case "webslicettl":
-                    isPublic = false;
-                    propertyNotFound = false;
-                    result = this.WebSliceTTL.ToString(outputFormat, formatProvider);
                     break;
                 case "inheritviewpermissions":
                     isPublic = false;
@@ -983,10 +941,6 @@ namespace DotNetNuke.Entities.Modules
                 DisplayTitle = this.DisplayTitle,
                 DisplayPrint = this.DisplayPrint,
                 DisplaySyndicate = this.DisplaySyndicate,
-                IsWebSlice = this.IsWebSlice,
-                WebSliceTitle = this.WebSliceTitle,
-                WebSliceExpiryDate = this.WebSliceExpiryDate,
-                WebSliceTTL = this.WebSliceTTL,
                 InheritViewPermissions = this.InheritViewPermissions,
                 IsShareable = this.IsShareable,
                 IsShareableViewOnly = this.IsShareableViewOnly,
@@ -1059,10 +1013,6 @@ namespace DotNetNuke.Entities.Modules
             this.DisplayTitle = true;
             this.DisplayPrint = false;
             this.DisplaySyndicate = Null.NullBoolean;
-            this.IsWebSlice = Null.NullBoolean;
-            this.WebSliceTitle = string.Empty;
-            this.WebSliceExpiryDate = Null.NullDate;
-            this.WebSliceTTL = 0;
             this.InheritViewPermissions = Null.NullBoolean;
             this.IsShareable = true;
             this.IsShareableViewOnly = true;

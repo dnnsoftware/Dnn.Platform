@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Installer.Writers
     public class AuthenticationPackageWriter : PackageWriterBase
     {
         /// <summary>Initializes a new instance of the <see cref="AuthenticationPackageWriter"/> class.</summary>
-        /// <param name="package"></param>
+        /// <param name="package">The package info.</param>
         public AuthenticationPackageWriter(PackageInfo package)
             : base(package)
         {
@@ -22,8 +22,8 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>Initializes a new instance of the <see cref="AuthenticationPackageWriter"/> class.</summary>
-        /// <param name="authSystem"></param>
-        /// <param name="package"></param>
+        /// <param name="authSystem">The auth system info.</param>
+        /// <param name="package">The package info.</param>
         public AuthenticationPackageWriter(AuthenticationInfo authSystem, PackageInfo package)
             : base(package)
         {

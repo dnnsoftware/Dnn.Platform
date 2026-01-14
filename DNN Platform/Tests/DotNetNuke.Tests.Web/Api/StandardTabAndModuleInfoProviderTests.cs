@@ -42,7 +42,6 @@ namespace DotNetNuke.Tests.Web.Api
         private ModuleInfo _moduleInfo;
 
         [SetUp]
-
         public void Setup()
         {
             MockComponentProvider.CreateDataCacheProvider();

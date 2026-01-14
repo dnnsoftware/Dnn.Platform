@@ -5,7 +5,10 @@ namespace Dnn.PersonaBar.Themes.Components
 {
     public enum ThemeType
     {
+        /// <summary>Theme layouts.</summary>
         Skin = 0,
+
+        /// <summary>Containers.</summary>
         Container = 1,
     }
 }

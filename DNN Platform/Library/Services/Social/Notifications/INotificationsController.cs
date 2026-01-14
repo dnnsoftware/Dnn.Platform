@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Social.Notifications
     public interface INotificationsController
     {
         /// <summary>Creates a new notification type.</summary>
-        /// <param name="notificationType"> </param>
+        /// <param name="notificationType">The notification type.</param>
         void CreateNotificationType(NotificationType notificationType);
 
         /// <summary>Deletes an existing notification type.</summary>

@@ -4,15 +4,13 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Containers
-    /// Class    : ActionCommandButton
     /// <summary>ActionCommandButton provides a button for a single action.</summary>
     /// <remarks>
     /// ActionBase inherits from CommandButton, and implements the IActionControl Interface.
@@ -76,6 +74,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnAction raises the Action Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnAction(ActionEventArgs e)
         {
             if (this.Action != null)
@@ -85,6 +84,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnButtonClick runs when the underlying CommandButton is clicked.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnButtonClick(EventArgs e)
         {
             base.OnButtonClick(e);
@@ -95,6 +95,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnPreRender runs when just before the Render phase of the Page Lifecycle.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -102,17 +103,17 @@ namespace DotNetNuke.UI.Containers
             if (this.ModuleAction != null && this.ActionManager.IsVisible(this.ModuleAction))
             {
                 this.Text = this.ModuleAction.Title;
-                this.CommandArgument = this.ModuleAction.ID.ToString();
+                this.CommandArgument = this.ModuleAction.ID.ToString(CultureInfo.InvariantCulture);
 
                 if (this.DisplayIcon && (!string.IsNullOrEmpty(this.ModuleAction.Icon) || !string.IsNullOrEmpty(this.ImageUrl)))
                 {
                     if (!string.IsNullOrEmpty(this.ImageUrl))
                     {
-                        this.ImageUrl = this.ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + this.ImageUrl;
+                        this.ImageUrl = this.ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/", StringComparison.Ordinal) + 1) + this.ImageUrl;
                     }
                     else
                     {
-                        if (this.ModuleAction.Icon.IndexOf("/") > Null.NullInteger)
+                        if (this.ModuleAction.Icon.IndexOf("/", StringComparison.Ordinal) > Null.NullInteger)
                         {
                             this.ImageUrl = this.ModuleAction.Icon;
                         }

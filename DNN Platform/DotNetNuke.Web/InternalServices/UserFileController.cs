@@ -17,11 +17,16 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
 
+    /// <summary>A web API controller for user files.</summary>
     public class UserFileController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserFileController));
+        private static readonly char[] FileExtensionSeparator = [',',];
+        private static readonly HashSet<string> ImageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "jpg", "png", "gif", "jpe", "jpeg", "tiff", };
         private readonly IFolderManager folderManager = FolderManager.Instance;
 
+        /// <summary>Gets the items in the user's folder.</summary>
+        /// <returns>A response with a list of objects (containing the following fields: <c>id</c>, <c>name</c>, <c>folder</c>, <c>parentId</c>, <c>thumb_url</c>, <c>type</c>, <c>size</c>, <c>modified</c>, and <c>children</c>).</returns>
         [DnnAuthorize]
         [HttpGet]
         public HttpResponseMessage GetItems()
@@ -29,6 +34,9 @@ namespace DotNetNuke.Web.InternalServices
             return this.GetItems(null);
         }
 
+        /// <summary>Gets the items in the user's folder.</summary>
+        /// <param name="fileExtensions">A comma-delimited list of file extensions.</param>
+        /// <returns>A response with a list of objects (containing the following fields: <c>id</c>, <c>name</c>, <c>folder</c>, <c>parentId</c>, <c>thumb_url</c>, <c>type</c>, <c>size</c>, <c>modified</c>, and <c>children</c>).</returns>
         [DnnAuthorize]
         [HttpGet]
         public HttpResponseMessage GetItems(string fileExtensions)
@@ -41,7 +49,7 @@ namespace DotNetNuke.Web.InternalServices
                 if (!string.IsNullOrEmpty(fileExtensions))
                 {
                     fileExtensions = fileExtensions.ToLowerInvariant();
-                    extensions.AddRange(fileExtensions.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+                    extensions.AddRange(fileExtensions.Split(FileExtensionSeparator, StringSplitOptions.RemoveEmptyEntries));
                 }
 
                 var folderStructure = new
@@ -68,23 +76,22 @@ namespace DotNetNuke.Web.InternalServices
 
         private static string GetModifiedTime(DateTime dateTime)
         {
-            return string.Format("{0:MMM} {0:dd}, {0:yyyy} at {0:t}", dateTime);
+            return string.Format(CultureInfo.CurrentCulture, "{0:MMM} {0:dd}, {0:yyyy} at {0:t}", dateTime);
         }
 
         private static string GetTypeName(IFileInfo file)
         {
             return file.ContentType == null
                        ? string.Empty
-                       : (file.ContentType.StartsWith("image/")
+                       : (file.ContentType.StartsWith("image/", StringComparison.Ordinal)
                             ? file.ContentType.Replace("image/", string.Empty)
                             : (file.Extension != null ? file.Extension.ToLowerInvariant() : string.Empty));
         }
 
         private static bool IsImageFile(string relativePath)
         {
-            var acceptedExtensions = new List<string> { "jpg", "png", "gif", "jpe", "jpeg", "tiff" };
-            var extension = relativePath.Substring(relativePath.LastIndexOf(".", StringComparison.Ordinal) + 1).ToLowerInvariant();
-            return acceptedExtensions.Contains(extension);
+            var extension = relativePath.Substring(relativePath.LastIndexOf(".", StringComparison.Ordinal) + 1);
+            return ImageExtensions.Contains(extension);
         }
 
         private static string GetFileSize(int sizeInBytes)

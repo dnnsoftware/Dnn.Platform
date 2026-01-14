@@ -5,9 +5,9 @@ namespace DotNetNuke.Modules.CoreMessaging
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -15,13 +15,45 @@ namespace DotNetNuke.Modules.CoreMessaging
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Implements the logic for the default view.</summary>
     public partial class View : PortalModuleBase
     {
+        private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IPortalController portalController;
+        private readonly IClientResourceController clientResourceController;
+
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public View()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public View(IJavaScriptLibraryHelper javaScript)
+            : this(javaScript, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public View(IJavaScriptLibraryHelper javaScript, IPortalController portalController, IClientResourceController clientResourceController)
+        {
+            this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
+            this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
+            this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
+        }
+
         /// <summary>Gets the user id from the request parameters.</summary>
         public int ProfileUserId
         {
@@ -37,35 +69,19 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
         }
 
-        /// <summary>Gets a string indicating whether attachements are allowed "true" or not "false".</summary>
-        public string ShowAttachments
-        {
-            get
-            {
-                var allowAttachments = PortalController.GetPortalSetting("MessagingAllowAttachments", this.PortalId, "NO");
-                return allowAttachments == "NO" ? "false" : "true";
-            }
-        }
+        /// <summary>Gets a string indicating whether attachments are allowed "true" or not "false".</summary>
+        public string ShowAttachments =>
+            PortalController.GetPortalSetting(this.portalController, "MessagingAllowAttachments", this.PortalId, "NO") == "NO" ? "false" : "true";
 
         /// <summary>Gets a value indicating whether the subscriptions tab should be shown.</summary>
-        public bool ShowSubscriptionTab
-        {
-            get
-            {
-                return !this.Settings.ContainsKey("ShowSubscriptionTab") ||
-                       this.Settings["ShowSubscriptionTab"].ToString().Equals("true", StringComparison.InvariantCultureIgnoreCase);
-            }
-        }
+        public bool ShowSubscriptionTab =>
+            !this.Settings.ContainsKey("ShowSubscriptionTab") ||
+            this.Settings["ShowSubscriptionTab"].ToString().Equals("true", StringComparison.InvariantCultureIgnoreCase);
 
         /// <summary>Gets a value indicating whether the private messaging should be disabled.</summary>
-        public bool DisablePrivateMessage
-        {
-            get
-            {
-                return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
-                    && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
-            }
-        }
+        public bool DisablePrivateMessage =>
+            this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
+                                                      && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
 
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
@@ -92,10 +108,10 @@ namespace DotNetNuke.Modules.CoreMessaging
 
             ServicesFramework.Instance.RequestAjaxScriptSupport();
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            JavaScript.RequestRegistration(CommonJs.Knockout);
-            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/CoreMessaging.js");
-            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.Knockout);
+            this.clientResourceController.RegisterScript("~/DesktopModules/CoreMessaging/Scripts/CoreMessaging.js");
+            this.javaScript.RequestRegistration(CommonJs.jQueryFileUpload);
             this.AddIe7StyleSheet();
 
             base.OnInit(e);

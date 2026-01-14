@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Social.Messaging
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml.Serialization;
 
     using DotNetNuke.Common.Utilities;
@@ -12,9 +13,6 @@ namespace DotNetNuke.Services.Social.Messaging
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Messaging
-    /// Class:      Messages
     /// <summary>
     /// The Message class describes the content of messages sent via the system
     /// As messaging is system wide process and there may be no portalID context (e.g. a host messaging "all users") the object does not tie to portalID.
@@ -111,7 +109,7 @@ namespace DotNetNuke.Services.Social.Messaging
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            this.MessageID = Convert.ToInt32(dr["MessageID"]);
+            this.MessageID = Convert.ToInt32(dr["MessageID"], CultureInfo.InvariantCulture);
             this.PortalID = Null.SetNullInteger(dr["PortalId"]);
             this.To = Null.SetNullString(dr["To"]);
             this.From = Null.SetNullString(dr["From"]);
@@ -119,7 +117,7 @@ namespace DotNetNuke.Services.Social.Messaging
             this.Body = Null.SetNullString(dr["Body"]);
             this.ConversationId = Null.SetNullInteger(dr["ConversationID"]);
             this.ReplyAllAllowed = Null.SetNullBoolean(dr["ReplyAllAllowed"]);
-            this.SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
+            this.SenderUserID = Convert.ToInt32(dr["SenderUserID"], CultureInfo.InvariantCulture);
             this.NotificationTypeID = Null.SetNullInteger(dr["NotificationTypeID"]);
 
             // add audit column data

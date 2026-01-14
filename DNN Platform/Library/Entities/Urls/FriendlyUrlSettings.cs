@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Urls
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
@@ -106,8 +107,16 @@ namespace DotNetNuke.Entities.Urls
         private Dictionary<string, string> replaceCharacterDictionary;
 
         /// <summary>Initializes a new instance of the <see cref="FriendlyUrlSettings"/> class.</summary>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
         public FriendlyUrlSettings(int portalId)
+            : this(PortalController.Instance, portalId)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="FriendlyUrlSettings"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        public FriendlyUrlSettings(IPortalController portalController, int portalId)
         {
             this.PortalId = portalId < -1 ? -1 : portalId;
             this.IsDirty = false;
@@ -119,7 +128,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (portalId > -1)
             {
-                var portal = PortalController.Instance.GetPortal(portalId);
+                var portal = portalController.GetPortal(portalId);
                 this.TabId500 = this.TabId404 = portal.Custom404TabId;
 
                 if (this.TabId500 == -1)
@@ -190,13 +199,8 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        public DNNPageForwardType ForwardExternalUrlsType
-        {
-            get
-            {
-                return DNNPageForwardType.Redirect301;
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public DNNPageForwardType ForwardExternalUrlsType => DNNPageForwardType.Redirect301;
 
         public bool EnableCustomProviders
         {
@@ -323,7 +327,7 @@ namespace DotNetNuke.Entities.Urls
                         DeletedTabHandlingTypeSetting, this.PortalId, DeletedTabHandlingType.Do404Error.ToString());
                 }
 
-                return "do301redirecttoportalhome".Equals(this.deletedTabHandling, StringComparison.InvariantCultureIgnoreCase)
+                return "do301redirecttoportalhome".Equals(this.deletedTabHandling, StringComparison.OrdinalIgnoreCase)
                     ? DeletedTabHandlingType.Do301RedirectToPortalHome
                     : DeletedTabHandlingType.Do404Error;
             }
@@ -693,7 +697,7 @@ namespace DotNetNuke.Entities.Urls
                 if (this.useBaseFriendlyUrls == null)
                 {
                     this.useBaseFriendlyUrls = this.GetStringSetting(UseBaseFriendlyUrlsSetting, string.Empty);
-                    if (!string.IsNullOrEmpty(this.useBaseFriendlyUrls) && !this.useBaseFriendlyUrls.EndsWith(";"))
+                    if (!string.IsNullOrEmpty(this.useBaseFriendlyUrls) && !this.useBaseFriendlyUrls.EndsWith(";", StringComparison.Ordinal))
                     {
                         this.useBaseFriendlyUrls += ";";
                     }

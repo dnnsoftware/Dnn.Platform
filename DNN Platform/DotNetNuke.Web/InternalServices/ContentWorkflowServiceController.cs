@@ -5,19 +5,23 @@
 namespace DotNetNuke.Web.InternalServices
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Dto;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    /// <summary>An API controller for managing content moving through its workflow.</summary>
     [DnnAuthorize]
     public partial class ContentWorkflowServiceController : DnnApiController
     {
@@ -29,6 +33,9 @@ namespace DotNetNuke.Web.InternalServices
             this.workflowEngine = WorkflowEngine.Instance;
         }
 
+        /// <summary>Rejects a workflow.</summary>
+        /// <param name="postData">The workflow notification to reject.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Reject(NotificationDTO postData)
@@ -40,21 +47,21 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     if (string.IsNullOrEmpty(notification.Context))
                     {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
                     }
 
                     string[] parameters = notification.Context.Split(':');
 
-                    var stateTransiction = new StateTransaction
+                    var stateTransaction = new StateTransaction
                     {
-                        ContentItemId = int.Parse(parameters[0]),
-                        CurrentStateId = int.Parse(parameters[2]),
+                        ContentItemId = int.Parse(parameters[0], CultureInfo.InvariantCulture),
+                        CurrentStateId = int.Parse(parameters[2], CultureInfo.InvariantCulture),
                         Message = new StateTransactionMessage(),
                         UserId = this.UserInfo.UserID,
                     };
-                    this.workflowEngine.DiscardState(stateTransiction);
+                    this.workflowEngine.DiscardState(stateTransaction);
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
                 }
             }
             catch (Exception exc)
@@ -65,6 +72,9 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
         }
 
+        /// <summary>Approves a workflow.</summary>
+        /// <param name="postData">The workflow notification to approve.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Approve(NotificationDTO postData)
@@ -76,21 +86,21 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     if (string.IsNullOrEmpty(notification.Context))
                     {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
                     }
 
                     string[] parameters = notification.Context.Split(':');
 
-                    var stateTransiction = new StateTransaction
+                    var stateTransaction = new StateTransaction
                     {
-                        ContentItemId = int.Parse(parameters[0]),
-                        CurrentStateId = int.Parse(parameters[2]),
+                        ContentItemId = int.Parse(parameters[0], CultureInfo.InvariantCulture),
+                        CurrentStateId = int.Parse(parameters[2], CultureInfo.InvariantCulture),
                         Message = new StateTransactionMessage(),
                         UserId = this.UserInfo.UserID,
                     };
-                    this.workflowEngine.CompleteState(stateTransiction);
+                    this.workflowEngine.CompleteState(stateTransaction);
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
                 }
             }
             catch (Exception exc)
@@ -101,46 +111,16 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
         }
 
-        [DnnDeprecated(7, 4, 0, "No replacement")]
+        /// <summary>Complete a workflow state for the current page.</summary>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public partial HttpResponseMessage Review(NotificationDTO postData)
+        public HttpResponseMessage CompleteState()
         {
             try
             {
-                var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
-
-                if (notification != null)
-                {
-                    if (string.IsNullOrEmpty(notification.Context))
-                    {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-                    }
-
-                    var source = notification.Context;
-                    string[] parameters = null;
-                    if (notification.Context.Contains(";"))
-                    {
-                        parameters = notification.Context.Split(';');
-                        source = parameters[0];
-                        parameters = parameters.ToList().Skip(1).ToArray();
-                    }
-
-                    var workflow = ContentWorkflowController.Instance.GetDefaultWorkflow(this.PortalSettings.PortalId);
-                    var workflowSource = ContentWorkflowController.Instance.GetWorkflowSource(workflow.WorkflowID, source);
-                    if (workflowSource == null)
-                    {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-                    }
-
-                    var sourceAction = Reflection.CreateInstance(Reflection.CreateType(workflowSource.SourceType)) as IContentWorkflowAction;
-                    if (sourceAction == null)
-                    {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-                    }
-
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Link = sourceAction.GetAction(parameters) });
-                }
+                this.workflowEngine.CompleteState(this.BuildStateTransaction());
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             catch (Exception exc)
             {
@@ -148,6 +128,81 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+        }
+
+        /// <summary>Discards a workflow state for the current page.</summary>
+        /// <returns>A response indicating success.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DiscardState()
+        {
+            try
+            {
+                this.workflowEngine.DiscardState(this.BuildStateTransaction());
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+        }
+
+        /// <summary>Complete a workflow for the current page.</summary>
+        /// <returns>A response indicating success.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage CompleteWorkflow()
+        {
+            try
+            {
+                this.workflowEngine.CompleteWorkflow(this.BuildStateTransaction());
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+        }
+
+        /// <summary>Discards a workflow for the current page.</summary>
+        /// <returns>A response indicating success.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DiscardWorkflow()
+        {
+            try
+            {
+                this.workflowEngine.DiscardWorkflow(this.BuildStateTransaction());
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+        }
+
+        private StateTransaction BuildStateTransaction()
+        {
+            var portalId = this.PortalSettings.PortalId;
+            var tabId = this.Request.FindTabId();
+            var currentPage = TabController.Instance.GetTab(tabId, portalId);
+            var contentItemId = currentPage.ContentItemId;
+            var contentController = Util.GetContentController();
+            var contentItem = contentController.GetContentItem(contentItemId);
+            var stateTransaction = new StateTransaction
+            {
+                ContentItemId = contentItem.ContentItemId,
+                CurrentStateId = contentItem.StateID,
+                Message = new StateTransactionMessage(),
+                UserId = this.UserInfo.UserID,
+            };
+            return stateTransaction;
         }
     }
 }

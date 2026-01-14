@@ -4,6 +4,8 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web;
     using System.Web.UI.WebControls;
 
@@ -20,7 +22,7 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
-    /// <summary>ActionManager is a helper class that provides common Action Behaviours that can be used by any IActionControl implementation.</summary>
+    /// <summary>ActionManager is a helper class that provides common Action Behaviours that can be used by any <see cref="IActionControl"/> implementation.</summary>
     public class ActionManager
     {
         private readonly PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -28,6 +30,7 @@ namespace DotNetNuke.UI.Containers
         private readonly HttpResponse response = HttpContext.Current.Response;
 
         /// <summary>Initializes a new instance of the <see cref="ActionManager"/> class.</summary>
+        /// <param name="actionControl">The action control.</param>
         public ActionManager(IActionControl actionControl)
         {
             this.ActionControl = actionControl;
@@ -46,10 +49,12 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>DisplayControl determines whether the associated Action control should be displayed.</summary>
+        /// <param name="objNodes">The nav nodes.</param>
         /// <returns><see langword="true"/> if the nodes should be displayed, otherwise <see langword="false"/>.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool DisplayControl(DNNNodeCollection objNodes)
         {
-            if (objNodes != null && objNodes.Count > 0 && Personalization.GetUserMode() != PortalSettings.Mode.View)
+            if (objNodes is { Count: > 0 } && Personalization.GetUserMode() != PortalSettings.Mode.View)
             {
                 DNNNode objRootNode = objNodes[0];
                 if (objRootNode.HasNodes && objRootNode.DNNNodes.Count == 0)
@@ -93,6 +98,7 @@ namespace DotNetNuke.UI.Containers
         /// <summary>GetClientScriptURL gets the client script to attach to the control's client side onclick event.</summary>
         /// <param name="action">The Action.</param>
         /// <param name="control">The Control.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void GetClientScriptURL(ModuleAction action, WebControl control)
         {
             if (!string.IsNullOrEmpty(action.ClientScript))
@@ -104,8 +110,7 @@ namespace DotNetNuke.UI.Containers
                     script = script.Substring(jSPos + 11);
                 }
 
-                string formatScript = "javascript: return {0};";
-                control.Attributes.Add("onClick", string.Format(formatScript, script));
+                control.Attributes.Add("onClick", $"javascript: return {script};");
             }
         }
 
@@ -114,7 +119,7 @@ namespace DotNetNuke.UI.Containers
         /// <returns><see langword="true"/> if the action is visible, otherwise <see langword="false"/>.</returns>
         public bool IsVisible(ModuleAction action)
         {
-            bool isVisible = false;
+            bool isVisible;
             if (action.Visible && ModulePermissionController.HasModuleAccess(action.Secure, Null.NullString, this.ModuleContext.Configuration))
             {
                 if ((Personalization.GetUserMode() == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
@@ -135,15 +140,15 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>ProcessAction processes the action.</summary>
-        /// <param name="id">The Id of the Action.</param>
+        /// <param name="id">The ID of the Action.</param>
         /// <returns><see langword="true"/> if the action was processed, otherwise <see langword="false"/> (if it's a custom action that can't be found).</returns>
         public bool ProcessAction(string id)
         {
             bool bProcessed = true;
-            int nid = 0;
-            if (int.TryParse(id, out nid))
+            int actionId;
+            if (int.TryParse(id, out actionId))
             {
-                bProcessed = this.ProcessAction(this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByID(nid));
+                bProcessed = this.ProcessAction(this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByID(actionId));
             }
 
             return bProcessed;
@@ -224,7 +229,7 @@ namespace DotNetNuke.UI.Containers
 
         private void Delete(ModuleAction command)
         {
-            var module = ModuleController.Instance.GetModule(int.Parse(command.CommandArgument), this.ModuleContext.TabId, true);
+            var module = ModuleController.Instance.GetModule(int.Parse(command.CommandArgument, CultureInfo.InvariantCulture), this.ModuleContext.TabId, true);
 
             // Check if this is the owner instance of a shared module.
             var user = UserController.Instance.GetCurrentUserInfo();
@@ -241,7 +246,7 @@ namespace DotNetNuke.UI.Containers
                 }
             }
 
-            ModuleController.Instance.DeleteTabModule(this.ModuleContext.TabId, int.Parse(command.CommandArgument), true);
+            ModuleController.Instance.DeleteTabModule(this.ModuleContext.TabId, int.Parse(command.CommandArgument, CultureInfo.InvariantCulture), true);
             EventLogController.Instance.AddLog(module, this.portalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
 
             // Redirect to the same page to pick up changes

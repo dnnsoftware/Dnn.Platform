@@ -11,9 +11,6 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : TabPermissionInfo
     /// <summary>TabPermissionInfo provides the Entity Layer for Tab Permissions.</summary>
     [Serializable]
     [XmlRoot("permission")]

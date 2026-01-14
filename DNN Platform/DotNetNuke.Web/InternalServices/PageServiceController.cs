@@ -17,12 +17,14 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
 
+    /// <summary>A web API controller for pages.</summary>
     [DnnAuthorize]
     [DnnPageEditor]
     public class PageServiceController : DnnApiController
     {
         private int? portalId;
 
+        /// <summary>Gets the portal ID.</summary>
         protected int PortalId
         {
             get
@@ -36,6 +38,9 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
+        /// <summary>Publishes a page.</summary>
+        /// <param name="dto">The publish request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnPagePermission]
@@ -48,6 +53,9 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        /// <summary>Updates a custom URL for a page.</summary>
+        /// <param name="dto">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateCustomUrl(SaveUrlDto dto)

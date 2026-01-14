@@ -10,6 +10,9 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Threading;
     using System.Web.UI;
 
+    /// <summary>A list of children controls.</summary>
+    /// <typeparam name="TOwner">The type of the owner/parent control.</typeparam>
+    /// <typeparam name="TChildren">The type of the children controls.</typeparam>
     public sealed class UniformControlCollection<TOwner, TChildren> : IList<TChildren>
         where TOwner : Control
         where TChildren : Control
@@ -23,9 +26,9 @@ namespace DotNetNuke.Web.UI.WebControls
             this.owner = owner;
         }
 
-        /// <summary>Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
+        /// <summary>Gets the number of elements contained in the <see cref="ICollection{T}" />.</summary>
         /// <returns>
-        /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
+        /// The number of elements contained in the <see cref="ICollection{T}" />.
         /// </returns>
         public int Count
         {
@@ -35,9 +38,9 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</summary>
+        /// <summary>Gets a value indicating whether the <see cref="ICollection{T}" /> is read-only.</summary>
         /// <returns>
-        /// true if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise, false.
+        /// true if the <see cref="ICollection{T}" /> is read-only; otherwise, false.
         /// </returns>
         public bool IsReadOnly
         {
@@ -54,10 +57,10 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <param name="index">
         /// The zero-based index of the element to get or set.
         /// </param>
-        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1" />.
+        /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="index" /> is not a valid index in the <see cref="IList{T}" />.
         /// </exception>
-        /// <exception cref="T:System.NotSupportedException">
-        /// The property is set and the <see cref="T:System.Collections.Generic.IList`1" /> is read-only.
+        /// <exception cref="System.NotSupportedException">
+        /// The property is set and the <see cref="IList{T}" /> is read-only.
         /// </exception>
         public TChildren this[int index]
         {
@@ -73,63 +76,66 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Adds the specified <typeparamref name="TChildren"/> object to the collection at the specified index location.</summary>
+        /// <param name="index">The location in the array at which to add the child control.</param>
+        /// <param name="childControl">The <typeparamref name="TChildren"/> to add to the collection.</param>
         public void AddAt(int index, TChildren childControl)
         {
             this.owner.Controls.AddAt(index, childControl);
         }
 
-        /// <summary>Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1" />.</summary>
+        /// <summary>Determines the index of a specific item in the <see cref="IList{T}" />.</summary>
         /// <returns>
         /// The index of <paramref name="item" /> if found in the list; otherwise, -1.
         /// </returns>
         /// <param name="item">
-        /// The object to locate in the <see cref="T:System.Collections.Generic.IList`1" />.
+        /// The object to locate in the <see cref="IList{T}" />.
         /// </param>
         public int IndexOf(TChildren item)
         {
             return this.owner.Controls.IndexOf(item);
         }
 
-        /// <summary>Inserts an item to the <see cref="T:System.Collections.Generic.IList`1" /> at the specified index.</summary>
+        /// <summary>Inserts an item to the <see cref="IList{T}" /> at the specified index.</summary>
         /// <param name="index">
         /// The zero-based index at which <paramref name="item" /> should be inserted.
         /// </param>
         /// <param name="item">
-        /// The object to insert into the <see cref="T:System.Collections.Generic.IList`1" />.
+        /// The object to insert into the <see cref="IList{T}" />.
         /// </param>
-        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1" />.
+        /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="index" /> is not a valid index in the <see cref="IList{T}" />.
         /// </exception>
-        /// <exception cref="T:System.NotSupportedException">
-        /// The <see cref="T:System.Collections.Generic.IList`1" /> is read-only.
+        /// <exception cref="System.NotSupportedException">
+        /// The <see cref="IList{T}" /> is read-only.
         /// </exception>
         public void Insert(int index, TChildren item)
         {
             this.owner.Controls.AddAt(index, item);
         }
 
-        /// <summary>Removes the <see cref="T:System.Collections.Generic.IList`1" /> item at the specified index.</summary>
+        /// <summary>Removes the <see cref="IList{T}" /> item at the specified index.</summary>
         /// <param name="index">
         /// The zero-based index of the item to remove.
         /// </param>
-        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1" />.
+        /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="index" /> is not a valid index in the <see cref="IList{T}" />.
         /// </exception>
-        /// <exception cref="T:System.NotSupportedException">
-        /// The <see cref="T:System.Collections.Generic.IList`1" /> is read-only.
+        /// <exception cref="System.NotSupportedException">
+        /// The <see cref="IList{T}" /> is read-only.
         /// </exception>
         public void RemoveAt(int index)
         {
             this.owner.Controls.RemoveAt(index);
         }
 
-        /// <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
+        /// <summary>Removes the first occurrence of a specific object from the <see cref="ICollection{T}" />.</summary>
         /// <returns>
-        /// true if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.
+        /// true if <paramref name="item" /> was successfully removed from the <see cref="ICollection{T}" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see cref="ICollection{T}" />.
         /// </returns>
         /// <param name="item">
-        /// The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1" />.
+        /// The object to remove from the <see cref="ICollection{T}" />.
         /// </param>
-        /// <exception cref="T:System.NotSupportedException">
-        /// The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
+        /// <exception cref="System.NotSupportedException">
+        /// The <see cref="ICollection{T}" /> is read-only.
         /// </exception>
         public bool Remove(TChildren item)
         {
@@ -139,7 +145,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
+        /// A <see cref="IEnumerator{T}" /> that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>1.</filterpriority>
         public IEnumerator<TChildren> GetEnumerator()
@@ -151,9 +157,9 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
-        /// <exception cref="T:System.NotSupportedException">
-        /// The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
+        /// <summary>Removes all items from the <see cref="ICollection{T}" />.</summary>
+        /// <exception cref="System.NotSupportedException">
+        /// The <see cref="ICollection{T}" /> is read-only.
         /// </exception>
         public void Clear()
         {
@@ -163,34 +169,34 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
+        /// <summary>Adds an item to the <see cref="ICollection{T}" />.</summary>
         /// <param name="item">
-        /// The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.
+        /// The object to add to the <see cref="ICollection{T}" />.
         /// </param>
-        /// <exception cref="T:System.NotSupportedException">
-        /// The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
+        /// <exception cref="System.NotSupportedException">
+        /// The <see cref="ICollection{T}" /> is read-only.
         /// </exception>
         public void Add(TChildren item)
         {
             this.owner.Controls.Add(item);
         }
 
-        /// <summary>Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.</summary>
+        /// <summary>Copies the elements of the <see cref="ICollection{T}" /> to an <see cref="System.Array" />, starting at a particular <see cref="System.Array" /> index.</summary>
         /// <param name="array">
-        /// The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1" />. The <see cref="T:System.Array" /> must have zero-based indexing.
+        /// The one-dimensional <see cref="System.Array" /> that is the destination of the elements copied from <see cref="ICollection{T}" />. The <see cref="System.Array" /> must have zero-based indexing.
         /// </param>
         /// <param name="arrayIndex">
         /// The zero-based index in <paramref name="array" /> at which copying begins.
         /// </param>
-        /// <exception cref="T:System.ArgumentNullException"><paramref name="array" /> is null.
+        /// <exception cref="System.ArgumentNullException"><paramref name="array" /> is null.
         /// </exception>
-        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex" /> is less than 0.
+        /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="arrayIndex" /> is less than 0.
         /// </exception>
-        /// <exception cref="T:System.ArgumentException"><paramref name="array" /> is multidimensional.
+        /// <exception cref="System.ArgumentException"><paramref name="array" /> is multidimensional.
         /// -or-
         /// <paramref name="arrayIndex" /> is equal to or greater than the length of <paramref name="array" />.
         /// -or-
-        /// The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.
+        /// The number of elements in the source <see cref="ICollection{T}" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.
         /// -or-
         /// Type paramref name="T" cannot be cast automatically to the type of the destination <paramref name="array" />.
         /// </exception>
@@ -203,12 +209,12 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.</summary>
+        /// <summary>Determines whether the <see cref="ICollection{T}" /> contains a specific value.</summary>
         /// <returns>
-        /// true if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false.
+        /// true if <paramref name="item" /> is found in the <see cref="ICollection{T}" />; otherwise, false.
         /// </returns>
         /// <param name="item">
-        /// The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.
+        /// The object to locate in the <see cref="ICollection{T}" />.
         /// </param>
         public bool Contains(TChildren item)
         {
@@ -223,7 +229,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// <summary>Returns an enumerator that iterates through a collection.</summary>
         /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
+        /// An <see cref="System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>2.</filterpriority>
         private IEnumerator EnumerableGetEnumerator()

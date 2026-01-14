@@ -15,6 +15,7 @@ namespace DNN.Integration.Test.Framework
     using System.Net.Http.Headers;
     using System.Text;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Xml;
     using System.Xml.Linq;
@@ -214,19 +215,22 @@ namespace DNN.Integration.Test.Framework
             return this.IsLoggedIn;
         }
 
-        public HttpResponseMessage UploadUserFile(string fileName, bool waitHttpResponse = true, int userId = -1)
+        public async Task<HttpResponseMessage> UploadUserFile(
+            string fileName,
+            bool waitHttpResponse = true,
+            int userId = -1)
         {
             this.EnsureLoggedIn();
 
             var folder = "Users";
             if (userId > Null.NullInteger)
             {
-                var rootFolder = PathUtils.Instance.GetUserFolderPathElement(userId, PathUtils.UserFolderElement.Root);
-                var subFolder = PathUtils.Instance.GetUserFolderPathElement(userId, PathUtils.UserFolderElement.SubFolder);
+                var rootFolder = PathUtils.GetUserFolderPathElement(userId, PathUtils.UserFolderElement.Root);
+                var subFolder = PathUtils.GetUserFolderPathElement(userId, PathUtils.UserFolderElement.SubFolder);
                 folder = $"Users/{rootFolder}/{subFolder}/{userId}/";
             }
 
-            return this.UploadFile(fileName, folder, waitHttpResponse);
+            return await this.UploadFile(fileName, folder, waitHttpResponse);
         }
 
         public HttpResponseMessage ActivityStreamUploadUserFile(IDictionary<string, string> headers, string fileName)
@@ -235,10 +239,10 @@ namespace DNN.Integration.Test.Framework
             return this.ActivityStreamUploadFile(headers, fileName);
         }
 
-        public bool UploadCmsFile(string fileName, string portalFolder)
+        public async Task<bool> UploadCmsFile(string fileName, string portalFolder)
         {
             this.EnsureLoggedIn();
-            var result = this.UploadFile(fileName, portalFolder);
+            var result = await this.UploadFile(fileName, portalFolder);
             return result.IsSuccessStatusCode;
         }
 
@@ -594,7 +598,7 @@ namespace DNN.Integration.Test.Framework
             }
 
             var url = domain.AbsoluteUri;
-            if (!url.EndsWith("/"))
+            if (!url.EndsWith("/", StringComparison.Ordinal))
             {
                 url += "/";
             }
@@ -604,7 +608,7 @@ namespace DNN.Integration.Test.Framework
                 path = string.Empty;
             }
 
-            if (path.StartsWith("/"))
+            if (path.StartsWith("/", StringComparison.Ordinal))
             {
                 return url + path.Substring(1);
             }
@@ -713,7 +717,7 @@ namespace DNN.Integration.Test.Framework
             }
         }
 
-        private HttpResponseMessage UploadFile(string fileName, string portalFolder, bool waitHttpResponse = true)
+        private async Task<HttpResponseMessage> UploadFile(string fileName, string portalFolder, bool waitHttpResponse = true)
         {
             using (var client = this.CreateHttpClient("/", true))
             {
@@ -724,8 +728,8 @@ namespace DNN.Integration.Test.Framework
 
                 if (string.IsNullOrEmpty(this._inputFieldVerificationToken))
                 {
-                    var resultGet = client.GetAsync("/").Result;
-                    var data = resultGet.Content.ReadAsStringAsync().Result;
+                    var resultGet = await client.GetAsync("/");
+                    var data = await resultGet.Content.ReadAsStringAsync();
                     this._inputFieldVerificationToken = GetVerificationToken(data);
 
                     if (!string.IsNullOrEmpty(this._inputFieldVerificationToken))
@@ -762,7 +766,7 @@ namespace DNN.Integration.Test.Framework
                 content.Add(fileContent);
 
                 client.DefaultRequestHeaders.UserAgent.ParseAdd(this.UserAgentValue);
-                var result = client.PostAsync(UploadFileRequestPath, content).Result;
+                var result = await client.PostAsync(UploadFileRequestPath, content);
                 return !waitHttpResponse
                     ? result
                     : EnsureSuccessResponse(result, "UploadFile", UploadFileRequestPath);
@@ -898,7 +902,7 @@ namespace DNN.Integration.Test.Framework
                 client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, cachedPage.VerificationToken);
             }
 
-            return cachedPage != null ? cachedPage.InputFields : new string[0];
+            return cachedPage != null ? cachedPage.InputFields : [];
         }
 
         private HttpWebResponse MultipartFormDataPost(

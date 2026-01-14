@@ -8,51 +8,41 @@ namespace DotNetNuke.Web.Validators
 
     using DotNetNuke.Common;
 
+    /// <summary>A validation result.</summary>
     public class ValidationResult
     {
-        private readonly IEnumerable<ValidationError> errors;
-
+        /// <summary>Initializes a new instance of the <see cref="ValidationResult"/> class without any errors.</summary>
         public ValidationResult()
         {
-            this.errors = Enumerable.Empty<ValidationError>();
+            this.Errors = [];
         }
 
+        /// <summary>Initializes a new instance of the <see cref="ValidationResult"/> class with errors.</summary>
+        /// <param name="errors">The errors.</param>
         public ValidationResult(IEnumerable<ValidationError> errors)
         {
             Requires.NotNull("errors", errors);
-            this.errors = errors;
+            this.Errors = errors;
         }
 
-        public static ValidationResult Successful
-        {
-            get
-            {
-                return new ValidationResult();
-            }
-        }
+        /// <summary>Gets a new successful instance.</summary>
+        public static ValidationResult Successful => new();
 
-        public IEnumerable<ValidationError> Errors
-        {
-            get
-            {
-                return this.errors;
-            }
-        }
+        /// <summary>Gets the validation errors.</summary>
+        public IEnumerable<ValidationError> Errors { get; }
 
-        public bool IsValid
-        {
-            get
-            {
-                return this.errors.Count() == 0;
-            }
-        }
+        /// <summary>Gets a value indicating whether this result is valid.</summary>
+        public bool IsValid => !this.Errors.Any();
 
+        /// <summary>Combines this result with <paramref name="other"/>.</summary>
+        /// <param name="other">The other validation result.</param>
+        /// <returns>A new <see cref="ValidationResult"/> with the errors combined.</returns>
         public ValidationResult CombineWith(ValidationResult other)
         {
             Requires.NotNull("other", other);
 
             // Just concatenate the errors collection
-            return new ValidationResult(this.errors.Concat(other.Errors));
+            return new ValidationResult(this.Errors.Concat(other.Errors));
         }
     }
 }

@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Xml;
 
@@ -18,9 +19,9 @@ namespace DotNetNuke.Services.Installer.Writers
     public class ScriptComponentWriter : FileComponentWriter
     {
         /// <summary>Initializes a new instance of the <see cref="ScriptComponentWriter"/> class.</summary>
-        /// <param name="basePath"></param>
-        /// <param name="scripts"></param>
-        /// <param name="package"></param>
+        /// <param name="basePath">The script files base path.</param>
+        /// <param name="scripts">The script files.</param>
+        /// <param name="package">The package info.</param>
         public ScriptComponentWriter(string basePath, Dictionary<string, InstallFile> scripts, PackageInfo package)
             : base(basePath, scripts, package)
         {
@@ -59,23 +60,23 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <inheritdoc/>
         protected override void WriteFileElement(XmlWriter writer, InstallFile file)
         {
-            this.Log.AddInfo(string.Format(Util.WRITER_AddFileToManifest, file.Name));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.WRITER_AddFileToManifest, file.Name));
             string type = "Install";
             string version = Null.NullString;
             string fileName = Path.GetFileNameWithoutExtension(file.Name);
-            if (fileName.Equals("uninstall", StringComparison.InvariantCultureIgnoreCase))
+            if (fileName.Equals("uninstall", StringComparison.OrdinalIgnoreCase))
             {
                 // UnInstall.SqlDataprovider
                 type = "UnInstall";
                 version = this.Package.Version.ToString(3);
             }
-            else if (fileName.Equals("install", StringComparison.InvariantCultureIgnoreCase))
+            else if (fileName.Equals("install", StringComparison.OrdinalIgnoreCase))
             {
                 // Install.SqlDataprovider
                 type = "Install";
                 version = new Version(0, 0, 0).ToString(3);
             }
-            else if (fileName.StartsWith("Install"))
+            else if (fileName.StartsWith("Install", StringComparison.OrdinalIgnoreCase))
             {
                 // Install.xx.xx.xx.SqlDataprovider
                 type = "Install";

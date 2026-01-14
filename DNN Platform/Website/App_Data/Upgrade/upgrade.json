@@ -1,0 +1,13 @@
+﻿{
+  "minimumDnnVersion": "10.02.00",
+  "upgradeExclude": [
+    "/favicon.ico",
+    "/Robots.txt",
+    "/web.config",
+    "/App_Data/Database.mdf",
+    "/App_Data/Database_log.LDF",
+    "/bin/Providers/DotNetNuke.Providers.AspNetClientCapabilityProvider.dll",
+    "/Config/DotNetNuke.config",
+    "/Install/InstallWizard.aspx"
+  ]
+}

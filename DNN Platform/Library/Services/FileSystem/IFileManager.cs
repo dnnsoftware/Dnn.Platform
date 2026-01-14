@@ -16,10 +16,6 @@ namespace DotNetNuke.Services.FileSystem
     /// </summary>
     public interface IFileManager
     {
-        /// <summary>Gets the system defined content types.</summary>
-        [Obsolete("Deprecated in DotNetNuke 7.4.2. It has been replaced by FileContentTypeManager.Instance.ContentTypes. Scheduled for removal in v10.0.0.")]
-        IDictionary<string, string> ContentTypes { get; }
-
         /// <summary>Gets current user's file upload extension whitelist.</summary>
         FileExtensionWhitelist WhiteList { get; }
 
@@ -98,12 +94,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A boolean value indicating whether the file exists or not in the specified folder.</returns>
         bool FileExists(IFolderInfo folder, string fileName, bool retrieveUnpublishedFiles);
 
-        /// <summary>Gets the Content Type for the specified file extension.</summary>
-        /// <param name="extension">The file extension.</param>
-        /// <returns>The Content Type for the specified extension.</returns>
-        [Obsolete("Deprecated in DotNetNuke 7.4.2. It has been replaced by FileContentTypeManager.Instance.GetContentType(string extension). Scheduled for removal in v10.0.0.")]
-        string GetContentType(string extension);
-
         /// <summary>Gets the file metadata for the specified file.</summary>
         /// <param name="fileID">The file identifier.</param>
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
@@ -158,7 +148,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The direct Url to the file.</returns>
         string GetUrl(IFileInfo file);
 
-        /// <summary>Gets a flag that dertermines if the file is an Image.</summary>
+        /// <summary>Gets a flag that determines if the file is an Image.</summary>
         /// <param name="file">The file to test.</param>
         /// <returns>The flag as a boolean value.</returns>
         bool IsImageFile(IFileInfo file);

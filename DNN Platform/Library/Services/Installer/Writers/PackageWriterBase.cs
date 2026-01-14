@@ -5,6 +5,8 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Text;
@@ -40,13 +42,13 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             this.package = package;
             this.package.AttachInstallerInfo(new InstallerInfo());
-            this.applicationStatusInfo = Common.Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.applicationStatusInfo = Common.Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
         /// <summary>Initializes a new instance of the <see cref="PackageWriterBase"/> class.</summary>
         protected PackageWriterBase()
         {
-            this.applicationStatusInfo = Common.Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.applicationStatusInfo = Common.Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
         /// <summary>Gets a Dictionary of AppCodeFiles that should be included in the Package.</summary>
@@ -299,6 +301,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="writer">The XmlWriter.</param>
         /// <param name="manifest">The manifest.</param>
         /// <remarks>This overload takes a package manifest and writes it to a Writer.</remarks>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void WriteManifest(XmlWriter writer, string manifest)
         {
             WriteManifestStartElement(writer);
@@ -386,7 +389,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
 
             // Close Package
-            this.WritePackageEndElement(writer);
+            WritePackageEndElement(writer);
 
             if (!packageFragment)
             {
@@ -480,17 +483,17 @@ namespace DotNetNuke.Services.Installer.Writers
             foreach (FileInfo file in files)
             {
                 string filePath = folder.FullName.Replace(rootPath, string.Empty);
-                if (filePath.StartsWith("\\"))
+                if (filePath.StartsWith(@"\", StringComparison.Ordinal))
                 {
                     filePath = filePath.Substring(1);
                 }
 
-                if (folder.FullName.ToLowerInvariant().Contains("app_code"))
+                if (folder.FullName.Contains("app_code", StringComparison.OrdinalIgnoreCase))
                 {
                     filePath = "[app_code]" + filePath;
                 }
 
-                if (!file.Extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase) && (file.Attributes & FileAttributes.Hidden) == 0)
+                if (!file.Extension.Equals(".dnn", StringComparison.OrdinalIgnoreCase) && (file.Attributes & FileAttributes.Hidden) == 0)
                 {
                     this.AddFile(Path.Combine(filePath, file.Name));
                 }
@@ -532,8 +535,14 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             string fileName = string.Empty;
 
-            // Create an XPathDocument from the Xml
-            var doc = new XPathDocument(new FileStream(projFile.FullName, FileMode.Open, FileAccess.Read));
+            // Create an XPathDocument from the XML
+            XPathDocument doc;
+            using (var fileStream = new FileStream(projFile.FullName, FileMode.Open, FileAccess.Read))
+            using (var projectFileReader = XmlReader.Create(fileStream))
+            {
+                doc = new XPathDocument(projectFileReader);
+            }
+
             XPathNavigator rootNav = doc.CreateNavigator();
             var manager = new XmlNamespaceManager(rootNav.NameTable);
             manager.AddNamespace("proj", "http://schemas.microsoft.com/developer/msbuild/2003");
@@ -543,21 +552,23 @@ namespace DotNetNuke.Services.Installer.Writers
             fileName = assemblyNav.Value;
             XPathNavigator buildPathNav = rootNav.SelectSingleNode("proj:PropertyGroup/proj:OutputPath", manager);
             string buildPath = buildPathNav.Value.Replace("..\\", string.Empty);
-            buildPath = buildPath.Replace(this.AssemblyPath + "\\", string.Empty);
+            buildPath = buildPath.Replace(this.AssemblyPath + @"\", string.Empty);
             this.AddFile(Path.Combine(buildPath, fileName + ".dll"));
 
             // Check for referenced assemblies
             foreach (XPathNavigator itemNav in rootNav.Select("proj:ItemGroup/proj:Reference", manager))
             {
                 fileName = Util.ReadAttribute(itemNav, "Include");
-                if (fileName.IndexOf(",") > -1)
+                if (fileName.Contains(",", StringComparison.Ordinal))
                 {
-                    fileName = fileName.Substring(0, fileName.IndexOf(","));
+                    fileName = fileName.Substring(0, fileName.IndexOf(",", StringComparison.Ordinal));
                 }
 
-                if (
-                    !(fileName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase) || fileName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) || fileName.Equals("dotnetnuke", StringComparison.InvariantCultureIgnoreCase) ||
-                      fileName.Equals("dotnetnuke.webutility", StringComparison.InvariantCultureIgnoreCase) || fileName.Equals("dotnetnuke.webcontrols", StringComparison.InvariantCultureIgnoreCase)))
+                if (!(fileName.StartsWith("system", StringComparison.OrdinalIgnoreCase)
+                      || fileName.StartsWith("microsoft", StringComparison.OrdinalIgnoreCase)
+                      || fileName.Equals("dotnetnuke", StringComparison.OrdinalIgnoreCase)
+                      || fileName.Equals("dotnetnuke.webutility", StringComparison.OrdinalIgnoreCase)
+                      || fileName.Equals("dotnetnuke.webcontrols", StringComparison.OrdinalIgnoreCase)))
                 {
                     this.AddFile(fileName + ".dll");
                 }
@@ -606,6 +617,15 @@ namespace DotNetNuke.Services.Installer.Writers
         {
         }
 
+        private static void WritePackageEndElement(XmlWriter writer)
+        {
+            // Close components Element
+            writer.WriteEndElement();
+
+            // Close package Element
+            writer.WriteEndElement();
+        }
+
         private void AddFilesToZip(ZipArchive stream, IDictionary<string, InstallFile> files, string basePath)
         {
             foreach (InstallFile packageFile in files.Values)
@@ -617,7 +637,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
                 else
                 {
-                    filepath = Path.Combine(Path.Combine(this.applicationStatusInfo.ApplicationMapPath, basePath), packageFile.FullName.Replace(basePath + "\\", string.Empty));
+                    filepath = Path.Combine(Path.Combine(this.applicationStatusInfo.ApplicationMapPath, basePath), packageFile.FullName.Replace(basePath + @"\", string.Empty));
                 }
 
                 if (File.Exists(filepath))
@@ -625,11 +645,11 @@ namespace DotNetNuke.Services.Installer.Writers
                     string packageFilePath = packageFile.Path;
                     if (!string.IsNullOrEmpty(basePath))
                     {
-                        packageFilePath = packageFilePath.Replace(basePath + "\\", string.Empty);
+                        packageFilePath = packageFilePath.Replace($@"{basePath}\", string.Empty);
                     }
 
                     FileSystemUtils.AddToZip(ref stream, filepath, packageFile.Name, packageFilePath);
-                    this.Log.AddInfo(string.Format(Util.WRITER_SavedFile, packageFile.FullName));
+                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.WRITER_SavedFile, packageFile.FullName));
                 }
             }
         }
@@ -644,7 +664,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Log.StartJob(Util.WRITER_CreatingPackage);
             try
             {
-                this.Log.AddInfo(string.Format(Util.WRITER_CreateArchive, zipFileShortName));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.WRITER_CreateArchive, zipFileShortName));
                 strmZipFile = File.Create(zipFileName);
                 ZipArchive strmZipStream = null;
                 try
@@ -662,14 +682,11 @@ namespace DotNetNuke.Services.Installer.Writers
                 catch (Exception ex)
                 {
                     Exceptions.Exceptions.LogException(ex);
-                    this.Log.AddFailure(string.Format(Util.WRITER_SaveFileError, ex));
+                    this.Log.AddFailure(string.Format(CultureInfo.InvariantCulture, Util.WRITER_SaveFileError, ex));
                 }
                 finally
                 {
-                    if (strmZipStream != null)
-                    {
-                        strmZipStream.Dispose();
-                    }
+                    strmZipStream?.Dispose();
                 }
 
                 this.Log.EndJob(Util.WRITER_CreatedPackage);
@@ -677,24 +694,12 @@ namespace DotNetNuke.Services.Installer.Writers
             catch (Exception ex)
             {
                 Exceptions.Exceptions.LogException(ex);
-                this.Log.AddFailure(string.Format(Util.WRITER_SaveFileError, ex));
+                this.Log.AddFailure(string.Format(CultureInfo.InvariantCulture, Util.WRITER_SaveFileError, ex));
             }
             finally
             {
-                if (strmZipFile != null)
-                {
-                    strmZipFile.Close();
-                }
+                strmZipFile?.Close();
             }
-        }
-
-        private void WritePackageEndElement(XmlWriter writer)
-        {
-            // Close components Element
-            writer.WriteEndElement();
-
-            // Close package Element
-            writer.WriteEndElement();
         }
 
         private void WritePackageStartElement(XmlWriter writer)

@@ -188,7 +188,7 @@ class LanguagePackPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         return (
@@ -255,7 +255,7 @@ class LanguagePackPanelBody extends Component {
                         }
                         <div className="buttons-box">
                             <Button
-                                type="secondary"
+                                type="neutral"
                                 onClick={props.closeLanguagePack.bind(this)}>
                                 {resx.get("Cancel")}
                             </Button>

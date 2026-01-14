@@ -5,64 +5,20 @@ namespace DotNetNuke.HttpModules.Config
 {
     using System;
 
+    /// <summary>An analytics engine from the <c>SiteAnalytics.config</c> file.</summary>
     [Serializable]
     public class AnalyticsEngine
     {
-        private string elementId;
-        private string engineType;
-        private bool injectTop;
-        private string scriptTemplate;
+        /// <summary>Gets or sets the engine type.</summary>
+        public string EngineType { get; set; }
 
-        public string EngineType
-        {
-            get
-            {
-                return this.engineType;
-            }
+        /// <summary>Gets or sets the script template.</summary>
+        public string ScriptTemplate { get; set; }
 
-            set
-            {
-                this.engineType = value;
-            }
-        }
+        /// <summary>Gets or sets the element ID.</summary>
+        public string ElementId { get; set; }
 
-        public string ScriptTemplate
-        {
-            get
-            {
-                return this.scriptTemplate;
-            }
-
-            set
-            {
-                this.scriptTemplate = value;
-            }
-        }
-
-        public string ElementId
-        {
-            get
-            {
-                return this.elementId;
-            }
-
-            set
-            {
-                this.elementId = value;
-            }
-        }
-
-        public bool InjectTop
-        {
-            get
-            {
-                return this.injectTop;
-            }
-
-            set
-            {
-                this.injectTop = value;
-            }
-        }
+        /// <summary>Gets or sets a value indicating whether to inject the script into the top or bottom of the element.</summary>
+        public bool InjectTop { get; set; }
     }
 }

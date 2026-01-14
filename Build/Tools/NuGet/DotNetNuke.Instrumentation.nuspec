@@ -16,10 +16,10 @@
     <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
   </metadata>
   <files>
-    <file src="..\..\..\Website\bin\DotNetNuke.Instrumentation.dll" target="lib\net45\" />
-    <file src="..\..\..\Website\bin\DotNetNuke.Instrumentation.pdb" target="lib\net45\" />
-    <file src="..\..\..\Website\bin\DotNetNuke.Log4Net.dll" target="lib\net45\"/>
-    <file src="..\..\..\Website\bin\DotNetNuke.Log4Net.pdb" target="lib\net45\"/>
+    <file src="..\..\..\Website\bin\DotNetNuke.Instrumentation.dll" target="lib\net48\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Instrumentation.pdb" target="lib\net48\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Log4Net.dll" target="lib\net48\"/>
+    <file src="..\..\..\Website\bin\DotNetNuke.Log4Net.pdb" target="lib\net48\"/>
     <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

@@ -6,28 +6,31 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
     using System.Collections;
+    using System.Net;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
     using Microsoft.Extensions.DependencyInjection;
 
     using Globals = DotNetNuke.Common.Globals;
 
+    /// <summary>A skin/theme object which provides a search input.</summary>
     public partial class Search : SkinObjectBase
     {
         private const string MyFileName = "Search.ascx";
 
         private readonly INavigationManager navigationManager;
-        private bool showSite = true;
-        private bool showWeb = true;
+        private readonly IClientResourceController clientResourceController;
+
+        private bool enableWildSearch = true;
         private string siteIconURL;
         private string siteText;
         private string siteToolTip;
@@ -37,11 +40,19 @@ namespace DotNetNuke.UI.Skins.Controls
         private string webToolTip;
         private string webURL;
 
-        private bool enableWildSearch = true;
-
+        /// <summary>Initializes a new instance of the <see cref="Search"/> class.</summary>
         public Search()
+            : this(null, null)
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Search"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public Search(INavigationManager navigationManager, IClientResourceController clientResourceController)
+        {
+            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
         public string SeeMoreText
@@ -81,37 +92,15 @@ namespace DotNetNuke.UI.Skins.Controls
         /// elements without requiring a custom CssClass.</remarks>
         public string CssClass { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets the visibility setting for the radio button corresponding to site based searchs.</summary>
-        /// <remarks>Set this value to false to hide the "Site" radio button.  This setting has no effect
-        /// if UseDropDownList is true.</remarks>
-        public bool ShowSite
-        {
-            get
-            {
-                return this.showSite;
-            }
+        /// <summary>Gets or sets a value indicating whether the visibility setting for the radio button corresponding to site based searches.</summary>
+        /// <remarks>Set this value to <see langword="false"/> to hide the "Site" radio button.  This setting has no effect
+        /// if <see cref="UseDropDownList"/> is <see langword="true"/>.</remarks>
+        public bool ShowSite { get; set; } = true;
 
-            set
-            {
-                this.showSite = value;
-            }
-        }
-
-        /// <summary>Gets or sets a value indicating whether gets or sets the visibility setting for the radio button corresponding to web based searchs.</summary>
-        /// <remarks>Set this value to false to hide the "Web" radio button.  This setting has no effect
-        /// if UseDropDownList is true.</remarks>
-        public bool ShowWeb
-        {
-            get
-            {
-                return this.showWeb;
-            }
-
-            set
-            {
-                this.showWeb = value;
-            }
-        }
+        /// <summary>Gets or sets a value indicating whether the visibility setting for the radio button corresponding to web based searches.</summary>
+        /// <remarks>Set this value to <see langword="false"/> to hide the "Web" radio button.  This setting has no effect
+        /// if <see cref="UseDropDownList"/> is <see langword="true"/>.</remarks>
+        public bool ShowWeb { get; set; } = true;
 
         /// <summary>Gets or sets the site icon URL.</summary>
         /// <value>The site icon URL.</value>
@@ -367,14 +356,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         }
                         else
                         {
-                            if (Host.UseFriendlyUrls)
-                            {
-                                this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId) + "?Search=" + this.Server.UrlEncode(searchText));
-                            }
-                            else
-                            {
-                                this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId) + "&Search=" + this.Server.UrlEncode(searchText));
-                            }
+                            this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId, string.Empty, "search=" + WebUtility.UrlEncode(searchText)));
                         }
 
                         break;
@@ -393,14 +375,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             else
             {
-                if (Host.UseFriendlyUrls)
-                {
-                    this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId));
-                }
-                else
-                {
-                    this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId));
-                }
+                this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId));
             }
         }
 
@@ -411,8 +386,8 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
 
             Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Search/SearchSkinObjectPreview.js");
+            this.clientResourceController.RegisterStylesheet("~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
+            this.clientResourceController.RegisterScript("~/Resources/Search/SearchSkinObjectPreview.js");
 
             this.cmdSearch.Click += this.CmdSearchClick;
             this.cmdSearchNew.Click += this.CmdSearchNewClick;
@@ -491,7 +466,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
 
                 JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
-                ClientResourceManager.RegisterScript(this.Page, "~/Resources/Search/Search.js", FileOrder.Js.DefaultPriority, "DnnFormBottomProvider");
+                this.clientResourceController.CreateScript("~/Resources/Search/Search.js").SetPriority(FileOrder.Js.DefaultPriority).SetProvider(ClientResourceProviders.DnnFormBottomProvider).Register();
 
                 this.txtSearchNew.Attributes.Add("autocomplete", "off");
                 this.txtSearchNew.Attributes.Add("placeholder", this.PlaceHolderText);

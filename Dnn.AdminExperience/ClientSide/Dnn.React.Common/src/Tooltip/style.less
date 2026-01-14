@@ -18,10 +18,11 @@
         z-index:50;
         visibility: visible;
         .tooltip-inner{
-            background-color: rgb(75, 78, 79);
-            color: #fff;
+            background-color: var(--dnn-color-surface, rgb(75, 78, 79));
+            color: var(--dnn-color-surface-contrast, #fff);
             padding:5px 10px;
-            border-radius: 5px;
+            border: 1px solid var(--dnn-color-surface-dark, rgb(40, 40, 40));
+            border-radius: var(--dnn-controls-radius, 5px);
             position: relative;
             font-family: proxima_nova, HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
             &::before{
@@ -54,67 +55,71 @@
         &.tooltip-overlay--hidden{
             opacity:0;
             pointer-events: none;
-            visibility: hidden;     
+            visibility: hidden;
         }
     } 
     &.error {
         .icon svg {
-            color: @alizarinCrimson;
-            fill: @alizarinCrimson;
+            color: var(--dnn-color-danger, @alizarinCrimson);
+            fill: var(--dnn-color-danger, @alizarinCrimson);
         }
         .tooltip-inner{
-            background-color: @alizarinCrimson;
+            background-color: var(--dnn-color-danger, @alizarinCrimson);
+            color: var(--dnn-color-danger-contrast, #fff);
         }  
         .top .tooltip-inner::before{
-            border-top-color: @alizarinCrimson;
+            border-top-color: var(--dnn-color-danger, @alizarinCrimson);
         }
         .bottom .tooltip-inner::before{
-            border-bottom-color: @alizarinCrimson;
+            border-bottom-color: var(--dnn-color-danger, @alizarinCrimson);
         }
     }
     &.warning {
         .icon svg {
-            color: #EA9C00;
-            fill: #EA9C00;
+            color: var(--dnn-color-warning, #EA9C00);
+            fill: var(--dnn-color-warning, #EA9C00);
         }
         .tooltip-inner{
-            background-color: #EA9C00;
+            background-color: var(--dnn-color-warning, #EA9C00);
+            color: var(--dnn-color-warning-contrast, #fff);
         }  
         .top .tooltip-inner::before{
-            border-top-color: #EA9C00;
+            border-top-color: var(--dnn-color-warning, #EA9C00);
         }
         .bottom .tooltip-inner::before{
-            border-bottom-color: #EA9C00;
+            border-bottom-color: var(--dnn-color-warning, #EA9C00);
         }
     }
     &.info {
         .icon svg {
-            color: @alto;
-            fill: @alto;
+            color: var(--dnn-color-neutral, @alto);
+            fill: var(--dnn-color-neutral, @alto);
         }
         .tooltip-inner{
-            background-color: @thunder;
+            background-color: var(--dnn-color-info, @thunder);
+            color: var(--dnn-color-info-contrast, #fff);
         }  
         .top .tooltip-inner::before{
-            border-top-color: @thunder;
+            border-top-color: var(--dnn-color-info, @thunder);
         }
         .bottom .tooltip-inner::before{
-            border-bottom-color: @thunder;
+            border-bottom-color: var(--dnn-color-info, @thunder);
         }
     }
     &.global {
         .icon svg {
-            color: @cerulean;
-            fill: @cerulean;
+            color: var(--dnn-color-info, @cerulean);
+            fill: var(--dnn-color-info, @cerulean);
         }
         .tooltip-inner{
-            background-color: @cerulean;
+            background-color: var(--dnn-color-info, @cerulean);
+            color: var(--dnn-color-info-contrast, #fff);
         }  
         .top .tooltip-inner::before{
-            border-top-color: @cerulean;
+            border-top-color: var(--dnn-color-info, @cerulean);
         }
         .bottom .tooltip-inner::before{
-            border-bottom-color: @cerulean;
+            border-bottom-color: var(--dnn-color-info, @cerulean);
         }   
     }
     .icon svg {

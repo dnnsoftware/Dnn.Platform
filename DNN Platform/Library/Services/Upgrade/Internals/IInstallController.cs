@@ -28,10 +28,11 @@ namespace DotNetNuke.Services.Upgrade.Internals
         InstallConfig GetInstallConfig();
 
         /// <summary>SetInstallConfig - Saves configuration n DotNetNuke.Install.Config.</summary>
+        /// <param name="installConfig">The install config.</param>
         void SetInstallConfig(InstallConfig installConfig);
 
         /// <summary>RemoveFromInstallConfig - Removes the specified XML Node from the InstallConfig.</summary>
-        /// <param name="xmlNodePath"></param>
+        /// <param name="xmlNodePath">An XPath selector for the nodes to remove.</param>
         void RemoveFromInstallConfig(string xmlNodePath);
 
         /// <summary>GetConnectionFromWebConfig - Returns Connection Configuration in web.config file.</summary>

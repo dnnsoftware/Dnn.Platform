@@ -4,26 +4,36 @@
 namespace DotNetNuke.Services.Search
 {
     using System;
+    using System.Globalization;
 
+    using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Search.Internals;
 
-    /// Namespace:  DotNetNuke.Services.Search
-    /// Project:    DotNetNuke
-    /// Class:      SearchEngineScheduler
-    /// <summary>
-    /// The SearchEngineScheduler implements a SchedulerClient for the Indexing of
-    /// portal content.
-    /// </summary>
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>The SearchEngineScheduler implements a SchedulerClient for the Indexing of portal content.</summary>
     public class SearchEngineScheduler : SchedulerClient
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchEngineScheduler));
+        private readonly IBusinessControllerProvider businessControllerProvider;
 
         /// <summary>Initializes a new instance of the <see cref="SearchEngineScheduler"/> class.</summary>
-        /// <param name="objScheduleHistoryItem"></param>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public SearchEngineScheduler(ScheduleHistoryItem objScheduleHistoryItem)
+            : this(objScheduleHistoryItem, null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SearchEngineScheduler"/> class.</summary>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        public SearchEngineScheduler(ScheduleHistoryItem objScheduleHistoryItem, IBusinessControllerProvider businessControllerProvider)
+        {
+            this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
@@ -33,10 +43,10 @@ namespace DotNetNuke.Services.Search
             try
             {
                 var lastSuccessFulDateTime = SearchHelper.Instance.GetLastSuccessfulIndexingDateTime(this.ScheduleHistoryItem.ScheduleID);
-                Logger.Trace("Search: Site Crawler - Starting. Content change start time " + lastSuccessFulDateTime.ToString("g"));
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Starting. Content change start time <b>{0:g}</b>", lastSuccessFulDateTime));
+                Logger.Trace("Search: Site Crawler - Starting. Content change start time " + lastSuccessFulDateTime.ToString("g", CultureInfo.InvariantCulture));
+                this.ScheduleHistoryItem.AddLogNote(string.Format(CultureInfo.InvariantCulture, "Starting. Content change start time <b>{0:g}</b>", lastSuccessFulDateTime));
 
-                var searchEngine = new SearchEngine(this.ScheduleHistoryItem, lastSuccessFulDateTime);
+                var searchEngine = new SearchEngine(this.ScheduleHistoryItem, lastSuccessFulDateTime, this.businessControllerProvider);
                 try
                 {
                     searchEngine.DeleteOldDocsBeforeReindex();

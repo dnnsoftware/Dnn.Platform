@@ -13,9 +13,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
     using DotNetNuke.Instrumentation;
     using DotNetNuke.UI.WebControls;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DateEditControl
     /// <summary>
     /// The DateEditControl control provides a standard UI component for editing
     /// date properties.
@@ -52,7 +49,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 DateTime dteValue = Null.NullDate;
                 try
                 {
-                    var dteString = Convert.ToString(this.Value);
+                    var dteString = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
                     DateTime.TryParse(dteString, CultureInfo.InvariantCulture, DateTimeStyles.None, out dteValue);
                 }
                 catch (Exception exc)
@@ -136,7 +133,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 string stringValue = Null.NullString;
                 if (this.DateValue.ToUniversalTime().Date != (DateTime)SqlDateTime.MinValue && this.DateValue != Null.NullDate)
                 {
-                    stringValue = this.DateValue.ToString(this.Format);
+                    stringValue = this.DateValue.ToString(this.Format, CultureInfo.InvariantCulture);
                 }
 
                 return stringValue;
@@ -144,7 +141,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
 
             set
             {
-                this.Value = DateTime.Parse(value);
+                this.Value = DateTime.Parse(value, CultureInfo.InvariantCulture);
             }
         }
 
@@ -168,7 +165,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             bool dataChanged = false;
             string presentValue = this.StringValue;
             string postedValue = postCollection[postDataKey + "_control"];
-            if (!presentValue.Equals(postedValue))
+            if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
             {
                 if (string.IsNullOrEmpty(postedValue))
                 {
@@ -201,6 +198,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             this.Controls.Add(this.DateControl);
         }
 
+        /// <summary>Loads the date controls.</summary>
         protected virtual void LoadDateControls()
         {
             if (this.DateValue != Null.NullDate)
@@ -234,7 +232,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         }
 
         /// <summary>RenderEditMode is called by the base control to render the control in Edit Mode.</summary>
-        /// <param name="writer"></param>
+        /// <param name="writer">The writer to which to render the HTML.</param>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);

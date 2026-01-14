@@ -3,8 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common.Utilities
 {
-    using System;
-
+    /// <summary>A contract specifying the ability to read and adjust paths.</summary>
     public interface IPathUtils
     {
         /// <summary>Adds backslash to the specified source.</summary>
@@ -18,23 +17,21 @@ namespace DotNetNuke.Common.Utilities
         string FormatFolderPath(string folderPath);
 
         /// <summary>Gets the physical path for the specified relative path.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="relativePath">The relative path.</param>
         /// <returns>The path.</returns>
         string GetPhysicalPath(int portalID, string relativePath);
 
         /// <summary>Gets the relative path for the specified physical path.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="physicalPath">The physical path.</param>
         /// <returns>The path.</returns>
         string GetRelativePath(int portalID, string physicalPath);
 
         /// <summary>Gets the physical root folder path for the specified portal.</summary>
+        /// <param name="portalID">The portal ID.</param>
         /// <returns>The path.</returns>
         string GetRootFolderMapPath(int portalID);
-
-        /// <summary>Get elements from the user folder path.</summary>
-        /// <param name="userID">The user identifier.</param>
-        /// <param name="mode">The UserFolderElement to get.</param>
-        /// <returns>The element from the user folder path.</returns>
-        [Obsolete("Deprecated in DotNetNuke 6.2.0. No replacement, this should have been internal only. Scheduled removal in v10.0.0.")]
-        string GetUserFolderPathElement(int userID, PathUtils.UserFolderElement mode);
 
         /// <summary>Checks if a folder is a default protected folder.</summary>
         /// <param name="folderPath">The folder path.</param>

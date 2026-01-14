@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Log.EventLog
     public class PurgeLogBuffer : SchedulerClient
     {
         /// <summary>Initializes a new instance of the <see cref="PurgeLogBuffer"/> class.</summary>
-        /// <param name="objScheduleHistoryItem"></param>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
         public PurgeLogBuffer(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;

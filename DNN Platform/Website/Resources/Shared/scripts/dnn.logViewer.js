@@ -33,7 +33,7 @@
                         modal: true,
                         autoOpen: true,
                         title: data.Title,
-                        dialogClass: "dnnFormPopup",
+                        classes: { "ui-dialog": "dnnFormPopup" },
                         position: "center",
                         width: 800,
                         height: 480,

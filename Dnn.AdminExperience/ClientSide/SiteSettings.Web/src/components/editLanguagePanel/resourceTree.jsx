@@ -12,7 +12,7 @@ const parentTermTreeStyle = {
     boxSizing: "border-box"
 };
 
-/*eslint-disable react/no-danger*/
+ 
 function mapChildFolders(folders, getChildFolders, getResxEntries, resxBeingEdited) {
     return folders.map((folder, i) => {
         const isResxFile = folder.NewValue.indexOf(".resx") !== -1;
@@ -79,7 +79,7 @@ class ResourceTree extends Component {
                     <Label label={resx.get("ResourceFile")} />
                     <div className="resource-file-dropdown" onClick={this.onToggleTree.bind(this)} style={{ width: "50%" }}>
                         {resxBeingEditedDisplay || resx.get("SelectResourcePlaceholder")}
-                        <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowDownIcon }}></div>
+                        <div className="dropdown-icon"><SvgIcons.ArrowDownIcon /></div>
                     </div>
                     <Collapsible isOpened={this.state.treeOpened} className="tree-container">
                         <Scrollbars style={parentTermTreeStyle}>

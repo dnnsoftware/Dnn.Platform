@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -16,17 +17,15 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("get-role", Constants.RolesCategory, "Prompt_GetRole_Description")]
-
     public class GetRole : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_GetRole_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
-        public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing);
+        public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
 
         /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -46,11 +45,19 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             var role = RolesController.Instance.GetRole(this.PortalSettings, this.RoleId);
             if (role == null)
             {
-                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_NoRoleWithId"), this.RoleId));
+                return new ConsoleErrorResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Prompt_NoRoleWithId"), this.RoleId));
             }
 
             lst.Add(new RoleModel(role));
-            return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_RoleFound"), this.RoleId) };
+            return new ConsoleResultModel
+            {
+                Data = lst,
+                Records = lst.Count,
+                Output = string.Format(
+                    CultureInfo.CurrentCulture,
+                    this.LocalizeString("Prompt_RoleFound"),
+                    this.RoleId),
+            };
         }
     }
 }

@@ -83,9 +83,9 @@ class SynonymsGroupEditor extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
-        /* eslint-disable react/no-danger */
+         
         if (this.state.group !== undefined || this.props.id === "add") {  
             return (
                 <div className="synonyms-editor">
@@ -100,7 +100,7 @@ class SynonymsGroupEditor extends Component {
                     </InputGroup>
                     <div className="editor-buttons-box">
                         <Button
-                            type="secondary"
+                            type="neutral"
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>                        

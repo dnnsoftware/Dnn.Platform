@@ -3,6 +3,7 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotNetNuke.Website</RootNamespace>
     <AssemblyName>DotNetNuke.Website</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -54,10 +55,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DotNetNuke.Website.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618,SA1600,SA1601,SA1602,SA1606,SA1607,SA1611,SA1614</WarningsNotAsErrors>
+    <WarningsNotAsErrors>SA1600</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -67,96 +67,34 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DotNetNuke.Website.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618,SA1600,SA1601,SA1602,SA1606,SA1607,SA1611,SA1614</WarningsNotAsErrors>
+    <WarningsNotAsErrors>SA1600</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClientDependency.Core, Version=1.9.10.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Dnn.ClientDependency.1.9.10\lib\net45\ClientDependency.Core.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json.Bson, Version=1.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.Bson.1.0.2\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="PetaPoco">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-    </Reference>
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.6.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.3.0\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.3.0\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.3.0\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SolutionInfo.cs">
@@ -449,13 +387,6 @@
     <Compile Include="admin\Skins\Login.ascx.designer.cs">
       <DependentUpon>login.ascx</DependentUpon>
     </Compile>
-    <Compile Include="admin\Skins\LeftMenu.ascx.cs">
-      <DependentUpon>LeftMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\Skins\LeftMenu.ascx.designer.cs">
-      <DependentUpon>LeftMenu.ascx</DependentUpon>
-    </Compile>
     <Compile Include="admin\Skins\Logo.ascx.cs">
       <DependentUpon>logo.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -469,13 +400,6 @@
     </Compile>
     <Compile Include="admin\Skins\Meta.ascx.designer.cs">
       <DependentUpon>Meta.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\Skins\Nav.ascx.cs">
-      <DependentUpon>nav.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\Skins\Nav.ascx.designer.cs">
-      <DependentUpon>nav.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Privacy.ascx.cs">
       <DependentUpon>privacy.ascx</DependentUpon>
@@ -615,6 +539,7 @@
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <Content Include="App_Data\Upgrade\upgrade.json" />
     <None Include="compilerconfig.json" />
     <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
       <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
@@ -821,7 +746,6 @@
     <Content Include="admin\Skins\DnnCssExclude.ascx" />
     <Content Include="admin\Skins\DnnJsInclude.ascx" />
     <Content Include="admin\Skins\DnnCssInclude.ascx" />
-    <Content Include="admin\Skins\LeftMenu.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\EditExtension.ascx" />
     <Content Include="DesktopModules\Admin\Security\DataConsent.ascx" />
@@ -837,7 +761,6 @@
     <Content Include="Licenses\Cake %28MIT%29.txt.resources" />
     <Content Include="Licenses\Cake LongPath Module %28MIT%29.txt.resources" />
     <Content Include="Licenses\CodeMirror %28MIT%29.txt.resources" />
-    <Content Include="Licenses\Effority Ealo %28Ms-RL%29.txt.resources" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
     <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
@@ -1232,7 +1155,6 @@
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.min.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.svg" />
-    <Content Include="packages.config" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.02.SqlDataProvider" />
@@ -1273,8 +1195,13 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.11.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.11.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.12.01.SqlDataProvider" />
+    <Content Include="Install\Config\09.09.00.config" />
+    <Content Include="Install\Config\10.00.00.config" />
     <Content Include="Install\Config\09.13.04.config" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.04.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.13.08.SqlDataProvider" />
+    <Content Include="Install\Config\10.02.00.config" />
+    <Content Include="Install\Config\10.02.01.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -1365,8 +1292,6 @@
     <Content Include="admin\Skins\Logo.xml" />
     <Content Include="admin\Skins\Meta.ascx" />
     <Content Include="admin\Skins\modulemessage.ascx" />
-    <Content Include="admin\Skins\nav.ascx" />
-    <Content Include="admin\Skins\nav.xml" />
     <Content Include="admin\Skins\privacy.ascx" />
     <Content Include="admin\Skins\Privacy.xml" />
     <Content Include="admin\Skins\search.ascx" />
@@ -1389,7 +1314,6 @@
     <Content Include="admin\Tabs\import.ascx" />
     <Content Include="admin\Tabs\module.css" />
     <Content Include="admin\Users\ViewProfile.ascx" />
-    <Content Include="App_Data\PlaceHolder.txt" />
     <Content Include="App_GlobalResources\TimeZones.xml" />
     <Content Include="Components\ResourceInstaller\template.dnn.txt" />
     <Content Include="Config\PlaceHolder.txt" />
@@ -1449,39 +1373,6 @@
     <Content Include="DesktopModules\AuthenticationServices\DNN\Login.ascx" />
     <Content Include="DesktopModules\AuthenticationServices\DNN\Settings.ascx" />
     <Content Include="DNN.ico" />
-    <Content Include="Documentation\Contributors.txt" />
-    <Content Include="Documentation\License.txt" />
-    <Content Include="Documentation\Readme.txt" />
-    <Content Include="Documentation\StarterKit\Documents.css" />
-    <Content Include="Documentation\StarterKit\images\AddDatabase.jpg" />
-    <Content Include="Documentation\StarterKit\images\AppSetting.gif" />
-    <Content Include="Documentation\StarterKit\images\App_Data.jpg" />
-    <Content Include="Documentation\StarterKit\images\ConnectionString.gif" />
-    <Content Include="Documentation\StarterKit\images\Database2005Properties.jpg" />
-    <Content Include="Documentation\StarterKit\images\DatabaseProperties.jpg" />
-    <Content Include="Documentation\StarterKit\images\EditWeb.jpg" />
-    <Content Include="Documentation\StarterKit\images\FileSecurity.jpg" />
-    <Content Include="Documentation\StarterKit\images\IISPermissions.jpg" />
-    <Content Include="Documentation\StarterKit\images\New2005Database.jpg" />
-    <Content Include="Documentation\StarterKit\images\New2005Login.jpg" />
-    <Content Include="Documentation\StarterKit\images\New2005User.jpg" />
-    <Content Include="Documentation\StarterKit\images\NewDatabase.jpg" />
-    <Content Include="Documentation\StarterKit\images\NewLogin.jpg" />
-    <Content Include="Documentation\StarterKit\images\NewUser.jpg" />
-    <Content Include="Documentation\StarterKit\images\NTFSPermissions.jpg" />
-    <Content Include="Documentation\StarterKit\images\User2005Properties.jpg" />
-    <Content Include="Documentation\StarterKit\images\UserProperties.jpg" />
-    <Content Include="Documentation\StarterKit\images\webconfig.jpg" />
-    <Content Include="Documentation\StarterKit\images\WebProperties1.jpg" />
-    <Content Include="Documentation\StarterKit\images\WebProperties2.jpg" />
-    <Content Include="Documentation\StarterKit\logo.gif" />
-    <Content Include="Documentation\StarterKit\NTFSConfig.html" />
-    <Content Include="Documentation\StarterKit\SQLServer2005Config.html" />
-    <Content Include="Documentation\StarterKit\SQLServerConfig.html" />
-    <Content Include="Documentation\StarterKit\SQLServerXpressConfig.html" />
-    <Content Include="Documentation\StarterKit\TemplateConfig.html" />
-    <Content Include="Documentation\StarterKit\WebServerConfig.html" />
-    <Content Include="Documentation\StarterKit\Welcome.html" />
     <Content Include="ErrorPage.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -2774,10 +2665,10 @@
     <Content Include="images\xml.gif" />
     <Content Include="images\yellow-warning.gif" />
     <Content Include="images\yellow-warning_16px.gif" />
-    <None Include="DesktopModules\Admin\Portals\portal.template.xsd">
+    <None Include="Components\Portals\portal.template.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="DesktopModules\Admin\Portals\portal.template.xsx">
+    <Content Include="Components\Portals\portal.template.xsx">
       <DependentUpon>portal.template.xsd</DependentUpon>
     </Content>
     <None Include="Install\App_LocalResources\Locales.xml" />
@@ -2786,7 +2677,6 @@
     <Content Include="Install\Config\PlaceHolder.txt" />
     <Content Include="Install\Container\PlaceHolder.txt" />
     <Content Include="Install\install.aspx" />
-    <Content Include="Install\Install.css" />
     <Content Include="Install\Install.htm" />
     <Content Include="Install\Install.template.htm" />
     <Content Include="Install\installbg.gif" />
@@ -2893,7 +2783,6 @@
     <Content Include="Portals\_default\Containers\_default\popUpContainer.ascx" />
     <Content Include="Resources\Shared\stylesheets\dnndefault\8.0.0\default.css" />
     <Content Include="Portals\_default\EventQueue\readme.txt" />
-    <Content Include="Portals\_default\ie.css" />
     <Content Include="Portals\_default\portal.css" />
     <Content Include="Portals\_default\Skins\_default\No Skin.ascx" />
     <Content Include="Portals\_default\Skins\_default\popUpSkin.ascx" />
@@ -3065,10 +2954,14 @@
     <Content Include="admin\Users\App_LocalResources\ViewProfile.ascx.resx" />
     <Content Include="App_GlobalResources\Exceptions.resx" />
     <Content Include="App_GlobalResources\FileUpload.resx" />
-    <Content Include="App_GlobalResources\GlobalResources.resx" />
+    <Content Include="App_GlobalResources\GlobalResources.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_GlobalResources\List_Country.resx" />
     <Content Include="App_GlobalResources\Prompt.resx" />
-    <Content Include="App_GlobalResources\SharedResources.resx" />
+    <Content Include="App_GlobalResources\SharedResources.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_GlobalResources\WebControls.resx" />
     <Content Include="controls\App_LocalResources\Address.ascx.resx" />
     <Content Include="controls\App_LocalResources\DualListControl.ascx.resx" />
@@ -3155,32 +3048,6 @@
     <None Include="Config\SolutionsExplorer.opml.config" />
     <None Include="controls\CountryListBox\Data\GeoIP.dat" />
     <None Include="development.config" />
-    <None Include="Documentation\TELERIK_EULA.pdf" />
-    <Content Include="Install\Config\04.06.00.config" />
-    <Content Include="Install\Config\04.07.00.config" />
-    <Content Include="Install\Config\04.08.00.config" />
-    <Content Include="Install\Config\04.09.00.config" />
-    <Content Include="Install\Config\05.01.00.config" />
-    <Content Include="Install\Config\05.02.00.config" />
-    <Content Include="Install\Config\05.02.01.config" />
-    <Content Include="Install\Config\05.03.00.config" />
-    <Content Include="Install\Config\05.05.00.config" />
-    <Content Include="Install\Config\05.06.00.config" />
-    <Content Include="Install\Config\05.06.01.config" />
-    <Content Include="Install\Config\05.06.03.config" />
-    <Content Include="Install\Config\06.00.00.config" />
-    <Content Include="Install\Config\06.01.00.config" />
-    <Content Include="Install\Config\06.01.01.config" />
-    <Content Include="Install\Config\06.02.00.config" />
-    <Content Include="Install\Config\07.00.00.config" />
-    <Content Include="Install\Config\07.00.05.config" />
-    <Content Include="Install\Config\07.00.06.config" />
-    <Content Include="Install\Config\07.01.01.config" />
-    <Content Include="Install\Config\07.01.02.config" />
-    <Content Include="Install\Config\07.02.00.config" />
-    <Content Include="Install\Config\07.02.01.config" />
-    <Content Include="Install\Config\07.03.00.config" />
-    <Content Include="Install\Config\07.04.01.config" />
     <Content Include="Install\Config\08.00.00.01.config" />
     <Content Include="Install\Config\08.00.00.02.config" />
     <Content Include="Install\Config\08.00.00.03.config" />
@@ -3204,14 +3071,11 @@
     <Content Include="Install\Config\RemoveBindingRedirect.config" />
     <Content Include="Install\Config\09.07.03.config" />
     <Content Include="Install\Config\09.08.00.config" />
-    <Content Include="Install\Config\Net35.config" />
-    <Content Include="Install\Config\Net40.config" />
     <None Include="Install\Template\UserProfile.page.template" />
     <None Include="jquery.min.map" />
     <None Include="js\ClientAPICaps.config" />
     <None Include="js\Debug\ClientAPICaps.config" />
     <Content Include="Licenses\SimpleMDE %28MIT%29.txt.resources" />
-    <Content Include="Licenses\SolPartMenu %28Ms-PL%29.txt.resources" />
     <Content Include="Licenses\Telerik RadControls for ASP.NET AJAX %28Custom%29.pdf.resources" />
     <None Include="Portals\_default\admin.template" />
     <Content Include="Portals\_default\Blank Website.template" />
@@ -3395,6 +3259,7 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.07.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.07.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.08.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.00.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.11.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.08.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.09.00.SqlDataProvider" />
@@ -3411,10 +3276,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Resources\Shared\scripts\jquery\jquery.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Install\Provider\" />
-    <Folder Include="Install\Temp\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -3449,6 +3310,10 @@
     <ProjectReference Include="..\DotNetNuke.Maintenance\DotNetNuke.Maintenance.csproj">
       <Project>{1D5A98BD-F8E0-45F7-B26D-270D9023629D}</Project>
       <Name>DotNetNuke.Maintenance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Web.Client.ResourceManager\DotNetNuke.Web.Client.ResourceManager.csproj">
+      <Project>{039bafbd-e2db-40c4-b565-c27467d9b5e1}</Project>
+      <Name>DotNetNuke.Web.Client.ResourceManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
       <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
@@ -3487,16 +3352,22 @@
     <Content Include="DesktopModules\Admin\Security\App_LocalResources\DataConsent.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Licenses\StencilJS %28MIT%29.resources" />
     <EmbeddedResource Include="Licenses\Google Fonts %28Apache2%29.txt.resources" />
     <EmbeddedResource Include="Licenses\NUnit3TestAdapter %28MIT%29.txt.resources" />
     <Content Include="Portals\_default\Blank Website.template.en-US.resx" />
     <Content Include="Portals\_default\Default Website.template.en-US.resx" />
     <Content Include="Portals\_default\Default Website.template.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -3523,13 +3394,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
   <PropertyGroup>
     <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
   </PropertyGroup>

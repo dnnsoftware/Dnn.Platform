@@ -8,10 +8,10 @@ namespace DotNetNuke.Entities.Urls
     internal class DupKeyCheck
     {
         /// <summary>Initializes a new instance of the <see cref="DupKeyCheck"/> class.</summary>
-        /// <param name="tabKey"></param>
-        /// <param name="tabIdOriginal"></param>
-        /// <param name="tabPath"></param>
-        /// <param name="isDeleted"></param>
+        /// <param name="tabKey">The tab key.</param>
+        /// <param name="tabIdOriginal">The original tab ID.</param>
+        /// <param name="tabPath">The tab path.</param>
+        /// <param name="isDeleted">Whether the tab is disabled or deleted.</param>
         public DupKeyCheck(string tabKey, string tabIdOriginal, string tabPath, bool isDeleted)
         {
             this.TabKey = tabKey;

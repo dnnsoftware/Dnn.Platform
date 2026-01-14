@@ -13,7 +13,8 @@
     width: 100%;
     float: left;
     height: 30px;
-    border: 1px solid @mountainMist;
+    border: 1px solid var(--dnn-color-foreground-light, @mountainMist);
+    border-radius: var(--dnn-controls-radius, 0);
     margin-bottom: 16px;
     position: relative;
     
@@ -27,7 +28,7 @@
         pointer-events: none;
         border-left: 6px solid transparent;
         border-right: 6px solid transparent;
-        border-top: 6px solid @rollingStone;
+        border-top: 6px solid var(--dnn-color-neutral, @rollingStone);
     }
 
     .selected-item {
@@ -54,8 +55,9 @@
         top: ~"calc(100% + 1px)";
         left: -1px;
         width: 100%;
-        border: 1px solid @alto;
-        background: white;
+        border: 1px solid var(--dnn-color-foreground-light, @alto);
+        border-radius: var(--dnn-controls-radius, 0);
+        background: var(--dnn-color-background, white);
         z-index: 1;
         transition: @transition;
         overflow: hidden;
@@ -76,7 +78,8 @@
             .search {
                 float: left;
                 width: 100%;
-                border: 1px solid @alto;
+                border: 1px solid var(--dnn-color-foreground-light, @alto);
+                border-radius: var(--dnn-controls-radius, 0);
                 position: relative;
                 .clear-button {
                     position: absolute;
@@ -98,7 +101,7 @@
                     top: 50%;
                     transform: translate(0, -50%);
                     height: 24px;
-                    color: @rollingStone;
+                    color: var(--dnn-color-foreground, @rollingStone);
                 }
                 input[type="text"] {
                     float: left;
@@ -111,7 +114,7 @@
             .items {
                 float: left;
                 width: 100%;
-                border: 1px solid @alto;
+                border: 1px solid var(--dnn-color-foreground, @alto);
                 height: 200px;
                 margin-top: 14px;
                 &, * {
@@ -140,7 +143,7 @@
                 width: 100%;
                 padding-top: 4px;
                 &:hover {
-                    color: @curiousBlue;
+                    color: var(--dnn-color-primary, @curiousBlue);
                 }   
             }
             & > ul {
@@ -192,7 +195,7 @@
                     height: 0;
                     border-top: 4px solid transparent;
                     border-bottom: 4px solid transparent;
-                    border-left: 4px solid @rollingStone;
+                    border-left: 4px solid var(--dnn-color-neutral, @rollingStone);
                 }
             }
         }
@@ -215,7 +218,7 @@
                 width: 100%;
                 padding-top: 4px;
                 &:hover {
-                    color: @curiousBlue;
+                    color: var(--dnn-color-primary, @curiousBlue);
                 }   
             }
             & > ul {
@@ -267,7 +270,7 @@
                     height: 0;
                     border-top: 4px solid transparent;
                     border-bottom: 4px solid transparent;
-                    border-left: 4px solid @rollingStone;
+                    border-left: 4px solid var(--dnn-color-neutral, @rollingStone);
                 }
             }
         }

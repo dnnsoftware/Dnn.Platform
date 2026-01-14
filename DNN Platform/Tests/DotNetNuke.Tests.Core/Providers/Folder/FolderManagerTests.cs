@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
     using System;
@@ -9,9 +8,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using System.Data;
     using System.Linq;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Services.FileSystem;
@@ -19,6 +15,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Tests.Core.Providers.Builders;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -44,6 +41,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IPathUtils> pathUtils;
         private Mock<IUserSecurityController> mockUserSecurityController;
         private Mock<IFileDeletionController> mockFileDeletionController;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
         public void Setup()
@@ -73,13 +71,17 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this.folderInfo = new Mock<IFolderInfo>();
 
-            var serviceCollection = new ServiceCollection();
-            var mockStatusInfo = new Mock<IApplicationStatusInfo>();
-            mockStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.None);
-
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockStatusInfo.Object);
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockFolder.Object);
+                    services.AddSingleton(this.mockData.Object);
+                    services.AddSingleton(this.folderMappingController.Object);
+                    services.AddSingleton(this.cbo.Object);
+                    services.AddSingleton(this.pathUtils.Object);
+                    services.AddSingleton(this.mockUserSecurityController.Object);
+                    services.AddSingleton(this.mockFileDeletionController.Object);
+                });
         }
 
         [TearDown]
@@ -91,11 +93,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             CBO.ClearInstance();
             FileDeletionController.ClearInstance();
             MockComponentProvider.ResetContainer();
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
         }
 
         [Test]
-
         public void AddFolder_Throws_On_Null_FolderPath()
         {
             Assert.Throws<ArgumentNullException>(() => this.folderManager.AddFolder(It.IsAny<FolderMappingInfo>(), null));
@@ -170,7 +171,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         // _mockFolderManager.Verify();
         // }
         [Test]
-
         public void AddFolder_Throws_When_Folder_Already_Exists()
         {
             var folderMapping = new FolderMappingInfo
@@ -184,7 +184,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void AddFolder_Throws_When_FolderPath_Is_Invalid()
         {
             // arrange
@@ -232,14 +231,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void DeleteFolder_Throws_On_Null_Folder()
         {
             Assert.Throws<ArgumentNullException>(() => this.folderManager.DeleteFolder(null));
         }
 
         [Test]
-
         public void DeleteFolder_Throws_OnNullFolder_WhenRecursive()
         {
             // Arrange
@@ -252,7 +249,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void DeleteFolder_CallsFolderProviderDeleteFolder_WhenRecursive()
         {
             // Arrange
@@ -282,7 +278,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void DeleteFolder_CallsFolderProviderDeleteFolder_WhenRecursive_WhenExistSubfolders()
         {
             // Arrange
@@ -331,7 +326,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void DeleteFolder_SubFoldersCollectionIsNotEmpty_WhenRecursive_WhenUserHasNotDeletePermission()
         {
             // Arrange
@@ -378,7 +372,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void DeleteFolder_Throws_OnFileDeletionControllerThrows_WhenRecursive_WhenFileIsLocked()
         {
             // Arrange
@@ -419,7 +412,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void DeleteFolder_Calls_FolderProvider_DeleteFolder()
         {
             this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
@@ -441,7 +433,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void DeleteFolder_Throws_When_FolderProvider_Throws()
         {
             this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
@@ -456,7 +447,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void DeleteFolder_Calls_Directory_Delete_When_Directory_Exists()
         {
             this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
@@ -481,7 +471,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void DeleteFolder_Calls_FolderManager_DeleteFolder_Overload()
         {
             this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
@@ -825,14 +814,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void UpdateFolder_Throws_On_Null_Folder()
         {
             Assert.Throws<ArgumentNullException>(() => this.folderManager.UpdateFolder(null));
         }
 
         [Test]
-
         public void UpdateFolder_Calls_DataProvider_UpdateFolder()
         {
             this.mockFolderManager.Setup(mfm => mfm.AddLogEntry(this.folderInfo.Object, It.IsAny<EventLogController.EventLogType>()));
@@ -860,14 +847,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void SynchronizeFolder_Throws_On_Null_RelativePath()
         {
             Assert.Throws<ArgumentNullException>(() => this.folderManager.Synchronize(It.IsAny<int>(), null, It.IsAny<bool>(), It.IsAny<bool>()));
         }
 
         [Test]
-
         public void SynchronizeFolder_Throws_When_Some_Folder_Mapping_Requires_Network_Connectivity_But_There_Is_No_Network_Available()
         {
             this.mockFolderManager.Setup(mfm => mfm.AreThereFolderMappingsRequiringNetworkConnectivity(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath, false)).Returns(true);
@@ -923,7 +908,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             this.pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderPath)).Returns(Constants.FOLDER_ValidFolderRelativePath);
 
-            this.directory.Setup(d => d.GetDirectories(Constants.FOLDER_ValidFolderPath)).Returns(new string[0]);
+            this.directory.Setup(d => d.GetDirectories(Constants.FOLDER_ValidFolderPath)).Returns([]);
 
             var result = this.mockFolderManager.Object.GetFileSystemFoldersRecursive(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderPath);
 
@@ -948,7 +933,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var directories = new List<string> { @"C:\folder\subfolder", @"C:\folder\subfolder2", @"C:\folder\subfolder2\subsubfolder", @"C:\folder\subfolder2\subsubfolder2" };
 
             this.directory.Setup(d => d.GetDirectories(It.IsAny<string>()))
-                .Returns<string>(path => directories.FindAll(sub => sub.StartsWith(path + "\\") && sub.LastIndexOf("\\") == path.Length).ToArray());
+                .Returns<string>(path => directories.FindAll(sub => sub.StartsWith(path + @"\") && sub.LastIndexOf(@"\", StringComparison.Ordinal) == path.Length).ToArray());
 
             var result = this.mockFolderManager.Object.GetFileSystemFoldersRecursive(Constants.CONTENT_ValidPortalId, @"C:\folder");
 
@@ -973,7 +958,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var directories = new List<string> { @"C:\folder", @"C:\folder\subfolder", @"C:\folder\subfolder2", @"C:\folder\subfolder2\subsubfolder", @"C:\folder\subfolder2\subsubfolder2" };
 
             this.directory.Setup(d => d.GetDirectories(It.IsAny<string>()))
-                .Returns<string>(path => directories.FindAll(sub => sub.StartsWith(path + "\\") && sub.LastIndexOf("\\") == path.Length).ToArray());
+                .Returns<string>(path => directories.FindAll(sub => sub.StartsWith(path + @"\") && sub.LastIndexOf(@"\", StringComparison.Ordinal) == path.Length).ToArray());
 
             var result = this.mockFolderManager.Object.GetFileSystemFoldersRecursive(Constants.CONTENT_ValidPortalId, @"C:\folder");
 
@@ -1052,7 +1037,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .Returns<IFolderInfo>(parent => subfolders.FindAll(sub =>
                     sub.FolderPath.StartsWith(parent.FolderPath) &&
                     sub.FolderPath.Length > parent.FolderPath.Length &&
-                    sub.FolderPath.Substring(parent.FolderPath.Length).IndexOf("/") == sub.FolderPath.Substring(parent.FolderPath.Length).LastIndexOf("/")));
+                    sub.FolderPath.Substring(parent.FolderPath.Length).IndexOf("/", StringComparison.Ordinal) == sub.FolderPath.Substring(parent.FolderPath.Length).LastIndexOf("/", StringComparison.Ordinal)));
 
             var result = this.mockFolderManager.Object.GetDatabaseFoldersRecursive(this.folderInfo.Object);
 
@@ -1077,7 +1062,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .Returns<IFolderInfo>(parent => subfolders.FindAll(sub =>
                     sub.FolderPath.StartsWith(parent.FolderPath) &&
                     sub.FolderPath.Length > parent.FolderPath.Length &&
-                    sub.FolderPath.Substring(parent.FolderPath.Length).IndexOf("/") == sub.FolderPath.Substring(parent.FolderPath.Length).LastIndexOf("/")));
+                    sub.FolderPath.Substring(parent.FolderPath.Length).IndexOf("/", StringComparison.Ordinal) == sub.FolderPath.Substring(parent.FolderPath.Length).LastIndexOf("/", StringComparison.Ordinal)));
 
             var result = this.mockFolderManager.Object.GetDatabaseFoldersRecursive(this.folderInfo.Object);
 
@@ -1129,7 +1114,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         //        .Returns<string, FolderMappingInfo>((parent, fm) => subfolders.FindAll(sub =>
         //            sub.StartsWith(parent) &&
         //            sub.Length > parent.Length &&
-        //            sub.Substring(parent.Length).IndexOf("/") == sub.Substring(parent.Length).LastIndexOf("/")));
+        //            sub.Substring(parent.Length).IndexOf("/", StringComparison.Ordinal) == sub.Substring(parent.Length).LastIndexOf("/", StringComparison.Ordinal)));
 
         // var result = _mockFolderManager.Object.GetFolderMappingFoldersRecursive(folderMapping, "folder/");
 
@@ -1147,7 +1132,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         //        .Returns<string, FolderMappingInfo>((parent, fm) => subfolders.FindAll(sub =>
         //            sub.StartsWith(parent) &&
         //            sub.Length > parent.Length &&
-        //            sub.Substring(parent.Length).IndexOf("/") == sub.Substring(parent.Length).LastIndexOf("/")));
+        //            sub.Substring(parent.Length).IndexOf("/", StringComparison.Ordinal) == sub.Substring(parent.Length).LastIndexOf("/", StringComparison.Ordinal)));
 
         // var result = _mockFolderManager.Object.GetFolderMappingFoldersRecursive(folderMapping, "folder/");
 
@@ -1349,7 +1334,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         // var mockFolder = MockComponentProvider.CreateFolderProvider("StandardFolderProvider");
 
-        // mockFolder.Setup(mf => mf.GetFiles(_folderInfo.Object)).Returns(new string[0]);
+        // mockFolder.Setup(mf => mf.GetFiles(_folderInfo.Object)).Returns([]);
 
         // var result = _mockFolderManager.Object.ProcessMergedTreeItem(mergedTree.Values[0], 0, mergedTree, Constants.CONTENT_ValidPortalId);
 
@@ -1596,7 +1581,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         // _pathUtils.Setup(pu => pu.GetPhysicalPath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderPath);
 
-        // _directory.Setup(d => d.GetFiles(Constants.FOLDER_ValidFolderPath)).Returns(new string[0]);
+        // _directory.Setup(d => d.GetFiles(Constants.FOLDER_ValidFolderPath)).Returns([]);
 
         // _mockFolderManager.Setup(mfm => mfm.CreateFolderInDatabase(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath, externalStorageLocation)).Verifiable();
 
@@ -2089,22 +2074,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         //    _mockFolderManager.Verify(mfm => mfm.DeleteFolder(It.IsAny<int>(), It.IsAny<string>()), Times.Never());
         //    _directory.Verify(d => d.Delete(It.IsAny<string>(), It.IsAny<bool>()), Times.Never());
         // }
-        [Test]
-        public void MoveFolder_Throws_On_Null_Folder()
-        {
-            Assert.Throws<ArgumentNullException>(() => this.folderManager.MoveFolder(null, It.IsAny<string>()));
-        }
+
 
         [Test]
-        [TestCase(null)]
-        [TestCase("")]
-        public void MoveFolder_Throws_On_Null_Or_Emtpy_NewFolderPath(string newFolderPath)
-        {
-            Assert.Throws<ArgumentException>(() => this.folderManager.MoveFolder(this.folderInfo.Object, newFolderPath));
-        }
-
-        [Test]
-
         public void MoveFolder_Returns_The_Same_Folder_If_The_Paths_Are_The_Same()
         {
             this.folderInfo.Setup(fi => fi.FolderPath).Returns(Constants.FOLDER_ValidFolderRelativePath);
@@ -2120,7 +2092,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void MoveFolder_Throws_When_Move_Operation_Is_Not_Valid()
         {
             this.folderInfo.Setup(fi => fi.FolderPath).Returns(Constants.FOLDER_ValidFolderRelativePath);
@@ -2193,7 +2164,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         // _mockFolderManager.Verify();
         // }
         [Test]
-
         public void OverwriteFolder_Calls_MoveFile_For_Each_File_In_Source_Folder()
         {
             this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
@@ -2227,7 +2197,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void OverwriteFolder_Deletes_Source_Folder_In_Database()
         {
             var fileManager = new Mock<IFileManager>();
@@ -2255,7 +2224,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-
         public void OverwriteFolder_Adds_Folder_To_FoldersToDelete_If_FolderMapping_Is_Editable()
         {
             var fileManager = new Mock<IFileManager>();

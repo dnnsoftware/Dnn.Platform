@@ -7,7 +7,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Exceptions
     public class WorkflowInvalidOperationException : WorkflowException
     {
         /// <summary>Initializes a new instance of the <see cref="WorkflowInvalidOperationException"/> class.</summary>
-        /// <param name="message"></param>
+        /// <param name="message">A message that describes the error.</param>
         public WorkflowInvalidOperationException(string message)
             : base(message)
         {

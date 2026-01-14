@@ -6,6 +6,7 @@ namespace Dnn.ExportImport.Components.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
 
@@ -19,6 +20,7 @@ namespace Dnn.ExportImport.Components.Services
     using DotNetNuke.Instrumentation;
     using DotNetNuke.UI.Skins;
 
+    /// <summary>An export service for themes.</summary>
     public class ThemesExportService : BasePortableService
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesExportService));
@@ -58,8 +60,8 @@ namespace Dnn.ExportImport.Components.Services
             var totalThemesExported = 0;
             try
             {
-                var packagesZipFileFormat = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipThemes}";
-                var packagesZipFile = string.Format(packagesZipFileFormat, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
+                var packagesZipFileFormat = $@"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\{Constants.ExportZipThemes}";
+                var packagesZipFile = string.Format(CultureInfo.InvariantCulture, packagesZipFileFormat, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
                 if (this.CheckPoint.Stage == 0)
                 {
@@ -111,7 +113,7 @@ namespace Dnn.ExportImport.Components.Services
             finally
             {
                 this.CheckPointStageCallback(this);
-                this.Result.AddSummary("Exported Themes", totalThemesExported.ToString());
+                this.Result.AddSummary("Exported Themes", totalThemesExported.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -136,7 +138,7 @@ namespace Dnn.ExportImport.Components.Services
             if (File.Exists(packageZipFile))
             {
                 CompressionUtil.UnZipArchive(packageZipFile, tempFolder);
-                var exporeFiles = Directory.Exists(tempFolder) ? Directory.GetFiles(tempFolder, "*.*", SearchOption.AllDirectories) : new string[0];
+                var exporeFiles = Directory.Exists(tempFolder) ? Directory.GetFiles(tempFolder, "*.*", SearchOption.AllDirectories) : [];
                 var portalSettings = new PortalSettings(importDto.PortalId);
                 this.importCount = exporeFiles.Length;
 
@@ -154,15 +156,15 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             try
                             {
-                                var checkFolder = file.Replace(tempFolder + "\\", string.Empty).Split('\\')[0];
-                                var relativePath = file.Substring((tempFolder + "\\" + checkFolder + "\\").Length);
+                                var checkFolder = file.Replace($@"{tempFolder}\", string.Empty).Split('\\')[0];
+                                var relativePath = file.Substring($@"{tempFolder}\{checkFolder}\".Length);
                                 string targetPath;
 
                                 if (checkFolder == "_default")
                                 {
                                     targetPath = Path.Combine(Globals.HostMapPath, relativePath);
                                 }
-                                else if (checkFolder.EndsWith("-System"))
+                                else if (checkFolder.EndsWith("-System", StringComparison.OrdinalIgnoreCase))
                                 {
                                     targetPath = Path.Combine(portalSettings.HomeSystemDirectoryMapPath, relativePath);
                                 }
@@ -219,13 +221,14 @@ namespace Dnn.ExportImport.Components.Services
             return this.importCount;
         }
 
-        private IList<string> GetExportThemes()
+        private List<string> GetExportThemes()
         {
-            var exportThemes = new List<string>();
-
-            // get site level themes
-            exportThemes.Add(this.portalSettings.DefaultPortalSkin);
-            exportThemes.Add(this.portalSettings.DefaultPortalContainer);
+            var exportThemes = new List<string>
+            {
+                // get site level themes
+                this.portalSettings.DefaultPortalSkin,
+                this.portalSettings.DefaultPortalContainer,
+            };
 
             if (!exportThemes.Contains(this.portalSettings.DefaultAdminSkin))
             {
@@ -245,7 +248,7 @@ namespace Dnn.ExportImport.Components.Services
             foreach (var theme in exportThemes)
             {
                 var packageName = theme.Substring(0, theme.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase));
-                if (!themePackages.Any(p => p.Equals(packageName, StringComparison.InvariantCultureIgnoreCase)))
+                if (!themePackages.Any(p => p.Equals(packageName, StringComparison.OrdinalIgnoreCase)))
                 {
                     themePackages.Add(packageName);
                 }
@@ -254,7 +257,7 @@ namespace Dnn.ExportImport.Components.Services
             return themePackages;
         }
 
-        private IList<string> LoadExportThemesForPages()
+        private List<string> LoadExportThemesForPages()
         {
             var exportThemes = new List<string>();
 
@@ -274,7 +277,7 @@ namespace Dnn.ExportImport.Components.Services
             return exportThemes;
         }
 
-        private IList<string> LoadExportContainersForModules()
+        private List<string> LoadExportContainersForModules()
         {
             var exportThemes = new List<string>();
 

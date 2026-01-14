@@ -177,7 +177,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
                         ClientResourceManager.ClearFileExistsCache($"{Globals.ApplicationPath}/{portal.HomeDirectory}/portal.css");
                     }
 
-                    var content = this.LoadStyleSheet(request.PortalId);
+                    var content = LoadStyleSheet(request.PortalId);
 
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, StyleSheetContent = content });
                 }
@@ -189,7 +189,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
             }
         }
 
-        private string LoadStyleSheet(int portalId)
+        private static string LoadStyleSheet(int portalId)
         {
             var activeLanguage = LocaleController.Instance.GetDefaultLocale(portalId).Code;
             var portal = PortalController.Instance.GetPortal(portalId, activeLanguage);

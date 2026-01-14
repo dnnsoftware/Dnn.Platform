@@ -29,7 +29,7 @@ In addition to robust content management, the free, open source DNN Platform inc
 * [Pull Request Procedures](.github/PULL_REQUEST_PROCESS.md)
 * [Versioning Policy](.github/VERSIONING_POLICY.md)
 * [Release Schedule](.github/RELEASE_SCHEDULE.md)
-* [DNN Docs](https://dnndocs.com)
+* [DNN Docs](https://docs.dnncommunity.org)
 * [Community Website](https://dnncommunity.org)
 * [Community Forums](https://dnncommunity.org/forums)
 * [Community Blogs](https://dnncommunity.org/blogs)

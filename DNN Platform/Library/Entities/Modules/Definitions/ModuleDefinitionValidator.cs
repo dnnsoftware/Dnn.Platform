@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules.Definitions
 {
-    using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Web;
     using System.Xml;
@@ -14,16 +14,30 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
     public enum ModuleDefinitionVersion
     {
+        /// <summary>An unknown version.</summary>
         VUnknown = 0,
+
+        /// <summary>Version one.</summary>
         V1 = 1,
+
+        /// <summary>Version two.</summary>
         V2 = 2,
+
+        /// <summary>Version two of a skin.</summary>
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         V2_Skin = 3,
+
+        /// <summary>Version two of a provider.</summary>
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         V2_Provider = 4,
+
+        /// <summary>Version three.</summary>
         V3 = 5,
     }
 
     public class ModuleDefinitionValidator : XmlValidatorBase
     {
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ModuleDefinitionVersion GetModuleDefinitionVersion(Stream xmlStream)
         {
             ModuleDefinitionVersion retValue;
@@ -115,7 +129,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                     schemaPath = "components\\ResourceInstaller\\ModuleDef_V2Provider.xsd";
                     break;
                 case ModuleDefinitionVersion.VUnknown:
-                    throw new Exception(GetLocalizedString("EXCEPTION_LoadFailed"));
+                    throw new UnknownModuleDefinitionVersionException(GetLocalizedString("EXCEPTION_LoadFailed"));
             }
 
             return Path.Combine(Globals.ApplicationMapPath, schemaPath);

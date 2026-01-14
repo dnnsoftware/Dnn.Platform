@@ -8,17 +8,12 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     using System.Collections;
     using System.Drawing;
 
-    /// <summary>Summary description for PaletteQuantizer.</summary>
+    /// <summary>A <see cref="PaletteQuantizer"/> for grayscale.</summary>
     [CLSCompliant(false)]
     public class GrayscaleQuantizer : PaletteQuantizer
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GrayscaleQuantizer"/> class.
-        /// Construct the palette quantizer.
-        /// </summary>
-        /// <remarks>
-        /// Palette quantization only requires a single quantization step.
-        /// </remarks>
+        /// <summary>Initializes a new instance of the <see cref="GrayscaleQuantizer"/> class.</summary>
+        /// <remarks>Palette quantization only requires a single quantization step.</remarks>
         public GrayscaleQuantizer()
             : base(new ArrayList())
         {

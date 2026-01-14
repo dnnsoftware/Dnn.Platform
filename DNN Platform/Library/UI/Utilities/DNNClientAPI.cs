@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.Utilities
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -17,9 +18,6 @@ namespace DotNetNuke.UI.Utilities
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
 
-    /// Project  : DotNetNuke
-    /// Class    : ClientAPI
-    ///
     /// <summary>Library responsible for interacting with DNN Client API.</summary>
     public partial class DNNClientAPI
     {
@@ -27,26 +25,26 @@ namespace DotNetNuke.UI.Utilities
 
         public enum MinMaxPersistanceType
         {
+            /// <summary>No min-max persistence.</summary>
             None = 0,
+
+            /// <summary>Store min-max via page state.</summary>
             Page = 1,
+
+            /// <summary>Store min-max via cookie.</summary>
             Cookie = 2,
+
+            /// <summary>Store min-max via personalization.</summary>
             Personalization = 3,
         }
 
         public enum PageCallBackType
         {
+            /// <summary>Get personalization.</summary>
             GetPersonalization = 0,
-            SetPersonalization = 1,
-        }
 
-        /// <summary>Adds client side body.onload event handler.</summary>
-        /// <param name="objPage">Current page rendering content.</param>
-        /// <param name="strJSFunction">Javascript function name to execute.</param>
-        [DnnDeprecated(7, 1, 0, "No replacement")]
-        public static partial void AddBodyOnloadEventHandler(Page objPage, string strJSFunction)
-        {
-            // legacy implementation replaced
-            AddBodyOnLoad(objPage, strJSFunction, strJSFunction);
+            /// <summary>Set personalization.</summary>
+            SetPersonalization = 1,
         }
 
         public static void SetInitialFocus(Page objPage, Control control)
@@ -188,7 +186,7 @@ namespace DotNetNuke.UI.Utilities
                         if (intModuleId != -1)
                         {
                             AddAttribute(objButton, "onclick", "if (__dnn_ContainerMaxMin_OnClick(this, '" + objContent.ClientID + "')) return false;");
-                            ClientAPI.RegisterClientVariable(objButton.Page, "containerid_" + objContent.ClientID, intModuleId.ToString(), true);
+                            ClientAPI.RegisterClientVariable(objButton.Page, "containerid_" + objContent.ClientID, intModuleId.ToString(CultureInfo.InvariantCulture), true);
                             ClientAPI.RegisterClientVariable(objButton.Page, "cookieid_" + objContent.ClientID, "_Module" + intModuleId + "_Visible", true);
 
                             ClientAPI.RegisterClientVariable(objButton.Page, "min_icon_" + intModuleId, strMinIconLoc, true);
@@ -258,7 +256,7 @@ namespace DotNetNuke.UI.Utilities
 
             if (intAnimationFrames != 5)
             {
-                ClientAPI.RegisterClientVariable(objButton.Page, "animf_" + objContent.ClientID, intAnimationFrames.ToString(), true);
+                ClientAPI.RegisterClientVariable(objButton.Page, "animf_" + objContent.ClientID, intAnimationFrames.ToString(CultureInfo.InvariantCulture), true);
             }
         }
 
@@ -308,7 +306,7 @@ namespace DotNetNuke.UI.Utilities
                         }
 
                     case MinMaxPersistanceType.Personalization:
-                        string strVisible = Convert.ToString(Personalization.GetProfile(Globals.GetAttribute(objButton, "userctr"), Globals.GetAttribute(objButton, "userkey")));
+                        string strVisible = Convert.ToString(Personalization.GetProfile(Globals.GetAttribute(objButton, "userctr"), Globals.GetAttribute(objButton, "userkey")), CultureInfo.InvariantCulture);
                         if (string.IsNullOrEmpty(strVisible))
                         {
                             return blnDefaultMin;
@@ -333,7 +331,7 @@ namespace DotNetNuke.UI.Utilities
                 switch (ePersistanceType)
                 {
                     case MinMaxPersistanceType.Page:
-                        ClientAPI.RegisterClientVariable(objButton.Page, objButton.ClientID + ":exp", Convert.ToInt32(value).ToString(), true);
+                        ClientAPI.RegisterClientVariable(objButton.Page, objButton.ClientID + ":exp", Convert.ToInt32(value).ToString(CultureInfo.InvariantCulture), true);
                         break;
                     case MinMaxPersistanceType.Cookie:
                         var objModuleVisible = new HttpCookie("_Module" + intModuleId + "_Visible", value.ToString().ToLowerInvariant())

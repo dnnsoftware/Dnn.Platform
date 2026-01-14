@@ -85,13 +85,15 @@ class DetailsRow extends Component {
 
         let i = 0;
         let userActions = sort(actionIcons, "index", "desc").map((actionIcon) => {
-            let element = <div key={`user_action_${i}`} title={actionIcon.title} className={ "extension-action " + !(opened && this.props.currentIndex === i) } dangerouslySetInnerHTML={{ __html: actionIcon.icon }} onClick={ this.toggle.bind(this, i) } ></div>;
+            let Icon = actionIcon.icon;
+            let element = <div key={`user_action_${i}`} title={actionIcon.title} className={ "extension-action " + !(opened && this.props.currentIndex === i) } onClick={ this.toggle.bind(this, i) } ><Icon /></div>;
             i++;
             return element;
         });
         return ([<div key={`user_action_wrapper_${user.userId}`} style={{ position: "relative" }}>
-            <div className={"extension-action " + !this.state.showMenu} dangerouslySetInnerHTML={{ __html: SvgIcons.MoreMenuIcon }}
+            <div className={"extension-action " + !this.state.showMenu}
                 onClick={this.toggleUserMenu.bind(this) }>
+                    <SvgIcons.MoreMenuIcon />
             </div>
             { this.state.showMenu && <UserMenu filter={this.props.filter} appSettings={this.props.appSettings} getUserMenu={this.props.getUserMenu && this.props.getUserMenu.bind(this)} userMenuAction={this.props.userMenuAction && this.props.userMenuAction.bind(this)} onClose={this.toggleUserMenu.bind(this) } 
                 userId={user.userId}/> }
@@ -104,19 +106,19 @@ class DetailsRow extends Component {
         let userColumns = [];
         if (this.props.appSettings.applicationSettings.settings.dataConsentActive) {
             let statusClass = "black";
-            let statusIcon = SvgIcons.Signature;
+            let StatusIcon = SvgIcons.Signature;
             let hoverText = Localization.get("HasAgreedToTerms.title");
             if (user.requestsRemoval) {
                 statusClass = "red";
-                statusIcon = SvgIcons.UserSlash;
+                StatusIcon = SvgIcons.UserSlash;
                 hoverText = Localization.get("RequestsRemoval.title");
             } else if (user.isDeleted) {
                 statusClass = "grey";
-                statusIcon = SvgIcons.UserSlash;
+                StatusIcon = SvgIcons.UserSlash;
                 hoverText = Localization.get("Deleted");
             } else if (!user.authorized) {
                 statusClass = "grey";
-                statusIcon = SvgIcons.CrossOutIcon;
+                StatusIcon = SvgIcons.CrossOutIcon;
                 hoverText = Localization.get("UnAuthorized");
             } else if (!user.hasAgreedToTerms) {
                 statusClass = "grey";
@@ -126,7 +128,7 @@ class DetailsRow extends Component {
                 {
                     index: 3,
                     content: <GridCell key={`gc-userstatus-${user.userId}`} columnSize={columnSizes.find(x=>x.index===3).size}>
-                        <span dangerouslySetInnerHTML={{__html: statusIcon}} className={"user-status " + statusClass} title={hoverText}></span>
+                        <span className={"user-status " + statusClass} title={hoverText}><StatusIcon /></span>
                     </GridCell>
                 }];
         }

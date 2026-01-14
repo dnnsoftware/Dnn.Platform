@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common;
@@ -12,9 +13,6 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DNNPageEditControl
     /// <summary>
     /// The DNNPageEditControl control provides a standard UI component for selecting
     /// a DNN Page.
@@ -41,7 +39,7 @@ namespace DotNetNuke.UI.WebControls
                 TabInfo tab = listTabs[tabIndex];
 
                 // Add the Value Attribute
-                writer.AddAttribute(HtmlTextWriterAttribute.Value, tab.TabID.ToString());
+                writer.AddAttribute(HtmlTextWriterAttribute.Value, tab.TabID.ToString(CultureInfo.InvariantCulture));
 
                 if (tab.TabID == this.IntegerValue)
                 {
@@ -66,22 +64,29 @@ namespace DotNetNuke.UI.WebControls
             TabInfo linkedTabInfo = TabController.Instance.GetTab(this.IntegerValue, Globals.GetPortalSettings().PortalId, false);
 
             // don't render anything if we didn't find the tab
-            if (linkedTabInfo != null)
+            if (linkedTabInfo == null)
             {
-                // Not really sure how to get a good TabID and ModuleID but it's only for tracking so not to concerned
-                int tabID = 0;
-                int moduleID = 0;
-                int.TryParse(this.Page.Request.QueryString["tabid"], out tabID);
-                int.TryParse(this.Page.Request.QueryString["mid"], out moduleID);
-
-                string url = Globals.LinkClick(this.StringValue, tabID, moduleID, true);
-                this.ControlStyle.AddAttributesToRender(writer);
-                writer.AddAttribute(HtmlTextWriterAttribute.Href, url);
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "Normal");
-                writer.RenderBeginTag(HtmlTextWriterTag.A);
-                writer.Write(linkedTabInfo.LocalizedTabName);
-                writer.RenderEndTag();
+                return;
             }
+
+            // Not really sure how to get a good TabID and ModuleID, but it's only for tracking so not to concerned
+            if (!int.TryParse(this.Page.Request.QueryString["tabid"], out var tabId))
+            {
+                tabId = Null.NullInteger;
+            }
+
+            if (!int.TryParse(this.Page.Request.QueryString["mid"], out var moduleId))
+            {
+                moduleId = Null.NullInteger;
+            }
+
+            string url = Globals.LinkClick(this.StringValue, tabId, moduleId, true);
+            this.ControlStyle.AddAttributesToRender(writer);
+            writer.AddAttribute(HtmlTextWriterAttribute.Href, url);
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, "Normal");
+            writer.RenderBeginTag(HtmlTextWriterTag.A);
+            writer.Write(linkedTabInfo.LocalizedTabName);
+            writer.RenderEndTag();
         }
     }
 }

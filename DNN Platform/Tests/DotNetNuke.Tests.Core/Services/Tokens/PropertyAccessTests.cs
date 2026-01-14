@@ -76,7 +76,6 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("utc", false)]
         [TestCase("anything", true)]
         [TestCase("", true)]
-
         public void DateTimePropertyAcccess_GetProperty_Sets_PropertyNotFound(string propertyName, bool expected)
         {
             // Arrange
@@ -101,7 +100,6 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("now", "de")]
         [TestCase("system", "en")]
         [TestCase("utc", "it")]
-
         public void DateTimePropertyAcccess_GetProperty_Returns_Correct_String_For_Culture(string propertyName, string cultureName)
         {
             // Arrange
@@ -145,7 +143,6 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("now", "de", "mmm yyyy")]
         [TestCase("system", "en", "dd/mm/yy")]
         [TestCase("utc", "it", "mmm dd, yyyy")]
-
         public void DateTimePropertyAcccess_GetProperty_Returns_Correct_String_Given_Format_And_Culture(string propertyName, string cultureName, string format)
         {
             // Arrange
@@ -183,7 +180,6 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [Test]
         [TestCase("current", "Tokyo Standard Time")]
         [TestCase("now", "Azores Standard Time")]
-
         public void DateTimePropertyAcccess_GetProperty_Adjusts_For_TimeZone(string propertyName, string timeZoneId)
         {
             // Arrange

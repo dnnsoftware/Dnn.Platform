@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -27,7 +28,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
-        /// <param name="type"></param>
+        /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
         public DnnCountryAutocompleteControl(string type)
         {
             this.Init += this.DnnCountryRegionControl_Init;
@@ -44,10 +45,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        protected string OldStringValue
-        {
-            get { return Convert.ToString(this.OldValue); }
-        }
+        protected string OldStringValue => Convert.ToString(this.OldValue, CultureInfo.InvariantCulture);
 
         /// <inheritdoc/>
         protected override string StringValue
@@ -57,7 +55,7 @@ namespace DotNetNuke.UI.WebControls
                 string strValue = Null.NullString;
                 if (this.Value != null)
                 {
-                    strValue = Convert.ToString(this.Value);
+                    strValue = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
                 }
 
                 return strValue;
@@ -101,7 +99,7 @@ namespace DotNetNuke.UI.WebControls
             bool dataChanged = false;
             string presentValue = this.StringValue;
             string postedValue = postCollection[postDataKey + "_id"];
-            if (!presentValue.Equals(postedValue))
+            if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
             {
                 this.Value = postedValue;
                 dataChanged = true;

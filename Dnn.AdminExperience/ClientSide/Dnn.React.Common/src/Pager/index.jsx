@@ -227,15 +227,15 @@ class Pager extends Component {
         />
         );
     }
-    /* eslint-disable react/no-danger */
+     
     renderIcon(OnClick, Type, Disabled) {
         if (!Disabled) {
             return <li className={"do-not-close pages prev"} onClick={OnClick.bind(this)}>
-                <span className="icon-button" dangerouslySetInnerHTML={{ __html: Type }} />
+                <span className="icon-button"><Type /></span>
             </li>;
         } else {
             return <li className={"do-not-close pages prev disabled"} >
-                <span className="icon-flat" dangerouslySetInnerHTML={{ __html: Type }} />
+                <span className="icon-flat"><Type /></span>
             </li>;
         }
     }

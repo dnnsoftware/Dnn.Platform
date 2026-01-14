@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -11,19 +12,23 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
 
+    /// <summary>A language label control.</summary>
     public class DnnLanguageLabel : CompositeControl, ILocalizable
     {
         private Image flag;
 
         private Label label;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnLanguageLabel"/> class.</summary>
         public DnnLanguageLabel()
         {
             this.Localize = true;
         }
 
+        /// <summary>Gets or sets the display type.</summary>
         public CultureDropDownTypes DisplayType { get; set; }
 
+        /// <summary>Gets or sets the language.</summary>
         public string Language
         {
             get
@@ -77,7 +82,8 @@ namespace DotNetNuke.Web.UI.WebControls
             base.CreateChildControls();
         }
 
-        /// <summary>  OnPreRender runs just before the control is rendered.</summary>
+        /// <summary>OnPreRender runs just before the control is rendered.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -88,14 +94,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             else
             {
-                this.flag.ImageUrl = string.Format("~/images/Flags/{0}.gif", this.Language);
+                this.flag.ImageUrl = $"~/images/Flags/{this.Language}.gif";
             }
 
             if (this.DisplayType == 0)
             {
                 PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 string viewTypePersonalizationKey = "ViewType" + portalSettings.PortalId;
-                string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
+                string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey), CultureInfo.InvariantCulture);
                 switch (viewType)
                 {
                     case "NATIVE":

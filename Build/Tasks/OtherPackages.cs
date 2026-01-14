@@ -18,14 +18,19 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>A cake task to include other 3rd party packages.</summary>
     [IsDependentOn(typeof(PackageNewtonsoft))]
     [IsDependentOn(typeof(PackageMailKit))]
+    [IsDependentOn(typeof(PackageHtmlSanitizer))]
     [IsDependentOn(typeof(PackageAspNetWebApi))]
     [IsDependentOn(typeof(PackageAspNetWebPages))]
     [IsDependentOn(typeof(PackageAspNetMvc))]
     [IsDependentOn(typeof(PackageMicrosoftGlobbing))]
     [IsDependentOn(typeof(PackageWebFormsMvp))]
     [IsDependentOn(typeof(PackageSharpZipLib))]
+    [IsDependentOn(typeof(PackageMicrosoftExtensionsDependencyInjection))]
+    [IsDependentOn(typeof(PackageMicrosoftWebInfrastructure))]
     public sealed class OtherPackages : FrostingTask<Context>
     {
+        private static readonly string[] IncludeAll = ["**/*",];
+
         /// <inheritdoc/>
         public override void Run(Context context)
         {
@@ -41,7 +46,7 @@ namespace DotNetNuke.Build.Tasks
             var srcFolder = "./" + package.Folder;
             var files = package.Excludes.Length == 0
                             ? context.GetFiles(srcFolder + "**/*")
-                            : context.GetFilesByPatterns(srcFolder, new[] { "**/*" }, package.Excludes);
+                            : context.GetFilesByPatterns(srcFolder, IncludeAll, package.Excludes);
             var version = "00.00.00";
             foreach (var dnn in context.GetFiles(srcFolder + "**/*.dnn"))
             {
@@ -55,7 +60,7 @@ namespace DotNetNuke.Build.Tasks
             context.Zip(srcFolder, packageZip, files);
         }
 
-        private class OtherPackage
+        private sealed class OtherPackage
         {
             public string Name { get; set; }
 

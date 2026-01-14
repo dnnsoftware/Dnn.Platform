@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Controllers.Portal
 {
     using System;
@@ -9,16 +8,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
     using System.Data;
     using System.Linq;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Data;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +23,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
 
     using NUnit.Framework;
 
-    // ReSharper disable InconsistentNaming
     [TestFixture]
     public class PortalGroupControllerTests
     {
@@ -36,32 +31,31 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         private UserCopiedCallback userCopied;
 #pragma warning restore 649
 
-        [SetUp]
+        private FakeServiceProvider serviceProvider;
 
+        [SetUp]
         public void SetUp()
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             this.mockData = MockComponentProvider.CreateDataProvider();
-            DataTable hostSettingsTable = new DataTable("HostSettings");
 
-            var nameCol = hostSettingsTable.Columns.Add("SettingName");
+            var hostSettingsTable = new DataTable("HostSettings");
+            hostSettingsTable.PrimaryKey = new[] { hostSettingsTable.Columns.Add("SettingName"), };
             hostSettingsTable.Columns.Add("SettingValue");
             hostSettingsTable.Columns.Add("SettingIsSecure");
-            hostSettingsTable.PrimaryKey = new[] { nameCol };
-
             hostSettingsTable.Rows.Add("PerformanceSetting", "0", false);
             this.mockData.Setup(c => c.GetHostSettings()).Returns(hostSettingsTable.CreateDataReader());
+
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockData.Object);
+                });
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             MockComponentProvider.ResetContainer();
         }
 
@@ -86,7 +80,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalToGroup_Throws_On_Null_PortalGroup()
         {
             // Arrange
@@ -100,7 +93,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalToGroup_Throws_On_Null_Portal()
         {
             // Arrange
@@ -114,7 +106,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalToGroup_Throws_On_Negative_PortalGroupId()
         {
             // Arrange
@@ -131,7 +122,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalToGroup_Throws_On_Negative_PortalId()
         {
             // Arrange
@@ -148,7 +138,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalGroup_Throws_On_Null_PortalGroup()
         {
             // Arrange
@@ -161,11 +150,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalGroup_Calls_DataService_On_Valid_Arguments()
         {
             // Arrange
-            MockComponentProvider.CreateNew<CachingProvider>();
+            MockComponentProvider.CreateDataCacheProvider();
             var mockDataService = new Mock<IDataService>();
             var mockPortalController = new Mock<IPortalController>();
             var controller = new PortalGroupController(mockDataService.Object, mockPortalController.Object);
@@ -181,11 +169,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalGroup_Calls_PortalController_On_Valid_Arguments()
         {
             // Arrange
-            MockComponentProvider.CreateNew<CachingProvider>();
+            MockComponentProvider.CreateDataCacheProvider();
             var mockDataService = new Mock<IDataService>();
             var masterPortal = new PortalInfo { PortalID = Constants.PORTAL_ValidPortalId };
             var mockPortalController = new Mock<IPortalController>();
@@ -205,11 +192,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalGroup_Returns_ValidId_On_Valid_PortalGroup()
         {
             // Arrange
-            MockComponentProvider.CreateNew<CachingProvider>();
+            MockComponentProvider.CreateDataCacheProvider();
             var mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.AddPortalGroup(It.IsAny<PortalGroupInfo>(), It.IsAny<int>())).Returns(Constants.PORTALGROUP_AddPortalGroupId);
             var mockPortalController = new Mock<IPortalController>();
@@ -226,11 +212,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalGroup_Sets_PortalGroupId_Property_On_Valid_PortalGroup()
         {
             // Arrange
-            MockComponentProvider.CreateNew<CachingProvider>();
+            MockComponentProvider.CreateDataCacheProvider();
             var mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.AddPortalGroup(It.IsAny<PortalGroupInfo>(), It.IsAny<int>())).Returns(Constants.PORTALGROUP_AddPortalGroupId);
             var mockPortalController = new Mock<IPortalController>();
@@ -247,7 +232,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_DeletePortalGroup_Throws_On_Null_PortalGroup()
         {
             // Arrange
@@ -260,7 +244,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_DeletePortalGroup_Throws_On_Negative_PortalGroupId()
         {
             // Arrange
@@ -276,11 +259,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_DeletePortalGroup_Calls_DataService_On_Valid_PortalGroupId()
         {
             // Arrange
-            MockComponentProvider.CreateNew<CachingProvider>();
+            MockComponentProvider.CreateDataCacheProvider();
             var mockDataService = new Mock<IDataService>();
             var mockPortalController = new Mock<IPortalController>();
             var controller = new PortalGroupController(mockDataService.Object, mockPortalController.Object);
@@ -296,11 +278,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_GetPortalGroups_Calls_DataService()
         {
             // Arrange
-            var mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            var mockCache = MockComponentProvider.CreateDataCacheProvider();
             mockCache.Setup(c => c.GetItem(CachingProvider.GetCacheKey(DataCache.PortalGroupsCacheKey))).Returns(null);
 
             var mockDataService = new Mock<IDataService>();
@@ -317,11 +298,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_GetPortalGroups_Returns_EmptyList_If_No_Items()
         {
             // Arrange
-            var mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            var mockCache = MockComponentProvider.CreateDataCacheProvider();
             mockCache.Setup(c => c.GetItem(CachingProvider.GetCacheKey(DataCache.PortalGroupsCacheKey))).Returns(null);
 
             Mock<IDataService> mockDataService = new Mock<IDataService>();
@@ -338,11 +318,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_GetPortalGroups_Returns_List_Of_PortalGroups()
         {
             // Arrange
-            var mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            var mockCache = MockComponentProvider.CreateDataCacheProvider();
             mockCache.Setup(c => c.GetItem(CachingProvider.GetCacheKey(DataCache.PortalGroupsCacheKey))).Returns(null);
 
             Mock<IDataService> mockDataService = new Mock<IDataService>();
@@ -361,7 +340,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_RemovePortalFromGroup_Throws_On_Null_PortalGroup()
         {
             // Arrange
@@ -375,7 +353,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_RemovePortalFromGroup_Throws_On_Null_Portal()
         {
             // Arrange
@@ -389,7 +366,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_RemovePortalFromGroup_Throws_On_Negative_PortalGroupId()
         {
             // Arrange
@@ -406,7 +382,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_RemovePortalFromGroup_Throws_On_Negative_PortalId()
         {
             // Arrange
@@ -452,7 +427,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         public void PortalGroupController_UpdatePortalGroup_Calls_DataService_On_Valid_PortalGroup()
         {
             // Arrange
-            MockComponentProvider.CreateNew<CachingProvider>();
+            MockComponentProvider.CreateDataCacheProvider();
             var mockDataService = new Mock<IDataService>();
             var mockPortalController = new Mock<IPortalController>();
             var controller = new PortalGroupController(mockDataService.Object, mockPortalController.Object);

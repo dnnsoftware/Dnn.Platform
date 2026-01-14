@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.Library.Containers
         /// <summary>Gets items allowed to defined in root level.</summary>
         IList<string> RootItems { get; }
 
-        /// <summary>Gets a value indicating whether indicate whether persona bar is available.</summary>
+        /// <summary>Gets a value indicating whether persona bar is available.</summary>
         bool Visible { get; }
 
         /// <summary>Initialize the persona bar container.</summary>

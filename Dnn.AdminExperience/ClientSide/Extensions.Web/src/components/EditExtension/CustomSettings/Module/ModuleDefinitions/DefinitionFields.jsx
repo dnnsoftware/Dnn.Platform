@@ -7,7 +7,7 @@ class DefinitionFields extends Component {
     constructor() {
         super();
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
 

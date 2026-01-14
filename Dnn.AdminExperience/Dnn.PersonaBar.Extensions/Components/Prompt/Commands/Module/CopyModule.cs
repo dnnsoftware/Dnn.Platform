@@ -2,6 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+using System.Diagnostics.CodeAnalysis;
+
+[assembly: SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Module", Scope = "namespace", Target = "Dnn.PersonaBar.Prompt.Components.Commands.Module", Justification = "Breaking change")]
+
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
     using System.Collections.Generic;
@@ -17,27 +21,21 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
     using ModulesControllerLibrary = Dnn.PersonaBar.Library.Controllers.ModulesController;
 
     [ConsoleCommand("copy-module", Constants.ModulesCategory, "Prompt_CopyModule_Description")]
-
     public class CopyModule : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_CopyModule_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("pageid", "Prompt_CopyModule_FlagPageId", "Integer", true)]
-
         private const string FlagPageId = "pageid";
 
         [FlagParameter("topageid", "Prompt_CopyModule_FlagToPageId", "Integer", true)]
-
         private const string FlagToPageId = "topageid";
 
         [FlagParameter("pane", "Prompt_CopyModule_FlagPane", "String", "ContentPane")]
-
         private const string FlagPane = "pane";
 
         [FlagParameter("includesettings", "Prompt_CopyModule_FlagIncludesettings", "Boolean", "true")]
-
         private const string FlagIncludesettings = "includesettings";
 
         public override string LocalResourceFile => Constants.LocalResourcesFile;

@@ -4,13 +4,17 @@
 
 namespace DotNetNuke.Web.Api.Internal.Auth
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Net.Http;
     using System.Threading;
 
     using DotNetNuke.HttpModules.Membership;
 
+    /// <summary>A web API message handler for web forms auth.</summary>
     public class WebFormsAuthMessageHandler : MessageProcessingHandler
     {
+        /// <summary>Gets the auth scheme.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string AuthScheme => "Forms";
 
         /// <inheritdoc/>

@@ -1,8 +1,4 @@
-DNN Platform/Components/MailKit/*.dnn
-DNN Platform/Components/Microsoft.*/**/*.dnn
-DNN Platform/Components/Newtonsoft/*.dnn
-DNN Platform/Components/WebFormsMvp/*.dnn
-DNN Platform/Components/SharpZipLib/*.dnn
+DNN Platform/Components/**/*.dnn
 DNN Platform/JavaScript Libraries/HoverIntent/*.dnn
 DNN Platform/JavaScript Libraries/jQuery*/*.dnn
 DNN Platform/JavaScript Libraries/Knockout*/*.dnn

@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
     using System.ComponentModel;
     using System.Reflection;
     using System.Web.UI.WebControls;
@@ -11,9 +12,6 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      StandardEditorInfoAdapter
     /// <summary>The StandardEditorInfoAdapter control provides an Adapter for standard datasources.</summary>
     public class StandardEditorInfoAdapter : IEditorInfoAdapter
     {
@@ -21,8 +19,8 @@ namespace DotNetNuke.UI.WebControls
         private readonly string fieldName;
 
         /// <summary>Initializes a new instance of the <see cref="StandardEditorInfoAdapter"/> class.</summary>
-        /// <param name="dataSource"></param>
-        /// <param name="fieldName"></param>
+        /// <param name="dataSource">The data source object.</param>
+        /// <param name="fieldName">The field/property name.</param>
         public StandardEditorInfoAdapter(object dataSource, string fieldName)
         {
             this.dataSource = dataSource;
@@ -33,10 +31,10 @@ namespace DotNetNuke.UI.WebControls
         public EditorInfo CreateEditControl()
         {
             EditorInfo editInfo = null;
-            PropertyInfo objProperty = this.GetProperty(this.dataSource, this.fieldName);
+            PropertyInfo objProperty = GetProperty(this.dataSource, this.fieldName);
             if (objProperty != null)
             {
-                editInfo = this.GetEditorInfo(this.dataSource, objProperty);
+                editInfo = GetEditorInfo(this.dataSource, objProperty);
             }
 
             return editInfo;
@@ -71,8 +69,8 @@ namespace DotNetNuke.UI.WebControls
             return false;
         }
 
-        /// <summary>GetEditorInfo builds an EditorInfo object for a propoerty.</summary>
-        private EditorInfo GetEditorInfo(object dataSource, PropertyInfo objProperty)
+        /// <summary>GetEditorInfo builds an EditorInfo object for a property.</summary>
+        private static EditorInfo GetEditorInfo(object dataSource, PropertyInfo objProperty)
         {
             var editInfo = new EditorInfo();
 
@@ -123,7 +121,7 @@ namespace DotNetNuke.UI.WebControls
                 EditorAttribute editor = null;
                 for (int i = 0; i <= editorAttributes.Length - 1; i++)
                 {
-                    if (((EditorAttribute)editorAttributes[i]).EditorBaseTypeName.IndexOf("DotNetNuke.UI.WebControls.EditControl") >= 0)
+                    if (((EditorAttribute)editorAttributes[i]).EditorBaseTypeName.Contains("DotNetNuke.UI.WebControls.EditControl", StringComparison.Ordinal))
                     {
                         editor = (EditorAttribute)editorAttributes[i];
                         break;
@@ -170,7 +168,7 @@ namespace DotNetNuke.UI.WebControls
             }
 
             // Set ResourceKey Field
-            editInfo.ResourceKey = string.Format("{0}_{1}", dataSource.GetType().Name, objProperty.Name);
+            editInfo.ResourceKey = $"{dataSource.GetType().Name}_{objProperty.Name}";
 
             // Get Validation Expression Field
             editInfo.ValidationExpression = string.Empty;
@@ -191,7 +189,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>GetProperty returns the property that is being "bound" to.</summary>
-        private PropertyInfo GetProperty(object dataSource, string fieldName)
+        private static PropertyInfo GetProperty(object dataSource, string fieldName)
         {
             if (dataSource != null)
             {

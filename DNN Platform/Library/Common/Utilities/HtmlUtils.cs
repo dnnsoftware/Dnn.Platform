@@ -13,7 +13,9 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Upgrade;
 
-    /// <summary>HtmlUtils is a Utility class that provides Html Utility methods.</summary>
+    using Ganss.Xss;
+
+    /// <summary>HtmlUtils is a Utility class that provides HTML Utility methods.</summary>
     public partial class HtmlUtils
     {
         // Create Regular Expression objects
@@ -75,9 +77,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>CleanWithTagInfo removes unspecified HTML Tags, Entities (and optionally any punctuation) from a string.</summary>
-        /// <param name="html"></param>
-        /// <param name="tagsFilter"></param>
-        /// <param name="removePunctuation"></param>
+        /// <param name="html">The HTML to clean.</param>
+        /// <param name="tagsFilter">A regular expression indicating attributes of which to keep the value, e.g. <c>"alt|href|src|title"</c>.</param>
+        /// <param name="removePunctuation">Whether to remove punctuation from <paramref name="html"/>.</param>
         /// <returns>The cleaned up string.</returns>
         public static string CleanWithTagInfo(string html, string tagsFilter, bool removePunctuation)
         {
@@ -89,7 +91,7 @@ namespace DotNetNuke.Common.Utilities
             // First remove unspecified HTML Tags ("<....>")
             html = StripUnspecifiedTags(html, tagsFilter, true);
 
-            // Second replace any HTML entities (&nbsp; &lt; etc) through their char symbol
+            // Second replace any HTML entities (&nbsp; &lt; etc.) through their char symbol
             html = HttpUtility.HtmlDecode(html);
 
             // Thirdly remove any punctuation
@@ -123,7 +125,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (email.IndexOf("@", StringComparison.Ordinal) != -1)
                 {
-                    formatEmail = string.Format("<a href=\"mailto:{0}\">{0}</a>", email);
+                    formatEmail = $"<a href=\"mailto:{email}\">{email}</a>";
                 }
                 else
                 {
@@ -272,9 +274,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>  StripUnspecifiedTags removes the HTML tags from the content -- leaving behind the info for the specified HTML tags. </summary>
-        /// <param name="html"></param>
-        /// <param name="specifiedTags"></param>
-        /// <param name="retainSpace"></param>
+        /// <param name="html">The HTML to clean.</param>
+        /// <param name="specifiedTags">A regular expression indicating attributes of which to keep the value, e.g. <c>"alt|href|src|title"</c>.</param>
+        /// <param name="retainSpace">Whether to replace tags with spaces or <see cref="string.Empty"/>.</param>
         /// <returns>The cleaned up string.</returns>
         public static string StripUnspecifiedTags(string html, string specifiedTags, bool retainSpace)
         {
@@ -362,7 +364,7 @@ namespace DotNetNuke.Common.Utilities
             return StripNonWordRegex.Replace(html, repString);
         }
 
-        /// <summary>Determines whether or not the passed in string contains any HTML tags.</summary>
+        /// <summary>Determines whether the passed in string contains any HTML tags.</summary>
         /// <param name="text">Text to be inspected.</param>
         /// <returns>True for HTML and False for plain text.</returns>
         public static bool IsHtml(string text)
@@ -437,18 +439,22 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>This method adds an empty char to the response stream to avoid closing http connection on long running tasks.</summary>
+        /// <summary>This method adds an empty char to the response stream to avoid closing http connection on long-running tasks.</summary>
         public static void WriteKeepAlive()
         {
-            if (HttpContext.Current != null)
+            if (HttpContext.Current == null)
             {
-                if (HttpContext.Current.Request.RawUrl.ToLowerInvariant().Contains("install.aspx?"))
-                {
-                    var response = HttpContext.Current.Response;
-                    response.Write(" ");
-                    response.Flush();
-                }
+                return;
             }
+
+            if (!HttpContext.Current.Request.RawUrl.ToLowerInvariant().Contains("install.aspx?"))
+            {
+                return;
+            }
+
+            var response = HttpContext.Current.Response;
+            response.Write(" ");
+            response.Flush();
         }
 
         /// <summary>WriteFooter outputs the Footer during Install/Upgrade etc.</summary>
@@ -548,16 +554,16 @@ namespace DotNetNuke.Common.Utilities
             foreach (string portalAlias in aliases)
             {
                 string searchAlias = portalAlias;
-                if (!portalAlias.EndsWith("/"))
+                if (!portalAlias.EndsWith("/", StringComparison.Ordinal))
                 {
-                    searchAlias = string.Format("{0}/", portalAlias);
+                    searchAlias = $"{portalAlias}/";
                 }
 
                 var exp = new Regex("((?:href|src)=&quot;)https?://" + searchAlias + "(.*?&quot;)", RegexOptions.IgnoreCase);
 
-                if (portalAlias.Contains("/"))
+                if (portalAlias.Contains("/", StringComparison.Ordinal))
                 {
-                    html = exp.Replace(html, "$1" + portalAlias.Substring(portalAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase)) + "/$2");
+                    html = exp.Replace(html, "$1" + portalAlias.Substring(portalAlias.IndexOf("/", StringComparison.Ordinal)) + "/$2");
                 }
                 else
                 {
@@ -566,6 +572,90 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return html;
+        }
+
+        /// <inheritdoc cref="HttpUtility.JavaScriptStringEncode(string)"/>
+        public static IHtmlString JavaScriptStringEncode(string value)
+            => JavaScriptStringEncode(value, false);
+
+        /// <inheritdoc cref="HttpUtility.JavaScriptStringEncode(string,bool)"/>
+        public static IHtmlString JavaScriptStringEncode(string value, bool addDoubleQuotes)
+            => new HtmlString(HttpUtility.JavaScriptStringEncode(value, addDoubleQuotes));
+
+        /// <summary>Sanitize the given HTML, removing element which could include JavaScript.</summary>
+        /// <param name="htmlInput">The HTML to sanitize.</param>
+        /// <returns>The sanitized HTML.</returns>
+        public static string CleanOutOfJavascript(string htmlInput)
+        {
+            var sanitizer = new HtmlSanitizer();
+
+            // We need to disallow all attributes that might contain JS
+            sanitizer.AllowedAttributes.Remove("onclick");
+            sanitizer.AllowedAttributes.Remove("onmouseover");
+            sanitizer.AllowedAttributes.Remove("onmouseout");
+            sanitizer.AllowedAttributes.Remove("onkeypress");
+            sanitizer.AllowedAttributes.Remove("onkeydown");
+            sanitizer.AllowedAttributes.Remove("onkeyup");
+
+            // We need to disallow tags like '<form action="javascript:submitForm()">'
+            sanitizer.AllowedSchemes.Remove("javascript");
+
+            // Tags like '<script>' are obviously not allowed
+            sanitizer.AllowedTags.Remove("script");
+
+            return sanitizer.Sanitize(htmlInput);
+        }
+
+        /// <summary>Determines whether the given <paramref name="htmlInput"/> contains any JavaScript.</summary>
+        /// <param name="htmlInput">The HTML to check.</param>
+        /// <returns><see langword="true"/> if <paramref name="htmlInput"/> contains JavaScript, otherwise <see langword="false"/>.</returns>
+        public static bool ContainsJavaScript(string htmlInput)
+        {
+            if (string.IsNullOrEmpty(htmlInput))
+            {
+                return false;
+            }
+
+            string cleaned = CleanOutOfJavascript(htmlInput);
+
+            // Strip all HTML syntax characters and whitespace for comparison
+            string strippedOriginal = StripHtmlSyntax(htmlInput);
+            string strippedCleaned = StripHtmlSyntax(cleaned);
+
+            // If the stripped versions are different, JavaScript was likely removed
+            return !string.Equals(strippedOriginal, strippedCleaned, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>Sanitizes the given <paramref name="rawHtmlInput"/> if <paramref name="allowJavaScript"/> is <see langword="false"/>.</summary>
+        /// <param name="rawHtmlInput">The raw HTML input.</param>
+        /// <param name="allowJavaScript">Whether to allow JavaScript in the HTML.</param>
+        /// <returns>The HTML, potentially sanitized.</returns>
+        public static string SanitizeHtmlIfNeeded(string rawHtmlInput, bool allowJavaScript)
+        {
+            // If input is null or empty: nothing to do
+            if (string.IsNullOrEmpty(rawHtmlInput))
+            {
+                return string.Empty;
+            }
+
+            // If JavaScript is not allowed: HTML must be sanitized
+            if (!allowJavaScript)
+            {
+                return CleanOutOfJavascript(rawHtmlInput);
+            }
+
+            return rawHtmlInput;
+        }
+
+        private static string StripHtmlSyntax(string html)
+        {
+            if (string.IsNullOrEmpty(html))
+            {
+                return string.Empty;
+            }
+
+            // Remove all whitespace and HTML syntax characters
+            return Regex.Replace(html, @"[\s<>/""'=]", string.Empty);
         }
     }
 }

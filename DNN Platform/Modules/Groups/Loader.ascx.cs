@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.Groups
 
     using DotNetNuke.Modules.Groups.Components;
 
+    /// <summary>Display the configured group view.</summary>
     public partial class Loader : GroupsModuleBase
     {
         protected void Page_Load(object sender, EventArgs e)

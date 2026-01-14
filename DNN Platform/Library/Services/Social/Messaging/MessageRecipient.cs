@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Social.Messaging
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml.Serialization;
 
     using DotNetNuke.Common.Utilities;
@@ -12,9 +13,6 @@ namespace DotNetNuke.Services.Social.Messaging
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Messaging
-    /// Class:      MessageRecipient
     /// <summary>The MessageRecipient class is used to store the details of all recipients of a particular message.</summary>
     [Serializable]
     public class MessageRecipient : BaseEntityInfo, IHydratable
@@ -72,9 +70,9 @@ namespace DotNetNuke.Services.Social.Messaging
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            this.RecipientID = Convert.ToInt32(dr["RecipientID"]);
-            this.MessageID = Convert.ToInt32(dr["MessageID"]);
-            this.UserID = Convert.ToInt32(dr["UserID"]);
+            this.RecipientID = Convert.ToInt32(dr["RecipientID"], CultureInfo.InvariantCulture);
+            this.MessageID = Convert.ToInt32(dr["MessageID"], CultureInfo.InvariantCulture);
+            this.UserID = Convert.ToInt32(dr["UserID"], CultureInfo.InvariantCulture);
             this.Archived = Null.SetNullBoolean(dr["Archived"]);
             this.Read = Null.SetNullBoolean(dr["Read"]);
 

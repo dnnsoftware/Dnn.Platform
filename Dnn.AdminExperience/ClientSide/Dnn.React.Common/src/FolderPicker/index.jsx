@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import FolderSelector from "./FolderSelector";
 
 function findKey(thisObject, id) {
-    /* eslint-disable spellcheck/spell-checker */
+     
     let p, tRet;
     for (p in thisObject) {
         if (p === "data") {
@@ -18,7 +18,7 @@ function findKey(thisObject, id) {
         }
     }
     return false;
-    /* eslint-enable spellcheck/spell-checker */
+     
 }
 
 export default class FolderPicker extends Component {

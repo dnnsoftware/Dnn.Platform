@@ -76,7 +76,7 @@ class LocalizedContent extends Component {
         this.setState({ allPagesTranslatable });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         
         const defaultLanguage = this.getDefaultLanguage() || {};
@@ -122,7 +122,7 @@ class LocalizedContent extends Component {
 
                     {!state.showProgressBars && <div className="buttons-box">
                         <Button
-                            type="secondary"
+                            type="neutral"
                             onClick={props.closePersonaBarPage.bind(this) }>
                             {resx.get("Cancel") }
                         </Button>

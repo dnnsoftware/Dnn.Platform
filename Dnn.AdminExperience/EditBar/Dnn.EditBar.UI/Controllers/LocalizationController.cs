@@ -13,12 +13,14 @@ namespace Dnn.EditBar.UI.Controllers
     using System.Xml;
     using System.Xml.XPath;
 
+    using Dnn.PersonaBar.Library.Controllers;
+
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Cache;
 
-    internal class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
+    internal sealed class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
     {
         public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
         public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
@@ -71,58 +73,59 @@ namespace Dnn.EditBar.UI.Controllers
 
         private static void AssertHeaderValue(IEnumerable<XmlNode> headers, string key, string value)
         {
-            var header = headers.FirstOrDefault(x => GetNameAttribute(x).Equals(key, StringComparison.InvariantCultureIgnoreCase));
+            var header = headers.FirstOrDefault(x => GetNameAttribute(x).Equals(key, StringComparison.OrdinalIgnoreCase));
             if (header != null)
             {
-                if (!header.InnerText.Equals(value, StringComparison.InvariantCultureIgnoreCase))
+                if (!header.InnerText.Equals(value, StringComparison.OrdinalIgnoreCase))
                 {
-                    throw new ApplicationException(string.Format("Resource header '{0}' != '{1}'", key, value));
+                    throw new LocalizationException($"Resource header '{key}' != '{value}'");
                 }
             }
             else
             {
-                throw new ApplicationException(string.Format("Resource header '{0}' is missing", key));
+                throw new LocalizationException($"Resource header '{key}' is missing");
             }
         }
 
         private static IEnumerable<KeyValuePair<string, string>> GetLocalizationValues(string fullPath, string culture)
         {
+            var document = new XmlDocument();
             using (var stream = new FileStream(System.Web.HttpContext.Current.Server.MapPath(fullPath), FileMode.Open, FileAccess.Read))
+            using (var xmlReader = XmlReader.Create(stream, new XmlReaderSettings { XmlResolver = null, }))
             {
-                var document = new XmlDocument();
-                document.Load(stream);
+                document.Load(xmlReader);
+            }
 
-                // ReSharper disable once AssignNullToNotNullAttribute
-                var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
+            // ReSharper disable once AssignNullToNotNullAttribute
+            var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
 
-                AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
+            AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
 
-                // ReSharper disable once AssignNullToNotNullAttribute
-                foreach (XPathNavigator navigator in document.CreateNavigator().Select("/root/data"))
+            // ReSharper disable once AssignNullToNotNullAttribute
+            foreach (XPathNavigator navigator in document.CreateNavigator().Select("/root/data"))
+            {
+                if (navigator.NodeType == XPathNodeType.Comment)
                 {
-                    if (navigator.NodeType == XPathNodeType.Comment)
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    var name = GetNameAttribute(navigator);
+                var name = GetNameAttribute(navigator);
 
-                    const string textPostFix = ".Text";
-                    if (name.EndsWith(textPostFix))
-                    {
-                        name = name.Substring(0, name.Length - textPostFix.Length);
-                    }
+                const string textPostFix = ".Text";
+                if (name.EndsWith(textPostFix, StringComparison.OrdinalIgnoreCase))
+                {
+                    name = name.Substring(0, name.Length - textPostFix.Length);
+                }
 
-                    if (string.IsNullOrEmpty(name))
-                    {
-                        continue;
-                    }
+                if (string.IsNullOrEmpty(name))
+                {
+                    continue;
+                }
 
-                    var valueNode = navigator.SelectSingleNode("value");
-                    if (valueNode != null)
-                    {
-                        yield return new KeyValuePair<string, string>(name, valueNode.Value);
-                    }
+                var valueNode = navigator.SelectSingleNode("value");
+                if (valueNode != null)
+                {
+                    yield return new KeyValuePair<string, string>(name, valueNode.Value);
                 }
             }
         }

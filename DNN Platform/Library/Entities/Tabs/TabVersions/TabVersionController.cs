@@ -6,6 +6,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -52,19 +54,22 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void SaveTabVersion(TabVersion tabVersion, int createdByUserID)
         {
             this.SaveTabVersion(tabVersion, createdByUserID, createdByUserID);
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void SaveTabVersion(TabVersion tabVersion, int createdByUserID, int modifiedByUserID)
         {
             tabVersion.TabVersionId = Provider.SaveTabVersion(tabVersion.TabVersionId, tabVersion.TabId, tabVersion.TimeStamp, tabVersion.Version, tabVersion.IsPublished, createdByUserID, modifiedByUserID);
-            this.ClearCache(tabVersion.TabId);
+            ClearCache(tabVersion.TabId);
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public TabVersion CreateTabVersion(int tabId, int createdByUserID, bool isPublished = false)
         {
             var lastTabVersion = this.GetTabVersions(tabId).OrderByDescending(tv => tv.Version).FirstOrDefault();
@@ -74,14 +79,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 if (!lastTabVersion.IsPublished && !isPublished)
                 {
-                    throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExists", Localization.ExceptionsResourceFile)));
+                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExists", Localization.ExceptionsResourceFile)));
                 }
 
                 newVersion = lastTabVersion.Version + 1;
             }
 
             var tabVersionId = Provider.SaveTabVersion(0, tabId, DateTime.UtcNow, newVersion, isPublished, createdByUserID, createdByUserID);
-            this.ClearCache(tabId);
+            ClearCache(tabId);
 
             return this.GetTabVersion(tabVersionId, tabId);
         }
@@ -90,7 +95,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         public void DeleteTabVersion(int tabId, int tabVersionId)
         {
             Provider.DeleteTabVersion(tabVersionId);
-            this.ClearCache(tabId);
+            ClearCache(tabId);
         }
 
         /// <inheritdoc/>
@@ -107,10 +112,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         private static string GetTabVersionsCacheKey(int tabId)
         {
-            return string.Format(DataCache.TabVersionsCacheKey, tabId);
+            return string.Format(CultureInfo.InvariantCulture, DataCache.TabVersionsCacheKey, tabId);
         }
 
-        private void ClearCache(int tabId)
+        private static void ClearCache(int tabId)
         {
             DataCache.RemoveCache(GetTabVersionsCacheKey(tabId));
         }

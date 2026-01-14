@@ -31,7 +31,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <inheritdoc/>
         public void AddWorkflowLog(int contentItemId, int workflowId, WorkflowLogType type, string comment, int userId)
         {
-            this.AddWorkflowLog(contentItemId, workflowId, type, this.GetWorkflowActionText(type), comment, userId);
+            this.AddWorkflowLog(contentItemId, workflowId, type, GetWorkflowActionText(type), comment, userId);
         }
 
         /// <inheritdoc/>
@@ -44,6 +44,12 @@ namespace DotNetNuke.Entities.Content.Workflow
         protected override Func<IWorkflowLogger> GetFactory()
         {
             return () => new WorkflowLogger();
+        }
+
+        private static string GetWorkflowActionText(WorkflowLogType logType)
+        {
+            var logName = Enum.GetName(typeof(WorkflowLogType), logType);
+            return Localization.GetString(logName + ".Action");
         }
 
         private void AddWorkflowLog(int contentItemId, int workflowId, WorkflowLogType type, string action, string comment, int userId)
@@ -59,12 +65,6 @@ namespace DotNetNuke.Entities.Content.Workflow
                 Date = DateTime.UtcNow,
             };
             this.workflowLogRepository.AddWorkflowLog(workflowLog);
-        }
-
-        private string GetWorkflowActionText(WorkflowLogType logType)
-        {
-            var logName = Enum.GetName(typeof(WorkflowLogType), logType);
-            return Localization.GetString(logName + ".Action");
         }
     }
 }

@@ -2,8 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
-    using Dnn.PersonaBar.Library.DTO;
+    using Dnn.PersonaBar.Library.Dto;
     using Dnn.PersonaBar.Pages.Components;
     using Dnn.PersonaBar.Pages.Services.Dto;
     using Dnn.PersonaBar.Security.Components;
@@ -103,7 +104,6 @@
         }
 
         [Test]
-
         public void Execute_WhenPublic_ReturnsWarning()
         {
             // arrange
@@ -127,7 +127,6 @@
         }
 
         [Test]
-
         public void Execute_WhenNeitherPublicNorActivityFeed_ReturnsPass()
         {
             // arrange
@@ -151,7 +150,6 @@
         }
 
         [Test]
-
         public void Execute_WhenNotPublicAndActivityFeedAndMyProfileNotFound_ReturnsPass()
         {
             // arrange
@@ -175,7 +173,6 @@
         }
 
         [Test]
-
         public void Execute_WhenNotPublicAndActivityFeedAndMyProfileDeleted_ReturnsPass()
         {
             // arrange
@@ -202,7 +199,6 @@
         [Test]
         [TestCase(true, SeverityEnum.Warning)]
         [TestCase(false, SeverityEnum.Pass)]
-
         public void Execute_WhenNotPublicAndActivityFeedAndMyProfileValid_ReturnsCorrectSeverity(
             bool myProfilePageIsPublic, SeverityEnum expectedSeverity)
         {
@@ -285,21 +281,14 @@
             var permissionsData = new PagePermissions(false);
             if (allUsersCanView)
             {
-                permissionsData.RolePermissions = new List<RolePermission>
-                {
+                permissionsData.RolePermissions =
+                [
                     new RolePermission
                     {
-                        RoleId = int.Parse(Globals.glbRoleAllUsers),
-                        Permissions = new List<Permission>
-                        {
-                            new Permission
-                            {
-                                PermissionName = CheckUserProfilePage.ViewTab,
-                                AllowAccess = true,
-                            },
-                        },
+                        RoleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture),
+                        Permissions = [new Permission { PermissionName = CheckUserProfilePage.ViewTab, AllowAccess = true, },],
                     },
-                };
+                ];
             }
 
             return permissionsData;

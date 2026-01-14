@@ -3,14 +3,20 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.NavigationProvider
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.WebControls;
 
-    public abstract class NavigationProvider : UserControlBase
+    /// <summary>Provides a renderer for navigation.</summary>
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
+    public abstract partial class NavigationProvider : UserControlBase
     {
         public delegate void NodeClickEventHandler(NavigationEventArgs args);
 
@@ -22,28 +28,46 @@ namespace DotNetNuke.Modules.NavigationProvider
 
         public enum Alignment
         {
+            /// <summary>Left aligned.</summary>
             Left = 0,
+
+            /// <summary>Right aligned.</summary>
             Right = 1,
+
+            /// <summary>Center aligned.</summary>
             Center = 2,
+
+            /// <summary>Justified alignment.</summary>
             Justify = 3,
         }
 
         public enum HoverAction
         {
+            /// <summary>Expand on hover.</summary>
             Expand = 0,
+
+            /// <summary>No action on hover.</summary>
             None = 1,
         }
 
         public enum HoverDisplay
         {
+            /// <summary>Highlight on hover.</summary>
             Highlight = 0,
+
+            /// <summary>Render an outset border on hover.</summary>
             Outset = 1,
+
+            /// <summary>No display changes on hover.</summary>
             None = 2,
         }
 
         public enum Orientation
         {
+            /// <summary>Horizontal orientation.</summary>
             Horizontal = 0,
+
+            /// <summary>Vertical orientation.</summary>
             Vertical = 1,
         }
 
@@ -979,9 +1003,16 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
-        public static NavigationProvider Instance(string friendlyName)
+        /// <inheritdoc cref="Instance(System.IServiceProvider,string)"/>
+        [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
+        public static partial NavigationProvider Instance(string friendlyName)
         {
-            return (NavigationProvider)Reflection.CreateObject("navigationControl", friendlyName, string.Empty, string.Empty);
+            return Instance(Globals.DependencyProvider, friendlyName);
+        }
+
+        public static NavigationProvider Instance(IServiceProvider serviceProvider, string friendlyName)
+        {
+            return (NavigationProvider)Reflection.CreateObject(serviceProvider, "navigationControl", friendlyName, string.Empty, string.Empty);
         }
 
         public abstract void Initialize();
@@ -992,6 +1023,7 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         protected void RaiseEvent_NodeClick(DNNNode objNode)
         {
             if (this.NodeClick != null)
@@ -1000,6 +1032,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         protected void RaiseEvent_NodeClick(string strID)
         {
             if (this.NodeClick != null)
@@ -1008,6 +1041,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         protected void RaiseEvent_PopulateOnDemand(DNNNode objNode)
         {
             if (this.PopulateOnDemand != null)
@@ -1016,6 +1050,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         protected void RaiseEvent_PopulateOnDemand(string strID)
         {
             if (this.PopulateOnDemand != null)

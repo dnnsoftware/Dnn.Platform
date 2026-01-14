@@ -195,7 +195,11 @@ namespace DotNetNuke.Entities.Modules
                     if (package != null && !string.IsNullOrEmpty(package.Manifest))
                     {
                         var xmlDocument = new XmlDocument { XmlResolver = null };
-                        xmlDocument.LoadXml(package.Manifest);
+                        using (var manifestReader = XmlReader.Create(new StringReader(package.Manifest), new XmlReaderSettings { XmlResolver = null, }))
+                        {
+                            xmlDocument.Load(manifestReader);
+                        }
+
                         var pageNode = xmlDocument.SelectSingleNode("//package//components//component[@type=\"Module\"]//page");
                         if (pageNode != null)
                         {
@@ -317,14 +321,18 @@ namespace DotNetNuke.Entities.Modules
 
                             break;
                         case "isAdmin":
-                            bool isAdmin;
-                            bool.TryParse(reader.ReadElementContentAsString(), out isAdmin);
-                            this.IsAdmin = isAdmin;
+                            if (bool.TryParse(reader.ReadElementContentAsString(), out var isAdmin))
+                            {
+                                this.IsAdmin = isAdmin;
+                            }
+
                             break;
                         case "isPremium":
-                            bool isPremium;
-                            bool.TryParse(reader.ReadElementContentAsString(), out isPremium);
-                            this.IsPremium = isPremium;
+                            if (bool.TryParse(reader.ReadElementContentAsString(), out var isPremium))
+                            {
+                                this.IsPremium = isPremium;
+                            }
+
                             break;
                         default:
                             if (reader.NodeType == XmlNodeType.Element && !string.IsNullOrEmpty(reader.Name))
@@ -615,7 +623,7 @@ namespace DotNetNuke.Entities.Modules
                             var commonValue = reader.GetAttribute("common");
                             if (!string.IsNullOrEmpty(commonValue))
                             {
-                                this.IsCommon = commonValue.Equals("true", StringComparison.InvariantCultureIgnoreCase);
+                                this.IsCommon = commonValue.Equals("true", StringComparison.OrdinalIgnoreCase);
                             }
 
                             reader.Read();

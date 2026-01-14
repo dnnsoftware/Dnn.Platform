@@ -4,6 +4,7 @@
 namespace DotNetNuke.Framework
 {
     using System;
+    using System.Globalization;
     using System.Reflection;
     using System.Web.Compilation;
 
@@ -180,7 +181,7 @@ namespace DotNetNuke.Framework
             bool fixAssemblyName)
         {
             return CreateObject(
-                Globals.DependencyProvider,
+                Globals.GetCurrentServiceProvider(),
                 objectProviderType,
                 objectProviderName,
                 objectNamespace,
@@ -284,7 +285,7 @@ namespace DotNetNuke.Framework
         [DnnDeprecated(9, 11, 3, "Please use overload with IServiceProvider")]
         public static partial object CreateObject(string typeName, string cacheKey, bool useCache)
         {
-            return CreateObject(Globals.DependencyProvider, typeName, cacheKey, useCache);
+            return CreateObject(Globals.GetCurrentServiceProvider(), typeName, cacheKey, useCache);
         }
 
         /// <summary>Creates an object.</summary>
@@ -306,7 +307,7 @@ namespace DotNetNuke.Framework
         [DnnDeprecated(9, 11, 3, "Please use overload with IServiceProvider")]
         public static partial T CreateObject<T>()
         {
-            return CreateObject<T>(Globals.DependencyProvider);
+            return CreateObject<T>(Globals.GetCurrentServiceProvider());
         }
 
         /// <summary>Creates an object.</summary>
@@ -332,7 +333,7 @@ namespace DotNetNuke.Framework
         [DnnDeprecated(9, 11, 3, "Please use overload with IServiceProvider")]
         public static partial object CreateObject(Type type)
         {
-            return CreateObject(Globals.DependencyProvider, type);
+            return CreateObject(Globals.GetCurrentServiceProvider(), type);
         }
 
         /// <summary>Creates an object.</summary>
@@ -456,14 +457,7 @@ namespace DotNetNuke.Framework
         /// <returns>The property's value, or <see langword="null"/> if <paramref name="type"/> is <see langword="null"/>.</returns>
         public static object GetProperty(Type type, string propertyName, object target)
         {
-            if (type != null)
-            {
-                return type.InvokeMember(propertyName, BindingFlags.GetProperty, null, target, null);
-            }
-            else
-            {
-                return null;
-            }
+            return type?.InvokeMember(propertyName, BindingFlags.GetProperty, null, target, null, CultureInfo.InvariantCulture);
         }
 
         /// <summary>Dynamically set the value of a property.</summary>
@@ -473,10 +467,7 @@ namespace DotNetNuke.Framework
         /// <param name="args">The input to the property.</param>
         public static void SetProperty(Type type, string propertyName, object target, object[] args)
         {
-            if (type != null)
-            {
-                type.InvokeMember(propertyName, BindingFlags.SetProperty, null, target, args);
-            }
+            type?.InvokeMember(propertyName, BindingFlags.SetProperty, null, target, args, CultureInfo.InvariantCulture);
         }
 
         /// <summary>Dynamically invoke a method on an object.</summary>
@@ -486,13 +477,12 @@ namespace DotNetNuke.Framework
         /// <param name="args">The input to the method.</param>
         public static void InvokeMethod(Type type, string propertyName, object target, object[] args)
         {
-            if (type != null)
-            {
-                type.InvokeMember(propertyName, BindingFlags.InvokeMethod, null, target, args);
-            }
+            type?.InvokeMember(propertyName, BindingFlags.InvokeMethod, null, target, args, CultureInfo.InvariantCulture);
         }
 
-        // dynamically create a default Provider from a ProviderType - this method was used by the CachingProvider to avoid a circular dependency
+        /// <summary>Dynamically create a default Provider from a ProviderType.</summary>
+        /// <param name="objectProviderType">The name of the <see cref="Type"/>.</param>
+        /// <returns>The provider instance.</returns>
         [DnnDeprecated(7, 0, 0, "Please use CreateObject(string objectProviderType, bool useCache)", RemovalVersion = 11)]
         internal static partial object CreateObjectNotCached(string objectProviderType)
         {

@@ -4,11 +4,14 @@
 namespace DotNetNuke.Services.Search
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Data.SqlTypes;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -20,6 +23,8 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>The ModuleIndexer is an implementation of the abstract <see cref="IndexingProviderBase"/> class.</summary>
@@ -28,29 +33,41 @@ namespace DotNetNuke.Services.Search
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleIndexer));
         private static readonly int ModuleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
-        private readonly IDictionary<int, IEnumerable<ModuleIndexInfo>> searchModules;
+        private readonly IBusinessControllerProvider businessControllerProvider;
+        private readonly Dictionary<int, IEnumerable<ModuleIndexInfo>> searchModules;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleIndexer"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public ModuleIndexer()
-            : this(false)
+            : this(false, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleIndexer"/> class.</summary>
-        /// <param name="needSearchModules"></param>
+        /// <param name="needSearchModules">Whether to pre-populate the collection of search modules.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public ModuleIndexer(bool needSearchModules)
+            : this(needSearchModules, null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleIndexer"/> class.</summary>
+        /// <param name="needSearchModules">Whether to pre-populate the collection of search modules.</param>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        public ModuleIndexer(bool needSearchModules, IBusinessControllerProvider businessControllerProvider)
+        {
+            this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
             this.searchModules = new Dictionary<int, IEnumerable<ModuleIndexInfo>>();
 
             if (needSearchModules)
             {
                 var portals = PortalController.Instance.GetPortals();
-                foreach (var portal in portals.Cast<PortalInfo>())
+                foreach (var portal in portals.Cast<IPortalInfo>())
                 {
-                    this.searchModules.Add(portal.PortalID, this.GetModulesForIndex(portal.PortalID));
+                    this.searchModules.Add(portal.PortalId, GetModulesForIndex(portal.PortalId));
                 }
 
-                this.searchModules.Add(Null.NullInteger, this.GetModulesForIndex(Null.NullInteger));
+                this.searchModules.Add(Null.NullInteger, GetModulesForIndex(Null.NullInteger));
             }
         }
 
@@ -62,8 +79,8 @@ namespace DotNetNuke.Services.Search
             var totalIndexed = 0;
             startDateLocal = this.GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new List<SearchDocument>();
-            var searchModuleCollection = this.searchModules.ContainsKey(portalId)
-                ? this.searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
+            var searchModuleCollection = this.searchModules.TryGetValue(portalId, out var indexes)
+                ? indexes.Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
                 : this.GetSearchModules(portalId);
 
             // Some modules update LastContentModifiedOnDate (e.g. Html module) when their content changes.
@@ -73,17 +90,17 @@ namespace DotNetNuke.Services.Search
                 !(SqlDateTime.MinValue.Value < module.LastContentModifiedOnDate && module.LastContentModifiedOnDate < startDateLocal))
                 .OrderBy(m => m.LastContentModifiedOnDate).ThenBy(m => m.ModuleID).ToArray();
 
-            if (modulesInDateRange.Any())
+            if (modulesInDateRange.Length != 0)
             {
                 foreach (var module in modulesInDateRange)
                 {
                     try
                     {
-                        var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                        var contentInfo = new SearchContentModuleInfo { ModSearchBaseControllerType = (ModuleSearchBase)controller, ModInfo = module };
+                        var controller = this.businessControllerProvider.GetInstance<ModuleSearchBase>(module);
+                        var contentInfo = new SearchContentModuleInfo { ModSearchBaseControllerType = controller, ModInfo = module };
                         var searchItems = contentInfo.ModSearchBaseControllerType.GetModifiedSearchDocuments(module, startDateLocal.ToUniversalTime());
 
-                        if (searchItems != null && searchItems.Count > 0)
+                        if (searchItems is { Count: > 0, })
                         {
                             AddModuleMetaData(searchItems, module);
                             searchDocuments.AddRange(searchItems);
@@ -91,6 +108,7 @@ namespace DotNetNuke.Services.Search
                             if (Logger.IsTraceEnabled)
                             {
                                 Logger.TraceFormat(
+                                    CultureInfo.InvariantCulture,
                                     "ModuleIndexer: {0} search documents found for module [{1} mid:{2}]",
                                     searchItems.Count,
                                     module.DesktopModule.ModuleName,
@@ -120,14 +138,15 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>Returns a collection of SearchDocuments containing module metadata (title, header, footer...) of Searchable Modules.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="startDate"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="startDate">The date after which to look for changes.</param>
         /// <returns>A <see cref="List{T}"/> of <see cref="SearchDocument"/> instances.</returns>
         public List<SearchDocument> GetModuleMetaData(int portalId, DateTime startDate)
         {
             var searchDocuments = new List<SearchDocument>();
-            var searchModuleCollection = this.searchModules.ContainsKey(portalId) ?
-                                            this.searchModules[portalId].Select(m => m.ModuleInfo) : this.GetSearchModules(portalId, true);
+            var searchModuleCollection = this.searchModules.TryGetValue(portalId, out var indexes)
+                ? indexes.Select(m => m.ModuleInfo)
+                : this.GetSearchModules(portalId, true);
             foreach (ModuleInfo module in searchModuleCollection)
             {
                 try
@@ -166,50 +185,42 @@ namespace DotNetNuke.Services.Search
             return searchDocuments;
         }
 
-        /// <summary>Converts a SearchItemInfo into a SearchDocument. SearchItemInfo object was used in the old version of search.</summary>
-        /// <param name="searchItem"></param>
-        /// <returns>A new <see cref="SearchDocument"/> instance.</returns>
-#pragma warning disable 0618
-        public SearchDocument ConvertSearchItemInfoToSearchDocument(SearchItemInfo searchItem)
-        {
-            var module = ModuleController.Instance.GetModule(searchItem.ModuleId, Null.NullInteger, true);
-
-            var searchDoc = new SearchDocument
-            {
-                // Assigns as a Search key the SearchItems' GUID, if not it creates a new guid.
-                UniqueKey = (searchItem.SearchKey.Trim() != string.Empty) ? searchItem.SearchKey : Guid.NewGuid().ToString(),
-                QueryString = searchItem.GUID,
-                Title = searchItem.Title,
-                Body = searchItem.Content,
-                Description = searchItem.Description,
-                ModifiedTimeUtc = searchItem.PubDate,
-                AuthorUserId = searchItem.Author,
-                TabId = searchItem.TabId,
-                PortalId = module.PortalID,
-                SearchTypeId = ModuleSearchTypeId,
-                CultureCode = module.CultureCode,
-
-                // Add Module MetaData
-                ModuleDefId = module.ModuleDefID,
-                ModuleId = module.ModuleID,
-            };
-
-            return searchDoc;
-        }
-
-        /// <summary>Gets a list of modules that are listed as "Searchable" from the module definition and check if they implement <see cref="ModuleSearchBase"/> -- which is a newer implementation of search that replaces <see cref="ISearchable"/>.</summary>
-        /// <param name="portalId"></param>
+        /// <summary>Gets a list of modules that are listed as "Searchable" from the module definition and check if they implement <see cref="ModuleSearchBase"/>.</summary>
+        /// <param name="portalId">The portal ID.</param>
         /// <returns>A sequence of <see cref="ModuleInfo"/> instances.</returns>
         protected IEnumerable<ModuleInfo> GetSearchModules(int portalId)
         {
             return this.GetSearchModules(portalId, false);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected IEnumerable<ModuleInfo> GetSearchModules(int portalId, bool allModules)
         {
-            return from mii in this.GetModulesForIndex(portalId)
+            return from mii in GetModulesForIndex(portalId)
                    where allModules || mii.SupportSearch
                    select mii.ModuleInfo;
+        }
+
+        private static void ThrowLogError(ModuleInfo module, Exception ex)
+        {
+            try
+            {
+                var message = string.Format(
+                    CultureInfo.InvariantCulture,
+                    Localization.GetExceptionMessage(
+                        "ErrorCreatingBusinessControllerClass",
+                        "Error Creating BusinessControllerClass '{0}' of module({1}) id=({2}) in tab({3}) and portal({4})"),
+                    module.DesktopModule.BusinessControllerClass,
+                    module.DesktopModule.ModuleName,
+                    module.ModuleID,
+                    module.TabID,
+                    module.PortalID);
+                throw new BusinessControllerClassException(message, ex);
+            }
+            catch (Exception ex1)
+            {
+                Exceptions.Exceptions.LogException(ex1);
+            }
         }
 
         private static void AddModuleMetaData(IEnumerable<SearchDocument> searchItems, ModuleInfo module)
@@ -230,30 +241,9 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        private static void ThrowLogError(ModuleInfo module, Exception ex)
+        private static List<ModuleIndexInfo> GetModulesForIndex(int portalId)
         {
-            try
-            {
-                var message = string.Format(
-                    Localization.GetExceptionMessage(
-                        "ErrorCreatingBusinessControllerClass",
-                        "Error Creating BusinessControllerClass '{0}' of module({1}) id=({2}) in tab({3}) and portal({4})"),
-                    module.DesktopModule.BusinessControllerClass,
-                    module.DesktopModule.ModuleName,
-                    module.ModuleID,
-                    module.TabID,
-                    module.PortalID);
-                throw new Exception(message, ex);
-            }
-            catch (Exception ex1)
-            {
-                Exceptions.Exceptions.LogException(ex1);
-            }
-        }
-
-        private IEnumerable<ModuleIndexInfo> GetModulesForIndex(int portalId)
-        {
-            var businessControllers = new Hashtable();
+            var businessControllers = new Dictionary<string, bool>();
             var searchModuleIds = new HashSet<int>();
             var searchModules = new List<ModuleIndexInfo>();
 
@@ -270,19 +260,14 @@ namespace DotNetNuke.Services.Search
                     if (tab.TabSettings["AllowIndex"] == null || (tab.TabSettings["AllowIndex"] != null && bool.Parse(tab.TabSettings["AllowIndex"].ToString())))
                     {
                         // Check if the business controller is in the Hashtable
-                        var controller = businessControllers[module.DesktopModule.BusinessControllerClass];
-                        if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
+                        if (!businessControllers.TryGetValue(module.DesktopModule.BusinessControllerClass, out var supportsSearch))
                         {
-                            // If nothing create a new instance
-                            if (controller == null)
-                            {
-                                // Add to hashtable
-                                controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                                businessControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
-                            }
+                            var controllerType = Reflection.CreateType(module.DesktopModule.BusinessControllerClass);
+                            supportsSearch = typeof(ModuleSearchBase).IsAssignableFrom(controllerType);
+                            businessControllers.Add(module.DesktopModule.BusinessControllerClass, supportsSearch);
                         }
 
-                        searchModules.Add(new ModuleIndexInfo { ModuleInfo = module, SupportSearch = controller is ModuleSearchBase });
+                        searchModules.Add(new ModuleIndexInfo { ModuleInfo = module, SupportSearch = supportsSearch });
                     }
                 }
                 catch (Exception ex)
@@ -300,7 +285,7 @@ namespace DotNetNuke.Services.Search
         }
 
         private int IndexCollectedDocs(
-            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, ScheduleHistoryItem schedule)
+            Action<IEnumerable<SearchDocument>> indexer, List<SearchDocument> searchDocuments, int portalId, ScheduleHistoryItem schedule)
         {
             indexer.Invoke(searchDocuments);
             var total = searchDocuments.Count;

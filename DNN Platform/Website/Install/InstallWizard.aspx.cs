@@ -10,18 +10,23 @@ namespace DotNetNuke.Services.Install
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Web;
     using System.Web.Security;
+    using System.Web.Services;
     using System.Web.UI.WebControls;
     using System.Xml;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer.Blocker;
@@ -36,7 +41,10 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using Globals = DotNetNuke.Common.Globals;
+    using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>The InstallWizard class provides the Installation Wizard for DotNetNuke.</summary>
     public partial class InstallWizard : PageBase, IClientAPICallbackEventHandler
@@ -52,10 +60,7 @@ namespace DotNetNuke.Services.Install
         private static readonly IInstallationStep InstallExtensionsStep = new InstallExtensionsStep();
         private static readonly IInstallationStep InstallSiteStep = new InstallSiteStep();
         private static readonly IInstallationStep InstallSuperUserStep = new InstallSuperUserStep();
-        private static readonly IInstallationStep ActivateLicenseStep = new ActivateLicenseStep();
 
-        // Hide Licensing Step for Community Edition
-        private static readonly bool IsProOrEnterprise = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) || File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll"));
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallWizard));
 
         // Ordered List of Steps (and weight in percentage) to be executed
@@ -69,10 +74,9 @@ namespace DotNetNuke.Services.Install
             { new UpdateLanguagePackStep(), 5 },
             { InstallSiteStep, 20 },
             { InstallSuperUserStep, 5 },
-            { new AddFcnModeStep(), 1 },
-            { ActivateLicenseStep, 3 },
-            { new InstallVersionStep(), 1 },
-            { new InstallSslStep(), 1 },
+            { new AddFcnModeStep(), 2 },
+            { new InstallVersionStep(), 2 },
+            { new InstallSslStep(), 2 },
         };
 
         private static string localResourceFile = "~/Install/App_LocalResources/InstallWizard.aspx.resx";
@@ -88,35 +92,51 @@ namespace DotNetNuke.Services.Install
         private static object @lock = new object();
 
         private readonly DataProvider dataProvider = DataProvider.Instance();
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalTemplateController portalTemplateController;
+
         private Version dataBaseVersion;
         private XmlDocument installTemplate;
 
-        /// <summary>Gets the current applicatoin version.</summary>
-        protected Version ApplicationVersion
+        /// <summary>Initializes a new instance of the <see cref="InstallWizard"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.1. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
+        public InstallWizard()
+            : this(null, null, null, null)
         {
-            get
-            {
-                return DotNetNukeContext.Current.Application.Version;
-            }
         }
+
+        /// <summary>Initializes a new instance of the <see cref="InstallWizard"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalTemplateController">The portal template controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.1. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
+        public InstallWizard(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IPortalTemplateController portalTemplateController)
+            : this(portalController, appStatus, hostSettings, null, portalTemplateController)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="InstallWizard"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="portalTemplateController">The portal template controller.</param>
+        public InstallWizard(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IUserController userController, IPortalTemplateController portalTemplateController)
+            : base(portalController, appStatus, hostSettings, userController)
+        {
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.portalTemplateController = portalTemplateController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalTemplateController>();
+        }
+
+        /// <summary>Gets the current application version.</summary>
+        protected Version ApplicationVersion => DotNetNukeContext.Current.Application.Version;
 
         /// <summary>Gets the database version.</summary>
-        protected Version DatabaseVersion
-        {
-            get
-            {
-                return this.dataBaseVersion ?? (this.dataBaseVersion = DataProvider.Instance().GetVersion());
-            }
-        }
+        protected Version DatabaseVersion => this.dataBaseVersion ??= DataProvider.Instance().GetVersion();
 
         /// <summary>Gets the base version from the install template.</summary>
-        protected Version BaseVersion
-        {
-            get
-            {
-                return Upgrade.GetInstallVersion(this.InstallTemplate);
-            }
-        }
+        protected Version BaseVersion => Upgrade.GetInstallVersion(this.InstallTemplate);
 
         /// <summary>Gets the install template.</summary>
         protected XmlDocument InstallTemplate
@@ -137,12 +157,6 @@ namespace DotNetNuke.Services.Install
         protected bool SupportLocalization
         {
             get { return installConfig.SupportLocalization; }
-        }
-
-        /// <summary>Gets a value indicating whether the user needs to accept the license terms.</summary>
-        protected bool NeedAcceptTerms
-        {
-            get { return File.Exists(Path.Combine(Globals.ApplicationMapPath, "Licenses\\Dnn_Corp_License.pdf")); }
         }
 
         /// <summary>Gets or sets a value indicating whether the permissions are valid.</summary>
@@ -213,54 +227,67 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <summary>Runs the intaller.</summary>
-        [System.Web.Services.WebMethod]
-
+        /// <summary>Runs the installer.</summary>
+        [WebMethod]
         public static void RunInstall()
         {
             installerRunning = false;
-            LaunchAutoInstall();
+            LaunchAutoInstall(Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>());
         }
 
-        /// <summary>Gets the installatoin log.</summary>
+        /// <summary>Gets the installation log.</summary>
         /// <param name="startRow">At which line to start obtaining log lines.</param>
         /// <returns>Log string from the provided line number forward.</returns>
-        [System.Web.Services.WebMethod]
+        [WebMethod]
         public static object GetInstallationLog(int startRow)
         {
-            var data = string.Empty;
+            var maxLines = 500;
             var logFile = InstallController.Instance.InstallerLogName;
             try
             {
                 var lines = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Portals", "_default", "logs", logFile));
+                var sb = new StringBuilder();
                 var errorLogged = false;
-                if (lines.Length > startRow)
+                var lineCount = 0;
+
+                // Important to return empty string to stop retries.
+                if (startRow > lines.Count())
                 {
-                    var count = Math.Min(lines.Length - startRow, 500);
-                    var sb = new System.Text.StringBuilder();
-                    for (var i = startRow; i < startRow + count; i++)
+                    return string.Empty;
+                }
+
+                for (var i = 0; i < lines.Length; i++)
+                {
+                    if (lines[i].Contains("[ERROR]"))
                     {
-                        if (lines[i].Contains("[ERROR]"))
+                        errorLogged = true;
+
+                        // Only append if error is in current lines range.
+                        if (i > startRow && lineCount < maxLines)
                         {
-                            sb.Append(lines[i]);
-                            sb.Append("<br/>");
-                            errorLogged = true;
+                            sb.Append(lines[i]).Append("<br />");
+                            lineCount++;
+
+                            // If we have reached the max lines, break out of loop.
+                            if (lineCount >= maxLines)
+                            {
+                                break;
+                            }
                         }
                     }
-
-                    data = sb.ToString();
                 }
 
-                if (errorLogged == false)
+                if (!errorLogged)
                 {
-                    Localization.Localization.GetString("NoErrorsLogged", "~/Install/App_LocalResources/InstallWizard.aspx.resx");
+                    return Localization.GetString("NoErrorsLogged", "~/Install/App_LocalResources/InstallWizard.aspx.resx");
                 }
+
+                return sb.ToString();
             }
             catch (Exception)
             {
+                return string.Empty;
             }
-
-            return data;
         }
 
         /// <summary>Validates the information provided for the install.</summary>
@@ -273,8 +300,7 @@ namespace DotNetNuke.Services.Install
             var errorMsg = string.Empty;
 
             // Check Required Fields
-            if (!installInfo.ContainsKey("acceptTerms") || installInfo["acceptTerms"] != "Y" ||
-                installInfo["username"] == string.Empty || installInfo["password"] == string.Empty || installInfo["confirmPassword"] == string.Empty
+            if (installInfo["username"] == string.Empty || installInfo["password"] == string.Empty || installInfo["confirmPassword"] == string.Empty
                  || installInfo["websiteName"] == string.Empty || installInfo["email"] == string.Empty)
             {
                 result = false;
@@ -440,7 +466,7 @@ namespace DotNetNuke.Services.Install
         /// <returns>A string representing the result of the action.</returns>
         public string ProcessAction(string someAction)
         {
-            // First check that we are not being targetted by an AJAX HttpPost, so get the current DB version
+            // First check that we are not being targeted by an AJAX HttpPost, so get the current DB version
             string strProviderPath = this.dataProvider.GetProviderPath();
             string nextVersion = this.GetNextScriptVersion(strProviderPath, this.DatabaseVersion);
             if (someAction != nextVersion)
@@ -510,7 +536,7 @@ namespace DotNetNuke.Services.Install
         /// <returns>The localized string.</returns>
         protected string LocalizeString(string key)
         {
-            return Localization.Localization.GetString(key, localResourceFile, culture);
+            return Localization.GetString(key, localResourceFile, culture);
         }
 
         /// <inheritdoc/>
@@ -532,7 +558,7 @@ namespace DotNetNuke.Services.Install
                 File.Copy(installConfig + ".resources", installConfig);
             }
 
-            GetInstallerLocales();
+            GetInstallerLocales(this.appStatus);
             if (!this.Page.IsPostBack || InstallWizard.installConfig == null)
             {
                 InstallWizard.installConfig = InstallController.Instance.GetInstallConfig();
@@ -592,21 +618,12 @@ namespace DotNetNuke.Services.Install
             this.LocalizePage();
 
             base.OnLoad(e);
-            this.visitSite.Click += VisitSiteClick;
+            this.visitSite.Click += this.VisitSiteClick;
 
             // Create Status Files
             if (!File.Exists(StatusFile))
             {
                 File.CreateText(StatusFile).Close();
-            }
-
-            // Hide Licensing Step if no License Info is available
-            this.LicenseActivation.Visible = IsProOrEnterprise && !string.IsNullOrEmpty(installConfig.License.AccountEmail) && !string.IsNullOrEmpty(installConfig.License.InvoiceNumber);
-            this.pnlAcceptTerms.Visible = this.NeedAcceptTerms;
-
-            if ((!IsProOrEnterprise) && this.templateList.FindItemByValue("Mobile Website.template") != null)
-            {
-                this.templateList.Items.Remove(this.templateList.FindItemByValue("Mobile Website.template"));
             }
 
             if (HttpContext.Current.Request.RawUrl.EndsWith("&initiateinstall"))
@@ -619,14 +636,8 @@ namespace DotNetNuke.Services.Install
             {
                 try
                 {
-                    if (HttpContext.Current.Request.QueryString["acceptterms"] != "true")
-                    {
-                        // Redirect back to first page if not accept terms.
-                        this.Response.Redirect(HttpContext.Current.Request.RawUrl.Replace("&executeinstall", string.Empty), true);
-                    }
-
                     installerRunning = true;
-                    LaunchAutoInstall();
+                    LaunchAutoInstall(this.appStatus);
                 }
                 catch (Exception)
                 {
@@ -638,7 +649,7 @@ namespace DotNetNuke.Services.Install
             {
                 if (installerRunning)
                 {
-                    LaunchAutoInstall();
+                    LaunchAutoInstall(this.appStatus);
                 }
                 else
                 {
@@ -653,13 +664,13 @@ namespace DotNetNuke.Services.Install
                     else
                     {
                         // Install but connection string not configured to point at a valid SQL Server
-                        UpdateMachineKey();
+                        UpdateMachineKey(this.appStatus);
                     }
 
                     if (!Regex.IsMatch(this.Request.Url.Host, "^([a-zA-Z0-9.-]+)$"))
                     {
                         this.lblError.Visible = true;
-                        this.lblError.Text = Localization.Localization.GetString("HostWarning", localResourceFile);
+                        this.lblError.Text = Localization.GetString("HostWarning", localResourceFile);
                     }
 
                     // ensure web.config is not read-only
@@ -680,15 +691,6 @@ namespace DotNetNuke.Services.Install
                         this.lblError.Visible = true;
                         this.lblError.Text = ex.ToString();
                         return;
-                    }
-
-                    // Adding ClientDependency Resources config to web.config
-                    if (!ClientResourceManager.IsInstalled() && ValidatePermissions().Item1)
-                    {
-                        ClientResourceManager.AddConfiguration();
-                        this.Response.Redirect(this.Request.RawUrl);
-
-                        // TODO - this may cause infinite loop
                     }
 
                     // Ensure connection strings are in synch
@@ -715,9 +717,9 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        private static void LaunchAutoInstall()
+        private static void LaunchAutoInstall(IApplicationStatusInfo appStatus)
         {
-            if (Globals.Status == Globals.UpgradeStatus.None)
+            if (appStatus.Status == UpgradeStatus.None)
             {
                 HttpContext.Current.Response.Redirect("~/");
                 return;
@@ -734,16 +736,16 @@ namespace DotNetNuke.Services.Install
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
             }
 
-            Install();
+            Install(appStatus);
 
             // restore Script timeout
             HttpContext.Current.Server.ScriptTimeout = scriptTimeOut;
         }
 
-        private static void Install()
+        private static void Install(IApplicationStatusInfo appStatus)
         {
             // bail out early if we are already running
-            if (installerRunning || InstallBlocker.Instance.IsInstallInProgress() || (Globals.Status != Globals.UpgradeStatus.Install))
+            if (installerRunning || InstallBlocker.Instance.IsInstallInProgress() || (appStatus.Status != UpgradeStatus.Install))
             {
                 return;
             }
@@ -761,11 +763,6 @@ namespace DotNetNuke.Services.Install
             foreach (var step in Steps)
             {
                 currentStep = step.Key;
-
-                if (currentStep.GetType().Name == "ActivateLicenseStep" && !IsProOrEnterprise)
-                {
-                    continue;
-                }
 
                 try
                 {
@@ -790,7 +787,7 @@ namespace DotNetNuke.Services.Install
                         if (currentStep.Status != StepStatus.Done)
                         {
                             CurrentStepActivity(string.Format(
-                                Localization.Localization.GetString("ErrorInStep", "~/Install/App_LocalResources/InstallWizard.aspx.resx"),
+                                Localization.GetString("ErrorInStep", "~/Install/App_LocalResources/InstallWizard.aspx.resx"),
                                 currentStep.Errors.Count > 0 ? string.Join(",", currentStep.Errors.ToArray()) : currentStep.Details));
 
                             installerRunning = false;
@@ -813,7 +810,7 @@ namespace DotNetNuke.Services.Install
             currentStep = null;
 
             installerProgress = 100;
-            CurrentStepActivity(Localization.Localization.GetString("InstallationDone", "~/Install/App_LocalResources/InstallWizard.aspx.resx"));
+            CurrentStepActivity(Localization.GetString("InstallationDone", "~/Install/App_LocalResources/InstallWizard.aspx.resx"));
 
             // indicate we are done
             installerRunning = false;
@@ -831,7 +828,6 @@ namespace DotNetNuke.Services.Install
                 check2 = InstallExtensionsStep.Status.ToString() + (InstallExtensionsStep.Errors.Count == 0 ? string.Empty : " Errors " + InstallExtensionsStep.Errors.Count),
                 check3 = InstallSiteStep.Status.ToString() + (InstallSiteStep.Errors.Count == 0 ? string.Empty : " Errors " + InstallSiteStep.Errors.Count),
                 check4 = InstallSuperUserStep.Status.ToString() + (InstallSuperUserStep.Errors.Count == 0 ? string.Empty : " Errors " + InstallSuperUserStep.Errors.Count),
-                check5 = ActivateLicenseStep.Status.ToString() + (ActivateLicenseStep.Errors.Count == 0 ? string.Empty : " Errors " + ActivateLicenseStep.Errors.Count),
             };
 
             try
@@ -850,9 +846,9 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        private static void GetInstallerLocales()
+        private static void GetInstallerLocales(IApplicationStatusInfo appStatus)
         {
-            var filePath = Globals.ApplicationMapPath + LocalesFile.Replace("/", "\\");
+            var filePath = appStatus.ApplicationMapPath + LocalesFile.Replace("/", @"\");
 
             if (File.Exists(filePath))
             {
@@ -888,7 +884,7 @@ namespace DotNetNuke.Services.Install
 
         private static string LocalizeStringStatic(string key)
         {
-            return Localization.Localization.GetString(key, localResourceFile, culture);
+            return Localization.GetString(key, localResourceFile, culture);
         }
 
         private static bool CheckDatabaseConnection()
@@ -912,29 +908,29 @@ namespace DotNetNuke.Services.Install
             }
 
             var connectionString = connectionResult;
-            var details = Localization.Localization.GetString("IsAbleToPerformDatabaseActionsCheck", localResourceFile);
+            var details = Localization.GetString("IsAbleToPerformDatabaseActionsCheck", localResourceFile);
             if (!InstallController.Instance.IsAbleToPerformDatabaseActions(connectionString))
             {
-                connectionResult = "ERROR: " + string.Format(Localization.Localization.GetString("IsAbleToPerformDatabaseActions", localResourceFile), details);
+                connectionResult = "ERROR: " + string.Format(CultureInfo.CurrentCulture, Localization.GetString("IsAbleToPerformDatabaseActions", localResourceFile), details);
             }
 
             // database actions check-running sql 2008 or higher
-            details = Localization.Localization.GetString("IsValidSqlServerVersionCheck", localResourceFile);
+            details = Localization.GetString("IsValidSqlServerVersionCheck", localResourceFile);
             if (!InstallController.Instance.IsValidSqlServerVersion(connectionString))
             {
-                connectionResult = "ERROR: " + string.Format(Localization.Localization.GetString("IsValidSqlServerVersion", localResourceFile), details);
+                connectionResult = "ERROR: " + string.Format(CultureInfo.CurrentCulture, Localization.GetString("IsValidSqlServerVersion", localResourceFile), details);
             }
 
             return connectionResult;
         }
 
-        private static void UpdateMachineKey()
+        private static void UpdateMachineKey(IApplicationStatusInfo appStatus)
         {
             var installationDate = Config.GetSetting("InstallationDate");
 
             if (string.IsNullOrEmpty(installationDate))
             {
-                string strError = Config.UpdateMachineKey();
+                string strError = Config.UpdateMachineKey(appStatus);
                 if (string.IsNullOrEmpty(strError))
                 {
                     // send a new request to the application to initiate step 2
@@ -1012,7 +1008,7 @@ namespace DotNetNuke.Services.Install
             InstallController.Instance.SetInstallConfig(installConfig);
         }
 
-        private static void VisitSiteClick(object sender, EventArgs eventArgs)
+        private void VisitSiteClick(object sender, EventArgs eventArgs)
         {
             // Delete the status file.
             try
@@ -1040,7 +1036,7 @@ namespace DotNetNuke.Services.Install
                 // Do nothing
             }
 
-            Config.Touch();
+            Config.Touch(this.appStatus);
             HttpContext.Current.Response.Redirect("../Default.aspx");
         }
 
@@ -1111,7 +1107,7 @@ namespace DotNetNuke.Services.Install
                 else
                 {
                     // Install
-                    UpdateMachineKey();
+                    UpdateMachineKey(this.appStatus);
                 }
             }
         }
@@ -1234,7 +1230,11 @@ namespace DotNetNuke.Services.Install
 
                 // Loading into XML doc
                 var xmlDoc = new XmlDocument { XmlResolver = null };
-                xmlDoc.Load(myResponseReader);
+                using (var xmlReader = XmlReader.Create(myResponseReader, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xmlDoc.Load(xmlReader);
+                }
+
                 var languages = xmlDoc.SelectNodes("available/language");
                 var packages = new List<PackageInfo>();
 
@@ -1322,8 +1322,7 @@ namespace DotNetNuke.Services.Install
 
         private void BindTemplates()
         {
-            var templates = PortalController.Instance.GetAvailablePortalTemplates();
-
+            var templates = this.portalTemplateController.GetPortalTemplates();
             foreach (var template in templates)
             {
                 this.templateList.AddItem(template.Name, Path.GetFileName(template.TemplateFilePath));

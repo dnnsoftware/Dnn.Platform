@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.GeneratedImage
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Threading;
     using System.Web;
@@ -14,6 +15,7 @@ namespace DotNetNuke.Services.GeneratedImage
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.UserRequest;
 
+    /// <summary>Manages counting the number of times an IP address has been seen.</summary>
     public partial class IPCount
     {
         private const string TempFileExtension = ".tmp";
@@ -117,27 +119,27 @@ namespace DotNetNuke.Services.GeneratedImage
                         var files = new DirectoryInfo(CachePath).GetFiles();
                         var threshold = DateTime.Now.Subtract(PurgeInterval);
                         var toTryDeleteAgain = new List<FileInfo>();
-                        foreach (var fileinfo in files)
+                        foreach (var file in files)
                         {
-                            if (fileinfo.Name.ToLowerInvariant() != "_lastpurge" && fileinfo.LastWriteTime < threshold)
+                            if (!file.Name.Equals("_lastpurge", StringComparison.OrdinalIgnoreCase) && file.LastWriteTime < threshold)
                             {
                                 try
                                 {
-                                    fileinfo.Delete();
+                                    file.Delete();
                                 }
                                 catch (Exception)
                                 {
-                                    toTryDeleteAgain.Add(fileinfo);
+                                    toTryDeleteAgain.Add(file);
                                 }
                             }
                         }
 
                         Thread.Sleep(0);
-                        foreach (var fileinfo in toTryDeleteAgain)
+                        foreach (var file in toTryDeleteAgain)
                         {
                             try
                             {
-                                fileinfo.Delete();
+                                file.Delete();
                             }
                             catch (Exception)
                             {
@@ -170,12 +172,13 @@ namespace DotNetNuke.Services.GeneratedImage
                     }
                 }
 
-                File.WriteAllText(path, count.ToString());
+                File.WriteAllText(path, count.ToString(CultureInfo.InvariantCulture));
                 return true;
             }
         }
 
         /// <summary>method to get Client ip address.</summary>
+        /// <param name="context">The HTTP context.</param>
         /// <returns>IP Address of visitor.</returns>
         [DnnDeprecated(9, 2, 0, "Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress")]
         public static partial string GetVisitorIPAddress(HttpContextBase context)

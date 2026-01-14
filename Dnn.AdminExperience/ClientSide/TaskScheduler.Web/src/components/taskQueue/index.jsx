@@ -4,15 +4,13 @@ import { connect } from "react-redux";
 import TaskStatusItemRow from "./taskStatusItemRow";
 import "./style.less";
 import resx from "../../resources";
-
-const noDataImage = require("!raw-loader!./../svg/nodata.svg").default;
+import NoDataIcon from "./../svg/nodata.svg";
 
 class TaskQueuePanelBody extends Component {
     constructor() {
         super();
     }
-
-    /* eslint-disable react/no-danger */
+     
     renderedTaskStatusList() {
         const { props } = this;
         return props.taskStatusList.map((term, index) => {
@@ -65,7 +63,7 @@ class TaskQueuePanelBody extends Component {
                     <div className="noData">
                         <div className="noTasks">{props.schedulingEnabled === "True" ? resx.get("NoTasks") : resx.get("DisabledMessage")}</div>
                         <div className="noTasksMessage">{resx.get("NoTasksMessage")}</div>
-                        <div dangerouslySetInnerHTML={{ __html: noDataImage }} />
+                        <div><NoDataIcon /></div>
                     </div>
                 }
                 {this.renderedTaskProcessingList()}

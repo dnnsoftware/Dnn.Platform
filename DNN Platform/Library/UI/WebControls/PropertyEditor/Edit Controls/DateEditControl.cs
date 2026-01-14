@@ -16,9 +16,6 @@ namespace DotNetNuke.UI.WebControls
 
     using Calendar = DotNetNuke.Common.Utilities.Calendar;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DateEditControl
     /// <summary>
     /// The DateEditControl control provides a standard UI component for editing
     /// date properties.
@@ -39,7 +36,7 @@ namespace DotNetNuke.UI.WebControls
                 DateTime dteValue = Null.NullDate;
                 try
                 {
-                    var dteString = Convert.ToString(this.Value);
+                    var dteString = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
                     DateTime.TryParse(dteString, CultureInfo.InvariantCulture, DateTimeStyles.None, out dteValue);
                 }
                 catch (Exception exc)
@@ -118,9 +115,9 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 string stringValue = Null.NullString;
-                if (this.DateValue.ToUniversalTime().Date != DateTime.Parse("1754/01/01") && this.DateValue != Null.NullDate)
+                if (this.DateValue.ToUniversalTime().Date != new DateTime(1754, 1, 1) && this.DateValue != Null.NullDate)
                 {
-                    stringValue = this.DateValue.ToString(this.Format);
+                    stringValue = this.DateValue.ToString(this.Format, CultureInfo.InvariantCulture);
                 }
 
                 return stringValue;
@@ -128,7 +125,7 @@ namespace DotNetNuke.UI.WebControls
 
             set
             {
-                this.Value = DateTime.Parse(value);
+                this.Value = DateTime.Parse(value, CultureInfo.InvariantCulture);
             }
         }
 
@@ -139,9 +136,9 @@ namespace DotNetNuke.UI.WebControls
             bool dataChanged = false;
             string presentValue = this.StringValue;
             string postedValue = postCollection[postDataKey + "date"];
-            if (!presentValue.Equals(postedValue))
+            if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
             {
-                this.Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
+                this.Value = DateTime.Parse(postedValue, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
                 dataChanged = true;
             }
 
@@ -171,7 +168,7 @@ namespace DotNetNuke.UI.WebControls
         {
             if (this.DateValue != Null.NullDate)
             {
-                this.dateField.Text = this.DateValue.Date.ToString("d");
+                this.dateField.Text = this.DateValue.Date.ToString("d", CultureInfo.CurrentCulture);
             }
         }
 
@@ -200,7 +197,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>RenderEditMode is called by the base control to render the control in Edit Mode.</summary>
-        /// <param name="writer"></param>
+        /// <param name="writer">The HTML text writer to which this control is to be rendered.</param>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);

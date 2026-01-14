@@ -4,6 +4,7 @@
 namespace DotNetNuke.Entities.Users
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
 
     using DotNetNuke.Services.Tokens;
@@ -13,29 +14,24 @@ namespace DotNetNuke.Entities.Users
         private readonly UserInfo objUser;
 
         /// <summary>Initializes a new instance of the <see cref="MembershipPropertyAccess"/> class.</summary>
-        /// <param name="user"></param>
+        /// <param name="user">The user info.</param>
         public MembershipPropertyAccess(UserInfo user)
         {
             this.objUser = user;
         }
 
         /// <inheritdoc/>
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.notCacheable;
-            }
-        }
+        public CacheLevel Cacheability => CacheLevel.notCacheable;
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             UserMembership objMembership = this.objUser.Membership;
             bool userQueriesHimself = this.objUser.UserID == accessingUser.UserID && this.objUser.UserID != -1;
             if (currentScope < Scope.DefaultSettings || (currentScope == Scope.DefaultSettings && !userQueriesHimself) ||
                 ((currentScope != Scope.SystemMessages || this.objUser.IsSuperUser)
-                    && (propertyName.Equals("password", StringComparison.InvariantCultureIgnoreCase) || propertyName.Equals("passwordanswer", StringComparison.InvariantCultureIgnoreCase) || propertyName.Equals("passwordquestion", StringComparison.InvariantCultureIgnoreCase))))
+                    && (propertyName.Equals("password", StringComparison.OrdinalIgnoreCase) || propertyName.Equals("passwordanswer", StringComparison.OrdinalIgnoreCase) || propertyName.Equals("passwordquestion", StringComparison.OrdinalIgnoreCase))))
             {
                 propertyNotFound = true;
                 return PropertyAccess.ContentLocked;
@@ -74,7 +70,7 @@ namespace DotNetNuke.Entities.Users
                 case "passwordquestion":
                     return PropertyAccess.FormatString(objMembership.PasswordQuestion, format);
                 case "passwordresettoken":
-                    return PropertyAccess.FormatString(Convert.ToString(this.objUser.PasswordResetToken), format);
+                    return PropertyAccess.FormatString(Convert.ToString(this.objUser.PasswordResetToken, CultureInfo.InvariantCulture), format);
                 case "passwordresetexpiration":
                     return PropertyAccess.FormatString(this.objUser.PasswordResetExpiration.ToString(formatProvider), format);
                 case "updatepassword":

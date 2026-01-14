@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         /// <summary>Initializes a new instance of the <see cref="AuthenticationEditor"/> class.</summary>
         public AuthenticationEditor()
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         protected AuthenticationInfo AuthSystem

@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNN_HTML" type="Module" version="09.13.06">
+    <package name="DNN_HTML" type="Module" version="10.01.00">
       <friendlyName>HTML</friendlyName>
       <description>This module renders a block of HTML or Text content. The Html/Text module allows authorized users to edit the content either inline or in a separate administration page. Optional tokens can be used that get replaced dynamically during display. All versions of content are stored in the database including the ability to rollback to an older version.</description>
       <iconFile>DesktopModules\HTML\Images\html.png</iconFile>
@@ -95,6 +95,16 @@
               <name>07.02.01.SqlDataProvider</name>
               <version>07.02.01</version>
             </script>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>10.00.00.SqlDataProvider</name>
+              <version>10.00.00</version>
+            </script>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>10.00.02.SqlDataProvider</name>
+              <version>10.00.02</version>
+            </script>
             <script type="UnInstall">
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>Uninstall.SqlDataProvider</name>
@@ -125,7 +135,7 @@
                     <controlTitle/>
                     <controlType>View</controlType>
                     <iconFile/>
-                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <helpUrl>https://docs.dnncommunity.org</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                   <moduleControl>
@@ -135,7 +145,7 @@
                     <controlTitle>Edit Content</controlTitle>
                     <controlType>Edit</controlType>
                     <iconFile/>
-                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <helpUrl>https://docs.dnncommunity.org</helpUrl>
                     <viewOrder>0</viewOrder>
                     <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
@@ -146,7 +156,7 @@
                     <controlTitle>My Work</controlTitle>
                     <controlType>View</controlType>
                     <iconFile/>
-                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <helpUrl>https://docs.dnncommunity.org</helpUrl>
                     <viewOrder>0</viewOrder>
                     <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
@@ -157,7 +167,7 @@
                     <controlTitle>Settings</controlTitle>
                     <controlType>Edit</controlType>
                     <iconFile/>
-                    <helpUrl>https://dnndocs.com</helpUrl>
+                    <helpUrl>https://docs.dnncommunity.org</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>
@@ -170,7 +180,7 @@
             <attributes>
               <businessControllerClass>DotNetNuke.Modules.Html.HtmlTextController</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>05.01.02,06.00.00,06.02.00</upgradeVersionsList>
+              <upgradeVersionsList>05.01.02,06.00.00,06.02.00,10.00.00</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
@@ -202,6 +212,7 @@
         <component type="Cleanup" version="05.02.00" fileName="05.02.00.txt" />
         <component type="Cleanup" version="05.04.03" fileName="05.04.03.txt" />
         <component type="Cleanup" version="07.03.00" fileName="07.03.00.txt" />
+        <component type="Cleanup" version="10.00.00" fileName="10.00.00.txt" />
       </components>
     </package>
   </packages>

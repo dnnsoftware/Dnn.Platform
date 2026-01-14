@@ -51,7 +51,7 @@ body:
   - type: checkboxes
     id: contribution-interest
     attributes:
-      label: Do you be plan to contribute code for this enhancement?
+      label: Do you plan to contribute code for this enhancement?
       description: We would like to know if you are willing to take ownership of this enhancement.
       options:
         - label: "Yes"

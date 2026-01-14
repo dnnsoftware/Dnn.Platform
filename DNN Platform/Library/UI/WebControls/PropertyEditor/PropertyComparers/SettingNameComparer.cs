@@ -13,7 +13,7 @@ namespace DotNetNuke.UI.WebControls
         {
             if (x is SettingInfo && y is SettingInfo)
             {
-                return string.Compare(((SettingInfo)x).Name, ((SettingInfo)y).Name);
+                return string.Compare(((SettingInfo)x).Name, ((SettingInfo)y).Name, StringComparison.Ordinal);
             }
             else
             {

@@ -4,13 +4,18 @@
 
 namespace DotNetNuke.ExtensionPoints
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Text;
+    using System.Web;
 
     using DotNetNuke.Common;
 
     public class ToolBarButtonRenderer : IExtensionControlRenderer
     {
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetOutput(IExtensionPoint extensionPoint)
         {
             var extension = (IToolBarButtonExtensionPoint)extensionPoint;
@@ -24,22 +29,22 @@ namespace DotNetNuke.ExtensionPoints
             }
 
             var icon = extension.Icon;
-            if (icon.StartsWith("~/"))
+            if (icon.StartsWith("~/", StringComparison.Ordinal))
             {
                 icon = Globals.ResolveUrl(icon);
             }
 
-            var quote = action.Contains("'") ? "\"" : "'";
             var str = new StringBuilder();
             str.AppendFormat(
-                "<button id=\"{0}\" class=\"{1}\" onclick={4}{2}; return false;{4} title=\"{3}\">",
+                CultureInfo.InvariantCulture,
+                "<button id=\"{0}\" class=\"{1}\" onclick=\"{2}\" title=\"{3}\">",
                 extension.ButtonId,
                 cssClass,
-                action,
-                extension.Text,
-                quote);
+                HttpUtility.HtmlAttributeEncode($"{action}; return false;"),
+                extension.Text);
 
             str.AppendFormat(
+                CultureInfo.InvariantCulture,
                 "<span id='{0}_text' style='{1} background-image: url(\"{2}\");'>{3}</span>",
                 extension.ButtonId,
                 !extension.ShowText ? "text-indent: -10000000px;" : string.Empty,

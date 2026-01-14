@@ -120,7 +120,7 @@ class IpFilterEditor extends Component {
         return re.test(ipAddress);
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const columnOne = <div className="container">
             <InputGroup>
@@ -183,7 +183,7 @@ class IpFilterEditor extends Component {
 
         let children = [];
         children.push(columnOne);
-        /* eslint-disable react/no-danger */
+         
         return (
             <div className="ip-filter-setting-editor">
                 <GridSystem
@@ -192,7 +192,7 @@ class IpFilterEditor extends Component {
                 </GridSystem>
                 <div className="buttons-box">
                     <Button                        
-                        type="secondary"
+                        type="neutral"
                         onClick={this.props.Collapse.bind(this) }>
                         {resx.get("Cancel") }
                     </Button>

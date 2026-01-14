@@ -9,30 +9,42 @@ namespace DotNetNuke.UI.WebControls
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
 
-    /// <summary>
-    /// The PropertyEditorControl control provides a way to display and edit any
-    /// properties of any Info class.
-    /// </summary>
+    using Globals = DotNetNuke.Common.Globals;
+
+    /// <summary>The PropertyEditorControl control provides a way to display and edit any properties of any Info class.</summary>
     public class PropertyEditorControl : WebControl, INamingContainer
     {
+        private readonly IServiceProvider serviceProvider;
         private bool itemChanged;
         private Hashtable sections;
 
         /// <summary>Initializes a new instance of the <see cref="PropertyEditorControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public PropertyEditorControl()
+            : this(Globals.GetCurrentServiceProvider())
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PropertyEditorControl"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        public PropertyEditorControl(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
             this.VisibilityStyle = new Style();
             this.ItemStyle = new Style();
             this.LabelStyle = new Style();
@@ -90,7 +102,7 @@ namespace DotNetNuke.UI.WebControls
         public EditorDisplayMode DisplayMode { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets a flag indicating whether the Validators should use client-side
+        /// Gets or sets a value indicating whether the Validators should use client-side
         /// validation.
         /// </summary>
         [Category("Behavior")]
@@ -257,12 +269,12 @@ namespace DotNetNuke.UI.WebControls
             // Create the Editor
             this.CreateEditor();
 
-            // Set flag so CreateChildConrols should not be invoked later in control's lifecycle
+            // Set flag so CreateChildControls should not be invoked later in control's lifecycle
             this.ChildControlsCreated = true;
         }
 
         /// <summary>
-        /// AddEditorRow builds a sigle editor row and adds it to the Table, using the
+        /// AddEditorRow builds a single editor row and adds it to the Table, using the
         /// specified adapter.
         /// </summary>
         /// <param name="table">The Table Control to add the row to.</param>
@@ -277,7 +289,7 @@ namespace DotNetNuke.UI.WebControls
             row.Cells.Add(cell);
 
             // Create a FieldEditor for this Row
-            var editor = new FieldEditorControl
+            var editor = new FieldEditorControl(this.serviceProvider)
             {
                 DataSource = this.DataSource,
                 EditorInfoAdapter = adapter,
@@ -296,7 +308,7 @@ namespace DotNetNuke.UI.WebControls
 
         protected void AddEditorRow(WebControl container, string name, IEditorInfoAdapter adapter)
         {
-            var editor = new FieldEditorControl
+            var editor = new FieldEditorControl(this.serviceProvider)
             {
                 DataSource = this.DataSource,
                 EditorInfoAdapter = adapter,
@@ -471,7 +483,7 @@ namespace DotNetNuke.UI.WebControls
             else
             {
                 this.Fields.Clear();
-                if (arrGroups != null && arrGroups.Length > 0)
+                if (arrGroups is { Length: > 0 })
                 {
                     foreach (string strGroup in arrGroups)
                     {
@@ -480,7 +492,7 @@ namespace DotNetNuke.UI.WebControls
                             if (this.DisplayMode == EditorDisplayMode.Div)
                             {
                                 var groupData = this.UnderlyingDataSource.Cast<object>().Where(obj => this.GetCategory(obj) == strGroup.Trim() && this.GetRowVisibility(obj));
-                                if (groupData.Count() > 0)
+                                if (groupData.Any())
                                 {
                                     // Add header
                                     var header = new HtmlGenericControl("h2");
@@ -574,6 +586,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>GetCategory gets the Category of an object.</summary>
+        /// <param name="obj">The <see cref="PropertyInfo"/>.</param>
         /// <returns>The category name, or <see cref="Null.NullString"/>.</returns>
         protected virtual string GetCategory(object obj)
         {
@@ -592,6 +605,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>GetGroups gets an array of Groups/Categories from the DataSource.</summary>
+        /// <param name="arrObjects">The <see cref="PropertyInfo"/> instances.</param>
         /// <returns>An array of group/category names.</returns>
         protected virtual string[] GetGroups(IEnumerable arrObjects)
         {
@@ -614,7 +628,7 @@ namespace DotNetNuke.UI.WebControls
             var strGroups = new string[arrGroups.Count];
             for (int i = 0; i <= arrGroups.Count - 1; i++)
             {
-                strGroups[i] = Convert.ToString(arrGroups[i]);
+                strGroups[i] = Convert.ToString(arrGroups[i], CultureInfo.InvariantCulture);
             }
 
             return strGroups;
@@ -656,6 +670,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Runs when an item is added to a collection type property.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnItemAdded(PropertyEditorEventArgs e)
         {
             if (this.ItemAdded != null)
@@ -665,6 +680,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Runs when an Editor is Created.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnItemCreated(PropertyEditorItemEventArgs e)
         {
             if (this.ItemCreated != null)
@@ -674,6 +690,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Runs when an item is removed from a collection type property.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
         {
             if (this.ItemDeleted != null)
@@ -683,6 +700,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Runs just before the control is rendered.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             if (this.itemChanged)
@@ -712,24 +730,32 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Runs when an item is added to a collection type property.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void CollectionItemAdded(object sender, PropertyEditorEventArgs e)
         {
             this.OnItemAdded(e);
         }
 
         /// <summary>Runs when an item is removed from a collection type property.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void CollectionItemDeleted(object sender, PropertyEditorEventArgs e)
         {
             this.OnItemDeleted(e);
         }
 
         /// <summary>Runs when an Editor Is Created.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void EditorItemCreated(object sender, PropertyEditorItemEventArgs e)
         {
             this.OnItemCreated(e);
         }
 
         /// <summary>Runs when an Item in the List Is Changed.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void ListItemChanged(object sender, PropertyEditorEventArgs e)
         {
             this.itemChanged = true;
@@ -742,7 +768,7 @@ namespace DotNetNuke.UI.WebControls
         /// GetProperties will return an array of public properties for the current DataSource
         /// object.  The properties will be sorted according to the SortMode property.
         /// </remarks>
-        private IEnumerable<PropertyInfo> GetProperties()
+        private PropertyInfo[] GetProperties()
         {
             if (this.DataSource != null)
             {

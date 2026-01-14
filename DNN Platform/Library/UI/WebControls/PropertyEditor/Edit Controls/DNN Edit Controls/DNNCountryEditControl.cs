@@ -3,13 +3,11 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common.Lists;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DNNCountryEditControl
     /// <summary>
     /// The DNNCountryEditControl control provides a standard UI component for editing
     /// Countries.
@@ -44,7 +42,7 @@ namespace DotNetNuke.UI.WebControls
                     var countries = listController.GetListEntryInfoItems("Country");
                     foreach (var checkCountry in countries)
                     {
-                        if (checkCountry.EntryID.ToString() == e.StringValue)
+                        if (checkCountry.EntryID.ToString(CultureInfo.InvariantCulture) == e.StringValue)
                         {
                             var attributes = new object[1];
                             attributes[0] = new ListAttribute("Region", "Country." + checkCountry.Value, ListBoundField.Id, ListBoundField.Text);

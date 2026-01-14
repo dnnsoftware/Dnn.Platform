@@ -10,17 +10,19 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Framework.Providers;
 
+    /// <summary>The friendly URL provider.</summary>
     public class DNNFriendlyUrlProvider : FriendlyUrlProvider
     {
+        /// <summary>The provider name.</summary>
         internal const string ProviderName = "DNNFriendlyUrl";
+
+        /// <summary>The provider type.</summary>
         internal const string ProviderType = "friendlyUrl";
 
         private readonly ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
-
         private readonly FriendlyUrlProviderBase providerInstance;
-        private readonly UrlFormatType urlFormat = UrlFormatType.SearchFriendly;
-        private readonly string[] validExtensions;
 
+        /// <summary>Initializes a new instance of the <see cref="DNNFriendlyUrlProvider"/> class.</summary>
         public DNNFriendlyUrlProvider()
         {
             // Read the configuration specific information for this provider
@@ -31,69 +33,49 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
                 switch (objProvider.Attributes["urlFormat"].ToLowerInvariant())
                 {
                     case "searchfriendly":
-                        this.urlFormat = UrlFormatType.SearchFriendly;
+                        this.UrlFormat = UrlFormatType.SearchFriendly;
                         break;
                     case "humanfriendly":
-                        this.urlFormat = UrlFormatType.HumanFriendly;
+                        this.UrlFormat = UrlFormatType.HumanFriendly;
                         break;
                     case "advanced":
                     case "customonly":
-                        this.urlFormat = UrlFormatType.Advanced;
+                        this.UrlFormat = UrlFormatType.Advanced;
                         break;
                     default:
-                        this.urlFormat = UrlFormatType.SearchFriendly;
+                        this.UrlFormat = UrlFormatType.SearchFriendly;
                         break;
                 }
             }
 
             // instance the correct provider implementation
-            switch (this.urlFormat)
+            this.providerInstance = this.UrlFormat switch
             {
-                case UrlFormatType.Advanced:
-                    this.providerInstance = new AdvancedFriendlyUrlProvider(objProvider.Attributes);
-                    break;
-                case UrlFormatType.HumanFriendly:
-                case UrlFormatType.SearchFriendly:
-                    this.providerInstance = new BasicFriendlyUrlProvider(objProvider.Attributes);
-                    break;
-            }
+                UrlFormatType.Advanced => new AdvancedFriendlyUrlProvider(objProvider.Attributes),
+                UrlFormatType.HumanFriendly or UrlFormatType.SearchFriendly => new BasicFriendlyUrlProvider(objProvider.Attributes),
+                _ => this.providerInstance,
+            };
 
             string extensions = !string.IsNullOrEmpty(objProvider.Attributes["validExtensions"]) ? objProvider.Attributes["validExtensions"] : ".aspx";
-            this.validExtensions = extensions.Split(',');
+            this.ValidExtensions = extensions.Split(',');
         }
 
-        public string[] ValidExtensions
-        {
-            get { return this.validExtensions; }
-        }
+        /// <summary>Gets the valid friendly URL extensions.</summary>
+        public string[] ValidExtensions { get; private set; }
 
-        public UrlFormatType UrlFormat
-        {
-            get { return this.urlFormat; }
-        }
+        /// <summary>Gets the URL format.</summary>
+        public UrlFormatType UrlFormat { get; private set; } = UrlFormatType.SearchFriendly;
 
         /// <inheritdoc/>
-        public override string FriendlyUrl(TabInfo tab, string path)
-        {
-            return this.providerInstance.FriendlyUrl(tab, path);
-        }
+        public override string FriendlyUrl(TabInfo tab, string path) => this.providerInstance.FriendlyUrl(tab, path);
 
         /// <inheritdoc/>
-        public override string FriendlyUrl(TabInfo tab, string path, string pageName)
-        {
-            return this.providerInstance.FriendlyUrl(tab, path, pageName);
-        }
+        public override string FriendlyUrl(TabInfo tab, string path, string pageName) => this.providerInstance.FriendlyUrl(tab, path, pageName);
 
         /// <inheritdoc/>
-        public override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
-        {
-            return this.providerInstance.FriendlyUrl(tab, path, pageName, settings);
-        }
+        public override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings) => this.providerInstance.FriendlyUrl(tab, path, pageName, settings);
 
         /// <inheritdoc/>
-        public override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
-        {
-            return this.providerInstance.FriendlyUrl(tab, path, pageName, portalAlias);
-        }
+        public override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias) => this.providerInstance.FriendlyUrl(tab, path, pageName, portalAlias);
     }
 }

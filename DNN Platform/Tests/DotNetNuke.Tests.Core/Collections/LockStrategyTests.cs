@@ -99,7 +99,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
                         // assert that read thread has terminated
                         Console.WriteLine(t.ThreadState.ToString());
-                        Assert.That(t.ThreadState == ThreadState.Stopped, Is.True);
+                        Assert.That(t.ThreadState, Is.EqualTo(ThreadState.Stopped));
                     }
                 }
             }

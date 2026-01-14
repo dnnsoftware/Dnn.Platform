@@ -26,8 +26,8 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>Initializes a new instance of the <see cref="GeneratedImage"/> class.</summary>
-        /// <param name="context"></param>
-        /// <param name="bindingContainer"></param>
+        /// <param name="context">The HTTP context.</param>
+        /// <param name="bindingContainer">The control into which the image should be rendered.</param>
         internal GeneratedImage(HttpContextBase context, Control bindingContainer)
             : this()
         {

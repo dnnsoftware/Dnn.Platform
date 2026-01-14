@@ -1,11 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace Dnn.PersonaBar.Library.DTO
+namespace Dnn.PersonaBar.Library.Dto
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Runtime.Serialization;
     using System.Xml;
     using System.Xml.Schema;
@@ -23,7 +24,7 @@ namespace Dnn.PersonaBar.Library.DTO
         {
             get
             {
-                return Convert.ToBoolean(this["expandPersonaBar"]);
+                return Convert.ToBoolean(this["expandPersonaBar"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -106,7 +107,7 @@ namespace Dnn.PersonaBar.Library.DTO
                     switch (settingName)
                     {
                         case "ExpandPersonaBar":
-                            this["expandPersonaBar"] = Convert.ToBoolean(settingValue);
+                            this["expandPersonaBar"] = Convert.ToBoolean(settingValue, CultureInfo.InvariantCulture);
                             break;
                         case "ActiveIdentifier":
                             this["activeIdentifier"] = settingValue;
@@ -115,13 +116,13 @@ namespace Dnn.PersonaBar.Library.DTO
                             this["activePath"] = settingValue;
                             break;
                         case "ExpandTasksPane":
-                            this["expandTasksPane"] = Convert.ToBoolean(settingValue);
+                            this["expandTasksPane"] = Convert.ToBoolean(settingValue, CultureInfo.InvariantCulture);
                             break;
                         case "ComparativeTerm":
                             this["comparativeTerm"] = settingValue;
                             break;
                         case "EndDate":
-                            this["endDate"] = Convert.ToDateTime(settingValue);
+                            this["endDate"] = Convert.ToDateTime(settingValue, CultureInfo.InvariantCulture);
                             break;
                         case "Legends":
                             this["legends"] = settingValue.Split(',');
@@ -130,7 +131,7 @@ namespace Dnn.PersonaBar.Library.DTO
                             this["period"] = settingValue;
                             break;
                         case "StartDate":
-                            this["startDate"] = Convert.ToDateTime(settingValue);
+                            this["startDate"] = Convert.ToDateTime(settingValue, CultureInfo.InvariantCulture);
                             break;
                     }
                 }

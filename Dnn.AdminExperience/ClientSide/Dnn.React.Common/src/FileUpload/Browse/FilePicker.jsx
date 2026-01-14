@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-const searchIcon = require("!raw-loader!./img/search.svg").default;
-const fileIcon = require("!raw-loader!./img/pages.svg").default;
+import SearchIcon from "./img/search.svg";
+import FileIcon from "./img/pages.svg";
 import { Scrollbars } from "react-custom-scrollbars";
 
 export default class FilePicker extends Component {
@@ -71,9 +71,9 @@ export default class FilePicker extends Component {
 
     getItem(isMatchSearch, child) {
         if (isMatchSearch) {
-            /* eslint-disable react/no-danger */
+             
             return <li>
-                <div className="icon" dangerouslySetInnerHTML={{ __html: fileIcon }} onClick={this.onFileNameClick.bind(this, child) }/>
+                <div className="icon" onClick={this.onFileNameClick.bind(this, child) }><FileIcon /></div>
                 <div className="item-name" onClick={this.onFileNameClick.bind(this, child) }>{child.data.value}</div>
             </li>;
         }
@@ -91,7 +91,7 @@ export default class FilePicker extends Component {
         });
         return <ul>
             <li>
-                <div className="icon" dangerouslySetInnerHTML={{ __html: fileIcon }} onClick={this.onFileNameClick.bind(this) }/>
+                <div className="icon" onClick={this.onFileNameClick.bind(this) }><FileIcon /></div>
                 <div className="item-name none-specified" onClick={this.onFileNameClick.bind(this) }>{this.props.notSpecifiedText}</div>
             </li>
             {files}
@@ -100,7 +100,7 @@ export default class FilePicker extends Component {
 
 
     render() {
-        /* eslint-disable react/no-danger */
+         
         const selectedFileText = this.props.selectedFile ? this.props.selectedFile.value : this.props.notSpecifiedText;
 
         const files = this.getFiles();
@@ -114,7 +114,7 @@ export default class FilePicker extends Component {
                     <div className="search">
                         <input type="text" value={this.state.searchFileText} onChange={this.onChangeSearchFileText.bind(this) } placeholder={this.props.searchFilesPlaceHolderText} aria-label="Search" />
                         {this.state.searchFileText && <div onClick={this.clearSearch.bind(this) } className="clear-button">×</div>}
-                        <div className="search-icon" dangerouslySetInnerHTML={{ __html: searchIcon }} />
+                        <div className="search-icon"><SearchIcon /></div>
                     </div>
                     <div className="items">
                         <Scrollbars className="scrollArea content-vertical"

@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities.Users
     using System;
     using System.Collections.Concurrent;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
 
@@ -25,9 +26,6 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.UI.WebControls;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Users
-    /// Class:      UserInfo
     /// <summary>The UserInfo class provides Business Layer model for Users.</summary>
     [Serializable]
     public class UserInfo : BaseEntityInfo, IPropertyAccess, IUserInfo
@@ -211,7 +209,7 @@ namespace DotNetNuke.Entities.Users
                     var socialRoles = this.Social.Roles;
                     if (socialRoles.Count == 0)
                     {
-                        return new string[0];
+                        return [];
                     }
                     else
                     {
@@ -253,16 +251,17 @@ namespace DotNetNuke.Entities.Users
         /// <param name="currentScope">requested maximum access level, might be restricted due to user level.</param>
         /// <param name="propertyNotFound">out: flag, if property could be retrieved.</param>
         /// <returns>current value of the property for this userinfo object.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             Scope internScope;
             if (this.UserID == -1 && currentScope > Scope.Configuration)
             {
-                internScope = Scope.Configuration; // anonymous users only get access to displayname
+                internScope = Scope.Configuration; // anonymous users only get access to display name
             }
             else if (this.UserID != accessingUser.UserID && !this.IsAdminUser(ref accessingUser) && currentScope > Scope.DefaultSettings)
             {
-                internScope = Scope.DefaultSettings; // registerd users can access username and userID as well
+                internScope = Scope.DefaultSettings; // registered users can access username and userID as well
             }
             else
             {

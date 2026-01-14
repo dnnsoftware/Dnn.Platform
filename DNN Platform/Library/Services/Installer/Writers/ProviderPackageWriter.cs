@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Installer.Writers
     public class ProviderPackageWriter : PackageWriterBase
     {
         /// <summary>Initializes a new instance of the <see cref="ProviderPackageWriter"/> class.</summary>
-        /// <param name="package"></param>
+        /// <param name="package">The package info.</param>
         public ProviderPackageWriter(PackageInfo package)
             : base(package)
         {
@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
             if (!string.IsNullOrEmpty(providerPath))
             {
-                this.BasePath = providerPath.Replace("~/", string.Empty).Replace("/", "\\");
+                this.BasePath = providerPath.Replace("~/", string.Empty).Replace("/", @"\");
             }
         }
 

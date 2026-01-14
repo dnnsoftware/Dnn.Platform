@@ -4,26 +4,26 @@ import "./styles.less";
 import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 export default class PersonaBarPageIcon extends Component {
-    /* eslint-disable react/no-danger */
+     
     selectIcon(number) {
 
-        /*eslint-disable react/no-danger*/
+         
         switch (number) {
             case "normal":
-                return (<div dangerouslySetInnerHTML={{ __html: SvgIcons.PagesIcon }} />);
+                return (<div><SvgIcons.PagesIcon /></div>);
 
             case "file":
-                return (<div dangerouslySetInnerHTML={{ __html: SvgIcons.TreePaperClip }} />);
+                return (<div><SvgIcons.TreePaperClip /></div>);
 
             case "tab":
             case "url":
-                return ( <div dangerouslySetInnerHTML={{ __html: SvgIcons.TreeLinkIcon }} /> );
+                return (<div><SvgIcons.TreeLinkIcon /></div>);
 
             case "existing":
-                return ( <div dangerouslySetInnerHTML={{ __html: SvgIcons.TreeLinkIcon }} /> );
+                return (<div><SvgIcons.TreeLinkIcon /></div>);
 
             default:
-                return (<div dangerouslySetInnerHTML={{ __html: SvgIcons.PagesIcon }}/>);
+                return (<div><SvgIcons.PagesIcon /></div>);
         }
     }
 

@@ -43,7 +43,7 @@ namespace Dnn.EditBar.Library.Items
 
         /// <summary>Gets the menu order.</summary>
         [DataMember(Name = "order")]
-        public virtual int Order { get; } = 0;
+        public virtual int Order { get; }
 
         /// <summary>Gets the menu script path, which will handle the button click event.</summary>
         [DataMember(Name = "loader")]
@@ -51,14 +51,14 @@ namespace Dnn.EditBar.Library.Items
 
         /// <summary>Gets a value indicating whether the menu have custom layout.</summary>
         [DataMember(Name = "customLayout")]
-        public virtual bool CustomLayout { get; } = false;
+        public virtual bool CustomLayout { get; }
 
         /// <summary>Gets menu custom settings.</summary>
         [DataMember(Name = "settings")]
         public virtual IDictionary<string, object> Settings { get; } = new Dictionary<string, object>();
 
         /// <summary>whether the menu is visible in current context.</summary>
-        /// <returns><c>true</c> if this menu item is visible, otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this menu item is visible, otherwise <see langword="false"/>.</returns>
         public virtual bool Visible()
         {
             return true;

@@ -1,0 +1,208 @@
+body {
+    background: #f4f4f4 url(body_bg.jpg) repeat-x 0 0;
+    font-size: 12px;
+    #languageFlags{
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        .selectedFlag{
+            padding-bottom: 4px;
+            margin-bottom: 4px;
+            border-bottom: 4px solid #3792ED;
+        }
+    }
+    form, .install {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .install {
+        background-color: white;
+        padding: 20px;
+        box-shadow: 5px 5px 20px grey;
+        h2 {
+            color: gray;
+        }
+        #tabs{
+            >ul{
+                display: flex;
+                list-style-type: none;
+                width: 100%;
+                padding: 0;
+                >li{
+                    &:last-child{
+                        flex-grow: 1;
+                    }
+                    --tab-inactive-foreground-color: #999;
+                    --tab-active-foreground-color: #333;
+                    font-weight: bold;
+                    a{
+                        text-decoration: none;
+                        color: var(--tab-inactive-foreground-color);
+                    }
+                    .dnnWizardStep{
+                        display: flex;
+                        align-items: center;
+                        height: 46px;
+                        background: transparent url(../../../../../images/InstallWizardBG.png) repeat-x;
+                        padding-left: 2rem;
+                        .dnnWizardStepNumber{
+                            width: 1.5rem;
+                            height: 1.5rem;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            border: 1px solid var(--tab-inactive-foreground-color);
+                            background-color: var(--tab-inactive-foreground-color);
+                            border-radius: 50%;
+                            color: white;
+                            margin-right: 0.5rem;
+                        }
+                    }
+                    .dnnWizardStepArrow {
+                        width: 25px;
+                        height: 46px;
+                        background: transparent url(../../../../../images/InstallWizardBG.png) no-repeat;
+                        background-position: 0 -401px;
+                        margin-left: 2rem;
+                    }
+                    &.ui-tabs-active{
+                        a{
+                            color: var(--tab-active-foreground-color);
+                        }
+                        .dnnWizardStep{
+                            background-position: 0 -100px;
+                        }
+                        .dnnWizardStepNumber{
+                            border-color: var(--tab-active-foreground-color);
+                            background-color: var(--tab-active-foreground-color);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.dnnFormMessage{
+    &.dnnFormError {
+        display: none;
+    }
+}
+
+.installAccountInfo, .installInstallation, .upgradeAccountInfo {
+    padding-top: 3rem;
+}
+
+#lblIntroDetail{
+    a.videoLink{
+        background: url(../images/videoIcon.png) no-repeat;
+        display: inline-block;
+        padding-left: 24px;
+        height: 24px;
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        margin-left: 20px;
+        &:hover, &:active{
+            text-decoration: underline;
+        }
+    }
+}
+.tabSubTitle{
+    font-size: 1rem;
+    font-weight: bold;
+    color: #444;
+}
+.installInstallation {
+    .installIntro{
+        font-size: 1.5em;
+        color: grey;
+    }
+}
+#installInstallationPanel{
+    margin-top: 2rem;
+    .dnnFormItem{
+        display: flex;
+        gap: 1rem;
+        #installation-progress{
+            flex-grow: 1;
+        }
+    }
+    #installation-buttons{
+        margin-top: 1rem;
+        display: flex;
+        gap: 1rem;
+        #visitSite{
+            margin-left: auto;
+        }
+    }
+}
+a.dnnDisabledAction:link, a.dnnDisabledAction:visited, a.dnnDisabledAction:active, a.dnnDisabledAction:hover {
+    text-decoration: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+#installation-steps{
+    background-color: #eee;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    p{
+        white-space: nowrap;
+        display: flex;
+        color: #666;
+        .states-icons {
+            width: 25px;
+            height: 16px;
+            background-image: url("../images/installer-feedback-states-sprite.png");
+            background-repeat: no-repeat;
+        }
+        &.step-notstarted {
+            color: #bbb;
+            .states-icons {
+                background-position: -1000px -1000px;
+            }
+        }
+        &.step-running {
+            .states-icons{
+                background-position: -48px 4px;
+            }
+        }
+        &.step-done {
+            .states-icons{
+                background-position: 0 3px;
+            }
+        }
+        &.step-error{
+            .states-icons{
+                background-position: -99px 3px;
+            }
+        }
+    }
+}
+#timer, #percentage {
+    font-style: italic;
+}
+.promptMessage {
+    display: inline-block;
+    padding-top: 1rem 2rem;
+    background-color: #FFFF81;
+    text-align: center;
+}
+.promptMessageError {
+    display: inline-block;
+    padding-top: 1rem 2rem;
+    background-color: rgba(255, 0, 0, 0.15);
+    text-align: center;
+}
+.dnnInstall{
+    margin-bottom:2rem;
+}
+#installation-log-container {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    display: none;
+    height: 15rem;
+}

@@ -7,9 +7,6 @@ namespace DotNetNuke.UI.WebControls
     using System.Collections.Specialized;
     using System.Web.UI;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      TrueFalseEditControl
     /// <summary>
     /// The TrueFalseEditControl control provides a standard UI component for editing
     /// true/false (boolean) properties.

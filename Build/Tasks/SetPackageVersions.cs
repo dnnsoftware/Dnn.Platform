@@ -27,6 +27,7 @@ namespace DotNetNuke.Build.Tasks
             packages.Add(context.GetFiles("./Dnn.AdminExperience/ClientSide/Dnn.React.Common/package.json"));
             packages.Add(context.GetFiles("./Dnn.AdminExperience/ClientSide/*.Web/**/_exportables/package.json"));
             packages.Add(context.GetFiles("./DNN Platform/Modules/ResourceManager/ResourceManager.Web/package.json"));
+            packages.Add(context.GetFiles("./DNN Platform/Skins/Aperture/package.json"));
 
             // Set all package.json in Admin Experience to the current version and to consume the current (local) version of dnn-react-common.
             foreach (var file in packages)

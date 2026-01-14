@@ -11,7 +11,7 @@
     <icon>images\logo-for-nuget.png</icon>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
-      This package contains components required for developing extensiong to utilize site export/import features.
+      This package contains components required for developing extensions to utilize site export/import features.
     </description>
     <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
     <dependencies>
@@ -21,11 +21,11 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.dll" target="lib\net45\"/>
-    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.pdb" target="lib\net45\"/>
+    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.dll" target="lib\net48\"/>
+    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.pdb" target="lib\net48\"/>
 
-    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.Library.dll" target="lib\net45\"/>
-    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.Library.pdb" target="lib\net45\"/>
+    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.Library.dll" target="lib\net48\"/>
+    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.Library.pdb" target="lib\net48\"/>
     <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

@@ -15,10 +15,10 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         }
 
         /// <summary>Initializes a new instance of the <see cref="TermUsage"/> class.</summary>
-        /// <param name="total"></param>
-        /// <param name="month"></param>
-        /// <param name="week"></param>
-        /// <param name="day"></param>
+        /// <param name="total">The total usage count.</param>
+        /// <param name="month">The usage count for the month.</param>
+        /// <param name="week">The usage count for the week.</param>
+        /// <param name="day">The usage count for the day.</param>
         internal TermUsage(int total, int month, int week, int day)
         {
             this.TotalTermUsage = total;

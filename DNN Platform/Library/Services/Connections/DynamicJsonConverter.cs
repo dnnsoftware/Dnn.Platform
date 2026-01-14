@@ -9,8 +9,10 @@ namespace DotNetNuke.Services.Connections
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Dynamic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
+    using System.Web;
     using System.Web.Script.Serialization;
 
     public sealed class DynamicJsonConverter : JavaScriptConverter
@@ -18,7 +20,7 @@ namespace DotNetNuke.Services.Connections
         /// <inheritdoc/>
         public override IEnumerable<Type> SupportedTypes
         {
-            get { return new ReadOnlyCollection<Type>(new List<Type>(new[] { typeof(object) })); }
+            get { return new ReadOnlyCollection<Type>(new List<Type>([typeof(object)])); }
         }
 
         /// <inheritdoc/>
@@ -26,7 +28,7 @@ namespace DotNetNuke.Services.Connections
         {
             if (dictionary == null)
             {
-                throw new ArgumentNullException("dictionary");
+                throw new ArgumentNullException(nameof(dictionary));
             }
 
             return type == typeof(object) ? new DynamicJsonObject(dictionary) : null;
@@ -44,12 +46,7 @@ namespace DotNetNuke.Services.Connections
 
             public DynamicJsonObject(IDictionary<string, object> dictionary)
             {
-                if (dictionary == null)
-                {
-                    throw new ArgumentNullException("dictionary");
-                }
-
-                this.dictionary = dictionary;
+                this.dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
             }
 
             public override string ToString()
@@ -116,56 +113,60 @@ namespace DotNetNuke.Services.Connections
                 {
                     if (!firstInDictionary)
                     {
-                        sb.Append(",");
+                        sb.Append(',');
                     }
 
                     firstInDictionary = false;
                     var value = pair.Value;
                     var name = pair.Key;
-                    if (value is string)
+                    if (value is string stringValue)
                     {
-                        sb.AppendFormat("{0}:\"{1}\"", name, value);
+                        sb.AppendFormat(
+                            CultureInfo.InvariantCulture,
+                            "{0}:{1}",
+                            HttpUtility.JavaScriptStringEncode(name, addDoubleQuotes: true),
+                            HttpUtility.JavaScriptStringEncode(stringValue, addDoubleQuotes: true));
                     }
-                    else if (value is IDictionary<string, object>)
+                    else if (value is IDictionary<string, object> dictValue)
                     {
-                        new DynamicJsonObject((IDictionary<string, object>)value).ToString(sb);
+                        new DynamicJsonObject(dictValue).ToString(sb);
                     }
-                    else if (value is ArrayList)
+                    else if (value is ArrayList list)
                     {
                         sb.Append(name + ":[");
                         var firstInArray = true;
-                        foreach (var arrayValue in (ArrayList)value)
+                        foreach (var arrayValue in list)
                         {
                             if (!firstInArray)
                             {
-                                sb.Append(",");
+                                sb.Append(',');
                             }
 
                             firstInArray = false;
 
-                            if (arrayValue is IDictionary<string, object>)
+                            if (arrayValue is IDictionary<string, object> dictArrayValue)
                             {
-                                sb.Append(new DynamicJsonObject((IDictionary<string, object>)arrayValue).ToString());
+                                sb.Append(new DynamicJsonObject(dictArrayValue));
                             }
-                            else if (arrayValue is string)
+                            else if (arrayValue is string stringArrayValue)
                             {
-                                sb.AppendFormat("\"{0}\"", arrayValue);
+                                sb.Append(HttpUtility.JavaScriptStringEncode(stringArrayValue, addDoubleQuotes: true));
                             }
                             else
                             {
-                                sb.AppendFormat("{0}", arrayValue);
+                                sb.Append(arrayValue);
                             }
                         }
 
-                        sb.Append("]");
+                        sb.Append(']');
                     }
                     else
                     {
-                        sb.AppendFormat("{0}:{1}", name, value);
+                        sb.AppendFormat(CultureInfo.InvariantCulture, "{0}:{1}", name, value);
                     }
                 }
 
-                sb.Append("}");
+                sb.Append('}');
             }
         }
     }

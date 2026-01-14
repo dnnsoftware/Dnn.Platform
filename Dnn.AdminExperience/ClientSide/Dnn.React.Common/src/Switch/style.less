@@ -17,7 +17,7 @@
     }
     .switch-label {
         padding-top: 1px;
-        color: @bulgarianRose;
+        color: var(--dnn-color-foreground, @bulgarianRose);
         font-size: 13px;
         font-weight: bold;
         float: left;
@@ -26,7 +26,7 @@
         float: right;
         .on-off-text {
             margin-top: 2px;
-            color: @bulgarianRose;
+            color: var(--dnn-color-foreground, @bulgarianRose);
             &.place-left {
                 float: left;
             }
@@ -40,19 +40,14 @@
         position: relative;
         width: 45px;
         height: 21px;
-        -webkit-border-radius: 14px;
-        -moz-border-radius: 14px;
-        border-radius: 14px;
-        border: 1px solid @mountainMist;
-        background-color: @alto;
+        border-radius: var(--dnn-controls-radius, 14px);
+        border: 1px solid var(--dnn-color-foreground-light, @mountainMist);
+        background-color: var(--dnn-color-background-dark, @alto);
         margin: 0;
         cursor: pointer;
-        -webkit-transition: background 100ms linear;
-        -moz-transition: background 100ms linear;
-        -o-transition: background 100ms linear;
         transition: background 100ms linear;
-        box-sizing: content-box !important;
         -moz-box-sizing: content-box !important;
+        box-sizing: content-box !important;
         &.place-left {
             margin-left: 8px;
         }
@@ -60,31 +55,29 @@
             margin-right: 8px;
         }
         &.dnn-switch-active {
-            background-color: @cerulean;
-            border-color: @matisse;
+            background-color: var(--dnn-color-primary, @cerulean);
             .mark {
                 left: 24px;
-                border-color: @matisse;
+                border-color: var(--dnn-color-foreground-light, @matisse);
             }
         }
         &.dnn-switch-readonly {
-            border: 1px solid @mercury;
+            border: 1px solid var(--dnn-color-neutral, @mercury);
             cursor: not-allowed;
-            background-color: @mercury;
+            background-color: var(--dnn-color-neutral, @mercury);
+            opacity: 0.5;
             .mark {
-                border: 1px solid @mercury;
-                background-color: @gallery;
+                border: 1px solid var(--dnn-color-neutral-dark, @mercury);
+                background-color: var(--dnn-color-neutral-light, @gallery);
             }
         }
         .mark {
             width: 21px;
             height: 21px;
             display: inline-block;
-            -webkit-border-radius: 13px;
-            -moz-border-radius: 13px;
-            border-radius: 13px;
-            background-color: @white;
-            border: 1px solid @mountainMist;
+            border-radius: var(--dnn-controls-radius, 13px);
+            background-color: var(--dnn-color-background, @white);
+            border: 1px solid var(--dnn-color-foreground-light, @mountainMist);
             position: absolute;
             top: 0px;
             left: 0px;

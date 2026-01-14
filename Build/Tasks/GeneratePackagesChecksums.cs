@@ -4,6 +4,7 @@
 namespace DotNetNuke.Build.Tasks
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
@@ -23,17 +24,19 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(CreateSymbols))]
     public sealed class GeneratePackagesChecksums : FrostingTask<Context>
     {
+        private static readonly string[] ZipFiles = ["*.zip",];
+
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            context.Information("Computing packages checksums...");
+            context.Information("Computing packages checksums…");
 
             var sb = new StringBuilder();
             sb.AppendLine($"## MD5 Checksums")
                 .AppendLine($"| File       | Checksum |")
                 .AppendLine($"|------------|----------|");
 
-            var files = context.GetFilesByPatterns(context.ArtifactsFolder, new[] { "*.zip" });
+            var files = context.GetFilesByPatterns(context.ArtifactsFolder, ZipFiles);
             foreach (var file in files)
             {
                 string hash;
@@ -43,13 +46,11 @@ namespace DotNetNuke.Build.Tasks
                     using (var stream = File.OpenRead(file.FullPath))
                     {
                         var hashBytes = md5.ComputeHash(stream);
-                        hash = BitConverter.ToString(hashBytes)
-                            .Replace("-", string.Empty)
-                            .ToLowerInvariant();
+                        hash = Convert.ToHexStringLower(hashBytes);
                     }
                 }
 
-                sb.AppendLine($"| {fileName} | {hash}   |");
+                sb.AppendLine(CultureInfo.InvariantCulture, $"| {fileName} | {hash}   |");
             }
 
             sb.AppendLine();

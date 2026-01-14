@@ -7,10 +7,13 @@ namespace DotNetNuke.Modules.Admin.Users
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -36,10 +39,28 @@ namespace DotNetNuke.Modules.Admin.Users
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditUser));
         private readonly INavigationManager navigationManager;
+        private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IHostSettings hostSettings;
+        private readonly IPortalController portalController;
 
+        /// <summary>Initializes a new instance of the <see cref="EditUser"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditUser()
+            : this(null, null, null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EditUser"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public EditUser(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings, IPortalController portalController)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+            this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
         }
 
         /// <summary>Gets or sets the current Page No.</summary>
@@ -153,7 +174,10 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
+        private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
+
         /// <summary>Page_Init runs when the control is initialised.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -168,8 +192,8 @@ namespace DotNetNuke.Modules.Admin.Users
 
             this.email.ValidationExpression = this.PortalSettings.Registration.EmailValidator;
 
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            JavaScript.RequestRegistration(CommonJs.Knockout);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.Knockout);
 
             // Set the Membership Control Properties
             this.ctlMembership.ID = "Membership";
@@ -200,6 +224,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -304,14 +329,14 @@ namespace DotNetNuke.Modules.Admin.Users
                     // make sure username matches possibly changed email address
                     if (this.PortalSettings.Registration.UseEmailAsUserName)
                     {
-                        if (this.UserInfo.Username.ToLower() != this.UserInfo.Email.ToLower())
+                        if (!string.Equals(this.UserInfo.Username, this.UserInfo.Email, StringComparison.OrdinalIgnoreCase))
                         {
                             UserController.ChangeUsername(this.UserInfo.UserID, this.UserInfo.Email);
 
                             // after username changed, should redirect to login page to let user authenticate again.
                             var loginUrl = Globals.LoginURL(HttpUtility.UrlEncode(this.Request.RawUrl), false);
-                            var spliter = loginUrl.Contains("?") ? "&" : "?";
-                            loginUrl = $"{loginUrl}{spliter}username={this.UserInfo.Email}&usernameChanged=true";
+                            var separator = loginUrl.Contains("?") ? "&" : "?";
+                            loginUrl = $"{loginUrl}{separator}username={this.UserInfo.Email}&usernameChanged=true";
                             this.Response.Redirect(loginUrl, true);
                         }
                     }
@@ -358,7 +383,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.userForm.DataSource = this.UserInfo;
 
                 // hide username field in UseEmailAsUserName mode
-                bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
+                bool disableUsername = PortalController.GetPortalSettingAsBoolean(this.portalController, "Registration_UseEmailAsUserName", this.PortalId, false);
                 if (disableUsername)
                 {
                     this.userForm.Items[0].Visible = false;
@@ -396,18 +421,17 @@ namespace DotNetNuke.Modules.Admin.Users
                     if (string.IsNullOrEmpty(this.UserInfo.VanityUrl))
                     {
                         // Clean Display Name
-                        bool modified;
                         var options = UrlRewriterUtils.GetOptionsFromSettings(urlSettings);
-                        var cleanUrl = FriendlyUrlController.CleanNameForUrl(this.UserInfo.DisplayName, options, out modified);
-                        var uniqueUrl = FriendlyUrlController.ValidateUrl(cleanUrl, -1, this.PortalSettings, out modified).ToLowerInvariant();
+                        var cleanUrl = FriendlyUrlController.CleanNameForUrl(this.UserInfo.DisplayName, options, out _);
+                        var uniqueUrl = FriendlyUrlController.ValidateUrl(cleanUrl, -1, this.PortalSettings, out _).ToLowerInvariant();
 
-                        this.VanityUrlAlias.Text = string.Format("{0}/{1}/", this.PortalSettings.PortalAlias.HTTPAlias, urlSettings.VanityUrlPrefix);
+                        this.VanityUrlAlias.Text = $"{this.CurrentPortalAlias.HttpAlias}/{urlSettings.VanityUrlPrefix}/";
                         this.VanityUrlTextBox.Text = uniqueUrl;
                         this.ShowVanityUrl = true;
                     }
                     else
                     {
-                        this.VanityUrl.Text = string.Format("{0}/{1}/{2}", this.PortalSettings.PortalAlias.HTTPAlias, urlSettings.VanityUrlPrefix, this.UserInfo.VanityUrl);
+                        this.VanityUrl.Text = $"{this.CurrentPortalAlias.HttpAlias}/{urlSettings.VanityUrlPrefix}/{this.UserInfo.VanityUrl}";
                         this.ShowVanityUrl = false;
                     }
                 }
@@ -571,10 +595,10 @@ namespace DotNetNuke.Modules.Admin.Users
             ProfilePropertyDefinition localeProperty = this.UserInfo.Profile.GetProperty("PreferredLocale");
             if (localeProperty.IsDirty)
             {
-                // store preferredlocale in cookie, if none specified set to portal default.
+                // store PreferredLocale in cookie, if none specified set to portal default.
                 if (this.UserInfo.Profile.PreferredLocale == string.Empty)
                 {
-                    Localization.SetLanguage(PortalController.GetPortalDefaultLanguage(this.UserInfo.PortalID));
+                    Localization.SetLanguage(PortalController.GetPortalDefaultLanguage(this.hostSettings, this.UserInfo.PortalID));
                 }
                 else
                 {
@@ -592,11 +616,11 @@ namespace DotNetNuke.Modules.Admin.Users
             string message;
             if (e.Cancel)
             {
-                message = string.Format(Localization.GetString("UserUnSubscribed", this.LocalResourceFile), e.RoleName);
+                message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserUnSubscribed", this.LocalResourceFile), e.RoleName);
             }
             else
             {
-                message = string.Format(Localization.GetString("UserSubscribed", this.LocalResourceFile), e.RoleName);
+                message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserSubscribed", this.LocalResourceFile), e.RoleName);
             }
 
             this.AddLocalizedModuleMessage(message, ModuleMessage.ModuleMessageType.GreenSuccess, true);

@@ -1,0 +1,201 @@
+﻿[JavaScript:{ jsname: "Knockout" }]
+[JavaScript:{ path: "~/DesktopModules/Dnn/ContactList/ClientScripts/contacts.js"}]
+[JavaScript:{ path: "~/DesktopModules/Dnn/ContactList/ClientScripts/util.js"}]
+[JavaScript:{ path: "~/Resources/Shared/scripts/dnn.jquery.js"}]
+[JavaScript:{ path: "~/DesktopModules/Dnn/ContactList/ClientScripts/QuickSettingsDispatcher.js"}]
+[JavaScript:{ path: "~/DesktopModules/Dnn/ContactList/ClientScripts/pager.js"}]
+[ModuleAction:{controlKey : "ShowInfo", securityAccessLevel : "Edit", titleKey: "ShowModuleInfo", localResourceFile: "~/DesktopModules/Dnn/ContactList/App_LocalResources/ShowInfo.resx" }]
+
+<div id="ContactList-[ModuleContext:ModuleId]" class="contactList-container">
+  <div data-bind="visible: !isEditMode()">
+    <div data-bind="foreach: contacts" class="contactList-grid">
+      <div class="contactCard">
+        <div class="contactCard-header">
+          <div class="contactCard-logo">
+            <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+              <!-- Left chevron/mountain -->
+              <polyline points="5,55 20,15 35,55"
+                        fill="none"
+                        stroke="white"
+                        stroke-width="6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round" />
+              <!-- Middle chevron/mountain -->
+              <polyline points="30,55 50,5 70,55"
+                        fill="none"
+                        stroke="white"
+                        stroke-width="6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round" />
+              <!-- Right chevron/mountain (partial) -->
+              <polyline points="65,55 80,15 95,55"
+                        fill="none"
+                        stroke="white"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="contactCard-company">
+            <div class="company-name">ACME CORP</div>
+            <div class="company-tagline">INNOVATION &amp; SOLUTIONS</div>
+          </div>
+          <div class="contactCard-actions"
+               data-bind="visible: $root.isFormEnabled()">
+            <div class="right" data-bind="visible: $root.isFormEnabled()">
+              <a title="[Resx:{key:'Edit'}]"
+                 data-bind="click: $parent.editContact">
+                <i class="fa fa-pencil"></i>
+              </a>
+              <a title="[Resx:{key:'Delete'}]" data-bind="click: deleteContact">
+                <i class="fa fa-trash"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="contactCard-body">
+          <div class="contact-name">
+            <span data-bind="text: firstName"></span>
+            <span data-bind="text: lastName"></span>
+          </div>
+          <div class="contact-title">[Resx:{key:"ContactPerson"}]</div>
+          <div class="contact-detail">
+            <i class="fa fa-envelope"></i>
+            <span data-bind="text: email"></span>
+          </div>
+          <div class="contact-detail">
+            <i class="fa fa-phone"></i>
+            <span data-bind="text: phone"></span>
+          </div>
+          <div class="contact-detail contact-social">
+            <i class="fa fa-twitter"></i>
+            <a href="https://social.com/@Model.Social.TrimStart('@')"
+               target="_blank">
+              <span data-bind="text: social"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="contactList-pagination" data-bind="visible: !isEditMode()">
+    <div data-bind="html: pagerItemsDescription"></div>
+    <a data-bind="click: prev" class="pagination-btn">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a data-bind="click: next" class="pagination-btn">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+    <div data-bind="html: pagerDescription"></div>
+  </div>
+  <div class="buttons col-md-12" data-bind="visible: isFormEnabled()">
+    <a class="dnnPrimaryAction" data-bind="click: addContact">[Resx:{key:"AddContact"}]</a>
+  </div>
+  <div class="editContact"
+       data-bind="visible: isFormEnabled() && isEditMode(), with: selectedContact">
+    <div class="editContact-header">
+      <h3 class="editContact-title">
+        <i class="fa fa-user-plus"></i>
+        <span data-bind="text: contactId() > 0 ? '[Resx:{key:"Edit"}]' : '[Resx:{key:"AddContact"}]'"></span>
+      </h3>
+    </div>
+    <div class="editContact-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fa fa-user"></i>
+            [Resx:{key:"FirstName"}]
+          </label>
+          <input class="form-control"
+                 data-bind="value: firstName, valueUpdate: 'input', css: firstName.validationClass"
+                 placeholder="[Resx:{key:"FirstName"}]" />
+          <span class="form-error"
+                data-bind="visible: firstName.hasError, text: firstName.validationMessage">
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fa fa-user"></i>
+            [Resx:{key:"LastName"}]
+          </label>
+          <input class="form-control"
+                 data-bind="value: lastName, valueUpdate: 'input', css: lastName.validationClass"
+                 placeholder="[Resx:{key:"LastName"}]" />
+          <span class="form-error"
+                data-bind="visible: lastName.hasError, text: lastName.validationMessage">
+          </span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">
+          <i class="fa fa-envelope"></i>
+          [Resx:{key:"Email"}]
+        </label>
+        <input class="form-control"
+               data-bind="value: email, valueUpdate: 'input', css: email.validationClass"
+               placeholder="[Resx:{key:"Email"}]" />
+        <span class="form-error"
+              data-bind="visible: email.hasError, text: email.validationMessage">
+        </span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">
+          <i class="fa fa-phone"></i>
+          [Resx:{key:"Phone"}]
+        </label>
+        <input class="form-control"
+               data-bind="value: phone, valueUpdate: 'input', css: phone.validationClass"
+               placeholder="[Resx:{key:"Phone"}]" />
+        <span class="form-error"
+              data-bind="visible: phone.hasError, text: phone.validationMessage">
+        </span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">
+          <i class="fa fa-twitter"></i>
+          [Resx:{key:"Social"}]
+        </label>
+        <input class="form-control"
+               data-bind="value: social, valueUpdate: 'input', css: social.validationClass"
+               placeholder="@username" />
+        <span class="form-error"
+              data-bind="visible: social.hasError, text: social.validationMessage">
+        </span>
+      </div>
+    </div>
+    <div class="editContact-footer">
+      <a class="btn-cancel" data-bind="click: cancel">
+        <i class="fa fa-times"></i>
+        [Resx:{key:"Cancel"}]
+      </a>
+      <a class="btn-save" data-bind="click: saveContact">
+        <i class="fa fa-check"></i>
+        [Resx:{key:"Save"}]
+      </a>
+    </div>
+  </div>
+</div>
+
+<script language="javascript" type="text/javascript">
+  jQuery(document).ready(function ($) {
+    var moduleId = parseInt("[ModuleContext:ModuleId]");
+    var preloadedData = [PreloadedData:All];
+    var localizedSettings = {
+      Cancel: '[Resx:{key:"Cancel"}]',
+      Delete: '[Resx:{key:"Delete"}]',
+      DeleteConfirm: '[Resx:{key:"DeleteConfirm"}]',
+      ConfirmDeleteTitle: '[Resx:{key:"ConfirmDeleteTitle"}]'
+    };
+
+    var settings = {
+      isFormEnabled: [contactsettings:IsFormEnabled],
+      emailRegex: "[contactsettings:EmailRegex]",
+      servicesFramework: $.ServicesFramework(moduleId),
+      moduleId: moduleId,
+      quickSettingsDispatcher: dnn.modules.spa.dnnContactListSpa.quickSettingsDispatcher
+    };
+
+    var contactList = new ContactList($, ko, settings, localizedSettings, preloadedData);
+    contactList.init("#ContactList-" + moduleId);
+  });
+</script>

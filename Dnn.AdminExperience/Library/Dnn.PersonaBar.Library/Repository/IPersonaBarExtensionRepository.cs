@@ -11,15 +11,15 @@ namespace Dnn.PersonaBar.Library.Repository
     public interface IPersonaBarExtensionRepository
     {
         /// <summary>save extension.</summary>
-        /// <param name="extension"></param>
+        /// <param name="extension">The Persona Bar extension.</param>
         void SaveExtension(PersonaBarExtension extension);
 
         /// <summary>delete extension.</summary>
-        /// <param name="extension"></param>
+        /// <param name="extension">The Persona Bar extension.</param>
         void DeleteExtension(PersonaBarExtension extension);
 
         /// <summary>delete extension.</summary>
-        /// <param name="identifier"></param>
+        /// <param name="identifier">The Persona Bar extension ID.</param>
         void DeleteExtension(string identifier);
 
         /// <summary>get persona bar extensions.</summary>
@@ -27,6 +27,7 @@ namespace Dnn.PersonaBar.Library.Repository
         IList<PersonaBarExtension> GetExtensions();
 
         /// <summary>get persona bar extensions for menu.</summary>
+        /// <param name="menuId">The ID of the menu.</param>
         /// <returns>A list of <see cref="PersonaBarExtension"/> instances.</returns>
         IList<PersonaBarExtension> GetExtensions(int menuId);
     }
