@@ -24,7 +24,7 @@ namespace DotNetNuke.Framework
             if (index > 0)
             {
                 path = path.Substring(index);
-                if (!path.EndsWith("/"))
+                if (!path.EndsWith("/", StringComparison.Ordinal))
                 {
                     path += "/";
                 }

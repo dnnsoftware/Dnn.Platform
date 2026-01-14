@@ -5,6 +5,7 @@ namespace Dnn.Modules.ResourceManager.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -66,9 +67,8 @@ namespace Dnn.Modules.ResourceManager.Components
                 Requires.NotNullOrEmpty("resourceFile", resourceFile);
                 Requires.NotNullOrEmpty("culture", culture);
 
-                var cacheKey = string.Format(localization.ResxDataCacheKey, culture, resourceFile);
-                var localizedDict = DataCache.GetCache(cacheKey) as Dictionary<string, string>;
-                if (localizedDict != null)
+                var cacheKey = string.Format(CultureInfo.CurrentCulture, localization.ResxDataCacheKey, culture, resourceFile);
+                if (DataCache.GetCache(cacheKey) is Dictionary<string, string> localizedDict)
                 {
                     return localizedDict;
                 }
@@ -168,7 +168,10 @@ namespace Dnn.Modules.ResourceManager.Components
                         FileAccess.Read))
                 {
                     var document = new XmlDocument { XmlResolver = null };
-                    document.Load(stream);
+                    using (var xmlReader = XmlReader.Create(stream, new XmlReaderSettings { XmlResolver = null, }))
+                    {
+                        document.Load(xmlReader);
+                    }
 
                     var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
                     AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
@@ -205,7 +208,7 @@ namespace Dnn.Modules.ResourceManager.Components
             {
                 Requires.NotNullOrEmpty("culture", culture);
 
-                var cacheKey = string.Format(localization.ResxModifiedDateCacheKey, culture);
+                var cacheKey = string.Format(CultureInfo.CurrentCulture, localization.ResxModifiedDateCacheKey, culture);
                 var cachedData = DataCache.GetCache(cacheKey);
                 if (cachedData is DateTime)
                 {

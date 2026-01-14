@@ -11,6 +11,8 @@ using DotNetNuke.Instrumentation;
 
 using Microsoft.Extensions.DependencyInjection;
 
+/// <summary>A helper for dependency injection.</summary>
+/// <remarks>This class uses reflection to access the DI container since it can't directly reference the main DotNetNuke.Library project.</remarks>
 internal static class DependencyInjection
 {
     private static readonly Type CommonGlobalsType;
@@ -28,16 +30,22 @@ internal static class DependencyInjection
         }
     }
 
+    /// <summary>Gets the current service scope, or creates a service scope if there isn't one already created. The scope must be disposed by the caller.</summary>
+    /// <returns>A service scope.</returns>
+    /// <exception cref="InvalidOperationException">The expected method in <c>DotNetNuke.Common.Globals</c> does not exist.</exception>
     public static IServiceScope GetOrCreateServiceScope()
     {
-        var getOrCreateServiceScopeMethod = CommonGlobalsType.GetMethod("GetOrCreateServiceScope", BindingFlags.NonPublic | BindingFlags.Static) ?? throw new InvalidOperationException("Unable to retrieve Globals.GetOrCreateServiceScope method via reflection");
+        var getOrCreateServiceScopeMethod = CommonGlobalsType.GetMethod("GetOrCreateServiceScope", BindingFlags.NonPublic | BindingFlags.Static, null, [], null) ?? throw new InvalidOperationException("Unable to retrieve Globals.GetOrCreateServiceScope method via reflection");
         var serviceScope = getOrCreateServiceScopeMethod.Invoke(null, []);
         return (IServiceScope)serviceScope;
     }
 
+    /// <summary>Gets the current service provider.</summary>
+    /// <returns>A service provider.</returns>
+    /// <exception cref="InvalidOperationException">The expected method in <c>DotNetNuke.Common.Globals</c> does not exist.</exception>
     public static IServiceProvider GetCurrentServiceProvider()
     {
-        var getCurrentServiceProviderMethod = CommonGlobalsType.GetMethod("GetCurrentServiceProvider", BindingFlags.NonPublic | BindingFlags.Static) ?? throw new InvalidOperationException("Unable to retrieve Globals.GetCurrentServiceProvider method via reflection");
+        var getCurrentServiceProviderMethod = CommonGlobalsType.GetMethod("GetCurrentServiceProvider", BindingFlags.NonPublic | BindingFlags.Static, null, [], null) ?? throw new InvalidOperationException("Unable to retrieve Globals.GetCurrentServiceProvider method via reflection");
         var serviceProvider = getCurrentServiceProviderMethod.Invoke(null, []);
         return (IServiceProvider)serviceProvider;
     }

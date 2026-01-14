@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Library.Common
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Instrumentation;
@@ -107,6 +108,7 @@ namespace Dnn.PersonaBar.Library.Common
             if (instance == null)
             {
                 Logger.WarnFormat(
+                    CultureInfo.InvariantCulture,
                     "No instance of type '{0}' and name '{1}' is registered in the IOC container.",
                     typeof(TContract).FullName,
                     name ?? "<empty>");

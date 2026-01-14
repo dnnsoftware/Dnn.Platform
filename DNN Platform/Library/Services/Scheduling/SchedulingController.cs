@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Scheduling
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -56,7 +57,7 @@ namespace DotNetNuke.Services.Scheduling
             DataProvider.Instance().DeleteSchedule(scheduleID);
             EventLogController.Instance.AddLog(
                 "ScheduleID",
-                scheduleID.ToString(),
+                scheduleID.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentPortalSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.SCHEDULE_DELETED);

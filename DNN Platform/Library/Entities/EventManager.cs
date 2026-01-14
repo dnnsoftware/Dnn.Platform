@@ -4,6 +4,7 @@
 namespace DotNetNuke.Entities
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
@@ -268,6 +269,7 @@ namespace DotNetNuke.Entities
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public virtual void OnFileDownloaded(FileDownloadedEventArgs args)
         {
             if (this.FileDownloaded != null)

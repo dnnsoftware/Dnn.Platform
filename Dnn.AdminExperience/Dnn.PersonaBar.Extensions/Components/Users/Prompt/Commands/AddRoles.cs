@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.PersonaBar.Library.Prompt;
@@ -128,7 +129,11 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 int notFoundCount = roleFiltersSet.Count;
                 if (notFoundCount > 0)
                 {
-                    var message = string.Format(this.LocalizeString("Prompt_AddRoles_NotFound"), notFoundCount > 1 ? "s" : string.Empty, string.Join(",", roleFiltersSet));
+                    var message = string.Format(
+                        CultureInfo.CurrentCulture,
+                        this.LocalizeString("Prompt_AddRoles_NotFound"),
+                        notFoundCount > 1 ? "s" : string.Empty,
+                        string.Join(",", roleFiltersSet));
                     throw new RoleNotFoundException(message);
                 }
             }

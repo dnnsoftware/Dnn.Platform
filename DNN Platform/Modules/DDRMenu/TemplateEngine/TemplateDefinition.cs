@@ -23,8 +23,10 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     public class TemplateDefinition
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public List<ClientOption> ClientOptions = new List<ClientOption>();
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public List<TemplateArgument> TemplateArguments = new List<TemplateArgument>();
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal readonly Dictionary<string, Tuple<Version, SpecificVersion?>> ScriptLibraries = new Dictionary<string, Tuple<Version, SpecificVersion?>>();
@@ -132,7 +134,10 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 baseDef = new TemplateDefinition { Folder = Path.GetDirectoryName(manifestUrl) };
 
                 var xml = new XmlDocument { XmlResolver = null };
-                xml.Load(manifestPath);
+                using (var manifestReader = XmlReader.Create(manifestPath, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xml.Load(manifestReader);
+                }
 
                 var resolver = new PathResolver(baseDef.Folder);
 

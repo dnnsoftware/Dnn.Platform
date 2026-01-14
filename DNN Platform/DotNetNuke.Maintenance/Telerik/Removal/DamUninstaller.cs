@@ -6,6 +6,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
 {
     using System;
     using System.Collections;
+    using System.Globalization;
 
     /// <inheritdoc cref="IDamUninstaller" />
     internal sealed class DamUninstaller : UnInstaller, IDamUninstaller
@@ -66,7 +67,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
                 }
             }
 
-            settings.Add("RM_Mode", newMode.ToString());
+            settings.Add("RM_Mode", newMode.ToString(CultureInfo.InvariantCulture));
 
             var rootFolder = oldSettings["RootFolderId"];
             if (rootFolder != null)

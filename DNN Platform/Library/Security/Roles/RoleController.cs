@@ -497,10 +497,10 @@ namespace DotNetNuke.Security.Roles
         /// <inheritdoc/>
         public void ClearRoleCache(int portalId)
         {
-            DataCache.RemoveCache(string.Format(DataCache.RolesCacheKey, portalId));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.RolesCacheKey, portalId));
             if (portalId != Null.NullInteger)
             {
-                DataCache.RemoveCache(string.Format(DataCache.RolesCacheKey, Null.NullInteger));
+                DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.RolesCacheKey, Null.NullInteger));
             }
         }
 
@@ -573,7 +573,7 @@ namespace DotNetNuke.Security.Roles
         /// <inheritdoc/>
         public IList<RoleInfo> GetRoles(int portalId)
         {
-            var cacheKey = string.Format(DataCache.RolesCacheKey, portalId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.RolesCacheKey, portalId);
             return CBO.GetCachedObject<IList<RoleInfo>>(
                 this.hostSettings,
                 new CacheItemArgs(cacheKey, DataCache.RolesCacheTimeOut, DataCache.RolesCachePriority),

@@ -4,6 +4,8 @@
 
 namespace DNN.Integration.Test.Framework.Helpers
 {
+    using System;
+
     public static class DnnDataHelper
     {
         private static int? _portalId;
@@ -15,13 +17,12 @@ namespace DNN.Integration.Test.Framework.Helpers
                 if (!_portalId.HasValue)
                 {
                     var alias = AppConfigHelper.SiteUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
-                    if (alias.EndsWith("/"))
+                    if (alias.EndsWith("/", StringComparison.Ordinal))
                     {
                         alias = alias.Substring(0, alias.Length - 1);
                     }
 
-                    var query = string.Format(
-                        "SELECT TOP(1) PortalID FROM {{objectQualifier}}PortalAlias WHERE HTTPAlias='{0}'", alias);
+                    var query = $"SELECT TOP(1) PortalID FROM {{objectQualifier}}PortalAlias WHERE HTTPAlias='{alias}'";
                     var id = DatabaseHelper.ExecuteScalar<int>(query);
                     _portalId = id;
                 }

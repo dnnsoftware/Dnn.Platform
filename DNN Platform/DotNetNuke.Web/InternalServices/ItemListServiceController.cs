@@ -27,6 +27,7 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Common;
 
+    /// <summary>A web API controller for lists of items.</summary>
     [DnnAuthorize]
     public class ItemListServiceController : DnnApiController
     {
@@ -35,6 +36,18 @@ namespace DotNetNuke.Web.InternalServices
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ItemListServiceController));
 
+        /// <summary>Gets a list of page descendants.</summary>
+        /// <param name="parentId">The parent ID.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="includeDisabled">Whether to include disabled pages.</param>
+        /// <param name="includeAllTypes">Whether to include all page types.</param>
+        /// <param name="includeActive">Whether to include active pages.</param>
+        /// <param name="includeHostPages">Whether to include host pages.</param>
+        /// <param name="roles">A semicolon-delimited list of role IDs.</param>
+        /// <param name="disabledNotSelectable">Whether disabled pages are not selectable.</param>
+        /// <returns>A response with a list of <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage GetPageDescendants(string parentId = null, int sortOrder = 0, string searchText = "", int portalId = -1, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = true, bool includeHostPages = false, string roles = "", bool disabledNotSelectable = false)
         {
@@ -46,6 +59,16 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Gets the tree path for a page.</summary>
+        /// <param name="itemId">The tab ID.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="includeDisabled">Whether to include disabled pages.</param>
+        /// <param name="includeAllTypes">Whether to include all page types.</param>
+        /// <param name="includeActive">Whether to include active pages.</param>
+        /// <param name="includeHostPages">Whether to include host pages.</param>
+        /// <param name="roles">A semicolon-delimited list of role IDs.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage GetTreePathForPage(string itemId, int sortOrder = 0, int portalId = -1, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = true, bool includeHostPages = false, string roles = "")
         {
@@ -58,6 +81,17 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Sort the given <paramref name="treeAsJson"/>.</summary>
+        /// <param name="treeAsJson">The tree as JSON.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="includeDisabled">Whether to include disabled pages.</param>
+        /// <param name="includeAllTypes">Whether to include all page types.</param>
+        /// <param name="includeActive">Whether to include active pages.</param>
+        /// <param name="includeHostPages">Whether to include host pages.</param>
+        /// <param name="roles">A semicolon-delimited list of role IDs.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage SortPages(string treeAsJson, int sortOrder = 0, string searchText = "", int portalId = -1, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = true, bool includeHostPages = false, string roles = "")
         {
@@ -71,6 +105,16 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Sort the given <paramref name="treeAsJson"/> in portal group.</summary>
+        /// <param name="treeAsJson">The tree as JSON.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="includeDisabled">Whether to include disabled pages.</param>
+        /// <param name="includeAllTypes">Whether to include all page types.</param>
+        /// <param name="includeActive">Whether to include active pages.</param>
+        /// <param name="includeHostPages">Whether to include host pages.</param>
+        /// <param name="roles">A semicolon-delimited list of role IDs.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage SortPagesInPortalGroup(string treeAsJson, int sortOrder = 0, string searchText = "", bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = true, bool includeHostPages = false, string roles = "")
         {
@@ -84,6 +128,16 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Gets pages.</summary>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="includeDisabled">Whether to include disabled pages.</param>
+        /// <param name="includeAllTypes">Whether to include all page types.</param>
+        /// <param name="includeActive">Whether to include active pages.</param>
+        /// <param name="includeHostPages">Whether to include host pages.</param>
+        /// <param name="roles">A semicolon-delimited list of role IDs.</param>
+        /// <param name="disabledNotSelectable">Whether disabled pages are not selectable.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage GetPages(int sortOrder = 0, int portalId = -1, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = true, bool includeHostPages = false, string roles = "", bool disabledNotSelectable = false)
         {
@@ -96,6 +150,9 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Gets pages in the current portal group.</summary>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage GetPagesInPortalGroup(int sortOrder = 0)
         {
@@ -108,6 +165,16 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Search pages.</summary>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="includeDisabled">Whether to include disabled pages.</param>
+        /// <param name="includeAllTypes">Whether to include all page types.</param>
+        /// <param name="includeActive">Whether to include active pages.</param>
+        /// <param name="includeHostPages">Whether to include host pages.</param>
+        /// <param name="roles">A semicolon-delimited list of role IDs.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage SearchPages(string searchText, int sortOrder = 0, int portalId = -1, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = true, bool includeHostPages = false, string roles = "")
         {
@@ -121,6 +188,16 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Gets descendants of a page in the current portal group.</summary>
+        /// <param name="parentId">The parent page ID.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="includeDisabled">Whether to include disabled pages.</param>
+        /// <param name="includeAllTypes">Whether to include all page types.</param>
+        /// <param name="includeActive">Whether to include active pages.</param>
+        /// <param name="includeHostPages">Whether to include host pages.</param>
+        /// <param name="roles">A semicolon-delimited list of role IDs.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage GetPageDescendantsInPortalGroup(string parentId = null, int sortOrder = 0, string searchText = "", bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = true, bool includeHostPages = false, string roles = "")
         {
@@ -132,6 +209,9 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Gets the portals in the current portal group.</summary>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <returns>A response with an object that has <c>sites</c> and <c>portalId</c> fields.</returns>
         [HttpGet]
         public HttpResponseMessage GetPortalsInGroup(int sortOrder = 0)
         {
@@ -140,6 +220,15 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, new { sites, portalId });
         }
 
+        /// <summary>Gets the tree path for a page in the current portal group.</summary>
+        /// <param name="itemId">The tab ID.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="includeDisabled">Whether to include disabled pages.</param>
+        /// <param name="includeAllTypes">Whether to include all page types.</param>
+        /// <param name="includeActive">Whether to include active pages.</param>
+        /// <param name="includeHostPages">Whether to include host pages.</param>
+        /// <param name="roles">A semicolon-delimited list of role IDs.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage GetTreePathForPageInPortalGroup(string itemId, int sortOrder = 0, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = true, bool includeHostPages = false, string roles = "")
         {
@@ -152,6 +241,15 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Search pages in the current portal group.</summary>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="includeDisabled">Whether to include disabled pages.</param>
+        /// <param name="includeAllTypes">Whether to include all page types.</param>
+        /// <param name="includeActive">Whether to include active pages.</param>
+        /// <param name="includeHostPages">Whether to include host pages.</param>
+        /// <param name="roles">A semicolon-delimited list of role IDs.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage SearchPagesInPortalGroup(string searchText, int sortOrder = 0, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = true, bool includeHostPages = false, string roles = "")
         {
@@ -165,6 +263,13 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Gets folder descendants.</summary>
+        /// <param name="parentId">The parent ID.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="permission">The permission key.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A response with an object that has an <c>Items</c> fields that's a list of <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage GetFolderDescendants(string parentId = null, int sortOrder = 0, string searchText = "", string permission = null, int portalId = -1)
         {
@@ -176,6 +281,12 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Get folders.</summary>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="permission">The permission key.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="parentFolderId">The parent folder ID.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage GetFolders(int sortOrder = 0, string permission = null, int portalId = -1, int parentFolderId = -1)
         {
@@ -188,6 +299,13 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Sorts the folder in <paramref name="treeAsJson"/>.</summary>
+        /// <param name="treeAsJson">The tree as JSON.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="permission">The permission key.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage SortFolders(string treeAsJson, int sortOrder = 0, string searchText = "", string permission = null, int portalId = -1)
         {
@@ -200,6 +318,12 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Get the tree path for a folder.</summary>
+        /// <param name="itemId">The folder ID.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="permission">The permission key.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage GetTreePathForFolder(string itemId, int sortOrder = 0, string permission = null, int portalId = -1)
         {
@@ -212,6 +336,12 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Search folders.</summary>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="permission">The permission key.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage SearchFolders(string searchText, int sortOrder = 0, string permission = null, int portalId = -1)
         {
@@ -224,6 +354,13 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Gets the files.</summary>
+        /// <param name="parentId">The parent ID.</param>
+        /// <param name="filter">The filter.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="permission">The permission key.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage GetFiles(int parentId, string filter, int sortOrder = 0, string permission = null, int portalId = -1)
         {
@@ -236,6 +373,14 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Sort the files.</summary>
+        /// <param name="parentId">The parent ID.</param>
+        /// <param name="filter">The filter.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="permission">The permission key.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage SortFiles(int parentId, string filter, int sortOrder = 0, string searchText = "", string permission = null, int portalId = -1)
         {
@@ -248,6 +393,14 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Search files.</summary>
+        /// <param name="parentId">The parent ID.</param>
+        /// <param name="filter">The filter.</param>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="sortOrder"><c>1</c> for A-Z, <c>2</c> for Z-A, any other value for no sorting.</param>
+        /// <param name="permission">The permission key.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A response with an object with a <c>Tree</c> field containing <see cref="ItemDto"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage SearchFiles(int parentId, string filter, string searchText, int sortOrder = 0, string permission = null, int portalId = -1)
         {
@@ -260,6 +413,9 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        /// <summary>Search users.</summary>
+        /// <param name="q">The search criteria.</param>
+        /// <returns>A response with a list of results (containing <c>id</c>, <c>name</c>, and <c>iconfile</c> fields) or <c>null</c> if there was no search query.</returns>
         [HttpGet]
         public HttpResponseMessage SearchUser(string q)
         {
@@ -292,6 +448,11 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
+        /// <summary>Gets terms.</summary>
+        /// <param name="q">The search criteria.</param>
+        /// <param name="includeSystem">Whether to include terms from system vocabularies.</param>
+        /// <param name="includeTags">Whether to include terms from the tags vocabulary.</param>
+        /// <returns>A response with a list of objects with <c>text</c> and <c>value</c> fields.</returns>
         [HttpGet]
         public HttpResponseMessage GetTerms(string q, bool includeSystem, bool includeTags)
         {
@@ -484,7 +645,7 @@ namespace DotNetNuke.Web.InternalServices
 
             int portalId;
             int parentIdAsInt;
-            if (parentId.StartsWith(PortalPrefix))
+            if (parentId.StartsWith(PortalPrefix, StringComparison.Ordinal))
             {
                 parentIdAsInt = -1;
                 if (!int.TryParse(parentId.Replace(PortalPrefix, string.Empty), out portalId))
@@ -1373,25 +1534,32 @@ namespace DotNetNuke.Web.InternalServices
             return portalId;
         }
 
+        /// <summary>A data transfer object with information about an item in a list.</summary>
         [DataContract]
         public class ItemDto
         {
+            /// <summary>Gets or sets the key.</summary>
             [DataMember(Name = "key")]
             public string Key { get; set; }
 
+            /// <summary>Gets or sets the value.</summary>
             [DataMember(Name = "value")]
             public string Value { get; set; }
 
+            /// <summary>Gets or sets a value indicating whether this item has children.</summary>
             [DataMember(Name = "hasChildren")]
             public bool HasChildren { get; set; }
 
+            /// <summary>Gets or sets a value indicating whether this item is selectable.</summary>
             [DataMember(Name = "selectable")]
             public bool Selectable { get; set; }
         }
 
+        /// <summary>A data transfer object with information about an item with an ID.</summary>
         [DataContract]
         public class ItemIdDto
         {
+            /// <summary>Gets or sets the ID.</summary>
             [DataMember(Name = "id")]
             public string Id { get; set; }
         }

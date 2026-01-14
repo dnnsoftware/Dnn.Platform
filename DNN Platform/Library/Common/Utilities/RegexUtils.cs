@@ -30,7 +30,7 @@ namespace DotNetNuke.Common.Utilities
 
             // // should not allow for compiled dynamic regex object
             options &= ~RegexOptions.Compiled;
-            key = string.Join(":", "REGEX_ITEM", options.ToString("X"), key.GetHashCode().ToString("X"));
+            key = string.Join(":", "REGEX_ITEM", options.ToString("X"), key.GetHashCode().ToString("X", CultureInfo.InvariantCulture));
 
             // limit timeout between 1 and 10 seconds
             if (timeoutSeconds < 1)
@@ -43,8 +43,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             var cache = CachingProvider.Instance();
-            var regex = cache.GetItem(key) as Regex;
-            if (regex == null)
+            if (cache.GetItem(key) is not Regex regex)
             {
                 regex = new Regex(pattern, options & ~RegexOptions.Compiled, TimeSpan.FromSeconds(timeoutSeconds));
                 cache.Insert(key, regex, (DNNCacheDependency)null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(10), CacheItemPriority.BelowNormal, null);

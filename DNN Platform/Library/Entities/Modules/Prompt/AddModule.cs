@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
 
@@ -55,14 +56,14 @@ namespace DotNetNuke.Entities.Modules.Prompt
                 var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(this.ModuleName, this.PortalId);
                 if (desktopModule == null)
                 {
-                    return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_DesktopModuleNotFound"), this.ModuleName));
+                    return new ConsoleErrorResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Prompt_DesktopModuleNotFound"), this.ModuleName));
                 }
 
                 var message = default(KeyValuePair<HttpStatusCode, string>);
                 var page = TabController.Instance.GetTab(this.PageId, this.PortalSettings.PortalId);
                 if (page == null)
                 {
-                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_PageNotFound", this.LocalResourceFile), this.PageId));
+                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_PageNotFound", this.LocalResourceFile), this.PageId));
                     return null;
                 }
 
@@ -143,7 +144,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
 
                 var modules = moduleList.Select(newModule => ModuleController.Instance.GetTabModule(newModule.TabModuleID)).ToList();
 
-                return new ConsoleResultModel(string.Format(this.LocalizeString("Prompt_ModuleAdded"), modules.Count, moduleList.Count == 1 ? string.Empty : "s")) { Data = modules, Records = modules.Count };
+                return new ConsoleResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Prompt_ModuleAdded"), modules.Count, moduleList.Count == 1 ? string.Empty : "s")) { Data = modules, Records = modules.Count };
             }
             catch (Exception ex)
             {

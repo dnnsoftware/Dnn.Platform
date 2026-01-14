@@ -6,6 +6,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 {
     using System;
 
+    [AttributeUsage(AttributeTargets.Property)]
     public class ReadOnlyColumnAttribute : Attribute
     {
     }

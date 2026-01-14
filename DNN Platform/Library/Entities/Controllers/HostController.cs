@@ -269,7 +269,7 @@ namespace DotNetNuke.Entities.Controllers
                     var config = new ConfigurationSetting
                     {
                         Key = key,
-                        IsSecure = Convert.ToBoolean(dr[2]),
+                        IsSecure = Convert.ToBoolean(dr[2], CultureInfo.InvariantCulture),
                         Value = dr.IsDBNull(1) ? string.Empty : dr.GetString(1),
                     };
 

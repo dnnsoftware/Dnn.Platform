@@ -38,7 +38,9 @@ namespace DotNetNuke.Data
             return instance;
         }
 
+#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public static IDataContext Instance(Dictionary<Type, IMapper> mappers)
+#pragma warning restore CS3001
         {
             IDataContext instance = ComponentFactory.GetComponent<IDataContext>();
 
@@ -52,7 +54,9 @@ namespace DotNetNuke.Data
             return instance;
         }
 
+#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public static IDataContext Instance(string connectionStringName, Dictionary<Type, IMapper> mappers)
+#pragma warning restore CS3001
         {
             IDataContext instance = ComponentFactory.GetComponent<IDataContext>(connectionStringName);
 

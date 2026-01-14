@@ -30,7 +30,7 @@ namespace DotNetNuke.Security.Cookies
             catch (Exception exc)
             {
                 this.ScheduleHistoryItem.Succeeded = false;
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging auth cookies task failed: {0}.", exc.ToString()));
+                this.ScheduleHistoryItem.AddLogNote($"Purging auth cookies task failed: {exc.ToString()}.");
                 this.Errored(ref exc);
                 Exceptions.LogException(exc);
             }

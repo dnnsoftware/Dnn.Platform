@@ -9,19 +9,25 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
     using DotNetNuke.Abstractions.ClientResources;
 
+    /// <summary>Renders client resources.</summary>
     public class DnnResources : Literal
     {
         private readonly IClientResourceController clientResourceController;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnResources"/> class.</summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
         public DnnResources(IClientResourceController clientResourceController)
         {
             this.clientResourceController = clientResourceController;
         }
 
+        /// <summary>Gets or sets the application path.</summary>
         public string ApplicationPath { get; set; }
 
+        /// <summary>Gets or sets the provider.</summary>
         public string Provider { get; set; }
 
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             base.Render(writer);

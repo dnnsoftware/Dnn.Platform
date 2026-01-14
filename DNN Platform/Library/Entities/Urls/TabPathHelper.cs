@@ -279,7 +279,7 @@ namespace DotNetNuke.Entities.Urls
                 // 770 : check for custom alias in these tabs
                 if (checkForCustomHttpAlias && customAliasForTabs != null)
                 {
-                    string key = tab.TabID.ToString() + ":" + cultureCodeKey;
+                    string key = tab.TabID.ToString(CultureInfo.InvariantCulture) + ":" + cultureCodeKey;
                     using (customAliasForTabs.GetReadLock())
                     {
                         if (customAliasForTabs.TryGetValue(key, out var alias))

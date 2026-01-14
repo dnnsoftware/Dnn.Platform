@@ -15,9 +15,13 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    /// <summary>A web API controller for new user notifications.</summary>
     [DnnAuthorize]
     public class NewUserNotificationServiceController : DnnApiController
     {
+        /// <summary>Authorizes a new user.</summary>
+        /// <param name="postData">Information about the request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Authorize(NotificationDTO postData)
@@ -43,6 +47,9 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
 
+        /// <summary>Rejects a new user.</summary>
+        /// <param name="postData">Information about the request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Reject(NotificationDTO postData)
@@ -59,6 +66,11 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
 
+        /// <summary>Sends a verification email to the current user.</summary>
+        /// <param name="postData">Information about the request.</param>
+        /// <returns>A response with an object that has a <c>Result</c> field.</returns>
+        /// <exception cref="UserAlreadyVerifiedException">The user is already verified.</exception>
+        /// <exception cref="InvalidVerificationCodeException">The user is not unverified.</exception>
         [HttpPost]
         [DnnAuthorize]
         [ValidateAntiForgeryToken]

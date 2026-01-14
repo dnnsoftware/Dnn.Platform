@@ -196,7 +196,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
                 string captureFile = GetCachedOutputFileName(tabId, cacheKey);
                 StreamReader oRead = File.OpenText(attribFile);
-                DateTime expires = Convert.ToDateTime(oRead.ReadLine());
+                DateTime expires = Convert.ToDateTime(oRead.ReadLine(), CultureInfo.InvariantCulture);
                 oRead.Close();
                 if (expires < DateTime.UtcNow)
                 {
@@ -282,7 +282,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             try
             {
                 oRead = File.OpenText(file);
-                DateTime expires = Convert.ToDateTime(oRead.ReadLine());
+                var expires = Convert.ToDateTime(oRead.ReadLine(), CultureInfo.InvariantCulture);
                 if (expires < DateTime.UtcNow)
                 {
                     return true;
@@ -294,10 +294,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
             finally
             {
-                if (oRead != null)
-                {
-                    oRead.Close();
-                }
+                oRead?.Close();
             }
         }
 

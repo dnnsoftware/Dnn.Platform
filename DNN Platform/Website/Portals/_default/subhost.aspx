@@ -25,12 +25,12 @@
 		for (urlIndex = 2; urlIndex <= url.GetUpperBound(0); urlIndex++)
 		{
 			bool willExit = false;
-			switch (url[urlIndex].ToLower())
+			switch (url[urlIndex].ToUpperInvariant())
 			{
-				case "admin":
-				case "desktopmodules":
-				case "mobilemodules":
-				case "premiummodules":
+				case "ADMIN":
+				case "DESKTOPMODULES":
+				case "MOBILEMODULES":
+				case "PREMIUMMODULES":
 					willExit = true;
 					break;
 				default:

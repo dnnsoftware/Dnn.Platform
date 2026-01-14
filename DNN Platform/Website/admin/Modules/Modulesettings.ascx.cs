@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     }
                     else
                     {
-                        returnValue.AppendFormat("{0}", t.LocalizedTabName);
+                        returnValue.Append(t.LocalizedTabName);
                     }
 
                     index = index + 1;
@@ -142,8 +142,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         protected string GetInstalledOnSite(object dataItem)
         {
             string returnValue = string.Empty;
-            var tab = dataItem as TabInfo;
-            if (tab != null)
+            if (dataItem is TabInfo tab)
             {
                 var portal = PortalController.Instance.GetPortal(tab.PortalID);
                 if (portal != null)

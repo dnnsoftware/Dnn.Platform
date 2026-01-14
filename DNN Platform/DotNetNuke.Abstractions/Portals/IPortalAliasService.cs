@@ -4,6 +4,7 @@
 namespace DotNetNuke.Abstractions.Portals
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>Portal Alias APIs for managing the different Portal Alias.</summary>
     public interface IPortalAliasService
@@ -38,12 +39,14 @@ namespace DotNetNuke.Abstractions.Portals
         /// <summary>Get a portal alias by name.</summary>
         /// <param name="alias">The name of the portal alias.</param>
         /// <returns>The portal alias.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         IPortalAliasInfo GetPortalAlias(string alias);
 
         /// <summary>Gets the portal alias.</summary>
         /// <param name="alias">The portal alias.</param>
         /// <param name="portalId">The portal ID.</param>
         /// <returns>Portal Alias Info.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         IPortalAliasInfo GetPortalAlias(string alias, int portalId);
 
         /// <summary>Gets the portal alias by portal alias ID.</summary>

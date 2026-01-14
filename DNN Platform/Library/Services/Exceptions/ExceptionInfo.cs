@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Exceptions
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Net;
     using System.Text;
@@ -207,9 +208,9 @@ namespace DotNetNuke.Services.Exceptions
         {
             writer.WriteStartElement("Exception");
             writer.WriteElementString("AssemblyVersion", this.AssemblyVersion);
-            writer.WriteElementString("PortalId", this.PortalId.ToString());
-            writer.WriteElementString("UserId", this.UserId.ToString());
-            writer.WriteElementString("TabId", this.TabId.ToString());
+            writer.WriteElementString("PortalId", this.PortalId.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("UserId", this.UserId.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("TabId", this.TabId.ToString(CultureInfo.InvariantCulture));
             writer.WriteElementString("RawUrl", this.RawUrl);
             writer.WriteElementString("Referrer", this.Referrer);
             writer.WriteElementString("UserAgent", this.UserAgent);
@@ -220,8 +221,8 @@ namespace DotNetNuke.Services.Exceptions
             writer.WriteElementString("InnerStackTrace", this.InnerStackTrace);
             writer.WriteElementString("Source", this.Source);
             writer.WriteElementString("FileName", this.FileName);
-            writer.WriteElementString("FileLineNumber", this.FileLineNumber.ToString());
-            writer.WriteElementString("FileColumnNumber", this.FileColumnNumber.ToString());
+            writer.WriteElementString("FileLineNumber", this.FileLineNumber.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("FileColumnNumber", this.FileColumnNumber.ToString(CultureInfo.InvariantCulture));
             writer.WriteElementString("Method", this.Method);
             writer.WriteEndElement();
         }

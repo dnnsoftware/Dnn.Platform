@@ -5,6 +5,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -90,7 +91,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             this.Visible = this.GetFlagValue<bool?>(FlagVisible, "Visible", null);
             if (string.IsNullOrEmpty(this.Title) && string.IsNullOrEmpty(this.Name) && string.IsNullOrEmpty(this.Description) && string.IsNullOrEmpty(this.Keywords) && string.IsNullOrEmpty(this.Url) && !this.ParentId.HasValue && !this.Visible.HasValue)
             {
-                this.AddMessage(string.Format(this.LocalizeString("Prompt_NothingToUpdate"), FlagTitle, FlagDescription, FlagName, FlagVisible));
+                this.AddMessage(string.Format(CultureInfo.InvariantCulture, this.LocalizeString("Prompt_NothingToUpdate"), FlagTitle, FlagDescription, FlagName, FlagVisible));
             }
         }
 

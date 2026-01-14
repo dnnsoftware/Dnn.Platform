@@ -80,10 +80,11 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portal">The portal info.</param>
         public PortalSettings(int tabId, PortalInfo portal)
         {
-            this.PortalId = portal != null ? portal.PortalID : Null.NullInteger;
+            this.PortalId = portal?.PortalID ?? Null.NullInteger;
             this.BuildPortalSettings(tabId, portal);
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public enum ControlPanelPermission
         {
             /// <summary>A page editor.</summary>
@@ -145,30 +146,18 @@ namespace DotNetNuke.Entities.Portals
             On = 2,
         }
 
-        public static PortalSettings Current
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
+        public static PortalSettings Current => PortalController.Instance.GetCurrentPortalSettings();
 
         /// <inheritdoc/>
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
-            }
-        }
+        public CacheLevel Cacheability => CacheLevel.fullyCacheable;
 
         /// <inheritdoc/>
         public bool ControlPanelVisible
         {
             get
             {
-                var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + this.PortalId));
-                return string.IsNullOrEmpty(setting) ? this.DefaultControlPanelVisibility : Convert.ToBoolean(setting);
+                var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + this.PortalId), CultureInfo.InvariantCulture);
+                return string.IsNullOrEmpty(setting) ? this.DefaultControlPanelVisibility : Convert.ToBoolean(setting, CultureInfo.InvariantCulture);
             }
         }
 
@@ -177,22 +166,16 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId).Where(alias => alias.IsPrimary))
+                foreach (IPortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId).Where(alias => alias.IsPrimary))
                 {
-                    return alias.HTTPAlias;
+                    return alias.HttpAlias;
                 }
 
                 return string.Empty;
             }
         }
 
-        public PortalAliasMapping PortalAliasMappingMode
-        {
-            get
-            {
-                return PortalSettingsController.Instance().GetPortalAliasMappingMode(this.PortalId);
-            }
-        }
+        public PortalAliasMapping PortalAliasMappingMode => PortalSettingsController.Instance().GetPortalAliasMappingMode(this.PortalId);
 
         /// <inheritdoc />
         public int UserId
@@ -341,6 +324,7 @@ namespace DotNetNuke.Entities.Portals
         public string FooterText { get; set; }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
         public Guid GUID { get; set; }
 
         /// <inheritdoc/>
@@ -666,7 +650,7 @@ namespace DotNetNuke.Entities.Portals
                     break;
                 case "footertext":
                     propertyNotFound = false;
-                    var footerText = this.FooterText.Replace("[year]", DateTime.Now.Year.ToString());
+                    var footerText = this.FooterText.Replace("[year]", DateTime.Now.Year.ToString(formatProvider));
                     result = PropertyAccess.FormatString(footerText, format);
                     break;
                 case "expirydate":
@@ -833,7 +817,7 @@ namespace DotNetNuke.Entities.Portals
 
             PortalSettingsController.Instance().LoadPortal(portal, this);
 
-            var key = string.Join(":", "ActiveTab", portal.PortalID.ToString(), tabId.ToString());
+            var key = string.Join(":", "ActiveTab", portal.PortalID.ToString(CultureInfo.InvariantCulture), tabId.ToString(CultureInfo.InvariantCulture));
             var items = HttpContext.Current != null ? HttpContext.Current.Items : null;
             if (items != null && items.Contains(key))
             {

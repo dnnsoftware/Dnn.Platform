@@ -462,7 +462,8 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
                     targetStream != null,
                     string.Format("Unable to location embedded resource for {0}Target.xml", testMethodName));
                 var targetDoc = new XmlDocument { XmlResolver = null };
-                targetDoc.Load(targetStream);
+                using var xmlReader = XmlReader.Create(targetStream, new XmlReaderSettings { XmlResolver = null, });
+                targetDoc.Load(xmlReader);
                 return targetDoc;
             }
         }

@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Pages.Components
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using Dnn.PersonaBar.Pages.Components.Dto;
     using Dnn.PersonaBar.Pages.Services.Dto;
@@ -12,6 +13,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
     public interface ITemplateController
     {
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         string SaveAsTemplate(PageTemplate template);
 
         IEnumerable<Template> GetTemplates();

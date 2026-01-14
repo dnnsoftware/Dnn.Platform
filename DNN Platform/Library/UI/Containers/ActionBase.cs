@@ -23,14 +23,9 @@ namespace DotNetNuke.UI.Containers
     {
         /// <summary>Defines if the action supports icons.</summary>
         [Obsolete("Deprecated in DotNetNuke 9.8.1. Use SupportsIcons property. Scheduled for removal in v11.0.0.")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "StyleCop.CSharp.NamingRules",
-            "SA1308:Variable names should not be prefixed",
-            Justification = "Keeping the name to prevent a breaking change, will be removed in v11.")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "StyleCop.CSharp.MaintainabilityRules",
-            "SA1401:Fields should be private",
-            Justification = "In v11, we will make this private and rename.")]
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1308:Variable names should not be prefixed", Justification = "Keeping the name to prevent a breaking change, will be removed in v11.")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "In v11, we will make this private and rename.")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected bool m_supportsIcons = true;
 
         private ActionManager actionManager;

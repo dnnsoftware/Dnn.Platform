@@ -6,6 +6,10 @@ namespace DotNetNuke.Entities.Users
 {
     using System.Collections.Generic;
 
+    using DotNetNuke.Abstractions.Users;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+
     /// <summary>Provides access to manage users.</summary>
     public interface IUserController
     {

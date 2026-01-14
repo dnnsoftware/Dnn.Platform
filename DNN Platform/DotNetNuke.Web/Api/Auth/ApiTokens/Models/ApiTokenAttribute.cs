@@ -4,14 +4,13 @@
 
 namespace DotNetNuke.Web.Api.Auth.ApiTokens.Models
 {
-    /// <summary>
-    /// This class is used to retrieve information about available APIs for Api Tokens.
-    /// </summary>
+    using System.Diagnostics.CodeAnalysis;
+
+    /// <summary>This class is used to retrieve information about available APIs for Api Tokens.</summary>
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class ApiTokenAttribute
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApiTokenAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ApiTokenAttribute"/> class.</summary>
         /// <param name="scope">The scope of the API token attribute.</param>
         /// <param name="key">The API key string.</param>
         /// <param name="name">The localized name of this part of the API.</param>
@@ -24,27 +23,17 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Models
             this.Description = description;
         }
 
-        /// <summary>
-        /// Gets or sets the scope of the API token attribute.
-        /// </summary>
-        /// <remarks>
-        /// The scope is set to determine the API requests allowed for this part of the API.
-        /// </remarks>
+        /// <summary>Gets or sets the scope of the API token attribute.</summary>
+        /// <remarks>The scope is set to determine the API requests allowed for this part of the API.</remarks>
         public int Scope { get; set; }
 
-        /// <summary>
-        /// Gets or sets the API key string.
-        /// </summary>
+        /// <summary>Gets or sets the API key string.</summary>
         public string Key { get; set; }
 
-        /// <summary>
-        /// Gets or sets the localized name of this part of the API.
-        /// </summary>
+        /// <summary>Gets or sets the localized name of this part of the API.</summary>
         public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets the localized description of this part of the API.
-        /// </summary>
+        /// <summary>Gets or sets the localized description of this part of the API.</summary>
         public string Description { get; set; }
     }
 }

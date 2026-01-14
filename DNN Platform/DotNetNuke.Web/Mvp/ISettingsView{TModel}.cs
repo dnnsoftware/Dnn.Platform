@@ -16,8 +16,10 @@ namespace DotNetNuke.Web.Mvp
     public partial interface ISettingsView<TModel> : IModuleViewBase, IView<TModel>
         where TModel : class, new()
     {
+        /// <summary>An event which triggers when the settings load.</summary>
         event EventHandler OnLoadSettings;
 
+        /// <summary>An event which triggers when the settings are saved.</summary>
         event EventHandler OnSaveSettings;
     }
 }

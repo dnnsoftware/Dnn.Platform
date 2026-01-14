@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using System;
     using System.Web.UI.WebControls;
 
+    /// <summary>A time zone combobox control.</summary>
     public class DnnTimeZoneComboBox : DropDownList
     {
         /// <inheritdoc/>

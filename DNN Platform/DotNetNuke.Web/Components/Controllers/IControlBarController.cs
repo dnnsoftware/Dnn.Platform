@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.Components.Controllers
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Web.Components.Controllers.Models;
 
+    /// <summary>An interface specifying the ability to get information needed for the control bar.</summary>
     public interface IControlBarController
     {
         /// <summary>Get all desktop modules that belong to a category.</summary>

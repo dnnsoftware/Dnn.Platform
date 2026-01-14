@@ -6,11 +6,13 @@ namespace DotNetNuke.UI.Skins
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Text.RegularExpressions;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -36,6 +38,7 @@ namespace DotNetNuke.UI.Skins
         private static readonly Regex SdirRegex = new Regex("\\[s]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex LdirRegex = new Regex("\\[l]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly string[] MessageSeparator = ["<br />",];
+        private static readonly List<string> LegacySkinExtensions = [".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS",];
 
         public static string RootSkin => "Skins";
 
@@ -75,18 +78,18 @@ namespace DotNetNuke.UI.Skins
             if (folderPath.IndexOf(Globals.HostMapPath, StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 skinType = "G";
-                skinFolder = folderPath.ToLowerInvariant().Replace(Globals.HostMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(Globals.HostMapPath.ToLowerInvariant(), string.Empty).Replace(@"\", "/");
             }
             else if (folderPath.IndexOf(PortalSettings.Current.HomeSystemDirectoryMapPath, StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 skinType = "S";
-                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace(@"\", "/");
             }
             else
             {
                 // to be compliant with all versions
                 skinType = "L";
-                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace(@"\", "/");
             }
 
             var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -161,7 +164,7 @@ namespace DotNetNuke.UI.Skins
             string strSkinSrc = skinSrc;
             if (!string.IsNullOrEmpty(strSkinSrc))
             {
-                strSkinSrc = strSkinSrc.Substring(0, strSkinSrc.LastIndexOf("/") + 1);
+                strSkinSrc = strSkinSrc.Substring(0, strSkinSrc.LastIndexOf("/", StringComparison.Ordinal) + 1);
             }
 
             return strSkinSrc;
@@ -340,56 +343,51 @@ namespace DotNetNuke.UI.Skins
 
             string strExtension;
             string strFileName;
-            FileStream objFileStream;
+            FileStream fileStream;
             var arrData = new byte[2048];
             string strMessage = string.Empty;
             var arrSkinFiles = new ArrayList();
 
             // Localized Strings
             PortalSettings resourcePortalSettings = Globals.GetPortalSettings();
-            string bEGIN_MESSAGE = Localization.GetString("BeginZip", resourcePortalSettings);
-            string cREATE_DIR = Localization.GetString("CreateDir", resourcePortalSettings);
-            string wRITE_FILE = Localization.GetString("WriteFile", resourcePortalSettings);
-            string fILE_ERROR = Localization.GetString("FileError", resourcePortalSettings);
-            string eND_MESSAGE = Localization.GetString("EndZip", resourcePortalSettings);
-            string fILE_RESTICTED = Localization.GetString("FileRestricted", resourcePortalSettings);
+            string beginMessage = Localization.GetString("BeginZip", resourcePortalSettings);
+            string createDir = Localization.GetString("CreateDir", resourcePortalSettings);
+            string writeFile = Localization.GetString("WriteFile", resourcePortalSettings);
+            string fileError = Localization.GetString("FileError", resourcePortalSettings);
+            string endMessage = Localization.GetString("EndZip", resourcePortalSettings);
+            string fileRestricted = Localization.GetString("FileRestricted", resourcePortalSettings);
 
-            strMessage += FormatMessage(bEGIN_MESSAGE, skinName, -1, false);
+            strMessage += FormatMessage(beginMessage, skinName, -1, false);
 
             foreach (var objZipEntry in objZipInputStream.FileEntries())
             {
                 // validate file extension
-                strExtension = objZipEntry.FullName.Substring(objZipEntry.FullName.LastIndexOf(".") + 1);
-                var extraExtensions = new List<string> { ".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS" };
-                if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
+                strExtension = objZipEntry.FullName.Substring(objZipEntry.FullName.LastIndexOf(".", StringComparison.Ordinal) + 1);
+                if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, LegacySkinExtensions))
                 {
                     // process embedded zip files
                     if (objZipEntry.FullName.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.OrdinalIgnoreCase))
                     {
-                        using (var objMemoryStream = new MemoryStream())
-                        {
-                            objZipEntry.Open().CopyToStream(objMemoryStream, 25000);
-                            objMemoryStream.Seek(0, SeekOrigin.Begin);
-                            strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
-                        }
+                        using var objMemoryStream = new MemoryStream();
+                        objZipEntry.Open().CopyToStream(objMemoryStream, 25000);
+                        objMemoryStream.Seek(0, SeekOrigin.Begin);
+                        strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
                     }
                     else if (objZipEntry.FullName.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.OrdinalIgnoreCase))
                     {
-                        using (var objMemoryStream = new MemoryStream())
-                        {
-                            objZipEntry.Open().CopyToStream(objMemoryStream, 25000);
-                            objMemoryStream.Seek(0, SeekOrigin.Begin);
-                            strMessage += UploadLegacySkin(rootPath, RootContainer, skinName, objMemoryStream);
-                        }
+                        using var objMemoryStream = new MemoryStream();
+                        objZipEntry.Open().CopyToStream(objMemoryStream, 25000);
+                        objMemoryStream.Seek(0, SeekOrigin.Begin);
+                        strMessage += UploadLegacySkin(rootPath, RootContainer, skinName, objMemoryStream);
                     }
                     else
                     {
-                        strFileName = rootPath + skinRoot + "\\" + skinName + "\\" + objZipEntry.FullName;
+                        strFileName = $@"{rootPath}{skinRoot}\{skinName}\{objZipEntry.FullName}";
 
                         // create the directory if it does not exist
                         if (!Directory.Exists(Path.GetDirectoryName(strFileName)))
                         {
-                            strMessage += FormatMessage(cREATE_DIR, Path.GetDirectoryName(strFileName), 2, false);
+                            strMessage += FormatMessage(createDir, Path.GetDirectoryName(strFileName), 2, false);
                             Directory.CreateDirectory(Path.GetDirectoryName(strFileName));
                         }
 
@@ -401,12 +399,12 @@ namespace DotNetNuke.UI.Skins
                         }
 
                         // create the new file
-                        objFileStream = File.Create(strFileName);
+                        fileStream = File.Create(strFileName);
 
                         // unzip the file
-                        strMessage += FormatMessage(wRITE_FILE, Path.GetFileName(strFileName), 2, false);
-                        objZipEntry.Open().CopyToStream(objFileStream, 25000);
-                        objFileStream.Close();
+                        strMessage += FormatMessage(writeFile, Path.GetFileName(strFileName), 2, false);
+                        objZipEntry.Open().CopyToStream(fileStream, 25000);
+                        fileStream.Close();
 
                         // save the skin file
                         switch (Path.GetExtension(strFileName))
@@ -428,11 +426,11 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    strMessage += string.Format(fILE_RESTICTED, objZipEntry.FullName, Host.AllowedExtensionWhitelist.ToStorageString(), ",", ", *.").Replace("2", "true");
+                    strMessage += string.Format(CultureInfo.CurrentCulture, fileRestricted, objZipEntry.FullName, Host.AllowedExtensionWhitelist.ToStorageString(), ",", ", *.").Replace("2", "true");
                 }
             }
 
-            strMessage += FormatMessage(eND_MESSAGE, skinName + ".zip", 1, false);
+            strMessage += FormatMessage(endMessage, skinName + ".zip", 1, false);
             objZipInputStream.Dispose();
 
             // process the list of skin files
@@ -442,7 +440,7 @@ namespace DotNetNuke.UI.Skins
             // log installation event
             try
             {
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = nameof(EventLogType.HOST_ALERT), };
                 log.LogProperties.Add(new LogDetailInfo("Install Skin:", skinName));
                 Array arrMessage = strMessage.Split(MessageSeparator, StringSplitOptions.None);
                 foreach (string strRow in arrMessage)
@@ -464,11 +462,11 @@ namespace DotNetNuke.UI.Skins
         {
             foreach (string skinFile in Directory.GetFiles(skinFolder, "*.ascx"))
             {
-                string folder = skinFolder.Substring(skinFolder.LastIndexOf("\\") + 1);
+                string folder = skinFolder.Substring(skinFolder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
 
-                string key = (skinPrefix == PortalSystemSkinPrefix || skinPrefix == PortalSkinPrefix ? "Site: " : "Host: ")
+                string key = (skinPrefix is PortalSystemSkinPrefix or PortalSkinPrefix ? "Site: " : "Host: ")
                                 + FormatSkinName(folder, Path.GetFileNameWithoutExtension(skinFile));
-                string value = skinPrefix + skinRoot + "/" + folder + "/" + Path.GetFileName(skinFile);
+                string value = $"{skinPrefix}{skinRoot}/{folder}/{Path.GetFileName(skinFile)}";
                 skins.Add(new KeyValuePair<string, string>(key, value));
             }
         }
@@ -482,7 +480,7 @@ namespace DotNetNuke.UI.Skins
             {
                 foreach (string skinFolder in Directory.GetDirectories(root))
                 {
-                    if (!skinFolder.EndsWith(Globals.glbHostSkinFolder))
+                    if (!skinFolder.EndsWith(Globals.glbHostSkinFolder, StringComparison.OrdinalIgnoreCase))
                     {
                         AddSkinFiles(skins, skinRoot, skinFolder, GlobalSkinPrefix);
                     }

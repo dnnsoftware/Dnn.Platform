@@ -7,6 +7,7 @@ namespace DotNetNuke.Entities.Content
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common.Utilities;
@@ -113,12 +114,12 @@ namespace DotNetNuke.Entities.Content
                 yield break;
             }
 
-            foreach (var file in content.FromJson<int[]>().ToArray())
+            foreach (var fileId in content.FromJson<int[]>().ToArray())
             {
                 IFileInfo fileInfo = null;
                 try
                 {
-                    fileInfo = FileManager.Instance.GetFile(file);
+                    fileInfo = FileManager.Instance.GetFile(fileId);
                 }
                 catch
                 {
@@ -127,7 +128,7 @@ namespace DotNetNuke.Entities.Content
                     // On second thought, I don't know how much sense it makes to be throwing an exception here.  If the file
                     // has been deleted or is otherwise unavailable, there's really no reason we can't continue on handling the
                     // ContentItem without its attachment.  Better than the yellow screen of death? --cbond
-                    Logger.WarnFormat("Unable to load file properties for File ID {0}", file);
+                    Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to load file properties for File ID {0}", fileId);
                 }
 
                 if (fileInfo != null)

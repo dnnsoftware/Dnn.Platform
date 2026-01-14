@@ -195,7 +195,11 @@ namespace DotNetNuke.Entities.Modules
                     if (package != null && !string.IsNullOrEmpty(package.Manifest))
                     {
                         var xmlDocument = new XmlDocument { XmlResolver = null };
-                        xmlDocument.LoadXml(package.Manifest);
+                        using (var manifestReader = XmlReader.Create(new StringReader(package.Manifest), new XmlReaderSettings { XmlResolver = null, }))
+                        {
+                            xmlDocument.Load(manifestReader);
+                        }
+
                         var pageNode = xmlDocument.SelectSingleNode("//package//components//component[@type=\"Module\"]//page");
                         if (pageNode != null)
                         {

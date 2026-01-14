@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.FileSystem
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
@@ -254,7 +255,7 @@ namespace DotNetNuke.Services.FileSystem
                 var hashData = hasher.ComputeHash(fileContent);
                 foreach (var b in hashData)
                 {
-                    hashText.Append(b.ToString("x2"));
+                    hashText.Append(b.ToString("x2", CultureInfo.InvariantCulture));
                 }
             }
 

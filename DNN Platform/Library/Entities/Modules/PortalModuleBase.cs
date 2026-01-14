@@ -132,7 +132,7 @@ namespace DotNetNuke.Entities.Modules
                 string strCacheKey = "TabModule:";
                 strCacheKey += this.TabModuleId + ":";
                 strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
-                return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
+                return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + @"\" + Globals.CleanFileName(strCacheKey) + ".resources";
             }
         }
 
@@ -285,7 +285,7 @@ namespace DotNetNuke.Entities.Modules
             string strCacheKey = "TabModule:";
             strCacheKey += tabModuleId + ":";
             strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
-            return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
+            return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + @"\" + Globals.CleanFileName(strCacheKey) + ".resources";
         }
 
         /// <summary>Gets the cache key for the module.</summary>

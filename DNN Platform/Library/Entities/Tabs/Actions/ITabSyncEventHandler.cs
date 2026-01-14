@@ -4,6 +4,9 @@
 
 namespace DotNetNuke.Entities.Tabs.Actions
 {
+    using System.Diagnostics.CodeAnalysis;
+
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public interface ITabSyncEventHandler
     {
         void TabSerialize(object sender, TabSyncEventArgs args);

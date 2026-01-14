@@ -150,7 +150,11 @@ namespace DotNetNuke.UI.Skins.Controls
                     if (File.Exists(configFile))
                     {
                         var xmlDocument = new XmlDocument { XmlResolver = null };
-                        xmlDocument.Load(configFile);
+                        using (var configReader = XmlReader.Create(configFile, new XmlReaderSettings { XmlResolver = null, }))
+                        {
+                            xmlDocument.Load(configReader);
+                        }
+
                         var moduleNameNode = xmlDocument.DocumentElement?.SelectSingleNode("moduleName");
                         var actionNode = xmlDocument.DocumentElement?.SelectSingleNode("action");
                         var scriptsNode = xmlDocument.DocumentElement?.SelectSingleNode("scripts");

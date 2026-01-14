@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    /// <summary>A form tab control.</summary>
     [ParseChildren(true)]
     public class DnnFormTab : WebControl, INamingContainer
     {
@@ -18,20 +19,25 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Items = new List<DnnFormItemBase>();
         }
 
+        /// <summary>Gets or sets a value indicating whether to include expand all.</summary>
         public bool IncludeExpandAll { get; set; }
 
+        /// <summary>Gets the list of items.</summary>
         [Category("Behavior")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<DnnFormItemBase> Items { get; private set; }
 
+        /// <summary>Gets the sections.</summary>
         [Category("Behavior")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<DnnFormSection> Sections { get; private set; }
 
+        /// <summary>Gets or sets the resource key.</summary>
         public string ResourceKey { get; set; }
 
+        /// <summary>Gets or sets the expand all script.</summary>
         internal string ExpandAllScript { get; set; }
     }
 }

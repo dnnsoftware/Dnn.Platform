@@ -5,7 +5,9 @@
 namespace Dnn.ExportImport.Dto.Assets
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class ExportFolderPermission : BasicExportImportDto
     {
         public int FolderPermissionId { get; set; }

@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Web.UI.WebControls;
 
@@ -23,58 +24,81 @@ namespace DotNetNuke.UI.UserControls
         // ReSharper disable InconsistentNaming
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label Label1;
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label Label2;
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label Label3;
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label Label4;
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label Label5;
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label Label6;
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label Label7;
 
         // ReSharper restore InconsistentNaming
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected LinkButton cmdDisplay;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected HyperLink cmdEndCalendar;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected HyperLink cmdStartCalendar;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected DataGrid grdLog;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblClicks;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblCreatedDate;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblLastClick;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblLogURL;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblTrackingURL;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblURL;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel pnlLog;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel pnlTrack;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected TextBox txtEndDate;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected TextBox txtStartDate;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected CompareValidator valEndDate;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected CompareValidator valStartDate;
 
         private int moduleID = -2;
@@ -143,7 +167,7 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-                // this needs to execute always to the client script code is registred in InvokePopupCal
+                // this needs to execute always to the client script code is registered in InvokePopupCal
                 this.cmdStartCalendar.NavigateUrl = Calendar.InvokePopupCal(this.txtStartDate);
                 this.cmdEndCalendar.NavigateUrl = Calendar.InvokePopupCal(this.txtEndDate);
                 if (!this.Page.IsPostBack)
@@ -152,12 +176,12 @@ namespace DotNetNuke.UI.UserControls
                     {
                         this.lblLogURL.Text = this.URL; // saved for loading Log grid
                         TabType urlType = Globals.GetURLType(this.URL);
-                        if (urlType == TabType.File && this.URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
+                        if (urlType == TabType.File && !this.URL.StartsWith("fileid=", StringComparison.OrdinalIgnoreCase))
                         {
                             // to handle legacy scenarios before the introduction of the FileServerHandler
                             var fileName = Path.GetFileName(this.URL);
 
-                            var folderPath = this.URL.Substring(0, this.URL.LastIndexOf(fileName));
+                            var folderPath = this.URL.Substring(0, this.URL.LastIndexOf(fileName, StringComparison.OrdinalIgnoreCase));
                             var folder = FolderManager.Instance.GetFolder(this.PortalSettings.PortalId, folderPath);
 
                             var file = FileManager.Instance.GetFile(folder, fileName);
@@ -172,7 +196,7 @@ namespace DotNetNuke.UI.UserControls
                             if (string.IsNullOrEmpty(this.FormattedURL))
                             {
                                 this.lblURL.Text = Globals.LinkClick(this.URL, this.PortalSettings.ActiveTab.TabID, this.ModuleID, false);
-                                if (!this.lblURL.Text.StartsWith("http") && !this.lblURL.Text.StartsWith("mailto"))
+                                if (!this.lblURL.Text.StartsWith("http", StringComparison.OrdinalIgnoreCase) && !this.lblURL.Text.StartsWith("mailto", StringComparison.OrdinalIgnoreCase))
                                 {
                                     this.lblURL.Text = Globals.AddHTTP(this.Request.Url.Host) + this.lblURL.Text;
                                 }
@@ -182,14 +206,14 @@ namespace DotNetNuke.UI.UserControls
                                 this.lblURL.Text = this.FormattedURL;
                             }
 
-                            this.lblCreatedDate.Text = objUrlTracking.CreatedDate.ToString();
+                            this.lblCreatedDate.Text = objUrlTracking.CreatedDate.ToString(CultureInfo.CurrentCulture);
 
                             if (objUrlTracking.TrackClicks)
                             {
                                 this.pnlTrack.Visible = true;
                                 if (string.IsNullOrEmpty(this.TrackingURL))
                                 {
-                                    if (!this.URL.StartsWith("http"))
+                                    if (!this.URL.StartsWith("http", StringComparison.OrdinalIgnoreCase))
                                     {
                                         this.lblTrackingURL.Text = Globals.AddHTTP(this.Request.Url.Host);
                                     }
@@ -201,10 +225,10 @@ namespace DotNetNuke.UI.UserControls
                                     this.lblTrackingURL.Text = this.TrackingURL;
                                 }
 
-                                this.lblClicks.Text = objUrlTracking.Clicks.ToString();
+                                this.lblClicks.Text = objUrlTracking.Clicks.ToString(CultureInfo.CurrentCulture);
                                 if (!Null.IsNull(objUrlTracking.LastClick))
                                 {
-                                    this.lblLastClick.Text = objUrlTracking.LastClick.ToString();
+                                    this.lblLastClick.Text = objUrlTracking.LastClick.ToString(CultureInfo.CurrentCulture);
                                 }
                             }
 
@@ -249,7 +273,12 @@ namespace DotNetNuke.UI.UserControls
 
                 // localize datagrid
                 Localization.LocalizeDataGrid(ref this.grdLog, this.LocalResourceFile);
-                this.grdLog.DataSource = objUrls.GetUrlLog(this.PortalSettings.PortalId, this.lblLogURL.Text, this.ModuleID, Convert.ToDateTime(strStartDate), Convert.ToDateTime(strEndDate));
+                this.grdLog.DataSource = objUrls.GetUrlLog(
+                    this.PortalSettings.PortalId,
+                    this.lblLogURL.Text,
+                    this.ModuleID,
+                    Convert.ToDateTime(strStartDate, CultureInfo.CurrentCulture),
+                    Convert.ToDateTime(strEndDate, CultureInfo.CurrentCulture));
                 this.grdLog.DataBind();
             }
             catch (Exception exc)

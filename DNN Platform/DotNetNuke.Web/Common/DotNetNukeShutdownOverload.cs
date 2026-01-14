@@ -14,6 +14,7 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
 
+    /// <summary>Watches <c>bin</c> folder and root files and unloads the app domain proactively when they change.</summary>
     internal static class DotNetNukeShutdownOverload
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeShutdownOverload));
@@ -24,6 +25,7 @@ namespace DotNetNuke.Web.Common.Internal
         private static FileSystemWatcher binOrRootWatcher;
         private static string binFolder = string.Empty;
 
+        /// <summary>Initializes the File Change Notification settings.</summary>
         internal static void InitializeFcnSettings()
         {
             // any error/message logged below should be informational only
@@ -105,7 +107,7 @@ namespace DotNetNuke.Web.Common.Internal
 
                             // begin watching;
                             binOrRootWatcher.EnableRaisingEvents = true;
-                            Logger.Trace("Added watcher for: " + binOrRootWatcher.Path + "\\" + binOrRootWatcher.Filter);
+                            Logger.Trace("Added watcher for: " + binOrRootWatcher.Path + @"\" + binOrRootWatcher.Filter);
                         }
                         catch (Exception ex)
                         {
@@ -148,7 +150,7 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static void WatcherOnChanged(object sender, FileSystemEventArgs e)
         {
-            if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
+            if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources", StringComparison.OrdinalIgnoreCase))
             {
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
             }
@@ -161,7 +163,7 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static void WatcherOnCreated(object sender, FileSystemEventArgs e)
         {
-            if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
+            if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources", StringComparison.OrdinalIgnoreCase))
             {
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
             }
@@ -174,7 +176,7 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static void WatcherOnRenamed(object sender, RenamedEventArgs e)
         {
-            if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
+            if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources", StringComparison.OrdinalIgnoreCase))
             {
                 Logger.Info($"Watcher Activity: {e.ChangeType}. New Path: {e.FullPath}. Old Path: {e.OldFullPath}");
             }
@@ -187,7 +189,7 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static void WatcherOnDeleted(object sender, FileSystemEventArgs e)
         {
-            if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
+            if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources", StringComparison.OrdinalIgnoreCase))
             {
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
             }

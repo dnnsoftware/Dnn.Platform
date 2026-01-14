@@ -5,6 +5,7 @@
 namespace Dnn.ExportImport.Components.Scheduler
 {
     using System;
+    using System.Globalization;
     using System.Text;
     using System.Threading;
 
@@ -165,7 +166,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                     var sb = new StringBuilder();
                     var jobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources);
                     var jobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources);
-                    sb.AppendFormat("<br/><b>{0} {1}</b>", jobType, jobStatus);
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "<br/><b>{0} {1}</b>", jobType, jobStatus);
                     var summary = result.Summary;
                     if (summary.Count > 0)
                     {

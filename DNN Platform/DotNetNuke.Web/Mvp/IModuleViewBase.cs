@@ -13,12 +13,20 @@ namespace DotNetNuke.Web.Mvp
     [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public partial interface IModuleViewBase : IView
     {
+        /// <summary>An event which triggers when the module view initializes.</summary>
         event EventHandler Initialize;
 
+        /// <summary>Gets or sets a value indicating whether to automatically data-bind the view.</summary>
         bool AutoDataBind { get; set; }
 
+        /// <summary>Process an exception that occurs during module load.</summary>
+        /// <param name="ex">The exception to process.</param>
         void ProcessModuleLoadException(Exception ex);
 
+        /// <summary>Show a module message.</summary>
+        /// <param name="messageHeader">The message header.</param>
+        /// <param name="message">The message text.</param>
+        /// <param name="messageType">The message type.</param>
         void ShowMessage(string messageHeader, string message, ModuleMessage.ModuleMessageType messageType);
     }
 }

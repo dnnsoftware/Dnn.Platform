@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
@@ -71,19 +72,17 @@ namespace DotNetNuke.UI.WebControls
         /// <inheritdoc/>
         public bool UpdateValue(PropertyEditorEventArgs e)
         {
-            string key;
             string name = e.Name;
             bool changed = e.Changed;
             object oldValue = e.OldValue;
             object newValue = e.Value;
-            object stringValue = e.StringValue;
             bool isDirty = Null.NullBoolean;
 
             var settings = (Hashtable)this.dataSource;
-            IDictionaryEnumerator settingsEnumerator = settings.GetEnumerator();
+            var settingsEnumerator = settings.GetEnumerator();
             while (settingsEnumerator.MoveNext())
             {
-                key = Convert.ToString(settingsEnumerator.Key);
+                var key = Convert.ToString(settingsEnumerator.Key, CultureInfo.InvariantCulture);
 
                 // Do we have the item in the Hashtable being changed
                 if (key == name)

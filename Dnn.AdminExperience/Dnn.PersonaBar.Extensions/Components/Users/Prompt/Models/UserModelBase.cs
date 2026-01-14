@@ -13,6 +13,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
     {
         // provide a default field order for use of callers
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public static readonly string[] FieldOrder =
         [
             "UserId",
@@ -41,12 +42,15 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
 
         // ReSharper disable InconsistentNaming
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public string __Email => $"get-user '{this.Email}'";
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public string __UserId => $"get-user {this.UserId}";
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public string __Username => $"get-user '{this.Username}'";
 
         // ReSharper restore InconsistentNaming

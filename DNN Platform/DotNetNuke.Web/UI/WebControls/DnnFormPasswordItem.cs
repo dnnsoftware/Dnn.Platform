@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -12,10 +13,12 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    /// <summary>A password control.</summary>
     public class DnnFormPasswordItem : DnnFormItemBase
     {
         private TextBox password;
 
+        /// <summary>Gets or sets the CSS class for the text box.</summary>
         public string TextBoxCssClass
         {
             get
@@ -29,6 +32,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the CSS class for the container.</summary>
         public string ContainerCssClass
         {
             get
@@ -51,7 +55,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 TextMode = TextBoxMode.Password,
                 CssClass = this.TextBoxCssClass,
                 MaxLength = 39, // ensure password cannot be cut if too long
-                Text = Convert.ToString(this.Value), // Load from ControlState
+                Text = Convert.ToString(this.Value, CultureInfo.InvariantCulture), // Load from ControlState
             };
             this.password.Attributes.Add("autocomplete", "off");
             this.password.Attributes.Add("aria-label", this.DataField);

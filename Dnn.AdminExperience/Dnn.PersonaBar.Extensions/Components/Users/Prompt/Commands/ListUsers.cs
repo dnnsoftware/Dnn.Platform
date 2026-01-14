@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
 
@@ -93,7 +94,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
                     if (numFilters != 1)
                     {
-                        this.AddMessage(string.Format(this.LocalizeString("Prompt_OnlyOneFlagRequired"), FlagEmail, FlagUsername, FlagRole));
+                        this.AddMessage(string.Format(CultureInfo.InvariantCulture, this.LocalizeString("Prompt_OnlyOneFlagRequired"), FlagEmail, FlagUsername, FlagRole));
                     }
                 }
             }

@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
+    using System;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -19,8 +20,10 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.FileName = fileName;
         }
 
+        /// <summary>Gets or sets the object name.</summary>
         public string ObjectName { get; set; }
 
+        /// <summary>Gets or sets the file name.</summary>
         public string FileName { get; set; }
 
         /// <inheritdoc/>
@@ -32,12 +35,12 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             if (this.ObjectName.Contains("."))
             {
                 // generate function check
-                writer.Write("if (typeof " + this.ObjectName + " != 'function') {");
+                writer.Write($"if (typeof {this.ObjectName} != 'function') {{");
             }
             else
             {
                 // generate object check
-                writer.Write("if (typeof " + this.ObjectName + " == 'undefined') {");
+                writer.Write($"if (typeof {this.ObjectName} == 'undefined') {{");
             }
 
             writer.Write($"document.write('<script src=\"{this.FileName}\" type=\"text/javascript\"></' + 'script>');");

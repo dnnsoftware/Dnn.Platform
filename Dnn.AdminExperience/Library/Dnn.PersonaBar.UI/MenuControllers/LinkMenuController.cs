@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.PersonaBar.Library.Controllers;
@@ -44,13 +45,13 @@ namespace Dnn.PersonaBar.UI.MenuControllers
             int tabId, portalId;
             if (query.TryGetValue("path", out var path))
             {
-                portalId = query.TryGetValue("portalId", out var queryPortalId) ? Convert.ToInt32(queryPortalId) : PortalSettings.Current.PortalId;
+                portalId = query.TryGetValue("portalId", out var queryPortalId) ? Convert.ToInt32(queryPortalId, CultureInfo.InvariantCulture) : PortalSettings.Current.PortalId;
                 tabId = TabController.GetTabByTabPath(portalId, path, string.Empty);
             }
             else
             {
-                portalId = Convert.ToInt32(query["portalId"]);
-                tabId = Convert.ToInt32(query["tabId"]);
+                portalId = Convert.ToInt32(query["portalId"], CultureInfo.InvariantCulture);
+                tabId = Convert.ToInt32(query["tabId"], CultureInfo.InvariantCulture);
             }
 
             var tabUrl = this.NavigationManager.NavigateURL(tabId, portalId == Null.NullInteger);
@@ -80,7 +81,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
             int tabId, portalId;
             if (query.TryGetValue("path", out var path) && !string.IsNullOrEmpty(path))
             {
-                portalId = query.TryGetValue("portalId", out var queryPortalId) ? Convert.ToInt32(queryPortalId) : PortalSettings.Current.PortalId;
+                portalId = query.TryGetValue("portalId", out var queryPortalId) ? Convert.ToInt32(queryPortalId, CultureInfo.InvariantCulture) : PortalSettings.Current.PortalId;
                 tabId = TabController.GetTabByTabPath(portalId, path, string.Empty);
 
                 if (tabId == Null.NullInteger)
@@ -95,8 +96,8 @@ namespace Dnn.PersonaBar.UI.MenuControllers
                     return false;
                 }
 
-                portalId = Convert.ToInt32(portalIdQuery);
-                tabId = Convert.ToInt32(tabIdQuery);
+                portalId = Convert.ToInt32(portalIdQuery, CultureInfo.InvariantCulture);
+                tabId = Convert.ToInt32(tabIdQuery, CultureInfo.InvariantCulture);
             }
 
             var tab = TabController.Instance.GetTab(tabId, portalId);

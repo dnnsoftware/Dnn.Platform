@@ -17,12 +17,12 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnDatePicker : TextBox
     {
+        /// <summary>Gets or sets the selected date.</summary>
         public DateTime? SelectedDate
         {
             get
             {
-                DateTime value;
-                if (!string.IsNullOrEmpty(this.Text) && DateTime.TryParse(this.Text, out value))
+                if (!string.IsNullOrEmpty(this.Text) && DateTime.TryParse(this.Text, CultureInfo.CurrentCulture, DateTimeStyles.None, out var value))
                 {
                     return value;
                 }
@@ -32,16 +32,20 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
             set
             {
-                this.Text = value?.ToString(this.Format) ?? string.Empty;
+                this.Text = value?.ToString(this.Format, CultureInfo.CurrentCulture) ?? string.Empty;
             }
         }
 
+        /// <summary>Gets or sets the minimum date.</summary>
         public DateTime MinDate { get; set; } = new DateTime(1900, 1, 1);
 
+        /// <summary>Gets or sets the maximum date.</summary>
         public DateTime MaxDate { get; set; } = DateTime.MaxValue;
 
+        /// <summary>Gets the .NET format string for the date.</summary>
         protected virtual string Format => "yyyy-MM-dd";
 
+        /// <summary>Gets the moment.js format string.</summary>
         protected virtual string ClientFormat => "YYYY-MM-DD";
 
         /// <inheritdoc/>
@@ -60,6 +64,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.RegisterClientResources();
         }
 
+        /// <summary>Gets the settings.</summary>
+        /// <returns>A dictionary of pikaday settings.</returns>
         protected virtual IDictionary<string, object> GetSettings()
         {
             return new Dictionary<string, object>

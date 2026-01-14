@@ -5,6 +5,7 @@
 namespace DotNetNuke.Common.Internal
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using System.Web;
 
@@ -16,6 +17,7 @@ namespace DotNetNuke.Common.Internal
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A collection of Dnn global methods and properties.</summary>
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class GlobalsImpl : IGlobals
     {
         /// <summary>Initializes a new instance of the <see cref="GlobalsImpl"/> class.</summary>
@@ -40,6 +42,7 @@ namespace DotNetNuke.Common.Internal
         protected INavigationManager NavigationManager { get; }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetSubFolderPath(string strFileNamePath, int portalId)
         {
             return Globals.GetSubFolderPath(strFileNamePath, portalId);
@@ -52,6 +55,7 @@ namespace DotNetNuke.Common.Internal
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string LinkClick(string link, int tabID, int moduleID, bool trackClicks, bool forceDownload, int portalId, bool enableUrlLanguage, string portalGuid)
         {
             return Globals.LinkClick(link, tabID, moduleID, trackClicks, forceDownload, portalId, enableUrlLanguage, portalGuid);

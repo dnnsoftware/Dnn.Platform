@@ -4,6 +4,8 @@
 
 namespace Dnn.PersonaBar.Extensions.Components
 {
+    using System.Diagnostics.CodeAnalysis;
+
     public enum PackageTypes
     {
         /// <summary>A generic package.</summary>
@@ -16,6 +18,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         AuthenticationSystem = AuthSystem,
 
         /// <summary>An authentication system.</summary>
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         Auth_System = AuthSystem,
 
         /// <summary>A container pack.</summary>
@@ -34,6 +37,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         JavascriptLibrary = 6,
 
         /// <summary>A JavaScript library.</summary>
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         Javascript_Library = JavascriptLibrary,
 
         /// <summary>A language pack.</summary>

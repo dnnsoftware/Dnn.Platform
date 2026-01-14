@@ -7,12 +7,14 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    /// <summary>A group in the <see cref="DnnRibbonBar"/>.</summary>
     [ParseChildren(true)]
     public class DnnRibbonBarGroup : WebControl
     {
         private bool checkToolVisibility = true;
         private HtmlGenericControl contentContainer;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnRibbonBarGroup"/> class.</summary>
         public DnnRibbonBarGroup()
             : base("div")
         {
@@ -29,12 +31,15 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the footer template.</summary>
         [TemplateInstance(TemplateInstance.Single)]
         public virtual ITemplate Footer { get; set; }
 
+        /// <summary>Gets or sets the content template.</summary>
         [TemplateInstance(TemplateInstance.Single)]
         public virtual ITemplate Content { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether the check tool is visible.</summary>
         public virtual bool CheckToolVisibility
         {
             get

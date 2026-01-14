@@ -106,10 +106,12 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             var notificationType = NotificationsController.Instance.GetNotificationType(FriendRequest);
             var language = GetUserPreferredLocale(targetUser)?.Name;
             var subject = string.Format(
+                CultureInfo.CurrentCulture,
                 Localization.GetString("AddFriendRequestSubject", Localization.GlobalResourceFile, language),
                 initiatingUser.DisplayName);
 
             var body = string.Format(
+                CultureInfo.CurrentCulture,
                 Localization.GetString("AddFriendRequestBody", Localization.GlobalResourceFile, language),
                 initiatingUser.DisplayName);
 

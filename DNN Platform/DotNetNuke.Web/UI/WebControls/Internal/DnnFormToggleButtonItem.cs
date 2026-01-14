@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -21,6 +22,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.Mode = CheckBoxMode.TrueFalse;
         }
 
+        /// <summary>The checkbox mode.</summary>
         public enum CheckBoxMode
         {
             /// <summary>True and False.</summary>
@@ -33,6 +35,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             YesNo = 2,
         }
 
+        /// <summary>Gets or sets the checkbox mode.</summary>
         public CheckBoxMode Mode { get; set; }
 
         /// <inheritdoc/>
@@ -53,15 +56,14 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 case CheckBoxMode.YN:
                 case CheckBoxMode.YesNo:
-                    var stringValue = this.Value as string;
-                    if (stringValue != null)
+                    if (this.Value is string stringValue)
                     {
                         this.checkBox.Checked = stringValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase);
                     }
 
                     break;
                 default:
-                    this.checkBox.Checked = Convert.ToBoolean(this.Value);
+                    this.checkBox.Checked = Convert.ToBoolean(this.Value, CultureInfo.InvariantCulture);
                     break;
             }
 

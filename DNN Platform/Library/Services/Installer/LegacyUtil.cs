@@ -64,19 +64,19 @@ namespace DotNetNuke.Services.Installer
                     if (Directory.Exists(Path.Combine(tempInstallFolder, "Skins")))
                     {
                         // Add Skin Package Fragment
-                        CreateSkinManifest(writer, skinFolder, "Skin", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", string.Empty), "Skins");
+                        CreateSkinManifest(writer, skinFolder, "Skin", tempInstallFolder.Replace(Globals.ApplicationMapPath + @"\", string.Empty), "Skins");
                     }
 
                     if (Directory.Exists(Path.Combine(tempInstallFolder, "Containers")))
                     {
                         // Add Container PAckage Fragment
-                        CreateSkinManifest(writer, skinFolder, "Container", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", string.Empty), "Containers");
+                        CreateSkinManifest(writer, skinFolder, "Container", tempInstallFolder.Replace(Globals.ApplicationMapPath + @"\", string.Empty), "Containers");
                     }
                 }
                 else
                 {
                     // Add Package Fragment
-                    CreateSkinManifest(writer, skinFolder, skinType, tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", string.Empty), string.Empty);
+                    CreateSkinManifest(writer, skinFolder, skinType, tempInstallFolder.Replace(Globals.ApplicationMapPath + @"\", string.Empty), string.Empty);
                 }
 
                 PackageWriterBase.WriteManifestEndElement(writer);
@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.Installer
             ParsePackageName(package, ".");
             if (string.IsNullOrEmpty(package.Owner))
             {
-                ParsePackageName(package, "\\");
+                ParsePackageName(package, @"\");
             }
 
             if (string.IsNullOrEmpty(package.Owner))
@@ -181,7 +181,7 @@ namespace DotNetNuke.Services.Installer
         private static void ParsePackageName(PackageInfo package, string separator)
         {
             // See if the Module is using a "Namespace" for its name
-            int ownerIndex = package.Name.IndexOf(separator);
+            int ownerIndex = package.Name.IndexOf(separator, StringComparison.Ordinal);
             if (ownerIndex > 0)
             {
                 package.Owner = package.Name.Substring(0, ownerIndex);

@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Library.Helper
 {
     using System;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Dto;
 
@@ -23,7 +24,7 @@ namespace Dnn.PersonaBar.Library.Helper
 
         private static string FormatOffset(TimeSpan time)
         {
-            return ((time < TimeSpan.Zero) ? "-" : "+") + time.ToString(@"hh\:mm");
+            return ((time < TimeSpan.Zero) ? "-" : "+") + time.ToString(@"hh\:mm", CultureInfo.InvariantCulture);
         }
     }
 }

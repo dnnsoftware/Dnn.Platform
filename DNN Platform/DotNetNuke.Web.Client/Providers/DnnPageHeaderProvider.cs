@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.Client.Providers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Web;
@@ -21,9 +22,10 @@ namespace DotNetNuke.Web.Client.Providers
         /// <summary>The default name of the provider.</summary>
         public const string DefaultName = "DnnPageHeaderProvider";
 
-        /// <summary>The name of the placeholder in which the controls will be rendered.</summary>
+        /// <summary>The name of the placeholder in which CSS will be rendered.</summary>
         public const string CssPlaceHolderName = "ClientDependencyHeadCss";
 
+        /// <summary>The name of the placeholder in which JS will be rendered.</summary>
         public const string JsPlaceHolderName = "ClientDependencyHeadJs";
 
         /// <inheritdoc/>
@@ -70,7 +72,7 @@ namespace DotNetNuke.Web.Client.Providers
         /// <inheritdoc/>
         protected override string RenderSingleJsFile(string js, IDictionary<string, string> htmlAttributes)
         {
-            return string.Format(HtmlEmbedContants.ScriptEmbedWithSource, js, htmlAttributes.ToHtmlAttributes());
+            return string.Format(CultureInfo.InvariantCulture, HtmlEmbedContants.ScriptEmbedWithSource, js, htmlAttributes.ToHtmlAttributes());
         }
 
         /// <inheritdoc/>
@@ -105,7 +107,7 @@ namespace DotNetNuke.Web.Client.Providers
         /// <inheritdoc/>
         protected override string RenderSingleCssFile(string css, IDictionary<string, string> htmlAttributes)
         {
-            return string.Format(HtmlEmbedContants.CssEmbedWithSource, css, htmlAttributes.ToHtmlAttributes());
+            return string.Format(CultureInfo.InvariantCulture, HtmlEmbedContants.CssEmbedWithSource, css, htmlAttributes.ToHtmlAttributes());
         }
 
         /// <summary>Registers the dependencies in the body of default.aspx.</summary>

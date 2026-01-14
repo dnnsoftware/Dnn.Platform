@@ -16,6 +16,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
+        /// <summary>Adds the controls.</summary>
+        /// <param name="childControls">The controls to add.</param>
         public void AddControls(params Control[] childControls)
         {
             foreach (var childControl in childControls)

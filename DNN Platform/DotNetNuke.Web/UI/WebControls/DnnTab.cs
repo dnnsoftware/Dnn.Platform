@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    /// <summary>A tab control.</summary>
     [ParseChildren(true)]
     public class DnnTab : WebControl
     {
@@ -25,9 +26,11 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the header template.</summary>
         [TemplateInstance(TemplateInstance.Single)]
         public virtual ITemplate Header { get; set; }
 
+        /// <summary>Gets or sets the content template.</summary>
         [TemplateInstance(TemplateInstance.Single)]
         public virtual ITemplate Content { get; set; }
 

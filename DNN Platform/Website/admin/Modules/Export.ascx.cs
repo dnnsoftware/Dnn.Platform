@@ -4,6 +4,7 @@
 namespace DotNetNuke.Modules.Admin.Modules
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Web.UI.WebControls;
@@ -204,14 +205,12 @@ namespace DotNetNuke.Modules.Admin.Modules
                                 if (PortalController.Instance.HasSpaceAvailable(this.PortalId, content.Length))
                                 {
                                     // add file to Files table
-                                    using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(content)))
-                                    {
-                                        Services.FileSystem.FileManager.Instance.AddFile(folder, fileName, fileContent, true, true, "application/octet-stream");
-                                    }
+                                    using var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(content));
+                                    Services.FileSystem.FileManager.Instance.AddFile(folder, fileName, fileContent, true, true, "application/octet-stream");
                                 }
                                 else
                                 {
-                                    strMessage += "<br>" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
+                                    strMessage += "<br>" + string.Format(CultureInfo.CurrentCulture, Localization.GetString("DiskSpaceExceeded"), fileName);
                                 }
                             }
                             else

@@ -598,7 +598,7 @@ namespace DNN.Integration.Test.Framework
             }
 
             var url = domain.AbsoluteUri;
-            if (!url.EndsWith("/"))
+            if (!url.EndsWith("/", StringComparison.Ordinal))
             {
                 url += "/";
             }
@@ -608,7 +608,7 @@ namespace DNN.Integration.Test.Framework
                 path = string.Empty;
             }
 
-            if (path.StartsWith("/"))
+            if (path.StartsWith("/", StringComparison.Ordinal))
             {
                 return url + path.Substring(1);
             }

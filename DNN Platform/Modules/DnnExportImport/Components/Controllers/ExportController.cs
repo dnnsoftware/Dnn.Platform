@@ -6,6 +6,7 @@ namespace Dnn.ExportImport.Components.Controllers
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
 
     using Dnn.ExportImport.Components.Common;
@@ -46,7 +47,7 @@ namespace Dnn.ExportImport.Components.Controllers
             exportDto.ProductVersion = Globals.FormatVersion(DotNetNuke.Application.DotNetNukeContext.Current.Application.Version, true);
             var dbTime = DateUtils.GetDatabaseUtcTime();
             exportDto.ToDateUtc = dbTime.AddMilliseconds(-dbTime.Millisecond);
-            var directory = dbTime.ToString("yyyy-MM-dd_HH-mm-ss");
+            var directory = dbTime.ToString("yyyy-MM-dd_HH-mm-ss", CultureInfo.InvariantCulture);
             if (exportDto.ExportMode == ExportMode.Differential)
             {
                 exportDto.FromDateUtc = this.GetLastJobTime(exportDto.PortalId, JobType.Export);

@@ -5,9 +5,11 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    /// <summary>A radio button control.</summary>
     public class DnnFormRadioButtonListItem : DnnFormListItemBase
     {
         private RadioButtonList radioButtonList;
@@ -17,11 +19,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (this.radioButtonList != null)
             {
-                string selectedValue = !this.radioButtonList.Page.IsPostBack ? Convert.ToString(this.Value) : this.radioButtonList.Page.Request.Form[this.radioButtonList.UniqueID];
+                string selectedValue = !this.radioButtonList.Page.IsPostBack
+                    ? Convert.ToString(this.Value, CultureInfo.InvariantCulture)
+                    : this.radioButtonList.Page.Request.Form[this.radioButtonList.UniqueID];
 
-                if (this.ListSource is Dictionary<string, string>)
+                if (this.ListSource is Dictionary<string, string> items)
                 {
-                    var items = this.ListSource as Dictionary<string, string>;
                     foreach (var item in items)
                     {
                         var listItem = new ListItem(item.Key, item.Value);
@@ -50,7 +53,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.radioButtonList.Items.FindByValue(selectedValue).Selected = true;
                 }
 
-                if (selectedValue != Convert.ToString(this.Value))
+                if (selectedValue != Convert.ToString(this.Value, CultureInfo.InvariantCulture))
                 {
                     this.UpdateDataSource(this.Value, selectedValue, this.DataField);
                 }

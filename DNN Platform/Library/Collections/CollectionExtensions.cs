@@ -756,7 +756,7 @@ namespace DotNetNuke.Collections
             }
             catch (Exception)
             {
-                Logger.ErrorFormat("Error loading portal setting: {0} Default value {1} was used instead", key + ":" + dictionary[key], defaultValue.ToString());
+                Logger.Error($"Error loading portal setting: {key}:{dictionary[key]} Default value {defaultValue} was used instead");
             }
 
             return value;

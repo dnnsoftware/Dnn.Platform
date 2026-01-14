@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Web;
 
@@ -328,14 +329,14 @@ namespace DotNetNuke.Modules.Admin.Users
                     // make sure username matches possibly changed email address
                     if (this.PortalSettings.Registration.UseEmailAsUserName)
                     {
-                        if (this.UserInfo.Username.ToLower() != this.UserInfo.Email.ToLower())
+                        if (!string.Equals(this.UserInfo.Username, this.UserInfo.Email, StringComparison.OrdinalIgnoreCase))
                         {
                             UserController.ChangeUsername(this.UserInfo.UserID, this.UserInfo.Email);
 
                             // after username changed, should redirect to login page to let user authenticate again.
                             var loginUrl = Globals.LoginURL(HttpUtility.UrlEncode(this.Request.RawUrl), false);
-                            var spliter = loginUrl.Contains("?") ? "&" : "?";
-                            loginUrl = $"{loginUrl}{spliter}username={this.UserInfo.Email}&usernameChanged=true";
+                            var separator = loginUrl.Contains("?") ? "&" : "?";
+                            loginUrl = $"{loginUrl}{separator}username={this.UserInfo.Email}&usernameChanged=true";
                             this.Response.Redirect(loginUrl, true);
                         }
                     }
@@ -615,11 +616,11 @@ namespace DotNetNuke.Modules.Admin.Users
             string message;
             if (e.Cancel)
             {
-                message = string.Format(Localization.GetString("UserUnSubscribed", this.LocalResourceFile), e.RoleName);
+                message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserUnSubscribed", this.LocalResourceFile), e.RoleName);
             }
             else
             {
-                message = string.Format(Localization.GetString("UserSubscribed", this.LocalResourceFile), e.RoleName);
+                message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserSubscribed", this.LocalResourceFile), e.RoleName);
             }
 
             this.AddLocalizedModuleMessage(message, ModuleMessage.ModuleMessageType.GreenSuccess, true);

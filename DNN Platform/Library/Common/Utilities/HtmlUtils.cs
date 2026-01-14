@@ -125,7 +125,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (email.IndexOf("@", StringComparison.Ordinal) != -1)
                 {
-                    formatEmail = string.Format("<a href=\"mailto:{0}\">{0}</a>", email);
+                    formatEmail = $"<a href=\"mailto:{email}\">{email}</a>";
                 }
                 else
                 {
@@ -554,16 +554,16 @@ namespace DotNetNuke.Common.Utilities
             foreach (string portalAlias in aliases)
             {
                 string searchAlias = portalAlias;
-                if (!portalAlias.EndsWith("/"))
+                if (!portalAlias.EndsWith("/", StringComparison.Ordinal))
                 {
-                    searchAlias = string.Format("{0}/", portalAlias);
+                    searchAlias = $"{portalAlias}/";
                 }
 
                 var exp = new Regex("((?:href|src)=&quot;)https?://" + searchAlias + "(.*?&quot;)", RegexOptions.IgnoreCase);
 
-                if (portalAlias.Contains("/"))
+                if (portalAlias.Contains("/", StringComparison.Ordinal))
                 {
-                    html = exp.Replace(html, "$1" + portalAlias.Substring(portalAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase)) + "/$2");
+                    html = exp.Replace(html, "$1" + portalAlias.Substring(portalAlias.IndexOf("/", StringComparison.Ordinal)) + "/$2");
                 }
                 else
                 {

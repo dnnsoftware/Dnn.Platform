@@ -4,6 +4,7 @@
 namespace DotNetNuke.Instrumentation
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>A contract specifying the ability to log information.</summary>
     public interface ILog
@@ -108,11 +109,13 @@ namespace DotNetNuke.Instrumentation
 
         /// <summary>Log a message at the Error log level.</summary>
         /// <param name="message">An object to display as the message.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         void Error(object message);
 
         /// <summary>Log a message and exception details at the Error log level.</summary>
         /// <param name="message">An object to display as the message.</param>
         /// <param name="exception">An exception to include in the log.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         void Error(object message, Exception exception);
 
         /// <summary>Log a message at the Error log level.</summary>

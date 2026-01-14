@@ -10,6 +10,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
+    /// <summary>A hidden field with a typed value.</summary>
+    /// <typeparam name="T">The type of value.</typeparam>
     public class DnnGenericHiddenField<T> : HiddenField
         where T : class, new()
     {
@@ -17,6 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private bool isValueSerialized;
 
+        /// <summary>Gets the typed value or a new instance of <typeparamref name="T"/> if it hasn't been set.</summary>
         public T TypedValueOrDefault
         {
             get
@@ -25,11 +28,13 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets a value indicating whether the hidden field has a value.</summary>
         public bool HasValue
         {
             get { return this.typedValue != null; }
         }
 
+        /// <summary>Gets or sets the typed value.</summary>
         public T TypedValue
         {
             get

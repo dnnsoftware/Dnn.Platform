@@ -7,6 +7,7 @@ namespace Dnn.PersonaBar.Library.Model
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.Runtime.Serialization;
 
     using Dnn.PersonaBar.Library.Repository;
@@ -132,7 +133,7 @@ namespace Dnn.PersonaBar.Library.Model
         /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
-            this.MenuId = Convert.ToInt32(dr["MenuId"]);
+            this.MenuId = Convert.ToInt32(dr["MenuId"], CultureInfo.InvariantCulture);
             this.Identifier = dr["Identifier"].ToString();
             this.ModuleName = dr["ModuleName"].ToString();
             this.FolderName = Null.SetNullString(dr["FolderName"]);
@@ -142,8 +143,8 @@ namespace Dnn.PersonaBar.Library.Model
             this.Link = dr["Link"].ToString();
             this.CssClass = dr["CssClass"].ToString();
             this.IconFile = dr["IconFile"].ToString();
-            this.AllowHost = Convert.ToBoolean(dr["AllowHost"]);
-            this.Enabled = Convert.ToBoolean(dr["Enabled"]);
+            this.AllowHost = Convert.ToBoolean(dr["AllowHost"], CultureInfo.InvariantCulture);
+            this.Enabled = Convert.ToBoolean(dr["Enabled"], CultureInfo.InvariantCulture);
             this.ParentId = Null.SetNullInteger(dr["ParentId"]);
             this.Order = Null.SetNullInteger(dr["Order"]);
         }

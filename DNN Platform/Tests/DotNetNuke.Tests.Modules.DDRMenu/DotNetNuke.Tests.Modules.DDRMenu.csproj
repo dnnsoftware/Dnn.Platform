@@ -5,15 +5,16 @@
     <IsPackable>false</IsPackable>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>SA0001</NoWarn>
+    <NoWarn>$(NoWarn),SA0001</NoWarn>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
-    <PackageReference Include="NUnit" Version="4.4.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="6.0.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" VersionOverride="10.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="NUnit3TestAdapter" />
+    <PackageReference Include="StyleCop.Analyzers">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

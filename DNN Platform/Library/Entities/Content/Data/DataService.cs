@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Content.Data
 {
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content.Common;
@@ -124,6 +125,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// <summary>Updates the content item.</summary>
         /// <param name="contentItem">The content item.</param>
         /// <param name="createdByUserId">The created by user id.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void UpdateContentItem(ContentItem contentItem, int createdByUserId)
         {
             this.provider.ExecuteNonQuery(

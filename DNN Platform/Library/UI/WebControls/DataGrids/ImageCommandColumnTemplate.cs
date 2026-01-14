@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -175,7 +176,7 @@ namespace DotNetNuke.UI.WebControls
             bool isVisible;
             if (!string.IsNullOrEmpty(this.VisibleField))
             {
-                isVisible = Convert.ToBoolean(DataBinder.Eval(container.DataItem, this.VisibleField));
+                isVisible = Convert.ToBoolean(DataBinder.Eval(container.DataItem, this.VisibleField), CultureInfo.InvariantCulture);
             }
             else
             {
@@ -192,7 +193,7 @@ namespace DotNetNuke.UI.WebControls
             int keyValue = Null.NullInteger;
             if (!string.IsNullOrEmpty(this.KeyField))
             {
-                keyValue = Convert.ToInt32(DataBinder.Eval(container.DataItem, this.KeyField));
+                keyValue = Convert.ToInt32(DataBinder.Eval(container.DataItem, this.KeyField), CultureInfo.InvariantCulture);
             }
 
             return keyValue;
@@ -212,11 +213,11 @@ namespace DotNetNuke.UI.WebControls
                 keyValue = this.GetValue(container);
                 if (!string.IsNullOrEmpty(this.NavigateURLFormatString))
                 {
-                    hypLink.NavigateUrl = string.Format(this.NavigateURLFormatString, keyValue);
+                    hypLink.NavigateUrl = string.Format(CultureInfo.InvariantCulture, this.NavigateURLFormatString, keyValue);
                 }
                 else
                 {
-                    hypLink.NavigateUrl = keyValue.ToString();
+                    hypLink.NavigateUrl = keyValue.ToString(CultureInfo.InvariantCulture);
                 }
             }
             else
@@ -227,7 +228,7 @@ namespace DotNetNuke.UI.WebControls
                     var colIcon = (ImageButton)sender;
                     container = (DataGridItem)colIcon.NamingContainer;
                     keyValue = this.GetValue(container);
-                    colIcon.CommandArgument = keyValue.ToString();
+                    colIcon.CommandArgument = keyValue.ToString(CultureInfo.InvariantCulture);
                     colIcon.Visible = this.GetIsVisible(container);
                 }
 
@@ -237,7 +238,7 @@ namespace DotNetNuke.UI.WebControls
                     var colLink = (LinkButton)sender;
                     container = (DataGridItem)colLink.NamingContainer;
                     keyValue = this.GetValue(container);
-                    colLink.CommandArgument = keyValue.ToString();
+                    colLink.CommandArgument = keyValue.ToString(CultureInfo.InvariantCulture);
                     colLink.Visible = this.GetIsVisible(container);
                 }
             }

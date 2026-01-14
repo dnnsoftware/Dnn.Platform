@@ -147,9 +147,9 @@ namespace DotNetNuke.Entities.Portals
                 }
 
                 // create the subhost default.aspx file
-                if (!File.Exists(childPath + "\\" + Globals.glbDefaultPage))
+                if (!File.Exists(childPath + @"\" + Globals.glbDefaultPage))
                 {
-                    File.Copy(Globals.HostMapPath + "subhost.aspx", childPath + "\\" + Globals.glbDefaultPage);
+                    File.Copy(Globals.HostMapPath + "subhost.aspx", childPath + @"\" + Globals.glbDefaultPage);
                 }
             }
             catch (Exception exc)
@@ -315,7 +315,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>portal dictionary. the dictionary's Key -> Value is: TabId -> PortalId.</returns>
         public static Dictionary<int, int> GetPortalDictionary(IHostSettings hostSettings, DataProvider dataProvider)
         {
-            string cacheKey = string.Format(DataCache.PortalDictionaryCacheKey);
+            string cacheKey = DataCache.PortalDictionaryCacheKey;
             return CBO.GetCachedObject<Dictionary<int, int>>(
                 hostSettings,
                 new CacheItemArgs(cacheKey, DataCache.PortalDictionaryTimeOut, DataCache.PortalDictionaryCachePriority, hostSettings, dataProvider),
@@ -803,7 +803,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = Convert.ToInt32(setting);
+                    retValue = Convert.ToInt32(setting, CultureInfo.InvariantCulture);
                 }
             }
             catch (Exception exc)
@@ -845,7 +845,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = Convert.ToDouble(setting);
+                    retValue = Convert.ToDouble(setting, CultureInfo.InvariantCulture);
                 }
             }
             catch (Exception exc)
@@ -885,15 +885,14 @@ namespace DotNetNuke.Entities.Portals
             int retValue = Null.NullInteger;
             try
             {
-                string setting;
-                GetPortalSettingsDictionary(hostSettings, appStatus, portalId, cultureCode).TryGetValue(key, out setting);
+                GetPortalSettingsDictionary(hostSettings, appStatus, portalId, cultureCode).TryGetValue(key, out var setting);
                 if (string.IsNullOrEmpty(setting))
                 {
                     retValue = defaultValue;
                 }
                 else
                 {
-                    retValue = Convert.ToInt32(setting);
+                    retValue = Convert.ToInt32(setting, CultureInfo.InvariantCulture);
                 }
             }
             catch (Exception exc)
@@ -1577,7 +1576,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>A <see cref="List{T}"/> of <see cref="PortalInfo"/> instances.</returns>
         public List<PortalInfo> GetPortalList(string cultureCode)
         {
-            string cacheKey = string.Format(DataCache.PortalCacheKey, Null.NullInteger, cultureCode);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalCacheKey, Null.NullInteger, cultureCode);
             return CBO.GetCachedObject<List<PortalInfo>>(
                 this.hostSettings,
                 new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, cultureCode),
@@ -1631,7 +1630,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     if (dr["SpaceUsed"] != DBNull.Value)
                     {
-                        size = Convert.ToInt64(dr["SpaceUsed"]);
+                        size = Convert.ToInt64(dr["SpaceUsed"], CultureInfo.InvariantCulture);
                     }
                 }
             }
@@ -2056,7 +2055,7 @@ namespace DotNetNuke.Entities.Portals
                 var hostController = HostController.Instance;
                 var demoPeriod = TimeSpan.FromDays(hostController.GetInteger("DemoPeriod"));
                 var datExpiryDate = demoPeriod > TimeSpan.Zero
-                    ? Convert.ToDateTime(Globals.GetMediumDate(DateTime.Now.Add(demoPeriod).ToString(CultureInfo.InvariantCulture)))
+                    ? Convert.ToDateTime(Globals.GetMediumDate(DateTime.Now.Add(demoPeriod).ToString(CultureInfo.InvariantCulture)), CultureInfo.CurrentCulture)
                     : Null.NullDate;
 
                 var hostCurrency = hostController.GetString("HostCurrency");
@@ -2102,7 +2101,7 @@ namespace DotNetNuke.Entities.Portals
         {
             UserController.DeleteUsers(portalId, false, true);
 
-            var portal = Instance.GetPortal(portalId);
+            IPortalInfo portal = Instance.GetPortal(portalId);
 
             DataProvider.Instance().DeletePortalInfo(portalId);
 
@@ -2111,10 +2110,10 @@ namespace DotNetNuke.Entities.Portals
                 var log = new LogInfo
                 {
                     BypassBuffering = true,
-                    LogTypeKey = EventLogController.EventLogType.PORTAL_DELETED.ToString(),
+                    LogTypeKey = nameof(EventLogType.PORTAL_DELETED),
                 };
                 log.LogProperties.Add(new LogDetailInfo("Delete Portal:", portal.PortalName));
-                log.LogProperties.Add(new LogDetailInfo("PortalID:", portal.PortalID.ToString()));
+                log.LogProperties.Add(new LogDetailInfo("PortalID:", portal.PortalId.ToString(CultureInfo.InvariantCulture)));
                 LogController.Instance.AddLog(log);
             }
             catch (Exception exc)
@@ -2186,7 +2185,7 @@ namespace DotNetNuke.Entities.Portals
                 while (dr.Read())
                 {
                     // add to dictionary
-                    portalDic[Convert.ToInt32(Null.SetNull(dr["TabID"], intField))] = Convert.ToInt32(Null.SetNull(dr["PortalID"], intField));
+                    portalDic[Convert.ToInt32(Null.SetNull(dr["TabID"], intField), CultureInfo.InvariantCulture)] = Convert.ToInt32(Null.SetNull(dr["PortalID"], intField), CultureInfo.InvariantCulture);
                 }
             }
             catch (Exception exc)
@@ -2207,7 +2206,7 @@ namespace DotNetNuke.Entities.Portals
                 return dicSettings;
             }
 
-            var cultureCode = Convert.ToString(cacheItemArgs.ParamList[1]);
+            var cultureCode = Convert.ToString(cacheItemArgs.ParamList[1], CultureInfo.InvariantCulture);
             if (string.IsNullOrEmpty(cultureCode))
             {
                 var hostSettings = (IHostSettings)cacheItemArgs.ParamList[2];
@@ -2308,7 +2307,7 @@ namespace DotNetNuke.Entities.Portals
             }
 
             // Get PortalSettings from Context or from cache
-            var dictionaryKey = string.Format(HttpContextKeyPortalSettingsDictionary, portalId, cultureCode);
+            var dictionaryKey = string.Format(CultureInfo.InvariantCulture, HttpContextKeyPortalSettingsDictionary, portalId, cultureCode);
             Dictionary<string, string> dictionary = null;
             if (httpContext != null)
             {
@@ -2317,7 +2316,7 @@ namespace DotNetNuke.Entities.Portals
 
             if (dictionary == null)
             {
-                var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
+                var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalSettingsCacheKey, portalId, cultureCode);
                 dictionary = CBO.GetCachedObject<Dictionary<string, string>>(
                     hostSettings,
                     new CacheItemArgs(
@@ -2384,7 +2383,7 @@ namespace DotNetNuke.Entities.Portals
                     if (httpContext != null)
                     {
                         var cultureCodeForKey = GetActivePortalLanguageFromHttpContext(hostSettings, appStatus, httpContext, portalId);
-                        var dictionaryKey = string.Format(HttpContextKeyPortalSettingsDictionary, portalId, cultureCodeForKey);
+                        var dictionaryKey = string.Format(CultureInfo.InvariantCulture, HttpContextKeyPortalSettingsDictionary, portalId, cultureCodeForKey);
                         httpContext.Items[dictionaryKey] = null;
                     }
                 }
@@ -2429,11 +2428,11 @@ namespace DotNetNuke.Entities.Portals
                 homeDirectory = "Portals/" + portalId;
             }
 
-            string mappedHomeDirectory = string.Format($@"{Globals.ApplicationMapPath}\{homeDirectory}\").Replace("/", @"\");
+            string mappedHomeDirectory = $@"{Globals.ApplicationMapPath}\{homeDirectory}\".Replace("/", @"\");
 
             if (Directory.Exists(mappedHomeDirectory))
             {
-                message += string.Format(Localization.GetString("CreatePortalHomeFolderExists.Error"), homeDirectory);
+                message += string.Format(CultureInfo.CurrentCulture, Localization.GetString("CreatePortalHomeFolderExists.Error"), homeDirectory);
                 throw new CreatePortalException(message);
             }
 
@@ -2483,7 +2482,7 @@ namespace DotNetNuke.Entities.Portals
                         }
 
                         // ensure that the Users folder exists
-                        string usersFolder = string.Format("{0}Users", mappedHomeDirectory);
+                        string usersFolder = $"{mappedHomeDirectory}Users";
                         if (!Directory.Exists(usersFolder))
                         {
                             Directory.CreateDirectory(usersFolder);
@@ -2776,7 +2775,12 @@ namespace DotNetNuke.Entities.Portals
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 portal.CultureCode);
 
-            EventLogController.Instance.AddLog("PortalId", portal.PortalID.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
+            EventLogController.Instance.AddLog(
+                "PortalId",
+                portal.PortalID.ToString(CultureInfo.InvariantCulture),
+                GetCurrentPortalSettingsInternal(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.PORTALINFO_UPDATED);
 
             // ensure a localization item exists (in case a new default language has been set)
             DataProvider.Instance().EnsureLocalizationExists(portal.PortalID, portal.DefaultLanguage);

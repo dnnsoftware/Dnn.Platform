@@ -10,118 +10,102 @@ namespace DotNetNuke.Collections.Internal
 
     /// <summary>Provides naive locking for generic lists.</summary>
     /// <typeparam name="T">The type of value in the list.</typeparam>
-    public class NaiveLockingList<T> : IList<T>
+    public class NaiveLockingList<T> : IList<T>, IDisposable
     {
-        private readonly SharedList<T> list = new SharedList<T>();
-
-        /// <summary>
-        /// Gets access to the underlying SharedList.
-        /// <remarks>
-        /// Allows locking to be explicitly managed for the sake of effeciency
-        /// </remarks>
-        /// </summary>
-        public SharedList<T> SharedList
-        {
-            get
-            {
-                return this.list;
-            }
-        }
+        /// <summary>Gets access to the underlying SharedList.</summary>
+        /// <remarks> Allows locking to be explicitly managed for the sake of efficiency.</remarks>
+        public SharedList<T> SharedList { get; } = new SharedList<T>();
 
         /// <inheritdoc/>
-        public int Count
-        {
-            get
-            {
-                return this.DoInReadLock(() => this.list.Count);
-            }
-        }
+        public int Count => this.DoInReadLock(() => this.SharedList.Count);
 
         /// <inheritdoc/>
-        public bool IsReadOnly
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool IsReadOnly => false;
 
         /// <inheritdoc/>
         public T this[int index]
         {
-            get
-            {
-                return this.DoInReadLock(() => this.list[index]);
-            }
-
-            set
-            {
-                this.DoInWriteLock(() => this.list[index] = value);
-            }
+            get => this.DoInReadLock(() => this.SharedList[index]);
+            set => this.DoInWriteLock(() => this.SharedList[index] = value);
         }
 
         /// <inheritdoc/>
         public IEnumerator<T> GetEnumerator()
         {
             // disposal of enumerator will release read lock
-            // TODO is there a need for some sort of timed release?  the timmer must release from the correct thread
+            // TODO is there a need for some sort of timed release?  the timer must release from the correct thread
             // if using RWLS
-            var readLock = this.list.GetReadLock();
-            return new NaiveLockingEnumerator(this.list.GetEnumerator(), readLock);
+            var readLock = this.SharedList.GetReadLock();
+            return new NaiveLockingEnumerator(this.SharedList.GetEnumerator(), readLock);
         }
 
         /// <inheritdoc/>
         public void Add(T item)
         {
-            this.DoInWriteLock(() => this.list.Add(item));
+            this.DoInWriteLock(() => this.SharedList.Add(item));
         }
 
         /// <inheritdoc/>
         public void Clear()
         {
-            this.DoInWriteLock(() => this.list.Clear());
+            this.DoInWriteLock(() => this.SharedList.Clear());
         }
 
         /// <inheritdoc/>
         public bool Contains(T item)
         {
-            return this.DoInReadLock(() => this.list.Contains(item));
+            return this.DoInReadLock(() => this.SharedList.Contains(item));
         }
 
         /// <inheritdoc/>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            this.DoInReadLock(() => this.list.CopyTo(array, arrayIndex));
+            this.DoInReadLock(() => this.SharedList.CopyTo(array, arrayIndex));
         }
 
         /// <inheritdoc/>
         public bool Remove(T item)
         {
-            return this.DoInWriteLock(() => this.list.Remove(item));
+            return this.DoInWriteLock(() => this.SharedList.Remove(item));
         }
 
         /// <inheritdoc/>
         public int IndexOf(T item)
         {
-            return this.DoInReadLock(() => this.list.IndexOf(item));
+            return this.DoInReadLock(() => this.SharedList.IndexOf(item));
         }
 
         /// <inheritdoc/>
         public void Insert(int index, T item)
         {
-            this.DoInWriteLock(() => this.list.Insert(index, item));
+            this.DoInWriteLock(() => this.SharedList.Insert(index, item));
         }
 
         /// <inheritdoc/>
         public void RemoveAt(int index)
         {
-            this.DoInWriteLock(() => this.list.RemoveAt(index));
+            this.DoInWriteLock(() => this.SharedList.RemoveAt(index));
         }
 
         /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.SharedList?.Dispose();
+            }
         }
 
         // TODO is no recursion the correct policy
@@ -136,7 +120,7 @@ namespace DotNetNuke.Collections.Internal
 
         private TRet DoInReadLock<TRet>(Func<TRet> func)
         {
-            using (this.list.GetReadLock())
+            using (this.SharedList.GetReadLock())
             {
                 return func.Invoke();
             }
@@ -153,7 +137,7 @@ namespace DotNetNuke.Collections.Internal
 
         private TRet DoInWriteLock<TRet>(Func<TRet> func)
         {
-            using (this.list.GetWriteLock())
+            using (this.SharedList.GetWriteLock())
             {
                 return func.Invoke();
             }
@@ -227,12 +211,12 @@ namespace DotNetNuke.Collections.Internal
                 {
                     if (disposing)
                     {
-                        // dispose managed resrources here
+                        // dispose managed resources here
                         this.enumerator.Dispose();
                         this.readLock.Dispose();
                     }
 
-                    // dispose unmanaged resrources here
+                    // dispose unmanaged resources here
                     this.isDisposed = true;
                 }
             }

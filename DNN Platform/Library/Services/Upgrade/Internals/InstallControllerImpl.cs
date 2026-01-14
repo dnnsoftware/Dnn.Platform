@@ -27,10 +27,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
         private static readonly string[] VersionSeparator = [".",];
 
         /// <inheritdoc/>
-        public string InstallerLogName
-        {
-            get { return "InstallerLog" + DateTime.Now.ToString("yyyyMMdd") + ".resources"; }
-        }
+        public string InstallerLogName => "InstallerLog" + DateTime.Now.ToString("yyyyMMdd", CultureInfo.InvariantCulture) + ".resources";
 
         /// <summary>GetConnectionFromWebConfig - Returns Connection Configuration in web.config file.</summary>
         /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
@@ -41,7 +38,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             string connection = Config.GetConnectionString();
             foreach (string connectionParam in connection.Split(';'))
             {
-                int index = connectionParam.IndexOf("=");
+                int index = connectionParam.IndexOf("=", StringComparison.Ordinal);
                 if (index > 0)
                 {
                     string key = connectionParam.Substring(0, index);
@@ -421,44 +418,40 @@ namespace DotNetNuke.Services.Upgrade.Internals
         {
             // todo: check if we can use globals.DatabaseEngineVersion instead
             var isValidVersion = false;
-            using (var sqlConnection = new SqlConnection(connectionString))
+            using var sqlConnection = new SqlConnection(connectionString);
+            try
             {
-                try
+                sqlConnection.Open();
+
+                var serverVersion = sqlConnection.ServerVersion;
+                if (serverVersion != null)
                 {
-                    sqlConnection.Open();
+                    var serverVersionDetails = serverVersion.Split(VersionSeparator, StringSplitOptions.None);
 
-                    var serverVersion = sqlConnection.ServerVersion;
-                    if (serverVersion != null)
+                    var versionNumber = int.Parse(serverVersionDetails[0], CultureInfo.InvariantCulture);
+
+                    // SQL Server 2017 and up, traditional version numbers are ok
+                    if (versionNumber >= 14)
                     {
-                        var serverVersionDetails = serverVersion.Split(VersionSeparator, StringSplitOptions.None);
-
-                        var versionNumber = int.Parse(serverVersionDetails[0]);
-
-                        // SQL Server 2017 and up, traditional version numbers are ok
-                        if (versionNumber >= 14)
-                        {
-                            isValidVersion = true;
-                        }
-                        else if (versionNumber == 12)
-                        {
-                            // We need to check to see if this is actually Azure SQL, as it is compatible with DNN as well
-                            using (var testCommand = new SqlCommand("select serverproperty('Edition')", sqlConnection))
-                            {
-                                var result = testCommand.ExecuteScalar();
-                                isValidVersion = result.ToString().Equals("SQL Azure", StringComparison.OrdinalIgnoreCase);
-                            }
-                        }
+                        isValidVersion = true;
+                    }
+                    else if (versionNumber == 12)
+                    {
+                        // We need to check to see if this is actually Azure SQL, as it is compatible with DNN as well
+                        using var testCommand = new SqlCommand("select serverproperty('Edition')", sqlConnection);
+                        var result = testCommand.ExecuteScalar();
+                        isValidVersion = result.ToString().Equals("SQL Azure", StringComparison.OrdinalIgnoreCase);
                     }
                 }
-                catch (Exception)
-                {
-                    // cannot connect with the details
-                    isValidVersion = false;
-                }
-                finally
-                {
-                    sqlConnection.Close();
-                }
+            }
+            catch (Exception)
+            {
+                // cannot connect with the details
+                isValidVersion = false;
+            }
+            finally
+            {
+                sqlConnection.Close();
             }
 
             return isValidVersion;
@@ -467,11 +460,11 @@ namespace DotNetNuke.Services.Upgrade.Internals
         /// <inheritdoc/>
         public bool IsAbleToPerformDatabaseActions(string connectionString)
         {
-            var fakeName = "{databaseOwner}[{objectQualifier}FakeTable_" + DateTime.Now.Ticks.ToString("x16") + "]";
-            var databaseActions = string.Format(@"CREATE TABLE {0}([fakeColumn] [int] NULL); SELECT * FROM {0}; DROP TABLE {0};", fakeName);
+            var fakeName = "{databaseOwner}[{objectQualifier}FakeTable_" + DateTime.Now.Ticks.ToString("x16", CultureInfo.InvariantCulture) + "]";
+            var databaseActions = $"CREATE TABLE {fakeName}([fakeColumn] [int] NULL); SELECT * FROM {fakeName}; DROP TABLE {fakeName};";
             var strExceptions = DataProvider.Instance().ExecuteScript(connectionString, databaseActions);
 
-            // if no exceptions we have necessary drop etc permissions
+            // if no exceptions we have necessary drop etc. permissions
             return string.IsNullOrEmpty(strExceptions);
         }
 

@@ -13,6 +13,7 @@ namespace DotNetNuke.Web.Api
 
     using DotNetNuke.Common;
 
+    /// <summary>A base class for implementing a Web API authorization filter.</summary>
     public abstract class AuthFilterBase : IAuthorizationFilter
     {
         /// <summary>Gets a value indicating whether more than one instance of the indicated attribute can be specified for a single program element.</summary>
@@ -20,7 +21,7 @@ namespace DotNetNuke.Web.Api
 
         /// <summary>Tests if the request passes the authorization requirements.</summary>
         /// <param name="context">The auth filter context.</param>
-        /// <returns>True when authorization is succesful.</returns>
+        /// <returns>True when authorization is successful.</returns>
         public abstract bool IsAuthorized(AuthFilterContext context);
 
         /// <inheritdoc/>

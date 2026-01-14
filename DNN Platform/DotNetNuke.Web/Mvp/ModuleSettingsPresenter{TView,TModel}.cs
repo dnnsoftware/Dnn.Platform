@@ -42,6 +42,7 @@ namespace DotNetNuke.Web.Mvp
             }
         }
 
+        /// <summary>Loads the module settings.</summary>
         protected virtual void LoadSettings()
         {
             this.View.Model.ModuleSettings = new Dictionary<string, string>(
@@ -55,6 +56,7 @@ namespace DotNetNuke.Web.Mvp
                                             .ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value));
         }
 
+        /// <summary>Updates the module settings.</summary>
         protected virtual void SaveSettings()
         {
             var controller = ModuleController.Instance;

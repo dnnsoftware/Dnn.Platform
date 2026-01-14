@@ -101,14 +101,14 @@ namespace Dnn.EditBar.UI.Services
                 throw new ArgumentException("Can't find the desktop module");
             }
 
-            var moduleScriptPath = string.Format("{0}/DesktopModules/{1}/ClientScripts/ModuleEditor.js", Globals.ApplicationMapPath, desktopModule.FolderName);
+            var moduleScriptPath = $"{Globals.ApplicationMapPath}/DesktopModules/{desktopModule.FolderName}/ClientScripts/ModuleEditor.js";
             var moduleScriptContent = string.Empty;
             if (File.Exists(moduleScriptPath))
             {
                 moduleScriptContent = File.ReadAllText(moduleScriptPath);
             }
 
-            var moduleStylePath = string.Format("/DesktopModules/{0}/Css/ModuleEditor.css", desktopModule.FolderName);
+            var moduleStylePath = $"/DesktopModules/{desktopModule.FolderName}/Css/ModuleEditor.css";
             if (File.Exists(Globals.ApplicationMapPath + moduleStylePath))
             {
                 moduleStylePath = Globals.ApplicationPath + moduleStylePath;
@@ -118,7 +118,7 @@ namespace Dnn.EditBar.UI.Services
                 moduleStylePath = string.Empty;
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Script = moduleScriptContent, StyleFile = moduleStylePath });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Script = moduleScriptContent, StyleFile = moduleStylePath, });
         }
 
         private static string LocalizeString(string key) => Localization.GetString(key, LocalResourcesFile);

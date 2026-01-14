@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.Client.Providers
     using ClientDependency.Core.Config;
     using ClientDependency.Core.FileRegistration.Providers;
 
+    /// <summary>DNN's file registration provider.</summary>
     public abstract class DnnFileRegistrationProvider : WebFormsFileRegistrationProvider
     {
         private readonly ClientResourceSettings dnnSettingsHelper = new ClientResourceSettings();

@@ -59,16 +59,16 @@ namespace DotNetNuke.Security.Profile
                                 break;
                             }
 
-                            int definitionId = Convert.ToInt32(dr["PropertyDefinitionId"]);
+                            int definitionId = Convert.ToInt32(dr["PropertyDefinitionId"], CultureInfo.InvariantCulture);
                             profProperty = properties.GetById(definitionId);
                             if (profProperty != null)
                             {
-                                profProperty.PropertyValue = Convert.ToString(dr["PropertyValue"]);
+                                profProperty.PropertyValue = Convert.ToString(dr["PropertyValue"], CultureInfo.InvariantCulture);
                                 var extendedVisibility = string.Empty;
                                 var schemaTable = dr.GetSchemaTable();
                                 if (schemaTable != null && schemaTable.Select("ColumnName = 'ExtendedVisibility'").Length > 0)
                                 {
-                                    extendedVisibility = Convert.ToString(dr["ExtendedVisibility"]);
+                                    extendedVisibility = Convert.ToString(dr["ExtendedVisibility"], CultureInfo.InvariantCulture);
                                 }
 
                                 profProperty.ProfileVisibility = new ProfileVisibility(portalId, extendedVisibility)
@@ -162,7 +162,7 @@ namespace DotNetNuke.Security.Profile
 
         private static string GetProfileCacheKey(UserInfo user)
         {
-            return string.Format(DataCache.UserProfileCacheKey, user.PortalID, user.Username);
+            return string.Format(CultureInfo.InvariantCulture, DataCache.UserProfileCacheKey, user.PortalID, user.Username);
         }
 
         private void UpdateTimeZoneInfo(UserInfo user, ProfilePropertyDefinitionCollection properties)

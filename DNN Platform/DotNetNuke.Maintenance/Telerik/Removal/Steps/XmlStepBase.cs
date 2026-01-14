@@ -42,9 +42,12 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         protected override void ExecuteInternal()
         {
             var doc = new XmlDocument { PreserveWhitespace = true };
-            var root = this.applicationStatusInfo.ApplicationMapPath + "\\";
+            var root = this.applicationStatusInfo.ApplicationMapPath + @"\";
             var fullPath = Path.GetFullPath(Path.Combine(root, this.RelativeFilePath));
-            doc.Load(fullPath);
+            using (var xmlReader = XmlReader.Create(fullPath, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                doc.Load(xmlReader);
+            }
 
             this.NamespaceManager = new XmlNamespaceManager(doc.NameTable);
             this.ConfigureNamespaceManager();

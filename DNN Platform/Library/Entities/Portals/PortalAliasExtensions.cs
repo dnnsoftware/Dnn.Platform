@@ -120,7 +120,7 @@ namespace DotNetNuke.Entities.Portals
                         a.BrowserType == browserType &&
                         string.Equals(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) &&
                         a.PortalID == portalId &&
-                        a.HTTPAlias.StartsWith(result.HttpAlias.Split('/')[0]));
+                        a.HTTPAlias.StartsWith(result.HttpAlias.Split('/')[0], StringComparison.OrdinalIgnoreCase));
                 }
             }
 

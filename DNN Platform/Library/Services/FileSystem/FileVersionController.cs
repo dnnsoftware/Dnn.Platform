@@ -5,6 +5,7 @@
 namespace DotNetNuke.Services.FileSystem
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
 
@@ -82,6 +83,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void SetPublishedVersion(IFileInfo file, int newPublishedVersion)
         {
             DataProvider.Instance().SetPublishedVersion(file.FileId, newPublishedVersion);

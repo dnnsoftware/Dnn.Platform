@@ -2,10 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.UI.Containers.EventListeners
-{
-    /// <summary>The ContainerEventHandler delegate defines a custom event handler for a Container Event.</summary>
-    /// <param name="sender">The event sender.</param>
-    /// <param name="e">The event arguments.</param>
-    public delegate void ContainerEventHandler(object sender, ContainerEventArgs e);
-}
+namespace DotNetNuke.UI.Containers.EventListeners;
+
+using System.Diagnostics.CodeAnalysis;
+
+/// <summary>The ContainerEventHandler delegate defines a custom event handler for a Container Event.</summary>
+/// <param name="sender">The event sender.</param>
+/// <param name="e">The event arguments.</param>
+[SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
+public delegate void ContainerEventHandler(object sender, ContainerEventArgs e);

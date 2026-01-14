@@ -16,6 +16,9 @@ namespace DotNetNuke.Web.Mvp
     {
         private const BindingFlags MemberBindingFlags = BindingFlags.Instance | BindingFlags.Public;
 
+        /// <summary>Deserializes the <paramref name="state"/> into the <paramref name="value"/>.</summary>
+        /// <param name="value">The value.</param>
+        /// <param name="state">The state.</param>
         public static void DeSerialize(object value, StateBag state)
         {
             Type typ = value.GetType();
@@ -40,6 +43,9 @@ namespace DotNetNuke.Web.Mvp
             }
         }
 
+        /// <summary>Serializes the <paramref name="value"/> into the <paramref name="state"/>.</summary>
+        /// <param name="value">The value.</param>
+        /// <param name="state">The state.</param>
         public static void Serialize(object value, StateBag state)
         {
             Type typ = value.GetType();

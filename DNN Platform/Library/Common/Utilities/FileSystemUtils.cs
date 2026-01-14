@@ -5,6 +5,7 @@ namespace DotNetNuke.Common.Utilities
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -41,6 +42,7 @@ namespace DotNetNuke.Common.Utilities
             if (len != fs.Length)
             {
                 Logger.ErrorFormat(
+                    CultureInfo.InvariantCulture,
                     "Reading from {0} didn't read all data in buffer. Requested to read {1} bytes, but was read {2} bytes",
                     filePath,
                     fs.Length,
@@ -69,6 +71,7 @@ namespace DotNetNuke.Common.Utilities
             if (len != fs.Length)
             {
                 Logger.ErrorFormat(
+                    CultureInfo.InvariantCulture,
                     "Reading from {0} didn't read all data in buffer. Requested to read {1} bytes, but was read {2} bytes",
                     filePath,
                     fs.Length,
@@ -404,11 +407,11 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 strPath = Path.Combine(appStatus.ApplicationMapPath, strPath);
-                if (strPath.EndsWith("\\") && Directory.Exists(strPath))
+                if (strPath.EndsWith(@"\", StringComparison.Ordinal) && Directory.Exists(strPath))
                 {
                     var directoryInfo = new System.IO.DirectoryInfo(strPath);
-                    var applicationPath = appStatus.ApplicationMapPath + "\\";
-                    if (!directoryInfo.FullName.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase) ||
+                    var applicationPath = $@"{appStatus.ApplicationMapPath}\";
+                    if (!directoryInfo.FullName.StartsWith(applicationPath, StringComparison.OrdinalIgnoreCase) ||
                         directoryInfo.FullName.Equals(applicationPath, StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
@@ -472,11 +475,11 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 strPath = Path.Combine(appStatus.ApplicationMapPath, strPath);
-                if (strPath.EndsWith("\\") && await Directory.ExistsAsync(strPath))
+                if (strPath.EndsWith(@"\", StringComparison.Ordinal) && await Directory.ExistsAsync(strPath))
                 {
                     var directoryInfo = new System.IO.DirectoryInfo(strPath);
-                    var applicationPath = appStatus.ApplicationMapPath + "\\";
-                    if (!directoryInfo.FullName.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase) ||
+                    var applicationPath = $@"{appStatus.ApplicationMapPath}\";
+                    if (!directoryInfo.FullName.StartsWith(applicationPath, StringComparison.OrdinalIgnoreCase) ||
                         directoryInfo.FullName.Equals(applicationPath, StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
@@ -758,16 +761,18 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>A valid Windows path.</returns>
         public static string FixPath(string input)
         {
-            return string.IsNullOrEmpty(input) ? input : input.Trim().Replace("/", "\\");
+            return string.IsNullOrEmpty(input) ? input : input.Trim().Replace("/", @"\");
         }
 
         /// <summary>Adds a file to a zip.</summary>
         /// <param name="zipFile">The zip file stream to add to.</param>
         /// <param name="filePath">The path to the file to add.</param>
         /// <param name="fileName">Name of the file to use in the zip entry.</param>
-        /// <param name="folder">The name of the folder to use in the zip entry..</param>
+        /// <param name="folder">The name of the folder to use in the zip entry.</param>
         [DnnDeprecated(9, 11, 0, "Replaced with .NET compression types.")]
+#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public static partial void AddToZip(ref ZipOutputStream zipFile, string filePath, string fileName, string folder)
+#pragma warning restore CS3001
         {
             FileStream fs = null;
             try
@@ -782,10 +787,9 @@ namespace DotNetNuke.Common.Utilities
                 if (len != fs.Length)
                 {
                     Logger.ErrorFormat(
-                        "Reading from " +
-                        filePath +
-                        " didn't read all data in buffer. " +
-                        "Requested to read {0} bytes, but was read {1} bytes",
+                        CultureInfo.InvariantCulture,
+                        "Reading from {0} didn't read all data in buffer. Requested to read {1} bytes, but was read {2} bytes",
+                        filePath,
                         fs.Length,
                         len);
                 }
@@ -814,7 +818,9 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="zipStream">The zip stream.</param>
         /// <param name="destPath">The destination path to extract to.</param>
         [DnnDeprecated(9, 11, 0, "Replaced with .NET compression types.")]
+#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public static partial void UnzipResources(ZipInputStream zipStream, string destPath)
+#pragma warning restore CS3001
         {
             try
             {

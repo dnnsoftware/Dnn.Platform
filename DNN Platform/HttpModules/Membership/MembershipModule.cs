@@ -188,6 +188,7 @@ namespace DotNetNuke.HttpModules.Membership
 
         /// <summary>Initializes the specified application.</summary>
         /// <param name="application">The application.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication application)
         {
             application.AuthenticateRequest += this.OnAuthenticateRequest;
@@ -205,7 +206,7 @@ namespace DotNetNuke.HttpModules.Membership
             var auth = HttpContext.Current.Request.Headers.Get("Authorization");
             if (!string.IsNullOrEmpty(auth))
             {
-                if (auth.StartsWith("Negotiate"))
+                if (auth.StartsWith("Negotiate", StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }

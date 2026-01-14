@@ -11,9 +11,9 @@ namespace Dnn.AzureConnector.Services
         private static readonly string[] Namespaces = ["Dnn.AzureConnector.Services",];
 
         /// <inheritdoc/>
-        public void RegisterRoutes(IMapRoute routeManager)
+        public void RegisterRoutes(IMapRoute mapRouteManager)
         {
-            routeManager.MapHttpRoute(
+            mapRouteManager.MapHttpRoute(
                 "AzureConnector",
                 "default",
                 "{controller}/{action}",

@@ -4,12 +4,16 @@
 
 namespace DotNetNuke.Web.Validators
 {
+    /// <summary>A validation error.</summary>
     public class ValidationError
     {
+        /// <summary>Gets or sets the error message.</summary>
         public string ErrorMessage { get; set; }
 
+        /// <summary>Gets or sets the name of the invalid property.</summary>
         public string PropertyName { get; set; }
 
+        /// <summary>Gets or sets the validator.</summary>
         public object Validator { get; set; }
     }
 }

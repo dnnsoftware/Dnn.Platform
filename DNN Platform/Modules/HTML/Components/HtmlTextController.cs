@@ -726,12 +726,12 @@ namespace DotNetNuke.Modules.Html
         {
             var portal = PortalController.Instance.GetPortal(portalId);
             var portalRoot = UrlUtils.Combine(Globals.ApplicationPath, portal.HomeDirectory);
-            if (!portalRoot.StartsWith("/"))
+            if (!portalRoot.StartsWith("/", StringComparison.Ordinal))
             {
                 portalRoot = "/" + portalRoot;
             }
 
-            if (!portalRoot.EndsWith("/"))
+            if (!portalRoot.EndsWith("/", StringComparison.Ordinal))
             {
                 portalRoot = portalRoot + "/";
             }
@@ -746,12 +746,12 @@ namespace DotNetNuke.Modules.Html
             // Replace any relative portal root reference by a token "{{PortalRoot}}"
             var portal = PortalController.Instance.GetPortal(portalId);
             var portalRoot = UrlUtils.Combine(Globals.ApplicationPath, portal.HomeDirectory);
-            if (!portalRoot.StartsWith("/"))
+            if (!portalRoot.StartsWith("/", StringComparison.Ordinal))
             {
                 portalRoot = "/" + portalRoot;
             }
 
-            if (!portalRoot.EndsWith("/"))
+            if (!portalRoot.EndsWith("/", StringComparison.Ordinal))
             {
                 portalRoot = portalRoot + "/";
             }

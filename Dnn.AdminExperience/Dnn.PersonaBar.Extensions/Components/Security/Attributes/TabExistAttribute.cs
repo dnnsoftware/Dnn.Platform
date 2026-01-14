@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Security.Attributes
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
 
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -18,26 +19,26 @@ namespace Dnn.PersonaBar.Security.Attributes
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var propertyName = validationContext.DisplayName;
-            int tabId = Convert.ToInt32(value.ToString());
+            int tabId = Convert.ToInt32(value.ToString(), CultureInfo.InvariantCulture);
 
             if (tabId != -1)
             {
-                var portalSetting = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSetting = PortalController.Instance.GetCurrentSettings();
                 var tab = TabController.Instance.GetTab(tabId, portalSetting.PortalId);
 
                 if (tab == null)
                 {
-                    return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid, Components.Constants.LocalResourcesFile), propertyName, tabId));
+                    return new ValidationResult(string.Format(CultureInfo.CurrentCulture, Localization.GetString(Components.Constants.NotValid, Components.Constants.LocalResourcesFile), propertyName, tabId));
                 }
 
                 if (tab.DisableLink)
                 {
-                    return new ValidationResult(string.Format(Localization.GetString(Components.Constants.DisabledTab, Components.Constants.LocalResourcesFile), tabId));
+                    return new ValidationResult(string.Format(CultureInfo.CurrentCulture, Localization.GetString(Components.Constants.DisabledTab, Components.Constants.LocalResourcesFile), tabId));
                 }
 
                 if (tab.IsDeleted)
                 {
-                    return new ValidationResult(string.Format(Localization.GetString(Components.Constants.DeletedTab, Components.Constants.LocalResourcesFile), tabId));
+                    return new ValidationResult(string.Format(CultureInfo.CurrentCulture, Localization.GetString(Components.Constants.DeletedTab, Components.Constants.LocalResourcesFile), tabId));
                 }
             }
 

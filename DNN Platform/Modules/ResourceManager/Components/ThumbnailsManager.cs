@@ -54,7 +54,7 @@ namespace Dnn.Modules.ResourceManager.Components
         public bool ThumbnailAvailable(string fileName)
         {
             var ext = Path.GetExtension(fileName).ToUpperInvariant();
-            ext = ext.StartsWith(".") ? ext.Substring(1) : ext;
+            ext = ext.StartsWith(".", StringComparison.Ordinal) ? ext.Substring(1) : ext;
             return Enum.TryParse(ext, out ThumbnailExtensions _);
         }
 

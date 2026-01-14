@@ -4,6 +4,7 @@
 namespace DotNetNuke.Modules.RazorHost
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Web.UI.WebControls;
 
@@ -103,7 +104,7 @@ namespace DotNetNuke.Modules.RazorHost
             string scriptFile = string.Format(this.razorScriptFileFormatString, this.scriptList.SelectedValue);
             string srcFile = this.Server.MapPath(scriptFile);
 
-            this.lblSourceFile.Text = string.Format(Localization.GetString("SourceFile", this.LocalResourceFile), scriptFile);
+            this.lblSourceFile.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("SourceFile", this.LocalResourceFile), scriptFile);
 
             StreamReader objStreamReader = null;
             objStreamReader = File.OpenText(srcFile);

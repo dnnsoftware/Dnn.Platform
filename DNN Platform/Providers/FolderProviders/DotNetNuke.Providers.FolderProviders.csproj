@@ -31,7 +31,6 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.FolderProviders.XML</DocumentationFile>
     <LangVersion>latest</LangVersion>
-    <NoWarn>1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS0618,SA1600</WarningsNotAsErrors>
   </PropertyGroup>
@@ -43,7 +42,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.FolderProviders.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS0618,SA1600</WarningsNotAsErrors>
@@ -58,7 +56,6 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.FolderProviders.XML</DocumentationFile>
     <LangVersion>latest</LangVersion>
-    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -68,7 +65,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.FolderProviders.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -141,12 +137,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+    <PackageReference Include="Microsoft.SourceLink.GitHub">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
-      <Version>1.2.0-beta.556</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

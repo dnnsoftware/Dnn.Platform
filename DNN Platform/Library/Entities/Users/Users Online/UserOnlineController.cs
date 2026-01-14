@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Users
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -250,12 +251,12 @@ namespace DotNetNuke.Entities.Users
             user.PortalID = portalSettings.PortalId;
             user.TabID = portalSettings.ActiveTab.TabID;
             user.LastActiveDate = DateTime.Now;
-            if (userList[objUserInfo.UserID.ToString()] == null)
+            if (userList[objUserInfo.UserID.ToString(CultureInfo.InvariantCulture)] == null)
             {
                 user.CreationDate = user.LastActiveDate;
             }
 
-            userList[objUserInfo.UserID.ToString()] = user;
+            userList[objUserInfo.UserID.ToString(CultureInfo.InvariantCulture)] = user;
             this.SetUserList(userList);
         }
     }

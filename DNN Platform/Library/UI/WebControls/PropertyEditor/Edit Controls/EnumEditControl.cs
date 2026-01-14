@@ -34,13 +34,13 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                var retValue = Convert.ToInt32(this.Value);
+                var retValue = Convert.ToInt32(this.Value, CultureInfo.InvariantCulture);
                 return retValue.ToString(CultureInfo.InvariantCulture);
             }
 
             set
             {
-                int setValue = int.Parse(value);
+                int setValue = int.Parse(value, CultureInfo.InvariantCulture);
                 this.Value = setValue;
             }
         }
@@ -49,8 +49,8 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="e">The event arguments.</param>
         protected override void OnDataChanged(EventArgs e)
         {
-            int intValue = Convert.ToInt32(this.Value);
-            int intOldValue = Convert.ToInt32(this.OldValue);
+            int intValue = Convert.ToInt32(this.Value, CultureInfo.InvariantCulture);
+            int intOldValue = Convert.ToInt32(this.OldValue, CultureInfo.InvariantCulture);
 
             var args = new PropertyEditorEventArgs(this.Name)
             { Value = Enum.ToObject(this.enumType, intValue), OldValue = Enum.ToObject(this.enumType, intOldValue) };
@@ -62,8 +62,8 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="writer">A HtmlTextWriter.</param>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            int propValue = Convert.ToInt32(this.Value);
-            Array enumValues = Enum.GetValues(this.enumType);
+            int propValue = Convert.ToInt32(this.Value, CultureInfo.InvariantCulture);
+            var enumValues = Enum.GetValues(this.enumType);
 
             // Render the Select Tag
             this.ControlStyle.AddAttributesToRender(writer);
@@ -74,7 +74,7 @@ namespace DotNetNuke.UI.WebControls
 
             for (int i = 0; i <= enumValues.Length - 1; i++)
             {
-                int enumValue = Convert.ToInt32(enumValues.GetValue(i));
+                int enumValue = (int)enumValues.GetValue(i);
                 string enumName = Enum.GetName(this.enumType, enumValue);
                 enumName = Localization.GetString(enumName, this.LocalResourceFile);
 
@@ -101,7 +101,7 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="writer">A HtmlTextWriter.</param>
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
-            int propValue = Convert.ToInt32(this.Value);
+            int propValue = Convert.ToInt32(this.Value, CultureInfo.InvariantCulture);
             string enumValue = Enum.Format(this.enumType, propValue, "G");
 
             this.ControlStyle.AddAttributesToRender(writer);

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Common.Utilities
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Threading;
@@ -60,6 +61,7 @@ namespace DotNetNuke.Common.Utilities
             NotSet = 2,
 
             /// <summary>The application creates one object to monitor the main directory and uses this object to monitor each subdirectory.</summary>
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
             Single,
         }
 
@@ -351,8 +353,8 @@ namespace DotNetNuke.Common.Utilities
                             configNav.SelectSingleNode("configuration//location//system.web//httpRuntime");
             if (httpNode != null)
             {
-                httpNode.Attributes["maxRequestLength"].InnerText = (newSize / 1024).ToString("#");
-                httpNode.Attributes["requestLengthDiskThreshold"].InnerText = (newSize / 1024).ToString("#");
+                httpNode.Attributes["maxRequestLength"].InnerText = (newSize / 1024).ToString("#", CultureInfo.InvariantCulture);
+                httpNode.Attributes["requestLengthDiskThreshold"].InnerText = (newSize / 1024).ToString("#", CultureInfo.InvariantCulture);
             }
 
             httpNode = configNav.SelectSingleNode("configuration//system.webServer//security//requestFiltering//requestLimits") ??
@@ -364,7 +366,7 @@ namespace DotNetNuke.Common.Utilities
                     httpNode.Attributes.Append(configNav.CreateAttribute("maxAllowedContentLength"));
                 }
 
-                httpNode.Attributes["maxAllowedContentLength"].InnerText = newSize.ToString("#");
+                httpNode.Attributes["maxAllowedContentLength"].InnerText = newSize.ToString("#", CultureInfo.InvariantCulture);
             }
 
             Save(appStatus, configNav);
@@ -382,7 +384,7 @@ namespace DotNetNuke.Common.Utilities
         public static string GetDataBaseOwner()
         {
             var databaseOwner = GetDefaultProvider("data").Attributes["databaseOwner"];
-            if (!string.IsNullOrEmpty(databaseOwner) && databaseOwner.EndsWith(".") == false)
+            if (!string.IsNullOrEmpty(databaseOwner) && !databaseOwner.EndsWith(".", StringComparison.Ordinal))
             {
                 databaseOwner += ".";
             }
@@ -444,7 +446,7 @@ namespace DotNetNuke.Common.Utilities
         {
             var provider = GetDefaultProvider("data");
             var objectQualifier = provider.Attributes["objectQualifier"];
-            if (!string.IsNullOrEmpty(objectQualifier) && objectQualifier.EndsWith("_") == false)
+            if (!string.IsNullOrEmpty(objectQualifier) && !objectQualifier.EndsWith("_", StringComparison.Ordinal))
             {
                 objectQualifier += "_";
             }
@@ -499,7 +501,7 @@ namespace DotNetNuke.Common.Utilities
             var persistentCookieTimeout = 0;
             if (!string.IsNullOrEmpty(GetSetting("PersistentCookieTimeout")))
             {
-                persistentCookieTimeout = int.Parse(GetSetting("PersistentCookieTimeout"));
+                persistentCookieTimeout = int.Parse(GetSetting("PersistentCookieTimeout"), CultureInfo.InvariantCulture);
             }
 
             return persistentCookieTimeout == 0 ? GetAuthCookieTimeout(appStatus) : persistentCookieTimeout;
@@ -611,14 +613,18 @@ namespace DotNetNuke.Common.Utilities
                 throw new SecurityException($"Unable to load config for \"{filename}\"");
             }
 
-            xmlDoc.Load(configPath);
+            using (var configReader = XmlReader.Create(configPath, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                xmlDoc.Load(configReader);
+            }
 
             // test for namespace added by Web Admin Tool
             if (!string.IsNullOrEmpty(xmlDoc.DocumentElement.GetAttribute("xmlns")))
             {
                 // remove namespace
                 var strDoc = xmlDoc.InnerXml.Replace("xmlns=\"http://schemas.microsoft.com/.NetConfiguration/v2.0\"", string.Empty);
-                xmlDoc.LoadXml(strDoc);
+                using var xmlReader = XmlReader.Create(new StringReader(strDoc), new XmlReaderSettings { XmlResolver = null, });
+                xmlDoc.Load(xmlReader);
             }
 
             return xmlDoc;
@@ -736,13 +742,11 @@ namespace DotNetNuke.Common.Utilities
                     try
                     {
                         // save the config file
-                        var settings = new XmlWriterSettings { CloseOutput = true, Indent = true };
-                        using (var writer = XmlWriter.Create(strFilePath, settings))
-                        {
-                            xmlDoc.WriteTo(writer);
-                            writer.Flush();
-                            writer.Close();
-                        }
+                        var settings = new XmlWriterSettings { CloseOutput = true, Indent = true, };
+                        using var writer = XmlWriter.Create(strFilePath, settings);
+                        xmlDoc.WriteTo(writer);
+                        writer.Flush();
+                        writer.Close();
 
                         break;
                     }

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Personalization
 {
     using System;
+    using System.Globalization;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -209,7 +210,7 @@ namespace DotNetNuke.Services.Personalization
             if (HttpContextSource.Current?.Request.IsAuthenticated == true)
             {
                 mode = PortalSettings.Current.DefaultControlPanelMode;
-                string setting = Convert.ToString(Personalization.GetProfile("Usability", "UserMode" + PortalController.Instance.GetCurrentSettings().PortalId));
+                string setting = Convert.ToString(Personalization.GetProfile("Usability", "UserMode" + PortalController.Instance.GetCurrentSettings().PortalId), CultureInfo.InvariantCulture);
                 switch (setting.ToUpperInvariant())
                 {
                     case "VIEW":

@@ -73,7 +73,7 @@ namespace DotNetNuke.Services.Sitemap
         /// <param name="portalId">The portal ID.</param>
         /// <param name="ps">The portal settings.</param>
         /// <param name="version">The version number.</param>
-        /// <returns>A <see cref="List"/> of <see cref="SitemapUrl"/> instances.</returns>
+        /// <returns>A <see cref="List{T}"/> of <see cref="SitemapUrl"/> instances.</returns>
         public abstract List<SitemapUrl> GetUrls(int portalId, PortalSettings ps, string version);
     }
 }

@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Mail
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net.Mail;
@@ -40,7 +41,7 @@ namespace DotNetNuke.Services.Mail
             // During install Wizard we may not have a valid PortalID
             if (portalid != Null.NullInteger)
             {
-                pattern = Convert.ToString(UserController.GetUserSettings(portalid)["Security_EmailValidation"]);
+                pattern = Convert.ToString(UserController.GetUserSettings(portalid)["Security_EmailValidation"], CultureInfo.InvariantCulture);
             }
 
             pattern = string.IsNullOrEmpty(pattern) ? Globals.glbEmailRegEx : pattern;
@@ -227,8 +228,9 @@ namespace DotNetNuke.Services.Mail
             subject = Localize.GetSystemMessage(locale, settings, subject, user, Localize.GlobalResourceFile, custom, string.Empty, settings.AdministratorId);
             body = Localize.GetSystemMessage(locale, settings, body, user, Localize.GlobalResourceFile, custom, string.Empty, settings.AdministratorId);
 
-            var fromUser = (UserController.GetUserByEmail(settings.PortalId, settings.Email) != null) ?
-                string.Format("{0} < {1} >", UserController.GetUserByEmail(settings.PortalId, settings.Email).DisplayName, settings.Email) : settings.Email;
+            var fromUser = UserController.GetUserByEmail(settings.PortalId, settings.Email) != null
+                ? $"{UserController.GetUserByEmail(settings.PortalId, settings.Email).DisplayName} < {settings.Email} >"
+                : settings.Email;
             SendEmail(fromUser, UserController.GetUserById(settings.PortalId, toUser).Email, subject, body);
 
             return Null.NullString;

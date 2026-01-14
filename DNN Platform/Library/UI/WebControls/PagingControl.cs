@@ -7,6 +7,7 @@ namespace DotNetNuke.UI.WebControls
     using System.ComponentModel;
     using System.Data;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Web.UI;
@@ -20,15 +21,19 @@ namespace DotNetNuke.UI.WebControls
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected Repeater PageNumbers;
 
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected TableCell cellDisplayLinks;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected TableCell cellDisplayStatus;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Table tablePageNumbers;
         private int totalPages = -1;
         private string cssClassLinkActive;
@@ -127,8 +132,8 @@ namespace DotNetNuke.UI.WebControls
         /// <inheritdoc/>
         public void RaisePostBackEvent(string eventArgument)
         {
-            this.CurrentPage = int.Parse(eventArgument.Replace("Page_", string.Empty));
-            this.OnPageChanged(new EventArgs());
+            this.CurrentPage = int.Parse(eventArgument.Replace("Page_", string.Empty), CultureInfo.InvariantCulture);
+            this.OnPageChanged(EventArgs.Empty);
         }
 
         /// <inheritdoc/>
@@ -158,7 +163,7 @@ namespace DotNetNuke.UI.WebControls
                 intTotalPages = 1;
             }
 
-            var str = string.Format(Localization.GetString("Pages"), this.CurrentPage, intTotalPages);
+            var str = string.Format(CultureInfo.CurrentCulture, Localization.GetString("Pages"), this.CurrentPage, intTotalPages);
             var lit = new LiteralControl(str);
             this.cellDisplayStatus.Controls.Add(lit);
             this.tablePageNumbers.Rows[intRowIndex].Cells.Add(this.cellDisplayStatus);
@@ -167,13 +172,11 @@ namespace DotNetNuke.UI.WebControls
 
         protected void OnPageChanged(EventArgs e)
         {
-            if (this.PageChanged != null)
-            {
-                this.PageChanged(this, e);
-            }
+            this.PageChanged?.Invoke(this, e);
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void Render(HtmlTextWriter output)
         {
             if (this.PageNumbers == null)
@@ -263,7 +266,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        private string CreateURL(string currentPage)
+        private string CreateUrl(string currentPage)
         {
             switch (this.Mode)
             {
@@ -281,68 +284,77 @@ namespace DotNetNuke.UI.WebControls
         {
             if (pageNum == this.CurrentPage)
             {
-                return this.CSSClassLinkInactive.Trim().Length > 0 ? "<span class=\"" + this.CSSClassLinkInactive + "\">[" + pageNum + "]</span>" : "<span>[" + pageNum + "]</span>";
+                return this.CSSClassLinkInactive.Trim().Length > 0
+                    ? $"<span class=\"{this.CSSClassLinkInactive}\">[{pageNum}]</span>"
+                    : $"<span>[{pageNum}]</span>";
             }
 
+            var url = this.CreateUrl(pageNum.ToString(CultureInfo.InvariantCulture));
             return this.CSSClassLinkActive.Trim().Length > 0
-                       ? "<a href=\"" + this.CreateURL(pageNum.ToString()) + "\" class=\"" + this.CSSClassLinkActive + "\">" + pageNum + "</a>"
-                       : "<a href=\"" + this.CreateURL(pageNum.ToString()) + "\">" + pageNum + "</a>";
+                       ? $"<a href=\"{url}\" class=\"{this.CSSClassLinkActive}\">{pageNum}</a>"
+                       : $"<a href=\"{url}\">{pageNum}</a>";
         }
 
         /// <summary>GetPreviousLink returns the link for the Previous page for paging.</summary>
         private string GetPreviousLink()
         {
+            var url = this.CreateUrl((this.CurrentPage - 1).ToString(CultureInfo.InvariantCulture));
+            var previousText = Localization.GetString("Previous", Localization.SharedResourceFile);
             return this.CurrentPage > 1 && this.totalPages > 0
                        ? (this.CSSClassLinkActive.Trim().Length > 0
-                              ? "<a href=\"" + this.CreateURL((this.CurrentPage - 1).ToString()) + "\" class=\"" + this.CSSClassLinkActive + "\">" +
-                                Localization.GetString("Previous", Localization.SharedResourceFile) + "</a>"
-                              : "<a href=\"" + this.CreateURL((this.CurrentPage - 1).ToString()) + "\">" + Localization.GetString("Previous", Localization.SharedResourceFile) + "</a>")
+                              ? $"<a href=\"{url}\" class=\"{this.CSSClassLinkActive}\">{previousText}</a>"
+                              : $"<a href=\"{url}\">{previousText}</a>")
                        : (this.CSSClassLinkInactive.Trim().Length > 0
-                              ? "<span class=\"" + this.CSSClassLinkInactive + "\">" + Localization.GetString("Previous", Localization.SharedResourceFile) + "</span>"
-                              : "<span>" + Localization.GetString("Previous", Localization.SharedResourceFile) + "</span>");
+                              ? $"<span class=\"{this.CSSClassLinkInactive}\">{previousText}</span>"
+                              : $"<span>{previousText}</span>");
         }
 
         /// <summary>GetNextLink returns the link for the Next Page for paging.</summary>
         private string GetNextLink()
         {
+            var url = this.CreateUrl((this.CurrentPage + 1).ToString(CultureInfo.InvariantCulture));
+            var nextText = Localization.GetString("Next", Localization.SharedResourceFile);
             return this.CurrentPage != this.totalPages && this.totalPages > 0
                        ? (this.CSSClassLinkActive.Trim().Length > 0
-                              ? "<a href=\"" + this.CreateURL((this.CurrentPage + 1).ToString()) + "\" class=\"" + this.CSSClassLinkActive + "\">" + Localization.GetString("Next", Localization.SharedResourceFile) +
-                                "</a>"
-                              : "<a href=\"" + this.CreateURL((this.CurrentPage + 1).ToString()) + "\">" + Localization.GetString("Next", Localization.SharedResourceFile) + "</a>")
+                              ? $"<a href=\"{url}\" class=\"{this.CSSClassLinkActive}\">{nextText}</a>"
+                              : $"<a href=\"{url}\">{nextText}</a>")
                        : (this.CSSClassLinkInactive.Trim().Length > 0
-                              ? "<span class=\"" + this.CSSClassLinkInactive + "\">" + Localization.GetString("Next", Localization.SharedResourceFile) + "</span>"
-                              : "<span>" + Localization.GetString("Next", Localization.SharedResourceFile) + "</span>");
+                              ? $"<span class=\"{this.CSSClassLinkInactive}\">{nextText}</span>"
+                              : $"<span>{nextText}</span>");
         }
 
         /// <summary>GetFirstLink returns the First Page link for paging.</summary>
         private string GetFirstLink()
         {
+            var firstText = Localization.GetString("First", Localization.SharedResourceFile);
             if (this.CurrentPage > 1 && this.totalPages > 0)
             {
+                var url = this.CreateUrl("1");
                 return this.CSSClassLinkActive.Trim().Length > 0
-                           ? "<a href=\"" + this.CreateURL("1") + "\" class=\"" + this.CSSClassLinkActive + "\">" + Localization.GetString("First", Localization.SharedResourceFile) + "</a>"
-                           : "<a href=\"" + this.CreateURL("1") + "\">" + Localization.GetString("First", Localization.SharedResourceFile) + "</a>";
+                           ? $"<a href=\"{url}\" class=\"{this.CSSClassLinkActive}\">{firstText}</a>"
+                           : $"<a href=\"{url}\">{firstText}</a>";
             }
 
             return this.CSSClassLinkInactive.Trim().Length > 0
-                       ? "<span class=\"" + this.CSSClassLinkInactive + "\">" + Localization.GetString("First", Localization.SharedResourceFile) + "</span>"
-                       : "<span>" + Localization.GetString("First", Localization.SharedResourceFile) + "</span>";
+                       ? $"<span class=\"{this.CSSClassLinkInactive}\">{firstText}</span>"
+                       : $"<span>{firstText}</span>";
         }
 
         /// <summary>GetLastLink returns the Last Page link for paging.</summary>
         private string GetLastLink()
         {
+            var lastText = Localization.GetString("Last", Localization.SharedResourceFile);
             if (this.CurrentPage != this.totalPages && this.totalPages > 0)
             {
+                var url = this.CreateUrl(this.totalPages.ToString(CultureInfo.InvariantCulture));
                 return this.CSSClassLinkActive.Trim().Length > 0
-                           ? "<a href=\"" + this.CreateURL(this.totalPages.ToString()) + "\" class=\"" + this.CSSClassLinkActive + "\">" + Localization.GetString("Last", Localization.SharedResourceFile) + "</a>"
-                           : "<a href=\"" + this.CreateURL(this.totalPages.ToString()) + "\">" + Localization.GetString("Last", Localization.SharedResourceFile) + "</a>";
+                           ? $"<a href=\"{url}\" class=\"{this.CSSClassLinkActive}\">{lastText}</a>"
+                           : $"<a href=\"{url}\">{lastText}</a>";
             }
 
             return this.CSSClassLinkInactive.Trim().Length > 0
-                       ? "<span class=\"" + this.CSSClassLinkInactive + "\">" + Localization.GetString("Last", Localization.SharedResourceFile) + "</span>"
-                       : "<span>" + Localization.GetString("Last", Localization.SharedResourceFile) + "</span>";
+                       ? $"<span class=\"{this.CSSClassLinkInactive}\">{lastText}</span>"
+                       : $"<span>{lastText}</span>";
         }
 
         public class PageNumberLinkTemplate : ITemplate
@@ -366,11 +378,9 @@ namespace DotNetNuke.UI.WebControls
 
             private void BindData(object sender, EventArgs e)
             {
-                Literal lc;
-                lc = (Literal)sender;
-                RepeaterItem container;
-                container = (RepeaterItem)lc.NamingContainer;
-                lc.Text = this.pagingControl.GetLink(Convert.ToInt32(DataBinder.Eval(container.DataItem, "PageNum"))) + "&nbsp;&nbsp;";
+                var lc = (Literal)sender;
+                var container = (RepeaterItem)lc.NamingContainer;
+                lc.Text = this.pagingControl.GetLink(Convert.ToInt32(DataBinder.Eval(container.DataItem, "PageNum"), CultureInfo.InvariantCulture)) + "&nbsp;&nbsp;";
             }
         }
     }

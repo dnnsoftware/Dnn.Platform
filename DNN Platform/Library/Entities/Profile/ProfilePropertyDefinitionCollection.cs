@@ -6,35 +6,25 @@ namespace DotNetNuke.Entities.Profile
     using System;
     using System.Collections;
 
-    /// <summary>
-    /// The ProfilePropertyDefinitionCollection class provides Business Layer methods for
-    /// a collection of property Definitions.
-    /// </summary>
+    using DotNetNuke.Collections;
+
+    /// <summary>The ProfilePropertyDefinitionCollection class provides Business Layer methods for a collection of property Definitions.</summary>
     [Serializable]
-    public class ProfilePropertyDefinitionCollection : CollectionBase
+    public class ProfilePropertyDefinitionCollection : GenericCollectionBase<ProfilePropertyDefinition>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProfilePropertyDefinitionCollection"/> class.
-        /// Constructs a new default collection.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProfilePropertyDefinitionCollection"/> class.</summary>
         public ProfilePropertyDefinitionCollection()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProfilePropertyDefinitionCollection"/> class.
-        /// Constructs a new Collection from an ArrayList of ProfilePropertyDefinition objects.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProfilePropertyDefinitionCollection"/> class from an ArrayList of ProfilePropertyDefinition objects.</summary>
         /// <param name="definitionsList">An ArrayList of ProfilePropertyDefinition objects.</param>
         public ProfilePropertyDefinitionCollection(ArrayList definitionsList)
         {
             this.AddRange(definitionsList);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProfilePropertyDefinitionCollection"/> class.
-        /// Constructs a new Collection from a ProfilePropertyDefinitionCollection.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProfilePropertyDefinitionCollection"/> class from a ProfilePropertyDefinitionCollection.</summary>
         /// <param name="collection">A ProfilePropertyDefinitionCollection.</param>
         public ProfilePropertyDefinitionCollection(ProfilePropertyDefinitionCollection collection)
         {
@@ -45,38 +35,7 @@ namespace DotNetNuke.Entities.Profile
         /// <remarks>This overload returns the item by its name.</remarks>
         /// <param name="name">The name of the Property to get.</param>
         /// <returns>A ProfilePropertyDefinition object.</returns>
-        public ProfilePropertyDefinition this[string name]
-        {
-            get
-            {
-                return this.GetByName(name);
-            }
-        }
-
-        /// <summary>Gets and sets an item in the collection.</summary>
-        /// <remarks>This overload returns the item by its index. </remarks>
-        /// <param name="index">The index to get.</param>
-        /// <returns>A ProfilePropertyDefinition object.</returns>
-        public ProfilePropertyDefinition this[int index]
-        {
-            get
-            {
-                return (ProfilePropertyDefinition)this.List[index];
-            }
-
-            set
-            {
-                this.List[index] = value;
-            }
-        }
-
-        /// <summary>Adds a property Definition to the collectio.</summary>
-        /// <param name="value">A ProfilePropertyDefinition object.</param>
-        /// <returns>The index of the property Definition in the collection.</returns>
-        public int Add(ProfilePropertyDefinition value)
-        {
-            return this.List.Add(value);
-        }
+        public ProfilePropertyDefinition this[string name] => this.GetByName(name);
 
         /// <summary>Add an ArrayList of ProfilePropertyDefinition objects.</summary>
         /// <param name="definitionsList">An ArrayList of ProfilePropertyDefinition objects.</param>
@@ -98,14 +57,6 @@ namespace DotNetNuke.Entities.Profile
             }
         }
 
-        /// <summary>Determines whether the collection contains a property definition.</summary>
-        /// <param name="value">A ProfilePropertyDefinition object.</param>
-        /// <returns>A Boolean True/False.</returns>
-        public bool Contains(ProfilePropertyDefinition value)
-        {
-            return this.List.Contains(value);
-        }
-
         /// <summary>Gets a sub-collection of items in the collection by category.</summary>
         /// <param name="category">The category to get.</param>
         /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
@@ -123,7 +74,7 @@ namespace DotNetNuke.Entities.Profile
             return collection;
         }
 
-        /// <summary>Gets an item in the collection by Id.</summary>
+        /// <summary>Gets an item in the collection by ID.</summary>
         /// <param name="id">The id of the Property to get.</param>
         /// <returns>A ProfilePropertyDefinition object.</returns>
         public ProfilePropertyDefinition GetById(int id)
@@ -156,29 +107,6 @@ namespace DotNetNuke.Entities.Profile
             }
 
             return profileItem;
-        }
-
-        /// <summary>Gets the index of a property Definition.</summary>
-        /// <param name="value">A ProfilePropertyDefinition object.</param>
-        /// <returns>The index of the property Definition in the collection.</returns>
-        public int IndexOf(ProfilePropertyDefinition value)
-        {
-            return this.List.IndexOf(value);
-        }
-
-        /// <summary>Inserts a property Definition into the collection.</summary>
-        /// <param name="index">The index to insert the item at.</param>
-        /// <param name="value">A ProfilePropertyDefinition object.</param>
-        public void Insert(int index, ProfilePropertyDefinition value)
-        {
-            this.List.Insert(index, value);
-        }
-
-        /// <summary>Removes a property definition from the collection.</summary>
-        /// <param name="value">The ProfilePropertyDefinition object to remove.</param>
-        public void Remove(ProfilePropertyDefinition value)
-        {
-            this.List.Remove(value);
         }
 
         /// <summary>Sorts the collection using the ProfilePropertyDefinitionComparer (ie by ViewOrder).</summary>

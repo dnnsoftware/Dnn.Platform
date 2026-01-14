@@ -42,7 +42,6 @@
     <WarningLevel>4</WarningLevel>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <DocumentationFile>bin\DotNetNuke.Modules.HtmlEditorManager.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS0618,SA1600</WarningsNotAsErrors>
@@ -55,7 +54,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DotNetNuke.Modules.HtmlEditorManager.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -162,12 +160,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+    <PackageReference Include="Microsoft.SourceLink.GitHub">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
-      <Version>1.2.0-beta.556</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

@@ -26,6 +26,7 @@ namespace DotNetNuke.Services.Log.EventLog
         [Obsolete("Deprecated in DotNetNuke 9.8.0. Use 'DotNetNuke.Abstractions.Logging.EventLogType' instead. Scheduled removal in v11.0.0.")]
         public enum EventLogType
         {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
             /// <inheritdoc cref="Abstractions.Logging.EventLogType.USER_CREATED" />
             USER_CREATED = 0,
 
@@ -488,14 +489,27 @@ namespace DotNetNuke.Services.Log.EventLog
             /// <inheritdoc cref="Abstractions.Logging.EventLogType.FOLDER_MOVED" />
             FOLDER_MOVED = 153,
 
+            /// <inheritdoc cref="Abstractions.Logging.EventLogType.APITOKEN_AUTHENTICATION_FAILED" />
+            APITOKEN_AUTHENTICATION_FAILED = 154,
+
+            /// <inheritdoc cref="Abstractions.Logging.EventLogType.APITOKEN_CREATED" />
+            APITOKEN_CREATED = 155,
+
+            /// <inheritdoc cref="Abstractions.Logging.EventLogType.APITOKEN_DELETED" />
+            APITOKEN_DELETED = 156,
+
+            /// <inheritdoc cref="Abstractions.Logging.EventLogType.APITOKEN_REVOKED" />
+            APITOKEN_REVOKED = 157,
+
             /// <inheritdoc cref="Abstractions.Logging.EventLogType.PORTALPERMISSION_DELETED" />
-            PORTALPERMISSION_DELETED = 154,
+            PORTALPERMISSION_DELETED = 158,
 
             /// <inheritdoc cref="Abstractions.Logging.EventLogType.PORTALPERMISSION_CREATED" />
-            PORTALPERMISSION_CREATED = 155,
+            PORTALPERMISSION_CREATED = 159,
 
             /// <inheritdoc cref="Abstractions.Logging.EventLogType.PORTALPERMISSION_UPDATED" />
-            PORTALPERMISSION_UPDATED = 156,
+            PORTALPERMISSION_UPDATED = 160,
+#pragma warning restore CA1707
         }
 
         [DnnDeprecated(9, 8, 0, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead")]

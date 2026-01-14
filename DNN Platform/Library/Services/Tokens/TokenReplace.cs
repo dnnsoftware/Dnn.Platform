@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.Tokens
             set => this.TokenContext.User = value;
         }
 
-        /// <summary>Replaces tokens in <paramref cref="sourceText"/> with the property values.</summary>
+        /// <summary>Replaces tokens in <paramref name="sourceText"/> with the property values.</summary>
         /// <param name="sourceText">String with <c>[Object:Property]</c> tokens.</param>
         /// <returns>string containing replaced values.</returns>
         public string ReplaceEnvironmentTokens(string sourceText)
@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.Tokens
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>Replaces tokens in <paramref cref="sourceText"/> with the property values.</summary>
+        /// <summary>Replaces tokens in <paramref name="sourceText"/> with the property values.</summary>
         /// <param name="sourceText">String with <c>[Object:Property]</c> tokens.</param>
         /// <param name="row">The data row to use as the source.</param>
         /// <returns>string containing replaced values.</returns>
@@ -136,7 +136,7 @@ namespace DotNetNuke.Services.Tokens
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>Replaces tokens in <paramref cref="sourceText"/> with the property values.</summary>
+        /// <summary>Replaces tokens in <paramref name="sourceText"/> with the property values.</summary>
         /// <param name="sourceText">String with <c>[Object:Property]</c> tokens.</param>
         /// <param name="custom">A list of custom properties.</param>
         /// <param name="customCaption">The prefix for the custom properties.</param>
@@ -147,7 +147,7 @@ namespace DotNetNuke.Services.Tokens
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>Replaces tokens in <paramref cref="sourceText"/> with the property values.</summary>
+        /// <summary>Replaces tokens in <paramref name="sourceText"/> with the property values.</summary>
         /// <param name="sourceText">String with <c>[Object:Property]</c> tokens.</param>
         /// <param name="custom">NameValueList for replacing <c>[custom:name]</c> tokens, where <c>custom</c> is specified in next param and <c>name</c> is either the key or the index number in the string.</param>
         /// <param name="customCaption">Token name to be used inside token <c>[custom:name]</c>.</param>
@@ -158,7 +158,7 @@ namespace DotNetNuke.Services.Tokens
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>Replaces tokens in <paramref cref="sourceText"/> with the property values.</summary>
+        /// <summary>Replaces tokens in <paramref name="sourceText"/> with the property values.</summary>
         /// <param name="sourceText">String with <c>[Object:Property]</c> tokens.</param>
         /// <param name="custom">NameValueList for replacing <c>[custom:name]</c> tokens, where <c>custom</c> is specified in next param and <c>name</c> is either the key or the index number in the string.</param>
         /// <param name="customCaptions">Token names to be used inside token <c>[custom:name]</c>, where 'custom' is one of the values in the string array. </param>
@@ -173,7 +173,7 @@ namespace DotNetNuke.Services.Tokens
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>Replaces tokens in <paramref cref="sourceText"/> with the property values.</summary>
+        /// <summary>Replaces tokens in <paramref name="sourceText"/> with the property values.</summary>
         /// <param name="sourceText">String with <c>[Object:Property]</c> tokens.</param>
         /// <param name="custom">NameValueList for replacing <c>[custom:name]</c> tokens, where <c>custom</c> is specified in next param and <c>name</c> is either the key or the index number in the string.</param>
         /// <param name="customCaption">Token name to be used inside token <c>[custom:name]</c>.</param>
@@ -188,7 +188,7 @@ namespace DotNetNuke.Services.Tokens
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>Replaces tokens in <paramref cref="sourceText"/> with the property values, skipping environment objects.</summary>
+        /// <summary>Replaces tokens in <paramref name="sourceText"/> with the property values, skipping environment objects.</summary>
         /// <param name="sourceText">String with <c>[Object:Property]</c> tokens.</param>
         /// <returns>string containing replaced values.</returns>
         protected override string ReplaceTokens(string sourceText)

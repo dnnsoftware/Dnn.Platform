@@ -15,10 +15,12 @@ namespace DotNetNuke.Entities.DataStructures
     {
         [DataMember(Name = "data")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public T Data;
 
         [DataMember(Name = "children")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public List<NTree<T>> Children;
 
         /// <summary>Initializes a new instance of the <see cref="NTree{T}"/> class.</summary>

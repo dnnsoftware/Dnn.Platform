@@ -4,6 +4,7 @@
 
 namespace Dnn.ExportImport.Components.Models
 {
+    /// <summary>A token indicating progress of an operation.</summary>
     public class ProgressToken
     {
         /// <summary>

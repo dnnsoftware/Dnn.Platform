@@ -9,6 +9,7 @@ namespace DotNetNuke.Common.Lists
     using System.ComponentModel;
     using System.Data;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Threading;
 
@@ -28,13 +29,11 @@ namespace DotNetNuke.Common.Lists
     {
         /// <summary>The list of list types that are not localized.</summary>
         [Obsolete("Deprecated in DotNetNuke 9.8.1. Use UnLocalizedLists instead. Scheduled removal in v11.0.0.")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "StyleCop.CSharp.MaintainabilityRules",
-            "SA1401:Fields should be private",
-            Justification = "Make private in v11.")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "Make private in v11.")]
         public readonly string[] NonLocalizedLists = UnLocalizableLists;
 
-        private static readonly string[] UnLocalizableLists = { "ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords" };
+        private static readonly string[] UnLocalizableLists = ["ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords",];
         private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="ListController"/> class.</summary>
@@ -152,7 +151,7 @@ namespace DotNetNuke.Common.Lists
 
         /// <summary>Deletes a list.</summary>
         /// <param name="list">The <see cref="ListInfo"/> reference for the list to delete.</param>
-        /// <param name="includeChildren">A value indicating wheter to also delete the children items for this list.</param>
+        /// <param name="includeChildren">A value indicating whether to also delete the children items for this list.</param>
         public void DeleteList(ListInfo list, bool includeChildren)
         {
             if (list == null)
@@ -160,15 +159,14 @@ namespace DotNetNuke.Common.Lists
                 return;
             }
 
-            var lists = new SortedList<string, ListInfo>();
-            lists.Add(list.Key, list);
+            var lists = new SortedList<string, ListInfo> { { list.Key, list }, };
 
             // add Children
             if (includeChildren)
             {
                 foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(list.PortalID))
                 {
-                    if (listPair.Value.ParentList.StartsWith(list.Key))
+                    if (listPair.Value.ParentList.StartsWith(list.Key, StringComparison.OrdinalIgnoreCase))
                     {
                         lists.Add(listPair.Value.Key.Replace(":", "."), listPair.Value);
                     }
@@ -456,7 +454,7 @@ namespace DotNetNuke.Common.Lists
 
         private static void ClearEntriesCache(string listName, int portalId)
         {
-            string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.ListEntriesCacheKey, portalId, listName);
             DataCache.RemoveCache(cacheKey);
         }
 
@@ -477,18 +475,18 @@ namespace DotNetNuke.Common.Lists
 
             if (canContinue)
             {
-                list = new ListInfo(Convert.ToString(dr["ListName"]));
+                list = new ListInfo(Convert.ToString(dr["ListName"], CultureInfo.InvariantCulture));
                 {
-                    list.Level = Convert.ToInt32(dr["Level"]);
-                    list.PortalID = Convert.ToInt32(dr["PortalID"]);
-                    list.DefinitionID = Convert.ToInt32(dr["DefinitionID"]);
-                    list.EntryCount = Convert.ToInt32(dr["EntryCount"]);
-                    list.ParentID = Convert.ToInt32(dr["ParentID"]);
-                    list.ParentKey = Convert.ToString(dr["ParentKey"]);
-                    list.Parent = Convert.ToString(dr["Parent"]);
-                    list.ParentList = Convert.ToString(dr["ParentList"]);
-                    list.EnableSortOrder = Convert.ToInt32(dr["MaxSortOrder"]) > 0;
-                    list.SystemList = Convert.ToInt32(dr["SystemList"]) > 0;
+                    list.Level = Convert.ToInt32(dr["Level"], CultureInfo.InvariantCulture);
+                    list.PortalID = Convert.ToInt32(dr["PortalID"], CultureInfo.InvariantCulture);
+                    list.DefinitionID = Convert.ToInt32(dr["DefinitionID"], CultureInfo.InvariantCulture);
+                    list.EntryCount = Convert.ToInt32(dr["EntryCount"], CultureInfo.InvariantCulture);
+                    list.ParentID = Convert.ToInt32(dr["ParentID"], CultureInfo.InvariantCulture);
+                    list.ParentKey = Convert.ToString(dr["ParentKey"], CultureInfo.InvariantCulture);
+                    list.Parent = Convert.ToString(dr["Parent"], CultureInfo.InvariantCulture);
+                    list.ParentList = Convert.ToString(dr["ParentList"], CultureInfo.InvariantCulture);
+                    list.EnableSortOrder = Convert.ToInt32(dr["MaxSortOrder"], CultureInfo.InvariantCulture) > 0;
+                    list.SystemList = Convert.ToInt32(dr["SystemList"], CultureInfo.InvariantCulture) > 0;
                 }
             }
 
@@ -525,7 +523,7 @@ namespace DotNetNuke.Common.Lists
 
         private static Dictionary<string, ListInfo> GetListInfoDictionary(int portalId)
         {
-            string cacheKey = string.Format(DataCache.ListsCacheKey, portalId);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.ListsCacheKey, portalId);
             return CBO.GetCachedObject<Dictionary<string, ListInfo>>(
                 new CacheItemArgs(
                 cacheKey,
@@ -536,7 +534,7 @@ namespace DotNetNuke.Common.Lists
 
         private static IEnumerable<ListEntryInfo> GetListEntries(string listName, int portalId)
         {
-            string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.ListEntriesCacheKey, portalId, listName);
             return CBO.GetCachedObject<IEnumerable<ListEntryInfo>>(
                 new CacheItemArgs(
                 cacheKey,

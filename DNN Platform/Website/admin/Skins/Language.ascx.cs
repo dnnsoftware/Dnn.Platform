@@ -478,7 +478,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.LocalTokenReplace.Language = this.selectCulture.SelectedItem.Value;
 
             // DNN-6170 ensure skin value is culture specific in case of  static localization
-            DataCache.RemoveCache(string.Format(DataCache.PortalSettingsCacheKey, this.PortalSettings.PortalId, Null.NullString));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.PortalSettingsCacheKey, this.PortalSettings.PortalId, Null.NullString));
             this.Response.Redirect(this.LocalTokenReplace.ReplaceEnvironmentTokens("[URL]"));
         }
     }

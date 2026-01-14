@@ -115,14 +115,14 @@ namespace DNNConnect.CKEditorProvider.Web
 
                     if (info.PropertyType.Name == "Boolean")
                     {
-                        this.settings[xmlAttributeAttribute.AttributeName] = settingValue.ToLower();
+                        this.settings[xmlAttributeAttribute.AttributeName] = settingValue.ToLowerInvariant();
                     }
                     else
                     {
                         switch (info.Name)
                         {
                             case "ToolbarLocation":
-                                this.settings[xmlAttributeAttribute.AttributeName] = settingValue.ToLower();
+                                this.settings[xmlAttributeAttribute.AttributeName] = settingValue.ToLowerInvariant();
                                 break;
                             case "EnterMode":
                             case "ShiftEnterMode":
@@ -182,7 +182,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                                 codeMirrorArray.AppendFormat("{0}: '{1}',", xmlAttribute.AttributeName, HttpUtility.JavaScriptStringEncode(codeMirrorSettingValue));
                                                 break;
                                             case "Boolean":
-                                                codeMirrorArray.AppendFormat("{0}: {1},", xmlAttribute.AttributeName, codeMirrorSettingValue.ToLower());
+                                                codeMirrorArray.AppendFormat("{0}: {1},", xmlAttribute.AttributeName, codeMirrorSettingValue.ToLowerInvariant());
                                                 break;
                                         }
                                     }
@@ -219,15 +219,15 @@ namespace DNNConnect.CKEditorProvider.Web
                                                 wordcountArray.AppendFormat("{0}: '{1}',", xmlAttribute.AttributeName, HttpUtility.JavaScriptStringEncode(wordCountSettingValue));
                                                 break;
                                             case "Boolean":
-                                                wordcountArray.AppendFormat("{0}: {1},", xmlAttribute.AttributeName, wordCountSettingValue.ToLower());
+                                                wordcountArray.AppendFormat("{0}: {1},", xmlAttribute.AttributeName, wordCountSettingValue.ToLowerInvariant());
                                                 break;
                                         }
                                     }
 
-                                    var wordcountSettings = wordcountArray.ToString();
+                                    var wordCountSettings = wordcountArray.ToString();
 
                                     this.settings["wordcount"] =
-                                        $"{{ {wordcountSettings.Remove(wordcountSettings.Length - 1, 1)} }}";
+                                        $"{{ {wordCountSettings.Remove(wordCountSettings.Length - 1, 1)} }}";
                                 }
 
                                 break;
@@ -865,7 +865,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 // Get Parent ModuleID From this ClientID
                 string sClientId = this.ClientID.Substring(this.ClientID.IndexOf("ctr") + 3);
 
-                sClientId = sClientId.Remove(this.ClientID.IndexOf("_"));
+                sClientId = sClientId.Remove(this.ClientID.IndexOf("_", StringComparison.Ordinal));
 
                 if (!int.TryParse(sClientId, out this.parentModulId))
                 {
@@ -1014,7 +1014,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 return formattedUrl;
             }
 
-            if (inputUrl.StartsWith("http://") || inputUrl.StartsWith("https://") || inputUrl.StartsWith("//"))
+            if (inputUrl.StartsWith("http://") || inputUrl.StartsWith("https://") || inputUrl.StartsWith("//", StringComparison.Ordinal))
             {
                 formattedUrl = inputUrl;
             }
@@ -1246,7 +1246,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 // Is boolean state or string
                 if (value.Equals("true", StringComparison.InvariantCultureIgnoreCase)
                     || value.Equals("false", StringComparison.InvariantCultureIgnoreCase) || value.StartsWith("[")
-                    || value.StartsWith("{") || Utility.IsNumeric(value))
+                    || value.StartsWith("{", StringComparison.Ordinal) || Utility.IsNumeric(value))
                 {
                     if (value.Equals("True"))
                     {

@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.PersonaBar.Library.Prompt;
@@ -44,7 +45,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
             var tasks = new List<TaskModelBase>();
             var schedulerItems = controller.GetScheduleItems(this.Enabled, string.Empty, this.TaskName?.Replace("*", string.Empty));
             tasks.AddRange(schedulerItems.Select(x => new TaskModelBase(x)));
-            return new ConsoleResultModel(string.Format(this.LocalizeString("Prompt_TasksFound"), tasks.Count))
+            return new ConsoleResultModel(string.Format(CultureInfo.InvariantCulture, this.LocalizeString("Prompt_TasksFound"), tasks.Count))
             {
                 Data = tasks,
                 Records = tasks.Count,

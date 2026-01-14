@@ -47,10 +47,11 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <param name="nav">The XPathNavigator representing the node.</param>
         protected override void ReadCustomManifest(XPathNavigator nav)
         {
-            XPathNavigator libraryNav = nav.SelectSingleNode("libraryFolderName");
+            var libraryNav = nav.SelectSingleNode("libraryFolderName");
             if (libraryNav != null)
             {
-                this.BasePath = string.Format("Resources\\Libraries\\{0}\\{1}", libraryNav.Value, Globals.FormatVersion(this.Package.Version, "00", 3, "_"));
+                var version = Globals.FormatVersion(this.Package.Version, "00", 3, "_");
+                this.BasePath = $@"Resources\Libraries\{libraryNav.Value}\{version}";
             }
         }
     }

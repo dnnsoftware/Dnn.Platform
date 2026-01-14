@@ -4,6 +4,9 @@
 
 namespace DotNetNuke.ExtensionPoints
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Text;
 
     using DotNetNuke.Common;
@@ -11,6 +14,7 @@ namespace DotNetNuke.ExtensionPoints
     public class ToolBarMenuButtonRenderer : IExtensionControlRenderer
     {
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetOutput(IExtensionPoint extensionPoint)
         {
             var extension = (IToolBarMenuButtonExtensionPoint)extensionPoint;
@@ -24,14 +28,15 @@ namespace DotNetNuke.ExtensionPoints
             }
 
             var icon = extension.Icon;
-            if (icon.StartsWith("~/"))
+            if (icon.StartsWith("~/", StringComparison.Ordinal))
             {
                 icon = Globals.ResolveUrl(icon);
             }
 
             var str = new StringBuilder();
-            str.AppendFormat("<div id='{0}_wrapper' class='{1}_wrapper'>", extension.ButtonId, extension.MenuCssClass);
+            str.AppendFormat(CultureInfo.InvariantCulture, "<div id='{0}_wrapper' class='{1}_wrapper'>", extension.ButtonId, extension.MenuCssClass);
             str.AppendFormat(
+                CultureInfo.InvariantCulture,
                 "<button id='{0}' class='{1} {2}' onclick='{3}; return false;' title='{4}'>",
                 extension.ButtonId,
                 cssClass,
@@ -39,13 +44,14 @@ namespace DotNetNuke.ExtensionPoints
                 action,
                 extension.Text);
             str.AppendFormat(
+                CultureInfo.InvariantCulture,
                 "<span id='{0}_text' style='{1} background-image: url(\"{2}\");'>{3}</span>",
                 extension.ButtonId,
                 !extension.ShowText ? "text-indent: -10000000px;" : string.Empty,
                 extension.ShowIcon ? icon : string.Empty,
                 extension.Text);
             str.AppendLine("</button>");
-            str.AppendFormat("<div class='{0}_menu dnnClear'>", extension.MenuCssClass);
+            str.AppendFormat(CultureInfo.InvariantCulture, "<div class='{0}_menu dnnClear'>", extension.MenuCssClass);
             str.AppendLine("<div class='handle'></div>");
             str.AppendLine("<ul>");
             foreach (var item in extension.Items)

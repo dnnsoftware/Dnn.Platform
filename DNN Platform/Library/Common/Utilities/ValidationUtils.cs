@@ -6,6 +6,7 @@ namespace DotNetNuke.Common.Utilities
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Cryptography;
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Internal.SourceGenerators;
@@ -47,7 +48,7 @@ namespace DotNetNuke.Common.Utilities
                     return p.ToString();
                 }));
 
-                return PortalSecurity.Instance.Encrypt(GetDecryptionKey(hostSettings), checkString);
+                return PortalSecurity.Instance.Encrypt(GetDecryptionKey(hostSettings, HashAlgorithmName.SHA512), checkString);
             }
 
             return string.Empty;
@@ -55,12 +56,13 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>The decryption key for the instance.</summary>
         /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hashAlgorithm">The hash algorithm to use when deriving the key for the encryption of the key.</param>
         /// <returns>The decryption key.</returns>
-        internal static string GetDecryptionKey(IHostSettings hostSettings)
+        internal static string GetDecryptionKey(IHostSettings hostSettings, HashAlgorithmName hashAlgorithm)
         {
             var machineKey = Config.GetDecryptionkey();
             var key = $"{machineKey ?? string.Empty}{hostSettings.Guid.Replace("-", string.Empty)}";
-            return FIPSCompliant.EncryptAES(key, key, hostSettings.Guid);
+            return FIPSCompliant.EncryptAES(hashAlgorithm, key, key, hostSettings.Guid);
         }
 
         /// <summary>Determines whether the <paramref name="validationCode"/> matches the given <paramref name="parameters"/>.</summary>

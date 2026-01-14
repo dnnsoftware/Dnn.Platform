@@ -121,7 +121,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             appStatus ??= Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
 
             var library = GetHighestVersionLibrary(appStatus, jsname);
-            return library != null ? Convert.ToString(library.Version) : string.Empty;
+            return library != null ? Convert.ToString(library.Version, CultureInfo.InvariantCulture) : string.Empty;
         }
 
         /// <summary>Requests a script to be added to the page.</summary>
@@ -541,7 +541,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 if (!string.IsNullOrEmpty(js.CDNPath))
                 {
                     var cdnPath = js.CDNPath;
-                    if (cdnPath.StartsWith("//"))
+                    if (cdnPath.StartsWith("//", StringComparison.Ordinal))
                     {
                         var useSecurePath = request == null || UrlUtils.IsSecureConnectionOrSslOffload(request);
                         cdnPath = $"{(useSecurePath ? "https" : "http")}:{cdnPath}";
@@ -572,15 +572,17 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static List<string> GetScriptVersions(IApplicationStatusInfo appStatus)
         {
-            var orderedScripts = (from object item in HttpContextSource.Current.Items.Keys
-                                  where item.ToString().StartsWith(ScriptPrefix)
-                                  select item.ToString().Substring(4)).ToList();
+            var orderedScripts = (
+                from object item in HttpContextSource.Current.Items.Keys
+                where item.ToString().StartsWith(ScriptPrefix, StringComparison.Ordinal)
+                select item.ToString().Substring(4))
+                .ToList();
             orderedScripts.Sort();
             var finalScripts = orderedScripts.ToList();
             foreach (var libraryId in orderedScripts)
             {
                 // find dependencies
-                var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.JavaScriptLibraryID.ToString() == libraryId);
+                var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.JavaScriptLibraryID.ToString(CultureInfo.InvariantCulture) == libraryId);
                 if (library == null)
                 {
                     continue;
@@ -590,7 +592,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 {
                     if (HttpContextSource.Current.Items[ScriptPrefix + "." + dependencyLibrary.JavaScriptLibraryID] == null)
                     {
-                        finalScripts.Add(dependencyLibrary.JavaScriptLibraryID.ToString());
+                        finalScripts.Add(dependencyLibrary.JavaScriptLibraryID.ToString(CultureInfo.InvariantCulture));
                     }
                 }
             }

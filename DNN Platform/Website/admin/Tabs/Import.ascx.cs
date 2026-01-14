@@ -152,11 +152,12 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     return;
                 }
 
-                var selectedFile = Services.FileSystem.FileManager.Instance.GetFile(Convert.ToInt32(this.cboTemplate.SelectedValue));
+                var selectedFile = FileManager.Instance.GetFile(Convert.ToInt32(this.cboTemplate.SelectedValue));
                 var xmlDoc = new XmlDocument { XmlResolver = null };
-                using (var content = Services.FileSystem.FileManager.Instance.GetFileContent(selectedFile))
+                using (var content = FileManager.Instance.GetFileContent(selectedFile))
+                using (var xmlReader = XmlReader.Create(content, new XmlReaderSettings { XmlResolver = null, }))
                 {
-                    xmlDoc.Load(content);
+                    xmlDoc.Load(xmlReader);
                 }
 
                 var tabNodes = new List<XmlNode>();
@@ -179,7 +180,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     string invalidType;
                     if (!TabController.IsValidTabName(this.txtTabName.Text, out invalidType))
                     {
-                        var warningMessage = string.Format(Localization.GetString(invalidType, this.LocalResourceFile), this.txtTabName.Text);
+                        var warningMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString(invalidType, this.LocalResourceFile), this.txtTabName.Text);
                         UI.Skins.Skin.AddModuleMessage(this, warningMessage, ModuleMessage.ModuleMessageType.RedError);
                         return;
                     }
@@ -285,22 +286,24 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 if (this.cboTemplate.SelectedIndex > 0 && this.cboFolders.SelectedItem != null)
                 {
-                    var selectedFile = Services.FileSystem.FileManager.Instance.GetFile(Convert.ToInt32(this.cboTemplate.SelectedValue));
+                    var selectedFile = FileManager.Instance.GetFile(Convert.ToInt32(this.cboTemplate.SelectedValue));
                     var xmldoc = new XmlDocument { XmlResolver = null };
-                    using (var fileContent = Services.FileSystem.FileManager.Instance.GetFileContent(selectedFile))
+                    using (var fileContent = FileManager.Instance.GetFileContent(selectedFile))
+                    using (var xmlReader = XmlReader.Create(fileContent, new XmlReaderSettings { XmlResolver = null, }))
                     {
-                        xmldoc.Load(fileContent);
-                        var node = xmldoc.SelectSingleNode("//portal/description");
-                        if (node != null && !string.IsNullOrEmpty(node.InnerXml))
-                        {
-                            this.lblTemplateDescription.Visible = true;
-                            this.lblTemplateDescription.Text = this.Server.HtmlDecode(node.InnerXml);
-                            this.txtTabName.Text = this.cboTemplate.SelectedItem.Text;
-                        }
-                        else
-                        {
-                            this.lblTemplateDescription.Visible = false;
-                        }
+                        xmldoc.Load(xmlReader);
+                    }
+
+                    var node = xmldoc.SelectSingleNode("//portal/description");
+                    if (node != null && !string.IsNullOrEmpty(node.InnerXml))
+                    {
+                        this.lblTemplateDescription.Visible = true;
+                        this.lblTemplateDescription.Text = this.Server.HtmlDecode(node.InnerXml);
+                        this.txtTabName.Text = this.cboTemplate.SelectedItem.Text;
+                    }
+                    else
+                    {
+                        this.lblTemplateDescription.Visible = false;
                     }
                 }
                 else

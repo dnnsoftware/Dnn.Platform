@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Web.UI.WebControls
 {
+    /// <summary>A label control.</summary>
     public class DnnFieldLabel : DnnLabel
     {
         /// <inheritdoc/>

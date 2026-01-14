@@ -11,6 +11,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
     public class PromptModuleInfo
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 #pragma warning disable CS3008 // Identifier beginning with an underscore is not CLS-compliant
         public string __ModuleId { get; set; } // command link
 #pragma warning restore CS3008 // Identifier beginning with an underscore is not CLS-compliant
@@ -20,6 +21,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
         public string Title { get; set; }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 #pragma warning disable CS3008 // Identifier beginning with an underscore is not CLS-compliant
         public string __ModuleName { get; set; } // command link
 #pragma warning restore CS3008 // Identifier beginning with an underscore is not CLS-compliant

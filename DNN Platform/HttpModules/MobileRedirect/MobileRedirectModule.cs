@@ -48,6 +48,7 @@ namespace DotNetNuke.HttpModules
         public string ModuleName => "MobileRedirectModule";
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication application)
         {
             application.BeginRequest += this.OnBeginRequest;

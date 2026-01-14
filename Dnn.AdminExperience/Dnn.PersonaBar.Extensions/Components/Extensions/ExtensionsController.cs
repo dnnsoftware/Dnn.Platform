@@ -220,7 +220,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
                 if (index < tab.BreadCrumbs.Count - 1)
                 {
-                    returnValue.AppendFormat("{0}", t.LocalizedTabName);
+                    returnValue.Append(t.LocalizedTabName);
                 }
                 else
                 {
@@ -231,7 +231,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                                                             .OrderBy(pa => pa.IsPrimary ? 0 : 1)
                                                             .First();
                     var url = this.NavigationManager.NavigateURL(t.TabID, new PortalSettings(t.PortalID, alias), string.Empty);
-                    returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
+                    returnValue.AppendFormat(CultureInfo.InvariantCulture, "<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
                 }
 
                 index = index + 1;
@@ -381,7 +381,11 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 var myResponseReader = UpdateService.GetLanguageList();
                 var xmlDoc = new XmlDocument { XmlResolver = null };
-                xmlDoc.Load(myResponseReader);
+                using (var xmlReader = XmlReader.Create(myResponseReader, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xmlDoc.Load(xmlReader);
+                }
+
                 var languages = xmlDoc.SelectNodes("available/language");
 
                 if (languages != null)

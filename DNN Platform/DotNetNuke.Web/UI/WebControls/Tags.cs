@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Web.UI;
@@ -15,6 +16,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Entities.Content.Taxonomy;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A tags control.</summary>
     public class Tags : WebControl, IPostBackEventHandler, IPostBackDataHandler
     {
         private string repeatDirection = "Horizontal";
@@ -22,16 +24,22 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private string tags;
 
+        /// <summary>An event which is triggered when the tags are updated.</summary>
         public event EventHandler<EventArgs> TagsUpdated;
 
+        /// <summary>Gets or sets the URL of the add image.</summary>
         public string AddImageUrl { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether to allow tagging.</summary>
         public bool AllowTagging { get; set; }
 
+        /// <summary>Gets or sets the URL of the cancel image.</summary>
         public string CancelImageUrl { get; set; }
 
+        /// <summary>Gets or sets the content item.</summary>
         public ContentItem ContentItem { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether it's in edit mode.</summary>
         public bool IsEditMode
         {
             get
@@ -39,7 +47,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 bool isEditMode = false;
                 if (this.ViewState["IsEditMode"] != null)
                 {
-                    isEditMode = Convert.ToBoolean(this.ViewState["IsEditMode"]);
+                    isEditMode = Convert.ToBoolean(this.ViewState["IsEditMode"], CultureInfo.InvariantCulture);
                 }
 
                 return isEditMode;
@@ -51,8 +59,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the URL format string.</summary>
         public string NavigateUrlFormatString { get; set; }
 
+        /// <summary>Gets or sets the repeat direction.</summary>
         public string RepeatDirection
         {
             get
@@ -66,8 +76,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the URL of the save image.</summary>
         public string SaveImageUrl { get; set; }
 
+        /// <summary>Gets or sets the separator.</summary>
         public string Separator
         {
             get
@@ -81,8 +93,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether to show categories.</summary>
         public bool ShowCategories { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether to show tags.</summary>
         public bool ShowTags { get; set; }
 
         private static Vocabulary TagVocabulary
@@ -238,6 +252,8 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>A method which triggers the <see cref="TagsUpdated"/> event.</summary>
+        /// <param name="e">The event args.</param>
         protected void OnTagsUpdate(EventArgs e)
         {
             if (this.TagsUpdated != null)
@@ -290,7 +306,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void RenderButton(HtmlTextWriter writer, string buttonType, string imageUrl)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Title, this.LocalizeString(string.Format("{0}.ToolTip", buttonType)));
+            writer.AddAttribute(HtmlTextWriterAttribute.Title, this.LocalizeString($"{buttonType}.ToolTip"));
             writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackClientHyperlink(this, buttonType));
             writer.RenderBeginTag(HtmlTextWriterTag.A);
 
@@ -308,7 +324,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void RenderTerm(HtmlTextWriter writer, Term term, bool renderSeparator)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Href, string.Format(this.NavigateUrlFormatString, term.Name));
+            writer.AddAttribute(HtmlTextWriterAttribute.Href, string.Format(CultureInfo.InvariantCulture, this.NavigateUrlFormatString, term.Name));
             writer.AddAttribute(HtmlTextWriterAttribute.Title, term.Name);
             writer.AddAttribute(HtmlTextWriterAttribute.Rel, "tag");
             writer.RenderBeginTag(HtmlTextWriterTag.A);

@@ -2,6 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+using System.Diagnostics.CodeAnalysis;
+
+[assembly: SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Module", Scope = "namespace", Target = "Dnn.PersonaBar.Prompt.Components.Commands.Module", Justification = "Breaking change")]
+
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
     using System.Collections.Generic;

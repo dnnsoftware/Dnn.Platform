@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -41,9 +42,8 @@ namespace Dnn.PersonaBar.Library.Controllers
             Requires.NotNullOrEmpty("resourceFile", resourceFile);
             Requires.NotNullOrEmpty("culture", culture);
 
-            var cacheKey = string.Format(localization.ResxDataCacheKey, culture, resourceFile);
-            var localizedDict = DataCache.GetCache(cacheKey) as Dictionary<string, string>;
-            if (localizedDict != null)
+            var cacheKey = string.Format(CultureInfo.CurrentCulture, localization.ResxDataCacheKey, culture, resourceFile);
+            if (DataCache.GetCache(cacheKey) is Dictionary<string, string> localizedDict)
             {
                 return localizedDict;
             }
@@ -125,42 +125,43 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         private static IEnumerable<KeyValuePair<string, string>> GetLocalizationValues(string fullPath, string culture)
         {
+            var document = new XmlDocument { XmlResolver = null };
             using (var stream = new FileStream(System.Web.HttpContext.Current.Server.MapPath(fullPath), FileMode.Open, FileAccess.Read))
+            using (var xmlReader = XmlReader.Create(stream, new XmlReaderSettings { XmlResolver = null, }))
             {
-                var document = new XmlDocument { XmlResolver = null };
-                document.Load(stream);
+                document.Load(xmlReader);
+            }
 
-                // ReSharper disable once AssignNullToNotNullAttribute
-                var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
+            // ReSharper disable once AssignNullToNotNullAttribute
+            var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
 
-                AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
+            AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
 
-                // ReSharper disable once AssignNullToNotNullAttribute
-                foreach (XPathNavigator navigator in document.CreateNavigator().Select("/root/data"))
+            // ReSharper disable once AssignNullToNotNullAttribute
+            foreach (XPathNavigator navigator in document.CreateNavigator().Select("/root/data"))
+            {
+                if (navigator.NodeType == XPathNodeType.Comment)
                 {
-                    if (navigator.NodeType == XPathNodeType.Comment)
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    var name = GetNameAttribute(navigator);
+                var name = GetNameAttribute(navigator);
 
-                    const string textPostFix = ".Text";
-                    if (name.EndsWith(textPostFix))
-                    {
-                        name = name.Substring(0, name.Length - textPostFix.Length);
-                    }
+                const string textPostFix = ".Text";
+                if (name.EndsWith(textPostFix, StringComparison.Ordinal))
+                {
+                    name = name.Substring(0, name.Length - textPostFix.Length);
+                }
 
-                    if (string.IsNullOrEmpty(name))
-                    {
-                        continue;
-                    }
+                if (string.IsNullOrEmpty(name))
+                {
+                    continue;
+                }
 
-                    var valueNode = navigator.SelectSingleNode("value");
-                    if (valueNode != null)
-                    {
-                        yield return new KeyValuePair<string, string>(name, valueNode.Value);
-                    }
+                var valueNode = navigator.SelectSingleNode("value");
+                if (valueNode != null)
+                {
+                    yield return new KeyValuePair<string, string>(name, valueNode.Value);
                 }
             }
         }
@@ -169,7 +170,7 @@ namespace Dnn.PersonaBar.Library.Controllers
         {
             Requires.NotNullOrEmpty("culture", culture);
 
-            var cacheKey = string.Format(localization.ResxModifiedDateCacheKey, culture);
+            var cacheKey = string.Format(CultureInfo.CurrentCulture, localization.ResxModifiedDateCacheKey, culture);
             var cachedData = DataCache.GetCache(cacheKey);
             if (cachedData is DateTime)
             {
@@ -192,7 +193,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         private static DateTime GetLastModifiedTimeInternal(string resourceFile, string culture)
         {
-            var cultureSpecificFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile.Replace(".resx", string.Empty) + "." + culture + ".resx");
+            var cultureSpecificFile = System.Web.HttpContext.Current.Server.MapPath($"{resourceFile.Replace(".resx", string.Empty)}.{culture}.resx");
             var lastModifiedDate = DateTime.MinValue;
 
             if (File.Exists(cultureSpecificFile))
