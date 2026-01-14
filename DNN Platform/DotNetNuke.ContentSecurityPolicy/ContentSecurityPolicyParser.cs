@@ -191,7 +191,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             if (!CspDirectiveNameMapper.TryGetDirectiveType(directiveName, out var directiveType))
             {
                 // Unknown directive - ignore for now
-                throw new ($"Unknown directive: {directiveName}");
+                throw new Exception($"Unknown directive: {directiveName}");
             }
 
             this.ApplyDirectiveToPolicy(directiveType, sources);
@@ -295,7 +295,7 @@ namespace DotNetNuke.ContentSecurityPolicy
                 CspDirectiveType.FrameAncestors => this.policy.FrameAncestors,
                 CspDirectiveType.FormAction => this.policy.FormAction,
                 CspDirectiveType.BaseUri => this.policy.BaseUriSource,
-                _ => null
+                _ => null,
             };
         }
     }

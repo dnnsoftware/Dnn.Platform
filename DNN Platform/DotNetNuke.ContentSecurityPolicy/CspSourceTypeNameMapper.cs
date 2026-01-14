@@ -29,7 +29,7 @@ namespace DotNetNuke.ContentSecurityPolicy
                 CspSourceType.Hash => "hash",
                 CspSourceType.None => "'none'",
                 CspSourceType.StrictDynamic => "'strict-dynamic'",
-                _ => throw new ArgumentException("Unknown source type")
+                _ => throw new ArgumentException("Unknown source type"),
             };
         }
 
@@ -53,7 +53,7 @@ namespace DotNetNuke.ContentSecurityPolicy
                 "'unsafe-eval'" => CspSourceType.Eval,
                 "'none'" => CspSourceType.None,
                 "'strict-dynamic'" => CspSourceType.StrictDynamic,
-                _ => throw new ArgumentException($"Unknown source name: {sourceName}")
+                _ => throw new ArgumentException($"Unknown source name: {sourceName}"),
             };
         }
 

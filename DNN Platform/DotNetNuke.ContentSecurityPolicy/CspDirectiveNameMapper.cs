@@ -37,7 +37,7 @@ namespace DotNetNuke.ContentSecurityPolicy
                 CspDirectiveType.ReportUri => "report-uri",
                 CspDirectiveType.ReportTo => "report-to",
                 CspDirectiveType.UpgradeInsecureRequests => "upgrade-insecure-requests",
-                _ => throw new ArgumentException("Unknown directive type")
+                _ => throw new ArgumentException("Unknown directive type"),
             };
         }
 
@@ -73,7 +73,7 @@ namespace DotNetNuke.ContentSecurityPolicy
                 "report-uri" => CspDirectiveType.ReportUri,
                 "report-to" => CspDirectiveType.ReportTo,
                 "upgrade-insecure-requests" => CspDirectiveType.UpgradeInsecureRequests,
-                _ => throw new ArgumentException($"Unknown directive name: {directiveName}")
+                _ => throw new ArgumentException($"Unknown directive name: {directiveName}"),
             };
         }
 
