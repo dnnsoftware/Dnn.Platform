@@ -18,6 +18,8 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// </summary>
         private static readonly Regex MimeTypeRegex = new Regex(@"^[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_.+]*/[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_.+]*$", RegexOptions.Compiled);
 
+        private static readonly char[] SpaceSeparator = new[] { ' ' };
+
         private string directiveValue;
 
         private bool checkSyntax;
@@ -49,7 +51,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             {
                 if (this.checkSyntax)
                 {
-                    this.ValidateDirectiveValue(this.DirectiveType, value);
+                    ValidateDirectiveValue(this.DirectiveType, value);
                 }
 
                 this.directiveValue = value;
@@ -76,32 +78,16 @@ namespace DotNetNuke.ContentSecurityPolicy
         }
 
         /// <summary>
-        /// Validates directive value based on directive type.
-        /// </summary>
-        private void ValidateDirectiveValue(CspDirectiveType type, string value)
-        {
-            switch (type)
-            {
-                case CspDirectiveType.PluginTypes:
-                    this.ValidatePluginTypes(value);
-                    break;
-                case CspDirectiveType.SandboxDirective:
-                    this.ValidateSandboxDirective(value);
-                    break;
-            }
-        }
-
-        /// <summary>
         /// Validates plugin types (MIME types).
         /// </summary>
-        private void ValidatePluginTypes(string value)
+        private static void ValidatePluginTypes(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
                 throw new ArgumentException("Plugin types cannot be empty");
             }
 
-            var types = value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var types = value.Split(SpaceSeparator, StringSplitOptions.RemoveEmptyEntries);
 
             if (types.Any(t => !MimeTypeRegex.IsMatch(t)))
             {
@@ -112,7 +98,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <summary>
         /// Validates sandbox directive values.
         /// </summary>
-        private void ValidateSandboxDirective(string value)
+        private static void ValidateSandboxDirective(string value)
         {
             var validSandboxValues = new string[]
             {
@@ -129,11 +115,27 @@ namespace DotNetNuke.ContentSecurityPolicy
                 "allow-top-navigation-by-user-activation",
             };
 
-            var values = value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var values = value.Split(SpaceSeparator, StringSplitOptions.RemoveEmptyEntries);
 
             if (values.Any(v => !validSandboxValues.Contains(v)))
             {
                 throw new ArgumentException($"Invalid sandbox directive value: {value}");
+            }
+        }
+
+        /// <summary>
+        /// Validates directive value based on directive type.
+        /// </summary>
+        private static void ValidateDirectiveValue(CspDirectiveType type, string value)
+        {
+            switch (type)
+            {
+                case CspDirectiveType.PluginTypes:
+                    ValidatePluginTypes(value);
+                    break;
+                case CspDirectiveType.SandboxDirective:
+                    ValidateSandboxDirective(value);
+                    break;
             }
         }
     }

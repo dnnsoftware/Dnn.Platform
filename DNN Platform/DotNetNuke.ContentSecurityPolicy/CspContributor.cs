@@ -60,7 +60,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <returns>The directive string.</returns>
         public string GenerateDirective()
         {
-            if (!this.Sources.Any())
+            if (this.Sources.Count == 0)
             {
                 return string.Empty;
             }

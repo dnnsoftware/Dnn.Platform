@@ -14,6 +14,9 @@ namespace DotNetNuke.ContentSecurityPolicy
     /// </summary>
     public class ContentSecurityPolicyParser
     {
+        private static readonly char[] CommaSeparator = new[] { ',' };
+        private static readonly char[] SpaceSeparator = new[] { ' ' };
+        private static readonly char[] EqualSeparator = new[] { '=' };
         private readonly IContentSecurityPolicy policy;
 
         /// <summary>
@@ -76,7 +79,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             }
 
             // Split the header into individual directives
-            var directives = cspHeader.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            var directives = cspHeader.Split(CommaSeparator, StringSplitOptions.RemoveEmptyEntries)
                            .Select(d => d.Trim())
                            .Where(d => !string.IsNullOrEmpty(d));
 
@@ -92,7 +95,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         private static IEnumerable<string> SplitDirectives(string cspHeader)
         {
             // CSP directives are separated by semicolons
-            return cspHeader.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+            return cspHeader.Split(CommaSeparator, StringSplitOptions.RemoveEmptyEntries)
                            .Select(d => d.Trim())
                            .Where(d => !string.IsNullOrEmpty(d));
         }
@@ -178,7 +181,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// </summary>
         private void ParseDirective(string directive)
         {
-            var parts = directive.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = directive.Split(SpaceSeparator, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length == 0)
             {
                 return;
@@ -191,7 +194,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             if (!CspDirectiveNameMapper.TryGetDirectiveType(directiveName, out var directiveType))
             {
                 // Unknown directive - ignore for now
-                throw new Exception($"Unknown directive: {directiveName}");
+                throw new ArgumentException($"Unknown directive: {directiveName}");
             }
 
             this.ApplyDirectiveToPolicy(directiveType, sources);
@@ -209,7 +212,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             }
 
             // Split directive into name=value pairs
-            var parts = directive.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = directive.Split(EqualSeparator, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 2)
             {
                 throw new ArgumentException("Invalid reporting endpoint format. Expected format: name=\"value\"");

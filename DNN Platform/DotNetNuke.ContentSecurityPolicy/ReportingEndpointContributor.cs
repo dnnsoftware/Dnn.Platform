@@ -71,7 +71,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <returns>The directive string.</returns>
         public override string GenerateDirective()
         {
-            if (!this.ReportingEndpoints.Any())
+            if (this.ReportingEndpoints.Count == 0)
             {
                 return string.Empty;
             }
@@ -80,23 +80,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             return $"{string.Join(" ", endpoints)}";
         }
 
-        /// <summary>
-        /// Validates reporting endpoint.
-        /// </summary>
-        private void ValidateReportingEndpoint(string value)
-        {
-            switch (this.DirectiveType)
-            {
-                case CspDirectiveType.ReportUri:
-                    this.ValidateReportUri(value);
-                    break;
-                case CspDirectiveType.ReportTo:
-                    this.ValidateReportTo(value);
-                    break;
-            }
-        }
-
-        private void ValidateReportTo(string value)
+        private static void ValidateReportTo(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
@@ -104,7 +88,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             }
         }
 
-        private void ValidateReportUri(string endpoint)
+        private static void ValidateReportUri(string endpoint)
         {
             if (string.IsNullOrWhiteSpace(endpoint))
             {
@@ -115,6 +99,22 @@ namespace DotNetNuke.ContentSecurityPolicy
             if (!Uri.TryCreate(endpoint, UriKind.Absolute, out Uri uriResult))
             {
                 throw new ArgumentException($"Invalid reporting endpoint: {endpoint}");
+            }
+        }
+
+        /// <summary>
+        /// Validates reporting endpoint.
+        /// </summary>
+        private void ValidateReportingEndpoint(string value)
+        {
+            switch (this.DirectiveType)
+            {
+                case CspDirectiveType.ReportUri:
+                    ValidateReportUri(value);
+                    break;
+                case CspDirectiveType.ReportTo:
+                    ValidateReportTo(value);
+                    break;
             }
         }
     }

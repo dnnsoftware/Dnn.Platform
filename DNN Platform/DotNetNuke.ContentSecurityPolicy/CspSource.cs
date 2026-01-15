@@ -27,7 +27,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         public CspSource(CspSourceType type, string value = null, bool checkSyntax = false)
         {
             this.Type = type;
-            this.Value = this.ValidateSource(type, value, checkSyntax);
+            this.Value = ValidateSource(type, value, checkSyntax);
         }
 
         /// <summary>
@@ -49,18 +49,18 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <summary>
         /// Validates the source based on its type.
         /// </summary>
-        private string ValidateSource(CspSourceType type, string value, bool checkSyntax)
+        private static string ValidateSource(CspSourceType type, string value, bool checkSyntax)
         {
             switch (type)
             {
                 case CspSourceType.Host:
-                    return this.ValidateHostSource(value, checkSyntax);
+                    return ValidateHostSource(value, checkSyntax);
                 case CspSourceType.Scheme:
-                    return this.ValidateSchemeSource(value, checkSyntax);
+                    return ValidateSchemeSource(value, checkSyntax);
                 case CspSourceType.Nonce:
-                    return this.ValidateNonceSource(value);
+                    return ValidateNonceSource(value);
                 case CspSourceType.Hash:
-                    return this.ValidateHashSource(value, checkSyntax);
+                    return ValidateHashSource(value, checkSyntax);
                 case CspSourceType.Self:
                     return "'self'";
                 case CspSourceType.Inline:
@@ -78,7 +78,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <summary>
         /// Validates host source (domain or IP).
         /// </summary>
-        private string ValidateHostSource(string value, bool checkSyntax)
+        private static string ValidateHostSource(string value, bool checkSyntax)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
@@ -97,7 +97,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <summary>
         /// Validates scheme source (protocol).
         /// </summary>
-        private string ValidateSchemeSource(string value, bool checkSyntax)
+        private static string ValidateSchemeSource(string value, bool checkSyntax)
         {
             var validSchemes = new string[] { "http:", "https:", "data:", "blob:", "filesystem:", "wss:", "ws:" };
             if (!validSchemes.Contains(value))
@@ -111,7 +111,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <summary>
         /// Validates nonce source.
         /// </summary>
-        private string ValidateNonceSource(string value)
+        private static string ValidateNonceSource(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
@@ -126,7 +126,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <summary>
         /// Validates hash source.
         /// </summary>
-        private string ValidateHashSource(string value, bool checkSyntax)
+        private static string ValidateHashSource(string value, bool checkSyntax)
         {
             var hashPrefixes = new string[] { "sha256-", "sha384-", "sha512-" };
 
@@ -137,7 +137,7 @@ namespace DotNetNuke.ContentSecurityPolicy
 
             // Check if the value starts with a valid hash prefix
             // Allow any string after the prefix for flexibility in parsing scenarios
-            bool hasValidPrefix = hashPrefixes.Any(prefix => value.StartsWith(prefix));
+            bool hasValidPrefix = hashPrefixes.Any(value.StartsWith);
 
             if (!hasValidPrefix)
             {

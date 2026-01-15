@@ -90,7 +90,7 @@ namespace DotNetNuke.ContentSecurityPolicy
                 return false;
             }
 
-            return source.StartsWith("'") && source.EndsWith("'");
+            return source.StartsWith("'", StringComparison.OrdinalIgnoreCase) && source.EndsWith("'", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace DotNetNuke.ContentSecurityPolicy
                 return false;
             }
 
-            return source.StartsWith("'nonce-") && source.EndsWith("'");
+            return source.StartsWith("'nonce-", StringComparison.OrdinalIgnoreCase) && source.EndsWith("'", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace DotNetNuke.ContentSecurityPolicy
                 return false;
             }
 
-            return source.StartsWith("'") && source.EndsWith("'") &&
+            return source.StartsWith("'", StringComparison.OrdinalIgnoreCase) && source.EndsWith("'", StringComparison.OrdinalIgnoreCase) &&
                    (source.Contains("sha256-") || source.Contains("sha384-") || source.Contains("sha512-"));
         }
     }
