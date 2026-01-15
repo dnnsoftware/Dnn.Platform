@@ -7,21 +7,19 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
     using System;
     using System.Linq;
 
-    using FluentAssertions;
-
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     /// <summary>
     /// Integration tests that test the complete parsing workflow with real-world examples.
     /// Based on the CspParsingExample class examples.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class IntegrationTests
     {
         /// <summary>
         /// Tests the complete example from CspParsingExample.ParseExample().
         /// </summary>
-        [TestMethod]
+        [Test]
         public void ParseExample_CompleteWorkflow_ShouldWorkAsExpected()
         {
             // Arrange - Example CSP header string from CspParsingExample
@@ -33,23 +31,23 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
             parser.Parse(cspHeader);
 
             // Assert - Access parsed directives
-            policy.Should().NotBeNull();
-            policy.GeneratePolicy().Should().NotBeNullOrEmpty();
-            policy.Nonce.Should().NotBeNullOrEmpty();
+            Assert.That(policy, Is.Not.Null);
+            Assert.That(policy.GeneratePolicy(), Is.Not.Empty);
+            Assert.That(policy.Nonce, Is.Not.Empty);
 
             // Modify the parsed policy as shown in the example
             policy.ScriptSource.AddHost("newcdn.example.com");
             policy.StyleSource.AddHash("sha256-abc123def456");
 
             var modifiedPolicy = policy.GeneratePolicy();
-            modifiedPolicy.Should().Contain("newcdn.example.com");
-            modifiedPolicy.Should().Contain("'sha256-abc123def456'");
+            Assert.That(modifiedPolicy, Does.Contain("newcdn.example.com"));
+            Assert.That(modifiedPolicy, Does.Contain("'sha256-abc123def456'"));
         }
 
         /// <summary>
         /// Tests all the various formats from CspParsingExample.ParseVariousFormats().
         /// </summary>
-        [TestMethod]
+        [Test]
         public void ParseVariousFormats_AllExamples_ShouldParseSuccessfully()
         {
             // Arrange - All examples from CspParsingExample.ParseVariousFormats()
@@ -86,16 +84,16 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
                 var policy = new ContentSecurityPolicy();
                 var parser = new ContentSecurityPolicyParser(policy);
                 var result = parser.TryParse(example);
-                result.Should().BeTrue($"Failed to parse: {example}");
-                policy.Should().NotBeNull($"Policy should not be null for: {example}");
-                policy.GeneratePolicy().Should().NotBeNullOrEmpty($"Generated policy should not be empty for: {example}");
+                Assert.That(result, Is.True, $"Failed to parse: {example}");
+                Assert.That(policy, Is.Not.Null, $"Policy should not be null for: {example}");
+                Assert.That(policy.GeneratePolicy(), Is.Not.Empty, $"Generated policy should not be empty for: {example}");
             }
         }
 
         /// <summary>
         /// Tests parsing and regenerating the real-world complex policy to ensure data integrity.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void ParseComplexRealWorldPolicy_ShouldPreserveAllDirectives()
         {
             // Arrange - Real-world complex policy from the example
@@ -108,32 +106,32 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
             var regeneratedPolicy = policy.GeneratePolicy();
 
             // Assert - Check that all key elements are preserved
-            regeneratedPolicy.Should().Contain("default-src 'self'");
-            regeneratedPolicy.Should().Contain("img-src");
-            regeneratedPolicy.Should().Contain("https://front.satrabel.be");
-            regeneratedPolicy.Should().Contain("https://www.googletagmanager.com");
-            regeneratedPolicy.Should().Contain("https://region1.google-analytics.com");
-            regeneratedPolicy.Should().Contain("font-src");
-            regeneratedPolicy.Should().Contain("https://fonts.gstatic.com");
-            regeneratedPolicy.Should().Contain("style-src");
-            regeneratedPolicy.Should().Contain("https://fonts.googleapis.com");
-            regeneratedPolicy.Should().Contain("frame-ancestors 'self'");
-            regeneratedPolicy.Should().Contain("frame-src 'self'");
-            regeneratedPolicy.Should().Contain("form-action 'self'");
-            regeneratedPolicy.Should().Contain("object-src 'none'");
-            regeneratedPolicy.Should().Contain("base-uri 'self'");
-            regeneratedPolicy.Should().Contain("script-src");
-            regeneratedPolicy.Should().Contain("'nonce-hq9CE6VltPZiiySID0F9914GvPObOnIAN3Qs/0R+AmQ='");
-            regeneratedPolicy.Should().Contain("'strict-dynamic'");
-            regeneratedPolicy.Should().Contain("connect-src");
-            regeneratedPolicy.Should().Contain("https://www.google-analytics.com");
-            regeneratedPolicy.Should().Contain("upgrade-insecure-requests");
+            Assert.That(regeneratedPolicy, Does.Contain("default-src 'self'"));
+            Assert.That(regeneratedPolicy, Does.Contain("img-src"));
+            Assert.That(regeneratedPolicy, Does.Contain("https://front.satrabel.be"));
+            Assert.That(regeneratedPolicy, Does.Contain("https://www.googletagmanager.com"));
+            Assert.That(regeneratedPolicy, Does.Contain("https://region1.google-analytics.com"));
+            Assert.That(regeneratedPolicy, Does.Contain("font-src"));
+            Assert.That(regeneratedPolicy, Does.Contain("https://fonts.gstatic.com"));
+            Assert.That(regeneratedPolicy, Does.Contain("style-src"));
+            Assert.That(regeneratedPolicy, Does.Contain("https://fonts.googleapis.com"));
+            Assert.That(regeneratedPolicy, Does.Contain("frame-ancestors 'self'"));
+            Assert.That(regeneratedPolicy, Does.Contain("frame-src 'self'"));
+            Assert.That(regeneratedPolicy, Does.Contain("form-action 'self'"));
+            Assert.That(regeneratedPolicy, Does.Contain("object-src 'none'"));
+            Assert.That(regeneratedPolicy, Does.Contain("base-uri 'self'"));
+            Assert.That(regeneratedPolicy, Does.Contain("script-src"));
+            Assert.That(regeneratedPolicy, Does.Contain("'nonce-hq9CE6VltPZiiySID0F9914GvPObOnIAN3Qs/0R+AmQ='"));
+            Assert.That(regeneratedPolicy, Does.Contain("'strict-dynamic'"));
+            Assert.That(regeneratedPolicy, Does.Contain("connect-src"));
+            Assert.That(regeneratedPolicy, Does.Contain("https://www.google-analytics.com"));
+            Assert.That(regeneratedPolicy, Does.Contain("upgrade-insecure-requests"));
         }
 
         /// <summary>
         /// Tests parsing and then extending a policy with additional sources.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void ParseAndExtendPolicy_ShouldWorkCorrectly()
         {
             // Arrange
@@ -143,7 +141,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
 
             // Act - Parse and extend
             parser.Parse(originalPolicy);
-            
+
             // Add new sources
             policy.ScriptSource.AddHost("cdn.example.com");
             policy.ScriptSource.AddNonce("newNonce123");
@@ -155,21 +153,21 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
             var extendedPolicy = policy.GeneratePolicy();
 
             // Assert
-            extendedPolicy.Should().Contain("default-src 'self'");
-            extendedPolicy.Should().Contain("script-src");
-            extendedPolicy.Should().Contain("'self'");
-            extendedPolicy.Should().Contain("cdn.example.com");
-            extendedPolicy.Should().Contain("'nonce-newNonce123'");
-            extendedPolicy.Should().Contain("style-src");
-            extendedPolicy.Should().Contain("fonts.googleapis.com");
-            extendedPolicy.Should().Contain("img-src");
-            extendedPolicy.Should().Contain("data:");
+            Assert.That(extendedPolicy, Does.Contain("default-src 'self'"));
+            Assert.That(extendedPolicy, Does.Contain("script-src"));
+            Assert.That(extendedPolicy, Does.Contain("'self'"));
+            Assert.That(extendedPolicy, Does.Contain("cdn.example.com"));
+            Assert.That(extendedPolicy, Does.Contain("'nonce-newNonce123'"));
+            Assert.That(extendedPolicy, Does.Contain("style-src"));
+            Assert.That(extendedPolicy, Does.Contain("fonts.googleapis.com"));
+            Assert.That(extendedPolicy, Does.Contain("img-src"));
+            Assert.That(extendedPolicy, Does.Contain("data:"));
         }
 
         /// <summary>
         /// Tests parsing policies with various source combinations.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void ParsePoliciesWithVariousSourceCombinations_ShouldHandleAllCorrectly()
         {
             // Arrange - Various source combinations
@@ -193,7 +191,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
 
                 foreach (var expectedSource in expectedSources)
                 {
-                    generatedPolicy.Should().Contain(expectedSource, $"Policy '{policyString}' should contain '{expectedSource}'");
+                    Assert.That(generatedPolicy, Does.Contain(expectedSource), $"Policy '{policyString}' should contain '{expectedSource}'");
                 }
             }
         }
@@ -201,7 +199,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         /// <summary>
         /// Tests that the parser handles edge cases gracefully.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void ParseEdgeCases_ShouldHandleGracefully()
         {
             // Test cases that should parse successfully even with unusual formatting
@@ -209,13 +207,13 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
             {
                 // Extra spaces
                 "default-src  'self'   ;   script-src   'self'  ",
-                
+
                 // Single directive
                 "default-src 'self'",
-                
+
                 // Empty directive values (should be handled gracefully)
                 "default-src 'self'; ; script-src 'self'",
-                
+
                 // Mixed case (should work due to case-insensitive parsing)
                 "DEFAULT-SRC 'self'; Script-Src 'self'",
             };
@@ -228,8 +226,8 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
                 var result = parser.TryParse(edgeCase);
                 if (result)
                 {
-                    policy.Should().NotBeNull();
-                    policy.GeneratePolicy().Should().NotBeNullOrEmpty();
+                    Assert.That(policy, Is.Not.Null);
+                    Assert.That(policy.GeneratePolicy(), Is.Not.Empty);
                 }
             }
         }
@@ -237,11 +235,11 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         /// <summary>
         /// Tests performance with a large, complex policy.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void ParseLargeComplexPolicy_ShouldPerformWell()
         {
             // Arrange - Large policy with many directives and sources
-            var largePolicy = string.Join("; ", 
+            var largePolicy = string.Join("; ",
                 "default-src 'self'",
                 "script-src 'self' 'unsafe-inline' 'nonce-abc123' https://cdn1.example.com https://cdn2.example.com https://cdn3.example.com 'strict-dynamic'",
                 "style-src 'self' 'unsafe-inline' 'sha256-hash1' 'sha256-hash2' https://fonts.googleapis.com https://cdn.example.com",
@@ -254,8 +252,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
                 "frame-ancestors 'self' https://parent.example.com",
                 "form-action 'self' https://secure.example.com",
                 "base-uri 'self'",
-                "upgrade-insecure-requests"
-            );
+                "upgrade-insecure-requests");
             var policy = new ContentSecurityPolicy();
             var parser = new ContentSecurityPolicyParser(policy);
 
@@ -267,10 +264,10 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
             var generatedPolicy = policy.GeneratePolicy();
 
             // Assert - Should complete quickly (less than 1 second)
-            parseTime.Should().BeLessThan(TimeSpan.FromSeconds(1));
-            generatedPolicy.Should().NotBeNullOrEmpty();
-            generatedPolicy.Should().Contain("default-src 'self'");
-            generatedPolicy.Should().Contain("upgrade-insecure-requests");
+            Assert.That(parseTime, Is.LessThan(TimeSpan.FromSeconds(1)));
+            Assert.That(generatedPolicy, Is.Not.Empty);
+            Assert.That(generatedPolicy, Does.Contain("default-src 'self'"));
+            Assert.That(generatedPolicy, Does.Contain("upgrade-insecure-requests"));
         }
     }
 }

@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -97,7 +97,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
             Console.WriteLine("======================");
 
             var realWorldPolicy = "default-src 'self'; img-src 'self' https://front.satrabel.be https://www.googletagmanager.com https://region1.google-analytics.com; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com https://www.googletagmanager.com; frame-ancestors 'self'; frame-src 'self'; form-action 'self'; object-src 'none'; base-uri 'self'; script-src 'nonce-hq9CE6VltPZiiySID0F9914GvPObOnIAN3Qs/0R+AmQ=' 'strict-dynamic'; report-to csp-endpoint; report-uri https://dnncore.satrabel.be/DesktopModules/Csp/Report; connect-src https://www.googletagmanager.com https://region1.google-analytics.com https://www.google-analytics.com; upgrade-insecure-requests";
-            
+
             Console.WriteLine("Original real-world CSP (truncated for display):");
             Console.WriteLine($"{realWorldPolicy.Substring(0, Math.Min(100, realWorldPolicy.Length))}...");
 
@@ -138,11 +138,11 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
             foreach (var (description, cspHeader, shouldSucceed) in testCases)
             {
                 Console.WriteLine($"Testing: {description}");
-                
+
                 var policy = new ContentSecurityPolicy();
                 var parser = new ContentSecurityPolicyParser(policy);
                 var result = parser.TryParse(cspHeader);
-                
+
                 if (result == shouldSucceed)
                 {
                     Console.WriteLine($"✅ Expected result: {(shouldSucceed ? "Success" : "Failure")}");
@@ -178,22 +178,21 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
                 "frame-ancestors 'self' https://parent.example.com",
                 "form-action 'self' https://secure.example.com",
                 "base-uri 'self'",
-                "upgrade-insecure-requests"
-            );
+                "upgrade-insecure-requests");
 
             Console.WriteLine($"Testing performance with policy containing {largePolicy.Split(';').Length} directives");
 
             var stopwatch = Stopwatch.StartNew();
-            
+
             try
             {
                 var policy = new ContentSecurityPolicy();
                 var parser = new ContentSecurityPolicyParser(policy);
                 parser.Parse(largePolicy);
                 var regenerated = policy.GeneratePolicy();
-                
+
                 stopwatch.Stop();
-                
+
                 Console.WriteLine($"Parse time: {stopwatch.ElapsedMilliseconds}ms");
                 Console.WriteLine($"Input length: {largePolicy.Length} characters");
                 Console.WriteLine($"Output length: {regenerated.Length} characters");
@@ -229,7 +228,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
             foreach (var (description, example) in sourceExamples)
             {
                 Console.WriteLine($"Testing: {description}");
-                
+
                 try
                 {
                     var policy = new ContentSecurityPolicy();
@@ -244,7 +243,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
                 {
                     Console.WriteLine($"  ❌ Error: {ex.Message}");
                 }
-                
+
                 Console.WriteLine();
             }
         }
