@@ -4,6 +4,7 @@
 namespace DotNetNuke.Build.Tasks
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
@@ -49,7 +50,7 @@ namespace DotNetNuke.Build.Tasks
                     }
                 }
 
-                sb.AppendLine($"| {fileName} | {hash}   |");
+                sb.AppendLine(CultureInfo.InvariantCulture, $"| {fileName} | {hash}   |");
             }
 
             sb.AppendLine();

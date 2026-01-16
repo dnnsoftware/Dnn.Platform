@@ -6,6 +6,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
@@ -368,7 +369,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             // Arrange
             var portalId = 1;
             var relationshipController = this.CreateRelationshipController();
-            var cacheKey = CachingProvider.GetCacheKey(string.Format(DataCache.RelationshipByPortalIDCacheKey, portalId));
+            var cacheKey = CachingProvider.GetCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.RelationshipByPortalIDCacheKey, portalId));
             var relationship = new Relationship()
             {
                 RelationshipId = Constants.SOCIAL_FollowerRelationshipID,

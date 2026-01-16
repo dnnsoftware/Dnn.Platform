@@ -768,8 +768,8 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 currentCount++;
 
                 if (value.Equals("true", StringComparison.InvariantCultureIgnoreCase)
-                    || value.Equals("false", StringComparison.InvariantCultureIgnoreCase) || value.StartsWith("[")
-                    || value.StartsWith("{") || Utility.IsNumeric(value))
+                    || value.Equals("false", StringComparison.InvariantCultureIgnoreCase) || value.StartsWith("[", StringComparison.Ordinal)
+                    || value.StartsWith("{", StringComparison.Ordinal) || Utility.IsNumeric(value))
                 {
                     if (value.Equals("True"))
                     {
@@ -809,11 +809,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 return formattedUrl;
             }
 
-            if (inputUrl.StartsWith("http://") || inputUrl.StartsWith("https://") || inputUrl.StartsWith("//"))
+            if (inputUrl.StartsWith("http://", StringComparison.Ordinal) || inputUrl.StartsWith("https://", StringComparison.Ordinal) || inputUrl.StartsWith("//", StringComparison.Ordinal))
             {
                 formattedUrl = inputUrl;
             }
-            else if (inputUrl.StartsWith("FileID="))
+            else if (inputUrl.StartsWith("FileID=", StringComparison.Ordinal))
             {
                 var fileId = int.Parse(inputUrl.Substring(7));
 

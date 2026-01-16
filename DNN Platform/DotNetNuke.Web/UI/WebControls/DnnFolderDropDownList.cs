@@ -17,6 +17,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Web.Common;
     using DotNetNuke.Web.UI.WebControls.Extensions;
 
+    /// <summary>A folder dropdown control.</summary>
     [ToolboxData("<{0}:DnnFolderDropDownList runat='server'></{0}:DnnFolderDropDownList>")]
     public class DnnFolderDropDownList : DnnDropDownList
     {
@@ -73,7 +74,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var parentFolder = FolderManager.Instance.GetFolder(selectedFolder.ParentID);
                 while (parentFolder != null)
                 {
-                    folderLevel = string.Format("{0},{1}", parentFolder.FolderID, folderLevel);
+                    folderLevel = $"{parentFolder.FolderID},{folderLevel}";
                     parentFolder = (parentFolder.ParentID < 0) ? null : FolderManager.Instance.GetFolder(parentFolder.ParentID);
                 }
 

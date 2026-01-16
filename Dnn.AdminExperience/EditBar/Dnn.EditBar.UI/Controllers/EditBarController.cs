@@ -123,6 +123,7 @@ namespace Dnn.EditBar.UI.Controllers
                 catch (Exception e)
                 {
                     Logger.ErrorFormat(
+                        CultureInfo.InvariantCulture,
                         "Unable to create {0} while getting all edit bar menu items. {1}",
                         type.FullName,
                         e.Message);
@@ -140,9 +141,7 @@ namespace Dnn.EditBar.UI.Controllers
         {
             var typeLocator = new TypeLocator();
             return typeLocator.GetAllMatchingTypes(
-                t => t != null &&
-                     t.IsClass &&
-                     !t.IsAbstract &&
+                t => t is { IsClass: true, IsAbstract: false, } &&
                      typeof(BaseMenuItem).IsAssignableFrom(t));
         }
     }

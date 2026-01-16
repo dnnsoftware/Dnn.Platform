@@ -10,25 +10,20 @@ namespace DotNetNuke.Web.Api
 
     using DotNetNuke.Entities.Modules;
 
-    public class SupportedModulesAttribute : AuthorizeAttributeBase
+    /// <summary>A web API authorization filter which requires the current module to be from particular desktop module.</summary>
+    public class SupportedModulesAttribute(params string[] supportedModules) : AuthorizeAttributeBase
     {
-        private readonly string[] supportedModules;
-
+        /// <summary>Initializes a new instance of the <see cref="SupportedModulesAttribute"/> class.</summary>
+        /// <param name="supportedModules">A comma-delimited list of desktop module names.</param>
         public SupportedModulesAttribute(string supportedModules)
+            : this(supportedModules.Split(','))
         {
-            this.supportedModules = supportedModules.Split(',');
-        }
-
-        public SupportedModulesAttribute(params string[] supportedModules)
-        {
-            this.supportedModules = supportedModules;
         }
 
         /// <inheritdoc/>
         public override bool IsAuthorized(AuthFilterContext context)
         {
             var module = this.FindModuleInfo(context.ActionContext.Request);
-
             if (module != null)
             {
                 return this.ModuleIsSupported(module);
@@ -37,6 +32,9 @@ namespace DotNetNuke.Web.Api
             return false;
         }
 
+        /// <summary>Gets the module associated with the <paramref name="request"/>.</summary>
+        /// <param name="request">The web API request.</param>
+        /// <returns>The <see cref="ModuleInfo"/> instance or <see langword="null"/>.</returns>
         protected virtual ModuleInfo FindModuleInfo(HttpRequestMessage request)
         {
             return request.FindModuleInfo();
@@ -50,7 +48,7 @@ namespace DotNetNuke.Web.Api
 
         private bool ModuleIsSupported(ModuleInfo module)
         {
-            return this.supportedModules.Contains(module.DesktopModule.ModuleName);
+            return supportedModules.Contains(module.DesktopModule.ModuleName);
         }
     }
 }

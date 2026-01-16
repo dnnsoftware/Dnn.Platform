@@ -69,7 +69,11 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             if (fileName.EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase))
             {
                 var configDoc = new XmlDocument { XmlResolver = null };
-                configDoc.LoadXml(fileContent);
+                using (var configReader = XmlReader.Create(new StringReader(fileContent), new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    configDoc.Load(configReader);
+                }
+
                 Config.Save(configDoc, fileName);
             }
             else
@@ -95,7 +99,11 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             if (fileName.EndsWith(WebConfig, StringComparison.InvariantCultureIgnoreCase))
             {
                 var configDoc = new XmlDocument { XmlResolver = null };
-                configDoc.LoadXml(fileContent);
+                using (var configReader = XmlReader.Create(new StringReader(fileContent), new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    configDoc.Load(configReader);
+                }
+
                 return ValidateSchema(configDoc, "Schemas/DotNetConfig.xsd");
             }
 
@@ -108,7 +116,11 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             if (IsValidXmlMergeDocument(fileContent))
             {
                 var doc = new XmlDocument { XmlResolver = null };
-                doc.LoadXml(fileContent);
+                using (var mergeReader = XmlReader.Create(new StringReader(fileContent), new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    doc.Load(mergeReader);
+                }
+
                 var app = DotNetNukeContext.Current.Application;
                 var merge = new DotNetNuke.Services.Installer.XmlMerge(doc, Globals.FormatVersion(app.Version), app.Description);
                 merge.UpdateConfigs();
@@ -129,10 +141,8 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
         {
             var xsd = LoadResource(schemaRelPath);
 
-            using (var reader = new StringReader(xsd))
-            {
-                return XmlSchema.Read(reader, (_, e) => { });
-            }
+            using var reader = new StringReader(xsd);
+            return XmlSchema.Read(XmlReader.Create(reader), (_, e) => { });
         }
 
         private static string LoadResource(string relativePath)

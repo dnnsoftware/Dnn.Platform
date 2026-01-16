@@ -67,7 +67,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                         {
                             string value = valueElement.Value;
 
-                            buffer = buffer.Replace(string.Format("[{0}]", name), value);
+                            buffer = buffer.Replace($"[{name}]", value);
                         }
                     }
                 }
@@ -75,7 +75,8 @@ namespace DotNetNuke.Entities.Portals.Templates
 
             this.TemplatePath = Path.GetDirectoryName(templateToLoad.TemplateFilePath);
             this.Template = new XmlDocument { XmlResolver = null };
-            this.Template.LoadXml(buffer.ToString());
+            using var templateReader = XmlReader.Create(new StringReader(buffer.ToString()), new XmlReaderSettings { XmlResolver = null, });
+            this.Template.Load(templateReader);
         }
 
         internal PortalTemplateImporter(string templatePath, string templateFile)
@@ -84,7 +85,8 @@ namespace DotNetNuke.Entities.Portals.Templates
 
             this.TemplatePath = templatePath;
             this.Template = new XmlDocument { XmlResolver = null };
-            this.Template.LoadXml(buffer.ToString());
+            using var templateReader = XmlReader.Create(new StringReader(buffer.ToString()), new XmlReaderSettings { XmlResolver = null, });
+            this.Template.Load(templateReader);
         }
 
         public string TemplatePath { get; set; }
@@ -225,12 +227,15 @@ namespace DotNetNuke.Entities.Portals.Templates
                         string path = Path.Combine(this.TemplatePath, "admin.template");
                         if (!File.Exists(path))
                         {
-                            // if the template is a merged copy of a localized templte the
+                            // if the template is a merged copy of a localized template the
                             // admin.template may be one director up
                             path = Path.Combine(this.TemplatePath, "..\admin.template");
                         }
 
-                        xmlAdmin.Load(path);
+                        using (var templateReader = XmlReader.Create(path, new XmlReaderSettings { XmlResolver = null, }))
+                        {
+                            xmlAdmin.Load(templateReader);
+                        }
 
                         XmlNode adminNode = xmlAdmin.SelectSingleNode("//portal/tabs");
                         foreach (XmlNode adminTabNode in adminNode.ChildNodes)
@@ -430,10 +435,10 @@ namespace DotNetNuke.Entities.Portals.Templates
                 switch (roleName)
                 {
                     case Globals.glbRoleAllUsersName:
-                        roleId = Convert.ToInt32(Globals.glbRoleAllUsers);
+                        roleId = Convert.ToInt32(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
                         break;
                     case Globals.glbRoleUnauthUserName:
-                        roleId = Convert.ToInt32(Globals.glbRoleUnauthUser);
+                        roleId = Convert.ToInt32(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
                         break;
                     default:
                         RoleInfo objRole = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
@@ -1063,15 +1068,15 @@ namespace DotNetNuke.Entities.Portals.Templates
                 if (!isNewPortal)
                 {
                     // running from wizard: try to find the tab by path
-                    string parenttabname = string.Empty;
+                    string parentTabName = string.Empty;
                     if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "parent")))
                     {
-                        parenttabname = XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "parent") + "/";
+                        parentTabName = XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "parent") + "/";
                     }
 
-                    if (hTabs[parenttabname + strName] != null)
+                    if (hTabs[parentTabName + strName] != null)
                     {
-                        tab = TabController.Instance.GetTab(Convert.ToInt32(hTabs[parenttabname + strName]), portalId, false);
+                        tab = TabController.Instance.GetTab(Convert.ToInt32(hTabs[parentTabName + strName], CultureInfo.InvariantCulture), portalId, false);
                     }
                 }
 
@@ -1147,7 +1152,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                     PortalController.GetActivePortalLanguage(portalId));
                 EventLogController.Instance.AddLog(
                     logType,
-                    tab.TabID.ToString(),
+                    tab.TabID.ToString(CultureInfo.InvariantCulture),
                     PortalSettings.Current,
                     UserController.Instance.GetCurrentUserInfo().UserID,
                     EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
@@ -1158,28 +1163,29 @@ namespace DotNetNuke.Entities.Portals.Templates
         {
             // used to control if modules are true modules or instances
             // will hold module ID from template / new module ID so new instances can reference right moduleid
-            // only first one from the template will be create as a true module,
+            // only first one from the template will be created as a true module,
             // others will be moduleinstances (tabmodules)
             Hashtable hModules = new Hashtable();
             Hashtable hTabs = new Hashtable();
 
-            // if running from wizard we need to pre populate htabs with existing tabs so ParseTab
+            // if running from wizard we need to pre-populate htabs with existing tabs so ParseTab
             // can find all existing ones
             if (!isNewPortal)
             {
                 Hashtable hTabNames = new Hashtable();
-                foreach (KeyValuePair<int, TabInfo> tabPair in TabController.Instance.GetTabsByPortal(portalId))
+                foreach (var tabPair in TabController.Instance.GetTabsByPortal(portalId))
                 {
                     TabInfo objTab = tabPair.Value;
                     if (!objTab.IsDeleted)
                     {
-                        var tabname = objTab.TabName;
+                        var tabName = objTab.TabName;
                         if (!Null.IsNull(objTab.ParentId))
                         {
-                            tabname = Convert.ToString(hTabNames[objTab.ParentId]) + "/" + objTab.TabName;
+                            tabName =
+                                $"{Convert.ToString(hTabNames[objTab.ParentId], CultureInfo.InvariantCulture)}/{objTab.TabName}";
                         }
 
-                        hTabNames.Add(objTab.TabID, tabname);
+                        hTabNames.Add(objTab.TabID, tabName);
                     }
                 }
 
@@ -1210,7 +1216,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 if (tabId > Null.NullInteger)
                 {
                     TabInfo objTab = TabController.Instance.GetTab(tabId, portalId, false);
-                    objTab.Url = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString).ToString();
+                    objTab.Url = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString).ToString(CultureInfo.InvariantCulture);
                     TabController.Instance.UpdateTab(objTab);
                 }
             }
@@ -1230,7 +1236,7 @@ namespace DotNetNuke.Entities.Portals.Templates
 
                     var fileName = Path.GetFileName(filePath);
 
-                    var folderPath = filePath.Substring(0, filePath.LastIndexOf(fileName));
+                    var folderPath = filePath.Substring(0, filePath.LastIndexOf(fileName, StringComparison.OrdinalIgnoreCase));
                     var folder = folderManager.GetFolder(portalId, folderPath);
 
                     var file = fileManager.GetFile(folder, fileName);
@@ -1323,7 +1329,7 @@ namespace DotNetNuke.Entities.Portals.Templates
 
         private static FolderMappingInfo GetFolderMappingFromStorageLocation(int portalId, XmlNode folderNode)
         {
-            var storageLocation = Convert.ToInt32(XmlUtils.GetNodeValue(folderNode, "storagelocation", "0"));
+            var storageLocation = Convert.ToInt32(XmlUtils.GetNodeValue(folderNode, "storagelocation", "0"), CultureInfo.InvariantCulture);
 
             switch (storageLocation)
             {
@@ -1355,7 +1361,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 privacyTabId,
                 adminTabId,
                 cultureCode);
-            EventLogController.Instance.AddLog("PortalId", portalId.ToString(), PortalSettings.Current, UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
+            EventLogController.Instance.AddLog("PortalId", portalId.ToString(CultureInfo.InvariantCulture), PortalSettings.Current, UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
             DataCache.ClearHostCache(true);
         }
 

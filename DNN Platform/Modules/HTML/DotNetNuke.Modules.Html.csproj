@@ -40,7 +40,6 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\</OutputPath>
     <DocumentationFile>bin\DotNetNuke.Modules.Html.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -53,7 +52,6 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
     <DocumentationFile>bin\DotNetNuke.Modules.Html.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -66,14 +64,12 @@
     <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <OutputPath>bin\</OutputPath>
-    <NoWarn>1591</NoWarn>
     <DocumentationFile>DotNetNuke.Modules.Html.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
@@ -288,12 +284,11 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+    <PackageReference Include="Microsoft.SourceLink.GitHub">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
-      <Version>1.2.0-beta.556</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

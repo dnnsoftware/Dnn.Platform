@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Installer.Dependencies
 {
     using System;
+    using System.Globalization;
     using System.Reflection;
     using System.Xml.XPath;
 
@@ -13,13 +14,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         private Version minVersion;
 
         /// <inheritdoc/>
-        public override string ErrorMessage
-        {
-            get
-            {
-                return string.Format(Util.INSTALL_Compatibility, this.minVersion);
-            }
-        }
+        public override string ErrorMessage => string.Format(CultureInfo.InvariantCulture, Util.INSTALL_Compatibility, this.minVersion);
 
         /// <inheritdoc/>
         public override bool IsValid

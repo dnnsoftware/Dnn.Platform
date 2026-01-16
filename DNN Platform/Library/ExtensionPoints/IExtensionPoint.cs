@@ -4,12 +4,16 @@
 
 namespace DotNetNuke.ExtensionPoints
 {
+    /// <summary>A contract specifying the ability to expose information about an extension point.</summary>
     public interface IExtensionPoint
     {
+        /// <summary>Gets the text.</summary>
         string Text { get; }
 
+        /// <summary>Gets the icon.</summary>
         string Icon { get; }
 
+        /// <summary>Gets the order.</summary>
         int Order { get; }
     }
 }

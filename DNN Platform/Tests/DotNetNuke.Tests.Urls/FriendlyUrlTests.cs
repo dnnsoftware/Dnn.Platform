@@ -400,7 +400,7 @@ public class FriendlyUrlTests : UrlTestBase
             .Replace("{vanityUrl}", vanityUrl)
             .Replace("{defaultPage}", _defaultPage);
 
-        if (!string.IsNullOrEmpty(parameters) && !parameters.StartsWith("&"))
+        if (!string.IsNullOrEmpty(parameters) && !parameters.StartsWith("&", StringComparison.Ordinal))
         {
             parameters = "&" + parameters;
         }

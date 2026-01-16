@@ -145,7 +145,11 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             var personaBarPath = Constants.PersonaBarRelativePath.Replace("~/", string.Empty);
             var dataPath = Path.Combine(this.appStatus.ApplicationMapPath, personaBarPath, "data/adminpages.resources");
             var xmlDocument = new XmlDocument { XmlResolver = null, };
-            xmlDocument.Load(dataPath);
+            using (var xmlReader = XmlReader.Create(dataPath, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                xmlDocument.Load(xmlReader);
+            }
+
             var pages = xmlDocument.SelectNodes($"//pages//{type}//name")?.Cast<XmlNode>().Select(n => n.InnerXml.Trim()).ToList();
             this.knownPages.Add(type, pages);
 

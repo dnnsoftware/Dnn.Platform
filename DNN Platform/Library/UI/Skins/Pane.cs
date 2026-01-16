@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.Skins
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -26,7 +27,7 @@ namespace DotNetNuke.UI.Skins
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>The Pane class represents a Pane within the Skin.</summary>
-    public class Pane
+    public class Pane : IDisposable
     {
         private const string CPaneOutline = "paneOutline";
         private HtmlGenericControl containerWrapperControl;
@@ -92,13 +93,13 @@ namespace DotNetNuke.UI.Skins
                 classFormatString += " DnnVersionableControl";
             }
 
-            this.containerWrapperControl.Attributes["class"] = string.Format(classFormatString, sanitizedModuleName, module.ModuleID);
+            this.containerWrapperControl.Attributes["class"] = string.Format(CultureInfo.InvariantCulture, classFormatString, sanitizedModuleName, module.ModuleID);
 
             try
             {
                 if (!Globals.IsAdminControl() && (this.PortalSettings.InjectModuleHyperLink || Personalization.GetUserMode() != PortalSettings.Mode.View))
                 {
-                    this.containerWrapperControl.Controls.Add(new LiteralControl("<a name=\"" + module.ModuleID + "\"></a>"));
+                    this.containerWrapperControl.Controls.Add(new LiteralControl($"<a name=\"{module.ModuleID}\"></a>"));
                 }
 
                 // Load container control
@@ -163,18 +164,18 @@ namespace DotNetNuke.UI.Skins
                 container.SetModuleConfiguration(module);
 
                 // display collapsible page panes
-                if (this.PaneControl.Visible == false)
+                if (!this.PaneControl.Visible)
                 {
                     this.PaneControl.Visible = true;
                 }
             }
             catch (ThreadAbortException)
             {
-                // Response.Redirect may called in module control's OnInit method, so it will cause ThreadAbortException, no need any action here.
+                // Response.Redirect may be called in module control's OnInit method, so it will cause ThreadAbortException, no need any action here.
             }
             catch (Exception exc)
             {
-                var lex = new ModuleLoadException(string.Format(Skin.MODULEADD_ERROR, this.PaneControl.ID), exc);
+                var lex = new ModuleLoadException(string.Format(CultureInfo.InvariantCulture, Skin.MODULEADD_ERROR, this.PaneControl.ID), exc);
                 if (TabPermissionController.CanAdminPage())
                 {
                     // only display the error to administrators
@@ -254,6 +255,22 @@ namespace DotNetNuke.UI.Skins
                         }
                     }
                 }
+            }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.containerWrapperControl?.Dispose();
+                this.PaneControl?.Dispose();
             }
         }
 
@@ -338,7 +355,7 @@ namespace DotNetNuke.UI.Skins
                 if (TabPermissionController.CanAdminPage())
                 {
                     // only display the error to administrators
-                    this.containerWrapperControl.Controls.Add(new ErrorContainer(this.PortalSettings, string.Format(Skin.CONTAINERLOAD_ERROR, containerPath), lex).Container);
+                    this.containerWrapperControl.Controls.Add(new ErrorContainer(this.PortalSettings, string.Format(CultureInfo.InvariantCulture, Skin.CONTAINERLOAD_ERROR, containerPath), lex).Container);
                 }
 
                 Exceptions.LogException(lex);
@@ -382,7 +399,7 @@ namespace DotNetNuke.UI.Skins
                 containerSrc = this.PaneControl.Attributes["ContainerSrc"];
                 if (containerSrc.Contains("/") && !(containerSrc.StartsWith("[g]", StringComparison.InvariantCultureIgnoreCase) || containerSrc.StartsWith("[l]", StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    containerSrc = string.Format(SkinController.IsGlobalSkin(this.PortalSettings.ActiveTab.SkinSrc) ? "[G]containers/{0}" : "[L]containers/{0}", containerSrc.TrimStart('/'));
+                    containerSrc = string.Format(CultureInfo.InvariantCulture, SkinController.IsGlobalSkin(this.PortalSettings.ActiveTab.SkinSrc) ? "[G]containers/{0}" : "[L]containers/{0}", containerSrc.TrimStart('/'));
                     validSrc = true;
                 }
             }
@@ -526,7 +543,7 @@ namespace DotNetNuke.UI.Skins
             // make the container id unique for the page
             if (module.ModuleID > -1)
             {
-                container.ID += module.ModuleID.ToString();
+                container.ID += module.ModuleID.ToString(CultureInfo.InvariantCulture);
             }
 
             return container;
@@ -539,9 +556,9 @@ namespace DotNetNuke.UI.Skins
             var portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
             if (TabPermissionController.CanAdminPage())
             {
-                var moduleId = Convert.ToInt32(args.EventArguments["moduleid"]);
-                var paneName = Convert.ToString(args.EventArguments["pane"]);
-                var moduleOrder = Convert.ToInt32(args.EventArguments["order"]);
+                var moduleId = Convert.ToInt32(args.EventArguments["moduleid"], CultureInfo.InvariantCulture);
+                var paneName = Convert.ToString(args.EventArguments["pane"], CultureInfo.InvariantCulture);
+                var moduleOrder = Convert.ToInt32(args.EventArguments["order"], CultureInfo.InvariantCulture);
 
                 ModuleController.Instance.UpdateModuleOrder(portalSettings.ActiveTab.TabID, moduleId, moduleOrder, paneName);
                 ModuleController.Instance.UpdateTabModuleOrder(portalSettings.ActiveTab.TabID);

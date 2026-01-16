@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Tabs
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -64,7 +65,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             var portalId = PortalSettings.Current.PortalId;
             var dataProvider = DataProvider.Instance();
-            var cacheKey = string.Format(DataCache.TabModuleSettingsNameCacheKey, portalId, settingName);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TabModuleSettingsNameCacheKey, portalId, settingName);
             var cachedItems = CBO.GetCachedObject<Dictionary<int, string>>(
                 new CacheItemArgs(cacheKey, DataCache.TabModuleCacheTimeOut, DataCache.TabModuleCachePriority),
                 c =>

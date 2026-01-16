@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.WebControls
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -53,7 +54,7 @@ namespace DotNetNuke.UI.WebControls
 
         protected string OldStringValue
         {
-            get { return Convert.ToString(this.OldValue); }
+            get { return Convert.ToString(this.OldValue, CultureInfo.InvariantCulture); }
         }
 
         /// <summary>Gets the ListEntryInfo objects associated with the control.</summary>
@@ -82,7 +83,7 @@ namespace DotNetNuke.UI.WebControls
                 string strValue = Null.NullString;
                 if (this.Value != null)
                 {
-                    strValue = Convert.ToString(this.Value);
+                    strValue = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
                 }
 
                 return strValue;
@@ -220,7 +221,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 foreach (ListEntryInfo item in this.ListEntries)
                 {
-                    this.Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.EntryID.ToString() });
+                    this.Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.EntryID.ToString(CultureInfo.InvariantCulture), });
                 }
             }
 

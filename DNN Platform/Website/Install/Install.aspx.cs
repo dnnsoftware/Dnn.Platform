@@ -527,7 +527,10 @@ namespace DotNetNuke.Services.Install
             if (File.Exists(strNewFile))
             {
                 XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
-                xmlDoc.Load(strNewFile);
+                using (var xmlReader = XmlReader.Create(strNewFile, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xmlDoc.Load(xmlReader);
+                }
 
                 // parse portal(s) if available
                 var nodes = xmlDoc.SelectNodes("//dotnetnuke/portals/portal");

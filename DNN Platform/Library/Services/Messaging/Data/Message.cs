@@ -296,19 +296,19 @@ namespace DotNetNuke.Services.Messaging.Data
 
         public Message GetReplyMessage()
         {
-            var message = new Message();
-            message.AllowReply = this.AllowReply;
-            message.Body = string.Format("<br><br><br>On {0} {1} wrote ", this.MessageDate, this.FromUserName) + this.Body;
-            message.Conversation = this.Conversation;
-            message.FromUserID = this.ToUserID;
-            message.ToUserID = this.FromUserID;
-            message.ToUserName = this.FromUserName;
-            message.PortalID = this.PortalID;
-            message.ReplyTo = this.MessageID;
-            message.SkipInbox = this.SkipInbox;
-            message.Subject = "RE:" + this.Subject;
-
-            return message;
+            return new Message
+            {
+                AllowReply = this.AllowReply,
+                Body = $"<br><br><br>On {this.MessageDate} {this.FromUserName} wrote {this.Body}",
+                Conversation = this.Conversation,
+                FromUserID = this.ToUserID,
+                ToUserID = this.FromUserID,
+                ToUserName = this.FromUserName,
+                PortalID = this.PortalID,
+                ReplyTo = this.MessageID,
+                SkipInbox = this.SkipInbox,
+                Subject = "RE:" + this.Subject,
+            };
         }
 
         /// <inheritdoc/>

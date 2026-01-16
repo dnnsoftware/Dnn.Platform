@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.ModuleCache
                         foreach (PortalInfo portal in portals)
                         {
                             kvp.Value.PurgeExpiredItems(portal.PortalID);
-                            this.ScheduleHistoryItem.AddLogNote(string.Format("Purged Module cache for {0}.  ", kvp.Key));
+                            this.ScheduleHistoryItem.AddLogNote($"Purged Module cache for {kvp.Key}.  ");
                         }
                     }
                     catch (NotSupportedException exc)
@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.ModuleCache
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging Module cache task failed: {0}.", exc.ToString()));
+                this.ScheduleHistoryItem.AddLogNote($"Purging Module cache task failed: {exc}.");
 
                 // notification that we have errored
                 this.Errored(ref exc); // REQUIRED

@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
     using System.ComponentModel;
     using System.Reflection;
     using System.Web.UI.WebControls;
@@ -120,7 +121,7 @@ namespace DotNetNuke.UI.WebControls
                 EditorAttribute editor = null;
                 for (int i = 0; i <= editorAttributes.Length - 1; i++)
                 {
-                    if (((EditorAttribute)editorAttributes[i]).EditorBaseTypeName.IndexOf("DotNetNuke.UI.WebControls.EditControl") >= 0)
+                    if (((EditorAttribute)editorAttributes[i]).EditorBaseTypeName.Contains("DotNetNuke.UI.WebControls.EditControl", StringComparison.Ordinal))
                     {
                         editor = (EditorAttribute)editorAttributes[i];
                         break;
@@ -167,7 +168,7 @@ namespace DotNetNuke.UI.WebControls
             }
 
             // Set ResourceKey Field
-            editInfo.ResourceKey = string.Format("{0}_{1}", dataSource.GetType().Name, objProperty.Name);
+            editInfo.ResourceKey = $"{dataSource.GetType().Name}_{objProperty.Name}";
 
             // Get Validation Expression Field
             editInfo.ValidationExpression = string.Empty;

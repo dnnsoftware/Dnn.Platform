@@ -16,16 +16,23 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
 
+    /// <summary>A web API for getting the translation status of a site.</summary>
     [DnnAuthorize]
     public class LanguageServiceController : DnnApiController
     {
+        /// <summary>Initializes a new instance of the <see cref="LanguageServiceController"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
         public LanguageServiceController(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;
         }
 
+        /// <summary>Gets the navigation manager.</summary>
         protected INavigationManager NavigationManager { get; }
 
+        /// <summary>Gets the pages which aren't translated for the <paramref name="languageCode"/>.</summary>
+        /// <param name="languageCode">The language code.</param>
+        /// <returns>A response with a list of <see cref="PageDto"/> instances.</returns>
         [HttpGet]
         public HttpResponseMessage GetNonTranslatedPages(string languageCode)
         {
@@ -56,12 +63,16 @@ namespace DotNetNuke.Web.InternalServices
             return code == this.PortalSettings.DefaultLanguage;
         }
 
+        /// <summary>A data transfer object with information about a page.</summary>
         public class PageDto
         {
+            /// <summary>Gets or sets the page's name.</summary>
             public string Name { get; set; }
 
+            /// <summary>Gets or sets the page's view URL.</summary>
             public string ViewUrl { get; set; }
 
+            /// <summary>Gets or sets the page's edit URL.</summary>
             public string EditUrl { get; set; }
         }
     }

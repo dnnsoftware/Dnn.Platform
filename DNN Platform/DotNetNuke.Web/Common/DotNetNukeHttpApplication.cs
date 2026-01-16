@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.Common.Internal
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Web;
@@ -43,7 +44,7 @@ namespace DotNetNuke.Web.Common.Internal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));
 
-        private static readonly string[] Endings = [".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd"];
+        private static readonly string[] Endings = [".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd",];
 
         static DotNetNukeHttpApplication()
         {
@@ -108,14 +109,14 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static bool IsInstallOrUpgradeRequest(HttpRequest request)
         {
-            var url = request.Url.LocalPath.ToLowerInvariant();
+            var url = request.Url.LocalPath;
 
-            return url.EndsWith("webresource.axd")
-                   || url.EndsWith("scriptresource.axd")
-                   || url.EndsWith("captcha.aspx")
-                   || url.Contains("upgradewizard.aspx")
-                   || url.Contains("installwizard.aspx")
-                   || url.EndsWith("install.aspx");
+            return url.EndsWith("webresource.axd", StringComparison.OrdinalIgnoreCase)
+                   || url.EndsWith("scriptresource.axd", StringComparison.OrdinalIgnoreCase)
+                   || url.EndsWith("captcha.aspx", StringComparison.OrdinalIgnoreCase)
+                   || url.Contains("upgradewizard.aspx", StringComparison.OrdinalIgnoreCase)
+                   || url.Contains("installwizard.aspx", StringComparison.OrdinalIgnoreCase)
+                   || url.EndsWith("install.aspx", StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool IsInstallInProgress(HttpApplication app)
@@ -174,12 +175,12 @@ namespace DotNetNuke.Web.Common.Internal
 
         private void Application_Start(object sender, EventArgs eventArgs)
         {
-            Logger.InfoFormat("Application Starting ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
+            Logger.InfoFormat(CultureInfo.InvariantCulture, "Application Starting ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
 
             var name = Config.GetSetting("ServerName");
             Globals.ServerName = string.IsNullOrEmpty(name) ? Dns.GetHostName() : name;
 
-            Logger.InfoFormat("Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
+            Logger.InfoFormat(CultureInfo.InvariantCulture, "Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
             DotNetNukeShutdownOverload.InitializeFcnSettings();
 
             // register the assembly-lookup to correct the breaking rename in DNN 9.2
@@ -218,8 +219,8 @@ namespace DotNetNuke.Web.Common.Internal
                 }
             }
 
-            var requestUrl = app.Request.Url.LocalPath.ToLowerInvariant();
-            if (!requestUrl.EndsWith(".aspx") && !requestUrl.EndsWith("/") && Endings.Any(requestUrl.EndsWith))
+            var requestUrl = app.Request.Url.LocalPath;
+            if (!requestUrl.EndsWith(".aspx", StringComparison.OrdinalIgnoreCase) && !requestUrl.EndsWith("/", StringComparison.Ordinal) && Endings.Any(ending => requestUrl.EndsWith(ending, StringComparison.OrdinalIgnoreCase)))
             {
                 return;
             }

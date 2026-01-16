@@ -12,8 +12,10 @@ namespace DotNetNuke.Web.Mvp
     [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public partial class SettingsModel
     {
+        /// <summary>Gets or sets the module settings.</summary>
         public Dictionary<string, string> ModuleSettings { get; set; }
 
+        /// <summary>Gets or sets the tab-module settings.</summary>
         public Dictionary<string, string> TabModuleSettings { get; set; }
     }
 }

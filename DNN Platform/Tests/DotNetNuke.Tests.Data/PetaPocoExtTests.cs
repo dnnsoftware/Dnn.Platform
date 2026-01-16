@@ -36,7 +36,10 @@
             var normalizeSqlMethod = typeof(PetaPocoExt)
                 .GetMethod(
                     NormalizeSqlMethodName,
-                    BindingFlags.Static | BindingFlags.NonPublic);
+                    BindingFlags.Static | BindingFlags.NonPublic,
+                    null,
+                    [typeof(string), typeof(object[])],
+                    null);
 
             // Act
             var result = normalizeSqlMethod.Invoke(

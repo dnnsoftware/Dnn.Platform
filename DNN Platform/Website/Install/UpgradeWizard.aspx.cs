@@ -92,6 +92,7 @@ namespace DotNetNuke.Services.Install
         }
 
         /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.1. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
         public UpgradeWizard()
             : this(null, null, null, null)
         {
@@ -102,8 +103,20 @@ namespace DotNetNuke.Services.Install
         /// <param name="appStatus">The application status.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="application">The application info.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.1. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
         public UpgradeWizard(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IApplicationInfo application)
-            : base(portalController, appStatus, hostSettings)
+            : this(portalController, appStatus, hostSettings, null, application)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="application">The application info.</param>
+        public UpgradeWizard(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IUserController userController, IApplicationInfo application)
+            : base(portalController, appStatus, hostSettings, userController)
         {
             this.applicationStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
@@ -596,7 +609,7 @@ namespace DotNetNuke.Services.Install
 
         private static void GetInstallerLocales(IApplicationStatusInfo applicationStatus)
         {
-            var filePath = applicationStatus.ApplicationMapPath + LocalesFile.Replace("/", "\\");
+            var filePath = applicationStatus.ApplicationMapPath + LocalesFile.Replace("/", @"\");
 
             if (File.Exists(filePath))
             {

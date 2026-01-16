@@ -494,7 +494,7 @@ namespace DotNetNuke.Web.DDRMenu
                 {
                     result = Globals.ResolveUrl(result);
                 }
-                else if (!(result.Contains("://") || result.StartsWith("/")))
+                else if (!(result.Contains("://") || result.StartsWith("/", StringComparison.Ordinal)))
                 {
                     result = defaultImagePath + result;
                 }

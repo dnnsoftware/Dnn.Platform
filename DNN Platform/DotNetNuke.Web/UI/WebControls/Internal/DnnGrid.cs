@@ -12,18 +12,25 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnGrid : GridView
     {
+        /// <summary>Gets the item style.</summary>
         public TableItemStyle ItemStyle => this.RowStyle;
 
+        /// <summary>Gets the alternating item style.</summary>
         public TableItemStyle AlternatingItemStyle => this.AlternatingRowStyle;
 
+        /// <summary>Gets the edit item style.</summary>
         public TableItemStyle EditItemStyle => this.EditRowStyle;
 
+        /// <summary>Gets the selected item style.</summary>
         public TableItemStyle SelectedItemStyle => this.SelectedRowStyle;
 
+        /// <summary>Gets or sets the screen row number.</summary>
         public int ScreenRowNumber { get; set; }
 
+        /// <summary>Gets or sets the row height.</summary>
         public int RowHeight { get; set; }
 
+        /// <summary>Gets or sets the current page index.</summary>
         public int CurrentPageIndex
         {
             get

@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Urls
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Text;
@@ -27,6 +28,7 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex AumDebugRegex = new Regex("/_aumdebug/(?:true|false)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex LangMatchRegex = new Regex("/language/(?<code>.[^/]+)(?:/|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex CodePatternRegex = new Regex(CodePattern, RegexOptions.Compiled);
+        private static readonly HashSet<string> IllegalPageNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "con", "aux", "nul", "prn", };
 
         /// <summary>Initializes a new instance of the <see cref="AdvancedFriendlyUrlProvider"/> class.</summary>
         /// <param name="attributes">The provider attributes.</param>
@@ -235,13 +237,13 @@ namespace DotNetNuke.Entities.Urls
             }
             else if (!friendlyPath.EndsWith(pageName, StringComparison.OrdinalIgnoreCase))
             {
-                if (friendlyPath.EndsWith("/"))
+                if (friendlyPath.EndsWith("/", StringComparison.Ordinal))
                 {
-                    friendlyPath = friendlyPath + pageName;
+                    friendlyPath = $"{friendlyPath}{pageName}";
                 }
                 else
                 {
-                    friendlyPath = friendlyPath + "/" + pageName;
+                    friendlyPath = $"{friendlyPath}/{pageName}";
                 }
             }
 
@@ -302,7 +304,7 @@ namespace DotNetNuke.Entities.Urls
             if (changeToSiteRoot)
             {
                 // no page path if changing to site root because of parameter replacement rule (593)
-                if (newPath.StartsWith("/"))
+                if (newPath.StartsWith("/", StringComparison.Ordinal))
                 {
                     newPath = newPath.Substring(1);
                 }
@@ -336,7 +338,7 @@ namespace DotNetNuke.Entities.Urls
                     && !builtInUrl)
                 {
                     // Url is home page, and there's no friendly path to add, so we don't need the home page path (ie, /home is unneeded, just use the site root)
-                    if (newPageName.Length == 0 && pageAndExtension.StartsWith("."))
+                    if (newPageName.Length == 0 && pageAndExtension.StartsWith(".", StringComparison.Ordinal))
                     {
                         // when the newPageName isn't specified, and the pageAndExtension is just an extension
                         // just add the querystring on the end
@@ -475,13 +477,11 @@ namespace DotNetNuke.Entities.Urls
                 if (aliasArray.Count > 0)
                 {
                     alias = aliasArray[0]; // nab the first one here
-                    messages.Add("Portal Id " + portalId.ToString() + " does not match http alias " + httpAlias +
-                                 " - " + alias.HTTPAlias + " was used instead");
+                    messages.Add($"Portal Id {portalId} does not match http alias {httpAlias} - {alias.HTTPAlias} was used instead");
                 }
                 else
                 {
-                    messages.Add("Portal Id " + portalId.ToString() +
-                                 " does not match http alias and no usable alias could be found");
+                    messages.Add($"Portal Id {portalId} does not match http alias and no usable alias could be found");
                 }
             }
 
@@ -603,12 +603,12 @@ namespace DotNetNuke.Entities.Urls
                     }
 
                     // the portal alias is not in the path already, so we need to get it in there
-                    if (friendlyPath.StartsWith("~/"))
+                    if (friendlyPath.StartsWith("~/", StringComparison.Ordinal))
                     {
                         friendlyPath = friendlyPath.Substring(1);
                     }
 
-                    if (friendlyPath.StartsWith("/") == false)
+                    if (!friendlyPath.StartsWith("/", StringComparison.Ordinal))
                     {
                         friendlyPath = "/" + friendlyPath;
                     }
@@ -674,7 +674,7 @@ namespace DotNetNuke.Entities.Urls
                 }
 
                 string queryString = queryStringMatch.Groups[2].Value.Replace("&amp;", "&");
-                if (queryString.StartsWith("?"))
+                if (queryString.StartsWith("?", StringComparison.Ordinal))
                 {
                     queryString = queryString.TrimStart('?');
                 }
@@ -685,26 +685,24 @@ namespace DotNetNuke.Entities.Urls
                     string pathToAppend = string.Empty;
                     string[] pair = nameValuePairs[i].Split('=');
 
-                    var illegalPageNames = new[] { "con", "aux", "nul", "prn" };
-
-                    if (!illegalPageNames.Contains(pair[0].ToLowerInvariant()) && (pair.Length == 1 || !illegalPageNames.Contains(pair[1].ToLowerInvariant())))
+                    if (!IllegalPageNames.Contains(pair[0]) && (pair.Length == 1 || !IllegalPageNames.Contains(pair[1])))
                     {
                         // Add name part of name/value pair
-                        if (friendlyPath.EndsWith("/"))
+                        if (friendlyPath.EndsWith("/", StringComparison.Ordinal))
                         {
                             if (pair[0].Equals("tabid", StringComparison.OrdinalIgnoreCase))
                             {
                                 // always lowercase the tabid part of the path
-                                pathToAppend = pathToAppend + pair[0].ToLowerInvariant();
+                                pathToAppend = $"{pathToAppend}{pair[0].ToLowerInvariant()}";
                             }
                             else
                             {
-                                pathToAppend = pathToAppend + pair[0];
+                                pathToAppend = $"{pathToAppend}{pair[0]}";
                             }
                         }
                         else
                         {
-                            pathToAppend = pathToAppend + "/" + pair[0];
+                            pathToAppend = $"{pathToAppend}/{pair[0]}";
                         }
 
                         if (pair.Length > 1)
@@ -712,21 +710,20 @@ namespace DotNetNuke.Entities.Urls
                             if (pair[1].Length > 0)
                             {
                                 var rx = RegexUtils.GetCachedRegex(settings.RegexMatch);
-                                if (rx.IsMatch(pair[1]) == false)
+                                if (!rx.IsMatch(pair[1]))
                                 {
                                     // Contains Non-AlphaNumeric Characters
                                     if (pair[0].Equals("tabid", StringComparison.OrdinalIgnoreCase))
                                     {
-                                        int tabId;
-                                        if (int.TryParse(pair[1], out tabId))
+                                        if (int.TryParse(pair[1], out var tabId))
                                         {
                                             if (tab != null && tab.TabID == tabId)
                                             {
                                                 if (tab.TabPath != Null.NullString && settings.IncludePageName)
                                                 {
-                                                    if (pathToAppend.StartsWith("/") == false)
+                                                    if (!pathToAppend.StartsWith("/", StringComparison.Ordinal))
                                                     {
-                                                        pathToAppend = "/" + pathToAppend;
+                                                        pathToAppend = $"/{pathToAppend}";
                                                     }
 
                                                     pathToAppend = tab.TabPath.Replace("//", "/").TrimStart('/').TrimEnd('/') + pathToAppend;
@@ -740,19 +737,18 @@ namespace DotNetNuke.Entities.Urls
                                         if (tab != null && (tab.IsSuperTab || RewriteController.IsAdminTab(tab.PortalID, tab.TabPath, settings)))
                                         {
                                             // 741 : check admin paths to make sure they aren't using + encoding
-                                            pathToAppend = pathToAppend + "/" + pair[1].Replace(" ", "%20");
+                                            pathToAppend = $"{pathToAppend}/{pair[1].Replace(" ", "%20")}";
                                         }
                                         else
                                         {
-                                            pathToAppend = pathToAppend + "/" +
-                                                           pair[1].Replace(" ", settings.SpaceEncodingValue);
+                                            pathToAppend = $"{pathToAppend}/{pair[1].Replace(" ", settings.SpaceEncodingValue)}";
 
                                             // 625 : replace space with specified url encoding value
                                         }
                                     }
                                     else
                                     {
-                                        pathToAppend = pathToAppend + "/" + pair[1];
+                                        pathToAppend = $"{pathToAppend}/{pair[1]}";
                                     }
                                 }
                                 else
@@ -776,11 +772,11 @@ namespace DotNetNuke.Entities.Urls
                                     // Rewrite into URL, contains only alphanumeric and the % or space
                                     if (queryStringSpecialChars.Length == 0)
                                     {
-                                        queryStringSpecialChars = key + "=" + valueBuilder;
+                                        queryStringSpecialChars = $"{key}={valueBuilder}";
                                     }
                                     else
                                     {
-                                        queryStringSpecialChars = queryStringSpecialChars + "&" + key + "=" + valueBuilder;
+                                        queryStringSpecialChars = $"{queryStringSpecialChars}&{key}={valueBuilder}";
                                     }
 
                                     pathToAppend = string.Empty;
@@ -788,7 +784,7 @@ namespace DotNetNuke.Entities.Urls
                             }
                             else
                             {
-                                pathToAppend = pathToAppend + "/" + settings.SpaceEncodingValue;
+                                pathToAppend = $"{pathToAppend}/{settings.SpaceEncodingValue}";
 
                                 // 625 : replace with specified space encoding value
                             }
@@ -800,11 +796,11 @@ namespace DotNetNuke.Entities.Urls
                         {
                             if (queryStringSpecialChars.Length == 0)
                             {
-                                queryStringSpecialChars = pair[0] + "=" + pair[1];
+                                queryStringSpecialChars = $"{pair[0]}={pair[1]}";
                             }
                             else
                             {
-                                queryStringSpecialChars = queryStringSpecialChars + "&" + pair[0] + "=" + pair[1];
+                                queryStringSpecialChars = $"{queryStringSpecialChars}&{pair[0]}={pair[1]}";
                             }
                         }
                     }
@@ -815,7 +811,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (queryStringSpecialChars.Length > 0)
             {
-                return AddPage(friendlyPath, pageName) + "?" + queryStringSpecialChars;
+                return $"{AddPage(friendlyPath, pageName)}?{queryStringSpecialChars}";
             }
 
             return AddPage(friendlyPath, pageName);
@@ -1201,7 +1197,7 @@ namespace DotNetNuke.Entities.Urls
                             finalPath = AumDebugRegex.Replace(finalPath, string.Empty);
 
                             // 'and we're done!
-                            if ((customOnly && isCustomUrl) || customOnly == false || builtInUrl)
+                            if ((customOnly && isCustomUrl) || !customOnly || builtInUrl)
                             {
                                 result = Globals.AddHTTP(finalPath);
                             }
@@ -1209,7 +1205,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        var re = RegexUtils.GetCachedRegex("[^?]*/tabId/(\\d+)/ctl/([A-Z][a-z]+)/" + pageName + "$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                        var re = RegexUtils.GetCachedRegex($@"[^?]*/tabId/(\d+)/ctl/([A-Z][a-z]+)/{pageName}$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                         if (re.IsMatch(friendlyPath))
                         {
                             Match sesMatch = re.Match(friendlyPath);
@@ -1250,7 +1246,7 @@ namespace DotNetNuke.Entities.Urls
             string resultUrl,
             FriendlyUrlSettings settings)
         {
-            if (settings != null && settings.AllowDebugCode && HttpContext.Current != null)
+            if (settings is { AllowDebugCode: true, } && HttpContext.Current != null)
             {
                 HttpRequest request = HttpContext.Current.Request;
                 string debugCheck = CheckForDebug(request);
@@ -1260,7 +1256,7 @@ namespace DotNetNuke.Entities.Urls
 
                     // append the friendly url headers
                     HttpResponse response = HttpContext.Current.Response;
-                    string msgId = id.ToString("000");
+                    string msgId = id.ToString("000", CultureInfo.InvariantCulture);
                     int tabId = -1;
                     string tabName = "null";
                     if (tab != null)
@@ -1269,26 +1265,26 @@ namespace DotNetNuke.Entities.Urls
                         tabName = tab.TabName;
                     }
 
-                    msgId += "-" + tabId.ToString("000");
+                    msgId += "-" + tabId.ToString("000", CultureInfo.InvariantCulture);
 
-                    if (messages != null && messages.Count > 0)
+                    if (messages is { Count: > 0, })
                     {
                         response.AppendHeader(
-                            "X-Friendly-Url-" + msgId + ".00",
-                            "Messages for Tab " + tabId.ToString() + ", " + tabName + ", " + path + " calltype:" + method);
+                            $"X-Friendly-Url-{msgId}.00",
+                            $"Messages for Tab {tabId}, {tabName}, {path} calltype:{method}");
 
                         int i = 1;
                         foreach (string msg in messages)
                         {
-                            response.AppendHeader("X-Friendly-Url-" + msgId + "." + i.ToString("00"), msg);
+                            response.AppendHeader($"X-Friendly-Url-{msgId}.{i:00}", msg);
                             i++;
                         }
 
                         if (resultUrl != null)
                         {
                             response.AppendHeader(
-                                "X-Friendly-Url-" + msgId + ".99",
-                                "Path : " + path + " Generated Url : " + resultUrl);
+                                $"X-Friendly-Url-{msgId}.99",
+                                $"Path : {path} Generated Url : {resultUrl}");
                         }
                     }
                     else
@@ -1296,8 +1292,8 @@ namespace DotNetNuke.Entities.Urls
                         if (debugCheck == "all")
                         {
                             response.AppendHeader(
-                                "X-Friendly-Url-" + msgId + ".00",
-                                "Path : " + path + " Generated Url: " + resultUrl);
+                                $"X-Friendly-Url-{msgId}.00",
+                                $"Path : {path} Generated Url: {resultUrl}");
                         }
                     }
                 }
@@ -1363,8 +1359,7 @@ namespace DotNetNuke.Entities.Urls
             // Build new path and query string
             newPath = pathBuilder.ToString();
             qs = string.IsNullOrWhiteSpace(qs) ?
-                queryStringBuilder.ToString() :
-                string.Format("{0}&{1}", qs, queryStringBuilder);
+                queryStringBuilder.ToString() : $"{qs}&{queryStringBuilder}";
         }
 
         private static bool TransformStandardPath(ref string newPath, ref string newTabPath)

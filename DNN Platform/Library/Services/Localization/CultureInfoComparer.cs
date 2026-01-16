@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Localization
 {
+    using System;
     using System.Collections;
     using System.Globalization;
 
@@ -20,15 +21,12 @@ namespace DotNetNuke.Services.Localization
         /// <inheritdoc/>
         public int Compare(object x, object y)
         {
-            switch (this.compare.ToUpperInvariant())
+            return this.compare.ToUpperInvariant() switch
             {
-                case "ENGLISH":
-                    return ((CultureInfo)x).EnglishName.CompareTo(((CultureInfo)y).EnglishName);
-                case "NATIVE":
-                    return ((CultureInfo)x).NativeName.CompareTo(((CultureInfo)y).NativeName);
-                default:
-                    return ((CultureInfo)x).Name.CompareTo(((CultureInfo)y).Name);
-            }
+                "ENGLISH" => string.Compare(((CultureInfo)x).EnglishName, ((CultureInfo)y).EnglishName, StringComparison.Ordinal),
+                "NATIVE" => string.Compare(((CultureInfo)x).NativeName, ((CultureInfo)y).NativeName, StringComparison.Ordinal),
+                _ => string.Compare(((CultureInfo)x).Name, ((CultureInfo)y).Name, StringComparison.Ordinal),
+            };
         }
     }
 }

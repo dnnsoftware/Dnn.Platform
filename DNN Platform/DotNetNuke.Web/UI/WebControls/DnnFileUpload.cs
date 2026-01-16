@@ -19,11 +19,13 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.Common;
 
+    /// <summary>A file upload control.</summary>
     [ToolboxData("<{0}:DnnFileUpload runat='server'></{0}:DnnFileUpload>")]
     public class DnnFileUpload : Control, INamingContainer
     {
         private readonly Lazy<DnnFileUploadOptions> options = new Lazy<DnnFileUploadOptions>(() => new DnnFileUploadOptions());
 
+        /// <summary>Gets the options.</summary>
         public DnnFileUploadOptions Options
         {
             get
@@ -32,6 +34,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Sets the module ID.</summary>
         public int ModuleId
         {
             set
@@ -42,32 +45,41 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Sets the parent client ID.</summary>
         public string ParentClientId
         {
             set { this.Options.ParentClientId = value; }
         }
 
+        /// <summary>Sets a value indicating whether to show on startup.</summary>
         public bool ShowOnStartup
         {
             set { this.Options.ShowOnStartup = value; }
         }
 
+        /// <summary>Gets or sets the skin.</summary>
         public string Skin { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether the host file system is supported.</summary>
         public bool SupportHost { get; set; }
 
+        /// <summary>Gets or sets the width in pixels.</summary>
         public int Width
         {
             get { return this.Options.Width; }
             set { this.Options.Width = value; }
         }
 
+        /// <summary>Gets or sets the height in pixels.</summary>
         public int Height
         {
             get { return this.Options.Height; }
             set { this.Options.Height = value; }
         }
 
+        /// <summary>Gets the current upload control.</summary>
+        /// <param name="page">The page.</param>
+        /// <returns>The control instance or <see langword="null"/>.</returns>
         public static DnnFileUpload GetCurrent(Page page)
         {
             return page.Items[typeof(DnnFileUpload)] as DnnFileUpload;
@@ -128,17 +140,17 @@ namespace DotNetNuke.Web.UI.WebControls
             if (this.Options.Extensions.Count > 0)
             {
                 var extensionsText = this.Options.Extensions.Aggregate(string.Empty, (current, extension) => current.Append(extension, ", "));
-                this.Options.Resources.InvalidFileExtensions = string.Format(this.Options.Resources.InvalidFileExtensions, extensionsText);
+                this.Options.Resources.InvalidFileExtensions = string.Format(CultureInfo.CurrentCulture, this.Options.Resources.InvalidFileExtensions, extensionsText);
             }
 
             if (this.Options.MaxFiles > 0)
             {
-                this.Options.Resources.TooManyFiles = string.Format(this.Options.Resources.TooManyFiles, this.Options.MaxFiles.ToString(CultureInfo.InvariantCulture));
+                this.Options.Resources.TooManyFiles = string.Format(CultureInfo.CurrentCulture, this.Options.Resources.TooManyFiles, this.Options.MaxFiles.ToString(CultureInfo.InvariantCulture));
             }
 
             if (!this.SupportHost)
             {
-                this.Options.FolderPicker.Services.Parameters["portalId"] = portalSettings.PortalId.ToString();
+                this.Options.FolderPicker.Services.Parameters["portalId"] = portalSettings.PortalId.ToString(CultureInfo.InvariantCulture);
             }
 
             this.Options.FolderPicker.Services.GetTreeMethod = "ItemListService/GetFolders";
@@ -148,9 +160,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Options.FolderPicker.Services.SortTreeMethod = "ItemListService/SortFolders";
             this.Options.FolderPicker.Services.ServiceRoot = "InternalServices";
 
-            var optionsAsJsonString = Json.Serialize(this.Options);
-
-            var script = string.Format("dnn.createFileUpload({0});{1}", optionsAsJsonString, Environment.NewLine);
+            var script = $"dnn.createFileUpload({Json.Serialize(this.Options)});{Environment.NewLine}";
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {

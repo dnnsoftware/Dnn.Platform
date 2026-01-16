@@ -23,8 +23,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         private DnnComboBox moduleCombo;
         private string originalValue;
 
+        /// <summary>An event which triggers when the item changes.</summary>
         public event EventHandler ItemChanged;
 
+        /// <summary>Gets the item count.</summary>
         public int ItemCount
         {
             get
@@ -33,6 +35,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <summary>Gets the client ID of the <see cref="DnnComboBox"/>.</summary>
         public string RadComboBoxClientId
         {
             get
@@ -41,6 +44,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <summary>Gets or sets the filter.</summary>
         public Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter { get; set; }
 
         /// <inheritdoc/>
@@ -66,6 +70,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <summary>Binds the portal desktop modules to the list.</summary>
         public void BindAllPortalDesktopModules()
         {
             this.moduleCombo.SelectedValue = null;
@@ -74,6 +79,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             BindPortalDesktopModuleImages();
         }
 
+        /// <summary>Binds the modules from the page to the list.</summary>
+        /// <param name="tabID">The tab ID.</param>
         public void BindTabModulesByTabID(int tabID)
         {
             this.moduleCombo.SelectedValue = null;
@@ -82,6 +89,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             BindTabModuleImages(tabID);
         }
 
+        /// <summary>Sets the module.</summary>
+        /// <param name="code">The item's value.</param>
         public void SetModule(string code)
         {
             this.moduleCombo.SelectedIndex = this.moduleCombo.FindItemIndexByValue(code);
@@ -104,6 +113,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.originalValue = this.SelectedValue;
         }
 
+        /// <summary>A method which triggers the <see cref="ItemChanged"/> event.</summary>
         protected virtual void OnItemChanged()
         {
             if (this.ItemChanged != null)

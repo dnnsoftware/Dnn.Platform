@@ -256,7 +256,7 @@ namespace DotNetNuke.Services.EventQueue
             string attValue = Null.NullString;
             var settings = new XmlReaderSettings();
             settings.ConformanceLevel = ConformanceLevel.Fragment;
-            XmlReader reader = XmlReader.Create(new StringReader(configXml));
+            using var reader = XmlReader.Create(new StringReader(configXml));
             reader.ReadStartElement("Attributes");
             if (!reader.IsEmptyElement)
             {

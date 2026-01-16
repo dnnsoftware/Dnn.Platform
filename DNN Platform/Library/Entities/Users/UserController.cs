@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Users
     using System.Collections;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Threading;
@@ -67,20 +68,20 @@ namespace DotNetNuke.Entities.Users
         /// <summary>Gets or sets the site (portal) id.</summary>
         public int PortalId { get; set; }
 
-        /// <summary>Gets the number count for all duplicate e-mail adresses in the database.</summary>
+        /// <summary>Gets the number count for all duplicate e-mail addresses in the database.</summary>
         /// <returns>An integer representing the amount of duplicate emails.</returns>
         public static int GetDuplicateEmailCount()
         {
             return DataProvider.Instance().GetDuplicateEmailCount(PortalSettings.Current.PortalId);
         }
 
-        /// <summary>add new userportal record (used for creating sites with existing user).</summary>
-        /// <param name="portalId">portalid.</param>
-        /// <param name="userId">userid.</param>
+        /// <summary>add new user portal record (used for creating sites with existing user).</summary>
+        /// <param name="portalId">portal ID.</param>
+        /// <param name="userId">user ID.</param>
         public static void AddUserPortal(int portalId, int userId)
         {
-            Requires.NotNullOrEmpty("portalId", portalId.ToString());
-            Requires.NotNullOrEmpty("userId", userId.ToString());
+            Requires.NotNullOrEmpty("portalId", portalId.ToString(CultureInfo.InvariantCulture));
+            Requires.NotNullOrEmpty("userId", userId.ToString(CultureInfo.InvariantCulture));
 
             MembershipProvider.Instance().AddUserPortal(portalId, userId);
         }
@@ -408,7 +409,7 @@ namespace DotNetNuke.Entities.Users
                 user.PasswordResetToken = passwordGuid;
                 UpdateUser(user.PortalID, user);
                 EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentSettings(), GetCurrentUserInternal().UserID, string.Empty, EventLogController.EventLogType.USER_CREATED);
-                CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, portalId));
+                CachingProvider.Instance().Remove(string.Format(CultureInfo.InvariantCulture, DataCache.PortalUserCountCacheKey, portalId));
                 if (!user.IsSuperUser)
                 {
                     // autoassign user to portal roles
@@ -698,7 +699,7 @@ namespace DotNetNuke.Entities.Users
         public static int GetUserCountByPortal(int portalId)
         {
             portalId = GetEffectivePortalId(portalId);
-            var cacheKey = string.Format(DataCache.PortalUserCountCacheKey, portalId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalUserCountCacheKey, portalId);
             return CBO.GetCachedObject<int>(new CacheItemArgs(cacheKey, DataCache.PortalUserCountCacheTimeOut, DataCache.PortalUserCountCachePriority, portalId), GetUserCountByPortalCallBack);
         }
 
@@ -717,8 +718,8 @@ namespace DotNetNuke.Entities.Users
                     return Localization.GetString("InvalidEmail");
                 case UserCreateStatus.InvalidPassword:
                     string strInvalidPassword = Localization.GetString("InvalidPassword");
-                    strInvalidPassword = strInvalidPassword.Replace("[PasswordLength]", MembershipProviderConfig.MinPasswordLength.ToString());
-                    strInvalidPassword = strInvalidPassword.Replace("[NoneAlphabet]", MembershipProviderConfig.MinNonAlphanumericCharacters.ToString());
+                    strInvalidPassword = strInvalidPassword.Replace("[PasswordLength]", MembershipProviderConfig.MinPasswordLength.ToString(CultureInfo.CurrentCulture));
+                    strInvalidPassword = strInvalidPassword.Replace("[NoneAlphabet]", MembershipProviderConfig.MinNonAlphanumericCharacters.ToString(CultureInfo.CurrentCulture));
                     return strInvalidPassword;
                 case UserCreateStatus.PasswordMismatch:
                     return Localization.GetString("PasswordMismatch");
@@ -797,7 +798,7 @@ namespace DotNetNuke.Entities.Users
             {
                 foreach (KeyValuePair<string, string> kvp in settingsDictionary)
                 {
-                    int index = kvp.Key.IndexOf("_");
+                    int index = kvp.Key.IndexOf("_", StringComparison.Ordinal);
                     if (index > 0)
                     {
                         // Get the prefix
@@ -814,13 +815,13 @@ namespace DotNetNuke.Entities.Users
                                 switch (kvp.Key)
                                 {
                                     case "Display_Mode":
-                                        settings[kvp.Key] = (DisplayMode)Convert.ToInt32(kvp.Value);
+                                        settings[kvp.Key] = (DisplayMode)Convert.ToInt32(kvp.Value, CultureInfo.InvariantCulture);
                                         break;
                                     case "Profile_DefaultVisibility":
-                                        settings[kvp.Key] = (UserVisibilityMode)Convert.ToInt32(kvp.Value);
+                                        settings[kvp.Key] = (UserVisibilityMode)Convert.ToInt32(kvp.Value, CultureInfo.InvariantCulture);
                                         break;
                                     case "Security_UsersControl":
-                                        settings[kvp.Key] = (UsersControl)Convert.ToInt32(kvp.Value);
+                                        settings[kvp.Key] = (UsersControl)Convert.ToInt32(kvp.Value, CultureInfo.InvariantCulture);
                                         break;
                                     default:
                                         // update value or add any new values
@@ -836,7 +837,7 @@ namespace DotNetNuke.Entities.Users
 
             if (currentPortalSettings != null)
             {
-                foreach (var kvp in currentPortalSettings.Where(kvp => kvp.Key.StartsWith("Redirect_")))
+                foreach (var kvp in currentPortalSettings.Where(kvp => kvp.Key.StartsWith("Redirect_", StringComparison.OrdinalIgnoreCase)))
                 {
                     settings[kvp.Key] = kvp.Value;
                 }
@@ -1459,7 +1460,7 @@ namespace DotNetNuke.Entities.Users
             // Check if Profile needs updating
             if (validStatus == UserValidStatus.VALID)
             {
-                var validProfile = Convert.ToBoolean(UserModuleBase.GetSetting(portalId, "Security_RequireValidProfileAtLogin"));
+                var validProfile = Convert.ToBoolean(UserModuleBase.GetSetting(portalId, "Security_RequireValidProfileAtLogin"), CultureInfo.InvariantCulture);
                 if (validProfile && (!ProfileController.ValidateProfile(portalId, objUser.Profile)))
                 {
                     validStatus = UserValidStatus.UPDATEPROFILE;
@@ -1609,7 +1610,7 @@ namespace DotNetNuke.Entities.Users
             var childPortalAlias = GetChildPortalAlias();
             var cdv = GetProfilePictureCdv(userId);
 
-            return childPortalAlias.StartsWith(Globals.ApplicationPath)
+            return childPortalAlias.StartsWith(Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase)
                 ? childPortalAlias + url + cdv
                 : Globals.ApplicationPath + childPortalAlias + url + cdv;
         }
@@ -1640,7 +1641,7 @@ namespace DotNetNuke.Entities.Users
             var childPortalAlias = Globals.ResolveUrl(this.GetUserProfilePictureUrl(userId, width, height));
             var cdv = GetProfilePictureCdv(portalId, userId);
 
-            return childPortalAlias.StartsWith(Globals.ApplicationPath)
+            return childPortalAlias.StartsWith(Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase)
                 ? childPortalAlias + url + cdv
                 : Globals.ApplicationPath + childPortalAlias + url + cdv;
         }
@@ -1729,7 +1730,7 @@ namespace DotNetNuke.Entities.Users
             }
             else
             {
-                settings["Display_Mode"] = (DisplayMode)Convert.ToInt32(settings["Display_Mode"]);
+                settings["Display_Mode"] = (DisplayMode)Convert.ToInt32(settings["Display_Mode"], CultureInfo.InvariantCulture);
             }
 
             if (settings["Display_SuppressPager"] == null)
@@ -1748,7 +1749,7 @@ namespace DotNetNuke.Entities.Users
             }
             else
             {
-                settings["Profile_DefaultVisibility"] = (UserVisibilityMode)Convert.ToInt32(settings["Profile_DefaultVisibility"]);
+                settings["Profile_DefaultVisibility"] = (UserVisibilityMode)Convert.ToInt32(settings["Profile_DefaultVisibility"], CultureInfo.InvariantCulture);
             }
 
             if (settings["Profile_DisplayVisibility"] == null)
@@ -1833,7 +1834,7 @@ namespace DotNetNuke.Entities.Users
             }
             else
             {
-                settings["Security_UsersControl"] = (UsersControl)Convert.ToInt32(settings["Security_UsersControl"]);
+                settings["Security_UsersControl"] = (UsersControl)Convert.ToInt32(settings["Security_UsersControl"], CultureInfo.InvariantCulture);
             }
 
             // Display name format
@@ -1891,14 +1892,12 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>  updates a user.</summary>
-        /// <param name="portalId">the portalid of the user.</param>
+        /// <param name="portalId">the portal ID of the user.</param>
         /// <param name="user">the user object.</param>
-        /// <param name="loggedAction">whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
+        /// <param name="loggedAction">whether the update calls the event log - the event log type must still be enabled for logging to occur.</param>
         /// <param name="sendNotification">Whether to send notification to the user about the update (i.e. a notification if the user was approved).</param>
         /// <param name="clearCache">Whether clear cache after update user.</param>
-        /// <remarks>
-        /// This method is used internal because it should be use carefully, or it will caught cache doesn't clear correctly.
-        /// </remarks>
+        /// <remarks>This method is used internal because it should be used carefully, or it will caught cache doesn't clear correctly.</remarks>
         internal static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool sendNotification, bool clearCache)
         {
             var originalPortalId = user.PortalID;
@@ -1906,7 +1905,7 @@ namespace DotNetNuke.Entities.Users
             user.PortalID = portalId;
 
             // clear the cache so that can get original info from database.
-            DataCache.RemoveCache(string.Format(DataCache.UserProfileCacheKey, portalId, user.Username));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.UserProfileCacheKey, portalId, user.Username));
             var oldUser = MembershipProvider.Instance().GetUser(user.PortalID, user.UserID);
             var oldProfile = oldUser.Profile; // access the profile property to reload data from database.
 
@@ -1914,7 +1913,7 @@ namespace DotNetNuke.Entities.Users
             MembershipProvider.Instance().UpdateUser(user);
             if (loggedAction)
             {
-                // if the httpcontext is null, then get portal settings by portal id.
+                // if the HttpContext is null, then get portal settings by portal id.
                 IPortalSettings portalSettings = null;
                 if (HttpContext.Current != null)
                 {
@@ -2055,7 +2054,7 @@ namespace DotNetNuke.Entities.Users
                         {
                             FolderID = userFolder.FolderID,
                             UserID = user.UserID,
-                            RoleID = int.Parse(Globals.glbRoleNothing),
+                            RoleID = int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture),
                             AllowAccess = true,
                         };
 
@@ -2115,7 +2114,7 @@ namespace DotNetNuke.Entities.Users
         private static SharedDictionary<int, string> GetUserLookupDictionary(int portalId)
         {
             var masterPortalId = GetEffectivePortalId(portalId);
-            var cacheKey = string.Format(DataCache.UserLookupCacheKey, masterPortalId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.UserLookupCacheKey, masterPortalId);
             return CBO.GetCachedObject<SharedDictionary<int, string>>(
                 new CacheItemArgs(
                     cacheKey,

@@ -3,11 +3,11 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.Logging
 {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>add xml docs.</summary>
+    [SuppressMessage("Microsoft.Design", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "Breaking change")]
     public interface ILogProperties : ICollection<ILogDetailInfo>
     {
         /// <summary>Gets the Summary.</summary>

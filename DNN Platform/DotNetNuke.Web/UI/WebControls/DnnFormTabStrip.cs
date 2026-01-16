@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    /// <summary>A tab strip control.</summary>
     public class DnnFormTabStrip : ListControl
     {
         /// <inheritdoc/>

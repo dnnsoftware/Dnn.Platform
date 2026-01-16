@@ -49,7 +49,7 @@ namespace DotNetNuke.Tests.Core
         [TestCase("//")]
         [TestCase("///")]
         [TestCase(@"\")]
-        [TestCase(@"\\")]
+        [TestCase("\\")]
         [TestCase(@"\\\")]
         [TestCase("/Test/../")]
         [TestCase("/Test/mmm/../../")]
@@ -125,7 +125,7 @@ namespace DotNetNuke.Tests.Core
             FileSystemUtils.DeleteFile(testPath);
 
             // Assert
-            Assert.That(testPath.Replace("/", "\\"), Does.Not.Exist);
+            Assert.That(testPath.Replace("/", @"\"), Does.Not.Exist);
         }
 
         [TestCase(null)]

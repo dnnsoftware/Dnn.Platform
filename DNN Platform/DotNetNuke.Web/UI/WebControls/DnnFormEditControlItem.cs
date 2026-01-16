@@ -14,6 +14,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A property edit item control.</summary>
     public class DnnFormEditControlItem : DnnFormItemBase
     {
         private readonly IServiceProvider serviceProvider;
@@ -33,6 +34,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.serviceProvider = serviceProvider;
         }
 
+        /// <summary>Gets or sets the control type.</summary>
         public string ControlType { get; set; }
 
         /// <inheritdoc/>

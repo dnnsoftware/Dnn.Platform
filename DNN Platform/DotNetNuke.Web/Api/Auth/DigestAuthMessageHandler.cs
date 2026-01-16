@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.Api.Auth
 {
     using System;
+    using System.Globalization;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -66,7 +67,7 @@ namespace DotNetNuke.Web.Api.Auth
         private static string CreateNewNonce()
         {
             DateTime nonceTime = DateTime.Now + TimeSpan.FromMinutes(1);
-            string expireStr = nonceTime.ToString("G");
+            string expireStr = nonceTime.ToString("G", CultureInfo.InvariantCulture);
 
             byte[] expireBytes = Encoding.Default.GetBytes(expireStr);
             string nonce = Convert.ToBase64String(expireBytes);

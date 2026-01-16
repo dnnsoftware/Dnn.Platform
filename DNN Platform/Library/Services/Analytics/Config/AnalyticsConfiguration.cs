@@ -5,7 +5,9 @@ namespace DotNetNuke.Services.Analytics.Config
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.IO;
+    using System.Xml;
     using System.Xml.Serialization;
     using System.Xml.XPath;
 
@@ -57,14 +59,13 @@ namespace DotNetNuke.Services.Analytics.Config
             config.Rules = new AnalyticsRuleCollection();
             config.Settings = new AnalyticsSettingCollection();
 
-            FileStream fileReader = null;
             string filePath = string.Empty;
             try
             {
                 config = (AnalyticsConfiguration)DataCache.GetCache(cacheKey);
                 if (config == null)
                 {
-                    filePath = PortalSettings.Current.HomeDirectoryMapPath + "\\" + analyticsEngineName + ".config";
+                    filePath = PortalSettings.Current.HomeDirectoryMapPath + @"\" + analyticsEngineName + ".config";
 
                     if (!File.Exists(filePath))
                     {
@@ -72,9 +73,13 @@ namespace DotNetNuke.Services.Analytics.Config
                     }
 
                     // Create a FileStream for the Config file
-                    fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    XPathDocument doc;
+                    using (var fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (var xmlReader = XmlReader.Create(fileReader))
+                    {
+                        doc = new XPathDocument(xmlReader);
+                    }
 
-                    var doc = new XPathDocument(fileReader);
                     config = new AnalyticsConfiguration();
                     config.Rules = new AnalyticsRuleCollection();
                     config.Settings = new AnalyticsSettingCollection();
@@ -91,8 +96,8 @@ namespace DotNetNuke.Services.Analytics.Config
                     foreach (XPathNavigator nav in doc.CreateNavigator().Select("AnalyticsConfig/Rules/AnalyticsRule"))
                     {
                         var rule = new AnalyticsRule();
-                        rule.RoleId = Convert.ToInt32(nav.SelectSingleNode("RoleId").Value);
-                        rule.TabId = Convert.ToInt32(nav.SelectSingleNode("TabId").Value);
+                        rule.RoleId = Convert.ToInt32(nav.SelectSingleNode("RoleId").Value, CultureInfo.InvariantCulture);
+                        rule.TabId = Convert.ToInt32(nav.SelectSingleNode("TabId").Value, CultureInfo.InvariantCulture);
                         rule.Label = nav.SelectSingleNode("Label").Value;
                         var valueNode = nav.SelectSingleNode("Value");
                         if (valueNode != null)
@@ -120,14 +125,6 @@ namespace DotNetNuke.Services.Analytics.Config
                 LogController.Instance.AddLog(log);
                 Logger.Error(ex);
             }
-            finally
-            {
-                if (fileReader != null)
-                {
-                    // Close the Reader
-                    fileReader.Close();
-                }
-            }
 
             return config;
         }
@@ -142,7 +139,7 @@ namespace DotNetNuke.Services.Analytics.Config
                 string filePath = string.Empty;
 
                 // Create a FileStream for the Config file
-                filePath = PortalSettings.Current.HomeDirectoryMapPath + "\\" + analyticsEngineName + ".config";
+                filePath = PortalSettings.Current.HomeDirectoryMapPath + @"\" + analyticsEngineName + ".config";
                 if (File.Exists(filePath))
                 {
                     File.SetAttributes(filePath, FileAttributes.Normal);

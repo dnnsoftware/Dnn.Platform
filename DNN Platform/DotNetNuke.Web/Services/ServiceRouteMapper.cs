@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.Services
 {
     using DotNetNuke.Web.Api;
 
+    /// <summary>Registers web API routes for <see cref="MobileHelperController"/>.</summary>
     public class ServiceRouteMapper : IServiceRouteMapper
     {
         /// <inheritdoc/>

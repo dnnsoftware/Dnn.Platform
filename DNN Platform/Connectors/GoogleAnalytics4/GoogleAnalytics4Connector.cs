@@ -201,7 +201,11 @@ namespace DNN.Connectors.GoogleAnalytics4
             var applicationMapPath = HttpContext.Current.Server.MapPath(@"\");
             var file = applicationMapPath + @"\SiteAnalytics.config";
             var xdoc = new XmlDocument();
-            xdoc.Load(file);
+            using (var siteConfigReader = XmlReader.Create(file, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                xdoc.Load(siteConfigReader);
+            }
+
             var found = false;
             foreach (XmlNode engineTypeNode in xdoc.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine/EngineType"))
             {
@@ -216,7 +220,10 @@ namespace DNN.Connectors.GoogleAnalytics4
             {
                 var fileGa4 = applicationMapPath + @"\DesktopModules\Connectors\GoogleAnalytics4\GoogleAnalytics4.config";
                 var xdocGa4 = new XmlDocument();
-                xdocGa4.Load(fileGa4);
+                using (var googleConfigReader = XmlReader.Create(fileGa4, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xdocGa4.Load(googleConfigReader);
+                }
 
                 var enginesElement = xdoc.SelectSingleNode("/AnalyticsEngineConfig/Engines");
                 foreach (XmlNode engineNode in xdocGa4.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine"))

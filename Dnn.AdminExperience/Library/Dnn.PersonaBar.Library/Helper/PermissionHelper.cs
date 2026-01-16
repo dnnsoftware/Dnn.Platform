@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Library.Helper
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.PersonaBar.Library.Dto;
@@ -71,7 +72,7 @@ namespace Dnn.PersonaBar.Library.Helper
 
             // Show also default roles
             dto.EnsureRole(RoleController.Instance.GetRoleById(PortalSettings.Current.PortalId, PortalSettings.Current.RegisteredRoleId), false, true);
-            dto.EnsureRole(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName }, false, true);
+            dto.EnsureRole(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture), RoleName = Globals.glbRoleAllUsersName, }, false, true);
         }
 
         public static void EnsureRole(this Dto.Permissions dto, RoleInfo role)
@@ -122,8 +123,8 @@ namespace Dnn.PersonaBar.Library.Helper
             }
 
             // retreive roles info
-            data.Roles.Add(new { RoleID = int.Parse(Globals.glbRoleUnauthUser), GroupId = -1, RoleName = Globals.glbRoleUnauthUserName });
-            data.Roles.Add(new { RoleID = int.Parse(Globals.glbRoleAllUsers), GroupId = -1, RoleName = Globals.glbRoleAllUsersName });
+            data.Roles.Add(new { RoleID = int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture), GroupId = -1, RoleName = Globals.glbRoleUnauthUserName });
+            data.Roles.Add(new { RoleID = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture), GroupId = -1, RoleName = Globals.glbRoleAllUsersName });
             foreach (RoleInfo role in RoleController.Instance.GetRoles(portalId).OrderBy(r => r.RoleName))
             {
                 data.Roles.Add(new { GroupId = role.RoleGroupID, RoleId = role.RoleID, Name = role.RoleName });

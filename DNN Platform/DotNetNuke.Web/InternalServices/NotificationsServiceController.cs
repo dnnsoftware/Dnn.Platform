@@ -16,11 +16,15 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    /// <summary>A web API controller for notifications.</summary>
     [DnnAuthorize]
     public class NotificationsServiceController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NotificationsServiceController));
 
+        /// <summary>Dismisses a notification.</summary>
+        /// <param name="postData">Information about the notification.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Dismiss(NotificationDTO postData)
@@ -43,6 +47,8 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
+        /// <summary>Gets toasts for the user.</summary>
+        /// <returns>A response with an object that has a <c>Toasts</c> field.</returns>
         [HttpGet]
         public HttpResponseMessage GetToasts()
         {

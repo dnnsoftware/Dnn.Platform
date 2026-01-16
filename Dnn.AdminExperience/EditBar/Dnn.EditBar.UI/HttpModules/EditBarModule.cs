@@ -4,6 +4,7 @@
 
 namespace Dnn.EditBar.UI.HttpModules
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using Dnn.EditBar.UI.Controllers;
@@ -54,6 +55,7 @@ namespace Dnn.EditBar.UI.HttpModules
             }
         }
 
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication application)
         {
             if (hasAppStarted)

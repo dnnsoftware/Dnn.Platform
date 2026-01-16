@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web;
     using System.Web.UI.WebControls;
@@ -19,12 +20,16 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     {
         private static readonly char[] TermIdSeparator = [',',];
 
+        /// <summary>Gets or sets the portal ID.</summary>
         public int PortalId { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether to include terms from system vocabularies.</summary>
         public bool IncludeSystemVocabularies { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether to include terms from the tags vocabulary.</summary>
         public bool IncludeTags { get; set; } = true;
 
+        /// <summary>Gets or sets the terms.</summary>
         public List<Term> Terms
         {
             get
@@ -39,7 +44,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                     {
                         if (!string.IsNullOrEmpty(i.Trim()))
                         {
-                            var termId = Convert.ToInt32(i.Trim());
+                            var termId = Convert.ToInt32(i.Trim(), CultureInfo.InvariantCulture);
                             var term = termRep.GetTerm(termId);
                             if (term != null)
                             {
@@ -54,10 +59,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
             set
             {
-                this.Value = string.Join(",", value.Select(t => t.TermId.ToString()));
+                this.Value = string.Join(",", value.Select(t => t.TermId.ToString(CultureInfo.InvariantCulture)));
 
                 this.Items.Clear();
-                value.Select(t => new ListItem(t.Name, t.TermId.ToString()) { Selected = true }).ToList().ForEach(this.Items.Add);
+                value.Select(t => new ListItem(t.Name, t.TermId.ToString(CultureInfo.InvariantCulture)) { Selected = true }).ToList().ForEach(this.Items.Add);
             }
         }
 

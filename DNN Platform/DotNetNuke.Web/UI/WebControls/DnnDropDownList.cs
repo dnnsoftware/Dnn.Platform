@@ -19,6 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls.Extensions;
 
+    /// <summary>A dropdown list control.</summary>
     [ToolboxData("<{0}:DnnDropDownList runat='server'></{0}:DnnDropDownList>")]
     public class DnnDropDownList : Panel, INamingContainer
     {
@@ -75,6 +76,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets the services options.</summary>
         public ItemListServicesOptions Services
         {
             get
@@ -153,6 +155,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the skin.</summary>
         public string Skin
         {
             get;
@@ -221,6 +224,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets the options.</summary>
         internal DnnDropDownListOptions Options
         {
             get
@@ -229,6 +233,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets the state control.</summary>
         protected DnnGenericHiddenField<DnnDropDownListState> StateControl
         {
             get
@@ -260,6 +265,9 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Registers scripts.</summary>
+        /// <param name="page">The page.</param>
+        /// <param name="skin">The skin.</param>
         internal static void RegisterClientScript(Page page, string skin)
         {
             ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList.css", FileOrder.Css.ResourceCss);
@@ -318,6 +326,8 @@ namespace DotNetNuke.Web.UI.WebControls
             this.RegisterStartupScript();
         }
 
+        /// <summary>A method called when the <see cref="SelectionChanged"/> event triggers.</summary>
+        /// <param name="e">The event args.</param>
         protected virtual void OnSelectionChanged(EventArgs e)
         {
             var eventHandler = (EventHandler)this.Events[EventSelectionChanged];
@@ -390,7 +400,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             var methodsAsJsonString = methods.ToJsonString();
 
-            var script = string.Format("dnn.createDropDownList('#{0}', {1}, {2});{3}", this.ClientID, optionsAsJsonString, methodsAsJsonString, Environment.NewLine);
+            var script = $"dnn.createDropDownList('#{this.ClientID}', {optionsAsJsonString}, {methodsAsJsonString});{Environment.NewLine}";
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {

@@ -44,14 +44,18 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             if (result == null)
             {
                 result = new XmlDocument { XmlResolver = null };
-                result.Load(filename);
+                using (var xmlReader = XmlReader.Create(filename, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    result.Load(xmlReader);
+                }
+
                 cache.Insert(filename, result, new CacheDependency(filename));
             }
 
             return result;
         }
 
-        /// <summary>Gets a cached version of an xslt tranformation script.</summary>
+        /// <summary>Gets a cached version of an xslt transformation script.</summary>
         /// <param name="filename">The name of the xslt file.</param>
         /// <returns>An <see cref="XslCompiledTransform"/> object with the content of cached content of the file.</returns>
         internal static XslCompiledTransform CachedXslt(string filename)

@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -44,10 +45,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        protected string OldStringValue
-        {
-            get { return Convert.ToString(this.OldValue); }
-        }
+        protected string OldStringValue => Convert.ToString(this.OldValue, CultureInfo.InvariantCulture);
 
         /// <inheritdoc/>
         protected override string StringValue
@@ -57,7 +55,7 @@ namespace DotNetNuke.UI.WebControls
                 string strValue = Null.NullString;
                 if (this.Value != null)
                 {
-                    strValue = Convert.ToString(this.Value);
+                    strValue = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
                 }
 
                 return strValue;

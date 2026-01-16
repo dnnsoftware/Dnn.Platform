@@ -228,7 +228,8 @@ namespace DotNetNuke.Modules.Admin.Modules
                 try
                 {
                     var content = XmlUtils.RemoveInvalidXmlCharacters(this.txtContent.Text);
-                    xmlDoc.LoadXml(content);
+                    using var contentReader = XmlReader.Create(new StringReader(content), new XmlReaderSettings { XmlResolver = null, });
+                    xmlDoc.Load(contentReader);
                 }
                 catch
                 {

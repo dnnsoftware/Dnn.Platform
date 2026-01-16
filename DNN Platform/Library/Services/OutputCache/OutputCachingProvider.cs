@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.OutputCache
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Security.Cryptography;
     using System.Text;
@@ -80,7 +81,7 @@ namespace DotNetNuke.Services.OutputCache
             var sOutput = new StringBuilder(arrInput.Length);
             for (i = 0; i <= arrInput.Length - 1; i++)
             {
-                sOutput.Append(arrInput[i].ToString("X2"));
+                sOutput.Append(arrInput[i].ToString("X2", CultureInfo.InvariantCulture));
             }
 
             return sOutput.ToString();
@@ -89,11 +90,9 @@ namespace DotNetNuke.Services.OutputCache
         protected string GenerateCacheKeyHash(int tabId, string cacheKey)
         {
             byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
-            using (var sha256 = new SHA256CryptoServiceProvider())
-            {
-                hash = sha256.ComputeHash(hash);
-                return string.Concat(tabId.ToString(), "_", this.ByteArrayToString(hash));
-            }
+            using var sha256 = new SHA256CryptoServiceProvider();
+            hash = sha256.ComputeHash(hash);
+            return string.Concat(tabId.ToString(CultureInfo.InvariantCulture), "_", this.ByteArrayToString(hash));
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]

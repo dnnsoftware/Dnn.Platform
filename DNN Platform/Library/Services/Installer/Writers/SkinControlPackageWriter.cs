@@ -21,8 +21,8 @@ namespace DotNetNuke.Services.Installer.Writers
             : base(package)
         {
             this.SkinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
-            this.BasePath = Path.Combine("DesktopModules", package.Name.ToLowerInvariant()).Replace("/", "\\");
-            this.AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.BasePath = Path.Combine("DesktopModules", package.Name.ToLowerInvariant()).Replace("/", @"\");
+            this.AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", @"\");
         }
 
         /// <summary>Initializes a new instance of the <see cref="SkinControlPackageWriter"/> class.</summary>
@@ -32,8 +32,8 @@ namespace DotNetNuke.Services.Installer.Writers
             : base(package)
         {
             this.SkinControl = skinControl;
-            this.BasePath = Path.Combine("DesktopModules", package.Name.ToLowerInvariant()).Replace("/", "\\");
-            this.AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.BasePath = Path.Combine("DesktopModules", package.Name.ToLowerInvariant()).Replace("/", @"\");
+            this.AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", @"\");
         }
 
         /// <summary>Initializes a new instance of the <see cref="SkinControlPackageWriter"/> class.</summary>
@@ -53,8 +53,8 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Package.PackageType = "SkinObject";
             this.Package.License = Util.PACKAGE_NoLicense;
 
-            this.BasePath = Path.Combine("DesktopModules", this.Package.Name.ToLowerInvariant()).Replace("/", "\\");
-            this.AppCodePath = Path.Combine("App_Code", this.Package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.BasePath = Path.Combine("DesktopModules", this.Package.Name.ToLowerInvariant()).Replace("/", @"\");
+            this.AppCodePath = Path.Combine("App_Code", this.Package.Name.ToLowerInvariant()).Replace("/", @"\");
         }
 
         /// <summary>Gets or sets the associated SkinControl.</summary>
@@ -88,7 +88,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 foreach (XPathNavigator controlNav in folderNav.Select("modules/module/controls/control"))
                 {
                     this.SkinControl.ControlKey = Util.ReadElement(controlNav, "key");
-                    this.SkinControl.ControlSrc = Path.Combine(Path.Combine("DesktopModules", this.Package.Name.ToLowerInvariant()), Util.ReadElement(controlNav, "src")).Replace("\\", "/");
+                    this.SkinControl.ControlSrc = Path.Combine(Path.Combine("DesktopModules", this.Package.Name.ToLowerInvariant()), Util.ReadElement(controlNav, "src")).Replace(@"\", "/");
                     string supportsPartialRendering = Util.ReadElement(controlNav, "supportspartialrendering");
                     if (!string.IsNullOrEmpty(supportsPartialRendering))
                     {

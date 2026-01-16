@@ -3,8 +3,10 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI.WebControls;
 
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public delegate void DNNDataGridCheckedColumnEventHandler(object sender, DNNDataGridCheckChangedEventArgs e);
 
     /// <summary>

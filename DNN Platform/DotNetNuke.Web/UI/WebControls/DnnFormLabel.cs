@@ -10,16 +10,22 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
 
+    /// <summary>A form label control.</summary>
     public class DnnFormLabel : Panel
     {
+        /// <summary>Gets or sets the ID of the associated control.</summary>
         public string AssociatedControlID { get; set; }
 
+        /// <summary>Gets or sets the path to the local resource file.</summary>
         public string LocalResourceFile { get; set; }
 
+        /// <summary>Gets or sets the resource key of the label.</summary>
         public string ResourceKey { get; set; }
 
+        /// <summary>Gets or sets the resource key of the tooltip.</summary>
         public string ToolTipKey { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether the field is required.</summary>
         public bool RequiredField { get; set; }
 
         /// <inheritdoc/>
@@ -77,6 +83,9 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets the localized string corresponding to the <paramref name="key"/>.</summary>
+        /// <param name="key">The resource key to find.</param>
+        /// <returns>The localized text.</returns>
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, this.LocalResourceFile);

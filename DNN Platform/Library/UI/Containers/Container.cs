@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.Containers
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -146,7 +147,7 @@ namespace DotNetNuke.UI.Containers
 
         private void AddAdministratorOnlyHighlighting(string message)
         {
-            this.ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo dnnFormInfoAdminErrMssg\">{0}</div>", message)));
+            this.ContentPane.Controls.Add(new LiteralControl($"<div class=\"dnnFormMessage dnnFormInfo dnnFormInfoAdminErrMssg\">{message}</div>"));
         }
 
         /// <summary>
@@ -157,28 +158,23 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         private void ProcessChildControls(Control control)
         {
-            IActionControl actions;
-            ISkinControl skinControl;
             foreach (Control childControl in control.Controls)
             {
                 // check if control is an action control
-                actions = childControl as IActionControl;
-                if (actions != null)
+                if (childControl is IActionControl actions)
                 {
                     actions.ModuleControl = this.ModuleControl;
                     actions.Action += this.ModuleActionClick;
                 }
 
                 // check if control is an actionLink control
-                var actionLink = childControl as ActionLink;
-                if (actionLink != null)
+                if (childControl is ActionLink actionLink)
                 {
                     actionLink.ModuleControl = this.ModuleControl;
                 }
 
                 // check if control is a skin control
-                skinControl = childControl as ISkinControl;
-                if (skinControl != null)
+                if (childControl is ISkinControl skinControl)
                 {
                     skinControl.ModuleControl = this.ModuleControl;
                 }
@@ -191,10 +187,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>
-        /// ProcessContentPane processes the ContentPane, setting its style and other
-        /// attributes.
-        /// </summary>
+        /// <summary>ProcessContentPane processes the ContentPane, setting its style and other attributes.</summary>
         private void ProcessContentPane()
         {
             this.SetAlignment();
@@ -228,13 +221,13 @@ namespace DotNetNuke.UI.Containers
 
             if (this.ModuleConfiguration.StartDate >= DateTime.Now)
             {
-                adminMessage = string.Format(Localization.GetString("ModuleEffective.Text"), this.ModuleConfiguration.StartDate);
+                adminMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("ModuleEffective.Text"), this.ModuleConfiguration.StartDate);
                 showMessage = !Globals.IsAdminControl();
             }
 
             if (this.ModuleConfiguration.EndDate <= DateTime.Now)
             {
-                adminMessage = string.Format(Localization.GetString("ModuleExpired.Text"), this.ModuleConfiguration.EndDate);
+                adminMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("ModuleExpired.Text"), this.ModuleConfiguration.EndDate);
                 showMessage = !Globals.IsAdminControl();
             }
 
@@ -348,15 +341,15 @@ namespace DotNetNuke.UI.Containers
                 string folderName = this.ModuleConfiguration.DesktopModule.FolderName;
 
                 string stylesheet = string.Empty;
-                if (string.IsNullOrEmpty(folderName) == false)
+                if (!string.IsNullOrEmpty(folderName))
                 {
-                    if (controlSrc.EndsWith(".mvc"))
+                    if (controlSrc.EndsWith(".mvc", StringComparison.OrdinalIgnoreCase))
                     {
-                        stylesheet = Globals.ApplicationPath + "/DesktopModules/MVC/" + folderName.Replace("\\", "/") + "/module.css";
+                        stylesheet = $"{Globals.ApplicationPath}/DesktopModules/MVC/{folderName.Replace(@"\", "/")}/module.css";
                     }
                     else
                     {
-                        stylesheet = Globals.ApplicationPath + "/DesktopModules/" + folderName.Replace("\\", "/") + "/module.css";
+                        stylesheet = $"{Globals.ApplicationPath}/DesktopModules/{folderName.Replace(@"\", "/")}/module.css";
                     }
 
                     this.clientResourceController.RegisterStylesheet(stylesheet, FileOrder.Css.ModuleCss, true);
@@ -365,7 +358,7 @@ namespace DotNetNuke.UI.Containers
                 var ix = controlSrc.LastIndexOf("/", StringComparison.Ordinal);
                 if (ix >= 0)
                 {
-                    stylesheet = Globals.ApplicationPath + "/" + controlSrc.Substring(0, ix + 1) + "module.css";
+                    stylesheet = $"{Globals.ApplicationPath}/{controlSrc.Substring(0, ix + 1)}module.css";
                     this.clientResourceController.RegisterStylesheet(stylesheet, FileOrder.Css.ModuleCss, true);
                 }
             }
@@ -398,10 +391,10 @@ namespace DotNetNuke.UI.Containers
         {
             if (!string.IsNullOrEmpty(this.ModuleConfiguration.Border))
             {
-                this.ContentPane.Style["border-top"] = string.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
-                this.ContentPane.Style["border-bottom"] = string.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
-                this.ContentPane.Style["border-right"] = string.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
-                this.ContentPane.Style["border-left"] = string.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
+                this.ContentPane.Style["border-top"] = string.Format(CultureInfo.InvariantCulture, "{0}px #000000 solid", this.ModuleConfiguration.Border);
+                this.ContentPane.Style["border-bottom"] = string.Format(CultureInfo.InvariantCulture, "{0}px #000000 solid", this.ModuleConfiguration.Border);
+                this.ContentPane.Style["border-right"] = string.Format(CultureInfo.InvariantCulture, "{0}px #000000 solid", this.ModuleConfiguration.Border);
+                this.ContentPane.Style["border-left"] = string.Format(CultureInfo.InvariantCulture, "{0}px #000000 solid", this.ModuleConfiguration.Border);
             }
         }
 

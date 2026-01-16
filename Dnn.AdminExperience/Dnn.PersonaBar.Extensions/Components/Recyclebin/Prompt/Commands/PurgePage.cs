@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Text;
 
     using Dnn.PersonaBar.Library.Helper;
@@ -70,15 +71,15 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             if (tabInfo == null ||
                 !this.contentVerifier.IsContentExistsForRequestedPortal(tabInfo.PortalID, this.PortalSettings))
             {
-                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("PageNotFound"), this.PageId));
+                return new ConsoleErrorResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("PageNotFound"), this.PageId));
             }
 
             var errors = new StringBuilder();
             this.recyclebinController.DeleteTabs(new List<TabInfo> { tabInfo }, errors, this.DeleteChildren);
 
             return errors.Length > 0
-                ? new ConsoleErrorResultModel(string.Format(this.LocalizeString("Service_RemoveTabError"), errors))
-                : new ConsoleResultModel(string.Format(this.LocalizeString("Prompt_PagePurgedSuccessfully"), this.PageId)) { Records = 1 };
+                ? new ConsoleErrorResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Service_RemoveTabError"), errors))
+                : new ConsoleResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Prompt_PagePurgedSuccessfully"), this.PageId)) { Records = 1 };
         }
     }
 }

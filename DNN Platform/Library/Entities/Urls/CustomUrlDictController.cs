@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Urls
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Collections.Internal;
@@ -61,7 +62,7 @@ namespace DotNetNuke.Entities.Urls
                         urlPortals,
                         customAliasForTabs,
                         settings,
-                        "Portal Id " + portalId.ToString() + " added to index.");
+                        "Portal Id " + portalId.ToString(CultureInfo.InvariantCulture) + " added to index.");
                 }
             }
             else
@@ -69,10 +70,10 @@ namespace DotNetNuke.Entities.Urls
                 // either values are null (Not in cache) or we want to force the rebuild, or we want to bypass the cache
                 // rebuild the dictionary for this portal
                 urlDict = BuildUrlDictionary(urlDict, portalId, settings, ref customAliasForTabs);
-                urlPortals = new ConcurrentBag<int> { portalId }; // always rebuild the portal list
+                urlPortals = [portalId,]; // always rebuild the portal list
 
                 // if we are to cache this item (byPassCache = false)
-                if (bypassCache == false)
+                if (!bypassCache)
                 {
                     // cache these items
                     string reason = forceRebuild ? "Force Rebuild of Index" : "Index not in cache";
@@ -126,10 +127,10 @@ namespace DotNetNuke.Entities.Urls
                 // check the custom alias tabs collection and add to the dictionary where necessary
                 foreach (var customAlias in tab.CustomAliases)
                 {
-                    string key = tab.TabID.ToString() + ":" + customAlias.Key;
+                    string key = tab.TabID.ToString(CultureInfo.InvariantCulture) + ":" + customAlias.Key;
                     using (customAliasTabs.GetWriteLock()) // obtain write lock on custom alias Tabs
                     {
-                        if (customAliasTabs.ContainsKey(key) == false)
+                        if (!customAliasTabs.ContainsKey(key))
                         {
                             customAliasTabs.Add(key, customAlias.Value);
                         }

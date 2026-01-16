@@ -22,7 +22,7 @@ namespace DotNetNuke.Common
         /// <exception cref="InvalidOperationException">When <paramref name="condition" /> is <see langword="true"/>.</exception>
         public static void Against(bool condition, string message, params object[] args)
         {
-            Against(condition, string.Format(CultureInfo.CurrentUICulture, message, args));
+            Against(condition, string.Format(CultureInfo.CurrentCulture, message, args));
         }
 
         /// <summary>

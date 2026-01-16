@@ -6,9 +6,11 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.ComponentModel;
     using System.Web.UI;
 
+    /// <summary>A template item control.</summary>
     [ParseChildren(true)]
     public class DnnFormTemplateItem : DnnFormItemBase
     {
+        /// <summary>Gets or sets the item template.</summary>
         [Browsable(false)]
         [DefaultValue(null)]
         [Description("The Item Template.")]

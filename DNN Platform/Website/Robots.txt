@@ -21,5 +21,6 @@ Disallow: /HttpModules/
 Disallow: /Install/
 Disallow: /Providers/
 Disallow: /Activity-Feed/userId/	# Do not index user profiles
+Disallow: *?returnurl=*
 
 # End of robots.txt file

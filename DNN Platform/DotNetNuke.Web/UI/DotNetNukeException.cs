@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.UI
     using System;
     using System.Runtime.Serialization;
 
+    /// <summary>An exception with a <see cref="DotNetNukeErrorCode"/>.</summary>
     public class DotNetNukeException : Exception
     {
         private readonly DotNetNukeErrorCode errorCode = DotNetNukeErrorCode.NotSet;
@@ -58,6 +59,7 @@ namespace DotNetNuke.Web.UI
         {
         }
 
+        /// <summary>Gets the error code associated with this exception.</summary>
         public DotNetNukeErrorCode ErrorCode
         {
             get

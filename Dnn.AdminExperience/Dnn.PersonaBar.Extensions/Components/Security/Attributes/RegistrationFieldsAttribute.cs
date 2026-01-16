@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Security.Attributes
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.PersonaBar.Security.Components;
@@ -40,32 +41,30 @@ namespace Dnn.PersonaBar.Security.Attributes
             }
             catch
             {
-                return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.RegistrationFormTypePropertyName, registrationFormTypeValue));
+                return new ValidationResult(string.Format(CultureInfo.CurrentCulture, Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.RegistrationFormTypePropertyName, registrationFormTypeValue));
             }
 
             if (string.IsNullOrWhiteSpace(registrationFormTypeValue))
             {
-                return new ValidationResult(string.Format(Localization.GetString(Constants.EmptyValue, Constants.LocalResourcesFile), this.RegistrationFormTypePropertyName));
+                return new ValidationResult(string.Format(CultureInfo.CurrentCulture, Localization.GetString(Constants.EmptyValue, Constants.LocalResourcesFile), this.RegistrationFormTypePropertyName));
             }
 
-            int registrationFormType;
-
-            if (!int.TryParse(registrationFormTypeValue, out registrationFormType))
+            if (!int.TryParse(registrationFormTypeValue, out var registrationFormType))
             {
-                return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.RegistrationFormTypePropertyName, registrationFormTypeValue));
+                return new ValidationResult(string.Format(CultureInfo.CurrentCulture, Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.RegistrationFormTypePropertyName, registrationFormTypeValue));
             }
 
             if (registrationFormType == 1)
             {
                 var registrationFields = value.ToString();
                 var registrationTokens = registrationFields.Split(',');
-                var portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
+                var portalId = PortalController.Instance.GetCurrentSettings().PortalId;
 
                 foreach (var registrationField in registrationTokens)
                 {
                     if (!string.IsNullOrWhiteSpace(registrationField) && !RegistrationProfileController.Instance.Search(portalId, registrationField).Any())
                     {
-                        return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), validationContext.DisplayName, registrationField));
+                        return new ValidationResult(string.Format(CultureInfo.CurrentCulture, Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), validationContext.DisplayName, registrationField));
                     }
                 }
 
@@ -82,19 +81,17 @@ namespace Dnn.PersonaBar.Security.Attributes
                 }
                 catch
                 {
-                    return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.RequireUniqueDisplayNamePropertyName, requireUniqueDisplayNameValue));
+                    return new ValidationResult(string.Format(CultureInfo.CurrentCulture, Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.RequireUniqueDisplayNamePropertyName, requireUniqueDisplayNameValue));
                 }
 
                 if (string.IsNullOrWhiteSpace(requireUniqueDisplayNameValue))
                 {
-                    return new ValidationResult(string.Format(Localization.GetString(Constants.EmptyValue, Constants.LocalResourcesFile), this.RequireUniqueDisplayNamePropertyName));
+                    return new ValidationResult(string.Format(CultureInfo.CurrentCulture, Localization.GetString(Constants.EmptyValue, Constants.LocalResourcesFile), this.RequireUniqueDisplayNamePropertyName));
                 }
 
-                bool requireUniqueDisplayName;
-
-                if (!bool.TryParse(requireUniqueDisplayNameValue, out requireUniqueDisplayName))
+                if (!bool.TryParse(requireUniqueDisplayNameValue, out var requireUniqueDisplayName))
                 {
-                    return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.RequireUniqueDisplayNamePropertyName, requireUniqueDisplayNameValue));
+                    return new ValidationResult(string.Format(CultureInfo.CurrentCulture, Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.RequireUniqueDisplayNamePropertyName, requireUniqueDisplayNameValue));
                 }
 
                 if (!registrationFields.Contains("DisplayName") && requireUniqueDisplayName)
@@ -111,7 +108,7 @@ namespace Dnn.PersonaBar.Security.Attributes
                 }
                 catch
                 {
-                    return new ValidationResult(string.Format(Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.DisplayNameFormatPropertyName, displayNameFormatValue));
+                    return new ValidationResult(string.Format(CultureInfo.CurrentCulture, Localization.GetString(Constants.NotValid, Constants.LocalResourcesFile), this.DisplayNameFormatPropertyName, displayNameFormatValue));
                 }
 
                 if (!registrationFields.Contains("DisplayName") && string.IsNullOrWhiteSpace(displayNameFormatValue))

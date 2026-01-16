@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -14,22 +15,30 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnFormComboBoxItem : DnnFormListItemBase
     {
-        // public DropDownList ComboBox { get; set; }
+        ////public DropDownList ComboBox { get; set; }
+
+        /// <summary>Gets or sets the combobox.</summary>
         public DnnComboBox ComboBox { get; set; }
 
-        // internal static void BindListInternal(DropDownList comboBox, object value, IEnumerable listSource, string textField, string valueField)
+        ////internal static void BindListInternal(DropDownList comboBox, object value, IEnumerable listSource, string textField, string valueField)
+
+        /// <summary>Binds the list.</summary>
+        /// <param name="comboBox">The combobox.</param>
+        /// <param name="value">The selected value.</param>
+        /// <param name="listSource">The list source.</param>
+        /// <param name="textField">The field of the data source that provides the text content of the list items.</param>
+        /// <param name="valueField">The field of the data source that provides the value content of the list items.</param>
         internal static void BindListInternal(DnnComboBox comboBox, object value, IEnumerable listSource, string textField, string valueField)
         {
             if (comboBox != null)
             {
-                string selectedValue = !comboBox.Page.IsPostBack ? Convert.ToString(value) : comboBox.SelectedValue;
+                string selectedValue = !comboBox.Page.IsPostBack ? Convert.ToString(value, CultureInfo.InvariantCulture) : comboBox.SelectedValue;
 
-                if (listSource is Dictionary<string, string>)
+                if (listSource is Dictionary<string, string> items)
                 {
-                    var items = listSource as Dictionary<string, string>;
                     foreach (var item in items)
                     {
-                        // comboBox.Items.Add(new ListItem(item.Key, item.Value));
+                        ////comboBox.Items.Add(new ListItem(item.Key, item.Value));
                         comboBox.AddItem(item.Key, item.Value);
                     }
                 }

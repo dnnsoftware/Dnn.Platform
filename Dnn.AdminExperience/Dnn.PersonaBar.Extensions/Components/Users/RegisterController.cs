@@ -252,7 +252,7 @@ namespace Dnn.PersonaBar.Users.Components
             // clear cache
             if (createStatus == UserCreateStatus.Success)
             {
-                CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, portalSettings.PortalId));
+                CachingProvider.Instance().Remove(string.Format(CultureInfo.InvariantCulture, DataCache.PortalUserCountCacheKey, portalSettings.PortalId));
             }
 
             if (createStatus != UserCreateStatus.Success)
@@ -313,7 +313,7 @@ namespace Dnn.PersonaBar.Users.Components
 
         private static bool GetBoolSetting(Hashtable settings, string settingKey)
         {
-            return settings[settingKey] != null && Convert.ToBoolean(settings[settingKey]);
+            return settings[settingKey] != null && Convert.ToBoolean(settings[settingKey], CultureInfo.InvariantCulture);
         }
 
         private static string GetStringSetting(Hashtable settings, string settingKey)

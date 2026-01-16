@@ -7,6 +7,7 @@ namespace Dnn.ExportImport.Components.Controllers
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
 
@@ -33,6 +34,7 @@ namespace Dnn.ExportImport.Components.Controllers
     /// <summary>The import/export controller.</summary>
     public class BaseController
     {
+        /// <summary>The full path to the folder used for import/export.</summary>
         public static readonly string ExportFolder;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BaseController));
@@ -60,6 +62,7 @@ namespace Dnn.ExportImport.Components.Controllers
             this.PortableServices = portableServices ?? Globals.GetCurrentServiceProvider().GetServices<BasePortableService>();
         }
 
+        /// <summary>Gets the portable services.</summary>
         protected IEnumerable<BasePortableService> PortableServices { get; }
 
         /// <summary>Cancels the job.</summary>
@@ -301,7 +304,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 LogUserID = userId,
             };
 
-            log.AddProperty("JobID", jobId.ToString());
+            log.AddProperty("JobID", jobId.ToString(CultureInfo.InvariantCulture));
             LogController.Instance.AddLog(log);
         }
 
@@ -314,7 +317,7 @@ namespace Dnn.ExportImport.Components.Controllers
             {
                 JobId = job.JobId,
                 PortalId = job.PortalId,
-                User = user?.DisplayName ?? user?.Username ?? job.CreatedByUserId.ToString(),
+                User = user?.DisplayName ?? user?.Username ?? job.CreatedByUserId.ToString(CultureInfo.InvariantCulture),
                 JobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources),
                 Status = (int)job.JobStatus,
                 Cancelled = job.IsCancelled,

@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    /// <summary>A ribbon bar control.</summary>
     [ParseChildren(true)]
     public class DnnRibbonBar : WebControl
     {
@@ -20,6 +21,7 @@ namespace DotNetNuke.Web.UI.WebControls
             Utilities.ApplyControlSkin(control, "RibbonBar", "RibbonBar");
         }
 
+        /// <summary>Gets the groups.</summary>
         [Category("Behavior")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]

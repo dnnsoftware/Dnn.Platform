@@ -17,11 +17,15 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    /// <summary>A web API controller for relationships.</summary>
     [DnnAuthorize]
     public class RelationshipServiceController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RelationshipServiceController));
 
+        /// <summary>Accept a friend.</summary>
+        /// <param name="postData">The request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage AcceptFriend(NotificationDTO postData)
@@ -60,6 +64,9 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
         }
 
+        /// <summary>Follow a user who has requested to follow you.</summary>
+        /// <param name="postData">The request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage FollowBack(NotificationDTO postData)

@@ -12,35 +12,49 @@ namespace Dnn.ExportImport.Components.Entities
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Modules;
 
+    /// <summary>A table of import/export jobs.</summary>
     [Serializable]
     [TableName("ExportImportJobs")]
     [PrimaryKey("JobId")]
     public class ExportImportJob : IHydratable
     {
+        /// <summary>Gets or sets the job ID.</summary>
         public int JobId { get; set; }
 
+        /// <summary>Gets or sets the portal ID.</summary>
         public int PortalId { get; set; }
 
+        /// <summary>Gets or sets the job type.</summary>
         public JobType JobType { get; set; }
 
+        /// <summary>Gets or sets the job status.</summary>
         public JobStatus JobStatus { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether the job is canceled.</summary>
         public bool IsCancelled { get; set; }
 
+        /// <summary>Gets or sets the job name.</summary>
         public string Name { get; set; }
 
+        /// <summary>Gets or sets the job description.</summary>
         public string Description { get; set; }
 
+        /// <summary>Gets or sets the ID of the user that created the job.</summary>
         public int CreatedByUserId { get; set; }
 
+        /// <summary>Gets or sets the date/time the job was created.</summary>
         public DateTime CreatedOnDate { get; set; }
 
+        /// <summary>Gets or sets the date/time the job was last modified.</summary>
         public DateTime LastModifiedOnDate { get; set; }
 
+        /// <summary>Gets or sets the date/time the job was completed (or <see langword="null"/> if the job is not complete).</summary>
         public DateTime? CompletedOnDate { get; set; }
 
+        /// <summary>Gets or sets the directory.</summary>
         public string Directory { get; set; }
 
+        /// <summary>Gets or sets the job object serialized as JSON.</summary>
         public string JobObject { get; set; }
 
         /// <inheritdoc/>

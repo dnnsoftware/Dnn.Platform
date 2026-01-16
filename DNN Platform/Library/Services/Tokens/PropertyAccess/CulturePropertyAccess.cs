@@ -23,90 +23,89 @@ namespace DotNetNuke.Services.Tokens
         /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            CultureInfo ci = formatProvider;
-            if (propertyName.Equals(CultureDropDownTypes.EnglishName.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals(nameof(CultureDropDownTypes.EnglishName), StringComparison.OrdinalIgnoreCase))
             {
-                return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ci.EnglishName), format);
+                return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(formatProvider.EnglishName), format);
             }
 
-            if (propertyName.Equals(CultureDropDownTypes.Lcid.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals(nameof(CultureDropDownTypes.Lcid), StringComparison.OrdinalIgnoreCase))
             {
-                return ci.LCID.ToString();
+                return formatProvider.LCID.ToString(formatProvider);
             }
 
-            if (propertyName.Equals(CultureDropDownTypes.Name.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals(nameof(CultureDropDownTypes.Name), StringComparison.OrdinalIgnoreCase))
             {
-                return PropertyAccess.FormatString(ci.Name, format);
+                return PropertyAccess.FormatString(formatProvider.Name, format);
             }
 
-            if (propertyName.Equals(CultureDropDownTypes.NativeName.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals(nameof(CultureDropDownTypes.NativeName), StringComparison.OrdinalIgnoreCase))
             {
-                return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ci.NativeName), format);
+                return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(formatProvider.NativeName), format);
             }
 
-            if (propertyName.Equals(CultureDropDownTypes.TwoLetterIsoCode.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals(nameof(CultureDropDownTypes.TwoLetterIsoCode), StringComparison.OrdinalIgnoreCase))
             {
-                return PropertyAccess.FormatString(ci.TwoLetterISOLanguageName, format);
+                return PropertyAccess.FormatString(formatProvider.TwoLetterISOLanguageName, format);
             }
 
-            if (propertyName.Equals(CultureDropDownTypes.ThreeLetterIsoCode.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals(nameof(CultureDropDownTypes.ThreeLetterIsoCode), StringComparison.OrdinalIgnoreCase))
             {
-                return PropertyAccess.FormatString(ci.ThreeLetterISOLanguageName, format);
+                return PropertyAccess.FormatString(formatProvider.ThreeLetterISOLanguageName, format);
             }
 
-            if (propertyName.Equals(CultureDropDownTypes.DisplayName.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (propertyName.Equals(nameof(CultureDropDownTypes.DisplayName), StringComparison.OrdinalIgnoreCase))
             {
-                return PropertyAccess.FormatString(ci.DisplayName, format);
+                return PropertyAccess.FormatString(formatProvider.DisplayName, format);
             }
 
             if (propertyName.Equals("languagename", StringComparison.OrdinalIgnoreCase))
             {
-                if (ci.IsNeutralCulture)
+                if (formatProvider.IsNeutralCulture)
                 {
-                    return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ci.EnglishName), format);
+                    return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(formatProvider.EnglishName), format);
                 }
                 else
                 {
-                    return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ci.Parent.EnglishName), format);
+                    return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(formatProvider.Parent.EnglishName), format);
                 }
             }
 
             if (propertyName.Equals("languagenativename", StringComparison.OrdinalIgnoreCase))
             {
-                if (ci.IsNeutralCulture)
+                if (formatProvider.IsNeutralCulture)
                 {
-                    return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ci.NativeName), format);
+                    return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(formatProvider.NativeName), format);
                 }
                 else
                 {
-                    return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ci.Parent.NativeName), format);
+                    return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(formatProvider.Parent.NativeName), format);
                 }
             }
 
             if (propertyName.Equals("countryname", StringComparison.OrdinalIgnoreCase))
             {
-                if (ci.IsNeutralCulture)
+                if (formatProvider.IsNeutralCulture)
                 {
                     // Neutral culture do not include region information
                     return string.Empty;
                 }
                 else
                 {
-                    RegionInfo country = new RegionInfo(new CultureInfo(ci.Name, false).LCID);
+                    RegionInfo country = new RegionInfo(new CultureInfo(formatProvider.Name, false).LCID);
                     return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(country.EnglishName), format);
                 }
             }
 
             if (propertyName.Equals("countrynativename", StringComparison.OrdinalIgnoreCase))
             {
-                if (ci.IsNeutralCulture)
+                if (formatProvider.IsNeutralCulture)
                 {
                     // Neutral culture do not include region information
                     return string.Empty;
                 }
                 else
                 {
-                    RegionInfo country = new RegionInfo(new CultureInfo(ci.Name, false).LCID);
+                    RegionInfo country = new RegionInfo(new CultureInfo(formatProvider.Name, false).LCID);
                     return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(country.NativeName), format);
                 }
             }

@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.Api
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
 
+    /// <summary>Determines web API authorization based on module permissions.</summary>
     public class DnnModuleAuthorizeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
         /// <summary>Initializes a new instance of the <see cref="DnnModuleAuthorizeAttribute"/> class.</summary>
@@ -18,8 +19,10 @@ namespace DotNetNuke.Web.Api
             this.AccessLevel = SecurityAccessLevel.Host;
         }
 
+        /// <summary>Gets or sets a custom permission key to check for access.</summary>
         public string PermissionKey { get; set; }
 
+        /// <summary>Gets or sets an access level to verify the user has.</summary>
         public SecurityAccessLevel AccessLevel { get; set; }
 
         /// <inheritdoc/>
@@ -35,6 +38,9 @@ namespace DotNetNuke.Web.Api
             return false;
         }
 
+        /// <summary>Finds the module associated with the request.</summary>
+        /// <param name="request">The web API request.</param>
+        /// <returns>A <see cref="ModuleInfo"/> instance or <see langword="null"/>.</returns>
         protected virtual ModuleInfo FindModuleInfo(HttpRequestMessage request)
         {
             return request.FindModuleInfo();

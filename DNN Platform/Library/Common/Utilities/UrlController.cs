@@ -71,12 +71,12 @@ namespace DotNetNuke.Common.Utilities
         public void UpdateUrlTracking(int portalID, string url, int moduleId, int userID)
         {
             TabType urlType = Globals.GetURLType(url);
-            if (urlType == TabType.File && url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
+            if (urlType == TabType.File && !url.StartsWith("fileid=", StringComparison.OrdinalIgnoreCase))
             {
                 // to handle legacy scenarios before the introduction of the FileServerHandler
                 var fileName = Path.GetFileName(url);
 
-                var folderPath = url.Substring(0, url.LastIndexOf(fileName));
+                var folderPath = url.Substring(0, url.LastIndexOf(fileName, StringComparison.OrdinalIgnoreCase));
                 var folder = FolderManager.Instance.GetFolder(portalID, folderPath);
 
                 var file = FileManager.Instance.GetFile(folder, fileName);

@@ -76,8 +76,12 @@ namespace DotNetNuke.Entities.Portals.Internal
         {
             var defaultLanguage = string.Empty;
             var locales = new List<string>();
-            var templateXml = new XmlDocument() { XmlResolver = null };
-            templateXml.Load(templateFilePath);
+            var templateXml = new XmlDocument { XmlResolver = null };
+            using (var templateReader = XmlReader.Create(templateFilePath, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                templateXml.Load(templateReader);
+            }
+
             var node = templateXml.SelectSingleNode("//settings/defaultlanguage");
             if (node != null)
             {

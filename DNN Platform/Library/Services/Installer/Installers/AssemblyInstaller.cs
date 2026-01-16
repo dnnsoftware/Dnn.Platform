@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Reflection;
     using System.Security;
@@ -33,9 +34,10 @@ namespace DotNetNuke.Services.Installer.Installers
         protected override string ItemNodeName => "assembly";
 
         /// <summary>Gets the PhysicalBasePath for the assemblies.</summary>
-        protected override string PhysicalBasePath => this.PhysicalSitePath + "\\";
+        protected override string PhysicalBasePath => this.PhysicalSitePath + @"\";
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void DeleteFile(InstallFile file)
         {
             // Attempt to unregister assembly
@@ -63,6 +65,7 @@ namespace DotNetNuke.Services.Installer.Installers
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override bool InstallFile(InstallFile file)
         {
             bool bSuccess = true;
@@ -163,7 +166,10 @@ namespace DotNetNuke.Services.Installer.Installers
         private static XmlDocument GetXmlMergeDoc(string xmlMergePath, string name, string publicKeyToken, string oldVersion, string newVersion)
         {
             var xmlMergeDoc = new XmlDocument { XmlResolver = null };
-            xmlMergeDoc.Load(xmlMergePath);
+            using (var xmlMergeReader = XmlReader.Create(xmlMergePath, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                xmlMergeDoc.Load(xmlMergeReader);
+            }
 
             var namespaceManager = new XmlNamespaceManager(xmlMergeDoc.NameTable);
             namespaceManager.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");

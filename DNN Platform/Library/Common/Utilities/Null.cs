@@ -4,6 +4,7 @@
 namespace DotNetNuke.Common.Utilities
 {
     using System;
+    using System.Globalization;
     using System.Reflection;
 
     public class Null
@@ -210,39 +211,39 @@ namespace DotNetNuke.Common.Utilities
 
         public static bool SetNullBoolean(object objValue)
         {
-            return objValue != DBNull.Value ? Convert.ToBoolean(objValue) : NullBoolean;
+            return objValue != DBNull.Value ? Convert.ToBoolean(objValue, CultureInfo.InvariantCulture) : NullBoolean;
         }
 
         public static DateTime SetNullDateTime(object objValue)
         {
-            return objValue != DBNull.Value ? Convert.ToDateTime(objValue) : NullDate;
+            return objValue != DBNull.Value ? Convert.ToDateTime(objValue, CultureInfo.InvariantCulture) : NullDate;
         }
 
         public static DateTime SetNullDateTime(object objValue, DateTimeKind dateTimeKind)
         {
             return objValue != DBNull.Value
-                ? DateTime.SpecifyKind(Convert.ToDateTime(objValue), dateTimeKind)
+                ? DateTime.SpecifyKind(Convert.ToDateTime(objValue, CultureInfo.InvariantCulture), dateTimeKind)
                 : NullDate;
         }
 
         public static int SetNullInteger(object objValue)
         {
-            return objValue != DBNull.Value ? Convert.ToInt32(objValue) : NullInteger;
+            return objValue != DBNull.Value ? Convert.ToInt32(objValue, CultureInfo.InvariantCulture) : NullInteger;
         }
 
         public static float SetNullSingle(object objValue)
         {
-            return objValue != DBNull.Value ? Convert.ToSingle(objValue) : NullSingle;
+            return objValue != DBNull.Value ? Convert.ToSingle(objValue, CultureInfo.InvariantCulture) : NullSingle;
         }
 
         public static string SetNullString(object objValue)
         {
-            return objValue != DBNull.Value ? Convert.ToString(objValue) : NullString;
+            return objValue != DBNull.Value ? Convert.ToString(objValue, CultureInfo.InvariantCulture) : NullString;
         }
 
         public static Guid SetNullGuid(object objValue)
         {
-            if ((!(objValue == DBNull.Value)) && !string.IsNullOrEmpty(objValue.ToString()))
+            if ((objValue != DBNull.Value) && !string.IsNullOrEmpty(objValue.ToString()))
             {
                 return new Guid(objValue.ToString());
             }
@@ -252,6 +253,9 @@ namespace DotNetNuke.Common.Utilities
 
         // convert an application encoded null value to a database null value ( used in DAL )
         public static object GetNull(object objField, object objDBNull)
+            => GetNull(objField, objDBNull, CultureInfo.CurrentCulture);
+
+        public static object GetNull(object objField, object objDBNull, IFormatProvider provider)
         {
             object returnValue = objField;
             if (objField == null)
@@ -260,42 +264,42 @@ namespace DotNetNuke.Common.Utilities
             }
             else if (objField is byte)
             {
-                if (Convert.ToByte(objField) == NullByte)
+                if (Convert.ToByte(objField, provider) == NullByte)
                 {
                     returnValue = objDBNull;
                 }
             }
             else if (objField is short)
             {
-                if (Convert.ToInt16(objField) == NullShort)
+                if (Convert.ToInt16(objField, provider) == NullShort)
                 {
                     returnValue = objDBNull;
                 }
             }
             else if (objField is int)
             {
-                if (Convert.ToInt32(objField) == NullInteger)
+                if (Convert.ToInt32(objField, provider) == NullInteger)
                 {
                     returnValue = objDBNull;
                 }
             }
             else if (objField is float)
             {
-                if (Convert.ToSingle(objField) == NullSingle)
+                if (Convert.ToSingle(objField, provider) == NullSingle)
                 {
                     returnValue = objDBNull;
                 }
             }
             else if (objField is double)
             {
-                if (Convert.ToDouble(objField) == NullDouble)
+                if (Convert.ToDouble(objField, provider) == NullDouble)
                 {
                     returnValue = objDBNull;
                 }
             }
             else if (objField is decimal)
             {
-                if (Convert.ToDecimal(objField) == NullDecimal)
+                if (Convert.ToDecimal(objField, provider) == NullDecimal)
                 {
                     returnValue = objDBNull;
                 }
@@ -303,7 +307,7 @@ namespace DotNetNuke.Common.Utilities
             else if (objField is DateTime)
             {
                 // compare the Date part of the DateTime with the DatePart of the NullDate ( this avoids subtle time differences )
-                if (Convert.ToDateTime(objField).Date == NullDate.Date)
+                if (Convert.ToDateTime(objField, provider).Date == NullDate.Date)
                 {
                     returnValue = objDBNull;
                 }
@@ -324,14 +328,14 @@ namespace DotNetNuke.Common.Utilities
             }
             else if (objField is bool)
             {
-                if (Convert.ToBoolean(objField) == NullBoolean)
+                if (Convert.ToBoolean(objField, provider) == NullBoolean)
                 {
                     returnValue = objDBNull;
                 }
             }
-            else if (objField is Guid)
+            else if (objField is Guid guid)
             {
-                if (((Guid)objField).Equals(NullGuid))
+                if (guid.Equals(NullGuid))
                 {
                     returnValue = objDBNull;
                 }
@@ -370,9 +374,8 @@ namespace DotNetNuke.Common.Utilities
                 {
                     isNull = objField.Equals(NullDecimal);
                 }
-                else if (objField is DateTime)
+                else if (objField is DateTime objDate)
                 {
-                    var objDate = (DateTime)objField;
                     isNull = objDate.Date.Equals(NullDate.Date);
                 }
                 else if (objField is string)

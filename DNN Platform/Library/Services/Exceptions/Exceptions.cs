@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Exceptions
 {
     using System;
     using System.Diagnostics;
+    using System.Globalization;
     using System.Reflection;
     using System.Threading;
     using System.Web;
@@ -192,7 +193,7 @@ namespace DotNetNuke.Services.Exceptions
                     moduleTitle = ctrlModule.ModuleContext.Configuration.ModuleTitle;
                 }
 
-                friendlyMessage = string.Format(Localization.GetString("ModuleUnavailable"), moduleTitle);
+                friendlyMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("ModuleUnavailable"), moduleTitle);
             }
 
             ProcessModuleLoadException(friendlyMessage, ctrl, exc, displayErrorMessage);
@@ -289,7 +290,7 @@ namespace DotNetNuke.Services.Exceptions
                 ProcessPageLoadException(exc2);
             }
 
-            Logger.ErrorFormat("FriendlyMessage=\"{0}\" ctrl=\"{1}\" exc=\"{2}\"", friendlyMessage, ctrl, exc);
+            Logger.ErrorFormat(CultureInfo.InvariantCulture, "FriendlyMessage=\"{0}\" ctrl=\"{1}\" exc=\"{2}\"", friendlyMessage, ctrl, exc);
         }
 
         /// <summary>Processes the page load exception.</summary>
@@ -298,7 +299,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string appURL = Globals.ApplicationURL();
-            if (appURL.IndexOf("?") == Null.NullInteger)
+            if (appURL.IndexOf("?", StringComparison.Ordinal) == Null.NullInteger)
             {
                 appURL += "?def=ErrorMessage";
             }
@@ -336,7 +337,7 @@ namespace DotNetNuke.Services.Exceptions
                 if (!string.IsNullOrEmpty(url))
                 {
                     // redirect
-                    if (url.IndexOf("error=terminate") != -1)
+                    if (url.Contains("error=terminate", StringComparison.OrdinalIgnoreCase))
                     {
                         HttpContext.Current.Response.Clear();
                         HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");

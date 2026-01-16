@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Syndication
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Web;
     using System.Xml;
 
@@ -96,10 +97,14 @@ namespace DotNetNuke.Services.Syndication
         /// <returns>A new <see cref="XmlDocument"/>.</returns>
         internal static XmlDocument CreateEmptyRssXml()
         {
+            const string EmptyRssXml = """
+                                       <?xml version="1.0" encoding="utf-8"?>
+                                       <rss version="2.0">
+                                       </rss>
+                                       """;
             var doc = new XmlDocument { XmlResolver = null };
-            doc.LoadXml(@"<?xml version=""1.0"" encoding=""utf-8""?>
-<rss version=""2.0"">
-</rss>");
+            using var xmlReader = XmlReader.Create(new StringReader(EmptyRssXml), new XmlReaderSettings { XmlResolver = null, });
+            doc.Load(xmlReader);
             return doc;
         }
 
@@ -161,7 +166,7 @@ namespace DotNetNuke.Services.Syndication
 
         private static string ResolveAppRelativeLinkToUrl(string link)
         {
-            if (!string.IsNullOrEmpty(link) && link.StartsWith("~/"))
+            if (!string.IsNullOrEmpty(link) && link.StartsWith("~/", StringComparison.Ordinal))
             {
                 HttpContext context = HttpContext.Current;
 

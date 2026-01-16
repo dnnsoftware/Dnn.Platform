@@ -5,6 +5,7 @@ namespace DotNetNuke.Modules.RazorHost
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Web.UI.WebControls;
 
@@ -279,7 +280,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 string scriptPath = script.Replace(basePath, string.Empty);
                 var item = new ListItem(scriptPath, scriptPath);
-                if (!string.IsNullOrEmpty(scriptFileSetting) && scriptPath.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant())
+                if (!string.IsNullOrEmpty(scriptFileSetting) && string.Equals(scriptPath, scriptFileSetting, StringComparison.OrdinalIgnoreCase))
                 {
                     item.Selected = true;
                 }
@@ -292,8 +293,8 @@ namespace DotNetNuke.Modules.RazorHost
         {
             string scriptFile = string.Format(this.razorScriptFileFormatString, this.scriptList.SelectedValue);
 
-            this.lblSourceFile.Text = string.Format(Localization.GetString("SourceFile", this.LocalResourceFile), scriptFile);
-            this.lblModuleControl.Text = string.Format(Localization.GetString("SourceControl", this.LocalResourceFile), this.ModuleControl);
+            this.lblSourceFile.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("SourceFile", this.LocalResourceFile), scriptFile);
+            this.lblModuleControl.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("SourceControl", this.LocalResourceFile), this.ModuleControl);
         }
 
         private void CmdCancel_Click(object sender, EventArgs e)

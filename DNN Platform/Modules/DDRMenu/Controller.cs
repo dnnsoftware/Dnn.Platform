@@ -84,7 +84,11 @@ namespace DotNetNuke.Web.DDRMenu
             var webConfig = server.MapPath("~/web.config");
 
             var configXml = new XmlDocument { XmlResolver = null };
-            configXml.Load(webConfig);
+            using (var configReader = XmlReader.Create(webConfig, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                configXml.Load(configReader);
+            }
+
             var navProviders = configXml.SelectSingleNode("/configuration/dotnetnuke/navigationControl/providers") as XmlElement;
 
             // ReSharper disable PossibleNullReferenceException

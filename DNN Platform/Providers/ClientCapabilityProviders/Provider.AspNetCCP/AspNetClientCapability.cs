@@ -6,6 +6,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -58,7 +59,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 this.ScreenResolutionHeightInPixels = browserCaps.ScreenPixelsHeight;
                 this.IsTouchScreen = false;
                 this.BrowserName = browserCaps.Browser;
-                this.properties = browserCaps.Capabilities?.Cast<DictionaryEntry>().ToDictionary(kvp => Convert.ToString(kvp.Key), kvp => Convert.ToString(kvp.Value)) ?? new Dictionary<string, string>(0);
+                this.properties = browserCaps.Capabilities?.Cast<DictionaryEntry>().ToDictionary(kvp => Convert.ToString(kvp.Key, CultureInfo.InvariantCulture), kvp => Convert.ToString(kvp.Value, CultureInfo.InvariantCulture)) ?? new Dictionary<string, string>(0);
                 this.SupportsFlash = false;
                 this.HtmlPreferedDTD = null;
 

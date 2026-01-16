@@ -5,6 +5,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Text;
@@ -116,9 +117,9 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             var containerSrc = Globals.HostPath + "Containers/_default/popUpContainer";
             extraParams.Add("SkinSrc", skinSrc);
             extraParams.Add("ContainerSrc", containerSrc);
-            extraParams.Add("mid", module.ModuleID.ToString());
+            extraParams.Add("mid", module.ModuleID.ToString(CultureInfo.InvariantCulture));
             extraParams.Add("popUp", "true");
-            extraParams.Add("UserId", userId.ToString());
+            extraParams.Add("UserId", userId.ToString(CultureInfo.InvariantCulture));
             extraParams.Add("editprofile", "true");
 
             // ctl/Edit/mid/345/packageid/52

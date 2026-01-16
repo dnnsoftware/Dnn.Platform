@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Portals
 {
     using System;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Security.Cryptography;
     using System.Xml.Serialization;
 
@@ -87,32 +88,17 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc />
         [XmlElement("homesystemdirectory")]
-        public string HomeSystemDirectory
-        {
-            get { return string.Format("{0}-System", this.HomeDirectory); }
-        }
+        public string HomeSystemDirectory => $"{this.HomeDirectory}-System";
 
         /// <inheritdoc />
         [XmlIgnore]
         [JsonIgnore]
-        public string HomeDirectoryMapPath
-        {
-            get
-            {
-                return string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, this.HomeDirectory.Replace("/", "\\"));
-            }
-        }
+        public string HomeDirectoryMapPath => $@"{Globals.ApplicationMapPath}\{this.HomeDirectory.Replace("/", @"\")}\";
 
         /// <inheritdoc />
         [XmlIgnore]
         [JsonIgnore]
-        public string HomeSystemDirectoryMapPath
-        {
-            get
-            {
-                return string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, this.HomeSystemDirectory.Replace("/", "\\"));
-            }
-        }
+        public string HomeSystemDirectoryMapPath => $@"{Globals.ApplicationMapPath}\{this.HomeSystemDirectory.Replace("/", @"\")}\";
 
         /// <inheritdoc />
         [XmlElement("administratorid")]
@@ -171,6 +157,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         [XmlIgnore]
         [JsonIgnore]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
         public Guid GUID { get; set; }
 
         /// <inheritdoc />

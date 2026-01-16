@@ -649,7 +649,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 case UserLoginStatus.LOGIN_USERLOCKEDOUT:
                     if (this.hostSettings.AutoAccountUnlockDuration > TimeSpan.Zero)
                     {
-                        this.AddLocalizedModuleMessage(string.Format(Localization.GetString("UserLockedOut", this.LocalResourceFile), this.hostSettings.AutoAccountUnlockDuration.TotalMinutes), ModuleMessage.ModuleMessageType.RedError, true);
+                        this.AddLocalizedModuleMessage(string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserLockedOut", this.LocalResourceFile), this.hostSettings.AutoAccountUnlockDuration.TotalMinutes), ModuleMessage.ModuleMessageType.RedError, true);
                     }
                     else
                     {
@@ -1349,13 +1349,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     this.Response.Redirect(redirectUrl, true);
                     break;
                 case UserValidStatus.PASSWORDEXPIRED:
-                    strMessage = string.Format(Localization.GetString("PasswordExpired", this.LocalResourceFile), expiryDate.ToLongDateString());
+                    strMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("PasswordExpired", this.LocalResourceFile), expiryDate.ToLongDateString());
                     this.AddLocalizedModuleMessage(strMessage, ModuleMessage.ModuleMessageType.YellowWarning, true);
                     this.PageNo = 2;
                     this.pnlProceed.Visible = false;
                     break;
                 case UserValidStatus.PASSWORDEXPIRING:
-                    strMessage = string.Format(Localization.GetString("PasswordExpiring", this.LocalResourceFile), expiryDate.ToLongDateString());
+                    strMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("PasswordExpiring", this.LocalResourceFile), expiryDate.ToLongDateString());
                     this.AddLocalizedModuleMessage(strMessage, ModuleMessage.ModuleMessageType.YellowWarning, true);
                     this.PageNo = 2;
                     this.pnlProceed.Visible = true;

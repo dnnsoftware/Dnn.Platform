@@ -4,11 +4,13 @@
 namespace DotNetNuke.Entities.Modules
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Membership;
 
     /// <summary>The UserUserControlBase class defines a custom base class for the User Control.</summary>
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class UserUserControlBase : UserModuleBase
     {
         public delegate void UserCreatedEventHandler(object sender, UserCreatedEventArgs e);
@@ -157,12 +159,13 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>The BaseUserEventArgs class provides a base for User EventArgs classes.</summary>
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public class BaseUserEventArgs
         {
-            /// <summary>Gets or sets the Id of the User.</summary>
+            /// <summary>Gets or sets the ID of the User.</summary>
             public int UserId { get; set; }
 
-            /// <summary>Gets or sets the Id of the User.</summary>
+            /// <summary>Gets or sets the ID of the User.</summary>
             public string UserName { get; set; }
         }
 

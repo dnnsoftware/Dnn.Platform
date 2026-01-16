@@ -62,7 +62,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             {
                 // TODO: Localize exception
                 var message = string.Format(
-                    CultureInfo.CurrentUICulture,
+                    CultureInfo.CurrentCulture,
                     "Could not cast {0} to property {1} of type {2}",
                     propertyValue,
                     property.Name,

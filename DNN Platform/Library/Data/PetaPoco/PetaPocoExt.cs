@@ -11,7 +11,9 @@ namespace DotNetNuke.Data.PetaPoco
 
     public static class PetaPocoExt
     {
+#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public static IDataReader ExecuteReader(this Database database, string sql, params object[] args)
+#pragma warning restore CS3001
         {
             IDataReader reader;
             try

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Modules.Admin.Tabs
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Xml;
@@ -118,7 +119,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     if (folder != null)
                     {
                         var filename = folder.FolderPath + this.txtFile.Text + ".page.template";
-                        filename = filename.Replace("/", "\\");
+                        filename = filename.Replace("/", @"\");
 
                         var xmlTemplate = new XmlDocument { XmlResolver = null };
                         XmlNode nodePortal = xmlTemplate.AppendChild(xmlTemplate.CreateElement("portal"));
@@ -136,7 +137,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         XmlNode nodeTabs = nodePortal.AppendChild(xmlTemplate.CreateElement("tabs"));
                         this.SerializeTab(xmlTemplate, nodeTabs);
 
-                        UI.Skins.Skin.AddModuleMessage(this, string.Empty, string.Format(Localization.GetString("ExportedMessage", this.LocalResourceFile), filename), ModuleMessage.ModuleMessageType.BlueInfo);
+                        UI.Skins.Skin.AddModuleMessage(this, string.Empty, string.Format(CultureInfo.CurrentCulture, Localization.GetString("ExportedMessage", this.LocalResourceFile), filename), ModuleMessage.ModuleMessageType.BlueInfo);
 
                         // add file to Files table
                         using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(xmlTemplate.OuterXml)))

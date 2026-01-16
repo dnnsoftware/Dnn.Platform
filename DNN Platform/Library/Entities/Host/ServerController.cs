@@ -5,10 +5,12 @@ namespace DotNetNuke.Entities.Host
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -152,9 +154,9 @@ namespace DotNetNuke.Entities.Host
             var log = new LogInfo();
             log.AddProperty(existServer != null ? "Server Updated" : "Add New Server", server.ServerName);
             log.AddProperty("IISAppName", server.IISAppName);
-            log.AddProperty("Last Activity Date", server.LastActivityDate.ToString());
-            log.LogTypeKey = existServer != null ? EventLogController.EventLogType.WEBSERVER_UPDATED.ToString()
-                                        : EventLogController.EventLogType.WEBSERVER_CREATED.ToString();
+            log.AddProperty("Last Activity Date", server.LastActivityDate.ToString(CultureInfo.InvariantCulture));
+            log.LogTypeKey = existServer != null ? nameof(EventLogType.WEBSERVER_UPDATED)
+                                        : nameof(EventLogType.WEBSERVER_CREATED);
             LogController.Instance.AddLog(log);
         }
 

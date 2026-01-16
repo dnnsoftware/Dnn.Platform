@@ -171,11 +171,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
                 moduleContext.Configuration = moduleInfo;
 
                 this.ModuleContext = new ModuleInstanceContext() { Configuration = moduleInfo };
-                this.LocalResourceFile = string.Format(
-                        "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                        moduleInfo.DesktopModule.FolderName,
-                        Localization.LocalResourceDirectory,
-                        this.RouteData.Values["controller"]);
+                this.LocalResourceFile = $"~/DesktopModules/MVC/{moduleInfo.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{this.RouteData.Values["controller"]}.resx";
 
                 var moduleApplication = new ModuleApplication(requestContext, true)
                 {

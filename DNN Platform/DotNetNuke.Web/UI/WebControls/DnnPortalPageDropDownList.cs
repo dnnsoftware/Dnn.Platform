@@ -16,6 +16,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.UI.WebControls.Extensions;
 
+    /// <summary>A portal page dropdown control.</summary>
     [ToolboxData("<{0}:DnnPortalPageDropDownList runat='server'></{0}:DnnPortalPageDropDownList>")]
     public class DnnPortalPageDropDownList : DnnDropDownList
     {

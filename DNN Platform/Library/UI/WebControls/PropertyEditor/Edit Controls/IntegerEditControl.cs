@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common.Utilities;
@@ -81,12 +82,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this.IntegerValue.ToString();
+                return this.IntegerValue.ToString(CultureInfo.InvariantCulture);
             }
 
             set
             {
-                int setValue = int.Parse(value);
+                int setValue = int.Parse(value, CultureInfo.InvariantCulture);
                 this.Value = setValue;
             }
         }

@@ -367,7 +367,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
             {
                 while (dr.Read())
                 {
-                    var fileId = Convert.ToInt32(dr["FileID"]);
+                    var fileId = Convert.ToInt32(dr["FileID"], CultureInfo.InvariantCulture);
                     var file = FileManager.Instance.GetFile(fileId);
 
                     if (file == null)

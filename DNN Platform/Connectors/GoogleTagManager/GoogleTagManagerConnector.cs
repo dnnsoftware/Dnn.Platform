@@ -202,7 +202,11 @@ namespace DNN.Connectors.GoogleTagManager
             var applicationMapPath = HttpContext.Current.Server.MapPath(@"\");
             var file = applicationMapPath + @"\SiteAnalytics.config";
             var xdoc = new XmlDocument();
-            xdoc.Load(file);
+            using (var siteConfigReader = XmlReader.Create(file, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                xdoc.Load(siteConfigReader);
+            }
+
             var found = false;
             foreach (XmlNode engineTypeNode in xdoc.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine/EngineType"))
             {
@@ -217,7 +221,10 @@ namespace DNN.Connectors.GoogleTagManager
             {
                 var fileGtm = applicationMapPath + @"\DesktopModules\Connectors\GoogleTagManager\GoogleTagManager.config";
                 var xdocGtm = new XmlDocument();
-                xdocGtm.Load(fileGtm);
+                using (var googleConfigReader = XmlReader.Create(fileGtm, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xdocGtm.Load(googleConfigReader);
+                }
 
                 var enginesElement = xdoc.SelectSingleNode("/AnalyticsEngineConfig/Engines");
                 foreach (XmlNode engineNode in xdocGtm.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine"))

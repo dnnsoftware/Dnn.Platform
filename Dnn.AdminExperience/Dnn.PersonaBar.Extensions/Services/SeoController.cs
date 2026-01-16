@@ -363,7 +363,7 @@ namespace Dnn.PersonaBar.Seo.Services
                     this.controller.ResetCache();
                 }
 
-                PortalController.UpdatePortalSetting(this.PortalId, "SitemapCacheDays", request.SitemapCacheDays.ToString());
+                PortalController.UpdatePortalSetting(this.PortalId, "SitemapCacheDays", request.SitemapCacheDays.ToString(CultureInfo.InvariantCulture));
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)

@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI.WebControls;
     using System.Xml;
@@ -121,7 +122,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private IFileInfo GetLogoFileInfo()
         {
-            string cacheKey = string.Format(DataCache.PortalCacheKey, this.PortalSettings.PortalId, this.PortalSettings.CultureCode) + "LogoFile";
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalCacheKey, this.PortalSettings.PortalId, this.PortalSettings.CultureCode) + "LogoFile";
 
             return CBO.GetCachedObject<FileInfo>(
                 this.hostSettings,
@@ -136,7 +137,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private string GetSvgContent(IFileInfo svgFile)
         {
-            var cacheKey = string.Format(DataCache.PortalCacheKey, this.PortalSettings.PortalId, this.PortalSettings.CultureCode) + "LogoSvg";
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalCacheKey, this.PortalSettings.PortalId, this.PortalSettings.CultureCode) + "LogoSvg";
             return CBO.GetCachedObject<string>(
                 this.hostSettings,
                 new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, svgFile),

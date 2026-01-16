@@ -32,12 +32,14 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.Paths = [];
         }
 
+        /// <summary>Gets the paths collection.</summary>
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public ClientResourcePathCollection Paths { get; private set; }
 
         private static bool AsyncPostBackHandlerEnabled =>
             HttpContext.Current != null && HttpContext.Current.Items.Contains("AsyncPostBackHandlerEnabled");
 
+        /// <inheritdoc />
         protected override void OnInit(System.EventArgs e)
         {
             if (AsyncPostBackHandlerEnabled && ScriptManager.GetCurrent(this.Page) == null)
@@ -48,6 +50,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             base.OnInit(e);
         }
 
+        /// <inheritdoc />
         protected override void OnLoad(System.EventArgs e)
         {
             foreach (var path in this.Paths)

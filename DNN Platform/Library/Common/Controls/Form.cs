@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common.Controls
 {
+    using System;
     using System.IO;
     using System.Web;
     using System.Web.UI;
@@ -20,10 +21,10 @@ namespace DotNetNuke.Common.Controls
             string html = stringWriter.ToString();
 
             // Locate and replace action attribute
-            int startPoint = html.IndexOf("action=\"");
+            int startPoint = html.IndexOf("action=\"", StringComparison.OrdinalIgnoreCase);
             if (startPoint >= 0)
             {
-                int endPoint = html.IndexOf("\"", startPoint + 8) + 1;
+                int endPoint = html.IndexOf("\"", startPoint + 8, StringComparison.Ordinal) + 1;
                 html = html.Remove(startPoint, endPoint - startPoint);
                 html = html.Insert(startPoint, "action=\"" + HttpUtility.HtmlEncode(HttpContext.Current.Request.RawUrl) + "\"");
             }
@@ -31,10 +32,10 @@ namespace DotNetNuke.Common.Controls
             if (this.ID != null)
             {
                 // Locate and replace id attribute
-                startPoint = html.IndexOf("id=\"");
+                startPoint = html.IndexOf("id=\"", StringComparison.OrdinalIgnoreCase);
                 if (startPoint >= 0)
                 {
-                    int endPoint = html.IndexOf("\"", startPoint + 4) + 1;
+                    int endPoint = html.IndexOf("\"", startPoint + 4, StringComparison.Ordinal) + 1;
                     html = html.Remove(startPoint, endPoint - startPoint);
                     html = html.Insert(startPoint, "id=\"" + this.ClientID + "\"");
                 }

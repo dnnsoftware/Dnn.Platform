@@ -50,7 +50,7 @@ namespace DotNetNuke.UI.WebControls
             set { this.Value = value; }
         }
 
-        /// <summary>LoadPostData loads the Post Back Data and determines whether the value has change.</summary>
+        /// <summary>LoadPostData loads the Post Back Data and determines whether the value has changed.</summary>
         /// <param name="postDataKey">A key to the PostBack Data to load.</param>
         /// <param name="postCollection">A name value collection of postback data.</param>
         /// <returns><see langword="true"/> if the value has changed, otherwise <see langword="false"/>.</returns>
@@ -58,7 +58,7 @@ namespace DotNetNuke.UI.WebControls
         {
             var dataChanged = false;
             var presentVisibility = this.Visibility.VisibilityMode;
-            var postedValue = Convert.ToInt32(postCollection[postDataKey]);
+            var postedValue = Convert.ToInt32(postCollection[postDataKey], CultureInfo.InvariantCulture);
             var postedVisibility = (UserVisibilityMode)Enum.ToObject(typeof(UserVisibilityMode), postedValue);
             if (!presentVisibility.Equals(postedVisibility) || postedVisibility == UserVisibilityMode.FriendsAndGroups)
             {

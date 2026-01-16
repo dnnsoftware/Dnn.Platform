@@ -7,6 +7,7 @@ namespace DotNetNuke.Security.Permissions
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
 
@@ -63,7 +64,7 @@ namespace DotNetNuke.Security.Permissions
             string permissionsString = permissionsBuilder.ToString();
 
             // ensure leading delimiter
-            if (!permissionsString.StartsWith(";"))
+            if (!permissionsString.StartsWith(";", StringComparison.Ordinal))
             {
                 permissionsString = permissionsString.Insert(0, ";");
             }
@@ -120,7 +121,7 @@ namespace DotNetNuke.Security.Permissions
         {
             EventLogController.Instance.AddLog(
                 "PermissionID",
-                permissionID.ToString(),
+                permissionID.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentPortalSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.PERMISSION_DELETED);
@@ -201,10 +202,10 @@ namespace DotNetNuke.Security.Permissions
                     switch (permission.RoleName)
                     {
                         case Globals.glbRoleAllUsersName:
-                            roleID = Convert.ToInt32(Globals.glbRoleAllUsers);
+                            roleID = Convert.ToInt32(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
                             break;
                         case Globals.glbRoleUnauthUserName:
-                            roleID = Convert.ToInt32(Globals.glbRoleUnauthUser);
+                            roleID = Convert.ToInt32(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
                             break;
                         default:
                             RoleInfo role = RoleController.Instance.GetRole(portalId, r => r.RoleName == permission.RoleName);

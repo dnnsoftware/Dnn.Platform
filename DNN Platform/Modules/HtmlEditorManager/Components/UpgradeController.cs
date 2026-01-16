@@ -138,7 +138,11 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                 try
                 {
                     var doc = new XmlDocument { XmlResolver = null };
-                    doc.Load(fileName);
+                    using (var xmlReader = XmlReader.Create(fileName, new XmlReaderSettings { XmlResolver = null, }))
+                    {
+                        doc.Load(xmlReader);
+                    }
+
                     var root = doc.DocumentElement;
                     var docFilters = root?.SelectNodes("/configuration/property[@name='DocumentsFilters']");
                     if (docFilters != null)
@@ -201,7 +205,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                     Config.AddAppSetting(xmlConfig, keyName, newKey);
 
                     // save a copy of the existing web.config
-                    var backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
+                    var backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), @"\");
                     strError += Config.Save(this.applicationStatusInfo, xmlConfig, backupFolder + "web_.config") + Environment.NewLine;
 
                     // save the web.config

@@ -4,6 +4,8 @@
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
     using Dnn.PersonaBar.Library.Prompt.Models;
@@ -13,7 +15,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("goto", Constants.PagesCategory, "Prompt_Goto_Description")]
-
+    [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
     public class Goto : ConsoleCommandBase
     {
         [FlagParameter("name", "Prompt_Goto_FlagName", "String")]

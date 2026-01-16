@@ -7,18 +7,22 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    /// <summary>A form section template.</summary>
     internal class DnnFormSectionTemplate : ITemplate
     {
+        /// <summary>Initializes a new instance of the <see cref="DnnFormSectionTemplate"/> class.</summary>
         public DnnFormSectionTemplate()
         {
             this.Items = new List<DnnFormItemBase>();
         }
 
+        /// <summary>Gets the items.</summary>
         public List<DnnFormItemBase> Items { get; private set; }
 
+        /// <summary>Gets or sets the path to the local resource file.</summary>
         public string LocalResourceFile { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void InstantiateIn(Control container)
         {
             var webControl = container as WebControl;

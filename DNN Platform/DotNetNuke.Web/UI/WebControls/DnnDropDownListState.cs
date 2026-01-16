@@ -8,11 +8,14 @@ namespace DotNetNuke.Web.UI.WebControls
 
     using DotNetNuke.Common;
 
+    /// <summary>A data transfer object with information about the state of a dropdown list.</summary>
     [DataContract]
     public class DnnDropDownListState
     {
+        /// <summary>Gets or sets the selected item.</summary>
         [DataMember(Name = "selectedItem")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public SerializableKeyValuePair<string, string> SelectedItem;
     }
 }

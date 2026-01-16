@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A radio button control.</summary>
     public class DnnRadioButton : RadioButton, ILocalizable
     {
         private bool localize = true;

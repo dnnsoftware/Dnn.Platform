@@ -143,12 +143,14 @@ namespace DotNetNuke.Data
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override string ExecuteScript(string connectionString, string script)
         {
             return ExecuteScriptInternal(connectionString, script);
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override string ExecuteScript(string connectionString, string script, int timeoutSec)
         {
             return ExecuteScriptInternal(connectionString, script, timeoutSec);

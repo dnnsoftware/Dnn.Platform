@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.Api
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -18,6 +19,7 @@ namespace DotNetNuke.Web.Api
     using DotNetNuke.Common;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>Selects the web API controller.</summary>
     internal class DnnHttpControllerSelector : IHttpControllerSelector
     {
         private const string ControllerSuffix = "Controller";
@@ -38,10 +40,7 @@ namespace DotNetNuke.Web.Api
                 isThreadSafe: true);
         }
 
-        private ConcurrentDictionary<string, HttpControllerDescriptor> DescriptorCache
-        {
-            get { return this.descriptorCache.Value; }
-        }
+        private ConcurrentDictionary<string, HttpControllerDescriptor> DescriptorCache => this.descriptorCache.Value;
 
         /// <inheritdoc/>
         public HttpControllerDescriptor SelectController(HttpRequestMessage request)
@@ -62,8 +61,7 @@ namespace DotNetNuke.Web.Api
             {
                 string fullName = GetFullName(controllerName, ns);
 
-                HttpControllerDescriptor descriptor;
-                if (this.DescriptorCache.TryGetValue(fullName, out descriptor))
+                if (this.DescriptorCache.TryGetValue(fullName, out var descriptor))
                 {
                     matches.Add(descriptor);
                 }
@@ -77,10 +75,10 @@ namespace DotNetNuke.Web.Api
             // only errors thrown beyond this point
             if (matches.Count == 0)
             {
-                throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(Localization.GetString("ControllerNotFound", Localization.ExceptionsResourceFile), request.RequestUri, string.Join(", ", namespaces))));
+                throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(CultureInfo.CurrentCulture, Localization.GetString("ControllerNotFound", Localization.ExceptionsResourceFile), request.RequestUri, string.Join(", ", namespaces))));
             }
 
-            throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.Conflict, string.Format(Localization.GetString("AmbiguousController", Localization.ExceptionsResourceFile), controllerName, string.Join(", ", namespaces))));
+            throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.Conflict, string.Format(CultureInfo.CurrentCulture, Localization.GetString("AmbiguousController", Localization.ExceptionsResourceFile), controllerName, string.Join(", ", namespaces))));
         }
 
         /// <inheritdoc/>

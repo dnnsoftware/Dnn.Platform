@@ -26,76 +26,157 @@ namespace DotNetNuke.Web.UI.WebControls
 
     using Globals = DotNetNuke.Common.Globals;
 
+    /// <summary>A URL control.</summary>
     public abstract class DnnUrlControl : UserControlBase
     {
         // ReSharper disable InconsistentNaming
+
+        /// <summary>Gets or sets the error row panel.</summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel ErrorRow;
+
+        /// <summary>Gets or sets the file row panel.</summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel FileRow;
+
+        /// <summary>Gets or sets the images row panel.</summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel ImagesRow;
+
+        /// <summary>Gets or sets the tab row panel.</summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel TabRow;
+
+        /// <summary>Gets or sets the type row panel.</summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel TypeRow;
+
+        /// <summary>Gets or sets the URL row panel.</summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel URLRow;
+
+        /// <summary>Gets or sets the user row panel.</summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel UserRow;
 
         // ReSharper restore InconsistentNaming
+
+        /// <summary>Gets or sets the images dropdown list.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected DropDownList cboImages;
+
+        /// <summary>Gets or sets the tabs dropdown list.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected DnnPageDropDownList cboTabs;
+
+        /// <summary>Gets or sets the URLs dropdown list.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected DropDownList cboUrls;
+
+        /// <summary>Gets or sets the log checkbox.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected CheckBox chkLog;
+
+        /// <summary>Gets or sets the new window checkbox.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected CheckBox chkNewWindow;
+
+        /// <summary>Gets or sets the track checkbox.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected CheckBox chkTrack;
+
+        /// <summary>Gets or sets the add button.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected LinkButton cmdAdd;
+
+        /// <summary>Gets or sets the delete button.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected LinkButton cmdDelete;
+
+        /// <summary>Gets or sets the select button.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected LinkButton cmdSelect;
+
+        /// <summary>Gets or sets the images label.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblImages;
+
+        /// <summary>Gets or sets the message label.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblMessage;
+
+        /// <summary>Gets or sets the tab label.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblTab;
+
+        /// <summary>Gets or sets the URL label.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblURL;
+
+        /// <summary>Gets or sets the URL type label.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblURLType;
+
+        /// <summary>Gets or sets the user label.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblUser;
+
+        /// <summary>Gets or sets the type radio button list.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected RadioButtonList optType;
+
+        /// <summary>Gets or sets the URL textbox.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected TextBox txtUrl;
+
+        /// <summary>Gets or sets the user textbox.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected TextBox txtUser;
+
+        /// <summary>Gets or sets the file picker uploader.</summary>
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected DnnFilePickerUploader ctlFile;
+
         private bool doChangeURL;
         private bool doRenderTypeControls;
         private bool doRenderTypes;
         private string localResourceFile;
         private PortalInfo objPortal;
 
+        /// <summary>Gets a value indicating whether to add logging to the URL.</summary>
         public bool Log
         {
             get
@@ -111,6 +192,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets a value indicating whether to add tracking to the URL.</summary>
         public bool Track
         {
             get
@@ -126,6 +208,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the file filter.</summary>
         public string FileFilter
         {
             get
@@ -144,13 +227,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether to include the current page.</summary>
         public bool IncludeActiveTab
         {
             get
             {
                 if (this.ViewState["IncludeActiveTab"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["IncludeActiveTab"]);
+                    return Convert.ToBoolean(this.ViewState["IncludeActiveTab"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -168,6 +252,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the local resource file path.</summary>
         public string LocalResourceFile
         {
             get
@@ -191,6 +276,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the module ID.</summary>
         public int ModuleID
         {
             get
@@ -198,7 +284,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 int myMid = -2;
                 if (this.ViewState["ModuleId"] != null)
                 {
-                    myMid = Convert.ToInt32(this.ViewState["ModuleId"]);
+                    myMid = Convert.ToInt32(this.ViewState["ModuleId"], CultureInfo.InvariantCulture);
                 }
                 else if (this.Request.QueryString["mid"] != null)
                 {
@@ -217,6 +303,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether to open the URL in a new window.</summary>
         public bool NewWindow
         {
             get
@@ -230,13 +317,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether selecting a URL is required.</summary>
         public bool Required
         {
             get
             {
                 if (this.ViewState["Required"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["Required"]);
+                    return Convert.ToBoolean(this.ViewState["Required"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -254,13 +342,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether to show files.</summary>
         public bool ShowFiles
         {
             get
             {
                 if (this.ViewState["ShowFiles"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["ShowFiles"]);
+                    return Convert.ToBoolean(this.ViewState["ShowFiles"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -278,13 +367,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether to show images.</summary>
         public bool ShowImages
         {
             get
             {
                 if (this.ViewState["ShowImages"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["ShowImages"]);
+                    return Convert.ToBoolean(this.ViewState["ShowImages"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -302,6 +392,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether to show the log option.</summary>
         public bool ShowLog
         {
             get
@@ -315,6 +406,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether to show the new window option.</summary>
         public bool ShowNewWindow
         {
             get
@@ -328,13 +420,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether to show a None option.</summary>
         public bool ShowNone
         {
             get
             {
                 if (this.ViewState["ShowNone"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["ShowNone"]);
+                    return Convert.ToBoolean(this.ViewState["ShowNone"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -352,13 +445,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether to show pages.</summary>
         public bool ShowTabs
         {
             get
             {
                 if (this.ViewState["ShowTabs"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["ShowTabs"]);
+                    return Convert.ToBoolean(this.ViewState["ShowTabs"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -376,6 +470,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether a tracking option.</summary>
         public bool ShowTrack
         {
             get
@@ -389,13 +484,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether to show an upload option.</summary>
         public bool ShowUpLoad
         {
             get
             {
                 if (this.ViewState["ShowUpLoad"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["ShowUpLoad"]);
+                    return Convert.ToBoolean(this.ViewState["ShowUpLoad"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -413,13 +509,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether to show URLs.</summary>
         public bool ShowUrls
         {
             get
             {
                 if (this.ViewState["ShowUrls"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["ShowUrls"]);
+                    return Convert.ToBoolean(this.ViewState["ShowUrls"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -437,13 +534,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether to show users.</summary>
         public bool ShowUsers
         {
             get
             {
                 if (this.ViewState["ShowUsers"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["ShowUsers"]);
+                    return Convert.ToBoolean(this.ViewState["ShowUsers"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -461,6 +559,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the URL.</summary>
         public string Url
         {
             get
@@ -562,11 +661,12 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the URL type.</summary>
         public string UrlType
         {
             get
             {
-                return Convert.ToString(this.ViewState["UrlType"]);
+                return Convert.ToString(this.ViewState["UrlType"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -582,11 +682,12 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the control width.</summary>
         public string Width
         {
             get
             {
-                return Convert.ToString(this.ViewState["SkinControlWidth"]);
+                return Convert.ToString(this.ViewState["SkinControlWidth"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -633,7 +734,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 if ((this.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    this.objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
+                    this.objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"], CultureInfo.InvariantCulture));
                 }
                 else
                 {
@@ -696,7 +797,11 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Handles the <see cref="LinkButton.Click"/> event on <see cref="cmdAdd"/>.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected void cmdAdd_Click(object sender, EventArgs e)
@@ -711,7 +816,11 @@ namespace DotNetNuke.Web.UI.WebControls
             this.doChangeURL = false;
         }
 
+        /// <summary>Handles the <see cref="LinkButton.Click"/> event on <see cref="cmdDelete"/>.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected void cmdDelete_Click(object sender, EventArgs e)
@@ -728,7 +837,11 @@ namespace DotNetNuke.Web.UI.WebControls
             this.doChangeURL = false;
         }
 
+        /// <summary>Handles the <see cref="LinkButton.Click"/> event on <see cref="cmdSelect"/>.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected void cmdSelect_Click(object sender, EventArgs e)
@@ -750,7 +863,11 @@ namespace DotNetNuke.Web.UI.WebControls
             this.doChangeURL = false;
         }
 
+        /// <summary>Handles the <see cref="ListControl.SelectedIndexChanged"/> event on <see cref="optType"/>.</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected void optType_SelectedIndexChanged(object sender, EventArgs e)
@@ -770,8 +887,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void DoChangeURL()
         {
-            string url = Convert.ToString(this.ViewState["Url"]);
-            string urltype = Convert.ToString(this.ViewState["UrlType"]);
+            string url = Convert.ToString(this.ViewState["Url"], CultureInfo.InvariantCulture);
+            string urltype = Convert.ToString(this.ViewState["UrlType"], CultureInfo.InvariantCulture);
             if (!string.IsNullOrEmpty(url))
             {
                 var objUrls = new UrlController();
@@ -789,7 +906,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     if (url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
                     {
                         trackingUrl = url;
-                        var objFile = FileManager.Instance.GetFile(int.Parse(url.Substring(7)));
+                        var objFile = FileManager.Instance.GetFile(int.Parse(url.Substring(7), CultureInfo.InvariantCulture));
                         if (objFile != null)
                         {
                             url = objFile.Folder + objFile.FileName;
@@ -799,7 +916,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     {
                         // to handle legacy scenarios before the introduction of the FileServerHandler
                         var fileName = Path.GetFileName(url);
-                        var folderPath = url.Substring(0, url.LastIndexOf(fileName));
+                        var folderPath = url.Substring(0, url.LastIndexOf(fileName, StringComparison.OrdinalIgnoreCase));
                         var folder = FolderManager.Instance.GetFolder(this.objPortal.PortalID, folderPath);
                         var fileId = -1;
                         if (folder != null)
@@ -811,7 +928,7 @@ namespace DotNetNuke.Web.UI.WebControls
                             }
                         }
 
-                        trackingUrl = "FileID=" + fileId.ToString();
+                        trackingUrl = "FileID=" + fileId.ToString(CultureInfo.InvariantCulture);
                     }
                 }
 
@@ -819,7 +936,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     if (url.StartsWith("userid=", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        UserInfo objUser = UserController.GetUserById(this.objPortal.PortalID, int.Parse(url.Substring(7)));
+                        UserInfo objUser = UserController.GetUserById(this.objPortal.PortalID, int.Parse(url.Substring(7), CultureInfo.InvariantCulture));
                         if (objUser != null)
                         {
                             url = objUser.Username;
@@ -1005,7 +1122,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void DoCorrectRadioButtonList()
         {
-            string urltype = Convert.ToString(this.ViewState["UrlType"]);
+            string urltype = Convert.ToString(this.ViewState["UrlType"], CultureInfo.InvariantCulture);
 
             if (this.optType.Items.Count > 0)
             {
@@ -1034,8 +1151,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void DoRenderTypeControls()
         {
-            string url = Convert.ToString(this.ViewState["Url"]);
-            string urltype = Convert.ToString(this.ViewState["UrlType"]);
+            string url = Convert.ToString(this.ViewState["Url"], CultureInfo.InvariantCulture);
+            string urltype = Convert.ToString(this.ViewState["UrlType"], CultureInfo.InvariantCulture);
             var objUrls = new UrlController();
             if (!string.IsNullOrEmpty(urltype))
             {
@@ -1062,14 +1179,11 @@ namespace DotNetNuke.Web.UI.WebControls
                         foreach (string strImage in Directory.GetFiles(strImagesFolder))
                         {
                             string img = strImage.Replace(strImagesFolder, string.Empty).Trim('/').Trim('\\');
-                            this.cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", this.PortalSettings.DefaultIconLocation, img).ToLowerInvariant()));
+                            this.cboImages.Items.Add(new ListItem(img, $"~/{this.PortalSettings.DefaultIconLocation}/{img}".ToLowerInvariant()));
                         }
 
                         ListItem selecteItem = this.cboImages.Items.FindByValue(url.ToLowerInvariant());
-                        if (selecteItem != null)
-                        {
-                            selecteItem.Selected = true;
-                        }
+                        selecteItem?.Selected = true;
 
                         break;
 
@@ -1113,7 +1227,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         if (!string.IsNullOrEmpty(url))
                         {
                             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
-                            var tabId = int.Parse(url);
+                            var tabId = int.Parse(url, CultureInfo.InvariantCulture);
                             var page = TabController.Instance.GetTab(tabId, settings.PortalId);
                             this.cboTabs.SelectedPage = page;
                         }
@@ -1136,18 +1250,18 @@ namespace DotNetNuke.Web.UI.WebControls
                         // Let's try to remember last selection
                         if (this.ViewState["LastFolderPath"] != null)
                         {
-                            lastFolderPath = Convert.ToString(this.ViewState["LastFolderPath"]);
+                            lastFolderPath = Convert.ToString(this.ViewState["LastFolderPath"], CultureInfo.InvariantCulture);
                         }
 
                         if (this.ViewState["LastFileName"] != null)
                         {
-                            lastFileName = Convert.ToString(this.ViewState["LastFileName"]);
+                            lastFileName = Convert.ToString(this.ViewState["LastFileName"], CultureInfo.InvariantCulture);
                         }
 
                         if (url != string.Empty)
                         {
                             // Let's use the new URL
-                            fileName = url.Substring(url.LastIndexOf("/") + 1);
+                            fileName = url.Substring(url.LastIndexOf("/", StringComparison.Ordinal) + 1);
                             folderPath = url.Replace(fileName, string.Empty);
                         }
                         else

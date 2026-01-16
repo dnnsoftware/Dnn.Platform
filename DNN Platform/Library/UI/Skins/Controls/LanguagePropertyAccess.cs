@@ -26,6 +26,7 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         public LanguageTokenReplace objParent;
@@ -53,6 +54,7 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             switch (propertyName.ToLowerInvariant())
@@ -249,7 +251,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             break;
                         case TabType.Tab:
                             // alternate tab url
-                            fullurl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(localizedTab.Url));
+                            fullurl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(localizedTab.Url, CultureInfo.InvariantCulture));
                             break;
                         case TabType.File:
                             // file url

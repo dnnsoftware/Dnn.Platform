@@ -145,7 +145,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>Gets or sets the ResourceFile to localize permissions.</summary>
         public string ResourceFile { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether enable ShowAllUsers to display the virtuell "Unauthenticated Users" role.</summary>
+        /// <summary>Gets or sets a value indicating whether enable ShowAllUsers to display the virtual "Unauthenticated Users" role.</summary>
         public bool ShowUnauthenticatedUsers
         {
             get
@@ -155,7 +155,7 @@ namespace DotNetNuke.UI.WebControls
                     return false;
                 }
 
-                return Convert.ToBoolean(this.ViewState["ShowUnauthenticatedUsers"]);
+                return Convert.ToBoolean(this.ViewState["ShowUnauthenticatedUsers"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -164,7 +164,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether enable ShowAllUsers to display the virtuell "All Users" role.</summary>
+        /// <summary>Gets or sets a value indicating whether enable ShowAllUsers to display the virtual "All Users" role.</summary>
         public bool ShowAllUsers
         {
             get
@@ -174,7 +174,7 @@ namespace DotNetNuke.UI.WebControls
                     return false;
                 }
 
-                return Convert.ToBoolean(this.ViewState["ShowAllUsers"]);
+                return Convert.ToBoolean(this.ViewState["ShowAllUsers"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -222,7 +222,7 @@ namespace DotNetNuke.UI.WebControls
                 // Load TabPermissions
                 if (myState[1] != null)
                 {
-                    string state = Convert.ToString(myState[1]);
+                    string state = Convert.ToString(myState[1], CultureInfo.InvariantCulture);
                     this.CurrentRoleSelection = state != string.Empty
                                         ? new List<string>(state.Split(RoleSeparator, StringSplitOptions.None))
                                         : new List<string>();
@@ -414,25 +414,25 @@ namespace DotNetNuke.UI.WebControls
         private void GetRoles()
         {
             int roleGroupId = -2;
-            if ((this.cboRoleGroups != null) && (this.cboRoleGroups.SelectedValue != null))
+            if (this.cboRoleGroups is { SelectedValue: not null, })
             {
-                roleGroupId = int.Parse(this.cboRoleGroups.SelectedValue);
+                roleGroupId = int.Parse(this.cboRoleGroups.SelectedValue, CultureInfo.InvariantCulture);
             }
 
             this.roles = roleGroupId > -2
-                    ? RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
-                    : RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
+                    ? RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentSettings().PortalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
+                    : RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
 
             if (roleGroupId < 0)
             {
                 if (this.ShowUnauthenticatedUsers)
                 {
-                    this.roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleUnauthUser), RoleName = Globals.glbRoleUnauthUserName });
+                    this.roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture), RoleName = Globals.glbRoleUnauthUserName });
                 }
 
                 if (this.ShowAllUsers)
                 {
-                    this.roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName });
+                    this.roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture), RoleName = Globals.glbRoleAllUsersName });
                 }
             }
 

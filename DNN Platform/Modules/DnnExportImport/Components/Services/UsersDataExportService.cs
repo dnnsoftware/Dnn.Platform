@@ -7,6 +7,7 @@ namespace Dnn.ExportImport.Components.Services
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.ExportImport.Components.Common;
@@ -158,7 +159,7 @@ namespace Dnn.ExportImport.Components.Services
                                             continue;
                                         }
 
-                                        if (!(roleId > Convert.ToInt32(Globals.glbRoleNothing)))
+                                        if (!(roleId > Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture)))
                                         {
                                             continue;
                                         }
@@ -263,10 +264,10 @@ namespace Dnn.ExportImport.Components.Services
             finally
             {
                 this.CheckPointStageCallback(this);
-                this.Result.AddSummary("Imported User Roles", totalUserRolesImported.ToString());
+                this.Result.AddSummary("Imported User Roles", totalUserRolesImported.ToString(CultureInfo.InvariantCulture));
                 if (includeProfile)
                 {
-                    this.Result.AddSummary("Imported User Profiles", totalProfilesImported.ToString());
+                    this.Result.AddSummary("Imported User Profiles", totalProfilesImported.ToString(CultureInfo.InvariantCulture));
                 }
             }
         }
@@ -311,9 +312,8 @@ namespace Dnn.ExportImport.Components.Services
                     files.Any(x => x.FileName == profilePicture.FileName))
                 {
                     return Convert.ToString(
-                        files.First(
-                            x => x.FileName == profilePicture.FileName)
-                            .FileId);
+                        files.First(x => x.FileName == profilePicture.FileName).FileId,
+                        CultureInfo.InvariantCulture);
                 }
             }
 

@@ -5,6 +5,7 @@
 namespace DotNetNuke.Services.Journal
 {
     using System;
+    using System.IO;
     using System.Xml;
 
     using DotNetNuke.Common.Utilities;
@@ -63,7 +64,8 @@ namespace DotNetNuke.Services.Journal
             if (!string.IsNullOrEmpty(Null.SetNullString(dr["CommentXML"])))
             {
                 this.CommentXML = new XmlDocument { XmlResolver = null };
-                this.CommentXML.LoadXml(dr["CommentXML"].ToString());
+                using var commentReader = XmlReader.Create(new StringReader(dr["CommentXML"].ToString()), new XmlReaderSettings { XmlResolver = null, });
+                this.CommentXML.Load(commentReader);
             }
 
             this.UserId = Null.SetNullInteger(dr["UserId"]);

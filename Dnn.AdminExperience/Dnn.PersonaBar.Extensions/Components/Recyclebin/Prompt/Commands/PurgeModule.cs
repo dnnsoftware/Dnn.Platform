@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Net;
     using System.Text;
 
@@ -47,15 +48,15 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             var module = ModulesController.Instance.GetModule(this.PortalSettings, this.ModuleId, this.PageId, out message);
             if (module == null)
             {
-                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("ModuleNotFound"), this.ModuleId, this.PageId));
+                return new ConsoleErrorResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("ModuleNotFound"), this.ModuleId, this.PageId));
             }
 
             var modulesToPurge = new List<ModuleInfo> { module };
             var errors = new StringBuilder();
             RecyclebinController.Instance.DeleteModules(modulesToPurge, errors);
             return errors.Length > 0
-                ? new ConsoleErrorResultModel(string.Format(this.LocalizeString("Service_RemoveTabModuleError"), errors))
-                : new ConsoleResultModel(string.Format(this.LocalizeString("Prompt_ModulePurgedSuccessfully"), this.ModuleId)) { Records = 1 };
+                ? new ConsoleErrorResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Service_RemoveTabModuleError"), errors))
+                : new ConsoleResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Prompt_ModulePurgedSuccessfully"), this.ModuleId)) { Records = 1, };
         }
     }
 }

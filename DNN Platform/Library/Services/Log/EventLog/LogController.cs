@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.Log.EventLog
     using System.Collections;
     using System.Collections.Generic;
     using System.Data.SqlClient;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -132,12 +133,14 @@ namespace DotNetNuke.Services.Log.EventLog
             var xmlDoc = new XmlDocument { XmlResolver = null };
             try
             {
-                xmlDoc.Load(configFile);
+                using var xmlReader = XmlReader.Create(configFile, new XmlReaderSettings { XmlResolver = null, });
+                xmlDoc.Load(xmlReader);
             }
             catch (FileNotFoundException exc)
             {
                 Logger.Debug(exc);
-                xmlDoc.Load(fallbackConfigFile);
+                using var xmlReader = XmlReader.Create(fallbackConfigFile, new XmlReaderSettings { XmlResolver = null, });
+                xmlDoc.Load(xmlReader);
             }
 
             var logType = xmlDoc.SelectNodes("/LogConfig/LogTypes/LogType");
@@ -176,8 +179,8 @@ namespace DotNetNuke.Services.Log.EventLog
                             LogTypePortalID = typeConfigInfo.Attributes["LogTypePortalID"].Value,
                             MailFromAddress = typeConfigInfo.Attributes["MailFromAddress"].Value,
                             MailToAddress = typeConfigInfo.Attributes["MailToAddress"].Value,
-                            NotificationThreshold = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThreshold"].Value),
-                            NotificationThresholdTime = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThresholdTime"].Value),
+                            NotificationThreshold = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThreshold"].Value, CultureInfo.InvariantCulture),
+                            NotificationThresholdTime = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThresholdTime"].Value, CultureInfo.InvariantCulture),
                             NotificationThresholdTimeType =
                                                             (LogTypeConfigInfo.NotificationThresholdTimeTypes)Enum.Parse(typeof(LogTypeConfigInfo.NotificationThresholdTimeTypes), typeConfigInfo.Attributes["NotificationThresholdTimeType"].Value),
                         };
@@ -204,9 +207,9 @@ namespace DotNetNuke.Services.Log.EventLog
                 logTypeConfig.KeepMostRecent,
                 logTypeConfig.LogFileName,
                 logTypeConfig.EmailNotificationIsActive,
-                Convert.ToString(logTypeConfig.NotificationThreshold),
-                Convert.ToString(logTypeConfig.NotificationThresholdTime),
-                Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType),
+                Convert.ToString(logTypeConfig.NotificationThreshold, CultureInfo.InvariantCulture),
+                Convert.ToString(logTypeConfig.NotificationThresholdTime, CultureInfo.InvariantCulture),
+                Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType, CultureInfo.InvariantCulture),
                 logTypeConfig.MailFromAddress,
                 logTypeConfig.MailToAddress);
         }
@@ -288,9 +291,9 @@ namespace DotNetNuke.Services.Log.EventLog
                 logTypeConfig.KeepMostRecent,
                 logTypeConfig.LogFileName,
                 logTypeConfig.EmailNotificationIsActive,
-                Convert.ToString(logTypeConfig.NotificationThreshold),
-                Convert.ToString(logTypeConfig.NotificationThresholdTime),
-                Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType),
+                Convert.ToString(logTypeConfig.NotificationThreshold, CultureInfo.InvariantCulture),
+                Convert.ToString(logTypeConfig.NotificationThresholdTime, CultureInfo.InvariantCulture),
+                Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType, CultureInfo.InvariantCulture),
                 logTypeConfig.MailFromAddress,
                 logTypeConfig.MailToAddress);
         }
@@ -324,7 +327,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         private static void RaiseError(string filePath, string header, string message)
         {
-            Logger.ErrorFormat("filePath={0}, header={1}, message={2}", filePath, header, message);
+            Logger.ErrorFormat(CultureInfo.InvariantCulture, "filePath={0}, header={1}, message={2}", filePath, header, message);
 
             if (HttpContext.Current != null)
             {

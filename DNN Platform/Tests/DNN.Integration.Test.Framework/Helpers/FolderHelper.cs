@@ -20,7 +20,7 @@ namespace DNN.Integration.Test.Framework.Helpers
 
             var fullPath = Path.Combine(Path.Combine(rootFolder, subFolder), userId.ToString(CultureInfo.InvariantCulture));
 
-            return string.Format("Users/{0}/", fullPath.Replace("\\", "/"));
+            return string.Format("Users/{0}/", fullPath.Replace(@"\", "/"));
         }
 
         private static string GetUserFolderPathRoot(int userId)

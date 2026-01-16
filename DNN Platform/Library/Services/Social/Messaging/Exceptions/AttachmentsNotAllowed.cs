@@ -5,9 +5,11 @@
 namespace DotNetNuke.Services.Social.Messaging.Exceptions
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
     [Serializable]
+    [SuppressMessage("Microsoft.Design", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "Breaking change")]
     public class AttachmentsNotAllowed : Exception
     {
         /// <summary>Initializes a new instance of the <see cref="AttachmentsNotAllowed"/> class.</summary>

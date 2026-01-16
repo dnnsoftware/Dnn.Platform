@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Reflection;
     using System.Web.Caching;
 
@@ -104,6 +105,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// <summary>Deserializes the property.</summary>
         /// <param name="settings">The settings.</param>
         /// <param name="property">The property.</param>
+        /// <param name="attribute">The attribute.</param>
         /// <param name="propertyValue">The property value.</param>
         /// <exception cref="InvalidCastException">Thrown if string value cannot be deserialized to desired type.</exception>
         private static void DeserializeProperty(T settings, PropertyInfo property, ParameterAttributeBase attribute, string propertyValue)
@@ -211,7 +213,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                     }
                     catch (Exception ex)
                     {
-                        Exceptions.LogException(new ModuleLoadException(string.Format(Localization.GetString("ErrorDecryptingSetting", Localization.SharedResourceFile), mapping.FullParameterName), ex, ctlModule));
+                        Exceptions.LogException(new ModuleLoadException(string.Format(CultureInfo.CurrentCulture, Localization.GetString("ErrorDecryptingSetting", Localization.SharedResourceFile), mapping.FullParameterName), ex, ctlModule));
                     }
                 }
 

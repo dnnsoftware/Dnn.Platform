@@ -367,7 +367,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 // Get Parent ModuleID From this ClientID
                 string sClientId = this.ClientID.Substring(this.ClientID.IndexOf("ctr") + 3);
 
-                sClientId = sClientId.Remove(this.ClientID.IndexOf("_"));
+                sClientId = sClientId.Remove(this.ClientID.IndexOf("_", StringComparison.Ordinal));
 
                 if (!int.TryParse(sClientId, out this.parentModulId))
                 {
@@ -404,7 +404,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 return formattedUrl;
             }
 
-            if (inputUrl.StartsWith("http://") || inputUrl.StartsWith("https://") || inputUrl.StartsWith("//"))
+            if (inputUrl.StartsWith("http://") || inputUrl.StartsWith("https://") || inputUrl.StartsWith("//", StringComparison.Ordinal))
             {
                 formattedUrl = inputUrl;
             }

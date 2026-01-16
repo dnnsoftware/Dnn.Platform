@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Upgrade
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
@@ -396,7 +397,7 @@ namespace DotNetNuke.Services.Upgrade
                     string description = XmlUtils.GetNodeValue(node.CreateNavigator(), "description");
                     string keyWords = XmlUtils.GetNodeValue(node.CreateNavigator(), "keywords");
                     string templateFileName = XmlUtils.GetNodeValue(node.CreateNavigator(), "templatefile");
-                    string serverPath = Globals.ApplicationMapPath + "\\";
+                    string serverPath = Globals.ApplicationMapPath + @"\";
                     bool isChild = bool.Parse(XmlUtils.GetNodeValue(node.CreateNavigator(), "ischild"));
                     string homeDirectory = XmlUtils.GetNodeValue(node.CreateNavigator(), "homedirectory");
 
@@ -420,9 +421,9 @@ namespace DotNetNuke.Services.Upgrade
                         email = "admin@" + domain.Replace("www.", string.Empty);
 
                         // Remove any domain subfolder information ( if it exists )
-                        if (email.IndexOf("/") != -1)
+                        if (email.IndexOf("/", StringComparison.Ordinal) != -1)
                         {
-                            email = email.Substring(0, email.IndexOf("/"));
+                            email = email.Substring(0, email.IndexOf("/", StringComparison.Ordinal));
                         }
                     }
 
@@ -555,7 +556,7 @@ namespace DotNetNuke.Services.Upgrade
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Cleaning Up Files: " + stringVersion);
             }
 
-            string listFile = Globals.InstallMapPath + "Cleanup\\" + stringVersion + ".txt";
+            string listFile = $@"{Globals.InstallMapPath}Cleanup\{stringVersion}.txt";
             try
             {
                 if (File.Exists(listFile))
@@ -598,14 +599,14 @@ namespace DotNetNuke.Services.Upgrade
         public static void ExecuteScripts(string strProviderPath)
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "ExecuteScripts:" + strProviderPath);
-            string scriptPath = Globals.ApplicationMapPath + "\\Install\\Scripts\\";
+            string scriptPath = $@"{Globals.ApplicationMapPath}\Install\Scripts\";
             if (Directory.Exists(scriptPath))
             {
                 string[] files = Directory.GetFiles(scriptPath);
                 foreach (string file in files)
                 {
                     // Execute if script is a provider script
-                    if (file.IndexOf("." + DefaultProvider) != -1)
+                    if (file.Contains("." + DefaultProvider))
                     {
                         ExecuteScript(file, true);
 
@@ -629,7 +630,7 @@ namespace DotNetNuke.Services.Upgrade
         public static void ExecuteScript(string file)
         {
             // Execute if script is a provider script
-            if (file.IndexOf("." + DefaultProvider) != -1)
+            if (file.Contains("." + DefaultProvider))
             {
                 ExecuteScript(file, true);
             }
@@ -644,7 +645,8 @@ namespace DotNetNuke.Services.Upgrade
             string installTemplate = Config.GetSetting("InstallTemplate");
             try
             {
-                xmlDoc.Load(Globals.ApplicationMapPath + "\\Install\\" + installTemplate);
+                using var xmlReader = XmlReader.Create($@"{Globals.ApplicationMapPath}\Install\{installTemplate}", new XmlReaderSettings { XmlResolver = null, });
+                xmlDoc.Load(xmlReader);
             }
             catch
             {
@@ -656,13 +658,13 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>SetInstallTemplate saves the XmlDocument back to Installation Template specified in web.config.</summary>
-        /// <param name="xmlDoc">The Xml Document to save.</param>
-        /// <returns>A string which contains the error massage - if appropriate.</returns>
+        /// <param name="xmlDoc">The XML Document to save.</param>
+        /// <returns>A string which contains the error message - if appropriate.</returns>
         public static string SetInstallTemplate(XmlDocument xmlDoc)
         {
             string errorMessage = Null.NullString;
             string installTemplate = Config.GetSetting("InstallTemplate");
-            string filePath = Globals.ApplicationMapPath + "\\Install\\" + installTemplate;
+            string filePath = $@"{Globals.ApplicationMapPath}\Install\{installTemplate}";
             try
             {
                 // ensure the file is not read-only
@@ -742,7 +744,7 @@ namespace DotNetNuke.Services.Upgrade
                 }
                 else
                 {
-                    stringVersion += versionArray[i].ToString();
+                    stringVersion += versionArray[i].ToString(CultureInfo.InvariantCulture);
                 }
 
                 if (i < 2)
@@ -816,7 +818,7 @@ namespace DotNetNuke.Services.Upgrade
             string[] files = Directory.GetFiles(providerPath, "*." + DefaultProvider);
             Array.Sort(files); // The order of the returned file names is not guaranteed on certain NAS systems; use the Sort method if a specific sort order is required.
 
-            Logger.TraceFormat("GetUpgradedScripts databaseVersion:{0} applicationVersion:{1}", databaseVersion, ApplicationVersion);
+            Logger.TraceFormat(CultureInfo.InvariantCulture, "GetUpgradedScripts databaseVersion:{0} applicationVersion:{1}", databaseVersion, ApplicationVersion);
 
             foreach (string file in files)
             {
@@ -833,24 +835,24 @@ namespace DotNetNuke.Services.Upgrade
                             scriptFiles.Add(file);
 
                             // check if any incrementals exist
-                            var incrementalfiles = AddAvailableIncrementalFiles(providerPath, version);
-                            if (incrementalfiles != null)
+                            var incrementalFiles = AddAvailableIncrementalFiles(providerPath, version);
+                            if (incrementalFiles != null)
                             {
-                                scriptFiles.AddRange(incrementalfiles);
+                                scriptFiles.AddRange(incrementalFiles);
                             }
 
-                            Logger.TraceFormat("GetUpgradedScripts including {0}", file);
+                            Logger.TraceFormat(CultureInfo.InvariantCulture, "GetUpgradedScripts including {0}", file);
                         }
 
                         if (version == databaseVersion && version <= ApplicationVersion && GetFileName(file).Length == 9 + DefaultProvider.Length)
                         {
-                            var incrementalfiles = AddAvailableIncrementalFiles(providerPath, version);
-                            if (incrementalfiles != null)
+                            var incrementalFiles = AddAvailableIncrementalFiles(providerPath, version);
+                            if (incrementalFiles != null)
                             {
-                                scriptFiles.AddRange(incrementalfiles);
+                                scriptFiles.AddRange(incrementalFiles);
                             }
 
-                            Logger.TraceFormat("GetUpgradedScripts including {0}", file);
+                            Logger.TraceFormat(CultureInfo.InvariantCulture, "GetUpgradedScripts including {0}", file);
                         }
 
                         // else
@@ -915,12 +917,12 @@ namespace DotNetNuke.Services.Upgrade
                                     settingValue = "support@" + domainName;
 
                                     // Remove any folders
-                                    settingValue = settingValue.Substring(0, settingValue.IndexOf("/"));
+                                    settingValue = settingValue.Substring(0, settingValue.IndexOf("/", StringComparison.Ordinal));
 
                                     // Remove port number
-                                    if (settingValue.IndexOf(":") != -1)
+                                    if (settingValue.Contains(":"))
                                     {
-                                        settingValue = settingValue.Substring(0, settingValue.IndexOf(":"));
+                                        settingValue = settingValue.Substring(0, settingValue.IndexOf(":", StringComparison.Ordinal));
                                     }
                                 }
 
@@ -1152,13 +1154,13 @@ namespace DotNetNuke.Services.Upgrade
                     }
                     else if (Globals.Status != Globals.UpgradeStatus.None)
                     {
-                        var message = string.Format(Localization.GetString("InstallPackageError", Localization.ExceptionsResourceFile), file, "Manifest file missing");
+                        var message = string.Format(CultureInfo.InvariantCulture, Localization.GetString("InstallPackageError", Localization.ExceptionsResourceFile), file, "Manifest file missing");
                         DnnInstallLogger.InstallLogError(message);
                     }
                 }
                 else
                 {
-                    // log the failure log when installer is invalid and not caught by mainfest file missing.
+                    // log the failure log when installer is invalid and not caught by manifest file missing.
                     foreach (var log in installer.InstallerInfo.Log.Logs
                                                 .Where(l => l.Type == LogType.Failure))
                     {
@@ -1419,7 +1421,7 @@ namespace DotNetNuke.Services.Upgrade
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                exceptions += string.Format("Error: {0}{1}", ex.Message + ex.StackTrace, Environment.NewLine);
+                exceptions += $"Error: {ex.Message + ex.StackTrace}{Environment.NewLine}";
 
                 // log the results
                 if (string.IsNullOrEmpty(exceptions))
@@ -1484,11 +1486,11 @@ namespace DotNetNuke.Services.Upgrade
         public static string UpdateConfig(string configFile, Version version, string reason)
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
-            string exceptions = string.Empty;
+            var exceptions = string.Empty;
             if (File.Exists(configFile))
             {
                 // Create XmlMerge instance from config file source
-                StreamReader stream = File.OpenText(configFile);
+                var stream = File.OpenText(configFile);
                 try
                 {
                     var merge = new XmlMerge(stream, version.ToString(3), reason);
@@ -1498,7 +1500,7 @@ namespace DotNetNuke.Services.Upgrade
                 }
                 catch (Exception ex)
                 {
-                    exceptions += string.Format("Error: {0}{1}", ex.Message + ex.StackTrace, Environment.NewLine);
+                    exceptions += $"Error: {ex.Message + ex.StackTrace}{Environment.NewLine}";
                     Exceptions.Exceptions.LogException(ex);
                 }
                 finally
@@ -1527,7 +1529,7 @@ namespace DotNetNuke.Services.Upgrade
             if (File.Exists(configFile))
             {
                 // Create XmlMerge instance from config file source
-                StreamReader stream = File.OpenText(configFile);
+                var stream = File.OpenText(configFile);
                 try
                 {
                     var merge = new XmlMerge(stream, version.ToString(3), reason);
@@ -1538,16 +1540,14 @@ namespace DotNetNuke.Services.Upgrade
                 catch (Exception ex)
                 {
                     Logger.Error(ex);
-                    exceptions += string.Format("Error: {0}{1}", ex.Message + ex.StackTrace, Environment.NewLine);
+                    exceptions += $"Error: {ex.Message + ex.StackTrace}{Environment.NewLine}";
 
                     // log the results
                     try
                     {
-                        using (StreamWriter streamWriter = File.CreateText(providerPath + Globals.FormatVersion(version) + "_Config.log"))
-                        {
-                            streamWriter.WriteLine(exceptions);
-                            streamWriter.Close();
-                        }
+                        using var streamWriter = File.CreateText(providerPath + Globals.FormatVersion(version) + "_Config.log");
+                        streamWriter.WriteLine(exceptions);
+                        streamWriter.Close();
                     }
                     catch (Exception exc)
                     {
@@ -2098,6 +2098,7 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name="controlKey">The key for this control in the Definition.</param>
         /// <param name="controlTitle">The title of this control.</param>
         /// <param name="controlSrc">Te source of ths control.</param>
+        /// <param name="mvcControlClass">The mvc control class.</param>
         /// <param name="iconFile">The icon file.</param>
         /// <param name="controlType">The type of control.</param>
         /// <param name="viewOrder">The vieworder for this module.</param>
@@ -2324,8 +2325,8 @@ namespace DotNetNuke.Services.Upgrade
         private static void AddPagePermission(TabPermissionCollection permissions, string key, int roleId)
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddPagePermission:" + key);
-            var permissionController = new PermissionController();
-            var permission = (IPermissionInfo)permissionController.GetPermissionByCodeAndKey("SYSTEM_TAB", key)[0];
+            IPermissionDefinitionService permissionController = new PermissionController();
+            var permission = permissionController.GetDefinitionsByCodeAndKey("SYSTEM_TAB", key).First();
 
             var tabPermission = new TabPermissionInfo();
             ((IPermissionInfo)tabPermission).PermissionId = permission.PermissionId;
@@ -2400,7 +2401,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 var fileName = XmlUtils.GetNodeValue(fileNode.CreateNavigator(), "filename");
                 var extension = XmlUtils.GetNodeValue(fileNode.CreateNavigator(), "extension");
-                var size = long.Parse(XmlUtils.GetNodeValue(fileNode.CreateNavigator(), "size"));
+                var size = long.Parse(XmlUtils.GetNodeValue(fileNode.CreateNavigator(), "size"), CultureInfo.InvariantCulture);
                 var width = XmlUtils.GetNodeValueInt(fileNode, "width");
                 var height = XmlUtils.GetNodeValueInt(fileNode, "height");
                 var contentType = XmlUtils.GetNodeValue(fileNode.CreateNavigator(), "contentType");
@@ -2477,7 +2478,7 @@ namespace DotNetNuke.Services.Upgrade
             var stringVersion = GetStringVersion(version);
             if (version.Revision > 0)
             {
-                stringVersion += "." + version.Revision.ToString("D2");
+                stringVersion += "." + version.Revision.ToString("D2", CultureInfo.InvariantCulture);
             }
 
             return stringVersion;
@@ -2719,7 +2720,10 @@ namespace DotNetNuke.Services.Upgrade
                 }
 
                 var xmlDocument = new XmlDocument { XmlResolver = null };
-                xmlDocument.Load(languageFilePath);
+                using (var xmlReader = XmlReader.Create(languageFilePath, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xmlDocument.Load(xmlReader);
+                }
 
                 resourcesDict.Add(cultureCode, xmlDocument);
 

@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -156,7 +157,7 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="writer">A HtmlTextWriter.</param>
         protected virtual void RenderViewMode(HtmlTextWriter writer)
         {
-            string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value));
+            string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value, CultureInfo.InvariantCulture));
 
             this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
@@ -169,7 +170,7 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="writer">A HtmlTextWriter.</param>
         protected virtual void RenderEditMode(HtmlTextWriter writer)
         {
-            string propValue = Convert.ToString(this.Value);
+            string propValue = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
 
             this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");

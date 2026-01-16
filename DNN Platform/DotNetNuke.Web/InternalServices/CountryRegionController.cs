@@ -6,6 +6,8 @@ namespace DotNetNuke.Web.InternalServices
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -17,9 +19,12 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Web.Api;
 
+    /// <summary>A web API controller for retrieving regions and countries.</summary>
     [AllowAnonymous]
     public class CountryRegionController : DnnApiController
     {
+        /// <summary>Gets the countries.</summary>
+        /// <returns>A response with an alphabetized list of <see cref="CachedCountryList.Country"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage Countries()
         {
@@ -29,25 +34,34 @@ namespace DotNetNuke.Web.InternalServices
                 x => x.NormalizedFullName.IndexOf(searchString, StringComparison.CurrentCulture) > -1).OrderBy(x => x.NormalizedFullName));
         }
 
+        /// <summary>Gets the regions for a country.</summary>
+        /// <param name="country">The country ID.</param>
+        /// <returns>A response with an alphabetized list of <see cref="Region"/> objects.</returns>
         [HttpGet]
         public HttpResponseMessage Regions(int country)
         {
-            List<Region> res = new List<Region>();
+            List<Region> res = [];
             foreach (ListEntryInfo r in new ListController().GetListEntryInfoItems("Region").Where(l => l.ParentID == country))
             {
                 res.Add(new Region
                 {
                     Text = r.Text,
-                    Value = r.EntryID.ToString(),
+                    Value = r.EntryID.ToString(CultureInfo.InvariantCulture),
                 });
             }
 
             return this.Request.CreateResponse(HttpStatusCode.OK, res.OrderBy(r => r.Text));
         }
 
+        /// <summary>A data transfer object representing a region.</summary>
         public struct Region
         {
+            /// <summary>Gets or sets the text.</summary>
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string Text;
+
+            /// <summary>Gets or sets the entry ID.</summary>
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
             public string Value;
         }
     }

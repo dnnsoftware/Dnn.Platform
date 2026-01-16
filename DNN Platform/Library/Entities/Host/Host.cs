@@ -5,6 +5,7 @@
 namespace DotNetNuke.Entities.Host
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -275,6 +276,7 @@ namespace DotNetNuke.Entities.Host
         public static FileExtensionWhitelist DefaultEndUserExtensionWhitelist => new(HostController.Instance.GetString("DefaultEndUserExtensionWhitelist"));
 
         /// <summary>Gets the GUID.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
         public static string GUID => HostController.Instance.GetString("GUID");
 
         /// <summary>Gets the Help URL.</summary>

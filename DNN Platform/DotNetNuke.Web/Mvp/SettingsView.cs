@@ -36,6 +36,10 @@ namespace DotNetNuke.Web.Mvp
             }
         }
 
+        /// <summary>Gets the module setting.</summary>
+        /// <param name="key">The setting name.</param>
+        /// <param name="defaultValue">The default setting value.</param>
+        /// <returns>The setting value or <paramref name="defaultValue"/>.</returns>
         protected string GetModuleSetting(string key, string defaultValue)
         {
             var value = defaultValue;
@@ -48,6 +52,10 @@ namespace DotNetNuke.Web.Mvp
             return value;
         }
 
+        /// <summary>Gets the tab-module setting.</summary>
+        /// <param name="key">The setting name.</param>
+        /// <param name="defaultValue">The default setting value.</param>
+        /// <returns>The setting value or <paramref name="defaultValue"/>.</returns>
         protected string GetTabModuleSetting(string key, string defaultValue)
         {
             var value = defaultValue;

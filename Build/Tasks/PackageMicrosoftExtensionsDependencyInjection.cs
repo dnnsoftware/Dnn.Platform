@@ -4,6 +4,7 @@
 namespace DotNetNuke.Build.Tasks;
 
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Xml;
 
@@ -38,7 +39,11 @@ public sealed class PackageMicrosoftExtensionsDependencyInjection : FrostingTask
         var manifestPath = context.GetFiles(packageDir.Path.CombineWithFilePath("*.dnn").ToString()).Single();
         context.Information($"Reading manifest from {manifestPath}");
         var manifest = new XmlDocument();
-        manifest.LoadXml(context.ReadFile(manifestPath));
+        using (var manifestReader = XmlReader.Create(new StringReader(context.ReadFile(manifestPath)), new XmlReaderSettings { XmlResolver = null, }))
+        {
+            manifest.Load(manifestReader);
+        }
+
         var assemblies =
             from XmlNode assemblyNode in manifest.SelectNodes("//assembly")
             from XmlNode childNode in assemblyNode.ChildNodes

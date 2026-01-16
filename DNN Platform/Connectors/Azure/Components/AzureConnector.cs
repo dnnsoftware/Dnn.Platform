@@ -6,6 +6,7 @@ namespace Dnn.AzureConnector.Components
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Collections;
@@ -99,11 +100,11 @@ namespace Dnn.AzureConnector.Components
             var connectors = this.FindAzureFolderMappings(portalId);
             if (connectors != null && connectors.Count != 0)
             {
-                connectors.ForEach(x => { this.Id = x.FolderMappingID.ToString(); });
+                connectors.ForEach(x => { this.Id = x.FolderMappingID.ToString(CultureInfo.InvariantCulture); });
                 var finalCon = connectors.Select(x => (IConnector)Activator.CreateInstance(this.GetType())).ToList();
                 finalCon.ForEach(x =>
                 {
-                    x.Id = connectors[finalCon.IndexOf(x)].FolderMappingID.ToString();
+                    x.Id = connectors[finalCon.IndexOf(x)].FolderMappingID.ToString(CultureInfo.InvariantCulture);
                     x.DisplayName = connectors[finalCon.IndexOf(x)].MappingName;
                 });
                 return finalCon;
@@ -130,7 +131,7 @@ namespace Dnn.AzureConnector.Components
         public bool HasConfig(int portalId)
         {
             var folderMapping = this.FindAzureFolderMapping(portalId, false, true);
-            this.Id = Convert.ToString(folderMapping?.FolderMappingID);
+            this.Id = Convert.ToString(folderMapping?.FolderMappingID, CultureInfo.InvariantCulture);
             return this.GetConfig(portalId)["Connected"] == "true";
         }
 
@@ -150,7 +151,7 @@ namespace Dnn.AzureConnector.Components
 
             // This setting will improve the UI to set password-type inputs on secure settings
             configs.Add("SecureSettings", "AccountKey");
-            configs.Add("Id", Convert.ToString(folderMapping?.FolderMappingID));
+            configs.Add("Id", Convert.ToString(folderMapping?.FolderMappingID, CultureInfo.InvariantCulture));
             return configs;
         }
 
@@ -182,7 +183,7 @@ namespace Dnn.AzureConnector.Components
                 return true;
             }
 
-            if (this.FolderMappingNameExists(portalId, this.DisplayName, Convert.ToInt32(!string.IsNullOrEmpty(this.Id) ? this.Id : null)))
+            if (this.FolderMappingNameExists(portalId, this.DisplayName, Convert.ToInt32(!string.IsNullOrEmpty(this.Id) ? this.Id : null, CultureInfo.InvariantCulture)))
             {
                 throw new AzureConnectorException(Localization.GetString("ErrorMappingNameExists", Constants.LocalResourceFile));
             }
@@ -193,7 +194,7 @@ namespace Dnn.AzureConnector.Components
                 FolderMappingInfo folderMapping;
                 if (this.SupportsMultiple && !string.IsNullOrEmpty(this.Id))
                 {
-                    folderMapping = folderMappings.FirstOrDefault(x => x.FolderMappingID.ToString() == this.Id);
+                    folderMapping = folderMappings.FirstOrDefault(x => x.FolderMappingID.ToString(CultureInfo.InvariantCulture) == this.Id);
                 }
                 else
                 {
@@ -251,7 +252,7 @@ namespace Dnn.AzureConnector.Components
 
                 if (!folderMapping.FolderMappingSettings.ContainsKey(Constants.SyncBatchSize))
                 {
-                    folderMapping.FolderMappingSettings[Constants.SyncBatchSize] = Constants.DefaultSyncBatchSize.ToString();
+                    folderMapping.FolderMappingSettings[Constants.SyncBatchSize] = Constants.DefaultSyncBatchSize.ToString(CultureInfo.InvariantCulture);
                 }
 
                 this.folderMappingController.UpdateFolderMapping(folderMapping);
@@ -438,10 +439,8 @@ namespace Dnn.AzureConnector.Components
                 var removableFolders =
                     folders.Where(
                         f => f.FolderMappingID == folderMappingId && !folders1.Any(f2 => f2.FolderID != f.FolderID &&
-                                                                                         f2.FolderPath.StartsWith(
-                                                                                             f.FolderPath) &&
-                                                                                         f2.FolderMappingID !=
-                                                                                         folderMappingId));
+                                                                                         f2.FolderPath.StartsWith(f.FolderPath, StringComparison.OrdinalIgnoreCase) &&
+                                                                                         f2.FolderMappingID != folderMappingId));
 
                 if (removableFolders.Any())
                 {
@@ -486,7 +485,7 @@ namespace Dnn.AzureConnector.Components
                 return folderMappings.FirstOrDefault();
             }
 
-            var folderMapping = folderMappings.FirstOrDefault(x => x.FolderMappingID.ToString() == this.Id);
+            var folderMapping = folderMappings.FirstOrDefault(x => x.FolderMappingID.ToString(CultureInfo.InvariantCulture) == this.Id);
 
             if (folderMapping == null && autoCreate)
             {
@@ -514,7 +513,7 @@ namespace Dnn.AzureConnector.Components
         private FolderMappingInfo CreateAzureFolderMapping(int portalId, string mappingName = "")
         {
             var folderMapping = CreateAzureFolderMappingStatic(this.folderMappingController, portalId, mappingName);
-            this.Id = folderMapping.FolderMappingID.ToString();
+            this.Id = folderMapping.FolderMappingID.ToString(CultureInfo.InvariantCulture);
             return folderMapping;
         }
     }

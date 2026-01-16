@@ -9,6 +9,7 @@ namespace DotNetNuke.Tests.Core.Collections
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Globalization;
+    using System.IO;
     using System.Web.UI;
     using System.Xml;
     using System.Xml.Linq;
@@ -231,10 +232,13 @@ namespace DotNetNuke.Tests.Core.Collections
         public void get_from_xmlnode()
         {
             var doc = new XmlDocument { XmlResolver = null };
-            doc.LoadXml(@"
-<parent>
-    <id>13</id>
-</parent>");
+            const string parentNode = """
+                                      <parent>
+                                          <id>13</id>
+                                      </parent>
+                                      """;
+            using var xmlReader = XmlReader.Create(new StringReader(parentNode), new XmlReaderSettings { XmlResolver = null, });
+            doc.Load(xmlReader);
 
             var value = doc.DocumentElement.GetValueOrDefault<int>("id");
 
@@ -427,10 +431,13 @@ namespace DotNetNuke.Tests.Core.Collections
         public void can_get_value_without_default_from_xmlnode()
         {
             var doc = new XmlDocument { XmlResolver = null };
-            doc.LoadXml(@"
-<parent>
-    <id>123</id>
-</parent>");
+            const string ParentWithIdXml = """
+                                           <parent>
+                                               <id>123</id>
+                                           </parent>
+                                           """;
+            using var xmlReader = XmlReader.Create(new StringReader(ParentWithIdXml), new XmlReaderSettings { XmlResolver = null, });
+            doc.Load(xmlReader);
 
             var value = doc.DocumentElement.GetValue<int>("id");
 

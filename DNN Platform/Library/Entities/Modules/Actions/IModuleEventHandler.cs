@@ -4,6 +4,9 @@
 
 namespace DotNetNuke.Entities.Modules.Actions
 {
+    using System.Diagnostics.CodeAnalysis;
+
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public interface IModuleEventHandler
     {
         void ModuleCreated(object sender, ModuleEventArgs args);

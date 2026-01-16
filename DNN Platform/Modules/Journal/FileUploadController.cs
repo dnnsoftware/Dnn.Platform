@@ -23,7 +23,7 @@ namespace DotNetNuke.Modules.Journal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
 
-        private static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO", ".SVG" };
+        private static readonly HashSet<string> ImageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO", ".SVG", };
 
         [DnnAuthorize]
         [HttpPost]
@@ -41,15 +41,15 @@ namespace DotNetNuke.Modules.Journal
                 Logger.Error(exc);
             }
 
-            return this.IframeSafeJson(statuses);
+            return IframeSafeJson(statuses);
         }
 
         private static bool IsImageExtension(string extension)
         {
-            return ImageExtensions.Contains(extension.ToUpper());
+            return ImageExtensions.Contains(extension);
         }
 
-        private HttpResponseMessage IframeSafeJson(List<FilesStatus> statuses)
+        private static HttpResponseMessage IframeSafeJson(List<FilesStatus> statuses)
         {
             // return json but label it as plain text
             return new HttpResponseMessage

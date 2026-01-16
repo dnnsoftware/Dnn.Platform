@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.Admin.Security
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Threading;
     using System.Web.UI;
@@ -431,7 +432,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         // cboRoles.Items.Add(new ListItem(Role.RoleName, Role.RoleID.ToString()));
                         this.cboRoles.AddItem(this.Role.RoleName, this.Role.RoleID.ToString());
                         this.cboRoles.Items[0].Selected = true;
-                        this.lblTitle.Text = string.Format(Localization.GetString("RoleTitle.Text", this.LocalResourceFile), this.Role.RoleName, this.Role.RoleID);
+                        this.lblTitle.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("RoleTitle.Text", this.LocalResourceFile), this.Role.RoleName, this.Role.RoleID);
                     }
 
                     this.cboRoles.Visible = false;
@@ -479,7 +480,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 if (this.User != null)
                 {
                     this.txtUsers.Text = this.User.UserID.ToString();
-                    this.lblTitle.Text = string.Format(Localization.GetString("UserTitle.Text", this.LocalResourceFile), this.User.Username, this.User.UserID);
+                    this.lblTitle.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserTitle.Text", this.LocalResourceFile), this.User.Username, this.User.UserID);
                 }
 
                 this.txtUsers.Visible = false;
@@ -699,11 +700,11 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     if (this.roleId == Null.NullInteger)
                     {
-                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(Localization.GetString("DeleteRoleFromUser.Text", this.LocalResourceFile), role.FullName, role.RoleName));
+                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(CultureInfo.CurrentCulture, Localization.GetString("DeleteRoleFromUser.Text", this.LocalResourceFile), role.FullName, role.RoleName));
                     }
                     else
                     {
-                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(Localization.GetString("DeleteUsersFromRole.Text", this.LocalResourceFile), role.FullName, role.RoleName));
+                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(CultureInfo.CurrentCulture, Localization.GetString("DeleteUsersFromRole.Text", this.LocalResourceFile), role.FullName, role.RoleName));
                     }
 
                     cmdDeleteUserRole.Attributes.Add("roleId", role.RoleID.ToString());

@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Security.Attributes
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
 
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Localization;
@@ -17,11 +18,10 @@ namespace Dnn.PersonaBar.Security.Attributes
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var propertyName = validationContext.DisplayName;
-            bool userEmailAsUsername;
 
-            if (!bool.TryParse(value.ToString(), out userEmailAsUsername))
+            if (!bool.TryParse(value.ToString(), out var userEmailAsUsername))
             {
-                return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid, Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
+                return new ValidationResult(string.Format(CultureInfo.CurrentCulture, Localization.GetString(Components.Constants.NotValid, Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
             }
 
             if (userEmailAsUsername && UserController.GetDuplicateEmailCount() > 0)

@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.Mobile
             this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
         }
 
-        private static string AllRedirectionsCacheKey => string.Format(DataCache.RedirectionsCacheKey, "All");
+        private static string AllRedirectionsCacheKey => string.Format(CultureInfo.InvariantCulture, DataCache.RedirectionsCacheKey, "All");
 
         /// <summary>
         /// Is Redirection Allowed for the session. Method analyzes the query string for special parameters to enable / disable redirects.
@@ -170,7 +170,7 @@ namespace DotNetNuke.Services.Mobile
             }
 
             // try to get content from cache
-            var cacheKey = string.Format(RedirectionUrlCacheKey, userAgent, portalId, currentTabId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, RedirectionUrlCacheKey, userAgent, portalId, currentTabId);
             redirectUrl = GetUrlFromCache(cacheKey);
             if (!string.IsNullOrEmpty(redirectUrl))
             {
@@ -273,7 +273,7 @@ namespace DotNetNuke.Services.Mobile
             }
 
             // try to get content from cache
-            var cacheKey = string.Format(FullSiteUrlCacheKey, portalId, currentTabId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, FullSiteUrlCacheKey, portalId, currentTabId);
             fullSiteUrl = GetUrlFromCache(cacheKey);
             if (!string.IsNullOrEmpty(fullSiteUrl))
             {
@@ -288,7 +288,7 @@ namespace DotNetNuke.Services.Mobile
                     if (redirection.TargetType == TargetType.Tab)
                     {
                         // page within same site
-                        int targetTabId = int.Parse(redirection.TargetValue.ToString());
+                        int targetTabId = int.Parse(redirection.TargetValue.ToString(), CultureInfo.InvariantCulture);
                         if (targetTabId == currentTabId)
                         {
                             // target tab is same as current tab
@@ -298,7 +298,7 @@ namespace DotNetNuke.Services.Mobile
                     else if (redirection.TargetType == TargetType.Portal)
                     {
                         // home page of another portal
-                        int targetPortalId = int.Parse(redirection.TargetValue.ToString());
+                        int targetPortalId = int.Parse(redirection.TargetValue.ToString(), CultureInfo.InvariantCulture);
                         if (targetPortalId == portalId)
                         {
                             // target portal is same as current portal
@@ -335,7 +335,7 @@ namespace DotNetNuke.Services.Mobile
             // append special query string
             if (!string.IsNullOrEmpty(fullSiteUrl))
             {
-                fullSiteUrl += string.Format("{0}{1}=1", fullSiteUrl.Contains("?") ? "&" : "?", DisableMobileRedirectQueryStringName);
+                fullSiteUrl += $"{(fullSiteUrl.Contains("?") ? "&" : "?")}{DisableMobileRedirectQueryStringName}=1";
             }
 
             // update cache content
@@ -377,14 +377,14 @@ namespace DotNetNuke.Services.Mobile
             }
 
             // try to get content from cache
-            var cacheKey = string.Format(MobileSiteUrlCacheKey, portalId, currentTabId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, MobileSiteUrlCacheKey, portalId, currentTabId);
             mobileSiteUrl = GetUrlFromCache(cacheKey);
             if (!string.IsNullOrEmpty(mobileSiteUrl))
             {
                 return mobileSiteUrl;
             }
 
-            // let's try to find if this tab has any specifc rules
+            // let's try to find if this tab has any specific rules
             foreach (var redirection in redirections)
             {
                 if (redirection.Enabled)
@@ -410,7 +410,7 @@ namespace DotNetNuke.Services.Mobile
             // append special query string
             if (!string.IsNullOrEmpty(mobileSiteUrl))
             {
-                mobileSiteUrl += string.Format("{0}{1}=0", mobileSiteUrl.Contains("?") ? "&" : "?", DisableMobileRedirectQueryStringName);
+                mobileSiteUrl += $"{(mobileSiteUrl.Contains("?") ? "&" : "?")}{DisableMobileRedirectQueryStringName}=0";
             }
 
             // update cache content
@@ -470,7 +470,7 @@ namespace DotNetNuke.Services.Mobile
 
             // remove rules for deleted target tabs
             redirects = this.GetRedirectionsByPortal(portalId); // fresh get of rules in case some were deleted above
-            foreach (var r in redirects.Where(r => r.TargetType == TargetType.Tab && allTabs.All(t => t.Key != int.Parse(r.TargetValue.ToString()))))
+            foreach (var r in redirects.Where(r => r.TargetType == TargetType.Tab && allTabs.All(t => t.Key != int.Parse(r.TargetValue.ToString(), CultureInfo.InvariantCulture))))
             {
                 this.Delete(portalId, r.Id);
             }
@@ -483,7 +483,7 @@ namespace DotNetNuke.Services.Mobile
                 bool found = false;
                 foreach (PortalInfo portal in allPortals)
                 {
-                    if (portal.PortalID == int.Parse(r.TargetValue.ToString()))
+                    if (portal.PortalID == int.Parse(r.TargetValue.ToString(), CultureInfo.InvariantCulture))
                     {
                         found = true;
                         break;
@@ -506,15 +506,17 @@ namespace DotNetNuke.Services.Mobile
             if (delRedirection != null)
             {
                 // update the list order
-                this.GetRedirectionsByPortal(portalId).Where(p => p.SortOrder > delRedirection.SortOrder).ToList().ForEach(p =>
-                                                                                                                {
-                                                                                                                    p.SortOrder--;
-                                                                                                                    this.Save(p);
-                                                                                                                });
+                this.GetRedirectionsByPortal(portalId)
+                    .Where(p => p.SortOrder > delRedirection.SortOrder)
+                    .ToList()
+                    .ForEach(p =>
+                    {
+                        p.SortOrder--;
+                        this.Save(p);
+                    });
                 DataProvider.Instance().DeleteRedirection(id);
 
-                var logContent = string.Format("Id '{0}' Deleted", id);
-                this.AddLog(logContent);
+                this.AddLog(string.Format(CultureInfo.InvariantCulture, "Id '{0}' Deleted", id));
 
                 ClearCache(portalId);
             }
@@ -528,7 +530,7 @@ namespace DotNetNuke.Services.Mobile
         {
             DataProvider.Instance().DeleteRedirectionRule(ruleId);
 
-            var logContent = string.Format("Id '{0}' Removed from Redirection Id '{1}'", ruleId, redirectionId);
+            var logContent = $"Id '{ruleId}' Removed from Redirection Id '{redirectionId}'";
             this.AddLog(logContent);
 
             ClearCache(portalId);
@@ -547,7 +549,7 @@ namespace DotNetNuke.Services.Mobile
         /// <returns>List of redirection.</returns>
         public IList<IRedirection> GetRedirectionsByPortal(int portalId)
         {
-            string cacheKey = string.Format(DataCache.RedirectionsCacheKey, portalId);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.RedirectionsCacheKey, portalId);
             var cacheArg = new CacheItemArgs(cacheKey, DataCache.RedirectionsCacheTimeOut, DataCache.RedirectionsCachePriority, portalId);
             return CBO.GetCachedObject<IList<IRedirection>>(cacheArg, GetRedirectionsByPortalCallBack);
         }
@@ -578,13 +580,13 @@ namespace DotNetNuke.Services.Mobile
             else if (redirection.TargetType == TargetType.Tab)
             {
                 // page within same site
-                int targetTabId = int.Parse(redirection.TargetValue.ToString());
+                int targetTabId = int.Parse(redirection.TargetValue.ToString(), CultureInfo.InvariantCulture);
 
                 // ensure it's not redirecting to itself
                 if (targetTabId != currentTabId)
                 {
                     var tab = TabController.Instance.GetTab(targetTabId, portalId, false);
-                    if (tab != null && !tab.IsDeleted)
+                    if (tab is { IsDeleted: false, })
                     {
                         redirectUrl = TestableGlobals.Instance.NavigateURL(targetTabId);
                     }
@@ -593,7 +595,7 @@ namespace DotNetNuke.Services.Mobile
             else if (redirection.TargetType == TargetType.Portal)
             {
                 // home page of another portal
-                int targetPortalId = int.Parse(redirection.TargetValue.ToString());
+                int targetPortalId = int.Parse(redirection.TargetValue.ToString(), CultureInfo.InvariantCulture);
 
                 // ensure it's not redirecting to itself
                 if (targetPortalId != portalId)
@@ -632,7 +634,7 @@ namespace DotNetNuke.Services.Mobile
 
         private static void ClearCache(int portalId)
         {
-            DataCache.RemoveCache(string.Format(DataCache.RedirectionsCacheKey, portalId));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.RedirectionsCacheKey, portalId));
             DataCache.RemoveCache(AllRedirectionsCacheKey);
             DataCache.RemoveCache(UrlsCacheKey);
         }

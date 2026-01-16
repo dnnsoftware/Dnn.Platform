@@ -4,6 +4,7 @@
 namespace Dnn.PersonaBar.Prompt.Services
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -102,7 +103,7 @@ namespace Dnn.PersonaBar.Prompt.Services
 
             if (portal == null)
             {
-                var errorMessage = string.Format(Localization.GetString("Prompt_GetPortal_NotFound", Constants.LocalResourcesFile), portalId);
+                var errorMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_GetPortal_NotFound", Constants.LocalResourcesFile), portalId);
                 Logger.Error(errorMessage);
                 return this.AddLogAndReturnResponse(null, null, command, DateTime.Now, errorMessage);
             }
@@ -147,6 +148,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                         command,
                         startTime,
                         string.Format(
+                            CultureInfo.CurrentCulture,
                             Localization.GetString("CommandNotFound", Constants.LocalResourcesFile),
                             cmdName.ToLowerInvariant()));
                 }
@@ -162,10 +164,10 @@ namespace Dnn.PersonaBar.Prompt.Services
                     {
                         var sbError = new StringBuilder();
                         var suggestion = Utilities.GetSuggestedCommand(cmdName);
-                        sbError.AppendFormat(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile), cmdName.ToLowerInvariant());
+                        sbError.AppendFormat(CultureInfo.InvariantCulture, Localization.GetString("CommandNotFound", Constants.LocalResourcesFile), cmdName.ToLowerInvariant());
                         if (!string.IsNullOrEmpty(suggestion))
                         {
-                            sbError.AppendFormat(Localization.GetString("DidYouMean", Constants.LocalResourcesFile), suggestion);
+                            sbError.AppendFormat(CultureInfo.InvariantCulture, Localization.GetString("DidYouMean", Constants.LocalResourcesFile), suggestion);
                         }
 
                         return this.AddLogAndReturnResponse(null, null, command, startTime, sbError.ToString());
@@ -284,6 +286,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                         if (result.PagingInfo.PageNo < result.PagingInfo.TotalPages)
                         {
                             result.Output = string.Format(
+                                CultureInfo.CurrentCulture,
                                 Localization.GetString("Prompt_PagingMessageWithLoad", Constants.LocalResourcesFile),
                                 result.PagingInfo.PageNo,
                                 result.PagingInfo.TotalPages);
@@ -294,7 +297,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                                 : -1;
                             if (indexOfPage > -1)
                             {
-                                args[indexOfPage + 1] = (result.PagingInfo.PageNo + 1).ToString();
+                                args[indexOfPage + 1] = (result.PagingInfo.PageNo + 1).ToString(CultureInfo.InvariantCulture);
                             }
 
                             var nextPageCommand = string.Join(" ", args);
@@ -308,6 +311,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                         else if (result.Records > 0)
                         {
                             result.Output = string.Format(
+                                CultureInfo.CurrentCulture,
                                 Localization.GetString("Prompt_PagingMessage", Constants.LocalResourcesFile),
                                 result.PagingInfo.PageNo,
                                 result.PagingInfo.TotalPages);
@@ -315,7 +319,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                     }
 
                     message = this.Request.CreateResponse(HttpStatusCode.OK, result);
-                    logInfo.LogProperties.Add(new LogDetailInfo("RecordsAffected", result.Records.ToString()));
+                    logInfo.LogProperties.Add(new LogDetailInfo("RecordsAffected", result.Records.ToString(CultureInfo.InvariantCulture)));
                     logInfo.LogProperties.Add(new LogDetailInfo("Output", result.Output));
                 }
                 else
@@ -330,7 +334,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                 message = this.BadRequestResponse(ex.Message);
             }
 
-            logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff")));
+            logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff", CultureInfo.InvariantCulture)));
             LogController.Instance.AddLog(logInfo);
             return message;
         }
@@ -368,6 +372,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                         if (result.PagingInfo.PageNo < result.PagingInfo.TotalPages)
                         {
                             result.Output = string.Format(
+                                CultureInfo.CurrentCulture,
                                 Localization.GetString("Prompt_PagingMessageWithLoad", Constants.LocalResourcesFile),
                                 result.PagingInfo.PageNo,
                                 result.PagingInfo.TotalPages);
@@ -378,7 +383,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                                 : -1;
                             if (indexOfPage > -1)
                             {
-                                args[indexOfPage + 1] = (result.PagingInfo.PageNo + 1).ToString();
+                                args[indexOfPage + 1] = (result.PagingInfo.PageNo + 1).ToString(CultureInfo.InvariantCulture);
                             }
 
                             var nextPageCommand = string.Join(" ", args);
@@ -392,6 +397,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                         else if (result.Records > 0)
                         {
                             result.Output = string.Format(
+                                CultureInfo.CurrentCulture,
                                 Localization.GetString("Prompt_PagingMessage", Constants.LocalResourcesFile),
                                 result.PagingInfo.PageNo,
                                 result.PagingInfo.TotalPages);
@@ -399,7 +405,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                     }
 
                     message = this.Request.CreateResponse(HttpStatusCode.OK, result);
-                    logInfo.LogProperties.Add(new LogDetailInfo("RecordsAffected", result.Records.ToString()));
+                    logInfo.LogProperties.Add(new LogDetailInfo("RecordsAffected", result.Records.ToString(CultureInfo.InvariantCulture)));
                     logInfo.LogProperties.Add(new LogDetailInfo("Output", result.Output));
                 }
                 else
@@ -414,7 +420,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                 message = this.BadRequestResponse(ex.Message);
             }
 
-            logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff")));
+            logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff", CultureInfo.InvariantCulture)));
             LogController.Instance.AddLog(logInfo);
             return message;
         }

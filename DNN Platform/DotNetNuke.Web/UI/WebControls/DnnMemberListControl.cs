@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI;
     using System.Web.UI.WebControls;
@@ -114,16 +115,16 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             var additionalFilters = new Dictionary<string, string>();
-            additionalFilters.Add("Records", this.PageSize.ToString());
-            additionalFilters.Add("PageIndex", this.PageIndex.ToString());
-            additionalFilters.Add("Rowsize", this.RowSize.ToString());
+            additionalFilters.Add("Records", this.PageSize.ToString(CultureInfo.InvariantCulture));
+            additionalFilters.Add("PageIndex", this.PageIndex.ToString(CultureInfo.InvariantCulture));
+            additionalFilters.Add("Rowsize", this.RowSize.ToString(CultureInfo.InvariantCulture));
             additionalFilters.Add("SortBy", this.SortBy);
             additionalFilters.Add("SortAscending", this.SortAscending.ToString());
 
             // Currently Not Used by the SPROC
-            var filterUser = this.Filters.TryGetValue("UserId", out var userId) && userId != null ? new UserInfo { UserID = int.Parse(userId) } : new UserInfo() { PortalID = this.currentUser.PortalID };
-            var role = this.Filters.TryGetValue("RoleId", out var roleId) && roleId != null ? new UserRoleInfo { RoleID = int.Parse(roleId) } : null;
-            var relationship = this.Filters.TryGetValue("RelationshipTypeId", out var relationshipTypeId) && relationshipTypeId != null ? new RelationshipType() { RelationshipTypeId = int.Parse(relationshipTypeId) } : null;
+            var filterUser = this.Filters.TryGetValue("UserId", out var userId) && userId != null ? new UserInfo { UserID = int.Parse(userId, CultureInfo.InvariantCulture) } : new UserInfo() { PortalID = this.currentUser.PortalID };
+            var role = this.Filters.TryGetValue("RoleId", out var roleId) && roleId != null ? new UserRoleInfo { RoleID = int.Parse(roleId, CultureInfo.InvariantCulture) } : null;
+            var relationship = this.Filters.TryGetValue("RelationshipTypeId", out var relationshipTypeId) && relationshipTypeId != null ? new RelationshipType { RelationshipTypeId = int.Parse(relationshipTypeId, CultureInfo.InvariantCulture), } : null;
 
             foreach (var filter in this.Filters.Where(filter => !additionalFilters.ContainsKey(filter.Key)))
             {

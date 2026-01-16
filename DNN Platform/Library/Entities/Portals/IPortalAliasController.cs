@@ -5,6 +5,7 @@
 namespace DotNetNuke.Entities.Portals
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should be used as a type and for unit test purposes only.
@@ -24,12 +25,14 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>Gets the portal alias info.</summary>
         /// <param name="alias">The portal alias.</param>
         /// <returns>Portal alias info.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         PortalAliasInfo GetPortalAlias(string alias);
 
         /// <summary>Gets the portal alias info.</summary>
         /// <param name="alias">The portal alias.</param>
-        /// <param name="portalId">The Id of the portal in question.</param>
+        /// <param name="portalId">The ID of the portal in question.</param>
         /// <returns>Portal alias info.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         PortalAliasInfo GetPortalAlias(string alias, int portalId);
 
         PortalAliasInfo GetPortalAliasByPortalAliasID(int portalAliasId);

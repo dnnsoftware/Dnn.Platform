@@ -87,15 +87,13 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
         /// <returns><see cref="IStep"/> of the data type updater.</returns>
         private protected IStep UpdateDataTypeList(string value)
         {
-            var commandFormat = string.Join(
-                Environment.NewLine,
-                "UPDATE {{databaseOwner}}[{{objectQualifier}}Lists]",
-                "SET Text = 'DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.{0}EditControl, DotNetNuke.Web'",
-                "WHERE ListName = 'DataType' AND Value = '{0}'");
-
             var step = this.GetService<IExecuteSqlStep>();
             step.Name = this.localizer.LocalizeFormat("UninstallStepUpdateDataTypeListFormat", value);
-            step.CommandText = string.Format(commandFormat, value);
+            step.CommandText = $$"""
+                                 UPDATE {databaseOwner}[{objectQualifier}Lists]
+                                 SET Text = 'DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.{{value}}EditControl, DotNetNuke.Web'
+                                 WHERE ListName = 'DataType' AND Value = '{{value}}'
+                                 """;
             return step;
         }
 

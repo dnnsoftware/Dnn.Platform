@@ -4,6 +4,7 @@
 namespace DotNetNuke.Entities.Users.Social
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Logging;
@@ -52,6 +53,7 @@ namespace DotNetNuke.Entities.Users.Social
             // log event
             string logContent =
                 string.Format(
+                    CultureInfo.InvariantCulture,
                     Localization.GetString("RelationshipType_Deleted", Localization.GlobalResourceFile),
                     relationshipType.Name,
                     relationshipType.RelationshipTypeId);
@@ -96,6 +98,7 @@ namespace DotNetNuke.Entities.Users.Social
 
             // log event
             string logContent = string.Format(
+                CultureInfo.CurrentCulture,
                 Localization.GetString(localizationKey, Localization.GlobalResourceFile),
                 relationshipType.Name);
             this.AddLog(logContent);
@@ -114,6 +117,7 @@ namespace DotNetNuke.Entities.Users.Social
             // log event
             string logContent =
                 string.Format(
+                    CultureInfo.InvariantCulture,
                     Localization.GetString("Relationship_Deleted", Localization.GlobalResourceFile),
                     relationship.Name,
                     relationship.RelationshipId);
@@ -145,7 +149,7 @@ namespace DotNetNuke.Entities.Users.Social
             }
 
             var cacheArgs = new CacheItemArgs(
-                string.Format(DataCache.RelationshipByPortalIDCacheKey, pid),
+                string.Format(CultureInfo.InvariantCulture, DataCache.RelationshipByPortalIDCacheKey, pid),
                 DataCache.RelationshipByPortalIDCacheTimeOut,
                 DataCache.RelationshipByPortalIDCachePriority,
                 pid);
@@ -172,6 +176,7 @@ namespace DotNetNuke.Entities.Users.Social
 
             // log event
             string logContent = string.Format(
+                CultureInfo.CurrentCulture,
                 Localization.GetString(localizationKey, Localization.GlobalResourceFile),
                 relationship.Name);
             this.AddLog(logContent);
@@ -190,6 +195,7 @@ namespace DotNetNuke.Entities.Users.Social
             // log event
             string logContent =
                 string.Format(
+                    CultureInfo.InvariantCulture,
                     Localization.GetString("UserRelationship_Deleted", Localization.GlobalResourceFile),
                     userRelationship.UserRelationshipId,
                     userRelationship.UserId,
@@ -244,6 +250,7 @@ namespace DotNetNuke.Entities.Users.Social
 
             // log event
             string logContent = string.Format(
+                CultureInfo.InvariantCulture,
                 Localization.GetString(localizationKey, Localization.GlobalResourceFile),
                 userRelationship.UserRelationshipId,
                 userRelationship.UserId,
@@ -264,6 +271,7 @@ namespace DotNetNuke.Entities.Users.Social
             // log event
             string logContent =
                 string.Format(
+                    CultureInfo.InvariantCulture,
                     Localization.GetString("UserRelationshipPreference_Deleted", Localization.GlobalResourceFile),
                     userRelationshipPreference.PreferenceId,
                     userRelationshipPreference.UserId,
@@ -303,6 +311,7 @@ namespace DotNetNuke.Entities.Users.Social
 
             // log event
             string logContent = string.Format(
+                CultureInfo.InvariantCulture,
                 Localization.GetString(localizationKey, Localization.GlobalResourceFile),
                 userRelationshipPreference.PreferenceId,
                 userRelationshipPreference.UserId,
@@ -569,7 +578,7 @@ namespace DotNetNuke.Entities.Users.Social
         {
             if (relationship.UserId == Null.NullInteger)
             {
-                DataCache.RemoveCache(string.Format(DataCache.RelationshipByPortalIDCacheKey, relationship.PortalId));
+                DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.RelationshipByPortalIDCacheKey, relationship.PortalId));
             }
         }
 

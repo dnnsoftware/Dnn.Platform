@@ -40,6 +40,7 @@ namespace DotNetNuke.Framework
         private readonly IPortalController portalController;
         private readonly IApplicationStatusInfo appStatus;
         private readonly IHostSettings hostSettings;
+        private readonly IUserController userController;
 
         private PageStatePersister persister;
         private CultureInfo pageCulture;
@@ -56,11 +57,23 @@ namespace DotNetNuke.Framework
         /// <param name="portalController">The portal controller.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.1. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
         protected PageBase(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings)
+            : this(portalController, appStatus, hostSettings, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PageBase"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="userController">The user controller.</param>
+        protected PageBase(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IUserController userController)
         {
             this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
         }
 
         public PortalSettings PortalSettings => this.portalController.GetCurrentPortalSettings();
@@ -158,7 +171,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary><para>GetControlAttribute looks a the type of control and does it's best to find an AttributeCollection.</para></summary>
+        /// <summary><para>GetControlAttribute looks at the type of control and does it's best to find an AttributeCollection.</para></summary>
         /// <param name="control">Control to find the AttributeCollection on.</param>
         /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>
         /// <param name="attributeName">Name of key to search for.</param>
@@ -213,7 +226,7 @@ namespace DotNetNuke.Framework
         /// <summary><para>ProcessControl performs the high level localization for a single control and optionally it's children.</para></summary>
         /// <param name="control">Control to find the AttributeCollection on.</param>
         /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>
-        /// <param name="includeChildren">If true, causes this method to process children of this controls.</param>
+        /// <param name="includeChildren">If true, causes this method to process children of this control.</param>
         /// <param name="resourceFileRoot">Root Resource File.</param>
         internal void ProcessControl(Control control, ArrayList affectedControls, bool includeChildren, string resourceFileRoot)
         {
@@ -411,6 +424,8 @@ namespace DotNetNuke.Framework
                    : "~/js/dnncore.js";
 
             ClientResourceManager.RegisterScript(this, dnncoreFilePath);
+
+            this.ViewStateUserKey = this.userController.GetCurrentUserInfo().Username;
 
             base.OnInit(e);
         }

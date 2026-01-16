@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -25,30 +26,39 @@ namespace DotNetNuke.UI.UserControls
         // ReSharper disable InconsistentNaming
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel PanelTextEditor;
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected RadioButtonList OptRender;
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected RadioButtonList OptView;
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected PlaceHolder PlcEditor;
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected HtmlGenericControl DivBasicTextBox;
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected HtmlGenericControl DivBasicRender;
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected HtmlGenericControl DivRichTextBox;
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel PanelView;
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected TextBox TxtDesktopHTML;
 
         // ReSharper restore InconsistentNaming
@@ -151,7 +161,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     if (Personalization.GetProfile("DotNetNuke.TextEditor", "PreferredTextEditor") != null)
                     {
-                        strMode = Convert.ToString(Personalization.GetProfile("DotNetNuke.TextEditor", "PreferredTextEditor"));
+                        strMode = Convert.ToString(Personalization.GetProfile("DotNetNuke.TextEditor", "PreferredTextEditor"), CultureInfo.InvariantCulture);
                     }
                 }
 
@@ -160,7 +170,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     if (this.ViewState["DesktopMode"] != null && !string.IsNullOrEmpty(this.ViewState["DesktopMode"].ToString()))
                     {
-                        strMode = Convert.ToString(this.ViewState["DesktopMode"]);
+                        strMode = Convert.ToString(this.ViewState["DesktopMode"], CultureInfo.InvariantCulture);
                     }
                 }
 
@@ -247,7 +257,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToString(this.ViewState["textrender"]);
+                return Convert.ToString(this.ViewState["textrender"], CultureInfo.InvariantCulture);
             }
 
             set

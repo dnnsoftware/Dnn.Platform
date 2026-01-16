@@ -5,9 +5,11 @@
 namespace Dnn.PersonaBar.Library.Dto
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
     [DataContract]
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class RolePermission
     {
         /// <summary>Initializes a new instance of the <see cref="RolePermission"/> class.</summary>

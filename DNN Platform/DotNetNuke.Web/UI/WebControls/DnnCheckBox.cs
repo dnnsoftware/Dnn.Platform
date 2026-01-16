@@ -4,15 +4,18 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI.WebControls;
 
+    /// <summary>A checkbox control.</summary>
     public class DnnCheckBox : CheckBox
     {
+        /// <summary>Gets or sets the command argument.</summary>
         public string CommandArgument
         {
             get
             {
-                return Convert.ToString(this.ViewState["CommandArgument"]);
+                return Convert.ToString(this.ViewState["CommandArgument"], CultureInfo.InvariantCulture);
             }
 
             set

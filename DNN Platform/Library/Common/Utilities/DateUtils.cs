@@ -4,6 +4,7 @@
 namespace DotNetNuke.Common.Utilities
 {
     using System;
+    using System.Globalization;
 
     using DotNetNuke.Data;
     using DotNetNuke.Internal.SourceGenerators;
@@ -33,7 +34,7 @@ namespace DotNetNuke.Common.Utilities
         {
             var dateTimeOffset = DataProvider.Instance().GetDatabaseTimeOffset();
             var offset = dateTimeOffset.Offset;
-            var id = string.Format("UTC {0}", offset.ToString());
+            var id = $"UTC {offset}";
             return TimeZoneInfo.CreateCustomTimeZone(id, offset, id, id);
         }
 
@@ -43,7 +44,7 @@ namespace DotNetNuke.Common.Utilities
         {
             try
             {
-                // Also We check that drift is not the initial value and it is not out of the maximum UTC offset
+                // Also We check that drift is not the initial value, and it is not out of the maximum UTC offset
                 if (DateTime.UtcNow >= lastUpdateUtc + TimeSpan.FromMinutes(15) || !(TimeSpan.FromHours(-26) <= driftUtc && driftUtc <= TimeSpan.FromHours(26)) || driftUtc == TimeSpan.MinValue)
                 {
                     lastUpdateUtc = DateTime.UtcNow;
@@ -90,57 +91,57 @@ namespace DotNetNuke.Common.Utilities
 
             if (utcTimeDifference.TotalSeconds < 60)
             {
-                return string.Format(Localization.GetString("SecondsAgo"), (int)utcTimeDifference.TotalSeconds);
+                return string.Format(CultureInfo.CurrentCulture, Localization.GetString("SecondsAgo"), (int)utcTimeDifference.TotalSeconds);
             }
 
             if (utcTimeDifference.TotalMinutes < 60)
             {
                 if (utcTimeDifference.TotalMinutes < 2)
                 {
-                    return string.Format(Localization.GetString("MinuteAgo"), (int)utcTimeDifference.TotalMinutes);
+                    return string.Format(CultureInfo.CurrentCulture, Localization.GetString("MinuteAgo"), (int)utcTimeDifference.TotalMinutes);
                 }
 
-                return string.Format(Localization.GetString("MinutesAgo"), (int)utcTimeDifference.TotalMinutes);
+                return string.Format(CultureInfo.CurrentCulture, Localization.GetString("MinutesAgo"), (int)utcTimeDifference.TotalMinutes);
             }
 
             if (utcTimeDifference.TotalHours < 24)
             {
                 if (utcTimeDifference.TotalHours < 2)
                 {
-                    return string.Format(Localization.GetString("HourAgo"), (int)utcTimeDifference.TotalHours);
+                    return string.Format(CultureInfo.CurrentCulture, Localization.GetString("HourAgo"), (int)utcTimeDifference.TotalHours);
                 }
 
-                return string.Format(Localization.GetString("HoursAgo"), (int)utcTimeDifference.TotalHours);
+                return string.Format(CultureInfo.CurrentCulture, Localization.GetString("HoursAgo"), (int)utcTimeDifference.TotalHours);
             }
 
             if (utcTimeDifference.TotalDays < 7)
             {
                 if (utcTimeDifference.TotalDays < 2)
                 {
-                    return string.Format(Localization.GetString("DayAgo"), (int)utcTimeDifference.TotalDays);
+                    return string.Format(CultureInfo.CurrentCulture, Localization.GetString("DayAgo"), (int)utcTimeDifference.TotalDays);
                 }
 
-                return string.Format(Localization.GetString("DaysAgo"), (int)utcTimeDifference.TotalDays);
+                return string.Format(CultureInfo.CurrentCulture, Localization.GetString("DaysAgo"), (int)utcTimeDifference.TotalDays);
             }
 
             if (utcTimeDifference.TotalDays < 30)
             {
                 if (utcTimeDifference.TotalDays < 14)
                 {
-                    return string.Format(Localization.GetString("WeekAgo"), (int)utcTimeDifference.TotalDays / 7);
+                    return string.Format(CultureInfo.CurrentCulture, Localization.GetString("WeekAgo"), (int)utcTimeDifference.TotalDays / 7);
                 }
 
-                return string.Format(Localization.GetString("WeeksAgo"), (int)utcTimeDifference.TotalDays / 7);
+                return string.Format(CultureInfo.CurrentCulture, Localization.GetString("WeeksAgo"), (int)utcTimeDifference.TotalDays / 7);
             }
 
             if (utcTimeDifference.TotalDays < 180)
             {
                 if (utcTimeDifference.TotalDays < 60)
                 {
-                    return string.Format(Localization.GetString("MonthAgo"), (int)utcTimeDifference.TotalDays / 30);
+                    return string.Format(CultureInfo.CurrentCulture, Localization.GetString("MonthAgo"), (int)utcTimeDifference.TotalDays / 30);
                 }
 
-                return string.Format(Localization.GetString("MonthsAgo"), (int)utcTimeDifference.TotalDays / 30);
+                return string.Format(CultureInfo.CurrentCulture, Localization.GetString("MonthsAgo"), (int)utcTimeDifference.TotalDays / 30);
             }
 
             // anything else (this is the only time we have to personalize it to the user)

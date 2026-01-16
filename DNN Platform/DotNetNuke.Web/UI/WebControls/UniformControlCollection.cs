@@ -10,6 +10,9 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Threading;
     using System.Web.UI;
 
+    /// <summary>A list of children controls.</summary>
+    /// <typeparam name="TOwner">The type of the owner/parent control.</typeparam>
+    /// <typeparam name="TChildren">The type of the children controls.</typeparam>
     public sealed class UniformControlCollection<TOwner, TChildren> : IList<TChildren>
         where TOwner : Control
         where TChildren : Control
@@ -73,6 +76,9 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Adds the specified <typeparamref name="TChildren"/> object to the collection at the specified index location.</summary>
+        /// <param name="index">The location in the array at which to add the child control.</param>
+        /// <param name="childControl">The <typeparamref name="TChildren"/> to add to the collection.</param>
         public void AddAt(int index, TChildren childControl)
         {
             this.owner.Controls.AddAt(index, childControl);

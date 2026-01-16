@@ -75,7 +75,11 @@ public static class WebConfigManager
         {
             var fileName = $"{physicalPath}\\web.config";
             var targetDocument = new XmlDocument();
-            targetDocument.Load(fileName);
+            using (var xmlReader = XmlReader.Create(fileName, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                targetDocument.Load(xmlReader);
+            }
+
             var mailNodes = (from mail in targetDocument.DocumentElement.ChildNodes.Cast<XmlNode>()
                 where mail.Name == "system.net"
                 select mail).ToList();

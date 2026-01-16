@@ -21,7 +21,7 @@ namespace DotNetNuke.UI.Modules
         /// </remarks>
         int Priority { get; }
 
-        /// <summary>Validates if the factory supports the given configuration and <see cref="controlSrc"/>.</summary>
+        /// <summary>Validates if the factory supports the given configuration and <paramref name="controlSrc"/>.</summary>
         /// <param name="moduleConfiguration">Module configuration.</param>
         /// <param name="controlSrc">Control source.</param>
         /// <returns><see langword="true"/> if the factory supports the control; otherwise, <see langword="false"/>.</returns>

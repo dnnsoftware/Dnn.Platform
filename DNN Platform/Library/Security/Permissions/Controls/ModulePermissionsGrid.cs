@@ -7,11 +7,13 @@ namespace DotNetNuke.Security.Permissions.Controls
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -112,18 +114,17 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <inheritdoc />
         protected override void AddPermission(ArrayList permissions, UserInfo user)
         {
-            bool isMatch = this.modulePermissions.Cast<ModulePermissionInfo>()
-                            .Any(objModulePermission => objModulePermission.UserID == user.UserID);
+            if (this.modulePermissions.Cast<IPermissionInfo>().Any(objModulePermission => objModulePermission.UserId == user.UserID))
+            {
+                return;
+            }
 
             // user not found so add new
-            if (!isMatch)
+            foreach (PermissionInfo objPermission in permissions)
             {
-                foreach (PermissionInfo objPermission in permissions)
+                if (objPermission.PermissionKey == "VIEW")
                 {
-                    if (objPermission.PermissionKey == "VIEW")
-                    {
-                        this.AddPermission(objPermission, int.Parse(Globals.glbRoleNothing), Null.NullString, user.UserID, user.DisplayName, true);
-                    }
+                    this.AddPermission(objPermission, int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture), Null.NullString, user.UserID, user.DisplayName, true);
                 }
             }
         }
@@ -132,8 +133,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
             // Search TabPermission Collection for the user
-            if (
-                this.modulePermissions.Cast<ModulePermissionInfo>().Any(p => p.RoleID == role.RoleID))
+            if (this.modulePermissions.Cast<IPermissionInfo>().Any(p => p.RoleId == role.RoleID))
             {
                 return;
             }
@@ -313,26 +313,26 @@ namespace DotNetNuke.Security.Permissions.Controls
                 // Load ModuleID
                 if (myState[1] != null)
                 {
-                    this.ModuleID = Convert.ToInt32(myState[1]);
+                    this.ModuleID = Convert.ToInt32(myState[1], CultureInfo.InvariantCulture);
                 }
 
                 // Load TabId
                 if (myState[2] != null)
                 {
-                    this.TabId = Convert.ToInt32(myState[2]);
+                    this.TabId = Convert.ToInt32(myState[2], CultureInfo.InvariantCulture);
                 }
 
                 // Load InheritViewPermissionsFromTab
                 if (myState[3] != null)
                 {
-                    this.InheritViewPermissionsFromTab = Convert.ToBoolean(myState[3]);
+                    this.InheritViewPermissionsFromTab = Convert.ToBoolean(myState[3], CultureInfo.InvariantCulture);
                 }
 
                 // Load ModulePermissions
                 if (myState[4] != null)
                 {
                     this.modulePermissions = new ModulePermissionCollection();
-                    string state = Convert.ToString(myState[4]);
+                    string state = Convert.ToString(myState[4], CultureInfo.InvariantCulture);
                     if (!string.IsNullOrEmpty(state))
                     {
                         // First Break the String into individual Keys
@@ -437,7 +437,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
             else
             {
-                objModulePermission.ModulePermissionID = Convert.ToInt32(settings[2]);
+                objModulePermission.ModulePermissionID = Convert.ToInt32(settings[2], CultureInfo.InvariantCulture);
             }
 
             objModulePermission.ModuleID = this.ModuleID;
@@ -448,13 +448,12 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             var item = e.Item;
 
-            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            if (item.ItemType is ListItemType.Item or ListItemType.AlternatingItem or ListItemType.SelectedItem)
             {
-                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
-                if (IsImplicitRole(PortalSettings.Current.PortalId, roleID))
+                var roleId = int.Parse(((DataRowView)item.DataItem)[0].ToString(), CultureInfo.InvariantCulture);
+                if (IsImplicitRole(PortalSettings.Current.PortalId, roleId))
                 {
-                    var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
-                    if (actionImage != null)
+                    if (item.Controls.Cast<Control>().Last().Controls[0] is ImageButton actionImage)
                     {
                         actionImage.Visible = false;
                     }

@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Web.Http;
     using System.Web.Routing;
 
@@ -99,12 +100,12 @@ namespace DotNetNuke.Web.Mvc.Routing
                 this.LocateServicesAndMapRoutes();
             }
 
-            Logger.TraceFormat("Registered a total of {0} routes", this.routes.Count);
+            Logger.TraceFormat(CultureInfo.InvariantCulture, "Registered a total of {0} routes", this.routes.Count);
         }
 
         internal static bool IsValidServiceRouteMapper(Type t)
         {
-            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IMvcRouteMapper).IsAssignableFrom(t);
+            return t is { IsClass: true, IsAbstract: false, IsVisible: true, } && typeof(IMvcRouteMapper).IsAssignableFrom(t);
         }
 
         private static bool IsTracingEnabled()
@@ -184,7 +185,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("{0}.RegisterRoutes threw an exception.  {1}\r\n{2}", routeMapper.GetType().FullName, e.Message, e.StackTrace);
+                    Logger.ErrorFormat(CultureInfo.InvariantCulture, "{0}.RegisterRoutes threw an exception.  {1}\r\n{2}", routeMapper.GetType().FullName, e.Message, e.StackTrace);
                 }
             }
         }
@@ -207,7 +208,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("Unable to create {0} while registering service routes.  {1}", routeMapperType.FullName, e.Message);
+                    Logger.ErrorFormat(CultureInfo.InvariantCulture, "Unable to create {0} while registering service routes.  {1}", routeMapperType.FullName, e.Message);
                     routeMapper = null;
                 }
 

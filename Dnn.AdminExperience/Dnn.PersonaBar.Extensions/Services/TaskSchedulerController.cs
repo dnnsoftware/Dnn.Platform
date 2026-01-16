@@ -4,6 +4,7 @@
 namespace Dnn.PersonaBar.TaskScheduler.Services
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
@@ -46,7 +47,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                             select server;
                 var availableServers = query.Select(v => new
                 {
-                    ServerID = v.ServerID.ToString(),
+                    ServerID = v.ServerID.ToString(CultureInfo.InvariantCulture),
                     v.ServerName,
                 }).ToList();
                 availableServers.Insert(0, new
@@ -90,7 +91,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         v.FriendlyName,
                         v.Enabled,
                         RetryTimeLapse = this.controller.GetTimeLapse(v.RetryTimeLapse, v.RetryTimeLapseMeasurement),
-                        NextStart = (v.Enabled && !Null.IsNull(v.NextStart)) ? v.NextStart.ToString() : string.Empty,
+                        NextStart = (v.Enabled && !Null.IsNull(v.NextStart)) ? v.NextStart.ToString(CultureInfo.CurrentCulture) : string.Empty,
                         Frequency = this.controller.GetTimeLapse(v.TimeLapse, v.TimeLapseMeasurement),
                     }),
                     TotalResults = arrSchedule.Length,
@@ -148,9 +149,8 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         {
             try
             {
-                var originalSchedulerMode = (SchedulerMode)Convert.ToInt32(HostController.Instance.GetString("SchedulerMode"));
-                SchedulerMode newSchedulerMode;
-                Enum.TryParse(request.SchedulerMode, true, out newSchedulerMode);
+                var originalSchedulerMode = (SchedulerMode)Convert.ToInt32(HostController.Instance.GetString("SchedulerMode"), CultureInfo.InvariantCulture);
+                Enum.TryParse(request.SchedulerMode, true, out SchedulerMode newSchedulerMode);
                 if (originalSchedulerMode != newSchedulerMode)
                 {
                     switch (newSchedulerMode)
@@ -193,20 +193,27 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         {
             try
             {
-                var arrSchedule = SchedulingProvider.Instance().GetScheduleHistory(scheduleId);
-
-                var query = from ScheduleHistoryItem history in arrSchedule
-                            select new
-                            {
-                                history.FriendlyName,
-                                history.LogNotes,
-                                history.Server,
-                                ElapsedTime = Math.Round(history.ElapsedTime, 3),
-                                history.Succeeded,
-                                StartDate = !Null.IsNull(history.StartDate) ? history.StartDate.ToString() : string.Empty,
-                                EndDate = !Null.IsNull(history.EndDate) ? history.EndDate.ToString() : string.Empty,
-                                NextStart = !Null.IsNull(history.NextStart) ? history.NextStart.ToString() : string.Empty,
-                            };
+                var query =
+                    from ScheduleHistoryItem history in SchedulingProvider.Instance().GetScheduleHistory(scheduleId)
+                    select new
+                    {
+                        history.FriendlyName,
+                        history.LogNotes,
+                        history.Server,
+                        ElapsedTime = Math.Round(history.ElapsedTime, 3),
+                        history.Succeeded,
+                        StartDate =
+                            !Null.IsNull(history.StartDate)
+                                ? history.StartDate.ToString(CultureInfo.CurrentCulture)
+                                : string.Empty,
+                        EndDate =
+                            !Null.IsNull(history.EndDate)
+                                ? history.EndDate.ToString(CultureInfo.CurrentCulture)
+                                : string.Empty,
+                        NextStart = !Null.IsNull(history.NextStart)
+                            ? history.NextStart.ToString(CultureInfo.CurrentCulture)
+                            : string.Empty,
+                    };
 
                 var response = new
                 {
@@ -245,7 +252,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         scheduleItem.FriendlyName,
                         scheduleItem.TypeFullName,
                         scheduleItem.Enabled,
-                        ScheduleStartDate = !Null.IsNull(scheduleItem.ScheduleStartDate) ? scheduleItem.ScheduleStartDate.ToString(CultureInfo.CurrentCulture.DateTimeFormat.SortableDateTimePattern) : string.Empty,
+                        ScheduleStartDate = !Null.IsNull(scheduleItem.ScheduleStartDate) ? scheduleItem.ScheduleStartDate.ToString(CultureInfo.CurrentCulture.DateTimeFormat.SortableDateTimePattern, CultureInfo.CurrentCulture) : string.Empty,
                         Locale = CultureInfo.CurrentCulture.TwoLetterISOLanguageName,
                         scheduleItem.TimeLapse,
                         scheduleItem.TimeLapseMeasurement,
@@ -392,7 +399,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         {
                             item.ScheduleID,
                             item.TypeFullName,
-                            StartDate = !Null.IsNull(item.StartDate) ? item.StartDate.ToString() : string.Empty,
+                            StartDate = !Null.IsNull(item.StartDate) ? item.StartDate.ToString(CultureInfo.CurrentCulture) : string.Empty,
                             ElapsedTime = Math.Round(item.ElapsedTime, 3),
                             item.ObjectDependencies,
                             ScheduleSource = item.ScheduleSource.ToString(),
@@ -406,7 +413,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         {
                             item.ScheduleID,
                             item.FriendlyName,
-                            NextStart = !Null.IsNull(item.NextStart) ? item.NextStart.ToString() : string.Empty,
+                            NextStart = !Null.IsNull(item.NextStart) ? item.NextStart.ToString(CultureInfo.CurrentCulture) : string.Empty,
                             item.Overdue,
                             RemainingTime = GetTimeStringFromSeconds(item.RemainingTime),
                             RemainingSeconds = item.RemainingTime,
@@ -421,12 +428,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         Success = true,
                         Results = new
                         {
-                            ServerTime = DateTime.Now.ToString(),
+                            ServerTime = DateTime.Now.ToString(CultureInfo.CurrentCulture),
                             SchedulingEnabled = SchedulingProvider.Enabled.ToString(),
                             Status = SchedulingProvider.Instance().GetScheduleStatus().ToString(),
-                            FreeThreadCount = SchedulingProvider.Instance().GetFreeThreadCount().ToString(),
-                            ActiveThreadCount = SchedulingProvider.Instance().GetActiveThreadCount().ToString(),
-                            MaxThreadCount = SchedulingProvider.Instance().GetMaxThreadCount().ToString(),
+                            FreeThreadCount = SchedulingProvider.Instance().GetFreeThreadCount().ToString(CultureInfo.InvariantCulture),
+                            ActiveThreadCount = SchedulingProvider.Instance().GetActiveThreadCount().ToString(CultureInfo.InvariantCulture),
+                            MaxThreadCount = SchedulingProvider.Instance().GetMaxThreadCount().ToString(CultureInfo.InvariantCulture),
                             ScheduleProcessing = processing,
                             ScheduleQueue = queue.ToList().OrderBy(q => q.RemainingSeconds),
                         },

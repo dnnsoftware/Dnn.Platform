@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
 
+    /// <summary>Information about a ribbon bar tool.</summary>
     [Serializable]
     public class RibbonBarToolInfo
     {
@@ -36,18 +37,25 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ShowAsPopUp = showAsPopUp;
         }
 
+        /// <summary>Gets or sets the control key.</summary>
         public string ControlKey { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether this is a host tool.</summary>
         public bool IsHostTool { get; set; }
 
+        /// <summary>Gets or sets the window target for the link.</summary>
         public string LinkWindowTarget { get; set; }
 
+        /// <summary>Gets or sets the friendly name of the module.</summary>
         public string ModuleFriendlyName { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether to show the tool as a pop-up.</summary>
         public bool ShowAsPopUp { get; set; }
 
+        /// <summary>Gets or sets the tool name.</summary>
         public string ToolName { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether to use a button.</summary>
         public bool UseButton { get; set; }
     }
 }

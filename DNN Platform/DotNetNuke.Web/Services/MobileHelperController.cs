@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -20,6 +21,7 @@ namespace DotNetNuke.Web.Services
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Models;
 
+    /// <summary>A web API controller for getting information about modules in the site.</summary>
     [AllowAnonymous]
     public class MobileHelperController : DnnApiController
     {
@@ -36,6 +38,9 @@ namespace DotNetNuke.Web.Services
             return this.Ok(monikers.Select(kpv => new { tabModuleId = kpv.Key, moniker = kpv.Value }));
         }
 
+        /// <summary>Gets the details about the modules in the site.</summary>
+        /// <param name="moduleList">A comma-delimited list of module names.</param>
+        /// <returns>A response with a <see cref="SiteDetail"/> object.</returns>
         [HttpGet]
         public HttpResponseMessage ModuleDetails(string moduleList)
         {
@@ -78,11 +83,11 @@ namespace DotNetNuke.Web.Services
 
         private static IEnumerable<TabModule> GetTabModules(string moduleName)
         {
-            var portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
+            var portalId = PortalController.Instance.GetCurrentSettings().PortalId;
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
             if (desktopModule != null)
             {
-                var cacheKey = string.Format(DataCache.DesktopModuleCacheKey, portalId) + "_" +
+                var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.DesktopModuleCacheKey, portalId) + "_" +
                                desktopModule.DesktopModuleID;
                 var args = new CacheItemArgs(cacheKey, DataCache.DesktopModuleCacheTimeOut, DataCache.DesktopModuleCachePriority, portalId, desktopModule);
 

@@ -161,13 +161,13 @@ namespace DotNetNuke.Admin.Containers
                                     (action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View))
                                 {
                                     if (!action.Icon.Contains("://")
-                                            && !action.Icon.StartsWith("/")
-                                            && !action.Icon.StartsWith("~/"))
+                                            && !action.Icon.StartsWith("/", StringComparison.Ordinal)
+                                            && !action.Icon.StartsWith("~/", StringComparison.Ordinal))
                                     {
                                         action.Icon = "~/images/" + action.Icon;
                                     }
 
-                                    if (action.Icon.StartsWith("~/"))
+                                    if (action.Icon.StartsWith("~/", StringComparison.Ordinal))
                                     {
                                         action.Icon = Globals.ResolveUrl(action.Icon);
                                     }

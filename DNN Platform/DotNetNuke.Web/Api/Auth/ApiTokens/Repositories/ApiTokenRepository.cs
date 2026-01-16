@@ -14,33 +14,26 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
     using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
 
     /// <inheritdoc />
-    internal class ApiTokenRepository : IApiTokenRepository
+    internal class ApiTokenRepository(IDataContext dataContext) : IApiTokenRepository
     {
-        private readonly IDataContext dataContext;
-
-        public ApiTokenRepository(IDataContext dataContext)
-        {
-            this.dataContext = dataContext;
-        }
-
         /// <inheritdoc />
         public ApiToken GetApiToken(int portalId, string tokenHash)
         {
-            var rep = this.dataContext.GetRepository<ApiToken>();
+            var rep = dataContext.GetRepository<ApiToken>();
             return rep.Find("WHERE (PortalId=@0 OR PortalId=-1) AND TokenHash=@1 AND IsDeleted=0", portalId, tokenHash).FirstOrDefault();
         }
 
         /// <inheritdoc />
         public ApiToken GetApiToken(int apiTokenId)
         {
-            var rep = this.dataContext.GetRepository<ApiToken>();
+            var rep = dataContext.GetRepository<ApiToken>();
             return rep.GetById(apiTokenId);
         }
 
         /// <inheritdoc />
         public List<string> GetApiTokenKeys(int apiTokenId)
         {
-            var rep = this.dataContext.GetRepository<ApiTokenKey>();
+            var rep = dataContext.GetRepository<ApiTokenKey>();
             return rep.Find("WHERE ApiTokenId=@0", apiTokenId).Select(k => k.TokenKey).ToList();
         }
 
@@ -50,10 +43,10 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
             Requires.NotNull(apiToken);
             apiToken.CreatedByUserId = userId;
             apiToken.CreatedOnDate = DateUtils.GetDatabaseUtcTime();
-            var rep = this.dataContext.GetRepository<ApiTokenBase>();
+            var rep = dataContext.GetRepository<ApiTokenBase>();
             rep.Insert(apiToken);
 
-            var repKeys = this.dataContext.GetRepository<ApiTokenKey>();
+            var repKeys = dataContext.GetRepository<ApiTokenKey>();
             foreach (var key in apiKeys.Split(','))
             {
                 repKeys.Insert(new ApiTokenKey { ApiTokenId = apiToken.ApiTokenId, TokenKey = key });
@@ -69,7 +62,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
             apiToken.IsRevoked = true;
             apiToken.RevokedOnDate = DateUtils.GetDatabaseUtcTime();
             apiToken.RevokedByUserId = userId;
-            var rep = this.dataContext.GetRepository<ApiTokenBase>();
+            var rep = dataContext.GetRepository<ApiTokenBase>();
             rep.Update(apiToken);
         }
 
@@ -77,7 +70,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens.Repositories
         public void DeleteApiToken(ApiTokenBase apiToken)
         {
             Requires.NotNull(apiToken);
-            var rep = this.dataContext.GetRepository<ApiTokenBase>();
+            var rep = dataContext.GetRepository<ApiTokenBase>();
             apiToken.IsDeleted = true;
             rep.Update(apiToken);
         }
@@ -92,7 +85,7 @@ WHERE (IsRevoked=1 OR ExpiresOn<@0)
 AND (PortalId=@1 OR @1=-1)
 AND (CreatedByUserId=@2 OR @2=-1)
 ";
-            this.dataContext.Execute(System.Data.CommandType.Text, sql, now, portalId, userId);
+            dataContext.Execute(System.Data.CommandType.Text, sql, now, portalId, userId);
         }
 
         /// <inheritdoc />
@@ -148,7 +141,7 @@ AND (CreatedByUserId=@2 OR @2=-1)
 
             sql += $"WHERE {string.Join(" AND ", wheres)} ORDER BY CreatedOnDate DESC";
 
-            var rep = this.dataContext.GetRepository<ApiToken>();
+            var rep = dataContext.GetRepository<ApiToken>();
             return rep.Find(pageIndex, pageSize, sql, portalId, userId, (int)scope, apiKey);
         }
 
@@ -158,7 +151,7 @@ AND (CreatedByUserId=@2 OR @2=-1)
             var sql = @"UPDATE {databaseOwner}{objectQualifier}ApiTokens
 SET LastUsedOnDate=GETUTCDATE()
 WHERE ApiTokenId=@0";
-            this.dataContext.Execute(System.Data.CommandType.Text, sql, apiToken.ApiTokenId);
+            dataContext.Execute(System.Data.CommandType.Text, sql, apiToken.ApiTokenId);
         }
     }
 }

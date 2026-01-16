@@ -6,6 +6,7 @@ namespace DotNetNuke.Collections.Internal
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>An <see cref="IDictionary{TKey,TValue}"/> implementation designed to be shared across threads.</summary>
     /// <typeparam name="TKey">The type of the key.</typeparam>
@@ -252,6 +253,7 @@ namespace DotNetNuke.Collections.Internal
 
         /// <summary>Returns an enumerator to iterate through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         public IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable_GetEnumerator()
         {
             this.EnsureNotDisposed();
@@ -275,11 +277,11 @@ namespace DotNetNuke.Collections.Internal
             {
                 if (disposing)
                 {
-                    // dispose managed resrources here
+                    // dispose managed resources here
                     this.dict = null;
                 }
 
-                // dispose unmanaged resrources here
+                // dispose unmanaged resources here
                 this.lockController.Dispose();
                 this.lockController = null;
                 this.isDisposed = true;

@@ -5,6 +5,7 @@ namespace DotNetNuke.Modules.NavigationProvider
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
 
     using DotNetNuke.Common;
@@ -14,6 +15,7 @@ namespace DotNetNuke.Modules.NavigationProvider
     using DotNetNuke.UI.WebControls;
 
     /// <summary>Provides a renderer for navigation.</summary>
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public abstract partial class NavigationProvider : UserControlBase
     {
         public delegate void NodeClickEventHandler(NavigationEventArgs args);
@@ -1021,6 +1023,7 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         protected void RaiseEvent_NodeClick(DNNNode objNode)
         {
             if (this.NodeClick != null)
@@ -1029,6 +1032,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         protected void RaiseEvent_NodeClick(string strID)
         {
             if (this.NodeClick != null)
@@ -1037,6 +1041,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         protected void RaiseEvent_PopulateOnDemand(DNNNode objNode)
         {
             if (this.PopulateOnDemand != null)
@@ -1045,6 +1050,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         protected void RaiseEvent_PopulateOnDemand(string strID)
         {
             if (this.PopulateOnDemand != null)
