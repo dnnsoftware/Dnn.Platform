@@ -10,19 +10,33 @@ namespace DotNetNuke.Data
     using System.Linq;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel.DataAnnotations;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public abstract class RepositoryBase<T> : IRepository<T>
         where T : class
     {
         /// <summary>Initializes a new instance of the <see cref="RepositoryBase{T}"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         protected RepositoryBase()
+            : this(null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="RepositoryBase{T}"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        protected RepositoryBase(IHostSettings hostSettings)
+        {
+            this.HostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.InitializeInternal();
         }
+
+        protected IHostSettings HostSettings { get; }
 
         protected CacheItemArgs CacheArgs { get; private set; }
 
@@ -52,7 +66,7 @@ namespace DotNetNuke.Data
         public IEnumerable<T> Get()
         {
             return this.IsCacheable && !this.IsScoped
-                ? DataCache.GetCachedData<IEnumerable<T>>(this.CacheArgs, c => this.GetInternal())
+                ? DataCache.GetCachedData<IEnumerable<T>>(this.HostSettings, this.CacheArgs, _ => this.GetInternal())
                 : this.GetInternal();
         }
 
@@ -67,7 +81,7 @@ namespace DotNetNuke.Data
             }
 
             return this.IsCacheable
-                ? DataCache.GetCachedData<IEnumerable<T>>(this.CacheArgs, c => this.GetByScopeInternal(scopeValue))
+                ? DataCache.GetCachedData<IEnumerable<T>>(this.HostSettings, this.CacheArgs, _ => this.GetByScopeInternal(scopeValue))
                 : this.GetByScopeInternal(scopeValue);
         }
 
@@ -131,7 +145,7 @@ namespace DotNetNuke.Data
             {
                 if (this.IsScoped)
                 {
-                    cacheKey += "_" + this.Scope + "_{0}";
+                    cacheKey += $"_{this.Scope}_{{0}}";
                 }
 
                 this.CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);

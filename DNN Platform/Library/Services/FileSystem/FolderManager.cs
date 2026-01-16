@@ -17,6 +17,8 @@ namespace DotNetNuke.Services.FileSystem
     using System.Threading;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -32,6 +34,8 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>Exposes methods to manage folders.</summary>
@@ -42,6 +46,30 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FolderManager));
         private static readonly ConcurrentDictionary<int, SyncFolderData> SyncFoldersData = new ConcurrentDictionary<int, SyncFolderData>();
         private static readonly object ThreadLocker = new object();
+        private readonly IEventLogger eventLogger;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
+        private readonly IHostSettings hostSettings;
+        private readonly IPortalController portalController;
+
+        /// <summary>Initializes a new instance of the <see cref="FolderManager"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public FolderManager()
+            : this(null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="FolderManager"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public FolderManager(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings, IPortalController portalController)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        }
 
         /// <summary>Gets the localization key for MyFolderName.</summary>
         public virtual string MyFolderName => Localization.GetString("MyFolderName");
@@ -638,7 +666,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             var updatedFolder = this.UpdateFolderInternal(folder, true);
 
-            this.AddLogEntry(updatedFolder, EventLogController.EventLogType.FOLDER_UPDATED);
+            this.AddLogEntry(updatedFolder, EventLogType.FOLDER_UPDATED);
 
             this.SaveFolderPermissions(updatedFolder);
 
@@ -649,12 +677,18 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="folder">The folder to add the permission to.</param>
         /// <param name="permission">Used as base class for FolderPermissionInfo when there is no read permission already defined.</param>
         public virtual void AddAllUserReadPermission(IFolderInfo folder, PermissionInfo permission)
+            => this.AddAllUserReadPermission(folder, (IPermissionDefinitionInfo)permission);
+
+        /// <summary>Adds read permissions for all users to the specified folder.</summary>
+        /// <param name="folder">The folder to add the permission to.</param>
+        /// <param name="permission">Used as base class for FolderPermissionInfo when there is no read permission already defined.</param>
+        public virtual void AddAllUserReadPermission(IFolderInfo folder, IPermissionDefinitionInfo permission)
         {
             var roleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
 
             var folderPermission =
-                (from FolderPermissionInfo p in folder.FolderPermissions
-                 where p.PermissionKey == "READ" && p.FolderID == folder.FolderID && p.RoleID == roleId && p.UserID == Null.NullInteger
+                (from IFolderPermissionInfo p in folder.FolderPermissions
+                 where p.PermissionKey == "READ" && p.FolderId == folder.FolderID && p.RoleId == roleId && p.UserId == Null.NullInteger
                  select p).SingleOrDefault();
 
             if (folderPermission != null)
@@ -664,12 +698,12 @@ namespace DotNetNuke.Services.FileSystem
             else
             {
                 folderPermission = new FolderPermissionInfo(permission);
-                ((IFolderPermissionInfo)folderPermission).FolderId = folder.FolderID;
-                ((IFolderPermissionInfo)folderPermission).UserId = Null.NullInteger;
-                ((IFolderPermissionInfo)folderPermission).RoleId = roleId;
+                folderPermission.FolderId = folder.FolderID;
+                folderPermission.UserId = Null.NullInteger;
+                folderPermission.RoleId = roleId;
                 folderPermission.AllowAccess = true;
 
-                folder.FolderPermissions.Add(folderPermission);
+                folder.FolderPermissions.Add((FolderPermissionInfo)folderPermission);
             }
         }
 
@@ -740,7 +774,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("folder", folder);
 
-            foreach (PermissionInfo objPermission in PermissionController.GetPermissionsByFolder())
+            foreach (var objPermission in this.permissionDefinitionService.GetDefinitionsByFolder())
             {
                 var folderPermission = new FolderPermissionInfo(objPermission);
                 ((IFolderPermissionInfo)folderPermission).FolderId = folder.FolderID;
@@ -764,18 +798,18 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>Adds a log entry.</summary>
         /// <param name="folder">The folder to log about.</param>
         /// <param name="eventLogType">The type of the log entry.</param>
-        internal virtual void AddLogEntry(IFolderInfo folder, EventLogController.EventLogType eventLogType)
+        internal virtual void AddLogEntry(IFolderInfo folder, EventLogType eventLogType)
         {
-            EventLogController.Instance.AddLog(folder, PortalController.Instance.GetCurrentSettings(), this.GetCurrentUserId(), string.Empty, eventLogType);
+            this.eventLogger.AddLog(folder, PortalController.Instance.GetCurrentSettings(), this.GetCurrentUserId(), string.Empty, eventLogType);
         }
 
         /// <summary>Adds a log entry.</summary>
         /// <param name="propertyName">The name of the property.</param>
         /// <param name="propertyValue">The value of the property.</param>
         /// <param name="eventLogType">The type of log entry.</param>
-        internal virtual void AddLogEntry(string propertyName, string propertyValue, EventLogController.EventLogType eventLogType)
+        internal virtual void AddLogEntry(string propertyName, string propertyValue, EventLogType eventLogType)
         {
-            EventLogController.Instance.AddLog(propertyName, propertyValue, PortalController.Instance.GetCurrentSettings(), this.GetCurrentUserId(), eventLogType);
+            this.eventLogger.AddLog(propertyName, propertyValue, PortalController.Instance.GetCurrentSettings(), this.GetCurrentUserId(), eventLogType);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
@@ -834,7 +868,7 @@ namespace DotNetNuke.Services.FileSystem
 
             var folder = this.GetFolder(portalId, folderPath);
 
-            foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
+            foreach (var permission in this.permissionDefinitionService.GetDefinitionsByFolder())
             {
                 if (!permission.PermissionKey.Equals("READ", StringComparison.OrdinalIgnoreCase) &&
                     !permission.PermissionKey.Equals("WRITE", StringComparison.OrdinalIgnoreCase) &&
@@ -909,7 +943,7 @@ namespace DotNetNuke.Services.FileSystem
                 if (folderMapping.MappingName == "Standard" ||
                     folderMapping.MappingName == "Secure" ||
                     folderMapping.MappingName == "Database" ||
-                    !Host.EnableFileAutoSync)
+                    !this.hostSettings.EnableFileAutoSync)
                 {
                     continue;
                 }
@@ -1001,7 +1035,7 @@ namespace DotNetNuke.Services.FileSystem
         internal virtual void DeleteFolder(int portalId, string folderPath)
         {
             DataProvider.Instance().DeleteFolder(portalId, PathUtils.Instance.FormatFolderPath(folderPath));
-            this.AddLogEntry("FolderPath", folderPath, EventLogController.EventLogType.FOLDER_DELETED);
+            this.AddLogEntry("FolderPath", folderPath, EventLogType.FOLDER_DELETED);
             this.UpdateParentFolder(portalId, folderPath);
             DataCache.ClearFolderCache(portalId);
         }
@@ -1131,7 +1165,7 @@ namespace DotNetNuke.Services.FileSystem
             var fileSystemFolders = new SortedList<string, MergedTreeItem>(new IgnoreCaseStringComparer());
 
             var physicalPath = PathUtils.Instance.GetPhysicalPath(portalId, relativePath);
-            var hideFoldersEnabled = PortalController.GetPortalSettingAsBoolean("HideFoldersEnabled", portalId, true);
+            var hideFoldersEnabled = PortalController.GetPortalSettingAsBoolean(this.portalController, "HideFoldersEnabled", portalId, true);
 
             if (!DirectoryWrapper.Instance.Exists(physicalPath))
             {
@@ -1176,7 +1210,7 @@ namespace DotNetNuke.Services.FileSystem
 
             stack.Push(physicalPath);
 
-            var hideFoldersEnabled = PortalController.GetPortalSettingAsBoolean("HideFoldersEnabled", portalId, true);
+            var hideFoldersEnabled = PortalController.GetPortalSettingAsBoolean(this.portalController, "HideFoldersEnabled", portalId, true);
 
             while (stack.Count > 0)
             {
@@ -2009,7 +2043,7 @@ namespace DotNetNuke.Services.FileSystem
                     parentId);
 
                 // Refetch folder for logging
-                this.AddLogEntry(this.GetFolder(folder.PortalID, folder.FolderPath), EventLogController.EventLogType.FOLDER_CREATED);
+                this.AddLogEntry(this.GetFolder(folder.PortalID, folder.FolderPath), EventLogType.FOLDER_CREATED);
 
                 if (parentFolder != null)
                 {

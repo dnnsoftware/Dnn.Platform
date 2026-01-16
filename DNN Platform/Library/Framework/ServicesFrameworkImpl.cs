@@ -4,20 +4,50 @@
 
 namespace DotNetNuke.Framework
 {
+    using System;
     using System.Globalization;
     using System.Web.Helpers;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Globals = DotNetNuke.Common.Globals;
+
+    /// <summary>The default <see cref="IServicesFramework"/> implementation.</summary>
     internal class ServicesFrameworkImpl : IServicesFramework, IServiceFrameworkInternals
     {
         private const string AntiForgeryKey = "dnnAntiForgeryRequested";
         private const string ScriptKey = "dnnSFAjaxScriptRequested";
+        private readonly IClientResourceController clientResourceController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
+
+        /// <summary>Initializes a new instance of the <see cref="ServicesFrameworkImpl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
+        public ServicesFrameworkImpl()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ServicesFrameworkImpl"/> class.</summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public ServicesFrameworkImpl(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+        {
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
 
         /// <inheritdoc/>
         public bool IsAjaxAntiForgerySupportRequired
@@ -42,16 +72,13 @@ namespace DotNetNuke.Framework
         public void RegisterAjaxAntiForgery(Page page)
         {
             var ctl = page.FindControl("ClientResourcesFormBottom");
-            if (ctl != null)
-            {
-                ctl.Controls.Add(new LiteralControl(AntiForgery.GetHtml().ToHtmlString()));
-            }
+            ctl?.Controls.Add(new LiteralControl(AntiForgery.GetHtml().ToHtmlString()));
         }
 
         /// <inheritdoc/>
         public void RequestAjaxScriptSupport()
         {
-            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, CommonJs.jQuery);
             SetKey(ScriptKey);
         }
 
@@ -78,7 +105,7 @@ namespace DotNetNuke.Framework
                 scriptPath = "~/js/dnn.servicesframework.js";
             }
 
-            ClientResourceManager.RegisterScript(page, scriptPath);
+            this.clientResourceController.RegisterScript(scriptPath);
         }
 
         private static void SetKey(string key)

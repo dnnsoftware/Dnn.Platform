@@ -30,6 +30,8 @@ namespace DotNetNuke.Web.InternalServices
         private readonly IPortalController portalController;
         private readonly IApplicationStatusInfo appStatus;
         private readonly IPortalGroupController portalGroupController;
+        private readonly IHostSettings hostSettings;
+        private readonly IHostSettingsService hostSettingsService;
 
         /// <summary>Initializes a new instance of the <see cref="ProfileServiceController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
@@ -42,11 +44,25 @@ namespace DotNetNuke.Web.InternalServices
         /// <param name="portalController">The portal controller.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="portalGroupController">The portal group controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ProfileServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
+            : this(portalController, appStatus, portalGroupController, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ProfileServiceController"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public ProfileServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IHostSettings hostSettings, IHostSettingsService hostSettingsService)
         {
             this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
         }
 
         /// <summary>Searches a registration profile.</summary>
@@ -70,7 +86,7 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage UpdateVanityUrl(VanityUrlDTO vanityUrl)
         {
             // Clean Url
-            var options = UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.PortalSettings.PortalId));
+            var options = UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.portalController, this.hostSettings, this.hostSettingsService, this.PortalSettings.PortalId));
             var cleanUrl = FriendlyUrlController.CleanNameForUrl(vanityUrl.Url, options, out var modified);
 
             if (modified)

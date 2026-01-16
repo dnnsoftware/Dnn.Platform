@@ -79,7 +79,12 @@ public class MailSettings(IHostSettingsService hostSettingsService, IHostSetting
     /// <inheritdoc />
     public bool GetSecureConnectionEnabled(int portalId)
     {
-        throw new NotImplementedException();
+        if (this.IsPortalEnabled(portalId))
+        {
+            return PortalController.GetPortalSettingAsBoolean("SMTPEnableSSL", PortalSettings.Current.PortalId, false);
+        }
+
+        return hostSettingsService.GetBoolean("SMTPEnableSSL", false);
     }
 
     /// <inheritdoc />

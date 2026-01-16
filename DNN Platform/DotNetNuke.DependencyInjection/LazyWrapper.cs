@@ -14,7 +14,13 @@ public class LazyWrapper<T> : Lazy<T>
     /// <summary>Initializes a new instance of the <see cref="LazyWrapper{T}"/> class.</summary>
     /// <param name="serviceProvider">The DI container.</param>
     public LazyWrapper(IServiceProvider serviceProvider)
-        : base(serviceProvider.GetService<T>)
+        : base(() => GetValue(serviceProvider))
     {
+    }
+
+    private static T GetValue(IServiceProvider serviceProvider)
+    {
+        var service = serviceProvider.GetService<T>();
+        return service;
     }
 }

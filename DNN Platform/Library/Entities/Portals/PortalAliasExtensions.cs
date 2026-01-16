@@ -11,8 +11,15 @@ namespace DotNetNuke.Entities.Portals
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Urls;
+    using DotNetNuke.Internal.SourceGenerators;
 
-    public static class PortalAliasExtensions
+    using NewBrowserTypes = DotNetNuke.Abstractions.Urls.BrowserTypes;
+#pragma warning disable CS0618 // Type or member is obsolete
+    using OldBrowserTypes = DotNetNuke.Entities.Urls.BrowserTypes;
+#pragma warning restore CS0618 // Type or member is obsolete
+
+    /// <summary>Extensions for portal aliases.</summary>
+    public static partial class PortalAliasExtensions
     {
         public static bool ContainsAlias(this IEnumerable<PortalAliasInfo> aliases, int portalId, string httpAlias)
         {
@@ -50,22 +57,28 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>The closest <see cref="PortalAliasInfo"/> match.</returns>
         public static PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, int portalId, UrlAction result, string cultureCode, FriendlyUrlSettings settings)
         {
-            var browserType = BrowserTypes.Normal;
+#pragma warning disable CS0618 // Type or member is obsolete
+            var browserType = OldBrowserTypes.Normal;
+#pragma warning restore CS0618 // Type or member is obsolete
 
             // if required, and possible, detect browser type
             if (HttpContext.Current != null && settings != null)
             {
                 HttpRequest request = HttpContext.Current.Request;
                 HttpResponse response = HttpContext.Current.Response;
+
+                // TODO: create version of GetBrowserType that returns NewBrowserTypes
                 browserType = FriendlyUrlController.GetBrowserType(request, response, settings);
             }
 
-            return GetAliasByPortalIdAndSettings(aliases, portalId, result, cultureCode, browserType);
+            return GetAliasByPortalIdAndSettings(aliases, portalId, result, cultureCode, browserType.ToAbstractionsBrowserTypes());
         }
 
         public static PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, int portalId, string requestedAlias, string cultureCode, FriendlyUrlSettings settings)
         {
-            var browserType = BrowserTypes.Normal;
+#pragma warning disable CS0618 // Type or member is obsolete
+            var browserType = OldBrowserTypes.Normal;
+#pragma warning restore CS0618 // Type or member is obsolete
             UrlAction result = null;
 
             // if required, and possible, detect browser type
@@ -83,12 +96,12 @@ namespace DotNetNuke.Entities.Portals
                 };
             }
 
-            return GetAliasByPortalIdAndSettings(aliases, portalId, result, cultureCode, browserType);
+            return GetAliasByPortalIdAndSettings(aliases, portalId, result, cultureCode, browserType.ToAbstractionsBrowserTypes());
         }
 
         public static PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, UrlAction result)
         {
-            return GetAliasByPortalIdAndSettings(aliases, result.PortalId, result, result.CultureCode, result.BrowserType);
+            return GetAliasByPortalIdAndSettings(aliases, result.PortalId, result, result.CultureCode, result.BrowserType.ToAbstractionsBrowserTypes());
         }
 
         /// <summary>Returns a ChosenPortalAlias object where the portalId, culture code and isMobile matches.</summary>
@@ -99,7 +112,19 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="browserType">The browser type.</param>
         /// <returns>The closest <see cref="PortalAliasInfo"/> match.</returns>
         /// <remarks>Note will return a best-match by portal if no specific culture Code match found.</remarks>
-        public static PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, int portalId, UrlAction result, string cultureCode, BrowserTypes browserType)
+        [DnnDeprecated(10, 2, 2, "Use overload taking DotNetNuke.Abstractions.Urls.BrowserTypes")]
+        public static partial PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, int portalId, UrlAction result, string cultureCode, OldBrowserTypes browserType)
+            => aliases.GetAliasByPortalIdAndSettings(portalId, result, cultureCode, browserType.ToAbstractionsBrowserTypes());
+
+        /// <summary>Returns a ChosenPortalAlias object where the portalId, culture code and isMobile matches.</summary>
+        /// <param name="aliases">The aliases.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="result">The URL action.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="browserType">The browser type.</param>
+        /// <returns>The closest <see cref="PortalAliasInfo"/> match.</returns>
+        /// <remarks>Note will return a best-match by portal if no specific culture Code match found.</remarks>
+        public static PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, int portalId, UrlAction result, string cultureCode, NewBrowserTypes browserType)
         {
             var aliasList = aliases.ToList();
 
@@ -109,18 +134,18 @@ namespace DotNetNuke.Entities.Portals
             {
                 // try to find exact match
                 foundAlias = aliasList.FirstOrDefault(a =>
-                    a.BrowserType == browserType &&
+                    ((IPortalAliasInfo)a).BrowserType == browserType &&
                     string.Equals(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) &&
-                    a.PortalID == portalId &&
-                    a.HTTPAlias == result.HttpAlias);
+                    ((IPortalAliasInfo)a).PortalId == portalId &&
+                    ((IPortalAliasInfo)a).HttpAlias == result.HttpAlias);
                 if (foundAlias == null)
                 {
                     // let us try again using StartsWith() to find matching Hosts
                     foundAlias = aliasList.FirstOrDefault(a =>
-                        a.BrowserType == browserType &&
+                        ((IPortalAliasInfo)a).BrowserType == browserType &&
                         string.Equals(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) &&
-                        a.PortalID == portalId &&
-                        a.HTTPAlias.StartsWith(result.HttpAlias.Split('/')[0], StringComparison.OrdinalIgnoreCase));
+                        ((IPortalAliasInfo)a).PortalId == portalId &&
+                        ((IPortalAliasInfo)a).HttpAlias.StartsWith(result.HttpAlias.Split('/')[0], StringComparison.OrdinalIgnoreCase));
                 }
             }
 
@@ -128,9 +153,9 @@ namespace DotNetNuke.Entities.Portals
             if (foundAlias == null)
             {
                 foundAlias = aliasList.Where(
-                        a => a.BrowserType == browserType
+                        a => ((IPortalAliasInfo)a).BrowserType == browserType
                              && (string.Equals(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(a.CultureCode))
-                             && a.PortalID == portalId)
+                             && ((IPortalAliasInfo)a).PortalId == portalId)
                     .OrderByDescending(a => a.IsPrimary)
                     .ThenByDescending(a => a.CultureCode)
                     .FirstOrDefault();
@@ -142,10 +167,10 @@ namespace DotNetNuke.Entities.Portals
             {
                 foundAlias = aliasList.Where(
                         a => (string.Equals(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(a.CultureCode))
-                             && a.PortalID == portalId)
-                       .OrderByDescending(a => a.IsPrimary)
-                       .ThenByDescending(a => a.CultureCode)
-                       .FirstOrDefault();
+                             && ((IPortalAliasInfo)a).PortalId == portalId)
+                    .OrderByDescending(a => a.IsPrimary)
+                    .ThenByDescending(a => a.CultureCode)
+                    .FirstOrDefault();
             }
 
             // END DNN-4882
@@ -153,7 +178,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (result is { PortalAlias: not null })
                 {
-                    if (foundAlias.BrowserType != result.PortalAlias.BrowserType)
+                    if (((IPortalAliasInfo)foundAlias).BrowserType != ((IPortalAliasInfo)result.PortalAlias).BrowserType)
                     {
                         result.Reason = foundAlias.CultureCode != result.PortalAlias.CultureCode
                             ? RedirectReason.Wrong_Portal_Alias_For_Culture_And_Browser
@@ -172,7 +197,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 // if we didn't find a specific match, return the default, which is the closest match
                 var defaultAlias = aliasList
-                    .Where(a => a.PortalID == portalId)
+                    .Where(a => ((IPortalAliasInfo)a).PortalId == portalId)
                     .OrderByDescending(a => a.IsPrimary)
                     .FirstOrDefault();
 
@@ -185,7 +210,7 @@ namespace DotNetNuke.Entities.Portals
         public static List<string> GetAliasesForPortalId(this IEnumerable<PortalAliasInfo> aliases, int portalId)
         {
             var httpAliases = new List<string>();
-            foreach (IPortalAliasInfo cpa in aliases.Where(cpa => httpAliases.Contains(cpa.HTTPAlias) == false))
+            foreach (var cpa in aliases.Where((IPortalAliasInfo cpa) => !httpAliases.Contains(cpa.HttpAlias)))
             {
                 httpAliases.Add(cpa.HttpAlias.ToLowerInvariant());
             }
@@ -198,13 +223,34 @@ namespace DotNetNuke.Entities.Portals
             return (from IPortalAliasInfo portalAlias in aliases
                     where portalAlias.PortalId == portalId && string.Equals(alias, portalAlias.HttpAlias, StringComparison.OrdinalIgnoreCase)
                     select portalAlias.CultureCode)
-                    .FirstOrDefault();
+                .FirstOrDefault();
         }
 
-        public static void GetSettingsByPortalIdAndAlias(this IEnumerable<PortalAliasInfo> aliases, int portalId, string alias, out string culture, out BrowserTypes browserType, out string skin)
+        /// <summary>Gets the culture, browser type, and skin for the given <paramref name="portalId"/> and <paramref name="alias"/>.</summary>
+        /// <param name="aliases">The aliases.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="alias">The alias.</param>
+        /// <param name="culture">The culture.</param>
+        /// <param name="browserType">The browser type.</param>
+        /// <param name="skin">The skin.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking DotNetNuke.Abstractions.Urls.BrowserTypes")]
+        public static partial void GetSettingsByPortalIdAndAlias(this IEnumerable<PortalAliasInfo> aliases, int portalId, string alias, out string culture, out OldBrowserTypes browserType, out string skin)
+        {
+            aliases.GetSettingsByPortalIdAndAlias(portalId, alias, out culture, out NewBrowserTypes newBrowserType, out skin);
+            browserType = newBrowserType.ToDeprecatedBrowserTypes();
+        }
+
+        /// <summary>Gets the culture, browser type, and skin for the given <paramref name="portalId"/> and <paramref name="alias"/>.</summary>
+        /// <param name="aliases">The aliases.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="alias">The alias.</param>
+        /// <param name="culture">The culture.</param>
+        /// <param name="browserType">The browser type.</param>
+        /// <param name="skin">The skin.</param>
+        public static void GetSettingsByPortalIdAndAlias(this IEnumerable<PortalAliasInfo> aliases, int portalId, string alias, out string culture, out NewBrowserTypes browserType, out string skin)
         {
             culture = null;
-            browserType = BrowserTypes.Normal;
+            browserType = NewBrowserTypes.Normal;
             skin = string.Empty;
             foreach (IPortalAliasInfo portalAlias in aliases)
             {
@@ -212,7 +258,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     // this is a match
                     culture = portalAlias.CultureCode;
-                    browserType = (BrowserTypes)portalAlias.BrowserType;
+                    browserType = portalAlias.BrowserType;
 
                     // 852 : add skin per portal alias
                     skin = portalAlias.Skin;

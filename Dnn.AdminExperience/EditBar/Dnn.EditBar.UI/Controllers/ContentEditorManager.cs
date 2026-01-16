@@ -60,12 +60,14 @@ namespace Dnn.EditBar.UI.Controllers
         private readonly IEventLogger eventLogger;
         private readonly IPortalController portalController;
         private readonly IHostSettings hostSettings;
+        private readonly IUserController userController;
+        private readonly IHostSettingsService hostSettingsService;
         private bool supportAjax = true;
 
         /// <summary>Initializes a new instance of the <see cref="ContentEditorManager"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public ContentEditorManager()
-            : this(null, null, null, null, null)
+            : this(null, null, null, null, null, null, null)
         {
         }
 
@@ -75,13 +77,17 @@ namespace Dnn.EditBar.UI.Controllers
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="hostSettings">The host settings.</param>
-        public ContentEditorManager(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalController portalController, IHostSettings hostSettings)
+        /// <param name="userController">The user controller.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public ContentEditorManager(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalController portalController, IHostSettings hostSettings, IUserController userController, IHostSettingsService hostSettingsService)
         {
             this.clientResourceController = clientResourceController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IClientResourceController>();
             this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
             this.eventLogger = eventLogger ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IEventLogger>();
             this.portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
             this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+            this.userController = userController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IUserController>();
+            this.hostSettingsService = hostSettingsService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettingsService>();
         }
 
         /// <summary>Gets or sets the skin.</summary>
@@ -251,7 +257,7 @@ namespace Dnn.EditBar.UI.Controllers
                             }
                             else
                             {
-                                moduleControl.Page = new ProxyPage(this.portalController, this.appStatus, this.hostSettings, this.Page);
+                                moduleControl.Page = new ProxyPage(this.portalController, this.appStatus, this.hostSettings, this.userController, this.hostSettingsService, this.Page);
                             }
 
                             this.ProcessDragTipShown(moduleContainer);
@@ -687,12 +693,12 @@ namespace Dnn.EditBar.UI.Controllers
 
             [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
             public ProxyPage(Page originalPage)
-                : this(null, null, null, originalPage)
+                : this(null, null, null, null, null, originalPage)
             {
             }
 
-            public ProxyPage(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, Page originalPage)
-                : base(portalController, appStatus, hostSettings)
+            public ProxyPage(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IUserController userController, IHostSettingsService hostSettingsService, Page originalPage)
+                : base(portalController, appStatus, hostSettings, userController, hostSettingsService)
             {
                 this.originalPage = originalPage;
 

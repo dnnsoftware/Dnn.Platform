@@ -8,12 +8,29 @@ namespace DotNetNuke.UI.Skins.Controls
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A skin/theme object which allows affecting the styles of the page.</summary>
     public partial class Styles : SkinObjectBase
     {
-        private bool useSkinPath = true;
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="Styles"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public Styles()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Styles"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public Styles(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
 
         public string Condition { get; set; }
 
@@ -23,18 +40,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string StyleSheet { get; set; }
 
-        public bool UseSkinPath
-        {
-            get
-            {
-                return this.useSkinPath;
-            }
-
-            set
-            {
-                this.useSkinPath = value;
-            }
-        }
+        public bool UseSkinPath { get; set; } = true;
 
         public string Media { get; set; }
 
@@ -62,7 +68,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     }
 
                     var objLink = new HtmlLink();
-                    objLink.ID = Globals.CreateValidID(this.Name);
+                    objLink.ID = Globals.CreateValidID(this.hostSettings, this.Name);
                     objLink.Attributes["rel"] = "stylesheet";
                     objLink.Attributes["type"] = "text/css";
                     objLink.Href = skinpath + this.StyleSheet;

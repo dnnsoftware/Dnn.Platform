@@ -3,11 +3,15 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Data.PetaPoco
 {
+    using System;
     using System.Collections.Generic;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using global::PetaPoco;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class PetaPocoRepository<T> : RepositoryBase<T>
         where T : class
@@ -19,7 +23,18 @@ namespace DotNetNuke.Data.PetaPoco
         /// <param name="database">The database.</param>
         /// <param name="mapper">The mapper.</param>
 #pragma warning disable CS3001 // Argument type is not CLS-compliant
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public PetaPocoRepository(Database database, IMapper mapper)
+            : this(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), database, mapper)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PetaPocoRepository{T}"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="database">The database.</param>
+        /// <param name="mapper">The mapper.</param>
+        public PetaPocoRepository(IHostSettings hostSettings, Database database, IMapper mapper)
+            : base(hostSettings)
 #pragma warning restore CS3001
         {
             Requires.NotNull("database", database);

@@ -30,6 +30,7 @@ namespace Dnn.EditBar.UI.Controllers
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.UI;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -52,7 +53,15 @@ namespace Dnn.EditBar.UI.Controllers
         /// <param name="hostSettings">The host settings.</param>
         public EditBarController(IHostSettings hostSettings)
         {
-            this.hostSettings = hostSettings ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ?? new HostSettings(new HostController());
+            this.hostSettings = hostSettings ??
+                                HttpContextSource.Current?.GetScope()
+                                    .ServiceProvider.GetRequiredService<IHostSettings>() ??
+                                new HostSettings(
+                                    new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                        new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                        new Lazy<IPortalController>(() => PortalController.Instance)));
         }
 
         /// <inheritdoc/>

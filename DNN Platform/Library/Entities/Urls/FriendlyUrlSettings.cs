@@ -7,8 +7,12 @@ namespace DotNetNuke.Entities.Urls
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     [Serializable]
     public class FriendlyUrlSettings
@@ -60,7 +64,9 @@ namespace DotNetNuke.Entities.Urls
         public const string ProcessRequestsSetting = "AUM_ProcessRequests";
         public const string CacheTimeSetting = "AUM_CacheTime";
         public const string IncludePageNameSetting = "AUM_IncludePageName";
-        private readonly IHostController hostControllerInstance = HostController.Instance;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IPortalController portalController;
+        private readonly IHostSettings hostSettings;
 
         // 894 : new switch to disable custom url provider
         private bool? allowDebugCode;
@@ -108,16 +114,32 @@ namespace DotNetNuke.Entities.Urls
 
         /// <summary>Initializes a new instance of the <see cref="FriendlyUrlSettings"/> class.</summary>
         /// <param name="portalId">The portal ID.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public FriendlyUrlSettings(int portalId)
-            : this(PortalController.Instance, portalId)
+            : this(null, null, null, portalId)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="FriendlyUrlSettings"/> class.</summary>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="portalId">The portal ID.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public FriendlyUrlSettings(IPortalController portalController, int portalId)
+            : this(null, null, null, portalId)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="FriendlyUrlSettings"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalId">The portal ID.</param>
+        public FriendlyUrlSettings(IPortalController portalController, IHostSettings hostSettings, IHostSettingsService hostSettingsService, int portalId)
+        {
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+
             this.PortalId = portalId < -1 ? -1 : portalId;
             this.IsDirty = false;
             this.IsLoading = false;
@@ -128,7 +150,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (portalId > -1)
             {
-                var portal = portalController.GetPortal(portalId);
+                var portal = this.portalController.GetPortal(portalId);
                 this.TabId500 = this.TabId404 = portal.Custom404TabId;
 
                 if (this.TabId500 == -1)
@@ -165,7 +187,7 @@ namespace DotNetNuke.Entities.Urls
                 if (!this.allowDebugCode.HasValue)
                 {
                     // 703 default debug code to false
-                    this.allowDebugCode = Host.Host.DebugMode;
+                    this.allowDebugCode = this.hostSettings.DebugMode;
                 }
 
                 return this.allowDebugCode.Value;
@@ -324,7 +346,10 @@ namespace DotNetNuke.Entities.Urls
                 if (this.deletedTabHandling == null)
                 {
                     this.deletedTabHandling = PortalController.GetPortalSetting(
-                        DeletedTabHandlingTypeSetting, this.PortalId, DeletedTabHandlingType.Do404Error.ToString());
+                        this.portalController,
+                        DeletedTabHandlingTypeSetting,
+                        this.PortalId,
+                        nameof(DeletedTabHandlingType.Do404Error));
                 }
 
                 return "do301redirecttoportalhome".Equals(this.deletedTabHandling, StringComparison.OrdinalIgnoreCase)
@@ -581,7 +606,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 if (!this.redirectOldProfileUrl.HasValue)
                 {
-                    this.redirectOldProfileUrl = PortalController.GetPortalSettingAsBoolean(RedirectOldProfileUrlSetting, this.PortalId, true);
+                    this.redirectOldProfileUrl = PortalController.GetPortalSettingAsBoolean(this.portalController, RedirectOldProfileUrlSetting, this.PortalId, true);
                 }
 
                 return this.redirectOldProfileUrl.Value;
@@ -775,12 +800,12 @@ namespace DotNetNuke.Entities.Urls
         private bool GetBooleanSetting(string key, bool defaultValue)
         {
             // First Get the Host Value using the passed in value as default
-            var returnValue = this.hostControllerInstance.GetBoolean(key, defaultValue);
+            var returnValue = this.hostSettingsService.GetBoolean(key, defaultValue);
 
             if (this.PortalId > -1)
             {
                 // Next check if there is a Portal Value, using the Host value as default
-                returnValue = PortalController.GetPortalSettingAsBoolean(key, this.PortalId, returnValue);
+                returnValue = PortalController.GetPortalSettingAsBoolean(this.portalController, key, this.PortalId, returnValue);
             }
 
             return returnValue;
@@ -789,12 +814,12 @@ namespace DotNetNuke.Entities.Urls
         private int GetIntegerSetting(string key, int defaultValue)
         {
             // First Get the Host Value using the passed in value as default
-            var returnValue = this.hostControllerInstance.GetInteger(key, defaultValue);
+            var returnValue = this.hostSettingsService.GetInteger(key, defaultValue);
 
             if (this.PortalId > -1)
             {
                 // Next check if there is a Portal Value, using the Host value as default
-                returnValue = PortalController.GetPortalSettingAsInteger(key, this.PortalId, returnValue);
+                returnValue = PortalController.GetPortalSettingAsInteger(this.portalController, key, this.PortalId, returnValue);
             }
 
             return returnValue;
@@ -803,12 +828,12 @@ namespace DotNetNuke.Entities.Urls
         private string GetStringSetting(string key, string defaultValue)
         {
             // First Get the Host Value using the passed in value as default
-            var returnValue = this.hostControllerInstance.GetString(key, defaultValue);
+            var returnValue = this.hostSettingsService.GetString(key, defaultValue);
 
             if (this.PortalId > -1)
             {
                 // Next check if there is a Portal Value, using the Host value as default
-                returnValue = PortalController.GetPortalSetting(key, this.PortalId, returnValue);
+                returnValue = PortalController.GetPortalSetting(this.portalController, key, this.PortalId, returnValue);
             }
 
             return returnValue;

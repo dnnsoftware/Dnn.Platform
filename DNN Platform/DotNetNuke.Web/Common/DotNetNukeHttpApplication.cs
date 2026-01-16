@@ -41,8 +41,6 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.Services.Url.FriendlyUrl;
 
-    using Microsoft.Extensions.DependencyInjection;
-
     /// <summary>DotNetNuke Http Application. It will handle Start, End, BeginRequest, Error event for whole application.</summary>
     public class DotNetNukeHttpApplication : HttpApplication
     {

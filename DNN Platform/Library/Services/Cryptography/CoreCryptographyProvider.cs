@@ -8,7 +8,9 @@ using System.Security.Cryptography;
 using DotNetNuke.Internal.SourceGenerators;
 
 /// <summary>The primary <see cref="CryptographyProvider"/> implementation.</summary>
+#pragma warning disable CS0618 // Type or member is obsolete
 internal partial class CoreCryptographyProvider : CryptographyProvider, DotNetNuke.Abstractions.Security.ICryptographyProvider
+#pragma warning restore CS0618 // Type or member is obsolete
 {
     private const string InterfaceEncryptStringHashAlgorithmName = nameof(SHA512);
     private const string InterfaceEncryptStringSymmetricAlgorithmName = nameof(Aes);

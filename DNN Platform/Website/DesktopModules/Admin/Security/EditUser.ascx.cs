@@ -42,11 +42,12 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IHostSettings hostSettings;
         private readonly IPortalController portalController;
+        private readonly IHostSettingsService hostSettingsService;
 
         /// <summary>Initializes a new instance of the <see cref="EditUser"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditUser()
-            : this(null, null, null, null)
+            : this(null, null, null, null, null)
         {
         }
 
@@ -55,12 +56,25 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="portalController">The portal controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettingsService. Scheduled removal in v12.0.0.")]
         public EditUser(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings, IPortalController portalController)
+            : this(navigationManager, javaScript, hostSettings, portalController, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EditUser"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public EditUser(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings, IPortalController portalController, IHostSettingsService hostSettingsService)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
             this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
             this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
+            this.hostSettingsService = hostSettingsService ?? this.DependencyProvider.GetRequiredService<IHostSettingsService>();
         }
 
         /// <summary>Gets or sets the current Page No.</summary>
@@ -413,7 +427,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.dnnServicesDetails.Visible = this.DisplayServices;
 
-                var urlSettings = new DotNetNuke.Entities.Urls.FriendlyUrlSettings(this.PortalSettings.PortalId);
+                var urlSettings = new FriendlyUrlSettings(this.portalController, this.hostSettings, this.hostSettingsService, this.PortalSettings.PortalId);
                 var showVanityUrl = (Config.GetFriendlyUrlProvider() == "advanced") && !this.UserInfo.IsSuperUser;
                 if (showVanityUrl)
                 {

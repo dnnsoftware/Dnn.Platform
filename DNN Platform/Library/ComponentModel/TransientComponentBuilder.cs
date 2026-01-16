@@ -5,11 +5,11 @@ namespace DotNetNuke.ComponentModel
 {
     using System;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Framework;
 
     internal class TransientComponentBuilder : IComponentBuilder
     {
-        private readonly string name;
         private readonly Type type;
 
         /// <summary>Initializes a new instance of the <see cref="TransientComponentBuilder"/> class.</summary>
@@ -17,18 +17,12 @@ namespace DotNetNuke.ComponentModel
         /// <param name="type">The type of the component.</param>
         public TransientComponentBuilder(string name, Type type)
         {
-            this.name = name;
+            this.Name = name;
             this.type = type;
         }
 
-        /// <inheritdoc/>
-        public string Name
-        {
-            get
-            {
-                return this.name;
-            }
-        }
+        /// <inheritdoc />
+        public string Name { get; }
 
         /// <inheritdoc/>
         public object BuildComponent()

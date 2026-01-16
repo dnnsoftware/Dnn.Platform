@@ -16,13 +16,15 @@ namespace DotNetNuke.Services.Log.EventLog
     using System.Web.Caching;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Scheduling;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class DBLoggingProvider : LoggingProvider
     {
@@ -37,11 +39,28 @@ namespace DotNetNuke.Services.Log.EventLog
         private static readonly ReaderWriterLockSlim LockNotif = new ReaderWriterLockSlim();
         private static readonly ReaderWriterLockSlim LockQueueLog = new ReaderWriterLockSlim();
 
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="DBLoggingProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public DBLoggingProvider()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DBLoggingProvider"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public DBLoggingProvider(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
+
         /// <inheritdoc/>
         public override void AddLog(LogInfo logInfo)
         {
-            string configPortalId = logInfo.LogPortalID != Null.NullInteger
-                                        ? logInfo.LogPortalID.ToString(CultureInfo.InvariantCulture)
+            ILogInfo theLogInfo = logInfo;
+            string configPortalId = theLogInfo.LogPortalId != Null.NullInteger
+                                        ? theLogInfo.LogPortalId.ToString(CultureInfo.InvariantCulture)
                                         : "*";
             var logTypeConfigInfo = this.GetLogTypeConfigInfoByKey(logInfo.LogTypeKey, configPortalId);
             if (logTypeConfigInfo is not { LoggingIsActive: true, })
@@ -49,11 +68,11 @@ namespace DotNetNuke.Services.Log.EventLog
                 return;
             }
 
-            logInfo.LogConfigID = logTypeConfigInfo.ID;
+            theLogInfo.LogConfigId = ((ILogTypeConfigInfo)logTypeConfigInfo).Id;
             var logQueueItem = new LogQueueItem { LogInfo = logInfo, LogTypeConfigInfo = logTypeConfigInfo };
-            SchedulingProvider scheduler = SchedulingProvider.Instance();
+            var scheduler = SchedulingProvider.Instance();
             if (scheduler == null || logInfo.BypassBuffering || !SchedulingProvider.Enabled
-                || scheduler.GetScheduleStatus() == ScheduleStatus.STOPPED || !Host.EventLogBuffer)
+                || scheduler.GetScheduleStatus() == ScheduleStatus.STOPPED || !this.hostSettings.EventLogBuffer)
             {
                 WriteLog(logQueueItem);
             }
@@ -124,7 +143,8 @@ namespace DotNetNuke.Services.Log.EventLog
         /// <inheritdoc/>
         public override void DeleteLog(LogInfo logInfo)
         {
-            DataProvider.Instance().DeleteLog(logInfo.LogGUID);
+            ILogInfo theLogInfo = logInfo;
+            DataProvider.Instance().DeleteLog(theLogInfo.LogGuid);
         }
 
         /// <inheritdoc/>
@@ -190,11 +210,13 @@ namespace DotNetNuke.Services.Log.EventLog
         public override ArrayList GetLogTypeInfo()
         {
             return CBO.GetCachedObject<ArrayList>(
+                this.hostSettings,
                 new CacheItemArgs(LogTypeCacheKey, 20, CacheItemPriority.Normal),
-                c => CBO.FillCollection(DataProvider.Instance().GetLogTypeInfo(), typeof(LogTypeInfo)));
+                _ => CBO.FillCollection(DataProvider.Instance().GetLogTypeInfo(), typeof(LogTypeInfo)));
         }
 
         /// <inheritdoc/>
+        [Obsolete("Deprecated in DotNetNuke 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService.GetLog()' instead. Scheduled for removal in v11.0.0.")]
         public override object GetSingleLog(LogInfo logInfo, ReturnType returnType)
         {
             var log = (LogInfo)this.GetLog(logInfo.LogGUID);
@@ -287,10 +309,10 @@ namespace DotNetNuke.Services.Log.EventLog
         /// <inheritdoc/>
         public override void SendLogNotifications()
         {
-            List<LogTypeConfigInfo> configInfos = CBO.FillCollection<LogTypeConfigInfo>(DataProvider.Instance().GetEventLogPendingNotifConfig());
-            foreach (LogTypeConfigInfo typeConfigInfo in configInfos)
+            var configInfos = CBO.FillCollection<LogTypeConfigInfo>(DataProvider.Instance().GetEventLogPendingNotifConfig());
+            foreach (ILogTypeConfigInfo typeConfigInfo in configInfos)
             {
-                IDataReader dr = DataProvider.Instance().GetEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID, CultureInfo.InvariantCulture));
+                IDataReader dr = DataProvider.Instance().GetEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.Id, CultureInfo.InvariantCulture));
                 string log = string.Empty;
                 try
                 {
@@ -306,7 +328,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 }
 
                 Mail.Mail.SendEmail(typeConfigInfo.MailFromAddress, typeConfigInfo.MailToAddress, "Event Notification", $"<pre>{HttpUtility.HtmlEncode(log)}</pre>");
-                DataProvider.Instance().UpdateEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID, CultureInfo.InvariantCulture));
+                DataProvider.Instance().UpdateEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.Id, CultureInfo.InvariantCulture));
             }
         }
 
@@ -393,18 +415,18 @@ namespace DotNetNuke.Services.Log.EventLog
             int i;
             for (i = 0; i <= arr.Count - 1; i++)
             {
-                var logTypeConfigInfo = (LogTypeConfigInfo)arr[i];
+                var logTypeConfigInfo = (ILogTypeConfigInfo)arr[i];
                 if (string.IsNullOrEmpty(logTypeConfigInfo.LogTypeKey))
                 {
                     logTypeConfigInfo.LogTypeKey = "*";
                 }
 
-                if (string.IsNullOrEmpty(logTypeConfigInfo.LogTypePortalID))
+                if (string.IsNullOrEmpty(logTypeConfigInfo.LogTypePortalId))
                 {
-                    logTypeConfigInfo.LogTypePortalID = "*";
+                    logTypeConfigInfo.LogTypePortalId = "*";
                 }
 
-                ht.Add(logTypeConfigInfo.LogTypeKey + "|" + logTypeConfigInfo.LogTypePortalID, logTypeConfigInfo);
+                ht.Add(logTypeConfigInfo.LogTypeKey + "|" + logTypeConfigInfo.LogTypePortalId, logTypeConfigInfo);
             }
 
             DataCache.SetCache(LogTypeInfoByKeyCacheKey, ht);
@@ -413,20 +435,20 @@ namespace DotNetNuke.Services.Log.EventLog
 
         private static LogInfo FillLogInfo(IDataReader dr)
         {
-            var obj = new LogInfo();
+            ILogInfo obj = new LogInfo();
             try
             {
                 obj.LogCreateDate = Convert.ToDateTime(dr["LogCreateDate"], CultureInfo.InvariantCulture);
-                obj.LogGUID = Convert.ToString(dr["LogGUID"], CultureInfo.InvariantCulture);
-                obj.LogPortalID = Convert.ToInt32(Null.SetNull(dr["LogPortalID"], obj.LogPortalID), CultureInfo.InvariantCulture);
+                obj.LogGuid = Convert.ToString(dr["LogGUID"], CultureInfo.InvariantCulture);
+                obj.LogPortalId = Convert.ToInt32(Null.SetNull(dr["LogPortalID"], obj.LogPortalId), CultureInfo.InvariantCulture);
                 obj.LogPortalName = Convert.ToString(Null.SetNull(dr["LogPortalName"], obj.LogPortalName), CultureInfo.InvariantCulture);
                 obj.LogServerName = Convert.ToString(Null.SetNull(dr["LogServerName"], obj.LogServerName), CultureInfo.InvariantCulture);
-                obj.LogUserID = Convert.ToInt32(Null.SetNull(dr["LogUserID"], obj.LogUserID), CultureInfo.InvariantCulture);
-                obj.LogEventID = Convert.ToInt32(Null.SetNull(dr["LogEventID"], obj.LogEventID), CultureInfo.InvariantCulture);
+                obj.LogUserId = Convert.ToInt32(Null.SetNull(dr["LogUserID"], obj.LogUserId), CultureInfo.InvariantCulture);
+                obj.LogEventId = Convert.ToInt32(Null.SetNull(dr["LogEventID"], obj.LogEventId), CultureInfo.InvariantCulture);
                 obj.LogTypeKey = Convert.ToString(dr["LogTypeKey"], CultureInfo.InvariantCulture);
                 obj.LogUserName = Convert.ToString(dr["LogUserName"], CultureInfo.InvariantCulture);
-                obj.LogConfigID = Convert.ToString(dr["LogConfigID"], CultureInfo.InvariantCulture);
-                obj.LogProperties.Deserialize(Convert.ToString(dr["LogProperties"], CultureInfo.InvariantCulture));
+                obj.LogConfigId = Convert.ToString(dr["LogConfigID"], CultureInfo.InvariantCulture);
+                ((LogInfo)obj).LogProperties.Deserialize(Convert.ToString(dr["LogProperties"], CultureInfo.InvariantCulture));
                 obj.Exception.AssemblyVersion = Convert.ToString(Null.SetNull(dr["AssemblyVersion"], obj.Exception.AssemblyVersion), CultureInfo.InvariantCulture);
                 obj.Exception.PortalId = Convert.ToInt32(Null.SetNull(dr["PortalId"], obj.Exception.PortalId), CultureInfo.InvariantCulture);
                 obj.Exception.UserId = Convert.ToInt32(Null.SetNull(dr["UserId"], obj.Exception.UserId), CultureInfo.InvariantCulture);
@@ -453,7 +475,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 Logger.Error(exc);
             }
 
-            return obj;
+            return (LogInfo)obj;
         }
 
         private static void FillLogs(IDataReader dr, IList logs, ref int totalRecords)
@@ -513,17 +535,18 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     LogInfo objLogInfo = logQueueItem.LogInfo;
                     string logProperties = objLogInfo.LogProperties.Serialize();
+                    ILogInfo theLogInfo = objLogInfo;
                     DataProvider.Instance().AddLog(
-                        objLogInfo.LogGUID,
-                        objLogInfo.LogTypeKey,
-                        objLogInfo.LogUserID,
-                        objLogInfo.LogUserName,
-                        objLogInfo.LogPortalID,
-                        objLogInfo.LogPortalName,
-                        objLogInfo.LogCreateDate,
-                        objLogInfo.LogServerName,
+                        theLogInfo.LogGuid,
+                        theLogInfo.LogTypeKey,
+                        theLogInfo.LogUserId,
+                        theLogInfo.LogUserName,
+                        theLogInfo.LogPortalId,
+                        theLogInfo.LogPortalName,
+                        theLogInfo.LogCreateDate,
+                        theLogInfo.LogServerName,
                         logProperties,
-                        Convert.ToInt32(objLogInfo.LogConfigID, CultureInfo.InvariantCulture),
+                        Convert.ToInt32(theLogInfo.LogConfigId, CultureInfo.InvariantCulture),
                         objLogInfo.Exception,
                         logTypeConfigInfo.EmailNotificationIsActive);
                     if (logTypeConfigInfo.EmailNotificationIsActive)

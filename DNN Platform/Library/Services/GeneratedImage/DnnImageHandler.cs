@@ -17,6 +17,7 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Web;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -45,22 +46,34 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private readonly IServiceProvider serviceProvider;
         private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalAliasService portalAliasService;
         private string defaultImageFile = string.Empty;
 
         /// <summary>Initializes a new instance of the <see cref="DnnImageHandler"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public DnnImageHandler()
-            : this(Globals.GetCurrentServiceProvider(), null)
+            : this(Globals.GetCurrentServiceProvider(), null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DnnImageHandler"/> class.</summary>
         /// <param name="serviceProvider">The DI container.</param>
         /// <param name="appStatus">The application status.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public DnnImageHandler(IServiceProvider serviceProvider, IApplicationStatusInfo appStatus)
+            : this(serviceProvider, appStatus, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnImageHandler"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        public DnnImageHandler(IServiceProvider serviceProvider, IApplicationStatusInfo appStatus, IPortalAliasService portalAliasService)
         {
             this.serviceProvider = serviceProvider;
             this.appStatus = appStatus ?? serviceProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.portalAliasService = portalAliasService ?? serviceProvider.GetRequiredService<IPortalAliasService>();
 
             // Set default settings here
             this.EnableClientCache = true;
@@ -258,8 +271,7 @@ namespace DotNetNuke.Services.GeneratedImage
                             var url = parameters["Url"];
 
                             // allow only site resources when using the url parameter
-                            IPortalAliasController portalAliasController = PortalAliasController.Instance;
-                            var uriValidator = new UriValidator(portalAliasController);
+                            var uriValidator = new UriValidator(this.portalAliasService);
                             if (!url.StartsWith("http", StringComparison.OrdinalIgnoreCase) || !uriValidator.UriBelongsToSite(new Uri(url)))
                             {
                                 return this.GetEmptyImageInfo();

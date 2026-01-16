@@ -20,6 +20,7 @@ namespace Dnn.EditBar.UI.HttpModules
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Skins.EventListeners;
@@ -39,11 +40,13 @@ namespace Dnn.EditBar.UI.HttpModules
         private readonly IApplicationStatusInfo appStatus;
         private readonly IEventLogger eventLogger;
         private readonly IPortalController portalController;
+        private readonly IUserController userController;
+        private readonly IHostSettingsService hostSettingsService;
 
         /// <summary>Initializes a new instance of the <see cref="EditBarModule"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditBarModule()
-            : this(null, null, null, null, null)
+            : this(null, null, null, null, null, null, null)
         {
         }
 
@@ -51,7 +54,7 @@ namespace Dnn.EditBar.UI.HttpModules
         /// <param name="hostSettings">The host settings.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditBarModule(IHostSettings hostSettings)
-            : this(hostSettings, null, null, null, null)
+            : this(hostSettings, null, null, null, null, null, null)
         {
         }
 
@@ -61,7 +64,9 @@ namespace Dnn.EditBar.UI.HttpModules
         /// <param name="appStatus">The application status.</param>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="portalController">The portal controller.</param>
-        public EditBarModule(IHostSettings hostSettings, IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalController portalController)
+        /// <param name="userController">The user controller.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public EditBarModule(IHostSettings hostSettings, IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalController portalController, IUserController userController, IHostSettingsService hostSettingsService)
         {
             if (hostSettings is not null)
             {
@@ -70,6 +75,8 @@ namespace Dnn.EditBar.UI.HttpModules
                 this.appStatus = appStatus;
                 this.eventLogger = eventLogger;
                 this.portalController = portalController;
+                this.userController = userController;
+                this.hostSettingsService = hostSettingsService;
             }
             else
             {
@@ -81,16 +88,22 @@ namespace Dnn.EditBar.UI.HttpModules
                     this.appStatus = scope.ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
                     this.eventLogger = scope.ServiceProvider.GetRequiredService<IEventLogger>();
                     this.portalController = scope.ServiceProvider.GetRequiredService<IPortalController>();
+                    this.userController = scope.ServiceProvider.GetRequiredService<IUserController>();
+                    this.hostSettingsService = scope.ServiceProvider.GetRequiredService<IHostSettingsService>();
                 }
                 else
                 {
-                    this.hostSettings = new HostSettings(new HostController());
+#pragma warning disable CS0618 // Type or member is obsolete
+                    this.eventLogger = new EventLogController();
+#pragma warning restore CS0618 // Type or member is obsolete
+                    this.hostSettings = new HostSettings(new HostController(this.eventLogger, new Lazy<IPortalController>(() => PortalController.Instance)));
                     this.clientResourceController = new ClientResourceController(this.hostSettings);
                     this.appStatus = new ApplicationStatusInfo(new Application());
 #pragma warning disable CS0618 // Type or member is obsolete
-                    this.eventLogger = new EventLogController();
                     this.portalController = new PortalController(new BusinessControllerProvider(null), this.hostSettings, this.appStatus, this.eventLogger, CryptographyProvider.Instance() as ICryptographyProvider);
 #pragma warning restore CS0618 // Type or member is obsolete
+                    this.userController = new UserController();
+                    this.hostSettingsService = new HostController(this.eventLogger, new Lazy<IPortalController>(() => this.portalController));
                 }
             }
         }
@@ -142,7 +155,7 @@ namespace Dnn.EditBar.UI.HttpModules
             {
                 if (PortalSettings.Current.UserId > 0)
                 {
-                    e.Skin.Page.Form.Controls.Add(new ContentEditorManager(this.clientResourceController, this.appStatus, this.eventLogger, this.portalController, this.hostSettings) { Skin = e.Skin });
+                    e.Skin.Page.Form.Controls.Add(new ContentEditorManager(this.clientResourceController, this.appStatus, this.eventLogger, this.portalController, this.hostSettings, this.userController, this.hostSettingsService) { Skin = e.Skin, });
                 }
             }
         }

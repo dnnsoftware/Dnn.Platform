@@ -17,6 +17,7 @@ namespace DotNetNuke.Data
     using System.Text;
     using System.Web.Hosting;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
@@ -29,13 +30,28 @@ namespace DotNetNuke.Data
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Search.Entities;
     using Microsoft.ApplicationBlocks.Data;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Base implementation of a provider of core database activities.</summary>
     public abstract partial class DataProvider
     {
         private const int DuplicateKey = 2601;
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataProvider));
+        private readonly IApplicationStatusInfo appStatus;
+
+        /// <summary>Initializes a new instance of the <see cref="DataProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IA. Scheduled removal in v12.0.0.")]
+        protected DataProvider()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DataProvider"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        protected DataProvider(IApplicationStatusInfo appStatus)
+        {
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        }
 
         public virtual string ConnectionString
         {
@@ -412,7 +428,9 @@ namespace DotNetNuke.Data
             return
                 this.ExecuteScalar<int>(
                     "AddPortalInfo",
+#pragma warning disable CS0618 // Type or member is obsolete
                     PortalSecurity.Instance.InputFilter(portalname, PortalSecurity.FilterFlag.NoMarkup),
+#pragma warning restore CS0618 // Type or member is obsolete
                     currency,
                     this.GetNull(expiryDate),
                     hostFee,
@@ -448,7 +466,7 @@ namespace DotNetNuke.Data
         public virtual IDataReader GetPortals(string cultureCode)
         {
             IDataReader reader;
-            if (Globals.Status == Globals.UpgradeStatus.Upgrade && Globals.DataBaseVersion < new Version(6, 1, 0))
+            if (this.appStatus.Status == UpgradeStatus.Upgrade && this.appStatus.DatabaseVersion < new Version(6, 1, 0))
             {
                 reader = this.ExecuteReader("GetPortals");
             }
@@ -527,7 +545,9 @@ namespace DotNetNuke.Data
                 "UpdatePortalInfo",
                 portalId,
                 portalGroupId,
+#pragma warning disable CS0618 // Type or member is obsolete
                 PortalSecurity.Instance.InputFilter(portalName, PortalSecurity.FilterFlag.NoMarkup),
+#pragma warning restore CS0618 // Type or member is obsolete
                 this.GetNull(logoFile),
                 this.GetNull(footerText),
                 this.GetNull(expiryDate),

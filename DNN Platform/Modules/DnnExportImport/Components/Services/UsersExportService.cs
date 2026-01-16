@@ -9,13 +9,23 @@ namespace Dnn.ExportImport.Components.Services
     using System.Data;
     using System.Globalization;
     using System.Linq;
+    using System.Runtime.CompilerServices;
 
     using Dnn.ExportImport.Components.Common;
     using Dnn.ExportImport.Components.Dto;
     using Dnn.ExportImport.Components.Entities;
     using Dnn.ExportImport.Dto.Users;
+
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data.PetaPoco;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Log.EventLog;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
@@ -23,43 +33,58 @@ namespace Dnn.ExportImport.Components.Services
     public class UsersExportService : BasePortableService
     {
         private static readonly Tuple<string, Type>[] UsersDatasetColumns =
+        [
+            Tuple.Create("PortalId", typeof(int)),
+            Tuple.Create("Username", typeof(string)),
+            Tuple.Create("FirstName", typeof(string)),
+            Tuple.Create("LastName", typeof(string)),
+            Tuple.Create("AffiliateId", typeof(int)),
+            Tuple.Create("IsSuperUser", typeof(bool)),
+            Tuple.Create("Email", typeof(string)),
+            Tuple.Create("DisplayName", typeof(string)),
+            Tuple.Create("UpdatePassword", typeof(bool)),
+            Tuple.Create("Authorised", typeof(bool)),
+            Tuple.Create("CreatedByUserID", typeof(int)),
+            Tuple.Create("VanityUrl", typeof(string)),
+            Tuple.Create("RefreshRoles", typeof(bool)),
+            Tuple.Create("LastIPAddress", typeof(string)),
+            Tuple.Create("PasswordResetToken", typeof(Guid)),
+            Tuple.Create("PasswordResetExpiration", typeof(DateTime)),
+            Tuple.Create("IsDeleted", typeof(bool)),
+            Tuple.Create("LastModifiedByUserID", typeof(int)),
+            Tuple.Create("ApplicationId", typeof(Guid)),
+            Tuple.Create("AspUserId", typeof(Guid)),
+            Tuple.Create("MobileAlias", typeof(string)),
+            Tuple.Create("IsAnonymous", typeof(bool)),
+            Tuple.Create("Password", typeof(string)),
+            Tuple.Create("PasswordFormat", typeof(int)),
+            Tuple.Create("PasswordSalt", typeof(string)),
+            Tuple.Create("MobilePIN", typeof(string)),
+            Tuple.Create("PasswordQuestion", typeof(string)),
+            Tuple.Create("PasswordAnswer", typeof(string)),
+            Tuple.Create("IsApproved", typeof(bool)),
+            Tuple.Create("IsLockedOut", typeof(bool)),
+            Tuple.Create("FailedPasswordAttemptCount", typeof(int)),
+            Tuple.Create("FailedPasswordAnswerAttemptCount", typeof(int)),
+            Tuple.Create("Comment", typeof(string)),
+            Tuple.Create("AuthenticationType", typeof(string)),
+            Tuple.Create("AuthenticationToken", typeof(string)),
+        ];
+
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="UsersExportService"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public UsersExportService()
         {
-            new Tuple<string, Type>("PortalId", typeof(int)),
-            new Tuple<string, Type>("Username", typeof(string)),
-            new Tuple<string, Type>("FirstName", typeof(string)),
-            new Tuple<string, Type>("LastName", typeof(string)),
-            new Tuple<string, Type>("AffiliateId", typeof(int)),
-            new Tuple<string, Type>("IsSuperUser", typeof(bool)),
-            new Tuple<string, Type>("Email", typeof(string)),
-            new Tuple<string, Type>("DisplayName", typeof(string)),
-            new Tuple<string, Type>("UpdatePassword", typeof(bool)),
-            new Tuple<string, Type>("Authorised", typeof(bool)),
-            new Tuple<string, Type>("CreatedByUserID", typeof(int)),
-            new Tuple<string, Type>("VanityUrl", typeof(string)),
-            new Tuple<string, Type>("RefreshRoles", typeof(bool)),
-            new Tuple<string, Type>("LastIPAddress", typeof(string)),
-            new Tuple<string, Type>("PasswordResetToken", typeof(Guid)),
-            new Tuple<string, Type>("PasswordResetExpiration", typeof(DateTime)),
-            new Tuple<string, Type>("IsDeleted", typeof(bool)),
-            new Tuple<string, Type>("LastModifiedByUserID", typeof(int)),
-            new Tuple<string, Type>("ApplicationId", typeof(Guid)),
-            new Tuple<string, Type>("AspUserId", typeof(Guid)),
-            new Tuple<string, Type>("MobileAlias", typeof(string)),
-            new Tuple<string, Type>("IsAnonymous", typeof(bool)),
-            new Tuple<string, Type>("Password", typeof(string)),
-            new Tuple<string, Type>("PasswordFormat", typeof(int)),
-            new Tuple<string, Type>("PasswordSalt", typeof(string)),
-            new Tuple<string, Type>("MobilePIN", typeof(string)),
-            new Tuple<string, Type>("PasswordQuestion", typeof(string)),
-            new Tuple<string, Type>("PasswordAnswer", typeof(string)),
-            new Tuple<string, Type>("IsApproved", typeof(bool)),
-            new Tuple<string, Type>("IsLockedOut", typeof(bool)),
-            new Tuple<string, Type>("FailedPasswordAttemptCount", typeof(int)),
-            new Tuple<string, Type>("FailedPasswordAnswerAttemptCount", typeof(int)),
-            new Tuple<string, Type>("Comment", typeof(string)),
-            new Tuple<string, Type>("AuthenticationType", typeof(string)),
-            new Tuple<string, Type>("AuthenticationToken", typeof(string)),
-        };
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="UsersExportService"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public UsersExportService(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
 
         /// <inheritdoc/>
         public override string Category => Constants.Category_Users;
@@ -404,7 +429,7 @@ namespace Dnn.ExportImport.Components.Services
                                 if (aspNetUser != null)
                                 {
                                     tempAspUserCount += 1;
-                                    row["ApplicationId"] = GetApplicationId();
+                                    row["ApplicationId"] = GetApplicationId(this.hostSettings);
                                     row["AspUserId"] = aspNetUser.UserId;
                                     row["MobileAlias"] = aspNetUser.MobileAlias;
                                     row["IsAnonymous"] = aspNetUser.IsAnonymous;
@@ -495,10 +520,11 @@ namespace Dnn.ExportImport.Components.Services
             return this.Repository.GetCount<ExportUser>();
         }
 
-        private static Guid GetApplicationId()
+        private static Guid GetApplicationId(IHostSettings hostSettings)
         {
             using var db =
                 new PetaPocoDataContext(
+                    hostSettings,
                     DotNetNuke.Data.DataProvider.Instance().Settings["connectionStringName"],
                     "aspnet_");
             return db.ExecuteScalar<Guid>(

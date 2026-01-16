@@ -9,6 +9,8 @@ namespace DotNetNuke.Web.Mvc
     using System.Web.Routing;
     using System.Web.SessionState;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
@@ -20,6 +22,8 @@ namespace DotNetNuke.Web.Mvc
     using DotNetNuke.Web.Mvc.Common;
     using DotNetNuke.Web.Mvc.Framework.Modules;
     using DotNetNuke.Web.Mvc.Routing;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class DnnMvcHandler : IHttpHandler, IRequiresSessionState
     {
@@ -51,7 +55,7 @@ namespace DotNetNuke.Web.Mvc
         void IHttpHandler.ProcessRequest(HttpContext httpContext)
         {
             SetThreadCulture();
-            MembershipModule.AuthenticateRequest(new HostController(), PortalController.Instance, UserRequestIPAddressController.Instance, RoleController.Instance, this.RequestContext.HttpContext, allowUnknownExtensions: true);
+            MembershipModule.AuthenticateRequest(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(), PortalController.Instance, UserRequestIPAddressController.Instance, RoleController.Instance, this.RequestContext.HttpContext, allowUnknownExtensions: true);
             this.ProcessRequest(httpContext);
         }
 

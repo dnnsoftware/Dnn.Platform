@@ -8,6 +8,8 @@ namespace DotNetNuke.Entities.Portals
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -16,7 +18,8 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Log.EventLog;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>PortalAliasController provides method to manage portal alias.</summary>
     /// <remarks>
@@ -26,6 +29,25 @@ namespace DotNetNuke.Entities.Portals
     /// </remarks>
     public partial class PortalAliasController : IPortalAliasService
     {
+        private readonly IEventLogger eventLogger;
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="PortalAliasController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public PortalAliasController()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PortalAliasController"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public PortalAliasController(IEventLogger eventLogger, IHostSettings hostSettings)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
+
         private IPortalAliasService ThisAsInterface => this;
 
         /// <inheritdoc/>
@@ -45,8 +67,7 @@ namespace DotNetNuke.Entities.Portals
                 // searching from longest to shortest alias ensures that the most specific portal is matched first
                 // In some cases this method has been called with "portalaliases" that were not exactly the real portal alias
                 // the startswith behaviour is preserved here to support those non-specific uses
-                var controller = new PortalAliasController();
-                var portalAliases = controller.GetPortalAliasesInternal();
+                var portalAliases = this.GetPortalAliasesInternal();
                 var portalAliasCollection = portalAliases.OrderByDescending(k => k.Key.Length);
 
                 foreach (var currentAlias in portalAliasCollection)
@@ -141,7 +162,7 @@ namespace DotNetNuke.Entities.Portals
                 UserController.Instance.GetCurrentUserInfo().UserID);
 
             // Log Event
-            LogEvent(portalAlias, EventLogController.EventLogType.PORTALALIAS_CREATED);
+            this.LogEvent(portalAlias, EventLogType.PORTALALIAS_CREATED);
 
             // clear portal alias cache
             ClearCache(true);
@@ -156,7 +177,7 @@ namespace DotNetNuke.Entities.Portals
             DataProvider.Instance().DeletePortalAlias(portalAlias.PortalAliasId);
 
             // Log Event
-            LogEvent(portalAlias, EventLogController.EventLogType.PORTALALIAS_DELETED);
+            this.LogEvent(portalAlias, EventLogType.PORTALALIAS_DELETED);
 
             // clear portal alias cache
             ClearCache(false, portalAlias.PortalId);
@@ -213,7 +234,7 @@ namespace DotNetNuke.Entities.Portals
                 UserController.Instance.GetCurrentUserInfo().UserID);
 
             // Log Event
-            LogEvent(portalAlias, EventLogController.EventLogType.PORTALALIAS_UPDATED);
+            this.LogEvent(portalAlias, EventLogType.PORTALALIAS_UPDATED);
 
             // clear portal alias cache
             ClearCache(false);
@@ -223,11 +244,9 @@ namespace DotNetNuke.Entities.Portals
         internal Dictionary<string, PortalAliasInfo> GetPortalAliasesInternal()
         {
             return CBO.GetCachedObject<Dictionary<string, PortalAliasInfo>>(
-                new CacheItemArgs(
-                DataCache.PortalAliasCacheKey,
-                DataCache.PortalAliasCacheTimeOut,
-                DataCache.PortalAliasCachePriority),
-                c =>
+                this.hostSettings,
+                new CacheItemArgs(DataCache.PortalAliasCacheKey, DataCache.PortalAliasCacheTimeOut, DataCache.PortalAliasCachePriority),
+                static _ =>
                 {
                     var dic = CBO.FillDictionary<string, PortalAliasInfo>(
                         "HTTPAlias",
@@ -238,10 +257,12 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <inheritdoc/>
+#pragma warning disable CS0618 // Type or member is obsolete
         protected override Func<IPortalAliasController> GetFactory()
         {
             return () => new PortalAliasController();
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         private static void ClearCache(bool refreshServiceRoutes, int portalId = -1)
         {
@@ -259,12 +280,6 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static void LogEvent(IPortalAliasInfo portalAlias, EventLogController.EventLogType logType)
-        {
-            int userId = UserController.Instance.GetCurrentUserInfo().UserID;
-            EventLogController.Instance.AddLog(portalAlias, PortalController.Instance.GetCurrentSettings(), userId, string.Empty, logType);
-        }
-
         private static bool ValidateAlias(string portalAlias, bool ischild, bool isDomain)
         {
             string validChars = "abcdefghijklmnopqrstuvwxyz0123456789-/";
@@ -279,6 +294,16 @@ namespace DotNetNuke.Entities.Portals
             }
 
             return portalAlias.All(c => validChars.Contains(c.ToString()));
+        }
+
+        private void LogEvent(IPortalAliasInfo portalAlias, EventLogType logType)
+        {
+            this.eventLogger.AddLog(
+                portalAlias,
+                PortalController.Instance.GetCurrentSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                string.Empty,
+                logType);
         }
 
         private PortalAliasInfo GetPortalAliasLookupInternal(string alias)
@@ -339,18 +364,17 @@ namespace DotNetNuke.Entities.Portals
             if (portalAlias == null)
             {
                 // check if this is a fresh install ( no alias values in collection )
-                var controller = new PortalAliasController();
-                var portalAliases = controller.GetPortalAliasesInternal();
+                var portalAliases = this.GetPortalAliasesInternal();
                 if (portalAliases.Keys.Count == 0 || (portalAliases.Count == 1 && portalAliases.ContainsKey("_default")))
                 {
                     // relate the PortalAlias to the default portal on a fresh database installation
                     DataProvider.Instance().UpdatePortalAlias(httpAlias.ToLowerInvariant().Trim('/'), UserController.Instance.GetCurrentUserInfo().UserID);
-                    EventLogController.Instance.AddLog(
+                    this.eventLogger.AddLog(
                         "PortalAlias",
                         httpAlias,
                         PortalController.Instance.GetCurrentSettings(),
                         UserController.Instance.GetCurrentUserInfo().UserID,
-                        EventLogController.EventLogType.PORTALALIAS_UPDATED);
+                        EventLogType.PORTALALIAS_UPDATED);
 
                     // clear the cachekey "GetPortalByAlias" otherwise portalalias "_default" stays in cache after first install
                     DataCache.RemoveCache("GetPortalByAlias");

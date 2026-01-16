@@ -15,6 +15,7 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using Microsoft.Extensions.DependencyInjection;
@@ -199,7 +200,7 @@ namespace DotNetNuke.Common.Utilities
                             // skip parameter
                             break;
                         default:
-                            if (keys[i].Equals("portalid", StringComparison.OrdinalIgnoreCase) && Globals.GetPortalSettings().ActiveTab.IsSuperTab)
+                            if (keys[i].Equals("portalid", StringComparison.OrdinalIgnoreCase) && TabController.CurrentPage.IsSuperTab)
                             {
                                 // skip parameter
                                 // navigateURL adds portalid to querystring if tab is superTab
@@ -240,23 +241,53 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>
         /// check if connection is HTTPS
-        /// or is HTTP but with ssloffload enabled on a secure page.
+        /// or is HTTP but with SSL offload enabled on a secure page.
         /// </summary>
         /// <param name="request">current request.</param>
         /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise.</returns>
         public static bool IsSecureConnectionOrSslOffload(HttpRequestBase request)
+            => IsSecureConnectionOrSslOffload(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(), request);
+
+        /// <summary>
+        /// check if connection is HTTPS
+        /// or is HTTP but with SSL offload enabled on a secure page.
+        /// </summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="request">current request.</param>
+        /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise.</returns>
+        public static bool IsSecureConnectionOrSslOffload(IHostSettingsService hostSettingsService, HttpRequestBase request)
         {
-            return request.IsSecureConnection || IsSslOffloadEnabled(request);
+            return request.IsSecureConnection || IsSslOffloadEnabled(hostSettingsService, request);
         }
 
-        public static bool IsSslOffloadEnabled(HttpRequest request)
-        {
-            return IsSslOffloadEnabled(new HttpRequestWrapper(request));
-        }
+        /// <summary>Gets a value indicating whether SSL/HTTPS offloading is enabled for the given <paramref name="request"/>.</summary>
+        /// <param name="request">The request.</param>
+        /// <returns><see langword="true"/> if offloading is in use, otherwise <see langword="false"/>.</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IHostSettingsService")]
+        public static partial bool IsSslOffloadEnabled(HttpRequest request)
+            => IsSslOffloadEnabled(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(), request);
 
-        public static bool IsSslOffloadEnabled(HttpRequestBase request)
+        /// <summary>Gets a value indicating whether SSL/HTTPS offloading is enabled for the given <paramref name="request"/>.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="request">The request.</param>
+        /// <returns><see langword="true"/> if offloading is in use, otherwise <see langword="false"/>.</returns>
+        public static bool IsSslOffloadEnabled(IHostSettingsService hostSettingsService, HttpRequest request)
+            => IsSslOffloadEnabled(hostSettingsService, new HttpRequestWrapper(request));
+
+        /// <summary>Gets a value indicating whether SSL/HTTPS offloading is enabled for the given <paramref name="request"/>.</summary>
+        /// <param name="request">The request.</param>
+        /// <returns><see langword="true"/> if offloading is in use, otherwise <see langword="false"/>.</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IHostSettingsService")]
+        public static partial bool IsSslOffloadEnabled(HttpRequestBase request)
+            => IsSslOffloadEnabled(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(), request);
+
+        /// <summary>Gets a value indicating whether SSL/HTTPS offloading is enabled for the given <paramref name="request"/>.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="request">The request.</param>
+        /// <returns><see langword="true"/> if offloading is in use, otherwise <see langword="false"/>.</returns>
+        public static bool IsSslOffloadEnabled(IHostSettingsService hostSettingsService, HttpRequestBase request)
         {
-            var sslOffloadHeader = HostController.Instance.GetString("SSLOffloadHeader", string.Empty);
+            var sslOffloadHeader = hostSettingsService.GetString("SSLOffloadHeader", string.Empty);
 
             // if the sslOffloadHeader variable has been set check to see if a request header with that type exists
             if (string.IsNullOrEmpty(sslOffloadHeader))

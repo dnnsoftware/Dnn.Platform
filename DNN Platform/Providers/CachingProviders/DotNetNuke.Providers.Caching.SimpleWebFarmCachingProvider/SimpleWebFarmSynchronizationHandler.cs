@@ -3,12 +3,14 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 {
+    using System;
     using System.Web;
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.Log.EventLog;
@@ -35,7 +37,13 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         /// <param name="cryptographyProvider">The cryptography provider.</param>
         public SimpleWebFarmSynchronizationHandler(IHostSettings hostSettings, ICryptographyProvider cryptographyProvider)
         {
-            this.hostSettings = hostSettings ?? new HostSettings(new HostController());
+            this.hostSettings = hostSettings ??
+                                new HostSettings(
+                                    new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                        new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                        new Lazy<IPortalController>(() => PortalController.Instance)));
 #pragma warning disable CS0618 // Type or member is obsolete
             this.cryptographyProvider = cryptographyProvider ?? CryptographyProvider.Instance() as ICryptographyProvider;
 #pragma warning restore CS0618 // Type or member is obsolete

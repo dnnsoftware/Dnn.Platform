@@ -16,7 +16,8 @@ namespace DotNetNuke.Services.Cryptography
 
     /// <summary>A base class for an <see cref="ICryptographyProvider"/> implementation.</summary>
     [DnnDeprecated(10, 2, 2, "Use DotNetNuke.Abstractions.Security.ICryptographyProvider")]
-    public abstract partial class CryptographyProvider : ICryptographyProvider
+    public abstract partial class CryptographyProvider
+        : ICryptographyProvider
     {
         /// <summary>Gets the algorithm name used by <see cref="EncryptParameter(string,string)"/>.</summary>
         public virtual string EncryptParameterAlgorithmName => nameof(DESCryptoServiceProvider);

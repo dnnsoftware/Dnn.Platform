@@ -16,10 +16,12 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Log.EventLog;
 
     using HttpWebRequest = System.Net.HttpWebRequest;
     using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
@@ -58,7 +60,12 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             : base(hostSettings)
         {
             this.appStatus = appStatus ?? new ApplicationStatusInfo(new Application());
-            this.hostSettingsService = hostSettingsService ?? new HostController();
+            this.hostSettingsService = hostSettingsService ??
+                                       new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                           new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                           new Lazy<IPortalController>(() => PortalController.Instance));
 #pragma warning disable CS0618 // Type or member is obsolete
             this.cryptographyProvider = cryptographyProvider ?? CryptographyProvider.Instance() as ICryptographyProvider;
 #pragma warning restore CS0618 // Type or member is obsolete

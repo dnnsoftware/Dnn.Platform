@@ -13,6 +13,7 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -376,10 +377,23 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        public static void ClearModuleCache(int tabId)
+        /// <summary>Clear the module cache.</summary>
+        /// <param name="tabId">The tab ID.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IHostSettings")]
+        public static partial void ClearModuleCache(int tabId)
+            => ClearModuleCache(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(),
+                tabId);
+
+        /// <summary>Clear the module cache.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="tabId">The tab ID.</param>
+        public static void ClearModuleCache(IHostSettings hostSettings, DataProvider dataProvider, int tabId)
         {
             CachingProvider.Instance().Clear("Module", tabId.ToString(CultureInfo.InvariantCulture));
-            var portals = PortalController.GetPortalDictionary();
+            var portals = PortalController.GetPortalDictionary(hostSettings, dataProvider);
             if (portals.TryGetValue(tabId, out var portalId))
             {
                 var tabSettings = TabController.Instance.GetTabSettings(tabId);

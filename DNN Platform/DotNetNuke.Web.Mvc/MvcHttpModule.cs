@@ -21,7 +21,10 @@ namespace DotNetNuke.Web.Mvc
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Mvc.Framework;
     using DotNetNuke.Web.Mvc.Framework.Modules;
 
@@ -35,7 +38,14 @@ namespace DotNetNuke.Web.Mvc
         {
             var engines = ViewEngines.Engines;
             engines.Clear();
-            engines.Add(new ModuleDelegatingViewEngine(new HostSettings(new HostController())));
+            engines.Add(
+                new ModuleDelegatingViewEngine(
+                    new HostSettings(
+                        new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                            new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                            new Lazy<IPortalController>(() => PortalController.Instance)))));
             engines.Add(new RazorViewEngine());
         }
 

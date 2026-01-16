@@ -11,27 +11,39 @@ namespace DotNetNuke.Data
     using System.Linq;
     using System.Text.RegularExpressions;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public sealed class SqlDataProvider : DataProvider
     {
-        private const string ScriptDelimiter = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
+        private const string ScriptDelimiter = @"(?<=(?:[^\w]+|^))GO(?=(?: |\t)*?(?:\r?\n|$))";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SqlDataProvider));
         private static DatabaseConnectionProvider dbConnectionProvider = DatabaseConnectionProvider.Instance() ?? new SqlDatabaseConnectionProvider();
+
+        /// <summary>Initializes a new instance of the <see cref="SqlDataProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        public SqlDataProvider()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SqlDataProvider"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        public SqlDataProvider(IApplicationStatusInfo appStatus)
+            : base(appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>())
+        {
+        }
 
         /// <inheritdoc/>
         public override bool IsConnectionValid => this.CanConnect();
 
         /// <inheritdoc/>
-        public override Dictionary<string, string> Settings
-        {
-            get
-            {
-                return ComponentFactory.GetComponentSettings<SqlDataProvider>() as Dictionary<string, string>;
-            }
-        }
+        public override Dictionary<string, string> Settings => ComponentFactory.GetComponentSettings<SqlDataProvider>() as Dictionary<string, string>;
 
         /// <inheritdoc/>
         public override void ExecuteNonQuery(string procedureName, params object[] commandParameters)

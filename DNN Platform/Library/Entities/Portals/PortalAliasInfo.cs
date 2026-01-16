@@ -94,8 +94,8 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.BrowserType instead. Scheduled removal in v11.0.0.")]
         public BrowserTypes BrowserType
         {
-            get => (BrowserTypes)this.ThisAsInterface.BrowserType;
-            set => this.ThisAsInterface.BrowserType = (NewBrowserType)value;
+            get => this.ThisAsInterface.BrowserType.ToDeprecatedBrowserTypes();
+            set => this.ThisAsInterface.BrowserType = value.ToAbstractionsBrowserTypes();
         }
 
         /// <inheritdoc />

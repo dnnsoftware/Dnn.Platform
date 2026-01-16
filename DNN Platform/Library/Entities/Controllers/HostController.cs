@@ -12,6 +12,7 @@ namespace DotNetNuke.Entities.Controllers
     using System.Security.Cryptography;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Settings;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -21,14 +22,33 @@ namespace DotNetNuke.Entities.Controllers
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Client;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc cref="IHostSettingsService" />
     public partial class HostController : IHostSettingsService
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(HostController));
         private static PerformanceSettings performanceSettings = PerformanceSettings.ModerateCaching;
+        private readonly IEventLogger eventLogger;
+        private readonly Lazy<IPortalController> portalController;
+
+        /// <summary>Initializes a new instance of the <see cref="HostController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public HostController()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="HostController"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public HostController(IEventLogger eventLogger, Lazy<IPortalController> portalController)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<Lazy<IPortalController>>();
+        }
 
         /// <inheritdoc cref="IHostSettingsService.GetBoolean(string)" />
         public bool GetBoolean(string key)
@@ -192,23 +212,23 @@ namespace DotNetNuke.Entities.Controllers
                     if (settings.TryGetValue(config.Key, out var currentConfig) && currentConfig?.Value != config.Value)
                     {
                         dbProvider.UpdateHostSetting(config.Key, config.Value, config.IsSecure, userId);
-                        EventLogController.Instance.AddLog(
+                        this.eventLogger.AddLog(
                             config.Key,
                             config.Value,
                             portalSettings,
                             userId,
-                            EventLogController.EventLogType.HOST_SETTING_UPDATED);
+                            EventLogType.HOST_SETTING_UPDATED);
                     }
                 }
                 else
                 {
                     dbProvider.UpdateHostSetting(config.Key, config.Value, config.IsSecure, userId);
-                    EventLogController.Instance.AddLog(
+                    this.eventLogger.AddLog(
                         config.Key,
                         config.Value,
                         portalSettings,
                         userId,
-                        EventLogController.EventLogType.HOST_SETTING_CREATED);
+                        EventLogType.HOST_SETTING_CREATED);
                 }
             }
             catch (Exception ex)
@@ -254,7 +274,7 @@ namespace DotNetNuke.Entities.Controllers
 
             if (includeOverridingPortals)
             {
-                PortalController.IncrementOverridingPortalsCrmVersion();
+                PortalController.IncrementOverridingPortalsCrmVersion(this.portalController.Value);
             }
         }
 

@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.Log.EventLog
     using System.Web;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -23,17 +24,35 @@ namespace DotNetNuke.Services.Log.EventLog
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <inheritdoc cref="ILogController" />
-    public partial class LogController : ServiceLocator<ILogController, LogController>, ILogController
+    public class LogController : ServiceLocator<ILogController, LogController>, ILogController
     {
         private const int WriterLockTimeout = 10000; // milliseconds
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LogController));
         private static readonly ReaderWriterLockSlim LockLog = new ReaderWriterLockSlim();
+        private readonly IApplicationStatusInfo appStatus;
+
+        /// <summary>Initializes a new instance of the <see cref="LogController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        public LogController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="LogController"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        public LogController(IApplicationStatusInfo appStatus)
+        {
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        }
 
         /// <inheritdoc/>
         public void AddLog(LogInfo logInfo)
         {
-            if (Globals.Status == Globals.UpgradeStatus.Install)
+            ILogInfo theLogInfo = logInfo;
+            if (this.appStatus.Status == UpgradeStatus.Install)
             {
                 Logger.Info(logInfo);
             }
@@ -67,29 +86,29 @@ namespace DotNetNuke.Services.Log.EventLog
                     }
 
                     // Get portal name if name isn't set
-                    if (logInfo.LogPortalID != Null.NullInteger && string.IsNullOrEmpty(logInfo.LogPortalName))
+                    if (theLogInfo.LogPortalId != Null.NullInteger && string.IsNullOrEmpty(logInfo.LogPortalName))
                     {
-                        logInfo.LogPortalName = PortalController.Instance.GetPortal(logInfo.LogPortalID).PortalName;
+                        logInfo.LogPortalName = PortalController.Instance.GetPortal(theLogInfo.LogPortalId).PortalName;
                     }
 
                     // Check if Log Type exists
                     if (!this.GetLogTypeInfoDictionary().ContainsKey(logInfo.LogTypeKey))
                     {
                         // Add new Log Type
-                        var logType = new LogTypeInfo()
+                        var logType = new LogTypeInfo
                         {
                             LogTypeKey = logInfo.LogTypeKey,
                             LogTypeFriendlyName = logInfo.LogTypeKey,
                             LogTypeOwner = "DotNetNuke.Logging.EventLogType",
-                            LogTypeCSSClass = "GeneralAdminOperation",
                             LogTypeDescription = string.Empty,
                         };
+                        ((ILogTypeInfo)logType).LogTypeCssClass = "GeneralAdminOperation";
+
                         this.AddLogType(logType);
 
                         var logTypeConfigInfo = new LogTypeConfigInfo()
                         {
                             LogTypeKey = logInfo.LogTypeKey,
-                            LogTypePortalID = "*",
                             LoggingIsActive = false,
                             KeepMostRecent = "-1",
                             EmailNotificationIsActive = false,
@@ -99,6 +118,7 @@ namespace DotNetNuke.Services.Log.EventLog
                             MailFromAddress = string.Empty,
                             MailToAddress = string.Empty,
                         };
+                        ((ILogTypeConfigInfo)logTypeConfigInfo).LogTypePortalId = "*";
                         this.AddLogTypeConfigInfo(logTypeConfigInfo);
                     }
 
@@ -110,9 +130,9 @@ namespace DotNetNuke.Services.Log.EventLog
                         }
                         catch (Exception)
                         {
-                            if (Globals.Status != Globals.UpgradeStatus.Upgrade)
+                            if (this.appStatus.Status != UpgradeStatus.Upgrade)
                             {
-                                // this may caught exception during upgrade because old logging provider has problem in it.
+                                // this may catch exceptions during upgrade because the old logging provider has problem in it.
                                 throw;
                             }
                         }
@@ -155,9 +175,9 @@ namespace DotNetNuke.Services.Log.EventLog
                             LogTypeKey = typeInfo.Attributes["LogTypeKey"].Value,
                             LogTypeFriendlyName = typeInfo.Attributes["LogTypeFriendlyName"].Value,
                             LogTypeDescription = typeInfo.Attributes["LogTypeDescription"].Value,
-                            LogTypeCSSClass = typeInfo.Attributes["LogTypeCSSClass"].Value,
                             LogTypeOwner = typeInfo.Attributes["LogTypeOwner"].Value,
                         };
+                        ((ILogTypeInfo)objLogTypeInfo).LogTypeCssClass = typeInfo.Attributes["LogTypeCSSClass"].Value;
                         this.AddLogType(objLogTypeInfo);
                     }
                 }
@@ -176,14 +196,13 @@ namespace DotNetNuke.Services.Log.EventLog
                             KeepMostRecent = typeConfigInfo.Attributes["KeepMostRecent"].Value,
                             LoggingIsActive = typeConfigInfo.Attributes["LoggingStatus"].Value == "On",
                             LogTypeKey = typeConfigInfo.Attributes["LogTypeKey"].Value,
-                            LogTypePortalID = typeConfigInfo.Attributes["LogTypePortalID"].Value,
                             MailFromAddress = typeConfigInfo.Attributes["MailFromAddress"].Value,
                             MailToAddress = typeConfigInfo.Attributes["MailToAddress"].Value,
                             NotificationThreshold = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThreshold"].Value, CultureInfo.InvariantCulture),
                             NotificationThresholdTime = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThresholdTime"].Value, CultureInfo.InvariantCulture),
-                            NotificationThresholdTimeType =
-                                                            (LogTypeConfigInfo.NotificationThresholdTimeTypes)Enum.Parse(typeof(LogTypeConfigInfo.NotificationThresholdTimeTypes), typeConfigInfo.Attributes["NotificationThresholdTimeType"].Value),
+                            NotificationThresholdTimeType = (LogTypeConfigInfo.NotificationThresholdTimeTypes)Enum.Parse(typeof(LogTypeConfigInfo.NotificationThresholdTimeTypes), typeConfigInfo.Attributes["NotificationThresholdTimeType"].Value),
                         };
+                        ((ILogTypeConfigInfo)logTypeConfigInfo).LogTypePortalId = typeConfigInfo.Attributes["LogTypePortalID"].Value;
                         this.AddLogTypeConfigInfo(logTypeConfigInfo);
                     }
                 }
@@ -193,25 +212,33 @@ namespace DotNetNuke.Services.Log.EventLog
         /// <inheritdoc/>
         public void AddLogType(LogTypeInfo logType)
         {
-            LoggingProvider.Instance().AddLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCSSClass, logType.LogTypeOwner);
+            ILogTypeInfo theLogType = logType;
+            LoggingProvider.Instance()
+                .AddLogType(
+                    theLogType.LogTypeKey,
+                    theLogType.LogTypeFriendlyName,
+                    theLogType.LogTypeDescription,
+                    theLogType.LogTypeCssClass,
+                    theLogType.LogTypeOwner);
         }
 
         /// <inheritdoc/>
         public void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
+            ILogTypeConfigInfo theLogTypeConfig = logTypeConfig;
             LoggingProvider.Instance().AddLogTypeConfigInfo(
-                logTypeConfig.ID,
-                logTypeConfig.LoggingIsActive,
-                logTypeConfig.LogTypeKey,
-                logTypeConfig.LogTypePortalID,
-                logTypeConfig.KeepMostRecent,
-                logTypeConfig.LogFileName,
-                logTypeConfig.EmailNotificationIsActive,
+                theLogTypeConfig.Id,
+                theLogTypeConfig.LoggingIsActive,
+                theLogTypeConfig.LogTypeKey,
+                theLogTypeConfig.LogTypePortalId,
+                theLogTypeConfig.KeepMostRecent,
+                theLogTypeConfig.LogFileName,
+                theLogTypeConfig.EmailNotificationIsActive,
                 Convert.ToString(logTypeConfig.NotificationThreshold, CultureInfo.InvariantCulture),
                 Convert.ToString(logTypeConfig.NotificationThresholdTime, CultureInfo.InvariantCulture),
                 Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType, CultureInfo.InvariantCulture),
-                logTypeConfig.MailFromAddress,
-                logTypeConfig.MailToAddress);
+                theLogTypeConfig.MailFromAddress,
+                theLogTypeConfig.MailToAddress);
         }
 
         /// <inheritdoc/>
@@ -235,7 +262,8 @@ namespace DotNetNuke.Services.Log.EventLog
         /// <inheritdoc/>
         public virtual void DeleteLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
-            LoggingProvider.Instance().DeleteLogTypeConfigInfo(logTypeConfig.ID);
+            ILogTypeConfigInfo theLogTypeConfig = logTypeConfig;
+            LoggingProvider.Instance().DeleteLogTypeConfigInfo(theLogTypeConfig.Id);
         }
 
         /// <inheritdoc/>
@@ -263,6 +291,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc/>
+        [Obsolete("Deprecated in DotNetNuke 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService.GetLog()' instead. Scheduled for removal in v11.0.0.")]
         public virtual object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType)
         {
             return LoggingProvider.Instance().GetSingleLog(log, returnType);
@@ -283,38 +312,46 @@ namespace DotNetNuke.Services.Log.EventLog
         /// <inheritdoc/>
         public virtual void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
+            ILogTypeConfigInfo theLogTypeConfig = logTypeConfig;
             LoggingProvider.Instance().UpdateLogTypeConfigInfo(
-                logTypeConfig.ID,
-                logTypeConfig.LoggingIsActive,
-                logTypeConfig.LogTypeKey,
-                logTypeConfig.LogTypePortalID,
-                logTypeConfig.KeepMostRecent,
-                logTypeConfig.LogFileName,
-                logTypeConfig.EmailNotificationIsActive,
+                theLogTypeConfig.Id,
+                theLogTypeConfig.LoggingIsActive,
+                theLogTypeConfig.LogTypeKey,
+                theLogTypeConfig.LogTypePortalId,
+                theLogTypeConfig.KeepMostRecent,
+                theLogTypeConfig.LogFileName,
+                theLogTypeConfig.EmailNotificationIsActive,
                 Convert.ToString(logTypeConfig.NotificationThreshold, CultureInfo.InvariantCulture),
                 Convert.ToString(logTypeConfig.NotificationThresholdTime, CultureInfo.InvariantCulture),
                 Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType, CultureInfo.InvariantCulture),
-                logTypeConfig.MailFromAddress,
-                logTypeConfig.MailToAddress);
+                theLogTypeConfig.MailFromAddress,
+                theLogTypeConfig.MailToAddress);
         }
 
         /// <inheritdoc/>
         public virtual void UpdateLogType(LogTypeInfo logType)
         {
-            LoggingProvider.Instance().UpdateLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCSSClass, logType.LogTypeOwner);
+            ILogTypeInfo theLogType = logType;
+            LoggingProvider.Instance()
+                .UpdateLogType(
+                    theLogType.LogTypeKey,
+                    theLogType.LogTypeFriendlyName,
+                    theLogType.LogTypeDescription,
+                    theLogType.LogTypeCssClass,
+                    theLogType.LogTypeOwner);
         }
 
         /// <inheritdoc/>
         protected override Func<ILogController> GetFactory()
         {
-            return () => new LogController();
+            return Globals.DependencyProvider.GetRequiredService<ILogController>;
         }
 
         private static void AddLogToFile(LogInfo logInfo)
         {
             try
             {
-                var f = Globals.HostMapPath + "\\Logs\\LogFailures.xml.resources";
+                var f = Globals.HostMapPath + @"\Logs\LogFailures.xml.resources";
                 WriteLog(f, logInfo.Serialize());
             }
 
@@ -331,7 +368,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
             if (HttpContext.Current != null)
             {
-                HttpResponse response = HttpContext.Current.Response;
+                var response = HttpContext.Current.Response;
                 HtmlUtils.WriteHeader(response, header);
                 HtmlUtils.WriteError(response, filePath, message);
                 HtmlUtils.WriteFooter(response);
@@ -341,21 +378,19 @@ namespace DotNetNuke.Services.Log.EventLog
 
         private static void WriteToStreamWriter(FileStream fs, string message)
         {
-            using (var sw = new StreamWriter(fs, Encoding.UTF8))
+            using var sw = new StreamWriter(fs, Encoding.UTF8);
+            var fileLength = fs.Length;
+            if (fileLength > 0)
             {
-                var fileLength = fs.Length;
-                if (fileLength > 0)
-                {
-                    fs.Position = fileLength - 9;
-                }
-                else
-                {
-                    message = "<logs>" + message;
-                }
-
-                sw.WriteLine(message + "</logs>");
-                sw.Flush();
+                fs.Position = fileLength - 9;
             }
+            else
+            {
+                message = "<logs>" + message;
+            }
+
+            sw.WriteLine(message + "</logs>");
+            sw.Flush();
         }
 
         private static void WriteLog(string filePath, string message)

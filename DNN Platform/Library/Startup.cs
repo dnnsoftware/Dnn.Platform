@@ -123,8 +123,11 @@ namespace DotNetNuke
             services.AddTransient<IJavaScriptLibraryController, JavaScriptLibraryController>();
             services.AddTransient<IJavaScriptLibraryHelper, JavaScript>();
             services.AddTransient<IPortalSettingsController, PortalSettingsController>();
+#pragma warning disable CS0618 // Type or member is obsolete
             services.AddTransient<IPortalAliasController, PortalAliasController>();
+#pragma warning restore CS0618 // Type or member is obsolete
             services.AddTransient<IPortalGroupController, PortalGroupController>();
+            services.AddTransient<DotNetNuke.Entities.Portals.Data.IDataService, DotNetNuke.Entities.Portals.Data.DataService>();
             services.AddTransient<ILocaleController, LocaleController>();
             services.AddTransient<IUserRequestIPAddressController, UserRequestIPAddressController>();
             services.AddTransient<IRoleController, RoleController>();
@@ -137,6 +140,7 @@ namespace DotNetNuke
             services.AddTransient<ISearchHelper, SearchHelperImpl>();
             services.AddTransient<IFile, FileWrapper>();
             services.AddTransient<IDirectory, DirectoryWrapper>();
+            services.AddTransient<ILogController, LogController>();
             if (CryptoConfig.AllowOnlyFipsAlgorithms)
             {
                 services.AddTransient<ICryptographyProvider, FipsCompilanceCryptographyProvider>();

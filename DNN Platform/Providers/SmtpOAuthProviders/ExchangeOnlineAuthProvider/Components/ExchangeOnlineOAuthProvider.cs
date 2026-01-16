@@ -179,7 +179,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
     /// <inheritdoc />
     public async Task AuthorizeAsync(int portalId, IOAuth2SmtpClient smtpClient, CancellationToken cancellationToken = default)
     {
-        if (await this.IsAuthorizedAsync(portalId, cancellationToken) == false)
+        if (!await this.IsAuthorizedAsync(portalId, cancellationToken))
         {
             return;
         }
@@ -212,10 +212,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
 
     /// <summary>Get the authentication scopes list.</summary>
     /// <returns>The scopes.</returns>
-    internal static IList<string> GetAuthenticationScopes()
-    {
-        return new[] { "https://outlook.office365.com/.default", };
-    }
+    internal static IList<string> GetAuthenticationScopes() => ["https://outlook.office365.com/.default",];
 
     private static ConfidentialClientApplication CreateClientApplication(ISmtpOAuthProvider authProvider, IHostSettingsService hostSettingsService, IHostSettings hostSettings, IPortalController portalController, int portalId)
     {
@@ -283,8 +280,8 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
             }
         }
 
-        return new List<SmtpOAuthSetting>
-        {
+        return
+        [
             new SmtpOAuthSetting
             {
                 Name = Constants.TenantIdSettingName,
@@ -310,7 +307,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
                 IsSecure = true,
                 IsRequired = true,
             },
-        };
+        ];
     }
 
     private IList<SmtpOAuthSetting> GetSettingsFromHost()

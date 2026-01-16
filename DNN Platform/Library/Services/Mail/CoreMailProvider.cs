@@ -14,9 +14,12 @@ namespace DotNetNuke.Services.Mail
     using System.Threading;
     using System.Threading.Tasks;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Localize = DotNetNuke.Services.Localization.Localization;
 
@@ -24,58 +27,68 @@ namespace DotNetNuke.Services.Mail
     public class CoreMailProvider : MailProvider
     {
         private static readonly Regex SmtpServerRegex = new Regex("^[^:]+(:[0-9]{1,5})?$", RegexOptions.Compiled);
+        private readonly IMailSettings mailSettings;
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="CoreMailProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IMailSettings. Scheduled removal in v12.0.0.")]
+        public CoreMailProvider()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CoreMailProvider"/> class.</summary>
+        /// <param name="mailSettings">The mail settings.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public CoreMailProvider(IMailSettings mailSettings, IHostSettings hostSettings)
+        {
+            this.mailSettings = mailSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IMailSettings>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
 
         /// <inheritdoc />
         public override string SendMail(MailInfo mailInfo, SmtpInfo smtpInfo = null)
         {
-            var (host, port, errorMessage) = ParseSmtpServer(ref smtpInfo);
+            var (host, port, errorMessage) = ParseSmtpServer(this.mailSettings, ref smtpInfo);
             if (errorMessage != null)
             {
                 return errorMessage;
             }
 
-            using (var mailMessage = CreateMailMessage(mailInfo, smtpInfo))
+            using var mailMessage = CreateMailMessage(this.mailSettings, this.hostSettings, mailInfo, smtpInfo);
+            try
             {
-                try
-                {
-                    using (var smtpClient = CreateSmtpClient(smtpInfo, host, port))
-                    {
-                        smtpClient.Send(mailMessage);
-                    }
+                using var smtpClient = CreateSmtpClient(smtpInfo, host, port);
+                smtpClient.Send(mailMessage);
 
-                    return string.Empty;
-                }
-                catch (Exception exc)
-                {
-                    return HandleException(exc);
-                }
+                return string.Empty;
+            }
+            catch (Exception exc)
+            {
+                return HandleException(exc);
             }
         }
 
         /// <inheritdoc />
         public override async Task<string> SendMailAsync(MailInfo mailInfo, SmtpInfo smtpInfo = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var (host, port, errorMessage) = ParseSmtpServer(ref smtpInfo);
+            var (host, port, errorMessage) = ParseSmtpServer(this.mailSettings, ref smtpInfo);
             if (errorMessage != null)
             {
                 return errorMessage;
             }
 
-            using (var mailMessage = CreateMailMessage(mailInfo, smtpInfo))
+            using var mailMessage = CreateMailMessage(this.mailSettings, this.hostSettings, mailInfo, smtpInfo);
+            try
             {
-                try
-                {
-                    using (var smtpClient = CreateSmtpClient(smtpInfo, host, port))
-                    {
-                        await smtpClient.SendMailAsync(mailMessage);
-                    }
+                using var smtpClient = CreateSmtpClient(smtpInfo, host, port);
+                await smtpClient.SendMailAsync(mailMessage);
 
-                    return string.Empty;
-                }
-                catch (Exception exc)
-                {
-                    return HandleException(exc);
-                }
+                return string.Empty;
+            }
+            catch (Exception exc)
+            {
+                return HandleException(exc);
             }
         }
 
@@ -85,7 +98,7 @@ namespace DotNetNuke.Services.Mail
         /// <param name="bodyEncoding">The encoding of the message body.</param>
         internal static void AddAlternateView(MailMessage mailMessage, string body, Encoding bodyEncoding)
         {
-            // added support for multipart html messages
+            // added support for multipart HTML messages
             // add text part as alternate view
             var plainView = AlternateView.CreateAlternateViewFromString(Mail.ConvertToText(body), bodyEncoding, "text/plain");
             mailMessage.AlternateViews.Add(plainView);
@@ -96,14 +109,14 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-        private static string ValidateSmtpInfo(SmtpInfo smtpInfo)
+        private static string ValidateSmtpInfo(IMailSettings mailSettings, SmtpInfo smtpInfo)
         {
             if (smtpInfo != null && !string.IsNullOrEmpty(smtpInfo.Server))
             {
                 return null;
             }
 
-            if (!string.IsNullOrWhiteSpace(Host.SMTPServer))
+            if (!string.IsNullOrWhiteSpace(mailSettings.GetServer(PortalSettings.Current.PortalId)))
             {
                 return null;
             }
@@ -111,25 +124,26 @@ namespace DotNetNuke.Services.Mail
             return "SMTP Server not configured";
         }
 
-        private static SmtpInfo GetDefaultSmtpInfo(SmtpInfo smtpInfo)
+        private static SmtpInfo GetDefaultSmtpInfo(IMailSettings mailSettings, SmtpInfo smtpInfo)
         {
             if (smtpInfo != null && !string.IsNullOrEmpty(smtpInfo.Server))
             {
                 return smtpInfo;
             }
 
+            var currentPortalId = PortalSettings.Current.PortalId;
             return new SmtpInfo
                    {
-                       Server = Host.SMTPServer,
-                       Authentication = Host.SMTPAuthentication,
-                       Username = Host.SMTPUsername,
-                       Password = Host.SMTPPassword,
-                       EnableSSL = Host.EnableSMTPSSL,
-                       AuthProvider = Host.SMTPAuthProvider,
+                       Server = mailSettings.GetServer(currentPortalId),
+                       Authentication = mailSettings.GetAuthentication(currentPortalId),
+                       Username = mailSettings.GetUsername(currentPortalId),
+                       Password = mailSettings.GetPassword(currentPortalId),
+                       EnableSSL = mailSettings.GetSecureConnectionEnabled(currentPortalId),
+                       AuthProvider = mailSettings.GetAuthProvider(currentPortalId),
                    };
         }
 
-        private static MailMessage CreateMailMessage(MailInfo mailInfo, SmtpInfo smtpInfo)
+        private static MailMessage CreateMailMessage(IMailSettings mailSettings, IHostSettings hostSettings, MailInfo mailInfo, SmtpInfo smtpInfo)
         {
             // translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
             if (!string.IsNullOrEmpty(mailInfo.To))
@@ -167,7 +181,7 @@ namespace DotNetNuke.Services.Mail
 
             // Only modify senderAddress if smtpAuthentication is enabled
             // Can be "0", empty or Null - anonymous, "1" - basic, "2" - NTLM.
-            if (smtpInfo.Authentication == "1" || smtpInfo.Authentication == "2")
+            if (smtpInfo.Authentication is "1" or "2")
             {
                 // if the senderAddress is the email address of the Host then switch it smtpUsername if different
                 // if display name of senderAddress is empty, then use Host.HostTitle for it
@@ -176,8 +190,8 @@ namespace DotNetNuke.Services.Mail
                     var senderAddress = mailInfo.Sender;
                     var senderDisplayName = mailInfo.FromName;
                     var needUpdateSender = false;
-                    if (smtpInfo.Username.Contains("@")
-                        && senderAddress == Host.HostEmail
+                    if (smtpInfo.Username.Contains("@", StringComparison.Ordinal)
+                        && senderAddress == hostSettings.HostEmail
                         && !senderAddress.Equals(smtpInfo.Username, StringComparison.OrdinalIgnoreCase))
                     {
                         senderAddress = smtpInfo.Username;
@@ -186,7 +200,7 @@ namespace DotNetNuke.Services.Mail
 
                     if (string.IsNullOrEmpty(senderDisplayName))
                     {
-                        senderDisplayName = Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle;
+                        senderDisplayName = mailSettings.IsPortalEnabled(PortalSettings.Current.PortalId) ? PortalSettings.Current.PortalName : hostSettings.HostTitle;
                         needUpdateSender = true;
                     }
 
@@ -199,7 +213,7 @@ namespace DotNetNuke.Services.Mail
                 {
                     mailMessage.Sender = new MailAddress(
                         smtpInfo.Username,
-                        Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle);
+                        mailSettings.IsPortalEnabled(PortalSettings.Current.PortalId) ? PortalSettings.Current.PortalName : hostSettings.HostTitle);
                 }
             }
 
@@ -227,15 +241,15 @@ namespace DotNetNuke.Services.Mail
             return mailMessage;
         }
 
-        private static (string Host, int? Port, string ErrorMessage) ParseSmtpServer(ref SmtpInfo smtpInfo)
+        private static (string Host, int? Port, string ErrorMessage) ParseSmtpServer(IMailSettings mailSettings, ref SmtpInfo smtpInfo)
         {
-            var errorMessage = ValidateSmtpInfo(smtpInfo);
+            var errorMessage = ValidateSmtpInfo(mailSettings, smtpInfo);
             if (errorMessage != null)
             {
                 return (null, null, errorMessage);
             }
 
-            smtpInfo = GetDefaultSmtpInfo(smtpInfo);
+            smtpInfo = GetDefaultSmtpInfo(mailSettings, smtpInfo);
 
             smtpInfo.Server = smtpInfo.Server.Trim();
             if (!SmtpServerRegex.IsMatch(smtpInfo.Server))

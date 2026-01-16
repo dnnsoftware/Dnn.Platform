@@ -7,11 +7,14 @@ namespace DotNetNuke.Entities.Portals
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     /// <summary>
     /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should be used as a type and for unit test purposes only.
     /// There is no guarantee that this interface will not change.
     /// </summary>
-    public interface IPortalAliasController
+    [DnnDeprecated(10, 2, 2, "Resolve IPortalAliasService via dependency injection")]
+    public partial interface IPortalAliasController
     {
         /// <summary>Add a new Portal Alias.</summary>
         /// <param name="portalAlias">The portal alias to add.</param>

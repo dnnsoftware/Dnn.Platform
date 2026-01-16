@@ -91,7 +91,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                 var routeUrl = this.portalAliasMvcRouteManager.GetRouteUrl(moduleFolderName, url, count);
                 route = MapRouteWithNamespace(fullRouteName, routeUrl, defaults, constraints, namespaces);
                 this.routes.Add(route);
-                Logger.Trace("Mapping route: " + fullRouteName + " @ " + routeUrl);
+                Logger.Trace($"Mapping route: {fullRouteName} @ {routeUrl}");
             }
 
             return route;
@@ -103,7 +103,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             GlobalConfiguration.Configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
             using (this.routes.GetWriteLock())
             {
-                // routes.Clear(); -- don't use; it will remove original WEP API maps
+                ////routes.Clear(); -- don't use; it will remove original WEP API maps
                 this.LocateServicesAndMapRoutes();
             }
 
@@ -124,7 +124,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         private static void RegisterSystemRoutes()
         {
-            // routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            ////routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
         }
 
         private static Route MapRouteWithNamespace(string name, string url, object defaults, object constraints, string[] namespaces)
@@ -151,8 +151,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         private static RouteValueDictionary CreateRouteValueDictionaryUncached(object values)
         {
-            var dictionary = values as IDictionary<string, object>;
-            return dictionary != null ? new RouteValueDictionary(dictionary) : TypeHelper.ObjectToDictionary(values);
+            return values is IDictionary<string, object> dictionary ? new RouteValueDictionary(dictionary) : TypeHelper.ObjectToDictionary(values);
         }
 
         private void LocateServicesAndMapRoutes()

@@ -18,6 +18,8 @@ namespace Dnn.AuthServices.Jwt.Data
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -37,7 +39,14 @@ namespace Dnn.AuthServices.Jwt.Data
         /// <param name="hostSettings">The host settings.</param>
         public DataService(IHostSettings hostSettings)
         {
-            this.hostSettings = hostSettings ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ?? new HostSettings(new HostController());
+            this.hostSettings = hostSettings ??
+                                HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ??
+                                new HostSettings(
+                                    new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                        new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                        new Lazy<IPortalController>(() => PortalController.Instance)));
         }
 
         /// <inheritdoc/>

@@ -159,7 +159,9 @@ namespace DotNetNuke.Entities.Urls
         public bool CustomParmRewrite { get; set; }
 
         // 737 : mobile browser identification
+#pragma warning disable CS0618 // Type or member is obsolete
         public BrowserTypes BrowserType { get; private set; }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         public bool IsPhysicalResource { get; set; }
 

@@ -9,7 +9,6 @@ namespace DotNetNuke.ComponentModel
 
     internal class SingletonComponentBuilder : IComponentBuilder
     {
-        private readonly string name;
         private readonly Type type;
         private object instance;
 
@@ -18,33 +17,17 @@ namespace DotNetNuke.ComponentModel
         /// <param name="type">The type of the component.</param>
         public SingletonComponentBuilder(string name, Type type)
         {
-            this.name = name;
+            this.Name = name;
             this.type = type;
         }
 
         /// <inheritdoc/>
-        public string Name
-        {
-            get
-            {
-                return this.name;
-            }
-        }
+        public string Name { get; }
 
         /// <inheritdoc/>
         public object BuildComponent()
         {
-            if (this.instance == null)
-            {
-                this.CreateInstance();
-            }
-
-            return this.instance;
-        }
-
-        private void CreateInstance()
-        {
-            this.instance = Reflection.CreateObject(this.type);
+            return this.instance ??= Reflection.CreateObject(this.type);
         }
     }
 }

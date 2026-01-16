@@ -14,39 +14,50 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.UI.Utilities;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class CDefault : PageBase
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public string Author = string.Empty;
+
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public string Comment = string.Empty;
+
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public string Copyright = string.Empty;
+
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public string Description = string.Empty;
+
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public string Generator = string.Empty;
+
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public string KeyWords = string.Empty;
+
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public new string Title = string.Empty;
 
         private static readonly object InstallerFilesRemovedLock = new object();
 
+        private readonly IHostSettingsService hostSettingsService;
+
         /// <summary>Initializes a new instance of the <see cref="CDefault"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public CDefault()
-            : this(null, null, null)
+            : this(null, null, null, null, null)
         {
         }
 
@@ -54,9 +65,22 @@ namespace DotNetNuke.Framework
         /// <param name="portalController">The portal controller.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
         public CDefault(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings)
-            : base(portalController, appStatus, hostSettings)
+            : base(portalController, appStatus, hostSettings, null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CDefault"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public CDefault(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IUserController userController, IHostSettingsService hostSettingsService)
+            : base(portalController, appStatus, hostSettings, userController)
+        {
+            this.hostSettingsService = hostSettingsService ?? DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
         }
 
         protected string AdvancedSettingsPageUrl
@@ -108,15 +132,17 @@ namespace DotNetNuke.Framework
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected void ManageInstallerFiles()
         {
-            if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
+            if (this.hostSettingsService.GetBoolean("InstallerFilesRemoved"))
             {
-                lock (InstallerFilesRemovedLock)
+                return;
+            }
+
+            lock (InstallerFilesRemovedLock)
+            {
+                if (!this.hostSettingsService.GetBoolean("InstallerFilesRemoved"))
                 {
-                    if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
-                    {
-                        Services.Upgrade.Upgrade.DeleteInstallerFiles();
-                        HostController.Instance.Update("InstallerFilesRemoved", "True", true);
-                    }
+                    Services.Upgrade.Upgrade.DeleteInstallerFiles();
+                    this.hostSettingsService.Update("InstallerFilesRemoved", "True", true);
                 }
             }
         }

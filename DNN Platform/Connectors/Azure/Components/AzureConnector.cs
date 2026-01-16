@@ -15,12 +15,15 @@ namespace Dnn.AzureConnector.Components
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Connections;
     using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Auth;
     using Microsoft.WindowsAzure.Storage.RetryPolicies;
@@ -63,7 +66,13 @@ namespace Dnn.AzureConnector.Components
 #pragma warning disable CS0618 // Type or member is obsolete
             this.cryptographyProvider = cryptographyProvider ?? (ICryptographyProvider)CryptographyProvider.Instance();
 #pragma warning restore CS0618 // Type or member is obsolete
-            this.hostSettings = hostSettings ?? new HostSettings(new HostController());
+            this.hostSettings = hostSettings ??
+                                new HostSettings(
+                                    new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                        new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                        new Lazy<IPortalController>(() => PortalController.Instance)));
         }
 
         /// <inheritdoc/>

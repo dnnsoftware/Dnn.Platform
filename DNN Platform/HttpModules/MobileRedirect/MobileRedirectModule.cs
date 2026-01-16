@@ -9,6 +9,7 @@ namespace DotNetNuke.HttpModules
     using System.Text.RegularExpressions;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
@@ -26,21 +27,28 @@ namespace DotNetNuke.HttpModules
         private static readonly Regex MvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private readonly IRedirectionController redirectionController;
         private readonly IPortalController portalController;
+        private readonly IHostSettings hostSettings;
+        private readonly IHostSettingsService hostSettingsService;
 
         /// <summary>Initializes a new instance of the <see cref="MobileRedirectModule"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IRedirectionController. Scheduled removal in v12.0.0.")]
         public MobileRedirectModule()
-            : this(null, null)
+            : this(null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="MobileRedirectModule"/> class.</summary>
         /// <param name="redirectionController">The redirection controller.</param>
         /// <param name="portalController">The portal controller.</param>
-        public MobileRedirectModule(IRedirectionController redirectionController, IPortalController portalController)
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public MobileRedirectModule(IRedirectionController redirectionController, IPortalController portalController, IHostSettings hostSettings, IHostSettingsService hostSettingsService)
         {
             this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
             this.redirectionController = redirectionController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IRedirectionController>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
         }
 
         /// <summary>Gets the HttpModule module name.</summary>
@@ -74,7 +82,7 @@ namespace DotNetNuke.HttpModules
                     || ServicesModule.ServiceApi.IsMatch(rawUrl)
                     || MvcServicePath.IsMatch(rawUrl)
                     || this.IsSpecialPage(rawUrl)
-                    || (portalSettings != null && !IsRedirectAllowed(rawUrl, app, portalSettings)))
+                    || (portalSettings != null && !this.IsRedirectAllowed(rawUrl, app, portalSettings)))
             {
                 return;
             }
@@ -106,10 +114,10 @@ namespace DotNetNuke.HttpModules
             app.Response.Redirect(redirectUrl);
         }
 
-        private static bool IsRedirectAllowed(string url, HttpApplication app, IPortalSettings portalSettings)
+        private bool IsRedirectAllowed(string url, HttpApplication app, IPortalSettings portalSettings)
         {
             var urlAction = new UrlAction(app.Request);
-            urlAction.SetRedirectAllowed(url, new FriendlyUrlSettings(portalSettings.PortalId));
+            urlAction.SetRedirectAllowed(url, new FriendlyUrlSettings(this.portalController, this.hostSettings, this.hostSettingsService, portalSettings.PortalId));
             return urlAction.RedirectAllowed;
         }
 
