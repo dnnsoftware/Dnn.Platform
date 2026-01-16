@@ -6,6 +6,7 @@ namespace Dnn.EditBar.UI.Mvc
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -129,7 +130,7 @@ namespace Dnn.EditBar.UI.Mvc
 
             if (user.UserID > 0)
             {
-                MvcClientAPI.RegisterClientVariable("dnn_current_userid", PortalSettings.UserInfo.UserID.ToString(), true);
+                MvcClientAPI.RegisterClientVariable("dnn_current_userid", PortalSettings.UserInfo.UserID.ToString(CultureInfo.InvariantCulture), true);
             }
 
             if (Personalization.GetUserMode() != PortalSettings.Mode.Edit
@@ -255,6 +256,7 @@ namespace Dnn.EditBar.UI.Mvc
                                                                                 }};";
 
             var script = string.Format(
+                CultureInfo.InvariantCulture,
                 scriptFormat,
                 Localization.GetSafeJSString("AddModule.Text", LocalResourcesFile),
                 Localization.GetSafeJSString("NoModules.Text", LocalResourcesFile),
