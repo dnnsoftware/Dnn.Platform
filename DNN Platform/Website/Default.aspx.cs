@@ -227,6 +227,8 @@ namespace DotNetNuke.Framework
 
             var ctlSkin = this.GetSkin();
 
+            this.clientResourceController.RegisterPathNameAlias("SkinPath", this.CurrentSkinPath);
+            
             // check for and read skin package level doctype
             this.SetSkinDoctype();
 
@@ -450,7 +452,7 @@ namespace DotNetNuke.Framework
             // Configure the ActiveTab with Skin/Container information
             this.portalSettingsController.ConfigureActiveTab(this.PortalSettings);
 
-            this.clientResourceController.RegisterPathNameAlias("SkinPath", this.CurrentSkinPath);
+            // this.clientResourceController.RegisterPathNameAlias("SkinPath", this.CurrentSkinPath);
 
             // redirect to a specific tab based on name
             if (!string.IsNullOrEmpty(this.Request.QueryString["tabname"]))
@@ -876,3 +878,4 @@ namespace DotNetNuke.Framework
         }
     }
 }
+
