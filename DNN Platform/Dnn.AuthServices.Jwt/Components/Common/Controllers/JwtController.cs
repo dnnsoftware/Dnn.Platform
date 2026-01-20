@@ -34,22 +34,58 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         public const string AuthScheme = "Bearer";
 
         private const int ClockSkew = 5; // in minutes; default for clock skew
-        private const int SessionTokenTtl = 60; // in minutes = 1 hour
-
-        private const int RenewalTokenTtl = 14; // in days = 2 weeks
+        private const int DefaultSessionTokenTtlMinutes = 60; // in minutes = 1 hour
+        private const int DefaultRenewalTokenTtlMinutes = 20160; // in minutes = 14 days
         private const string SessionClaimType = "sid";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtController));
         private static readonly HashAlgorithm Hasher = SHA384.Create();
         private static readonly Encoding TextEncoder = Encoding.UTF8;
-
         private static object hasherLock = new object();
+
+        /// <summary>Initializes static members of the <see cref="JwtController"/> class.</summary>
+        static JwtController()
+        {
+            ValidateConfiguration();
+        }
 
         /// <inheritdoc/>
         public string SchemeType => "JWT";
 
         /// <summary>Gets or sets a reference to the DNN data provider.</summary>
         public IDataService DataProvider { get; set; } = DataService.Instance;
+
+        /// <summary>Gets the session token time-to-live in minutes.</summary>
+        /// <remarks>This value can be configured in web.config appSettings using key "Jwt.SessionTokenTtlMinutes". If not specified, defaults to 60 minutes (1 hour).</remarks>
+        private static int SessionTokenTtlMinutes
+        {
+            get
+            {
+                var setting = System.Configuration.ConfigurationManager.AppSettings["Jwt.SessionTokenTtlMinutes"];
+                if (!string.IsNullOrEmpty(setting) && int.TryParse(setting, out var value) && value > 0)
+                {
+                    return value;
+                }
+
+                return DefaultSessionTokenTtlMinutes;
+            }
+        }
+
+        /// <summary>Gets the renewal token time-to-live in minutes.</summary>
+        /// <remarks>This value can be configured in web.config appSettings using key "Jwt.RenewalTokenTtlMinutes". If not specified, defaults to 20160 minutes (14 days).</remarks>
+        private static int RenewalTokenTtlMinutes
+        {
+            get
+            {
+                var setting = System.Configuration.ConfigurationManager.AppSettings["Jwt.RenewalTokenTtlMinutes"];
+                if (!string.IsNullOrEmpty(setting) && int.TryParse(setting, out var value) && value > 0)
+                {
+                    return value;
+                }
+
+                return DefaultRenewalTokenTtlMinutes;
+            }
+        }
 
         private static string NewSessionId => DateTime.UtcNow.Ticks.ToString("x16") + Guid.NewGuid().ToString("N").Substring(16);
 
@@ -163,8 +199,8 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             {
                 TokenId = sessionId,
                 UserId = userInfo.UserID,
-                TokenExpiry = now.AddMinutes(SessionTokenTtl),
-                RenewalExpiry = now.AddDays(RenewalTokenTtl),
+                TokenExpiry = now.AddMinutes(SessionTokenTtlMinutes),
+                RenewalExpiry = now.AddMinutes(RenewalTokenTtlMinutes),
                 RenewalHash = GetHashedStr(renewalToken),
             };
 
@@ -414,9 +450,62 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return hash;
         }
 
+        /// <summary>Validates the JWT configuration settings at startup.</summary>
+        private static void ValidateConfiguration()
+        {
+            var sessionTtl = SessionTokenTtlMinutes;
+            var renewalTtl = RenewalTokenTtlMinutes;
+
+            // Check if session token TTL exceeds renewal token TTL
+            if (sessionTtl > renewalTtl)
+            {
+                Logger.Warn(
+                    $"JWT Configuration Warning: SessionTokenTtlMinutes ({sessionTtl} minutes) exceeds RenewalTokenTtlMinutes ({renewalTtl} minutes). " +
+                    $"Session tokens will be capped at the renewal period. This configuration may cause unexpected behavior. " +
+                    $"Please ensure SessionTokenTtlMinutes <= RenewalTokenTtlMinutes in web.config.");
+            }
+
+            // Warn about very short session tokens (less than 5 minutes)
+            if (sessionTtl < 5)
+            {
+                Logger.Warn(
+                    $"JWT Configuration Warning: SessionTokenTtlMinutes is set to {sessionTtl} minutes, which is very short. " +
+                    $"This may cause frequent re-authentication requests. Recommended minimum: 15 minutes.");
+            }
+
+            // Warn about very long session tokens (more than 24 hours)
+            if (sessionTtl > 1440)
+            {
+                Logger.Warn(
+                    $"JWT Configuration Warning: SessionTokenTtlMinutes is set to {sessionTtl} minutes ({sessionTtl / 60} hours), which is very long. " +
+                    $"This may pose a security risk. Recommended maximum: 1440 minutes (24 hours).");
+            }
+
+            // Warn about very short renewal tokens (less than 1 hour)
+            if (renewalTtl < 60)
+            {
+                Logger.Warn(
+                    $"JWT Configuration Warning: RenewalTokenTtlMinutes is set to {renewalTtl} minutes, which is very short. " +
+                    $"Users will need to re-login frequently. Recommended minimum: 1440 minutes (1 day).");
+            }
+
+            // Warn about very long renewal tokens (more than 90 days)
+            if (renewalTtl > 129600)
+            {
+                Logger.Warn(
+                    $"JWT Configuration Warning: RenewalTokenTtlMinutes is set to {renewalTtl} minutes ({renewalTtl / 1440} days), which is very long. " +
+                    $"This may pose a security risk. Recommended maximum: 43200 minutes (30 days).");
+            }
+
+            // Log the current configuration at info level
+            Logger.Info(
+                $"JWT Token Configuration: SessionTokenTtlMinutes={sessionTtl} ({sessionTtl / 60.0:F1} hours), " +
+                $"RenewalTokenTtlMinutes={renewalTtl} ({renewalTtl / 1440.0:F1} days)");
+        }
+
         private LoginResultData UpdateToken(string renewalToken, PersistedToken persistedToken, UserInfo userInfo)
         {
-            var expiry = DateTime.UtcNow.AddMinutes(SessionTokenTtl);
+            var expiry = DateTime.UtcNow.AddMinutes(SessionTokenTtlMinutes);
             if (expiry > persistedToken.RenewalExpiry)
             {
                 // don't extend beyond renewal expiry and make sure it is marked in UTC
