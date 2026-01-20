@@ -228,7 +228,7 @@ namespace DotNetNuke.Framework
             var ctlSkin = this.GetSkin();
 
             this.clientResourceController.RegisterPathNameAlias("SkinPath", this.CurrentSkinPath);
-            
+
             // check for and read skin package level doctype
             this.SetSkinDoctype();
 
@@ -454,7 +454,6 @@ namespace DotNetNuke.Framework
 
             // moved this call to OnInit to avoid incorrect CurrentSkinPath if using fallback skin
             ////this.clientResourceController.RegisterPathNameAlias("SkinPath", this.CurrentSkinPath);
-
 
             // redirect to a specific tab based on name
             if (!string.IsNullOrEmpty(this.Request.QueryString["tabname"]))
@@ -880,4 +879,3 @@ namespace DotNetNuke.Framework
         }
     }
 }
-
