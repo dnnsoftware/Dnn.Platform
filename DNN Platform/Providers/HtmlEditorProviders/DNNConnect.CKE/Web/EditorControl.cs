@@ -56,6 +56,7 @@ namespace DNNConnect.CKEditorProvider.Web
         private readonly IApplicationStatusInfo appStatus;
         private readonly IEventLogger eventLogger;
         private readonly IClientResourceController clientResourceController;
+        private readonly IModuleController moduleController;
         private readonly PortalSettings portalSettings = (PortalSettings)HttpContextSource.Current.Items["PortalSettings"];
         private bool isMerged; // Check if the Settings Collection is Merged with all Settings.
         private NameValueCollection settings;
@@ -67,7 +68,7 @@ namespace DNNConnect.CKEditorProvider.Web
         /// <summary>Initializes a new instance of the <see cref="EditorControl"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public EditorControl()
-            : this(null, null, null, null, null)
+            : this(null, null, null, null, null, null)
         {
         }
 
@@ -77,13 +78,15 @@ namespace DNNConnect.CKEditorProvider.Web
         /// <param name="appStatus">The application status.</param>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="clientResourceController">The client resource controller.</param>
-        public EditorControl(INavigationManager navigationManager, IHostSettings hostSettings, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController)
+        /// <param name="moduleController">The module controller.</param>
+        public EditorControl(INavigationManager navigationManager, IHostSettings hostSettings, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController, IModuleController moduleController)
         {
             this.navigationManager = navigationManager ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<INavigationManager>();
             this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
             this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
             this.eventLogger = eventLogger ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IEventLogger>();
             this.clientResourceController = clientResourceController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IClientResourceController>();
+            this.moduleController = moduleController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>();
             this.LoadConfigSettings();
             this.Init += this.CKEditorInit;
         }
@@ -894,8 +897,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 if (!int.TryParse(sClientId, out this.parentModulId))
                 {
                     // The is no real module, then use the "User Accounts" module (Profile editor)
-                    ModuleController db = new ModuleController();
-                    ModuleInfo objm = db.GetModuleByDefinition(this.portalSettings.PortalId, "User Accounts");
+                    ModuleInfo objm = this.moduleController.GetModuleByDefinition(this.portalSettings.PortalId, "User Accounts");
 
                     this.parentModulId = objm.TabModuleID;
                 }

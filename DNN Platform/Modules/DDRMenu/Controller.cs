@@ -11,22 +11,40 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Web;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Implements the Dnn interfaces for the module.</summary>
     public class Controller : IUpgradeable, IPortable
     {
         private const string DdrMenuModuleName = "DDRMenu";
-        private const string DdrMenuMmoduleDefinitionName = "DDR Menu";
+        private const string DdrMenuModuleDefinitionName = "DDR Menu";
+        private readonly IEventLogger eventLogger;
+
+        /// <summary>Initializes a new instance of the <see cref="Controller"/> class.</summary>
+        public Controller()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Controller"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        public Controller(IEventLogger eventLogger)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
 
         /// <inheritdoc/>
         public string UpgradeModule(string version)
         {
             UpdateWebConfig();
 
-            TidyModuleDefinitions();
+            TidyModuleDefinitions(this.eventLogger);
 
             CleanOldAssemblies();
 
@@ -114,13 +132,13 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        private static void TidyModuleDefinitions()
+        private static void TidyModuleDefinitions(IEventLogger eventLogger)
         {
-            RemoveLegacyModuleDefinitions(DdrMenuModuleName, DdrMenuMmoduleDefinitionName);
-            RemoveLegacyModuleDefinitions("DDRMenuAdmin", "N/A");
+            RemoveLegacyModuleDefinitions(eventLogger, DdrMenuModuleName, DdrMenuModuleDefinitionName);
+            RemoveLegacyModuleDefinitions(eventLogger, "DDRMenuAdmin", "N/A");
         }
 
-        private static void RemoveLegacyModuleDefinitions(string moduleName, string currentModuleDefinitionName)
+        private static void RemoveLegacyModuleDefinitions(IEventLogger eventLogger, string moduleName, string currentModuleDefinitionName)
         {
             var mdc = new ModuleDefinitionController();
 
@@ -163,13 +181,13 @@ namespace DotNetNuke.Web.DDRMenu
             modDefs = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId);
             if (modDefs.Count == 0)
             {
-                new DesktopModuleController().DeleteDesktopModule(desktopModuleId);
+                new DesktopModuleController(eventLogger).DeleteDesktopModule(desktopModuleId);
             }
         }
 
         private static void CleanOldAssemblies()
         {
-            var assembliesToRemove = new[] { "DNNDoneRight.DDRMenu.dll", "DNNGarden.DDRMenu.dll" };
+            var assembliesToRemove = new[] { "DNNDoneRight.DDRMenu.dll", "DNNGarden.DDRMenu.dll", };
 
             var server = HttpContext.Current.Server;
             var assemblyPath = server.MapPath("~/bin/");

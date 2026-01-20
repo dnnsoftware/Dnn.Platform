@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.Groups
             this.AddModule(memberTab, this.PortalId, "DotNetNuke.Modules.MemberDirectory", "ContentPane");
 
             // List Settings
-            ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupLoadView, GroupMode.List.ToString());
+            ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupLoadView, nameof(GroupMode.List));
             ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewPage, tab.TabID.ToString(CultureInfo.InvariantCulture));
 
             // Default Social Groups
@@ -232,7 +232,7 @@ namespace DotNetNuke.Modules.Groups
                     ModuleInfo mi = ModuleController.Instance.GetModule(moduleId, tab.TabID, false);
                     if (moduleName == "Social Groups")
                     {
-                        ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, Constants.GroupLoadView, GroupMode.View.ToString());
+                        ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, Constants.GroupLoadView, nameof(GroupMode.View));
                         ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, Constants.GroupListPage, tab.TabID.ToString(CultureInfo.InvariantCulture));
                     }
 

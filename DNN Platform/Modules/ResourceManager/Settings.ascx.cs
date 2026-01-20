@@ -8,8 +8,14 @@ namespace Dnn.Modules.ResourceManager
     using System.Web.UI.WebControls;
 
     using Dnn.Modules.ResourceManager.Components.Common;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.FileSystem;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Constants = Dnn.Modules.ResourceManager.Components.Constants;
     using DnnExceptions = DotNetNuke.Services.Exceptions.Exceptions;
@@ -17,6 +23,22 @@ namespace Dnn.Modules.ResourceManager
     /// <summary>Provides module settings control.</summary>
     public partial class Settings : ModuleSettingsBase
     {
+        private readonly IModuleController moduleController;
+
+        /// <summary>Initializes a new instance of the <see cref="Settings"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IModuleController. Scheduled removal in v12.0.0.")]
+        public Settings()
+            : this(HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>())
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Settings"/> class.</summary>
+        /// <param name="moduleController">The module controller.</param>
+        public Settings(IModuleController moduleController)
+        {
+            this.moduleController = moduleController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>();
+        }
+
         /// <inheritdoc/>
         public override void LoadSettings()
         {
@@ -61,10 +83,8 @@ namespace Dnn.Modules.ResourceManager
         {
             try
             {
-                var modules = new ModuleController();
-
-                modules.UpdateModuleSetting(this.ModuleId, Constants.ModeSettingName, this.ddlMode.SelectedValue);
-                modules.UpdateModuleSetting(this.ModuleId, Constants.HomeFolderSettingName, this.ddlFolder.SelectedFolder.FolderID.ToString());
+                this.moduleController.UpdateModuleSetting(this.ModuleId, Constants.ModeSettingName, this.ddlMode.SelectedValue);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, Constants.HomeFolderSettingName, this.ddlFolder.SelectedFolder.FolderID.ToString());
             }
             catch (Exception exc)
             {

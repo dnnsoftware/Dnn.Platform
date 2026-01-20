@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Analytics
     using System.Security.Cryptography;
     using System.Text;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Log.EventLog;
@@ -80,15 +81,12 @@ namespace DotNetNuke.Services.Analytics
             catch (Exception ex)
             {
                 // log it
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = nameof(EventLogType.HOST_ALERT), };
                 log.AddProperty("GoogleAnalytics.UpgradeModule", "GetConfigFile Failed");
                 log.AddProperty("FilePath", filePath);
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);
-                if (fileReader != null)
-                {
-                    fileReader.Close();
-                }
+                fileReader?.Close();
 
                 Logger.Error(ex);
             }

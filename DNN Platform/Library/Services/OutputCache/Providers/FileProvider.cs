@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     using System.Text;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -125,14 +126,14 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
                         if (filesNotDeleted.Length > 0)
                         {
-                            var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                            var log = new LogInfo { LogTypeKey = nameof(EventLogType.HOST_ALERT), };
 
                             var logDetail = new LogDetailInfo
                             {
                                 PropertyName = "FileOutputCacheProvider",
                                 PropertyValue = $"Deleted {i} files, however, some files are locked.  Could not delete the following files: {filesNotDeleted}",
                             };
-                            var properties = new LogProperties { logDetail };
+                            var properties = new LogProperties { logDetail, };
                             log.LogProperties = properties;
 
                             LogController.Instance.AddLog(log);

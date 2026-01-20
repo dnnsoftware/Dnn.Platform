@@ -33,21 +33,24 @@ namespace DNNConnect.CKEditorProvider.Module
     {
         private readonly IHostSettings hostSettings;
         private readonly IPortalController portalController;
+        private readonly IModuleController moduleController;
 
         /// <summary>Initializes a new instance of the <see cref="EditorConfigManager"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditorConfigManager()
-            : this(null, null)
+            : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="EditorConfigManager"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="portalController">The portal controller.</param>
-        public EditorConfigManager(IHostSettings hostSettings, IPortalController portalController)
+        /// <param name="moduleController">The module controller.</param>
+        public EditorConfigManager(IHostSettings hostSettings, IPortalController portalController, IModuleController moduleController)
         {
             this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
             this.portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
+            this.moduleController = moduleController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>();
         }
 
         /// <summary>  Gets Current Language from Url.</summary>
@@ -103,7 +106,7 @@ namespace DNNConnect.CKEditorProvider.Module
             }
         }
 
-        private static Dictionary<int, HashSet<TreeNode>> GetModuleNodes(int portalId, ModuleController moduleController, List<EditorHostSetting> editorHostSettings)
+        private static Dictionary<int, HashSet<TreeNode>> GetModuleNodes(int portalId, IModuleController moduleController, List<EditorHostSetting> editorHostSettings)
         {
             var portalModules = moduleController.GetModules(portalId).Cast<ModuleInfo>();
             Dictionary<int, HashSet<TreeNode>> modulesNodes = new Dictionary<int, HashSet<TreeNode>>();
@@ -325,23 +328,20 @@ namespace DNNConnect.CKEditorProvider.Module
         {
             this.PortalTabsAndModulesTree.Nodes.Clear();
 
-            var moduleController = new ModuleController();
-
             var settingsDictionary = EditorController.GetEditorHostSettings(this.hostSettings);
 
             if (this.PortalOnly.Checked)
             {
-                this.RenderPortalNode(
-                    this.portalController.GetPortal(this.PortalSettings.PortalId), moduleController, settingsDictionary);
+                this.RenderPortalNode(this.portalController.GetPortal(this.PortalSettings.PortalId), settingsDictionary);
             }
             else
             {
                 var portals = this.portalController.GetPortals().Cast<IPortalInfo>();
-                this.RenderHostNode(portals, moduleController, settingsDictionary);
+                this.RenderHostNode(portals, settingsDictionary);
             }
         }
 
-        private void RenderHostNode(IEnumerable<IPortalInfo> portals, ModuleController moduleController, List<EditorHostSetting> editorHostSettings)
+        private void RenderHostNode(IEnumerable<IPortalInfo> portals, List<EditorHostSetting> editorHostSettings)
         {
             var hostKey = SettingConstants.HostKey;
             var hostSettingsExist = SettingsUtil.CheckSettingsExistByKey(editorHostSettings, hostKey);
@@ -359,7 +359,7 @@ namespace DNNConnect.CKEditorProvider.Module
 
             foreach (var portal in portals)
             {
-                this.RenderPortalNode(portal, moduleController, editorHostSettings, hostNode);
+                this.RenderPortalNode(portal, editorHostSettings, hostNode);
             }
 
             this.PortalTabsAndModulesTree.Nodes.Add(hostNode);
@@ -367,10 +367,9 @@ namespace DNNConnect.CKEditorProvider.Module
 
         /// <summary>Renders the <paramref name="portal" /> node.</summary>
         /// <param name="portal">The <paramref name="portal" />.</param>
-        /// <param name="moduleController">The module controller.</param>
         /// <param name="editorHostSettings">The editor host settings.</param>
         /// <param name="parentNode">The parent node.</param>
-        private void RenderPortalNode(IPortalInfo portal, ModuleController moduleController, List<EditorHostSetting> editorHostSettings, TreeNode parentNode = null)
+        private void RenderPortalNode(IPortalInfo portal, List<EditorHostSetting> editorHostSettings, TreeNode parentNode = null)
         {
             var portalKey = SettingConstants.PortalKey(portal.PortalId);
 
@@ -388,7 +387,7 @@ namespace DNNConnect.CKEditorProvider.Module
                 Expanded = this.PortalOnly.Checked,
             };
 
-            Dictionary<int, HashSet<TreeNode>> modulesNodes = GetModuleNodes(portal.PortalId, moduleController, editorHostSettings);
+            Dictionary<int, HashSet<TreeNode>> modulesNodes = GetModuleNodes(portal.PortalId, this.moduleController, editorHostSettings);
             var tabs = TabController.GetPortalTabs(portal.PortalId, -1, false, null, true, false, true, true, false);
 
             LoadNodesByTreeViewHelper(editorHostSettings, portalNode, modulesNodes, tabs);

@@ -17,6 +17,7 @@ namespace DotNetNuke.Services.Upgrade
     using System.Xml.XPath;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Abstractions.Security.Permissions;
@@ -1358,7 +1359,7 @@ namespace DotNetNuke.Services.Upgrade
                 Logger.Error(ex);
                 var log = new LogInfo
                 {
-                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                    LogTypeKey = nameof(EventLogType.HOST_ALERT),
                     BypassBuffering = true,
                 };
                 log.AddProperty("Upgraded DotNetNuke", "General");
@@ -1814,10 +1815,10 @@ namespace DotNetNuke.Services.Upgrade
 
                 var log = new LogInfo
                 {
-                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                    LogTypeKey = nameof(EventLogType.HOST_ALERT),
                     BypassBuffering = true,
                 };
-                log.AddProperty("Upgraded DotNetNuke", "Version: " + Globals.FormatVersion(version) + ", Iteration:" + version.Revision);
+                log.AddProperty("Upgraded DotNetNuke", $"Version: {Globals.FormatVersion(version)}, Iteration:{version.Revision}");
                 if (exceptions.Length > 0)
                 {
                     log.AddProperty("Warnings", exceptions);

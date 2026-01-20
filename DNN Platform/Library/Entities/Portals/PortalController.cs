@@ -1935,12 +1935,12 @@ namespace DotNetNuke.Entities.Portals
 
         internal static void EnsureRequiredEventLogTypesExist()
         {
-            if (!DoesLogTypeExists(EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString()))
+            if (!DoesLogTypeExists(nameof(EventLogType.PAGE_NOT_FOUND_404)))
             {
                 // Add 404 Log
                 var logTypeInfo = new LogTypeInfo
                 {
-                    LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
+                    LogTypeKey = nameof(EventLogType.PAGE_NOT_FOUND_404),
                     LogTypeFriendlyName = "HTTP Error Code 404 Page Not Found",
                     LogTypeDescription = string.Empty,
                     LogTypeCSSClass = "OperationFailure",
@@ -1952,7 +1952,7 @@ namespace DotNetNuke.Entities.Portals
                 var logTypeConf = new LogTypeConfigInfo
                 {
                     LoggingIsActive = true,
-                    LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
+                    LogTypeKey = nameof(EventLogType.PAGE_NOT_FOUND_404),
                     KeepMostRecent = "100",
                     NotificationThreshold = 1,
                     NotificationThresholdTime = 1,
@@ -1964,12 +1964,12 @@ namespace DotNetNuke.Entities.Portals
                 LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
             }
 
-            if (!DoesLogTypeExists(EventLogController.EventLogType.IP_LOGIN_BANNED.ToString()))
+            if (!DoesLogTypeExists(nameof(EventLogType.IP_LOGIN_BANNED)))
             {
                 // Add IP filter log type
                 var logTypeFilterInfo = new LogTypeInfo
                 {
-                    LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
+                    LogTypeKey = nameof(EventLogType.IP_LOGIN_BANNED),
                     LogTypeFriendlyName = "HTTP Error Code Forbidden IP address rejected",
                     LogTypeDescription = string.Empty,
                     LogTypeCSSClass = "OperationFailure",
@@ -1981,7 +1981,7 @@ namespace DotNetNuke.Entities.Portals
                 var logTypeFilterConf = new LogTypeConfigInfo
                 {
                     LoggingIsActive = true,
-                    LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
+                    LogTypeKey = nameof(EventLogType.IP_LOGIN_BANNED),
                     KeepMostRecent = "100",
                     NotificationThreshold = 1,
                     NotificationThresholdTime = 1,
@@ -1993,11 +1993,11 @@ namespace DotNetNuke.Entities.Portals
                 LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
             }
 
-            if (!DoesLogTypeExists(EventLogController.EventLogType.TABURL_CREATED.ToString()))
+            if (!DoesLogTypeExists(nameof(EventLogType.TABURL_CREATED)))
             {
                 var logTypeInfo = new LogTypeInfo
                 {
-                    LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
+                    LogTypeKey = nameof(EventLogType.TABURL_CREATED),
                     LogTypeFriendlyName = "TabURL created",
                     LogTypeDescription = string.Empty,
                     LogTypeCSSClass = "OperationSuccess",
@@ -2005,11 +2005,11 @@ namespace DotNetNuke.Entities.Portals
                 };
                 LogController.Instance.AddLogType(logTypeInfo);
 
-                logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
+                logTypeInfo.LogTypeKey = nameof(EventLogType.TABURL_UPDATED);
                 logTypeInfo.LogTypeFriendlyName = "TabURL updated";
                 LogController.Instance.AddLogType(logTypeInfo);
 
-                logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
+                logTypeInfo.LogTypeKey = nameof(EventLogType.TABURL_DELETED);
                 logTypeInfo.LogTypeFriendlyName = "TabURL deleted";
                 LogController.Instance.AddLogType(logTypeInfo);
 
@@ -2017,7 +2017,7 @@ namespace DotNetNuke.Entities.Portals
                 var logTypeUrlConf = new LogTypeConfigInfo
                 {
                     LoggingIsActive = false,
-                    LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
+                    LogTypeKey = nameof(EventLogType.TABURL_CREATED),
                     KeepMostRecent = "100",
                     NotificationThreshold = 1,
                     NotificationThresholdTime = 1,
@@ -2028,19 +2028,19 @@ namespace DotNetNuke.Entities.Portals
                 };
                 LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
 
-                logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
+                logTypeUrlConf.LogTypeKey = nameof(EventLogType.TABURL_UPDATED);
                 LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
 
-                logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
+                logTypeUrlConf.LogTypeKey = nameof(EventLogType.TABURL_DELETED);
                 LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
             }
 
-            if (!DoesLogTypeExists(EventLogController.EventLogType.SCRIPT_COLLISION.ToString()))
+            if (!DoesLogTypeExists(nameof(EventLogType.SCRIPT_COLLISION)))
             {
                 // Add IP filter log type
                 var logTypeFilterInfo = new LogTypeInfo
                 {
-                    LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
+                    LogTypeKey = nameof(EventLogType.SCRIPT_COLLISION),
                     LogTypeFriendlyName = "Javscript library registration resolved script collision",
                     LogTypeDescription = string.Empty,
                     LogTypeCSSClass = "OperationFailure",
@@ -2052,7 +2052,7 @@ namespace DotNetNuke.Entities.Portals
                 var logTypeFilterConf = new LogTypeConfigInfo
                 {
                     LoggingIsActive = true,
-                    LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
+                    LogTypeKey = nameof(EventLogType.SCRIPT_COLLISION),
                     KeepMostRecent = "100",
                     NotificationThreshold = 1,
                     NotificationThresholdTime = 1,
@@ -2257,7 +2257,7 @@ namespace DotNetNuke.Entities.Portals
                         dicSettings[key] = dr.GetString(1);
                         var log = new LogInfo
                         {
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
+                            LogTypeKey = nameof(EventLogType.ADMIN_ALERT),
                         };
                         log.AddProperty("Duplicate PortalSettings Key", key);
                         LogController.Instance.AddLog(log);
@@ -2663,7 +2663,7 @@ namespace DotNetNuke.Entities.Portals
                         var log = new LogInfo
                         {
                             BypassBuffering = true,
-                            LogTypeKey = EventLogController.EventLogType.PORTAL_CREATED.ToString(),
+                            LogTypeKey = nameof(EventLogType.PORTAL_CREATED),
                         };
                         log.LogProperties.Add(new LogDetailInfo("Install Portal:", portalName));
                         log.LogProperties.Add(new LogDetailInfo("FirstName:", adminUser.FirstName));

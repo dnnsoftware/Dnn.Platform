@@ -57,7 +57,6 @@ namespace DNNConnect.CKEditorProvider
     {
         /// <summary>The provider type.</summary>
         private const string ProviderType = "htmlEditor";
-
         private const string UnauthenticatedUsersRoleName = "Unauthenticated Users";
         private const int NoPortal = -1;
         private const string KeyCurrentTabId = "CurrentTabId";
@@ -72,6 +71,7 @@ namespace DNNConnect.CKEditorProvider
         private readonly IEventLogger eventLogger;
         private readonly IClientResourceController clientResourceController;
         private readonly IPortalAliasService portalAliasService;
+        private readonly IModuleController moduleController;
 
         /// <summary>  The provider config.</summary>
         private readonly ProviderConfiguration provConfig = ProviderConfiguration.GetProviderConfiguration(ProviderType);
@@ -108,7 +108,7 @@ namespace DNNConnect.CKEditorProvider
         /// <summary>Initializes a new instance of the <see cref="CKEditorOptions"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public CKEditorOptions()
-            : this(null, null, null, null, null)
+            : this(null, null, null, null, null, null)
         {
         }
 
@@ -118,13 +118,15 @@ namespace DNNConnect.CKEditorProvider
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="clientResourceController">The client resource controller.</param>
         /// <param name="portalAliasService">The portal alias service.</param>
-        public CKEditorOptions(IHostSettings hostSettings, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController, IPortalAliasService portalAliasService)
+        /// <param name="moduleController">The module controller.</param>
+        public CKEditorOptions(IHostSettings hostSettings, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController, IPortalAliasService portalAliasService, IModuleController moduleController)
         {
             this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
             this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
             this.eventLogger = eventLogger ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IEventLogger>();
             this.clientResourceController = clientResourceController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IClientResourceController>();
             this.portalAliasService = portalAliasService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalAliasService>();
+            this.moduleController = moduleController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>();
         }
 
         /// <summary>Gets or sets a value indicating whether this instance is host mode.</summary>
@@ -221,7 +223,7 @@ namespace DNNConnect.CKEditorProvider
                     return this.currentModule;
                 }
 
-                this.currentModule = new ModuleController().GetModule(
+                this.currentModule = this.moduleController.GetModule(
                     this.Request.QueryString.GetValueOrDefault("ModuleId", -1),
                     this.TabId,
                     false);
@@ -967,48 +969,45 @@ namespace DNNConnect.CKEditorProvider
             this.moduleInstanceName = this.request.QueryString["minc"];
             string moduleKey = $"DNNCKMI#{this.ModuleId}#INS#{this.moduleInstanceName}#";
 
-            var moduleController = new ModuleController();
-
-            foreach (PropertyInfo info in
-                SettingsUtil.GetEditorConfigProperties())
+            foreach (PropertyInfo info in SettingsUtil.GetEditorConfigProperties())
             {
-                moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{info.Name}");
+                this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{info.Name}");
             }
 
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SKIN}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CODEMIRRORTHEME}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSER}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.FILELISTPAGESIZE}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.FILELISTVIEWMODE}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.DEFAULTLINKMODE}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.USEANCHORSELECTOR}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SHOWPAGELINKSTABFIRST}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.OVERRIDEFILEONUPLOAD}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SUBDIRS}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSERROOTDIRID}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSERROOTDIRFORIMGID}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.UPLOADDIRID}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.UPLOADDIRFORIMGID}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.INJECTJS}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.WIDTH}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.HEIGHT}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BLANKTEXT}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CSS}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.TEMPLATEFILES}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CUSTOMJSFILE}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CONFIG}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.ROLES}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEHEIGHTUPLOAD}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEWIDTHUPLOAD}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEHEIGHT}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEWIDTH}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SKIN}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CODEMIRRORTHEME}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSER}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.FILELISTPAGESIZE}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.FILELISTVIEWMODE}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.DEFAULTLINKMODE}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.USEANCHORSELECTOR}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SHOWPAGELINKSTABFIRST}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.OVERRIDEFILEONUPLOAD}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SUBDIRS}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSERROOTDIRID}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSERROOTDIRFORIMGID}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.UPLOADDIRID}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.UPLOADDIRFORIMGID}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.INJECTJS}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.WIDTH}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.HEIGHT}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BLANKTEXT}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CSS}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.TEMPLATEFILES}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CUSTOMJSFILE}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CONFIG}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.ROLES}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEHEIGHTUPLOAD}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEWIDTHUPLOAD}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEHEIGHT}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEWIDTH}");
 
             foreach (var objRole in RoleController.Instance.GetRoles(this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId))
             {
-                moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{objRole.RoleID}#{SettingConstants.TOOLB}");
+                this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{objRole.RoleID}#{SettingConstants.TOOLB}");
             }
 
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}-1#{SettingConstants.TOOLB}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}-1#{SettingConstants.TOOLB}");
 
             // Finally Clear Cache
             EditorController.ClearEditorCache();
@@ -1028,7 +1027,7 @@ namespace DNNConnect.CKEditorProvider
 
             ModuleDefinitionInfo moduleDefinitionInfo = null;
             var portalId = this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId;
-            var moduleInfo = new ModuleController().GetModuleByDefinition(
+            var moduleInfo = this.moduleController.GetModuleByDefinition(
                 portalId, "User Accounts");
 
             if (this.CurrentModule != null)
@@ -2260,8 +2259,6 @@ namespace DNNConnect.CKEditorProvider
             this.moduleInstanceName = this.request.QueryString["minc"];
             string key = $"DNNCKMI#{this.ModuleId}#INS#{this.moduleInstanceName}#";
 
-            var moduleController = new ModuleController();
-
             // Editor config settings
             foreach (var info in
                 SettingsUtil.GetEditorConfigProperties())
@@ -2276,7 +2273,7 @@ namespace DNNConnect.CKEditorProvider
 
                             if (textBox != null)
                             {
-                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", textBox.Text);
+                                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", textBox.Text);
                             }
                         }
 
@@ -2287,7 +2284,7 @@ namespace DNNConnect.CKEditorProvider
 
                             if (checkBox != null)
                             {
-                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", checkBox.Checked.ToString());
+                                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", checkBox.Checked.ToString());
                             }
                         }
 
@@ -2306,7 +2303,7 @@ namespace DNNConnect.CKEditorProvider
 
                             if (dropDownList?.SelectedItem != null)
                             {
-                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", dropDownList.SelectedValue);
+                                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", dropDownList.SelectedValue);
                             }
                         }
 
@@ -2326,7 +2323,7 @@ namespace DNNConnect.CKEditorProvider
 
                                             if (textBox != null)
                                             {
-                                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{codeMirrorInfo.Name}", textBox.Text);
+                                                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{codeMirrorInfo.Name}", textBox.Text);
                                             }
                                         }
 
@@ -2338,7 +2335,7 @@ namespace DNNConnect.CKEditorProvider
 
                                             if (checkBox != null)
                                             {
-                                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{codeMirrorInfo.Name}", checkBox.Checked.ToString());
+                                                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{codeMirrorInfo.Name}", checkBox.Checked.ToString());
                                             }
                                         }
 
@@ -2360,7 +2357,7 @@ namespace DNNConnect.CKEditorProvider
 
                                             if (textBox != null)
                                             {
-                                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{wordCountInfo.Name}", textBox.Text);
+                                                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{wordCountInfo.Name}", textBox.Text);
                                             }
                                         }
 
@@ -2372,7 +2369,7 @@ namespace DNNConnect.CKEditorProvider
 
                                             if (checkBox != null)
                                             {
-                                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{wordCountInfo.Name}", checkBox.Checked.ToString());
+                                                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{wordCountInfo.Name}", checkBox.Checked.ToString());
                                             }
                                         }
 
@@ -2386,72 +2383,72 @@ namespace DNNConnect.CKEditorProvider
             }
             ///////////////////
 
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SKIN}", this.ddlSkin.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CODEMIRRORTHEME}", this.CodeMirrorTheme.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSER}", this.ddlBrowser.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.IMAGEBUTTON}", this.ddlImageButton.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.FILELISTVIEWMODE}", this.FileListViewMode.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.DEFAULTLINKMODE}", this.DefaultLinkMode.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.USEANCHORSELECTOR}", this.UseAnchorSelector.Checked.ToString());
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SHOWPAGELINKSTABFIRST}", this.ShowPageLinksTabFirst.Checked.ToString());
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.OVERRIDEFILEONUPLOAD}", this.OverrideFileOnUpload.Checked.ToString());
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SUBDIRS}", this.cbBrowserDirs.Checked.ToString());
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERROOTDIRID}", this.BrowserRootDir.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERROOTDIRFORIMGID}", this.BrowserRootDirForImg.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.UPLOADDIRID}", this.UploadDir.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.UPLOADDIRFORIMGID}", this.UploadDirForImg.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SKIN}", this.ddlSkin.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CODEMIRRORTHEME}", this.CodeMirrorTheme.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSER}", this.ddlBrowser.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.IMAGEBUTTON}", this.ddlImageButton.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.FILELISTVIEWMODE}", this.FileListViewMode.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.DEFAULTLINKMODE}", this.DefaultLinkMode.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.USEANCHORSELECTOR}", this.UseAnchorSelector.Checked.ToString());
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SHOWPAGELINKSTABFIRST}", this.ShowPageLinksTabFirst.Checked.ToString());
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.OVERRIDEFILEONUPLOAD}", this.OverrideFileOnUpload.Checked.ToString());
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SUBDIRS}", this.cbBrowserDirs.Checked.ToString());
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERROOTDIRID}", this.BrowserRootDir.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERROOTDIRFORIMGID}", this.BrowserRootDirForImg.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.UPLOADDIRID}", this.UploadDir.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.UPLOADDIRFORIMGID}", this.UploadDirForImg.SelectedValue);
 
             if (Utility.IsNumeric(this.FileListPageSize.Text))
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.FILELISTPAGESIZE}", this.FileListPageSize.Text);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.FILELISTPAGESIZE}", this.FileListPageSize.Text);
             }
 
             if (Utility.IsNumeric(this.txtResizeWidthUpload.Text))
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEWIDTHUPLOAD}", this.txtResizeWidthUpload.Text);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEWIDTHUPLOAD}", this.txtResizeWidthUpload.Text);
             }
 
             if (Utility.IsNumeric(this.txtResizeHeightUpload.Text))
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEHEIGHTUPLOAD}", this.txtResizeHeightUpload.Text);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEHEIGHTUPLOAD}", this.txtResizeHeightUpload.Text);
             }
 
             if (Utility.IsNumeric(this.txtResizeWidth.Text))
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEWIDTH}", this.txtResizeWidth.Text);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEWIDTH}", this.txtResizeWidth.Text);
             }
 
             if (Utility.IsNumeric(this.txtResizeHeight.Text))
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEHEIGHT}", this.txtResizeHeight.Text);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEHEIGHT}", this.txtResizeHeight.Text);
             }
 
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.INJECTJS}", this.InjectSyntaxJs.Checked.ToString());
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.INJECTJS}", this.InjectSyntaxJs.Checked.ToString());
 
             if (Utility.IsUnit(this.txtWidth.Text))
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.WIDTH}", this.txtWidth.Text);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.WIDTH}", this.txtWidth.Text);
             }
 
             if (Utility.IsUnit(this.txtHeight.Text))
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.HEIGHT}", this.txtWidth.Text);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.HEIGHT}", this.txtWidth.Text);
             }
 
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERALLOWFOLLOWFOLDERPERMS}", this.BrowAllowFollowPerms.Checked.ToString());
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERALLOWFOLLOWFOLDERPERMS}", this.BrowAllowFollowPerms.Checked.ToString());
 
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BLANKTEXT}", this.txtBlanktext.Text);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CSS}", this.CssUrl.Url);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.TEMPLATEFILES}", this.TemplUrl.Url);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CUSTOMJSFILE}", this.CustomJsFile.Url);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CONFIG}", this.ConfigUrl.Url);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BLANKTEXT}", this.txtBlanktext.Text);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CSS}", this.CssUrl.Url);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.TEMPLATEFILES}", this.TemplUrl.Url);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CUSTOMJSFILE}", this.CustomJsFile.Url);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CONFIG}", this.ConfigUrl.Url);
 
             string sRoles = this.chblBrowsGr.Items.Cast<ListItem>().Where(item => item.Selected).Aggregate(
                 string.Empty, (current, item) => current + (item.Value + ";"));
 
             if (sRoles != string.Empty)
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.ROLES}", sRoles);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.ROLES}", sRoles);
             }
 
             // Save Toolbar Setting for every Role
@@ -2468,7 +2465,7 @@ namespace DNNConnect.CKEditorProvider
 
                 if (label.Text.Equals(UnauthenticatedUsersRoleName))
                 {
-                    moduleController.UpdateModuleSetting(
+                    this.moduleController.UpdateModuleSetting(
                         this.ModuleId,
                         string.Format("{0}{2}#{1}", key, "-1", SettingConstants.TOOLB),
                         ddLToolB.SelectedValue);
@@ -2477,7 +2474,7 @@ namespace DNNConnect.CKEditorProvider
                 {
                     var objRole = RoleController.Instance.GetRoleByName(this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId, label.Text);
 
-                    moduleController.UpdateModuleSetting(
+                    this.moduleController.UpdateModuleSetting(
                         this.ModuleId,
                         string.Format("{0}{2}#{1}", key, objRole.RoleID, SettingConstants.TOOLB),
                         ddLToolB.SelectedValue);
@@ -2498,7 +2495,7 @@ namespace DNNConnect.CKEditorProvider
 
                 if (label.Text.Equals(UnauthenticatedUsersRoleName))
                 {
-                    moduleController.UpdateModuleSetting(
+                    this.moduleController.UpdateModuleSetting(
                         this.ModuleId,
                         $"{key}-1{SettingConstants.UPLOADFILELIMITS}",
                         sizeLimit.Text);
@@ -2507,7 +2504,7 @@ namespace DNNConnect.CKEditorProvider
                 {
                     var objRole = RoleController.Instance.GetRoleByName(this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId, label.Text);
 
-                    moduleController.UpdateModuleSetting(
+                    this.moduleController.UpdateModuleSetting(
                         this.ModuleId,
                         string.Format("{0}{1}#{2}", key, objRole.RoleID, SettingConstants.UPLOADFILELIMITS),
                         sizeLimit.Text);
@@ -2777,18 +2774,16 @@ namespace DNNConnect.CKEditorProvider
         /// <summary>Save all Settings for the Current Selected Mode.</summary>
         private void SaveSettings()
         {
-            ModuleDefinitionInfo objm;
-            var db = new ModuleController();
-            var moduleInfo = db.GetModuleByDefinition(this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId, "User Accounts");
+            var moduleInfo = this.moduleController.GetModuleByDefinition(this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId, "User Accounts");
 
+            ModuleDefinitionInfo definition;
             try
             {
-                objm = ModuleDefinitionController.GetModuleDefinitionByID(this.CurrentModule.ModuleDefID);
+                definition = ModuleDefinitionController.GetModuleDefinitionByID(this.CurrentModule.ModuleDefID);
             }
             catch (Exception)
             {
-                objm = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(
-                    "User Accounts", moduleInfo.DesktopModuleID);
+                definition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("User Accounts", moduleInfo.DesktopModuleID);
             }
 
             switch (this.CurrentSettingsMode)
@@ -2803,7 +2798,7 @@ namespace DNNConnect.CKEditorProvider
                     this.SaveSettingsByKey($"DNNCKT#{this.CurrentOrSelectedTabId}#");
                     break;
                 default:
-                    if (this.CurrentSettingsMode.Equals(SettingsMode.ModuleInstance) && !objm.FriendlyName.Equals("User Accounts"))
+                    if (this.CurrentSettingsMode.Equals(SettingsMode.ModuleInstance) && !definition.FriendlyName.Equals("User Accounts"))
                     {
                         this.SaveModuleSettings();
                     }

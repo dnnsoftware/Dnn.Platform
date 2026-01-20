@@ -276,7 +276,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         {
                             LogUserID = PortalSettings.Current.UserId,
                             LogPortalID = PortalSettings.Current.PortalId,
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
+                            LogTypeKey = nameof(EventLogType.ADMIN_ALERT),
                         };
                         logInfo.AddProperty("DnnImageHandler", message);
                         logInfo.AddProperty("IP", ipAddress);
@@ -310,7 +310,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         {
                             LogUserID = PortalSettings.Current.UserId,
                             LogPortalID = PortalSettings.Current.PortalId,
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
+                            LogTypeKey = nameof(EventLogType.ADMIN_ALERT),
                         };
                         logInfo.AddProperty("DnnImageHandler", message);
                         logInfo.AddProperty("IP", ipAddress);

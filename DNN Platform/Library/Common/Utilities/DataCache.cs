@@ -575,16 +575,16 @@ namespace DotNetNuke.Common.Utilities
                     switch (removedReason)
                     {
                         case CacheItemRemovedReason.Removed:
-                            log.LogTypeKey = EventLogController.EventLogType.CACHE_REMOVED.ToString();
+                            log.LogTypeKey = nameof(EventLogType.CACHE_REMOVED);
                             break;
                         case CacheItemRemovedReason.Expired:
-                            log.LogTypeKey = EventLogController.EventLogType.CACHE_EXPIRED.ToString();
+                            log.LogTypeKey = nameof(EventLogType.CACHE_EXPIRED);
                             break;
                         case CacheItemRemovedReason.Underused:
-                            log.LogTypeKey = EventLogController.EventLogType.CACHE_UNDERUSED.ToString();
+                            log.LogTypeKey = nameof(EventLogType.CACHE_UNDERUSED);
                             break;
                         case CacheItemRemovedReason.DependencyChanged:
-                            log.LogTypeKey = EventLogController.EventLogType.CACHE_DEPENDENCYCHANGED.ToString();
+                            log.LogTypeKey = nameof(EventLogType.CACHE_DEPENDENCYCHANGED);
                             break;
                     }
 
@@ -674,7 +674,7 @@ namespace DotNetNuke.Common.Utilities
                             if (GetCache(cacheItemArgs.CacheKey) == null)
                             {
                                 // log the event if the item was not saved in the cache ( likely because we are out of memory )
-                                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.CACHE_OVERFLOW.ToString() };
+                                var log = new LogInfo { LogTypeKey = nameof(EventLogType.CACHE_OVERFLOW) };
                                 log.LogProperties.Add(new LogDetailInfo(cacheItemArgs.CacheKey, "Overflow - Item Not Cached"));
                                 LogController.Instance.AddLog(log);
                             }

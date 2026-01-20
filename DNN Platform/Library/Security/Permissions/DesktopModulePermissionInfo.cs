@@ -6,13 +6,11 @@ namespace DotNetNuke.Security.Permissions
     using System;
     using System.Data;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// <summary>
-    /// DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo
-    /// Permissions.
-    /// </summary>
+    /// <summary>DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo Permissions.</summary>
     [Serializable]
     public class DesktopModulePermissionInfo : PermissionInfoBase, IHydratable
     {
@@ -20,27 +18,28 @@ namespace DotNetNuke.Security.Permissions
         private int desktopModulePermissionID;
         private int portalDesktopModuleID;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DesktopModulePermissionInfo"/> class.
-        /// Constructs a new DesktopModulePermissionInfo.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionInfo"/> class.</summary>
         public DesktopModulePermissionInfo()
         {
             this.desktopModulePermissionID = Null.NullInteger;
             this.portalDesktopModuleID = Null.NullInteger;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DesktopModulePermissionInfo"/> class.
-        /// Constructs a new DesktopModulePermissionInfo.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionInfo"/> class.</summary>
         /// <param name="permission">A PermissionInfo object.</param>
         public DesktopModulePermissionInfo(PermissionInfo permission)
+            : this((IPermissionDefinitionInfo)permission)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionInfo"/> class.</summary>
+        /// <param name="permission">A PermissionInfo object.</param>
+        public DesktopModulePermissionInfo(IPermissionDefinitionInfo permission)
             : this()
         {
-            this.ModuleDefID = permission.ModuleDefID;
+            ((IPermissionInfo)this).ModuleDefId = permission.ModuleDefId;
             this.PermissionCode = permission.PermissionCode;
-            this.PermissionID = permission.PermissionID;
+            ((IPermissionInfo)this).PermissionId = permission.PermissionId;
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
@@ -49,45 +48,24 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>An Integer.</returns>
         public int DesktopModulePermissionID
         {
-            get
-            {
-                return this.desktopModulePermissionID;
-            }
-
-            set
-            {
-                this.desktopModulePermissionID = value;
-            }
+            get => this.desktopModulePermissionID;
+            set => this.desktopModulePermissionID = value;
         }
 
         /// <summary>Gets or sets the PortalDesktopModule ID.</summary>
         /// <returns>An Integer.</returns>
         public int PortalDesktopModuleID
         {
-            get
-            {
-                return this.portalDesktopModuleID;
-            }
-
-            set
-            {
-                this.portalDesktopModuleID = value;
-            }
+            get => this.portalDesktopModuleID;
+            set => this.portalDesktopModuleID = value;
         }
 
         /// <summary>Gets or sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
         public int KeyID
         {
-            get
-            {
-                return this.DesktopModulePermissionID;
-            }
-
-            set
-            {
-                this.DesktopModulePermissionID = value;
-            }
+            get => this.DesktopModulePermissionID;
+            set => this.DesktopModulePermissionID = value;
         }
 
         /// <summary>Fills a DesktopModulePermissionInfo from a Data Reader.</summary>

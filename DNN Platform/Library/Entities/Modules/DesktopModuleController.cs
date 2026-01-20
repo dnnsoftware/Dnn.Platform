@@ -13,6 +13,7 @@ namespace DotNetNuke.Entities.Modules
 
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -25,6 +26,7 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.EventQueue;
     using DotNetNuke.Services.Installer.Packages;
@@ -34,10 +36,25 @@ namespace DotNetNuke.Entities.Modules
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>DesktopModuleController provides the Business Layer for Desktop Modules.</summary>
-    public class DesktopModuleController
+    public partial class DesktopModuleController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DesktopModuleController));
         private static readonly DataProvider DataProvider = DataProvider.Instance();
+        private readonly IEventLogger eventLogger;
+
+        /// <summary>Initializes a new instance of the <see cref="DesktopModuleController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public DesktopModuleController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DesktopModuleController"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        public DesktopModuleController(IEventLogger eventLogger)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
 
         public static void AddModuleCategory(string category)
         {
@@ -205,29 +222,51 @@ namespace DotNetNuke.Entities.Modules
             return portalDesktopModuleID;
         }
 
-        public static int AddDesktopModuleToPortal(int portalId, int desktopModuleId, bool addPermissions, bool clearCache)
+        /// <summary>Add a desktop module to a portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="desktopModuleId">The desktop module ID.</param>
+        /// <param name="addPermissions">Whether to add permissions for the administrator role to deploy the module.</param>
+        /// <param name="clearCache">Whether to clear the cache after adding.</param>
+        /// <returns>The portal desktop module ID.</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial int AddDesktopModuleToPortal(int portalId, int desktopModuleId, bool addPermissions, bool clearCache)
+            => AddDesktopModuleToPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), portalId, desktopModuleId, addPermissions, clearCache);
+
+        /// <summary>Add a desktop module to a portal.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="desktopModuleId">The desktop module ID.</param>
+        /// <param name="addPermissions">Whether to add permissions for the administrator role to deploy the module.</param>
+        /// <param name="clearCache">Whether to clear the cache after adding.</param>
+        /// <returns>The portal desktop module ID.</returns>
+        public static int AddDesktopModuleToPortal(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, int portalId, int desktopModuleId, bool addPermissions, bool clearCache)
         {
             int portalDesktopModuleID;
             PortalDesktopModuleInfo portalDesktopModule = GetPortalDesktopModule(portalId, desktopModuleId);
             if (portalDesktopModule == null)
             {
                 portalDesktopModuleID = DataProvider.Instance().AddPortalDesktopModule(portalId, desktopModuleId, UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(
+                eventLogger.AddLog(
                     "PortalDesktopModuleID",
                     portalDesktopModuleID.ToString(CultureInfo.InvariantCulture),
                     PortalController.Instance.GetCurrentSettings(),
                     UserController.Instance.GetCurrentUserInfo().UserID,
-                    EventLogController.EventLogType.PORTALDESKTOPMODULE_CREATED);
+                    EventLogType.PORTALDESKTOPMODULE_CREATED);
                 if (addPermissions)
                 {
-                    ArrayList permissions = PermissionController.GetPermissionsByPortalDesktopModule();
-                    if (permissions.Count > 0)
+                    var permission = permissionDefinitionService.GetDefinitionsByPortalDesktopModule().FirstOrDefault();
+                    if (permission is not null)
                     {
-                        var permission = permissions[0] as PermissionInfo;
                         PortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
-                        if (permission != null && objPortal != null)
+                        if (objPortal != null)
                         {
-                            var desktopModulePermission = new DesktopModulePermissionInfo(permission) { RoleID = objPortal.AdministratorRoleId, AllowAccess = true, PortalDesktopModuleID = portalDesktopModuleID };
+                            var desktopModulePermission = new DesktopModulePermissionInfo(permission)
+                            {
+                                RoleID = objPortal.AdministratorRoleId,
+                                AllowAccess = true,
+                                PortalDesktopModuleID = portalDesktopModuleID,
+                            };
                             DesktopModulePermissionController.AddDesktopModulePermission(desktopModulePermission);
                         }
                     }
@@ -310,42 +349,73 @@ namespace DotNetNuke.Entities.Modules
             return lstModules;
         }
 
-        public static void RemoveDesktopModuleFromPortal(int portalId, int desktopModuleId, bool clearCache)
+        /// <summary>Remove a desktop module from a portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="desktopModuleId">The desktop module ID.</param>
+        /// <param name="clearCache">Whether to clear the cache after the removal.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void RemoveDesktopModuleFromPortal(int portalId, int desktopModuleId, bool clearCache)
+            => RemoveDesktopModuleFromPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalId, desktopModuleId, clearCache);
+
+        /// <summary>Remove a desktop module from a portal.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="desktopModuleId">The desktop module ID.</param>
+        /// <param name="clearCache">Whether to clear the cache after the removal.</param>
+        public static void RemoveDesktopModuleFromPortal(IEventLogger eventLogger, int portalId, int desktopModuleId, bool clearCache)
         {
             DataProvider.Instance().DeletePortalDesktopModules(portalId, desktopModuleId);
-            EventLogController.Instance.AddLog(
+            eventLogger.AddLog(
                 "DesktopModuleID",
                 desktopModuleId.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
+                EventLogType.PORTALDESKTOPMODULE_DELETED);
             if (clearCache)
             {
                 DataCache.ClearPortalCache(portalId, false);
             }
         }
 
-        public static void RemoveDesktopModuleFromPortals(int desktopModuleId)
+        /// <summary>Remove the desktop module from all portals.</summary>
+        /// <param name="desktopModuleId">The desktop module ID.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void RemoveDesktopModuleFromPortals(int desktopModuleId)
+            => RemoveDesktopModuleFromPortals(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), desktopModuleId);
+
+        /// <summary>Remove the desktop module from all portals.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="desktopModuleId">The desktop module ID.</param>
+        public static void RemoveDesktopModuleFromPortals(IEventLogger eventLogger, int desktopModuleId)
         {
             DataProvider.Instance().DeletePortalDesktopModules(Null.NullInteger, desktopModuleId);
-            EventLogController.Instance.AddLog(
+            eventLogger.AddLog(
                 "DesktopModuleID",
                 desktopModuleId.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
+                EventLogType.PORTALDESKTOPMODULE_DELETED);
             DataCache.ClearHostCache(true);
         }
 
-        public static void RemoveDesktopModulesFromPortal(int portalId)
+        /// <summary>Remove all desktop modules from the portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void RemoveDesktopModulesFromPortal(int portalId)
+            => RemoveDesktopModulesFromPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalId);
+
+        /// <summary>Remove all desktop modules from the portal.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">The portal ID.</param>
+        public static void RemoveDesktopModulesFromPortal(IEventLogger eventLogger, int portalId)
         {
             DataProvider.Instance().DeletePortalDesktopModules(portalId, Null.NullInteger);
-            EventLogController.Instance.AddLog(
+            eventLogger.AddLog(
                 "PortalID",
                 portalId.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
+                EventLogType.PORTALDESKTOPMODULE_DELETED);
             DataCache.ClearPortalCache(portalId, true);
         }
 
@@ -387,12 +457,12 @@ namespace DotNetNuke.Entities.Modules
         public void DeleteDesktopModule(int desktopModuleID)
         {
             DataProvider.DeleteDesktopModule(desktopModuleID);
-            EventLogController.Instance.AddLog(
+            this.eventLogger.AddLog(
                 "DesktopModuleID",
                 desktopModuleID.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.DESKTOPMODULE_DELETED);
+                EventLogType.DESKTOPMODULE_DELETED);
             DataCache.ClearHostCache(true);
         }
 

@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.FileSystem
     using System.Text;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
@@ -160,7 +161,7 @@ namespace DotNetNuke.Services.FileSystem
             // DNN-2949 If IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
             if (!this.IsAllowedExtension(fileName) && ignoreWhiteList)
             {
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = nameof(EventLogType.HOST_ALERT), };
                 log.LogProperties.Add(new LogDetailInfo("Following file was imported/uploaded, but is not an authorized filetype: ", fileName));
                 LogController.Instance.AddLog(log);
             }

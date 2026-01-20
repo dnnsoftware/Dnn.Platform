@@ -531,8 +531,8 @@ namespace DotNetNuke.Entities.Users.Social
                 var friendRelationship = new Relationship
                 {
                     RelationshipId = Null.NullInteger,
-                    Name = DefaultRelationshipTypes.Friends.ToString(),
-                    Description = DefaultRelationshipTypes.Friends.ToString(),
+                    Name = nameof(DefaultRelationshipTypes.Friends),
+                    Description = nameof(DefaultRelationshipTypes.Friends),
                     PortalId = portalId,
                     UserId = Null.NullInteger,
                     DefaultResponse = RelationshipStatus.None,
@@ -549,8 +549,8 @@ namespace DotNetNuke.Entities.Users.Social
                 var followerRelationship = new Relationship
                 {
                     RelationshipId = Null.NullInteger,
-                    Name = DefaultRelationshipTypes.Followers.ToString(),
-                    Description = DefaultRelationshipTypes.Followers.ToString(),
+                    Name = nameof(DefaultRelationshipTypes.Followers),
+                    Description = nameof(DefaultRelationshipTypes.Followers),
                     PortalId = portalId,
                     UserId = Null.NullInteger,
                     DefaultResponse = RelationshipStatus.Accepted,

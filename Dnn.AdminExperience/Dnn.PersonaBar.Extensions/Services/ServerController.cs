@@ -13,6 +13,7 @@ namespace Dnn.PersonaBar.Servers.Services
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
@@ -41,7 +42,7 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                var log = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo { BypassBuffering = true, LogTypeKey = nameof(EventLogType.HOST_ALERT) };
                 log.AddProperty("Message", Localization.GetString("UserRestart", LocalResourceFile));
                 LogController.Instance.AddLog(log);
                 Config.Touch();

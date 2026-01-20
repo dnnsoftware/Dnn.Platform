@@ -551,7 +551,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 if (this.pageExtensionUsage == null)
                 {
-                    this.pageExtensionUsage = this.GetStringSetting(PageExtensionUsageSetting, PageExtensionUsageType.Never.ToString());
+                    this.pageExtensionUsage = this.GetStringSetting(PageExtensionUsageSetting, nameof(PageExtensionUsageType.Never));
                 }
 
                 PageExtensionUsageType val;

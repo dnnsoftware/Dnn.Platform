@@ -17,6 +17,7 @@ namespace DotNetNuke.Entities.Modules
     using System.Xml;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -48,6 +49,21 @@ namespace DotNetNuke.Entities.Modules
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleController));
         private static readonly DataProvider DataProvider = DataProvider.Instance();
+        private readonly IEventLogger eventLogger;
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public ModuleController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleController"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        public ModuleController(IEventLogger eventLogger)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
 
         private static Hashtable ParsedLocalizedModuleGuid
         {
@@ -435,7 +451,7 @@ namespace DotNetNuke.Entities.Modules
 
                 var log = new LogInfo
                 {
-                    LogTypeKey = EventLogController.EventLogType.TABMODULE_CREATED.ToString(),
+                    LogTypeKey = nameof(EventLogType.TABMODULE_CREATED),
                     LogPortalID = module.PortalID,
                 };
                 log.LogProperties.Add(new LogDetailInfo("TabPath", module.ParentTab.TabPath));
@@ -699,12 +715,12 @@ namespace DotNetNuke.Entities.Modules
             }
 
             // Log deletion
-            EventLogController.Instance.AddLog(
+            this.eventLogger.AddLog(
                 "ModuleId",
                 moduleId.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.MODULE_DELETED);
+                EventLogType.MODULE_DELETED);
 
             // queue remove module from search index
             var document = new SearchDocumentToDelete
@@ -723,7 +739,7 @@ namespace DotNetNuke.Entities.Modules
         public void DeleteModuleSetting(int moduleId, string settingName)
         {
             DataProvider.DeleteModuleSetting(moduleId, settingName);
-            var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.MODULE_SETTING_DELETED.ToString() };
+            var log = new LogInfo { LogTypeKey = nameof(EventLogType.MODULE_SETTING_DELETED) };
             log.LogProperties.Add(new LogDetailInfo("ModuleId", moduleId.ToString(CultureInfo.InvariantCulture)));
             log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
             LogController.Instance.AddLog(log);
@@ -758,7 +774,7 @@ namespace DotNetNuke.Entities.Modules
             UpdateTabModuleVersion(tabModuleId);
             var log = new LogInfo
             {
-                LogTypeKey = EventLogController.EventLogType.TABMODULE_SETTING_DELETED.ToString(),
+                LogTypeKey = nameof(EventLogType.TABMODULE_SETTING_DELETED),
             };
             log.LogProperties.Add(new LogDetailInfo("TabModuleId", tabModuleId.ToString(CultureInfo.InvariantCulture)));
             log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
@@ -773,7 +789,7 @@ namespace DotNetNuke.Entities.Modules
         {
             int moduleId = Null.NullInteger;
 
-            if (sourceModule != null && sourceModule.DefaultLanguageModule != null)
+            if (sourceModule is { DefaultLanguageModule: not null, })
             {
                 // clone the module object ( to avoid creating an object reference to the data cache )
                 ModuleInfo newModule = sourceModule.Clone();
@@ -1291,7 +1307,7 @@ namespace DotNetNuke.Entities.Modules
                 termController.AddTermToContent(term, module);
             }
 
-            EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.MODULE_UPDATED);
+            this.eventLogger.AddLog(module, PortalController.Instance.GetCurrentSettings(), currentUser.UserID, string.Empty, EventLogType.MODULE_UPDATED);
 
             // save module permissions
             ModulePermissionController.SaveModulePermissions(module);
@@ -1332,7 +1348,7 @@ namespace DotNetNuke.Entities.Modules
 
                 DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.SingleTabModuleCacheKey, module.TabModuleID));
 
-                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.TABMODULE_UPDATED);
+                this.eventLogger.AddLog(module, PortalController.Instance.GetCurrentSettings(), currentUser.UserID, string.Empty, EventLogType.TABMODULE_UPDATED);
 
                 if (hasModuleOrderOrPaneChanged)
                 {
@@ -1554,8 +1570,8 @@ namespace DotNetNuke.Entities.Modules
                     if (dr.GetString(1) != settingValue)
                     {
                         DataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
-                        EventLogController.AddSettingLog(
-                            EventLogController.EventLogType.MODULE_SETTING_UPDATED,
+                        this.eventLogger.AddSettingLog(
+                            EventLogType.MODULE_SETTING_UPDATED,
                             "TabModuleId",
                             tabModuleId,
                             settingName,
@@ -1567,8 +1583,8 @@ namespace DotNetNuke.Entities.Modules
                 else
                 {
                     DataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
-                    EventLogController.AddSettingLog(
-                        EventLogController.EventLogType.TABMODULE_SETTING_CREATED,
+                    this.eventLogger.AddSettingLog(
+                        EventLogType.TABMODULE_SETTING_CREATED,
                         "TabModuleId",
                         tabModuleId,
                         settingName,
@@ -1693,7 +1709,7 @@ namespace DotNetNuke.Entities.Modules
         /// <inheritdoc/>
         protected override Func<IModuleController> GetFactory()
         {
-            return () => new ModuleController();
+            return Globals.DependencyProvider.GetRequiredService<IModuleController>;
         }
 
         private static void AddContent(IBusinessControllerProvider businessControllerProvider, XmlNode nodeModule, ModuleInfo module)
@@ -2227,7 +2243,7 @@ namespace DotNetNuke.Entities.Modules
                 var contentController = Util.GetContentController();
                 contentController.UpdateContentItem(module);
 
-                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
+                this.eventLogger.AddLog(module, PortalController.Instance.GetCurrentSettings(), currentUser.UserID, string.Empty, EventLogType.MODULE_CREATED);
 
                 // set module permissions
                 ModulePermissionController.SaveModulePermissions(module);
@@ -2395,8 +2411,8 @@ namespace DotNetNuke.Entities.Modules
                 if (existValue == null)
                 {
                     DataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
-                    EventLogController.AddSettingLog(
-                        EventLogController.EventLogType.MODULE_SETTING_CREATED,
+                    this.eventLogger.AddSettingLog(
+                        EventLogType.MODULE_SETTING_CREATED,
                         "ModuleId",
                         moduleId,
                         settingName,
@@ -2406,8 +2422,8 @@ namespace DotNetNuke.Entities.Modules
                 else if (existValue != settingValue)
                 {
                     DataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
-                    EventLogController.AddSettingLog(
-                        EventLogController.EventLogType.MODULE_SETTING_UPDATED,
+                    this.eventLogger.AddSettingLog(
+                        EventLogType.MODULE_SETTING_UPDATED,
                         "ModuleId",
                         moduleId,
                         settingName,
@@ -2486,7 +2502,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 // delete the module instance for the tab
                 DataProvider.DeleteTabModule(moduleInfo.TabID, moduleInfo.ModuleID, softDelete, UserController.Instance.GetCurrentUserInfo().UserID);
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.TABMODULE_DELETED.ToString() };
+                var log = new LogInfo { LogTypeKey = nameof(EventLogType.TABMODULE_DELETED) };
                 log.LogProperties.Add(new LogDetailInfo("tabId", moduleInfo.TabID.ToString(CultureInfo.InvariantCulture)));
                 log.LogProperties.Add(new LogDetailInfo("moduleId", moduleInfo.ModuleID.ToString(CultureInfo.InvariantCulture)));
                 LogController.Instance.AddLog(log);

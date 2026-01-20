@@ -31,6 +31,7 @@ namespace DNNConnect.CKEditorProvider
         private readonly IClientResourceController clientResourceController;
         private readonly IHostSettingsService hostSettingsService;
         private readonly IPortalAliasService portalAliasService;
+        private readonly IModuleController moduleController;
 
         /// <summary>The request.</summary>
         private readonly HttpRequest request = HttpContext.Current.Request;
@@ -41,7 +42,7 @@ namespace DNNConnect.CKEditorProvider
         /// <summary>Initializes a new instance of the <see cref="Options"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
         public Options()
-            : this(null, null, null, null, null, null, null, null)
+            : this(null, null, null, null, null, null, null, null, null)
         {
         }
 
@@ -51,7 +52,7 @@ namespace DNNConnect.CKEditorProvider
         /// <param name="hostSettings">The host settings.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
         public Options(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings)
-            : this(portalController, appStatus, hostSettings, null, null, null, null, null)
+            : this(portalController, appStatus, hostSettings, null, null, null, null, null, null)
         {
         }
 
@@ -64,13 +65,15 @@ namespace DNNConnect.CKEditorProvider
         /// <param name="clientResourceController">The client resource controller.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="portalAliasService">The portal alias service.</param>
-        public Options(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IUserController userController, IEventLogger eventLogger, IClientResourceController clientResourceController, IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService)
+        /// <param name="moduleController">The module controller.</param>
+        public Options(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IUserController userController, IEventLogger eventLogger, IClientResourceController clientResourceController, IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService, IModuleController moduleController)
             : base(portalController, appStatus, hostSettings, userController)
         {
             this.eventLogger = eventLogger ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IEventLogger>();
             this.clientResourceController = clientResourceController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IClientResourceController>();
             this.hostSettingsService = hostSettingsService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettingsService>();
             this.portalAliasService = portalAliasService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalAliasService>();
+            this.moduleController = moduleController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>();
         }
 
         /// <summary>  Gets Current Language from Url.</summary>
@@ -120,7 +123,6 @@ namespace DNNConnect.CKEditorProvider
         protected void Page_Load(object sender, EventArgs e)
         {
             ModuleInfo modInfo = null;
-            ModuleController db = new ModuleController();
 
             try
             {
@@ -140,7 +142,7 @@ namespace DNNConnect.CKEditorProvider
 
                 if (moduleId != -1 && tabId != -1)
                 {
-                    modInfo = db.GetModule(moduleId, tabId, false);
+                    modInfo = this.moduleController.GetModule(moduleId, tabId, false);
                 }
                 else
                 {

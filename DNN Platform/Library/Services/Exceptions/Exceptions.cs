@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Exceptions
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -435,7 +436,7 @@ namespace DotNetNuke.Services.Exceptions
             var log = new LogInfo
             {
                 BypassBuffering = true,
-                LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                LogTypeKey = nameof(EventLogType.HOST_ALERT),
             };
             log.LogProperties.Add(new LogDetailInfo(notFoundErrorString, "URL"));
             var context = HttpContext.Current;
