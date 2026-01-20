@@ -228,7 +228,7 @@ namespace DotNetNuke.Services.Localization
                     EventLogController.Instance.AddLog(
                         "portalID/languageID",
                         portalID + "/" + languageID,
-                        PortalController.Instance.GetCurrentPortalSettings(),
+                        PortalController.Instance.GetCurrentSettings(),
                         UserController.Instance.GetCurrentUserInfo().UserID,
                         EventLogController.EventLogType.LANGUAGETOPORTAL_CREATED);
 
@@ -438,7 +438,7 @@ namespace DotNetNuke.Services.Localization
             RemoveLanguageFromPortals(language.LanguageId, isInstalling);
 
             DataProvider.Instance().DeleteLanguage(language.LanguageId);
-            EventLogController.Instance.AddLog(language, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_DELETED);
+            EventLogController.Instance.AddLog(language, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_DELETED);
             DataCache.ClearHostCache(true);
         }
 
@@ -699,7 +699,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns>The localized Text.</returns>
         public static string GetString(string key)
         {
-            return GetString(key, null, PortalController.Instance.GetCurrentPortalSettings(), null, false);
+            return GetString(key, null, PortalSettings.Current, null, false);
         }
 
         /// <overloads>One of six overloads.</overloads>
@@ -720,7 +720,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns>The localized Text.</returns>
         public static string GetString(string key, string resourceFileRoot, bool disableShowMissingKeys)
         {
-            return GetString(key, resourceFileRoot, PortalController.Instance.GetCurrentPortalSettings(), null, disableShowMissingKeys);
+            return GetString(key, resourceFileRoot, PortalSettings.Current, null, disableShowMissingKeys);
         }
 
         /// <overloads>One of six overloads.</overloads>
@@ -775,18 +775,18 @@ namespace DotNetNuke.Services.Localization
         /// <returns>The localized Text.</returns>
         /// <remarks>
         /// This function should be used to retrieve strings to be used on URLs.
-        /// It is the same as <see cref="GetString(string, string)">GetString(name,ResourceFileRoot)</see> method
+        /// It is the same as <see cref="GetString(string, string)">GetString(name,ResourceFileRoot)</see> method,
         /// but it disables the ShowMissingKey flag, so even in testing scenarios, the correct string
         /// is returned.
         /// </remarks>
         public static string GetStringUrl(string key, string resourceFileRoot)
         {
-            return GetString(key, resourceFileRoot, PortalController.Instance.GetCurrentPortalSettings(), null, true);
+            return GetString(key, resourceFileRoot, PortalSettings.Current, null, true);
         }
 
-        /// <summary>this function will escape reserved character fields to their "safe" javascript equivalents.</summary>
+        /// <summary>this function will escape reserved character fields to their "safe" JavaScript equivalents.</summary>
         /// <param name="unsafeString">The string to be parsed for unsafe characters.</param>
-        /// <returns>the string that is safe to use in a javascript function.</returns>
+        /// <returns>the string that is safe to use in a JavaScript function.</returns>
         public static string GetSafeJSString(string unsafeString)
         {
             if (string.IsNullOrEmpty(unsafeString))
@@ -1110,7 +1110,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns>A sequence of new <see cref="ListItem"/> instances.</returns>
         public static IEnumerable<ListItem> LoadCultureInListItems(CultureDropDownTypes displayType, string selectedValue, string filter, bool host)
         {
-            PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var objPortalSettings = PortalController.Instance.GetCurrentSettings();
             Dictionary<string, Locale> enabledLanguages;
             if (host)
             {
@@ -1353,11 +1353,7 @@ namespace DotNetNuke.Services.Localization
                                 var newDefaultAlias = portalAliases.SingleOrDefault(a => a.IsPrimary && a.CultureCode == string.Empty);
                                 if (newDefaultAlias != null)
                                 {
-                                    var settings = PortalController.Instance.GetCurrentPortalSettings();
-                                    if (settings != null)
-                                    {
-                                        settings.PortalAlias = newDefaultAlias;
-                                    }
+                                    PortalSettings.Current?.PortalAlias = newDefaultAlias;
                                 }
                             }
                         }
@@ -1378,7 +1374,7 @@ namespace DotNetNuke.Services.Localization
                 EventLogController.Instance.AddLog(
                     "portalID/languageID",
                     portalID + "/" + languageID,
-                    PortalController.Instance.GetCurrentPortalSettings(),
+                    PortalController.Instance.GetCurrentSettings(),
                     UserController.Instance.GetCurrentUserInfo().UserID,
                     EventLogController.EventLogType.LANGUAGETOPORTAL_DELETED);
 
@@ -1417,12 +1413,12 @@ namespace DotNetNuke.Services.Localization
             if (locale.LanguageId == Null.NullInteger)
             {
                 locale.LanguageId = DataProvider.Instance().AddLanguage(locale.Code, locale.Text, locale.Fallback, UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_CREATED);
+                EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_CREATED);
             }
             else
             {
                 DataProvider.Instance().UpdateLanguage(locale.LanguageId, locale.Code, locale.Text, locale.Fallback, UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_UPDATED);
+                EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_UPDATED);
             }
 
             if (clearCache)

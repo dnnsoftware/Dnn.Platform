@@ -928,8 +928,9 @@ namespace DotNetNuke.UI.UserControls
                 var fileManager = FileManager.Instance;
                 var folderManager = FolderManager.Instance;
 
-                var settings = PortalController.Instance.GetCurrentPortalSettings();
-                var portalId = (settings.ActiveTab.ParentId == settings.SuperTabId) ? Null.NullInteger : settings.PortalId;
+                var settings = PortalController.Instance.GetCurrentSettings();
+                var currentPage = TabController.CurrentPage;
+                var portalId = (currentPage.ParentId == settings.SuperTabId) ? Null.NullInteger : settings.PortalId;
 
                 var fileName = Path.GetFileName(this.txtFile.PostedFile.FileName);
                 var folderPath = Globals.GetSubFolderPath(parentFolderName.Replace("/", @"\") + fileName, portalId);
@@ -1495,7 +1496,8 @@ namespace DotNetNuke.UI.UserControls
 
                         this.cboTabs.Items.Clear();
 
-                        PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+                        var currentPage = TabController.CurrentPage;
+                        var settings = PortalController.Instance.GetCurrentSettings();
                         this.cboTabs.DataSource = TabController.GetPortalTabs(settings.PortalId, Null.NullInteger, !this.Required, "none available", true, false, false, true, false);
                         this.cboTabs.DataBind();
                         if (this.cboTabs.Items.FindByValue(url) != null)
@@ -1503,9 +1505,9 @@ namespace DotNetNuke.UI.UserControls
                             this.cboTabs.Items.FindByValue(url).Selected = true;
                         }
 
-                        if (!this.IncludeActiveTab && this.cboTabs.Items.FindByValue(settings.ActiveTab.TabID.ToString(CultureInfo.InvariantCulture)) != null)
+                        if (!this.IncludeActiveTab && this.cboTabs.Items.FindByValue(currentPage.TabID.ToString(CultureInfo.InvariantCulture)) != null)
                         {
-                            this.cboTabs.Items.FindByValue(settings.ActiveTab.TabID.ToString(CultureInfo.InvariantCulture)).Attributes.Add("disabled", "disabled");
+                            this.cboTabs.Items.FindByValue(currentPage.TabID.ToString(CultureInfo.InvariantCulture)).Attributes.Add("disabled", "disabled");
                         }
 
                         break;

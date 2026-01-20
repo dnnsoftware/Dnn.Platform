@@ -75,7 +75,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         /// <summary>Gets the current Portal Settings.</summary>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        protected PortalSettings PortalSettings => PortalSettings.Current;
 
         /// <summary>Gets the User mode of the Control Panel.</summary>
         /// <value>A Boolean.</value>
@@ -98,7 +98,7 @@ namespace DotNetNuke.UI.ControlPanels
                 }
             }
 
-            return PortalController.Instance.GetCurrentPortalSettings().ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && isModuleAdmin;
+            return PortalSettings.Current.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && isModuleAdmin;
         }
 
         internal static bool IsPageAdminInternal()

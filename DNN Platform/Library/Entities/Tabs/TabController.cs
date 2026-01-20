@@ -125,7 +125,7 @@ namespace DotNetNuke.Entities.Tabs
 
                     EventLogController.Instance.AddLog(
                         tab,
-                        PortalController.Instance.GetCurrentPortalSettings(),
+                        PortalController.Instance.GetCurrentSettings(),
                         UserController.Instance.GetCurrentUserInfo().UserID,
                         string.Empty,
                         EventLogController.EventLogType.TAB_UPDATED);
@@ -1236,7 +1236,7 @@ namespace DotNetNuke.Entities.Tabs
             EventLogController.Instance.AddLog(
                 "tabUrl.TabId",
                 tabUrl.TabId.ToString(CultureInfo.InvariantCulture),
-                PortalController.Instance.GetCurrentPortalSettings(),
+                PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.TABURL_DELETED);
             if (clearCache)
@@ -1251,9 +1251,9 @@ namespace DotNetNuke.Entities.Tabs
         /// <inheritdoc />
         public bool DeleteTranslatedTabs(int portalId, string cultureCode, bool clearCache)
         {
-            if (PortalController.Instance.GetCurrentPortalSettings() != null)
+            if (PortalController.Instance.GetCurrentSettings() != null)
             {
-                var defaultLanguage = PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage;
+                var defaultLanguage = PortalController.Instance.GetCurrentSettings().DefaultLanguage;
                 if (cultureCode != defaultLanguage)
                 {
                     this.dataProvider.DeleteTranslatedTabs(portalId, cultureCode);
@@ -1888,7 +1888,7 @@ namespace DotNetNuke.Entities.Tabs
             EventLogController.Instance.AddLog(
                 "tabUrl",
                 tabUrl.ToString(),
-                PortalController.Instance.GetCurrentPortalSettings(),
+                PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 saveLog);
 
@@ -2003,7 +2003,7 @@ namespace DotNetNuke.Entities.Tabs
 
             EventLogController.Instance.AddLog(
                 updatedTab,
-                PortalController.Instance.GetCurrentPortalSettings(),
+                PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 string.Empty,
                 EventLogController.EventLogType.TAB_UPDATED);
@@ -2395,7 +2395,7 @@ namespace DotNetNuke.Entities.Tabs
 
             EventLogController.Instance.AddLog(
                 tab,
-                PortalController.Instance.GetCurrentPortalSettings(),
+                PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 string.Empty,
                 EventLogController.EventLogType.TAB_CREATED);
@@ -2403,7 +2403,7 @@ namespace DotNetNuke.Entities.Tabs
             // Add Tab Permissions
             TabPermissionController.SaveTabPermissions(tab);
 
-            // Add TabSettings - use Try/catch as tabs are added during upgrade ptocess and the sproc may not exist
+            // Add TabSettings - use Try/catch as tabs are added during upgrade process and the sproc may not exist
             try
             {
                 this.UpdateTabSettings(ref tab);
@@ -2596,11 +2596,10 @@ namespace DotNetNuke.Entities.Tabs
 
         private void CreateTabRedirect(TabInfo tab)
         {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-
+            var settings = PortalSettings.Current;
             if (settings != null && tab.TabID != settings.HomeTabId && tab.TabUrls.All(u => u.HttpStatus != "200"))
             {
-                var domainRoot = TestableGlobals.Instance.AddHTTP(settings.PortalAlias.HTTPAlias);
+                var domainRoot = TestableGlobals.Instance.AddHTTP(((IPortalAliasInfo)settings.PortalAlias).HttpAlias);
 
                 if (!string.IsNullOrEmpty(domainRoot))
                 {
@@ -2856,7 +2855,7 @@ namespace DotNetNuke.Entities.Tabs
             EventLogController.Instance.AddLog(
                 "TabID",
                 tabId.ToString(CultureInfo.InvariantCulture),
-                PortalController.Instance.GetCurrentPortalSettings(),
+                PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.TAB_DELETED);
 

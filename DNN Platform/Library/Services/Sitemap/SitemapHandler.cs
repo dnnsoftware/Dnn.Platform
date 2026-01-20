@@ -26,12 +26,11 @@ namespace DotNetNuke.Services.Sitemap
             try
             {
                 HttpResponse response = context.Response;
-                PortalSettings ps = PortalController.Instance.GetCurrentPortalSettings();
 
                 response.ContentType = "text/xml";
                 response.ContentEncoding = Encoding.UTF8;
 
-                var builder = new SitemapBuilder(ps);
+                var builder = new SitemapBuilder(PortalSettings.Current);
 
                 if (context.Request.QueryString["i"] != null)
                 {

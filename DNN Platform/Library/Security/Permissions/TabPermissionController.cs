@@ -180,7 +180,7 @@ namespace DotNetNuke.Security.Permissions
         public static void DeleteTabPermissionsByUser(UserInfo user)
         {
             Provider.DeleteTabPermissionsByUser(user);
-            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABPERMISSION_DELETED);
+            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABPERMISSION_DELETED);
             DataCache.ClearTabPermissionsCache(user.PortalID);
         }
 
@@ -194,16 +194,16 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>HasTabPermission checks whether the current user has a specific Tab Permission.</summary>
-        /// <remarks>If you pass in a comma delimited list of permissions (eg "ADD,DELETE"), this will return true if the user has any one of the permissions.</remarks>
+        /// <remarks>If you pass in a comma-delimited list of permissions (eg "ADD,DELETE"), this will return true if the user has any one of the permissions.</remarks>
         /// <param name="permissionKey">The Permission to check.</param>
         /// <returns><see langword="true"/> if the current user has the given permission, otherwise <see langword="false"/>.</returns>
         public static bool HasTabPermission(string permissionKey)
         {
-            return HasTabPermission(PortalController.Instance.GetCurrentPortalSettings().ActiveTab.TabPermissions, permissionKey);
+            return HasTabPermission(TabController.CurrentPage.TabPermissions, permissionKey);
         }
 
         /// <summary>HasTabPermission checks whether the current user has a specific Tab Permission.</summary>
-        /// <remarks>If you pass in a comma delimited list of permissions (eg "ADD,DELETE"), this will return true if the user has any one of the permissions.</remarks>
+        /// <remarks>If you pass in a comma-delimited list of permissions (eg "ADD,DELETE"), this will return true if the user has any one of the permissions.</remarks>
         /// <param name="tabPermissions">The Permissions for the Tab.</param>
         /// <param name="permissionKey">The Permission(s) to check.</param>
         /// <returns><see langword="true"/> if the current user has the given permission, otherwise <see langword="false"/>.</returns>
@@ -217,7 +217,7 @@ namespace DotNetNuke.Security.Permissions
         public static void SaveTabPermissions(TabInfo tab)
         {
             Provider.SaveTabPermissions(tab);
-            EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABPERMISSION_UPDATED);
+            EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABPERMISSION_UPDATED);
             DataCache.ClearTabPermissionsCache(tab.PortalID);
         }
 

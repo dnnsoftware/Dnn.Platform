@@ -77,7 +77,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>Gets the portal settings for the current portal.</summary>
         // TODO: In v11 we should replace this by IPortalSettings and make it private or instantiate PortalSettings in the constructor.
         [Obsolete("Deprecated in DotNetNuke 9.8.1. This should not have been public. Scheduled removal in v11.0.0.")]
-        internal PortalSettings HostPortalSettings => this.hostPortalSettings ??= PortalController.Instance.GetCurrentPortalSettings();
+        internal PortalSettings HostPortalSettings => this.hostPortalSettings ??= PortalSettings.Current;
 
         /// <summary>Gets or sets the root node.</summary>
         internal MenuNode RootNode { get; set; }

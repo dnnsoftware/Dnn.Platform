@@ -847,7 +847,7 @@ namespace DotNetNuke.Security.Roles
         private static void SendNotification(IRoleController roleController, IUserController userController, UserInfo user, RoleInfo role, PortalSettings portalSettings, UserRoleActions action)
         {
             var profile = userController.GetUserById(user.PortalID, user.UserID).Profile;
-            var custom = new ArrayList { role.RoleName, role.Description };
+            var custom = new ArrayList { role.RoleName, role.Description, };
             switch (action)
             {
                 case UserRoleActions.Add:
@@ -890,7 +890,7 @@ namespace DotNetNuke.Security.Roles
                 Status = MessageStatusType.Unread,
             };
 
-            // _messagingController.SaveMessage(_message);
+            ////_messagingController.SaveMessage(_message);
             Mail.SendEmail(portalSettings.Email, user.Email, message.Subject, message.Body);
         }
 

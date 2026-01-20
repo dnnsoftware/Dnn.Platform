@@ -9,6 +9,7 @@ namespace DotNetNuke.UI
     using System.Globalization;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
@@ -208,14 +209,15 @@ namespace DotNetNuke.UI
         /// <remarks>Returns a subset of navigation nodes based off of passed in starting node id and depth.</remarks>
         public static DNNNodeCollection GetNavigationNodes(DNNNode objRootNode, ToolTipSource eToolTips, int intStartTabId, int intDepth, int intNavNodeOptions)
         {
-            var objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var currentPage = TabController.CurrentPage;
+            var objPortalSettings = PortalController.Instance.GetCurrentSettings();
             var objBreadCrumbs = new Hashtable();
             var objTabLookup = new Hashtable();
             var objRootNodes = objRootNode.DNNNodes;
             var intLastBreadCrumbId = 0;
 
             //--- cache breadcrumbs in hashtable so we can easily set flag on node denoting it as a breadcrumb node (without looping multiple times) ---
-            foreach (TabInfo tabInfo in objPortalSettings.ActiveTab.BreadCrumbs)
+            foreach (TabInfo tabInfo in currentPage.BreadCrumbs)
             {
                 objBreadCrumbs.Add(tabInfo.TabID, 1);
                 intLastBreadCrumbId = tabInfo.TabID;
@@ -334,11 +336,11 @@ namespace DotNetNuke.UI
         /// <param name="objTab">Tab to base DNNNode off of.</param>
         /// <param name="objNodes">Node collection to append new node to.</param>
         /// <param name="objBreadCrumbs">Hashtable of breadcrumb IDs to efficiently determine node's BreadCrumb property.</param>
-        /// <param name="objPortalSettings">Portal settings object to determine if node is selected.</param>
+        /// <param name="activeTabId">The ID of the current page.</param>
         /// <param name="eToolTips">The tool-tip source.</param>
         /// <param name="nodesLookup">A dictionary of nodes indexed by ID.</param>
         /// <remarks>Logic moved to separate sub to make GetNavigationNodes cleaner.</remarks>
-        private static void AddNode(TabInfo objTab, DNNNodeCollection objNodes, Hashtable objBreadCrumbs, PortalSettings objPortalSettings, ToolTipSource eToolTips, Dictionary<string, DNNNode> nodesLookup)
+        private static void AddNode(TabInfo objTab, DNNNodeCollection objNodes, Hashtable objBreadCrumbs, int activeTabId, ToolTipSource eToolTips, Dictionary<string, DNNNode> nodesLookup)
         {
             var objNode = new DNNNode();
 
@@ -354,7 +356,7 @@ namespace DotNetNuke.UI
                 if (objBreadCrumbs.Contains(objTab.TabID))
                 {
                     objNode.BreadCrumb = true;
-                    if (objTab.TabID == objPortalSettings.ActiveTab.TabID)
+                    if (objTab.TabID == activeTabId)
                     {
                         objNode.Selected = true;
                     }
@@ -500,7 +502,7 @@ namespace DotNetNuke.UI
 
         private static void ProcessTab(DNNNode objRootNode, TabInfo objTab, Hashtable objTabLookup, Hashtable objBreadCrumbs, int intLastBreadCrumbId, ToolTipSource eToolTips, int intStartTabId, int intDepth, int intNavNodeOptions, Dictionary<string, DNNNode> nodesLookup)
         {
-            PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var objPortalSettings = PortalController.Instance.GetCurrentSettings();
             bool showHidden = (intNavNodeOptions & (int)NavNodeOptions.IncludeHiddenNodes) == (int)NavNodeOptions.IncludeHiddenNodes;
 
             // based off of tab properties, is it shown
@@ -521,7 +523,7 @@ namespace DotNetNuke.UI
                         // if we are including parent, make sure there is one, then add
                         if (objTabLookup[objTab.ParentId] != null)
                         {
-                            AddNode((TabInfo)objTabLookup[objTab.ParentId], objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
+                            AddNode((TabInfo)objTabLookup[objTab.ParentId], objParentNodes, objBreadCrumbs, TabController.CurrentPage.TabID, eToolTips, nodesLookup);
                             if (nodesLookup.TryGetValue(objTab.ParentId.ToString(CultureInfo.InvariantCulture), out objParentNode))
                             {
                                 objParentNodes = objParentNode.DNNNodes;
@@ -532,13 +534,13 @@ namespace DotNetNuke.UI
                     if ((intNavNodeOptions & (int)NavNodeOptions.IncludeSelf) != 0)
                     {
                         // if we are including our self (starting tab) then add
-                        AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
+                        AddNode(objTab, objParentNodes, objBreadCrumbs, TabController.CurrentPage.TabID, eToolTips, nodesLookup);
                     }
                 }
                 else if (((intNavNodeOptions & (int)NavNodeOptions.IncludeSiblings) != 0) && IsTabSibling(objTab, intStartTabId, objTabLookup))
                 {
                     // is this a sibling of the starting node, and we are including siblings, then add it
-                    AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
+                    AddNode(objTab, objParentNodes, objBreadCrumbs, TabController.CurrentPage.TabID, eToolTips, nodesLookup);
                 }
                 else
                 {
@@ -559,14 +561,14 @@ namespace DotNetNuke.UI
                             }
                             else
                             {
-                                AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
+                                AddNode(objTab, objParentNodes, objBreadCrumbs, TabController.CurrentPage.TabID, eToolTips, nodesLookup);
                             }
                         }
                     }
                     else if ((intNavNodeOptions & (int)NavNodeOptions.IncludeSelf) == 0 && objTab.ParentId == intStartTabId)
                     {
                         // if not including self and parent is the start id then add
-                        AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
+                        AddNode(objTab, objParentNodes, objBreadCrumbs, TabController.CurrentPage.TabID, eToolTips, nodesLookup);
                     }
                 }
             }

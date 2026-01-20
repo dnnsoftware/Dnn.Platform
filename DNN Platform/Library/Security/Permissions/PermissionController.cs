@@ -103,7 +103,7 @@ namespace DotNetNuke.Security.Permissions
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public int AddPermission(IPermissionDefinitionInfo permission)
         {
-            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_CREATED);
+            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_CREATED);
             var permissionId = Convert.ToInt32(Provider.AddPermission(
                 permission.PermissionCode,
                 permission.ModuleDefId,
@@ -122,7 +122,7 @@ namespace DotNetNuke.Security.Permissions
             EventLogController.Instance.AddLog(
                 "PermissionID",
                 permissionID.ToString(CultureInfo.InvariantCulture),
-                PortalController.Instance.GetCurrentPortalSettings(),
+                PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.PERMISSION_DELETED);
             Provider.DeletePermission(permissionID);
@@ -167,7 +167,7 @@ namespace DotNetNuke.Security.Permissions
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void UpdatePermission(IPermissionDefinitionInfo permission)
         {
-            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_UPDATED);
+            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_UPDATED);
             Provider.UpdatePermission(
                 permission.PermissionId,
                 permission.PermissionCode,

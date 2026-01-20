@@ -101,7 +101,7 @@ namespace DotNetNuke.UI.Containers
         /// <summary>Gets the Portal Settings for the current Portal.</summary>
         /// <returns>A PortalSettings object.</returns>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        protected PortalSettings PortalSettings => PortalSettings.Current;
 
         public void SetModuleConfiguration(ModuleInfo configuration)
         {
@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.Containers
             this.ProcessModule();
         }
 
-        /// <summary>OnInit runs when the Container is initialised.</summary>
+        /// <summary>OnInit runs when the Container is initialized.</summary>
         /// <param name="e">The event arguments.</param>
         protected override void OnInit(EventArgs e)
         {

@@ -126,7 +126,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                 return null;
             }
 
-            var currentPortalSetting = PortalController.Instance.GetCurrentPortalSettings();
+            var currentPortalSetting = PortalController.Instance.GetCurrentSettings();
 
             if (
                 currentPortalSetting == portalSettings ||
@@ -184,14 +184,14 @@ namespace Dnn.PersonaBar.Prompt.Components
         /// <inheritdoc/>
         public ModuleInfo GetModule(PortalSettings portalSettings, int moduleId, int? pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
-            message = default(KeyValuePair<HttpStatusCode, string>);
+            message = default;
             if (pageId.HasValue)
             {
                 var module = ModuleController.Instance.GetModule(moduleId, pageId.Value, true);
 
                 if (module != null)
                 {
-                    var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
+                    var currentPortal = PortalController.Instance.GetCurrentSettings();
 
                     if (
                         portalSettings == currentPortal ||

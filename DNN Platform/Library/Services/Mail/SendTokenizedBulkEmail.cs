@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.Mail
     using System.Text;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
@@ -43,7 +44,7 @@ namespace DotNetNuke.Services.Mail
         private UserInfo replyToUser;
         private bool smtpEnableSSL;
         private TokenReplace tokenReplace;
-        private PortalSettings portalSettings;
+        private IPortalSettings portalSettings;
         private UserInfo sendingUser;
         private string body = string.Empty;
         private string confirmBodyHTML;
@@ -164,14 +165,13 @@ namespace DotNetNuke.Services.Mail
                 }
                 else
                 {
-                    PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                    this.strSenderLanguage = portalSettings.DefaultLanguage;
+                    this.strSenderLanguage = PortalController.Instance.GetCurrentSettings().DefaultLanguage;
                 }
             }
         }
 
         /// <summary>Gets or sets email of the user to be shown in the mail as replyTo address.</summary>
-        /// <remarks>if not set explicitely, sendingUser will be used.</remarks>
+        /// <remarks>if not set explicitly, sendingUser will be used.</remarks>
         public UserInfo ReplyTo
         {
             get
@@ -523,8 +523,8 @@ namespace DotNetNuke.Services.Mail
         /// <summary>internal method to initialize used objects, depending on parameters of construct method.</summary>
         private void Initialize()
         {
-            this.portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            this.PortalAlias = this.portalSettings.PortalAlias.HTTPAlias;
+            this.portalSettings = PortalController.Instance.GetCurrentSettings();
+            this.PortalAlias = ((IPortalAliasInfo)PortalSettings.Current.PortalAlias).HttpAlias;
             this.SendingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
             this.tokenReplace = new TokenReplace();
             this.confirmBodyHTML = Localization.GetString("EMAIL_BulkMailConf_Html_Body", Localization.GlobalResourceFile, this.strSenderLanguage);

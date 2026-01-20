@@ -239,7 +239,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         private static string GetCacheFolder()
         {
-            int portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
+            int portalId = PortalController.Instance.GetCurrentSettings().PortalId;
             return GetCacheFolder(portalId);
         }
 

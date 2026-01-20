@@ -27,13 +27,13 @@ namespace DotNetNuke.Services.FileSystem
         public bool IsReusable => true;
 
         /// <summary>
-        /// This handler handles requests for LinkClick.aspx, but only those specifc
+        /// This handler handles requests for LinkClick.aspx, but only those specific
         /// to file serving.
         /// </summary>
-        /// <param name="context">System.Web.HttpContext).</param>
+        /// <param name="context">System.Web.HttpContext.</param>
         public void ProcessRequest(HttpContext context)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var tabId = -1;
             var moduleId = -1;
             try
@@ -270,7 +270,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception)
             {
-                UrlUtils.Handle404Exception(context.Response, PortalController.Instance.GetCurrentPortalSettings());
+                UrlUtils.Handle404Exception(context.Response, PortalSettings.Current);
             }
         }
     }

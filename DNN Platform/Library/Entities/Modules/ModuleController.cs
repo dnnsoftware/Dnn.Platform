@@ -702,7 +702,7 @@ namespace DotNetNuke.Entities.Modules
             EventLogController.Instance.AddLog(
                 "ModuleId",
                 moduleId.ToString(CultureInfo.InvariantCulture),
-                PortalController.Instance.GetCurrentPortalSettings(),
+                PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.MODULE_DELETED);
 
@@ -1291,7 +1291,7 @@ namespace DotNetNuke.Entities.Modules
                 termController.AddTermToContent(term, module);
             }
 
-            EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.MODULE_UPDATED);
+            EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.MODULE_UPDATED);
 
             // save module permissions
             ModulePermissionController.SaveModulePermissions(module);
@@ -1332,7 +1332,7 @@ namespace DotNetNuke.Entities.Modules
 
                 DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.SingleTabModuleCacheKey, module.TabModuleID));
 
-                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.TABMODULE_UPDATED);
+                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.TABMODULE_UPDATED);
 
                 if (hasModuleOrderOrPaneChanged)
                 {
@@ -2227,7 +2227,7 @@ namespace DotNetNuke.Entities.Modules
                 var contentController = Util.GetContentController();
                 contentController.UpdateContentItem(module);
 
-                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
+                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
 
                 // set module permissions
                 ModulePermissionController.SaveModulePermissions(module);

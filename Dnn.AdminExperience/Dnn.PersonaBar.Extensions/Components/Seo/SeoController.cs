@@ -25,7 +25,7 @@ namespace Dnn.PersonaBar.Seo.Components
         public SeoController(IApplicationStatusInfo applicationStatusInfo)
         {
             this.applicationStatusInfo = applicationStatusInfo;
-            this.portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            this.portalSettings = PortalSettings.Current;
         }
 
         public IEnumerable<SitemapProvider> GetSitemapProviders()

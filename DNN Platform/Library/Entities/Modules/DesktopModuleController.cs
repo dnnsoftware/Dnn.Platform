@@ -11,6 +11,7 @@ namespace DotNetNuke.Entities.Modules
     using System.Linq;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -29,6 +30,8 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Upgrade;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>DesktopModuleController provides the Business Layer for Desktop Modules.</summary>
     public class DesktopModuleController
@@ -173,8 +176,17 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="clearCache">A flag that determines whether to clear the host cache.</param>
         /// <returns>The desktop module ID.</returns>
         public static int SaveDesktopModule(DesktopModuleInfo desktopModule, bool saveChildren, bool clearCache)
+            => SaveDesktopModule(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), desktopModule, saveChildren, clearCache);
+
+        /// <summary>SaveDesktopModule saves the Desktop Module to the database.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="desktopModule">The Desktop Module to save.</param>
+        /// <param name="saveChildren">A flag that determines whether the child objects are also saved.</param>
+        /// <param name="clearCache">A flag that determines whether to clear the host cache.</param>
+        /// <returns>The desktop module ID.</returns>
+        public static int SaveDesktopModule(IEventLogger eventLogger, DesktopModuleInfo desktopModule, bool saveChildren, bool clearCache)
         {
-            return SaveDesktopModule(desktopModule, saveChildren, clearCache, true);
+            return SaveDesktopModule(eventLogger, desktopModule, saveChildren, clearCache, true);
         }
 
         public static int AddDesktopModuleToPortal(int portalID, DesktopModuleInfo desktopModule, DesktopModulePermissionCollection permissions, bool clearCache)
@@ -412,7 +424,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        internal static int SaveDesktopModule(DesktopModuleInfo desktopModule, bool saveChildren, bool clearCache, bool saveTerms)
+        internal static int SaveDesktopModule(IEventLogger eventLogger, DesktopModuleInfo desktopModule, bool saveChildren, bool clearCache, bool saveTerms)
         {
             var desktopModuleID = desktopModule.DesktopModuleID;
             if (desktopModuleID == Null.NullInteger)
@@ -437,7 +449,7 @@ namespace DotNetNuke.Entities.Modules
                     UserController.Instance.GetCurrentUserInfo().UserID,
                     desktopModule.AdminPage,
                     desktopModule.HostPage);
-                EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.DESKTOPMODULE_CREATED);
+                eventLogger.AddLog(desktopModule, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.DESKTOPMODULE_CREATED);
             }
             else
             {
@@ -479,7 +491,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                 }
 
-                EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.DESKTOPMODULE_UPDATED);
+                eventLogger.AddLog(desktopModule, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.DESKTOPMODULE_UPDATED);
             }
 
             if (saveChildren)

@@ -9,6 +9,7 @@ namespace DotNetNuke.UI.Containers
     using System.Web;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
@@ -22,10 +23,10 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
-    /// <summary>ActionManager is a helper class that provides common Action Behaviours that can be used by any <see cref="IActionControl"/> implementation.</summary>
+    /// <summary>ActionManager is a helper class that provides common Action Behaviors that can be used by any <see cref="IActionControl"/> implementation.</summary>
     public class ActionManager
     {
-        private readonly PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+        private readonly IPortalSettings portalSettings = PortalController.Instance.GetCurrentSettings();
         private readonly HttpRequest request = HttpContext.Current.Request;
         private readonly HttpResponse response = HttpContext.Current.Response;
 
@@ -40,13 +41,7 @@ namespace DotNetNuke.UI.Containers
         public IActionControl ActionControl { get; set; }
 
         /// <summary>Gets the ModuleInstanceContext instance that is connected to this ActionManager instance.</summary>
-        protected ModuleInstanceContext ModuleContext
-        {
-            get
-            {
-                return this.ActionControl.ModuleControl.ModuleContext;
-            }
-        }
+        protected ModuleInstanceContext ModuleContext => this.ActionControl.ModuleControl.ModuleContext;
 
         /// <summary>DisplayControl determines whether the associated Action control should be displayed.</summary>
         /// <param name="objNodes">The nav nodes.</param>

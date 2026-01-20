@@ -453,7 +453,7 @@ namespace DotNetNuke.Entities.Host
             {
                 if (SMTPPortalEnabled)
                 {
-                    return PortalController.GetEncryptedString("SMTPPassword", PortalController.Instance.GetCurrentPortalSettings().PortalId, Config.GetDecryptionkey());
+                    return PortalController.GetEncryptedString("SMTPPassword", PortalController.Instance.GetCurrentSettings().PortalId, Config.GetDecryptionkey());
                 }
                 else
                 {

@@ -54,9 +54,9 @@ namespace DotNetNuke.UI.WebControls
                 ProfilePropertyDefinitionCollection definitions = editor.DataSource as ProfilePropertyDefinitionCollection;
                 ProfilePropertyDefinition definition = definitions[fieldName];
 
-                if (definition != null && definition.ReadOnly && (editor.Editor.EditMode == PropertyEditorMode.Edit))
+                if (definition is { ReadOnly: true, } && editor.Editor.EditMode == PropertyEditorMode.Edit)
                 {
-                    PortalSettings ps = PortalController.Instance.GetCurrentPortalSettings();
+                    var ps = PortalController.Instance.GetCurrentSettings();
                     if (!PortalSecurity.IsInRole(ps.AdministratorRoleName))
                     {
                         editor.Editor.EditMode = PropertyEditorMode.View;

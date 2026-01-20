@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Modules
         public static void DeleteSkinControl(SkinControlInfo skinControl)
         {
             DataProvider.DeleteSkinControl(skinControl.SkinControlID);
-            EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_DELETED);
+            EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_DELETED);
         }
 
         /// <summary>GetSkinControl gets a single Skin Control from the database.</summary>
@@ -70,7 +70,7 @@ namespace DotNetNuke.Entities.Modules
                     skinControl.ControlSrc,
                     skinControl.SupportsPartialRendering,
                     UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_CREATED);
+                EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_CREATED);
             }
             else
             {
@@ -82,7 +82,7 @@ namespace DotNetNuke.Entities.Modules
                     skinControl.ControlSrc,
                     skinControl.SupportsPartialRendering,
                     UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_UPDATED);
+                EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_UPDATED);
             }
 
             return skinControlID;

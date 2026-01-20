@@ -64,7 +64,7 @@ namespace DotNetNuke.UI.Skins
 
         /// <summary>Gets the PortalSettings of the Portal.</summary>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        protected PortalSettings PortalSettings => PortalSettings.Current;
 
         /// <summary>Gets or sets the name (ID) of the Pane.</summary>
         protected string Name { get; set; }

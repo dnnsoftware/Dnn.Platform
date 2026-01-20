@@ -15,6 +15,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
     using System.Web;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -27,25 +28,9 @@ namespace Dnn.PersonaBar.AdminLogs.Components
     {
         private Dictionary<string, LogTypeInfo> logTypeDictionary;
 
-        private PortalSettings portalSettings;
+        protected Dictionary<string, LogTypeInfo> LogTypeDictionary => this.logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
 
-        protected Dictionary<string, LogTypeInfo> LogTypeDictionary
-        {
-            get
-            {
-                this.logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
-                return this.logTypeDictionary;
-            }
-        }
-
-        private PortalSettings PortalSettings
-        {
-            get
-            {
-                this.portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                return this.portalSettings;
-            }
-        }
+        private static IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         public LogTypeInfo GetMyLogType(string logTypeKey)
         {
@@ -93,6 +78,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             return str.ToString();
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void ClearLog()
         {
             LogController.Instance.ClearLog();
@@ -101,7 +87,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             EventLogController.Instance.AddLog(
                 Localization.GetString("LogCleared", Constants.LocalResourcesFile),
                 Localization.GetString("Username", Constants.LocalResourcesFile) + ":" + UserController.Instance.GetCurrentUserInfo().Username,
-                this.PortalSettings,
+                PortalSettings,
                 -1,
                 EventLogController.EventLogType.ADMIN_ALERT);
         }
@@ -229,18 +215,19 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             return LogController.Instance.GetLogTypeConfigInfoByID(logTypeConfigId);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string EmailLogItems(string subject, string fromEmailAddress, string toEmailAddress, string message, IEnumerable<string> logItemIds, out string error)
         {
             if (string.IsNullOrEmpty(subject))
             {
-                subject = this.PortalSettings.PortalName + @" Exceptions";
+                subject = PortalSettings.PortalName + @" Exceptions";
             }
 
             string returnMsg;
             if (Globals.EmailValidatorRegex.IsMatch(fromEmailAddress))
             {
                 const string tempFileName = "errorlog.xml";
-                var filePath = this.PortalSettings.HomeDirectoryMapPath + tempFileName;
+                var filePath = PortalSettings.HomeDirectoryMapPath + tempFileName;
                 var xmlDoc = GetExceptions(logItemIds);
                 xmlDoc.Save(filePath);
 

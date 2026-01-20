@@ -186,8 +186,8 @@ namespace Dnn.PersonaBar.Pages.Components.Security
 
         private TabInfo GetTabById(int pageId)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return pageId <= 0 ? new TabInfo { PortalID = portalSettings.PortalId } : this.tabController.GetTab(pageId, portalSettings.PortalId, false);
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
+            return pageId <= 0 ? new TabInfo { PortalID = portalSettings.PortalId, } : this.tabController.GetTab(pageId, portalSettings.PortalId, false);
         }
     }
 }

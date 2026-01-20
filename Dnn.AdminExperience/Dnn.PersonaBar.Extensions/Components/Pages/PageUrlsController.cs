@@ -12,6 +12,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
     using Dnn.PersonaBar.Pages.Components.Dto;
     using Dnn.PersonaBar.Pages.Services.Dto;
+
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -52,10 +54,10 @@ namespace Dnn.PersonaBar.Pages.Components
         /// <inheritdoc/>
         public PageUrlResult CreateCustomUrl(SaveUrlDto dto, TabInfo tab)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            PortalInfo aliasPortal = new PortalAliasController().GetPortalByPortalAliasID(dto.SiteAliasKey);
+            var portalSettings = PortalSettings.Current;
+            IPortalInfo aliasPortal = new PortalAliasController().GetPortalByPortalAliasID(dto.SiteAliasKey);
 
-            if (aliasPortal != null && portalSettings.PortalId != aliasPortal.PortalID)
+            if (aliasPortal != null && portalSettings.PortalId != aliasPortal.PortalId)
             {
                 return new PageUrlResult
                 {
@@ -66,12 +68,11 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
-            bool modified;
 
             // Clean Url
             var options = UrlRewriterUtils.ExtendOptionsForCustomURLs(UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(portalSettings.PortalId)));
 
-            urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
+            urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out var modified);
             if (modified)
             {
                 return new PageUrlResult
@@ -178,9 +179,8 @@ namespace Dnn.PersonaBar.Pages.Components
         /// <inheritdoc/>
         public PageUrlResult UpdateCustomUrl(SaveUrlDto dto, TabInfo tab)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalSettings.Current;
             var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
-            bool modified;
 
             // Clean Url
             var options =
@@ -188,7 +188,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(portalSettings.PortalId)));
 
             // now clean the path
-            urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
+            urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out var modified);
             if (modified)
             {
                 return new PageUrlResult
@@ -309,7 +309,7 @@ namespace Dnn.PersonaBar.Pages.Components
         /// <inheritdoc/>
         public PageUrlResult DeleteCustomUrl(int id, TabInfo tab)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var tabUrl = tab.TabUrls.SingleOrDefault(u => u.SeqNum == id);
 
             TabController.Instance.DeleteTabUrl(tabUrl, portalSettings.PortalId, true);

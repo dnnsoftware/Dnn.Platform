@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Authentication
         /// <returns>The authentication system ID.</returns>
         public static int AddAuthentication(AuthenticationInfo authSystem)
         {
-            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_CREATED);
+            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_CREATED);
             return Provider.AddAuthentication(
                 authSystem.PackageID,
                 authSystem.AuthenticationType,
@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.Authentication
                 EventLogController.Instance.AddLog(
                     "userID/authenticationType",
                     userID + "/" + authenticationType,
-                    PortalController.Instance.GetCurrentPortalSettings(),
+                    PortalController.Instance.GetCurrentSettings(),
                     UserController.Instance.GetCurrentUserInfo().UserID,
                     EventLogController.EventLogType.AUTHENTICATION_USER_CREATED);
                 return Provider.AddUserAuthentication(userID, authenticationType, authenticationToken, UserController.Instance.GetCurrentUserInfo().UserID);
@@ -66,7 +66,7 @@ namespace DotNetNuke.Services.Authentication
                 EventLogController.Instance.AddLog(
                     "userID/authenticationType already exists",
                     userID + "/" + authenticationType,
-                    PortalController.Instance.GetCurrentPortalSettings(),
+                    PortalController.Instance.GetCurrentSettings(),
                     UserController.Instance.GetCurrentUserInfo().UserID,
                     EventLogController.EventLogType.AUTHENTICATION_USER_UPDATED);
 
@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.Authentication
         public static void DeleteAuthentication(AuthenticationInfo authSystem)
         {
             Provider.DeleteAuthentication(authSystem.AuthenticationID);
-            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_DELETED);
+            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_DELETED);
         }
 
         /// <summary>GetAuthenticationService fetches a single Authentication Systems.</summary>
@@ -346,7 +346,7 @@ namespace DotNetNuke.Services.Authentication
                 authSystem.LoginControlSrc,
                 authSystem.LogoffControlSrc,
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_UPDATED);
+            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_UPDATED);
         }
 
         private static object GetAuthenticationServicesCallBack(CacheItemArgs cacheItemArgs)

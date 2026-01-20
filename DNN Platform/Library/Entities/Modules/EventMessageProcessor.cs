@@ -80,7 +80,7 @@ namespace DotNetNuke.Entities.Modules
                 switch (message.ProcessorCommand)
                 {
                     case "UpdateSupportedFeatures":
-                        UpdateSupportedFeatures(message);
+                        UpdateSupportedFeatures(this.eventLogger, message);
                         break;
                     case "UpgradeModule":
                         this.UpgradeModule(message);
@@ -103,14 +103,14 @@ namespace DotNetNuke.Entities.Modules
             return true;
         }
 
-        private static void UpdateSupportedFeatures(EventMessage message)
+        private static void UpdateSupportedFeatures(IEventLogger eventLogger, EventMessage message)
         {
             var businessControllerClass = message.Attributes["BusinessControllerClass"];
             var controllerType = Reflection.CreateType(businessControllerClass);
-            UpdateSupportedFeatures(controllerType, Convert.ToInt32(message.Attributes["DesktopModuleId"], CultureInfo.InvariantCulture));
+            UpdateSupportedFeatures(eventLogger, controllerType, Convert.ToInt32(message.Attributes["DesktopModuleId"], CultureInfo.InvariantCulture));
         }
 
-        private static void UpdateSupportedFeatures(Type controllerType, int desktopModuleId)
+        private static void UpdateSupportedFeatures(IEventLogger eventLogger, Type controllerType, int desktopModuleId)
         {
             try
             {
@@ -127,7 +127,7 @@ namespace DotNetNuke.Entities.Modules
                 desktopModule.IsPortable = typeof(IPortable).IsAssignableFrom(controllerType);
                 desktopModule.IsSearchable = typeof(ModuleSearchBase).IsAssignableFrom(controllerType);
                 desktopModule.IsUpgradeable = typeof(IUpgradeable).IsAssignableFrom(controllerType);
-                DesktopModuleController.SaveDesktopModule(desktopModule, false, false, false);
+                DesktopModuleController.SaveDesktopModule(eventLogger, desktopModule, false, false, false);
 
                 foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
                 {
@@ -198,7 +198,7 @@ namespace DotNetNuke.Entities.Modules
                 }
 
                 var desktopModuleId = Convert.ToInt32(message.Attributes["DesktopModuleId"], CultureInfo.InvariantCulture);
-                UpdateSupportedFeatures(businessControllerType, desktopModuleId);
+                UpdateSupportedFeatures(this.eventLogger, businessControllerType, desktopModuleId);
             }
             catch (Exception exc)
             {

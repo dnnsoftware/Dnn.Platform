@@ -4,21 +4,59 @@
 
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>A web API controller for new user notifications.</summary>
     [DnnAuthorize]
     public class NewUserNotificationServiceController : DnnApiController
     {
+        private readonly RoleProvider roleProvider;
+        private readonly IRoleController roleController;
+        private readonly IEventManager eventManager;
+        private readonly IPortalController portalController;
+        private readonly IUserController userController;
+        private readonly IEventLogger eventLogger;
+
+        /// <summary>Initializes a new instance of the <see cref="NewUserNotificationServiceController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public NewUserNotificationServiceController()
+            : this(null, null, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="NewUserNotificationServiceController"/> class.</summary>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="eventManager">The event manager.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public NewUserNotificationServiceController(RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger)
+        {
+            this.roleProvider = roleProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>();
+            this.roleController = roleController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>();
+            this.eventManager = eventManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventManager>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
+
         /// <summary>Authorizes a new user.</summary>
         /// <param name="postData">Information about the request.</param>
         /// <returns>A response indicating success.</returns>
@@ -39,12 +77,12 @@ namespace DotNetNuke.Web.InternalServices
             // Update User Roles if needed
             if (!user.IsSuperUser && user.IsInRole("Unverified Users") && this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
             {
-                UserController.ApproveUser(user);
+                UserController.ApproveUser(this.roleProvider, this.roleController, this.eventManager, this.portalController, this.userController, this.eventLogger, this.PortalSettings, user);
             }
 
             Mail.SendMail(user, MessageType.UserAuthorized, this.PortalSettings);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
         }
 
         /// <summary>Rejects a new user.</summary>
@@ -63,7 +101,7 @@ namespace DotNetNuke.Web.InternalServices
 
             UserController.RemoveUser(user);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
         }
 
         /// <summary>Sends a verification email to the current user.</summary>
@@ -89,7 +127,7 @@ namespace DotNetNuke.Web.InternalServices
             var message = Mail.SendMail(this.UserInfo, MessageType.UserRegistrationVerified, this.PortalSettings);
             if (string.IsNullOrEmpty(message))
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = Localization.GetSafeJSString("VerificationMailSendSuccessful", Localization.SharedResourceFile) });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = Localization.GetSafeJSString("VerificationMailSendSuccessful", Localization.SharedResourceFile), });
             }
             else
             {
@@ -101,8 +139,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             var notification = NotificationsController.Instance.GetNotification(notificationDto.NotificationId);
 
-            int userId;
-            if (!int.TryParse(notification.Context, out userId))
+            if (!int.TryParse(notification.Context, out var userId))
             {
                 return null;
             }

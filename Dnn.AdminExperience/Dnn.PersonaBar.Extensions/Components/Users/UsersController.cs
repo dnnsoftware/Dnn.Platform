@@ -36,7 +36,7 @@ namespace Dnn.PersonaBar.Users.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Services.UsersController));
 
-        private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        private static PortalSettings PortalSettings => PortalSettings.Current;
 
         public static UserInfo GetUser(int userId, PortalSettings portalSettings, UserInfo userInfo, out KeyValuePair<HttpStatusCode, string> response)
         {
@@ -552,7 +552,7 @@ namespace Dnn.PersonaBar.Users.Components
                     {
                         IList<UserInfo> userInfos = RoleController.Instance.GetUsersByRole(
                             portalId,
-                            PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleName);
+                            PortalController.Instance.GetCurrentSettings().RegisteredRoleName);
                         if (!isSuperUser)
                         {
                             userInfos = (IList<UserInfo>)userInfos?.Where(x => !x.IsSuperUser);

@@ -559,7 +559,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private static void SetupCulture()
         {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalSettings.Current;
             if (settings == null)
             {
                 return;

@@ -137,11 +137,11 @@ namespace DotNetNuke.Services.Mobile
         /// <param name="userAgent">User Agent - used for client capability detection.</param>
         public string GetRedirectUrl(string userAgent)
         {
-            var portalSettings = this.portalController.GetCurrentPortalSettings();
-            if (portalSettings is { ActiveTab: not null, })
+            var currentPage = TabController.CurrentPage;
+            if (currentPage is not null)
             {
-                string redirectUrl = this.GetRedirectUrl(userAgent, portalSettings.PortalId, portalSettings.ActiveTab.TabID);
-                if (!string.IsNullOrEmpty(redirectUrl) && !string.Equals(redirectUrl, portalSettings.ActiveTab.FullUrl, StringComparison.OrdinalIgnoreCase))
+                string redirectUrl = this.GetRedirectUrl(userAgent, this.portalController.GetCurrentSettings().PortalId, currentPage.TabID);
+                if (!string.IsNullOrEmpty(redirectUrl) && !string.Equals(redirectUrl, currentPage.FullUrl, StringComparison.OrdinalIgnoreCase))
                 {
                     return redirectUrl;
                 }
@@ -243,11 +243,11 @@ namespace DotNetNuke.Services.Mobile
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         public string GetFullSiteUrl()
         {
-            var portalSettings = this.portalController.GetCurrentPortalSettings();
-            if (portalSettings is { ActiveTab: not null, })
+            var currentPage = TabController.CurrentPage;
+            if (currentPage is not null)
             {
-                string fullSiteUrl = this.GetFullSiteUrl(portalSettings.PortalId, portalSettings.ActiveTab.TabID);
-                if (!string.IsNullOrEmpty(fullSiteUrl) && !string.Equals(fullSiteUrl, portalSettings.ActiveTab.FullUrl, StringComparison.OrdinalIgnoreCase))
+                string fullSiteUrl = this.GetFullSiteUrl(this.portalController.GetCurrentSettings().PortalId, currentPage.TabID);
+                if (!string.IsNullOrEmpty(fullSiteUrl) && !string.Equals(fullSiteUrl, currentPage.FullUrl, StringComparison.OrdinalIgnoreCase))
                 {
                     return fullSiteUrl;
                 }
@@ -348,11 +348,11 @@ namespace DotNetNuke.Services.Mobile
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         public string GetMobileSiteUrl()
         {
-            var portalSettings = this.portalController.GetCurrentPortalSettings();
-            if (portalSettings is { ActiveTab: not null })
+            var currentPage = TabController.CurrentPage;
+            if (currentPage is not null)
             {
-                string fullSiteUrl = this.GetMobileSiteUrl(portalSettings.PortalId, portalSettings.ActiveTab.TabID);
-                if (!string.IsNullOrEmpty(fullSiteUrl) && !string.Equals(fullSiteUrl, portalSettings.ActiveTab.FullUrl, StringComparison.OrdinalIgnoreCase))
+                string fullSiteUrl = this.GetMobileSiteUrl(this.portalController.GetCurrentSettings().PortalId, currentPage.TabID);
+                if (!string.IsNullOrEmpty(fullSiteUrl) && !string.Equals(fullSiteUrl, currentPage.FullUrl, StringComparison.OrdinalIgnoreCase))
                 {
                     return fullSiteUrl;
                 }

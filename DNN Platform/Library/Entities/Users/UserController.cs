@@ -14,6 +14,7 @@ namespace DotNetNuke.Entities.Users
     using System.Threading;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Collections.Internal;
@@ -91,16 +92,36 @@ namespace DotNetNuke.Entities.Users
 
         /// <summary>ApproveUser removes the Unverified Users role from the user and adds the auto assigned roles.</summary>
         /// <param name="user">The user to update.</param>
-        public static void ApproveUser(UserInfo user)
+        [DnnDeprecated(10, 2, 2, "Use overload taking RoleProvider")]
+        public static partial void ApproveUser(UserInfo user)
+            => ApproveUser(
+                Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IEventManager>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                PortalSettings.Current,
+                user);
+
+        /// <summary>ApproveUser removes the Unverified Users role from the user and adds the auto assigned roles.</summary>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="eventManager">The event manager.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="user">The user to update.</param>
+        public static void ApproveUser(RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger, PortalSettings portalSettings, UserInfo user)
         {
             Requires.NotNull("user", user);
 
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-            var role = RoleController.Instance.GetRole(settings.PortalId, r => r.RoleName == "Unverified Users");
+            var role = RoleController.Instance.GetRole(portalSettings.PortalId, r => r.RoleName == "Unverified Users");
 
-            RoleController.DeleteUserRole(user, role, settings, false);
+            RoleController.DeleteUserRole(roleProvider, roleController, eventManager, portalController, userController, eventLogger, user, role, portalSettings, false);
 
-            AutoAssignUsersToRoles(user, settings.PortalId);
+            AutoAssignUsersToRoles(user, portalSettings.PortalId);
         }
 
         /// <summary>User has agreed to terms and conditions. The time is recorded at the same time in SQL.</summary>
@@ -457,7 +478,7 @@ namespace DotNetNuke.Entities.Users
 
             // If the HTTP Current Context is unavailable (e.g. when called from within a SchedulerClient) GetCurrentPortalSettings() returns null and the
             // PortalSettings are created/loaded for the portal (originally) assigned to the user.
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings() ?? new PortalSettings(portalId);
+            var portalSettings = PortalSettings.Current ?? new PortalSettings(portalId);
 
             var canDelete = deleteAdmin || (user.UserID != portalSettings.AdministratorId);
 
@@ -1175,7 +1196,7 @@ namespace DotNetNuke.Entities.Users
 
             if (sendEmail)
             {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalSettings.Current;
                 return Mail.SendMail(user, MessageType.PasswordReminder, portalSettings) == string.Empty;
             }
 
@@ -2202,8 +2223,9 @@ namespace DotNetNuke.Entities.Users
 
         private static string GetChildPortalAlias()
         {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-            var currentAlias = settings.PortalAlias.HTTPAlias;
+            var settings = PortalSettings.Current;
+            IPortalAliasInfo alias = settings.PortalAlias;
+            var currentAlias = alias.HttpAlias;
             var index = currentAlias.IndexOf('/');
             var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : string.Empty;
             return childPortalAlias;

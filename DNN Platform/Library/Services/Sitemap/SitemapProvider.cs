@@ -18,12 +18,12 @@ namespace DotNetNuke.Services.Sitemap
         {
             get
             {
-                return bool.Parse(PortalController.GetPortalSetting(this.Name + "Enabled", PortalController.Instance.GetCurrentPortalSettings().PortalId, "True"));
+                return bool.Parse(PortalController.GetPortalSetting(this.Name + "Enabled", PortalController.Instance.GetCurrentSettings().PortalId, "True"));
             }
 
             set
             {
-                PortalController.UpdatePortalSetting(PortalController.Instance.GetCurrentPortalSettings().PortalId, this.Name + "Enabled", value.ToString());
+                PortalController.UpdatePortalSetting(PortalController.Instance.GetCurrentSettings().PortalId, this.Name + "Enabled", value.ToString());
             }
         }
 
@@ -31,12 +31,12 @@ namespace DotNetNuke.Services.Sitemap
         {
             get
             {
-                return bool.Parse(PortalController.GetPortalSetting(this.Name + "Override", PortalController.Instance.GetCurrentPortalSettings().PortalId, "False"));
+                return bool.Parse(PortalController.GetPortalSetting(this.Name + "Override", PortalController.Instance.GetCurrentSettings().PortalId, "False"));
             }
 
             set
             {
-                PortalController.UpdatePortalSetting(PortalController.Instance.GetCurrentPortalSettings().PortalId, this.Name + "Override", value.ToString());
+                PortalController.UpdatePortalSetting(PortalController.Instance.GetCurrentSettings().PortalId, this.Name + "Override", value.ToString());
             }
         }
 
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Sitemap
                 if (this.OverridePriority)
                 {
                     // stored as an integer (pr * 100) to prevent from translating errors with the decimal point
-                    value = float.Parse(PortalController.GetPortalSetting(this.Name + "Value", PortalController.Instance.GetCurrentPortalSettings().PortalId, "0.5"), NumberFormatInfo.InvariantInfo);
+                    value = float.Parse(PortalController.GetPortalSetting(this.Name + "Value", PortalController.Instance.GetCurrentSettings().PortalId, "0.5"), NumberFormatInfo.InvariantInfo);
                 }
 
                 return value;
@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.Sitemap
 
             set
             {
-                PortalController.UpdatePortalSetting(PortalController.Instance.GetCurrentPortalSettings().PortalId, this.Name + "Value", value.ToString(NumberFormatInfo.InvariantInfo));
+                PortalController.UpdatePortalSetting(PortalController.Instance.GetCurrentSettings().PortalId, this.Name + "Value", value.ToString(NumberFormatInfo.InvariantInfo));
             }
         }
 

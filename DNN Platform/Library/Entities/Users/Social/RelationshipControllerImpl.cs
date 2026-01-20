@@ -585,8 +585,7 @@ namespace DotNetNuke.Entities.Users.Social
         private static void ClearUserCache(UserRelationship userRelationship)
         {
             // Get Portal
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
-
+            var settings = PortalController.Instance.GetCurrentSettings();
             if (settings != null)
             {
                 // Get User

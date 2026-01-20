@@ -9,6 +9,7 @@ namespace DotNetNuke.Services.FileSystem
     using System.Web;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
@@ -96,10 +97,10 @@ namespace DotNetNuke.Services.FileSystem
             get
             {
                 string physicalPath;
-                PortalSettings portalSettings = null;
+                IPortalSettings portalSettings = null;
                 if (HttpContext.Current != null)
                 {
-                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                    portalSettings = PortalController.Instance.GetCurrentSettings();
                 }
 
                 if (this.PortalID == Null.NullInteger)

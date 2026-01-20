@@ -42,13 +42,13 @@ namespace DotNetNuke.Services.Localization
         /// <inheritdoc/>
         public string GetString(string key, string resourceFileRoot)
         {
-            return this.GetString(key, resourceFileRoot, null, PortalController.Instance.GetCurrentPortalSettings(), false);
+            return this.GetString(key, resourceFileRoot, null, PortalSettings.Current, false);
         }
 
         /// <inheritdoc/>
         public string GetString(string key, string resourceFileRoot, string language)
         {
-            return this.GetString(key, resourceFileRoot, language, PortalController.Instance.GetCurrentPortalSettings(), false);
+            return this.GetString(key, resourceFileRoot, language, PortalSettings.Current, false);
         }
 
         /// <inheritdoc/>

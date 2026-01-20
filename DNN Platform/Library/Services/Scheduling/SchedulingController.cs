@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Scheduling
     {
         public static int AddSchedule(string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
         {
-            EventLogController.Instance.AddLog("TypeFullName", typeFullName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_CREATED);
+            EventLogController.Instance.AddLog("TypeFullName", typeFullName, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_CREATED);
             return DataProvider.Instance().AddSchedule(
                 typeFullName,
                 timeLapse,
@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.Scheduling
             EventLogController.Instance.AddLog(
                 "ScheduleID",
                 scheduleID.ToString(CultureInfo.InvariantCulture),
-                PortalController.Instance.GetCurrentPortalSettings(),
+                PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.SCHEDULE_DELETED);
         }
@@ -191,7 +191,7 @@ namespace DotNetNuke.Services.Scheduling
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 friendlyName,
                 scheduleStartDate);
-            EventLogController.Instance.AddLog("TypeFullName", typeFullName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_UPDATED);
+            EventLogController.Instance.AddLog("TypeFullName", typeFullName, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_UPDATED);
         }
 
         public static void UpdateScheduleHistory(ScheduleHistoryItem objScheduleHistoryItem)

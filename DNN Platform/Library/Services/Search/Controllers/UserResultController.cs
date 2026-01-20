@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.Search.Controllers
     using System.Linq;
     using System.Text.RegularExpressions;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -30,7 +31,7 @@ namespace DotNetNuke.Services.Search.Controllers
         /// <inheritdoc/>
         public override string LocalizedSearchTypeName => Localization.GetString("Crawler_user", LocalizedResxFile);
 
-        private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        private static IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         /// <inheritdoc/>
         public override bool HasViewPermission(SearchResult searchResult)

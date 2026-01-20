@@ -789,7 +789,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         SkinController.AddSkinPackage(skinPackage);
                         break;
                     case PackageTypes.CoreLanguagePack:
-                        locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
+                        locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentSettings().DefaultLanguage);
                         languagePack = new LanguagePackInfo
                         {
                             PackageID = package.PackageID,
@@ -799,7 +799,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         LanguagePackController.SaveLanguagePack(languagePack);
                         break;
                     case PackageTypes.ExtensionLanguagePack:
-                        locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
+                        locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentSettings().DefaultLanguage);
                         languagePack = new LanguagePackInfo
                         {
                             PackageID = package.PackageID,

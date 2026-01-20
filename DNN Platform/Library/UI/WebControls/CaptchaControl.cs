@@ -780,7 +780,7 @@ namespace DotNetNuke.UI.WebControls
             url += $"?{KEY}={encryptedTicket}";
 
             // Append the Alias to the url so that it doesn't lose track of the alias it's currently on
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalSettings.Current;
             url += "&alias=" + ((IPortalAliasInfo)portalSettings.PortalAlias).HttpAlias;
             return url;
         }

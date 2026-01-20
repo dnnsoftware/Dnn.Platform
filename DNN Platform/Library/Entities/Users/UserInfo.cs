@@ -435,7 +435,7 @@ namespace DotNetNuke.Entities.Users
                 return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, this.Profile.PreferredTimeZone);
             }
 
-            return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, PortalController.Instance.GetCurrentPortalSettings().TimeZone);
+            return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, PortalController.Instance.GetCurrentSettings().TimeZone);
         }
 
         /// <summary>UpdateDisplayName updates the displayname to the format provided.</summary>

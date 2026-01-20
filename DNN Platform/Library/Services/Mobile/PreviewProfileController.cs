@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.Mobile
 
         private static void AddLog(string logContent)
         {
-            EventLogController.Instance.AddLog("Message", logContent, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.ADMIN_ALERT);
+            EventLogController.Instance.AddLog("Message", logContent, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.ADMIN_ALERT);
         }
 
         private IList<IPreviewProfile> GetProfilesByPortal(int portalId, bool addDefault)

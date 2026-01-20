@@ -213,7 +213,7 @@ namespace DotNetNuke.Services.UserProfile
 
         private static void SetupCulture()
         {
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            PortalSettings settings = PortalSettings.Current;
             if (settings is null)
             {
                 return;

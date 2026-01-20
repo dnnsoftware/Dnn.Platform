@@ -3383,7 +3383,7 @@ namespace DotNetNuke.Common
         [DnnDeprecated(7, 3, 0, "It causes issues in SSL-offloading scenarios - please use UserProfilePicRelativeUrl instead", RemovalVersion = 11)]
         public static partial string UserProfilePicFormattedUrl()
         {
-            var avatarUrl = PortalController.Instance.GetCurrentPortalSettings().DefaultPortalAlias;
+            var avatarUrl = PortalController.Instance.GetCurrentSettings().DefaultPortalAlias;
             if (string.IsNullOrEmpty(avatarUrl))
             {
                 avatarUrl = HttpContext.Current.Request.Url.Host;
@@ -3522,9 +3522,9 @@ namespace DotNetNuke.Common
         public static partial string GetSubFolderPath(string strFileNamePath)
         {
             // Obtain PortalSettings from Current Context
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             string parentFolderName = null;
-            if (IsHostTab(portalSettings.ActiveTab.TabID))
+            if (IsHostTab(TabController.CurrentPage.TabID))
             {
                 parentFolderName = HostMapPath.Replace("/", @"\");
             }
@@ -3544,8 +3544,7 @@ namespace DotNetNuke.Common
         [DnnDeprecated(7, 0, 0, "Use Common.Globals.LinkClick() for proper handling of URLs", RemovalVersion = 11)]
         public static partial string LinkClickURL(string link)
         {
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return LinkClick(link, portalSettings.ActiveTab.TabID, -1, false);
+            return LinkClick(link, TabController.CurrentPage.TabID, -1, false);
         }
 
         /// <summary>Helps prevent sql injection in certain scenarios.</summary>

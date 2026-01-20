@@ -24,7 +24,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         {
             get
             {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
 
                 if (this.CultureCode == portalSettings.DefaultLanguage)
                 {

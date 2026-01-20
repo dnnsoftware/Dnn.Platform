@@ -183,7 +183,7 @@ namespace DotNetNuke.UI.WebControls
                 if (GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture).Length < 2)
                 {
                     // return single language
-                    PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+                    var settings = PortalController.Instance.GetCurrentSettings();
                     foreach (string strLocale in LocaleController.Instance.GetLocales(settings.PortalId).Keys)
                     {
                         a.Add(strLocale);
@@ -325,7 +325,7 @@ namespace DotNetNuke.UI.WebControls
         private static CultureInfo[] GetCultures(bool specific)
         {
             var a = new ArrayList();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentSettings();
             foreach (string strLocale in LocaleController.Instance.GetLocales(settings.PortalId).Keys)
             {
                 var c = new CultureInfo(strLocale);

@@ -33,10 +33,7 @@ namespace DotNetNuke.Services.Sitemap
         private string cacheFileName;
         private string cacheIndexFileNameFormat;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SitemapBuilder"/> class.
-        ///   Creates an instance of the sitemap builder class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SitemapBuilder"/> class.</summary>
         /// <param name="ps">Current PortalSettings for the portal being processed.</param>
         public SitemapBuilder(PortalSettings ps)
         {

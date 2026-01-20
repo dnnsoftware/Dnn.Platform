@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.WebControls
         protected string DisplayMode => this.displayMode;
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        protected PortalSettings PortalSettings => PortalSettings.Current;
 
         /// <inheritdoc/>
         public void RaisePostBackEvent(string eventArgument)

@@ -82,7 +82,7 @@ namespace DotNetNuke.UI.Modules
 
         /// <summary>Gets the current Portal Settings.</summary>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        public PortalSettings PortalSettings => PortalSettings.Current;
 
         public Containers.Container Container { get; private set; }
 

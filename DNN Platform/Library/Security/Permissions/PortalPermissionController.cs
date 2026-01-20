@@ -48,7 +48,7 @@ namespace DotNetNuke.Security.Permissions
         public static void DeletePortalPermissionsByUser(UserInfo user)
         {
             Provider.DeletePortalPermissionsByUser(user);
-            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_DELETED);
+            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_DELETED);
             DataCache.ClearPortalPermissionsCache(user.PortalID);
         }
 
@@ -84,7 +84,7 @@ namespace DotNetNuke.Security.Permissions
         public static void SavePortalPermissions(PortalInfo portal)
         {
             Provider.SavePortalPermissions(portal);
-            EventLogController.Instance.AddLog(portal, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_UPDATED);
+            EventLogController.Instance.AddLog(portal, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_UPDATED);
             DataCache.ClearPortalPermissionsCache(portal.PortalID);
         }
 

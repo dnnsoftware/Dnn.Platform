@@ -89,7 +89,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns><see langword="true"/> if the current user is in the administrator role for the current portal, otherwise <see langword="false"/>.</returns>
         public virtual bool IsPortalEditor()
         {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentSettings();
             return settings != null && PortalSecurity.IsInRole(settings.AdministratorRoleName);
         }
 
@@ -732,7 +732,7 @@ namespace DotNetNuke.Security.Permissions
             TabPermissionCollection objCurrentTabPermissions = this.GetTabPermissions(tab.TabID, tab.PortalID);
             if (!objCurrentTabPermissions.CompareTo(tab.TabPermissions))
             {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
                 var userId = UserController.Instance.GetCurrentUserInfo().UserID;
 
                 if (objCurrentTabPermissions.Count > 0)
@@ -852,7 +852,7 @@ namespace DotNetNuke.Security.Permissions
             var objCurrentPortalPermissions = this.GetPortalPermissions(portal.PortalID);
             if (!objCurrentPortalPermissions.CompareTo(portal.PortalPermissions))
             {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
                 var userId = UserController.Instance.GetCurrentUserInfo().UserID;
 
                 if (objCurrentPortalPermissions.Count > 0)

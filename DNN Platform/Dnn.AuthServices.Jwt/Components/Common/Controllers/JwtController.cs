@@ -142,10 +142,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("disabled");
             }
 
-#pragma warning disable 618 // Obsolete
-            var obsoletePortalSettings = PortalController.Instance.GetCurrentPortalSettings();
-#pragma warning restore 618 // Obsolete
-
+            var obsoletePortalSettings = PortalSettings.Current;
             IPortalSettings portalSettings = obsoletePortalSettings;
             if (portalSettings == null)
             {
@@ -514,9 +511,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             persistedToken.TokenExpiry = expiry;
 
-#pragma warning disable 618 // Obsolete
-            var obsoletePortalSettings = PortalController.Instance.GetCurrentPortalSettings();
-#pragma warning restore 618 // Obsolete
+            var obsoletePortalSettings = PortalSettings.Current;
             IPortalSettings portalSettings = obsoletePortalSettings;
             IPortalAliasInfo portalAlias = obsoletePortalSettings.PortalAlias;
             var secret = ObtainSecret(persistedToken.TokenId, portalSettings.GUID, userInfo.Membership.LastPasswordChangeDate);

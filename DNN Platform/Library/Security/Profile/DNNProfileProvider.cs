@@ -155,7 +155,7 @@ namespace DotNetNuke.Security.Profile
                         (int)profProperty.ProfileVisibility.VisibilityMode,
                         profProperty.ProfileVisibility.ExtendedVisibilityString(),
                         DateTime.Now);
-                    EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, "USERPROFILE_UPDATED");
+                    EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, "USERPROFILE_UPDATED");
                 }
             }
         }

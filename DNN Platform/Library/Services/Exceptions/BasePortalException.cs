@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Exceptions
 
     using DotNetNuke.Application;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
@@ -126,7 +127,7 @@ namespace DotNetNuke.Services.Exceptions
             try
             {
                 var context = HttpContext.Current;
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
                 Exception innerException = new WrappedException(this.message, this);
                 while (innerException.InnerException != null)
                 {
@@ -140,8 +141,8 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     this.PortalID = portalSettings.PortalId;
                     this.PortalName = portalSettings.PortalName;
-                    this.ActiveTabID = portalSettings.ActiveTab.TabID;
-                    this.ActiveTabName = portalSettings.ActiveTab.TabName;
+                    this.ActiveTabID = TabController.CurrentPage.TabID;
+                    this.ActiveTabName = TabController.CurrentPage.TabName;
                 }
                 else
                 {
