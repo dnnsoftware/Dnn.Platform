@@ -80,8 +80,11 @@ namespace DotNetNuke.Tests.Utilities.Mocks
         }
 
         public static Mock<DataProvider> CreateDataProvider()
+            => CreateDataProvider(null);
+
+        public static Mock<DataProvider> CreateDataProvider(IApplicationStatusInfo appStatus)
         {
-            return CreateNew<DataProvider>();
+            return CreateNew<DataProvider>(appStatus ?? Mock.Of<IApplicationStatusInfo>());
         }
 
         public static Mock<FolderProvider> CreateFolderProvider(string name)

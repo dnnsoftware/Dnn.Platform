@@ -52,12 +52,12 @@
                 unexpectedException = ex;
             }
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // assert
                 Assert.That(unexpectedException, Is.Null);
                 Assert.That(argumentNullException, Is.Not.Null);
-            });
+            }
             Assert.That(argumentNullException.ParamName, Is.EqualTo(nullParamName));
         }
 

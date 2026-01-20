@@ -9,6 +9,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
 
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals.Templates;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Internal;
     using DotNetNuke.Entities.Portals.Templates;
     using DotNetNuke.Tests.Utilities.Fakes;
@@ -18,7 +19,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
     using NUnit.Framework;
 
     [TestFixture]
-    public class PortalControllerTests
+    public class PortalTemplateIOTests
     {
         private const string HostMapPath = @"C:\path";
         private const string DefaultName = "Default";
@@ -102,6 +103,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                 services =>
                 {
                     services.AddSingleton(this.mockPortalTemplateIO.Object);
+                    services.AddSingleton(Mock.Of<IPortalController>());
                 });
         }
 

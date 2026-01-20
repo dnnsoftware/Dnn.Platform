@@ -5,8 +5,13 @@ namespace DotNetNuke.Tests.Core.Framework
 {
     using System;
 
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
     using DotNetNuke.Tests.Utilities.Fakes;
+
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Moq;
 
     using NUnit.Framework;
 
@@ -17,7 +22,7 @@ namespace DotNetNuke.Tests.Core.Framework
         [SetUp]
         public void Setup()
         {
-            this.serviceProvider = FakeServiceProvider.Setup();
+            this.serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<IPortalController>()));
 
             var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", "c:\\");
             simulator.SimulateRequest(new Uri("http://localhost/dnn/Default.aspx"));

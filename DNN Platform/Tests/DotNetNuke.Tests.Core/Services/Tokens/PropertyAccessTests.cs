@@ -7,22 +7,43 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
     using System;
     using System.Globalization;
 
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
+
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Moq;
+
     using NUnit.Framework;
 
     [TestFixture]
     public class PropertyAccessTests
     {
+        private FakeServiceProvider serviceProvider;
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<IPortalController>()));
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
+        }
+
         [Test]
         [TestCase("now", false)]
         [TestCase("today", false)]
         [TestCase("ticksperday", false)]
         [TestCase("anything", true)]
         [TestCase("", true)]
-        public void TicksPropertyAcccess_GetProperty_Sets_PropertyNotFound(string propertyName, bool expected)
+        public void TicksPropertyAccess_GetProperty_Sets_PropertyNotFound(string propertyName, bool expected)
         {
             // Arrange
             var ticksPropertyAccess = new TicksPropertyAccess();
@@ -30,8 +51,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
 
             // Act
             bool propertyNotFound = false;
-            string propertyValue = ticksPropertyAccess.GetProperty(propertyName, string.Empty, CultureInfo.InvariantCulture,
-                                                                   accessingUser, Scope.DefaultSettings, ref propertyNotFound);
+            string propertyValue = ticksPropertyAccess.GetProperty(propertyName, string.Empty, CultureInfo.InvariantCulture, accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
             Assert.That(propertyNotFound, Is.EqualTo(expected));
@@ -40,7 +60,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [Test]
         [TestCase("today")]
         [TestCase("ticksperday")]
-        public void TicksPropertyAcccess_GetProperty_Returns_Correct_String(string propertyName)
+        public void TicksPropertyAccess_GetProperty_Returns_Correct_String(string propertyName)
         {
             // Arrange
             var ticksPropertyAccess = new TicksPropertyAccess();
@@ -62,8 +82,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
 
             // Act
             bool propertyNotFound = false;
-            string propertyValue = ticksPropertyAccess.GetProperty(propertyName, string.Empty, CultureInfo.InvariantCulture,
-                                                                   accessingUser, Scope.DefaultSettings, ref propertyNotFound);
+            string propertyValue = ticksPropertyAccess.GetProperty(propertyName, string.Empty, CultureInfo.InvariantCulture, accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
             Assert.That(propertyValue, Is.EqualTo(expected.ToString(CultureInfo.InvariantCulture)));
@@ -76,7 +95,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("utc", false)]
         [TestCase("anything", true)]
         [TestCase("", true)]
-        public void DateTimePropertyAcccess_GetProperty_Sets_PropertyNotFound(string propertyName, bool expected)
+        public void DateTimePropertyAccess_GetProperty_Sets_PropertyNotFound(string propertyName, bool expected)
         {
             // Arrange
             var dtPropertyAccess = new DateTimePropertyAccess();
@@ -84,8 +103,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
 
             // Act
             bool propertyNotFound = false;
-            string propertyValue = dtPropertyAccess.GetProperty(propertyName, string.Empty, CultureInfo.InvariantCulture,
-                                                                   accessingUser, Scope.DefaultSettings, ref propertyNotFound);
+            string propertyValue = dtPropertyAccess.GetProperty(propertyName, string.Empty, CultureInfo.InvariantCulture, accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
             Assert.That(propertyNotFound, Is.EqualTo(expected));
@@ -100,7 +118,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("now", "de")]
         [TestCase("system", "en")]
         [TestCase("utc", "it")]
-        public void DateTimePropertyAcccess_GetProperty_Returns_Correct_String_For_Culture(string propertyName, string cultureName)
+        public void DateTimePropertyAccess_GetProperty_Returns_Correct_String_For_Culture(string propertyName, string cultureName)
         {
             // Arrange
             var dtPropertyAccess = new DateTimePropertyAccess();
@@ -127,8 +145,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
 
             // Act
             bool propertyNotFound = false;
-            string propertyValue = dtPropertyAccess.GetProperty(propertyName, string.Empty, culture,
-                                                                   accessingUser, Scope.DefaultSettings, ref propertyNotFound);
+            string propertyValue = dtPropertyAccess.GetProperty(propertyName, string.Empty, culture, accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
             Assert.That(propertyValue, Is.EqualTo(expected));
@@ -143,7 +160,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("now", "de", "mmm yyyy")]
         [TestCase("system", "en", "dd/mm/yy")]
         [TestCase("utc", "it", "mmm dd, yyyy")]
-        public void DateTimePropertyAcccess_GetProperty_Returns_Correct_String_Given_Format_And_Culture(string propertyName, string cultureName, string format)
+        public void DateTimePropertyAccess_GetProperty_Returns_Correct_String_Given_Format_And_Culture(string propertyName, string cultureName, string format)
         {
             // Arrange
             var dtPropertyAccess = new DateTimePropertyAccess();
@@ -170,8 +187,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
 
             // Act
             bool propertyNotFound = false;
-            string propertyValue = dtPropertyAccess.GetProperty(propertyName, format, culture,
-                                                                   accessingUser, Scope.DefaultSettings, ref propertyNotFound);
+            string propertyValue = dtPropertyAccess.GetProperty(propertyName, format, culture, accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
             Assert.That(propertyValue, Is.EqualTo(expected));
@@ -180,7 +196,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [Test]
         [TestCase("current", "Tokyo Standard Time")]
         [TestCase("now", "Azores Standard Time")]
-        public void DateTimePropertyAcccess_GetProperty_Adjusts_For_TimeZone(string propertyName, string timeZoneId)
+        public void DateTimePropertyAccess_GetProperty_Adjusts_For_TimeZone(string propertyName, string timeZoneId)
         {
             // Arrange
             var dtPropertyAccess = new DateTimePropertyAccess();
@@ -216,8 +232,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
 
             // Act
             bool propertyNotFound = false;
-            string propertyValue = dtPropertyAccess.GetProperty(propertyName, string.Empty, culture,
-                                                                   accessingUser, Scope.DefaultSettings, ref propertyNotFound);
+            string propertyValue = dtPropertyAccess.GetProperty(propertyName, string.Empty, culture, accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
             Assert.That(propertyValue, Is.EqualTo(expected));

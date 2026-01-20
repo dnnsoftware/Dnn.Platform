@@ -39,12 +39,12 @@ namespace DotNetNuke.Tests.Web.Mvp
 
             // Assert
             Assert.That(view.Object.Model.ModuleSettings, Is.InstanceOf<Dictionary<string, string>>());
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(view.Object.Model.ModuleSettings, Is.Empty);
 
                 Assert.That(view.Object.Model.TabModuleSettings, Is.InstanceOf<Dictionary<string, string>>());
-            });
+            }
             Assert.That(view.Object.Model.TabModuleSettings, Is.Empty);
         }
 
@@ -61,12 +61,12 @@ namespace DotNetNuke.Tests.Web.Mvp
             // Act
             view.Raise(v => v.Load += null, EventArgs.Empty);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(view.Object.Model.ModuleSettings, Is.Null);
                 Assert.That(view.Object.Model.TabModuleSettings, Is.Null);
-            });
+            }
         }
 
         [Test]
@@ -86,12 +86,12 @@ namespace DotNetNuke.Tests.Web.Mvp
 
             // Assert
             Assert.That(view.Object.Model.ModuleSettings, Is.InstanceOf<Dictionary<string, string>>());
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(view.Object.Model.ModuleSettings, Has.Count.EqualTo(_moduleSettingCount));
 
                 Assert.That(view.Object.Model.TabModuleSettings, Is.InstanceOf<Dictionary<string, string>>());
-            });
+            }
             Assert.That(view.Object.Model.TabModuleSettings, Has.Count.EqualTo(_tabModuleSettingCount));
         }
 

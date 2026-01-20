@@ -241,12 +241,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             // Act
             var url = helper.Content("~/test.css");
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(url, Is.Not.Null);
                 Assert.That(url, Is.EqualTo(expectedResult));
-            });
+            }
         }
 
         [Test]
@@ -260,12 +260,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var withOuterUrl = helper.IsLocalUrl("http://dnnsoftware.com");
             var withLocalUrl = helper.IsLocalUrl("~/foo/foo.html");
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(withOuterUrl, Is.False);
                 Assert.That(withLocalUrl, Is.True);
-            });
+            }
         }
 
         [Test]
@@ -285,7 +285,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             // Act
             helper.Action("foo", "bar", new { id = 5 });
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(routeValues.Values, Has.Count.EqualTo(3));
@@ -295,7 +295,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
                 Assert.That((string)routeValues["action"], Is.EqualTo("foo"));
                 Assert.That((string)routeValues["controller"], Is.EqualTo("bar"));
                 Assert.That((int)routeValues["id"], Is.EqualTo(5));
-            });
+            }
         }
 
         private static DnnUrlHelper ArrangeHelper(ModuleInstanceContext expectedContext, string url = null, bool isViewContext = true)

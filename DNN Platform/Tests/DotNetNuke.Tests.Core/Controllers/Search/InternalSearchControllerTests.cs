@@ -128,6 +128,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     services.AddSingleton(this.mockSearchHelper.Object);
                     services.AddSingleton(this.mockUserController.Object);
                     services.AddSingleton<IApplicationStatusInfo>(new ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+                    services.AddSingleton(Mock.Of<IPortalController>());
                 });
 
             this.CreateNewLuceneControllerInstance();
@@ -259,11 +260,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             stats = this.GetSearchStatistics();
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(stats.TotalActiveDocuments, Is.EqualTo(totalDocs - 1));
                 Assert.That(stats.TotalDeletedDocuments, Is.EqualTo(1));
-            });
+            }
 
             // Act - delete first item
             searchDoc = new SearchDocument { ModuleDefId = 1 };
@@ -271,11 +272,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             stats = this.GetSearchStatistics();
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(stats.TotalActiveDocuments, Is.EqualTo(totalDocs - 2));
                 Assert.That(stats.TotalDeletedDocuments, Is.EqualTo(2));
-            });
+            }
         }
 
         [Test]
@@ -311,11 +312,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             stats = this.GetSearchStatistics();
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(stats.TotalActiveDocuments, Is.EqualTo(totalDocs - 1));
                 Assert.That(stats.TotalDeletedDocuments, Is.EqualTo(1));
-            });
+            }
 
             // Act - delete first item
             searchDoc = new SearchDocument { ModuleId = 1 };
@@ -323,11 +324,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             stats = this.GetSearchStatistics();
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(stats.TotalActiveDocuments, Is.EqualTo(totalDocs - 2));
                 Assert.That(stats.TotalDeletedDocuments, Is.EqualTo(2));
-            });
+            }
         }
 
         [Test]
@@ -363,11 +364,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert - delete all portal 1
             stats = this.GetSearchStatistics();
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(stats.TotalActiveDocuments, Is.EqualTo(totalDocs / 2));
                 Assert.That(stats.TotalDeletedDocuments, Is.EqualTo(totalDocs / 2));
-            });
+            }
         }
 
         [Test]
@@ -404,11 +405,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             stats = this.GetSearchStatistics();
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(stats.TotalActiveDocuments, Is.EqualTo(totalDocs - 1));
                 Assert.That(stats.TotalDeletedDocuments, Is.EqualTo(1));
-            });
+            }
 
             // Act - delete first item
             searchDoc = new SearchDocument { RoleId = 1 };
@@ -416,11 +417,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             stats = this.GetSearchStatistics();
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(stats.TotalActiveDocuments, Is.EqualTo(totalDocs - 2));
                 Assert.That(stats.TotalDeletedDocuments, Is.EqualTo(2));
-            });
+            }
         }
 
         [Test]
@@ -455,11 +456,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             stats = this.GetSearchStatistics();
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(stats.TotalActiveDocuments, Is.EqualTo(totalDocs - 1));
                 Assert.That(stats.TotalDeletedDocuments, Is.EqualTo(1));
-            });
+            }
 
             // Act - delete first item
             searchDoc = new SearchDocument { TabId = 1 };
@@ -467,11 +468,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             stats = this.GetSearchStatistics();
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(stats.TotalActiveDocuments, Is.EqualTo(totalDocs - 2));
                 Assert.That(stats.TotalDeletedDocuments, Is.EqualTo(2));
-            });
+            }
         }
 
         [Test]
@@ -503,28 +504,28 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.That(stats.TotalActiveDocuments, Is.EqualTo(totalDocs));
 
             // Act - delete last item
-            var searchDoc = new SearchDocument { AuthorUserId = totalDocs };
+            var searchDoc = new SearchDocument { AuthorUserId = totalDocs, };
             this.internalSearchController.DeleteSearchDocument(searchDoc);
 
             // Assert
             stats = this.GetSearchStatistics();
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(stats.TotalActiveDocuments, Is.EqualTo(totalDocs - 1));
                 Assert.That(stats.TotalDeletedDocuments, Is.EqualTo(1));
-            });
+            }
 
             // Act - delete first item
-            searchDoc = new SearchDocument { AuthorUserId = 1 };
+            searchDoc = new SearchDocument { AuthorUserId = 1, };
             this.internalSearchController.DeleteSearchDocument(searchDoc);
 
             // Assert
             stats = this.GetSearchStatistics();
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(stats.TotalActiveDocuments, Is.EqualTo(totalDocs - 2));
                 Assert.That(stats.TotalDeletedDocuments, Is.EqualTo(2));
-            });
+            }
         }
 
         private void CreateNewLuceneControllerInstance()

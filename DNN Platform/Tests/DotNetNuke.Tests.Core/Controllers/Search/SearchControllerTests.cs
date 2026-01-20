@@ -251,13 +251,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeyword("hello");
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.Results, Has.Count.EqualTo(1));
                 Assert.That(doc.UniqueKey, Is.EqualTo(result.Results[0].UniqueKey));
                 Assert.That(doc.Title, Is.EqualTo(result.Results[0].Title));
-            });
+            }
         }
 
         [Test]
@@ -397,12 +397,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var query = new SearchQuery { KeyWords = veryLongWord, SearchTypeIds = new List<int> { ModuleSearchTypeId } };
             var search = this.searchController.SiteSearch(query);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(search.Results, Has.Count.EqualTo(1));
                 Assert.That(StripEllipses(search.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + veryLongWord + "</b>"));
-            });
+            }
         }
 
         [Test]
@@ -439,13 +439,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
                 Assert.That(result.Results, Has.Count.EqualTo(query.PageSize));
                 Assert.That(ids, Is.EqualTo(new[] { 6, 7, 8, 9 }));
-            });
+            }
         }
 
         [Test]
@@ -468,13 +468,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
                 Assert.That(result.Results, Has.Count.EqualTo(query.PageSize));
                 Assert.That(ids, Is.EqualTo(new[] { 6, 7, 8, 9, 16, 17 }));
-            });
+            }
         }
 
         [Test]
@@ -497,13 +497,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
                 Assert.That(result.Results, Has.Count.EqualTo(query.PageSize));
                 Assert.That(ids, Is.EqualTo(new[] { 6, 7, 8, 9, 16, 17, 18, 19 }));
-            });
+            }
         }
 
         [Test]
@@ -526,13 +526,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(4 * 3));
                 Assert.That(result.Results, Has.Count.EqualTo(4 * 3));
                 Assert.That(ids, Is.EqualTo(new[] { 6, 7, 8, 9, 16, 17, 18, 19, 26, 27, 28, 29 }));
-            });
+            }
         }
 
         [Test]
@@ -555,13 +555,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).Skip(1).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(maxDocs));
                 Assert.That(result.Results, Has.Count.EqualTo(query.PageSize));
                 Assert.That(ids, Is.EqualTo(Enumerable.Range(1, 9).ToArray()));
-            });
+            }
         }
 
         [Test]
@@ -584,13 +584,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(maxDocs));
                 Assert.That(result.Results, Has.Count.EqualTo(query.PageSize));
                 Assert.That(ids, Is.EqualTo(Enumerable.Range(90, 10).ToArray()));
-            });
+            }
         }
 
         [Test]
@@ -613,13 +613,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
                 Assert.That(result.Results, Has.Count.EqualTo(5));
                 Assert.That(ids, Is.EqualTo(new[] { 17, 18, 19, 26, 27 }));
-            });
+            }
         }
 
         [Test]
@@ -642,13 +642,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
                 Assert.That(result.Results, Has.Count.EqualTo(6));
                 Assert.That(ids, Is.EqualTo(new[] { 18, 19, 26, 27, 28, 29 }));
-            });
+            }
         }
 
         [Test]
@@ -671,13 +671,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(query);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
                 Assert.That(result.Results, Has.Count.EqualTo(4));
                 Assert.That(ids, Is.EqualTo(new[] { 26, 27, 28, 29 }));
-            });
+            }
         }
 
         [Test]
@@ -700,13 +700,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(queryPg3);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
                 Assert.That(result.Results, Has.Count.EqualTo(queryPg3.PageSize));
                 Assert.That(ids, Is.EqualTo(new[] { 26, 27, 28, 29 }));
-            });
+            }
         }
 
         [Test]
@@ -729,13 +729,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(queryPg3);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
                 Assert.That(result.Results, Has.Count.EqualTo(2));
                 Assert.That(ids, Is.EqualTo(new[] { 28, 29 }));
-            });
+            }
         }
 
         [Test]
@@ -758,13 +758,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(queryPg3);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(maxDocs - 18));
                 Assert.That(result.Results, Is.Empty);
                 Assert.That(ids, Is.EqualTo(new int[] { }));
-            });
+            }
         }
 
         [Test]
@@ -787,13 +787,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result = this.searchController.SiteSearch(queryPg3);
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(maxDocs - (10 * 6)));
                 Assert.That(result.Results, Has.Count.EqualTo(queryPg3.PageSize));
                 Assert.That(ids, Is.EqualTo(new int[] { 86, 87, 88, 89, 96, 97, 98, 99 }));
-            });
+            }
         }
 
         [Test]
@@ -831,7 +831,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.That(search.Results, Has.Count.EqualTo(1));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[0].PortalId, Is.EqualTo(PortalId12));
                 Assert.That(search.Results[0].TabId, Is.EqualTo(StandardTabId));
@@ -850,18 +850,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Assert.That(search.Results[0].Tags.ElementAt(0), Is.EqualTo(tags[0]));
                 Assert.That(search.Results[0].Tags.ElementAt(1), Is.EqualTo(tags[1]));
                 Assert.That(search.Results[0].NumericKeys, Has.Count.EqualTo(numericKeys.Count));
-            });
-            Assert.Multiple(() =>
+            }
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[0].NumericKeys[NumericKey1], Is.EqualTo(numericKeys[NumericKey1]));
                 Assert.That(search.Results[0].NumericKeys[NumericKey2], Is.EqualTo(numericKeys[NumericKey2]));
                 Assert.That(search.Results[0].Keywords, Has.Count.EqualTo(keywords.Count));
-            });
-            Assert.Multiple(() =>
+            }
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[0].Keywords[KeyWord1Name], Is.EqualTo(keywords[KeyWord1Name]));
                 Assert.That(search.Results[0].Keywords[KeyWord2Name], Is.EqualTo(keywords[KeyWord2Name]));
-            });
+            }
         }
 
         [Test]
@@ -883,7 +883,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert -
             Assert.That(search.Results, Has.Count.EqualTo(1));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[0].PortalId, Is.EqualTo(PortalId0));
                 Assert.That(search.Results[0].TabId, Is.EqualTo(0));
@@ -901,7 +901,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Assert.That(search.Results[0].Tags.Count(), Is.EqualTo(0));
                 Assert.That(search.Results[0].NumericKeys, Is.Empty);
                 Assert.That(search.Results[0].Keywords, Is.Empty);
-            });
+            }
         }
 
         [Test]
@@ -921,7 +921,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Act
             var search = this.SearchForKeyword("fox");
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(search.Results, Has.Count.EqualTo(docs.Length));
@@ -937,7 +937,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                         ])
                         .AsCollection,
                     "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Snippet)));
-            });
+            }
         }
 
         [Test]
@@ -975,12 +975,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var searches = this.SearchForKeyword(searchWord);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(searches.TotalHits, Is.EqualTo(1));
                 Assert.That(searches.Results[0].CultureCode, Is.EqualTo(cultureCode));
-            });
+            }
         }
 
         [Test]
@@ -1040,34 +1040,34 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-368), EndModifiedTimeUtc = utcNow.AddDays(1) };
             search = this.searchController.SiteSearch(query);
             Assert.That(search.Results, Has.Count.EqualTo(2));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[0].Title, Is.EqualTo(Line5));
                 Assert.That(search.Results[1].Title, Is.EqualTo(Line4));
-            });
+            }
 
             // Act and Assert - 2 years or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-800), EndModifiedTimeUtc = utcNow.AddDays(1) };
             search = this.searchController.SiteSearch(query);
             Assert.That(search.Results, Has.Count.EqualTo(3));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[0].Title, Is.EqualTo(Line5));
                 Assert.That(search.Results[1].Title, Is.EqualTo(Line4));
                 Assert.That(search.Results[2].Title, Is.EqualTo(Line3));
-            });
+            }
 
             // Act and Assert - 3 years or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-1200), EndModifiedTimeUtc = utcNow.AddDays(1) };
             search = this.searchController.SiteSearch(query);
             Assert.That(search.Results, Has.Count.EqualTo(4));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[0].Title, Is.EqualTo(Line5));
                 Assert.That(search.Results[1].Title, Is.EqualTo(Line4));
                 Assert.That(search.Results[2].Title, Is.EqualTo(Line3));
                 Assert.That(search.Results[3].Title, Is.EqualTo(Line2));
-            });
+            }
 
             // Act and Assert - 2 to 3 years or so
             query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddDays(-1200), EndModifiedTimeUtc = utcNow.AddDays(-800) };
@@ -1130,13 +1130,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.That(search.Results, Has.Count.EqualTo(2));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[0].Tags.ElementAt(0), Is.EqualTo(Tag0));
                 Assert.That(search.Results[0].Tags.ElementAt(1), Is.EqualTo(Tag1));
                 Assert.That(search.Results[1].Tags.ElementAt(0), Is.EqualTo(Tag1));
                 Assert.That(search.Results[1].Tags.ElementAt(1), Is.EqualTo(Tag2));
-            });
+            }
         }
 
         [Test]
@@ -1165,11 +1165,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.That(search.Results, Has.Count.EqualTo(1));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[0].Tags.ElementAt(0), Is.EqualTo(Tag1));
                 Assert.That(search.Results[0].Tags.ElementAt(1), Is.EqualTo(Tag2));
-            });
+            }
         }
 
         [Test]
@@ -1257,7 +1257,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             Assert.That(search.Results, Has.Count.EqualTo(added), "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[1].Tags.ElementAt(0), Is.EqualTo(Tag3));
                 Assert.That(search.Results[1].Tags.ElementAt(1), Is.EqualTo(Tag4));
@@ -1266,7 +1266,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Assert.That(search.Results[0].Tags.ElementAt(0), Is.EqualTo(Tag2));
                 Assert.That(search.Results[0].Tags.ElementAt(1), Is.EqualTo(Tag3));
                 Assert.That(search.Results[0].Tags.ElementAt(2), Is.EqualTo(TagIt.ToLowerInvariant()));
-            });
+            }
         }
 
         [Test]
@@ -1286,19 +1286,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.That(search.Results, Has.Count.EqualTo(added));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[1].DisplayModifiedTime, Is.GreaterThan(search.Results[0].DisplayModifiedTime));
                 Assert.That(search.Results[2].DisplayModifiedTime, Is.GreaterThan(search.Results[1].DisplayModifiedTime));
                 Assert.That(search.Results[3].DisplayModifiedTime, Is.GreaterThan(search.Results[2].DisplayModifiedTime));
-            });
+            }
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[0].Tags.ElementAt(0), Is.EqualTo(Tag0));
                 Assert.That(search.Results[0].Tags.ElementAt(1), Is.EqualTo(Tag1));
                 Assert.That(search.Results[0].Tags.ElementAt(2), Is.EqualTo(TagOldest));
-            });
+            }
         }
 
         [Test]
@@ -1319,11 +1319,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.That(search.Results, Has.Count.EqualTo(added));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[1].NumericKeys[NumericKey1], Is.GreaterThan(search.Results[0].NumericKeys[NumericKey1]));
                 Assert.That(search.Results[2].NumericKeys[NumericKey1], Is.GreaterThan(search.Results[1].NumericKeys[NumericKey1]));
-            });
+            }
         }
 
         [Test]
@@ -1344,11 +1344,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.That(search.Results, Has.Count.EqualTo(added));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[0].NumericKeys[NumericKey1], Is.GreaterThan(search.Results[1].NumericKeys[NumericKey1]));
                 Assert.That(search.Results[1].NumericKeys[NumericKey1], Is.GreaterThan(search.Results[2].NumericKeys[NumericKey1]));
-            });
+            }
         }
 
         [Test]
@@ -1679,11 +1679,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.That(search.Results, Has.Count.EqualTo(2), "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(search.Results[0].Title, Is.EqualTo(Line3));
                 Assert.That(search.Results[1].Title, Is.EqualTo(Line1));
-            });
+            }
         }
 
         [Test]
@@ -1790,7 +1790,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var searches1 = this.SearchForKeyword("zèbre");
             var searches2 = this.SearchForKeyword("zebre");
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(searches1.TotalHits, Is.EqualTo(2));
@@ -1800,7 +1800,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Assert.That(searches2.TotalHits, Is.EqualTo(2));
                 Assert.That(StripEllipses(searches2.Results[0].Snippet).Trim(), Is.EqualTo("<b>z&#232;bre</b> or panth&#232;re"));
                 Assert.That(StripEllipses(searches2.Results[1].Snippet).Trim(), Is.EqualTo("<b>zebre</b> without accent"));
-            });
+            }
         }
 
         [Test]
@@ -1819,7 +1819,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var search1 = this.SearchForKeyword(lines[0]);
             var search2 = this.SearchForKeyword("\"" + lines[1] + "\"");
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(search1.TotalHits, Is.EqualTo(1));
@@ -1827,7 +1827,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
                 Assert.That(StripEllipses(search1.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + lines[0] + "</b>"));
                 Assert.That(StripEllipses(search2.Results[0].Snippet).Trim(), Is.EqualTo("<b>" + lines[1] + "</b>"));
-            });
+            }
         }
 
         [Test]
@@ -1847,14 +1847,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Act
             var search = this.SearchForKeyword("ride");
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(search.TotalHits, Is.EqualTo(3));
                 Assert.That(StripEllipses(search.Results[0].Snippet), Is.EqualTo("I <b>ride</b> my bike to work"));
                 Assert.That(StripEllipses(search.Results[1].Snippet), Is.EqualTo("m are <b>riding</b> their bikes"));
                 Assert.That(StripEllipses(search.Results[2].Snippet), Is.EqualTo("e boy <b>rides</b> his bike to school"));
-            });
+            }
         }
 
         [Test]
@@ -1870,13 +1870,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.That(search.TotalHits, Is.EqualTo(added));
 
             var snippets = search.Results.Select(result => StripEllipses(result.Snippet)).OrderBy(s => s).ToArray();
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(snippets[0], Is.EqualTo("brown <b>fox</b> jumps over the lazy dog"));
                 Assert.That(snippets[1], Is.EqualTo("e red <b>fox</b> jumped over the lazy dark gray dog"));
                 Assert.That(snippets[2], Is.EqualTo("gold <b>fox</b> jumped over the lazy black dog"));
                 Assert.That(snippets[3], Is.EqualTo("quick <b>fox</b> jumps over the black dog - Italian"));
-            });
+            }
         }
 
         [Test]
@@ -1895,13 +1895,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeyword("cow");
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(2));
                 Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
                 Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
-            });
+            }
         }
 
         [Test]
@@ -1920,13 +1920,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeyword("cow");
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(2));
                 Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc3.UniqueKey));
                 Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc1.UniqueKey));
-            });
+            }
         }
 
         [Test]
@@ -1948,11 +1948,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.That(result.TotalHits, Is.EqualTo(2));
             Console.WriteLine("first score: {0}  {1}", result.Results[0].UniqueKey, result.Results[0].DisplayScore);
             Console.WriteLine("second score: {0}  {1}", result.Results[1].UniqueKey, result.Results[1].DisplayScore);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
                 Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
-            });
+            }
         }
 
         [Test]
@@ -1983,13 +1983,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Console.WriteLine("{0} score: {1}", searchResult.UniqueKey, searchResult.DisplayScore);
             }
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
                 Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
                 Assert.That(result.Results[2].UniqueKey, Is.EqualTo(doc3.UniqueKey));
                 Assert.That(result.Results[3].UniqueKey, Is.EqualTo(doc4.UniqueKey));
-            });
+            }
         }
 
         [Test]
@@ -2005,12 +2005,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeywordWithWildCard("file");
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(1));
                 Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
-            });
+            }
         }
 
         [Test]
@@ -2026,12 +2026,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeywordWithWildCard("file.ext");
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(1));
                 Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
-            });
+            }
         }
 
         [Test]
@@ -2047,12 +2047,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeyword("file.ext");
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(1));
                 Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
-            });
+            }
         }
 
         [Test]
@@ -2066,13 +2066,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result2 = this.SearchForKeyword("kw-folderName:Images/DNN/*");
             var result3 = this.SearchForKeywordWithWildCard("kw-folderName:Images/* AND spacer");
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result1.TotalHits, Is.EqualTo(5));
                 Assert.That(result2.TotalHits, Is.EqualTo(2));
                 Assert.That(result3.TotalHits, Is.EqualTo(1));
-            });
+            }
         }
 
         [Test]
@@ -2089,13 +2089,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var result2 = this.searchController.SiteSearch(query2);
             var result3 = this.searchController.SiteSearch(query3);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result1.TotalHits, Is.EqualTo(5));
                 Assert.That(result2.TotalHits, Is.EqualTo(5));
                 Assert.That(result3.TotalHits, Is.EqualTo(2));
-            });
+            }
         }
 
         [Test]
@@ -2111,12 +2111,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeywordWithWildCard("email@");
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(1));
                 Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
-            });
+            }
         }
 
         [Test]
@@ -2196,11 +2196,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var result = this.searchController.SiteSearch(query);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(result.TotalHits, Is.EqualTo(0)); // 0 due to security trimming
                 Assert.That(result.Results, Is.Empty);
-            });
+            }
         }
 
         [Test]
@@ -2236,11 +2236,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var result = this.searchController.SiteSearch(query);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(result.TotalHits, Is.EqualTo(1));
                 Assert.That(result.Results[0].RoleId, Is.EqualTo(RoleId731));
-            });
+            }
         }
 
         [Test]
@@ -2261,11 +2261,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var result = this.searchController.SiteSearch(query);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(result.TotalHits, Is.EqualTo(1));
                 Assert.That(result.Results[0].RoleId, Is.EqualTo(RoleId731));
-            });
+            }
         }
 
         [Test]
@@ -2287,13 +2287,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.searchController.SiteSearch(query);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(2));
                 Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
                 Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
-            });
+            }
         }
 
         [Test]
@@ -2317,13 +2317,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.searchController.SiteSearch(query);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(2));
                 Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
                 Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
-            });
+            }
         }
 
         [Test]
@@ -2347,14 +2347,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.searchController.SiteSearch(query);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(3));
                 Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
                 Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
                 Assert.That(result.Results[2].UniqueKey, Is.EqualTo(doc3.UniqueKey));
-            });
+            }
         }
 
         [Test]
@@ -2380,7 +2380,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.searchController.SiteSearch(query);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(4));
@@ -2388,7 +2388,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
                 Assert.That(result.Results[2].UniqueKey, Is.EqualTo(doc3.UniqueKey));
                 Assert.That(result.Results[3].UniqueKey, Is.EqualTo(doc5.UniqueKey));
-            });
+            }
         }
 
         [Test]
@@ -2414,14 +2414,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.searchController.SiteSearch(query);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(3));
                 Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc1.UniqueKey));
                 Assert.That(result.Results[1].UniqueKey, Is.EqualTo(doc2.UniqueKey));
                 Assert.That(result.Results[2].UniqueKey, Is.EqualTo(doc5.UniqueKey));
-            });
+            }
         }
 
         [Test]
@@ -2502,12 +2502,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeyword("rld", OtherSearchTypeId, true, true);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(1));
                 Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc2.UniqueKey));
-            });
+            }
         }
 
         [Test]
@@ -2528,12 +2528,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var result = this.SearchForKeyword("rld", OtherSearchTypeId, true, false);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.TotalHits, Is.EqualTo(1));
                 Assert.That(result.Results[0].UniqueKey, Is.EqualTo(doc2.UniqueKey));
-            });
+            }
         }
 
         [Test]

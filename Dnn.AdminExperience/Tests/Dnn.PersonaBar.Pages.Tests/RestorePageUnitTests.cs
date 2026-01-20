@@ -71,13 +71,13 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Act
             var result = this.restorePage.Run();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.IsError, Is.False);
                 Assert.That(result.Records, Is.EqualTo(1));
                 Assert.That(result is ConsoleErrorResultModel, Is.False);
-            });
+            }
         }
 
         [Test]
@@ -93,12 +93,12 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Act
             var result = this.restorePage.Run();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.IsError, Is.True);
                 Assert.That(result is ConsoleErrorResultModel, Is.True);
-            });
+            }
         }
 
         [Test]
@@ -112,12 +112,12 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Act
             var result = this.restorePage.Run();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.IsError, Is.True);
                 Assert.That(result is ConsoleErrorResultModel, Is.True);
-            });
+            }
         }
 
         [Test]
@@ -132,12 +132,12 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Act
             var result = this.restorePage.Run();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.IsError, Is.True);
                 Assert.That(result is ConsoleErrorResultModel, Is.True);
-            });
+            }
         }
 
         private void SetupCommand()

@@ -32,12 +32,12 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
 
             var decrypted = DotNetNuke.Security.FIPSCompliant.DecryptAES(result, Config.GetDecryptionkey(), Host.GUID);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(result, Is.Not.EqualTo(string.Empty));
                 Assert.That(decrypted, Is.Not.EqualTo(result));
                 Assert.That(newPassword, Is.EqualTo(decrypted));
-            });
+            }
         }
     }
 }

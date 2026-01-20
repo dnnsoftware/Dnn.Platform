@@ -61,12 +61,12 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
             // Act
             var isValid = TabController.IsValidTabName(tabName, out invalidType);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(isValid, Is.False, "A forbidden tab name is allowed");
                 Assert.That(invalidType, Is.EqualTo("InvalidTabName"), "The invalidType is not the expected one");
-            });
+            }
         }
 
         [Test]
@@ -78,12 +78,12 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
             // Act
             var isValid = TabController.IsValidTabName(string.Empty, out invalidType);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(isValid, Is.False, "An empty tab name is allowed");
                 Assert.That(invalidType, Is.EqualTo("EmptyTabName"), "The invalidType is not the expected one");
-            });
+            }
         }
 
         [Test]
@@ -98,12 +98,12 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
             // Act
             var isValid = TabController.IsValidTabName(tabName, out invalidType);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(isValid, Is.True, "A regular tab name is not allowed");
                 Assert.That(invalidType, Is.Empty, "The invalidType is not the expected one");
-            });
+            }
         }
     }
 }

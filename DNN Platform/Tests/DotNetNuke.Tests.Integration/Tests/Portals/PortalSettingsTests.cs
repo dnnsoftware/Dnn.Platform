@@ -52,11 +52,11 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
 
             // Assert
             Assert.That(result, Is.Not.EqualTo(string.Empty));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(result, Is.Not.EqualTo(this._settingValue));
                 Assert.That(this._settingValue, Is.EqualTo(decrypted));
-            });
+            }
         }
     }
 }

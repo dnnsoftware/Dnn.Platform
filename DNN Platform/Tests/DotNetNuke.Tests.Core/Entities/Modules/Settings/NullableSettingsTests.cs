@@ -246,14 +246,14 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             // Act
             var settings = settingsRepository.GetSettings(moduleInfo);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(settings.StringProperty, Is.EqualTo(expectedStringValue), "The retrieved string property value is not equal to the stored one");
                 Assert.That(settings.IntegerProperty, Is.EqualTo(integerValue), "The retrieved integer property value is not equal to the stored one");
                 Assert.That(settings.DateTimeProperty, Is.EqualTo(datetimeValue), "The retrieved datetime property value is not equal to the stored one");
                 Assert.That(settings.TimeSpanProperty, Is.EqualTo(timeSpanValue), "The retrieved timespan property value is not equal to the stored one");
-            });
+            }
             this.MockRepository.VerifyAll();
         }
 

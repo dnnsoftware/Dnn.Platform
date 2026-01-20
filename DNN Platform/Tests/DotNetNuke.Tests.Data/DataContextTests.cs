@@ -7,23 +7,32 @@ namespace DotNetNuke.Tests.Data
     using System.Collections.Generic;
     using System.Configuration;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
+
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Moq;
+
     using NUnit.Framework;
     using PetaPoco;
 
     [TestFixture]
     public class DataContextTests
     {
-        // ReSharper disable InconsistentNaming
+        private FakeServiceProvider serviceProvider;
+
         [SetUp]
         public void SetUp()
         {
+            this.serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<IApplicationStatusInfo>()));
             ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.RegisterComponentInstance<DataProvider>(new SqlDataProvider());
-            ComponentFactory.RegisterComponentSettings<SqlDataProvider>(new Dictionary<string, string>()
+            ComponentFactory.RegisterComponentSettings<SqlDataProvider>(new Dictionary<string, string>
             {
                 { "name", "SqlDataProvider" },
                 { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke" },
@@ -36,6 +45,7 @@ namespace DotNetNuke.Tests.Data
         [TearDown]
         public void TearDown()
         {
+            this.serviceProvider.Dispose();
         }
 
         [Test]
@@ -80,7 +90,5 @@ namespace DotNetNuke.Tests.Data
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "database");
             Assert.That(Util.GetPrivateMember<Database, string>(db, "_connectionString"), Is.EqualTo(connectionString));
         }
-
-        // ReSharper restore InconsistentNaming
     }
 }

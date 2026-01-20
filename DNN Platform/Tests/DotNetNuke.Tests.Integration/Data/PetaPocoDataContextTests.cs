@@ -87,12 +87,12 @@ namespace DotNetNuke.Tests.Data
             // Act
             var context = new PetaPocoDataContext(connectionStringName);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(Util.GetPrivateMember<PetaPocoDataContext, IMapper>(context, "_mapper"), Is.InstanceOf<IMapper>());
                 Assert.That(Util.GetPrivateMember<PetaPocoDataContext, PetaPocoMapper>(context, "_mapper"), Is.InstanceOf<PetaPocoMapper>());
-            });
+            }
         }
 
         [Test]

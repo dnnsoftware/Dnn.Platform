@@ -562,12 +562,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             // Act
             this.mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, this.adminUserInfo);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(message.Subject, Is.EqualTo("subject_filtered"));
                 Assert.That(message.Body, Is.EqualTo("body_filtered"));
-            });
+            }
         }
 
         [Test]

@@ -30,22 +30,22 @@ namespace DotNetNuke.Tests.Integration.Tests.Security
             // make sure the request succeeds when the user is logged in
             // var result1 = session.GetContent(GetPortaslApi, null, false); -- use same method to validate
             var result1 = this.SendDirectGetRequest(session.Domain, GetPortaslApi, session.Timeout, cookies);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(result1.IsSuccessStatusCode, Is.True);
                 Assert.That(result1.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            });
+            }
 
             session.Logout();
             Assert.That(session.IsLoggedIn, Is.False);
 
             // make sure the request fails when using the same cookies before logging out
             var result2 = this.SendDirectGetRequest(session.Domain, GetPortaslApi, session.Timeout, cookies);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(result2.IsSuccessStatusCode, Is.False);
                 Assert.That(result2.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-            });
+            }
         }
 
         private static HttpClient CreateHttpClient(Uri domain, TimeSpan timeout, CookieContainer cookies)

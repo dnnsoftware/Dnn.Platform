@@ -39,20 +39,20 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             var response = connector.PostJson(AddBulkPagesApi, addPagesDto).Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<BulkPageResponseWrapper>(response);
             Console.WriteLine(@"Add bulk pages ersponse = {0}", response);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(result.Status, Is.EqualTo(0));
                 Assert.That(result.Response.Pages.First().ErrorMessage, Is.Null);
-            });
+            }
 
             var response2 = connector.PostJson(VerifyBulkPagesApi, addPagesDto).Content.ReadAsStringAsync().Result;
             var result2 = JsonConvert.DeserializeObject<BulkPageResponseWrapper>(response2);
             Console.WriteLine(@"Verify bulk pages ersponse = {0}", response2);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(int.Parse(result2.Status.ToString()), Is.EqualTo(0));
                 Assert.That(result2.Response.Pages.First().ErrorMessage, Is.Not.Null.And.Not.Empty);
-            });
+            }
         }
 
         [JsonObject]

@@ -66,12 +66,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
 
             // Assert
             mockEngines.Verify(e => e.FindPartialView(context, viewName));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(engineResult.SearchedLocations.ElementAt(0), Is.EqualTo("foo"));
                 Assert.That(engineResult.SearchedLocations.ElementAt(1), Is.EqualTo("bar"));
                 Assert.That(engineResult.SearchedLocations.ElementAt(2), Is.EqualTo("baz"));
-            });
+            }
         }
 
         [Test]
@@ -101,12 +101,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
 
             // Assert
             mockEngines.Verify(e => e.FindView(context, viewName, masterName));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(engineResult.SearchedLocations.ElementAt(0), Is.EqualTo("foo"));
                 Assert.That(engineResult.SearchedLocations.ElementAt(1), Is.EqualTo("bar"));
                 Assert.That(engineResult.SearchedLocations.ElementAt(2), Is.EqualTo("baz"));
-            });
+            }
         }
 
         [Test]
@@ -187,11 +187,11 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
 
             // Assert
             Assert.That(engineResult, Is.Not.Null);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(engineResult.View, Is.Null);
                 Assert.That(engineResult.SearchedLocations.Count(), Is.EqualTo(0));
-            });
+            }
         }
 
         [Test]
@@ -209,11 +209,11 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
 
             // Assert
             Assert.That(engineResult, Is.Not.Null);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(engineResult.View, Is.Null);
                 Assert.That(engineResult.SearchedLocations.Count(), Is.EqualTo(0));
-            });
+            }
         }
 
         private static void SetupMockModuleApplication(ControllerContext context, ViewEngineCollection engines)
