@@ -8,7 +8,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     using System.IO;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Web.MvcPipeline.Controllers;
+    using DotNetNuke.Web.MvcPipeline.Skins;
 
     /// <summary>
     /// Represents the skin definition and resources used to render a page.
@@ -18,9 +18,24 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         private Dictionary<string, PaneModel> panes;
 
         /// <summary>
-        /// Gets or sets the skin source path.
+        /// Gets the skin source path.
         /// </summary>
-        public string SkinSrc { get; set; }
+        public string SkinSrc { get; internal set; }
+
+        /// <summary>
+        /// Gets the directory path of the skin.
+        /// </summary>
+        public string SkinPath { get; internal set; }
+
+        /// <summary>
+        /// Gets the folder path to the Razor view file corresponding to the skin.
+        /// </summary>
+        public string RazorPath { get; internal set; }
+
+        /// <summary>
+        /// Gets the file path to the Razor view file corresponding to the skin.
+        /// </summary>
+        public string RazorFile { get; internal set; }
 
         /// <summary>
         /// Gets the collection of panes defined by the skin.
@@ -30,28 +45,6 @@ namespace DotNetNuke.Web.MvcPipeline.Models
             get
             {
                 return this.panes ?? (this.panes = new Dictionary<string, PaneModel>());
-            }
-        }
-
-        /// <summary>
-        /// Gets the path to the Razor view file corresponding to the skin.
-        /// </summary>
-        public string RazorFile
-        {
-            get
-            {
-                return Path.GetDirectoryName(this.SkinSrc).Replace("\\", "/") + "/Views/" + Path.GetFileName(this.SkinSrc).Replace(".ascx", ".cshtml");
-            }
-        }
-
-        /// <summary>
-        /// Gets the directory path of the skin.
-        /// </summary>
-        public string SkinPath
-        {
-            get
-            {
-                return Path.GetDirectoryName(this.SkinSrc).Replace("\\", "/") + "/";
             }
         }
 

@@ -7,7 +7,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
     /// <summary>
     /// Provides helper methods for rendering skin-related content in the MVC pipeline.
     /// </summary>
-    public static partial class SkinHelpers
+    public static partial class ContainerHelpers
     {
     }
 }

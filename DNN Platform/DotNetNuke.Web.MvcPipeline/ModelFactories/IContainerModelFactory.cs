@@ -19,7 +19,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         /// <param name="configuration">The module configuration.</param>
         /// <param name="portalSettings">The current portal settings.</param>
         /// <param name="containerSrc">The container source path.</param>
+        /// <param name="containerPath">The container folder</param>
         /// <returns>The created <see cref="ContainerModel"/>.</returns>
-        ContainerModel CreateContainerModel(ModuleInfo configuration, PortalSettings portalSettings, string containerSrc);
+        ContainerModel CreateContainerModel(ModuleInfo configuration, PortalSettings portalSettings, string containerSrc, string containerPath);
     }
 }

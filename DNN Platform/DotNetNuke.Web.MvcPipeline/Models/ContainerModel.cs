@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.MvcPipeline.Skins;
 
     /// <summary>
     /// Represents the data and behavior required to render a module container.
@@ -77,20 +78,19 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         public string ID { get; internal set; }
 
         /// <summary>
-        /// Gets the directory path of the container control.
-        /// </summary>
-        public string ContainerPath
-        {
-            get
-            {
-                return Path.GetDirectoryName(this.ContainerSrc) + "/";
-            }
-        }
-
-        /// <summary>
         /// Gets the source path of the container control.
         /// </summary>
         public string ContainerSrc { get; internal set; }
+
+        /// <summary>
+        /// Gets the source folder path of the container control.
+        /// </summary>
+        public string ContainerPath { get; internal set; }
+
+        /// <summary>
+        /// Gets the directory path of the container control.
+        /// </summary>
+        public string ContainerRazorPath { get; internal set; }
 
         /// <summary>
         /// Gets the MVC action name used to render the module within the container.
@@ -135,7 +135,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         {
             get
             {
-                return "~" + Path.GetDirectoryName(this.ContainerSrc) + "/Views/" + Path.GetFileName(this.ContainerSrc).Replace(".ascx", ".cshtml");
+                return this.ContainerRazorPath + Path.GetFileName(this.ContainerSrc).Replace(".ascx", ".cshtml");
             }
         }
 

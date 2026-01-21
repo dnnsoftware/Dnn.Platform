@@ -33,8 +33,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                 throw new InvalidOperationException("The model need to be present.");
             }
 
-            var skinPath = Path.GetDirectoryName(model.Skin.SkinSrc);
-            return helper.Partial("~" + skinPath + "/Views/" + name + ".cshtml");
+            return helper.Partial(model.Skin.RazorPath + name + ".cshtml");
         }
     }
 }

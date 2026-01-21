@@ -15,7 +15,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using DotNetNuke.Web.MvcPipeline.Skins;
 
     /// <summary>
     /// Builds and configures <see cref="ContainerModel"/> instances for module containers.
@@ -37,10 +39,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         }
 
         /// <inheritdoc/>
-        public ContainerModel CreateContainerModel(ModuleInfo configuration, PortalSettings portalSettings, string containerSrc)
+        public ContainerModel CreateContainerModel(ModuleInfo configuration, PortalSettings portalSettings, string containerSrc, string containerPath)
         {
             var container = new ContainerModel(configuration, portalSettings, this.hostSettings);
             container.ContainerSrc = containerSrc;
+            container.ContainerPath = SkinController.FormatSkinPath(containerSrc);
+            container.ContainerRazorPath = SkinHelpers.SkinPathToRazorPath(SkinController.FormatSkinPath(containerPath));
             container = this.ProcessModule(container, portalSettings);
             return container;
         }

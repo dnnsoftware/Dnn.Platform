@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
     /// <summary>
     /// Container-related HTML helper methods for skinning, including module content rendering.
     /// </summary>
-    public static partial class SkinHelpers
+    public static partial class ContainerHelpers
     {
         /// <summary>
         /// Renders the module content for the current container, including the module control, actions, and styling.

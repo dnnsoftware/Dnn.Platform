@@ -41,6 +41,16 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         }
 
         /// <summary>
+        /// Gets the Razor path from the skin .
+        /// </summary>
+        /// <param name="skinPath">The Skin path.</param>
+        /// <returns>The the skins razor path.</returns>
+        public static string SkinPathToRazorPath(string skinPath)
+        {
+            return "~" + skinPath + "Views/";
+        }
+
+        /// <summary>
         /// Gets the dependency injection service provider from the current <see cref="DnnPageController"/>.
         /// </summary>
         /// <param name="htmlHelper">The MVC HTML helper.</param>

@@ -301,13 +301,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                     containerPath = containerPath.Remove(0, Globals.ApplicationPath.Length);
                 }
 
-                // container = ControlUtilities.LoadControl<MvcContainer>(this.PaneControl.Page, containerPath);
-                container = this.containerModelFactory.CreateContainerModel(module, portalSettings, containerSrc);
-
-                // container.ContainerSrc = containerSrc;
-
-                // call databind so that any server logic in the container is executed
-                // container.DataBind();
+                container = this.containerModelFactory.CreateContainerModel(module, portalSettings, containerSrc, containerPath);
             }
             catch (Exception exc)
             {

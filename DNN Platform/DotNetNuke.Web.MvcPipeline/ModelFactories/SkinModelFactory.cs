@@ -45,6 +45,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Web.MvcPipeline.Exceptions;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using DotNetNuke.Web.MvcPipeline.Skins;
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -242,6 +243,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
                 ctlSkin = new SkinModel();
                 ctlSkin.SkinSrc = skinSrc;
+                ctlSkin.SkinPath = SkinController.FormatSkinPath(skinSrc);
+                ctlSkin.RazorPath = SkinHelpers.SkinPathToRazorPath(SkinController.FormatSkinPath(skinPath));
+                ctlSkin.RazorFile = ctlSkin.RazorPath + Path.GetFileName(ctlSkin.SkinSrc).Replace(".ascx", ".cshtml");
 
                 // Load the Module Control(s)
                 var success = Globals.IsAdminControl() ? this.ProcessSlaveModule(page.PortalSettings, ctlSkin) : this.ProcessMasterModules(page.PortalSettings, ctlSkin);
