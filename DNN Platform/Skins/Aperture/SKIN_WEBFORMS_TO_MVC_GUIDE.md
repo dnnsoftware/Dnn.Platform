@@ -47,6 +47,7 @@ SkinName/
 ├── default.ascx (keep for backward compatibility)
 └── Views/
     ├── default.cshtml
+    ├── web.config
     └── partials/
         ├── _includes.cshtml
         └── _header.cshtml
@@ -54,6 +55,7 @@ SkinName/
 ContainerName/
 ├── title.ascx (keep for backward compatibility)
 └── Views/
+    ├── web.config
     └── title.cshtml
 ```
 
