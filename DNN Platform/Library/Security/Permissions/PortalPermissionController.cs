@@ -3,13 +3,19 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Security.Permissions
 {
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>PortalPermissionController provides the Business Layer for Portal Permissions.</summary>
-    public class PortalPermissionController
+    public partial class PortalPermissionController
     {
         private static readonly PermissionProvider Provider = PermissionProvider.Instance();
 
@@ -45,10 +51,17 @@ namespace DotNetNuke.Security.Permissions
 
         /// <summary>DeletePortalPermissionsByUser deletes a user's Portal Permissions in the Database.</summary>
         /// <param name="user">The user.</param>
-        public static void DeletePortalPermissionsByUser(UserInfo user)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeletePortalPermissionsByUser(UserInfo user)
+            => DeletePortalPermissionsByUser(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), user);
+
+        /// <summary>DeletePortalPermissionsByUser deletes a user's Portal Permissions in the Database.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="user">The user.</param>
+        public static void DeletePortalPermissionsByUser(IEventLogger eventLogger, UserInfo user)
         {
             Provider.DeletePortalPermissionsByUser(user);
-            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_DELETED);
+            eventLogger.AddLog(user, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.PORTALPERMISSION_DELETED);
             DataCache.ClearPortalPermissionsCache(user.PortalID);
         }
 
@@ -70,7 +83,7 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>HasPortalPermission checks whether the current user has a specific Portal Permission.</summary>
-        /// <remarks>If you pass in a comma delimited list of permissions (eg "ADD,DELETE"), this will return true if the user has any one of the permissions.</remarks>
+        /// <remarks>If you pass in a comma-delimited list of permissions (eg "ADD,DELETE"), this will return true if the user has any one of the permissions.</remarks>
         /// <param name="portalPermissions">The Permissions for the Portal.</param>
         /// <param name="permissionKey">The Permission(s) to check.</param>
         /// <returns><see langword="true"/> if the current user has the requested permission, otherwise <see langword="false"/>.</returns>
@@ -81,17 +94,24 @@ namespace DotNetNuke.Security.Permissions
 
         /// <summary>SavePortalPermissions saves a Portal's permissions.</summary>
         /// <param name="portal">The Portal to update.</param>
-        public static void SavePortalPermissions(PortalInfo portal)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void SavePortalPermissions(PortalInfo portal)
+            => SavePortalPermissions(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portal);
+
+        /// <summary>SavePortalPermissions saves a Portal's permissions.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portal">The Portal to update.</param>
+        public static void SavePortalPermissions(IEventLogger eventLogger, PortalInfo portal)
         {
             Provider.SavePortalPermissions(portal);
-            EventLogController.Instance.AddLog(portal, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_UPDATED);
+            eventLogger.AddLog(portal, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.PORTALPERMISSION_UPDATED);
             DataCache.ClearPortalPermissionsCache(portal.PortalID);
         }
 
         private static void ClearPermissionCache(int portalId)
         {
-            var objPortal = PortalController.Instance.GetPortal(portalId);
-            DataCache.ClearPortalPermissionsCache(objPortal.PortalID);
+            IPortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
+            DataCache.ClearPortalPermissionsCache(objPortal.PortalId);
         }
     }
 }

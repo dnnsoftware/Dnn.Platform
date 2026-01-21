@@ -15,6 +15,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
     using System.Web;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -24,9 +25,26 @@ namespace Dnn.PersonaBar.AdminLogs.Components
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Mail;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class AdminLogsController
     {
+        private readonly IEventLogger eventLogger;
         private Dictionary<string, LogTypeInfo> logTypeDictionary;
+
+        /// <summary>Initializes a new instance of the <see cref="AdminLogsController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public AdminLogsController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="AdminLogsController"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        public AdminLogsController(IEventLogger eventLogger)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
 
         protected Dictionary<string, LogTypeInfo> LogTypeDictionary => this.logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
 
@@ -84,12 +102,12 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             LogController.Instance.ClearLog();
 
             // add entry to log recording it was cleared
-            EventLogController.Instance.AddLog(
+            this.eventLogger.AddLog(
                 Localization.GetString("LogCleared", Constants.LocalResourcesFile),
                 Localization.GetString("Username", Constants.LocalResourcesFile) + ":" + UserController.Instance.GetCurrentUserInfo().Username,
                 PortalSettings,
                 -1,
-                EventLogController.EventLogType.ADMIN_ALERT);
+                EventLogType.ADMIN_ALERT);
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]

@@ -11,6 +11,7 @@ namespace DotNetNuke.Security.Permissions
     using System.Linq;
     using System.Text;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -22,10 +23,27 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The default <see cref="IPermissionDefinitionService"/> implementation.</summary>
     public partial class PermissionController : IPermissionDefinitionService
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
+        private readonly IEventLogger eventLogger;
+
+        /// <summary>Initializes a new instance of the <see cref="PermissionController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public PermissionController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PermissionController"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        public PermissionController(IEventLogger eventLogger)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
 
         public static string BuildPermissions(IList permissions, string permissionKey)
         {
@@ -103,7 +121,7 @@ namespace DotNetNuke.Security.Permissions
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public int AddPermission(IPermissionDefinitionInfo permission)
         {
-            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_CREATED);
+            this.eventLogger.AddLog(permission, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.PERMISSION_CREATED);
             var permissionId = Convert.ToInt32(Provider.AddPermission(
                 permission.PermissionCode,
                 permission.ModuleDefId,
@@ -119,12 +137,12 @@ namespace DotNetNuke.Security.Permissions
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void DeletePermission(int permissionID)
         {
-            EventLogController.Instance.AddLog(
+            this.eventLogger.AddLog(
                 "PermissionID",
                 permissionID.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.PERMISSION_DELETED);
+                EventLogType.PERMISSION_DELETED);
             Provider.DeletePermission(permissionID);
             ClearCache();
         }
@@ -167,7 +185,7 @@ namespace DotNetNuke.Security.Permissions
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void UpdatePermission(IPermissionDefinitionInfo permission)
         {
-            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_UPDATED);
+            this.eventLogger.AddLog(permission, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.PERMISSION_UPDATED);
             Provider.UpdatePermission(
                 permission.PermissionId,
                 permission.PermissionCode,

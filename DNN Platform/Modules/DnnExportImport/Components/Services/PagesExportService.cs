@@ -20,6 +20,7 @@ namespace Dnn.ExportImport.Components.Services
     using Dnn.ExportImport.Repository;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security.Permissions;
@@ -55,6 +56,7 @@ namespace Dnn.ExportImport.Components.Services
         private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly IPortalAliasService portalAliasService;
         private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
         private ProgressTotals totals;
         private DataProvider dataProvider;
         private ITabController tabController;
@@ -70,7 +72,7 @@ namespace Dnn.ExportImport.Components.Services
         /// <summary>Initializes a new instance of the <see cref="PagesExportService"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalAliasService. Scheduled removal in v12.0.0.")]
         public PagesExportService()
-            : this(null, null, null)
+            : this(null, null, null, null)
         {
         }
 
@@ -78,7 +80,7 @@ namespace Dnn.ExportImport.Components.Services
         /// <param name="businessControllerProvider">The business controller provider.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalAliasService. Scheduled removal in v12.0.0.")]
         public PagesExportService(IBusinessControllerProvider businessControllerProvider)
-            : this(businessControllerProvider, null, null)
+            : this(businessControllerProvider, null, null, null)
         {
         }
 
@@ -86,11 +88,13 @@ namespace Dnn.ExportImport.Components.Services
         /// <param name="businessControllerProvider">The business controller provider.</param>
         /// <param name="portalAliasService">The portal alias service.</param>
         /// <param name="appStatus">The application status.</param>
-        public PagesExportService(IBusinessControllerProvider businessControllerProvider, IPortalAliasService portalAliasService, IApplicationStatusInfo appStatus)
+        /// <param name="eventLogger">The event logger.</param>
+        public PagesExportService(IBusinessControllerProvider businessControllerProvider, IPortalAliasService portalAliasService, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
         {
             this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
             this.portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         /// <inheritdoc/>
@@ -906,10 +910,10 @@ namespace Dnn.ExportImport.Components.Services
 
                         localTab.TabPermissions.Add(local, true);
 
-                        // UNDONE: none set; not possible until after saving all tab permissions as donbefore exiting this method
-                        // var createdBy = Util.GetUserIdByName(exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
-                        // var modifiedBy = Util.GetUserIdByName(exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                        // UpdateTabPermissionChangers(local.TabPermissionID, createdBy, modifiedBy);
+                        // UNDONE: none set; not possible until after saving all tab permissions as done before exiting this method
+                        ////var createdBy = Util.GetUserIdByName(exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
+                        ////var modifiedBy = Util.GetUserIdByName(exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                        ////UpdateTabPermissionChangers(local.TabPermissionID, createdBy, modifiedBy);
                         this.Result.AddLogEntry("Added tab permission", $"{other.PermissionKey} - {other.PermissionID}");
                         count++;
                     }
@@ -925,7 +929,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (count > 0)
             {
-                TabPermissionController.SaveTabPermissions(localTab);
+                TabPermissionController.SaveTabPermissions(this.eventLogger, localTab);
             }
 
             return count;

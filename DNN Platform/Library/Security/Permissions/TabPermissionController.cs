@@ -5,15 +5,20 @@ namespace DotNetNuke.Security.Permissions
 {
     using System.Collections.Generic;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>TabPermissionController provides the Business Layer for Tab Permissions.</summary>
-    public class TabPermissionController
+    public partial class TabPermissionController
     {
         private static readonly PermissionProvider Provider = PermissionProvider.Instance();
 
@@ -177,10 +182,17 @@ namespace DotNetNuke.Security.Permissions
 
         /// <summary>DeleteTabPermissionsByUser deletes a user's Tab Permissions in the Database.</summary>
         /// <param name="user">The user.</param>
-        public static void DeleteTabPermissionsByUser(UserInfo user)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeleteTabPermissionsByUser(UserInfo user)
+            => DeleteTabPermissionsByUser(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), user);
+
+        /// <summary>DeleteTabPermissionsByUser deletes a user's Tab Permissions in the Database.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="user">The user.</param>
+        public static void DeleteTabPermissionsByUser(IEventLogger eventLogger, UserInfo user)
         {
             Provider.DeleteTabPermissionsByUser(user);
-            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABPERMISSION_DELETED);
+            eventLogger.AddLog(user, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.TABPERMISSION_DELETED);
             DataCache.ClearTabPermissionsCache(user.PortalID);
         }
 
@@ -214,10 +226,17 @@ namespace DotNetNuke.Security.Permissions
 
         /// <summary>SaveTabPermissions saves a Tab's permissions.</summary>
         /// <param name="tab">The Tab to update.</param>
-        public static void SaveTabPermissions(TabInfo tab)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void SaveTabPermissions(TabInfo tab)
+            => SaveTabPermissions(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), tab);
+
+        /// <summary>SaveTabPermissions saves a Tab's permissions.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="tab">The Tab to update.</param>
+        public static void SaveTabPermissions(IEventLogger eventLogger, TabInfo tab)
         {
             Provider.SaveTabPermissions(tab);
-            EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABPERMISSION_UPDATED);
+            eventLogger.AddLog(tab, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.TABPERMISSION_UPDATED);
             DataCache.ClearTabPermissionsCache(tab.PortalID);
         }
 

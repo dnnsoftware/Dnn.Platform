@@ -11,7 +11,9 @@ namespace DotNetNuke.Security.Permissions
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -25,6 +27,8 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class PermissionProvider
     {
@@ -65,15 +69,24 @@ namespace DotNetNuke.Security.Permissions
         private static SharedDictionary<int, DNNCacheDependency> cacheDependencyDict = new SharedDictionary<int, DNNCacheDependency>();
 
         private readonly DataProvider dataProvider = DataProvider.Instance();
+        private readonly IEventLogger eventLogger;
+
+        /// <summary>Initializes a new instance of the <see cref="PermissionProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public PermissionProvider()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PermissionProvider"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        public PermissionProvider(IEventLogger eventLogger)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
 
         // return the provider
-        public virtual string LocalResourceFile
-        {
-            get
-            {
-                return Localization.GlobalResourceFile;
-            }
-        }
+        public virtual string LocalResourceFile => Localization.GlobalResourceFile;
 
         public static PermissionProvider Instance()
         {
@@ -738,10 +751,10 @@ namespace DotNetNuke.Security.Permissions
                 if (objCurrentTabPermissions.Count > 0)
                 {
                     this.dataProvider.DeleteTabPermissionsByTabID(tab.TabID);
-                    EventLogController.Instance.AddLog(tab, portalSettings, userId, string.Empty, EventLogController.EventLogType.TABPERMISSION_DELETED);
+                    this.eventLogger.AddLog(tab, portalSettings, userId, string.Empty, EventLogType.TABPERMISSION_DELETED);
                 }
 
-                if (tab.TabPermissions != null && tab.TabPermissions.Count > 0)
+                if (tab.TabPermissions is { Count: > 0 })
                 {
                     foreach (TabPermissionInfo objTabPermission in tab.TabPermissions)
                     {
@@ -754,7 +767,7 @@ namespace DotNetNuke.Security.Permissions
                             userId);
                     }
 
-                    EventLogController.Instance.AddLog(tab, portalSettings, userId, string.Empty, EventLogController.EventLogType.TABPERMISSION_CREATED);
+                    this.eventLogger.AddLog(tab, portalSettings, userId, string.Empty, EventLogType.TABPERMISSION_CREATED);
                 }
             }
         }
@@ -858,10 +871,10 @@ namespace DotNetNuke.Security.Permissions
                 if (objCurrentPortalPermissions.Count > 0)
                 {
                     this.dataProvider.DeletePortalPermissionsByPortalID(portal.PortalID);
-                    EventLogController.Instance.AddLog(portal, portalSettings, userId, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_DELETED);
+                    this.eventLogger.AddLog(portal, portalSettings, userId, string.Empty, EventLogType.PORTALPERMISSION_DELETED);
                 }
 
-                if (portal.PortalPermissions != null && portal.PortalPermissions.Count > 0)
+                if (portal.PortalPermissions is { Count: > 0 })
                 {
                     foreach (PortalPermissionInfo objPortalPermission in portal.PortalPermissions)
                     {
@@ -874,15 +887,15 @@ namespace DotNetNuke.Security.Permissions
                             userId);
                     }
 
-                    EventLogController.Instance.AddLog(portal, portalSettings, userId, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_CREATED);
+                    this.eventLogger.AddLog(portal, portalSettings, userId, string.Empty, EventLogType.PORTALPERMISSION_CREATED);
                 }
             }
         }
 
-        internal static void ResetCacheDependency(int portalId, Action cacehClearAction)
+        internal static void ResetCacheDependency(int portalId, Action cacheClearAction)
         {
             // first execute the cache clear action then check the dependency change
-            cacehClearAction.Invoke();
+            cacheClearAction.Invoke();
             DNNCacheDependency dependency;
             using (cacheDependencyDict.GetReadLock())
             {
