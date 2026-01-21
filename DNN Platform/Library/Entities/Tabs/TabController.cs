@@ -56,7 +56,24 @@ namespace DotNetNuke.Entities.Tabs
         private static readonly Regex TabNameCheck1 = new Regex("^LPT[1-9]$|^COM[1-9]$", RegexOptions.IgnoreCase);
         private static readonly Regex TabNameCheck2 = new Regex("^AUX$|^CON$|^NUL$|^SITEMAP$|^LINKCLICK$|^KEEPALIVE$|^DEFAULT$|^ERRORPAGE$|^LOGIN$|^REGISTER$", RegexOptions.IgnoreCase);
 
-        private readonly DataProvider dataProvider = DataProvider.Instance();
+        private readonly IEventLogger eventLogger;
+        private readonly DataProvider dataProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="TabController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public TabController()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="TabController"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        public TabController(IEventLogger eventLogger, DataProvider dataProvider)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
+        }
 
         /// <summary>Gets the current page in current http request.</summary>
         /// <value>Current Page Info.</value>
@@ -76,7 +93,16 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="skinSrc">The skin SRC.</param>
         /// <param name="containerSrc">The container SRC.</param>
         /// <param name="cultureCode">The culture code.</param>
-        public static void CopyDesignToChildren(TabInfo parentTab, string skinSrc, string containerSrc, string cultureCode)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void CopyDesignToChildren(TabInfo parentTab, string skinSrc, string containerSrc, string cultureCode)
+            => CopyDesignToChildren(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), parentTab, skinSrc, containerSrc);
+
+        /// <summary>Copies the design to children.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="parentTab">The parent tab.</param>
+        /// <param name="skinSrc">The skin SRC.</param>
+        /// <param name="containerSrc">The container SRC.</param>
+        public static void CopyDesignToChildren(IEventLogger eventLogger, TabInfo parentTab, string skinSrc, string containerSrc)
         {
             bool clearCache = Null.NullBoolean;
             List<TabInfo> childTabs = Instance.GetTabsByPortal(parentTab.PortalID).DescendentsOf(parentTab.TabID);
@@ -123,12 +149,12 @@ namespace DotNetNuke.Entities.Tabs
 
                     UpdateTabVersion(tab.TabID);
 
-                    EventLogController.Instance.AddLog(
+                    eventLogger.AddLog(
                         tab,
                         PortalController.Instance.GetCurrentSettings(),
                         UserController.Instance.GetCurrentUserInfo().UserID,
                         string.Empty,
-                        EventLogController.EventLogType.TAB_UPDATED);
+                        EventLogType.TAB_UPDATED);
                     clearCache = true;
                 }
             }
@@ -1231,14 +1257,14 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="clearCache">whether to clear the cache.</param>
         public void DeleteTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache)
         {
-            DataProvider.Instance().DeleteTabUrl(tabUrl.TabId, tabUrl.SeqNum);
+            this.dataProvider.DeleteTabUrl(tabUrl.TabId, tabUrl.SeqNum);
 
-            EventLogController.Instance.AddLog(
+            this.eventLogger.AddLog(
                 "tabUrl.TabId",
                 tabUrl.TabId.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.TABURL_DELETED);
+                EventLogType.TABURL_DELETED);
             if (clearCache)
             {
                 DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.TabUrlCacheKey, portalId));
@@ -1839,7 +1865,7 @@ namespace DotNetNuke.Entities.Tabs
                 this.UpdateTab(localizedtab);
             }
 
-            EventLogController.Instance.AddLog(tab, portalSettings, portalSettings.UserId, string.Empty, EventLogController.EventLogType.TAB_RESTORED);
+            this.eventLogger.AddLog(tab, portalSettings, portalSettings.UserId, string.Empty, EventLogType.TAB_RESTORED);
 
             ArrayList allTabsModules = ModuleController.Instance.GetAllTabsModules(tab.PortalID, true);
             var tabModules = ModuleController.Instance.GetTabModules(tab.TabID);
@@ -1866,11 +1892,10 @@ namespace DotNetNuke.Entities.Tabs
                                   ? Null.NullInteger
                                   : tabUrl.PortalAliasId;
 
-            var saveLog = EventLogController.EventLogType.TABURL_CREATED;
-
+            var saveLog = EventLogType.TABURL_CREATED;
             if (tabUrl.HttpStatus == "200")
             {
-                saveLog = EventLogController.EventLogType.TABURL_CREATED;
+                saveLog = EventLogType.TABURL_CREATED;
             }
             else
             {
@@ -1879,13 +1904,13 @@ namespace DotNetNuke.Entities.Tabs
                 var existingSeq = t.FirstOrDefault(r => r.SeqNum == tabUrl.SeqNum);
                 if (existingSeq == null)
                 {
-                    saveLog = EventLogController.EventLogType.TABURL_CREATED;
+                    saveLog = EventLogType.TABURL_CREATED;
                 }
             }
 
-            DataProvider.Instance().SaveTabUrl(tabUrl.TabId, tabUrl.SeqNum, portalAliasId, (int)tabUrl.PortalAliasUsage, tabUrl.Url, tabUrl.QueryString, tabUrl.CultureCode, tabUrl.HttpStatus, tabUrl.IsSystem, UserController.Instance.GetCurrentUserInfo().UserID);
+            this.dataProvider.SaveTabUrl(tabUrl.TabId, tabUrl.SeqNum, portalAliasId, (int)tabUrl.PortalAliasUsage, tabUrl.Url, tabUrl.QueryString, tabUrl.CultureCode, tabUrl.HttpStatus, tabUrl.IsSystem, UserController.Instance.GetCurrentUserInfo().UserID);
 
-            EventLogController.Instance.AddLog(
+            this.eventLogger.AddLog(
                 "tabUrl",
                 tabUrl.ToString(),
                 PortalController.Instance.GetCurrentSettings(),
@@ -2001,12 +2026,12 @@ namespace DotNetNuke.Entities.Tabs
                 termController.AddTermToContent(term, updatedTab);
             }
 
-            EventLogController.Instance.AddLog(
+            this.eventLogger.AddLog(
                 updatedTab,
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 string.Empty,
-                EventLogController.EventLogType.TAB_UPDATED);
+                EventLogType.TAB_UPDATED);
 
             // Update Tab permissions
             TabPermissionController.SaveTabPermissions(updatedTab);
@@ -2058,7 +2083,7 @@ namespace DotNetNuke.Entities.Tabs
                 localizedTab.LocalizedVersionGuid = Guid.NewGuid();
             }
 
-            DataProvider.Instance()
+            this.dataProvider
                 .UpdateTabTranslationStatus(
                     localizedTab.TabID,
                     localizedTab.LocalizedVersionGuid,
@@ -2393,12 +2418,12 @@ namespace DotNetNuke.Entities.Tabs
                 termController.AddTermToContent(term, tab);
             }
 
-            EventLogController.Instance.AddLog(
+            this.eventLogger.AddLog(
                 tab,
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 string.Empty,
-                EventLogController.EventLogType.TAB_CREATED);
+                EventLogType.TAB_CREATED);
 
             // Add Tab Permissions
             TabPermissionController.SaveTabPermissions(tab);
@@ -2657,7 +2682,7 @@ namespace DotNetNuke.Entities.Tabs
             var dic = new Dictionary<int, List<TabAliasSkinInfo>>();
             if (portalId > -1)
             {
-                IDataReader dr = DataProvider.Instance().GetTabAliasSkins(portalId);
+                IDataReader dr = this.dataProvider.GetTabAliasSkins(portalId);
                 try
                 {
                     while (dr.Read())
@@ -2712,7 +2737,7 @@ namespace DotNetNuke.Entities.Tabs
             var dic = new Dictionary<int, Dictionary<string, string>>();
             if (portalID > -1)
             {
-                IDataReader dr = DataProvider.Instance().GetTabCustomAliases(portalID);
+                IDataReader dr = this.dataProvider.GetTabCustomAliases(portalID);
                 try
                 {
                     while (dr.Read())
@@ -2801,7 +2826,7 @@ namespace DotNetNuke.Entities.Tabs
 
             if (portalId > -1)
             {
-                IDataReader dr = DataProvider.Instance().GetTabUrls(portalId);
+                IDataReader dr = this.dataProvider.GetTabUrls(portalId);
                 try
                 {
                     while (dr.Read())
@@ -2852,12 +2877,12 @@ namespace DotNetNuke.Entities.Tabs
             this.dataProvider.DeleteTab(tabId);
 
             // Log deletion
-            EventLogController.Instance.AddLog(
+            this.eventLogger.AddLog(
                 "TabID",
                 tabId.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.TAB_DELETED);
+                EventLogType.TAB_DELETED);
 
             // queue remove tab/page from search index
             var document = new SearchDocumentToDelete
@@ -2865,7 +2890,7 @@ namespace DotNetNuke.Entities.Tabs
                 TabId = tabId,
             };
 
-            DataProvider.Instance().AddSearchDeletedItems(document);
+            this.dataProvider.AddSearchDeletedItems(document);
 
             // Remove the Content Item
             if (tab != null && tab.ContentItemId > Null.NullInteger)
@@ -2923,12 +2948,12 @@ namespace DotNetNuke.Entities.Tabs
                         ModuleController.Instance.DeleteTabModule(m.TabID, m.ModuleID, true);
                     }
 
-                    EventLogController.Instance.AddLog(
+                    this.eventLogger.AddLog(
                         tabToDelete,
                         portalSettings,
                         portalSettings.UserId,
                         string.Empty,
-                        EventLogController.EventLogType.TAB_SENT_TO_RECYCLE_BIN);
+                        EventLogType.TAB_SENT_TO_RECYCLE_BIN);
                     deleted = true;
 
                     EventManager.Instance.OnTabRemoved(new TabEventArgs { Tab = tabToDelete });

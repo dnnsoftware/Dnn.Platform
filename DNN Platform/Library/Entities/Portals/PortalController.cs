@@ -1827,7 +1827,7 @@ namespace DotNetNuke.Entities.Portals
         {
             var t = new Templates.PortalTemplateInfo(template.TemplateFilePath, template.CultureCode);
             var portalTemplateImporter = new PortalTemplateImporter(t);
-            portalTemplateImporter.ParseTemplate(this.businessControllerProvider, portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal);
+            portalTemplateImporter.ParseTemplate(this.businessControllerProvider, this.eventLogger, portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal);
         }
 
         /// <summary>Processes the resource file for the template file selected.</summary>
@@ -2559,7 +2559,7 @@ namespace DotNetNuke.Entities.Portals
                     try
                     {
                         this.CreatePredefinedFolderTypes(portalId);
-                        portalTemplateImporter.ParseTemplateInternal(this.businessControllerProvider, portalId, adminUser.UserID, PortalTemplateModuleAction.Replace.ToNewEnum(), true, out newPortalLocales);
+                        portalTemplateImporter.ParseTemplateInternal(this.businessControllerProvider, this.eventLogger, portalId, adminUser.UserID, PortalTemplateModuleAction.Replace.ToNewEnum(), true, out newPortalLocales);
                     }
                     catch (Exception exc1)
                     {
@@ -2810,12 +2810,12 @@ namespace DotNetNuke.Entities.Portals
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 portal.CultureCode);
 
-            EventLogController.Instance.AddLog(
+            this.eventLogger.AddLog(
                 "PortalId",
                 portal.PortalID.ToString(CultureInfo.InvariantCulture),
                 GetCurrentPortalSettingsInternal(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.PORTALINFO_UPDATED);
+                EventLogType.PORTALINFO_UPDATED);
 
             // ensure a localization item exists (in case a new default language has been set)
             DataProvider.Instance().EnsureLocalizationExists(portal.PortalID, portal.DefaultLanguage);

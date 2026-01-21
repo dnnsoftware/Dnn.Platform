@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.DDRMenu
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.UI;
     using DotNetNuke.UI.Skins;
@@ -24,12 +25,13 @@ namespace DotNetNuke.Web.DDRMenu
     {
         private readonly IHostSettings hostSettings;
         private readonly ILocaliser localiser;
+        private readonly ITabController tabController;
         private MenuBase menu;
 
         /// <summary>Initializes a new instance of the <see cref="SkinObject"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ILocaliser. Scheduled removal in v12.0.0.")]
         public SkinObject()
-            : this(null, null)
+            : this(null, null, null)
         {
         }
 
@@ -37,17 +39,19 @@ namespace DotNetNuke.Web.DDRMenu
         /// <param name="localiser">The tab localizer.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public SkinObject(ILocaliser localiser)
-            : this(localiser, null)
+            : this(localiser, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="SkinObject"/> class.</summary>
         /// <param name="localiser">The tab localizer.</param>
         /// <param name="hostSettings">The host settings.</param>
-        public SkinObject(ILocaliser localiser, IHostSettings hostSettings)
+        /// <param name="tabController">The tab controller.</param>
+        public SkinObject(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController)
         {
             this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
         }
 
         public string MenuStyle { get; set; }
@@ -83,7 +87,7 @@ namespace DotNetNuke.Web.DDRMenu
                 {
                     base.OnPreRender(e);
 
-                    this.menu = MenuBase.Instantiate(this.localiser, this.hostSettings, this.MenuStyle);
+                    this.menu = MenuBase.Instantiate(this.localiser, this.hostSettings, this.tabController, this.MenuStyle);
                     this.menu.ApplySettings(
                         new Settings
                         {

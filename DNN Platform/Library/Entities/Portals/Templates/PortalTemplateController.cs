@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Portals.Templates
     using System.IO;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Common;
@@ -21,6 +22,7 @@ namespace DotNetNuke.Entities.Portals.Templates
     public class PortalTemplateController : ServiceLocator<IPortalTemplateController, PortalTemplateController>, IPortalTemplateController
     {
         private readonly IBusinessControllerProvider businessControllerProvider;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="PortalTemplateController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
@@ -31,16 +33,26 @@ namespace DotNetNuke.Entities.Portals.Templates
 
         /// <summary>Initializes a new instance of the <see cref="PortalTemplateController"/> class.</summary>
         /// <param name="businessControllerProvider">The DI container.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public PortalTemplateController(IBusinessControllerProvider businessControllerProvider)
+            : this(businessControllerProvider, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PortalTemplateController"/> class.</summary>
+        /// <param name="businessControllerProvider">The DI container.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public PortalTemplateController(IBusinessControllerProvider businessControllerProvider, IEventLogger eventLogger)
         {
             this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+            this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
         }
 
         /// <inheritdoc/>
         public void ApplyPortalTemplate(int portalId, IPortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             var importer = new PortalTemplateImporter(template);
-            importer.ParseTemplate(this.businessControllerProvider, portalId, administratorId, mergeTabs, isNewPortal);
+            importer.ParseTemplate(this.businessControllerProvider, this.eventLogger, portalId, administratorId, mergeTabs, isNewPortal);
         }
 
         /// <inheritdoc/>

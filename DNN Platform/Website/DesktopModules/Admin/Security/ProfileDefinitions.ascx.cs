@@ -11,6 +11,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -35,22 +36,31 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private readonly INavigationManager navigationManager;
         private readonly IHostSettings hostSettings;
+        private readonly IEventLogger eventLogger;
         private ProfilePropertyDefinitionCollection profileProperties;
         private bool requiredColumnHidden;
 
         /// <summary>Initializes a new instance of the <see cref="ProfileDefinitions"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public ProfileDefinitions()
-            : this(null, null)
+            : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ProfileDefinitions"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public ProfileDefinitions(INavigationManager navigationManager, IHostSettings hostSettings)
+            : this(navigationManager, hostSettings, null)
+        {
+        }
+
+        public ProfileDefinitions(INavigationManager navigationManager, IHostSettings hostSettings, IEventLogger eventLogger)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+            this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
         }
 
         /// <summary>Gets the Return Url for the page.</summary>
@@ -338,7 +348,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="index">The index of the Property to delete.</param>
         private void DeleteProperty(int index)
         {
-            ProfileController.DeletePropertyDefinition(this.ProfileProperties[index]);
+            ProfileController.DeletePropertyDefinition(this.eventLogger, this.ProfileProperties[index]);
 
             this.RefreshGrid();
         }
@@ -444,7 +454,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         property.Required = false;
                     }
 
-                    ProfileController.UpdatePropertyDefinition(property);
+                    ProfileController.UpdatePropertyDefinition(this.eventLogger, property);
                 }
             }
         }

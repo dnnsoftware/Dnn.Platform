@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Portals.Templates
     using System.Xml.Linq;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Common;
@@ -93,18 +94,17 @@ namespace DotNetNuke.Entities.Portals.Templates
 
         private XmlDocument Template { get; set; }
 
-        internal void ParseTemplate(IBusinessControllerProvider businessControllerProvider, int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
+        internal void ParseTemplate(IBusinessControllerProvider businessControllerProvider, IEventLogger eventLogger, int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
-            this.ParseTemplateInternal(businessControllerProvider, portalId, administratorId, mergeTabs, isNewPortal);
+            this.ParseTemplateInternal(businessControllerProvider, eventLogger, portalId, administratorId, mergeTabs, isNewPortal);
         }
 
-        internal void ParseTemplateInternal(IBusinessControllerProvider businessControllerProvider, int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
+        internal void ParseTemplateInternal(IBusinessControllerProvider businessControllerProvider, IEventLogger eventLogger, int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
-            LocaleCollection localeCollection;
-            this.ParseTemplateInternal(businessControllerProvider, portalId, administratorId, mergeTabs, isNewPortal, out localeCollection);
+            this.ParseTemplateInternal(businessControllerProvider, eventLogger, portalId, administratorId, mergeTabs, isNewPortal, out _);
         }
 
-        internal void ParseTemplateInternal(IBusinessControllerProvider businessControllerProvider, int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
+        internal void ParseTemplateInternal(IBusinessControllerProvider businessControllerProvider, IEventLogger eventLogger, int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
         {
             CachingProvider.DisableCacheExpiration();
 
@@ -139,13 +139,13 @@ namespace DotNetNuke.Entities.Portals.Templates
             node = this.Template.SelectSingleNode("//portal/rolegroups");
             if (node != null)
             {
-                ParseRoleGroups(node.CreateNavigator(), portalId, administratorId);
+                ParseRoleGroups(eventLogger, node.CreateNavigator(), portalId, administratorId);
             }
 
             node = this.Template.SelectSingleNode("//portal/roles");
             if (node != null)
             {
-                ParseRoles(node.CreateNavigator(), portalId, administratorId);
+                ParseRoles(eventLogger, node.CreateNavigator(), portalId, administratorId);
             }
 
             node = this.Template.SelectSingleNode("//portal/portalDesktopModules");
@@ -249,7 +249,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                     }
                 }
 
-                ParseTabs(businessControllerProvider, node, portalId, false, mergeTabs, isNewPortal);
+                ParseTabs(businessControllerProvider, eventLogger, node, portalId, false, mergeTabs, isNewPortal);
             }
 
             CachingProvider.EnableCacheExpiration();
@@ -935,7 +935,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
         }
 
-        private static void ParseRoleGroups(XPathNavigator nav, int portalID, int administratorId)
+        private static void ParseRoleGroups(IEventLogger eventLogger, XPathNavigator nav, int portalID, int administratorId)
         {
             var administratorRoleId = -1;
             var registeredRoleId = -1;
@@ -983,6 +983,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             // update portal setup
             var portal = PortalController.Instance.GetPortal(portalID);
             UpdatePortalSetup(
+                eventLogger,
                 portalID,
                 administratorId,
                 administratorRoleId,
@@ -1001,7 +1002,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 PortalController.GetActivePortalLanguage(portalID));
         }
 
-        private static void ParseRoles(XPathNavigator nav, int portalID, int administratorId)
+        private static void ParseRoles(IEventLogger eventLogger, XPathNavigator nav, int portalID, int administratorId)
         {
             var administratorRoleId = -1;
             var registeredRoleId = -1;
@@ -1040,6 +1041,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             // update portal setup
             var portal = PortalController.Instance.GetPortal(portalID);
             UpdatePortalSetup(
+                eventLogger,
                 portalID,
                 administratorId,
                 administratorRoleId,
@@ -1058,7 +1060,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 PortalController.GetActivePortalLanguage(portalID));
         }
 
-        private static void ParseTab(IBusinessControllerProvider businessControllerProvider, XmlNode nodeTab, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, ref Hashtable hModules, ref Hashtable hTabs, bool isNewPortal)
+        private static void ParseTab(IBusinessControllerProvider businessControllerProvider, IEventLogger eventLogger, XmlNode nodeTab, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, ref Hashtable hModules, ref Hashtable hTabs, bool isNewPortal)
         {
             TabInfo tab = null;
             string strName = XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "name");
@@ -1134,6 +1136,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 }
 
                 UpdatePortalSetup(
+                    eventLogger,
                     portalId,
                     portal.AdministratorId,
                     portal.AdministratorRoleId,
@@ -1150,16 +1153,16 @@ namespace DotNetNuke.Entities.Portals.Templates
                     portal.PrivacyTabId,
                     portal.AdminTabId,
                     PortalController.GetActivePortalLanguage(portalId));
-                EventLogController.Instance.AddLog(
+                eventLogger.AddLog(
                     logType,
                     tab.TabID.ToString(CultureInfo.InvariantCulture),
                     PortalSettings.Current,
                     UserController.Instance.GetCurrentUserInfo().UserID,
-                    EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                    EventLogType.PORTAL_SETTING_UPDATED);
             }
         }
 
-        private static void ParseTabs(IBusinessControllerProvider businessControllerProvider, XmlNode nodeTabs, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
+        private static void ParseTabs(IBusinessControllerProvider businessControllerProvider, IEventLogger eventLogger, XmlNode nodeTabs, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             // used to control if modules are true modules or instances
             // will hold module ID from template / new module ID so new instances can reference right moduleid
@@ -1204,7 +1207,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab"))
             {
                 HtmlUtils.WriteKeepAlive();
-                ParseTab(businessControllerProvider, nodeTab, portalId, isAdminTemplate, mergeTabs, ref hModules, ref hTabs, isNewPortal);
+                ParseTab(businessControllerProvider, eventLogger, nodeTab, portalId, isAdminTemplate, mergeTabs, ref hModules, ref hTabs, isNewPortal);
             }
 
             // Process tabs that are linked to tabs
@@ -1342,7 +1345,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
         }
 
-        private static void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
+        private static void UpdatePortalSetup(IEventLogger eventLogger, int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
         {
             DataProvider.Instance().UpdatePortalSetup(
                 portalId,
@@ -1361,7 +1364,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 privacyTabId,
                 adminTabId,
                 cultureCode);
-            EventLogController.Instance.AddLog("PortalId", portalId.ToString(CultureInfo.InvariantCulture), PortalSettings.Current, UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
+            eventLogger.AddLog("PortalId", portalId.ToString(CultureInfo.InvariantCulture), PortalSettings.Current, UserController.Instance.GetCurrentUserInfo().UserID, EventLogType.PORTALINFO_UPDATED);
             DataCache.ClearHostCache(true);
         }
 

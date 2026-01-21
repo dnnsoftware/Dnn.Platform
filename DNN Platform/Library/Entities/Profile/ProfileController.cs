@@ -8,8 +8,10 @@ namespace DotNetNuke.Entities.Profile
     using System.Data;
     using System.Globalization;
     using System.IO;
+    using System.Runtime.CompilerServices;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
@@ -78,8 +80,16 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Adds a Property Definition to the Data Store.</summary>
         /// <param name="definition">An ProfilePropertyDefinition object.</param>
-        /// <returns>The Id of the definition (or if negative the errorcode of the error).</returns>
-        public static int AddPropertyDefinition(ProfilePropertyDefinition definition)
+        /// <returns>The ID of the definition (or if negative the errorcode of the error).</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial int AddPropertyDefinition(ProfilePropertyDefinition definition)
+            => AddPropertyDefinition(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), definition);
+
+        /// <summary>Adds a Property Definition to the Data Store.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="definition">An ProfilePropertyDefinition object.</param>
+        /// <returns>The ID of the definition (or if negative the errorcode of the error).</returns>
+        public static int AddPropertyDefinition(IEventLogger eventLogger, ProfilePropertyDefinition definition)
         {
             int portalId = GetEffectivePortalId(definition.PortalId);
             if (definition.Required)
@@ -102,7 +112,7 @@ namespace DotNetNuke.Entities.Profile
                 definition.Length,
                 (int)definition.DefaultVisibility,
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
+            eventLogger.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.PROFILEPROPERTY_CREATED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
             return intDefinition;
@@ -117,10 +127,17 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Deletes a Property Definition from the Data Store.</summary>
         /// <param name="definition">The ProfilePropertyDefinition object to delete.</param>
-        public static void DeletePropertyDefinition(ProfilePropertyDefinition definition)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeletePropertyDefinition(ProfilePropertyDefinition definition)
+            => DeletePropertyDefinition(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), definition);
+
+        /// <summary>Deletes a Property Definition from the Data Store.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="definition">The ProfilePropertyDefinition object to delete.</param>
+        public static void DeletePropertyDefinition(IEventLogger eventLogger, ProfilePropertyDefinition definition)
         {
             DataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
+            eventLogger.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.PROFILEPROPERTY_DELETED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }
@@ -297,7 +314,14 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Updates a Property Definition in the Data Store.</summary>
         /// <param name="definition">The ProfilePropertyDefinition object to update.</param>
-        public static void UpdatePropertyDefinition(ProfilePropertyDefinition definition)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void UpdatePropertyDefinition(ProfilePropertyDefinition definition)
+            => UpdatePropertyDefinition(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), definition);
+
+        /// <summary>Updates a Property Definition in the Data Store.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="definition">The ProfilePropertyDefinition object to update.</param>
+        public static void UpdatePropertyDefinition(IEventLogger eventLogger, ProfilePropertyDefinition definition)
         {
             if (definition.Required)
             {
@@ -318,7 +342,7 @@ namespace DotNetNuke.Entities.Profile
                 definition.Length,
                 (int)definition.DefaultVisibility,
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
+            eventLogger.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.PROFILEPROPERTY_UPDATED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }

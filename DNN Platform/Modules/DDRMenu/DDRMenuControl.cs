@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.DDRMenu
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.DDRMenu.Localisation;
 
@@ -20,13 +21,14 @@ namespace DotNetNuke.Web.DDRMenu
     {
         private readonly ILocaliser localiser;
         private readonly IHostSettings hostSettings;
+        private readonly ITabController tabController;
         private MenuBase menu;
 
         /// <summary>Initializes a new instance of the <see cref="DDRMenuControl"/> class.</summary>
         /// <param name="localiser">The tab localizer.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public DDRMenuControl(ILocaliser localiser)
-            : this(localiser, null)
+            : this(localiser, null, null)
         {
             this.localiser = localiser;
         }
@@ -34,10 +36,12 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>Initializes a new instance of the <see cref="DDRMenuControl"/> class.</summary>
         /// <param name="localiser">The tab localizer.</param>
         /// <param name="hostSettings">The host settings.</param>
-        public DDRMenuControl(ILocaliser localiser, IHostSettings hostSettings)
+        /// <param name="tabController">The tab controller.</param>
+        public DDRMenuControl(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController)
         {
             this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
         }
 
         /// <summary>Handles a click on the menu.</summary>
@@ -83,7 +87,7 @@ namespace DotNetNuke.Web.DDRMenu
                 base.OnPreRender(e);
 
                 this.MenuSettings.MenuStyle ??= "DNNMenu";
-                this.menu = MenuBase.Instantiate(this.localiser, this.hostSettings, this.MenuSettings.MenuStyle);
+                this.menu = MenuBase.Instantiate(this.localiser, this.hostSettings, this.tabController, this.MenuSettings.MenuStyle);
                 this.menu.RootNode = this.RootNode ?? new MenuNode();
                 this.menu.SkipLocalisation = this.SkipLocalisation;
                 this.menu.ApplySettings(this.MenuSettings);

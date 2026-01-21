@@ -5,23 +5,35 @@ namespace DotNetNuke.Entities.Modules
 {
     using System.Collections.Generic;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>ModuleControlController provides the Business Layer for Module Controls.</summary>
-    public class SkinControlController
+    public partial class SkinControlController
     {
         private static readonly DataProvider DataProvider = DataProvider.Instance();
 
         /// <summary>DeleteSkinControl deletes a Skin Control in the database.</summary>
         /// <param name="skinControl">The Skin Control to delete.</param>
-        public static void DeleteSkinControl(SkinControlInfo skinControl)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeleteSkinControl(SkinControlInfo skinControl)
+            => DeleteSkinControl(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), skinControl);
+
+        /// <summary>DeleteSkinControl deletes a Skin Control in the database.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="skinControl">The Skin Control to delete.</param>
+        public static void DeleteSkinControl(IEventLogger eventLogger, SkinControlInfo skinControl)
         {
             DataProvider.DeleteSkinControl(skinControl.SkinControlID);
-            EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_DELETED);
+            eventLogger.AddLog(skinControl, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.SKINCONTROL_DELETED);
         }
 
         /// <summary>GetSkinControl gets a single Skin Control from the database.</summary>
@@ -58,7 +70,15 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>SaveSkinControl updates a Skin Control in the database.</summary>
         /// <param name="skinControl">The Skin Control to save.</param>
         /// <returns>The skin control ID.</returns>
-        public static int SaveSkinControl(SkinControlInfo skinControl)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial int SaveSkinControl(SkinControlInfo skinControl)
+            => SaveSkinControl(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), skinControl);
+
+        /// <summary>SaveSkinControl updates a Skin Control in the database.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="skinControl">The Skin Control to save.</param>
+        /// <returns>The skin control ID.</returns>
+        public static int SaveSkinControl(IEventLogger eventLogger, SkinControlInfo skinControl)
         {
             int skinControlID = skinControl.SkinControlID;
             if (skinControlID == Null.NullInteger)
@@ -70,7 +90,7 @@ namespace DotNetNuke.Entities.Modules
                     skinControl.ControlSrc,
                     skinControl.SupportsPartialRendering,
                     UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_CREATED);
+                eventLogger.AddLog(skinControl, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.SKINCONTROL_CREATED);
             }
             else
             {
@@ -82,7 +102,7 @@ namespace DotNetNuke.Entities.Modules
                     skinControl.ControlSrc,
                     skinControl.SupportsPartialRendering,
                     UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_UPDATED);
+                eventLogger.AddLog(skinControl, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.SKINCONTROL_UPDATED);
             }
 
             return skinControlID;

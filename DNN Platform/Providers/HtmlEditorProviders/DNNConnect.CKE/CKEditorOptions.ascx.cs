@@ -31,7 +31,6 @@ namespace DNNConnect.CKEditorProvider
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Portals;
@@ -46,7 +45,6 @@ namespace DNNConnect.CKEditorProvider
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -72,6 +70,7 @@ namespace DNNConnect.CKEditorProvider
         private readonly IClientResourceController clientResourceController;
         private readonly IPortalAliasService portalAliasService;
         private readonly IModuleController moduleController;
+        private readonly ITabController tabController;
 
         /// <summary>  The provider config.</summary>
         private readonly ProviderConfiguration provConfig = ProviderConfiguration.GetProviderConfiguration(ProviderType);
@@ -108,7 +107,7 @@ namespace DNNConnect.CKEditorProvider
         /// <summary>Initializes a new instance of the <see cref="CKEditorOptions"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public CKEditorOptions()
-            : this(null, null, null, null, null, null)
+            : this(null, null, null, null, null, null, null)
         {
         }
 
@@ -119,7 +118,8 @@ namespace DNNConnect.CKEditorProvider
         /// <param name="clientResourceController">The client resource controller.</param>
         /// <param name="portalAliasService">The portal alias service.</param>
         /// <param name="moduleController">The module controller.</param>
-        public CKEditorOptions(IHostSettings hostSettings, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController, IPortalAliasService portalAliasService, IModuleController moduleController)
+        /// <param name="tabController">The tab controller.</param>
+        public CKEditorOptions(IHostSettings hostSettings, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController, IPortalAliasService portalAliasService, IModuleController moduleController, ITabController tabController)
         {
             this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
             this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
@@ -127,6 +127,7 @@ namespace DNNConnect.CKEditorProvider
             this.clientResourceController = clientResourceController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IClientResourceController>();
             this.portalAliasService = portalAliasService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalAliasService>();
             this.moduleController = moduleController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>();
+            this.tabController = tabController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<ITabController>();
         }
 
         /// <summary>Gets or sets a value indicating whether this instance is host mode.</summary>
@@ -284,7 +285,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else if (this.DefaultHostLoadMode.Equals(1))
                 {
-                    var currentTabName = new TabController().GetTab(this.CurrentOrSelectedTabId, this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId, false).TabName;
+                    var currentTabName = this.tabController.GetTab(this.CurrentOrSelectedTabId, this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId, false).TabName;
                     var pageLabel = Localization.GetString("lblPage.Text", this.ResXFile, this.LangCode);
                     var settingsLabel = Localization.GetString("lblSettings.Text", this.ResXFile, this.LangCode);
 
@@ -1044,10 +1045,8 @@ namespace DNNConnect.CKEditorProvider
 
             try
             {
-                this.lblPage.Text += string.Format(
-                    "{0} - TabID {1}",
-                    new TabController().GetTab(this.CurrentOrSelectedTabId, portalId, false).TabName,
-                    this.CurrentOrSelectedTabId);
+                var tabName = this.tabController.GetTab(this.CurrentOrSelectedTabId, portalId, false).TabName;
+                this.lblPage.Text += $"{tabName} - TabID {this.CurrentOrSelectedTabId}";
             }
             catch (Exception)
             {
@@ -1932,7 +1931,7 @@ namespace DNNConnect.CKEditorProvider
                             this.lnkRemove.Enabled = false;
                         }
 
-                        var currentTab = new TabController().GetTab(
+                        var currentTab = this.tabController.GetTab(
                             this.CurrentOrSelectedTabId, this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId, false);
 
                         this.lnkRemoveChild.Enabled = currentTab.HasChildren;
@@ -2017,7 +2016,7 @@ namespace DNNConnect.CKEditorProvider
                 // TODO : Load Localized Setting Name
                 if (!isSubSetting)
                 {
-                    var settingNameLabel = new Label { Text = string.Format("{0}:", info.Name) };
+                    var settingNameLabel = new Label { Text = $"{info.Name}:", };
                     settingNameLabel.Attributes.Add("class", "dnnLabel");
                     settingValueContainer.Controls.Add(settingNameLabel);
                 }
@@ -2153,7 +2152,7 @@ namespace DNNConnect.CKEditorProvider
                                 var settingValueContainer2 = new HtmlGenericControl("div");
                                 settingValueContainer2.Attributes.Add("class", "dnnFormItem");
 
-                                var settingNameLabel2 = new Label { Text = string.Format("{0} - {1}:", info.Name, codeMirrorInfo.Name) };
+                                var settingNameLabel2 = new Label { Text = $"{info.Name} - {codeMirrorInfo.Name}:", };
                                 settingNameLabel2.Attributes.Add("class", "dnnLabel");
                                 settingValueContainer2.Controls.Add(settingNameLabel2);
 

@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.DDRMenu
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Modules.NavigationProvider;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.WebControls;
@@ -24,12 +25,13 @@ namespace DotNetNuke.Web.DDRMenu
     {
         private readonly ILocaliser localiser;
         private readonly IHostSettings hostSettings;
+        private readonly ITabController tabController;
         private DDRMenuControl menuControl;
 
         /// <summary>Initializes a new instance of the <see cref="DDRMenuNavigationProvider"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ILocaliser. Scheduled removal in v12.0.0.")]
         public DDRMenuNavigationProvider()
-            : this(null, null)
+            : this(null, null, null)
         {
         }
 
@@ -37,17 +39,19 @@ namespace DotNetNuke.Web.DDRMenu
         /// <param name="localiser">The localizer.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public DDRMenuNavigationProvider(ILocaliser localiser)
-            : this(localiser, null)
+            : this(localiser, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DDRMenuNavigationProvider"/> class.</summary>
         /// <param name="localiser">The localizer.</param>
         /// <param name="hostSettings">The host settings.</param>
-        public DDRMenuNavigationProvider(ILocaliser localiser, IHostSettings hostSettings)
+        /// <param name="tabController">The tab controller.</param>
+        public DDRMenuNavigationProvider(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController)
         {
             this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
         }
 
         /// <inheritdoc/>
@@ -308,7 +312,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <inheritdoc/>
         public override void Initialize()
         {
-            this.menuControl = new DDRMenuControl(this.localiser, this.hostSettings) { ID = this.ControlID, EnableViewState = false, };
+            this.menuControl = new DDRMenuControl(this.localiser, this.hostSettings, this.tabController) { ID = this.ControlID, EnableViewState = false, };
             this.menuControl.NodeClick += this.RaiseEvent_NodeClick;
         }
 

@@ -6,7 +6,6 @@ namespace DNNConnect.CKEditorProvider.Browser;
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -50,7 +49,6 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Client.ClientResourceManagement;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JScript;
@@ -476,9 +474,7 @@ public partial class Browser : PageBase
                 return;
             }
 
-            var tabController = new TabController();
-
-            var selectTab = tabController.GetTab(
+            var selectTab = this.tabController.GetTab(
                 int.Parse(this.dnntreeTabs.SelectedValue), this.portalSettings.PortalId, true);
 
             string fileName = null;
@@ -1763,7 +1759,7 @@ public partial class Browser : PageBase
                 return;
             }
 
-            var currentTab = new TabController().GetTab(
+            var currentTab = this.tabController.GetTab(
                 int.Parse(this.request.QueryString["tabid"]), this.portalSettings.PortalId, false);
 
             if (currentTab == null || string.IsNullOrEmpty(currentTab.CultureCode))
@@ -2737,9 +2733,7 @@ public partial class Browser : PageBase
 
         this.SetDefaultLinkTypeText();
 
-        var tabController = new TabController();
-
-        var selectTab = tabController.GetTab(
+        var selectTab = this.tabController.GetTab(
             int.Parse(this.dnntreeTabs.SelectedValue), this.portalSettings.PortalId, true);
 
         string sDomainName = $"http://{Globals.GetDomainName(this.Request, true)}";

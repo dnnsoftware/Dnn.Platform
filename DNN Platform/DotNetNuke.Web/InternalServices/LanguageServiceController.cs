@@ -25,12 +25,13 @@ namespace DotNetNuke.Web.InternalServices
     public class LanguageServiceController : DnnApiController
     {
         private readonly ILocaleController localeController;
+        private readonly ITabController tabController;
 
         /// <summary>Initializes a new instance of the <see cref="LanguageServiceController"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalAliasService. Scheduled removal in v12.0.0.")]
         public LanguageServiceController(INavigationManager navigationManager)
-            : this(navigationManager, null)
+            : this(navigationManager, null, null)
         {
             this.NavigationManager = navigationManager;
         }
@@ -38,10 +39,12 @@ namespace DotNetNuke.Web.InternalServices
         /// <summary>Initializes a new instance of the <see cref="LanguageServiceController"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="localeController">The locale controller.</param>
-        public LanguageServiceController(INavigationManager navigationManager, ILocaleController localeController)
+        /// <param name="tabController">The tab controller.</param>
+        public LanguageServiceController(INavigationManager navigationManager, ILocaleController localeController, ITabController tabController)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.localeController = localeController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaleController>();
+            this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
         }
 
         /// <summary>Gets the navigation manager.</summary>
@@ -59,8 +62,7 @@ namespace DotNetNuke.Web.InternalServices
             List<PageDto> pages = [];
             if (!this.IsDefaultLanguage(locale.Code))
             {
-                TabController ctl = new TabController();
-                var nonTranslated = from t in ctl.GetTabsByPortal(this.PortalSettings.PortalId).WithCulture(locale.Code, false).Values where !t.IsTranslated && !t.IsDeleted select t;
+                var nonTranslated = from t in this.tabController.GetTabsByPortal(this.PortalSettings.PortalId).WithCulture(locale.Code, false).Values where !t.IsTranslated && !t.IsDeleted select t;
                 foreach (TabInfo page in nonTranslated)
                 {
                     pages.Add(new PageDto()

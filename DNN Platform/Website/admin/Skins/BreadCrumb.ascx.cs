@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins.Controls
@@ -24,15 +24,27 @@ namespace DotNetNuke.UI.Skins.Controls
         private const string HomeTabName = "Root";
         private const string UrlRegex = """(href|src)=(\"|'|)(.[^\"']*)(\"|'|)""";
         private readonly INavigationManager navigationManager;
+        private readonly ITabController tabController;
 
         private string separator = $"""<img alt="breadcrumb separator" src="{Globals.ApplicationPath}/images/breadcrumb.gif">""";
         private string cssClass = "SkinObject";
         private int rootLevel;
         private bool showRoot;
 
+        /// <summary>Initializes a new instance of the <see cref="BreadCrumb"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public BreadCrumb()
+            : this(null, null)
         {
-            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="BreadCrumb"/> class.</summary>
+        /// <param name="navigationManager">The navigation provider.</param>
+        /// <param name="tabController">The tab controller.</param>
+        public BreadCrumb(INavigationManager navigationManager, ITabController tabController)
+        {
+            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
             this.CleanerMarkup = false;
 
             // Default to Legacy to avoid breaking changes.
@@ -294,8 +306,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 homeUrl = this.navigationManager.NavigateURL(this.PortalSettings.HomeTabId);
 
-                var tc = new TabController();
-                var homeTab = tc.GetTab(this.PortalSettings.HomeTabId, this.PortalSettings.PortalId, false);
+                var homeTab = this.tabController.GetTab(this.PortalSettings.HomeTabId, this.PortalSettings.PortalId, false);
                 homeName = homeTab?.LocalizedTabName ?? homeName;
 
                 if (this.UseTitle && homeTab != null && !string.IsNullOrEmpty(homeTab.Title))
