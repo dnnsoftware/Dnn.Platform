@@ -72,7 +72,7 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             user.Membership.Approved = true;
-            UserController.UpdateUser(this.PortalSettings.PortalId, user);
+            UserController.UpdateUser(this.eventLogger, this.PortalSettings.PortalId, user);
 
             // Update User Roles if needed
             if (!user.IsSuperUser && user.IsInRole("Unverified Users") && this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)

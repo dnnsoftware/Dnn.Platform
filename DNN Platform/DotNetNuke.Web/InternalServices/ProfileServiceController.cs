@@ -12,6 +12,7 @@ namespace DotNetNuke.Web.InternalServices
     using System.Web.Http;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -32,11 +33,12 @@ namespace DotNetNuke.Web.InternalServices
         private readonly IPortalGroupController portalGroupController;
         private readonly IHostSettings hostSettings;
         private readonly IHostSettingsService hostSettingsService;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="ProfileServiceController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public ProfileServiceController()
-            : this(null, null, null)
+            : this(null, null, null, null, null, null)
         {
         }
 
@@ -46,7 +48,7 @@ namespace DotNetNuke.Web.InternalServices
         /// <param name="portalGroupController">The portal group controller.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ProfileServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
-            : this(portalController, appStatus, portalGroupController, null, null)
+            : this(portalController, appStatus, portalGroupController, null, null, null)
         {
         }
 
@@ -56,13 +58,15 @@ namespace DotNetNuke.Web.InternalServices
         /// <param name="portalGroupController">The portal group controller.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
-        public ProfileServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IHostSettings hostSettings, IHostSettingsService hostSettingsService)
+        /// <param name="eventLogger">The event logger.</param>
+        public ProfileServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger)
         {
             this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         /// <summary>Searches a registration profile.</summary>
@@ -120,12 +124,12 @@ namespace DotNetNuke.Web.InternalServices
 
             var user = this.PortalSettings.UserInfo;
             user.VanityUrl = uniqueUrl;
-            UserController.UpdateUser(this.PortalSettings.PortalId, user);
+            UserController.UpdateUser(this.eventLogger, this.PortalSettings.PortalId, user);
 
             DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, CacheController.VanityUrlLookupKey, this.PortalSettings.PortalId));
 
             // Url is clean and validated so we can update the User
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
         }
 
         /// <summary>Gets the profile property values.</summary>

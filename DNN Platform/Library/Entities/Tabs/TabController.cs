@@ -2982,8 +2982,8 @@ namespace DotNetNuke.Entities.Tabs
                             settingName,
                             settingValue,
                             UserController.Instance.GetCurrentUserInfo().UserID);
-                        EventLogController.AddSettingLog(
-                            EventLogController.EventLogType.TAB_SETTING_UPDATED,
+                        this.eventLogger.AddSettingLog(
+                            EventLogType.TAB_SETTING_UPDATED,
                             "TabId",
                             tabId,
                             settingName,
@@ -2998,8 +2998,8 @@ namespace DotNetNuke.Entities.Tabs
                         settingName,
                         settingValue,
                         UserController.Instance.GetCurrentUserInfo().UserID);
-                    EventLogController.AddSettingLog(
-                        EventLogController.EventLogType.TAB_SETTING_CREATED,
+                    this.eventLogger.AddSettingLog(
+                        EventLogType.TAB_SETTING_CREATED,
                         "TabId",
                         tabId,
                         settingName,

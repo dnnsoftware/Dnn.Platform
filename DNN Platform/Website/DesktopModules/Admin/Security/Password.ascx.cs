@@ -81,26 +81,15 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        protected bool UseCaptcha
-        {
-            get
-            {
-                return Convert.ToBoolean(GetSetting(this.PortalId, "Security_CaptchaChangePassword"));
-            }
-        }
+        protected bool UseCaptcha => Convert.ToBoolean(GetSetting(this.PortalId, "Security_CaptchaChangePassword"));
 
         /// <summary>Raises the <see cref="PasswordUpdated"/> Event.</summary>
         /// <param name="e">The event arguments.</param>
         public void OnPasswordUpdated(PasswordUpdatedEventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin)
             {
-                return;
-            }
-
-            if (this.PasswordUpdated != null)
-            {
-                this.PasswordUpdated(this, e);
+                this.PasswordUpdated?.Invoke(this, e);
             }
         }
 
@@ -108,14 +97,9 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         public void OnPasswordQuestionAnswerUpdated(PasswordUpdatedEventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin)
             {
-                return;
-            }
-
-            if (this.PasswordQuestionAnswerUpdated != null)
-            {
-                this.PasswordQuestionAnswerUpdated(this, e);
+                this.PasswordQuestionAnswerUpdated?.Invoke(this, e);
             }
         }
 
@@ -273,7 +257,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 var options = new DnnPaswordStrengthOptions();
                 var optionsAsJsonString = Json.Serialize(options);
-                var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}", "password-strength", optionsAsJsonString, Environment.NewLine);
+                var script = $"dnn.initializePasswordStrength('.password-strength', {optionsAsJsonString});{Environment.NewLine}";
 
                 if (ScriptManager.GetCurrent(this.Page) != null)
                 {
@@ -296,7 +280,7 @@ namespace DotNetNuke.Modules.Admin.Users
             };
 
             var confirmOptionsAsJsonString = Json.Serialize(confirmPasswordOptions);
-            var confirmScript = string.Format("dnn.initializePasswordComparer({0});{1}", confirmOptionsAsJsonString, Environment.NewLine);
+            var confirmScript = $"dnn.initializePasswordComparer({confirmOptionsAsJsonString});{Environment.NewLine}";
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {
@@ -311,7 +295,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void CmdReset_Click(object sender, EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
@@ -327,7 +311,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             try
             {
-                // create resettoken
+                // create reset token
                 UserController.ResetPasswordToken(this.User, (int)this.hostSettings.AdminMembershipResetLinkValidity.TotalMinutes);
 
                 bool canSend = Mail.SendMail(this.User, MessageType.PasswordReminder, this.PortalSettings) == string.Empty;
@@ -363,7 +347,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             try
             {
-                // send fresh resettoken copy
+                // send fresh reset token copy
                 bool canSend = UserController.ResetPasswordToken(this.User, true);
 
                 string message;
@@ -431,7 +415,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || !this.UseCaptcha)
             {
-                if (this.IsUserOrAdmin == false)
+                if (!this.IsUserOrAdmin)
                 {
                     return;
                 }
@@ -457,7 +441,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     return;
                 }
 
-                // 4. Check New Password is ddifferent
+                // 4. Check New Password is different
                 if (!this.IsAdmin && this.txtNewPassword.Text == this.txtOldPassword.Text)
                 {
                     this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordNotDifferent));
@@ -507,7 +491,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                     catch (ThreadAbortException)
                     {
-                        // Do nothing we are not logging ThreadAbortxceptions caused by redirects
+                        // Do nothing we are not logging ThreadAbortExceptions caused by redirects
                     }
                     catch (Exception exc)
                     {
@@ -534,7 +518,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                     catch (ThreadAbortException)
                     {
-                        // Do nothing we are not logging ThreadAbortxceptions caused by redirects
+                        // Do nothing we are not logging ThreadAbortExceptions caused by redirects
                     }
                     catch (Exception exc)
                     {
@@ -550,7 +534,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>cmdUpdate_Click runs when the Update Question and Answer  Button is clicked.</summary>
         private void CmdUpdateQA_Click(object sender, EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
@@ -575,21 +559,15 @@ namespace DotNetNuke.Modules.Admin.Users
 
             // Try and set password Q and A
             UserInfo objUser = UserController.GetUserById(this.PortalId, this.UserId);
-            this.OnPasswordQuestionAnswerUpdated(UserController.ChangePasswordQuestionAndAnswer(objUser, this.txtQAPassword.Text, this.txtEditQuestion.Text, this.txtEditAnswer.Text)
+            this.OnPasswordQuestionAnswerUpdated(UserController.ChangePasswordQuestionAndAnswer(this.eventLogger, objUser, this.txtQAPassword.Text, this.txtEditQuestion.Text, this.txtEditAnswer.Text)
                                                 ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
                                                 : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
         }
 
-        /// <summary>
-        /// The PasswordUpdatedEventArgs class provides a customised EventArgs class for
-        /// the PasswordUpdated Event.
-        /// </summary>
+        /// <summary>Provides a customised EventArgs class for the <see cref="Password.PasswordUpdated"/> event.</summary>
         public class PasswordUpdatedEventArgs
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="PasswordUpdatedEventArgs"/> class.
-            /// Constructs a new PasswordUpdatedEventArgs.
-            /// </summary>
+            /// <summary>Initializes a new instance of the <see cref="PasswordUpdatedEventArgs"/> class.</summary>
             /// <param name="status">The Password Update Status.</param>
             public PasswordUpdatedEventArgs(PasswordUpdateStatus status)
             {

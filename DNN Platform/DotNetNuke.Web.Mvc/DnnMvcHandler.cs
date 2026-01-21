@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.Mvc
     using System.Web.SessionState;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
@@ -55,7 +56,14 @@ namespace DotNetNuke.Web.Mvc
         void IHttpHandler.ProcessRequest(HttpContext httpContext)
         {
             SetThreadCulture();
-            MembershipModule.AuthenticateRequest(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(), PortalController.Instance, UserRequestIPAddressController.Instance, RoleController.Instance, this.RequestContext.HttpContext, allowUnknownExtensions: true);
+            MembershipModule.AuthenticateRequest(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(),
+                PortalController.Instance,
+                UserRequestIPAddressController.Instance,
+                RoleController.Instance,
+                Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                this.RequestContext.HttpContext,
+                allowUnknownExtensions: true);
             this.ProcessRequest(httpContext);
         }
 

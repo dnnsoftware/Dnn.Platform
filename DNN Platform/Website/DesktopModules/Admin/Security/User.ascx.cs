@@ -11,6 +11,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
@@ -38,19 +39,21 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly IPortalController portalController;
         private readonly DataProvider dataProvider;
         private readonly IClientResourceController clientResourceController;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="User"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public User()
-            : this(null, null, null, null, null)
+            : this(null, null, null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="User"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public User(IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript)
-            : this(hostSettings, javaScript, null, null, null)
+            : this(hostSettings, javaScript, null, null, null, null)
         {
         }
 
@@ -60,13 +63,27 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="portalController">The portal controller.</param>
         /// <param name="dataProvider">The data provider.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public User(IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IPortalController portalController, DataProvider dataProvider, IClientResourceController clientResourceController)
+            : this(hostSettings, javaScript, portalController, dataProvider, clientResourceController, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="User"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public User(IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IPortalController portalController, DataProvider dataProvider, IClientResourceController clientResourceController, IEventLogger eventLogger)
         {
             this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
             this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
             this.dataProvider = dataProvider ?? this.DependencyProvider.GetRequiredService<DataProvider>();
             this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
+            this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
         }
 
         /// <summary>Gets a value indicating whether the User is valid.</summary>
@@ -461,7 +478,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>cmdDelete_Click runs when the delete Button is clicked.</summary>
         private void CmdDelete_Click(object sender, EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
@@ -469,7 +486,7 @@ namespace DotNetNuke.Modules.Admin.Users
             string name = this.User.Username;
             int id = this.UserId;
             UserInfo user = this.User;
-            if (UserController.DeleteUser(ref user, true, false))
+            if (UserController.DeleteUser(this.eventLogger, ref user, true, false))
             {
                 this.OnUserDeleted(new UserDeletedEventArgs(id, name));
             }
@@ -490,7 +507,7 @@ namespace DotNetNuke.Modules.Admin.Users
             var id = this.UserId;
 
             var userInfo = this.User;
-            if (UserController.RestoreUser(ref userInfo))
+            if (UserController.RestoreUser(this.eventLogger, ref userInfo))
             {
                 this.OnUserRestored(new UserRestoredEventArgs(id, name));
             }
@@ -568,7 +585,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             }
                         }
 
-                        UserController.UpdateUser(this.UserPortalID, this.User);
+                        UserController.UpdateUser(this.eventLogger, this.UserPortalID, this.User);
 
                         if (this.PortalSettings.Registration.UseEmailAsUserName && (!string.Equals(this.User.Username, this.User.Email, StringComparison.OrdinalIgnoreCase)))
                         {

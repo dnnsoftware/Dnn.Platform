@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         public void OnMembershipPromoteToSuperuser(EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         public void OnMembershipDemoteFromSuperuser(EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
@@ -133,14 +133,9 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         public void OnMembershipAuthorized(EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin)
             {
-                return;
-            }
-
-            if (this.MembershipAuthorized != null)
-            {
-                this.MembershipAuthorized(this, e);
+                this.MembershipAuthorized?.Invoke(this, e);
             }
         }
 
@@ -148,14 +143,9 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         public void OnMembershipPasswordUpdateChanged(EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin)
             {
-                return;
-            }
-
-            if (this.MembershipPasswordUpdateChanged != null)
-            {
-                this.MembershipPasswordUpdateChanged(this, e);
+                this.MembershipPasswordUpdateChanged?.Invoke(this, e);
             }
         }
 
@@ -163,14 +153,9 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         public void OnMembershipUnAuthorized(EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin)
             {
-                return;
-            }
-
-            if (this.MembershipUnAuthorized != null)
-            {
-                this.MembershipUnAuthorized(this, e);
+                this.MembershipUnAuthorized?.Invoke(this, e);
             }
         }
 
@@ -178,14 +163,9 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         public void OnMembershipUnLocked(EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin)
             {
-                return;
-            }
-
-            if (this.MembershipUnLocked != null)
-            {
-                this.MembershipUnLocked(this, e);
+                this.MembershipUnLocked?.Invoke(this, e);
             }
         }
 
@@ -281,7 +261,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.User.Membership.Approved = true;
 
             // Update User
-            UserController.UpdateUser(this.PortalId, this.User);
+            UserController.UpdateUser(this.eventLogger, this.PortalId, this.User);
 
             // Update User Roles if needed
             if (!this.User.IsSuperUser && this.User.IsInRole("Unverified Users") && this.PortalSettings.UserRegistration == (int)Common.Globals.PortalRegistrationType.VerifiedRegistration)
@@ -297,12 +277,12 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>cmdPassword_Click runs when the ChangePassword Button is clicked.</summary>
         private void CmdPassword_Click(object sender, EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
 
-            if (this.Request.IsAuthenticated != true)
+            if (!this.Request.IsAuthenticated)
             {
                 return;
             }
@@ -316,7 +296,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.User.Membership.UpdatePassword = true;
 
                 // Update User
-                UserController.UpdateUser(this.PortalId, this.User);
+                UserController.UpdateUser(this.eventLogger, this.PortalId, this.User);
 
                 this.OnMembershipPasswordUpdateChanged(EventArgs.Empty);
             }
@@ -330,12 +310,12 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>cmdUnAuthorize_Click runs when the UnAuthorize User Button is clicked.</summary>
         private void CmdUnAuthorize_Click(object sender, EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
 
-            if (this.Request.IsAuthenticated != true)
+            if (!this.Request.IsAuthenticated)
             {
                 return;
             }
@@ -346,7 +326,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.User.Membership.Approved = false;
 
             // Update User
-            UserController.UpdateUser(this.PortalId, this.User);
+            UserController.UpdateUser(this.eventLogger, this.PortalId, this.User);
 
             this.OnMembershipUnAuthorized(EventArgs.Empty);
         }
@@ -356,17 +336,18 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         private void CmdToggleSuperuser_Click(object sender, EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
 
-            if (this.Request.IsAuthenticated != true)
+            if (!this.Request.IsAuthenticated)
             {
                 return;
             }
-            ////ensure only superusers can change user superuser state
-            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser != true)
+
+            // ensure only superusers can change user superuser state
+            if (!UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 return;
             }
@@ -375,7 +356,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.User.IsSuperUser = !currentSuperUserState;
 
             // Update User
-            UserController.UpdateUser(this.PortalId, this.User);
+            UserController.UpdateUser(this.eventLogger, this.PortalId, this.User);
             DataCache.ClearCache();
 
             if (currentSuperUserState)
@@ -391,19 +372,18 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>cmdUnlock_Click runs when the Unlock Account Button is clicked.</summary>
         private void CmdUnLock_Click(object sender, EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
 
-            if (this.Request.IsAuthenticated != true)
+            if (!this.Request.IsAuthenticated)
             {
                 return;
             }
 
             // update the user record in the database
-            bool isUnLocked = UserController.UnLockUser(this.User);
-
+            bool isUnLocked = UserController.UnLockUser(this.eventLogger, this.User);
             if (isUnLocked)
             {
                 this.User.Membership.LockedOut = false;

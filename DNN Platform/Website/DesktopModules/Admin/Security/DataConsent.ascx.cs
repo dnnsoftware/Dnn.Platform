@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -19,6 +20,7 @@ namespace DotNetNuke.Modules.Admin.Users
     public partial class DataConsent : UserModuleBase
     {
         private readonly INavigationManager navigationManager;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="DataConsent"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
@@ -29,9 +31,19 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// <summary>Initializes a new instance of the <see cref="DataConsent"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public DataConsent(INavigationManager navigationManager)
+            : this(navigationManager, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DataConsent"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public DataConsent(INavigationManager navigationManager, IEventLogger eventLogger)
         {
             this.navigationManager = navigationManager ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.eventLogger = eventLogger ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         /// <summary>A function which handles the <see cref="DataConsent.DataConsentCompleted"/> event.</summary>
@@ -148,13 +160,13 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 case PortalSettings.UserDeleteAction.Manual:
                     this.User.Membership.Approved = false;
-                    UserController.UpdateUser(this.PortalSettings.PortalId, this.User);
+                    UserController.UpdateUser(this.eventLogger, this.PortalSettings.PortalId, this.User);
                     UserController.UserRequestsRemoval(this.User, true);
                     success = true;
                     break;
                 case PortalSettings.UserDeleteAction.DelayedHardDelete:
                     var user = this.User;
-                    success = UserController.DeleteUser(ref user, true, false);
+                    success = UserController.DeleteUser(this.eventLogger, ref user, true, false);
                     UserController.UserRequestsRemoval(this.User, true);
                     break;
                 case PortalSettings.UserDeleteAction.HardDelete:

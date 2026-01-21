@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -43,11 +44,12 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly IHostSettings hostSettings;
         private readonly IPortalController portalController;
         private readonly IHostSettingsService hostSettingsService;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="EditUser"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditUser()
-            : this(null, null, null, null, null)
+            : this(null, null, null, null, null, null)
         {
         }
 
@@ -58,7 +60,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="portalController">The portal controller.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettingsService. Scheduled removal in v12.0.0.")]
         public EditUser(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings, IPortalController portalController)
-            : this(navigationManager, javaScript, hostSettings, portalController, null)
+            : this(navigationManager, javaScript, hostSettings, portalController, null, null)
         {
         }
 
@@ -68,13 +70,15 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
-        public EditUser(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings, IPortalController portalController, IHostSettingsService hostSettingsService)
+        /// <param name="eventLogger">The event logger.</param>
+        public EditUser(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings, IPortalController portalController, IHostSettingsService hostSettingsService, IEventLogger eventLogger)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
             this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
             this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
             this.hostSettingsService = hostSettingsService ?? this.DependencyProvider.GetRequiredService<IHostSettingsService>();
+            this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
         }
 
         /// <summary>Gets or sets the current Page No.</summary>
@@ -267,25 +271,25 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     case PortalSettings.UserDeleteAction.Manual:
                         user.Membership.Approved = false;
-                        UserController.UpdateUser(this.PortalSettings.PortalId, user);
+                        UserController.UpdateUser(this.eventLogger, this.PortalSettings.PortalId, user);
                         UserController.UserRequestsRemoval(user, true);
                         success = true;
                         break;
                     case PortalSettings.UserDeleteAction.DelayedHardDelete:
-                        success = UserController.DeleteUser(ref user, true, false);
+                        success = UserController.DeleteUser(this.eventLogger, ref user, true, false);
                         UserController.UserRequestsRemoval(user, true);
                         break;
                     case PortalSettings.UserDeleteAction.HardDelete:
                         success = UserController.RemoveUser(user);
                         break;
                     default: // if user delete is switched off under Data Consent then we revert to the old behavior
-                        success = UserController.DeleteUser(ref user, true, false);
+                        success = UserController.DeleteUser(this.eventLogger, ref user, true, false);
                         break;
                 }
             }
             else
             {
-                success = UserController.DeleteUser(ref user, true, false);
+                success = UserController.DeleteUser(this.eventLogger, ref user, true, false);
             }
 
             if (!success)
@@ -338,7 +342,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         this.UserInfo.PasswordResetExpiration = Null.NullDate;
                     }
 
-                    UserController.UpdateUser(this.UserPortalID, this.UserInfo);
+                    UserController.UpdateUser(this.eventLogger, this.UserPortalID, this.UserInfo);
 
                     // make sure username matches possibly changed email address
                     if (this.PortalSettings.Registration.UseEmailAsUserName)

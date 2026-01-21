@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
     using System.Threading;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.HttpModules.Membership;
@@ -33,6 +34,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
                 scope.ServiceProvider.GetRequiredService<IPortalController>(),
                 scope.ServiceProvider.GetRequiredService<IUserRequestIPAddressController>(),
                 scope.ServiceProvider.GetRequiredService<IRoleController>(),
+                scope.ServiceProvider.GetRequiredService<IEventLogger>(),
                 request.GetHttpContext(),
                 allowUnknownExtensions: true);
 
