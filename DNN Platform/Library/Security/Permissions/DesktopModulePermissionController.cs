@@ -6,79 +6,115 @@ namespace DotNetNuke.Security.Permissions
     using System;
     using System.Globalization;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Security.Permissions;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Log.EventLog;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>DesktopModulePermissionController provides the Business Layer for DesktopModule Permissions.</summary>
     [Serializable]
-    public class DesktopModulePermissionController
+    public partial class DesktopModulePermissionController
     {
         private static readonly PermissionProvider Provider = PermissionProvider.Instance();
 
         /// <summary>AddDesktopModulePermission adds a DesktopModule Permission to the Database.</summary>
         /// <param name="objDesktopModulePermission">The DesktopModule Permission to add.</param>
         /// <returns>The new desktop module permission ID.</returns>
-        public static int AddDesktopModulePermission(DesktopModulePermissionInfo objDesktopModulePermission)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial int AddDesktopModulePermission(DesktopModulePermissionInfo objDesktopModulePermission)
+            => AddDesktopModulePermission(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), objDesktopModulePermission);
+
+        /// <summary>AddDesktopModulePermission adds a DesktopModule Permission to the Database.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="desktopModulePermission">The DesktopModule Permission to add.</param>
+        /// <returns>The new desktop module permission ID.</returns>
+        public static int AddDesktopModulePermission(IEventLogger eventLogger, DesktopModulePermissionInfo desktopModulePermission)
         {
+            IPermissionInfo permission = desktopModulePermission;
             int id = DataProvider.Instance().AddDesktopModulePermission(
-                objDesktopModulePermission.PortalDesktopModuleID,
-                objDesktopModulePermission.PermissionID,
-                objDesktopModulePermission.RoleID,
-                objDesktopModulePermission.AllowAccess,
-                objDesktopModulePermission.UserID,
+                desktopModulePermission.PortalDesktopModuleID,
+                permission.PermissionId,
+                permission.RoleId,
+                permission.AllowAccess,
+                permission.UserId,
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(
-                objDesktopModulePermission,
+            eventLogger.AddLog(
+                desktopModulePermission,
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 string.Empty,
-                EventLogController.EventLogType.DESKTOPMODULEPERMISSION_CREATED);
+                EventLogType.DESKTOPMODULEPERMISSION_CREATED);
             ClearPermissionCache();
             return id;
         }
 
         /// <summary>DeleteDesktopModulePermission deletes a DesktopModule Permission in the Database.</summary>
         /// <param name="desktopModulePermissionID">The ID of the DesktopModule Permission to delete.</param>
-        public static void DeleteDesktopModulePermission(int desktopModulePermissionID)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeleteDesktopModulePermission(int desktopModulePermissionID)
+            => DeleteDesktopModulePermission(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), desktopModulePermissionID);
+
+        /// <summary>DeleteDesktopModulePermission deletes a DesktopModule Permission in the Database.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="desktopModulePermissionId">The ID of the DesktopModule Permission to delete.</param>
+        public static void DeleteDesktopModulePermission(IEventLogger eventLogger, int desktopModulePermissionId)
         {
-            DataProvider.Instance().DeleteDesktopModulePermission(desktopModulePermissionID);
-            EventLogController.Instance.AddLog(
+            DataProvider.Instance().DeleteDesktopModulePermission(desktopModulePermissionId);
+            eventLogger.AddLog(
                 "DesktopModulePermissionID",
-                desktopModulePermissionID.ToString(CultureInfo.InvariantCulture),
+                desktopModulePermissionId.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.DESKTOPMODULEPERMISSION_DELETED);
+                EventLogType.DESKTOPMODULEPERMISSION_DELETED);
             ClearPermissionCache();
         }
 
         /// <summary>DeleteDesktopModulePermissionsByPortalDesktopModuleID deletes a DesktopModule's DesktopModule Permission in the Database.</summary>
         /// <param name="portalDesktopModuleID">The ID of the DesktopModule to delete.</param>
-        public static void DeleteDesktopModulePermissionsByPortalDesktopModuleID(int portalDesktopModuleID)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeleteDesktopModulePermissionsByPortalDesktopModuleID(int portalDesktopModuleID)
+            => DeleteDesktopModulePermissionsByPortalDesktopModuleID(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalDesktopModuleID);
+
+        /// <summary>DeleteDesktopModulePermissionsByPortalDesktopModuleID deletes a DesktopModule's DesktopModule Permission in the Database.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalDesktopModuleId">The ID of the DesktopModule to delete.</param>
+        public static void DeleteDesktopModulePermissionsByPortalDesktopModuleID(IEventLogger eventLogger, int portalDesktopModuleId)
         {
-            DataProvider.Instance().DeleteDesktopModulePermissionsByPortalDesktopModuleID(portalDesktopModuleID);
-            EventLogController.Instance.AddLog(
+            DataProvider.Instance().DeleteDesktopModulePermissionsByPortalDesktopModuleID(portalDesktopModuleId);
+            eventLogger.AddLog(
                 "PortalDesktopModuleID",
-                portalDesktopModuleID.ToString(CultureInfo.InvariantCulture),
+                portalDesktopModuleId.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.DESKTOPMODULE_DELETED);
+                EventLogType.DESKTOPMODULE_DELETED);
             ClearPermissionCache();
         }
 
         /// <summary>DeleteDesktopModulePermissionsByUserID deletes a user's DesktopModule Permission in the Database.</summary>
         /// <param name="objUser">The user.</param>
-        public static void DeleteDesktopModulePermissionsByUserID(UserInfo objUser)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeleteDesktopModulePermissionsByUserID(UserInfo objUser)
+            => DeleteDesktopModulePermissionsByUserID(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), objUser);
+
+        /// <summary>DeleteDesktopModulePermissionsByUserID deletes a user's DesktopModule Permission in the Database.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="user">The user.</param>
+        public static void DeleteDesktopModulePermissionsByUserID(IEventLogger eventLogger, UserInfo user)
         {
-            DataProvider.Instance().DeleteDesktopModulePermissionsByUserID(objUser.UserID, objUser.PortalID);
-            EventLogController.Instance.AddLog(
+            DataProvider.Instance().DeleteDesktopModulePermissionsByUserID(user.UserID, user.PortalID);
+            eventLogger.AddLog(
                 "UserID",
-                objUser.UserID.ToString(CultureInfo.InvariantCulture),
+                user.UserID.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.DESKTOPMODULE_DELETED);
+                EventLogType.DESKTOPMODULE_DELETED);
             ClearPermissionCache();
         }
 
@@ -109,22 +145,30 @@ namespace DotNetNuke.Security.Permissions
 
         /// <summary>UpdateDesktopModulePermission updates a DesktopModule Permission in the Database.</summary>
         /// <param name="objDesktopModulePermission">The DesktopModule Permission to update.</param>
-        public static void UpdateDesktopModulePermission(DesktopModulePermissionInfo objDesktopModulePermission)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void UpdateDesktopModulePermission(DesktopModulePermissionInfo objDesktopModulePermission)
+            => UpdateDesktopModulePermission(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), objDesktopModulePermission);
+
+        /// <summary>UpdateDesktopModulePermission updates a DesktopModule Permission in the Database.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="desktopModulePermission">The DesktopModule Permission to update.</param>
+        public static void UpdateDesktopModulePermission(IEventLogger eventLogger, DesktopModulePermissionInfo desktopModulePermission)
         {
+            IPermissionInfo permission = desktopModulePermission;
             DataProvider.Instance().UpdateDesktopModulePermission(
-                objDesktopModulePermission.DesktopModulePermissionID,
-                objDesktopModulePermission.PortalDesktopModuleID,
-                objDesktopModulePermission.PermissionID,
-                objDesktopModulePermission.RoleID,
-                objDesktopModulePermission.AllowAccess,
-                objDesktopModulePermission.UserID,
+                desktopModulePermission.DesktopModulePermissionID,
+                desktopModulePermission.PortalDesktopModuleID,
+                permission.PermissionId,
+                permission.RoleId,
+                permission.AllowAccess,
+                permission.UserId,
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(
-                objDesktopModulePermission,
+            eventLogger.AddLog(
+                desktopModulePermission,
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 string.Empty,
-                EventLogController.EventLogType.DESKTOPMODULEPERMISSION_UPDATED);
+                EventLogType.DESKTOPMODULEPERMISSION_UPDATED);
             ClearPermissionCache();
         }
 
