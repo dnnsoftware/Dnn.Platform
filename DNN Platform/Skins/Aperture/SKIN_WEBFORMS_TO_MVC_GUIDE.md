@@ -32,10 +32,10 @@ This guide provides instructions for transforming DNN WebForms skins (.ascx file
 ```
 SkinName/
 ├── default.ascx
-├── partials/
-│   ├── _registers.ascx
-│   ├── _includes.ascx
-│   └── _header.ascx
+└── partials/
+    ├── _registers.ascx
+    ├── _includes.ascx
+    └── _header.ascx
 
 ContainerName/
 └── title.ascx
@@ -389,9 +389,6 @@ This comprehensive reference shows how to transform each DNN WebForms control to
 | WebForms | MVC Pipeline | Notes |
 |----------|-------------|-------|
 | `<dnn:TITLE runat="server" />` | `@Html.Title()` | Module title |
-| `<dnn:ACTIONS runat="server" />` | `@Html.Actions()` | Module actions menu |
-| `<dnn:ICON runat="server" />` | `@Html.Icon()` | Module icon |
-| `<dnn:VISIBILITY runat="server" />` | `@Html.Visibility()` | Visibility toggle |
 | `<div id="ContentPane" runat="server"></div>` (in container) | `@Html.Content()` | Module content |
 
 ### Panes (in Skins)
@@ -570,52 +567,7 @@ When transforming controls with attributes, convert them to named parameters in 
 </div>
 ```
 
-### Example 3: Container with Actions
-
-**WebForms (actions.ascx):**
-```aspx
-<%@ Control AutoEventWireup="false" Explicit="True" Inherits="DotNetNuke.UI.Containers.Container" %>
-<%@ Register TagPrefix="dnn" TagName="TITLE" Src="~/Admin/Containers/Title.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="ACTIONS" Src="~/Admin/Containers/Actions.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="ICON" Src="~/Admin/Containers/Icon.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="VISIBILITY" Src="~/Admin/Containers/Visibility.ascx" %>
-
-<div class="module-container">
-    <div class="module-header">
-        <dnn:ICON runat="server" />
-        <h3><dnn:TITLE runat="server" /></h3>
-        <div class="module-controls">
-            <dnn:VISIBILITY runat="server" />
-            <dnn:ACTIONS runat="server" />
-        </div>
-    </div>
-    <div class="module-content">
-        <div id="ContentPane" runat="server"></div>
-    </div>
-</div>
-```
-
-**MVC Pipeline (Views/Actions.cshtml):**
-```csharp
-@using DotNetNuke.Web.MvcPipeline.Containers
-@model DotNetNuke.Web.MvcPipeline.Models.ContainerModel
-
-<div class="module-container">
-    <div class="module-header">
-        @Html.Icon()
-        <h3>@Html.Title()</h3>
-        <div class="module-controls">
-            @Html.Visibility()
-            @Html.Actions()
-        </div>
-    </div>
-    <div class="module-content">
-        @Html.Content()
-    </div>
-</div>
-```
-
-### Example 4: Complex Partial with Code
+### Example 3: Complex Partial with Code
 
 **WebForms (partials/_navigation.ascx):**
 ```aspx
@@ -720,6 +672,7 @@ Use this checklist when transforming a WebForms skin:
 - [ ] Verify edit mode functionality
 - [ ] Check responsive behavior
 - [ ] Validate HTML output
+- [ ] Create a web.config file in each Views/ folder
 
 ---
 
@@ -790,9 +743,6 @@ Use this checklist when transforming a WebForms skin:
 **Container Helpers:**
 - `@Html.Title()` - Module title
 - `@Html.Content()` - Module content
-- `@Html.Actions()` - Module actions menu
-- `@Html.Icon()` - Module icon
-- `@Html.Visibility()` - Visibility toggle
 
 ---
 
