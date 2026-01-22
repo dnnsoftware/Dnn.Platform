@@ -49,9 +49,20 @@ namespace DotNetNuke.UI.Skins
             return DataProvider.Instance().AddSkin(skinPackageID, skinSrc);
         }
 
-        public static int AddSkinPackage(SkinPackageInfo skinPackage)
+        /// <summary>Adds the skin package.</summary>
+        /// <param name="skinPackage">The skin package.</param>
+        /// <returns>The skin package ID.</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial int AddSkinPackage(SkinPackageInfo skinPackage)
+            => AddSkinPackage(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), skinPackage);
+
+        /// <summary>Adds the skin package.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="skinPackage">The skin package.</param>
+        /// <returns>The skin package ID.</returns>
+        public static int AddSkinPackage(IEventLogger eventLogger, SkinPackageInfo skinPackage)
         {
-            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINPACKAGE_CREATED);
+            eventLogger.AddLog(skinPackage, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.SKINPACKAGE_CREATED);
             return DataProvider.Instance().AddSkinPackage(skinPackage.PackageID, skinPackage.PortalID, skinPackage.SkinName, skinPackage.SkinType, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
@@ -126,10 +137,19 @@ namespace DotNetNuke.UI.Skins
             DataProvider.Instance().DeleteSkin(skinID);
         }
 
-        public static void DeleteSkinPackage(SkinPackageInfo skinPackage)
+        /// <summary>Deletes the skin package.</summary>
+        /// <param name="skinPackage">The skin package.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeleteSkinPackage(SkinPackageInfo skinPackage)
+            => DeleteSkinPackage(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), skinPackage);
+
+        /// <summary>Deletes the skin package.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="skinPackage">The skin package.</param>
+        public static void DeleteSkinPackage(IEventLogger eventLogger, SkinPackageInfo skinPackage)
         {
             DataProvider.Instance().DeleteSkinPackage(skinPackage.SkinPackageID);
-            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINPACKAGE_DELETED);
+            eventLogger.AddLog(skinPackage, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.SKINPACKAGE_DELETED);
         }
 
         public static string FormatMessage(string title, string body, int level, bool isError)
@@ -137,26 +157,26 @@ namespace DotNetNuke.UI.Skins
             string message = title;
             if (isError)
             {
-                message = "<span class=\"NormalRed\">" + title + "</span>";
+                message = $"""<span class="NormalRed">{title}</span>""";
             }
 
             switch (level)
             {
                 case -1:
-                    message = "<hr /><br /><strong>" + message + "</strong>";
+                    message = $"<hr /><br /><strong>{message}</strong>";
                     break;
                 case 0:
-                    message = "<br /><br /><strong>" + message + "</strong>";
+                    message = $"<br /><br /><strong>{message}</strong>";
                     break;
                 case 1:
-                    message = "<br /><strong>" + message + "</strong>";
+                    message = $"<br /><strong>{message}</strong>";
                     break;
                 default:
-                    message = "<br /><li>" + message + "</li>";
+                    message = $"<br /><li>{message}</li>";
                     break;
             }
 
-            return message + ": " + body + Environment.NewLine;
+            return $"{message}: {body}{Environment.NewLine}";
         }
 
         public static string FormatSkinPath(string skinSrc)
@@ -321,7 +341,16 @@ namespace DotNetNuke.UI.Skins
             DataProvider.Instance().UpdateSkin(skinID, skinSrc);
         }
 
-        public static void UpdateSkinPackage(SkinPackageInfo skinPackage)
+        /// <summary>Updates the skin package.</summary>
+        /// <param name="skinPackage">The skin package.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void UpdateSkinPackage(SkinPackageInfo skinPackage)
+            => UpdateSkinPackage(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), skinPackage);
+
+        /// <summary>Updates the skin package.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="skinPackage">The skin package.</param>
+        public static void UpdateSkinPackage(IEventLogger eventLogger, SkinPackageInfo skinPackage)
         {
             DataProvider.Instance().UpdateSkinPackage(
                 skinPackage.SkinPackageID,
@@ -330,7 +359,7 @@ namespace DotNetNuke.UI.Skins
                 skinPackage.SkinName,
                 skinPackage.SkinType,
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINPACKAGE_UPDATED);
+            eventLogger.AddLog(skinPackage, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.SKINPACKAGE_UPDATED);
             foreach (KeyValuePair<int, string> kvp in skinPackage.Skins)
             {
                 UpdateSkin(kvp.Key, kvp.Value);

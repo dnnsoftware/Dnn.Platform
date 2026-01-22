@@ -8,8 +8,12 @@ namespace DotNetNuke.Tests.Web.Mvp
     using System.Collections.Generic;
 
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Mvp;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
     using NUnit.Framework;
 
@@ -23,6 +27,24 @@ namespace DotNetNuke.Tests.Web.Mvp
         private const int _tabModuleSettingCount = 3;
         private const string _tabModuleSettingName = "tabModuleKey{0}";
         private const string _tabModuleSettingValue = "value{0}";
+
+        private Mock<IModuleController> moduleControllerMock;
+        private FakeServiceProvider serviceProvider;
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.moduleControllerMock = new Mock<IModuleController>();
+            ModuleController.SetTestableInstance(this.moduleControllerMock.Object);
+            this.serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(this.moduleControllerMock.Object));
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
+            ModuleController.ClearInstance();
+        }
 
         [Test]
         public void ModuleSettingsPresenter_Load_Initialises_Both_Dictionaries_On_PostBack()
@@ -42,9 +64,9 @@ namespace DotNetNuke.Tests.Web.Mvp
             using (Assert.EnterMultipleScope())
             {
                 Assert.That(view.Object.Model.ModuleSettings, Is.Empty);
-
                 Assert.That(view.Object.Model.TabModuleSettings, Is.InstanceOf<Dictionary<string, string>>());
             }
+
             Assert.That(view.Object.Model.TabModuleSettings, Is.Empty);
         }
 
@@ -102,8 +124,6 @@ namespace DotNetNuke.Tests.Web.Mvp
             var view = new Mock<ISettingsView<SettingsModel>>();
             view.SetupGet(v => v.Model).Returns(new SettingsModel());
 
-            var controller = new Mock<IModuleController>();
-
             var presenter = new TestSettingsPresenter(view.Object) { ModuleContext = this.CreateModuleContext() };
             presenter.IsPostBack = true;
             view.Raise(v => v.Load += null, EventArgs.Empty);
@@ -116,7 +136,7 @@ namespace DotNetNuke.Tests.Web.Mvp
             {
                 var key = setting.Key;
                 var value = setting.Value;
-                controller.Verify(c => c.UpdateModuleSetting(It.IsAny<int>(), key, value), Times.Once());
+                this.moduleControllerMock.Verify(c => c.UpdateModuleSetting(It.IsAny<int>(), key, value), Times.Once());
             }
         }
 
@@ -126,8 +146,6 @@ namespace DotNetNuke.Tests.Web.Mvp
             // Arrange
             var view = new Mock<ISettingsView<SettingsModel>>();
             view.SetupGet(v => v.Model).Returns(new SettingsModel());
-
-            var controller = new Mock<IModuleController>();
 
             var presenter = new TestSettingsPresenter(view.Object) { ModuleContext = this.CreateModuleContext() };
             presenter.IsPostBack = true;
@@ -141,7 +159,7 @@ namespace DotNetNuke.Tests.Web.Mvp
             {
                 var key = setting.Key;
                 var value = setting.Value;
-                controller.Verify(c => c.UpdateTabModuleSetting(It.IsAny<int>(), key, value), Times.Once());
+                this.moduleControllerMock.Verify(c => c.UpdateTabModuleSetting(It.IsAny<int>(), key, value), Times.Once());
             }
         }
 

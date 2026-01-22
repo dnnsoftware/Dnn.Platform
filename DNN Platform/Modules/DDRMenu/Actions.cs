@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.DDRMenu
     using System.ComponentModel;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Modules.NavigationProvider;
@@ -18,6 +19,8 @@ namespace DotNetNuke.Web.DDRMenu
     using DotNetNuke.UI.WebControls;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.DDRMenu.TemplateEngine;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Represents DDR Menu Actions.</summary>
     public class Actions : ActionBase
@@ -29,13 +32,23 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>Initializes a new instance of the <see cref="Actions"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public Actions()
-            : this(Globals.DependencyProvider)
+            : this(Globals.GetCurrentServiceProvider(), null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Actions"/> class.</summary>
         /// <param name="serviceProvider">The DI container.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public Actions(IServiceProvider serviceProvider)
+            : this(serviceProvider, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Actions"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public Actions(IServiceProvider serviceProvider, IEventLogger eventLogger)
+            : base(eventLogger ?? serviceProvider.GetRequiredService<IEventLogger>())
         {
             this.serviceProvider = serviceProvider;
         }

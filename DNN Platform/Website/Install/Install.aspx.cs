@@ -14,6 +14,7 @@ namespace DotNetNuke.Services.Install
     using System.Xml;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -45,8 +46,10 @@ namespace DotNetNuke.Services.Install
         private static readonly object InstallLocker = new object();
 
         private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="Install"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public Install()
             : this(null)
         {
@@ -54,9 +57,19 @@ namespace DotNetNuke.Services.Install
 
         /// <summary>Initializes a new instance of the <see cref="Install"/> class.</summary>
         /// <param name="appStatus">The application status.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public Install(IApplicationStatusInfo appStatus)
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Install"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public Install(IApplicationStatusInfo appStatus, IEventLogger eventLogger)
         {
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         /// <inheritdoc/>
@@ -278,7 +291,7 @@ namespace DotNetNuke.Services.Install
                         if (!installConfig.InstallCulture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
                         {
                             var locale = LocaleController.Instance.GetLocale("en-US");
-                            Localization.RemoveLanguageFromPortal(0, locale.LanguageId, true);
+                            Localization.RemoveLanguageFromPortal(this.eventLogger, 0, locale.LanguageId, true);
                         }
 
                         var installVersion = DataProvider.Instance().GetInstallVersion();

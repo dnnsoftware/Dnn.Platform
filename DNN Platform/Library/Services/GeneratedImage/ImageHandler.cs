@@ -11,20 +11,34 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Drawing.Imaging;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>Image Handler abstract class.</summary>
     public abstract class ImageHandler : IHttpHandler
     {
         /// <summary>Initializes a new instance of the <see cref="ImageHandler"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
         /// <param name="imageStore">The image store.</param>
         /// <param name="now">The current <see cref="DateTime"/>.</param>
-        internal ImageHandler(IImageStore imageStore, DateTime now)
-            : this(new ImageHandlerInternal(imageStore, now))
+        internal ImageHandler(IEventLogger eventLogger, IImageStore imageStore, DateTime now)
+            : this(new ImageHandlerInternal(eventLogger, imageStore, now))
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ImageHandler"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         protected ImageHandler()
-            : this(new ImageHandlerInternal())
+            : this(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>())
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ImageHandler"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        protected ImageHandler(IEventLogger eventLogger)
+            : this(new ImageHandlerInternal(eventLogger))
         {
         }
 
@@ -39,62 +53,62 @@ namespace DotNetNuke.Services.GeneratedImage
         /// <summary>Gets or sets a value indicating whether enables server-side caching of the result.</summary>
         public bool EnableServerCache
         {
-            get { return this.Implementation.EnableServerCache; }
+            get => this.Implementation.EnableServerCache;
             set { this.Implementation.EnableServerCache = value; }
         }
 
         /// <summary>Gets or sets a value indicating whether enables client-side caching of the result.</summary>
         public bool EnableClientCache
         {
-            get { return this.Implementation.EnableClientCache; }
-            set { this.Implementation.EnableClientCache = value; }
+            get => this.Implementation.EnableClientCache;
+            set => this.Implementation.EnableClientCache = value;
         }
 
         /// <summary>Gets or sets the client-side cache expiration time.</summary>
         public TimeSpan ClientCacheExpiration
         {
-            get { return this.Implementation.ClientCacheExpiration; }
-            set { this.Implementation.ClientCacheExpiration = value; }
+            get => this.Implementation.ClientCacheExpiration;
+            set => this.Implementation.ClientCacheExpiration = value;
         }
 
         /// <summary>Gets or sets list of Domains who are allowed to use the imagehandler when security is enabled.</summary>
         public string[] AllowedDomains
         {
-            get { return this.Implementation.AllowedDomains; }
-            set { this.Implementation.AllowedDomains = value; }
+            get => this.Implementation.AllowedDomains;
+            set => this.Implementation.AllowedDomains = value;
         }
 
         public bool AllowStandalone
         {
-            get { return this.Implementation.AllowStandalone; }
+            get => this.Implementation.AllowStandalone;
             set { this.Implementation.AllowStandalone = value; }
         }
 
         public bool LogSecurity
         {
-            get { return this.Implementation.LogSecurity; }
-            set { this.Implementation.LogSecurity = value; }
+            get => this.Implementation.LogSecurity;
+            set => this.Implementation.LogSecurity = value;
         }
 
         /// <summary>Gets or sets the type of the result image. The handler will return ouput with MIME type matching this content.</summary>
         public ImageFormat ContentType
         {
-            get { return this.Implementation.ContentType; }
-            set { this.Implementation.ContentType = value; }
+            get => this.Implementation.ContentType;
+            set => this.Implementation.ContentType = value;
         }
 
         /// <summary>Gets or sets the image compression encoding for the result image. Default is 50L.</summary>
         public long ImageCompression
         {
-            get { return this.Implementation.ImageCompression; }
-            set { this.Implementation.ImageCompression = value; }
+            get => this.Implementation.ImageCompression;
+            set => this.Implementation.ImageCompression = value;
         }
 
         /// <summary>Gets or sets a value indicating whether enables block mechanism for DDOS by referring IP.</summary>
         public bool EnableIPCount
         {
-            get { return this.Implementation.EnableIPCount; }
-            set { this.Implementation.EnableIPCount = value; }
+            get => this.Implementation.EnableIPCount;
+            set => this.Implementation.EnableIPCount = value;
         }
 
         /// <summary>
@@ -103,15 +117,15 @@ namespace DotNetNuke.Services.GeneratedImage
         /// </summary>
         public int IPCountMaxCount
         {
-            get { return this.Implementation.IPCountMax; }
+            get => this.Implementation.IPCountMax;
             set { this.Implementation.IPCountMax = value; }
         }
 
         /// <summary>Gets or sets timespan for resetting the blocking.</summary>
         public TimeSpan IPCountPurgeInterval
         {
-            get { return this.Implementation.IpCountPurgeInterval; }
-            set { this.Implementation.IpCountPurgeInterval = value; }
+            get => this.Implementation.IpCountPurgeInterval;
+            set => this.Implementation.IpCountPurgeInterval = value;
         }
 
         /// <summary>Gets a list of image transforms that will be applied successively to the image.</summary>

@@ -544,13 +544,13 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 if (this.CreateStatus == UserCreateStatus.Success)
                 {
-                    // hide the succesful captcha
+                    // hide the successful captcha
                     this.captchaRow.Visible = false;
 
-                    // Assocate alternate Login with User and proceed with Login
+                    // Associate alternate Login with User and proceed with Login
                     if (!string.IsNullOrEmpty(this.AuthenticationType))
                     {
-                        AuthenticationController.AddUserAuthentication(this.User.UserID, this.AuthenticationType, this.UserToken);
+                        AuthenticationController.AddUserAuthentication(this.eventLogger, this.User.UserID, this.AuthenticationType, this.UserToken);
                     }
 
                     string strMessage = this.CompleteUserCreation(this.CreateStatus, user, true, this.IsRegister);

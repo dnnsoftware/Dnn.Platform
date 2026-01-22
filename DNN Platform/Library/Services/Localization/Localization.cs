@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.Localization
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -30,6 +31,8 @@ namespace DotNetNuke.Services.Localization
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.UI.Modules;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Localization class support localization in system.</summary>
     /// <remarks>
@@ -199,57 +202,70 @@ namespace DotNetNuke.Services.Localization
             return count;
         }
 
-        public static void AddLanguageToPortal(int portalID, int languageID, bool clearCache)
+        /// <summary>Add the language to the portal.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="languageID">The language ID.</param>
+        /// <param name="clearCache">Whether to clear the cache after adding.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void AddLanguageToPortal(int portalID, int languageID, bool clearCache)
+            => AddLanguageToPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalID, languageID, clearCache);
+
+        /// <summary>Add the language to the portal.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="languageId">The language ID.</param>
+        /// <param name="clearCache">Whether to clear the cache after adding.</param>
+        public static void AddLanguageToPortal(IEventLogger eventLogger, int portalId, int languageId, bool clearCache)
         {
             // try to get valid locale reference
-            var newLocale = LocaleController.Instance.GetLocale(languageID);
+            var newLocale = LocaleController.Instance.GetLocale(languageId);
 
             // we can only add a valid locale
             if (newLocale != null)
             {
                 // check if locale has not been added to portal already
-                var portalLocale = LocaleController.Instance.GetLocale(portalID, newLocale.Code);
+                var portalLocale = LocaleController.Instance.GetLocale(portalId, newLocale.Code);
 
                 // locale needs to be added
                 if (portalLocale == null)
                 {
                     // We need to add a translator role for the language
-                    bool contentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalID, false);
+                    bool contentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalId, false);
                     if (contentLocalizationEnabled)
                     {
                         // Create new Translator Role
-                        AddTranslatorRole(portalID, newLocale);
+                        AddTranslatorRole(portalId, newLocale);
                     }
 
-                    DataProvider.Instance().AddPortalLanguage(portalID, languageID, false, UserController.Instance.GetCurrentUserInfo().UserID);
-                    string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.LocalesCacheKey, portalID);
+                    DataProvider.Instance().AddPortalLanguage(portalId, languageId, false, UserController.Instance.GetCurrentUserInfo().UserID);
+                    string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.LocalesCacheKey, portalId);
                     DataCache.RemoveCache(cacheKey);
 
-                    EventLogController.Instance.AddLog(
+                    eventLogger.AddLog(
                         "portalID/languageID",
-                        portalID + "/" + languageID,
+                        $"{portalId}/{languageId}",
                         PortalController.Instance.GetCurrentSettings(),
                         UserController.Instance.GetCurrentUserInfo().UserID,
-                        EventLogController.EventLogType.LANGUAGETOPORTAL_CREATED);
+                        EventLogType.LANGUAGETOPORTAL_CREATED);
 
-                    var portalInfo = PortalController.Instance.GetPortal(portalID);
+                    var portalInfo = PortalController.Instance.GetPortal(portalId);
                     if (portalInfo != null && newLocale.Code != portalInfo.DefaultLanguage)
                     {
                         // check to see if this is the first extra language being added to the portal
-                        var portalLocales = LocaleController.Instance.GetLocales(portalID);
+                        var portalLocales = LocaleController.Instance.GetLocales(portalId);
                         var firstExtraLanguage = (portalLocales != null) && portalLocales.Count == 2;
 
                         if (firstExtraLanguage)
                         {
-                            AddLanguageHttpAlias(portalID, LocaleController.Instance.GetLocale(portalID, portalInfo.DefaultLanguage));
+                            AddLanguageHttpAlias(portalId, LocaleController.Instance.GetLocale(portalId, portalInfo.DefaultLanguage));
                         }
 
-                        AddLanguageHttpAlias(portalID, newLocale);
+                        AddLanguageHttpAlias(portalId, newLocale);
                     }
 
                     if (clearCache)
                     {
-                        DataCache.ClearPortalCache(portalID, false);
+                        DataCache.ClearPortalCache(portalId, false);
                     }
                 }
             }
@@ -427,18 +443,36 @@ namespace DotNetNuke.Services.Localization
             return timeZoneInfo;
         }
 
-        public static void DeleteLanguage(Locale language)
-        {
-            DeleteLanguage(language, false);
-        }
+        /// <summary>Delete the language.</summary>
+        /// <param name="language">The language/locale.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeleteLanguage(Locale language)
+            => DeleteLanguage(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), language);
 
-        public static void DeleteLanguage(Locale language, bool isInstalling)
+        /// <summary>Delete the language.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="language">The language/locale.</param>
+        public static void DeleteLanguage(IEventLogger eventLogger, Locale language)
+            => DeleteLanguage(eventLogger, language, false);
+
+        /// <summary>Delete the language.</summary>
+        /// <param name="language">The language/locale.</param>
+        /// <param name="isInstalling">Whether the site is installing.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeleteLanguage(Locale language, bool isInstalling)
+            => DeleteLanguage(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), language, isInstalling);
+
+        /// <summary>Delete the language.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="language">The language/locale.</param>
+        /// <param name="isInstalling">Whether the site is installing.</param>
+        public static void DeleteLanguage(IEventLogger eventLogger, Locale language, bool isInstalling)
         {
             // remove languages from all portals
             RemoveLanguageFromPortals(language.LanguageId, isInstalling);
 
             DataProvider.Instance().DeleteLanguage(language.LanguageId);
-            EventLogController.Instance.AddLog(language, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_DELETED);
+            eventLogger.AddLog(language, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.LANGUAGE_DELETED);
             DataCache.ClearHostCache(true);
         }
 
@@ -1309,35 +1343,57 @@ namespace DotNetNuke.Services.Localization
             return roleDescription;
         }
 
-        public static void RemoveLanguageFromPortal(int portalID, int languageID)
-        {
-            RemoveLanguageFromPortal(portalID, languageID, false);
-        }
+        /// <summary>Remove the specified language from the specified portal.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="languageID">The language ID.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void RemoveLanguageFromPortal(int portalID, int languageID)
+            => RemoveLanguageFromPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalID, languageID);
 
-        public static void RemoveLanguageFromPortal(int portalID, int languageID, bool isInstalling)
+        /// <summary>Remove the specified language from the specified portal.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="languageId">The language ID.</param>
+        public static void RemoveLanguageFromPortal(IEventLogger eventLogger, int portalId, int languageId)
+            => RemoveLanguageFromPortal(eventLogger, portalId, languageId, false);
+
+        /// <summary>Remove the specified language from the specified portal.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="languageID">The language ID.</param>
+        /// <param name="isInstalling">Whether the site is installing.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void RemoveLanguageFromPortal(int portalID, int languageID, bool isInstalling)
+            => RemoveLanguageFromPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalID, languageID, isInstalling);
+
+        /// <summary>Remove the specified language from the specified portal.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="languageId">The language ID.</param>
+        /// <param name="isInstalling">Whether the site is installing.</param>
+        public static void RemoveLanguageFromPortal(IEventLogger eventLogger, int portalId, int languageId, bool isInstalling)
         {
             if (!isInstalling)
             {
-                var portalLocales = GetPortalLocalizations(portalID);
+                var portalLocales = GetPortalLocalizations(portalId);
                 if (portalLocales.Count <= 1)
                 {
                     throw new PortalLocalizationRequiredException("You are trying to delete the only Portal localization entry in the system. This is NOT allowed!");
                 }
             }
 
-            var language = LocaleController.Instance.GetLocale(languageID);
+            var language = LocaleController.Instance.GetLocale(languageId);
             if (language != null)
             {
                 if (Config.GetFriendlyUrlProvider() == "advanced")
                 {
                     // only do this with Advanced URL Management
-                    var portalInfo = PortalController.Instance.GetPortal(portalID);
+                    var portalInfo = PortalController.Instance.GetPortal(portalId);
                     if (portalInfo != null)
                     {
                         // check to see if this is the last extra language being added to the portal
-                        var lastLanguage = LocaleController.Instance.GetLocales(portalID).Count == 2;
+                        var lastLanguage = LocaleController.Instance.GetLocales(portalId).Count == 2;
 
-                        var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalID).ToList();
+                        var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
                         foreach (var portalAliasInfo in portalAliases)
                         {
                             if (portalAliasInfo.CultureCode == language.Code)
@@ -1362,7 +1418,7 @@ namespace DotNetNuke.Services.Localization
 
                 // Get Translator Role
                 string roleName = $"Translator ({language.Code})";
-                RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
+                RoleInfo role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
 
                 if (role != null)
                 {
@@ -1370,55 +1426,100 @@ namespace DotNetNuke.Services.Localization
                     RoleController.Instance.DeleteRole(role);
                 }
 
-                DataProvider.Instance().DeletePortalLanguages(portalID, languageID);
-                EventLogController.Instance.AddLog(
+                DataProvider.Instance().DeletePortalLanguages(portalId, languageId);
+                eventLogger.AddLog(
                     "portalID/languageID",
-                    portalID + "/" + languageID,
+                    $"{portalId}/{languageId}",
                     PortalController.Instance.GetCurrentSettings(),
                     UserController.Instance.GetCurrentUserInfo().UserID,
-                    EventLogController.EventLogType.LANGUAGETOPORTAL_DELETED);
+                    EventLogType.LANGUAGETOPORTAL_DELETED);
 
-                DataCache.ClearPortalCache(portalID, false);
+                DataCache.ClearPortalCache(portalId, false);
             }
         }
 
-        public static void RemoveLanguageFromPortals(int languageId)
-        {
-            RemoveLanguageFromPortals(languageId, false);
-        }
+        /// <summary>Removes the specified language from all portals.</summary>
+        /// <param name="languageId">The language ID.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void RemoveLanguageFromPortals(int languageId)
+            => RemoveLanguageFromPortals(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), languageId);
 
-        public static void RemoveLanguageFromPortals(int languageId, bool isInstalling)
+        /// <summary>Removes the specified language from all portals.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="languageId">The language ID.</param>
+        public static void RemoveLanguageFromPortals(IEventLogger eventLogger, int languageId)
+            => RemoveLanguageFromPortals(eventLogger, languageId, false);
+
+        /// <summary>Removes the specified language from all portals.</summary>
+        /// <param name="languageId">The language ID.</param>
+        /// <param name="isInstalling">Whether the site is installing.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void RemoveLanguageFromPortals(int languageId, bool isInstalling)
+            => RemoveLanguageFromPortals(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), languageId, isInstalling);
+
+        /// <summary>Removes the specified language from all portals.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="languageId">The language ID.</param>
+        /// <param name="isInstalling">Whether the site is installing.</param>
+        public static void RemoveLanguageFromPortals(IEventLogger eventLogger, int languageId, bool isInstalling)
         {
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
+            foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
             {
-                RemoveLanguageFromPortal(portal.PortalID, languageId, isInstalling);
+                RemoveLanguageFromPortal(eventLogger, portal.PortalId, languageId, isInstalling);
             }
         }
 
-        public static void RemoveLanguagesFromPortal(int portalId)
+        /// <summary>Removes all languages from the specified portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void RemoveLanguagesFromPortal(int portalId)
+            => RemoveLanguagesFromPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalId);
+
+        /// <summary>Removes all languages from the specified portal.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">The portal ID.</param>
+        public static void RemoveLanguagesFromPortal(IEventLogger eventLogger, int portalId)
         {
-            foreach (Locale locale in LocaleController.Instance.GetLocales(portalId).Values)
+            foreach (var locale in LocaleController.Instance.GetLocales(portalId).Values)
             {
-                RemoveLanguageFromPortal(portalId, locale.LanguageId);
+                RemoveLanguageFromPortal(eventLogger, portalId, locale.LanguageId);
             }
         }
 
-        public static void SaveLanguage(Locale locale)
-        {
-            SaveLanguage(locale, true);
-        }
+        /// <summary>Adds or updates the language.</summary>
+        /// <param name="locale">The language/locale.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void SaveLanguage(Locale locale)
+            => SaveLanguage(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), locale);
 
-        public static void SaveLanguage(Locale locale, bool clearCache)
+        /// <summary>Adds or updates the language.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="locale">The language/locale.</param>
+        public static void SaveLanguage(IEventLogger eventLogger, Locale locale)
+            => SaveLanguage(eventLogger, locale, true);
+
+        /// <summary>Adds or updates the language.</summary>
+        /// <param name="locale">The language/locale.</param>
+        /// <param name="clearCache">Whether to clear the cache afterwards.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void SaveLanguage(Locale locale, bool clearCache)
+            => SaveLanguage(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), locale, clearCache);
+
+        /// <summary>Adds or updates the language.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="locale">The language/locale.</param>
+        /// <param name="clearCache">Whether to clear the cache afterwards.</param>
+        public static void SaveLanguage(IEventLogger eventLogger, Locale locale, bool clearCache)
         {
             if (locale.LanguageId == Null.NullInteger)
             {
                 locale.LanguageId = DataProvider.Instance().AddLanguage(locale.Code, locale.Text, locale.Fallback, UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_CREATED);
+                eventLogger.AddLog(locale, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.LANGUAGE_CREATED);
             }
             else
             {
                 DataProvider.Instance().UpdateLanguage(locale.LanguageId, locale.Code, locale.Text, locale.Fallback, UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_UPDATED);
+                eventLogger.AddLog(locale, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.LANGUAGE_UPDATED);
             }
 
             if (clearCache)

@@ -50,6 +50,12 @@ namespace Dnn.PersonaBar.Pages.Tests
             this.friendlyUrlWrapperMock = new Mock<IFriendlyUrlWrapper>();
             this.contentVerifierMock = new Mock<IContentVerifier>();
             this.portalControllerMock = new Mock<IPortalController>();
+            TabController.SetTestableInstance(this.tabControllerMock.Object);
+            ModuleController.SetTestableInstance(this.moduleControllerMock.Object);
+            PageUrlsController.SetTestableInstance(this.pageUrlsControllerMock.Object);
+            DefaultPortalThemeController.SetTestableInstance(this.defaultPortalThemeControllerMock.Object);
+            CloneModuleExecutionContext.SetTestableInstance(this.cloneModuleExecutionContextMock.Object);
+            PortalController.SetTestableInstance(this.portalControllerMock.Object);
             this.serviceProvider = FakeServiceProvider.Setup(
                 services =>
                 {
@@ -71,6 +77,12 @@ namespace Dnn.PersonaBar.Pages.Tests
         public void TearDown()
         {
             this.serviceProvider.Dispose();
+            TabController.ClearInstance();
+            ModuleController.ClearInstance();
+            PageUrlsController.ClearInstance();
+            DefaultPortalThemeController.ClearInstance();
+            CloneModuleExecutionContext.ClearInstance();
+            PortalController.ClearInstance();
         }
 
         [TestCase("http://www.websitename.com/home/", "/home")]
@@ -119,6 +131,7 @@ namespace Dnn.PersonaBar.Pages.Tests
 
             // Arrange
             this.tabControllerMock.Setup(t => t.GetTab(It.IsAny<int>(), It.IsAny<int>())).Returns(tab);
+            this.portalControllerMock.Setup(p => p.GetCurrentSettings()).Returns(portalSettings);
             this.portalControllerMock.Setup(p => p.GetCurrentPortalSettings()).Returns(portalSettings);
             this.contentVerifierMock.Setup(c => c.IsContentExistsForRequestedPortal(It.IsAny<int>(), It.IsAny<PortalSettings>(), false)).Returns(false);
 
@@ -129,7 +142,8 @@ namespace Dnn.PersonaBar.Pages.Tests
 
             // Assert
             Assert.Throws<PageNotFoundException>(pageSettingsCall);
-            this.portalControllerMock.Verify(p => p.GetCurrentPortalSettings(), Times.Exactly(2));
+            this.portalControllerMock.Verify(p => p.GetCurrentSettings(), Times.Once);
+            this.portalControllerMock.Verify(p => p.GetCurrentPortalSettings(), Times.Once);
             this.contentVerifierMock.Verify(c => c.IsContentExistsForRequestedPortal(portalId, portalSettings, false));
         }
 

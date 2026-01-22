@@ -30,13 +30,17 @@ namespace DotNetNuke.Services.GeneratedImage
     {
         private static TimeSpan defaultClientCacheExpiration = new TimeSpan(0, 10, 0);
 
+        private readonly IEventLogger eventLogger;
         private TimeSpan clientCacheExpiration = defaultClientCacheExpiration;
         private IImageStore imageStore;
         private DateTime? now;
 
         /// <summary>Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.</summary>
-        public ImageHandlerInternal()
+        /// <param name="eventLogger">The event logger.</param>
+        public ImageHandlerInternal(IEventLogger eventLogger)
         {
+            this.eventLogger = eventLogger;
+
             this.ContentType = ImageFormat.Jpeg;
             this.ImageCompression = 95;
             this.ImageTransforms = new List<ImageTransform>();
@@ -44,10 +48,11 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
         /// <param name="imageStore">The image store.</param>
         /// <param name="now">The current <see cref="DateTime"/>.</param>
-        internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
-            : this()
+        internal ImageHandlerInternal(IEventLogger eventLogger, IImageStore imageStore, DateTime now)
+            : this(eventLogger)
         {
             this.imageStore = imageStore;
             this.now = now;
@@ -133,23 +138,22 @@ namespace DotNetNuke.Services.GeneratedImage
             // Check if allowed standalone
             if (!this.AllowStandalone && context.Request.UrlReferrer == null && !context.Request.IsLocal)
             {
-                string message = "Not allowed to use standalone";
+                const string Message = "Not allowed to use standalone";
                 if (this.LogSecurity)
                 {
-                    EventLogController logController = new EventLogController();
-                    var logInfo = new LogInfo
+                    ILogInfo logInfo = new LogInfo
                     {
-                        LogUserID = PortalSettings.Current.UserId,
-                        LogPortalID = PortalSettings.Current.PortalId,
                         LogTypeKey = nameof(EventLogType.ADMIN_ALERT),
                     };
-                    logInfo.AddProperty("DnnImageHandler", message);
+                    logInfo.LogUserId = PortalSettings.Current.UserId;
+                    logInfo.LogPortalId = PortalSettings.Current.PortalId;
+                    logInfo.AddProperty("DnnImageHandler", Message);
                     logInfo.AddProperty("IP", ipAddress);
-                    logController.AddLog(logInfo);
+                    this.eventLogger.AddLog(logInfo);
                 }
 
                 context.Response.StatusCode = 403;
-                context.Response.StatusDescription = message;
+                context.Response.StatusDescription = Message;
                 context.Response.End();
                 return;
             }
@@ -178,13 +182,12 @@ namespace DotNetNuke.Services.GeneratedImage
                     string message = $"Not allowed to use from referrer '{context.Request.UrlReferrer.Host}'";
                     if (this.LogSecurity)
                     {
-                        EventLogController logController = new EventLogController();
-                        var logInfo = new LogInfo
+                        ILogInfo logInfo = new LogInfo
                         {
-                            LogUserID = PortalSettings.Current.UserId,
-                            LogPortalID = PortalSettings.Current.PortalId,
                             LogTypeKey = nameof(EventLogType.ADMIN_ALERT),
                         };
+                        logInfo.LogUserId = PortalSettings.Current.UserId;
+                        logInfo.LogPortalId = PortalSettings.Current.PortalId;
                         logInfo.AddProperty("DnnImageHandler", message);
                         logInfo.AddProperty("IP", ipAddress);
 
@@ -192,7 +195,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         logInfo.AddProperty("AllowedDomains", allowedDomains);
 #pragma warning restore CA1507
 
-                        logController.AddLog(logInfo);
+                        this.eventLogger.AddLog(logInfo);
                     }
 
                     context.Response.StatusCode = 403;
@@ -213,14 +216,12 @@ namespace DotNetNuke.Services.GeneratedImage
 
             if (imageMethodData.IsEmptyImage)
             {
-                using (var imageOutputBuffer = new MemoryStream())
-                {
-                    this.RenderImage(imageMethodData.Image, imageOutputBuffer);
-                    var buffer = imageOutputBuffer.GetBuffer();
-                    context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-                    context.Response.End();
-                    return;
-                }
+                using var imageOutputBuffer = new MemoryStream();
+                this.RenderImage(imageMethodData.Image, imageOutputBuffer);
+                var buffer = imageOutputBuffer.GetBuffer();
+                context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+                context.Response.End();
+                return;
             }
 
             string cacheId = this.GetUniqueIDString(context, uniqueIdStringSeed);
@@ -267,20 +268,19 @@ namespace DotNetNuke.Services.GeneratedImage
                 var isAnonymousUser = userId <= 0 ? true : false;
                 if (isProfilePic && !isAnonymousUser && !IsPicVisibleToCurrentUser(userId))
                 {
-                    string message = "Not allowed to see profile picture";
+                    const string message = "Not allowed to see profile picture";
 
                     if (this.LogSecurity)
                     {
-                        EventLogController logController = new EventLogController();
-                        var logInfo = new LogInfo
+                        ILogInfo logInfo = new LogInfo
                         {
-                            LogUserID = PortalSettings.Current.UserId,
-                            LogPortalID = PortalSettings.Current.PortalId,
                             LogTypeKey = nameof(EventLogType.ADMIN_ALERT),
                         };
+                        logInfo.LogUserId = PortalSettings.Current.UserId;
+                        logInfo.LogPortalId = PortalSettings.Current.PortalId;
                         logInfo.AddProperty("DnnImageHandler", message);
                         logInfo.AddProperty("IP", ipAddress);
-                        logController.AddLog(logInfo);
+                        this.eventLogger.AddLog(logInfo);
                     }
 
                     context.Response.StatusCode = 403;
@@ -301,24 +301,23 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 if (!IPCount.CheckIp(ipAddress))
                 {
-                    string message = "Too many requests";
+                    const string Message = "Too many requests";
 
                     if (this.LogSecurity)
                     {
-                        EventLogController logController = new EventLogController();
-                        var logInfo = new LogInfo
+                        ILogInfo logInfo = new LogInfo
                         {
-                            LogUserID = PortalSettings.Current.UserId,
-                            LogPortalID = PortalSettings.Current.PortalId,
                             LogTypeKey = nameof(EventLogType.ADMIN_ALERT),
                         };
-                        logInfo.AddProperty("DnnImageHandler", message);
+                        logInfo.LogUserId = PortalSettings.Current.UserId;
+                        logInfo.LogPortalId = PortalSettings.Current.PortalId;
+                        logInfo.AddProperty("DnnImageHandler", Message);
                         logInfo.AddProperty("IP", ipAddress);
-                        logController.AddLog(logInfo);
+                        this.eventLogger.AddLog(logInfo);
                     }
 
                     context.Response.StatusCode = 429;
-                    context.Response.StatusDescription = message;
+                    context.Response.StatusDescription = Message;
                     context.Response.End();
                     return;
                 }

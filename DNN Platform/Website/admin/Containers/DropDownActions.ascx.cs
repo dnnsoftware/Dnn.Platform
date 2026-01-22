@@ -7,10 +7,13 @@ namespace DotNetNuke.UI.Containers
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Modules.NavigationProvider;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.UI.WebControls;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Globals = DotNetNuke.Common.Globals;
 
@@ -18,46 +21,43 @@ namespace DotNetNuke.UI.Containers
     public partial class DropDownActions : ActionBase
     {
         private readonly IServiceProvider serviceProvider;
-        private NavigationProvider objControl;
         private string strProviderName = "DNNDropDownNavigationProvider";
 
         /// <summary>Initializes a new instance of the <see cref="DropDownActions"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public DropDownActions()
-            : this(Globals.DependencyProvider)
+            : this(Globals.GetCurrentServiceProvider())
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DropDownActions"/> class.</summary>
         /// <param name="serviceProvider">The DI container.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public DropDownActions(IServiceProvider serviceProvider)
+            : this(serviceProvider, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DropDownActions"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public DropDownActions(IServiceProvider serviceProvider, IEventLogger eventLogger)
+            : base(eventLogger ?? serviceProvider.GetRequiredService<IEventLogger>())
         {
             this.serviceProvider = serviceProvider;
         }
 
-        public NavigationProvider Control
-        {
-            get
-            {
-                return this.objControl;
-            }
-        }
+        public NavigationProvider Control { get; private set; }
 
         public string ProviderName
         {
-            get
-            {
-                return this.strProviderName;
-            }
-
-            set
-            {
-            }
+            get { return this.strProviderName; }
+            set { }
         }
 
         public void BindDropDown()
         {
-            DNNNodeCollection objNodes;
-            objNodes = Navigation.GetActionNodes(this.ActionRoot, this);
+            var objNodes = Navigation.GetActionNodes(this.ActionRoot, this);
             foreach (DNNNode objNode in objNodes)
             {
                 this.ProcessNodes(objNode);
@@ -89,7 +89,7 @@ namespace DotNetNuke.UI.Containers
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            this.objControl = NavigationProvider.Instance(this.serviceProvider, this.ProviderName);
+            this.Control = NavigationProvider.Instance(this.serviceProvider, this.ProviderName);
             this.Control.ControlID = "ctl" + this.ID;
             this.Control.Initialize();
             this.spActions.Controls.Add(this.Control.NavigationControl);
@@ -123,7 +123,7 @@ namespace DotNetNuke.UI.Containers
                 ClientAPI.RegisterClientVariable(this.Page, "__dnn_CSAction_" + this.Control.NavigationControl.ClientID + "_" + objParent.ID, objParent.JSFunction, true);
             }
 
-            objParent.ClickAction = eClickAction.None; // since GO button is handling actions dont allow selected index change fire postback
+            objParent.ClickAction = eClickAction.None; // since GO button is handling actions don't allow selected index change fire postback
 
             foreach (DNNNode objNode in objParent.DNNNodes)
             {

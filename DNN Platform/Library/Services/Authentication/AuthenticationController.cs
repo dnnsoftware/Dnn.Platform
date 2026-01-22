@@ -9,6 +9,7 @@ namespace DotNetNuke.Services.Authentication
     using System.Web;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
@@ -17,11 +18,14 @@ namespace DotNetNuke.Services.Authentication
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The AuthenticationController class provides the Business Layer for the Authentication Systems.</summary>
-    public class AuthenticationController
+    public partial class AuthenticationController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationController));
         private static readonly DataProvider Provider = DataProvider.Instance();
@@ -29,9 +33,17 @@ namespace DotNetNuke.Services.Authentication
         /// <summary>AddAuthentication adds a new Authentication System to the Data Store.</summary>
         /// <param name="authSystem">The new Authentication System to add.</param>
         /// <returns>The authentication system ID.</returns>
-        public static int AddAuthentication(AuthenticationInfo authSystem)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial int AddAuthentication(AuthenticationInfo authSystem)
+            => AddAuthentication(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), authSystem);
+
+        /// <summary>AddAuthentication adds a new Authentication System to the Data Store.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="authSystem">The new Authentication System to add.</param>
+        /// <returns>The authentication system ID.</returns>
+        public static int AddAuthentication(IEventLogger eventLogger, AuthenticationInfo authSystem)
         {
-            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_CREATED);
+            eventLogger.AddLog(authSystem, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.AUTHENTICATION_CREATED);
             return Provider.AddAuthentication(
                 authSystem.PackageID,
                 authSystem.AuthenticationType,
@@ -47,29 +59,38 @@ namespace DotNetNuke.Services.Authentication
         /// <param name="authenticationType">The authentication type.</param>
         /// <param name="authenticationToken">The authentication token.</param>
         /// <returns>The user authentication ID.</returns>
-        public static int AddUserAuthentication(int userID, string authenticationType, string authenticationToken)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial int AddUserAuthentication(int userID, string authenticationType, string authenticationToken)
+            => AddUserAuthentication(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), userID, authenticationType, authenticationToken);
+
+        /// <summary>AddUserAuthentication adds a new UserAuthentication to the User.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="userId">The new Authentication System to add.</param>
+        /// <param name="authenticationType">The authentication type.</param>
+        /// <param name="authenticationToken">The authentication token.</param>
+        /// <returns>The user authentication ID.</returns>
+        public static int AddUserAuthentication(IEventLogger eventLogger, int userId, string authenticationType, string authenticationToken)
         {
-            UserAuthenticationInfo userAuth = GetUserAuthentication(userID);
+            UserAuthenticationInfo userAuth = GetUserAuthentication(userId);
 
             if (userAuth == null || string.IsNullOrEmpty(userAuth.AuthenticationType))
             {
-                EventLogController.Instance.AddLog(
+                eventLogger.AddLog(
                     "userID/authenticationType",
-                    userID + "/" + authenticationType,
+                    $"{userId}/{authenticationType}",
                     PortalController.Instance.GetCurrentSettings(),
                     UserController.Instance.GetCurrentUserInfo().UserID,
-                    EventLogController.EventLogType.AUTHENTICATION_USER_CREATED);
-                return Provider.AddUserAuthentication(userID, authenticationType, authenticationToken, UserController.Instance.GetCurrentUserInfo().UserID);
+                    EventLogType.AUTHENTICATION_USER_CREATED);
+                return Provider.AddUserAuthentication(userId, authenticationType, authenticationToken, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
-                EventLogController.Instance.AddLog(
+                eventLogger.AddLog(
                     "userID/authenticationType already exists",
-                    userID + "/" + authenticationType,
+                    $"{userId}/{authenticationType}",
                     PortalController.Instance.GetCurrentSettings(),
                     UserController.Instance.GetCurrentUserInfo().UserID,
-                    EventLogController.EventLogType.AUTHENTICATION_USER_UPDATED);
-
+                    EventLogType.AUTHENTICATION_USER_UPDATED);
                 return userAuth.UserAuthenticationID;
             }
         }
@@ -83,10 +104,19 @@ namespace DotNetNuke.Services.Authentication
             return CBO.FillObject<UserAuthenticationInfo>(Provider.GetUserAuthentication(userID));
         }
 
-        public static void DeleteAuthentication(AuthenticationInfo authSystem)
+        /// <summary>Deletes the authentication system.</summary>
+        /// <param name="authSystem">The auth system.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeleteAuthentication(AuthenticationInfo authSystem)
+            => DeleteAuthentication(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), authSystem);
+
+        /// <summary>Deletes the authentication system.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="authSystem">The auth system.</param>
+        public static void DeleteAuthentication(IEventLogger eventLogger, AuthenticationInfo authSystem)
         {
             Provider.DeleteAuthentication(authSystem.AuthenticationID);
-            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_DELETED);
+            eventLogger.AddLog(authSystem, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.AUTHENTICATION_DELETED);
         }
 
         /// <summary>GetAuthenticationService fetches a single Authentication Systems.</summary>
@@ -335,7 +365,14 @@ namespace DotNetNuke.Services.Authentication
 
         /// <summary>UpdateAuthentication updates an existing Authentication System in the Data Store.</summary>
         /// <param name="authSystem">The new Authentication System to update.</param>
-        public static void UpdateAuthentication(AuthenticationInfo authSystem)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void UpdateAuthentication(AuthenticationInfo authSystem)
+            => UpdateAuthentication(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), authSystem);
+
+        /// <summary>UpdateAuthentication updates an existing Authentication System in the Data Store.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="authSystem">The new Authentication System to update.</param>
+        public static void UpdateAuthentication(IEventLogger eventLogger, AuthenticationInfo authSystem)
         {
             Provider.UpdateAuthentication(
                 authSystem.AuthenticationID,
@@ -346,7 +383,7 @@ namespace DotNetNuke.Services.Authentication
                 authSystem.LoginControlSrc,
                 authSystem.LogoffControlSrc,
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_UPDATED);
+            eventLogger.AddLog(authSystem, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.AUTHENTICATION_UPDATED);
         }
 
         private static object GetAuthenticationServicesCallBack(CacheItemArgs cacheItemArgs)

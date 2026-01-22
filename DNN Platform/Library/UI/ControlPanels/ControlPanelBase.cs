@@ -8,6 +8,7 @@ namespace DotNetNuke.UI.ControlPanels
     using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
@@ -23,10 +24,27 @@ namespace DotNetNuke.UI.ControlPanels
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Personalization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The ControlPanel class defines a custom base class inherited by all ControlPanel controls.</summary>
     public class ControlPanelBase : UserControl
     {
+        private readonly IEventLogger eventLogger;
         private string localResourceFile;
+
+        /// <summary>Initializes a new instance of the <see cref="ControlPanelBase"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public ControlPanelBase()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ControlPanelBase"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        public ControlPanelBase(IEventLogger eventLogger)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
 
         protected enum ViewPermissionType
         {
@@ -146,7 +164,7 @@ namespace DotNetNuke.UI.ControlPanels
                 objClone.PaneName = paneName;
                 objClone.Alignment = align;
                 ModuleController.Instance.AddModule(objClone);
-                EventLogController.Instance.AddLog(objClone, this.PortalSettings, userId, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
+                this.eventLogger.AddLog(objClone, this.PortalSettings, userId, string.Empty, EventLogType.MODULE_CREATED);
             }
         }
 

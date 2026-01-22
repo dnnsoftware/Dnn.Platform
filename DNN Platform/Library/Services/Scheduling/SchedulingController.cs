@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.Scheduling
     using System.Collections.Generic;
     using System.Globalization;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Host;
@@ -15,6 +16,8 @@ namespace DotNetNuke.Services.Scheduling
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Log.EventLog;
+
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualBasic;
 
     using Globals = DotNetNuke.Common.Globals;
@@ -22,9 +25,172 @@ namespace DotNetNuke.Services.Scheduling
     /// <summary>Provides the ability to manage scheduled tasks.</summary>
     public partial class SchedulingController
     {
-        public static int AddSchedule(string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
+        /// <summary>Add a new scheduled task.</summary>
+        /// <param name="typeFullName">The full name of the <see cref="SchedulerClient"/> implementation.</param>
+        /// <param name="timeLapse">The amount of time between runs of the task (in the unit specified by <paramref name="timeLapseMeasurement"/>).</param>
+        /// <param name="timeLapseMeasurement">
+        /// The time unit of <paramref name="timeLapse"/>. Options include the following:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term><c>"s"</c></term>
+        ///         <description>Seconds</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"m"</c></term>
+        ///         <description>Minutes</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"h"</c></term>
+        ///         <description>Hours</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"d"</c></term>
+        ///         <description>Days</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"mo"</c></term>
+        ///         <description>Months</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"y"</c></term>
+        ///         <description>Years</description>
+        ///     </item>
+        /// </list>
+        /// </param>
+        /// <param name="retryTimeLapse">The amount of time between retries after a task failure (in the unit specified by <paramref name="retryTimeLapseMeasurement"/>).</param>
+        /// <param name="retryTimeLapseMeasurement">
+        /// The time unit of <paramref name="retryTimeLapse"/>. Options include the following:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term><c>"s"</c></term>
+        ///         <description>Seconds</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"m"</c></term>
+        ///         <description>Minutes</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"h"</c></term>
+        ///         <description>Hours</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"d"</c></term>
+        ///         <description>Days</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"mo"</c></term>
+        ///         <description>Months</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"y"</c></term>
+        ///         <description>Years</description>
+        ///     </item>
+        /// </list>
+        /// </param>
+        /// <param name="retainHistoryNum">The number of log entries to retain.</param>
+        /// <param name="attachToEvent">The name of an event which should trigger the task to run.</param>
+        /// <param name="catchUpEnabled">Whether to catch up on task runs that were missed.</param>
+        /// <param name="enabled">Whether the task is enabled.</param>
+        /// <param name="objectDependencies">The name of objects (e.g. database tables) that the task depends on.</param>
+        /// <param name="servers">A comma-delimited list of server names on which the task should run, or <see cref="string.Empty"/> to run on all servers.</param>
+        /// <param name="friendlyName">The friendly name of the task.</param>
+        /// <param name="scheduleStartDate">The date/time on which the task should start running.</param>
+        /// <returns>The schedule ID.</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial int AddSchedule(string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
+            => AddSchedule(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), typeFullName, timeLapse, timeLapseMeasurement, retryTimeLapse, retryTimeLapseMeasurement, retainHistoryNum, attachToEvent, catchUpEnabled, enabled, objectDependencies, servers, friendlyName, scheduleStartDate);
+
+        /// <summary>Add a new scheduled task.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="typeFullName">The full name of the <see cref="SchedulerClient"/> implementation.</param>
+        /// <param name="timeLapse">The amount of time between runs of the task (in the unit specified by <paramref name="timeLapseMeasurement"/>).</param>
+        /// <param name="timeLapseMeasurement">
+        /// The time unit of <paramref name="timeLapse"/>. Options include the following:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term><c>"s"</c></term>
+        ///         <description>Seconds</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"m"</c></term>
+        ///         <description>Minutes</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"h"</c></term>
+        ///         <description>Hours</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"d"</c></term>
+        ///         <description>Days</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"mo"</c></term>
+        ///         <description>Months</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"y"</c></term>
+        ///         <description>Years</description>
+        ///     </item>
+        /// </list>
+        /// </param>
+        /// <param name="retryTimeLapse">The amount of time between retries after a task failure (in the unit specified by <paramref name="retryTimeLapseMeasurement"/>).</param>
+        /// <param name="retryTimeLapseMeasurement">
+        /// The time unit of <paramref name="retryTimeLapse"/>. Options include the following:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term><c>"s"</c></term>
+        ///         <description>Seconds</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"m"</c></term>
+        ///         <description>Minutes</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"h"</c></term>
+        ///         <description>Hours</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"d"</c></term>
+        ///         <description>Days</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"mo"</c></term>
+        ///         <description>Months</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"y"</c></term>
+        ///         <description>Years</description>
+        ///     </item>
+        /// </list>
+        /// </param>
+        /// <param name="retainHistoryNum">The number of log entries to retain.</param>
+        /// <param name="attachToEvent">The name of an event which should trigger the task to run.</param>
+        /// <param name="catchUpEnabled">Whether to catch up on task runs that were missed.</param>
+        /// <param name="enabled">Whether the task is enabled.</param>
+        /// <param name="objectDependencies">The name of objects (e.g. database tables) that the task depends on.</param>
+        /// <param name="servers">A comma-delimited list of server names on which the task should run, or <see cref="string.Empty"/> to run on all servers.</param>
+        /// <param name="friendlyName">The friendly name of the task.</param>
+        /// <param name="scheduleStartDate">The date/time on which the task should start running.</param>
+        /// <returns>The schedule ID.</returns>
+        public static int AddSchedule(IEventLogger eventLogger, string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
         {
-            EventLogController.Instance.AddLog("TypeFullName", typeFullName, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_CREATED);
+            eventLogger.AddLog("TypeFullName", typeFullName, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogType.SCHEDULE_CREATED);
             return DataProvider.Instance().AddSchedule(
                 typeFullName,
                 timeLapse,
@@ -52,15 +218,24 @@ namespace DotNetNuke.Services.Scheduling
             DataProvider.Instance().AddScheduleItemSetting(scheduleID, name, value);
         }
 
-        public static void DeleteSchedule(int scheduleID)
+        /// <summary>Delete a scheduled task.</summary>
+        /// <param name="scheduleID">The schedule ID.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeleteSchedule(int scheduleID)
+            => DeleteSchedule(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), scheduleID);
+
+        /// <summary>Delete a scheduled task.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="scheduleId">The schedule ID.</param>
+        public static void DeleteSchedule(IEventLogger eventLogger, int scheduleId)
         {
-            DataProvider.Instance().DeleteSchedule(scheduleID);
-            EventLogController.Instance.AddLog(
+            DataProvider.Instance().DeleteSchedule(scheduleId);
+            eventLogger.AddLog(
                 "ScheduleID",
-                scheduleID.ToString(CultureInfo.InvariantCulture),
+                scheduleId.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.SCHEDULE_DELETED);
+                EventLogType.SCHEDULE_DELETED);
         }
 
         public static int GetActiveThreadCount()
@@ -173,10 +348,173 @@ namespace DotNetNuke.Services.Scheduling
 #pragma warning restore 618
         }
 
-        public static void UpdateSchedule(int scheduleID, string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
+        /// <summary>Updates the scheduled task.</summary>
+        /// <param name="scheduleID">The ID of the scheduled task.</param>
+        /// <param name="typeFullName">The full name of the <see cref="SchedulerClient"/> implementation.</param>
+        /// <param name="timeLapse">The amount of time between runs of the task (in the unit specified by <paramref name="timeLapseMeasurement"/>).</param>
+        /// <param name="timeLapseMeasurement">
+        /// The time unit of <paramref name="timeLapse"/>. Options include the following:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term><c>"s"</c></term>
+        ///         <description>Seconds</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"m"</c></term>
+        ///         <description>Minutes</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"h"</c></term>
+        ///         <description>Hours</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"d"</c></term>
+        ///         <description>Days</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"mo"</c></term>
+        ///         <description>Months</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"y"</c></term>
+        ///         <description>Years</description>
+        ///     </item>
+        /// </list>
+        /// </param>
+        /// <param name="retryTimeLapse">The amount of time between retries after a task failure (in the unit specified by <paramref name="retryTimeLapseMeasurement"/>).</param>
+        /// <param name="retryTimeLapseMeasurement">
+        /// The time unit of <paramref name="retryTimeLapse"/>. Options include the following:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term><c>"s"</c></term>
+        ///         <description>Seconds</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"m"</c></term>
+        ///         <description>Minutes</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"h"</c></term>
+        ///         <description>Hours</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"d"</c></term>
+        ///         <description>Days</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"mo"</c></term>
+        ///         <description>Months</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"y"</c></term>
+        ///         <description>Years</description>
+        ///     </item>
+        /// </list>
+        /// </param>
+        /// <param name="retainHistoryNum">The number of log entries to retain.</param>
+        /// <param name="attachToEvent">The name of an event which should trigger the task to run.</param>
+        /// <param name="catchUpEnabled">Whether to catch up on task runs that were missed.</param>
+        /// <param name="enabled">Whether the task is enabled.</param>
+        /// <param name="objectDependencies">The name of objects (e.g. database tables) that the task depends on.</param>
+        /// <param name="servers">A comma-delimited list of server names on which the task should run, or <see cref="string.Empty"/> to run on all servers.</param>
+        /// <param name="friendlyName">The friendly name of the task.</param>
+        /// <param name="scheduleStartDate">The date/time on which the task should start running.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void UpdateSchedule(int scheduleID, string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
+            => UpdateSchedule(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), scheduleID, typeFullName, timeLapse, timeLapseMeasurement, retryTimeLapse, retryTimeLapseMeasurement, retainHistoryNum, attachToEvent, catchUpEnabled, enabled, objectDependencies, servers, friendlyName, scheduleStartDate);
+
+        /// <summary>Updates the scheduled task.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="scheduleId">The ID of the scheduled task.</param>
+        /// <param name="typeFullName">The full name of the <see cref="SchedulerClient"/> implementation.</param>
+        /// <param name="timeLapse">The amount of time between runs of the task (in the unit specified by <paramref name="timeLapseMeasurement"/>).</param>
+        /// <param name="timeLapseMeasurement">
+        /// The time unit of <paramref name="timeLapse"/>. Options include the following:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term><c>"s"</c></term>
+        ///         <description>Seconds</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"m"</c></term>
+        ///         <description>Minutes</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"h"</c></term>
+        ///         <description>Hours</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"d"</c></term>
+        ///         <description>Days</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"mo"</c></term>
+        ///         <description>Months</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"y"</c></term>
+        ///         <description>Years</description>
+        ///     </item>
+        /// </list>
+        /// </param>
+        /// <param name="retryTimeLapse">The amount of time between retries after a task failure (in the unit specified by <paramref name="retryTimeLapseMeasurement"/>).</param>
+        /// <param name="retryTimeLapseMeasurement">
+        /// The time unit of <paramref name="retryTimeLapse"/>. Options include the following:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term><c>"s"</c></term>
+        ///         <description>Seconds</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"m"</c></term>
+        ///         <description>Minutes</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"h"</c></term>
+        ///         <description>Hours</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"d"</c></term>
+        ///         <description>Days</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"mo"</c></term>
+        ///         <description>Months</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"y"</c></term>
+        ///         <description>Years</description>
+        ///     </item>
+        /// </list>
+        /// </param>
+        /// <param name="retainHistoryNum">The number of log entries to retain.</param>
+        /// <param name="attachToEvent">The name of an event which should trigger the task to run.</param>
+        /// <param name="catchUpEnabled">Whether to catch up on task runs that were missed.</param>
+        /// <param name="enabled">Whether the task is enabled.</param>
+        /// <param name="objectDependencies">The name of objects (e.g. database tables) that the task depends on.</param>
+        /// <param name="servers">A comma-delimited list of server names on which the task should run, or <see cref="string.Empty"/> to run on all servers.</param>
+        /// <param name="friendlyName">The friendly name of the task.</param>
+        /// <param name="scheduleStartDate">The date/time on which the task should start running.</param>
+        public static void UpdateSchedule(IEventLogger eventLogger, int scheduleId, string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)
         {
             DataProvider.Instance().UpdateSchedule(
-                scheduleID,
+                scheduleId,
                 typeFullName,
                 timeLapse,
                 timeLapseMeasurement,
@@ -191,7 +529,7 @@ namespace DotNetNuke.Services.Scheduling
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 friendlyName,
                 scheduleStartDate);
-            EventLogController.Instance.AddLog("TypeFullName", typeFullName, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_UPDATED);
+            eventLogger.AddLog("TypeFullName", typeFullName, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogType.SCHEDULE_UPDATED);
         }
 
         public static void UpdateScheduleHistory(ScheduleHistoryItem objScheduleHistoryItem)

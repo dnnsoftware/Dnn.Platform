@@ -190,7 +190,7 @@ namespace DotNetNuke.Web.Common.Internal
             // register the assembly-lookup to correct the breaking rename in DNN 9.2
             DotNetNuke.Services.Zip.SharpZipLibRedirect.RegisterSharpZipLibRedirect();
 
-            // DotNetNukeSecurity.Initialize();
+            ////DotNetNukeSecurity.Initialize();
         }
 
         private void Application_Error(object sender, EventArgs eventArgs)

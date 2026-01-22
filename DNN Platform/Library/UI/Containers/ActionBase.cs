@@ -7,6 +7,8 @@ namespace DotNetNuke.UI.Containers
     using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Exceptions;
@@ -15,10 +17,10 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>ActionBase is an abstract base control for Action objects that inherit from UserControl.</summary>
-    /// <remarks>
-    /// ActionBase inherits from UserControl, and implements the IActionControl Interface.
-    /// </remarks>
+    /// <remarks>ActionBase inherits from <see cref="UserControl"/>, and implements the <see cref="IActionControl"/> Interface.</remarks>
     public abstract class ActionBase : UserControl, IActionControl
     {
         /// <summary>Defines if the action supports icons.</summary>
@@ -30,6 +32,20 @@ namespace DotNetNuke.UI.Containers
 
         private ActionManager actionManager;
         private ModuleAction actionRoot;
+
+        /// <summary>Initializes a new instance of the <see cref="ActionBase"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        protected ActionBase()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ActionBase"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        protected ActionBase(IEventLogger eventLogger)
+        {
+            this.EventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
 
         /// <inheritdoc/>
         public event ActionEventHandler Action;
@@ -43,18 +59,7 @@ namespace DotNetNuke.UI.Containers
 
         /// <summary>Gets the ActionManager instance for this Action control.</summary>
         /// <returns>An ActionManager object.</returns>
-        public ActionManager ActionManager
-        {
-            get
-            {
-                if (this.actionManager == null)
-                {
-                    this.actionManager = new ActionManager(this);
-                }
-
-                return this.actionManager;
-            }
-        }
+        public ActionManager ActionManager => this.actionManager ??= new ActionManager(this.EventLogger, this);
 
         /// <summary>Gets or sets the ModuleControl instance for this Action control.</summary>
         /// <returns>An IModuleControl object.</returns>
@@ -62,48 +67,28 @@ namespace DotNetNuke.UI.Containers
 
         /// <summary>Gets the Actions Collection.</summary>
         /// <returns>A ModuleActionCollection.</returns>
-        protected ModuleActionCollection Actions
-        {
-            get
-            {
-                return this.ModuleContext.Actions;
-            }
-        }
+        protected ModuleActionCollection Actions => this.ModuleContext.Actions;
 
         /// <summary>Gets the ActionRoot.</summary>
         /// <returns>A ModuleActionCollection.</returns>
-        protected ModuleAction ActionRoot
-        {
-            get
-            {
-                if (this.actionRoot == null)
-                {
-                    this.actionRoot = new ModuleAction(this.ModuleContext.GetNextActionID(), Localization.GetString("Manage.Text", Localization.GlobalResourceFile), string.Empty, string.Empty, "manage-icn.png");
-                }
-
-                return this.actionRoot;
-            }
-        }
+        protected ModuleAction ActionRoot =>
+            this.actionRoot ??= new ModuleAction(
+                this.ModuleContext.GetNextActionID(),
+                Localization.GetString("Manage.Text", Localization.GlobalResourceFile),
+                string.Empty,
+                string.Empty,
+                "manage-icn.png");
 
         /// <summary>Gets the ModuleContext.</summary>
         /// <returns>A ModuleInstanceContext.</returns>
-        protected ModuleInstanceContext ModuleContext
-        {
-            get
-            {
-                return this.ModuleControl.ModuleContext;
-            }
-        }
+        protected ModuleInstanceContext ModuleContext => this.ModuleControl.ModuleContext;
 
         /// <summary>Gets the PortalSettings.</summary>
         /// <returns>A PortalSettings object.</returns>
-        protected PortalSettings PortalSettings
-        {
-            get
-            {
-                return this.ModuleControl.ModuleContext.PortalSettings;
-            }
-        }
+        protected PortalSettings PortalSettings => this.ModuleControl.ModuleContext.PortalSettings;
+
+        /// <summary>Gets the event logger.</summary>
+        protected IEventLogger EventLogger { get; }
 
         /// <summary>DisplayControl determines whether the control should be displayed.</summary>
         /// <param name="objNodes">A collection of Dnn nodes, <see cref="DNNNodeCollection"/>.</param>
@@ -117,18 +102,14 @@ namespace DotNetNuke.UI.Containers
         /// <param name="e">The action event arguments.</param>
         protected virtual void OnAction(ActionEventArgs e)
         {
-            if (this.Action != null)
-            {
-                this.Action(this, e);
-            }
+            this.Action?.Invoke(this, e);
         }
 
         /// <summary>ProcessAction processes the action event.</summary>
         /// <param name="actionID">The id of the action.</param>
         protected void ProcessAction(string actionID)
         {
-            int output;
-            if (int.TryParse(actionID, out output))
+            if (int.TryParse(actionID, out var output))
             {
                 ModuleAction action = this.Actions.GetActionByID(output);
                 if (action != null)

@@ -7,11 +7,15 @@ namespace DotNetNuke.UI.Containers
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Personalization;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Contains the attributes of an Icon.
@@ -19,6 +23,20 @@ namespace DotNetNuke.UI.Containers
     /// </summary>
     public partial class PrintModule : ActionBase
     {
+        /// <summary>Initializes a new instance of the <see cref="PrintModule"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public PrintModule()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PrintModule"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        public PrintModule(IEventLogger eventLogger)
+            : base(eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>())
+        {
+        }
+
         public string PrintIcon { get; set; }
 
         /// <inheritdoc/>

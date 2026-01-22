@@ -6,56 +6,50 @@ namespace DotNetNuke.UI.Containers
     using System;
     using System.Globalization;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>ActionCommandButton provides a button for a single action.</summary>
-    /// <remarks>
-    /// ActionBase inherits from CommandButton, and implements the IActionControl Interface.
-    /// </remarks>
+    /// <remarks>Inherits from <see cref="CommandButton"/>, and implements the <see cref="IActionControl"/> Interface.</remarks>
     public class ActionCommandButton : CommandButton, IActionControl
     {
+        private readonly IEventLogger eventLogger;
         private ActionManager actionManager;
         private ModuleAction moduleAction;
+
+        /// <summary>Initializes a new instance of the <see cref="ActionCommandButton"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public ActionCommandButton()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ActionCommandButton"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        public ActionCommandButton(IEventLogger eventLogger)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
 
         /// <inheritdoc/>
         public event ActionEventHandler Action;
 
         /// <summary>Gets the ActionManager instance for this Action control.</summary>
         /// <returns>An ActionManager object.</returns>
-        public ActionManager ActionManager
-        {
-            get
-            {
-                if (this.actionManager == null)
-                {
-                    this.actionManager = new ActionManager(this);
-                }
-
-                return this.actionManager;
-            }
-        }
+        public ActionManager ActionManager => this.actionManager ??= new ActionManager(this.eventLogger, this);
 
         /// <summary>Gets or sets the ModuleAction for this Action control.</summary>
         /// <returns>A ModuleAction object.</returns>
         public ModuleAction ModuleAction
         {
-            get
-            {
-                if (this.moduleAction == null)
-                {
-                    this.moduleAction = this.ModuleControl.ModuleContext.Actions.GetActionByCommandName(this.CommandName);
-                }
-
-                return this.moduleAction;
-            }
-
-            set
-            {
-                this.moduleAction = value;
-            }
+            get => this.moduleAction ??= this.ModuleControl.ModuleContext.Actions.GetActionByCommandName(this.CommandName);
+            set => this.moduleAction = value;
         }
 
         /// <summary>Gets or sets the ModuleControl instance for this Action control.</summary>
@@ -77,10 +71,7 @@ namespace DotNetNuke.UI.Containers
         /// <param name="e">The event arguments.</param>
         protected virtual void OnAction(ActionEventArgs e)
         {
-            if (this.Action != null)
-            {
-                this.Action(this, e);
-            }
+            this.Action?.Invoke(this, e);
         }
 
         /// <summary>OnButtonClick runs when the underlying CommandButton is clicked.</summary>
