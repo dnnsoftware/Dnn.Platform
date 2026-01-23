@@ -9,15 +9,16 @@ namespace DotNetNuke.UI.WebControls.Internal
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Security.Permissions;
 
     internal class PermissionTriStateTemplate : ITemplate
     {
-        private readonly PermissionInfo permission;
+        private readonly IPermissionDefinitionInfo permission;
 
         /// <summary>Initializes a new instance of the <see cref="PermissionTriStateTemplate"/> class.</summary>
         /// <param name="permission">The permission info.</param>
-        public PermissionTriStateTemplate(PermissionInfo permission)
+        public PermissionTriStateTemplate(IPermissionDefinitionInfo permission)
         {
             this.permission = permission;
         }

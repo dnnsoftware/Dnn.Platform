@@ -13,10 +13,13 @@ namespace DotNetNuke.Security.Permissions.Controls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.WebControls;
@@ -26,7 +29,8 @@ namespace DotNetNuke.Security.Permissions.Controls
 
     using Globals = DotNetNuke.Common.Globals;
 
-    public abstract class PermissionsGrid : Control, INamingContainer
+    /// <summary>A base class for permissions grid controls.</summary>
+    public abstract partial class PermissionsGrid : Control, INamingContainer
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
@@ -43,7 +47,11 @@ namespace DotNetNuke.Security.Permissions.Controls
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected DataGrid userPermissionsGrid;
-        private ArrayList permissions;
+
+        private readonly int unAuthUsersRoleId = int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
+        private readonly int allUsersRoleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
+
+        private IList<IPermissionDefinitionInfo> permissions;
         private ArrayList users;
         private DropDownList cboRoleGroups;
         private DropDownList cboSelectRole;
@@ -56,10 +64,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         private TextBox txtUser;
         private HiddenField hiddenUserIds;
         private HiddenField roleField;
-
-        private int unAuthUsersRoleId = int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
-
-        private int allUsersRoleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
 
         /// <summary>Initializes a new instance of the <see cref="PermissionsGrid"/> class.</summary>
         public PermissionsGrid()
@@ -84,11 +88,11 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// <summary>Gets the ID of the Administrator Role.</summary>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public int AdministratorRoleId => PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleId;
+        public int AdministratorRoleId => PortalController.Instance.GetCurrentSettings().AdministratorRoleId;
 
         /// <summary>Gets the ID of the Registered Users Role.</summary>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public int RegisteredUsersRoleId => PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleId;
+        public int RegisteredUsersRoleId => PortalController.Instance.GetCurrentSettings().RegisteredRoleId;
 
         /// <summary>Gets the ID of the Portal.</summary>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
@@ -98,18 +102,18 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 // Obtain PortalSettings from Current Context
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                int portalID;
+                int portalId;
                 if (Globals.IsHostTab(portalSettings.ActiveTab.TabID))
                 {
                     // if we are in host filemanager then we need to pass a null portal id
-                    portalID = Null.NullInteger;
+                    portalId = Null.NullInteger;
                 }
                 else
                 {
-                    portalID = portalSettings.PortalId;
+                    portalId = portalSettings.PortalId;
                 }
 
-                return portalID;
+                return portalId;
             }
         }
 
@@ -158,15 +162,8 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>Gets or sets a value indicating whether a Dynamic Column has been added.</summary>
         public bool DynamicColumnAdded
         {
-            get
-            {
-                return this.ViewState["ColumnAdded"] != null;
-            }
-
-            set
-            {
-                this.ViewState["ColumnAdded"] = value;
-            }
+            get => this.ViewState["ColumnAdded"] != null;
+            set => this.ViewState["ColumnAdded"] = value;
         }
 
         /// <summary>Gets the underlying Permissions Data Table.</summary>
@@ -187,34 +184,19 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>Gets or sets the ResourceFile to localize permissions.</summary>
         public string ResourceFile { get; set; }
 
-        protected virtual List<PermissionInfoBase> PermissionsList
-        {
-            get
-            {
-                return null;
-            }
-        }
+        /// <summary>Gets a value indicating whether the implementation supports the APIs using <see cref="IPermissionDefinitionInfo"/>, rather than <see cref="PermissionInfoBase"/>.</summary>
+        protected virtual bool SupportsPermissionsAbstractions => false;
 
-        protected virtual bool RefreshGrid
-        {
-            get
-            {
-                return false;
-            }
-        }
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use PermissionCollection property instead. Scheduled removal in v12.0.0.")]
+        protected virtual List<PermissionInfoBase> PermissionsList => null;
 
-        private int UnAuthUsersRoleId
-        {
-            get { return this.unAuthUsersRoleId; }
-        }
+        protected virtual IList<IPermissionInfo> PermissionCollection => this.PermissionsList?.Cast<IPermissionInfo>().ToList();
 
-        private int AllUsersRoleId
-        {
-            get
-            {
-                return this.allUsersRoleId;
-            }
-        }
+        protected virtual bool RefreshGrid => false;
+
+        private int UnAuthUsersRoleId => this.unAuthUsersRoleId;
+
+        private int AllUsersRoleId => this.allUsersRoleId;
 
         /// <summary>Registers the scripts necessary to make the tri-state controls work inside a RadAjaxPanel.</summary>
         /// <remarks>
@@ -229,21 +211,55 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>Generate the Data Grid.</summary>
         public abstract void GenerateDataGrid();
 
-        protected virtual void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
+        /// <summary>Add the permission to the permission grid's collection.</summary>
+        /// <param name="permission">The permission definition.</param>
+        /// <param name="roleId">The ID of the role or <see cref="Globals.glbRoleNothing"/>.</param>
+        /// <param name="roleName">The role name or <see cref="Null.NullString"/>.</param>
+        /// <param name="userId">The user ID or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="displayName">The user's display name or <see cref="Null.NullString"/>.</param>
+        /// <param name="allowAccess">Whether the permission allows or denies access.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        protected virtual partial void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
+            => this.AddPermission((IPermissionDefinitionInfo)permission, roleId, roleName, userId, displayName, allowAccess);
+
+        /// <summary>Add the permission to the permission grid's collection.</summary>
+        /// <param name="permissionDefinition">The permission definition.</param>
+        /// <param name="roleId">The ID of the role or <see cref="Globals.glbRoleNothing"/>.</param>
+        /// <param name="roleName">The role name or <see cref="Null.NullString"/>.</param>
+        /// <param name="userId">The user ID or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="displayName">The user's display name or <see cref="Null.NullString"/>.</param>
+        /// <param name="allowAccess">Whether the permission allows or denies access.</param>
+        protected virtual void AddPermission(IPermissionDefinitionInfo permissionDefinition, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
         }
 
         /// <summary>Updates a Permission.</summary>
-        /// <param name="permissions">The permissions collection.</param>
+        /// <param name="permissions">The collection of permissions.</param>
         /// <param name="user">The user to add.</param>
-        protected virtual void AddPermission(ArrayList permissions, UserInfo user)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IList<IPermissionDefinitionInfo>")]
+        protected virtual partial void AddPermission(ArrayList permissions, UserInfo user)
         {
         }
 
         /// <summary>Updates a Permission.</summary>
-        /// <param name="permissions">The permissions collection.</param>
+        /// <param name="permissionsList">The collection of permissions.</param>
+        /// <param name="user">The user to add.</param>
+        protected virtual void AddPermission(IList<IPermissionDefinitionInfo> permissionsList, UserInfo user)
+        {
+        }
+
+        /// <summary>Updates a Permission.</summary>
+        /// <param name="permissions">The collection of permissions.</param>
         /// <param name="role">The role to add.</param>
-        protected virtual void AddPermission(ArrayList permissions, RoleInfo role)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IList<IPermissionDefinitionInfo>")]
+        protected virtual partial void AddPermission(ArrayList permissions, RoleInfo role)
+        {
+        }
+
+        /// <summary>Updates a Permission.</summary>
+        /// <param name="permissionsList">The collection of permissions.</param>
+        /// <param name="role">The role to add.</param>
+        protected virtual void AddPermission(IList<IPermissionDefinitionInfo> permissionsList, RoleInfo role)
         {
         }
 
@@ -299,9 +315,13 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <inheritdoc />
         protected override void CreateChildControls()
         {
-            this.permissions = this.GetPermissions();
+            this.permissions = this.SupportsPermissionsAbstractions
+                ? this.GetPermissionDefinitions()
+#pragma warning disable CS0618 // Type or member is obsolete
+                : this.GetPermissions().Cast<IPermissionDefinitionInfo>().ToList();
+#pragma warning restore CS0618 // Type or member is obsolete
 
-            this.pnlPermissions = new Panel { CssClass = "dnnGrid dnnPermissionsGrid" };
+            this.pnlPermissions = new Panel { CssClass = "dnnGrid dnnPermissionsGrid", };
 
             // Optionally Add Role Group Filter
             this.CreateAddRoleControls();
@@ -367,29 +387,52 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="role">The role.</param>
         /// <param name="column">The column of the Grid.</param>
         /// <returns><see langword="true"/> if the permission is enabled, otherwise <see langword="false"/>.</returns>
-        protected virtual bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
-        {
-            return true;
-        }
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        protected virtual partial bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
+            => this.GetEnabled((IPermissionDefinitionInfo)objPerm, role, column);
+
+        /// <summary>Gets the Enabled status of the permission.</summary>
+        /// <param name="permissionDefinition">The permission being loaded.</param>
+        /// <param name="role">The role.</param>
+        /// <param name="column">The column of the Grid.</param>
+        /// <returns><see langword="true"/> if the permission is enabled, otherwise <see langword="false"/>.</returns>
+        protected virtual bool GetEnabled(IPermissionDefinitionInfo permissionDefinition, RoleInfo role, int column)
+            => true;
 
         /// <summary>Gets the Enabled status of the permission.</summary>
         /// <param name="objPerm">The permission being loaded.</param>
         /// <param name="user">The user.</param>
         /// <param name="column">The column of the Grid.</param>
         /// <returns><see langword="true"/> if the permission is enabled, otherwise <see langword="false"/>.</returns>
-        protected virtual bool GetEnabled(PermissionInfo objPerm, UserInfo user, int column)
-        {
-            return true;
-        }
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        protected virtual partial bool GetEnabled(PermissionInfo objPerm, UserInfo user, int column)
+            => this.GetEnabled((IPermissionDefinitionInfo)objPerm, user, column);
+
+        /// <summary>Gets the Enabled status of the permission.</summary>
+        /// <param name="permissionDefinition">The permission being loaded.</param>
+        /// <param name="user">The user.</param>
+        /// <param name="column">The column of the Grid.</param>
+        /// <returns><see langword="true"/> if the permission is enabled, otherwise <see langword="false"/>.</returns>
+        protected virtual bool GetEnabled(IPermissionDefinitionInfo permissionDefinition, UserInfo user, int column)
+            => true;
 
         /// <summary>Gets the Value of the permission.</summary>
         /// <param name="objPerm">The permission being loaded.</param>
         /// <param name="role">The role.</param>
         /// <param name="column">The column of the Grid.</param>
         /// <returns><see langword="true"/> if the permission is granted, otherwise <see langword="false"/>.</returns>
-        protected virtual bool GetPermission(PermissionInfo objPerm, RoleInfo role, int column)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        protected virtual partial bool GetPermission(PermissionInfo objPerm, RoleInfo role, int column)
+            => this.GetPermission((IPermissionDefinitionInfo)objPerm, role, column);
+
+        /// <summary>Gets the Value of the permission.</summary>
+        /// <param name="permissionDefinition">The permission being loaded.</param>
+        /// <param name="role">The role.</param>
+        /// <param name="column">The column of the Grid.</param>
+        /// <returns><see langword="true"/> if the permission is granted, otherwise <see langword="false"/>.</returns>
+        protected virtual bool GetPermission(IPermissionDefinitionInfo permissionDefinition, RoleInfo role, int column)
         {
-            return Convert.ToBoolean(this.GetPermission(objPerm, role, column, PermissionTypeDeny));
+            return Convert.ToBoolean(this.GetPermission(permissionDefinition, role, column, PermissionTypeDeny));
         }
 
         /// <summary>Gets the Value of the permission.</summary>
@@ -398,30 +441,32 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="column">The column of the Grid.</param>
         /// <param name="defaultState">Default State.</param>
         /// <returns>The permission state (one of <see cref="PermissionTypeGrant"/>, <see cref="PermissionTypeDeny"/> or <paramref name="defaultState"/>).</returns>
-        protected virtual string GetPermission(PermissionInfo objPerm, RoleInfo role, int column, string defaultState)
-        {
-            string stateKey = defaultState;
-            if (this.PermissionsList != null)
-            {
-                foreach (PermissionInfoBase permission in this.PermissionsList)
-                {
-                    if (permission.PermissionID == objPerm.PermissionID && permission.RoleID == role.RoleID)
-                    {
-                        if (permission.AllowAccess)
-                        {
-                            stateKey = PermissionTypeGrant;
-                        }
-                        else
-                        {
-                            stateKey = PermissionTypeDeny;
-                        }
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        protected virtual partial string GetPermission(PermissionInfo objPerm, RoleInfo role, int column, string defaultState)
+            => this.GetPermission((IPermissionDefinitionInfo)objPerm, role, column, defaultState);
 
-                        break;
-                    }
+        /// <summary>Gets the Value of the permission.</summary>
+        /// <param name="permissionDefinition">The permission being loaded.</param>
+        /// <param name="role">The role.</param>
+        /// <param name="column">The column of the Grid.</param>
+        /// <param name="defaultState">Default State.</param>
+        /// <returns>The permission state (one of <see cref="PermissionTypeGrant"/>, <see cref="PermissionTypeDeny"/> or <paramref name="defaultState"/>).</returns>
+        protected virtual string GetPermission(IPermissionDefinitionInfo permissionDefinition, RoleInfo role, int column, string defaultState)
+        {
+            if (this.PermissionCollection == null)
+            {
+                return defaultState;
+            }
+
+            foreach (var permission in this.PermissionCollection)
+            {
+                if (permission.PermissionId == permissionDefinition.PermissionId && permission.RoleId == role.RoleID)
+                {
+                    return permission.AllowAccess ? PermissionTypeGrant : PermissionTypeDeny;
                 }
             }
 
-            return stateKey;
+            return defaultState;
         }
 
         /// <summary>Gets the Value of the permission.</summary>
@@ -429,9 +474,18 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="user">The user.</param>
         /// <param name="column">The column of the Grid.</param>
         /// <returns><see langword="true"/> if the permission is granted, otherwise <see langword="false"/>.</returns>
-        protected virtual bool GetPermission(PermissionInfo objPerm, UserInfo user, int column)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        protected virtual partial bool GetPermission(PermissionInfo objPerm, UserInfo user, int column)
+            => this.GetPermission((IPermissionDefinitionInfo)objPerm, user, column);
+
+        /// <summary>Gets the Value of the permission.</summary>
+        /// <param name="permissionDefinition">The permission being loaded.</param>
+        /// <param name="user">The user.</param>
+        /// <param name="column">The column of the Grid.</param>
+        /// <returns><see langword="true"/> if the permission is granted, otherwise <see langword="false"/>.</returns>
+        protected virtual bool GetPermission(IPermissionDefinitionInfo permissionDefinition, UserInfo user, int column)
         {
-            return Convert.ToBoolean(this.GetPermission(objPerm, user, column, PermissionTypeDeny));
+            return Convert.ToBoolean(this.GetPermission(permissionDefinition, user, column, PermissionTypeDeny));
         }
 
         /// <summary>Gets the Value of the permission.</summary>
@@ -440,84 +494,95 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="column">The column of the Grid.</param>
         /// <param name="defaultState">Default State.</param>
         /// <returns>The permission state (one of <see cref="PermissionTypeGrant"/>, <see cref="PermissionTypeDeny"/> or <paramref name="defaultState"/>).</returns>
-        protected virtual string GetPermission(PermissionInfo objPerm, UserInfo user, int column, string defaultState)
-        {
-            var stateKey = defaultState;
-            if (this.PermissionsList != null)
-            {
-                foreach (var permission in this.PermissionsList)
-                {
-                    if (permission.PermissionID == objPerm.PermissionID && permission.UserID == user.UserID)
-                    {
-                        if (permission.AllowAccess)
-                        {
-                            stateKey = PermissionTypeGrant;
-                        }
-                        else
-                        {
-                            stateKey = PermissionTypeDeny;
-                        }
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        protected virtual partial string GetPermission(PermissionInfo objPerm, UserInfo user, int column, string defaultState)
+            => this.GetPermission((IPermissionDefinitionInfo)objPerm, user, column, defaultState);
 
-                        break;
-                    }
+        /// <summary>Gets the Value of the permission.</summary>
+        /// <param name="permissionDefinition">The permission being loaded.</param>
+        /// <param name="user">The user.</param>
+        /// <param name="column">The column of the Grid.</param>
+        /// <param name="defaultState">Default State.</param>
+        /// <returns>The permission state (one of <see cref="PermissionTypeGrant"/>, <see cref="PermissionTypeDeny"/> or <paramref name="defaultState"/>).</returns>
+        protected virtual string GetPermission(IPermissionDefinitionInfo permissionDefinition, UserInfo user, int column, string defaultState)
+        {
+            if (this.PermissionsList == null)
+            {
+                return defaultState;
+            }
+
+            foreach (IPermissionInfo permission in this.PermissionsList)
+            {
+                if (permission.PermissionId == permissionDefinition.PermissionId && permission.UserId == user.UserID)
+                {
+                    return permission.AllowAccess ? PermissionTypeGrant : PermissionTypeDeny;
                 }
             }
 
-            return stateKey;
+            return defaultState;
         }
 
         /// <summary>Gets the permissions from the Database.</summary>
         /// <returns>An <see cref="ArrayList"/> of <see cref="PermissionInfo"/> instances.</returns>
-        protected virtual ArrayList GetPermissions()
-        {
-            return null;
-        }
+        [DnnDeprecated(10, 2, 2, "Use GetPermissionDefinitions")]
+        protected virtual partial ArrayList GetPermissions() => null;
+
+        /// <summary>Gets the permissions from the Database.</summary>
+        /// <remarks>If method does not return <see langword="null"/>, this value is used instead of the value from <see cref="GetPermissions"/>.</remarks>
+        /// <returns>An <see cref="IList{T}"/> of <see cref="IPermissionDefinitionInfo"/> instances.</returns>
+        protected virtual IList<IPermissionDefinitionInfo> GetPermissionDefinitions() => null;
 
         /// <summary>Gets the users from the Database.</summary>
         /// <returns>An <see cref="ArrayList"/> of <see cref="UserInfo"/> instances.</returns>
         protected virtual ArrayList GetUsers()
         {
-            var arrUsers = new ArrayList();
-            UserInfo objUser;
-            if (this.PermissionsList != null)
+            if (this.PermissionsList == null)
             {
-                foreach (var permission in this.PermissionsList)
-                {
-                    if (!Null.IsNull(permission.UserID))
-                    {
-                        bool blnExists = false;
-                        foreach (UserInfo user in arrUsers)
-                        {
-                            if (permission.UserID == user.UserID)
-                            {
-                                blnExists = true;
-                            }
-                        }
+                return [];
+            }
 
-                        if (!blnExists)
+            var usersMap = new Dictionary<int, UserInfo>();
+            foreach (var permission in this.PermissionsList.Cast<IPermissionInfo>().Where(permission => !Null.IsNull(permission.UserId)))
+            {
+                if (!usersMap.ContainsKey(permission.UserId))
+                {
+                    usersMap.Add(
+                        permission.UserId,
+                        new UserInfo
                         {
-                            objUser = new UserInfo();
-                            objUser.UserID = permission.UserID;
-                            objUser.Username = permission.Username;
-                            objUser.DisplayName = permission.DisplayName;
-                            arrUsers.Add(objUser);
-                        }
-                    }
+                            UserID = permission.UserId,
+                            Username = permission.Username,
+                            DisplayName = permission.DisplayName,
+                        });
                 }
             }
 
-            return arrUsers;
+            return new ArrayList(usersMap.Values);
         }
 
-        protected virtual bool IsFullControl(PermissionInfo permissionInfo)
-        {
-            return false;
-        }
+        /// <summary>Gets a value indicating whether the given permission definition represents full control.</summary>
+        /// <param name="permissionInfo">The permission definition.</param>
+        /// <returns><see langword="true"/> if it represents full control, otherwise <see langword="false"/>.</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        protected virtual partial bool IsFullControl(PermissionInfo permissionInfo)
+            => this.IsFullControl((IPermissionDefinitionInfo)permissionInfo);
 
-        protected virtual bool IsViewPermisison(PermissionInfo permissionInfo)
-        {
-            return false;
-        }
+        /// <summary>Gets a value indicating whether the given permission definition represents full control.</summary>
+        /// <param name="permissionDefinition">The permission definition.</param>
+        /// <returns><see langword="true"/> if it represents full control, otherwise <see langword="false"/>.</returns>
+        protected virtual bool IsFullControl(IPermissionDefinitionInfo permissionDefinition) => false;
+
+        /// <summary>Gets a value indicating whether the given permission definition represents the view permission.</summary>
+        /// <param name="permissionInfo">The permission definition.</param>
+        /// <returns><see langword="true"/> if it represents the view permission, otherwise <see langword="false"/>.</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        protected virtual partial bool IsViewPermisison(PermissionInfo permissionInfo)
+            => this.IsViewPermission((IPermissionDefinitionInfo)permissionInfo);
+
+        /// <summary>Gets a value indicating whether the given permission definition represents the view permission.</summary>
+        /// <param name="permissionDefinition">The permission definition.</param>
+        /// <returns><see langword="true"/> if it represents the view permission, otherwise <see langword="false"/>.</returns>
+        protected virtual bool IsViewPermission(IPermissionDefinitionInfo permissionDefinition) => false;
 
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
@@ -550,13 +615,23 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        protected virtual void ParsePermissionKeys(PermissionInfoBase permission, string[] settings)
+        /// <summary>Update the <paramref name="permission"/> with the <paramref name="settings"/>.</summary>
+        /// <param name="permission">The permission.</param>
+        /// <param name="settings">The settings.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionInfo")]
+        protected virtual partial void ParsePermissionKeys(PermissionInfoBase permission, string[] settings)
+            => this.ParsePermissionKeys((IPermissionInfo)permission, settings);
+
+        /// <summary>Update the <paramref name="permission"/> with the <paramref name="settings"/>.</summary>
+        /// <param name="permission">The permission.</param>
+        /// <param name="settings">The settings.</param>
+        protected virtual void ParsePermissionKeys(IPermissionInfo permission, string[] settings)
         {
-            permission.PermissionID = Convert.ToInt32(settings[1], CultureInfo.InvariantCulture);
-            permission.RoleID = Convert.ToInt32(settings[4], CultureInfo.InvariantCulture);
+            permission.PermissionId = Convert.ToInt32(settings[1], CultureInfo.InvariantCulture);
+            permission.RoleId = Convert.ToInt32(settings[4], CultureInfo.InvariantCulture);
             permission.RoleName = settings[3];
             permission.AllowAccess = Convert.ToBoolean(settings[0], CultureInfo.InvariantCulture);
-            permission.UserID = Convert.ToInt32(settings[5], CultureInfo.InvariantCulture);
+            permission.UserId = Convert.ToInt32(settings[5], CultureInfo.InvariantCulture);
             permission.DisplayName = settings[6];
         }
 
@@ -564,30 +639,51 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
         }
 
-        protected virtual bool SupportsDenyPermissions(PermissionInfo permissionInfo)
-        {
-            // to maintain backward compatibility the base implementation must always call the simple parameterless version of this method
-            return false;
-        }
+        /// <summary>Gets a value indicating whether the permission supports deny permissions.</summary>
+        /// <param name="permissionInfo">The permission definition.</param>
+        /// <returns><see langword="true"/> if deny permissions are supported, otherwise <see langword="false"/>.</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        protected virtual partial bool SupportsDenyPermissions(PermissionInfo permissionInfo) => this.SupportsDenyPermissions((IPermissionDefinitionInfo)permissionInfo);
+
+        /// <summary>Gets a value indicating whether the permission supports deny permissions.</summary>
+        /// <param name="permissionDefinition">The permission definition.</param>
+        /// <returns><see langword="true"/> if deny permissions are supported, otherwise <see langword="false"/>.</returns>
+        protected virtual bool SupportsDenyPermissions(IPermissionDefinitionInfo permissionDefinition) => false;
 
         /// <summary>Updates a Permission.</summary>
         /// <param name="permission">The permission being updated.</param>
         /// <param name="roleId">Role Id.</param>
         /// <param name="roleName">The name of the role.</param>
         /// <param name="allowAccess">The value of the permission.</param>
-        protected virtual void UpdatePermission(PermissionInfo permission, int roleId, string roleName, bool allowAccess)
-        {
-            this.UpdatePermission(permission, roleId, roleName, allowAccess ? PermissionTypeGrant : PermissionTypeNull);
-        }
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        protected virtual partial void UpdatePermission(PermissionInfo permission, int roleId, string roleName, bool allowAccess)
+            => this.UpdatePermission((IPermissionDefinitionInfo)permission, roleId, roleName, allowAccess);
+
+        /// <summary>Updates a Permission.</summary>
+        /// <param name="permission">The permission being updated.</param>
+        /// <param name="roleId">Role Id.</param>
+        /// <param name="roleName">The name of the role.</param>
+        /// <param name="allowAccess">The value of the permission.</param>
+        protected virtual void UpdatePermission(IPermissionDefinitionInfo permission, int roleId, string roleName, bool allowAccess)
+            => this.UpdatePermission(permission, roleId, roleName, allowAccess ? PermissionTypeGrant : PermissionTypeNull);
 
         /// <summary>Updates a Permission.</summary>
         /// <param name="permission">The permission being updated.</param>
         /// <param name="roleId">Role Id.</param>
         /// <param name="roleName">The name of the role.</param>
         /// <param name="stateKey">The permission state.</param>
-        protected virtual void UpdatePermission(PermissionInfo permission, int roleId, string roleName, string stateKey)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        protected virtual partial void UpdatePermission(PermissionInfo permission, int roleId, string roleName, string stateKey)
+            => this.UpdatePermission((IPermissionDefinitionInfo)permission, roleId, roleName, stateKey);
+
+        /// <summary>Updates a Permission.</summary>
+        /// <param name="permission">The permission being updated.</param>
+        /// <param name="roleId">Role Id.</param>
+        /// <param name="roleName">The name of the role.</param>
+        /// <param name="stateKey">The permission state.</param>
+        protected virtual void UpdatePermission(IPermissionDefinitionInfo permission, int roleId, string roleName, string stateKey)
         {
-            this.RemovePermission(permission.PermissionID, roleId, Null.NullInteger);
+            this.RemovePermission(permission.PermissionId, roleId, Null.NullInteger);
             switch (stateKey)
             {
                 case PermissionTypeGrant:
@@ -604,19 +700,35 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="displayName">The user's display name.</param>
         /// <param name="userId">The user's id.</param>
         /// <param name="allowAccess">The value of the permission.</param>
-        protected virtual void UpdatePermission(PermissionInfo permission, string displayName, int userId, bool allowAccess)
-        {
-            this.UpdatePermission(permission, displayName, userId, allowAccess ? PermissionTypeGrant : PermissionTypeNull);
-        }
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        protected virtual partial void UpdatePermission(PermissionInfo permission, string displayName, int userId, bool allowAccess)
+            => this.UpdatePermission((IPermissionDefinitionInfo)permission, displayName, userId, allowAccess);
+
+        /// <summary>Updates a Permission.</summary>
+        /// <param name="permission">The permission being updated.</param>
+        /// <param name="displayName">The user's display name.</param>
+        /// <param name="userId">The user's id.</param>
+        /// <param name="allowAccess">The value of the permission.</param>
+        protected virtual void UpdatePermission(IPermissionDefinitionInfo permission, string displayName, int userId, bool allowAccess)
+            => this.UpdatePermission(permission, displayName, userId, allowAccess ? PermissionTypeGrant : PermissionTypeNull);
 
         /// <summary>Updates a Permission.</summary>
         /// <param name="permission">The permission being updated.</param>
         /// <param name="displayName">The user's display name.</param>
         /// <param name="userId">The user's id.</param>
         /// <param name="stateKey">The permission state.</param>
-        protected virtual void UpdatePermission(PermissionInfo permission, string displayName, int userId, string stateKey)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        protected virtual partial void UpdatePermission(PermissionInfo permission, string displayName, int userId, string stateKey)
+            => this.UpdatePermission((IPermissionDefinitionInfo)permission, displayName, userId, stateKey);
+
+        /// <summary>Updates a Permission.</summary>
+        /// <param name="permission">The permission being updated.</param>
+        /// <param name="displayName">The user's display name.</param>
+        /// <param name="userId">The user's id.</param>
+        /// <param name="stateKey">The permission state.</param>
+        protected virtual void UpdatePermission(IPermissionDefinitionInfo permission, string displayName, int userId, string stateKey)
         {
-            this.RemovePermission(permission.PermissionID, int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture), userId);
+            this.RemovePermission(permission.PermissionId, int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture), userId);
             switch (stateKey)
             {
                 case PermissionTypeGrant:
@@ -657,15 +769,15 @@ namespace DotNetNuke.Security.Permissions.Controls
                         // all except first two cells which is role names and role ids and last column is Actions
                         if (dgi.Cells[i].Controls.Count > 0)
                         {
-                            var permissionInfo = (PermissionInfo)this.permissions[i - 2];
+                            var permissionInfo = this.permissions[i - 2];
                             var triState = (PermissionTriState)dgi.Cells[i].Controls[0];
-                            if (this.SupportsDenyPermissions(permissionInfo))
+                            if (SupportsDenyPermissions(this, permissionInfo))
                             {
-                                this.UpdatePermission(permissionInfo, roleId, dgi.Cells[0].Text, triState.Value);
+                                UpdatePermission(this, permissionInfo, roleId, dgi.Cells[0].Text, triState.Value);
                             }
                             else
                             {
-                                this.UpdatePermission(permissionInfo, roleId, dgi.Cells[0].Text, triState.Value == PermissionTypeGrant);
+                                UpdatePermission(this, permissionInfo, roleId, dgi.Cells[0].Text, triState.Value == PermissionTypeGrant);
                             }
                         }
                     }
@@ -692,15 +804,15 @@ namespace DotNetNuke.Security.Permissions.Controls
                         // all except first two cells which is display name and user ID and Last column is Actions
                         if (dgi.Cells[i].Controls.Count > 0)
                         {
-                            var permissionInfo = (PermissionInfo)this.permissions[i - 2];
+                            var permissionInfo = this.permissions[i - 2];
                             var triState = (PermissionTriState)dgi.Cells[i].Controls[0];
-                            if (this.SupportsDenyPermissions(permissionInfo))
+                            if (SupportsDenyPermissions(this, permissionInfo))
                             {
-                                this.UpdatePermission(permissionInfo, dgi.Cells[0].Text, userId, triState.Value);
+                                UpdatePermission(this, permissionInfo, dgi.Cells[0].Text, userId, triState.Value);
                             }
                             else
                             {
-                                this.UpdatePermission(permissionInfo, dgi.Cells[0].Text, userId, triState.Value == PermissionTypeGrant);
+                                UpdatePermission(this, permissionInfo, dgi.Cells[0].Text, userId, triState.Value == PermissionTypeGrant);
                             }
                         }
                     }
@@ -730,12 +842,169 @@ namespace DotNetNuke.Security.Permissions.Controls
                     var user = UserController.GetUserById(this.PortalId, userId);
                     if (user != null)
                     {
-                        this.AddPermission(this.permissions, user);
+                        AddPermission(this, this.permissions, user);
                         this.BindData();
                     }
                 }
 
                 this.txtUser.Text = this.hiddenUserIds.Value = string.Empty;
+            }
+        }
+
+        private static bool SupportsDenyPermissions(PermissionsGrid @this, IPermissionDefinitionInfo permissionDefinitionInfo)
+        {
+            return @this.SupportsPermissionsAbstractions
+                ? @this.SupportsDenyPermissions(permissionDefinitionInfo)
+#pragma warning disable CS0618 // Type or member is obsolete
+                : @this.SupportsDenyPermissions((PermissionInfo)permissionDefinitionInfo);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        private static bool GetEnabled(PermissionsGrid @this, IPermissionDefinitionInfo permissionDefinition, RoleInfo role, int column)
+        {
+            return @this.SupportsPermissionsAbstractions
+                ? @this.GetEnabled(permissionDefinition, role, column)
+#pragma warning disable CS0618 // Type or member is obsolete
+                : @this.GetEnabled((PermissionInfo)permissionDefinition, role, column);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        private static bool GetEnabled(PermissionsGrid @this, IPermissionDefinitionInfo permissionDefinition, UserInfo user, int column)
+        {
+            return @this.SupportsPermissionsAbstractions
+                ? @this.GetEnabled(permissionDefinition, user, column)
+#pragma warning disable CS0618 // Type or member is obsolete
+                : @this.GetEnabled((PermissionInfo)permissionDefinition, user, column);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        private static bool GetPermission(PermissionsGrid @this, IPermissionDefinitionInfo permissionDefinition, RoleInfo role, int column)
+        {
+            return @this.SupportsPermissionsAbstractions
+                ? @this.GetPermission(permissionDefinition, role, column)
+#pragma warning disable CS0618 // Type or member is obsolete
+                : @this.GetPermission((PermissionInfo)permissionDefinition, role, column);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        private static bool GetPermission(PermissionsGrid @this, IPermissionDefinitionInfo permissionDefinition, UserInfo user, int column)
+        {
+            return @this.SupportsPermissionsAbstractions
+                ? @this.GetPermission(permissionDefinition, user, column)
+#pragma warning disable CS0618 // Type or member is obsolete
+                : @this.GetPermission((PermissionInfo)permissionDefinition, user, column);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        private static string GetPermission(PermissionsGrid @this, IPermissionDefinitionInfo permissionDefinition, RoleInfo role, int column, string defaultState)
+        {
+            return @this.SupportsPermissionsAbstractions
+                ? @this.GetPermission(permissionDefinition, role, column, defaultState)
+#pragma warning disable CS0618 // Type or member is obsolete
+                : @this.GetPermission((PermissionInfo)permissionDefinition, role, column, defaultState);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        private static string GetPermission(PermissionsGrid @this, IPermissionDefinitionInfo permissionDefinition, UserInfo user, int column, string defaultState)
+        {
+            return @this.SupportsPermissionsAbstractions
+                ? @this.GetPermission(permissionDefinition, user, column, defaultState)
+#pragma warning disable CS0618 // Type or member is obsolete
+                : @this.GetPermission((PermissionInfo)permissionDefinition, user, column, defaultState);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        private static bool IsViewPermission(PermissionsGrid @this, IPermissionDefinitionInfo permissionDefinition)
+        {
+            return @this.SupportsPermissionsAbstractions
+                ? @this.IsViewPermission(permissionDefinition)
+#pragma warning disable CS0618 // Type or member is obsolete
+                : @this.IsViewPermisison((PermissionInfo)permissionDefinition);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        private static bool IsFullControl(PermissionsGrid @this, IPermissionDefinitionInfo permissionDefinition)
+        {
+            return @this.SupportsPermissionsAbstractions
+                ? @this.IsFullControl(permissionDefinition)
+#pragma warning disable CS0618 // Type or member is obsolete
+                : @this.IsFullControl((PermissionInfo)permissionDefinition);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        private static void AddPermission(PermissionsGrid @this, IList<IPermissionDefinitionInfo> permissionsList, UserInfo user)
+        {
+            if (@this.SupportsPermissionsAbstractions)
+            {
+                @this.AddPermission(permissionsList, user);
+            }
+            else
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                var arrayList = new ArrayList(permissionsList.ToList());
+                @this.AddPermission(arrayList, user);
+                permissionsList.Clear();
+                foreach (IPermissionDefinitionInfo item in arrayList)
+                {
+                    permissionsList.Add(item);
+                }
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
+        }
+
+        private static void UpdatePermission(PermissionsGrid @this, IPermissionDefinitionInfo permissionDefinitionInfo, int roleId, string roleName, string stateKey)
+        {
+            if (@this.SupportsPermissionsAbstractions)
+            {
+                @this.UpdatePermission(permissionDefinitionInfo, roleId, roleName, stateKey);
+            }
+            else
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                @this.UpdatePermission((PermissionInfo)permissionDefinitionInfo, roleId, roleName, stateKey);
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
+        }
+
+        private static void UpdatePermission(PermissionsGrid @this, IPermissionDefinitionInfo permissionDefinitionInfo, int roleId, string roleName, bool allowAccess)
+        {
+            if (@this.SupportsPermissionsAbstractions)
+            {
+                @this.UpdatePermission(permissionDefinitionInfo, roleId, roleName, allowAccess);
+            }
+            else
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                @this.UpdatePermission((PermissionInfo)permissionDefinitionInfo, roleId, roleName, allowAccess);
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
+        }
+
+        private static void UpdatePermission(PermissionsGrid @this, IPermissionDefinitionInfo permissionDefinitionInfo, string displayName, int userId, string stateKey)
+        {
+            if (@this.SupportsPermissionsAbstractions)
+            {
+                @this.UpdatePermission(permissionDefinitionInfo, displayName, userId, stateKey);
+            }
+            else
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                @this.UpdatePermission((PermissionInfo)permissionDefinitionInfo, displayName, userId, stateKey);
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
+        }
+
+        private static void UpdatePermission(PermissionsGrid @this, IPermissionDefinitionInfo permissionDefinitionInfo, string displayName, int userId, bool allowAccess)
+        {
+            if (@this.SupportsPermissionsAbstractions)
+            {
+                @this.UpdatePermission(permissionDefinitionInfo, displayName, userId, allowAccess);
+            }
+            else
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                @this.UpdatePermission((PermissionInfo)permissionDefinitionInfo, displayName, userId, allowAccess);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
 
@@ -779,10 +1048,8 @@ namespace DotNetNuke.Security.Permissions.Controls
             // Add Roles Column
             this.dtRolePermissions.Columns.Add(new DataColumn("RoleName"));
 
-            for (int i = 0; i <= this.permissions.Count - 1; i++)
+            foreach (var permissionInfo in this.permissions)
             {
-                var permissionInfo = (PermissionInfo)this.permissions[i];
-
                 // Add Enabled Column
                 this.dtRolePermissions.Columns.Add(new DataColumn(permissionInfo.PermissionName + "_Enabled"));
 
@@ -802,16 +1069,15 @@ namespace DotNetNuke.Security.Permissions.Controls
                 int j;
                 for (j = 0; j <= this.permissions.Count - 1; j++)
                 {
-                    PermissionInfo objPerm;
-                    objPerm = (PermissionInfo)this.permissions[j];
-                    row[objPerm.PermissionName + "_Enabled"] = this.GetEnabled(objPerm, role, j + 1);
+                    var objPerm = this.permissions[j];
+                    row[objPerm.PermissionName + "_Enabled"] = GetEnabled(this, objPerm, role, j + 1);
                     if (this.SupportsDenyPermissions(objPerm))
                     {
-                        row[objPerm.PermissionName] = this.GetPermission(objPerm, role, j + 1, PermissionTypeNull);
+                        row[objPerm.PermissionName] = GetPermission(this, objPerm, role, j + 1, PermissionTypeNull);
                     }
                     else
                     {
-                        if (this.GetPermission(objPerm, role, j + 1))
+                        if (GetPermission(this, objPerm, role, j + 1))
                         {
                             row[objPerm.PermissionName] = PermissionTypeGrant;
                         }
@@ -873,16 +1139,15 @@ namespace DotNetNuke.Security.Permissions.Controls
                         int j;
                         for (j = 0; j <= this.permissions.Count - 1; j++)
                         {
-                            PermissionInfo objPerm;
-                            objPerm = (PermissionInfo)this.permissions[j];
-                            row[objPerm.PermissionName + "_Enabled"] = this.GetEnabled(objPerm, user, j + 1);
+                            var objPerm = this.permissions[j];
+                            row[objPerm.PermissionName + "_Enabled"] = GetEnabled(this, objPerm, user, j + 1);
                             if (this.SupportsDenyPermissions(objPerm))
                             {
-                                row[objPerm.PermissionName] = this.GetPermission(objPerm, user, j + 1, PermissionTypeNull);
+                                row[objPerm.PermissionName] = GetPermission(this, objPerm, user, j + 1, PermissionTypeNull);
                             }
                             else
                             {
-                                if (this.GetPermission(objPerm, user, j + 1))
+                                if (GetPermission(this, objPerm, user, j + 1))
                                 {
                                     row[objPerm.PermissionName] = PermissionTypeGrant;
                                 }
@@ -974,20 +1239,22 @@ namespace DotNetNuke.Security.Permissions.Controls
             };
             grid.Columns.Add(idColumn);
 
-            foreach (PermissionInfo permission in this.permissions)
+            foreach (var permission in this.permissions)
             {
                 var templateCol = new TemplateColumn();
                 var columnTemplate = new PermissionTriStateTemplate(permission)
                 {
-                    IsFullControl = this.IsFullControl(permission),
-                    IsView = this.IsViewPermisison(permission),
-                    SupportDenyMode = this.SupportsDenyPermissions(permission),
+                    IsFullControl = IsFullControl(this, permission),
+                    IsView = IsViewPermission(this, permission),
+                    SupportDenyMode = SupportsDenyPermissions(this, permission),
                 };
                 templateCol.ItemTemplate = columnTemplate;
 
-                var locName = (permission.ModuleDefID <= 0) ? Localization.GetString(permission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile) // system permission
-                                                            : (!string.IsNullOrEmpty(this.ResourceFile) ? Localization.GetString(permission.PermissionName + ".Permission", this.ResourceFile) // custom permission
-                                                                                                    : string.Empty);
+                var locName = permission.ModuleDefId <= 0
+                    ? Localization.GetString(permission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile) // system permission
+                    : !string.IsNullOrEmpty(this.ResourceFile)
+                        ? Localization.GetString(permission.PermissionName + ".Permission", this.ResourceFile) // custom permission
+                        : string.Empty;
                 templateCol.HeaderText = !string.IsNullOrEmpty(locName) ? locName : permission.PermissionName;
                 templateCol.HeaderStyle.Wrap = true;
                 grid.Columns.Add(templateCol);
@@ -1030,17 +1297,17 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         private void DeleteRolePermissions(int entityId)
         {
-            // PermissionsList.RemoveAll(p => p.RoleID == entityID);
-            var permissionToDelete = this.PermissionsList.Where(p => p.RoleID == entityId);
-            foreach (PermissionInfoBase permission in permissionToDelete)
+            ////PermissionsList.RemoveAll(p => p.RoleID == entityID);
+            var permissionToDelete = this.PermissionsList.Where((IPermissionInfo p) => p.RoleId == entityId);
+            foreach (var permission in permissionToDelete)
             {
-                this.RemovePermission(permission.PermissionID, entityId, permission.UserID);
+                this.RemovePermission(permission.PermissionId, entityId, permission.UserId);
             }
         }
 
         private void DeleteUserPermissions(int entityID)
         {
-            var permissionToDelete = this.PermissionsList.Where(p => p.UserID == entityID);
+            var permissionToDelete = this.PermissionsList.Where((IPermissionInfo p) => p.UserId == entityID);
             foreach (PermissionInfoBase permission in permissionToDelete)
             {
                 this.RemovePermission(permission.PermissionID, permission.RoleID, entityID);

@@ -4,7 +4,6 @@
 namespace DotNetNuke.Security.Permissions.Controls
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Data;
     using System.Globalization;
@@ -21,18 +20,31 @@ namespace DotNetNuke.Security.Permissions.Controls
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Roles;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A permissions grid for module permissions.</summary>
     public class ModulePermissionsGrid : PermissionsGrid
     {
         private static readonly string[] PermissionKeySeparator = ["##",];
+        private readonly IPermissionDefinitionService permissionDefinitionService;
         private bool inheritViewPermissionsFromTab;
-        private int moduleID = -1;
+        private int moduleId = -1;
         private ModulePermissionCollection modulePermissions;
-        private List<PermissionInfoBase> permissionsList;
+        private List<IPermissionInfo> permissionCollection;
         private int viewColumnIndex;
 
         /// <summary>Initializes a new instance of the <see cref="ModulePermissionsGrid"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPermissionDefinitionService. Scheduled removal in v12.0.0.")]
         public ModulePermissionsGrid()
+            : this(null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModulePermissionsGrid"/> class.</summary>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        public ModulePermissionsGrid(IPermissionDefinitionService permissionDefinitionService)
+        {
+            this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
             this.TabId = -1;
         }
 
@@ -60,7 +72,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             set
             {
                 this.inheritViewPermissionsFromTab = value;
-                this.permissionsList = null;
+                this.permissionCollection = null;
             }
         }
 
@@ -69,12 +81,12 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                return this.moduleID;
+                return this.moduleId;
             }
 
             set
             {
-                this.moduleID = value;
+                this.moduleId = value;
                 if (!this.Page.IsPostBack)
                 {
                     this.GetModulePermissions();
@@ -85,17 +97,20 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>Gets or sets the ID of the Tab associated with this module.</summary>
         public int TabId { get; set; }
 
-        /// <inheritdoc/>
-        protected override List<PermissionInfoBase> PermissionsList
+        /// <inheritdoc />
+        protected override bool SupportsPermissionsAbstractions => true;
+
+        /// <inheritdoc />
+        protected override IList<IPermissionInfo> PermissionCollection
         {
             get
             {
-                if (this.permissionsList == null && this.modulePermissions != null)
+                if (this.permissionCollection == null && this.modulePermissions != null)
                 {
-                    this.permissionsList = this.modulePermissions.ToList();
+                    this.permissionCollection = this.modulePermissions.Cast<IPermissionInfo>().ToList();
                 }
 
-                return this.permissionsList;
+                return this.permissionCollection;
             }
         }
 
@@ -104,7 +119,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -112,15 +127,15 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <inheritdoc />
-        protected override void AddPermission(ArrayList permissions, UserInfo user)
+        protected override void AddPermission(IList<IPermissionDefinitionInfo> permissionsList, UserInfo user)
         {
-            if (this.modulePermissions.Cast<IPermissionInfo>().Any(objModulePermission => objModulePermission.UserId == user.UserID))
+            if (this.modulePermissions.Any((IPermissionInfo mp) => mp.UserId == user.UserID))
             {
                 return;
             }
 
             // user not found so add new
-            foreach (PermissionInfo objPermission in permissions)
+            foreach (var objPermission in permissionsList)
             {
                 if (objPermission.PermissionKey == "VIEW")
                 {
@@ -130,16 +145,16 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <inheritdoc />
-        protected override void AddPermission(ArrayList permissions, RoleInfo role)
+        protected override void AddPermission(IList<IPermissionDefinitionInfo> permissionsList, RoleInfo role)
         {
             // Search TabPermission Collection for the user
-            if (this.modulePermissions.Cast<IPermissionInfo>().Any(p => p.RoleId == role.RoleID))
+            if (this.modulePermissions.Any((IPermissionInfo p) => p.RoleId == role.RoleID))
             {
                 return;
             }
 
             // role not found so add new
-            foreach (PermissionInfo objPermission in permissions)
+            foreach (var objPermission in permissionsList)
             {
                 if (objPermission.PermissionKey == "VIEW")
                 {
@@ -148,26 +163,26 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// <inheritdoc/>
-        protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
+        /// <inheritdoc />
+        protected override void AddPermission(IPermissionDefinitionInfo permissionDefinition, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
-            var objPermission = new ModulePermissionInfo(permission)
+            var objPermission = new ModulePermissionInfo(permissionDefinition)
             {
                 ModuleID = this.ModuleID,
-                RoleID = roleId,
                 RoleName = roleName,
                 AllowAccess = allowAccess,
-                UserID = userId,
                 DisplayName = displayName,
             };
+            ((IPermissionInfo)objPermission).RoleId = roleId;
+            ((IPermissionInfo)objPermission).UserId = userId;
             this.modulePermissions.Add(objPermission, true);
 
             // Clear Permission List
-            this.permissionsList = null;
+            this.permissionCollection = null;
         }
 
-        /// <inheritdoc/>
-        protected override void UpdatePermission(PermissionInfo permission, int roleId, string roleName, string stateKey)
+        /// <inheritdoc />
+        protected override void UpdatePermission(IPermissionDefinitionInfo permission, int roleId, string roleName, string stateKey)
         {
             if (this.InheritViewPermissionsFromTab && permission.PermissionKey == "VIEW")
             {
@@ -177,8 +192,8 @@ namespace DotNetNuke.Security.Permissions.Controls
             base.UpdatePermission(permission, roleId, roleName, stateKey);
         }
 
-        /// <inheritdoc/>
-        protected override void UpdatePermission(PermissionInfo permission, string displayName, int userId, string stateKey)
+        /// <inheritdoc />
+        protected override void UpdatePermission(IPermissionDefinitionInfo permission, string displayName, int userId, string stateKey)
         {
             if (this.InheritViewPermissionsFromTab && permission.PermissionKey == "VIEW")
             {
@@ -189,7 +204,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <inheritdoc />
-        protected override bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
+        protected override bool GetEnabled(IPermissionDefinitionInfo permissionDefinition, RoleInfo role, int column)
         {
             bool enabled;
             if (this.InheritViewPermissionsFromTab && column == this.viewColumnIndex)
@@ -205,7 +220,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <inheritdoc />
-        protected override bool GetEnabled(PermissionInfo objPerm, UserInfo user, int column)
+        protected override bool GetEnabled(IPermissionDefinitionInfo permissionDefinition, UserInfo user, int column)
         {
             bool enabled;
             if (this.InheritViewPermissionsFromTab && column == this.viewColumnIndex)
@@ -221,25 +236,20 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <inheritdoc />
-        protected override string GetPermission(PermissionInfo objPerm, RoleInfo role, int column, string defaultState)
+        protected override string GetPermission(IPermissionDefinitionInfo permissionDefinition, RoleInfo role, int column, string defaultState)
         {
-            string permission;
             if (this.InheritViewPermissionsFromTab && column == this.viewColumnIndex)
             {
-                permission = PermissionTypeNull;
-            }
-            else
-            {
-                permission = role.RoleID == this.AdministratorRoleId
-                                ? PermissionTypeGrant
-                                : base.GetPermission(objPerm, role, column, defaultState);
+                return PermissionTypeNull;
             }
 
-            return permission;
+            return role.RoleID == this.AdministratorRoleId
+                ? PermissionTypeGrant
+                : base.GetPermission(permissionDefinition, role, column, defaultState);
         }
 
         /// <inheritdoc />
-        protected override string GetPermission(PermissionInfo objPerm, UserInfo user, int column, string defaultState)
+        protected override string GetPermission(IPermissionDefinitionInfo permissionDefinition, UserInfo user, int column, string defaultState)
         {
             string permission;
             if (this.InheritViewPermissionsFromTab && column == this.viewColumnIndex)
@@ -249,21 +259,20 @@ namespace DotNetNuke.Security.Permissions.Controls
             else
             {
                 // Call base class method to handle standard permissions
-                permission = base.GetPermission(objPerm, user, column, defaultState);
+                permission = base.GetPermission(permissionDefinition, user, column, defaultState);
             }
 
             return permission;
         }
 
         /// <inheritdoc />
-        protected override ArrayList GetPermissions()
+        protected override IList<IPermissionDefinitionInfo> GetPermissionDefinitions()
         {
             var moduleInfo = ModuleController.Instance.GetModule(this.ModuleID, this.TabId, false);
 
-            var permissionController = new PermissionController();
-            var permissions = permissionController.GetPermissionsByModule(this.ModuleID, this.TabId);
+            var permissions = this.permissionDefinitionService.GetDefinitionsByModule(this.ModuleID, this.TabId).ToList();
 
-            var permissionList = new ArrayList();
+            var permissionList = new List<IPermissionDefinitionInfo>();
             for (int i = 0; i <= permissions.Count - 1; i++)
             {
                 var permission = (PermissionInfo)permissions[i];
@@ -285,15 +294,15 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <inheritdoc/>
-        protected override bool IsFullControl(PermissionInfo permissionInfo)
+        protected override bool IsFullControl(IPermissionDefinitionInfo permissionDefinition)
         {
-            return (permissionInfo.PermissionKey == "EDIT") && PermissionProvider.Instance().SupportsFullControl();
+            return (permissionDefinition.PermissionKey == "EDIT") && PermissionProvider.Instance().SupportsFullControl();
         }
 
         /// <inheritdoc/>
-        protected override bool IsViewPermisison(PermissionInfo permissionInfo)
+        protected override bool IsViewPermission(IPermissionDefinitionInfo permissionDefinition)
         {
-            return permissionInfo.PermissionKey == "VIEW";
+            return permissionDefinition.PermissionKey == "VIEW";
         }
 
         /// <inheritdoc />
@@ -353,7 +362,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.modulePermissions.Remove(permissionID, roleID, userID);
 
             // Clear Permission List
-            this.permissionsList = null;
+            this.permissionCollection = null;
         }
 
         /// <inheritdoc />
@@ -391,11 +400,11 @@ namespace DotNetNuke.Security.Permissions.Controls
 
                     sb.Append(this.BuildKey(
                         modulePermission.AllowAccess,
-                        modulePermission.PermissionID,
+                        ((IPermissionInfo)modulePermission).PermissionId,
                         modulePermission.ModulePermissionID,
-                        modulePermission.RoleID,
+                        ((IPermissionInfo)modulePermission).RoleId,
                         modulePermission.RoleName,
-                        modulePermission.UserID,
+                        ((IPermissionInfo)modulePermission).UserId,
                         modulePermission.DisplayName));
                 }
             }
@@ -405,7 +414,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <inheritdoc />
-        protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
+        protected override bool SupportsDenyPermissions(IPermissionDefinitionInfo permissionDefinition)
         {
             return true;
         }
@@ -420,7 +429,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         private void GetModulePermissions()
         {
             this.modulePermissions = new ModulePermissionCollection(ModulePermissionController.GetModulePermissions(this.ModuleID, this.TabId));
-            this.permissionsList = null;
+            this.permissionCollection = null;
         }
 
         /// <summary>Parse the Permission Keys used to persist the Permissions in the ViewState.</summary>
@@ -430,7 +439,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             var objModulePermission = new ModulePermissionInfo();
 
             // Call base class to load base properties
-            this.ParsePermissionKeys(objModulePermission, settings);
+            this.ParsePermissionKeys((IPermissionInfo)objModulePermission, settings);
             if (string.IsNullOrEmpty(settings[2]))
             {
                 objModulePermission.ModulePermissionID = -1;
