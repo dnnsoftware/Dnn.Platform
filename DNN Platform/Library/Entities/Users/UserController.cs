@@ -17,6 +17,7 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -1263,10 +1264,11 @@ namespace DotNetNuke.Entities.Users
         /// </remarks>
         [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
         public static partial bool RestoreUser(ref UserInfo user)
-            => RestoreUser(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), ref user);
+            => RestoreUser(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), ref user);
 
         /// <summary>Restores a deleted user.</summary>
         /// <param name="eventLogger">The event logger.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
         /// <param name="user">The user to restore.</param>
         /// <returns>A value indicating whether the user restore succeeded.</returns>
         /// <remarks>
@@ -1274,7 +1276,7 @@ namespace DotNetNuke.Entities.Users
         /// This method can only be used for those "soft-deleted" users, if a user was removed (hard-deleted), this method cannot restore the user
         /// as that action cannot be undone.
         /// </remarks>
-        public static bool RestoreUser(IEventLogger eventLogger, ref UserInfo user)
+        public static bool RestoreUser(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, ref UserInfo user)
         {
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
@@ -1285,7 +1287,7 @@ namespace DotNetNuke.Entities.Users
             if (retValue)
             {
                 // restore user permissions
-                RestoreUserPermissions(user);
+                RestoreUserPermissions(permissionDefinitionService, user);
 
                 // Obtain PortalSettings from Current Context
                 var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -2151,7 +2153,7 @@ namespace DotNetNuke.Entities.Users
             TabPermissionController.DeleteTabPermissionsByUser(user);
         }
 
-        private static void RestoreUserPermissions(UserInfo user)
+        private static void RestoreUserPermissions(IPermissionDefinitionService permissionDefinitionService, UserInfo user)
         {
             // restore user's folder permission
             var userFolderPath = PathUtils.GetUserFolderPathInternal(user);
@@ -2160,19 +2162,16 @@ namespace DotNetNuke.Entities.Users
 
             if (userFolder != null)
             {
-                foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
+                foreach (var permission in permissionDefinitionService.GetDefinitionsByFolder())
                 {
                     if (permission.PermissionKey.Equals("READ", StringComparison.OrdinalIgnoreCase)
                             || permission.PermissionKey.Equals("WRITE", StringComparison.OrdinalIgnoreCase)
                             || permission.PermissionKey.Equals("BROWSE", StringComparison.OrdinalIgnoreCase))
                     {
-                        var folderPermission = new FolderPermissionInfo(permission)
-                        {
-                            FolderID = userFolder.FolderID,
-                            UserID = user.UserID,
-                            RoleID = int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture),
-                            AllowAccess = true,
-                        };
+                        var folderPermission = new FolderPermissionInfo(permission) { AllowAccess = true, };
+                        ((IPermissionInfo)folderPermission).RoleId = int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
+                        ((IPermissionInfo)folderPermission).UserId = user.UserID;
+                        ((IFolderPermissionInfo)folderPermission).FolderId = userFolder.FolderID;
 
                         userFolder.FolderPermissions.Add(folderPermission, true);
                     }

@@ -7,6 +7,7 @@ namespace DotNetNuke.Security.Permissions
     using System.Data;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
@@ -16,26 +17,31 @@ namespace DotNetNuke.Security.Permissions
     [XmlRoot("permission")]
     public class TabPermissionInfo : PermissionInfoBase, IHydratable
     {
-        private int tabID;
-
-        // local property declarations
-        private int tabPermissionID;
+        private int tabId;
+        private int tabPermissionId;
 
         /// <summary>Initializes a new instance of the <see cref="TabPermissionInfo"/> class.</summary>
         public TabPermissionInfo()
         {
-            this.tabPermissionID = Null.NullInteger;
-            this.tabID = Null.NullInteger;
+            this.tabPermissionId = Null.NullInteger;
+            this.tabId = Null.NullInteger;
         }
 
         /// <summary>Initializes a new instance of the <see cref="TabPermissionInfo"/> class.</summary>
         /// <param name="permission">A PermissionInfo object.</param>
         public TabPermissionInfo(PermissionInfo permission)
+            : this((IPermissionDefinitionInfo)permission)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="TabPermissionInfo"/> class.</summary>
+        /// <param name="permission">A PermissionInfo object.</param>
+        public TabPermissionInfo(IPermissionDefinitionInfo permission)
             : this()
         {
-            this.ModuleDefID = permission.ModuleDefID;
+            ((IPermissionDefinitionInfo)this).ModuleDefId = permission.ModuleDefId;
             this.PermissionCode = permission.PermissionCode;
-            this.PermissionID = permission.PermissionID;
+            ((IPermissionDefinitionInfo)this).PermissionId = permission.PermissionId;
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
@@ -45,15 +51,8 @@ namespace DotNetNuke.Security.Permissions
         [XmlElement("tabpermissionid")]
         public int TabPermissionID
         {
-            get
-            {
-                return this.tabPermissionID;
-            }
-
-            set
-            {
-                this.tabPermissionID = value;
-            }
+            get => this.tabPermissionId;
+            set => this.tabPermissionId = value;
         }
 
         /// <summary>Gets or sets the Tab ID.</summary>
@@ -61,15 +60,8 @@ namespace DotNetNuke.Security.Permissions
         [XmlElement("tabid")]
         public int TabID
         {
-            get
-            {
-                return this.tabID;
-            }
-
-            set
-            {
-                this.tabID = value;
-            }
+            get => this.tabId;
+            set => this.tabId = value;
         }
 
         /// <summary>Gets or sets the Key ID.</summary>
@@ -78,15 +70,8 @@ namespace DotNetNuke.Security.Permissions
         [JsonIgnore]
         public int KeyID
         {
-            get
-            {
-                return this.TabPermissionID;
-            }
-
-            set
-            {
-                this.TabPermissionID = value;
-            }
+            get => this.TabPermissionID;
+            set => this.TabPermissionID = value;
         }
 
         /// <summary>Fills a TabPermissionInfo from a Data Reader.</summary>

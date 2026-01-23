@@ -12,6 +12,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
@@ -40,11 +41,12 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly DataProvider dataProvider;
         private readonly IClientResourceController clientResourceController;
         private readonly IEventLogger eventLogger;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
 
         /// <summary>Initializes a new instance of the <see cref="User"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public User()
-            : this(null, null, null, null, null, null)
+            : this(null, null, null, null, null, null, null)
         {
         }
 
@@ -53,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="javaScript">The JavaScript library helper.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public User(IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript)
-            : this(hostSettings, javaScript, null, null, null, null)
+            : this(hostSettings, javaScript, null, null, null, null, null)
         {
         }
 
@@ -65,7 +67,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="clientResourceController">The client resources controller.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public User(IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IPortalController portalController, DataProvider dataProvider, IClientResourceController clientResourceController)
-            : this(hostSettings, javaScript, portalController, dataProvider, clientResourceController, null)
+            : this(hostSettings, javaScript, portalController, dataProvider, clientResourceController, null, null)
         {
         }
 
@@ -76,7 +78,8 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="dataProvider">The data provider.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
         /// <param name="eventLogger">The event logger.</param>
-        public User(IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IPortalController portalController, DataProvider dataProvider, IClientResourceController clientResourceController, IEventLogger eventLogger)
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        public User(IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IPortalController portalController, DataProvider dataProvider, IClientResourceController clientResourceController, IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService)
         {
             this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
@@ -84,6 +87,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.dataProvider = dataProvider ?? this.DependencyProvider.GetRequiredService<DataProvider>();
             this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.permissionDefinitionService = permissionDefinitionService ?? this.DependencyProvider.GetRequiredService<IPermissionDefinitionService>();
         }
 
         /// <summary>Gets a value indicating whether the User is valid.</summary>
@@ -507,7 +511,7 @@ namespace DotNetNuke.Modules.Admin.Users
             var id = this.UserId;
 
             var userInfo = this.User;
-            if (UserController.RestoreUser(this.eventLogger, ref userInfo))
+            if (UserController.RestoreUser(this.eventLogger, this.permissionDefinitionService, ref userInfo))
             {
                 this.OnUserRestored(new UserRestoredEventArgs(id, name));
             }

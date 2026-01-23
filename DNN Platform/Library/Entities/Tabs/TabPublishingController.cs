@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities.Tabs
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -18,9 +19,26 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class TabPublishingController : ServiceLocator<ITabPublishingController, TabPublishingController>, ITabPublishingController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabPublishingController));
+        private readonly IPermissionDefinitionService permissionDefinitionService;
+
+        /// <summary>Initializes a new instance of the <see cref="TabPublishingController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPermissionDefinitionService. Scheduled removal in v12.0.0.")]
+        public TabPublishingController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="TabPublishingController"/> class.</summary>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        public TabPublishingController(IPermissionDefinitionService permissionDefinitionService)
+        {
+            this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
+        }
 
         /// <inheritdoc/>
         public bool IsTabPublished(int tabID, int portalID)
@@ -28,7 +46,7 @@ namespace DotNetNuke.Entities.Tabs
             var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
             var tab = TabController.Instance.GetTab(tabID, portalID);
 
-            var existPermission = GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
+            var existPermission = GetAlreadyPermission(this.permissionDefinitionService, tab, "VIEW", allUsersRoleId);
             return existPermission is { AllowAccess: true, };
         }
 
@@ -46,7 +64,7 @@ namespace DotNetNuke.Entities.Tabs
 
             if (publish)
             {
-                PublishTabInternal(tab);
+                PublishTabInternal(this.permissionDefinitionService, tab);
             }
             else
             {
@@ -79,20 +97,20 @@ namespace DotNetNuke.Entities.Tabs
         /// <inheritdoc/>
         protected override Func<ITabPublishingController> GetFactory()
         {
-            return () => new TabPublishingController();
+            return Globals.DependencyProvider.GetRequiredService<ITabPublishingController>;
         }
 
-        private static void PublishTabInternal(TabInfo tab)
+        private static void PublishTabInternal(IPermissionDefinitionService permissionDefinitionService, TabInfo tab)
         {
             var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
 
-            var existPermission = GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
+            var existPermission = GetAlreadyPermission(permissionDefinitionService, tab, "VIEW", allUsersRoleId);
             if (existPermission != null)
             {
                 tab.TabPermissions.Remove(existPermission);
             }
 
-            tab.TabPermissions.Add(GetTabPermissionByRole(tab.TabID, "VIEW", allUsersRoleId));
+            tab.TabPermissions.Add(GetTabPermissionByRole(permissionDefinitionService, tab.TabID, "VIEW", allUsersRoleId));
             TabPermissionController.SaveTabPermissions(tab);
             ClearTabCache(tab);
         }
@@ -119,28 +137,25 @@ namespace DotNetNuke.Entities.Tabs
             DataCache.ClearModuleCache(tabInfo.TabID);
         }
 
-        private static TabPermissionInfo GetAlreadyPermission(TabInfo tab, string permissionKey, int roleId)
+        private static TabPermissionInfo GetAlreadyPermission(IPermissionDefinitionService permissionDefinitionService, TabInfo tab, string permissionKey, int roleId)
         {
-            var permission = PermissionController.GetPermissionsByTab().Cast<PermissionInfo>().SingleOrDefault<PermissionInfo>(p => p.PermissionKey == permissionKey);
-
-            return
-                tab.TabPermissions.Cast<TabPermissionInfo>()
-                    .FirstOrDefault(tp => tp.RoleID == roleId && tp.PermissionID == permission.PermissionID);
+            var permission = permissionDefinitionService.GetDefinitionsByTab().Single(p => p.PermissionKey == permissionKey);
+            return tab.TabPermissions.FirstOrDefault(tp => ((IPermissionInfo)tp).RoleId == roleId && ((IPermissionDefinitionInfo)tp).PermissionId == permission.PermissionId);
         }
 
-        private static TabPermissionInfo GetTabPermissionByRole(int tabID, string permissionKey, int roleID)
+        private static TabPermissionInfo GetTabPermissionByRole(IPermissionDefinitionService permissionDefinitionService, int tabID, string permissionKey, int roleID)
         {
-            var permission = PermissionController.GetPermissionsByTab().Cast<PermissionInfo>().SingleOrDefault<PermissionInfo>(p => p.PermissionKey == permissionKey);
+            var permission = permissionDefinitionService.GetDefinitionsByTab().Single(p => p.PermissionKey == permissionKey);
             var tabPermission = new TabPermissionInfo
             {
                 TabID = tabID,
-                PermissionID = permission.PermissionID,
                 PermissionKey = permission.PermissionKey,
                 PermissionName = permission.PermissionName,
-                RoleID = roleID,
-                UserID = Null.NullInteger,
                 AllowAccess = true,
             };
+            ((IPermissionInfo)tabPermission).PermissionId = permission.PermissionId;
+            ((IPermissionInfo)tabPermission).RoleId = roleID;
+            ((IPermissionInfo)tabPermission).UserId = Null.NullInteger;
             return tabPermission;
         }
     }

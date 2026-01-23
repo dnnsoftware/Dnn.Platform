@@ -23,6 +23,7 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Portals.Templates;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
@@ -69,11 +70,12 @@ namespace DotNetNuke.Entities.Portals
         private readonly IApplicationStatusInfo appStatus;
         private readonly IEventLogger eventLogger;
         private readonly ICryptographyProvider cryptographyProvider;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
 
         /// <summary>Initializes a new instance of the <see cref="PortalController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public PortalController()
-            : this(null, null, null, null, null)
+            : this(null, null, null, null, null, null)
         {
         }
 
@@ -81,7 +83,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="businessControllerProvider">The business controller provider.</param>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public PortalController(IBusinessControllerProvider businessControllerProvider)
-            : this(businessControllerProvider, null, null, null, null)
+            : this(businessControllerProvider, null, null, null, null, null)
         {
         }
 
@@ -92,17 +94,25 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="eventLogger">The event logger.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Use overload with ICryptographyProvider. Scheduled for removal in v12.0.0.")]
         public PortalController(IBusinessControllerProvider businessControllerProvider, IHostSettings hostSettings, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
-            : this(businessControllerProvider, hostSettings, appStatus, eventLogger, null)
+            : this(businessControllerProvider, hostSettings, appStatus, eventLogger, null, null)
         {
         }
 
-        public PortalController(IBusinessControllerProvider businessControllerProvider, IHostSettings hostSettings, IApplicationStatusInfo appStatus, IEventLogger eventLogger, ICryptographyProvider cryptographyProvider)
+        /// <summary>Initializes a new instance of the <see cref="PortalController"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        public PortalController(IBusinessControllerProvider businessControllerProvider, IHostSettings hostSettings, IApplicationStatusInfo appStatus, IEventLogger eventLogger, ICryptographyProvider cryptographyProvider, IPermissionDefinitionService permissionDefinitionService)
         {
             this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
             this.cryptographyProvider = cryptographyProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>();
+            this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
         }
 
         /// <summary>Adds the portal dictionary.</summary>
@@ -1826,7 +1836,7 @@ namespace DotNetNuke.Entities.Portals
         public partial void ParseTemplate(int portalId, PortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             var t = new Templates.PortalTemplateInfo(template.TemplateFilePath, template.CultureCode);
-            var portalTemplateImporter = new PortalTemplateImporter(t);
+            var portalTemplateImporter = new PortalTemplateImporter(this.permissionDefinitionService, t);
             portalTemplateImporter.ParseTemplate(this.businessControllerProvider, this.eventLogger, portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal);
         }
 
@@ -2449,14 +2459,14 @@ namespace DotNetNuke.Entities.Portals
                 Exceptions.LogException(ex);
             }
 
-            var portalTemplateImporter = new PortalTemplateImporter(template);
+            var portalTemplateImporter = new PortalTemplateImporter(this.permissionDefinitionService, template);
 
             if (string.IsNullOrEmpty(homeDirectory))
             {
                 homeDirectory = "Portals/" + portalId;
             }
 
-            string mappedHomeDirectory = $@"{Globals.ApplicationMapPath}\{homeDirectory}\".Replace("/", @"\");
+            string mappedHomeDirectory = $@"{this.appStatus.ApplicationMapPath}\{homeDirectory}\".Replace("/", @"\");
 
             if (Directory.Exists(mappedHomeDirectory))
             {
@@ -2574,22 +2584,23 @@ namespace DotNetNuke.Entities.Portals
 
                 if (message == Null.NullString)
                 {
-                    var portal = this.GetPortal(portalId);
+                    var obsoletePortal = this.GetPortal(portalId);
+                    IPortalInfo portal = obsoletePortal;
                     portal.Description = description;
                     portal.KeyWords = keyWords;
-                    portal.UserTabId = TabController.GetTabByTabPath(portal.PortalID, "//UserProfile", portal.CultureCode);
+                    portal.UserTabId = TabController.GetTabByTabPath(portal.PortalId, "//UserProfile", portal.CultureCode);
                     if (portal.UserTabId == -1)
                     {
-                        portal.UserTabId = TabController.GetTabByTabPath(portal.PortalID, "//ActivityFeed", portal.CultureCode);
+                        portal.UserTabId = TabController.GetTabByTabPath(portal.PortalId, "//ActivityFeed", portal.CultureCode);
                     }
 
-                    portal.SearchTabId = TabController.GetTabByTabPath(portal.PortalID, "//SearchResults", portal.CultureCode);
-                    this.UpdatePortalInfo(portal);
+                    portal.SearchTabId = TabController.GetTabByTabPath(portal.PortalId, "//SearchResults", portal.CultureCode);
+                    this.UpdatePortalInfo(obsoletePortal);
 
                     adminUser.Profile.PreferredLocale = portal.DefaultLanguage;
-                    var portalSettings = new PortalSettings(portal);
+                    var portalSettings = new PortalSettings(obsoletePortal);
                     adminUser.Profile.PreferredTimeZone = portalSettings.TimeZone;
-                    UserController.UpdateUser(portal.PortalID, adminUser);
+                    UserController.UpdateUser(portal.PortalId, adminUser);
 
                     DesktopModuleController.AddDesktopModulesToPortal(portalId);
 

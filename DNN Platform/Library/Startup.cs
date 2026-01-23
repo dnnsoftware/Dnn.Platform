@@ -141,6 +141,7 @@ namespace DotNetNuke
             services.AddTransient<IFile, FileWrapper>();
             services.AddTransient<IDirectory, DirectoryWrapper>();
             services.AddTransient<ILogController, LogController>();
+            services.AddTransient<ITabPublishingController, TabPublishingController>();
             if (CryptoConfig.AllowOnlyFipsAlgorithms)
             {
                 services.AddTransient<ICryptographyProvider, FipsCompilanceCryptographyProvider>();

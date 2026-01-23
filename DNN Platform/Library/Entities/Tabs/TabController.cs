@@ -58,21 +58,24 @@ namespace DotNetNuke.Entities.Tabs
 
         private readonly IEventLogger eventLogger;
         private readonly DataProvider dataProvider;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
 
         /// <summary>Initializes a new instance of the <see cref="TabController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public TabController()
-            : this(null, null)
+            : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="TabController"/> class.</summary>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="dataProvider">The data provider.</param>
-        public TabController(IEventLogger eventLogger, DataProvider dataProvider)
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        public TabController(IEventLogger eventLogger, DataProvider dataProvider, IPermissionDefinitionService permissionDefinitionService)
         {
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
             this.dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
+            this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
         }
 
         /// <summary>Gets the current page in current http request.</summary>
@@ -251,10 +254,20 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="portalId">The portal id.</param>
         /// <param name="mergeTabs">The merge tabs.</param>
         /// <returns>The deserialized <see cref="TabInfo"/> instance.</returns>
-        public static TabInfo DeserializeTab(IBusinessControllerProvider businessControllerProvider, XmlNode tabNode, TabInfo tab, int portalId, PortalTemplateModuleAction mergeTabs)
-        {
-            return DeserializeTab(businessControllerProvider, tabNode, tab, new Hashtable(), portalId, false, mergeTabs, new Hashtable());
-        }
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionService")]
+        public static partial TabInfo DeserializeTab(IBusinessControllerProvider businessControllerProvider, XmlNode tabNode, TabInfo tab, int portalId, PortalTemplateModuleAction mergeTabs)
+            => DeserializeTab(businessControllerProvider, Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), tabNode, tab, portalId, mergeTabs);
+
+        /// <summary>Deserializes the tab.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="tabNode">The node tab.</param>
+        /// <param name="tab">The obj tab.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="mergeTabs">The merge tabs.</param>
+        /// <returns>The deserialized <see cref="TabInfo"/> instance.</returns>
+        public static TabInfo DeserializeTab(IBusinessControllerProvider businessControllerProvider, IPermissionDefinitionService permissionDefinitionService, XmlNode tabNode, TabInfo tab, int portalId, PortalTemplateModuleAction mergeTabs)
+            => DeserializeTab(businessControllerProvider, permissionDefinitionService, tabNode, tab, new Hashtable(), portalId, false, mergeTabs, new Hashtable());
 
         /// <summary>Deserializes the tab.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
@@ -266,7 +279,22 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="mergeTabs">The merge tabs.</param>
         /// <param name="modules">The h modules.</param>
         /// <returns>The deserialized <see cref="TabInfo"/> instance.</returns>
-        public static TabInfo DeserializeTab(IBusinessControllerProvider businessControllerProvider, XmlNode tabNode, TabInfo tab, Hashtable tabs, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, Hashtable modules)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionService")]
+        public static partial TabInfo DeserializeTab(IBusinessControllerProvider businessControllerProvider, XmlNode tabNode, TabInfo tab, Hashtable tabs, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, Hashtable modules)
+            => DeserializeTab(businessControllerProvider, Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), tabNode, tab, tabs, portalId, isAdminTemplate, mergeTabs, modules);
+
+        /// <summary>Deserializes the tab.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="tabNode">The node tab.</param>
+        /// <param name="tab">The obj tab.</param>
+        /// <param name="tabs">The h tabs.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="isAdminTemplate">if set to <see langword="true"/> [is admin template].</param>
+        /// <param name="mergeTabs">The merge tabs.</param>
+        /// <param name="modules">The h modules.</param>
+        /// <returns>The deserialized <see cref="TabInfo"/> instance.</returns>
+        public static TabInfo DeserializeTab(IBusinessControllerProvider businessControllerProvider, IPermissionDefinitionService permissionDefinitionService, XmlNode tabNode, TabInfo tab, Hashtable tabs, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, Hashtable modules)
         {
             string tabName = XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "name");
             if (!string.IsNullOrEmpty(tabName))
@@ -308,7 +336,7 @@ namespace DotNetNuke.Entities.Tabs
                 tab.UseBaseFriendlyUrls = XmlUtils.GetNodeValueBoolean(tabNode, "UseBaseFriendlyUrls", false);
 
                 tab.TabPermissions.Clear();
-                DeserializeTabPermissions(tabNode.SelectNodes("tabpermissions/permission"), tab, isAdminTemplate);
+                DeserializeTabPermissions(permissionDefinitionService, tabNode.SelectNodes("tabpermissions/permission"), tab, isAdminTemplate);
 
                 DeserializeTabSettings(tabNode.SelectNodes("tabsettings/tabsetting"), tab);
 
@@ -1578,8 +1606,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="users">The users.</param>
         public void GiveTranslatorRoleEditRights(TabInfo localizedTab, Dictionary<int, UserInfo> users)
         {
-            var permissionCtrl = new PermissionController();
-            ArrayList permissionsList = permissionCtrl.GetPermissionByCodeAndKey("SYSTEM_TAB", "EDIT");
+            var permissionsList = this.permissionDefinitionService.GetDefinitionsByCodeAndKey("SYSTEM_TAB", "EDIT");
 
             string translatorRoles = PortalController.GetPortalSetting($"DefaultTranslatorRoles-{localizedTab.CultureCode}", localizedTab.PortalID, string.Empty);
             foreach (string translatorRole in translatorRoles.Split(';'))
@@ -1592,27 +1619,23 @@ namespace DotNetNuke.Entities.Tabs
                     }
                 }
 
-                if (permissionsList is { Count: > 0 })
+                var translatePermission = permissionsList.FirstOrDefault();
+                if (translatePermission is not null)
                 {
-                    var translatePermission = (PermissionInfo)permissionsList[0];
                     string roleName = translatorRole;
-                    RoleInfo role = RoleController.Instance.GetRole(
-                        localizedTab.PortalID,
-                        r => r.RoleName == roleName);
+                    RoleInfo role = RoleController.Instance.GetRole(localizedTab.PortalID, r => r.RoleName == roleName);
                     if (role != null)
                     {
-                        TabPermissionInfo perm =
-                            localizedTab.TabPermissions.Where(
-                                tp => tp.RoleID == role.RoleID && tp.PermissionKey == "EDIT").SingleOrDefault();
+                        var perm = localizedTab.TabPermissions.SingleOrDefault((IPermissionInfo tp) => tp.RoleId == role.RoleID && tp.PermissionKey == "EDIT");
                         if (perm == null)
                         {
                             // Create Permission
                             var tabTranslatePermission = new TabPermissionInfo(translatePermission)
                             {
-                                RoleID = role.RoleID,
                                 AllowAccess = true,
                                 RoleName = roleName,
                             };
+                            ((IPermissionInfo)tabTranslatePermission).RoleId = role.RoleID;
                             localizedTab.TabPermissions.Add(tabTranslatePermission);
                             this.UpdateTab(localizedTab);
                         }
@@ -2157,69 +2180,60 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        private static void DeserializeTabPermissions(XmlNodeList nodeTabPermissions, TabInfo tab, bool isAdminTemplate)
+        private static void DeserializeTabPermissions(IPermissionDefinitionService permissionDefinitionService, XmlNodeList nodeTabPermissions, TabInfo tab, bool isAdminTemplate)
         {
-            var permissionController = new PermissionController();
-            int permissionID = 0;
+            int permissionId = 0;
             foreach (XmlNode tabPermissionNode in nodeTabPermissions)
             {
                 string permissionKey = XmlUtils.GetNodeValue(tabPermissionNode.CreateNavigator(), "permissionkey");
                 string permissionCode = XmlUtils.GetNodeValue(tabPermissionNode.CreateNavigator(), "permissioncode");
                 string roleName = XmlUtils.GetNodeValue(tabPermissionNode.CreateNavigator(), "rolename");
                 bool allowAccess = XmlUtils.GetNodeValueBoolean(tabPermissionNode, "allowaccess");
-                ArrayList arrPermissions = permissionController.GetPermissionByCodeAndKey(permissionCode, permissionKey);
-                int i;
-                for (i = 0; i <= arrPermissions.Count - 1; i++)
+                var permissions = permissionDefinitionService.GetDefinitionsByCodeAndKey(permissionCode, permissionKey);
+                foreach (var permission in permissions)
                 {
-                    var permission = (IPermissionDefinitionInfo)arrPermissions[i];
-                    permissionID = permission.PermissionId;
+                    permissionId = permission.PermissionId;
                 }
 
-                int roleID = int.MinValue;
+                int roleId = int.MinValue;
                 switch (roleName)
                 {
                     case Globals.glbRoleAllUsersName:
-                        roleID = Convert.ToInt32(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
+                        roleId = Convert.ToInt32(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
                         break;
                     case Globals.glbRoleUnauthUserName:
-                        roleID = Convert.ToInt32(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
+                        roleId = Convert.ToInt32(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
                         break;
                     default:
                         IPortalInfo portal = PortalController.Instance.GetPortal(tab.PortalID);
-                        var role = RoleController.Instance.GetRole(
-                            portal.PortalId,
-                            r => r.RoleName == roleName);
+                        var role = RoleController.Instance.GetRole(portal.PortalId, r => r.RoleName == roleName);
                         if (role != null)
                         {
-                            roleID = role.RoleID;
+                            roleId = role.RoleID;
                         }
                         else
                         {
                             if (isAdminTemplate && roleName.Equals("Administrators", StringComparison.OrdinalIgnoreCase))
                             {
-                                roleID = portal.AdministratorRoleId;
+                                roleId = portal.AdministratorRoleId;
                             }
                         }
 
                         break;
                 }
 
-                if (roleID != int.MinValue)
+                if (roleId != int.MinValue)
                 {
-                    var tabPermission = new TabPermissionInfo
-                    {
-                        TabID = tab.TabID,
-                        PermissionID = permissionID,
-                        RoleID = roleID,
-                        UserID = Null.NullInteger,
-                        AllowAccess = allowAccess,
-                    };
+                    var tabPermission = new TabPermissionInfo { TabID = tab.TabID, AllowAccess = allowAccess, };
+                    ((IPermissionInfo)tabPermission).PermissionId = permissionId;
+                    ((IPermissionInfo)tabPermission).RoleId = roleId;
+                    ((IPermissionInfo)tabPermission).UserId = Null.NullInteger;
 
-                    bool canAdd = !tab.TabPermissions.Cast<TabPermissionInfo>()
+                    bool canAdd = !tab.TabPermissions
                                       .Any(tp => tp.TabID == tabPermission.TabID
-                                                 && tp.PermissionID == tabPermission.PermissionID
-                                                 && tp.RoleID == tabPermission.RoleID
-                                                 && tp.UserID == tabPermission.UserID);
+                                                 && ((IPermissionInfo)tp).PermissionId == ((IPermissionInfo)tabPermission).PermissionId
+                                                 && ((IPermissionInfo)tp).RoleId == ((IPermissionInfo)tabPermission).RoleId
+                                                 && ((IPermissionInfo)tp).UserId == ((IPermissionInfo)tabPermission).UserId);
                     if (canAdd)
                     {
                         tab.TabPermissions.Add(tabPermission);

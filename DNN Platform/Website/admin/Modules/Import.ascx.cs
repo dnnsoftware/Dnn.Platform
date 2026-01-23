@@ -10,6 +10,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -28,6 +29,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     {
         private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly INavigationManager navigationManager;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
 
         private int moduleId = -1;
         private ModuleInfo module;
@@ -42,10 +44,21 @@ namespace DotNetNuke.Modules.Admin.Modules
         /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
         /// <param name="navigationManager">The navigation manager.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPermissionDefinitionService. Scheduled removal in v12.0.0.")]
         public Import(IBusinessControllerProvider businessControllerProvider, INavigationManager navigationManager)
+            : this(businessControllerProvider, navigationManager, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        public Import(IBusinessControllerProvider businessControllerProvider, INavigationManager navigationManager, IPermissionDefinitionService permissionDefinitionService)
         {
             this.businessControllerProvider = businessControllerProvider ?? this.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.permissionDefinitionService = permissionDefinitionService ?? this.DependencyProvider.GetRequiredService<IPermissionDefinitionService>();
         }
 
         private ModuleInfo Module
@@ -260,6 +273,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 {
                     ModuleController.DeserializeModule(
                         this.businessControllerProvider,
+                        this.permissionDefinitionService,
                         xmlDoc.DocumentElement,
                         this.Module,
                         this.PortalId,

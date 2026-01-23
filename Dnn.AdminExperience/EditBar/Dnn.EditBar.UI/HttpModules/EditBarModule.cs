@@ -21,6 +21,7 @@ namespace Dnn.EditBar.UI.HttpModules
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Skins.EventListeners;
@@ -100,7 +101,7 @@ namespace Dnn.EditBar.UI.HttpModules
                     this.clientResourceController = new ClientResourceController(this.hostSettings);
                     this.appStatus = new ApplicationStatusInfo(new Application());
 #pragma warning disable CS0618 // Type or member is obsolete
-                    this.portalController = new PortalController(new BusinessControllerProvider(null), this.hostSettings, this.appStatus, this.eventLogger, CryptographyProvider.Instance() as ICryptographyProvider);
+                    this.portalController = new PortalController(new BusinessControllerProvider(null), this.hostSettings, this.appStatus, this.eventLogger, CryptographyProvider.Instance() as ICryptographyProvider, new PermissionController(this.eventLogger));
 #pragma warning restore CS0618 // Type or member is obsolete
                     this.userController = new UserController();
                     this.hostSettingsService = new HostController(this.eventLogger, new Lazy<IPortalController>(() => this.portalController));

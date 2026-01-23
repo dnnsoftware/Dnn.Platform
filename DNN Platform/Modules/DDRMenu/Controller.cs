@@ -12,6 +12,7 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Xml;
 
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -25,18 +26,22 @@ namespace DotNetNuke.Web.DDRMenu
         private const string DdrMenuModuleName = "DDRMenu";
         private const string DdrMenuModuleDefinitionName = "DDR Menu";
         private readonly IEventLogger eventLogger;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
 
         /// <summary>Initializes a new instance of the <see cref="Controller"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public Controller()
-            : this(null)
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Controller"/> class.</summary>
         /// <param name="eventLogger">The event logger.</param>
-        public Controller(IEventLogger eventLogger)
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        public Controller(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService)
         {
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
         }
 
         /// <inheritdoc/>
@@ -44,7 +49,7 @@ namespace DotNetNuke.Web.DDRMenu
         {
             UpdateWebConfig();
 
-            TidyModuleDefinitions(this.eventLogger);
+            TidyModuleDefinitions(this.eventLogger, this.permissionDefinitionService);
 
             CleanOldAssemblies();
 
@@ -132,15 +137,15 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        private static void TidyModuleDefinitions(IEventLogger eventLogger)
+        private static void TidyModuleDefinitions(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService)
         {
-            RemoveLegacyModuleDefinitions(eventLogger, DdrMenuModuleName, DdrMenuModuleDefinitionName);
-            RemoveLegacyModuleDefinitions(eventLogger, "DDRMenuAdmin", "N/A");
+            RemoveLegacyModuleDefinitions(eventLogger, permissionDefinitionService, DdrMenuModuleName, DdrMenuModuleDefinitionName);
+            RemoveLegacyModuleDefinitions(eventLogger, permissionDefinitionService, "DDRMenuAdmin", "N/A");
         }
 
-        private static void RemoveLegacyModuleDefinitions(IEventLogger eventLogger, string moduleName, string currentModuleDefinitionName)
+        private static void RemoveLegacyModuleDefinitions(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, string moduleName, string currentModuleDefinitionName)
         {
-            var mdc = new ModuleDefinitionController();
+            var mdc = new ModuleDefinitionController(permissionDefinitionService);
 
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, Null.NullInteger);
             if (desktopModule == null)

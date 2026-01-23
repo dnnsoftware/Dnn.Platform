@@ -16,6 +16,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Security;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -107,7 +108,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             HostController.RegisterInstance(this.mockHostController.Object);
 
             var eventLogger = Mock.Of<IEventLogger>();
-            this.portalController = new PortalController(Mock.Of<IBusinessControllerProvider>(), new HostSettings((IHostSettingsService)this.mockHostController.Object), Mock.Of<IApplicationStatusInfo>(), eventLogger, Mock.Of<ICryptographyProvider>());
+            this.portalController = new PortalController(Mock.Of<IBusinessControllerProvider>(), new HostSettings((IHostSettingsService)this.mockHostController.Object), Mock.Of<IApplicationStatusInfo>(), eventLogger, Mock.Of<ICryptographyProvider>(), Mock.Of<IPermissionDefinitionService>());
             this.redirectionController = new RedirectionController(this.portalController, eventLogger);
             this.SetupContainer();
 

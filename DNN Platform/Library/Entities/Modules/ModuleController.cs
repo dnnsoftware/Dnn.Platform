@@ -19,6 +19,7 @@ namespace DotNetNuke.Entities.Modules
 
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -33,6 +34,7 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Exceptions;
@@ -50,33 +52,25 @@ namespace DotNetNuke.Entities.Modules
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleController));
         private static readonly DataProvider DataProvider = DataProvider.Instance();
         private readonly IEventLogger eventLogger;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public ModuleController()
-            : this(null)
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleController"/> class.</summary>
         /// <param name="eventLogger">The event logger.</param>
-        public ModuleController(IEventLogger eventLogger)
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        public ModuleController(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService)
         {
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
         }
 
-        private static Hashtable ParsedLocalizedModuleGuid
-        {
-            get
-            {
-                if (HttpContext.Current.Items["ParsedLocalizedModuleGuid"] == null)
-                {
-                    HttpContext.Current.Items["ParsedLocalizedModuleGuid"] = new Hashtable();
-                }
-
-                return (Hashtable)HttpContext.Current.Items["ParsedLocalizedModuleGuid"];
-            }
-        }
+        private static Hashtable ParsedLocalizedModuleGuid => (Hashtable)(HttpContext.Current.Items["ParsedLocalizedModuleGuid"] ??= new Hashtable());
 
         /// <summary>Deserializes the module.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
@@ -84,7 +78,18 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="module">ModuleInfo of current module.</param>
         /// <param name="portalId">The portal id.</param>
         /// <param name="tabId">The tab id.</param>
-        public static void DeserializeModule(IBusinessControllerProvider businessControllerProvider, XmlNode nodeModule, ModuleInfo module, int portalId, int tabId)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionService")]
+        public static partial void DeserializeModule(IBusinessControllerProvider businessControllerProvider, XmlNode nodeModule, ModuleInfo module, int portalId, int tabId)
+            => DeserializeModule(businessControllerProvider, Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), nodeModule, module, portalId, tabId);
+
+        /// <summary>Deserializes the module.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="nodeModule">The node module.</param>
+        /// <param name="module">ModuleInfo of current module.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="tabId">The tab id.</param>
+        public static void DeserializeModule(IBusinessControllerProvider businessControllerProvider, IPermissionDefinitionService permissionDefinitionService, XmlNode nodeModule, ModuleInfo module, int portalId, int tabId)
         {
             var moduleDefinition = GetModuleDefinition(nodeModule);
 
@@ -147,7 +152,7 @@ namespace DotNetNuke.Entities.Modules
 
             // deserialize Permissions
             XmlNodeList nodeModulePermissions = nodeModule.SelectNodes("modulepermissions/permission");
-            DeserializeModulePermissions(nodeModulePermissions, portalId, module);
+            DeserializeModulePermissions(permissionDefinitionService, nodeModulePermissions, portalId, module);
 
             // Persist the permissions to the Data base
             ModulePermissionController.SaveModulePermissions(module);
@@ -161,7 +166,20 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="tabId">The tab id.</param>
         /// <param name="mergeTabs">The merge tabs.</param>
         /// <param name="hModules">The modules.</param>
-        public static void DeserializeModule(IBusinessControllerProvider businessControllerProvider, XmlNode nodeModule, XmlNode nodePane, int portalId, int tabId, PortalTemplateModuleAction mergeTabs, Hashtable hModules)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionService")]
+        public static partial void DeserializeModule(IBusinessControllerProvider businessControllerProvider, XmlNode nodeModule, XmlNode nodePane, int portalId, int tabId, PortalTemplateModuleAction mergeTabs, Hashtable hModules)
+            => DeserializeModule(businessControllerProvider, Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), nodeModule, nodePane, portalId, tabId, mergeTabs, hModules);
+
+        /// <summary>Deserializes the module.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="nodeModule">The node module.</param>
+        /// <param name="nodePane">The node pane.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="tabId">The tab id.</param>
+        /// <param name="mergeTabs">The merge tabs.</param>
+        /// <param name="hModules">The modules.</param>
+        public static void DeserializeModule(IBusinessControllerProvider businessControllerProvider, IPermissionDefinitionService permissionDefinitionService, XmlNode nodeModule, XmlNode nodePane, int portalId, int tabId, PortalTemplateModuleAction mergeTabs, Hashtable hModules)
         {
             var moduleDefinition = GetModuleDefinition(nodeModule);
 
@@ -232,7 +250,7 @@ namespace DotNetNuke.Entities.Modules
                     if (!isInstance && portalId != Null.NullInteger)
                     {
                         XmlNodeList nodeModulePermissions = nodeModule.SelectNodes("modulepermissions/permission");
-                        DeserializeModulePermissions(nodeModulePermissions, portalId, module);
+                        DeserializeModulePermissions(permissionDefinitionService, nodeModulePermissions, portalId, module);
 
                         // Persist the permissions to the Data base
                         ModulePermissionController.SaveModulePermissions(module);
@@ -1114,43 +1132,40 @@ namespace DotNetNuke.Entities.Modules
         public void InitialModulePermission(ModuleInfo module, int tabId, int permissionType)
         {
             var tabPermissions = TabPermissionController.GetTabPermissions(tabId, module.PortalID);
-            var permissionController = new PermissionController();
 
             module.InheritViewPermissions = permissionType == 0;
 
             // get the default module view permissions
-            ArrayList systemModuleViewPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
+            var systemModuleViewPermission = this.permissionDefinitionService.GetDefinitionsByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW").FirstOrDefault();
 
             // get the permissions from the page
-            foreach (TabPermissionInfo tabPermission in tabPermissions)
+            foreach (IPermissionInfo tabPermission in tabPermissions)
             {
                 if (tabPermission.PermissionKey == "VIEW" && permissionType == 0)
                 {
-                    // Don't need to explicitly add View permisisons if "Same As Page"
+                    // Don't need to explicitly add View permissions if "Same As Page"
                     continue;
                 }
 
-                // get the system module permissions for the permissionkey
-                ArrayList systemModulePermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", tabPermission.PermissionKey);
+                // get the system module permissions for the permission key
+                var systemModulePermissions = this.permissionDefinitionService.GetDefinitionsByCodeAndKey("SYSTEM_MODULE_DEFINITION", tabPermission.PermissionKey);
 
                 // loop through the system module permissions
-                int j;
-                for (j = 0; j <= systemModulePermissions.Count - 1; j++)
+                foreach (var systemModulePermission in systemModulePermissions)
                 {
                     // create the module permission
-                    var systemModulePermission = (PermissionInfo)systemModulePermissions[j];
                     if (systemModulePermission.PermissionKey == "VIEW" && permissionType == 1 && tabPermission.PermissionKey != "EDIT")
                     {
                         // Only Page Editors get View permissions if "Page Editors Only"
                         continue;
                     }
 
-                    ModulePermissionInfo modulePermission = AddModulePermission(module, systemModulePermission, tabPermission.RoleID, tabPermission.UserID, tabPermission.AllowAccess);
+                    var modulePermission = AddModulePermission(module, systemModulePermission, tabPermission.RoleId, tabPermission.UserId, tabPermission.AllowAccess);
 
                     // ensure that every EDIT permission which allows access also provides VIEW permission
                     if (modulePermission.PermissionKey == "EDIT" && modulePermission.AllowAccess)
                     {
-                        AddModulePermission(module, (PermissionInfo)systemModuleViewPermissions[0], modulePermission.RoleID, modulePermission.UserID, true);
+                        AddModulePermission(module, systemModuleViewPermission, modulePermission.RoleId, modulePermission.UserId, true);
                     }
                 }
 
@@ -1158,15 +1173,12 @@ namespace DotNetNuke.Entities.Modules
                 // are automatically assigned to the Custom Module Permissions
                 if (tabPermission.PermissionKey == "EDIT")
                 {
-                    ArrayList customModulePermissions = permissionController.GetPermissionsByModuleDefID(module.ModuleDefID);
+                    var customModulePermissions = this.permissionDefinitionService.GetDefinitionsByModuleDefId(module.ModuleDefID);
 
                     // loop through the custom module permissions
-                    for (j = 0; j <= customModulePermissions.Count - 1; j++)
+                    foreach (var customModulePermission in customModulePermissions)
                     {
-                        // create the module permission
-                        var customModulePermission = (PermissionInfo)customModulePermissions[j];
-
-                        AddModulePermission(module, customModulePermission, tabPermission.RoleID, tabPermission.UserID, tabPermission.AllowAccess);
+                        AddModulePermission(module, customModulePermission, tabPermission.RoleId, tabPermission.UserId, tabPermission.AllowAccess);
                     }
                 }
             }
@@ -1178,15 +1190,14 @@ namespace DotNetNuke.Entities.Modules
             try
             {
                 // we could be working from a single culture page that is not in the default language,
-                // so we need to test whether or not the module is going to be localized for the default locale
+                // so we need to test whether the module is going to be localized for the default locale
                 var defaultLocale = LocaleController.Instance.GetDefaultLocale(sourceModule.PortalID);
                 ModuleInfo defaultModule = locale.Code == defaultLocale.Code ? sourceModule : sourceModule.DefaultLanguageModule;
 
                 if (defaultModule != null)
                 {
-                    ModuleInfo localizedModule;
-                    var alreadyLocalized = defaultModule.LocalizedModules.TryGetValue(locale.Code, out localizedModule)
-                                            && localizedModule.ModuleID != defaultModule.ModuleID;
+                    var alreadyLocalized = defaultModule.LocalizedModules.TryGetValue(locale.Code, out var localizedModule)
+                                           && localizedModule.ModuleID != defaultModule.ModuleID;
                     var tabModules = this.GetTabModulesByModule(defaultModule.ModuleID);
                     if (tabModules.Count > 1)
                     {
@@ -1766,9 +1777,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        private static void AddModulePermission(ref ModuleInfo module, int portalId, string roleName, PermissionInfo permission, string permissionKey)
+        private static void AddModulePermission(ref ModuleInfo module, int portalId, string roleName, IPermissionDefinitionInfo permission, string permissionKey)
         {
-            var perm = module.ModulePermissions.Where(tp => tp.RoleName == roleName && tp.PermissionKey == permissionKey).SingleOrDefault();
+            var perm = module.ModulePermissions.SingleOrDefault(tp => tp.RoleName == roleName && tp.PermissionKey == permissionKey);
             if (permission != null && perm == null)
             {
                 var modulePermission = new ModulePermissionInfo(permission);
@@ -1779,7 +1790,7 @@ namespace DotNetNuke.Entities.Modules
                 // ReSharper restore ImplicitlyCapturedClosure
                 if (role != null)
                 {
-                    modulePermission.RoleID = role.RoleID;
+                    ((IPermissionInfo)modulePermission).RoleId = role.RoleID;
                     modulePermission.AllowAccess = true;
 
                     module.ModulePermissions.Add(modulePermission);
@@ -1787,13 +1798,13 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        private static bool CheckIsInstance(int templateModuleID, Hashtable hModules)
+        private static bool CheckIsInstance(int templateModuleId, Hashtable hModules)
         {
             // will be instance or module?
             bool isInstance = false;
-            if (templateModuleID > 0)
+            if (templateModuleId > 0)
             {
-                if (hModules[templateModuleID] != null)
+                if (hModules[templateModuleId] != null)
                 {
                     // this module has already been processed -> process as instance
                     isInstance = true;
@@ -1893,9 +1904,8 @@ namespace DotNetNuke.Entities.Modules
             return module;
         }
 
-        private static void DeserializeModulePermissions(XmlNodeList nodeModulePermissions, int portalId, ModuleInfo module)
+        private static void DeserializeModulePermissions(IPermissionDefinitionService permissionDefinitionService, XmlNodeList nodeModulePermissions, int portalId, ModuleInfo module)
         {
-            var permissionController = new PermissionController();
             foreach (XmlNode node in nodeModulePermissions)
             {
                 string permissionKey = XmlUtils.GetNodeValue(node.CreateNavigator(), "permissionkey");
@@ -1922,31 +1932,30 @@ namespace DotNetNuke.Entities.Modules
 
                 if (roleID != int.MinValue)
                 {
-                    int permissionID = -1;
-                    ArrayList permissions = permissionController.GetPermissionByCodeAndKey(permissionCode, permissionKey);
-                    for (int i = 0; i <= permissions.Count - 1; i++)
+                    int permissionId = -1;
+                    var permissions = permissionDefinitionService.GetDefinitionsByCodeAndKey(permissionCode, permissionKey);
+                    foreach (var permission in permissions)
                     {
-                        var permission = (PermissionInfo)permissions[i];
-                        permissionID = permission.PermissionID;
+                        permissionId = permission.PermissionId;
                     }
 
                     // if role was found add, otherwise ignore
-                    if (permissionID != -1)
+                    if (permissionId != -1)
                     {
                         var modulePermission = new ModulePermissionInfo
                         {
                             ModuleID = module.ModuleID,
-                            PermissionID = permissionID,
-                            RoleID = roleID,
                             AllowAccess = Convert.ToBoolean(XmlUtils.GetNodeValue(node.CreateNavigator(), "allowaccess")),
                         };
+                        ((IPermissionInfo)modulePermission).PermissionId = permissionId;
+                        ((IPermissionInfo)modulePermission).RoleId = roleID;
 
                         // do not add duplicate ModulePermissions
-                        bool canAdd = !module.ModulePermissions.Cast<ModulePermissionInfo>()
-                                                    .Any(mp => mp.ModuleID == modulePermission.ModuleID
-                                                            && mp.PermissionID == modulePermission.PermissionID
-                                                            && mp.RoleID == modulePermission.RoleID
-                                                            && mp.UserID == modulePermission.UserID);
+                        bool canAdd = !module.ModulePermissions
+                            .Any(mp => mp.ModuleID == modulePermission.ModuleID &&
+                                       ((IPermissionInfo)mp).PermissionId == ((IPermissionInfo)modulePermission).PermissionId &&
+                                       ((IPermissionInfo)mp).RoleId == ((IPermissionInfo)modulePermission).RoleId &&
+                                       ((IPermissionInfo)mp).UserId == ((IPermissionInfo)modulePermission).UserId);
                         if (canAdd)
                         {
                             module.ModulePermissions.Add(modulePermission);
@@ -2093,22 +2102,22 @@ namespace DotNetNuke.Entities.Modules
             DataProvider.UpdateTabModuleVersion(tabModuleId, Guid.NewGuid());
         }
 
-        private static ModulePermissionInfo AddModulePermission(ModuleInfo module, PermissionInfo permission, int roleId, int userId, bool allowAccess)
+        private static IPermissionInfo AddModulePermission(ModuleInfo module, IPermissionDefinitionInfo permission, int roleId, int userId, bool allowAccess)
         {
-            var modulePermission = new ModulePermissionInfo
+            IPermissionInfo modulePermission = new ModulePermissionInfo
             {
                 ModuleID = module.ModuleID,
-                PermissionID = permission.PermissionID,
-                RoleID = roleId,
-                UserID = userId,
                 PermissionKey = permission.PermissionKey,
                 AllowAccess = allowAccess,
             };
+            modulePermission.PermissionId = permission.PermissionId;
+            modulePermission.RoleId = roleId;
+            modulePermission.UserId = userId;
 
             // add the permission to the collection
             if (!module.ModulePermissions.Contains(modulePermission))
             {
-                module.ModulePermissions.Add(modulePermission);
+                module.ModulePermissions.Add((ModulePermissionInfo)modulePermission);
             }
 
             return modulePermission;
@@ -2277,24 +2286,10 @@ namespace DotNetNuke.Entities.Modules
                 string translatorRoles = PortalController.GetPortalSetting($"DefaultTranslatorRoles-{sourceModule.CultureCode}", sourceModule.PortalID, string.Empty).TrimEnd(';');
 
                 // Add the default translators for this language, view and edit permissions
-                var permissionController = new PermissionController();
-                var viewPermissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
-                var editPermissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "EDIT");
-                PermissionInfo viewPermission = null;
-                PermissionInfo editPermission = null;
-
-                // View
-                if (viewPermissionsList != null && viewPermissionsList.Count > 0)
-                {
-                    viewPermission = (PermissionInfo)viewPermissionsList[0];
-                }
-
-                // Edit
-                if (editPermissionsList != null && editPermissionsList.Count > 0)
-                {
-                    editPermission = (PermissionInfo)editPermissionsList[0];
-                }
-
+                var viewPermissionsList = this.permissionDefinitionService.GetDefinitionsByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
+                var editPermissionsList = this.permissionDefinitionService.GetDefinitionsByCodeAndKey("SYSTEM_MODULE_DEFINITION", "EDIT");
+                var viewPermission = viewPermissionsList.FirstOrDefault();
+                var editPermission = editPermissionsList.FirstOrDefault();
                 if (viewPermission != null || editPermission != null)
                 {
                     foreach (string translatorRole in translatorRoles.Split(';'))

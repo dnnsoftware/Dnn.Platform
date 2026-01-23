@@ -11,6 +11,7 @@ namespace DotNetNuke.Entities.Portals.Templates
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals.Templates;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals.Internal;
     using DotNetNuke.Framework;
@@ -23,11 +24,12 @@ namespace DotNetNuke.Entities.Portals.Templates
     {
         private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly IEventLogger eventLogger;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
 
         /// <summary>Initializes a new instance of the <see cref="PortalTemplateController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public PortalTemplateController()
-            : this(null)
+            : this(null, null, null)
         {
         }
 
@@ -35,23 +37,25 @@ namespace DotNetNuke.Entities.Portals.Templates
         /// <param name="businessControllerProvider">The DI container.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public PortalTemplateController(IBusinessControllerProvider businessControllerProvider)
-            : this(businessControllerProvider, null)
+            : this(businessControllerProvider, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalTemplateController"/> class.</summary>
         /// <param name="businessControllerProvider">The DI container.</param>
         /// <param name="eventLogger">The event logger.</param>
-        public PortalTemplateController(IBusinessControllerProvider businessControllerProvider, IEventLogger eventLogger)
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        public PortalTemplateController(IBusinessControllerProvider businessControllerProvider, IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService)
         {
             this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
             this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.permissionDefinitionService = permissionDefinitionService ?? Globals.DependencyProvider.GetRequiredService<IPermissionDefinitionService>();
         }
 
         /// <inheritdoc/>
         public void ApplyPortalTemplate(int portalId, IPortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
-            var importer = new PortalTemplateImporter(template);
+            var importer = new PortalTemplateImporter(this.permissionDefinitionService, template);
             importer.ParseTemplate(this.businessControllerProvider, this.eventLogger, portalId, administratorId, mergeTabs, isNewPortal);
         }
 

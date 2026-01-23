@@ -7,6 +7,7 @@ namespace DotNetNuke.Security.Permissions
     using System.Data;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
@@ -15,26 +16,31 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class ModulePermissionInfo : PermissionInfoBase, IHydratable
     {
-        private int moduleID;
-
-        // local property declarations
-        private int modulePermissionID;
+        private int moduleId;
+        private int modulePermissionId;
 
         /// <summary>Initializes a new instance of the <see cref="ModulePermissionInfo"/> class.</summary>
         public ModulePermissionInfo()
         {
-            this.modulePermissionID = Null.NullInteger;
-            this.moduleID = Null.NullInteger;
+            this.modulePermissionId = Null.NullInteger;
+            this.moduleId = Null.NullInteger;
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModulePermissionInfo"/> class.</summary>
         /// <param name="permission">A PermissionInfo object.</param>
         public ModulePermissionInfo(PermissionInfo permission)
+            : this((IPermissionDefinitionInfo)permission)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModulePermissionInfo"/> class.</summary>
+        /// <param name="permission">A PermissionInfo object.</param>
+        public ModulePermissionInfo(IPermissionDefinitionInfo permission)
             : this()
         {
-            this.ModuleDefID = permission.ModuleDefID;
+            ((IPermissionDefinitionInfo)this).ModuleDefId = permission.ModuleDefId;
             this.PermissionCode = permission.PermissionCode;
-            this.PermissionID = permission.PermissionID;
+            ((IPermissionDefinitionInfo)this).PermissionId = permission.PermissionId;
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
@@ -44,8 +50,8 @@ namespace DotNetNuke.Security.Permissions
         [XmlElement("modulepermissionid")]
         public int ModulePermissionID
         {
-            get => this.modulePermissionID;
-            set => this.modulePermissionID = value;
+            get => this.modulePermissionId;
+            set => this.modulePermissionId = value;
         }
 
         /// <summary>Gets or sets the Module ID.</summary>
@@ -53,8 +59,8 @@ namespace DotNetNuke.Security.Permissions
         [XmlElement("moduleid")]
         public int ModuleID
         {
-            get => this.moduleID;
-            set => this.moduleID = value;
+            get => this.moduleId;
+            set => this.moduleId = value;
         }
 
         /// <summary>Gets or sets the Key ID.</summary>
@@ -136,7 +142,7 @@ namespace DotNetNuke.Security.Permissions
         {
             unchecked
             {
-                return (this.moduleID * 397) ^ this.modulePermissionID;
+                return (this.moduleId * 397) ^ this.modulePermissionId;
             }
         }
     }
