@@ -13,12 +13,14 @@ namespace Dnn.PersonaBar.Library.Helper
     using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public static class PermissionHelper
+    /// <summary>Helpers methods for permissions.</summary>
+    public static partial class PermissionHelper
     {
         public static void AddUserPermission(this Dto.Permissions dto, PermissionInfoBase permissionInfo)
             => dto.AddUserPermission((IPermissionInfo)permissionInfo);
@@ -108,19 +110,47 @@ namespace Dnn.PersonaBar.Library.Helper
             }
         }
 
-        public static bool IsFullControl(PermissionInfo permissionInfo)
+        /// <summary>Gets a value indicating whether the <paramref name="permissionInfo"/> gives full control.</summary>
+        /// <param name="permissionInfo">The permission definition.</param>
+        /// <returns><see langword="true"/> if it's the full control permission, otherwise <see langword="false"/>.</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionInfo")]
+        public static partial bool IsFullControl(PermissionInfo permissionInfo)
+            => IsFullControl((IPermissionDefinitionInfo)permissionInfo);
+
+        /// <summary>Gets a value indicating whether the <paramref name="permissionDefinition"/> gives full control.</summary>
+        /// <param name="permissionDefinition">The permission definition.</param>
+        /// <returns><see langword="true"/> if it's the full control permission, otherwise <see langword="false"/>.</returns>
+        public static bool IsFullControl(IPermissionDefinitionInfo permissionDefinition)
         {
-            return (permissionInfo.PermissionKey == "EDIT") && PermissionProvider.Instance().SupportsFullControl();
+            return permissionDefinition.PermissionKey == "EDIT" && PermissionProvider.Instance().SupportsFullControl();
         }
 
-        public static bool IsViewPermisison(PermissionInfo permissionInfo)
+        /// <summary>Gets a value indicating whether the <paramref name="permissionInfo"/> is the view permission.</summary>
+        /// <param name="permissionInfo">The permission definition.</param>
+        /// <returns><see langword="true"/> if it's the view permission, otherwise <see langword="false"/>.</returns>
+        [DnnDeprecated(10, 2, 2, "Use IsViewPermission")]
+        public static partial bool IsViewPermisison(PermissionInfo permissionInfo)
+            => IsViewPermission(permissionInfo);
+
+        /// <summary>Gets a value indicating whether the <paramref name="permissionDefinition"/> is the view permission.</summary>
+        /// <param name="permissionDefinition">The permission definition.</param>
+        /// <returns><see langword="true"/> if it's the view permission, otherwise <see langword="false"/>.</returns>
+        public static bool IsViewPermission(IPermissionDefinitionInfo permissionDefinition)
         {
-            return permissionInfo.PermissionKey == "VIEW";
+            return permissionDefinition.PermissionKey == "VIEW";
         }
 
-        public static object GetRoles(int portalId)
+        /// <summary>Gets the roles for the portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>An object with <c>Groups</c> and <c>Roles</c> fields.</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking RoleProvider")]
+        public static partial object GetRoles(int portalId)
             => GetRoles(Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>(), portalId);
 
+        /// <summary>Gets the roles for the portal.</summary>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>An object with <c>Groups</c> and <c>Roles</c> fields.</returns>
         public static object GetRoles(RoleProvider roleProvider, int portalId)
         {
             var data = new { Groups = new List<object>(), Roles = new List<object>() };

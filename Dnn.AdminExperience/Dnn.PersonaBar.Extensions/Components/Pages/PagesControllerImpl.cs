@@ -17,8 +17,10 @@ namespace Dnn.PersonaBar.Pages.Components
     using Dnn.PersonaBar.Pages.Components.Exceptions;
     using Dnn.PersonaBar.Pages.Services.Dto;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content;
@@ -32,7 +34,6 @@ namespace Dnn.PersonaBar.Pages.Components
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Exceptions;
@@ -62,7 +63,12 @@ namespace Dnn.PersonaBar.Pages.Components
         private readonly IContentVerifier contentVerifier;
         private readonly IPortalController portalController;
         private readonly PersonalizationController personalizationController;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
+        private readonly IPortalAliasService portalAliasService;
+        private readonly IHostSettings hostSettings;
+        private readonly IHostSettingsService hostSettingsService;
 
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPermissionDefinitionService. Scheduled removal in v12.0.0.")]
         public PagesControllerImpl(IBusinessControllerProvider businessControllerProvider, ITemplateController templateController)
             : this(
                   businessControllerProvider,
@@ -79,6 +85,7 @@ namespace Dnn.PersonaBar.Pages.Components
         {
         }
 
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPermissionDefinitionService. Scheduled removal in v12.0.0.")]
         public PagesControllerImpl(
             IBusinessControllerProvider businessControllerProvider,
             ITabController tabController,
@@ -107,6 +114,7 @@ namespace Dnn.PersonaBar.Pages.Components
         {
         }
 
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPermissionDefinitionService. Scheduled removal in v12.0.0.")]
         public PagesControllerImpl(
             IBusinessControllerProvider businessControllerProvider,
             ITabController tabController,
@@ -120,6 +128,27 @@ namespace Dnn.PersonaBar.Pages.Components
             IContentVerifier contentVerifier,
             IPortalController portalController,
             PersonalizationController personalizationController)
+            : this(businessControllerProvider, tabController, moduleController, pageUrlsController, templateController, defaultPortalThemeController, cloneModuleExecutionContext, urlRewriterUtilsWrapper, friendlyUrlWrapper, contentVerifier, portalController, personalizationController, null, null, null, null)
+        {
+        }
+
+        public PagesControllerImpl(
+            IBusinessControllerProvider businessControllerProvider,
+            ITabController tabController,
+            IModuleController moduleController,
+            IPageUrlsController pageUrlsController,
+            ITemplateController templateController,
+            IDefaultPortalThemeController defaultPortalThemeController,
+            ICloneModuleExecutionContext cloneModuleExecutionContext,
+            IUrlRewriterUtilsWrapper urlRewriterUtilsWrapper,
+            IFriendlyUrlWrapper friendlyUrlWrapper,
+            IContentVerifier contentVerifier,
+            IPortalController portalController,
+            PersonalizationController personalizationController,
+            IPermissionDefinitionService permissionDefinitionService,
+            IPortalAliasService portalAliasService,
+            IHostSettings hostSettings,
+            IHostSettingsService hostSettingsService)
         {
             this.businessControllerProvider = businessControllerProvider;
             this.tabController = tabController;
@@ -133,6 +162,10 @@ namespace Dnn.PersonaBar.Pages.Components
             this.contentVerifier = contentVerifier;
             this.portalController = portalController;
             this.personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
+            this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
+            this.portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
         }
 
         private PortalSettings PortalSettings { get; set; }
@@ -198,7 +231,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 throw new PageNotFoundException();
             }
 
-            var paths = new List<int> { tab.TabID };
+            var paths = new List<int> { tab.TabID, };
             while (tab.ParentId != Null.NullInteger)
             {
                 tab = TabController.Instance.GetTab(tab.ParentId, portalSettings.PortalId);
@@ -624,7 +657,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 url = this.CleanTabUrl(url);
 
                 string currentUrl = string.Empty;
-                var friendlyUrlSettings = new FriendlyUrlSettings(portalSettings.PortalId);
+                var friendlyUrlSettings = new FriendlyUrlSettings(this.portalController, this.hostSettings, this.hostSettingsService, portalSettings.PortalId);
                 if (tab.TabID > -1)
                 {
                     IPortalAliasInfo alias = portalSettings.PortalAlias;
@@ -708,7 +741,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var urlPath = url.TrimStart('/');
 
             var portalSettings = PortalController.Instance.GetCurrentSettings();
-            var friendlyUrlSettings = new FriendlyUrlSettings(portalSettings.PortalId);
+            var friendlyUrlSettings = new FriendlyUrlSettings(this.portalController, this.hostSettings, this.hostSettingsService, portalSettings.PortalId);
             urlPath = UrlRewriterUtils.CleanExtension(urlPath, friendlyUrlSettings, string.Empty);
 
             // Clean Url
@@ -913,16 +946,14 @@ namespace Dnn.PersonaBar.Pages.Components
             if (!HasAdminPermissions(permissions))
             {
                 // add default permissions
-                var permissionsList = PermissionController.GetPermissionsByTab();
-                foreach (var permissionInfo in permissionsList)
+                foreach (var editPermission in this.permissionDefinitionService.GetDefinitionsByTab())
                 {
-                    var editPermisison = (PermissionInfo)permissionInfo;
-                    var permission = new TabPermissionInfo(editPermisison)
+                    var permission = new TabPermissionInfo(editPermission)
                     {
-                        RoleID = portalSettings.AdministratorRoleId,
                         AllowAccess = true,
                         RoleName = portalSettings.AdministratorRoleName,
                     };
+                    ((IPermissionInfo)permission).RoleId = portalSettings.AdministratorRoleId;
                     tab.TabPermissions.Add(permission);
                 }
             }
@@ -938,13 +969,14 @@ namespace Dnn.PersonaBar.Pages.Components
                     {
                         foreach (var permission in rolePermission.Permissions)
                         {
-                            tab.TabPermissions.Add(new TabPermissionInfo
+                            var info = new TabPermissionInfo
                             {
-                                PermissionID = permission.PermissionId,
-                                RoleID = rolePermission.RoleId,
-                                UserID = Null.NullInteger,
                                 AllowAccess = permission.AllowAccess,
-                            });
+                            };
+                            ((IPermissionInfo)info).PermissionId = permission.PermissionId;
+                            ((IPermissionInfo)info).RoleId = rolePermission.RoleId;
+                            ((IPermissionInfo)info).UserId = Null.NullInteger;
+                            tab.TabPermissions.Add(info);
                         }
                     }
                 }
@@ -965,13 +997,14 @@ namespace Dnn.PersonaBar.Pages.Components
 
                         foreach (var permission in userPermission.Permissions)
                         {
-                            tab.TabPermissions.Add(new TabPermissionInfo
+                            var info = new TabPermissionInfo
                             {
-                                PermissionID = permission.PermissionId,
-                                RoleID = roleId,
-                                UserID = userPermission.UserId,
                                 AllowAccess = permission.AllowAccess,
-                            });
+                            };
+                            ((IPermissionInfo)info).PermissionId = permission.PermissionId;
+                            ((IPermissionInfo)info).RoleId = roleId;
+                            ((IPermissionInfo)info).UserId = userPermission.UserId;
+                            tab.TabPermissions.Add(info);
                         }
                     }
                 }
@@ -1007,16 +1040,16 @@ namespace Dnn.PersonaBar.Pages.Components
         /// <inheritdoc/>
         public PagePermissions GetPermissionsData(int pageId)
         {
-            var permissions = new PagePermissions(true);
+            var permissions = new PagePermissions(this.permissionDefinitionService, true);
             if (pageId > 0)
             {
                 var portalSettings = PortalController.Instance.GetCurrentSettings();
                 var tab = TabController.Instance.GetTab(pageId, portalSettings.PortalId);
                 if (tab != null)
                 {
-                    foreach (TabPermissionInfo permission in tab.TabPermissions)
+                    foreach (IPermissionInfo permission in tab.TabPermissions)
                     {
-                        if (permission.UserID != Null.NullInteger)
+                        if (permission.UserId != Null.NullInteger)
                         {
                             permissions.AddUserPermission(permission);
                         }
@@ -1353,22 +1386,20 @@ namespace Dnn.PersonaBar.Pages.Components
             return locales.Value.Values.Select(local => new KeyValuePair<int, string>(local.KeyID, local.EnglishName)).OrderBy(x => x.Value);
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected IEnumerable<KeyValuePair<int, string>> GetSiteAliases(int portalId)
         {
-            var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
-            return aliases.Select(alias => new KeyValuePair<int, string>(alias.KeyID, alias.HTTPAlias)).OrderBy(x => x.Value);
+            var aliases = this.portalAliasService.GetPortalAliasesByPortalId(portalId);
+            return aliases.Select(alias => new KeyValuePair<int, string>(alias.PortalAliasId, alias.HttpAlias)).OrderBy(x => x.Value);
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected int? GetPrimaryAliasId(int portalId, string cultureCode)
         {
-            var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
-            var primary = aliases.Where(a => a.IsPrimary
-                                             && (a.CultureCode == cultureCode || string.IsNullOrEmpty(a.CultureCode)))
+            return this.portalAliasService.GetPortalAliasesByPortalId(portalId)
+                .Where(a => a.IsPrimary && (a.CultureCode == cultureCode || string.IsNullOrEmpty(a.CultureCode)))
                 .OrderByDescending(a => a.CultureCode)
+                .Select(a => (int?)a.PortalAliasId)
                 .FirstOrDefault();
-            return primary?.KeyID;
         }
 
         private static string GetExternalUrlRedirection(string url)
@@ -1621,19 +1652,18 @@ namespace Dnn.PersonaBar.Pages.Components
                     newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
 
                     // copy permissions from source module
-                    foreach (ModulePermissionInfo permission in objModule.ModulePermissions)
+                    foreach (ModulePermissionInfo existingPermission in objModule.ModulePermissions)
                     {
-                        newModule.ModulePermissions.Add(
-                            new ModulePermissionInfo
+                        var newPermission = new ModulePermissionInfo
                             {
                                 ModuleID = newModule.ModuleID,
-                                PermissionID = permission.PermissionID,
-                                RoleID = permission.RoleID,
-                                UserID = permission.UserID,
-                                PermissionKey = permission.PermissionKey,
-                                AllowAccess = permission.AllowAccess,
-                            },
-                            true);
+                                PermissionKey = existingPermission.PermissionKey,
+                                AllowAccess = existingPermission.AllowAccess,
+                            };
+                        ((IPermissionInfo)newPermission).PermissionId = ((IPermissionInfo)existingPermission).PermissionId;
+                        ((IPermissionInfo)newPermission).RoleId = ((IPermissionInfo)existingPermission).RoleId;
+                        ((IPermissionInfo)newPermission).UserId = ((IPermissionInfo)existingPermission).UserId;
+                        newModule.ModulePermissions.Add(newPermission, true);
                     }
 
                     ModulePermissionController.SaveModulePermissions(newModule);

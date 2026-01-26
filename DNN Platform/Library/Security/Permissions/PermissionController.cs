@@ -21,7 +21,6 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -48,7 +47,7 @@ namespace DotNetNuke.Security.Permissions
         public static string BuildPermissions(IList permissions, string permissionKey)
         {
             var permissionsBuilder = new StringBuilder();
-            foreach (PermissionInfoBase permission in permissions)
+            foreach (IPermissionInfo permission in permissions)
             {
                 if (permissionKey.Equals(permission.PermissionKey, StringComparison.OrdinalIgnoreCase))
                 {
@@ -57,13 +56,13 @@ namespace DotNetNuke.Security.Permissions
 
                     // encode permission
                     string permissionString;
-                    if (Null.IsNull(permission.UserID))
+                    if (Null.IsNull(permission.UserId))
                     {
                         permissionString = prefix + permission.RoleName + ";";
                     }
                     else
                     {
-                        permissionString = $"{prefix}[{permission.UserID}];";
+                        permissionString = $"{prefix}[{permission.UserId}];";
                     }
 
                     // build permissions string ensuring that Deny permissions are inserted at the beginning and Grant permissions at the end

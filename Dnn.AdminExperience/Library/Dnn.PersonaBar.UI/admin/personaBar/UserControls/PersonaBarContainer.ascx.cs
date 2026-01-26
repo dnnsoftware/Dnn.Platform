@@ -17,6 +17,7 @@ namespace Dnn.PersonaBar.UI.UserControls
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
@@ -55,19 +56,20 @@ namespace Dnn.PersonaBar.UI.UserControls
         /// <param name="clientResourceController">The client resources controller.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public PersonaBarContainer(IPersonaBarContainer personaBarContainer, IPersonaBarController personaBarController, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
-            : this(null, personaBarContainer, personaBarController, hostSettings, javaScript, clientResourceController)
+            : this(null, null, personaBarContainer, personaBarController, hostSettings, javaScript, clientResourceController)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PersonaBarContainer"/> class.</summary>
         /// <param name="eventLogger">The event logger.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
         /// <param name="personaBarContainer">The Persona Bar container.</param>
         /// <param name="personaBarController">The Persona Bar controller.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
-        public PersonaBarContainer(IEventLogger eventLogger, IPersonaBarContainer personaBarContainer, IPersonaBarController personaBarController, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
-            : base(eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>())
+        public PersonaBarContainer(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IPersonaBarContainer personaBarContainer, IPersonaBarController personaBarController, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
+            : base(eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>())
         {
             this.personaBarContainer = personaBarContainer ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPersonaBarContainer>();
             this.personaBarController = personaBarController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPersonaBarController>();

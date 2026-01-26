@@ -4,14 +4,16 @@
 namespace DotNetNuke.Security.Permissions
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Data;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -26,7 +28,6 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -70,19 +71,25 @@ namespace DotNetNuke.Security.Permissions
 
         private readonly DataProvider dataProvider = DataProvider.Instance();
         private readonly IEventLogger eventLogger;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="PermissionProvider"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public PermissionProvider()
-            : this(null)
+            : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PermissionProvider"/> class.</summary>
         /// <param name="eventLogger">The event logger.</param>
-        public PermissionProvider(IEventLogger eventLogger)
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public PermissionProvider(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings)
         {
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         // return the provider
@@ -202,6 +209,7 @@ namespace DotNetNuke.Security.Permissions
 #else
             var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.FolderPathPermissionCacheKey, portalID, folder);
             return CBO.GetCachedObject<FolderPermissionCollection>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, DataCache.FolderPermissionCacheTimeOut, DataCache.FolderPermissionCachePriority)
                 {
                     CacheDependency = GetCacheDependency(portalID),
@@ -249,45 +257,33 @@ namespace DotNetNuke.Security.Permissions
             if (folder.FolderPermissions != null)
             {
                 // Ensure that if role/user has been given a permission that is not Read/Browse then they also need Read/Browse
-                var permController = new PermissionController();
-                ArrayList permArray = permController.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "READ");
-                PermissionInfo readPerm = null;
-                if (permArray.Count == 1)
-                {
-                    readPerm = permArray[0] as PermissionInfo;
-                }
-
-                PermissionInfo browsePerm = null;
-                permArray = permController.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "BROWSE");
-                if (permArray.Count == 1)
-                {
-                    browsePerm = permArray[0] as PermissionInfo;
-                }
+                var readPerm = this.permissionDefinitionService.GetDefinitionsByCodeAndKey("SYSTEM_FOLDER", "READ").FirstOrDefault();
+                var browsePerm = this.permissionDefinitionService.GetDefinitionsByCodeAndKey("SYSTEM_FOLDER", "BROWSE").FirstOrDefault();
 
                 var additionalPermissions = new FolderPermissionCollection();
-                foreach (FolderPermissionInfo folderPermission in folder.FolderPermissions)
+                foreach (IFolderPermissionInfo folderPermission in folder.FolderPermissions)
                 {
                     if (folderPermission.PermissionKey != "BROWSE" && folderPermission.PermissionKey != "READ" && folderPermission.AllowAccess)
                     {
                         // Try to add Read permission
                         var newFolderPerm = new FolderPermissionInfo(readPerm)
                         {
-                            FolderID = folderPermission.FolderID,
-                            RoleID = folderPermission.RoleID,
-                            UserID = folderPermission.UserID,
                             AllowAccess = true,
                         };
+                        ((IFolderPermissionInfo)newFolderPerm).FolderId = folderPermission.FolderId;
+                        ((IFolderPermissionInfo)newFolderPerm).RoleId = folderPermission.RoleId;
+                        ((IFolderPermissionInfo)newFolderPerm).UserId = folderPermission.UserId;
 
                         additionalPermissions.Add(newFolderPerm);
 
                         // Try to add Browse permission
                         newFolderPerm = new FolderPermissionInfo(browsePerm)
                         {
-                            FolderID = folderPermission.FolderID,
-                            RoleID = folderPermission.RoleID,
-                            UserID = folderPermission.UserID,
                             AllowAccess = true,
                         };
+                        ((IFolderPermissionInfo)newFolderPerm).FolderId = folderPermission.FolderId;
+                        ((IFolderPermissionInfo)newFolderPerm).RoleId = folderPermission.RoleId;
+                        ((IFolderPermissionInfo)newFolderPerm).UserId = folderPermission.UserId;
 
                         additionalPermissions.Add(newFolderPerm);
                     }
@@ -299,14 +295,14 @@ namespace DotNetNuke.Security.Permissions
                 }
 
                 this.dataProvider.DeleteFolderPermissionsByFolderPath(folder.PortalID, folder.FolderPath);
-                foreach (FolderPermissionInfo folderPermission in folder.FolderPermissions)
+                foreach (IFolderPermissionInfo folderPermission in folder.FolderPermissions)
                 {
                     this.dataProvider.AddFolderPermission(
                         folder.FolderID,
-                        folderPermission.PermissionID,
-                        folderPermission.RoleID,
+                        folderPermission.PermissionId,
+                        folderPermission.RoleId,
                         folderPermission.AllowAccess,
-                        folderPermission.UserID,
+                        folderPermission.UserId,
                         UserController.Instance.GetCurrentUserInfo().UserID);
                 }
             }
@@ -545,10 +541,10 @@ namespace DotNetNuke.Security.Permissions
                             this.dataProvider.AddModulePermission(
                                 module.ModuleID,
                                 module.PortalID,
-                                modulePermission.PermissionID,
-                                modulePermission.RoleID,
+                                ((IPermissionInfo)modulePermission).PermissionId,
+                                ((IPermissionInfo)modulePermission).RoleId,
                                 modulePermission.AllowAccess,
-                                modulePermission.UserID,
+                                ((IPermissionInfo)modulePermission).UserId,
                                 UserController.Instance.GetCurrentUserInfo().UserID);
                         }
                     }
@@ -760,10 +756,10 @@ namespace DotNetNuke.Security.Permissions
                     {
                         objTabPermission.TabPermissionID = this.dataProvider.AddTabPermission(
                             tab.TabID,
-                            objTabPermission.PermissionID,
-                            objTabPermission.RoleID,
+                            ((IPermissionInfo)objTabPermission).PermissionId,
+                            ((IPermissionInfo)objTabPermission).RoleId,
                             objTabPermission.AllowAccess,
-                            objTabPermission.UserID,
+                            ((IPermissionInfo)objTabPermission).UserId,
                             userId);
                     }
 
@@ -786,7 +782,7 @@ namespace DotNetNuke.Security.Permissions
         public virtual DesktopModulePermissionCollection GetDesktopModulePermissions(int portalDesktopModuleId)
         {
             // Get the Tab DesktopModulePermission Dictionary
-            Dictionary<int, DesktopModulePermissionCollection> dicDesktopModulePermissions = GetDesktopModulePermissions();
+            Dictionary<int, DesktopModulePermissionCollection> dicDesktopModulePermissions = GetDesktopModulePermissions(this.hostSettings);
 
             // Get the Collection from the Dictionary
             DesktopModulePermissionCollection desktopModulePermissions;
@@ -862,7 +858,7 @@ namespace DotNetNuke.Security.Permissions
         /// <param name="portal">The Portal to update.</param>
         public virtual void SavePortalPermissions(PortalInfo portal)
         {
-            var objCurrentPortalPermissions = this.GetPortalPermissions(portal.PortalID);
+            var objCurrentPortalPermissions = this.GetPortalPermissions(((IPortalInfo)portal).PortalId);
             if (!objCurrentPortalPermissions.CompareTo(portal.PortalPermissions))
             {
                 var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -870,7 +866,7 @@ namespace DotNetNuke.Security.Permissions
 
                 if (objCurrentPortalPermissions.Count > 0)
                 {
-                    this.dataProvider.DeletePortalPermissionsByPortalID(portal.PortalID);
+                    this.dataProvider.DeletePortalPermissionsByPortalID(((IPortalInfo)portal).PortalId);
                     this.eventLogger.AddLog(portal, portalSettings, userId, string.Empty, EventLogType.PORTALPERMISSION_DELETED);
                 }
 
@@ -879,11 +875,11 @@ namespace DotNetNuke.Security.Permissions
                     foreach (PortalPermissionInfo objPortalPermission in portal.PortalPermissions)
                     {
                         objPortalPermission.PortalPermissionID = this.dataProvider.AddPortalPermission(
-                            portal.PortalID,
-                            objPortalPermission.PermissionID,
-                            objPortalPermission.RoleID,
+                            ((IPortalInfo)portal).PortalId,
+                            ((IPermissionInfo)objPortalPermission).PermissionId,
+                            ((IPermissionInfo)objPortalPermission).RoleId,
                             objPortalPermission.AllowAccess,
-                            objPortalPermission.UserID,
+                            ((IPermissionInfo)objPortalPermission).UserId,
                             userId);
                     }
 
@@ -960,13 +956,16 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>GetDesktopModulePermissions gets a Dictionary of DesktopModulePermissionCollections by DesktopModule.</summary>
-        private static Dictionary<int, DesktopModulePermissionCollection> GetDesktopModulePermissions()
+        /// <param name="hostSettings">The host settings.</param>
+        private static Dictionary<int, DesktopModulePermissionCollection> GetDesktopModulePermissions(IHostSettings hostSettings)
         {
             return CBO.GetCachedObject<Dictionary<int, DesktopModulePermissionCollection>>(
-                new CacheItemArgs(DataCache.DesktopModulePermissionCacheKey, DataCache.DesktopModulePermissionCachePriority), GetDesktopModulePermissionsCallBack);
+                hostSettings,
+                new CacheItemArgs(DataCache.DesktopModulePermissionCacheKey, DataCache.DesktopModulePermissionCachePriority),
+                GetDesktopModulePermissionsCallBack);
         }
 
-        /// <summary>GetDesktopModulePermissionsCallBack gets a Dictionary of DesktopModulePermissionCollections by DesktopModule from the the Database.</summary>
+        /// <summary>GetDesktopModulePermissionsCallBack gets a Dictionary of DesktopModulePermissionCollections by DesktopModule from the Database.</summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters needed for the database call.</param>
         private static object GetDesktopModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -1091,7 +1090,7 @@ namespace DotNetNuke.Security.Permissions
                    && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey));
 
             // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
-            // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
+            ////&&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
         }
 
         private static bool HasSitePermission(PortalInfo portal, string permissionKey)
@@ -1101,7 +1100,7 @@ namespace DotNetNuke.Security.Permissions
                    && !PortalSecurity.IsDenied(portal.PortalPermissions.ToString(permissionKey));
 
             // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
-            // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
+            ////&&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
         }
 
         private static bool IsDeniedModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
@@ -1164,10 +1163,12 @@ namespace DotNetNuke.Security.Permissions
         {
             string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.ModulePermissionCacheKey, tabId);
             return CBO.GetCachedObject<Dictionary<int, ModulePermissionCollection>>(
-                new CacheItemArgs(cacheKey, DataCache.ModulePermissionCacheTimeOut, DataCache.ModulePermissionCachePriority, tabId), this.GetModulePermissionsCallBack);
+                this.hostSettings,
+                new CacheItemArgs(cacheKey, DataCache.ModulePermissionCacheTimeOut, DataCache.ModulePermissionCachePriority, tabId),
+                this.GetModulePermissionsCallBack);
         }
 
-        /// <summary>GetModulePermissionsCallBack gets a Dictionary of ModulePermissionCollections by Module from the the Database.</summary>
+        /// <summary>GetModulePermissionsCallBack gets a Dictionary of ModulePermissionCollections by Module from the Database.</summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters needed for the database call.</param>
         private object GetModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -1212,12 +1213,13 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>GetTabPermissions gets a Dictionary of TabPermissionCollections by Tab.</summary>
-        /// <param name="portalID">The ID of the portal.</param>
-        private Dictionary<int, TabPermissionCollection> GetTabPermissions(int portalID)
+        /// <param name="portalId">The ID of the portal.</param>
+        private Dictionary<int, TabPermissionCollection> GetTabPermissions(int portalId)
         {
-            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TabPermissionCacheKey, portalID);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TabPermissionCacheKey, portalId);
             return CBO.GetCachedObject<Dictionary<int, TabPermissionCollection>>(
-                new CacheItemArgs(cacheKey, DataCache.TabPermissionCacheTimeOut, DataCache.TabPermissionCachePriority, portalID),
+                this.hostSettings,
+                new CacheItemArgs(cacheKey, DataCache.TabPermissionCacheTimeOut, DataCache.TabPermissionCachePriority, portalId),
                 this.GetTabPermissionsCallBack);
         }
 
@@ -1225,12 +1227,12 @@ namespace DotNetNuke.Security.Permissions
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters needed for the database call.</param>
         private object GetTabPermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
-            var portalID = (int)cacheItemArgs.ParamList[0];
+            var portalId = (int)cacheItemArgs.ParamList[0];
             var dic = new Dictionary<int, TabPermissionCollection>();
 
-            if (portalID > -1)
+            if (portalId > -1)
             {
-                IDataReader dr = this.dataProvider.GetTabPermissionsByPortal(portalID);
+                IDataReader dr = this.dataProvider.GetTabPermissionsByPortal(portalId);
                 try
                 {
                     while (dr.Read())
@@ -1268,12 +1270,13 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>GetPortalPermissions gets a Dictionary of PortalPermissionCollections by PortalId.</summary>
-        /// <param name="portalID">The ID of the portal.</param>
-        private Dictionary<int, PortalPermissionCollection> GetPortalPermissionsDic(int portalID)
+        /// <param name="portalId">The ID of the portal.</param>
+        private Dictionary<int, PortalPermissionCollection> GetPortalPermissionsDic(int portalId)
         {
-            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalPermissionCacheKey, portalID);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalPermissionCacheKey, portalId);
             return CBO.GetCachedObject<Dictionary<int, PortalPermissionCollection>>(
-                new CacheItemArgs(cacheKey, DataCache.PortalPermissionCacheTimeOut, DataCache.PortalPermissionCachePriority, portalID),
+                this.hostSettings,
+                new CacheItemArgs(cacheKey, DataCache.PortalPermissionCacheTimeOut, DataCache.PortalPermissionCachePriority, portalId),
                 this.GetPortalPermissionsCallBack);
         }
 
@@ -1281,12 +1284,12 @@ namespace DotNetNuke.Security.Permissions
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters needed for the database call.</param>
         private object GetPortalPermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
-            var portalID = (int)cacheItemArgs.ParamList[0];
+            var portalId = (int)cacheItemArgs.ParamList[0];
             var dic = new Dictionary<int, PortalPermissionCollection>();
 
-            if (portalID > -1)
+            if (portalId > -1)
             {
-                var dr = this.dataProvider.GetPortalPermissionsByPortal(portalID);
+                var dr = this.dataProvider.GetPortalPermissionsByPortal(portalId);
                 try
                 {
                     while (dr.Read())

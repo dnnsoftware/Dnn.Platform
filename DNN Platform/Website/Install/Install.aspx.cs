@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.Install
         /// <param name="appStatus">The application status.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public Install(IApplicationStatusInfo appStatus)
-            : this(null, null)
+            : this(appStatus, null)
         {
         }
 
@@ -536,10 +536,10 @@ namespace DotNetNuke.Services.Install
             this.Response.Flush();
 
             // install new portal(s)
-            string strNewFile = this.appStatus.ApplicationMapPath + "\\Install\\Portal\\Portals.resources";
+            string strNewFile = $@"{this.appStatus.ApplicationMapPath}\Install\Portal\Portals.resources";
             if (File.Exists(strNewFile))
             {
-                XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
+                var xmlDoc = new XmlDocument { XmlResolver = null, };
                 using (var xmlReader = XmlReader.Create(strNewFile, new XmlReaderSettings { XmlResolver = null, }))
                 {
                     xmlDoc.Load(xmlReader);
@@ -553,7 +553,7 @@ namespace DotNetNuke.Services.Install
                     {
                         if (node != null)
                         {
-                            Upgrade.Upgrade.AddPortal(node, true, 0, null);
+                            Upgrade.Upgrade.AddPortal(this.eventLogger, this.appStatus, node, true, 0, null);
                         }
                     }
                 }
