@@ -171,7 +171,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             var args = new XsltArgumentList();
             args.AddExtensionObject("urn:ddrmenu", new XsltFunctions());
             args.AddExtensionObject("urn:dnngarden", new XsltFunctions());
-            args.AddParam("controlid", string.Empty, DNNContext.Current.HostControl.ClientID);
+            args.AddParam("controlid", string.Empty, DNNContext.Current.ClientID);
             args.AddParam("options", string.Empty, ConvertToJson(liveDefinition.ClientOptions));
             args.AddParam("dnnpath", string.Empty, resolver.Resolve("/", PathResolver.RelativeTo.Dnn));
             args.AddParam("manifestpath", string.Empty, resolver.Resolve("/", PathResolver.RelativeTo.Manifest));

@@ -40,7 +40,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 var resolver = new PathResolver(liveDefinition.Folder);
                 dynamic model = new ExpandoObject();
                 model.Source = source;
-                model.ControlID = DNNContext.Current.HostControl.ClientID;
+                model.ControlID = DNNContext.Current.ClientID;
                 model.Options = ConvertToJson(liveDefinition.ClientOptions);
                 model.DNNPath = resolver.Resolve("/", PathResolver.RelativeTo.Dnn);
                 model.ManifestPath = resolver.Resolve("/", PathResolver.RelativeTo.Manifest);
