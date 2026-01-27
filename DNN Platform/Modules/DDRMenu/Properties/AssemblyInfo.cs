@@ -15,4 +15,3 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("3b7331d9-4c26-4936-8198-be5410591f8c")]
-[assembly: InternalsVisibleTo("DotNetNuke.Web.NewDDRMenu")]

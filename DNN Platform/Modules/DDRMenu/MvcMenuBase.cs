@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.NewDDRMenu
+namespace DotNetNuke.Web.DDRMenu
 {
     using System;
     using System.Collections.Generic;
@@ -15,6 +15,9 @@ namespace DotNetNuke.Web.NewDDRMenu
     using System.Xml;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Pages;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
@@ -22,9 +25,10 @@ namespace DotNetNuke.Web.NewDDRMenu
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Web.DDRMenu;
+    using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.DDRMenu.Localisation;
-    using DotNetNuke.Web.NewDDRMenu.DNNCommon;
-    using DotNetNuke.Web.NewDDRMenu.TemplateEngine;
+    using DotNetNuke.Web.DDRMenu.TemplateEngine;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Base class for multiple DDR Menu classes.</summary>
     public class MvcMenuBase
@@ -36,11 +40,25 @@ namespace DotNetNuke.Web.NewDDRMenu
             { "currentchildren", "." },
         };
 
+        private readonly ILocaliser localiser;
+        private readonly IClientResourceController clientResourceController;
+        private readonly IPageService pageService;
         private Settings menuSettings;
 
         private HttpContext currentContext;
 
         private PortalSettings hostPortalSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="MvcMenuBase"/> class.</summary>
+        /// <param name="localiser">The tab localizer.</param>
+        /// <param name="clientResourceController">The clientResourceController.</param>
+        /// <param name="pageService">The pageService.</param>
+        public MvcMenuBase(ILocaliser localiser, IClientResourceController clientResourceController, IPageService pageService)
+        {
+            this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
+            this.clientResourceController = Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.pageService = Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
+        }
 
         /// <summary>Gets or sets the template definition.</summary>
         public TemplateDefinition TemplateDef { get; set; }
@@ -65,10 +83,13 @@ namespace DotNetNuke.Web.NewDDRMenu
         }
 
         /// <summary>Instantiates the MenuBase.</summary>
+        /// <param name="localiser">The localiser.</param>
+        /// <param name="clientResourceController">The clientResourceController.</param>
+        /// <param name="pageService">The pageService.</param>
         /// <param name="menuStyle">The menu style to use.</param>
         /// <param name="dirName">The skinpath.</param>
         /// <returns>A new instance of <see cref="MenuBase"/> using the provided menu style.</returns>
-        public static MvcMenuBase Instantiate(string menuStyle, string dirName)
+        public static MvcMenuBase Instantiate(ILocaliser localiser, IClientResourceController clientResourceController, IPageService pageService, string menuStyle, string dirName)
         {
             try
             {
@@ -81,7 +102,7 @@ namespace DotNetNuke.Web.NewDDRMenu
                 }
 
                 var templateDef = TemplateDefinition.FromManifest(resolvedPath);
-                return new MvcMenuBase { TemplateDef = templateDef };
+                return new MvcMenuBase(localiser, clientResourceController, pageService) { TemplateDef = templateDef };
             }
             catch (Exception exc)
             {
@@ -126,7 +147,7 @@ namespace DotNetNuke.Web.NewDDRMenu
             {
 #pragma warning disable CS0618 // Type or member is obsolete
                 // TODO: In Dnn v11, replace this to use IPortalSettings private field instantiate in constructor
-                new Localiser().LocaliseNode(this.RootNode, this.HostPortalSettings.PortalId);
+                this.localiser.LocaliseNode(this.RootNode, this.HostPortalSettings.PortalId);
 #pragma warning restore CS0618 // Type or member is obsolete
             }
 
@@ -145,7 +166,7 @@ namespace DotNetNuke.Web.NewDDRMenu
             this.RootNode.ApplyContext(
                 imagePathOption == null ? this.HostPortalSettings.HomeDirectory : imagePathOption.Value);
 
-            // this.TemplateDef.PreRender();
+            this.TemplateDef.PreRender(this.clientResourceController, this.pageService);
         }
 
         /// <summary>Renders the menu.</summary>

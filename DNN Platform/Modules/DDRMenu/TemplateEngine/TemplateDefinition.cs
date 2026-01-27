@@ -15,10 +15,15 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using System.Web.UI;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
+    using DotNetNuke.Web.DDRMenu.Localisation;
+    using DotNetNuke.Web.MvcPipeline.UI.Utilities;
+    using Microsoft.Extensions.DependencyInjection;
 
     public class TemplateDefinition
     {
@@ -289,18 +294,18 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             return result;
         }
 
-        internal void PreRender()
+        internal void PreRender(IClientResourceController clientResourceController, IPageService pageService)
         {
-            var page = DNNContext.Current.Page;
+            var page = DNNContext.Current?.Page;
 
             foreach (var stylesheet in this.StyleSheets)
             {
-                ClientResourceManager.RegisterStyleSheet(page, stylesheet);
+                clientResourceController.CreateStylesheet(stylesheet).Register();
             }
 
             foreach (var scriptUrl in this.ScriptUrls)
             {
-                ClientResourceManager.RegisterScript(page, scriptUrl);
+                clientResourceController.CreateScript(scriptUrl).Register();
             }
 
             foreach (var libraryInfo in this.ScriptLibraries)
@@ -325,16 +330,23 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
             foreach (var scriptKey in this.ScriptKeys)
             {
-                var clientScript = page.ClientScript;
-                if (!clientScript.IsClientScriptBlockRegistered(typeof(TemplateDefinition), scriptKey))
+                if (page == null)
                 {
-                    clientScript.RegisterClientScriptBlock(typeof(TemplateDefinition), scriptKey, this.Scripts[scriptKey], false);
+                    MvcClientAPI.RegisterScript(scriptKey, this.Scripts[scriptKey]);
+                }
+                else
+                {
+                    var clientScript = page.ClientScript;
+                    if (!clientScript.IsClientScriptBlockRegistered(typeof(TemplateDefinition), scriptKey))
+                    {
+                        clientScript.RegisterClientScriptBlock(typeof(TemplateDefinition), scriptKey, this.Scripts[scriptKey], false);
+                    }
                 }
             }
 
             var headContent = string.IsNullOrEmpty(this.TemplateHeadPath) ? string.Empty : Utilities.CachedFileContent(this.TemplateHeadPath);
             var expandedHead = RegexLinks.Replace(headContent, "$1" + DNNContext.Current.ActiveTab.SkinPath + "$3");
-            page.Header.Controls.Add(new LiteralControl(expandedHead));
+            pageService.AddToHead(new PageTag(expandedHead, PagePriority.Module));
         }
 
         internal void Render(object source, HtmlTextWriter htmlWriter)

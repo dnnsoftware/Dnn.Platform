@@ -14,6 +14,8 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Xml;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
@@ -40,6 +42,8 @@ namespace DotNetNuke.Web.DDRMenu
         };
 
         private readonly ILocaliser localiser;
+        private readonly IClientResourceController clientResourceController;
+        private readonly IPageService pageService;
         private Settings menuSettings;
         private HttpContext currentContext;
         private PortalSettings hostPortalSettings;
@@ -53,9 +57,21 @@ namespace DotNetNuke.Web.DDRMenu
 
         /// <summary>Initializes a new instance of the <see cref="MenuBase"/> class.</summary>
         /// <param name="localiser">The tab localizer.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ILocaliser. Scheduled removal in v12.0.0.")]
         public MenuBase(ILocaliser localiser)
+            : this(localiser, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="MenuBase"/> class.</summary>
+        /// <param name="localiser">The tab localizer.</param>
+        /// <param name="clientResourceController">The clientResourceController.</param>
+        /// <param name="pageService">The pageService.</param>
+        public MenuBase(ILocaliser localiser, IClientResourceController clientResourceController, IPageService pageService)
         {
             this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.pageService = pageService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
         }
 
         /// <summary>Gets or sets the template definition.</summary>
@@ -100,7 +116,29 @@ namespace DotNetNuke.Web.DDRMenu
             try
             {
                 var templateDef = TemplateDefinition.FromName(menuStyle, "*menudef.xml");
-                return new MenuBase(localiser) { TemplateDef = templateDef };
+                return new MenuBase(
+                    localiser,
+                    Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>(),
+                    Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>()) { TemplateDef = templateDef };
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException(string.Format("Couldn't load menu style '{0}': {1}", menuStyle, exc));
+            }
+        }
+
+        /// <summary>Instantiates the MenuBase.</summary>
+        /// <param name="localiser">The tab localizer.</param>
+        /// <param name="clientResourceController">The clientResourceController.</param>
+        /// <param name="pageService">The pageService.</param>
+        /// <param name="menuStyle">The menu style to use.</param>
+        /// <returns>A new instance of <see cref="MenuBase"/> using the provided menu style.</returns>
+        public static MenuBase Instantiate(ILocaliser localiser, IClientResourceController clientResourceController, IPageService pageService, string menuStyle)
+        {
+            try
+            {
+                var templateDef = TemplateDefinition.FromName(menuStyle, "*menudef.xml");
+                return new MenuBase(localiser, clientResourceController, pageService) { TemplateDef = templateDef };
             }
             catch (Exception exc)
             {
@@ -165,7 +203,7 @@ namespace DotNetNuke.Web.DDRMenu
             this.RootNode.ApplyContext(
                 imagePathOption == null ? DNNContext.Current.PortalSettings.HomeDirectory : imagePathOption.Value);
 
-            this.TemplateDef.PreRender();
+            this.TemplateDef.PreRender(this.clientResourceController, this.pageService);
         }
 
         /// <summary>Renders the menu.</summary>

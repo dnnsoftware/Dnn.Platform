@@ -33,7 +33,16 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         public DNNContext(Control hostControl)
         {
             this.HostControl = hostControl;
+            this.ClientID = hostControl.ClientID;
+            this.savedContext = Current;
+            Current = this;
+        }
 
+        /// <summary>Initializes a new instance of the <see cref="DNNContext"/> class.</summary>
+        /// <param name="clientID">The client ID.</param>
+        public DNNContext(string clientID)
+        {
+            this.ClientID = clientID;
             this.savedContext = Current;
             Current = this;
         }
@@ -66,7 +75,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         /// <summary>Gets a reference to the page.</summary>
         public Page Page
         {
-            get { return this.page ?? (this.page = this.HostControl.Page); }
+            get { return this.page ?? (this.page = this.HostControl?.Page); }
         }
 
         /// <summary>Gets the current portal settings.</summary>
@@ -89,6 +98,9 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 
         /// <summary>Gets the host control.</summary>
         public Control HostControl { get; private set; }
+
+        /// <summary>Gets the client ID.</summary>
+        public string ClientID { get; private set; }
 
         private static string DataName
         {
