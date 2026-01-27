@@ -4,17 +4,20 @@
 
 namespace DotNetNuke.Web.DDRMenu
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.UI;
 
-    using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.UI;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.DDRMenu.Localisation;
     using DotNetNuke.Web.DDRMenu.TemplateEngine;
+    using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Models;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -56,11 +59,13 @@ namespace DotNetNuke.Web.DDRMenu
                                         List<TemplateArgument> templateArguments = null)
         {
             StringWriter stringWriter = new StringWriter();
-            using (new DNNContext(null, clientID))
+            using (new DNNContext(clientID))
             {
-                ILocaliser localiser = Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
+                var localiser = GetDependencyProvider(htmlHelper).GetRequiredService<ILocaliser>();
+                var clientResourceController = GetDependencyProvider(htmlHelper).GetRequiredService<IClientResourceController>();
+                var pageSpervice = GetDependencyProvider(htmlHelper).GetRequiredService<IPageService>();
                 MvcMenuBase menu;
-                menu = MvcMenuBase.Instantiate(localiser, menuStyle, htmlHelper.ViewData.Model.Skin.SkinPath);
+                menu = MvcMenuBase.Instantiate(localiser, clientResourceController, pageSpervice, menuStyle, htmlHelper.ViewData.Model.Skin.SkinPath);
                 menu.ApplySettings(
                     new Settings
                     {
@@ -105,6 +110,18 @@ namespace DotNetNuke.Web.DDRMenu
             }
 
             return MvcHtmlString.Create(stringWriter.ToString());
+        }
+
+        private static IServiceProvider GetDependencyProvider(HtmlHelper htmlHelper)
+        {
+            var controller = htmlHelper.ViewContext.Controller as DnnPageController;
+
+            if (controller == null)
+            {
+                throw new InvalidOperationException("The HtmlHelper can only be used from DnnPageController");
+            }
+
+            return controller.DependencyProvider;
         }
     }
 }

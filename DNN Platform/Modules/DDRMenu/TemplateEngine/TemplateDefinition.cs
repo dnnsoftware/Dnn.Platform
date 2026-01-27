@@ -294,20 +294,18 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             return result;
         }
 
-        internal void PreRender()
+        internal void PreRender(IClientResourceController clientResourceController, IPageService pageService)
         {
             var page = DNNContext.Current?.Page;
-            var clientResourceCtrl = Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
-            var pageService = Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
 
             foreach (var stylesheet in this.StyleSheets)
             {
-                clientResourceCtrl.CreateStylesheet(stylesheet).Register();
+                clientResourceController.CreateStylesheet(stylesheet).Register();
             }
 
             foreach (var scriptUrl in this.ScriptUrls)
             {
-                clientResourceCtrl.CreateScript(scriptUrl).Register();
+                clientResourceController.CreateScript(scriptUrl).Register();
             }
 
             foreach (var libraryInfo in this.ScriptLibraries)
@@ -348,8 +346,6 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
             var headContent = string.IsNullOrEmpty(this.TemplateHeadPath) ? string.Empty : Utilities.CachedFileContent(this.TemplateHeadPath);
             var expandedHead = RegexLinks.Replace(headContent, "$1" + DNNContext.Current.ActiveTab.SkinPath + "$3");
-
-            // page.Header.Controls.Add(new LiteralControl(expandedHead));
             pageService.AddToHead(new PageTag(expandedHead, PagePriority.Module));
         }
 

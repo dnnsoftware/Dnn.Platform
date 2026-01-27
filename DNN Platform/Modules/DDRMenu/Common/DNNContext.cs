@@ -30,12 +30,19 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 
         /// <summary>Initializes a new instance of the <see cref="DNNContext"/> class.</summary>
         /// <param name="hostControl">The control that hosts the menu.</param>
-        /// <param name="clientID">The client ID.</param>
-        public DNNContext(Control hostControl, string clientID = null)
+        public DNNContext(Control hostControl)
         {
             this.HostControl = hostControl;
-            this.ClientID = hostControl == null ? clientID : hostControl.ClientID;
+            this.ClientID = hostControl.ClientID;
+            this.savedContext = Current;
+            Current = this;
+        }
 
+        /// <summary>Initializes a new instance of the <see cref="DNNContext"/> class.</summary>
+        /// <param name="clientID">The client ID.</param>
+        public DNNContext(string clientID)
+        {
+            this.ClientID = clientID;
             this.savedContext = Current;
             Current = this;
         }

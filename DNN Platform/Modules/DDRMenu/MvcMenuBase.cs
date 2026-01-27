@@ -15,6 +15,8 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Xml;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -39,6 +41,8 @@ namespace DotNetNuke.Web.DDRMenu
         };
 
         private readonly ILocaliser localiser;
+        private readonly IClientResourceController clientResourceController;
+        private readonly IPageService pageService;
         private Settings menuSettings;
 
         private HttpContext currentContext;
@@ -46,17 +50,14 @@ namespace DotNetNuke.Web.DDRMenu
         private PortalSettings hostPortalSettings;
 
         /// <summary>Initializes a new instance of the <see cref="MvcMenuBase"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ILocaliser. Scheduled removal in v12.0.0.")]
-        public MvcMenuBase()
-            : this(null)
-        {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="MvcMenuBase"/> class.</summary>
         /// <param name="localiser">The tab localizer.</param>
-        public MvcMenuBase(ILocaliser localiser)
+        /// <param name="clientResourceController">The clientResourceController.</param>
+        /// <param name="pageService">The pageService.</param>
+        public MvcMenuBase(ILocaliser localiser, IClientResourceController clientResourceController, IPageService pageService)
         {
             this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
+            this.clientResourceController = Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.pageService = Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
         }
 
         /// <summary>Gets or sets the template definition.</summary>
@@ -83,10 +84,12 @@ namespace DotNetNuke.Web.DDRMenu
 
         /// <summary>Instantiates the MenuBase.</summary>
         /// <param name="localiser">The localiser.</param>
+        /// <param name="clientResourceController">The clientResourceController.</param>
+        /// <param name="pageService">The pageService.</param>
         /// <param name="menuStyle">The menu style to use.</param>
         /// <param name="dirName">The skinpath.</param>
         /// <returns>A new instance of <see cref="MenuBase"/> using the provided menu style.</returns>
-        public static MvcMenuBase Instantiate(ILocaliser localiser, string menuStyle, string dirName)
+        public static MvcMenuBase Instantiate(ILocaliser localiser, IClientResourceController clientResourceController, IPageService pageService, string menuStyle, string dirName)
         {
             try
             {
@@ -99,7 +102,7 @@ namespace DotNetNuke.Web.DDRMenu
                 }
 
                 var templateDef = TemplateDefinition.FromManifest(resolvedPath);
-                return new MvcMenuBase(localiser) { TemplateDef = templateDef };
+                return new MvcMenuBase(localiser, clientResourceController, pageService) { TemplateDef = templateDef };
             }
             catch (Exception exc)
             {
@@ -163,7 +166,7 @@ namespace DotNetNuke.Web.DDRMenu
             this.RootNode.ApplyContext(
                 imagePathOption == null ? this.HostPortalSettings.HomeDirectory : imagePathOption.Value);
 
-            this.TemplateDef.PreRender();
+            this.TemplateDef.PreRender(this.clientResourceController, this.pageService);
         }
 
         /// <summary>Renders the menu.</summary>
