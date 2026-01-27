@@ -80,21 +80,65 @@ namespace DotNetNuke.Entities.Portals.Templates
                     languageDoc = XDocument.Load(reader);
                 }
 
-                var localizedData = languageDoc.Descendants("data");
-
-                foreach (var item in localizedData)
+                // var localizedData = languageDoc.Descendants("data");
+                var localizedData = languageDoc.Descendants("data")
+                    .Where(x => x.Attribute("name") != null)
+                    .ToDictionary(x => x.Attribute("name").Value, x => x);
+                
+                // check missed localize resource text
+                if (templateToLoad.CultureCode != "en-US")
                 {
-                    var nameAttribute = item.Attribute("name");
-                    if (nameAttribute != null)
+                    // var rootDoc = languageDoc.Root;
+                    var defLangFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(templateToLoad.TemplateFilePath, "en-US");
+                    if (!string.IsNullOrEmpty(defLangFilePath))
                     {
-                        string name = nameAttribute.Value;
-                        var valueElement = item.Descendants("value").FirstOrDefault();
-                        if (valueElement != null)
+                        // var isModified = false;
+                        XDocument defLanguageDoc;
+                        using (var reader = PortalTemplateIO.Instance.OpenTextReader(defLangFilePath))
                         {
-                            string value = valueElement.Value;
-
-                            buffer = buffer.Replace($"[{name}]", value);
+                            defLanguageDoc = XDocument.Load(reader);
                         }
+                
+                        var defData = defLanguageDoc.Descendants("data");
+                        foreach (var defNode in defData)
+                        {
+                            var key = defNode.Attribute("name")?.Value;
+                            if (string.IsNullOrEmpty(key))
+                            {
+                                continue;
+                            }
+                
+                            if (!localizedData.ContainsKey(key))
+                            {
+                                // isModified = true;
+                                // rootDoc.Add(new XElement(defNode));
+                                localizedData.Add(key, defNode);
+                            }
+                        }
+                
+                        // if(isModified)
+                        // {
+                        //    using (var writer = PortalTemplateIO.Instance.OpenTextWriter(templateToLoad.LanguageFilePath))
+                        //    {
+                        //        languageDoc.Save(writer);
+                        //    }
+                        // }
+                    }
+                }
+                
+                foreach (var node in localizedData.Values)
+                {
+                    var name = node.Attribute("name")?.Value;
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        continue;
+                    }
+                
+                    var valueElement = node.Element("value");
+                    if (valueElement != null)
+                    {
+                        var value = valueElement.Value;
+                        buffer.Replace($"[{name}]", value);
                     }
                 }
             }
@@ -1405,3 +1449,4 @@ namespace DotNetNuke.Entities.Portals.Templates
         }
     }
 }
+
