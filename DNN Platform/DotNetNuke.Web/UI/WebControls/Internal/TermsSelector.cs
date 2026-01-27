@@ -90,10 +90,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool MultipleSelect { get; set; } = true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

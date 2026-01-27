@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Portals
         public static IPortalSettingsController Instance() =>
             Globals.GetCurrentServiceProvider().GetRequiredService<IPortalSettingsController>();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public virtual void ConfigureActiveTab(PortalSettings portalSettings)
         {
@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Portals
             activeTab.BreadCrumbs = new ArrayList(this.GetBreadcrumbs(activeTab.TabID, portalSettings.PortalId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual TabInfo GetActiveTab(int tabId, PortalSettings portalSettings)
         {
             var portalId = portalSettings.PortalId;
@@ -102,7 +102,7 @@ namespace DotNetNuke.Entities.Portals
             return activeTab;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual PortalSettings.PortalAliasMapping GetPortalAliasMappingMode(int portalId)
         {
             var aliasMapping = PortalSettings.PortalAliasMapping.None;
@@ -125,13 +125,13 @@ namespace DotNetNuke.Entities.Portals
             return aliasMapping;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual IList<ModuleInfo> GetTabModules(PortalSettings portalSettings)
         {
             return portalSettings.ActiveTab.Modules.Cast<ModuleInfo>().Select(m => m).ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void LoadPortal(PortalInfo portal, PortalSettings portalSettings)
         {
             portalSettings.PortalName = portal.PortalName;
@@ -177,7 +177,7 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.CultureCode = portal.CultureCode;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void LoadPortalSettings(PortalSettings portalSettings)
         {
             var settings = PortalController.Instance.GetPortalSettings(portalSettings.PortalId);

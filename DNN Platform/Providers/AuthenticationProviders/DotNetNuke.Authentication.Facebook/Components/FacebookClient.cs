@@ -10,7 +10,7 @@ namespace DotNetNuke.Authentication.Facebook.Components
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Authentication.OAuth;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public class FacebookClient : OAuthClientBase
     {
         /// <summary>Initializes a new instance of the <see cref="FacebookClient"/> class.</summary>
@@ -33,7 +33,7 @@ namespace DotNetNuke.Authentication.Facebook.Components
             this.LoadTokenCookie(string.Empty);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override TimeSpan GetExpiry(string responseText)
         {
             TimeSpan expiry = TimeSpan.MinValue;
@@ -46,7 +46,7 @@ namespace DotNetNuke.Authentication.Facebook.Components
             return expiry;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string GetToken(string responseText)
         {
             string authToken = string.Empty;

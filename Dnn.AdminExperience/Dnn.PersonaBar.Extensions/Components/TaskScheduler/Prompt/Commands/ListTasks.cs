@@ -24,21 +24,21 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
         [FlagParameter("name", "Prompt_ListTasks_FlagName", "String")]
         private const string FlagName = "name";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private bool? Enabled { get; set; }
 
         private string TaskName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.Enabled = this.GetFlagValue<bool?>(FlagEnabled, "Enabled", null, false, true);
             this.TaskName = this.GetFlagValue(FlagName, "Task Name", string.Empty, false, !this.Enabled.HasValue);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var controller = new TaskSchedulerController();

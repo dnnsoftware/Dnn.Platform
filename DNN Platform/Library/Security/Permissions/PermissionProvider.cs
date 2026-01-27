@@ -1080,7 +1080,7 @@ namespace DotNetNuke.Security.Permissions
                    && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(permissionKey));
 
             // Deny on Edit permission on folder shouldn't take away any other explicitly Allowed
-            // && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
+            ////&& !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
         }
 
         private static bool HasPagePermission(TabInfo tab, string permissionKey)

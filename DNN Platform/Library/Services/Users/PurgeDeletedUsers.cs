@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Users
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DoWork()
         {
             try

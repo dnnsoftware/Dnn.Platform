@@ -45,19 +45,19 @@ namespace DotNetNuke.Data.PetaPoco
             PetaPocoMapper.SetMapper<T>(mapper);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Delete(string sqlCondition, params object[] args)
         {
             this.database.Delete<T>(DataUtil.ReplaceTokens(sqlCondition), args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IEnumerable<T> Find(string sqlCondition, params object[] args)
         {
             return this.database.Fetch<T>(DataUtil.ReplaceTokens(sqlCondition), args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IPagedList<T> Find(int pageIndex, int pageSize, string sqlCondition, params object[] args)
         {
             // Make sure that the sql Condition contains an ORDER BY Clause
@@ -71,55 +71,55 @@ namespace DotNetNuke.Data.PetaPoco
             return new PagedList<T>(petaPocoPage.Items, (int)petaPocoPage.TotalItems, pageIndex, pageSize);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Update(string sqlCondition, params object[] args)
         {
             this.database.Update<T>(DataUtil.ReplaceTokens(sqlCondition), args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void DeleteInternal(T item)
         {
             this.database.Delete(item);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override IEnumerable<T> GetInternal()
         {
             return this.database.Fetch<T>(string.Empty);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override IPagedList<T> GetPageInternal(int pageIndex, int pageSize)
         {
             return this.Find(pageIndex, pageSize, string.Empty);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override IEnumerable<T> GetByScopeInternal(object propertyValue)
         {
             return this.database.Fetch<T>(this.GetScopeSql(), propertyValue);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override IPagedList<T> GetPageByScopeInternal(object propertyValue, int pageIndex, int pageSize)
         {
             return this.Find(pageIndex, pageSize, this.GetScopeSql(), propertyValue);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override T GetByIdInternal(object id)
         {
             return this.database.SingleOrDefault<T>(id);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void InsertInternal(T item)
         {
             this.database.Insert(item);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void UpdateInternal(T item)
         {
             this.database.Update(item);

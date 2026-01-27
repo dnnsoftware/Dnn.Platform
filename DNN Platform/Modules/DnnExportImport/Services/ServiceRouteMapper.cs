@@ -13,7 +13,7 @@ namespace Dnn.ExportImport.Services
     {
         private static readonly string[] Namespaces = [typeof(ServiceRouteMapper).Namespace,];
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void RegisterRoutes(IMapRoute routeManager)
         {

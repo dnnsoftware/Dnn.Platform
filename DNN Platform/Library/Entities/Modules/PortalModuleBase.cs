@@ -319,7 +319,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             if (this.tracelLogger.IsDebugEnabled)
@@ -334,7 +334,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             if (this.tracelLogger.IsDebugEnabled)

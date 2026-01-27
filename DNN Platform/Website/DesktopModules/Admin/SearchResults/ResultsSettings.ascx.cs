@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.SearchResults
             this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void LoadSettings()
         {
             try
@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.SearchResults
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdateSettings()
         {
             try

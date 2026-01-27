@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
                                                       && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             if (!this.Request.IsAuthenticated)

@@ -158,7 +158,7 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     try
                     {
-                        // objQueueReadWriteLock.EnterWriteLock(WriteTimeout)
+                        ////objQueueReadWriteLock.EnterWriteLock(WriteTimeout)
                         using (ScheduleQueue.GetWriteLock(LockTimeout))
                         {
                             // Do a second check just in case
@@ -674,7 +674,7 @@ namespace DotNetNuke.Services.Scheduling
                     activeThreadCount = 0;
 
                     // This is where the action begins.
-                    // Loop until KeepRunning = false
+                    ////Loop until KeepRunning = false
                     if (SchedulingProvider.SchedulerMode != SchedulerMode.REQUEST_METHOD || debug)
                     {
                         var log = new LogInfo();

@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Modules.Settings
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public abstract class SettingsRepository<T> : ISettingsRepository<T>
         where T : class, new()
     {
@@ -41,19 +41,19 @@ namespace DotNetNuke.Entities.Modules.Settings
 
         private IList<ParameterMapping> Mapping { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public T GetSettings(ModuleInfo moduleContext)
         {
             return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(moduleContext.PortalID, moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext), this.Load, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public T GetSettings(int portalId)
         {
             return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(portalId, -1), 20, CacheItemPriority.AboveNormal, null, portalId), this.Load, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SaveSettings(ModuleInfo moduleContext, T settings)
         {
             Requires.NotNull("settings", settings);
@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             this.SaveSettings(moduleContext.PortalID, moduleContext, settings);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SaveSettings(int portalId, T settings)
         {
             Requires.NotNull("settings", settings);

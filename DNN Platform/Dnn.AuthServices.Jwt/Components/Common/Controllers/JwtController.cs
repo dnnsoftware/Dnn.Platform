@@ -49,7 +49,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             ValidateConfiguration();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string SchemeType => "JWT";
 
         /// <summary>Gets or sets a reference to the DNN data provider.</summary>
@@ -89,7 +89,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
         private static string NewSessionId => DateTime.UtcNow.Ticks.ToString("x16") + Guid.NewGuid().ToString("N").Substring(16);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ValidateToken(HttpRequestMessage request)
         {
             if (!JwtAuthMessageHandler.IsEnabled)
@@ -102,7 +102,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return string.IsNullOrEmpty(authorization) ? null : this.ValidateAuthorizationValue(authorization);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool LogoutUser(HttpRequestMessage request)
         {
             if (!JwtAuthMessageHandler.IsEnabled)
@@ -133,7 +133,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public LoginResultData LoginUser(HttpRequestMessage request, LoginData loginData)
         {
             if (!JwtAuthMessageHandler.IsEnabled)
@@ -220,7 +220,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public LoginResultData RenewToken(HttpRequestMessage request, string renewalToken)
         {
             if (!JwtAuthMessageHandler.IsEnabled)
@@ -317,7 +317,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return this.UpdateToken(renewalToken, persistedToken, userInfo);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IJwtController> GetFactory()
         {
             return () => new JwtController();
@@ -537,7 +537,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (authHdr == null)
             {
-                // if (Logger.IsTraceEnabled) Logger.Trace("Authorization header not present in the request"); // too verbose; shows in all web requests
+                ////if (Logger.IsTraceEnabled) Logger.Trace("Authorization header not present in the request"); // too verbose; shows in all web requests
                 return null;
             }
 

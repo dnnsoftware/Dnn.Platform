@@ -21,7 +21,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                                      || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), inherit: true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnAuthorization(AuthorizationContext filterContext)
         {
             Requires.NotNull("filterContext", filterContext);
@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             var authFilterContext = new AuthFilterContext(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), filterContext, failureMessage);
             authFilterContext.HandleUnauthorizedRequest();
 
-            // filterContext.HttpContext.Response.Redirect(Globals.AccessDeniedURL());
+            ////filterContext.HttpContext.Response.Redirect(Globals.AccessDeniedURL());
         }
 
         protected virtual HttpValidationStatus OnCacheAuthorization(HttpContextBase httpContext)

@@ -26,18 +26,18 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DeleteRole));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.RoleId = this.GetFlagValue(FlagId, "Role Id", -1, true, true, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             try

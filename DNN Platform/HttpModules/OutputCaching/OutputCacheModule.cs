@@ -35,7 +35,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             ExcludeByDefault = 1,
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication httpApp)
         {
@@ -45,7 +45,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             httpApp.UpdateRequestCache += this.OnUpdateRequestCache;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
         }

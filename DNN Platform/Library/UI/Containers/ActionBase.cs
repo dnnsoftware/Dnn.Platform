@@ -47,7 +47,7 @@ namespace DotNetNuke.UI.Containers
             this.EventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public event ActionEventHandler Action;
 
         /// <summary>Gets a value indicating whether the page is in edit mode.</summary>

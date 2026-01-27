@@ -148,7 +148,7 @@ namespace DotNetNuke.Modules.Html
 
         private bool IsWorkflowEnabled => this.IsVersioningEnabled && TabWorkflowSettings.Instance.IsWorkflowEnabled(PortalSettings.Current.PortalId, TabController.CurrentPage.TabID);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -167,7 +167,7 @@ namespace DotNetNuke.Modules.Html
             this.dgVersions.PageIndexChanged += this.OnVersionsGridPageIndexChanged;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -212,7 +212,7 @@ namespace DotNetNuke.Modules.Html
                     {
                         this.DisplayContent(htmlContent);
 
-                        // DisplayPreview(htmlContent);
+                        ////DisplayPreview(htmlContent);
                         this.DisplayHistory(htmlContent);
                     }
                     else
@@ -223,7 +223,7 @@ namespace DotNetNuke.Modules.Html
                     this.phCurrentVersion.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
                     this.phPreviewVersion.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
 
-                    // DisplayVersions();
+                    ////DisplayVersions();
                     this.BindRenderItems();
                     this.ddlRender.SelectedValue = this.txtContent.Mode;
                 }
@@ -371,8 +371,8 @@ namespace DotNetNuke.Modules.Html
                     {
                         this.DisplayContent(latestContent);
 
-                        // DisplayPreview(latestContent);
-                        // DisplayVersions();
+                        ////DisplayPreview(latestContent);
+                        ////DisplayVersions();
                     }
                 }
 
@@ -526,7 +526,7 @@ namespace DotNetNuke.Modules.Html
             this.cmdPreview.Enabled = true;
             this.cmdHistory.Enabled = true;
 
-            // DisplayMasterLanguageContent();
+            ////DisplayMasterLanguageContent();
             this.DisplayMasterContentButton();
             this.ddlRender.Visible = true;
         }
@@ -606,7 +606,7 @@ namespace DotNetNuke.Modules.Html
             this.txtContent.Visible = false;
             this.cmdSave.Visible = false;
 
-            // cmdPreview.Enabled = false;
+            ////cmdPreview.Enabled = false;
             this.divSubmittedContent.Visible = true;
 
             this.lblCurrentWorkflowInUse.Text = this.GetLocalizedString(htmlContent.WorkflowName);
@@ -620,7 +620,7 @@ namespace DotNetNuke.Modules.Html
             {
                 this.DisplayPreview(lastPublishedContent);
 
-                // DisplayHistory(lastPublishedContent);
+                ////DisplayHistory(lastPublishedContent);
             }
             else
             {

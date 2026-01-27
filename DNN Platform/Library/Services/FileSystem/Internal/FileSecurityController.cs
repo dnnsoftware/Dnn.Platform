@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSecurityController));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Validate(string fileName, Stream fileContent)
         {
             Requires.NotNullOrEmpty("fileName", fileName);
@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool ValidateNotExectuable(Stream fileContent)
         {
             Requires.NotNull("fileContent", fileContent);
@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             return bytesRead < 2 || firstBytes[0] != 0x4D || firstBytes[1] != 0x5A;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IFileSecurityController> GetFactory()
         {
             return () => new FileSecurityController();

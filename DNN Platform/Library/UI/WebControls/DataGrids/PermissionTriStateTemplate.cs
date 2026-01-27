@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.WebControls.Internal
 
         public bool SupportDenyMode { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void InstantiateIn(Control container)
         {
             var triState = new PermissionTriState();

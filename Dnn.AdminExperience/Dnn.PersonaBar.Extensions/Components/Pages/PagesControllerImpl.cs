@@ -170,7 +170,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private PortalSettings PortalSettings { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsValidTabPath(TabInfo tab, string newTabPath, string newTabName, out string errorMessage)
         {
             var portalSettings = this.PortalSettings ?? PortalSettings.Current;
@@ -221,7 +221,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return valid;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public List<int> GetPageHierarchy(int pageId)
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -244,7 +244,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return paths;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public TabInfo MovePage(PageMoveRequest request)
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -298,13 +298,13 @@ namespace Dnn.PersonaBar.Pages.Components
             return TabController.Instance.GetTab(request.PageId, portalSettings.PortalId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeletePage(PageItem page, PortalSettings portalSettings = null)
         {
             this.DeletePage(page, false, portalSettings);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeletePage(PageItem page, bool hardDelete, PortalSettings portalSettings = null)
         {
             var currentPortal = portalSettings ?? PortalSettings.Current;
@@ -345,7 +345,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void EditModeForPage(int pageId, int userId)
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -364,7 +364,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public TabInfo SavePageDetails(PortalSettings settings, PageSettings pageSettings)
         {
@@ -393,7 +393,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return TabController.Instance.GetTab(tabId, this.PortalSettings.PortalId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IEnumerable<TabInfo> GetPageList(PortalSettings settings, int parentId = -1, string searchKey = "", bool includeHidden = true, bool includeDeleted = false, bool includeSubpages = false)
         {
@@ -413,7 +413,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return includeSubpages ? pages.OrderBy(x => x.ParentId > -1 ? x.ParentId : x.TabID).ThenBy(x => x.TabID) : pages;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<TabInfo> GetPageList(PortalSettings portalSettings, bool? deleted, string tabName, string tabTitle, string tabPath, string tabSkin, bool? visible, int parentId, out int total, string searchKey = "", int pageIndex = -1, int pageSize = 10, bool includeSubpages = false)
         {
             pageIndex = pageIndex <= 0 ? 0 : pageIndex;
@@ -476,7 +476,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return finalList.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<TabInfo> SearchPages(out int totalRecords, string searchKey = "", string pageType = "", string tags = "", string publishStatus = "", string publishDateStart = "", string publishDateEnd = "", int workflowId = -1, int pageIndex = -1, int pageSize = -1)
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -543,7 +543,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return pageIndex == -1 || pageSize == -1 ? pages : pages.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<ModuleInfo> GetModules(int pageId)
         {
             var tabModules = this.moduleController.GetTabModules(pageId);
@@ -730,7 +730,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string CleanTabUrl(string url)
         {
             if (string.IsNullOrEmpty(url))
@@ -751,7 +751,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return '/' + urlPath;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CopyThemeToDescendantPages(int pageId, Theme theme)
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -765,7 +765,7 @@ namespace Dnn.PersonaBar.Pages.Components
             TabController.CopyDesignToChildren(tab, theme.SkinSrc, theme.ContainerSrc);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CopyPermissionsToDescendantPages(int pageId)
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -784,7 +784,7 @@ namespace Dnn.PersonaBar.Pages.Components
             TabController.CopyPermissionsToChildren(tab, tab.TabPermissions);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<Url> GetPageUrls(int tabId)
         {
             var tab = this.GetPageDetails(tabId);
@@ -793,7 +793,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return this.pageUrlsController.GetPageUrls(tab, portalId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public PageSettings GetPageSettings(int pageId, PortalSettings requestPortalSettings = null)
         {
@@ -868,21 +868,21 @@ namespace Dnn.PersonaBar.Pages.Components
             return page;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PageUrlResult CreateCustomUrl(SeoUrl dto)
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
             return this.pageUrlsController.CreateCustomUrl(dto.SaveUrl, this.tabController.GetTab(dto.TabId, portalSettings.PortalId, false));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PageUrlResult UpdateCustomUrl(SeoUrl dto)
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
             return this.pageUrlsController.UpdateCustomUrl(dto.SaveUrl, this.tabController.GetTab(dto.TabId, portalSettings.PortalId, false));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PageUrlResult DeleteCustomUrl(UrlIdDto dto)
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -1011,7 +1011,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual PageSettings GetDefaultSettings(int pageId = 0)
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -1037,7 +1037,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return pageSettings;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PagePermissions GetPermissionsData(int pageId)
         {
             var permissions = new PagePermissions(this.permissionDefinitionService, true);
@@ -1078,7 +1078,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return permissions;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteTabModule(int pageId, int moduleId)
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();

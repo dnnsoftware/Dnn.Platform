@@ -37,7 +37,7 @@ namespace DotNetNuke.UI.Containers
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public event ActionEventHandler Action;
 
         /// <summary>Gets the ActionManager instance for this Action control.</summary>

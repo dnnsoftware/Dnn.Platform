@@ -11,7 +11,7 @@ namespace DotNetNuke.Maintenance.Shims
     /// <summary>An implementation of <see cref="IDataProvider"/> that relies on the <see cref="DataProvider"/> class.</summary>
     internal sealed class DataProviderShim : IDataProvider
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader ExecuteSQL(string sql)
         {
             return DataProvider.Instance().ExecuteSQL(sql);

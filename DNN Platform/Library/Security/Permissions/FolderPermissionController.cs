@@ -174,7 +174,7 @@ namespace DotNetNuke.Security.Permissions
             return Provider.CanViewFolder((FolderInfo)folder);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IFolderPermissionController> GetFactory()
         {
             return () => new FolderPermissionController();

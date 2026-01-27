@@ -2310,7 +2310,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>This class and its members are reserved for internal use and are not intended to be used in your code.</summary>
         private class IgnoreCaseStringComparer : IComparer<string>
         {
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public int Compare(string x, string y)
             {
                 return string.Compare(x.ToLowerInvariant(), y.ToLowerInvariant(), StringComparison.Ordinal);

@@ -75,7 +75,7 @@ namespace DotNetNuke.UI.Skins.Controls
             return Localization.GetString("SeeAllNotification", Localization.GetResourceFile(this, MyFileName));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

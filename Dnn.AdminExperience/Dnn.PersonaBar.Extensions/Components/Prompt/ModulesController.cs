@@ -28,7 +28,7 @@ namespace Dnn.PersonaBar.Prompt.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public List<ModuleInfo> AddNewModule(PortalSettings portalSettings, string title, int desktopModuleId, int tabId, string paneName, int position, int permissionType, string align, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = default(KeyValuePair<HttpStatusCode, string>);
@@ -107,7 +107,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             return moduleList;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleInfo CopyModule(PortalSettings portalSettings, int moduleId, int sourcePageId, int targetPageId, string pane, bool includeSettings, out KeyValuePair<HttpStatusCode, string> message, bool moveBahaviour = false)
         {
             var sourceModule = this.GetModule(portalSettings, moduleId, sourcePageId, out message);
@@ -161,7 +161,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteModule(PortalSettings portalSettings, int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
             var module = this.GetModule(portalSettings, moduleId, pageId, out message);
@@ -181,7 +181,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleInfo GetModule(PortalSettings portalSettings, int moduleId, int? pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = default;
@@ -220,7 +220,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null, int? pageId = null, int pageIndex = 0, int pageSize = 10)
         {
@@ -258,7 +258,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             return moduleInfos.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IModulesController> GetFactory()
         {
             return () => new ModulesController();

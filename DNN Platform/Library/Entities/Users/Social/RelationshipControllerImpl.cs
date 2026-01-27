@@ -43,7 +43,7 @@ namespace DotNetNuke.Entities.Users.Social
             this.eventLogger = eventLogger;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteRelationshipType(RelationshipType relationshipType)
         {
             Requires.NotNull("relationshipType", relationshipType);
@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Users.Social
             DataCache.RemoveCache(DataCache.RelationshipTypesCacheKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<RelationshipType> GetAllRelationshipTypes()
         {
             var cacheArgs = new CacheItemArgs(
@@ -77,13 +77,13 @@ namespace DotNetNuke.Entities.Users.Social
                                                                     this.dataService.GetAllRelationshipTypes()));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public RelationshipType GetRelationshipType(int relationshipTypeId)
         {
             return this.GetAllRelationshipTypes().FirstOrDefault(r => r.RelationshipTypeId == relationshipTypeId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SaveRelationshipType(RelationshipType relationshipType)
         {
             Requires.NotNull("relationshipType", relationshipType);
@@ -107,7 +107,7 @@ namespace DotNetNuke.Entities.Users.Social
             DataCache.RemoveCache(DataCache.RelationshipTypesCacheKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteRelationship(Relationship relationship)
         {
             Requires.NotNull("relationship", relationship);
@@ -127,19 +127,19 @@ namespace DotNetNuke.Entities.Users.Social
             ClearRelationshipCache(relationship);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Relationship GetRelationship(int relationshipId)
         {
             return CBO.FillCollection<Relationship>(this.dataService.GetRelationship(relationshipId)).FirstOrDefault();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<Relationship> GetRelationshipsByUserId(int userId)
         {
             return CBO.FillCollection<Relationship>(this.dataService.GetRelationshipsByUserId(userId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<Relationship> GetRelationshipsByPortalId(int portalId)
         {
             var pid = portalId;
@@ -161,7 +161,7 @@ namespace DotNetNuke.Entities.Users.Social
                                                                     (int)c.ParamList[0])));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SaveRelationship(Relationship relationship)
         {
             Requires.NotNull("relationship", relationship);
@@ -185,7 +185,7 @@ namespace DotNetNuke.Entities.Users.Social
             ClearRelationshipCache(relationship);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteUserRelationship(UserRelationship userRelationship)
         {
             Requires.NotNull("userRelationship", userRelationship);
@@ -206,13 +206,13 @@ namespace DotNetNuke.Entities.Users.Social
             ClearUserCache(userRelationship);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public UserRelationship GetUserRelationship(int userRelationshipId)
         {
             return CBO.FillObject<UserRelationship>(this.dataService.GetUserRelationship(userRelationshipId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public UserRelationship GetUserRelationship(UserInfo user, UserInfo relatedUser, Relationship relationship)
         {
             UserRelationship userRelationship = null;
@@ -229,13 +229,13 @@ namespace DotNetNuke.Entities.Users.Social
             return userRelationship;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<UserRelationship> GetUserRelationships(UserInfo user)
         {
             return CBO.FillCollection<UserRelationship>(this.dataService.GetUserRelationships(user.UserID));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SaveUserRelationship(UserRelationship userRelationship)
         {
             Requires.NotNull("userRelationship", userRelationship);
@@ -261,7 +261,7 @@ namespace DotNetNuke.Entities.Users.Social
             ClearUserCache(userRelationship);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteUserRelationshipPreference(UserRelationshipPreference userRelationshipPreference)
         {
             Requires.NotNull("userRelationshipPreference", userRelationshipPreference);
@@ -279,14 +279,14 @@ namespace DotNetNuke.Entities.Users.Social
             this.AddLog(logContent);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public UserRelationshipPreference GetUserRelationshipPreference(int preferenceId)
         {
             return
                 CBO.FillObject<UserRelationshipPreference>(this.dataService.GetUserRelationshipPreferenceById(preferenceId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public UserRelationshipPreference GetUserRelationshipPreference(int userId, int relationshipId)
         {
             return
@@ -295,7 +295,7 @@ namespace DotNetNuke.Entities.Users.Social
                     relationshipId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SaveUserRelationshipPreference(UserRelationshipPreference userRelationshipPreference)
         {
             Requires.NotNull("userRelationshipPreference", userRelationshipPreference);
@@ -522,7 +522,7 @@ namespace DotNetNuke.Entities.Users.Social
                 this.GetFriendsRelationshipByPortal(initiatingUser.PortalID));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CreateDefaultRelationshipsForPortal(int portalId)
         {
             // create default Friend Relationship
@@ -562,13 +562,13 @@ namespace DotNetNuke.Entities.Users.Social
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Relationship GetFriendsRelationshipByPortal(int portalId)
         {
             return this.GetRelationshipsByPortalId(portalId).FirstOrDefault(re => re.RelationshipTypeId == (int)DefaultRelationshipTypes.Friends);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Relationship GetFollowersRelationshipByPortal(int portalId)
         {
             return this.GetRelationshipsByPortalId(portalId).FirstOrDefault(re => re.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers);

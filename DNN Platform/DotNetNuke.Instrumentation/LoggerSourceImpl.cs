@@ -20,13 +20,13 @@ namespace DotNetNuke.Instrumentation
     [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class LoggerSourceImpl : ILoggerSource
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ILog GetLogger(Type type)
         {
             return new Logger(LogManager.GetLogger(type).Logger, type);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ILog GetLogger(string name)
         {
             return new Logger(LogManager.GetLogger(name).Logger, null);

@@ -67,7 +67,7 @@ namespace DotNetNuke.Web.Api.Internal
         /// <summary>Gets or sets the type locator.</summary>
         internal ITypeLocator TypeLocator { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, object defaults, object constraints, string[] namespaces)
         {
             if (namespaces == null || namespaces.Length == 0 || string.IsNullOrEmpty(namespaces[0]))

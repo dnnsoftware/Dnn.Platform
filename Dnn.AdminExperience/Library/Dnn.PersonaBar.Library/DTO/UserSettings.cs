@@ -33,13 +33,13 @@ namespace Dnn.PersonaBar.Library.Dto
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public XmlSchema GetSchema()
         {
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ReadXml(XmlReader reader)
         {
             bool wasEmpty = reader.IsEmptyElement;
@@ -63,7 +63,7 @@ namespace Dnn.PersonaBar.Library.Dto
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteStartElement("data");

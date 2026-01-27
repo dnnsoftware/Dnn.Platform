@@ -149,7 +149,7 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override DateTime NextStart { get; set; }
 
         public DateTime EndDate { get; set; }
@@ -232,7 +232,7 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Fill(IDataReader dr)
         {
             this.ScheduleHistoryID = Null.SetNullInteger(dr["ScheduleHistoryID"]);

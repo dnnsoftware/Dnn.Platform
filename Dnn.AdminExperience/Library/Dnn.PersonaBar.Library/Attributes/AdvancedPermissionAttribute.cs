@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.Library.Attributes
         /// <summary>Gets or sets a value indicating whether when true, it will force admin to have explicit Permission. When false, admin is passed without checking the Permission.</summary>
         public bool CheckPermissionForAdmin { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsAuthorized(AuthFilterContext context)
         {
             var menuItem = this.GetMenuByIdentifier();

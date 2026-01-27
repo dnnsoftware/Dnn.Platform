@@ -297,9 +297,9 @@ namespace DotNetNuke.Entities.Modules
                 moduleNode.RemoveChildNode("content");
 
                 // support for localized templates
-                // moduleNode.RemoveChild(moduleNode.SelectSingleNode("uniqueId"));
-                // moduleNode.RemoveChild(moduleNode.SelectSingleNode("defaultLanguageGuid"));
-                // moduleNode.RemoveChild(moduleNode.SelectSingleNode("cultureCode"));
+                ////moduleNode.RemoveChild(moduleNode.SelectSingleNode("uniqueId"));
+                ////moduleNode.RemoveChild(moduleNode.SelectSingleNode("defaultLanguageGuid"));
+                ////moduleNode.RemoveChild(moduleNode.SelectSingleNode("cultureCode"));
                 if (Null.IsNull(module.DefaultLanguageGuid))
                 {
                     moduleNode.RemoveChild(moduleNode.SelectSingleNode("defaultLanguageGuid"));
@@ -665,7 +665,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CreateContentItem(ModuleInfo module)
         {
             ContentType contentType = ContentType.Module;
@@ -1128,7 +1128,7 @@ namespace DotNetNuke.Entities.Modules
             return CBO.FillCollection<ModuleInfo>(DataProvider.GetModule(moduleID, Null.NullInteger));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void InitialModulePermission(ModuleInfo module, int tabId, int permissionType)
         {
             var tabPermissions = TabPermissionController.GetTabPermissions(tabId, module.PortalID);
@@ -1184,7 +1184,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void LocalizeModule(ModuleInfo sourceModule, Locale locale)
         {
             try
@@ -1717,7 +1717,7 @@ namespace DotNetNuke.Entities.Modules
             return tabModuleSettings.TryGetValue(tabModuleId, out var setting) ? setting : new Hashtable();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IModuleController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<IModuleController>;

@@ -25,7 +25,7 @@ namespace DotNetNuke.UI.Modules.Html5
             this.moduleActions = moduleActions;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string ProcessToken(ModuleActionDto model, UserInfo accessingUser, Scope accessLevel)
         {
             var title = (!string.IsNullOrEmpty(model.TitleKey) && !string.IsNullOrEmpty(model.LocalResourceFile))

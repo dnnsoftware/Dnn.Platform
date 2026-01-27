@@ -164,15 +164,15 @@ namespace DotNetNuke.Entities.Urls
             bool retVal;
             try
             {
-                // var uri = new Uri(requestedPath);
-                // if (uri.PathAndQuery.ToLowerInvariant().StartsWith("/default.aspx"))
-                // {
-                //    retVal = false;
-                //    result.CanRewrite = StateBoolean.True;
-                //    result.RewritePath = uri.PathAndQuery.Substring(1);
-                // }
-                // else
-                // {
+                ////var uri = new Uri(requestedPath);
+                ////if (uri.PathAndQuery.ToLowerInvariant().StartsWith("/default.aspx"))
+                ////{
+                ////   retVal = false;
+                ////   result.CanRewrite = StateBoolean.True;
+                ////   result.RewritePath = uri.PathAndQuery.Substring(1);
+                ////}
+                ////else
+                ////{
                 if (string.IsNullOrEmpty(settings.DoNotRewriteRegex) ||
                     !Regex.IsMatch(requestedPath, settings.DoNotRewriteRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
                 {
@@ -185,7 +185,7 @@ namespace DotNetNuke.Entities.Urls
                     result.CanRewrite = StateBoolean.False;
                 }
 
-                // }
+                ////}
             }
             catch (Exception ex)
             {
@@ -1460,7 +1460,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // 622 : remove encoding from querystring paths
                         // 699 : reverses 622 because works from Request.QUeryString instead of Request.Url.Query
-                        // string queryStringPiece = System.Web.HttpUtility.UrlDecode(parms[i]);
+                        ////string queryStringPiece = System.Web.HttpUtility.UrlDecode(parms[i]);
                         string queryStringPiece = parms[i];
 
                         // no decoding - querystring passes through rewriting process untouched

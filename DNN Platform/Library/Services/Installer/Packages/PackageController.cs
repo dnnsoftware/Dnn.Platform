@@ -303,7 +303,7 @@ namespace DotNetNuke.Services.Installer.Packages
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteExtensionPackage(PackageInfo package)
         {
             switch (package.PackageType)
@@ -346,13 +346,13 @@ namespace DotNetNuke.Services.Installer.Packages
             DeletePackageInternal(this.eventLogger, package);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)
         {
             return this.GetExtensionPackage(portalId, predicate, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate, bool useCopy)
         {
             var package = this.GetExtensionPackages(portalId).FirstOrDefault(predicate);
@@ -365,7 +365,7 @@ namespace DotNetNuke.Services.Installer.Packages
             return package;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<PackageInfo> GetExtensionPackages(int portalId)
         {
             var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PackagesCacheKey, portalId);
@@ -376,7 +376,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 c => CBO.FillCollection<PackageInfo>(Provider.GetPackages(portalId)));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<PackageInfo> GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)
         {
             return this.GetExtensionPackages(portalId).Where(predicate).ToList();
@@ -396,13 +396,13 @@ namespace DotNetNuke.Services.Installer.Packages
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PackageType GetExtensionPackageType(Func<PackageType, bool> predicate)
         {
             return this.GetExtensionPackageTypes().SingleOrDefault(predicate);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<PackageType> GetExtensionPackageTypes()
         {
             return CBO.GetCachedObject<List<PackageType>>(
@@ -414,7 +414,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 _ => CBO.FillCollection<PackageType>(Provider.GetPackageTypes()));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<PackageDependencyInfo> GetPackageDependencies(Func<PackageDependencyInfo, bool> predicate)
         {
             return GetPackageDependencies(this.hostSettings).Where(predicate).ToList();
@@ -441,7 +441,7 @@ namespace DotNetNuke.Services.Installer.Packages
             return result;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IPackageController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<IPackageController>;

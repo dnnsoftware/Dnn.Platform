@@ -49,7 +49,7 @@ namespace Dnn.AuthServices.Jwt.Data
                                         new Lazy<IPortalController>(() => PortalController.Instance)));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual PersistedToken GetTokenById(string tokenId)
         {
             try
@@ -66,13 +66,13 @@ namespace Dnn.AuthServices.Jwt.Data
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual IList<PersistedToken> GetUserTokens(int userId)
         {
             return CBO.FillCollection<PersistedToken>(this.dataProvider.ExecuteReader("JsonWebTokens_GetByUserId", userId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void AddToken(PersistedToken token)
         {
             this.dataProvider.ExecuteNonQuery(
@@ -86,7 +86,7 @@ namespace Dnn.AuthServices.Jwt.Data
             DataCache.SetCache(GetCacheKey(token.TokenId), token, token.TokenExpiry.ToLocalTime());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void UpdateToken(PersistedToken token)
         {
             this.dataProvider.ExecuteNonQuery("JsonWebTokens_Update", token.TokenId, token.TokenExpiry, token.TokenHash);
@@ -94,14 +94,14 @@ namespace Dnn.AuthServices.Jwt.Data
             DataCache.SetCache(GetCacheKey(token.TokenId), token, token.TokenExpiry.ToLocalTime());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void DeleteToken(string tokenId)
         {
             this.dataProvider.ExecuteNonQuery("JsonWebTokens_DeleteById", tokenId);
             DataCache.RemoveCache(GetCacheKey(tokenId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void DeleteUserTokens(int userId)
         {
             this.dataProvider.ExecuteNonQuery("JsonWebTokens_DeleteByUser", userId);
@@ -111,7 +111,7 @@ namespace Dnn.AuthServices.Jwt.Data
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void DeleteExpiredTokens()
         {
             // don't worry about caching; these will already be invalidated by cache manager

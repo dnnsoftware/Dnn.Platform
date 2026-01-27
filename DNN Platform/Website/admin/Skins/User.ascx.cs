@@ -71,7 +71,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>Gets or sets a value indicating whether set this to true to show in custom 404/500 page.</summary>
         public bool ShowInErrorPage { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -79,7 +79,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.Visible = !this.PortalSettings.InErrorPageRequest() || this.ShowInErrorPage;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

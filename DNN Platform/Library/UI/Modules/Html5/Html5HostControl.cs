@@ -45,10 +45,10 @@ namespace DotNetNuke.UI.Modules.Html5
             this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleActionCollection ModuleActions { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -80,7 +80,7 @@ namespace DotNetNuke.UI.Modules.Html5
             ServicesFramework.Instance.RequestAjaxScriptSupport();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

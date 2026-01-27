@@ -13,22 +13,22 @@ namespace DotNetNuke.Prompt
     [JsonObject]
     public class Command : ICommand
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Key { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Name { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Category { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Description { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Version { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [JsonIgnore]
         public string TypeFullName { get; set; }
     }

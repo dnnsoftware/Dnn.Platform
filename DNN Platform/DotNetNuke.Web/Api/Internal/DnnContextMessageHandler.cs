@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.Api.Internal
     /// <summary>Sets up DNN context information upon a request.</summary>
     public class DnnContextMessageHandler : MessageProcessingHandler
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override HttpRequestMessage ProcessRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var portalSettings = SetupPortalSettings(request);
@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.Api.Internal
             return request;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override HttpResponseMessage ProcessResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             return response;

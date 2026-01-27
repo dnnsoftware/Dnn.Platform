@@ -408,7 +408,7 @@ namespace DNNConnect.CKEditorProvider
 
             int imageFileId = int.Parse(sXmlImport.Substring(7));
 
-            // FileInfo objFileInfo = objFileController.GetFileById(imageFileId, this.portalSettings.PortalId);
+            ////FileInfo objFileInfo = objFileController.GetFileById(imageFileId, this.portalSettings.PortalId);
             var objFileInfo = FileManager.Instance.GetFile(imageFileId);
 
             var homeDirectory = this.HomeDirectory;

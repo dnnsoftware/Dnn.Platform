@@ -21,39 +21,39 @@ namespace DotNetNuke.Prompt
             this.Output = output;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [JsonProperty(PropertyName = "output")]
         public string Output { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [JsonProperty(PropertyName = "isError")]
         public bool IsError { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [JsonProperty(PropertyName = "isHtml")]
         public bool IsHtml { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [JsonProperty(PropertyName = "mustReload")]
         public bool MustReload { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [JsonProperty(PropertyName = "data")]
         public object Data { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [JsonProperty(PropertyName = "fieldOrder")]
         public string[] FieldOrder { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [JsonProperty(PropertyName = "pagingInfo")]
         public IPagingInfo PagingInfo { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [JsonProperty(PropertyName = "nextPageCommand")]
         public string NextPageCommand { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [JsonProperty(PropertyName = "records")]
         public int Records { get; set; }
     }

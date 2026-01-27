@@ -17,10 +17,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
     [ConsoleCommand("list-portals", Constants.PortalCategory, "Prompt_ListPortals_Description")]
     public class ListPortals : ConsoleCommandBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             if (args.Length == 1)
@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var pc = PortalController.Instance;

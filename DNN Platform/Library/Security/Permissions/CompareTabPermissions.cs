@@ -8,7 +8,7 @@ namespace DotNetNuke.Security.Permissions
     /// <summary>Provides a custom <see cref="IComparer"/> implementation for <see cref="TabPermissionInfo"/> objects.</summary>
     internal class CompareTabPermissions : IComparer
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Compare(object x, object y)
         {
             return ((TabPermissionInfo)x).TabPermissionID.CompareTo(((TabPermissionInfo)y).TabPermissionID);

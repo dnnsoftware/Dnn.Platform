@@ -219,7 +219,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual int KeyID
         {
             get
@@ -233,7 +233,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void Fill(IDataReader dr)
         {
             this.VocabularyId = Null.SetNullInteger(dr["VocabularyID"]);

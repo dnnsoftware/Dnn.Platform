@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.OutputCache
             this.captureStream = this.CaptureStream;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanRead
         {
             get
@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.OutputCache
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanSeek
         {
             get
@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.OutputCache
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanWrite
         {
             get
@@ -55,7 +55,7 @@ namespace DotNetNuke.Services.OutputCache
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override long Length
         {
             get
@@ -87,7 +87,7 @@ namespace DotNetNuke.Services.OutputCache
 
         public int MaxVaryByCount { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override long Position
         {
             get
@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.OutputCache
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Flush()
         {
             this.ChainedStream.Flush();
@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.OutputCache
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Write(byte[] buffer, int offset, int count)
         {
             this.ChainedStream.Write(buffer, offset, count);
@@ -131,19 +131,19 @@ namespace DotNetNuke.Services.OutputCache
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Read(byte[] buffer, int offset, int count)
         {
             throw new NotSupportedException();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override long Seek(long offset, SeekOrigin origin)
         {
             throw new NotSupportedException();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void SetLength(long value)
         {
             throw new NotSupportedException();

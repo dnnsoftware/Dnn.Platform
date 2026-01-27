@@ -50,7 +50,7 @@ namespace DotNetNuke.Entities.Portals
 
         private IPortalAliasService ThisAsInterface => this;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         string IPortalAliasService.GetPortalAliasByPortal(int portalId, string portalAlias)
         {
             string retValue = string.Empty;
@@ -96,7 +96,7 @@ namespace DotNetNuke.Entities.Portals
             return retValue;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         string IPortalAliasService.GetPortalAliasByTab(int tabId, string portalAlias)
         {
             string retValue = Null.NullString;
@@ -256,7 +256,7 @@ namespace DotNetNuke.Entities.Portals
                 true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
 #pragma warning disable CS0618 // Type or member is obsolete
         protected override Func<IPortalAliasController> GetFactory()
         {

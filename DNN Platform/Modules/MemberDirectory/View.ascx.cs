@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             this.eventLogger = eventLogger;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool DisplayModule
             => !(this.ProfileUserId == this.ModuleContext.PortalSettings.UserId && this.FilterBy == "User") && this.ModuleContext.PortalSettings.UserId > -1;
 
@@ -124,7 +124,7 @@ namespace DotNetNuke.Modules.MemberDirectory
 
         protected UserInfo UserInfo => UserController.Instance.GetCurrentUserInfo();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();

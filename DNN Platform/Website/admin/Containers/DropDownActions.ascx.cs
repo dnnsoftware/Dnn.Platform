@@ -68,7 +68,7 @@ namespace DotNetNuke.UI.Containers
             this.Visible = this.DisplayControl(objNodes);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -85,7 +85,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

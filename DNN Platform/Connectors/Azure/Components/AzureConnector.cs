@@ -30,7 +30,7 @@ namespace Dnn.AzureConnector.Components
 
     using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public class AzureConnector : IConnector
     {
         private const string DefaultDisplayName = "Azure Storage";
@@ -75,35 +75,35 @@ namespace Dnn.AzureConnector.Components
                                         new Lazy<IPortalController>(() => PortalController.Instance)));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Name => "Azure";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string IconUrl => "~/DesktopModules/Connectors/Azure/Images/Azure.png";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string PluginFolder => "~/DesktopModules/Connectors/Azure/";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsEngageConnector => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ConnectorCategories Type => ConnectorCategories.FileSystem;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SupportsMultiple => true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DisplayName
         {
             get => string.IsNullOrEmpty(this.displayName) ? DefaultDisplayName : this.displayName;
             set => this.displayName = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Id { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {
             var connectors = this.FindAzureFolderMappings(portalId);
@@ -122,7 +122,7 @@ namespace Dnn.AzureConnector.Components
             return new List<IConnector> { this };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteConnector(int portalId)
         {
             if (!string.IsNullOrEmpty(this.Id))
@@ -136,7 +136,7 @@ namespace Dnn.AzureConnector.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HasConfig(int portalId)
         {
             var folderMapping = this.FindAzureFolderMapping(portalId, false, true);
@@ -144,7 +144,7 @@ namespace Dnn.AzureConnector.Components
             return this.GetConfig(portalId)["Connected"] == "true";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, string> GetConfig(int portalId)
         {
             var configs = new Dictionary<string, string>();
@@ -164,7 +164,7 @@ namespace Dnn.AzureConnector.Components
             return configs;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
         {
             customErrorMessage = string.Empty;

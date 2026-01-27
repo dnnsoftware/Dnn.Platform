@@ -45,7 +45,7 @@ namespace DotNetNuke.UI.Containers
             set => this._itemSeparator = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -110,7 +110,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

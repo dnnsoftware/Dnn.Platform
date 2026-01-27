@@ -20,7 +20,7 @@ namespace Dnn.AzureConnector.Services
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.WindowsAzure.Storage;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     [DnnAuthorize]
     public class ServicesController : DnnApiController
     {

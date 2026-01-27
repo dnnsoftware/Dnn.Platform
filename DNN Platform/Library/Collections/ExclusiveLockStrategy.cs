@@ -14,7 +14,7 @@ namespace DotNetNuke.Collections.Internal
         private bool isDisposed;
         private Thread lockedThread;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool ThreadCanRead
         {
             get
@@ -24,7 +24,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool ThreadCanWrite
         {
             get
@@ -34,7 +34,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SupportsConcurrentReads
         {
             get
@@ -43,31 +43,31 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ISharedCollectionLock GetReadLock()
         {
             return this.GetLock(TimeSpan.FromMilliseconds(-1));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ISharedCollectionLock GetReadLock(TimeSpan timeout)
         {
             return this.GetLock(timeout);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ISharedCollectionLock GetWriteLock()
         {
             return this.GetLock(TimeSpan.FromMilliseconds(-1));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ISharedCollectionLock GetWriteLock(TimeSpan timeout)
         {
             return this.GetLock(timeout);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             this.Dispose(true);

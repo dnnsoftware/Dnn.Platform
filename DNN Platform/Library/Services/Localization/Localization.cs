@@ -59,8 +59,8 @@ namespace DotNetNuke.Services.Localization
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Localization));
         private static string defaultKeyName = "resourcekey";
 
-        // private static readonly ILocaleController LocaleController.Instance = LocaleController.Instance;
-        // private static readonly ILocalizationProvider _localizationProvider = LocalizationProvider.Instance;
+        ////private static readonly ILocaleController LocaleController.Instance = LocaleController.Instance;
+        ////private static readonly ILocalizationProvider _localizationProvider = LocalizationProvider.Instance;
         private static bool? showMissingKeys;
 
         /// <summary>Gets <c>"~/App_GlobalResources"</c>.</summary>

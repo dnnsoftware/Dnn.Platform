@@ -508,7 +508,7 @@ namespace DotNetNuke.Modules.Html
             this.UpdateHtmlText(htmlContent, this.GetMaximumVersionHistory(module.PortalID));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo modInfo, DateTime beginDateUtc)
         {
             var workflowId = this.GetWorkflow(modInfo.ModuleID, modInfo.TabID, modInfo.PortalID).Value;
@@ -547,7 +547,7 @@ namespace DotNetNuke.Modules.Html
             return searchDocuments;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             switch (version)

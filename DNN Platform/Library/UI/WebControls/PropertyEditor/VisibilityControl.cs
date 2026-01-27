@@ -133,7 +133,7 @@ namespace DotNetNuke.UI.WebControls
             this.OnVisibilityChanged(args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -141,7 +141,7 @@ namespace DotNetNuke.UI.WebControls
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, CommonJs.jQuery);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -177,11 +177,11 @@ namespace DotNetNuke.UI.WebControls
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnButtonIcon");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-            // writer.AddAttribute(HtmlTextWriterAttribute.Src, IconController.IconURL("Lock"));
-            // writer.RenderBeginTag(HtmlTextWriterTag.Img);
+            ////writer.AddAttribute(HtmlTextWriterAttribute.Src, IconController.IconURL("Lock"));
+            ////writer.RenderBeginTag(HtmlTextWriterTag.Img);
 
             // Close Image Tag
-            // writer.RenderEndTag();
+            ////writer.RenderEndTag();
 
             // Close dnnButtonIcon
             writer.RenderEndTag();
@@ -195,7 +195,7 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
 
             // Render UL for radio Button List
-            // writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "none");
+            ////writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "none");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnButtonDropdown-ul");
 
             writer.RenderBeginTag(HtmlTextWriterTag.Ul);

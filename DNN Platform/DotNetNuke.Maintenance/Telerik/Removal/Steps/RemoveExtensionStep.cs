@@ -26,18 +26,18 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
                 throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Name => this.LocalizeFormat("UninstallStepRemoveExtension", this.PackageName);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public string PackageName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public bool DeleteFiles { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ExecuteInternal()
         {
             this.Steps = new List<IStep>(new[]

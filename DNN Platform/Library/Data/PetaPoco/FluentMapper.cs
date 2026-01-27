@@ -41,13 +41,13 @@ namespace DotNetNuke.Data.PetaPoco
 
         public TableInfo TableInfo { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public TableInfo GetTableInfo(Type pocoType)
         {
             return this.TableInfo;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ColumnInfo GetColumnInfo(PropertyInfo pocoProperty)
         {
             var fluentMap = default(FluentColumnMap);
@@ -59,7 +59,7 @@ namespace DotNetNuke.Data.PetaPoco
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Func<object, object> GetFromDbConverter(PropertyInfo targetProperty, Type sourceType)
         {
             // ReSharper disable once RedundantAssignment
@@ -72,7 +72,7 @@ namespace DotNetNuke.Data.PetaPoco
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Func<object, object> GetToDbConverter(PropertyInfo sourceProperty)
         {
             // ReSharper disable once RedundantAssignment

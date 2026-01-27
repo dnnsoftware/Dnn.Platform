@@ -12,18 +12,18 @@ namespace Dnn.PersonaBar.Seo.Components
 
     public class ExtensionMenuController : IMenuItemController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Visible(MenuItem menuItem)
         {
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>();

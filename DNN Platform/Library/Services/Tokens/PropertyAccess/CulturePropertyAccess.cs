@@ -11,7 +11,7 @@ namespace DotNetNuke.Services.Tokens
 
     public class CulturePropertyAccess : IPropertyAccess
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CacheLevel Cacheability
         {
             get
@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             if (propertyName.Equals(nameof(CultureDropDownTypes.EnglishName), StringComparison.OrdinalIgnoreCase))

@@ -64,7 +64,7 @@ namespace Dnn.EditBar.UI.Controllers
                                         new Lazy<IPortalController>(() => PortalController.Instance)));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, object> GetConfigurations(int portalId)
         {
             var settings = new Dictionary<string, object>();
@@ -87,7 +87,7 @@ namespace Dnn.EditBar.UI.Controllers
             return settings;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<BaseMenuItem> GetMenuItems()
         {
             var menuItems = DataCache.GetCache<IList<BaseMenuItem>>(Constants.MenuItemsCacheKey);
@@ -112,7 +112,7 @@ namespace Dnn.EditBar.UI.Controllers
                     .ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IEditBarController> GetFactory()
         {
             return () => new EditBarController();

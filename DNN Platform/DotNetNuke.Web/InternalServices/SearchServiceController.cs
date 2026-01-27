@@ -292,7 +292,7 @@ namespace DotNetNuke.Web.InternalServices
 
             foreach (var result in searchResults.Results)
             {
-                // var key = result.TabId + result.Url;
+                ////var key = result.TabId + result.Url;
                 var key = result.Url;
                 if (!tabGroups.ContainsKey(key))
                 {

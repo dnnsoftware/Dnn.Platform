@@ -34,10 +34,10 @@ namespace DotNetNuke.Web.Api.Auth
             this.apiTokenController = apiTokenController;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string AuthScheme => this.apiTokenController.SchemeType;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool BypassAntiForgeryToken => true;
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.Api.Auth
         /// </summary>
         internal static bool IsEnabled { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (this.NeedsAuthentication(request))

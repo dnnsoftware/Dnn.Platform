@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Tokens
             this.page = page;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string ProcessToken(JavaScriptDto model, UserInfo accessingUser, Scope accessLevel)
         {
             if (string.IsNullOrEmpty(model.JsName) && string.IsNullOrEmpty(model.Path))

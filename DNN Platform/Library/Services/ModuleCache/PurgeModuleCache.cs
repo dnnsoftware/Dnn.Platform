@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.ModuleCache
             this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DoWork()
         {
             try

@@ -15,18 +15,18 @@ namespace Dnn.PersonaBar.Themes.MenuControllers
     /// <summary>Controls the themes menu.</summary>
     public class ThemeMenuController : IMenuItemController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Visible(MenuItem menuItem)
         {
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             return new Dictionary<string, object>

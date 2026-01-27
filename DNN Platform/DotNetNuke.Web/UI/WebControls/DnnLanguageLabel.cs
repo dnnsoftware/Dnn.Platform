@@ -42,18 +42,18 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Localize { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string LocalResourceFile { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void LocalizeStrings()
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

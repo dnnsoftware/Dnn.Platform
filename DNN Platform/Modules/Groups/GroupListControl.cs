@@ -84,14 +84,14 @@ namespace DotNetNuke.Modules.Groups.Controls
 
         public int GroupViewTabId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             this.currentUser = UserController.Instance.GetCurrentUserInfo();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter output)
         {
             var whereCls = new List<Func<RoleInfo, bool>>

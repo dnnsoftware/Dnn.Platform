@@ -42,7 +42,7 @@ namespace DotNetNuke.Framework
             return path;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IServicesFramework> GetFactory()
         {
             return static () => ActivatorUtilities.GetServiceOrCreateInstance<ServicesFrameworkImpl>(Globals.DependencyProvider);

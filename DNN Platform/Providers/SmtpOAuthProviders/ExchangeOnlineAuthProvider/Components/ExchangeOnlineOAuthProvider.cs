@@ -26,7 +26,7 @@ using DotNetNuke.Services.Mail.OAuth;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
 
-/// <inheritdoc/>
+/// <inheritdoc />
 public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
 {
     private readonly IHostSettingsService hostSettingsService;

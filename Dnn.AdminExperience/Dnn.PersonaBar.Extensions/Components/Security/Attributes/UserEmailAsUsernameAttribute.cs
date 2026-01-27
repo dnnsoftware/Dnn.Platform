@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.Security.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     internal class UserEmailAsUsernameAttribute : ValidationAttribute
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var propertyName = validationContext.DisplayName;

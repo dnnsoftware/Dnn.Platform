@@ -13,7 +13,7 @@ namespace Dnn.PersonaBar.Users.Data
 
     public class UsersDataService : ServiceLocator<IUsersDataService, UsersDataService>, IUsersDataService
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<UserBasicDto> GetUsersByUserIds(int portalId, string userIds)
         {
             return CBO.FillCollection<UserBasicDto>(
@@ -24,7 +24,7 @@ namespace Dnn.PersonaBar.Users.Data
                         userIds));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IUsersDataService> GetFactory()
         {
             return () => new UsersDataService();

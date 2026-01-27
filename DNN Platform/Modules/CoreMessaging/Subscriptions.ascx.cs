@@ -81,7 +81,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -182,7 +182,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             {
                 // FIXME(cbond): The default configuration doesn't actually let us see this data
                 // FIXME(cbond): It's too annoying seeing this fill the Event Log, we need to add the permission to web.config
-                // Exceptions.LogException(ex);
+                ////Exceptions.LogException(ex);
             }
 
             return TimeSpan.FromMinutes(25);

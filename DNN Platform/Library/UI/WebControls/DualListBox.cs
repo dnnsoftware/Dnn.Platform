@@ -169,7 +169,7 @@ namespace DotNetNuke.UI.WebControls
 
         public string ValidationGroup { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -178,7 +178,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             bool retValue = Null.NullBoolean;
@@ -209,12 +209,12 @@ namespace DotNetNuke.UI.WebControls
             return retValue;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RaisePostDataChangedEvent()
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RaisePostBackEvent(string eventArgument)
         {
             switch (eventArgument)
@@ -279,7 +279,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -289,7 +289,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RenderContents(HtmlTextWriter writer)
         {
             // render table

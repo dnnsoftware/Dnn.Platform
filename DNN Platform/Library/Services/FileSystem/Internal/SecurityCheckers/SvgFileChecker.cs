@@ -343,7 +343,7 @@ public class SvgFileChecker : IFileSecurityChecker
         ],
         StringComparer.OrdinalIgnoreCase);
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool Validate(Stream fileContent)
     {
         try

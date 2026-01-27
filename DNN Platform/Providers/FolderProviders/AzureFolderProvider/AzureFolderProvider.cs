@@ -65,13 +65,13 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string FileNotFoundMessage => "Azure File Not Found";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string ObjectCacheKey => "Azure_Object_{0}_{1}";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string ListObjectsCacheKey => "Azure_ListObjects_{0}";
 
         /// <remarks>
@@ -201,7 +201,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CopyFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)
         {
             var container = this.GetContainer(folderMapping);
@@ -214,7 +214,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.ClearCache(folderMapping.FolderMappingID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void DeleteFileInternal(FolderMappingInfo folderMapping, string uri)
         {
             var container = this.GetContainer(folderMapping);
@@ -225,13 +225,13 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.ClearCache(folderMapping.FolderMappingID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void DeleteFolderInternal(FolderMappingInfo folderMapping, IFolderInfo folder)
         {
             this.DeleteFileInternal(folderMapping, folder.MappedPath + Constants.PlaceHolderFileName);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Stream GetFileStreamInternal(FolderMappingInfo folderMapping, string uri)
         {
             var container = this.GetContainer(folderMapping);
@@ -244,7 +244,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             return memoryStream;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override IList<IRemoteStorageItem> GetObjectList(FolderMappingInfo folderMapping)
         {
             var cacheKey = string.Format(this.ListObjectsCacheKey, folderMapping.FolderMappingID);
@@ -293,7 +293,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                 });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void MoveFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)
         {
             var container = this.GetContainer(folderMapping);
@@ -307,7 +307,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.ClearCache(folderMapping.FolderMappingID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void MoveFolderInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)
         {
             var container = this.GetContainer(folderMapping);
@@ -325,7 +325,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.ClearCache(folderMapping.FolderMappingID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void UpdateFileInternal(Stream stream, FolderMappingInfo folderMapping, string uri)
         {
             var container = this.GetContainer(folderMapping);

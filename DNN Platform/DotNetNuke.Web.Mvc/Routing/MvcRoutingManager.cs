@@ -50,19 +50,19 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         internal ITypeLocator TypeLocator { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Route MapRoute(string moduleFolderName, string routeName, string url, string[] namespaces)
         {
             return this.MapRoute(moduleFolderName, routeName, url, null /* defaults */, null /* constraints */, namespaces);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Route MapRoute(string moduleFolderName, string routeName, string url, object defaults, string[] namespaces)
         {
             return this.MapRoute(moduleFolderName, routeName, url, defaults, null /* constraints */, namespaces);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Route MapRoute(string moduleFolderName, string routeName, string url, object defaults, object constraints, string[] namespaces)
         {
             if (namespaces == null || namespaces.Length == 0 || string.IsNullOrEmpty(namespaces[0]))

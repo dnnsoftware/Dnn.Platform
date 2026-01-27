@@ -104,7 +104,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID
         {
             get
@@ -118,7 +118,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
             this.SkinPackageID = Null.SetNullInteger(dr["SkinPackageID"]);

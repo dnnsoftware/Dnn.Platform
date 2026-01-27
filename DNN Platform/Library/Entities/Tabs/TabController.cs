@@ -331,8 +331,8 @@ namespace DotNetNuke.Entities.Tabs
                 tab.SiteMapPriority = XmlUtils.GetNodeValueSingle(tabNode, "sitemappriority", 0.5F);
                 tab.CultureCode = XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "cultureCode");
 
-                // objTab.UniqueId = New Guid(XmlUtils.GetNodeValue(nodeTab, "guid", Guid.NewGuid.ToString()));
-                // objTab.VersionGuid = New Guid(XmlUtils.GetNodeValue(nodeTab, "versionGuid", Guid.NewGuid.ToString()));
+                ////objTab.UniqueId = New Guid(XmlUtils.GetNodeValue(nodeTab, "guid", Guid.NewGuid.ToString()));
+                ////objTab.VersionGuid = New Guid(XmlUtils.GetNodeValue(nodeTab, "versionGuid", Guid.NewGuid.ToString()));
                 tab.UseBaseFriendlyUrls = XmlUtils.GetNodeValueBoolean(tabNode, "UseBaseFriendlyUrls", false);
 
                 tab.TabPermissions.Clear();
@@ -1135,7 +1135,7 @@ namespace DotNetNuke.Entities.Tabs
             CacheController.FlushPageIndexFromCache();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RefreshCache(int portalId, int tabId)
         {
             var portalTabs = this.GetTabsByPortal(portalId);
@@ -2146,7 +2146,7 @@ namespace DotNetNuke.Entities.Tabs
                 this.GetTabUrlsCallback);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ITabController> GetFactory()
         {
             return () => new TabController();

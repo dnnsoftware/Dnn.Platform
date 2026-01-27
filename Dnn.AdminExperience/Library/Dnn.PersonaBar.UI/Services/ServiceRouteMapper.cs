@@ -17,7 +17,7 @@ namespace Dnn.PersonaBar.UI.Services
     /// <summary>The <see cref="IServiceRouteMapper"/> for the Persona Bar API.</summary>
     public class ServiceRouteMapper : IServiceRouteMapper
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void RegisterRoutes(IMapRoute routeManager)
         {

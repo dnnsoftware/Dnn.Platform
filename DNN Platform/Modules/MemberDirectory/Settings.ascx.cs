@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             this.AutoDataBind = false;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -161,7 +161,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnSettingsLoaded()
         {
             base.OnSettingsLoaded();
@@ -188,7 +188,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnSavingSettings()
         {
             this.Model.TabModuleSettings["ItemTemplate"] = this.itemTemplate.Text;

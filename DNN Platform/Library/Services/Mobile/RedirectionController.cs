@@ -309,14 +309,14 @@ namespace DotNetNuke.Services.Mobile
                     // found the rule, let's find the url now
                     if (foundRule)
                     {
-                        ////redirection is based on tab
+                        // redirection is based on tab
                         // Following are being commented as NavigateURL method does not return correct url for a tab in a different portal
                         // always point to the home page of the other portal
-                        // if (redirection.SourceTabId != Null.NullInteger)
-                        // {
-                        //    fullSiteUrl = Globals.NavigateURL(redirection.SourceTabId);
-                        // }
-                        // else //redirection is based on portal
+                        ////if (redirection.SourceTabId != Null.NullInteger)
+                        ////{
+                        ////   fullSiteUrl = Globals.NavigateURL(redirection.SourceTabId);
+                        ////}
+                        ////else //redirection is based on portal
                         {
                             var portalSettings = new PortalSettings(redirection.PortalId);
 

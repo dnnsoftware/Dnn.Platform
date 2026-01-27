@@ -37,16 +37,16 @@ namespace Dnn.AuthServices.Jwt.Auth
             IsEnabled = true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string AuthScheme => this.jwtController.SchemeType;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool BypassAntiForgeryToken => true;
 
         /// <summary>Gets or sets a value indicating whether this handler is enabled.</summary>
         internal static bool IsEnabled { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (this.NeedsAuthentication(request))

@@ -80,38 +80,38 @@ namespace DotNetNuke.Security.Membership
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanEditProviderProperties => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int MaxInvalidPasswordAttempts
         {
             get => System.Web.Security.Membership.MaxInvalidPasswordAttempts;
             set => throw new NotSupportedException("Provider properties for AspNetMembershipProvider must be set in web.config");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int MinNonAlphanumericCharacters
         {
             get => System.Web.Security.Membership.MinRequiredNonAlphanumericCharacters;
             set => throw new NotSupportedException("Provider properties for AspNetMembershipProvider must be set in web.config");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int MinPasswordLength
         {
             get => System.Web.Security.Membership.MinRequiredPasswordLength;
             set => throw new NotSupportedException("Provider properties for AspNetMembershipProvider must be set in web.config");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int PasswordAttemptWindow
         {
             get => System.Web.Security.Membership.PasswordAttemptWindow;
             set => throw new NotSupportedException("Provider properties for AspNetMembershipProvider must be set in web.config");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override PasswordFormat PasswordFormat
         {
             get
@@ -134,35 +134,35 @@ namespace DotNetNuke.Security.Membership
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool PasswordResetEnabled
         {
             get => System.Web.Security.Membership.EnablePasswordReset;
             set => throw new NotSupportedException("Provider properties for AspNetMembershipProvider must be set in web.config");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool PasswordRetrievalEnabled
         {
             get => System.Web.Security.Membership.EnablePasswordRetrieval;
             set => throw new NotSupportedException("Provider properties for AspNetMembershipProvider must be set in web.config");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string PasswordStrengthRegularExpression
         {
             get => System.Web.Security.Membership.PasswordStrengthRegularExpression;
             set => throw new NotSupportedException("Provider properties for AspNetMembershipProvider must be set in web.config");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool RequiresQuestionAndAnswer
         {
             get => System.Web.Security.Membership.RequiresQuestionAndAnswer;
             set => throw new NotSupportedException("Provider properties for AspNetMembershipProvider must be set in web.config");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool RequiresUniqueEmail
         {
             get => System.Web.Security.Membership.Provider.RequiresUniqueEmail;
@@ -199,7 +199,7 @@ namespace DotNetNuke.Security.Membership
             return arrUsers;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override UserInfo GetUserByAuthToken(int portalId, string userToken, string authType)
         {
             IDataReader dr = this.dataProvider.GetUserByAuthToken(portalId, userToken, authType);
@@ -433,7 +433,7 @@ namespace DotNetNuke.Security.Membership
             return System.Web.Security.Membership.GeneratePassword(length, this.MinNonAlphanumericCharacters);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ArrayList GetDeletedUsers(int portalId)
         {
             return FillUserCollection(portalId, this.dataProvider.GetDeletedUsers(portalId));
@@ -459,13 +459,13 @@ namespace DotNetNuke.Security.Membership
             return this.RequiresQuestionAndAnswer ? aspnetUser.GetPassword(passwordAnswer) : aspnetUser.GetPassword();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ArrayList GetUnAuthorizedUsers(int portalId)
         {
             return this.GetUnAuthorizedUsers(portalId, false, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ArrayList GetUnAuthorizedUsers(int portalId, bool includeDeleted, bool superUsersOnly)
         {
             return FillUserCollection(
@@ -527,13 +527,13 @@ namespace DotNetNuke.Security.Membership
             return user;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string GetProviderUserKey(UserInfo user)
         {
             return this.GetMembershipUser(user).ProviderUserKey?.ToString().Replace("-", string.Empty) ?? string.Empty;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override UserInfo GetUserByProviderUserKey(int portalId, string providerUserKey)
         {
             var userName = this.GetMembershipUserByUserKey(providerUserKey)?.UserName ?? string.Empty;
@@ -590,7 +590,7 @@ namespace DotNetNuke.Security.Membership
                 ref totalRecords);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationshipTypeId, bool isAdmin, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyNames, string propertyValues)
         {
@@ -611,7 +611,7 @@ namespace DotNetNuke.Security.Membership
                     propertyValues));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyName, string propertyValue)
         {
             return FillUserList(
@@ -765,7 +765,7 @@ namespace DotNetNuke.Security.Membership
             return isOnline;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool RemoveUser(UserInfo user)
         {
             bool retValue = true;
@@ -810,7 +810,7 @@ namespace DotNetNuke.Security.Membership
             return this.ResetAndChangePassword(user, newPassword, string.Empty);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool ResetAndChangePassword(UserInfo user, string newPassword, string answer)
         {
             if (this.RequiresQuestionAndAnswer && string.IsNullOrEmpty(answer))
@@ -829,7 +829,7 @@ namespace DotNetNuke.Security.Membership
             return aspnetUser.ChangePassword(resetPassword, newPassword);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool RestoreUser(UserInfo user)
         {
             bool retValue = true;

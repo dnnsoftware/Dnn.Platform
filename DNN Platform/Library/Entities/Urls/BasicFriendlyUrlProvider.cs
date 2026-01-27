@@ -51,26 +51,26 @@ namespace DotNetNuke.Entities.Urls
             get { return this.regexMatch; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override string FriendlyUrl(TabInfo tab, string path)
         {
             return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalSettings.Current);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
             return this.FriendlyUrl(tab, path, pageName, PortalSettings.Current);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
         {
             IPortalAliasInfo portalAliasInfo = ((PortalSettings)settings)?.PortalAlias;
             return this.FriendlyUrl(tab, path, pageName, portalAliasInfo?.HttpAlias, settings);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
             return this.FriendlyUrl(tab, path, pageName, portalAlias, null);

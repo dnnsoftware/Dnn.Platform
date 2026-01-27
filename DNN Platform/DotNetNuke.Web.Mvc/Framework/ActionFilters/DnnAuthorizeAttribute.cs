@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             return UserController.Instance.GetCurrentUserInfo();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             if (!this.IsAuthenticated())

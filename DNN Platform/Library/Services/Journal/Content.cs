@@ -76,8 +76,8 @@ namespace DotNetNuke.Services.Journal
             objContent.ContentItemId = Util.GetContentController().AddContentItem(objContent);
 
             // Add Terms
-            // var cntTerm = new Terms();
-            // cntTerm.ManageQuestionTerms(objPost, objContent);
+            ////var cntTerm = new Terms();
+            ////cntTerm.ManageQuestionTerms(objPost, objContent);
             return objContent;
         }
 
@@ -108,8 +108,8 @@ namespace DotNetNuke.Services.Journal
             }
 
             // Update Terms
-            // var cntTerm = new Terms();
-            // cntTerm.ManageQuestionTerms(objPost, objContent);
+            ////var cntTerm = new Terms();
+            ////cntTerm.ManageQuestionTerms(objPost, objContent);
         }
 
         /// <summary>This removes a content item associated with a question/thread from the data store. Should run every time an entire thread is deleted.</summary>
@@ -129,8 +129,8 @@ namespace DotNetNuke.Services.Journal
             }
 
             // remove any metadata/terms associated first (perhaps we should just rely on ContentItem cascade delete here?)
-            // var cntTerms = new Terms();
-            // cntTerms.RemoveQuestionTerms(objContent);
+            ////var cntTerms = new Terms();
+            ////cntTerms.RemoveQuestionTerms(objContent);
             Util.GetContentController().DeleteContentItem(objContent);
         }
 

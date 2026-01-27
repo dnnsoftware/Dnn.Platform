@@ -23,10 +23,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListCommands));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             try

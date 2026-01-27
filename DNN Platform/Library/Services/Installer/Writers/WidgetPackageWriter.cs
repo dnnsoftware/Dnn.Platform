@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = Path.Combine(@"Resources\Widgets\User", company);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IncludeAssemblies
         {
             get
@@ -35,14 +35,14 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
             // Call base class method with includeAppCode = false
             base.GetFiles(includeSource, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void WriteFilesToManifest(XmlWriter writer)
         {
             string company = this.Package.Name.Substring(0, this.Package.Name.IndexOf(".", StringComparison.Ordinal));

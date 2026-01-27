@@ -15,13 +15,13 @@ namespace DotNetNuke.Web.Mvc.Common
 
     public class ModuleControlControllerAdapter : ServiceLocator<IModuleControlController, ModuleControlControllerAdapter>, IModuleControlController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleControlInfo GetModuleControlByControlKey(string controlKey, int moduleDefID)
         {
             return ModuleControlController.GetModuleControlByControlKey(controlKey, moduleDefID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IModuleControlController> GetFactory()
         {
             return () => new ModuleControlControllerAdapter();

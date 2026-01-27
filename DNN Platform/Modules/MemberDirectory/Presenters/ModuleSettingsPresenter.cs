@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Presenters
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad()
         {
             base.OnLoad();

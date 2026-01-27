@@ -109,7 +109,7 @@ namespace DotNetNuke.Web.UI.WebControls
             set => this.ViewState["ToolTip"] = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual string ToolName
         {
             get
@@ -239,7 +239,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -247,14 +247,14 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Controls.Add(this.DnnLink);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             this.EnsureChildControls();
             this.DnnLinkButton.Click += this.ControlPanelTool_OnClick;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             this.ProcessTool();

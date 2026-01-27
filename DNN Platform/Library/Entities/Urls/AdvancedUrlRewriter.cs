@@ -198,7 +198,7 @@ namespace DotNetNuke.Entities.Urls
             return destUrl;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override void RewriteUrl(object sender, EventArgs e)
         {
             Guid parentTraceId = Guid.Empty;
@@ -1792,8 +1792,8 @@ namespace DotNetNuke.Entities.Urls
                             // 819 : leaving /do301/check in Url because not using cleanPath to remove from
                             string cleanPath = RedirectTokens.RemoveAnyRedirectTokensAndReasons(rewritePathOnly);
 
-                            // string cleanPath = rewritePathOnly.Replace("&do301=check","");//remove check parameter if it exists
-                            // cleanPath = cleanPath.Replace("&do301=true", "");//don't pass through internal redirect check parameter
+                            ////string cleanPath = rewritePathOnly.Replace("&do301=check","");//remove check parameter if it exists
+                            ////cleanPath = cleanPath.Replace("&do301=true", "");//don't pass through internal redirect check parameter
                             cleanPath = cleanPath.Replace("&_aumdebug=true", string.Empty); // remove debug parameter if it exists
 
                             Match match = RewritePathRx.Match(rewritePathOnly ?? string.Empty);
@@ -1837,7 +1837,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 string rawUrlWithHost = StripDebugParameter(urlDecode.ToLowerInvariant());
 
-                                // string rawUrlWithHost = StripDebugParameter(System.Web.HttpUtility.UrlDecode(scheme + requestUri.Host + requestUri.PathAndQuery).ToLowerInvariant());
+                                ////string rawUrlWithHost = StripDebugParameter(System.Web.HttpUtility.UrlDecode(scheme + requestUri.Host + requestUri.PathAndQuery).ToLowerInvariant());
                                 string rawUrlWithHostNoScheme = StripDebugParameter(rawUrlWithHost.Replace(scheme, string.Empty));
                                 string bestFriendlyNoScheme = StripDebugParameter(bestFriendlyUrl.ToLowerInvariant().Replace(scheme, string.Empty));
                                 string requestedPathNoScheme = StripDebugParameter(requestUri.AbsoluteUri.Replace(scheme, string.Empty).ToLowerInvariant());

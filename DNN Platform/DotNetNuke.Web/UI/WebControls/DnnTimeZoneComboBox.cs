@@ -9,7 +9,7 @@ namespace DotNetNuke.Web.UI.WebControls
     /// <summary>A time zone combobox control.</summary>
     public class DnnTimeZoneComboBox : DropDownList
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(System.EventArgs e)
         {
             // Utilities.ApplySkin(this);

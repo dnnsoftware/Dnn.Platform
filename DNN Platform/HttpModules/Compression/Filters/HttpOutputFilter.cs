@@ -18,19 +18,19 @@ namespace DotNetNuke.HttpModules.Compression
             this.BaseStream = baseStream;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanRead => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanSeek => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanWrite => this.BaseStream.CanWrite;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override long Length => throw new NotSupportedException();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override long Position
         {
             get => throw new NotSupportedException();
@@ -40,21 +40,21 @@ namespace DotNetNuke.HttpModules.Compression
         /// <summary>Gets the base stream.</summary>
         protected Stream BaseStream { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override long Seek(long offset, SeekOrigin direction) => throw new NotSupportedException();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void SetLength(long length) => throw new NotSupportedException();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Close() => this.BaseStream.Close();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Flush() => this.BaseStream.Flush();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
     }
 }

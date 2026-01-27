@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string AuthScheme => "Forms";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override HttpRequestMessage ProcessRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             using var scope = Globals.GetOrCreateServiceScope();
@@ -41,7 +41,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             return request;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override HttpResponseMessage ProcessResponse(HttpResponseMessage response, CancellationToken cancellationToken) => response;
     }
 }

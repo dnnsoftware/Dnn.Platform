@@ -9,7 +9,7 @@ namespace DotNetNuke.Common.Internal
     /// <inheritdoc cref="IFileSystemUtils" />
     internal class FileSystemUtilsProvider : IFileSystemUtils
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteEmptyFoldersRecursive(string path)
         {
             FileSystemUtils.DeleteEmptyFoldersRecursive(path);

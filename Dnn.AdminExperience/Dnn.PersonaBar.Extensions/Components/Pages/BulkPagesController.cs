@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.Pages.Components
             this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public BulkPageResponse AddBulkPages(BulkPage page, bool validateOnly)
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -156,7 +156,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return response;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IBulkPagesController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<IBulkPagesController>;
@@ -313,7 +313,7 @@ namespace Dnn.PersonaBar.Pages.Components
             if (objRoot != null)
             {
                 // TODO: To be retrieved once the parent tab  is selected?
-                // tab.IsVisible = objRoot.IsVisible;
+                ////tab.IsVisible = objRoot.IsVisible;
                 tab.DisableLink = objRoot.DisableLink;
                 tab.SkinSrc = objRoot.SkinSrc;
                 tab.ContainerSrc = objRoot.ContainerSrc;
@@ -333,7 +333,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
             else
             {
-                // return Null.NullInteger;
+                ////return Null.NullInteger;
                 tab.PortalID = portalSettings.PortalId;
                 tab.ParentId = Null.NullInteger;
             }

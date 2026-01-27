@@ -228,7 +228,7 @@ namespace DotNetNuke.UI.WebControls
 
         public bool Required { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override HtmlTextWriterTag TagKey => HtmlTextWriterTag.Div;
 
         /// <summary>CreateChildControls creates the control collection.</summary>
@@ -265,7 +265,7 @@ namespace DotNetNuke.UI.WebControls
             aHelpPin.Attributes.Add("aria-label", "Pin");
             this.pnlHelp.Controls.Add(aHelpPin);
 
-            // Controls.Add(label);
+            ////Controls.Add(label);
             this.Controls.Add(this.pnlTooltip);
         }
 
@@ -297,7 +297,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -322,7 +322,7 @@ namespace DotNetNuke.UI.WebControls
                 this.lblLabel.CssClass += " dnnFormRequired";
             }
 
-            // DNNClientAPI.EnableMinMax(cmdHelp, pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
+            ////DNNClientAPI.EnableMinMax(cmdHelp, pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
             if (this.EditControl != null)
             {
                 this.label.Attributes.Add("for", this.EditControl is EditControl editControl ? editControl.EditControlClientId : this.EditControl.ClientID);

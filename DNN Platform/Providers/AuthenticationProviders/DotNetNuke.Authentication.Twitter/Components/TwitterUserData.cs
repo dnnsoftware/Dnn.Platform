@@ -7,32 +7,32 @@ namespace DotNetNuke.Authentication.Twitter.Components
 
     using DotNetNuke.Services.Authentication.OAuth;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     [DataContract]
     public class TwitterUserData : UserData
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string DisplayName
         {
             get { return this.ScreenName; }
             set { }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Locale
         {
             get { return this.LanguageCode; }
             set { }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ProfileImage
         {
             get { return this.ProfileImageUrl; }
             set { }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Website
         {
             get { return this.Url; }

@@ -10,13 +10,13 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     public class CheckUnexpectedExtensions : IAuditCheck
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Id => "CheckUnexpectedExtensions";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool LazyLoad => true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);

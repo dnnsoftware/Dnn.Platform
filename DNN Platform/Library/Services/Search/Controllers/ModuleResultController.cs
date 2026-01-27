@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.Search.Controllers
             this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool HasViewPermission(SearchResult searchResult)
         {
             var viewable = false;
@@ -106,7 +106,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         // Returns the URL to the first instance of the module the user has access to view
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string GetDocUrl(SearchResult searchResult)
         {
             if (!string.IsNullOrEmpty(searchResult.Url))

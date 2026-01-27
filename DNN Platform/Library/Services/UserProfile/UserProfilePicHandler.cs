@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.UserProfile
             ".ICO",
         };
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsReusable
         {
             get
@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.UserProfile
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ProcessRequest(HttpContext context)
         {
             SetupCulture();

@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         [FlagParameter("notify", "Prompt_NewUser_FlagNotify", "Boolean", "false")]
         private const string FlagNotify = "notify";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private string Email { get; set; }
@@ -57,7 +57,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         private bool Notify { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.Email = this.GetFlagValue(FlagEmail, "Email", string.Empty, true);
@@ -79,7 +79,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var settings = new RegisterationDetails

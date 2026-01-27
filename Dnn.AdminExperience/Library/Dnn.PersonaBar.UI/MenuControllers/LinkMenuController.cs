@@ -32,7 +32,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
         /// <summary>Gets the navigation manager.</summary>
         protected INavigationManager NavigationManager { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateParameters(MenuItem menuItem)
         {
             if (!this.Visible(menuItem))
@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
             menuItem.Link = tabUrl;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Visible(MenuItem menuItem)
         {
             var query = GetPathQuery(menuItem);
@@ -105,7 +105,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
                    && tab is { IsDeleted: false, DisableLink: false, IsVisible: true };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             return null;

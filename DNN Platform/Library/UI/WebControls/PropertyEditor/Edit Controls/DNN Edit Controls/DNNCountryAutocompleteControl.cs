@@ -35,7 +35,7 @@ namespace DotNetNuke.UI.WebControls
             this.SystemType = type;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string EditControlClientId
         {
             get
@@ -47,7 +47,7 @@ namespace DotNetNuke.UI.WebControls
 
         protected string OldStringValue => Convert.ToString(this.OldValue, CultureInfo.InvariantCulture);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string StringValue
         {
             get
@@ -93,7 +93,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
         {
             bool dataChanged = false;
@@ -108,7 +108,7 @@ namespace DotNetNuke.UI.WebControls
             return dataChanged;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnDataChanged(EventArgs e)
         {
             PropertyEditorEventArgs args = new PropertyEditorEventArgs(this.Name);
@@ -118,7 +118,7 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -136,7 +136,7 @@ namespace DotNetNuke.UI.WebControls
             this.Controls.Add(this.CountryId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(System.EventArgs e)
         {
             base.OnPreRender(e);
@@ -150,7 +150,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);

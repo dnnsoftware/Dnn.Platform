@@ -50,7 +50,7 @@ namespace DotNetNuke.Maintenance.Telerik
         /// <inheritdoc />
         public string BinPath => Path.Combine(this.applicationStatusInfo.ApplicationMapPath, "bin");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<string> GetAssembliesThatDependOnTelerik()
         {
             // use a temp AppDomain to avoid locking files in the bin folder

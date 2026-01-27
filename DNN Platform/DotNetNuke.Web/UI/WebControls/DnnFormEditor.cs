@@ -131,7 +131,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -140,7 +140,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DataBind()
         {
             this.OnDataBinding(EventArgs.Empty);
@@ -169,7 +169,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             // CreateChildControls re-creates the children (the items)
@@ -204,7 +204,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.DataBindItems(useDataSource);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void LoadControlState(object state)
         {
@@ -214,7 +214,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             this.Page.RegisterRequiresControlState(this);
@@ -222,7 +222,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnInit(e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -265,7 +265,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override object SaveControlState()
         {
             return this.itemCount > 0 ? (object)this.itemCount : null;

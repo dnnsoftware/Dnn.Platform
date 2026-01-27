@@ -26,13 +26,13 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
                 throw new ArgumentNullException(nameof(localizationProvider));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Localize(string key)
         {
             return this.localizationProvider.GetString(key, ResourceFile);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string LocalizeFormat(string formatKey, params object[] args)
         {
             return string.Format(

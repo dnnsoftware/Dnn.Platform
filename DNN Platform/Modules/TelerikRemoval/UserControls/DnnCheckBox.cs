@@ -21,7 +21,7 @@ namespace Dnn.Modules.TelerikRemoval.UserControls
         /// <inheritdoc />
         public string LocalResourceFile { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Localize
         {
             get
@@ -40,7 +40,7 @@ namespace Dnn.Modules.TelerikRemoval.UserControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void LocalizeStrings()
         {
             if (!this.Localize)

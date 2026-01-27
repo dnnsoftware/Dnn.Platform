@@ -16,7 +16,7 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(OtherPackages))]
     public sealed class CreateSymbols : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             context.CreateDirectory(context.ArtifactsFolder);

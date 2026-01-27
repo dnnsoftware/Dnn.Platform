@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         [JsonProperty("desktopModuleId")]
         public int DesktopModuleId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void LoadPermissionDefinitions()
         {
             foreach (var permission in this.permissionDefinitionService.GetDefinitionsByPortalDesktopModule())

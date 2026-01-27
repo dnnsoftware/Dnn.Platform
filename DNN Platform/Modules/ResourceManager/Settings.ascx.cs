@@ -39,7 +39,7 @@ namespace Dnn.Modules.ResourceManager
             this.moduleController = moduleController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void LoadSettings()
         {
             try
@@ -78,7 +78,7 @@ namespace Dnn.Modules.ResourceManager
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdateSettings()
         {
             try

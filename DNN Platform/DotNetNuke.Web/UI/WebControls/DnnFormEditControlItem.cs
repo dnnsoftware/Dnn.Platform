@@ -49,7 +49,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets the control type.</summary>
         public string ControlType { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override WebControl CreateControlInternal(Control container)
         {
             this.control = ActivatorUtilities.CreateInstance(this.serviceProvider, Reflection.CreateType(this.ControlType)) as EditControl;

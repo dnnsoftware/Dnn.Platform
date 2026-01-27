@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             this.personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdatePersonaBarUserSettings(UserSettings settings, int userId, int portalId)
         {
             var personalizationInfo = this.personalizationController.LoadProfile(userId, portalId);
@@ -41,14 +41,14 @@ namespace Dnn.PersonaBar.Library.Controllers
             this.personalizationController.SaveProfile(personalizationInfo);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public UserSettings GetPersonaBarUserSettings()
         {
             var settings = (UserSettings)Personalization.GetProfile(ContainerName, UserSettingsKey);
             return settings ?? GetDefaultSettings();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IPersonaBarUserSettingsController> GetFactory()
         {
             return () => Globals.GetCurrentServiceProvider().GetRequiredService<IPersonaBarUserSettingsController>();

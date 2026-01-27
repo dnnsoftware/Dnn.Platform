@@ -584,7 +584,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <returns><see langword="true"/> if it represents the view permission, otherwise <see langword="false"/>.</returns>
         protected virtual bool IsViewPermission(IPermissionDefinitionInfo permissionDefinition) => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

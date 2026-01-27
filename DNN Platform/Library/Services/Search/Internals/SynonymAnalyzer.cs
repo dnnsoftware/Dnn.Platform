@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Search.Internals
     /// <summary>This is responsible for the filters chain that analyzes search documents/queries.</summary>
     internal class SynonymAnalyzer : Analyzer
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override TokenStream TokenStream(string fieldName, TextReader reader)
         {
             var stops = GetStopWords();

@@ -36,13 +36,13 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             this.HostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsMappedPaths => true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsMoveFile => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsMoveFolder => true;
 
         /// <summary>Gets the host settings.</summary>
@@ -355,7 +355,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             this.UpdateFileInternal(content, folderMapping, folder.MappedPath + fileName);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string GetHashCode(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -371,7 +371,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             return (item.Size == file.Size) ? item.HashCode : string.Empty;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string GetHashCode(IFileInfo file, Stream fileContent)
         {
             if (this.FileExists(FolderManager.Instance.GetFolder(file.FolderId), file.FileName))
@@ -446,7 +446,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                 {
                     var list = this.GetObjectList(folderMapping, key);
 
-                    // return list.FirstOrDefault(i => i.Key == key);
+                    ////return list.FirstOrDefault(i => i.Key == key);
                     return list.FirstOrDefault(i => i.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase));
                 });
         }

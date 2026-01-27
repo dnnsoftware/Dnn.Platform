@@ -69,16 +69,16 @@ namespace Dnn.ExportImport.Components.Services
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Category => Constants.Category_UsersData;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ParentCategory => Constants.Category_Users;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override uint Priority => 10;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             this.CheckPoint.Progress += 100;
@@ -90,7 +90,7 @@ namespace Dnn.ExportImport.Components.Services
             // No implementation required in export users child as everything is exported in parent service.
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob))
@@ -293,7 +293,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportUser>();

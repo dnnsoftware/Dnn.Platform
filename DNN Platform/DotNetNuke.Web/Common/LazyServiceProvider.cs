@@ -12,10 +12,10 @@ namespace DotNetNuke.Web.Common
     {
         private IServiceProvider serviceProvider;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public object GetService(Type serviceType)
         {
             if (this.serviceProvider is null)

@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.Journal.Controls
 
         public int CurrentIndex { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter output)
         {
             if (this.Enabled)

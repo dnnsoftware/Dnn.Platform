@@ -12,7 +12,7 @@ namespace Dnn.Modules.ResourceManager.Services.Attributes
     /// <summary>A custom <see cref="ExceptionFilterAttribute"/> for the resource manager.</summary>
     public class ResourceManagerExceptionFilter : ExceptionFilterAttribute
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
             if (actionExecutedContext.Exception == null)

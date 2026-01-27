@@ -36,7 +36,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public void Insert(int index, T item)
             => throw new NotSupportedException();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Add(Control child)
         {
             if (child is not T item)
@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.Add(child);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void AddAt(int index, Control child)
         {
             if (child is not T)

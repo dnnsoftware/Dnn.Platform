@@ -57,7 +57,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -71,7 +71,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Services.ServiceRoot = "InternalServices";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             this.AddCssClass("page");

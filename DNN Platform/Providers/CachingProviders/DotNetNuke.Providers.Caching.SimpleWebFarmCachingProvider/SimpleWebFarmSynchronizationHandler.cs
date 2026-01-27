@@ -52,7 +52,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         /// <summary>Gets a value indicating whether indicates that this handler can be reused for multiple requests.</summary>
         public bool IsReusable => true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ProcessRequest(HttpContext context)
         {
             // Validate the request for required inputs, return if no action possible

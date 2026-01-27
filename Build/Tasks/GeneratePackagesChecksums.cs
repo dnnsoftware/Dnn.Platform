@@ -29,7 +29,7 @@ namespace DotNetNuke.Build.Tasks
     {
         private static readonly string[] ZipFiles = ["*.zip",];
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             context.Information("Computing packages checksums…");

@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.FileSystem
             get { return FileContentTypeManager.Instance.ContentTypes; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public FileExtensionWhitelist WhiteList
         {
             get

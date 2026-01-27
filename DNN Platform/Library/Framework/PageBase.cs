@@ -376,7 +376,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnError(EventArgs e)
         {
             base.OnError(e);
@@ -418,7 +418,7 @@ namespace DotNetNuke.Framework
             Exceptions.ProcessPageLoadException(exc, strURL);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             var isInstallPage = HttpContext.Current.Request.Url.LocalPath.ToLowerInvariant().Contains("installwizard.aspx");
@@ -438,7 +438,7 @@ namespace DotNetNuke.Framework
             base.OnInit(e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -447,22 +447,22 @@ namespace DotNetNuke.Framework
             // Modules can override the standard behavior by including their own script on the page.
             // The module must register the script with the "jQuery" key and should notify user
             // of potential version conflicts with core jQuery support.
-            // if (jQuery.IsRequested)
-            // {
-            //    jQuery.RegisterJQuery(Page);
-            // }
-            // if (jQuery.IsUIRequested)
-            // {
-            //    jQuery.RegisterJQueryUI(Page);
-            // }
-            // if (jQuery.AreDnnPluginsRequested)
-            // {
-            //    jQuery.RegisterDnnJQueryPlugins(Page);
-            // }
-            // if (jQuery.IsHoverIntentRequested)
-            // {
-            //    jQuery.RegisterHoverIntent(Page);
-            // }
+            ////if (jQuery.IsRequested)
+            ////{
+            ////   jQuery.RegisterJQuery(Page);
+            ////}
+            ////if (jQuery.IsUIRequested)
+            ////{
+            ////   jQuery.RegisterJQueryUI(Page);
+            ////}
+            ////if (jQuery.AreDnnPluginsRequested)
+            ////{
+            ////   jQuery.RegisterDnnJQueryPlugins(Page);
+            ////}
+            ////if (jQuery.IsHoverIntentRequested)
+            ////{
+            ////   jQuery.RegisterHoverIntent(Page);
+            ////}
             if (ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
             {
                 ServicesFrameworkInternal.Instance.RegisterAjaxAntiForgery(this.Page);
@@ -471,7 +471,7 @@ namespace DotNetNuke.Framework
             this.RegisterAjaxScript();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             this.LogDnnTrace("PageBase.Render", "Start", $"{this.Page.Request.Url.AbsoluteUri}");

@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.Groups
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             this.InitializeComponent();

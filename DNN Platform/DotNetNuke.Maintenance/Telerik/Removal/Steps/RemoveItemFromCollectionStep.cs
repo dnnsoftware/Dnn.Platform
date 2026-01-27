@@ -27,19 +27,19 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public string CollectionPath { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public string AttributeNamesToIncludeInSearch { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public string SearchTerm { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ProcessXml(XmlDocument doc)
         {
             this.Success = true;

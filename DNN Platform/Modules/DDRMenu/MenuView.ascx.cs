@@ -50,7 +50,7 @@ namespace DotNetNuke.Web.DDRMenu
             this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             using (new DNNContext(this))
@@ -109,7 +109,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter htmlWriter)
         {
             using (new DNNContext(this))

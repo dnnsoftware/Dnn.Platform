@@ -280,30 +280,30 @@ namespace DotNetNuke.Services.Exceptions
             }
         }
 
-        // public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        // {
-        //    //Serialize this class' state and then call the base class GetObjectData
-        //    info.AddValue("m_AssemblyVersion", AssemblyVersion, typeof (string));
-        //    info.AddValue("m_PortalID", PortalID, typeof (Int32));
-        //    info.AddValue("m_PortalName", PortalName, typeof (string));
-        //    info.AddValue("m_UserID", UserID, typeof (Int32));
-        //    info.AddValue("m_UserName", UserName, typeof (string));
-        //    info.AddValue("m_ActiveTabID", ActiveTabID, typeof (Int32));
-        //    info.AddValue("m_ActiveTabName", ActiveTabName, typeof (string));
-        //    info.AddValue("m_RawURL", RawURL, typeof (string));
-        //    info.AddValue("m_AbsoluteURL", AbsoluteURL, typeof (string));
-        //    info.AddValue("m_AbsoluteURLReferrer", AbsoluteURLReferrer, typeof (string));
-        //    info.AddValue("m_UserAgent", UserAgent, typeof (string));
-        //    info.AddValue("m_DefaultDataProvider", DefaultDataProvider, typeof (string));
-        //    info.AddValue("m_ExceptionGUID", ExceptionGUID, typeof (string));
-        //    info.AddValue("m_FileName", FileName, typeof (string));
-        //    info.AddValue("m_FileLineNumber", FileLineNumber, typeof (Int32));
-        //    info.AddValue("m_FileColumnNumber", FileColumnNumber, typeof (Int32));
-        //    info.AddValue("m_Method", Method, typeof (string));
-        //    info.AddValue("m_StackTrace", m_StackTrace, typeof (string));
-        //    info.AddValue("m_Message", m_Message, typeof (string));
-        //    info.AddValue("m_Source", m_Source, typeof (string));
-        //    base.GetObjectData(info, context);
-        // }
+        ////public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        ////{
+        ////   //Serialize this class' state and then call the base class GetObjectData
+        ////   info.AddValue("m_AssemblyVersion", AssemblyVersion, typeof (string));
+        ////   info.AddValue("m_PortalID", PortalID, typeof (Int32));
+        ////   info.AddValue("m_PortalName", PortalName, typeof (string));
+        ////   info.AddValue("m_UserID", UserID, typeof (Int32));
+        ////   info.AddValue("m_UserName", UserName, typeof (string));
+        ////   info.AddValue("m_ActiveTabID", ActiveTabID, typeof (Int32));
+        ////   info.AddValue("m_ActiveTabName", ActiveTabName, typeof (string));
+        ////   info.AddValue("m_RawURL", RawURL, typeof (string));
+        ////   info.AddValue("m_AbsoluteURL", AbsoluteURL, typeof (string));
+        ////   info.AddValue("m_AbsoluteURLReferrer", AbsoluteURLReferrer, typeof (string));
+        ////   info.AddValue("m_UserAgent", UserAgent, typeof (string));
+        ////   info.AddValue("m_DefaultDataProvider", DefaultDataProvider, typeof (string));
+        ////   info.AddValue("m_ExceptionGUID", ExceptionGUID, typeof (string));
+        ////   info.AddValue("m_FileName", FileName, typeof (string));
+        ////   info.AddValue("m_FileLineNumber", FileLineNumber, typeof (Int32));
+        ////   info.AddValue("m_FileColumnNumber", FileColumnNumber, typeof (Int32));
+        ////   info.AddValue("m_Method", Method, typeof (string));
+        ////   info.AddValue("m_StackTrace", m_StackTrace, typeof (string));
+        ////   info.AddValue("m_Message", m_Message, typeof (string));
+        ////   info.AddValue("m_Source", m_Source, typeof (string));
+        ////   base.GetObjectData(info, context);
+        ////}
     }
 }

@@ -276,7 +276,7 @@ namespace DotNetNuke.Modules.Groups
 
         public string GetCreateUrl()
         {
-            return this.ModuleContext.EditUrl("Create"); // .NavigateUrl(GroupCreateTabId,"",true,null);
+            return this.ModuleContext.EditUrl("Create"); ////.NavigateUrl(GroupCreateTabId,"",true,null);
         }
 
         public string GetClearFilterUrl()

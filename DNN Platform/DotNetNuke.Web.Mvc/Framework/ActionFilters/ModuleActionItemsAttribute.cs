@@ -21,7 +21,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         public string MethodName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var controller = filterContext.Controller as IDnnController;

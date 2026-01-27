@@ -23,7 +23,7 @@ namespace DotNetNuke.HttpModules.DependencyInjection
             ServiceRequestScopeModule.serviceProvider = serviceProvider;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Init(HttpApplication context)
         {
             context.BeginRequest += Context_BeginRequest;

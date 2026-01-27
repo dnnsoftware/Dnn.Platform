@@ -49,13 +49,13 @@ namespace DotNetNuke.Services.Social.Messaging
             this.dataService = dataService;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void SendMessage(Message message, IList<RoleInfo> roles, IList<UserInfo> users, IList<int> fileIDs)
         {
             this.SendMessage(message, roles, users, fileIDs, UserController.Instance.GetCurrentUserInfo());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void SendMessage(Message message, IList<RoleInfo> roles, IList<UserInfo> users, IList<int> fileIDs, UserInfo sender)
         {
             if (sender == null || sender.UserID <= 0)
@@ -279,7 +279,7 @@ namespace DotNetNuke.Services.Social.Messaging
             return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentSettings().AdministratorRoleName);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IMessagingController> GetFactory()
         {
             return () => new MessagingController();

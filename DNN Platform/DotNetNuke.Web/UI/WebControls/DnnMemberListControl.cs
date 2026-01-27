@@ -89,7 +89,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </remarks>
         public IDictionary<string, string> Filters { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -98,7 +98,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.relationshipController = new RelationshipController();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             if (this.ItemTemplate == string.Empty)

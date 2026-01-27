@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void LoadPermissionDefinitions()
         {
             foreach (var permission in this.permissionDefinitionService.GetDefinitionsByTab())

@@ -83,7 +83,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets a value indicating whether to use the user's personal folder.</summary>
         public bool UsePersonalFolder { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string FilePath
         {
             get
@@ -121,7 +121,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int FileID
         {
             get
@@ -162,7 +162,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string FileFilter
         {
             get
@@ -216,7 +216,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets the drop file label.</summary>
         protected string DropFileLabel => Localization.GetString("DropFile", Localization.GetResourceFile(this, MyFileName));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -242,7 +242,7 @@ namespace DotNetNuke.Web.UI.WebControls
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             if (this.FoldersComboBox.SelectedFolder != null && this.FoldersComboBox.SelectedFolder.FolderPath.StartsWith("Users/", StringComparison.InvariantCultureIgnoreCase))

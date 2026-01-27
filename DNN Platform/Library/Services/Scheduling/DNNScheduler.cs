@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.Scheduling
 
     public class DNNScheduler : SchedulingProvider
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Dictionary<string, string> Settings
         {
             get
@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int AddSchedule(ScheduleItem scheduleItem)
         {
             // Remove item from queue
@@ -54,13 +54,13 @@ namespace DotNetNuke.Services.Scheduling
             return scheduleItem.ScheduleID;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void AddScheduleItemSetting(int scheduleID, string name, string value)
         {
             SchedulingController.AddScheduleItemSetting(scheduleID, name, value);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DeleteSchedule(ScheduleItem scheduleItem)
         {
             SchedulingController.DeleteSchedule(scheduleItem.ScheduleID);
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.Scheduling
             DataCache.RemoveCache("ScheduleLastPolled");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExecuteTasks()
         {
             if (Enabled)
@@ -80,85 +80,85 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetActiveThreadCount()
         {
             return SchedulingController.GetActiveThreadCount();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetFreeThreadCount()
         {
             return SchedulingController.GetFreeThreadCount();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetMaxThreadCount()
         {
             return SchedulingController.GetMaxThreadCount();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ScheduleItem GetNextScheduledTask(string server)
         {
             return SchedulingController.GetNextScheduledTask(server);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ArrayList GetSchedule()
         {
             return new ArrayList(SchedulingController.GetSchedule().ToArray());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ArrayList GetSchedule(string server)
         {
             return new ArrayList(SchedulingController.GetSchedule(server).ToArray());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ScheduleItem GetSchedule(int scheduleID)
         {
             return SchedulingController.GetSchedule(scheduleID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ScheduleItem GetSchedule(string typeFullName, string server)
         {
             return SchedulingController.GetSchedule(typeFullName, server);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ArrayList GetScheduleHistory(int scheduleID)
         {
             return new ArrayList(SchedulingController.GetScheduleHistory(scheduleID).ToArray());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Hashtable GetScheduleItemSettings(int scheduleID)
         {
             return SchedulingController.GetScheduleItemSettings(scheduleID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Collection GetScheduleProcessing()
         {
             return SchedulingController.GetScheduleProcessing();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Collection GetScheduleQueue()
         {
             return SchedulingController.GetScheduleQueue();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ScheduleStatus GetScheduleStatus()
         {
             return SchedulingController.GetScheduleStatus();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Halt(string sourceOfHalt)
         {
             Scheduler.CoreScheduler.InitializeThreadPool(Debug, MaxThreads);
@@ -166,21 +166,21 @@ namespace DotNetNuke.Services.Scheduling
             Scheduler.CoreScheduler.KeepRunning = false;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void PurgeScheduleHistory()
         {
             Scheduler.CoreScheduler.InitializeThreadPool(false, MaxThreads);
             Scheduler.CoreScheduler.PurgeScheduleHistory();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ReStart(string sourceOfRestart)
         {
             this.Halt(sourceOfRestart);
             this.StartAndWaitForResponse();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RunEventSchedule(EventName eventName)
         {
             if (Enabled)
@@ -190,7 +190,7 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RunScheduleItemNow(ScheduleItem scheduleItem, bool runNow)
         {
             // If the validation for the server failed, then the server was updated. The scheduled item will be picked up on the next check, so we can exit the request for this instance to run.
@@ -215,13 +215,13 @@ namespace DotNetNuke.Services.Scheduling
             DataCache.RemoveCache("ScheduleLastPolled");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RunScheduleItemNow(ScheduleItem scheduleItem)
         {
             this.RunScheduleItemNow(scheduleItem, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Start()
         {
             if (Enabled)
@@ -233,7 +233,7 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void StartAndWaitForResponse()
         {
             if (Enabled)
@@ -255,13 +255,13 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdateScheduleWithoutExecution(ScheduleItem scheduleItem)
         {
             SchedulingController.UpdateSchedule(scheduleItem);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdateSchedule(ScheduleItem scheduleItem)
         {
             // Remove item from queue
@@ -286,7 +286,7 @@ namespace DotNetNuke.Services.Scheduling
             this.RunScheduleItemNow(scheduleItem);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RemoveFromScheduleInProgress(ScheduleItem scheduleItem)
         {
             // get ScheduleHistoryItem of the running task

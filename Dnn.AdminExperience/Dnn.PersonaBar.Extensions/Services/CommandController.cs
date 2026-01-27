@@ -187,7 +187,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
             mapRouteManager.MapHttpRoute("PersonaBar", "promptwithportalid", "{controller}/{action}/{portalId}", null, new { portalId = "-?\\d+" }, Namespaces);

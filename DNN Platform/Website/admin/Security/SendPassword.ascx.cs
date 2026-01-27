@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private bool ShowEmailField => MembershipProviderConfig.RequiresUniqueEmail || this.UsernameDisabled;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

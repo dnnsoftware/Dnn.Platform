@@ -305,7 +305,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.cmdRestore.Click += this.CmdRestore_Click;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.extensions.js");

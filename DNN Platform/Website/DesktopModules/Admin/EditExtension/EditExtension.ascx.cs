@@ -126,7 +126,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             set => this.ViewState["ReturnUrl"] = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

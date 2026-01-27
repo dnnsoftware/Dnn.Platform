@@ -73,7 +73,7 @@ namespace DotNetNuke.Web.Api
             return allRouteValues;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetRouteName(string moduleFolderName, string routeName, int count)
         {
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
@@ -82,7 +82,7 @@ namespace DotNetNuke.Web.Api
             return moduleFolderName + "-" + routeName + "-" + count.ToString(CultureInfo.InvariantCulture);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetRouteName(string moduleFolderName, string routeName, PortalAliasInfo portalAlias)
             => this.GetRouteName(moduleFolderName, routeName, (IPortalAliasInfo)portalAlias);
 
@@ -107,11 +107,11 @@ namespace DotNetNuke.Web.Api
             return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public HttpRouteValueDictionary GetAllRouteValues(PortalAliasInfo portalAliasInfo, object routeValues)
             => GetAllRouteValues((IPortalAliasInfo)portalAliasInfo, routeValues);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetRouteUrl(string moduleFolderName, string url, int count)
         {
             Requires.NotNegative("count", count);
@@ -120,13 +120,13 @@ namespace DotNetNuke.Web.Api
             return $"{GeneratePrefixString(count)}API/{moduleFolderName}/{url}";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ClearCachedData()
         {
             this.prefixCounts = null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<int> GetRoutePrefixCounts()
         {
             if (this.prefixCounts != null)

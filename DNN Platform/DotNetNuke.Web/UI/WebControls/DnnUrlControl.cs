@@ -697,7 +697,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets the application status.</summary>
         protected IApplicationStatusInfo AppStatus { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -713,7 +713,7 @@ namespace DotNetNuke.Web.UI.WebControls
 #pragma warning restore CS0618 // Type or member is obsolete
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -756,7 +756,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

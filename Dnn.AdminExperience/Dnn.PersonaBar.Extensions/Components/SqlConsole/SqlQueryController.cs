@@ -13,7 +13,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
 
     public class SqlQueryController : ServiceLocator<ISqlQueryController, SqlQueryController>, ISqlQueryController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddQuery(SqlQuery query)
         {
             using (IDataContext ctx = DataContext.Instance())
@@ -23,7 +23,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteQuery(SqlQuery query)
         {
             using (IDataContext ctx = DataContext.Instance())
@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<SqlQuery> GetQueries()
         {
             IEnumerable<SqlQuery> queries;
@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
             return queries;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public SqlQuery GetQuery(int id)
         {
             SqlQuery query;
@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
             return query;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public SqlQuery GetQuery(string name)
         {
             List<SqlQuery> queries;
@@ -80,7 +80,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
             return query;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateQuery(SqlQuery query)
         {
             using (IDataContext ctx = DataContext.Instance())
@@ -90,7 +90,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<string> GetConnections()
         {
             var connections = new List<string>();
@@ -105,7 +105,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
             return connections;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ISqlQueryController> GetFactory()
         {
             return () => new SqlQueryController();

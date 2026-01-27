@@ -11,7 +11,7 @@ namespace DotNetNuke.Authentication.Google.Components
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Authentication.OAuth;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public class GoogleClient : OAuthClientBase
     {
         /// <summary>Initializes a new instance of the <see cref="GoogleClient"/> class.</summary>
@@ -34,7 +34,7 @@ namespace DotNetNuke.Authentication.Google.Components
             this.LoadTokenCookie(string.Empty);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override TimeSpan GetExpiry(string responseText)
         {
             var jsonSerializer = new JavaScriptSerializer();
@@ -43,7 +43,7 @@ namespace DotNetNuke.Authentication.Google.Components
             return new TimeSpan(0, 0, Convert.ToInt32(tokenDictionary["expires_in"]));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string GetToken(string responseText)
         {
             var jsonSerializer = new JavaScriptSerializer();

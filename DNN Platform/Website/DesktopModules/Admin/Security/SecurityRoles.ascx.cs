@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Security
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleActionCollection ModuleActions => new();
 
         /// <summary>Gets or sets the ParentModule (if one exists).</summary>
@@ -429,7 +429,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     if (this.Role != null)
                     {
-                        // cboRoles.Items.Add(new ListItem(Role.RoleName, Role.RoleID.ToString()));
+                        ////cboRoles.Items.Add(new ListItem(Role.RoleName, Role.RoleID.ToString()));
                         this.cboRoles.AddItem(this.Role.RoleName, this.Role.RoleID.ToString());
                         this.cboRoles.Items[0].Selected = true;
                         this.lblTitle.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("RoleTitle.Text", this.LocalResourceFile), this.Role.RoleName, this.Role.RoleID);
@@ -459,7 +459,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     {
                         foreach (UserInfo objUser in UserController.GetUsers(this.PortalId))
                         {
-                            // cboUsers.Items.Add(new ListItem(objUser.DisplayName + " (" + objUser.Username + ")", objUser.UserID.ToString()));
+                            ////cboUsers.Items.Add(new ListItem(objUser.DisplayName + " (" + objUser.Username + ")", objUser.UserID.ToString()));
                             this.cboUsers.AddItem(objUser.DisplayName + " (" + objUser.Username + ")", objUser.UserID.ToString());
                         }
                     }

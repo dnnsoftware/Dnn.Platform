@@ -12,115 +12,115 @@ namespace DotNetNuke.Entities.Users.Social.Data
     {
         private readonly DataProvider provider = DataProvider.Instance();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetAllRelationshipTypes()
         {
             return this.provider.ExecuteReader("GetAllRelationshipTypes");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetRelationshipType(int relationshipTypeId)
         {
             return this.provider.ExecuteReader("GetRelationshipType", relationshipTypeId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteRelationshipType(int relationshipTypeId)
         {
             this.provider.ExecuteNonQuery("DeleteRelationshipType", relationshipTypeId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int SaveRelationshipType(RelationshipType relationshipType, int createUpdateUserId)
         {
             return this.provider.ExecuteScalar<int>("SaveRelationshipType", relationshipType.RelationshipTypeId, relationshipType.Direction, relationshipType.Name, relationshipType.Description, createUpdateUserId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteRelationship(int relationshipId)
         {
             this.provider.ExecuteNonQuery("DeleteRelationship", relationshipId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetRelationship(int relationshipId)
         {
             return this.provider.ExecuteReader("GetRelationship", relationshipId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetRelationshipsByUserId(int userId)
         {
             return this.provider.ExecuteReader("GetRelationshipsByUserID", userId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetRelationshipsByPortalId(int portalId)
         {
             return this.provider.ExecuteReader("GetRelationshipsByPortalID", portalId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int SaveRelationship(Relationship relationship, int createUpdateUserId)
         {
             return this.provider.ExecuteScalar<int>("SaveRelationship", relationship.RelationshipId, relationship.RelationshipTypeId, relationship.Name, relationship.Description, this.provider.GetNull(relationship.UserId), this.provider.GetNull(relationship.PortalId), relationship.DefaultResponse, createUpdateUserId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteUserRelationship(int userRelationshipId)
         {
             this.provider.ExecuteNonQuery("DeleteUserRelationship", userRelationshipId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetUserRelationship(int userRelationshipId)
         {
             return this.provider.ExecuteReader("GetUserRelationship", userRelationshipId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetUserRelationship(int userId, int relatedUserId, int relationshipId, RelationshipDirection relationshipDirection)
         {
             return this.provider.ExecuteReader("GetUserRelationshipsByMultipleIDs", userId, relatedUserId, relationshipId, relationshipDirection);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetUserRelationships(int userId)
         {
             return this.provider.ExecuteReader("GetUserRelationships", userId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetUserRelationshipsByRelationshipId(int relationshipId)
         {
             return this.provider.ExecuteReader("GetUserRelationshipsByRelationshipID", relationshipId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int SaveUserRelationship(UserRelationship userRelationship, int createUpdateUserId)
         {
             return this.provider.ExecuteScalar<int>("SaveUserRelationship", userRelationship.UserRelationshipId, userRelationship.UserId, userRelationship.RelatedUserId, userRelationship.RelationshipId, userRelationship.Status, createUpdateUserId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetUserRelationshipPreferenceById(int preferenceId)
         {
             return this.provider.ExecuteReader("GetUserRelationshipPreferenceByID", preferenceId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetUserRelationshipPreference(int userId, int relationshipId)
         {
             return this.provider.ExecuteReader("GetUserRelationshipPreference", userId, relationshipId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteUserRelationshipPreference(int preferenceId)
         {
             this.provider.ExecuteNonQuery("DeleteUserRelationshipPreference", preferenceId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int SaveUserRelationshipPreference(UserRelationshipPreference userRelationshipPreference, int createUpdateUserId)
         {
             return this.provider.ExecuteScalar<int>("SaveUserRelationshipPreference", userRelationshipPreference.PreferenceId, userRelationshipPreference.UserId, userRelationshipPreference.RelationshipId, userRelationshipPreference.DefaultResponse, createUpdateUserId);

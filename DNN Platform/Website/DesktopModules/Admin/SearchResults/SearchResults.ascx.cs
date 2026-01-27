@@ -355,7 +355,7 @@ namespace DotNetNuke.Modules.SearchResults
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -295,13 +295,13 @@ namespace DotNetNuke.Web.DDRMenu
             return this.Children.Count > 0;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public XmlSchema GetSchema()
         {
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ReadXml(XmlReader reader)
         {
             var empty = reader.IsEmptyElement;
@@ -396,7 +396,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void WriteXml(XmlWriter writer)
         {
             if (this.Parent != null)

@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleActionCollection ModuleActions
         {
             get
@@ -193,7 +193,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void LoadViewState(object savedState)
         {
             if (savedState != null)
@@ -215,7 +215,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override object SaveViewState()
         {
             var allStates = new object[2];
@@ -279,7 +279,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

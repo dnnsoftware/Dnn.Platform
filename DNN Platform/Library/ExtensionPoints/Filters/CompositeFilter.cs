@@ -23,7 +23,7 @@ namespace DotNetNuke.ExtensionPoints.Filters
             return this;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Condition(IExtensionPointData m)
         {
             return this.filters.All(f => f.Condition(m));

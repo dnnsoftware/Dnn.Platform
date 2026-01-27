@@ -45,7 +45,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
             this.redirectionController = redirectionController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IRedirectionController>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             switch (version)

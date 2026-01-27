@@ -39,25 +39,25 @@ namespace DotNetNuke.Services.Localization
             Host = 2,
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetString(string key, string resourceFileRoot)
         {
             return this.GetString(key, resourceFileRoot, null, PortalSettings.Current, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetString(string key, string resourceFileRoot, string language)
         {
             return this.GetString(key, resourceFileRoot, language, PortalSettings.Current, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings)
         {
             return this.GetString(key, resourceFileRoot, language, portalSettings, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings, bool disableShowMissingKeys)
         {
             // make the default translation property ".Text"
@@ -180,7 +180,7 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Dictionary<string, string> GetCompiledResourceFile(PortalSettings portalSettings, string resourceFile, string locale)
         {
             return

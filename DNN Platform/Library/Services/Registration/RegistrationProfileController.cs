@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Registration
 
     public class RegistrationProfileController : ServiceLocator<IRegistrationProfileController, RegistrationProfileController>, IRegistrationProfileController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IEnumerable<string> Search(int portalId, string searchTerm)
         {
@@ -42,7 +42,7 @@ namespace DotNetNuke.Services.Registration
             return results;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IRegistrationProfileController> GetFactory()
         {
             return () => new RegistrationProfileController();

@@ -454,7 +454,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public object this[string name]
         {
             get

@@ -154,7 +154,7 @@ namespace DotNetNuke.UI.Skins.Controls
             return Localization.GetString(key, Localization.GetResourceFile(this, MyFileName));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -162,7 +162,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.Visible = !this.PortalSettings.InErrorPageRequest() || this.ShowInErrorPage;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

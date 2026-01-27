@@ -11,7 +11,7 @@ namespace DotNetNuke.Web.InternalServices
     {
         private static readonly string[] Namespaces = ["DotNetNuke.Web.InternalServices",];
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
             mapRouteManager.MapHttpRoute(

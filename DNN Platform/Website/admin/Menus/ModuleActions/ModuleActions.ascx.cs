@@ -93,7 +93,7 @@ namespace DotNetNuke.Admin.Containers
             return Localization.GetString(key, Localization.GlobalResourceFile);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -111,7 +111,7 @@ namespace DotNetNuke.Admin.Containers
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -211,7 +211,7 @@ namespace DotNetNuke.Admin.Containers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             base.Render(writer);

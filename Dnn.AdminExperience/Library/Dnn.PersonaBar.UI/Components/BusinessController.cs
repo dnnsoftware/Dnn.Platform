@@ -60,7 +60,7 @@ namespace Dnn.PersonaBar.UI.Components
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             switch (version)

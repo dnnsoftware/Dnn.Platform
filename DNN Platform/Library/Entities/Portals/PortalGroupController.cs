@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Portals
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddPortalToGroup(PortalInfo portal, PortalGroupInfo portalGroup, UserCopiedCallback callback)
         {
             Requires.NotNull("portal", portal);
@@ -118,7 +118,7 @@ namespace DotNetNuke.Entities.Portals
             OnAddPortalToGroupFinished(callback, portal, portalGroup, users.Count);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int AddPortalGroup(PortalGroupInfo portalGroup)
         {
             // Argument Contract
@@ -141,7 +141,7 @@ namespace DotNetNuke.Entities.Portals
             return portalGroup.PortalGroupId;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeletePortalGroup(PortalGroupInfo portalGroup)
         {
             // Argument Contract
@@ -163,7 +163,7 @@ namespace DotNetNuke.Entities.Portals
             ClearCache();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<PortalGroupInfo> GetPortalGroups()
         {
             return CBO.GetCachedObject<IEnumerable<PortalGroupInfo>>(
@@ -175,7 +175,7 @@ namespace DotNetNuke.Entities.Portals
                 this.GetPortalGroupsCallback);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<PortalInfo> GetPortalsByGroup(int portalGroupId)
         {
             var portals = PortalController.Instance.GetPortals();
@@ -184,7 +184,7 @@ namespace DotNetNuke.Entities.Portals
                             .ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RemovePortalFromGroup(PortalInfo portal, PortalGroupInfo portalGroup, bool copyUsers, UserCopiedCallback callback)
         {
             // Argument Contract
@@ -271,7 +271,7 @@ namespace DotNetNuke.Entities.Portals
             callback(args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdatePortalGroup(PortalGroupInfo portalGroup)
         {
             // Argument Contract
@@ -283,7 +283,7 @@ namespace DotNetNuke.Entities.Portals
             ClearCache();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsModuleShared(int moduleId, PortalInfo portal)
         {
             if (portal == null)

@@ -12,7 +12,7 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>A cake task to copy the <c>release.config</c> to the <c>web.config</c>.</summary>
     public sealed class CopyWebConfig : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             context.CopyFile(context.WebsiteFolder + "release.config", context.WebsiteFolder + "web.config");

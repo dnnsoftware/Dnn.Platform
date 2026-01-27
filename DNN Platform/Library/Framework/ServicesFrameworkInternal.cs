@@ -12,7 +12,7 @@ namespace DotNetNuke.Framework
 
     internal class ServicesFrameworkInternal : ServiceLocator<IServiceFrameworkInternals, ServicesFrameworkInternal>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IServiceFrameworkInternals> GetFactory()
         {
             return static () => ActivatorUtilities.GetServiceOrCreateInstance<ServicesFrameworkImpl>(Globals.DependencyProvider);

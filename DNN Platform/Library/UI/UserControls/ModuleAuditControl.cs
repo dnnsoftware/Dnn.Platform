@@ -76,7 +76,7 @@ namespace DotNetNuke.UI.UserControls
             get { return this.ViewState["Entity"] as EntityInfo; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -97,13 +97,13 @@ namespace Dnn.ExportImport.Components.Services
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Category => Constants.Category_Pages;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ParentCategory => null;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override uint Priority => 20;
 
         /// <summary>Gets or sets a value indicating whether to include system pages.</summary>
@@ -138,7 +138,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -168,7 +168,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -196,7 +196,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportTab>(x => x.IsSystem == this.IncludeSystem);
@@ -373,7 +373,7 @@ namespace Dnn.ExportImport.Components.Services
                 localTab.IsVisible = otherTab.IsVisible;
                 EntitiesController.Instance.SetTabSpecificData(localTab.TabID, false, localTab.IsVisible);
 
-                // tabController.UpdateTab(localTab); // to clear cache
+                ////tabController.UpdateTab(localTab); // to clear cache
                 // Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
                 if (!DataProvider.Instance().CheckTabUniqueIdExists(otherTab.UniqueId))
                 {
@@ -466,7 +466,7 @@ namespace Dnn.ExportImport.Components.Services
             localTab.Description = otherTab.Description;
             localTab.KeyWords = otherTab.KeyWords;
 
-            // localTab.IsDeleted = otherTab.IsDeleted; // DO NOT enable this; leave this to other logic
+            ////localTab.IsDeleted = otherTab.IsDeleted; // DO NOT enable this; leave this to other logic
             localTab.Url = otherTab.Url;
             localTab.SkinSrc = otherTab.SkinSrc;
             localTab.ContainerSrc = otherTab.ContainerSrc;
@@ -480,7 +480,7 @@ namespace Dnn.ExportImport.Components.Services
             localTab.IconFileLarge = otherTab.IconFileLarge;
             localTab.CultureCode = otherTab.CultureCode;
 
-            // localTab.UniqueId = otherTab.UniqueId;
+            ////localTab.UniqueId = otherTab.UniqueId;
             localTab.VersionGuid = otherTab.VersionGuid;
             localTab.LocalizedVersionGuid = otherTab.LocalizedVersionGuid;
             localTab.Level = otherTab.Level;
@@ -860,7 +860,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (isUpdate)
                 {
                     // UNDONE: Do we really need to update an existing permission? It won't do anything; permissions are immutable
-                    // Result.AddLogEntry("Updated tab permission", other.PermissionKey);
+                    ////Result.AddLogEntry("Updated tab permission", other.PermissionKey);
                 }
                 else
                 {
@@ -1075,7 +1075,7 @@ namespace Dnn.ExportImport.Components.Services
                         Footer = other.Footer,
                         CultureCode = other.CultureCode,
 
-                        // UniqueId = other.UniqueId,
+                        ////UniqueId = other.UniqueId,
                         UniqueId = DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
                         VersionGuid = other.VersionGuid,
                         DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
@@ -1088,7 +1088,7 @@ namespace Dnn.ExportImport.Components.Services
                         PortalID = this.exportImportJob.PortalId,
                     };
 
-                    // Logger.Error($"Local Tab ID={local.TabID}, ModuleID={local.ModuleID}, ModuleDefID={local.ModuleDefID}");
+                    ////Logger.Error($"Local Tab ID={local.TabID}, ModuleID={local.ModuleID}, ModuleDefID={local.ModuleDefID}");
                     try
                     {
                         // this will create up to 2 records:  Module (if it is not already there) and TabModule
@@ -1173,7 +1173,7 @@ namespace Dnn.ExportImport.Components.Services
                                     Footer = other.Footer,
                                     CultureCode = other.CultureCode,
 
-                                    // UniqueId = other.UniqueId,
+                                    ////UniqueId = other.UniqueId,
                                     UniqueId = DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
                                     VersionGuid = other.VersionGuid,
                                     DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,

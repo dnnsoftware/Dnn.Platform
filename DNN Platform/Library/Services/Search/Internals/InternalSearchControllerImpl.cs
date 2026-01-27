@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Search.Internals
             this.authorBoost = hostController.GetInteger(Constants.SearchAuthorBoostSetting, Constants.DefaultSearchAuthorBoost);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<SearchContentSource> GetSearchContentSourceList(int portalId)
         {
             var searchableModuleDefsCacheArgs = new CacheItemArgs(
@@ -89,7 +89,7 @@ namespace DotNetNuke.Services.Search.Internals
             return list;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetSearchDocumentTypeDisplayName(SearchResult searchResult)
         {
             // ModuleDefId will be zero for non-module
@@ -100,13 +100,13 @@ namespace DotNetNuke.Services.Search.Internals
             return keys.TryGetValue(key, out var documentTypeDisplayName) ? documentTypeDisplayName : string.Empty;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddSearchDocument(SearchDocument searchDocument)
         {
             this.AddSearchDocumentInternal(searchDocument, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddSearchDocuments(IEnumerable<SearchDocument> searchDocuments)
         {
             var searchDocs = searchDocuments as IList<SearchDocument> ?? searchDocuments.ToList();
@@ -115,14 +115,14 @@ namespace DotNetNuke.Services.Search.Internals
                 const int commitBatchSize = 1024 * 16;
                 var idx = 0;
 
-                // var added = false;
+                ////var added = false;
                 foreach (var searchDoc in searchDocs)
                 {
                     try
                     {
                         this.AddSearchDocumentInternal(searchDoc, (++idx % commitBatchSize) == 0);
 
-                        // added = true;
+                        ////added = true;
                     }
                     catch (Exception ex)
                     {
@@ -132,20 +132,20 @@ namespace DotNetNuke.Services.Search.Internals
 
                 // Note: modified to do commit only once at the end of scheduler job
                 // check so we don't commit again
-                // if (added && (idx % commitBatchSize) != 0)
-                // {
-                //    Commit();
-                // }
+                ////if (added && (idx % commitBatchSize) != 0)
+                ////{
+                ////   Commit();
+                ////}
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteSearchDocument(SearchDocument searchDocument)
         {
             this.DeleteSearchDocumentInternal(searchDocument, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteSearchDocumentsByModule(int portalId, int moduleId, int moduleDefId)
         {
             Requires.NotNegative("PortalId", portalId);
@@ -159,7 +159,7 @@ namespace DotNetNuke.Services.Search.Internals
             });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteAllDocuments(int portalId, int searchTypeId)
         {
             Requires.NotNegative("SearchTypeId", searchTypeId);
@@ -171,20 +171,20 @@ namespace DotNetNuke.Services.Search.Internals
             });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Commit()
         {
             LuceneController.Instance.Commit();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool OptimizeSearchIndex()
         {
             // run optimization in background
             return LuceneController.Instance.OptimizeSearchIndex(true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public SearchStatistics GetSearchStatistics()
         {
             return LuceneController.Instance.GetSearchStatistics();

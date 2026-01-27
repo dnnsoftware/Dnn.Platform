@@ -11,7 +11,7 @@ namespace DotNetNuke.Services.Scheduling
     /// </summary>
     public class ScheduleHistorySortStartDate : IComparer
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Compare(object x, object y)
         {
             return ((ScheduleHistoryItem)y).StartDate.CompareTo(((ScheduleHistoryItem)x).StartDate);

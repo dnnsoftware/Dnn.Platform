@@ -32,7 +32,7 @@ namespace Dnn.PersonaBar.Library
         /// <returns>The query string value or <see langword="null"/>.</returns>
         public static string GetQueryString(this HttpRequestMessage request, string key)
         {
-            // IEnumerable<KeyValuePair<string,string>> - right!
+            ////IEnumerable<KeyValuePair<string,string>> - right!
             var queryStrings = request.GetQueryNameValuePairs();
             if (queryStrings == null)
             {
@@ -54,7 +54,7 @@ namespace Dnn.PersonaBar.Library
         /// <returns>The query string value or <c>-1</c>.</returns>
         public static int GetQueryStringAsInteger(this HttpRequestMessage request, string key)
         {
-            // IEnumerable<KeyValuePair<string,string>> - right!
+            ////IEnumerable<KeyValuePair<string,string>> - right!
             var value = request.GetQueryString(key);
             int intValue;
             if (!string.IsNullOrEmpty(value) && int.TryParse(value, out intValue))

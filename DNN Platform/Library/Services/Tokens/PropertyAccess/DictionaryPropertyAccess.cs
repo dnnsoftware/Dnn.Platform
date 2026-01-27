@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Tokens
             this.nameValueCollection = list;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CacheLevel Cacheability
         {
             get
@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             if (this.nameValueCollection == null)

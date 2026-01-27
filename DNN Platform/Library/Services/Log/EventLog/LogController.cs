@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Log.EventLog
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddLog(LogInfo logInfo)
         {
             ILogInfo theLogInfo = logInfo;
@@ -147,7 +147,7 @@ namespace DotNetNuke.Services.Log.EventLog
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddLogType(string configFile, string fallbackConfigFile)
         {
             var xmlDoc = new XmlDocument { XmlResolver = null };
@@ -209,7 +209,7 @@ namespace DotNetNuke.Services.Log.EventLog
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddLogType(LogTypeInfo logType)
         {
             ILogTypeInfo theLogType = logType;
@@ -222,7 +222,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     theLogType.LogTypeOwner);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
             ILogTypeConfigInfo theLogTypeConfig = logTypeConfig;
@@ -241,56 +241,56 @@ namespace DotNetNuke.Services.Log.EventLog
                 theLogTypeConfig.MailToAddress);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ClearLog()
         {
             LoggingProvider.Instance().ClearLog();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteLog(LogInfo logInfo)
         {
             LoggingProvider.Instance().DeleteLog(logInfo);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void DeleteLogType(LogTypeInfo logType)
         {
             LoggingProvider.Instance().DeleteLogType(logType.LogTypeKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void DeleteLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
             ILogTypeConfigInfo theLogTypeConfig = logTypeConfig;
             LoggingProvider.Instance().DeleteLogTypeConfigInfo(theLogTypeConfig.Id);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
         {
             return LoggingProvider.Instance().GetLogs(portalID, logType, pageSize, pageIndex, ref totalRecords);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual ArrayList GetLogTypeConfigInfo()
         {
             return LoggingProvider.Instance().GetLogTypeConfigInfo();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual LogTypeConfigInfo GetLogTypeConfigInfoByID(string id)
         {
             return LoggingProvider.Instance().GetLogTypeConfigInfoByID(id);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual Dictionary<string, LogTypeInfo> GetLogTypeInfoDictionary()
         {
             return LoggingProvider.Instance().GetLogTypeInfo().Cast<LogTypeInfo>().ToDictionary(logTypeInfo => logTypeInfo.LogTypeKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Obsolete("Deprecated in DotNetNuke 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService.GetLog()' instead. Scheduled for removal in v11.0.0.")]
         public virtual object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType)
         {
@@ -303,13 +303,13 @@ namespace DotNetNuke.Services.Log.EventLog
             return LoggingProvider.Instance().GetLog(logGuid);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void PurgeLogBuffer()
         {
             LoggingProvider.Instance().PurgeLogBuffer();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
             ILogTypeConfigInfo theLogTypeConfig = logTypeConfig;
@@ -328,7 +328,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 theLogTypeConfig.MailToAddress);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void UpdateLogType(LogTypeInfo logType)
         {
             ILogTypeInfo theLogType = logType;
@@ -341,7 +341,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     theLogType.LogTypeOwner);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ILogController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<ILogController>;

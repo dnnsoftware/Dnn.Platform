@@ -41,7 +41,7 @@ namespace DotNetNuke.Web.Mvc
 
         public RequestContext RequestContext { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         bool IHttpHandler.IsReusable => this.IsReusable;
 
         internal ControllerBuilder ControllerBuilder
@@ -52,7 +52,7 @@ namespace DotNetNuke.Web.Mvc
 
         protected virtual bool IsReusable => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         void IHttpHandler.ProcessRequest(HttpContext httpContext)
         {
             SetThreadCulture();

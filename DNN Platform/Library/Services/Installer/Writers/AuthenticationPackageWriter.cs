@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <value>An AuthenticationInfo object.</value>
         public AuthenticationInfo AuthSystem { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void WriteManifestComponent(XmlWriter writer)
         {
             // Write Authentication Component

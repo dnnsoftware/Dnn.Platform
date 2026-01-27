@@ -74,7 +74,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Browsable(false)]
         public CacheLevel Cacheability
         {
@@ -201,7 +201,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Browsable(false)]
         public string[] Roles
         {
@@ -243,7 +243,7 @@ namespace DotNetNuke.Entities.Users
         [Required(true)]
         public string Username { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string VanityUrl { get; set; }
 
         /// <summary>Property access, initially provided for TokenReplace.</summary>

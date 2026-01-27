@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>Handles a click on a node of the menu.</summary>
         public event MenuClickEventHandler NodeClick;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool EnableViewState
         {
             get { return false; }
@@ -67,7 +67,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>Gets or sets the menu settings.</summary>
         internal Settings MenuSettings { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RaisePostBackEvent(string eventArgument)
         {
             using (new DNNContext(this))
@@ -79,7 +79,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             using (new DNNContext(this))
@@ -96,7 +96,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter htmlWriter)
         {
             using (new DNNContext(this))

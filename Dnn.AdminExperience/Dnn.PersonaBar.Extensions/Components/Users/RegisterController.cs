@@ -53,7 +53,7 @@ namespace Dnn.PersonaBar.Users.Components
         // This method can easily be modified to pass password, display name, etc.
         // It is recommended to write unit tests.
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public UserBasicDto Register(RegisterationDetails registerationDetails)
         {
             var portalSettings = registerationDetails.PortalSettings;
@@ -260,11 +260,11 @@ namespace Dnn.PersonaBar.Users.Components
                 throw new InvalidUserRegisterException(UserController.GetUserCreateStatus(createStatus));
             }
 
-            // if (registerationDetails.IgnoreRegistrationMode)
-            //            {
-            //                Mail.SendMail(newUser, MessageType.UserRegistrationPublic, portalSettings);
-            //                return UserBasicDto.FromUserInfo(newUser);
-            //            }
+            ////if (registerationDetails.IgnoreRegistrationMode)
+            ////{
+            ////    Mail.SendMail(newUser, MessageType.UserRegistrationPublic, portalSettings);
+            ////    return UserBasicDto.FromUserInfo(newUser);
+            ////}
 
             // send notification to portal administrator of new user registration
             // check the receive notification setting first, but if register type is Private, we will always send the notification email.
@@ -279,7 +279,7 @@ namespace Dnn.PersonaBar.Users.Components
             return UserBasicDto.FromUserInfo(newUser);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IRegisterController> GetFactory()
         {
             return () => new RegisterController();

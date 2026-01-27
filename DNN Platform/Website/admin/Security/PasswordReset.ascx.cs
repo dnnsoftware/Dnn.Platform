@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.Admin.Security
             set => this.ViewState.Add("ResetToken", value);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -124,7 +124,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

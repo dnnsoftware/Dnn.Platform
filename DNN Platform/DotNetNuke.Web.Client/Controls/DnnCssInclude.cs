@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <inheritdoc cref="ILinkResource.Preload" />
         public bool Preload { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             var stylesheet = this.clientResourceController.CreateStylesheet(this.FilePath, this.PathNameAlias)
@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             base.OnLoad(e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             if (this.AddTag || this.Context.IsDebuggingEnabled)

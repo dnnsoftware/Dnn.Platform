@@ -14,19 +14,19 @@ namespace Dnn.PersonaBar.SiteImportExport.MenuControllers
     /// <summary>Controls the site import/export menu.</summary>
     public class SiteImportExportMenuController : IMenuItemController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Visible(MenuItem menuItem)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
             return user.IsSuperUser;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>();

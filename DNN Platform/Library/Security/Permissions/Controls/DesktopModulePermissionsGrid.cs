@@ -72,10 +72,10 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override bool SupportsPermissionsAbstractions => true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override IList<IPermissionInfo> PermissionCollection => this.permissionCollection ??= this.desktopModulePermissions?.Cast<IPermissionInfo>().ToList();
 
         /// <summary>Resets the permissions collection.</summary>
@@ -85,12 +85,12 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.permissionCollection = null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void GenerateDataGrid()
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void AddPermission(IPermissionDefinitionInfo permissionDefinition, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
             var objPermission = new DesktopModulePermissionInfo(permissionDefinition)
@@ -199,7 +199,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             this.desktopModulePermissions.Remove(permissionID, roleID, userID);

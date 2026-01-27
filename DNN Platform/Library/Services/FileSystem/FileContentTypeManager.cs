@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly object ThreadLocker = new object();
         private Dictionary<string, string> contentTypes;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual IDictionary<string, string> ContentTypes
         {
             get
@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual string GetContentType(string extension)
         {
             if (string.IsNullOrEmpty(extension))

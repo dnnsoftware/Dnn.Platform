@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.DataConsentCompleted?.Invoke(this, e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string SelectedValue
         {
             get
@@ -66,7 +66,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DataBind()
         {
             if (!string.IsNullOrEmpty(this.initValue))
@@ -160,14 +160,14 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             return this.Items.IndexOf(this.FindItemByValue(value));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             this.RepeatColumns = 1;
             base.OnInit(e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             Utilities.ApplyControlSkin(this.clientResourceController, this, string.Empty, string.Empty);

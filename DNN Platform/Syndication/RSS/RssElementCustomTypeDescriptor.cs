@@ -19,73 +19,73 @@ namespace DotNetNuke.Services.Syndication
             this.attributes = attributes;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         AttributeCollection ICustomTypeDescriptor.GetAttributes()
         {
             return AttributeCollection.Empty;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         string ICustomTypeDescriptor.GetClassName()
         {
             return this.GetType().Name;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         string ICustomTypeDescriptor.GetComponentName()
         {
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         TypeConverter ICustomTypeDescriptor.GetConverter()
         {
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         EventDescriptor ICustomTypeDescriptor.GetDefaultEvent()
         {
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         PropertyDescriptor ICustomTypeDescriptor.GetDefaultProperty()
         {
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         object ICustomTypeDescriptor.GetEditor(Type editorBaseType)
         {
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         EventDescriptorCollection ICustomTypeDescriptor.GetEvents(Attribute[] attributes)
         {
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         EventDescriptorCollection ICustomTypeDescriptor.GetEvents()
         {
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
         {
             return this.GetPropertyDescriptors();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
         {
             return this.GetPropertyDescriptors();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         object ICustomTypeDescriptor.GetPropertyOwner(PropertyDescriptor pd)
         {
             return (pd is RssElementCustomPropertyDescriptor) ? this : null;

@@ -495,7 +495,7 @@ namespace DotNetNuke.Services.Mail
             this.SendMails();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             this.Dispose(true);

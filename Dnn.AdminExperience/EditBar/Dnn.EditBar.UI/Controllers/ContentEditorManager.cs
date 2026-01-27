@@ -138,7 +138,7 @@ namespace Dnn.EditBar.UI.Controllers
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -180,7 +180,7 @@ namespace Dnn.EditBar.UI.Controllers
             this.EnsureChildControls();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -189,7 +189,7 @@ namespace Dnn.EditBar.UI.Controllers
             this.RegisterInitScripts();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -267,7 +267,7 @@ namespace Dnn.EditBar.UI.Controllers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             var scripts = ScriptManager.GetCurrent(this.Page).GetRegisteredStartupScripts()
@@ -717,7 +717,7 @@ namespace Dnn.EditBar.UI.Controllers
                 }
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public override Control FindControl(string id)
             {
                 return this.originalPage.FindControl(id);

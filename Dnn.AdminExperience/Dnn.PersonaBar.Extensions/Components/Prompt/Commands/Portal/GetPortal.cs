@@ -20,12 +20,12 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
         [FlagParameter("id", "Prompt_GetPortal_FlagId", "Integer")]
         private const string FlagId = "id";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int PortalIdFlagValue { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             // default usage: return current portal if nothing else specified
@@ -48,7 +48,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var pc = new PortalController();

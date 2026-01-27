@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.Search.Entities
         /// <summary>Gets or sets tags can be specified as additional information.</summary>
         public IEnumerable<string> Tags { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ToString()
         {
             return string.Join(

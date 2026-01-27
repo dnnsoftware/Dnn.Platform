@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void WriteFileElement(XmlWriter writer, InstallFile file)
         {
             this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.WRITER_AddFileToManifest, file.Name));

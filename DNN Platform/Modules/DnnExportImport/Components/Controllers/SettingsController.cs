@@ -41,7 +41,7 @@ namespace Dnn.ExportImport.Components.Controllers
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<ExportImportSetting> GetAllSettings()
         {
             return CBO.GetCachedObject<List<ExportImportSetting>>(
@@ -50,20 +50,20 @@ namespace Dnn.ExportImport.Components.Controllers
                 c => CBO.FillQueryable<ExportImportSetting>(DataProvider.Instance().GetExportImportSettings()).ToList());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ExportImportSetting GetSetting(string settingName)
         {
             return this.GetAllSettings().ToList().FirstOrDefault(x => x.SettingName == settingName);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddSetting(ExportImportSetting exportImportSetting)
         {
             DataProvider.Instance().AddExportImportSetting(exportImportSetting);
             DataCache.RemoveCache(CacheKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ISettingsController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<ISettingsController>;

@@ -116,7 +116,7 @@ namespace DotNetNuke.Entities.Portals
 
         private IPortalAliasInfo ThisAsInterface => this;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
             this.FillInternal(dr);
@@ -133,13 +133,13 @@ namespace DotNetNuke.Entities.Portals
             this.Skin = Null.SetNullString(dr["Skin"]);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public XmlSchema GetSchema()
         {
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ReadXml(XmlReader reader)
         {
             while (reader.Read())
@@ -191,7 +191,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void WriteXml(XmlWriter writer)
         {
             // Write start of main elements

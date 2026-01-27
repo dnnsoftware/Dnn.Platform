@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.ModuleCache
         private const string AttribFileExtension = ".attrib.resources";
         private static readonly SharedDictionary<int, string> CacheFolderPath = new SharedDictionary<int, string>(LockingStrategy.ReaderWriter);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string GenerateCacheKey(int tabModuleId, SortedDictionary<string, string> varyBy)
         {
             var cacheKey = new StringBuilder();
@@ -40,13 +40,13 @@ namespace DotNetNuke.Services.ModuleCache
             return this.GenerateCacheKeyHash(tabModuleId, cacheKey.ToString());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetItemCount(int tabModuleId)
         {
             return GetCachedItemCount(tabModuleId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override byte[] GetModule(int tabModuleId, string cacheKey)
         {
             string cachedModule = GetCachedOutputFileName(tabModuleId, cacheKey);
@@ -64,13 +64,13 @@ namespace DotNetNuke.Services.ModuleCache
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void PurgeCache(int portalId)
         {
             PurgeCache(GetCacheFolder(portalId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void PurgeExpiredItems(int portalId)
         {
             try
@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.ModuleCache
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void SetModule(int tabModuleId, string cacheKey, TimeSpan duration, byte[] output)
         {
@@ -132,7 +132,7 @@ namespace DotNetNuke.Services.ModuleCache
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Remove(int tabModuleId)
         {
             try

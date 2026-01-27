@@ -654,7 +654,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 request.Method = "POST";
                 request.ContentType = "application/x-www-form-urlencoded";
 
-                // request.ContentType = "text/xml";
+                ////request.ContentType = "text/xml";
                 request.ContentLength = byteArray.Length;
 
                 if (!string.IsNullOrEmpty(this.OAuthHeaderCode))

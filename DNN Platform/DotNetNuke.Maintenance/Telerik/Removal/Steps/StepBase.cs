@@ -32,22 +32,22 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
                 throw new ArgumentNullException(nameof(localizer));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual string Name { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool? Success { get; protected set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Notes { get; protected set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Quiet { get; protected set; }
 
         /// <summary>Gets an instance of <see cref="ILog"/> specific to steps.</summary>
         protected ILog Log { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Execute()
         {
             try

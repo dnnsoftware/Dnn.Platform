@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
         private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

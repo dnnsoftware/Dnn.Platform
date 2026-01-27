@@ -588,13 +588,13 @@ namespace DotNetNuke.Entities.Modules
                 return this.Type.IndexOf("host", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public XmlSchema GetSchema()
             {
                 return null;
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public void ReadXml(XmlReader reader)
             {
                 while (!reader.EOF)
@@ -647,7 +647,7 @@ namespace DotNetNuke.Entities.Modules
                 }
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public void WriteXml(XmlWriter writer)
             {
                 // Write start of main elements

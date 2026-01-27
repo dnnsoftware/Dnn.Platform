@@ -14,22 +14,22 @@ namespace DotNetNuke.Entities.Modules.Settings
     using DotNetNuke.Abstractions;
     using DotNetNuke.Services.Exceptions;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public class SerializationManager : ISerializationManager
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         string ISerializationManager.SerializeValue<T>(T value) =>
             this.SerializeValue(value, null, typeof(T));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         string ISerializationManager.SerializeValue<T>(T value, string serializer) =>
             this.SerializeValue(value, serializer, typeof(T));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         string ISerializationManager.SerializeProperty<T>(T myObject, PropertyInfo property) =>
             ((ISerializationManager)this).SerializeProperty(myObject, property, null);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         string ISerializationManager.SerializeProperty<T>(T myObject, PropertyInfo property, string serializer)
         {
             var settingValue = property.GetValue(myObject, null) ?? string.Empty;
@@ -45,11 +45,11 @@ namespace DotNetNuke.Entities.Modules.Settings
             return (T)this.DeserializeValue(value, serializer, typeof(T));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         void ISerializationManager.DeserializeProperty<T>(T myObject, PropertyInfo property, string propertyValue) =>
             ((ISerializationManager)this).DeserializeProperty(myObject, property, propertyValue, null);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         void ISerializationManager.DeserializeProperty<T>(T myObject, PropertyInfo property, string propertyValue, string serializer)
         {
             try

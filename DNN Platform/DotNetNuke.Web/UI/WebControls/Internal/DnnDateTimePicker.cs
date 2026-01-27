@@ -35,13 +35,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string Format => "yyyy-MM-dd HH:mm:ss";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string ClientFormat => "YYYY-MM-DD HH:mm:ss";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override IDictionary<string, object> GetSettings()
         {
             var settings = base.GetSettings();

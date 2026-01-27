@@ -61,8 +61,8 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 
         private static string CreateMd5HashBinHex(string val)
         {
-            // Services.Logging.LoggingController.SimpleLog(String.Format("Creating Hash for {0}", val))
-            // Services.Logging.LoggingController.SimpleLog(String.Format("Back and forth: {0}", Encoding.Default.GetString(Encoding.Default.GetBytes(val))))
+            ////Services.Logging.LoggingController.SimpleLog(String.Format("Creating Hash for {0}", val))
+            ////Services.Logging.LoggingController.SimpleLog(String.Format("Back and forth: {0}", Encoding.Default.GetString(Encoding.Default.GetBytes(val))))
             var bha1 = Md5.ComputeHash(Encoding.Default.GetBytes(val));
             var ha1 = string.Empty;
             for (var i = 0; i <= 15; i++)
@@ -107,7 +107,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             {
                 this.IsNonceStale = !IsNonceValid(this.Request.RequestParams["nonce"]);
 
-                // Services.Logging.LoggingController.SimpleLog(String.Format("Request hash: {0} - Response Hash: {1}", _request.RequestParams("response"), HashedDigest))
+                ////Services.Logging.LoggingController.SimpleLog(String.Format("Request hash: {0} - Response Hash: {1}", _request.RequestParams("response"), HashedDigest))
                 if ((!this.IsNonceStale) && this.Request.RequestParams["response"] == this.CalculateHashedDigest())
                 {
                     this.IsValid = true;
@@ -155,7 +155,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             var cnonce = this.Request.RequestParams["cnonce"];
             var qop = this.Request.RequestParams["qop"];
 
-            // Services.Logging.LoggingController.SimpleLog(A1, HA1, A2, HA2, unhashedDigest)
+            ////Services.Logging.LoggingController.SimpleLog(A1, HA1, A2, HA2, unhashedDigest)
             return qop != null ? $"{ha1}:{nonce}:{nc}:{cnonce}:{qop}:{ha2}" : $"{ha1}:{nonce}:{ha2}";
         }
     }

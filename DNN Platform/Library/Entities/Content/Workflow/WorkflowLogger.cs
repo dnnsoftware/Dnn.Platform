@@ -22,25 +22,25 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.workflowLogRepository = WorkflowLogRepository.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<WorkflowLog> GetWorkflowLogs(int contentItemId, int workflowId)
         {
             return this.workflowLogRepository.GetWorkflowLogs(contentItemId, workflowId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddWorkflowLog(int contentItemId, int workflowId, WorkflowLogType type, string comment, int userId)
         {
             this.AddWorkflowLog(contentItemId, workflowId, type, GetWorkflowActionText(type), comment, userId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddWorkflowLog(int contentItemId, int workflowId, string action, string comment, int userId)
         {
             this.AddWorkflowLog(contentItemId, workflowId, WorkflowLogType.CommentProvided, action, comment, userId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IWorkflowLogger> GetFactory()
         {
             return () => new WorkflowLogger();

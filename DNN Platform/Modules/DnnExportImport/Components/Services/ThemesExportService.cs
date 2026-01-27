@@ -48,16 +48,16 @@ namespace Dnn.ExportImport.Components.Services
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Category => Constants.Category_Themes;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ParentCategory => Constants.Category_Pages;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override uint Priority => 10;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckCancelled(exportJob))
@@ -136,7 +136,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob))
@@ -234,7 +234,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetImportTotal()
         {
             return this.importCount;

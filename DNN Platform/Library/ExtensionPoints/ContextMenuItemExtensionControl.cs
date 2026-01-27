@@ -18,7 +18,7 @@ namespace DotNetNuke.ExtensionPoints
     {
         private string content = string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -48,7 +48,7 @@ namespace DotNetNuke.ExtensionPoints
             this.content = str.ToString();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void RenderContents(HtmlTextWriter output)
         {

@@ -40,7 +40,7 @@ namespace DotNetNuke.Entities.Tabs
             this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsTabPublished(int tabID, int portalID)
         {
             var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
@@ -50,7 +50,7 @@ namespace DotNetNuke.Entities.Tabs
             return existPermission is { AllowAccess: true, };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SetTabPublishing(int tabID, int portalID, bool publish)
         {
             var tab = TabController.Instance.GetTab(tabID, portalID);
@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool CanPublishingBePerformed(int tabID, int portalID)
         {
             var tab = TabController.Instance.GetTab(tabID, portalID);
@@ -94,7 +94,7 @@ namespace DotNetNuke.Entities.Tabs
             return workflowId is 1 or -1;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ITabPublishingController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<ITabPublishingController>;

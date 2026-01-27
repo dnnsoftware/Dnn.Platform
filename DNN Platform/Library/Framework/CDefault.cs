@@ -117,7 +117,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RegisterAjaxScript()
         {
             if (this.Page.Form != null)

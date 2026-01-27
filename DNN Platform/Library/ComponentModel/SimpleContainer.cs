@@ -34,7 +34,7 @@ namespace DotNetNuke.ComponentModel
             this.name = name;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Name
         {
             get
@@ -43,7 +43,7 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void RegisterComponent(string name, Type type)
         {
@@ -53,7 +53,7 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override object GetComponent(string name)
         {
             IComponentBuilder builder = this.GetComponentBuilder(name);
@@ -61,7 +61,7 @@ namespace DotNetNuke.ComponentModel
             return GetComponent(builder);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override object GetComponent(Type contractType)
         {
             ComponentType componentType = this.GetComponentType(contractType);
@@ -87,7 +87,7 @@ namespace DotNetNuke.ComponentModel
             return component;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override object GetComponent(string name, Type contractType)
         {
             ComponentType componentType = this.GetComponentType(contractType);
@@ -103,7 +103,7 @@ namespace DotNetNuke.ComponentModel
             return component;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string[] GetComponentList(Type contractType)
         {
             var components = new List<string>();
@@ -122,7 +122,7 @@ namespace DotNetNuke.ComponentModel
             return components.ToArray();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IDictionary GetComponentSettings(string name)
         {
             IDictionary settings;
@@ -134,7 +134,7 @@ namespace DotNetNuke.ComponentModel
             return settings;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void RegisterComponent(string name, Type contractType, Type type, ComponentLifeStyleType lifestyle)
         {
@@ -156,7 +156,7 @@ namespace DotNetNuke.ComponentModel
             this.RegisterComponent(name, type);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RegisterComponentInstance(string name, Type contractType, object instance)
         {
             this.AddComponentType(contractType);
@@ -166,7 +166,7 @@ namespace DotNetNuke.ComponentModel
             this.RegisterComponent(name, instance.GetType());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RegisterComponentSettings(string name, IDictionary dependencies)
         {
             using (this.componentDependencies.GetWriteLock())

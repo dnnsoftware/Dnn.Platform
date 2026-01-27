@@ -54,7 +54,7 @@ public partial class GroupEdit : GroupsModuleBase
         this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override void OnInit(EventArgs e)
     {
         this.Load += this.Page_Load;

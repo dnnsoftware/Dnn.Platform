@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.UI.WebControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public DnnRibbonBarGroupCollection Groups => (DnnRibbonBarGroupCollection)this.Controls;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void AddParsedSubObject(object obj)
         {
             if (obj is DnnRibbonBarGroup)
@@ -57,13 +57,13 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override ControlCollection CreateControlCollection()
         {
             return new DnnRibbonBarGroupCollection(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -73,7 +73,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             if (this.Groups.Count > 0)

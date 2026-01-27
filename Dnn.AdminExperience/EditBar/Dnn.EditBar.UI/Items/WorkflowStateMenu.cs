@@ -10,25 +10,25 @@ namespace Dnn.EditBar.UI.Items
     [Serializable]
     public class WorkflowStateMenu : WorkflowBaseMenuItem
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Name { get; } = "WorkflowState";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Text => this.Workflow != null ? $"<small>{this.Workflow.WorkflowName}:</small><br>{this.RenderStates()}" : string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CssClass => string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Template { get; } = string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Parent { get; } = Library.Constants.LeftMenu;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Loader { get; } = "WorkflowState";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Order { get; } = 77;
 
         // render list of workflow states from first state to current workflow state

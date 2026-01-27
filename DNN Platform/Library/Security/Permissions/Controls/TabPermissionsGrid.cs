@@ -257,7 +257,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             this.tabPermissions.Remove(permissionID, roleID, userID);

@@ -23,7 +23,7 @@ namespace DotNetNuke.ExtensionPoints
         [DefaultValue(false)]
         public bool IsHost { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void RenderContents(HtmlTextWriter output)
         {
@@ -53,7 +53,7 @@ namespace DotNetNuke.ExtensionPoints
             output.Write(str.ToString());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             this.RenderContents(writer);

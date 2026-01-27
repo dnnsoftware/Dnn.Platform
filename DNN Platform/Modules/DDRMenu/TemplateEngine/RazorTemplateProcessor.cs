@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
     public class RazorTemplateProcessor : ITemplateProcessor
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool LoadDefinition(TemplateDefinition baseDefinition)
         {
             var virtualPath = baseDefinition.TemplateVirtualPath;
@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
         {
             if (!string.IsNullOrEmpty(liveDefinition.TemplateVirtualPath))

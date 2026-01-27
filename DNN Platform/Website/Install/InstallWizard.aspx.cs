@@ -539,14 +539,14 @@ namespace DotNetNuke.Services.Install
             return Localization.GetString(key, localResourceFile, culture);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnError(EventArgs e)
         {
             HttpContext.Current.Response.Clear();
             HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -566,7 +566,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -606,7 +606,7 @@ namespace DotNetNuke.Services.Install
             this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ConfirmPassword", confirmScript, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             if (InstallBlocker.Instance.IsInstallInProgress())

@@ -203,9 +203,9 @@ namespace Dnn.PersonaBar.Extensions.Services
 
             controlFolders.Insert(0, Path.Combine(Globals.ApplicationMapPath, @"Admin\Skins"));
 
-            // var moduleControl = ModuleControlController.GetModuleControl(moduleControlId);
-            // var currentControlFolder = moduleControl == null ? "" :
-            //    (Path.GetDirectoryName(moduleControl.ControlSrc.ToLower()) ?? "").Replace('\\', '/');
+            ////var moduleControl = ModuleControlController.GetModuleControl(moduleControlId);
+            ////var currentControlFolder = moduleControl == null ? "" :
+            ////   (Path.GetDirectoryName(moduleControl.ControlSrc.ToLower()) ?? "").Replace('\\', '/');
             var response = new List<KeyValuePair<string, string>>();
             var appPathLen = Globals.ApplicationMapPath.Length + 1;
             foreach (var folder in controlFolders)

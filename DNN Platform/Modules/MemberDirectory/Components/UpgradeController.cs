@@ -13,7 +13,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Components
 
     public class UpgradeController : IUpgradeable
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             try

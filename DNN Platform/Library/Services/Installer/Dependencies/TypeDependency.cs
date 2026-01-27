@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         private string missingDependentType = string.Empty;
         private string dependentTypes;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ErrorMessage
         {
             get
@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsValid
         {
             get
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
             this.dependentTypes = dependencyNav.Value;

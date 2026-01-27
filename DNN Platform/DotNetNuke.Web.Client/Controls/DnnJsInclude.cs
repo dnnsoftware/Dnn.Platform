@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <inheritdoc cref="IScriptResource.NoModule" />
         public bool NoModule { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(System.EventArgs e)
         {
             var script = this.clientResourceController.CreateScript(this.FilePath, this.PathNameAlias);
@@ -66,7 +66,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             base.OnLoad(e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             if (this.AddTag || this.Context.IsDebuggingEnabled)

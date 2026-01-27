@@ -61,7 +61,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         private PortalInfo Portal => this.PortalId == Null.NullInteger ? null : PortalController.Instance.GetPortal(this.PortalId);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -92,7 +92,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.AttachEvents();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void PerformDataBinding(IEnumerable dataSource)
         {
             // do not select item during data binding, item will select later

@@ -79,7 +79,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets a value indicating whether to include a "none specified" item.</summary>
         public bool IncludeNoneSpecificItem { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -94,7 +94,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.FolderId = Null.NullInteger;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             this.AddCssClass("file");

@@ -51,7 +51,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             this.serviceProvider = serviceProvider;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override void RewriteUrl(object sender, EventArgs e)
         {
             var app = (HttpApplication)sender;

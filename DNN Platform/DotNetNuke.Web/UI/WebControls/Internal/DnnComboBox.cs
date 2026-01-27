@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.ClientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string SelectedValue
         {
             get
@@ -114,10 +114,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         /// <summary>Gets the client resource controller.</summary>
         protected IClientResourceController ClientResourceController { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override HtmlTextWriterTag TagKey => this.MultipleSelect || this.CheckBoxes ? HtmlTextWriterTag.Input : HtmlTextWriterTag.Select;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DataBind()
         {
             if (!string.IsNullOrEmpty(this.initValue))
@@ -211,7 +211,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             return this.Items.IndexOf(this.FindItemByValue(value));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             var postData = postCollection[postDataKey];
@@ -223,7 +223,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             return base.LoadPostData(postDataKey, postCollection);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RenderContents(HtmlTextWriter writer)
         {
             if (this.TagKey == HtmlTextWriterTag.Select)
@@ -232,7 +232,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             Utilities.ApplyControlSkin(this.ClientResourceController, this, string.Empty, string.Empty);

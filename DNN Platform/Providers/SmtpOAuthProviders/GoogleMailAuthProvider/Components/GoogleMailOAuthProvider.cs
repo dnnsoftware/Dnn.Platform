@@ -29,7 +29,7 @@ using Google.Apis.Auth.OAuth2.Responses;
 
 using Microsoft.Extensions.DependencyInjection;
 
-/// <inheritdoc/>
+/// <inheritdoc />
 public class GoogleMailOAuthProvider : ISmtpOAuthProvider
 {
     private readonly IHostSettingsService hostSettingsService;

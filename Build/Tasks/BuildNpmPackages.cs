@@ -12,7 +12,7 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>Builds the npm packages for the entire solution.</summary>
     public sealed class BuildNpmPackages : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             var corepackCommand = new CommandSettings

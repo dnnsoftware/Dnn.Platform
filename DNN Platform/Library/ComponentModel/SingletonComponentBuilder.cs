@@ -21,10 +21,10 @@ namespace DotNetNuke.ComponentModel
             this.type = type;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Name { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public object BuildComponent()
         {
             return this.instance ??= Reflection.CreateObject(this.type);

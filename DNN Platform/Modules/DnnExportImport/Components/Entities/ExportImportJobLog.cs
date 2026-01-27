@@ -35,14 +35,14 @@ namespace Dnn.ExportImport.Components.Entities
         /// <summary>Gets or sets the date/time on which the log was created.</summary>
         public DateTime CreatedOnDate { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID
         {
             get { return this.JobLogId; }
             set { this.JobLogId = value; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
             this.JobLogId = Null.SetNullInteger(dr[nameof(this.JobLogId)]);

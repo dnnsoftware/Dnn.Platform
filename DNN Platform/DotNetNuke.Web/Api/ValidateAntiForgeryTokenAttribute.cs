@@ -26,10 +26,10 @@ namespace DotNetNuke.Web.Api
 
         private static readonly List<string> BypassedAuthTypes = new List<string>();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool AllowMultiple => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
             if (!BypassTokenCheck())

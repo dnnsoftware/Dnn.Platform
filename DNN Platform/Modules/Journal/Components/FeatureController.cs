@@ -45,38 +45,38 @@ namespace DotNetNuke.Modules.Journal.Components
         /// <inheritdoc cref="IPortable.ExportModule" />
         public string ExportModule(int moduleID)
         {
-            // string strXML = "";
+            ////string strXML = "";
 
-            // List<JournalInfo> colJournals = GetJournals(ModuleID);
-            // if (colJournals.Count != 0)
-            // {
-            //    strXML += "<Journals>";
+            ////List<JournalInfo> colJournals = GetJournals(ModuleID);
+            ////if (colJournals.Count != 0)
+            ////{
+            ////   strXML += "<Journals>";
 
-            // foreach (JournalInfo objJournal in colJournals)
-            //    {
-            //        strXML += "<Journal>";
-            //        strXML += "<content>" + DotNetNuke.Common.Utilities.XmlUtils.XMLEncode(objJournal.Content) + "</content>";
-            //        strXML += "</Journal>";
-            //    }
-            //    strXML += "</Journals>";
-            // }
+            ////foreach (JournalInfo objJournal in colJournals)
+            ////   {
+            ////       strXML += "<Journal>";
+            ////       strXML += "<content>" + DotNetNuke.Common.Utilities.XmlUtils.XMLEncode(objJournal.Content) + "</content>";
+            ////       strXML += "</Journal>";
+            ////   }
+            ////   strXML += "</Journals>";
+            ////}
 
-            // return strXML;
+            ////return strXML;
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
         /// <inheritdoc cref="IPortable.ImportModule" />
         public void ImportModule(int moduleID, string content, string version, int userId)
         {
-            // XmlNode xmlJournals = DotNetNuke.Common.Globals.GetContent(Content, "Journals");
-            // foreach (XmlNode xmlJournal in xmlJournals.SelectNodes("Journal"))
-            // {
-            //    JournalInfo objJournal = new JournalInfo();
-            //    objJournal.ModuleId = ModuleID;
-            //    objJournal.Content = xmlJournal.SelectSingleNode("content").InnerText;
-            //    objJournal.CreatedByUser = UserID;
-            //    AddJournal(objJournal);
-            // }
+            ////XmlNode xmlJournals = DotNetNuke.Common.Globals.GetContent(Content, "Journals");
+            ////foreach (XmlNode xmlJournal in xmlJournals.SelectNodes("Journal"))
+            ////{
+            ////   JournalInfo objJournal = new JournalInfo();
+            ////   objJournal.ModuleId = ModuleID;
+            ////   objJournal.Content = xmlJournal.SelectSingleNode("content").InnerText;
+            ////   objJournal.CreatedByUser = UserID;
+            ////   AddJournal(objJournal);
+            ////}
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.Journal.Components
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
             var searchDocuments = new Dictionary<string, SearchDocument>();
@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.Journal.Components
                         {
                             var journalId = Convert.ToInt32(reader["JournalId"]);
 
-                            // var journalTypeId = reader["JournalTypeId"].ToString();
+                            ////var journalTypeId = reader["JournalTypeId"].ToString();
                             var userId = Convert.ToInt32(reader["UserId"]);
                             var dateUpdated = Convert.ToDateTime(reader["DateUpdated"]);
                             var profileId = reader["ProfileId"].ToString();
@@ -171,7 +171,7 @@ namespace DotNetNuke.Modules.Journal.Components
             return searchDocuments.Values.ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HasViewPermission(SearchResult searchResult)
         {
             if (!searchResult.UniqueKey.StartsWith("JI_", StringComparison.InvariantCultureIgnoreCase))
@@ -228,7 +228,7 @@ namespace DotNetNuke.Modules.Journal.Components
             return false;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetDocUrl(SearchResult searchResult)
         {
             if (!searchResult.UniqueKey.StartsWith("JI_", StringComparison.InvariantCultureIgnoreCase))
@@ -242,7 +242,7 @@ namespace DotNetNuke.Modules.Journal.Components
             var groupId = Convert.ToInt32(searchResult.Keywords["GroupId"]);
             var tabId = Convert.ToInt32(searchResult.Keywords["TabId"]);
 
-            // var tabModuleId = Convert.ToInt32(searchResult.Keywords["TabModuleId"]);
+            ////var tabModuleId = Convert.ToInt32(searchResult.Keywords["TabModuleId"]);
             var profileId = Convert.ToInt32(searchResult.Keywords["ProfileId"]);
 
             if (groupId > 0 && tabId > 0)

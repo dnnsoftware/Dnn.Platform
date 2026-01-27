@@ -26,7 +26,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
     using HttpWebRequest = System.Net.HttpWebRequest;
     using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public class SimpleWebFarmCachingProvider : CachingProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SimpleWebFarmCachingProvider));
@@ -71,7 +71,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 #pragma warning restore CS0618 // Type or member is obsolete
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Clear(string type, string data)
         {
             // Clear the local cache
@@ -87,7 +87,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             this.NotifyOtherServers("Clear~" + type, data);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void Remove(string key)
         {

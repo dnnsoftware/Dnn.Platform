@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.FileSystem
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileServerHandler));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsReusable => true;
 
         /// <summary>

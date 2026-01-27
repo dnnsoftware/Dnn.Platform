@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <value>A DesktopModuleInfo object.</value>
         public DesktopModuleInfo DesktopModule { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Dictionary<string, string> Dependencies
         {
             get
@@ -113,7 +113,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void WriteManifestComponent(XmlWriter writer)
         {
             // Write Module Component

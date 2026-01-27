@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.DDRMenu
             this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             UpdateWebConfig();
@@ -58,7 +58,7 @@ namespace DotNetNuke.Web.DDRMenu
             return "UpgradeModule completed OK";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ExportModule(int moduleId)
         {
             var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
@@ -81,7 +81,7 @@ namespace DotNetNuke.Web.DDRMenu
             return settings.ToXml();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ImportModule(int moduleId, string content, string version, int userId)
         {
             var settings = Settings.FromXml(content);

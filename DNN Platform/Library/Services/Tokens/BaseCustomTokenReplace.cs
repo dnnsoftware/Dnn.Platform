@@ -136,7 +136,7 @@ namespace DotNetNuke.Services.Tokens
                 || this.Provider.ContainsTokens(strSourceText, this.TokenContext);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string replacedTokenValue(string objectName, string propertyName, string format)
         {
             string result = string.Empty;
@@ -182,7 +182,7 @@ namespace DotNetNuke.Services.Tokens
             return result;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string ReplaceTokens(string sourceText)
         {
             return this.Provider is CoreTokenProvider ? base.ReplaceTokens(sourceText) : this.Provider.Tokenize(sourceText, this.TokenContext);

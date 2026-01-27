@@ -24,7 +24,7 @@ namespace DotNetNuke.ComponentModel
         /// <inheritdoc />
         public string Name { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public object BuildComponent()
         {
             return Reflection.CreateObject(this.type);

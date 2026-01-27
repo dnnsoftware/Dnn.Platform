@@ -293,13 +293,13 @@ namespace DotNetNuke.Security.Permissions.Controls
             return permissionList;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override bool IsFullControl(IPermissionDefinitionInfo permissionDefinition)
         {
             return (permissionDefinition.PermissionKey == "EDIT") && PermissionProvider.Instance().SupportsFullControl();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override bool IsViewPermission(IPermissionDefinitionInfo permissionDefinition)
         {
             return permissionDefinition.PermissionKey == "VIEW";
@@ -356,7 +356,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             this.modulePermissions.Remove(permissionID, roleID, userID);

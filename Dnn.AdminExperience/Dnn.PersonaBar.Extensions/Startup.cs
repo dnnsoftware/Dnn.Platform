@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 /// <summary>Registers services for the Persona Bar Extensions.</summary>
 public class Startup : IDnnStartup
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void ConfigureServices(IServiceCollection services)
     {
 #pragma warning disable CS0618

@@ -55,7 +55,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets a value indicating whether the field is required.</summary>
         public bool RequiredField { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             string toolTipText = this.LocalizeString(this.ToolTipKey);

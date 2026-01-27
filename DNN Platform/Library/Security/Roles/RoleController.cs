@@ -450,13 +450,13 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int AddRole(RoleInfo role)
         {
             return ((IRoleController)this).AddRole(role, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddUserRole(int portalId, int userId, int roleId, RoleStatus status, bool isOwner, DateTime effectiveDate, DateTime expiryDate)
         {
             var user = UserController.GetUserById(portalId, userId);
@@ -494,7 +494,7 @@ namespace DotNetNuke.Security.Roles
             this.ClearRoleCache(portalId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ClearRoleCache(int portalId)
         {
             DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.RolesCacheKey, portalId));
@@ -504,7 +504,7 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteRole(RoleInfo role)
         {
             Requires.NotNull("role", role);
@@ -544,33 +544,33 @@ namespace DotNetNuke.Security.Roles
             // queue remove role/group from search index
             var document = new SearchDocumentToDelete
             {
-                // PortalId = role.PortalID,
+                ////PortalId = role.PortalID,
                 RoleId = role.RoleID, // this is unique and sufficient
             };
 
             this.dataProvider.AddSearchDeletedItems(document);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public RoleInfo GetRole(int portalId, Func<RoleInfo, bool> predicate)
         {
             return this.GetRoles(portalId).Where(predicate).FirstOrDefault();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public RoleInfo GetRoleById(int portalId, int roleId)
         {
             return this.GetRole(portalId, r => r.RoleID == roleId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public RoleInfo GetRoleByName(int portalId, string roleName)
         {
             roleName = roleName.Trim();
             return this.GetRoles(portalId).SingleOrDefault(r => roleName.Equals(r.RoleName.Trim(), StringComparison.OrdinalIgnoreCase) && r.PortalID == portalId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<RoleInfo> GetRoles(int portalId)
         {
             var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.RolesCacheKey, portalId);
@@ -580,19 +580,19 @@ namespace DotNetNuke.Security.Roles
                 c => this.roleProvider.GetRoles(portalId).Cast<RoleInfo>().ToList());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<RoleInfo> GetRoles(int portalId, Func<RoleInfo, bool> predicate)
         {
             return this.GetRoles(portalId).Where(predicate).ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<RoleInfo> GetRolesBasicSearch(int portalId, int pageSize, string filterBy)
         {
             return this.roleProvider.GetRolesBasicSearch(portalId, pageSize, filterBy);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, string> GetRoleSettings(int roleId)
         {
             return this.roleProvider.GetRoleSettings(roleId);
@@ -617,19 +617,19 @@ namespace DotNetNuke.Security.Roles
             return this.roleProvider.GetUserRoles(user, includePrivate);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<UserRoleInfo> GetUserRoles(int portalId, string userName, string roleName)
         {
             return this.roleProvider.GetUserRoles(portalId, userName, roleName).Cast<UserRoleInfo>().ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<UserInfo> GetUsersByRole(int portalId, string roleName)
         {
             return this.roleProvider.GetUsersByRoleName(portalId, roleName).Cast<UserInfo>().ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateRole(RoleInfo role, bool addToExistUsers)
         {
             Requires.NotNull("role", role);
@@ -647,7 +647,7 @@ namespace DotNetNuke.Security.Roles
             this.eventManager.OnRoleUpdated(new RoleEventArgs() { Role = role });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateRoleSettings(RoleInfo role, bool clearCache)
         {
             this.roleProvider.UpdateRoleSettings(role);
@@ -658,7 +658,7 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateUserRole(int portalId, int userId, int roleId, RoleStatus status, bool isOwner, bool cancel)
         {
             var user = UserController.GetUserById(portalId, userId);
@@ -764,7 +764,7 @@ namespace DotNetNuke.Security.Roles
             this.ClearRoleCache(portalId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         int IRoleController.AddRole(RoleInfo role, bool addToExistUsers)
         {
             Requires.NotNull("role", role);
@@ -788,7 +788,7 @@ namespace DotNetNuke.Security.Roles
             return roleId;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         void IRoleController.UpdateRole(RoleInfo role)
         {
             this.UpdateRole(role, true);
@@ -807,7 +807,7 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IRoleController> GetFactory()
         {
             return () => Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>();

@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Journal
 
     public class CommentInfo : IHydratable, IPropertyAccess
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CacheLevel Cacheability
         {
             get
@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Journal
 
         public string DisplayName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID
         {
             get
@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(System.Data.IDataReader dr)
         {
             this.CommentId = Null.SetNullInteger(dr["CommentId"]);
@@ -72,7 +72,7 @@ namespace DotNetNuke.Services.Journal
             this.DisplayName = Null.SetNullString(dr["DisplayName"]);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             throw new NotImplementedException();

@@ -34,7 +34,7 @@ namespace DotNetNuke.Web.Mvp
         /// <summary>Gets or sets the tab-module settings.</summary>
         public Dictionary<string, string> TabModuleSettings { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void LoadFromContext()
         {
             base.LoadFromContext();

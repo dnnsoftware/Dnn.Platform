@@ -48,12 +48,12 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Commit()
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Install()
         {
             try
@@ -80,7 +80,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             foreach (XPathNavigator navigator in manifestNav.Select("menu"))
@@ -99,13 +99,13 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Rollback()
         {
             this.DeleteMenus();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UnInstall()
         {
             this.DeleteMenus();

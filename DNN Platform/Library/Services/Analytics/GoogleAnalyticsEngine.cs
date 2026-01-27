@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Analytics
 
     public class GoogleAnalyticsEngine : AnalyticsEngineBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string EngineName
         {
             get
@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Analytics
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string RenderScript(string scriptTemplate)
         {
             AnalyticsConfiguration config = this.GetConfig();
@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Analytics
             return scriptTemplate;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string RenderCustomScript(AnalyticsConfiguration config)
         {
             try

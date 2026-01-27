@@ -396,7 +396,7 @@ namespace DotNetNuke.UI.Skins
                 hostSettings ??= Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
                 // DNN-6170 ensure skin value is culture specific
-                // skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
+                ////skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
                 skinSource = Globals.IsAdminSkin() ? PortalController.GetPortalSetting("DefaultAdminSkin", page.PortalSettings.PortalId, hostSettings.DefaultPortalSkin, page.PortalSettings.CultureCode) : page.PortalSettings.ActiveTab.SkinSrc;
                 if (!string.IsNullOrEmpty(skinSource))
                 {

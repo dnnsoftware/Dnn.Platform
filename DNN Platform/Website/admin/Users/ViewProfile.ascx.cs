@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.cryptographyProvider = cryptographyProvider ?? this.DependencyProvider.GetRequiredService<ICryptographyProvider>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.ctlProfile.UserId = this.UserId;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

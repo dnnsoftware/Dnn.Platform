@@ -234,14 +234,14 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets the user.</summary>
         public UserInfo User { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Localize
         {
             get => this.localize;
             set => this.localize = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string LocalResourceFile { get; set; }
 
         /// <summary>Gets a value indicating whether the control is on a Host or Portal Tab.</summary>
@@ -301,12 +301,12 @@ namespace DotNetNuke.Web.UI.WebControls
             set => this.ViewState["Mode"] = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void LocalizeStrings()
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

@@ -190,7 +190,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 objFolder.IsProtected = true;
                 FolderManager.Instance.UpdateFolder(objFolder);
 
-                // AddFolderPermissions(PortalId, objFolder.FolderID);
+                ////AddFolderPermissions(PortalId, objFolder.FolderID);
             }
 
             // force creation of users folder if not present on template
@@ -201,7 +201,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 objFolder.IsProtected = true;
                 FolderManager.Instance.UpdateFolder(objFolder);
 
-                // AddFolderPermissions(PortalId, objFolder.FolderID);
+                ////AddFolderPermissions(PortalId, objFolder.FolderID);
             }
 
             if (mergeTabs == PortalTemplateModuleAction.Replace)

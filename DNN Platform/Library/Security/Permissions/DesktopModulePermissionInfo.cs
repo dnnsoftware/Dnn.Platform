@@ -132,7 +132,7 @@ namespace DotNetNuke.Security.Permissions
             return this.Equals((DesktopModulePermissionInfo)obj);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked

@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string EditorID
         {
             get
@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Initialize()
         {
             this.pnlSettings.Visible = !this.IsSuperTab;
@@ -99,7 +99,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             this.BindAuthentication();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdatePackage()
         {
             if (this.authenticationForm.IsValid)
@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -359,7 +359,7 @@ namespace DotNetNuke.UI.WebControls
                 }
             }
 
-            // var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.CaptchaCacheKey, masterPortalId);
+            ////var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.CaptchaCacheKey, masterPortalId);
             // _CaptchaText
         }
 

@@ -62,7 +62,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -78,7 +78,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Options.ItemList.DisableUnspecifiedOrder = true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             this.AddCssClass("folder");

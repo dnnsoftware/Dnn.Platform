@@ -26,7 +26,7 @@ namespace DotNetNuke.Common
         [DataMember(Name = "value")]
         public TValue Value { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ToString()
         {
             return Json.Serialize(this);

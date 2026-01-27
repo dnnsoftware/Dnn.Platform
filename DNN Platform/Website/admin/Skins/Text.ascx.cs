@@ -20,7 +20,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public bool ReplaceTokens { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

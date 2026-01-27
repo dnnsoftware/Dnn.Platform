@@ -209,7 +209,7 @@ namespace DotNetNuke.Framework
 
         private IPortalAliasInfo PrimaryPortalAlias => this.PortalSettings.PrimaryAlias;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string RaiseClientAPICallbackEvent(string eventArgument)
         {
             var dict = this.ParsePageCallBackArgs(eventArgument);
@@ -380,7 +380,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs evt)
         {
             base.OnPreRender(evt);
@@ -440,7 +440,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             if (Personalization.GetUserMode() == PortalSettings.Mode.Edit)

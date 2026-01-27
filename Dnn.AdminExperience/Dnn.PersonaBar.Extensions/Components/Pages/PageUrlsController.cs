@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Pages.Components
             new KeyValuePair<int, string>(301, "Redirect (301)")
         ];
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<Url> GetPageUrls(TabInfo tab, int portalId)
         {
             var locales = new Lazy<Dictionary<string, Locale>>(() => LocaleController.Instance.GetLocales(portalId));
@@ -51,7 +51,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return automaticUrls.OrderBy(url => url.StatusCode, new KeyValuePairComparer()).ThenBy(url => url.Path);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PageUrlResult CreateCustomUrl(SaveUrlDto dto, TabInfo tab)
         {
             var portalSettings = PortalSettings.Current;
@@ -176,7 +176,7 @@ namespace Dnn.PersonaBar.Pages.Components
             };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PageUrlResult UpdateCustomUrl(SaveUrlDto dto, TabInfo tab)
         {
             var portalSettings = PortalSettings.Current;
@@ -306,7 +306,7 @@ namespace Dnn.PersonaBar.Pages.Components
             };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PageUrlResult DeleteCustomUrl(int id, TabInfo tab)
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -320,7 +320,7 @@ namespace Dnn.PersonaBar.Pages.Components
             };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IPageUrlsController> GetFactory()
         {
             return () => new PageUrlsController();
@@ -398,7 +398,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         isRedirected = true;
                     }
 
-                    // AddUrlToList(tabs, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200);
+                    ////AddUrlToList(tabs, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200);
                     // 27139 : only show primary aliases in the tab grid (gets too confusing otherwise)
                     if (alias.IsPrimary)
                     {
@@ -528,7 +528,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public class KeyValuePairComparer : IComparer<KeyValuePair<int, string>>
         {
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public int Compare(KeyValuePair<int, string> pair1, KeyValuePair<int, string> pair2)
             {
                 return string.Compare(pair1.Value, pair2.Value, StringComparison.OrdinalIgnoreCase);

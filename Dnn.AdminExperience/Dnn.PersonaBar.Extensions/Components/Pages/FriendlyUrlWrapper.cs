@@ -11,13 +11,13 @@ namespace Dnn.PersonaBar.Pages.Components
 
     public class FriendlyUrlWrapper : IFriendlyUrlWrapper
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string CleanNameForUrl(string urlPath, FriendlyUrlOptions options, out bool modified)
         {
             return FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void ValidateUrl(string urlPath, int tabld, PortalSettings portalSettings, out bool modified)
         {

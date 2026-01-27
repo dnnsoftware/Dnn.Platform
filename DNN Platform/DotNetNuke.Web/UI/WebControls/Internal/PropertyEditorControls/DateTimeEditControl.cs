@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateTimeEditControl));
         private DnnDateTimePicker dateControl;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ID
         {
             get => base.ID + "_control";
@@ -137,7 +137,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
 
         private DnnDateTimePicker DateControl => this.dateControl ??= ActivatorUtilities.CreateInstance<DnnDateTimePicker>(Globals.GetCurrentServiceProvider());
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             this.EnsureChildControls();
@@ -165,7 +165,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             return dataChanged;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -198,7 +198,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             this.OnValueChanged(args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

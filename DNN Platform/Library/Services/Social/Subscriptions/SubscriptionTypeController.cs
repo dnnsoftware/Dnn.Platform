@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             this.dataService = DataService.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddSubscriptionType(SubscriptionType subscriptionType)
         {
             Requires.NotNull("subscriptionType", subscriptionType);
@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             CleanCache();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public SubscriptionType GetSubscriptionType(Func<SubscriptionType, bool> predicate)
         {
             Requires.NotNull("predicate", predicate);
@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return this.GetSubscriptionTypes().SingleOrDefault(predicate);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<SubscriptionType> GetSubscriptionTypes()
         {
             var cacheArgs = new CacheItemArgs(
@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
                 c => CBO.FillCollection<SubscriptionType>(this.dataService.GetSubscriptionTypes()));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<SubscriptionType> GetSubscriptionTypes(Func<SubscriptionType, bool> predicate)
         {
             Requires.NotNull("predicate", predicate);
@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return this.GetSubscriptionTypes().Where(predicate);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteSubscriptionType(SubscriptionType subscriptionType)
         {
             Requires.NotNull("subscriptionType", subscriptionType);
@@ -77,7 +77,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             CleanCache();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ISubscriptionTypeController> GetFactory()
         {
             return () => new SubscriptionTypeController();

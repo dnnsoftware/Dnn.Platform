@@ -20,10 +20,10 @@ namespace DotNetNuke.Entities.Users
             this.objUser = user;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CacheLevel Cacheability => CacheLevel.notCacheable;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {

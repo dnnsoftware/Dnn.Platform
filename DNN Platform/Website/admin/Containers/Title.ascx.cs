@@ -40,7 +40,7 @@ namespace DotNetNuke.UI.Containers
         /// <summary>Gets or sets the CSS class applied to the element containing the title.</summary>
         public string CssClass { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -48,7 +48,7 @@ namespace DotNetNuke.UI.Containers
             this.titleLabel.UpdateLabel += this.UpdateTitle;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

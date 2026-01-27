@@ -17,7 +17,7 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>A cake task to calculate the version.</summary>
     public sealed class SetVersion : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             if (context.Settings.Version == "auto")

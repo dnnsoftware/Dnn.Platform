@@ -305,7 +305,7 @@ namespace DotNetNuke.Services.Install
             return Localization.GetString(key, localResourceFile, culture);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnError(EventArgs e)
         {
             HttpContext.Current.Response.Clear();

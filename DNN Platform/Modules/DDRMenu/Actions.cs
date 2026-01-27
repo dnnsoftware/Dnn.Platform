@@ -69,7 +69,7 @@ namespace DotNetNuke.Web.DDRMenu
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public List<TemplateArgument> TemplateArguments { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             using (new DNNContext(this))
@@ -85,7 +85,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             using (new DNNContext(this))
@@ -96,7 +96,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             using (new DNNContext(this))

@@ -47,7 +47,7 @@ namespace DotNetNuke.Services.GeneratedImage
             this.Implementation = implementation;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual bool IsReusable => false;
 
         /// <summary>Gets or sets a value indicating whether enables server-side caching of the result.</summary>
@@ -135,7 +135,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public abstract ImageInfo GenerateImage(NameValueCollection parameters);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ProcessRequest(HttpContext context)
         {
             if (context == null)

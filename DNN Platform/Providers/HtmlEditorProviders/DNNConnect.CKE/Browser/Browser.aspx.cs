@@ -603,7 +603,7 @@ public partial class Browser : PageBase
             }
         }
 
-        // string _CKEditorName = httpRequest.QueryString["CKEditor"];
+        ////string _CKEditorName = httpRequest.QueryString["CKEditor"];
         string funcNum = HttpContext.Current.Request.QueryString["CKEditorFuncNum"];
 
         string errorMsg = string.Empty;
@@ -628,7 +628,7 @@ public partial class Browser : PageBase
 
         var httpRequest = HttpContext.Current.Request;
 
-        // var _CKEditorName = request.QueryString["CKEditor"];
+        ////var _CKEditorName = request.QueryString["CKEditor"];
         // funcNum is null when EasyImageUpload is being used
         var funcNum = httpRequest.QueryString["CKEditorFuncNum"];
 
@@ -1698,7 +1698,7 @@ public partial class Browser : PageBase
         this.BrowserMode.SelectedIndexChanged += this.BrowserMode_SelectedIndexChanged;
         this.dnntreeTabs.SelectedNodeChanged += this.TreeTabs_NodeClick;
 
-        // this.FoldersTree.SelectedNodeChanged += new EventHandler(FoldersTree_SelectedNodeChanged);
+        ////this.FoldersTree.SelectedNodeChanged += new EventHandler(FoldersTree_SelectedNodeChanged);
         this.FoldersTree.SelectedNodeChanged += this.FoldersTree_NodeClick;
 
         this.FilesList.ItemCommand += this.FilesList_ItemCommand;
@@ -2146,7 +2146,7 @@ public partial class Browser : PageBase
 
         this.PagerFileLinks.Visible = filesPagedDataSource.PageCount > 1;
 
-        // this.FilesList.DataSource = this.GetFiles(directory);
+        ////this.FilesList.DataSource = this.GetFiles(directory);
         this.FilesList.DataSource = filesPagedDataSource;
         this.FilesList.DataBind();
     }

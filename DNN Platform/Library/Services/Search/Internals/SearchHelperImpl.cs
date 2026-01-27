@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Search.Internals
         private const string ResourceFileRelativePathWithoutExt = "/App_GlobalResources/GlobalResources";
         private readonly IList<string> emptySynonums = new List<string>(0);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<SearchType> GetSearchTypes()
         {
             var cachArg = new CacheItemArgs(SearchTypesCacheKey, 120, CacheItemPriority.Default);
@@ -47,13 +47,13 @@ namespace DotNetNuke.Services.Search.Internals
                 });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public SearchType GetSearchTypeByName(string searchTypeName)
         {
             return this.GetSearchTypes().Single(t => t.SearchTypeName == searchTypeName);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<string> GetSynonyms(int portalId, string cultureCode, string term)
         {
             var terms = this.GetSynonymTerms(portalId, cultureCode);
@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.Search.Internals
             return synonyms;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<SynonymsGroup> GetSynonymsGroups(int portalId, string cultureCode)
         {
             var cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SynonymGroupsCacheKey, portalId, cultureCode);
@@ -73,7 +73,7 @@ namespace DotNetNuke.Services.Search.Internals
             return CBO.GetCachedObject<IList<SynonymsGroup>>(cacheArg, GetSynonymsGroupsCallBack);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int AddSynonymsGroup(string synonymsTags, int portalId, string cultureCode, out string duplicateWord)
         {
             duplicateWord = null;
@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.Search.Internals
             return newId;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int UpdateSynonymsGroup(int synonymsGroupId, string synonymsTags, int portalId, string cultureCode, out string duplicateWord)
         {
             duplicateWord = null;
@@ -161,7 +161,7 @@ namespace DotNetNuke.Services.Search.Internals
             return synonymsGroupId;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteSynonymsGroup(int synonymsGroupId, int portalId, string cultureCode)
         {
             if (synonymsGroupId <= 0)
@@ -177,7 +177,7 @@ namespace DotNetNuke.Services.Search.Internals
             DataCache.ClearCache(cacheKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public SearchStopWords GetSearchStopWords(int portalId, string cultureCode)
         {
             var cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SearchStopWordsCacheKey, portalId, cultureCode);
@@ -186,7 +186,7 @@ namespace DotNetNuke.Services.Search.Internals
             return list?.FirstOrDefault();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int AddSearchStopWords(string stopWords, int portalId, string cultureCode)
         {
             if (string.IsNullOrEmpty(stopWords))
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Search.Internals
             return newId;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int UpdateSearchStopWords(int stopWordsId, string stopWords, int portalId, string cultureCode)
         {
             if (string.IsNullOrEmpty(stopWords))
@@ -253,7 +253,7 @@ namespace DotNetNuke.Services.Search.Internals
             return stopWordsId;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteSearchStopWords(int stopWordsId, int portalId, string cultureCode)
         {
             if (stopWordsId <= 0)
@@ -266,7 +266,7 @@ namespace DotNetNuke.Services.Search.Internals
             DataCache.ClearCache(cacheKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public DateTime GetSearchReindexRequestTime(int portalId)
         {
             var requestedOn = SqlDateTime.MinValue.Value;
@@ -283,7 +283,7 @@ namespace DotNetNuke.Services.Search.Internals
             return requestedOn;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public DateTime SetSearchReindexRequestTime(int portalId)
         {
             var now = DateTime.Now;
@@ -303,13 +303,13 @@ namespace DotNetNuke.Services.Search.Internals
             return now;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool GetSearchCompactFlag()
         {
             return HostController.Instance.GetString(Constants.SearchOptimizeFlagName, Null.NullString) == "1";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SetSearchReindexRequestTime(bool turnOn)
         {
             HostController.Instance.Update(Constants.SearchOptimizeFlagName, turnOn ? "1" : "0", true);
@@ -381,7 +381,7 @@ namespace DotNetNuke.Services.Search.Internals
                     startDateLocal.ToUniversalTime().ToString(Constants.ReindexDateTimeFormat, CultureInfo.InvariantCulture));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public DateTime GetIndexerCheckpointUtcTime(int scheduleId, string indexerKey)
         {
             var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
@@ -400,26 +400,26 @@ namespace DotNetNuke.Services.Search.Internals
             return lastUtcTime;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SetIndexerCheckpointUtcTime(int scheduleId, string indexerKey, DateTime lastUtcTime)
         {
             SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId, indexerKey, lastUtcTime.ToString(Constants.ReindexDateTimeFormat, CultureInfo.InvariantCulture));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetIndexerCheckpointData(int scheduleId, string indexerKey)
         {
             var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
             return settings[indexerKey] as string;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SetIndexerCheckpointData(int scheduleId, string indexerKey, string checkPointData)
         {
             SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId, indexerKey, checkPointData);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Tuple<int, int> GetSearchMinMaxLength()
         {
             var hostController = HostController.Instance;
@@ -520,7 +520,7 @@ namespace DotNetNuke.Services.Search.Internals
             return newPhraseBulder.ToString().Trim().Replace("  ", " ");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string StripTagsNoAttributes(string html, bool retainSpace)
         {
             var strippedString = !string.IsNullOrEmpty(html) ? HtmlUtils.StripTags(html, retainSpace) : html;

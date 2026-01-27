@@ -77,7 +77,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         /// <summary>Gets the moment.js format string.</summary>
         protected virtual string ClientFormat => "YYYY-MM-DD";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Library.Helper
             this.portalGroupController = portalGroupController;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsContentExistsForRequestedPortal(int contentPortalId, PortalSettings portalSettings, bool checkForSiteGroup = false)
         {
             var currentPortal = this.portalController.GetCurrentSettings();
@@ -38,7 +38,7 @@ namespace Dnn.PersonaBar.Library.Helper
                 || (checkForSiteGroup && this.IsRequestForSiteGroup(contentPortalId, portalSettings.PortalId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsRequestForSiteGroup(int portalId, int portalIdSiteGroup)
         {
             const int NO_SITE_GROUPID = -1;

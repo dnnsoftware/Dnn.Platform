@@ -29,18 +29,18 @@ namespace DotNetNuke.Services.FileSystem
             this.LoadConfig();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ConfigNode
         {
             get { return ConfigNodeValue; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<FolderTypeConfig> FolderTypes { get; internal set; }
 
         private Dictionary<string, string> FolderMappings { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void LoadConfig()
         {
             try
@@ -63,7 +63,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SaveConfig(string folderMappinsSettings)
         {
             if (!File.Exists(DefaultConfigFilePath))
@@ -81,7 +81,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public FolderMappingInfo GetFolderMapping(int portalId, string folderPath)
         {
             if (!this.FolderMappings.TryGetValue(folderPath, out var mapping))
@@ -92,7 +92,7 @@ namespace DotNetNuke.Services.FileSystem
             return FolderMappingController.Instance.GetFolderMapping(portalId, mapping);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IFolderMappingsConfigController> GetFactory()
         {
             return () => new FolderMappingsConfigController();

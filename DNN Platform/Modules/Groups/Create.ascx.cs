@@ -65,7 +65,7 @@ public partial class Create : GroupsModuleBase
         this.dataProvider = dataProvider ?? this.DependencyProvider.GetRequiredService<DataProvider>();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override void OnInit(EventArgs e)
     {
         this.Load += this.Page_Load;

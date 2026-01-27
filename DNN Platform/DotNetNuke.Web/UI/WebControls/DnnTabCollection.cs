@@ -16,7 +16,7 @@ public class DnnTabCollection : TypedControlCollection<DnnTab>
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override void ThrowOnInvalidControlType()
     {
         throw new ArgumentException("DnnTabCollection must contain controls of type DnnTab");

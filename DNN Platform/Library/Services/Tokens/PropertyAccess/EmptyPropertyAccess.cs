@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Tokens
     /// <summary>Returns an Empty String for all Properties.</summary>
     public class EmptyPropertyAccess : IPropertyAccess
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CacheLevel Cacheability
         {
             get
@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             return string.Empty;

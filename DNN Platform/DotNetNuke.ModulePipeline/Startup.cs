@@ -7,10 +7,10 @@ namespace DotNetNuke.ModulePipeline
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public class Startup : IDnnStartup
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IModuleControlPipeline, ModuleControlPipeline>();

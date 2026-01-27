@@ -88,7 +88,7 @@ namespace Dnn.PersonaBar.UI.UserControls
         /// <summary>Gets the client resource version number.</summary>
         public string BuildNumber => this.hostSettings.CrmVersion.ToString(CultureInfo.InvariantCulture);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -99,7 +99,7 @@ namespace Dnn.PersonaBar.UI.UserControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -111,7 +111,7 @@ namespace Dnn.PersonaBar.UI.UserControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             this.Visible = this.Response.StatusCode == (int)HttpStatusCode.OK;

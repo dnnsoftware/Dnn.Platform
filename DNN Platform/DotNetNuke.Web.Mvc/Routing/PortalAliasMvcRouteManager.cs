@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             this.portalAliasService = portalAliasService;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetRouteName(string moduleFolderName, string routeName, int count)
         {
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
@@ -88,7 +88,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             return allRouteValues;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetRouteUrl(string moduleFolderName, string url, int count)
         {
             Requires.NotNegative("count", count);
@@ -97,13 +97,13 @@ namespace DotNetNuke.Web.Mvc.Routing
             return $"{GeneratePrefixString(count)}DesktopModules/MVC/{moduleFolderName}/{url}";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ClearCachedData()
         {
             this.prefixCounts = null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<int> GetRoutePrefixCounts()
         {
             if (this.prefixCounts != null)

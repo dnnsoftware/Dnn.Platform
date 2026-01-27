@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.Admin.Sales
             this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.Sales
             this.InitializeComponent();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

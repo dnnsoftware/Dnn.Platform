@@ -83,10 +83,10 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override bool SupportsPermissionsAbstractions => true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override IList<IPermissionInfo> PermissionCollection
         {
             get
@@ -100,7 +100,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override bool RefreshGrid
         {
             get
@@ -121,7 +121,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.permissionCollection = null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -272,7 +272,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             this.FolderPermissions.Remove(permissionID, roleID, userID);

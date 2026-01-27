@@ -109,7 +109,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return page.Items[typeof(DnnFileUpload)] as DnnFileUpload;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -118,7 +118,7 @@ namespace DotNetNuke.Web.UI.WebControls
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, CommonJs.jQueryFileUpload);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ViewStateMode = ViewStateMode.Disabled;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override WebControl CreateControlInternal(Control container)
         {
             var literal = new Label { ID = this.ID + "_Label", Text = Convert.ToString(this.Value, CultureInfo.InvariantCulture), };

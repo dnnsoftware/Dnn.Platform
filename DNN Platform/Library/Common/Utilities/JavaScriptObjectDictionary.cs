@@ -95,7 +95,7 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
         return ToJavaScriptArrayString(this);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
     {
         var enumerator = this.Dictionary.GetEnumerator();
@@ -105,13 +105,13 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator()
     {
         return this.GetEnumeratorPrivate();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string ToString()
     {
         return this.dictionary == null ? string.Empty : this.dictionary.ToString();

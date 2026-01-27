@@ -51,13 +51,13 @@ namespace Dnn.PersonaBar.Recyclebin.Components
 
         private static PortalSettings PortalSettings => PortalSettings.Current;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string LocalizeString(string key)
         {
             return Localization.GetString(key, Constants.LocalResourcesFile);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteTabs(IEnumerable<PageItem> tabs, StringBuilder errors, bool deleteDescendants = false)
         {
             if (tabs != null)
@@ -77,7 +77,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteTabs(IEnumerable<TabInfo> tabs, StringBuilder errors, bool deleteDescendants = false)
         {
             if (tabs != null)
@@ -97,7 +97,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteModules(IEnumerable<ModuleItem> modules, StringBuilder errors)
         {
             if (modules != null)
@@ -117,13 +117,13 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteModules(IEnumerable<ModuleInfo> modules, StringBuilder errors)
         {
             modules?.ForEach(mod => this.HardDeleteModule(mod, errors));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool RestoreTab(TabInfo tab, out string resultmessage)
         {
             var changeControlStateForTab = this.tabChangeSettings.GetChangeControlState(tab.PortalID, tab.TabID);
@@ -170,7 +170,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return success;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool RestoreModule(int moduleId, int tabId, out string errorMessage)
         {
             errorMessage = null;
@@ -213,7 +213,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public List<TabInfo> GetDeletedTabs(out int totalRecords, int pageIndex = -1, int pageSize = -1, string sortType = "", string sortDirection = "")
         {
             var adminTabId = PortalSettings.AdminTabId;
@@ -234,7 +234,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return pageIndex == -1 || pageSize == -1 ? deletedtabs.ToList() : deletedtabs.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public List<ModuleInfo> GetDeletedModules(out int totalRecords, int pageIndex = -1, int pageSize = -1, string sortType = "", string sortDirection = "")
         {
             var deletedModules = this.moduleController.GetModules(PortalSettings.PortalId)
@@ -261,7 +261,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return pageIndex == -1 || pageSize == -1 ? deletedModules.ToList() : deletedModules.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetTabStatus(TabInfo tab)
         {
             if (tab.DisableLink)
@@ -272,7 +272,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return tab.IsVisible ? "Visible" : "Hidden";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public List<UserInfo> GetDeletedUsers(out int totalRecords, int pageIndex = -1, int pageSize = -1, string sortType = "", string sortDirection = "")
         {
             var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().Where(this.CanManageUser);
@@ -295,7 +295,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return pageIndex == -1 || pageSize == -1 ? deletedusers.ToList() : deletedusers.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteUsers(IEnumerable<UserInfo> users)
         {
             var userInfos = users as IList<UserInfo> ?? users.ToList();
@@ -317,14 +317,14 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteUsers(IEnumerable<UserItem> users)
         {
             var userInfos = users.Select(x => new UserInfo { PortalID = x.PortalId, UserID = x.Id });
             this.DeleteUsers(userInfos);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public bool RestoreUser(UserInfo user, out string errorMessage)
         {
@@ -340,7 +340,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return false;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IRecyclebinController> GetFactory()
         {
             return () => new RecyclebinController();

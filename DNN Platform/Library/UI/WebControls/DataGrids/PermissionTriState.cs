@@ -81,7 +81,7 @@ namespace DotNetNuke.UI.WebControls.Internal
                      """;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -89,7 +89,7 @@ namespace DotNetNuke.UI.WebControls.Internal
             RegisterScripts(this.Page, this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             string imagePath;

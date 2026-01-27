@@ -49,40 +49,40 @@ namespace DotNetNuke.Framework
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsAjaxAntiForgerySupportRequired
         {
             get { return CheckKey(AntiForgeryKey); }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsAjaxScriptSupportRequired
         {
             get { return CheckKey(ScriptKey); }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RequestAjaxAntiForgerySupport()
         {
             this.RequestAjaxScriptSupport();
             SetKey(AntiForgeryKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RegisterAjaxAntiForgery(Page page)
         {
             var ctl = page.FindControl("ClientResourcesFormBottom");
             ctl?.Controls.Add(new LiteralControl(AntiForgery.GetHtml().ToHtmlString()));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RequestAjaxScriptSupport()
         {
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, CommonJs.jQuery);
             SetKey(ScriptKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RegisterAjaxScript(Page page)
         {
             var path = ServicesFramework.GetServiceFrameworkRoot();

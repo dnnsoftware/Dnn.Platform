@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         protected bool IsValid => this.Validate();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override bool AddUser { get; } = true;
 
         protected string AuthenticationType
@@ -134,7 +134,7 @@ namespace DotNetNuke.Modules.Admin.Users
             set => this.ViewState.SetValue("UserToken", value, string.Empty);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -314,7 +314,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -377,7 +377,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

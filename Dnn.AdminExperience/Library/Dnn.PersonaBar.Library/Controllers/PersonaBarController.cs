@@ -63,7 +63,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public PersonaBarMenu GetMenu(PortalSettings portalSettings, UserInfo user)
         {
@@ -84,7 +84,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsVisible(PortalSettings portalSettings, UserInfo user, MenuItem menuItem)
         {
             var visible = menuItem.Enabled
@@ -109,7 +109,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             return visible;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IPersonaBarController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<IPersonaBarController>;

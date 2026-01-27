@@ -32,13 +32,13 @@ namespace DotNetNuke.UI.WebControls
             this.name = name;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public EditorInfo CreateEditControl()
         {
             return this.GetEditorInfo();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool UpdateValue(PropertyEditorEventArgs e)
         {
             string nameDataField = Convert.ToString(this.fieldNames["Name"], CultureInfo.InvariantCulture);
@@ -83,7 +83,7 @@ namespace DotNetNuke.UI.WebControls
             return isDirty;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool UpdateVisibility(PropertyEditorEventArgs e)
         {
             string nameDataField = Convert.ToString(this.fieldNames["Name"], CultureInfo.InvariantCulture);

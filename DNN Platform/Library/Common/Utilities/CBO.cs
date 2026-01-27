@@ -581,25 +581,25 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         List<TItem> ICBO.FillCollection<TItem>(IDataReader dr)
         {
             return (List<TItem>)FillListFromReader(dr, new List<TItem>(), true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         TObject ICBO.FillObject<TObject>(IDataReader dr)
         {
             return (TObject)CreateObjectFromReader(typeof(TObject), dr, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         TObject ICBO.GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
         {
             return DataCache.GetCachedData<TObject>(this.hostSettings.PerformanceSetting, cacheItemArgs, cacheItemExpired, saveInDictionary);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ICBO> GetFactory()
         {
             return () => Globals.GetCurrentServiceProvider().GetRequiredService<ICBO>();

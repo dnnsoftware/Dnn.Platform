@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.CssClass = "dnnFormLabel";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Localize
         {
             get
@@ -34,10 +34,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string LocalResourceFile { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void LocalizeStrings()
         {
             if (this.Localize)
@@ -61,14 +61,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
             this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             this.LocalizeStrings();

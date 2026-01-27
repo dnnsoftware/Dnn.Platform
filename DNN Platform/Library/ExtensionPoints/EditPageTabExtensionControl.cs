@@ -108,7 +108,7 @@ namespace DotNetNuke.ExtensionPoints
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             var extensionPointManager = new ExtensionPointManager();

@@ -12,7 +12,7 @@ namespace Dnn.Modules.ResourceManager.Components
     /// <summary>Manages groups.</summary>
     public class GroupManager : ServiceLocator<IGroupManager, GroupManager>, IGroupManager
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IFolderInfo FindOrCreateGroupFolder(int portalId, int groupId)
         {
             Requires.NotNegative("portalId", portalId);
@@ -21,7 +21,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return this.GetGroupFolder(portalId, groupId) ?? FolderManager.Instance.AddFolder(portalId, "Groups/" + groupId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IFolderInfo GetGroupFolder(int portalId, int groupId)
         {
             Requires.NotNegative("portalId", portalId);
@@ -30,7 +30,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return FolderManager.Instance.GetFolder(portalId, "Groups/" + groupId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IGroupManager> GetFactory()
         {
             return () => new GroupManager();

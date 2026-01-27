@@ -12,7 +12,7 @@ namespace DotNetNuke.Common.Controls
     /// <summary>The Privacy PortalModuleBase displays the Privacy text.</summary>
     public partial class Privacy : PortalModuleBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

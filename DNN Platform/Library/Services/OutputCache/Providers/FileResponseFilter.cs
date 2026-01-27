@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     /// <summary>FileResponseFilter implements <see cref="OutputCacheResponseFilter"/> to capture the response into files.</summary>
     public class FileResponseFilter : OutputCacheResponseFilter
     {
-        // Private _content As StringBuilder
+        ////Private _content As StringBuilder
         private DateTime cacheExpiration;
 
         /// <summary>Initializes a new instance of the <see cref="FileResponseFilter"/> class.</summary>
@@ -79,7 +79,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override byte[] StopFiltering(int itemId, bool deleteData)
         {
             if (this.HasErrored)

@@ -8,18 +8,18 @@ namespace DotNetNuke.Authentication.Facebook.Components
 
     using DotNetNuke.Services.Authentication.OAuth;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     [DataContract]
     public class FacebookUserData : UserData
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string FirstName
         {
             get { return this.FacebookFirstName; }
             set { }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LastName
         {
             get { return this.FacebookLastName; }

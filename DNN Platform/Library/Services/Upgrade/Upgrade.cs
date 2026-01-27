@@ -891,10 +891,10 @@ namespace DotNetNuke.Services.Upgrade
                             Logger.TraceFormat(CultureInfo.InvariantCulture, "GetUpgradedScripts including {0}", file);
                         }
 
-                        // else
-                        // {
-                        //    Logger.TraceFormat("GetUpgradedScripts excluding {0}", file);
-                        // }
+                        ////else
+                        ////{
+                        ////   Logger.TraceFormat("GetUpgradedScripts excluding {0}", file);
+                        ////}
                     }
                 }
             }
@@ -2019,9 +2019,9 @@ namespace DotNetNuke.Services.Upgrade
                 exceptions += InstallMemberRoleProviderScript(providerPath, "InstallMembership", writeFeedback);
 
                 // Install Profile
-                // exceptions += InstallMemberRoleProviderScript(providerPath, "InstallProfile", writeFeedback);
+                ////exceptions += InstallMemberRoleProviderScript(providerPath, "InstallProfile", writeFeedback);
                 // Install Roles
-                // exceptions += InstallMemberRoleProviderScript(providerPath, "InstallRoles", writeFeedback);
+                ////exceptions += InstallMemberRoleProviderScript(providerPath, "InstallRoles", writeFeedback);
             }
 
             if (string.IsNullOrEmpty(exceptions))

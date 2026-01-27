@@ -16,114 +16,114 @@ using SchwabenCode.QuickIO;
 /// <summary>The default <see cref="IFile"/> implementation.</summary>
 public class FileWrapper : ComponentBase<IFile, FileWrapper>, IFile
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public Stream Create(string path)
     {
         EnsureFileFolderExists(path);
         return File.Create(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Delete(string path)
     {
         File.Delete(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task DeleteAsync(string path)
     {
         await QuickIOFile.DeleteAsync(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool Exists(string path)
     {
         return File.Exists(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<bool> ExistsAsync(string path)
     {
         return await QuickIOFile.ExistsAsync(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public FileAttributes GetAttributes(string path)
     {
         return File.GetAttributes(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<FileAttributes> GetAttributesAsync(string path)
     {
         return await QuickIOFile.GetAttributesAsync(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public DateTime GetLastWriteTime(string path)
     {
         return File.GetLastWriteTime(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<DateTime> GetLastWriteTimeAsync(string path)
     {
         return await QuickIOFile.GetLastWriteTimeAsync(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Move(string sourceFileName, string destFileName)
     {
         EnsureFileFolderExists(destFileName);
         File.Move(sourceFileName, destFileName);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task MoveAsync(string sourceFileName, string destFileName)
     {
         await EnsureFileFolderExistsAsync(destFileName);
         await QuickIOFile.MoveAsync(sourceFileName, destFileName);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Copy(string sourceFileName, string destinationFileName, bool overwrite)
     {
         EnsureFileFolderExists(destinationFileName);
         File.Copy(sourceFileName, destinationFileName, overwrite);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task CopyAsync(string sourceFileName, string destinationFileName, bool overwrite)
     {
         await EnsureFileFolderExistsAsync(destinationFileName);
         await QuickIOFile.CopyAsync(sourceFileName, destinationFileName, overwrite);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public Stream OpenRead(string path)
     {
         return File.OpenRead(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public byte[] ReadAllBytes(string path)
     {
         return File.ReadAllBytes(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<byte[]> ReadAllBytesAsync(string path)
     {
         return await new QuickIOFileInfo(path).ReadAllBytesAsync();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void SetAttributes(string path, FileAttributes fileAttributes)
     {
         File.SetAttributes(path, fileAttributes);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task SetAttributesAsync(string path, FileAttributes fileAttributes)
     {
         await QuickIOFile.SetAttributesAsync(path, fileAttributes);

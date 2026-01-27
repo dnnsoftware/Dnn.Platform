@@ -1890,13 +1890,13 @@ namespace DotNetNuke.Entities.Portals
             return GetCurrentPortalSettingsInternal();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         IAbPortalSettings IPortalController.GetCurrentSettings()
         {
             return GetCurrentPortalSettingsInternal();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Obsolete("Deprecated in DotNetNuke 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
@@ -2075,7 +2075,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IPortalController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<IPortalController>;

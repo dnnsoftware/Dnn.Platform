@@ -11,28 +11,28 @@ namespace Dnn.EditBar.UI.Items
     [Serializable]
     public class CompleteStateMenu : WorkflowBaseMenuItem
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Name { get; } = "CompleteState";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Text => this.IsWorkflowEnabled ? (this.IsFirstState == true ? "Submit" : "Approve") : string.Empty; // (1) "Submit" -> (2..last-2) "Approve" -> (last) HIDDEN
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CssClass => string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Template { get; } = string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Parent { get; } = Constants.LeftMenu;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Loader { get; } = "CompleteState";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Order { get; } = 78;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool Visible() => base.Visible()
             && this.IsLastState == false // not the last 'Published' state
             && this.IsPriorState == false // not the state that is before last 'Published' state

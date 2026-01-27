@@ -29,10 +29,10 @@ namespace DotNetNuke.Web.Api.Auth
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string AuthScheme => DigestAuthentication.AuthenticationScheme;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (this.NeedsAuthentication(request))
@@ -55,7 +55,7 @@ namespace DotNetNuke.Web.Api.Auth
             return base.OnInboundRequest(request, cancellationToken);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             if (response.StatusCode == HttpStatusCode.Unauthorized && SupportsDigestAuth(response.RequestMessage))

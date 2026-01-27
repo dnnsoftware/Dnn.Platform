@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.Containers
 
         public string PrintIcon { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

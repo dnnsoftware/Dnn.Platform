@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Assets
             this.cache = new Dictionary<int, string>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Compare(int folderIdA, int folderIdB)
         {
             if (folderIdA == folderIdB)

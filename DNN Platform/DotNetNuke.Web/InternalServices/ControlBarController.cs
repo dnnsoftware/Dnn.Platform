@@ -535,7 +535,7 @@ namespace DotNetNuke.Web.InternalServices
             return true;
 
             // If we are not in an edit page
-            // return (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) && (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
+            ////return (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) && (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
         }
 
         private static void SetCloneModuleContext(bool cloneModuleContext)

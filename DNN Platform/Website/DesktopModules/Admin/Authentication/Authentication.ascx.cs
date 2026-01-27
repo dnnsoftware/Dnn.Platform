@@ -20,7 +20,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
     {
         private readonly List<AuthenticationSettingsBase> settingControls = new List<AuthenticationSettingsBase>();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

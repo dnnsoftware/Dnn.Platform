@@ -74,7 +74,7 @@ namespace DotNetNuke.Web.Api
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsAuthorized(AuthFilterContext context)
         {
             Requires.NotNull("context", context);

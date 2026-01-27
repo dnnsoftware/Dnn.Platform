@@ -132,7 +132,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         // Add image generation logic here and return an instance of ImageInfo
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ImageInfo GenerateImage(NameValueCollection parameters)
         {
             SetupCulture();

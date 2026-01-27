@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Library.Repository
         private static readonly object ThreadLocker = new object();
         private readonly DataService dataService = new DataService();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PersonaBarMenu GetMenu()
         {
             var menu = DataCache.GetCache<PersonaBarMenu>(PersonaBarMenuCacheKey);
@@ -50,19 +50,19 @@ namespace Dnn.PersonaBar.Library.Repository
             return menu;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public MenuItem GetMenuItem(string identifier)
         {
             return this.GetMenu().AllItems.ToList().FirstOrDefault(m => m.Identifier.Equals(identifier, StringComparison.OrdinalIgnoreCase));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public MenuItem GetMenuItem(int menuId)
         {
             return this.GetMenu().AllItems.ToList().FirstOrDefault(m => m.MenuId == menuId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SaveMenuItem(MenuItem item)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
@@ -86,7 +86,7 @@ namespace Dnn.PersonaBar.Library.Repository
             ClearCache();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteMenuItem(string identifier)
         {
             this.dataService.DeletePersonaBarMenuByIdentifier(identifier);
@@ -94,19 +94,19 @@ namespace Dnn.PersonaBar.Library.Repository
             ClearCache();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetMenuDefaultPermissions(int menuId)
         {
             return this.dataService.GetPersonaBarMenuDefaultPermissions(menuId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SaveMenuDefaultPermissions(MenuItem menuItem, string roleNames)
         {
             this.dataService.SavePersonaBarMenuDefaultPermissions(menuItem.MenuId, roleNames);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateMenuController(string identifier, string controller)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
@@ -114,7 +114,7 @@ namespace Dnn.PersonaBar.Library.Repository
             ClearCache();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IPersonaBarRepository> GetFactory()
         {
             return () => new PersonaBarRepository();

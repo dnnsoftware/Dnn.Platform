@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         /// <summary>Gets or sets the checkbox mode.</summary>
         public CheckBoxMode Mode { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override WebControl CreateControlInternal(Control container)
         {
             // _checkBox = new DnnRadButton {ID = ID + "_CheckBox", ButtonType = RadButtonType.ToggleButton, ToggleType = ButtonToggleType.CheckBox, AutoPostBack = false};
@@ -85,7 +85,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             return this.checkBox;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

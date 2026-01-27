@@ -130,7 +130,7 @@ namespace DotNetNuke.Entities.Controllers
             return retValue;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         IDictionary<string, IConfigurationSetting> IHostSettingsService.GetSettings()
         {
             return DataCache.GetCachedData<Dictionary<string, IConfigurationSetting>>(
@@ -143,7 +143,7 @@ namespace DotNetNuke.Entities.Controllers
                 true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         IDictionary<string, string> IHostSettingsService.GetSettingsDictionary()
         {
             return ((IHostSettingsService)this).GetSettings()
@@ -181,7 +181,7 @@ namespace DotNetNuke.Entities.Controllers
             return value.Value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         void IHostSettingsService.Update(IDictionary<string, string> settings)
         {
             foreach (var settingKvp in settings)
@@ -192,13 +192,13 @@ namespace DotNetNuke.Entities.Controllers
             DataCache.ClearHostCache(false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Update(IConfigurationSetting config)
         {
             this.Update(config, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Update(IConfigurationSetting config, bool clearCache)
         {
             try

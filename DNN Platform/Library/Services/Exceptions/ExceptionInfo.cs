@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.Exceptions
         /// <inheritdoc />
         public string StackTrace { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string InnerMessage { get; set; }
 
         /// <inheritdoc />
@@ -180,7 +180,7 @@ namespace DotNetNuke.Services.Exceptions
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ToString()
         {
             var str = new StringBuilder();

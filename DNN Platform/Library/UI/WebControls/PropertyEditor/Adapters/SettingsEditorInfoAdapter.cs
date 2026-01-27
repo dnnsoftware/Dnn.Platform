@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.WebControls
             this.fieldName = fieldName;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public EditorInfo CreateEditControl()
         {
             var info = (SettingInfo)this.dataMember;
@@ -69,7 +69,7 @@ namespace DotNetNuke.UI.WebControls
             return editInfo;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool UpdateValue(PropertyEditorEventArgs e)
         {
             string name = e.Name;
@@ -100,7 +100,7 @@ namespace DotNetNuke.UI.WebControls
             return isDirty;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool UpdateVisibility(PropertyEditorEventArgs e)
         {
             return false;

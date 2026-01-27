@@ -65,10 +65,10 @@ namespace Dnn.PersonaBar.Library.Containers
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please resolve via dependency injection. Scheduled removal in v12.0.0.")]
         public static IPersonaBarContainer Instance => instance ??= Globals.DependencyProvider.GetRequiredService<IPersonaBarContainer>();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual IList<string> RootItems => ["Content", "Manage", "Settings", "Edit",];
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual bool Visible => true;
 
         protected INavigationManager NavigationManager { get; }
@@ -86,12 +86,12 @@ namespace Dnn.PersonaBar.Library.Containers
             instance = null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void Initialize(UserControl personaBarControl)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual IDictionary<string, object> GetConfiguration()
         {
             var portalSettings = PortalSettings.Current;
@@ -99,7 +99,7 @@ namespace Dnn.PersonaBar.Library.Containers
             return this.GetConfiguration(portalSettings);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void FilterMenu(PersonaBarMenu menu)
         {
         }

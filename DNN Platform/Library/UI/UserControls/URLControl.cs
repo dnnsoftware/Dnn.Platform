@@ -667,7 +667,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -681,7 +681,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -719,7 +719,7 @@ namespace DotNetNuke.UI.UserControls
                     ClientAPI.AddButtonConfirm(this.cmdDelete, Localization.GetString("DeleteItem"));
 
                     // The following line was mover to the pre-render event to ensure render for the first time
-                    // ViewState("IsUrlControlLoaded") = "Loaded"
+                    ////ViewState("IsUrlControlLoaded") = "Loaded"
                 }
             }
             catch (Exception exc)
@@ -728,7 +728,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

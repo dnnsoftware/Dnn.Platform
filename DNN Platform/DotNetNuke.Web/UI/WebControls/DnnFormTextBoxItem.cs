@@ -67,7 +67,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets a value indicating whether to clear the field's value after post back when text mode set to password mode.</summary>
         public bool ClearContentInPasswordMode { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override WebControl CreateControlInternal(Control container)
         {
             this.textBox = new TextBox { ID = this.ID + "_TextBox" };
@@ -97,7 +97,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return this.textBox;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

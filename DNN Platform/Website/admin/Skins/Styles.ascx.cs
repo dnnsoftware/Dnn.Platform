@@ -44,7 +44,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string Media { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

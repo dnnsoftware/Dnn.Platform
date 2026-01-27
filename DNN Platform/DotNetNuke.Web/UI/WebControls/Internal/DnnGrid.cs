@@ -65,7 +65,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             set => this.PageIndex = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -75,7 +75,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, CommonJs.DnnPlugins);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

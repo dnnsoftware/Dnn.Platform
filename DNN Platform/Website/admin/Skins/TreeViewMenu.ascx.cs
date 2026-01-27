@@ -406,7 +406,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             this.InitializeTree();

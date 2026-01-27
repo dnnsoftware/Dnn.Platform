@@ -174,14 +174,14 @@ namespace DotNetNuke.Services.Scheduling
         /// <summary>Gets or sets the ID of the running thread.</summary>
         public int ThreadID { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID
         {
             get => this.ScheduleID;
             set => this.ScheduleID = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void Fill(IDataReader dr)
         {
             this.FillInternal(dr);
@@ -247,7 +247,7 @@ namespace DotNetNuke.Services.Scheduling
             return this.scheduleItemSettings;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void FillInternal(IDataReader dr)
         {
             this.ScheduleID = Null.SetNullInteger(dr["ScheduleID"]);

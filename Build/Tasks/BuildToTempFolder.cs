@@ -18,7 +18,7 @@ namespace DotNetNuke.Build.Tasks
     {
         private static readonly string[] SampleModuleArtifactsPattern = ["SampleModules/*.zip",];
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             if (context.Settings.CopySampleProjects)

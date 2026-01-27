@@ -52,21 +52,21 @@ namespace DotNetNuke.Entities.Portals.Templates
             this.permissionDefinitionService = permissionDefinitionService ?? Globals.DependencyProvider.GetRequiredService<IPermissionDefinitionService>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ApplyPortalTemplate(int portalId, IPortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             var importer = new PortalTemplateImporter(this.permissionDefinitionService, template);
             importer.ParseTemplate(this.businessControllerProvider, this.eventLogger, portalId, administratorId, mergeTabs, isNewPortal);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public (bool Success, string Message) ExportPortalTemplate(int portalId, string fileName, string description, bool isMultiLanguage, IEnumerable<string> locales, string localizationCulture, IEnumerable<int> exportTabIds, bool includeContent, bool includeFiles, bool includeModules, bool includeProfile, bool includeRoles)
         {
             var exporter = new PortalTemplateExporter();
             return exporter.ExportPortalTemplate(this.businessControllerProvider, portalId, fileName, description, isMultiLanguage, locales, localizationCulture, exportTabIds, includeContent, includeFiles, includeModules, includeProfile, includeRoles);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IPortalTemplateInfo GetPortalTemplate(string templatePath, string cultureCode)
         {
             var template = new PortalTemplateInfo(templatePath, cultureCode);

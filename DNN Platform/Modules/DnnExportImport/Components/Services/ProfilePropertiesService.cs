@@ -18,16 +18,16 @@ namespace Dnn.ExportImport.Components.Services
     /// <summary>An export service for profile properties.</summary>
     public class ProfilePropertiesService : BasePortableService
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Category => Constants.Category_ProfileProps;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ParentCategory => null;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override uint Priority => 5;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
@@ -75,7 +75,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -132,7 +132,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportProfileProperty>();

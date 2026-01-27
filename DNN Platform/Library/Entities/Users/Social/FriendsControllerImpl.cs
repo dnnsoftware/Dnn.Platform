@@ -15,9 +15,9 @@ namespace DotNetNuke.Entities.Users.Social.Internal
     {
         internal const string FriendRequest = "FriendRequest";
 
-        // static FriendsControllerImpl()
-        // {
-        // }
+        ////static FriendsControllerImpl()
+        ////{
+        ////}
 
         /// <summary>AcceptFriend - Current User accepts a Friend Request to the Target User.</summary>
         /// <param name="targetUser">UserInfo for Target User.</param>
