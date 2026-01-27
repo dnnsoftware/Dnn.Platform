@@ -478,7 +478,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     try
                     {
-                        this.OnPasswordUpdated(UserController.ChangePassword(this.User, this.txtOldPassword.Text, this.txtNewPassword.Text)
+                        this.OnPasswordUpdated(UserController.ChangePassword(this.eventLogger, this.User, this.txtOldPassword.Text, this.txtNewPassword.Text)
                                               ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
                                               : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
                     }

@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Content.Workflow
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content.Workflow.Entities;
     using DotNetNuke.Entities.Content.Workflow.Exceptions;
@@ -15,17 +16,30 @@ namespace DotNetNuke.Entities.Content.Workflow
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class WorkflowStateManager : ServiceLocator<IWorkflowStateManager, WorkflowStateManager>, IWorkflowStateManager
     {
-        private readonly DataProvider dataProvider;
         private readonly IWorkflowRepository workflowRepository = WorkflowRepository.Instance;
         private readonly IWorkflowStateRepository workflowStateRepository = WorkflowStateRepository.Instance;
         private readonly IWorkflowStatePermissionsRepository workflowStatePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
+        private readonly DataProvider dataProvider;
+        private readonly IDataContext dataContext;
 
         /// <summary>Initializes a new instance of the <see cref="WorkflowStateManager"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IDataContext. Scheduled removal in v12.0.0.")]
         public WorkflowStateManager()
+            : this(null, null)
         {
-            this.dataProvider = DataProvider.Instance();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="WorkflowStateManager"/> class.</summary>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        public WorkflowStateManager(IDataContext dataContext, DataProvider dataProvider)
+        {
+            this.dataContext = dataContext ?? Globals.GetCurrentServiceProvider().GetRequiredService<IDataContext>();
+            this.dataProvider = dataProvider ?? DataProvider.Instance();
         }
 
         /// <inheritdoc />
@@ -86,11 +100,8 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.workflowStateRepository.DeleteWorkflowState(stateToDelete);
 
             // Reorder states order
-            using (var context = DataContext.Instance())
-            {
-                var rep = context.GetRepository<WorkflowState>();
-                rep.Update("SET [Order] = [Order] - 1 WHERE WorkflowID = @0 AND [Order] > @1", stateToDelete.WorkflowID, stateToDelete.Order);
-            }
+            var rep = this.dataContext.GetRepository<WorkflowState>();
+            rep.Update("SET [Order] = [Order] - 1 WHERE WorkflowID = @0 AND [Order] > @1", stateToDelete.WorkflowID, stateToDelete.Order);
         }
 
         /// <inheritdoc />

@@ -148,6 +148,7 @@ namespace DotNetNuke
             services.AddTransient<ITabPublishingController, TabPublishingController>();
             services.AddTransient<IClientResourceSettings, ClientResourceSettings>();
             services.AddTransient<IWorkflowSecurity, WorkflowSecurity>();
+            services.AddTransient<IWorkflowStateManager, WorkflowStateManager>();
             if (CryptoConfig.AllowOnlyFipsAlgorithms)
             {
                 services.AddTransient<ICryptographyProvider, FipsCompilanceCryptographyProvider>();
@@ -159,10 +160,11 @@ namespace DotNetNuke
 
             services.AddTransient<IDataContext>(serviceProvider =>
             {
+                var hostSettings = serviceProvider.GetRequiredService<IHostSettings>();
                 var dataProvider = serviceProvider.GetRequiredService<DataProvider>();
                 var defaultConnectionStringName = dataProvider.Settings["connectionStringName"];
 
-                return new PetaPocoDataContext(defaultConnectionStringName, dataProvider.ObjectQualifier);
+                return new PetaPocoDataContext(hostSettings, defaultConnectionStringName, dataProvider.ObjectQualifier);
             });
 
             services.AddTransient<ModuleInjectionManager>();
