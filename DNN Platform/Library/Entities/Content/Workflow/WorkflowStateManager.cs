@@ -269,7 +269,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <inheritdoc />
         protected override Func<IWorkflowStateManager> GetFactory()
         {
-            return () => new WorkflowStateManager();
+            return Globals.DependencyProvider.GetRequiredService<IWorkflowStateManager>;
         }
 
         private static int GetStateIndex(WorkflowState[] states, WorkflowState currentState)
