@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.Sitemap
                     var currentCulture = this.portalSettings.CultureCode?.ToLowerInvariant();
                     if (string.IsNullOrEmpty(currentCulture))
                     {
-                        currentCulture = Localization.GetPageLocale(this.portalSettings).Name.ToLowerInvariant();
+                        currentCulture = Localization.GetPageLocale((IPortalSettings)this.portalSettings).Name.ToLowerInvariant();
                     }
 
                     this.cacheFileName = $"sitemap.{currentCulture}.xml";
@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.Sitemap
             {
                 if (string.IsNullOrEmpty(this.cacheIndexFileNameFormat))
                 {
-                    var currentCulture = Localization.GetPageLocale(this.portalSettings).Name.ToLowerInvariant();
+                    var currentCulture = Localization.GetPageLocale((IPortalSettings)this.portalSettings).Name.ToLowerInvariant();
                     this.cacheIndexFileNameFormat = $"sitemap_{{0}}.{currentCulture}.xml";
                 }
 
@@ -202,7 +202,7 @@ namespace DotNetNuke.Services.Sitemap
         /// </remarks>
         public void GetSitemapIndexFile(string index, TextWriter output)
         {
-            var currentCulture = Localization.GetPageLocale(this.portalSettings).Name.ToLowerInvariant();
+            var currentCulture = Localization.GetPageLocale((IPortalSettings)this.portalSettings).Name.ToLowerInvariant();
             this.WriteSitemapFileToOutput($"sitemap_{index}.{currentCulture}.xml", output);
         }
 

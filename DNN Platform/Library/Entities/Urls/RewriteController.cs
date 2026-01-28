@@ -14,6 +14,7 @@ namespace DotNetNuke.Entities.Urls
     using System.Web;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -953,7 +954,8 @@ namespace DotNetNuke.Entities.Urls
                 PortalInfo portal = CacheController.GetPortal(result.PortalId, false);
 
                 // DNN-3789 - culture is defined by GetPageLocale
-                string currentLocale = Localization.GetPageLocale(new PortalSettings(result.TabId, result.PortalAlias)).Name;
+                IPortalSettings portalSettings = new PortalSettings(result.TabId, result.PortalAlias);
+                string currentLocale = Localization.GetPageLocale(portalSettings).Name;
                 if (portal != null && !string.IsNullOrEmpty(currentLocale))
                 {
                     AddLanguageCodeToRewritePath(ref rewritePath, currentLocale);
@@ -1807,7 +1809,8 @@ namespace DotNetNuke.Entities.Urls
                     var currentLocale = result.CultureCode;
                     if (string.IsNullOrEmpty(currentLocale))
                     {
-                        currentLocale = Localization.GetPageLocale(new PortalSettings(result.PortalId)).Name;
+                        IPortalSettings portalSettings = new PortalSettings(result.PortalId);
+                        currentLocale = Localization.GetPageLocale(portalSettings).Name;
                     }
 
                     if (!newUrl.Contains(currentLocale))
