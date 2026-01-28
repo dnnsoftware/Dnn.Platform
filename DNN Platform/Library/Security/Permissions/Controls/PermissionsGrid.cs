@@ -17,6 +17,7 @@ namespace DotNetNuke.Security.Permissions.Controls
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Internal.SourceGenerators;
@@ -113,9 +114,9 @@ namespace DotNetNuke.Security.Permissions.Controls
             get
             {
                 // Obtain PortalSettings from Current Context
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
                 int portalId;
-                if (Globals.IsHostTab(portalSettings.ActiveTab.TabID))
+                if (Globals.IsHostTab(TabController.CurrentPage.TabID))
                 {
                     // if we are in host filemanager then we need to pass a null portal id
                     portalId = Null.NullInteger;
@@ -1199,7 +1200,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         private void GetRoles()
         {
             var checkedRoles = this.GetCheckedRoles();
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             this.Roles = new ArrayList(RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved && checkedRoles.Contains(r.RoleID)).ToArray());
 
             if (checkedRoles.Contains(this.UnAuthUsersRoleId))
@@ -1339,7 +1340,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         private void FillSelectRoleComboBox(int selectedRoleGroupId)
         {
             this.cboSelectRole.Items.Clear();
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var groupRoles = (selectedRoleGroupId > -2) ? RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.RoleGroupID == selectedRoleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
                 : RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
 

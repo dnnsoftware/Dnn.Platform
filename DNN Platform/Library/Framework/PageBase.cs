@@ -72,11 +72,13 @@ namespace DotNetNuke.Framework
             this.UserController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         public PortalSettings PortalSettings => this.PortalController.GetCurrentPortalSettings();
+#pragma warning restore CS0618 // Type or member is obsolete
 
         public NameValueCollection HtmlAttributes { get; } = [];
 
-        public CultureInfo PageCulture => this.pageCulture ?? (this.pageCulture = Localization.GetPageLocale(this.PortalSettings));
+        public CultureInfo PageCulture => this.pageCulture ??= Localization.GetPageLocale(this.PortalController.GetCurrentSettings());
 
         public string LocalResourceFile
         {
