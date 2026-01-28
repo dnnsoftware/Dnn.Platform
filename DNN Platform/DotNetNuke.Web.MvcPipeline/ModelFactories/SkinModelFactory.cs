@@ -197,6 +197,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             this.clientResourceController.RegisterStylesheet(string.Concat(portalSettings.ActiveTab.SkinPath, "skin.css"), FileOrder.Css.SkinCss, true);
             this.clientResourceController.RegisterStylesheet(portalSettings.ActiveTab.SkinSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificSkinCss, true);
 
+            // portal.css
+            skin.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = string.Concat(portalSettings.HomeDirectory, "portal.css"), FileOrder = FileOrder.Css.PortalCss });
+
             // register css variables
             var cssVariablesStyleSheet = this.GetCssVariablesStylesheet(portalSettings.PortalId, portalSettings.GetStyles(), portalSettings.HomeSystemDirectory);
             skin.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = cssVariablesStyleSheet, FileOrder = FileOrder.Css.DefaultCss });
