@@ -2109,7 +2109,9 @@ namespace DotNetNuke.Entities.Users
                 LogTypeKey = loginStatus.ToString(),
                 LogPortalID = portalId,
                 LogPortalName = portalName,
+    #pragma warning disable CS0618 // Type or member is obsolete
                 LogUserName = objSecurity.InputFilter(username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup),
+    #pragma warning restore CS0618 // Type or member is obsolete
                 LogUserID = userId,
             };
             log.AddProperty("IP", ip);

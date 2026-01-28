@@ -472,7 +472,9 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 // clean the return url to avoid possible XSS attack.
+#pragma warning disable CS0618 // Type or member is obsolete
                 var cleanUrl = PortalSecurity.Instance.InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
                 if (url != cleanUrl)
                 {
                     return string.Empty;

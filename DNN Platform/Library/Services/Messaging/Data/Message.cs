@@ -217,14 +217,17 @@ namespace DotNetNuke.Services.Messaging.Data
             get
             {
                 var ps = PortalSecurity.Instance;
+#pragma warning disable CS0618 // Type or member is obsolete
                 return ps.InputFilter(this.subject, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             set
             {
                 var ps = PortalSecurity.Instance;
-                ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning disable CS0618 // Type or member is obsolete
                 this.subject = ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
 

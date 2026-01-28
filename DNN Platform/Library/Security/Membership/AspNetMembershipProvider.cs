@@ -222,7 +222,9 @@ namespace DotNetNuke.Security.Membership
 
             var userName = PortalSecurity.Instance.InputFilter(
                 newUsername,
+#pragma warning disable CS0618 // Type or member is obsolete
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             if (!userName.Equals(newUsername, StringComparison.Ordinal))
             {
@@ -886,16 +888,24 @@ namespace DotNetNuke.Security.Membership
             var objSecurity = PortalSecurity.Instance;
             string firstName = objSecurity.InputFilter(
                 user.FirstName,
+#pragma warning disable CS0618 // Type or member is obsolete
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
             string lastName = objSecurity.InputFilter(
                 user.LastName,
+#pragma warning disable CS0618 // Type or member is obsolete
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
             string email = objSecurity.InputFilter(
                 user.Email,
+#pragma warning disable CS0618 // Type or member is obsolete
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
             string displayName = objSecurity.InputFilter(
                 user.DisplayName,
+#pragma warning disable CS0618 // Type or member is obsolete
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
             if (displayName.Contains("<"))
             {
                 displayName = HttpUtility.HtmlEncode(displayName);
@@ -1078,10 +1088,14 @@ namespace DotNetNuke.Security.Membership
             var portalSecurity = PortalSecurity.Instance;
             string userName = portalSecurity.InputFilter(
                 user.Username,
+#pragma warning disable CS0618 // Type or member is obsolete
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
             string email = portalSecurity.InputFilter(
                 user.Email,
+#pragma warning disable CS0618 // Type or member is obsolete
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
             MembershipCreateStatus status;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {
@@ -1449,7 +1463,9 @@ namespace DotNetNuke.Security.Membership
             var portalSecurity = PortalSecurity.Instance;
             string email = portalSecurity.InputFilter(
                 user.Email,
+#pragma warning disable CS0618 // Type or member is obsolete
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             // Persist the Membership Properties to the AspNet Data Store
             MembershipUser membershipUser = System.Web.Security.Membership.GetUser(user.Username);
@@ -1562,7 +1578,9 @@ namespace DotNetNuke.Security.Membership
         private UserCreateStatus CreateDNNUser(ref UserInfo user)
         {
             var objSecurity = PortalSecurity.Instance;
-            var filterFlags = PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup;
+#pragma warning disable CS0618 // Type or member is obsolete
+            const PortalSecurity.FilterFlag filterFlags = PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup;
+#pragma warning restore CS0618 // Type or member is obsolete
             user.Username = objSecurity.InputFilter(user.Username, filterFlags);
             user.Email = objSecurity.InputFilter(user.Email, filterFlags);
             user.LastName = objSecurity.InputFilter(user.LastName, filterFlags);

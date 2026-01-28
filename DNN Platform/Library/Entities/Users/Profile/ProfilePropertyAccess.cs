@@ -182,7 +182,9 @@ namespace DotNetNuke.Entities.Users
                         break;
                     case "richtext":
                         var objSecurity = PortalSecurity.Instance;
+#pragma warning disable CS0618 // Type or member is obsolete
                         result = PropertyAccess.FormatString(objSecurity.InputFilter(HttpUtility.HtmlDecode(property.PropertyValue), PortalSecurity.FilterFlag.NoScripting), formatString);
+#pragma warning restore CS0618 // Type or member is obsolete
                         break;
                     default:
                         result = HttpUtility.HtmlEncode(PropertyAccess.FormatString(property.PropertyValue, formatString));

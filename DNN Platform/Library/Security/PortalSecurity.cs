@@ -463,7 +463,9 @@ namespace DotNetNuke.Security
             }
 
             var tempInput = userInput;
+#pragma warning disable CS0618 // Type or member is obsolete
             if ((filterType & FilterFlag.NoAngleBrackets) == FilterFlag.NoAngleBrackets)
+#pragma warning restore CS0618 // Type or member is obsolete
             {
                 var removeAngleBrackets = Config.GetSetting("RemoveAngleBrackets") != null && bool.Parse(Config.GetSetting("RemoveAngleBrackets"));
                 if (removeAngleBrackets)
@@ -472,17 +474,23 @@ namespace DotNetNuke.Security
                 }
             }
 
+#pragma warning disable CS0618 // Type or member is obsolete
             if ((filterType & FilterFlag.NoSQL) == FilterFlag.NoSQL)
+#pragma warning restore CS0618 // Type or member is obsolete
             {
                 tempInput = FormatRemoveSQL(tempInput);
             }
 
+#pragma warning disable CS0618 // Type or member is obsolete
             if ((filterType & FilterFlag.NoMarkup) == FilterFlag.NoMarkup && IncludesMarkup(tempInput))
+#pragma warning restore CS0618 // Type or member is obsolete
             {
                 tempInput = HttpUtility.HtmlEncode(tempInput);
             }
 
+#pragma warning disable CS0618 // Type or member is obsolete
             if ((filterType & FilterFlag.NoScripting) == FilterFlag.NoScripting)
+#pragma warning restore CS0618 // Type or member is obsolete
             {
                 tempInput = FilterStrings(tempInput);
             }

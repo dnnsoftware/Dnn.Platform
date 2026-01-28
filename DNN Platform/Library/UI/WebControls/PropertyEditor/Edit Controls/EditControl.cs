@@ -162,7 +162,9 @@ namespace DotNetNuke.UI.WebControls
             this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
             var security = PortalSecurity.Instance;
+#pragma warning disable CS0618 // Type or member is obsolete
             writer.Write(security.InputFilter(propValue, PortalSecurity.FilterFlag.NoScripting));
+#pragma warning restore CS0618 // Type or member is obsolete
             writer.RenderEndTag();
         }
 
