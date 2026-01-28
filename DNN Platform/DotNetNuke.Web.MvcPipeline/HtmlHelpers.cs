@@ -5,17 +5,23 @@
 namespace DotNetNuke.Web.MvcPipeline
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Text;
+    using System.Threading;
     using System.Web;
     using System.Web.Helpers;
     using System.Web.Mvc;
+    using System.Web.UI;
 
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Framework;
+    using DotNetNuke.Services.ModuleCache;
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Framework;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
@@ -41,7 +47,41 @@ namespace DotNetNuke.Web.MvcPipeline
                 pageContributor.ConfigurePage(new PageConfigurationContext(Common.Globals.GetCurrentServiceProvider()));
             }
 
-            return moduleControl.Html(htmlHelper);
+            bool isCached = false;
+            string cachedContent = string.Empty;
+            var moduleConfiguration = moduleControl.ModuleContext.Configuration;
+            if (DotNetNuke.UI.Modules.ModuleCacheUtils.SupportsCaching(moduleConfiguration) && DotNetNuke.UI.Modules.ModuleHost.IsViewMode(moduleConfiguration, moduleControl.ModuleContext.PortalSettings) && !TabVersionUtils.TryGetUrlVersion(out _))
+            {
+                // attempt to load the cached content
+                isCached = DotNetNuke.UI.Modules.ModuleCacheUtils.TryLoadCached(moduleConfiguration, out cachedContent);
+                if (!isCached)
+                {
+                    // we will need to render and cache the content
+                    var moduleControlContent = moduleControl.Html(htmlHelper);
+                    var cachedOutput = moduleControlContent.ToString();
+                    if (!string.IsNullOrEmpty(cachedOutput) && (!HttpContext.Current.Request.Browser.Crawler))
+                    {
+                        // Save content to cache
+                        var moduleContent = Encoding.UTF8.GetBytes(cachedOutput);
+                        var cache = ModuleCachingProvider.Instance(moduleConfiguration.GetEffectiveCacheMethod());
+
+                        var varyBy = new SortedDictionary<string, string> { { "locale", Thread.CurrentThread.CurrentUICulture.ToString() } };
+
+                        var cacheKey = cache.GenerateCacheKey(moduleConfiguration.TabModuleID, varyBy);
+                        cache.SetModule(moduleConfiguration.TabModuleID, cacheKey, new TimeSpan(0, 0, moduleConfiguration.CacheTime), moduleContent);
+                    }
+
+                    return moduleControlContent;
+                }
+
+                // Render the cached content to Response
+                return new MvcHtmlString(cachedContent);
+            }
+            else
+            {
+                // load the control dynamically
+                return moduleControl.Html(htmlHelper);
+            }
         }
 
         /// <summary>

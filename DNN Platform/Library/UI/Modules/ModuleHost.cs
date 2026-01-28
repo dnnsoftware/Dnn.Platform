@@ -164,7 +164,7 @@ namespace DotNetNuke.UI.Modules
             }
             else
             {
-                if (this.SupportsCaching() && IsViewMode(this.moduleConfiguration, this.PortalSettings) && !Globals.IsAdminControl() && !IsVersionRequest())
+                if (ModuleCacheUtils.SupportsCaching(this.moduleConfiguration) && IsViewMode(this.moduleConfiguration, this.PortalSettings) && !Globals.IsAdminControl() && !IsVersionRequest())
                 {
                     // Render to cache
                     var tempWriter = new StringWriter();
@@ -256,7 +256,7 @@ namespace DotNetNuke.UI.Modules
                 if (this.DisplayContent())
                 {
                     // if the module supports caching and caching is enabled for the instance and the user does not have Edit rights or is currently in View mode
-                    if (this.SupportsCaching() && IsViewMode(this.moduleConfiguration, this.PortalSettings) && !IsVersionRequest())
+                    if (ModuleCacheUtils.SupportsCaching(this.moduleConfiguration) && IsViewMode(this.moduleConfiguration, this.PortalSettings) && !IsVersionRequest())
                     {
                         // attempt to load the cached content
                         this.isCached = this.TryLoadCached();
@@ -358,40 +358,13 @@ namespace DotNetNuke.UI.Modules
             this.Controls.Add(updateProgress);
         }
 
-        /// <summary>Gets a flag that indicates whether the Module Instance supports Caching.</summary>
-        /// <returns>A Boolean.</returns>
-        private bool SupportsCaching()
-        {
-            return this.moduleConfiguration.CacheTime > 0;
-        }
-
         /// <summary>Trys to load previously cached Module Content.</summary>
         /// <returns>A Boolean that indicates whether the cahed content was loaded.</returns>
         private bool TryLoadCached()
         {
             bool success = false;
             string cachedContent = string.Empty;
-            try
-            {
-                var cache = ModuleCachingProvider.Instance(this.moduleConfiguration.GetEffectiveCacheMethod());
-                var varyBy = new SortedDictionary<string, string> { { "locale", Thread.CurrentThread.CurrentUICulture.ToString() } };
-
-                string cacheKey = cache.GenerateCacheKey(this.moduleConfiguration.TabModuleID, varyBy);
-                byte[] cachedBytes = ModuleCachingProvider.Instance(this.moduleConfiguration.GetEffectiveCacheMethod()).GetModule(this.moduleConfiguration.TabModuleID, cacheKey);
-
-                if (cachedBytes != null && cachedBytes.Length > 0)
-                {
-                    cachedContent = Encoding.UTF8.GetString(cachedBytes);
-                    success = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                cachedContent = string.Empty;
-                Exceptions.LogException(ex);
-                success = false;
-            }
-
+            success = ModuleCacheUtils.TryLoadCached(this.moduleConfiguration, out cachedContent);
             if (success)
             {
                 this.RestoreCachedClientResourceRegistrations(cachedContent);
