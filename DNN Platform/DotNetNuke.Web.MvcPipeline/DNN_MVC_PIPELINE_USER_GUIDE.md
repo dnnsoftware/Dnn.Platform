@@ -1,5 +1,8 @@
 # DNN MVC Pipeline - User Guide
 
+<img width="2752" height="1536" alt="image" src="https://github.com/user-attachments/assets/6672f0f6-fe7c-4d06-8c2e-dfba5d26c05d" />
+
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
