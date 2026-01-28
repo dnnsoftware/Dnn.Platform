@@ -12,12 +12,13 @@ namespace DotNetNuke.Website.Controllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Website.Models;
 
     /// <summary>
     /// Handles module-related actions for the MVC website.
     /// </summary>
-    public class ModuleActionsController : Controller
+    public class ModuleActionsController : Controller, IMvcController
     {
         private readonly IPortalSettings portalSettings;
         private readonly IPortalController portalController;

@@ -83,7 +83,7 @@
                         var token = '@Html.AntiForgeryToken()';
                         token = $(token).val();
 
-                        $.post('/DesktopModules/ModuleActions/Delete', {
+                        $.post('@(DotNetNuke.Common.Globals.ApplicationPath)/DesktopModules/ModuleActions/Delete', {
                             moduleId: moduleId,
                             tabId: @Model.ModuleContext.TabID,
                             __RequestVerificationToken: token,
@@ -104,7 +104,7 @@
                     }
                 });
 
-            }, "200");
+            }, "2000");
         }
         var actionScripts = {}
         @foreach (var a in Model.ActionScripts)
