@@ -63,7 +63,7 @@ namespace Dnn.ContactList.Razor
             context.PageService.SetDescription("Contact List description - " + contacts.Count());
             context.PageService.SetKeyWords("keywords1");
 
-            context.PageService.AddInfoMessage("", "This is a simple contact list module built using Razor and DNN's MVC Pipeline");
+            // context.PageService.AddInfoMessage("", "This is a simple contact list module built using Razor and DNN's MVC Pipeline");
         }
 
         // Render the html for module control
@@ -88,5 +88,94 @@ namespace Dnn.ContactList.Razor
                 }).ToList()
             });
         }
+
+        // Example with internal routing
+
+        /*
+        public override IRazorModuleResult Invoke()
+        {
+            var viewAction = GetRouteAction();
+            return viewAction();
+        }
+
+        private Dictionary<string, Func<IRazorModuleResult>> Routes => new Dictionary<string, Func<IRazorModuleResult>>()
+            {
+                { "default", DefaultViewAction},
+                { "view1", ViewAction1},
+                { "view2", ViewAction2},
+            };
+
+        private Func<IRazorModuleResult> GetRouteAction()
+        {
+            var view = Request.QueryString["view"];
+
+            if (view != null && Routes.ContainsKey(view))
+            {
+                return Routes[view];
+
+            }
+            else
+            {
+                return Routes["default"];
+            }
+        }
+
+        private IRazorModuleResult DefaultViewAction()
+        {
+            return View(new ContactsModel()
+            {
+                IsEditable = ModuleContext.IsEditable,
+                EditUrl = ModuleContext.EditUrl(),
+                Contacts = new List<ContactModel>()
+                {
+                    new ContactModel()
+                    {
+                        ContactId = 1,
+                        FirstName = "John",
+                        LastName = "Doe from Default View ",
+                        Email = "test@test.com"
+                    }
+                }
+            });
+        }
+
+        private IRazorModuleResult ViewAction1()
+        {
+            return View(new ContactsModel()
+            {
+                IsEditable = ModuleContext.IsEditable,
+                EditUrl = ModuleContext.EditUrl(),
+                Contacts = new List<ContactModel>()
+                {
+                    new ContactModel()
+                    {
+                        ContactId = 1,
+                        FirstName = "John",
+                        LastName = "Doe from View 1",
+                        Email = "test@test.com"
+                    }
+                }
+            });
+        }
+
+        private IRazorModuleResult ViewAction2()
+        {
+            return View(new ContactsModel()
+            {
+                IsEditable = ModuleContext.IsEditable,
+                EditUrl = ModuleContext.EditUrl(),
+                Contacts = new List<ContactModel>()
+                {
+                    new ContactModel()
+                    {
+                        ContactId = 1,
+                        FirstName = "John",
+                        LastName = "Doe from View 2",
+                        Email = "test@test.com"
+                    }
+                }
+            });
+        }
+        */
     }
 }
