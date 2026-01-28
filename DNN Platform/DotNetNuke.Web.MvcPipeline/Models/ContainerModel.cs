@@ -93,42 +93,6 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         public string ContainerRazorPath { get; internal set; }
 
         /// <summary>
-        /// Gets the MVC action name used to render the module within the container.
-        /// </summary>
-        public string ActionName
-        {
-            get
-            {
-                if (this.moduleConfiguration.ModuleControl.ControlKey == "Module")
-                {
-                    return "LoadDefaultSettings";
-                }
-                else
-                {
-                    return string.IsNullOrEmpty(this.ModuleName) ? "Index" : this.FileNameWithoutExtension;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the MVC controller name used to render the module within the container.
-        /// </summary>
-        public string ControllerName
-        {
-            get
-            {
-                if (this.moduleConfiguration.ModuleControl.ControlKey == "Module")
-                {
-                    return "ModuleSettings";
-                }
-                else
-                {
-                    return string.IsNullOrEmpty(this.ModuleName) ? this.FileNameWithoutExtension : this.ModuleName;
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets the Razor view path that corresponds to the container control.
         /// </summary>
         public string ContainerRazorFile
@@ -179,21 +143,5 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         /// Gets or sets the stylesheets registered by the container.
         /// </summary>
         public List<RegisteredStylesheet> RegisteredStylesheets { get; set; } = new List<RegisteredStylesheet>();
-
-        private string ModuleName
-        {
-            get
-            {
-                return this.moduleConfiguration.DesktopModule.ModuleName;
-            }
-        }
-
-        private string FileNameWithoutExtension
-        {
-            get
-            {
-                return Path.GetFileNameWithoutExtension(this.moduleConfiguration.ModuleControl.ControlSrc);
-            }
-        }
     }
 }

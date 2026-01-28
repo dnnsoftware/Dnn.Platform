@@ -60,8 +60,6 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         {
             get
             {
-                // Make sure the Control tree has been created
-                // this.EnsureChildControls();
                 return this.control as IModuleControl;
             }
         }
