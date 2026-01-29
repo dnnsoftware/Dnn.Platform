@@ -38,7 +38,7 @@
             var siteRoot = dnn.getVar("sf_siteRoot", "/");
             var jsonResult = function() {
                 $.ajax({
-                    url: siteRoot + "DesktopModules/MVC/ContactList/Contact/GetJsonResult",
+                    url: siteRoot + "DesktopModules/MVC/Dnn/ContactList/Contact/GetJsonResult",
                     method: "Get",
                     headers: {
                         "ModuleId": ModuleId,
@@ -55,7 +55,7 @@
             }
             var partialResult = function() {
                 $.ajax({
-                    url: siteRoot + "DesktopModules/MVC/ContactList/Contact/GetDemoPartial",
+                    url: siteRoot + "DesktopModules/MVC/Dnn/ContactList/Contact/GetDemoPartial",
                     method: "Get",
                     headers: {
                         "ModuleId": ModuleId,

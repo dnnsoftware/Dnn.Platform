@@ -40,7 +40,7 @@ namespace Dnn.ContactList.Razor
 
                 actions.Add(
                     this.GetNextActionID(),
-                    Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
+                    Localization.GetString("AddContact", this.LocalResourceFile),
                     ModuleActionType.AddContent,
                     string.Empty,
                     string.Empty,
