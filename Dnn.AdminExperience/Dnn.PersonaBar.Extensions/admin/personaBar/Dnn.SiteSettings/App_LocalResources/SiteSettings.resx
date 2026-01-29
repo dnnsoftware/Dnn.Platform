@@ -1562,5 +1562,8 @@
   </data>
   <data name="Mvc.Text" xml:space="preserve">
     <value>Mvc</value>
-  </data> 
+  </data>
+  <data name="Auto.Text" xml:space="preserve">
+    <value>Auto</value>
+  </data>
 </root>

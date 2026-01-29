@@ -15,6 +15,9 @@ namespace DotNetNuke.Abstractions.Portals
         /// <summary>MVC.</summary>
         public const string Mvc = "mvc";
 
+        /// <summary>Auto.</summary>
+        public const string Auto = "auto";
+
         /// <summary>QueryString key.</summary>
         public const string QueryStringKey = "pipeline";
 

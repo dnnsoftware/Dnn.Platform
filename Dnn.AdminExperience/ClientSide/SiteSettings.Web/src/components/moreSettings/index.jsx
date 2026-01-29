@@ -307,6 +307,7 @@ class MoreSettingsPanelBody extends Component {
         const options = [];
         options.push({ value: "webforms", label: resx.get("WebForms") });
         options.push({ value: "mvc", label: resx.get("Mvc") });
+        options.push({ value: "auto", label: resx.get("Auto") });                
         return options;
     }
     
