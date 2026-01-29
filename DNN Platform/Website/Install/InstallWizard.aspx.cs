@@ -626,13 +626,13 @@ namespace DotNetNuke.Services.Install
                 File.CreateText(StatusFile).Close();
             }
 
-            if (HttpContext.Current.Request.RawUrl.EndsWith("&initiateinstall"))
+            if (HttpContext.Current.Request.RawUrl.EndsWith("&initiateinstall=1"))
             {
                 var synchConnectionString = new SynchConnectionStringStep();
                 synchConnectionString.Execute();
-                this.Response.Redirect(HttpContext.Current.Request.RawUrl.Replace("&initiateinstall", "&executeinstall"), true);
+                this.Response.Redirect(HttpContext.Current.Request.RawUrl.Replace("&initiateinstall=1", "&executeinstall=1"), true);
             }
-            else if (HttpContext.Current.Request.RawUrl.EndsWith("&executeinstall"))
+            else if (HttpContext.Current.Request.RawUrl.EndsWith("&executeinstall=1"))
             {
                 try
                 {
@@ -642,7 +642,7 @@ namespace DotNetNuke.Services.Install
                 catch (Exception)
                 {
                     // Redirect back to first page
-                    this.Response.Redirect(HttpContext.Current.Request.RawUrl.Replace("&executeinstall", string.Empty), true);
+                    this.Response.Redirect(HttpContext.Current.Request.RawUrl.Replace("&executeinstall=1", string.Empty), true);
                 }
             }
             else if (!this.Page.IsPostBack)
