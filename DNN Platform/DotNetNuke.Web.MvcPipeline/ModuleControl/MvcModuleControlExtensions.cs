@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 {
     using System;
+
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Services.Localization;
 
@@ -138,8 +139,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 throw new ArgumentNullException(nameof(moduleControl));
             }
 
-            var parameters = GetParameters(moduleControl, controlKey, additionalParameters);
-            return moduleControl.ModuleContext.EditUrl(keyName, keyValue, controlKey, parameters);
+            // var parameters = GetParameters(moduleControl, controlKey, additionalParameters);
+            return moduleControl.ModuleContext.EditUrl(keyName, keyValue, controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -158,8 +159,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 throw new ArgumentNullException(nameof(moduleControl));
             }
 
-            var parameters = GetParameters(moduleControl, controlKey, additionalParameters);
-            return moduleControl.ModuleContext.NavigateUrl(tabID, controlKey, pageRedirect, parameters);
+            // var parameters = GetParameters(moduleControl, controlKey, additionalParameters);
+            return moduleControl.ModuleContext.NavigateUrl(tabID, controlKey, pageRedirect, additionalParameters);
         }
 
         /// <summary>

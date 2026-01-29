@@ -44,7 +44,18 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         {
             get
             {
-                return string.Format("~/DesktopModules/MVC/{0}", this.ModuleConfiguration.DesktopModule.FolderName);
+                return string.Format("DesktopModules/MVC/{0}", this.ModuleConfiguration.DesktopModule.FolderName);
+            }
+        }
+
+        /// <summary>
+        /// Gets the default resource file name for this control.
+        /// </summary>
+        public override string ResourceName
+        {
+            get
+            {
+                return this.RouteControllerName + ".resx";
             }
         }
 
@@ -137,12 +148,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             string controllerName = string.Empty;
             string actionName = string.Empty;
             var controlKey = module.ModuleControl.ControlKey;
-
-            this.LocalResourceFile = string.Format(
-                "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                module.DesktopModule.FolderName,
-                Localization.LocalResourceDirectory,
-                this.RouteActionName);
 
             RouteValueDictionary values = new RouteValueDictionary
                     {

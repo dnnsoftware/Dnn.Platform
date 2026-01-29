@@ -2196,14 +2196,15 @@ namespace DotNetNuke.Entities.Urls
 
         private static bool IsMvc(UrlAction result, NameValueCollection queryStringCol, HttpContext context, int tabId, int portalId)
         {
-            var mvcCtls = new[] { "Terms", "Privacy" };
-
             bool mvcCtl = false;
+
+            /*
             if (result.RewritePath.Contains("&ctl="))
             {
                 var portalPipeline = PortalSettingsController.Instance().GetPortalPagePipeline(portalId);
                 if (portalPipeline == PagePipelineConstants.Mvc)
                 {
+                    var mvcCtls = new[] { "Terms", "Privacy" };
                     foreach (var item in mvcCtls)
                     {
                         mvcCtl = mvcCtl || result.RewritePath.Contains("&ctl=" + item);
@@ -2211,6 +2212,7 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
             else
+            */
             {
                 TabInfo tab = null;
                 if (tabId > 0 && portalId > -1)
@@ -2227,6 +2229,38 @@ namespace DotNetNuke.Entities.Urls
                         {
                             var portalPipeline = PortalSettingsController.Instance().GetPortalPagePipeline(portalId);
                             mvcCtl = portalPipeline == PagePipelineConstants.Mvc;
+                        }
+
+                        if (mvcCtl && result.RewritePath.Contains("&ctl="))
+                        {
+                            var query = HttpUtility.ParseQueryString(result.RewritePath.Split('?')[1]);
+                            var mid = query["mid"];
+                            var ctl = query["ctl"];
+                            if (int.TryParse(mid, out int moduleId))
+                            {
+                                var module = Modules.ModuleController.Instance.GetModule(moduleId, tabId, false);
+                                if (module != null)
+                                {
+                                    var modCtl = Modules.ModuleControlController.GetModuleControlByControlKey(ctl, module.ModuleDefID);
+                                    mvcCtl = module != null && !string.IsNullOrEmpty(modCtl.MvcControlClass);
+                                }
+                            }
+                            else
+                            {
+                                mvcCtl = false;
+                            }
+                        }
+                    }
+                }
+                else if (result.RewritePath.Contains("&ctl="))
+                {
+                    var portalPipeline = PortalSettingsController.Instance().GetPortalPagePipeline(portalId);
+                    if (portalPipeline == PagePipelineConstants.Mvc)
+                    {
+                        var mvcCtls = new[] { "Terms", "Privacy" };
+                        foreach (var item in mvcCtls)
+                        {
+                            mvcCtl = mvcCtl || result.RewritePath.Contains("&ctl=" + item);
                         }
                     }
                 }
@@ -2468,14 +2502,14 @@ namespace DotNetNuke.Entities.Urls
                     // if so, do the rewrite
                     if (result.RewritePath.StartsWith(result.Scheme, StringComparison.OrdinalIgnoreCase) || !result.RewritePath.StartsWith(Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (!result.RewritePath.Contains(Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
+                        if (!result.RewritePath.Contains(Globals.glbDefaultPage))
                         {
                             RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
                         }
                         else
                         {
                             // if there is no TabId and we have the domain
-                            if (!result.RewritePath.Contains("tabId=", StringComparison.OrdinalIgnoreCase))
+                            if (!result.RewritePath.Contains("tabId="))
                             {
                                 RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
                             }
@@ -2787,12 +2821,12 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // 739 : catch no-extension 404 errors
                         string pathWithNoQs = result.OriginalPath;
-                        if (pathWithNoQs.Contains("?", StringComparison.Ordinal))
+                        if (pathWithNoQs.Contains("?"))
                         {
                             pathWithNoQs = pathWithNoQs.Substring(0, pathWithNoQs.IndexOf("?", StringComparison.Ordinal));
                         }
 
-                        if (!pathWithNoQs.AsSpan(pathWithNoQs.Length - 5, 5).Contains(".", StringComparison.Ordinal))
+                        if (!pathWithNoQs.AsSpan(pathWithNoQs.Length - 5, 5).Contains(".".AsSpan(), StringComparison.Ordinal))
                         {
                             // no page extension, output a 404 if the Url is not found
                             // 766 : check for physical path before passing off as a 404 error
