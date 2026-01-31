@@ -39,7 +39,7 @@ The DNN MVC Pipeline is a modern rendering system that enables DNN Platform to u
 - **Dependency Injection**: Built-in support for modern DI patterns
 - **Future-Proof**: Follows patterns compatible with .NET Core migration
 
-**For Projects:**
+**For Integrators:**
 - **Gradual Migration**: Migrate skins and modules incrementally
 - **No Breaking Changes**: Existing WebForms code continues to work
 - **Flexibility**: Choose the best approach for each component
@@ -51,13 +51,13 @@ The DNN MVC Pipeline is a modern rendering system that enables DNN Platform to u
    - **MVC Skins**: Uses `.cshtml` Razor view files in `Views/` folders and HTML helpers instead of server controls
 
 2. **Module Controls**
-   - **WebForms Modules**: Traditional `.ascx` user controls
-   - **MVC Modules**: Classes implementing `IMvcModuleControl`
-   - **Hybrid Modules**: Support both pipelines simultaneously
+   - **WebForms Module Controls**: Traditional `.ascx` user controls
+   - **MVC pipeline Module Controls**: Classes implementing `IMvcModuleControl`
+   - **Hybrid Module controls**: Support both pipelines simultaneously
 
 
 ### How activate the MVC Pipeline ?
-- On the site settings you can activate it globaly for a portal
+- On site settings you can activate it globaly for a portal
 - On page settings you can overide the site settings 
 
 [Video showcase the general usage](https://www.youtube.com/watch?v=L7ZHTP8e_7w)
@@ -138,40 +138,41 @@ In DNN we have 3 kinds of Module controls : View, Edit and Settings.
 The View control is the only one that is rendered on a page where other modules are also be rendered.
 So it's also the only one that needs to support the 2 pipelines.
 
-The Edit Controls are always rendered on a page without other modules, so it is enoug to support only one pipeline. So you can leave them in WebForms or convert them to MVC. You can also convert this controls gradually.
+The Edit Controls are always rendered on a page without other modules, so it is enoug to support only one pipeline. So you can leave them in WebForms or add MVC support. You can also convert this controls gradually.
 
 The settings control is actually not supported in the MVC pipeline. So you have to leave them in webforms or convert them to a Edit Control.
 
 ### Module patern
 Three module paterns are supported in the MVC pipeline : the existing SPA and MVC module paterns and a new Razor+ patern.
-The SPA patern can be used without changes and the MVC patern with small changes. The MVC patern is not really future proof because it use Child Action Controllers that dousn't exist in .net Core.
+The SPA patern can be used without changes and the MVC patern with small changes. The MVC patern is not really future proof because it is based on Child Action Controllers (in the mvc pipeline) that dousn't exist in .net Core.
 
 The recommended patern is Razor+ with use the same structure then a .net Core Viewcomponent.
 The Razor+ use a Razor file for server side rendering and typically interaction are done in javascript with webapi or alternatively with AJAX and classic MVC Controllers.
 
 ### Migration paths
-To make it work you need to define in module manifest the Webforms Control and the MVC Control class name.
+To make it work you need to define in module manifest : the Webforms Control and a new MVC Control class name.
 
-There 2 options :
-1. Use a WebForms Control and a Razor+ with 2 UI implementations.
-2. Create a unic Razor+ Module control and a generic WebForms Wrapper Module Control
+There are 2 options :
+1. Use a WebForms Control and a MVC Control with 2 UI implementations.
+2. Create one Razor+ Module control and use the generic WebForms Wrapper Module Control to render the Razor+ in Webforms.
 
-#### What is WrapperModule?
+#### What is the WrapperModule?
 
 `WrapperModule` is a bridge component that allows MVC module controls to run within the traditional WebForms pipeline. 
 
 #### When to Use WrapperModule
 
-✅ **Use WrapperModule when:**
+✅ **Use the WrapperModule when:**
 - You want to migrate a module to MVC
 - You need to support both WebForms and MVC pipelines
-- Your module doesn't require form submissions (except if they are in js)
-- You want to maintain a unic code base
+- Your module doesn't require mvc form submissions
+- You use webapi or Ajax for form submissions
+- You want to maintain a one code base
 
 ❌ **Don't use WrapperModule if:**
-- Your module requires `<form>` tags (WebForms pages already have one)
+- Your module requires `<form>` tags in MVC (not allowed because WebForms pages already have one)
 - You need postback functionality
-- you don't use a javascript frmawork with webapi's for form submissions
+- you don't use a javascript frmaworks with webapi's for form submissions
 
 
 > **Note**: For complete technical details, see [razor-module-development.md](https://github.com/dnnsoftware/Dnn.Platform/blob/feature/mvc-pipeline-old/DNN%20Platform/DotNetNuke.Web.MvcPipeline/razor-module-development.md)
