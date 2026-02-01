@@ -9,8 +9,8 @@
         <button
           type="button"
           class="dnnSearchBoxClearText"
-          title="Clear search"
-          aria-label="Clear search">
+          title="<%= Clear search %>"
+          aria-label="<%= Clear search %>">
         </button>
     </span>
     <asp:LinkButton ID="cmdSearch" runat="server" CausesValidation="False" CssClass="SkinObject"></asp:LinkButton>
@@ -26,8 +26,8 @@
             <button
               type="button"
               class="dnnSearchBoxClearText"
-              title="Clear search"
-              aria-label="Clear search">
+              title="<%= Clear search %>"
+              aria-label="<%= Clear search %>">
             </button>
         </span>
 
