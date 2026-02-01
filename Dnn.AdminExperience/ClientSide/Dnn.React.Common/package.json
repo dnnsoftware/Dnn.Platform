@@ -56,7 +56,7 @@
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.28.5",
     "@eslint/compat": "^1.4.0",
-    "@storybook/addon-docs": "9.1.13",
+    "@storybook/addon-docs": "10.2.3",
     "@storybook/addon-onboarding": "10.1.11",
     "@storybook/addon-webpack5-compiler-swc": "4.0.1",
     "@storybook/react-webpack5": "9.1.13",
