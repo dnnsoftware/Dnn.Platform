@@ -386,6 +386,7 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
 
             Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.clientResourceController.RegisterStylesheet("~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
             this.clientResourceController.RegisterScript("~/Resources/Search/SearchSkinObjectPreview.js");
 
             this.cmdSearch.Click += this.CmdSearchClick;
@@ -539,4 +540,5 @@ namespace DotNetNuke.UI.Skins.Controls
         }
     }
 }
+
 
