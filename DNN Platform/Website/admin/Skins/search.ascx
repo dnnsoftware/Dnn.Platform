@@ -6,7 +6,12 @@
     <asp:RadioButton ID="SiteRadioButton" runat="server" CssClass="SkinObject" GroupName="Search" />
     <span class="searchInputContainer" data-moreresults="<%= SeeMoreText %>" data-noresult="<%= NoResultText %>">
         <asp:TextBox ID="txtSearch" runat="server" EnableViewState="False" CssClass="NormalTextBox" Columns="20" MaxLength="255" aria-label="Search"></asp:TextBox>
-        <a class="dnnSearchBoxClearText" title="<%= ClearQueryText %>"></a>
+        <button
+          type="button"
+          class="dnnSearchBoxClearText"
+          title="Clear search"
+          aria-label="Clear search">
+        </button>
     </span>
     <asp:LinkButton ID="cmdSearch" runat="server" CausesValidation="False" CssClass="SkinObject"></asp:LinkButton>
 </span>
@@ -18,7 +23,12 @@
         </div>
         <span class="searchInputContainer" data-moreresults="<%= SeeMoreText %>" data-noresult="<%= NoResultText %>">
             <asp:TextBox ID="txtSearchNew" runat="server" CssClass="SearchTextBox" MaxLength="255" EnableViewState="False" aria-label="Search"></asp:TextBox>
-            <a class="dnnSearchBoxClearText" title="<%= ClearQueryText %>"></a>
+            <button
+              type="button"
+              class="dnnSearchBoxClearText"
+              title="Clear search"
+              aria-label="Clear search">
+            </button>
         </span>
 
         <ul id="SearchChoices">
