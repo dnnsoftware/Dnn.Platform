@@ -5,19 +5,10 @@
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Security.Claims;
-    using System.Security.Principal;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
-    using System.Web.Mvc.Html;
-    using System.Web.Routing;
 
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
-    using DotNetNuke.Web.MvcPipeline.Modules;
 
     /// <summary>
     /// Base class for Razor-based MVC module controls.

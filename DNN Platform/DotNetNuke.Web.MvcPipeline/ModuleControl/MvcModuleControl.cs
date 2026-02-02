@@ -5,9 +5,7 @@
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 {
     using System;
-    using System.Collections;
     using System.Globalization;
-    using System.IO;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -18,7 +16,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Services.Localization;
 
     /// <summary>
     /// MVC module control that routes requests to MVC controllers and views based on the control source.

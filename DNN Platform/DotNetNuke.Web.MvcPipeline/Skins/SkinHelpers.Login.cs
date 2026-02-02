@@ -5,8 +5,6 @@
 namespace DotNetNuke.Web.MvcPipeline.Skins
 {
     using System;
-    using System.Runtime.CompilerServices;
-    using System.Security.Policy;
     using System.Web;
     using System.Web.Mvc;
 

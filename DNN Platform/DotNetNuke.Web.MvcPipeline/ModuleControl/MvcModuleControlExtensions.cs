@@ -7,7 +7,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     using System;
     using System.Globalization;
 
-    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Services.Localization;
 
     /// <summary>

@@ -33,7 +33,6 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
         public UserInfo UserInfo
         {
             get { return this.PortalSettings.UserInfo; }
-            get { return UserController.Instance.GetCurrentUserInfo(); }
         }
 
         /// <summary>

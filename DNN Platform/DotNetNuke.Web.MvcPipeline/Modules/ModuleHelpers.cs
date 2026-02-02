@@ -5,16 +5,12 @@
 namespace DotNetNuke.Web.MvcPipeline.Modules
 {
     using System;
-    using System.Collections;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
 
-    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
-    using DotNetNuke.Web.MvcPipeline.Controllers;
-    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// HTML helpers for working with DNN MVC modules (localization, edit URLs, and partial views).

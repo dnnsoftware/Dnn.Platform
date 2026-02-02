@@ -5,14 +5,10 @@
 namespace DotNetNuke.Web.MvcPipeline.Skins
 {
     using System;
-    using System.Collections;
-    using System.Web;
     using System.Web.Mvc;
 
-    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.MvcPipeline.Controllers;
-    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Skin-related helper methods shared across MVC skin helper partials.

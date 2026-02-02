@@ -6,10 +6,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 {
     using System;
     using System.Collections;
-    using System.IO;
     using System.Web;
     using System.Web.Mvc;
-    using System.Web.Mvc.Html;
     using System.Web.UI;
 
     using DotNetNuke.Common;
@@ -17,11 +15,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     /// <summary>
     /// Base implementation for MVC module controls, exposing common DNN context and services.

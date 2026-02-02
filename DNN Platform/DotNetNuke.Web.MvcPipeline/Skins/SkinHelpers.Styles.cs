@@ -8,8 +8,6 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System.Web;
     using System.Web.Mvc;
 
-    using DotNetNuke.UI.Skins;
-
     using DotNetNuke.Web.MvcPipeline.Models;
 
     /// <summary>

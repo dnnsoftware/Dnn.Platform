@@ -5,19 +5,14 @@
 namespace DotNetNuke.Web.MvcPipeline.Containers
 {
     using System;
-    using System.IO;
     using System.Web;
     using System.Web.Mvc;
-    using System.Web.Mvc.Html;
 
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Internal;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.ClientDependency;
-    using DotNetNuke.Web.Client.ResourceManager;
-    using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.Modules;

@@ -11,7 +11,6 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System.Xml;
     using System.Xml.Linq;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;

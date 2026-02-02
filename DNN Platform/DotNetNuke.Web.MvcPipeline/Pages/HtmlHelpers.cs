@@ -4,27 +4,14 @@
 
 namespace DotNetNuke.Web.MvcPipeline.Pages
 {
-    using System;
-    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Web;
-    using System.Web.Helpers;
     using System.Web.Mvc;
 
     using DotNetNuke.Abstractions.Pages;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.UI.Skins;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
-    using DotNetNuke.Web.MvcPipeline.Framework;
-    using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
-    using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
-    using DotNetNuke.Web.MvcPipeline.Utils;
 
     /// <summary>
     /// HTML helper extensions for rendering MVC pipeline page-level elements.

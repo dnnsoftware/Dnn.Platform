@@ -17,10 +17,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Pages;
-    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Extensions;

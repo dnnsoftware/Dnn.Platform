@@ -15,9 +15,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;

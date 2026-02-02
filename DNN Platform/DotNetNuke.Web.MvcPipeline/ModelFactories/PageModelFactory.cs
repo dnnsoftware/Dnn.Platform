@@ -5,35 +5,26 @@
 namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 {
     using System;
-    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading;
-    using System.Web;
     using System.Web.Helpers;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Internals;
     using DotNetNuke.UI.Modules;
-    using DotNetNuke.UI.Skins;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Controllers;
-    using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     /// <summary>

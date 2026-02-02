@@ -5,10 +5,8 @@
 namespace DotNetNuke.Web.MvcPipeline.Models
 {
     using System.Collections.Generic;
-    using System.IO;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Web.MvcPipeline.Skins;
 
     /// <summary>
     /// Represents the skin definition and resources used to render a page.

@@ -9,13 +9,11 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System.Web;
     using System.Web.Mvc;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Web.MvcPipeline.Models;
-    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Skin helper methods for rendering breadcrumb navigation.

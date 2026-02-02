@@ -10,7 +10,6 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System.Web;
     using System.Web.Mvc;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;

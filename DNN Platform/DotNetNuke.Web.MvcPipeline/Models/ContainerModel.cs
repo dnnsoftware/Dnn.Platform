@@ -9,8 +9,6 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.UI.Modules;
-    using DotNetNuke.Web.MvcPipeline.Skins;
 
     /// <summary>
     /// Represents the data and behavior required to render a module container.

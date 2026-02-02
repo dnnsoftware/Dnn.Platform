@@ -5,27 +5,19 @@
 namespace DotNetNuke.Web.MvcPipeline.Skins
 {
     using System;
-    using System.Collections.Generic;
-    using System.Globalization;
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Social.Messaging.Internal;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.MvcPipeline.Models;
-    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Skin helper methods for rendering combined user and login UI elements.
