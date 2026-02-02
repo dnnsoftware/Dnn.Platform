@@ -88,10 +88,10 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
             var showMessage = false;
             var adminMessage = Null.NullString;
-            if (viewRoles.Equals(portalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
-                            && (moduleEditRoles.Equals(portalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
+            if (viewRoles.Equals(portalSettings.AdministratorRoleName, StringComparison.OrdinalIgnoreCase)
+                            && (moduleEditRoles.Equals(portalSettings.AdministratorRoleName, StringComparison.OrdinalIgnoreCase)
                                     || string.IsNullOrEmpty(moduleEditRoles))
-                            && pageEditRoles.Equals(portalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase))
+                            && pageEditRoles.Equals(portalSettings.AdministratorRoleName, StringComparison.OrdinalIgnoreCase))
             {
                 adminMessage = Localization.GetString("ModuleVisibleAdministrator.Text");
                 showMessage = !container.ModuleConfiguration.HideAdminBorder && !Globals.IsAdminControl();

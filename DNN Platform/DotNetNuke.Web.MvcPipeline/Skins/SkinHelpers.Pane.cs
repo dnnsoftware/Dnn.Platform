@@ -50,7 +50,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                 paneDiv.AddCssClass(cssClass);
             }
 
-            id = id.ToLower();
+            id = id.ToLowerInvariant();
 
             if (model.Skin.Panes.ContainsKey(id))
             {
@@ -81,7 +81,6 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                     var anchor = new TagBuilder("a");
                     anchor.Attributes["name"] = container.Value.ModuleConfiguration.ModuleID.ToString();
                     moduleDiv.InnerHtml += anchor.ToString();
-
                     moduleDiv.InnerHtml += htmlHelper.Partial(container.Value.ContainerRazorFile, container.Value).ToHtmlString();
                     paneDiv.InnerHtml += moduleDiv.ToString();
                 }

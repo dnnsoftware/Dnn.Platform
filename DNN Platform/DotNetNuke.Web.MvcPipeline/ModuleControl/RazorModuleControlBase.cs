@@ -56,7 +56,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         }
 
         /// <summary>
-        /// Gets the <see cref="Http.HttpContext"/>.
+        /// Gets the <see cref="HttpContext"/>.
         /// </summary>
         public HttpContextBase HttpContext => this.ViewContext.HttpContext;
 
@@ -111,7 +111,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         {
             if (content == null)
             {
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(content));
             }
 
             return new ContentRazorModuleResult(content);
@@ -127,7 +127,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         {
             if (message == null)
             {
-                throw new ArgumentNullException("message");
+                throw new ArgumentNullException(nameof(message));
             }
 
             return new ErrorRazorModuleResult(heading, message);

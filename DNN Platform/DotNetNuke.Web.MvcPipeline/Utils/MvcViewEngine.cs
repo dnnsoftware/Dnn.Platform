@@ -168,7 +168,7 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
                 routeData.Values.Add(
                     "controller",
                     controller.GetType().Name
-                        .ToLower()
+                        .ToLowerInvariant()
                         .Replace("controller", string.Empty));
             }
 

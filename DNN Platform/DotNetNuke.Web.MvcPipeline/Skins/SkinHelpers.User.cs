@@ -64,10 +64,12 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             if (!string.IsNullOrEmpty(text))
             {
                 registerText = text;
+#pragma warning disable CA1310 // Spécifier StringComparison à des fins de précision
                 if (text.IndexOf("src=") != -1)
                 {
                     registerText = text.Replace("src=\"", "src=\"" + portalSettings.ActiveTab.SkinPath);
                 }
+#pragma warning restore CA1310 // Spécifier StringComparison à des fins de précision
             }
 
             if (legacyMode)
@@ -169,6 +171,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                         if (showUnreadMessages)
                         {
                             var effectivePortalId = PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, userInfo.PortalID);
+
                             // Create Messages
                             var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(userInfo.UserID, effectivePortalId);
 

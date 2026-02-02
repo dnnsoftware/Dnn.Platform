@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
         /// <summary>
         /// Gets the dependency injection service provider for the current request.
         /// </summary>
-        public IServiceProvider DependencyProvider  { get; private set; }
+        public IServiceProvider DependencyProvider { get; private set; }
 
         /// <summary>
         /// Gets the current portal settings.

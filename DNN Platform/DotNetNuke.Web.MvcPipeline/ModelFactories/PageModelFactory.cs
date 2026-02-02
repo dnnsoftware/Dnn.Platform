@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -85,11 +86,11 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         }
 
         /// <inheritdoc/>
-        public PageModel CreatePageModel(DnnPageController controller)
+        public PageModel CreatePageModel(DnnPageController page)
         {
-            var ctl = controller.Request.QueryString["ctl"] != null ? controller.Request.QueryString["ctl"] : string.Empty;
-            IPortalSettings portalSettings = controller.PortalSettings;
-            TabInfo activeTab = controller.PortalSettings.ActiveTab;
+            var ctl = page.Request.QueryString["ctl"] != null ? page.Request.QueryString["ctl"] : string.Empty;
+            var portalSettings = page.PortalSettings;
+            TabInfo activeTab = page.PortalSettings.ActiveTab;
             var pageModel = new PageModel
             {
                 IsEditMode = Globals.IsEditMode(),
@@ -266,7 +267,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 pageModel.Title += versionString;
             }
 
-            pageModel.Skin = this.skinModelFactory.CreateSkinModel(controller);
+            pageModel.Skin = this.skinModelFactory.CreateSkinModel(page);
 
             return pageModel;
         }

@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
 {
     using System.Collections.Generic;
     using System.IO;
+
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -56,23 +57,6 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         }
 
         /// <summary>
-        /// Gets the module control instance associated with this container.
-        /// </summary>
-        public IModuleControl ModuleControl
-        {
-            get
-            {
-                IModuleControl moduleControl = null;
-                if (this.ModuleHost != null)
-                {
-                    moduleControl = this.ModuleHost.ModuleControl;
-                }
-
-                return moduleControl;
-            }
-        }
-
-        /// <summary>
         /// Gets the HTML identifier assigned to the container.
         /// </summary>
         public string ID { get; internal set; }
@@ -115,7 +99,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         }
 
         /// <summary>
-        /// Gets the value indicating whether the container is rendered in edit mode.
+        /// Gets a value indicating whether the container is rendered in edit mode.
         /// </summary>
         public bool EditMode { get; internal set; }
 

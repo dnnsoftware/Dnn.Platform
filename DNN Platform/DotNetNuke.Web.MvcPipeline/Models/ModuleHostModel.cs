@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.MvcPipeline.Models
 {
     using System.Text.RegularExpressions;
+
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -32,12 +33,11 @@ namespace DotNetNuke.Web.MvcPipeline.Models
 
         private readonly ModuleInfo moduleConfiguration;
 
-        private IModuleControl control = null;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleHostModel"/> class.
         /// </summary>
         /// <param name="moduleConfiguration">The module configuration to host.</param>
+        /// <param name="hostSettings">The host settings.</param>
         public ModuleHostModel(ModuleInfo moduleConfiguration, IHostSettings hostSettings)
         {
             this.moduleConfiguration = moduleConfiguration;
@@ -49,18 +49,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
                     moduleName = Globals.CleanName(moduleName);
                 }
 
-                this.CssClass = string.Format("DNNModuleContent Mod{0}C", moduleName);
-            }
-        }
-
-        /// <summary>
-        /// Gets the attached <see cref="IModuleControl"/> instance.
-        /// </summary>
-        public IModuleControl ModuleControl
-        {
-            get
-            {
-                return this.control as IModuleControl;
+                this.CssClass = $"DNNModuleContent Mod{moduleName}C";
             }
         }
 

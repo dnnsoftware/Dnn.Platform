@@ -46,12 +46,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                     }
                     else
                     {
-                        throw new Exception("Mvc Control needs to implement IMvcModuleControl : " + controlClass);
+                        throw new ArgumentException("Mvc Control needs to implement IMvcModuleControl : " + controlClass);
                     }
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Could not create instance of " + controlClass, ex);
+                    throw new ArgumentException("Could not create instance of " + controlClass, ex);
                 }
             }
             //// else if (controlSrc.EndsWith(".mvc", System.StringComparison.OrdinalIgnoreCase))
@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
             else
             {
-                throw new Exception("The module control dous not support the MVC pipeline : " + module.ModuleTitle + " " + module.ModuleControl.ControlTitle);
+                throw new ArgumentException("The module control dous not support the MVC pipeline : " + module.ModuleTitle + " " + module.ModuleControl.ControlTitle);
             }
 
             control.ModuleContext.Configuration = module;

@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 {
     using System;
+    using System.Globalization;
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Services.Localization;
@@ -119,7 +120,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 throw new ArgumentNullException(nameof(moduleControl));
             }
 
-            var parameters = new string[] { };
+            var parameters = Array.Empty<string>();
             return EditUrl(moduleControl, keyName, keyValue, controlKey, parameters);
         }
 
@@ -197,7 +198,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                     return defaultValue;
                 }
 
-                return (T)Convert.ChangeType(settingValue, typeof(T));
+                return (T)Convert.ChangeType(settingValue, typeof(T), CultureInfo.InvariantCulture);
             }
             catch (Exception)
             {
@@ -235,6 +236,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             return moduleControl.ModuleContext.IsEditable;
         }
 
+        /*
         private static string[] GetParameters(IMvcModuleControl moduleControl, string controlKey, string[] additionalParameters)
         {
             if (moduleControl.ModuleContext.Configuration.ModuleDefinition.ModuleControls.ContainsKey(controlKey))
@@ -251,5 +253,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 
             return additionalParameters;
         }
+        */
     }
 }

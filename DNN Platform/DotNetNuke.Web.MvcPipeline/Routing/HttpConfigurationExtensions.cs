@@ -52,7 +52,7 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             if (providers == null)
             {
                 // shouldn't ever happen outside of unit tests
-                return new ITabAndModuleInfoProvider[] { };
+                return System.Array.Empty<ITabAndModuleInfoProvider>();
             }
 
             return providers.ToArray();

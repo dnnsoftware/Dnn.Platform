@@ -102,11 +102,11 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         }
 
         /// <inheritdoc/>
-        public SkinModel CreateSkinModel(DnnPageController pageController)
+        public SkinModel CreateSkinModel(DnnPageController page)
         {
             SkinModel skin = null;
             var skinSource = Null.NullString;
-            PortalSettings portalSettings = pageController.PortalSettings;
+            PortalSettings portalSettings = page.PortalSettings;
 
             if (portalSettings.EnablePopUps && UrlUtils.InPopUp())
             {
@@ -118,7 +118,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
                     if (File.Exists(HttpContext.Current.Server.MapPath(SkinController.FormatSkinSrc(skinSource, portalSettings))))
                     {
-                        skin = this.LoadSkin(pageController, skinSource);
+                        skin = this.LoadSkin(page, skinSource);
                     }
                 }
 
@@ -126,7 +126,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 if (skin == null)
                 {
                     skinSource = Globals.HostPath + "Skins/_default/popUpSkin.ascx";
-                    skin = this.LoadSkin(pageController, skinSource);
+                    skin = this.LoadSkin(page, skinSource);
                 }
 
                 // set skin path
@@ -135,22 +135,22 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             else
             {
                 // skin preview
-                if (pageController.Request.QueryString["SkinSrc"] != null)
+                if (page.Request.QueryString["SkinSrc"] != null)
                 {
-                    skinSource = SkinController.FormatSkinSrc(Globals.QueryStringDecode(pageController.Request.QueryString["SkinSrc"]) + ".ascx", portalSettings);
-                    skin = this.LoadSkin(pageController, skinSource);
+                    skinSource = SkinController.FormatSkinSrc(Globals.QueryStringDecode(page.Request.QueryString["SkinSrc"]) + ".ascx", portalSettings);
+                    skin = this.LoadSkin(page, skinSource);
                 }
 
                 // load user skin ( based on cookie )
                 if (skin == null)
                 {
-                    var skinCookie = pageController.Request.Cookies["_SkinSrc" + portalSettings.PortalId];
+                    var skinCookie = page.Request.Cookies["_SkinSrc" + portalSettings.PortalId];
                     if (skinCookie != null)
                     {
                         if (!string.IsNullOrEmpty(skinCookie.Value))
                         {
                             skinSource = SkinController.FormatSkinSrc(skinCookie.Value + ".ascx", portalSettings);
-                            skin = this.LoadSkin(pageController, skinSource);
+                            skin = this.LoadSkin(page, skinSource);
                         }
                     }
                 }
@@ -163,7 +163,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                     if (!string.IsNullOrEmpty(skinSource))
                     {
                         skinSource = SkinController.FormatSkinSrc(skinSource, portalSettings);
-                        skin = this.LoadSkin(pageController, skinSource);
+                        skin = this.LoadSkin(page, skinSource);
                     }
                 }
 
@@ -171,7 +171,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 if (skin == null)
                 {
                     skinSource = SkinController.FormatSkinSrc(SkinController.GetDefaultPortalSkin(), portalSettings);
-                    skin = this.LoadSkin(pageController, skinSource);
+                    skin = this.LoadSkin(page, skinSource);
                 }
 
                 // set skin path
@@ -330,7 +330,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             }
             catch (MvcPageException mvcExc)
             {
-                throw mvcExc;
+                throw new MvcPageException("LoadSkin", mvcExc);
             }
             catch (Exception exc)
             {
@@ -380,7 +380,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 // check portal expiry date
                 if (!this.CheckExpired(portalSettings))
                 {
-                    if (portalSettings.ActiveTab.StartDate < DateTime.Now && portalSettings.ActiveTab.EndDate > DateTime.Now || TabPermissionController.CanAdminPage() || Globals.IsLayoutMode())
+                    if ((portalSettings.ActiveTab.StartDate < DateTime.Now && portalSettings.ActiveTab.EndDate > DateTime.Now) ||
+                        TabPermissionController.CanAdminPage() ||
+                        Globals.IsLayoutMode())
                     {
                         foreach (var objModule in PortalSettingsController.Instance().GetTabModules(portalSettings))
                         {

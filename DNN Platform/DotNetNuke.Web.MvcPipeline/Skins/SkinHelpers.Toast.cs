@@ -177,7 +177,9 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                 if (File.Exists(configFile))
                 {
                     var xmlDocument = new XmlDocument { XmlResolver = null };
+#pragma warning disable CA3075 // Traitement DTD non sécurisé dans le code XML
                     xmlDocument.Load(configFile);
+#pragma warning restore CA3075 // Traitement DTD non sécurisé dans le code XML
                     var moduleNameNode = xmlDocument.DocumentElement?.SelectSingleNode("moduleName");
                     var actionNode = xmlDocument.DocumentElement?.SelectSingleNode("action");
                     var scriptsNode = xmlDocument.DocumentElement?.SelectSingleNode("scripts");

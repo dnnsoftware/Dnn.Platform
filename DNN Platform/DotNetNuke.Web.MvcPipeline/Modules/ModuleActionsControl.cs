@@ -18,6 +18,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Modules;
@@ -250,8 +251,8 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
                         {
                             if (action.Visible)
                             {
-                                if (this.EditMode && Globals.IsAdminControl() == false ||
-                                    action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View)
+                                if ((this.EditMode && Globals.IsAdminControl() == false) ||
+                                    (action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View))
                                 {
                                     if (!action.Icon.Contains("://")
                                             && !action.Icon.StartsWith("/")
@@ -317,7 +318,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             catch (Exception exc)
             {
                 // Exceptions.ProcessModuleLoadException(this, exc);
-                throw exc;
+                throw new ModuleLoadException("ModuleLoadException", exc, moduleInfo);
             }
         }
     }

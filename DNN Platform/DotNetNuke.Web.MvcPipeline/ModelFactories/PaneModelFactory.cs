@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Threading;
     using System.Web;
@@ -47,7 +48,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         }
 
         /// <inheritdoc/>
-        public PaneModel InjectModule(PaneModel pane, ModuleInfo module, PortalSettings portalSettings)
+        public PaneModel InjectModule(PaneModel pane, ModuleInfo moduleInfo, PortalSettings portalSettings)
         {
             // this.containerWrapperControl = new HtmlGenericControl("div");
             // this.PaneControl.Controls.Add(this.containerWrapperControl);
@@ -56,12 +57,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             var classFormatString = "DnnModule DnnModule-{0} DnnModule-{1}";
             var sanitizedModuleName = Null.NullString;
 
-            if (!string.IsNullOrEmpty(module.DesktopModule.ModuleName))
+            if (!string.IsNullOrEmpty(moduleInfo.DesktopModule.ModuleName))
             {
-                sanitizedModuleName = Globals.CreateValidClass(module.DesktopModule.ModuleName, false);
+                sanitizedModuleName = Globals.CreateValidClass(moduleInfo.DesktopModule.ModuleName, false);
             }
 
-            if (this.IsVesionableModule(module))
+            if (this.IsVesionableModule(moduleInfo))
             {
                 classFormatString += " DnnVersionableControl";
             }
@@ -75,7 +76,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 }
 
                 // Load container control
-                var container = this.LoadModuleContainer(module, portalSettings);
+                var container = this.LoadModuleContainer(moduleInfo, portalSettings);
 
                 // Add Container to Dictionary
                 pane.Containers.Add(container.ID, container);
@@ -86,17 +87,14 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             }
             catch (Exception exc)
             {
-                var lex = new ModuleLoadException(string.Format(Skin.MODULEADD_ERROR, pane.Name), exc);
-                /*
+                var lex = new ModuleLoadException(string.Format(CultureInfo.InvariantCulture, Skin.MODULEADD_ERROR, pane.Name), exc);
                 if (TabPermissionController.CanAdminPage())
                 {
                     // only display the error to administrators
-                    this.containerWrapperControl.Controls.Add(new ErrorContainer(this.PortalSettings, Skin.MODULELOAD_ERROR, lex).Container);
+                    throw lex;
                 }
 
                 Exceptions.LogException(exc);
-                */
-                throw lex;
             }
 
             return pane;
@@ -275,7 +273,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             // make the container id unique for the page
             if (module.ModuleID > -1)
             {
-                container.ID += module.ModuleID.ToString();
+                container.ID += module.ModuleID.ToString(CultureInfo.InvariantCulture);
             }
 
             container.EditMode = Personalization.GetUserMode() == PortalSettings.Mode.Edit;
@@ -288,7 +286,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             if (containerPath.IndexOf("/skins/", StringComparison.InvariantCultureIgnoreCase) != -1 || containerPath.IndexOf("/skins\\", StringComparison.InvariantCultureIgnoreCase) != -1 || containerPath.IndexOf("\\skins\\", StringComparison.InvariantCultureIgnoreCase) != -1 ||
                 containerPath.IndexOf("\\skins/", StringComparison.InvariantCultureIgnoreCase) != -1)
             {
-                throw new Exception();
+                throw new ArgumentException("containerPath /skins/");
             }
 
             ContainerModel container = null;
@@ -310,9 +308,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 if (TabPermissionController.CanAdminPage())
                 {
                     // only display the error to administrators
-                    /*
-                    this.containerWrapperControl.Controls.Add(new ErrorContainer(this.PortalSettings, string.Format(Skin.CONTAINERLOAD_ERROR, containerPath), lex).Container);
-                    */
+                    throw lex;
                 }
 
                 Exceptions.LogException(lex);

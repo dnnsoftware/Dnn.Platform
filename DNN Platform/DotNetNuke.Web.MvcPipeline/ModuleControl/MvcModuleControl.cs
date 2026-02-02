@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Web;
@@ -44,7 +45,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         {
             get
             {
-                return string.Format("DesktopModules/MVC/{0}", this.ModuleConfiguration.DesktopModule.FolderName);
+                return string.Format(CultureInfo.InvariantCulture, "DesktopModules/MVC/{0}", this.ModuleConfiguration.DesktopModule.FolderName);
             }
         }
 
@@ -136,13 +137,13 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             var area = module.DesktopModule.FolderName;
             if (!controlSrc.EndsWith(".mvc", System.StringComparison.OrdinalIgnoreCase))
             {
-                throw new Exception("The controlSrc is not a MVC control: " + controlSrc);
+                throw new ArgumentException("The controlSrc is not a MVC control: " + controlSrc);
             }
 
             var segments = this.GetSegments();
             if (segments.Length < 2)
             {
-                throw new Exception("The controlSrc is not a MVC control: " + controlSrc);
+                throw new ArgumentException("The controlSrc is not a MVC control: " + controlSrc);
             }
 
             string controllerName = string.Empty;
@@ -172,7 +173,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             var moduleId = Null.NullInteger;
             if (queryString["moduleid"] != null)
             {
+#pragma warning disable CA1806 // Ne pas ignorer les résultats des méthodes
                 int.TryParse(queryString["moduleid"], out moduleId);
+#pragma warning restore CA1806 // Ne pas ignorer les résultats des méthodes
             }
 
             if (moduleId != module.ModuleID && string.IsNullOrEmpty(controlKey))

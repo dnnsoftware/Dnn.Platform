@@ -293,11 +293,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         /// <inheritdoc/>
         public void Dispose()
         {
-            // base.Dispose();
             if (this.serviceScopeContainer.IsValueCreated)
             {
                 this.serviceScopeContainer.Value.Dispose();
             }
+
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>

@@ -24,10 +24,10 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         /// Injects a module into the specified pane.
         /// </summary>
         /// <param name="pane">The target pane.</param>
-        /// <param name="module">The module to inject.</param>
+        /// <param name="moduleInfo">The module to inject.</param>
         /// <param name="portalSettings">The current portal settings.</param>
         /// <returns>The updated <see cref="PaneModel"/>.</returns>
-        PaneModel InjectModule(PaneModel pane, ModuleInfo module, PortalSettings portalSettings);
+        PaneModel InjectModule(PaneModel pane, ModuleInfo moduleInfo, PortalSettings portalSettings);
 
         /// <summary>
         /// Applies layout and behavior rules to the specified pane.

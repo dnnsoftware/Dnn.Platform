@@ -53,13 +53,17 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             int profileUserId = Null.NullInteger;
             if (!string.IsNullOrEmpty(request.Params["UserId"]))
             {
+#pragma warning disable CA1806 // Ne pas ignorer les résultats des méthodes
                 int.TryParse(request.Params["UserId"], out profileUserId);
+#pragma warning restore CA1806 // Ne pas ignorer les résultats des méthodes
             }
 
             int groupId = Null.NullInteger;
             if (!string.IsNullOrEmpty(request.Params["GroupId"]))
             {
+#pragma warning disable CA1806 // Ne pas ignorer les résultats des méthodes
                 int.TryParse(request.Params["GroupId"], out groupId);
+#pragma warning restore CA1806 // Ne pas ignorer les résultats des méthodes
             }
 
             if (showRoot)

@@ -13,12 +13,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Razor
     public class RazorModuleViewContext
     {
         /// <summary>
-        /// Gets or sets the current HTTP context.
+        /// Gets the current HTTP context.
         /// </summary>
         public HttpContextBase HttpContext { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="ViewDataDictionary"/> used by the view.
+        /// Gets the <see cref="ViewDataDictionary"/> used by the view.
         /// </summary>
         public ViewDataDictionary ViewData { get; internal set; }
     }
