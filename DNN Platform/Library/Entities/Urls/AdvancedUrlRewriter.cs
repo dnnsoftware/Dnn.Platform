@@ -710,7 +710,7 @@ namespace DotNetNuke.Entities.Urls
                                     // results when iis is configured to handle portal alias, but
                                     // DNN isn't.  This always returns 404 because a multi-portal site
                                     // can't just show the 404 page of the host site.
-                                    ArrayList portals = PortalController.Instance.GetPortals();
+                                    ArrayList portals = Portals.PortalController.Instance.GetPortals();
                                     if (portals != null && portals.Count == 1)
                                     {
                                         // single portal install, load up portal settings for this portal
@@ -2592,7 +2592,7 @@ namespace DotNetNuke.Entities.Urls
 
                                 // load PortalSettings and HostSettings dictionaries into current context
                                 // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way
-                                context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalSettings.PortalId));
+                                context.Items.Add("PortalSettingsDictionary", Portals.PortalController.Instance.GetPortalSettings(portalSettings.PortalId));
                                 context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
                             }
 
@@ -3090,7 +3090,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // this might end up in a double redirect if the path of the Url is for a specific language as opposed
                         // to a path belonging to the default language domain
-                        PortalInfo portal = PortalController.Instance.GetPortal(result.PortalId);
+                        PortalInfo portal = Portals.PortalController.Instance.GetPortal(result.PortalId);
                         if (portal != null)
                         {
                             requestCultureCode = portal.DefaultLanguage;

@@ -15,14 +15,33 @@ namespace DotNetNuke.Web.InternalServices
     using System.Web;
     using System.Web.Http;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Web.Api;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A web API controller for retrieving regions and countries.</summary>
     [AllowAnonymous]
     public class CountryRegionController : DnnApiController
     {
+        private readonly ListController listController;
+
+        /// <summary>Initializes a new instance of the <see cref="CountryRegionController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public CountryRegionController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CountryRegionController"/> class.</summary>
+        /// <param name="listController">The list controller.</param>
+        public CountryRegionController(ListController listController)
+        {
+            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+        }
+
         /// <summary>Gets the countries.</summary>
         /// <returns>A response with an alphabetized list of <see cref="CachedCountryList.Country"/> objects.</returns>
         [HttpGet]
@@ -41,7 +60,7 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage Regions(int country)
         {
             List<Region> res = [];
-            foreach (ListEntryInfo r in new ListController().GetListEntryInfoItems("Region").Where(l => l.ParentID == country))
+            foreach (ListEntryInfo r in this.listController.GetListEntryInfoItems("Region").Where(l => l.ParentID == country))
             {
                 res.Add(new Region
                 {

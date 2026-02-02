@@ -11,18 +11,36 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Content.Taxonomy;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>A tags control.</summary>
     public class Tags : WebControl, IPostBackEventHandler, IPostBackDataHandler
     {
-        private string repeatDirection = "Horizontal";
-        private string separator = ",&nbsp;";
-
+        private readonly IVocabularyController vocabularyController;
+        private readonly ITermController termController;
         private string tags;
+
+        /// <summary>Initializes a new instance of the <see cref="Tags"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IVocabularyController. Scheduled removal in v12.0.0.")]
+        protected Tags()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Tags"/> class.</summary>
+        /// <param name="vocabularyController">The vocabulary controller.</param>
+        /// <param name="termController">The term controller.</param>
+        protected Tags(IVocabularyController vocabularyController, ITermController termController)
+        {
+            this.vocabularyController = vocabularyController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IVocabularyController>();
+            this.termController = termController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITermController>();
+        }
 
         /// <summary>An event which is triggered when the tags are updated.</summary>
         public event EventHandler<EventArgs> TagsUpdated;
@@ -63,35 +81,13 @@ namespace DotNetNuke.Web.UI.WebControls
         public string NavigateUrlFormatString { get; set; }
 
         /// <summary>Gets or sets the repeat direction.</summary>
-        public string RepeatDirection
-        {
-            get
-            {
-                return this.repeatDirection;
-            }
-
-            set
-            {
-                this.repeatDirection = value;
-            }
-        }
+        public string RepeatDirection { get; set; } = "Horizontal";
 
         /// <summary>Gets or sets the URL of the save image.</summary>
         public string SaveImageUrl { get; set; }
 
         /// <summary>Gets or sets the separator.</summary>
-        public string Separator
-        {
-            get
-            {
-                return this.separator;
-            }
-
-            set
-            {
-                this.separator = value;
-            }
-        }
+        public string Separator { get; set; } = ",&nbsp;";
 
         /// <summary>Gets or sets a value indicating whether to show categories.</summary>
         public bool ShowCategories { get; set; }
@@ -99,14 +95,8 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets a value indicating whether to show tags.</summary>
         public bool ShowTags { get; set; }
 
-        private static Vocabulary TagVocabulary
-        {
-            get
-            {
-                VocabularyController vocabularyController = new VocabularyController();
-                return (from v in vocabularyController.GetVocabularies() where v.IsSystem && v.Name == "Tags" select v).SingleOrDefault();
-            }
-        }
+        private Vocabulary TagVocabulary =>
+            this.vocabularyController.GetVocabularies().SingleOrDefault(v => v.IsSystem && v.Name == "Tags");
 
         /// <inheritdoc />
         public override void RenderControl(HtmlTextWriter writer)
@@ -124,7 +114,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
                 // Render Category Links
-                var categories = from cat in this.ContentItem.Terms where cat.VocabularyId != TagVocabulary.VocabularyId select cat;
+                var categories = from cat in this.ContentItem.Terms where cat.VocabularyId != this.TagVocabulary.VocabularyId select cat;
 
                 for (int i = 0; i <= categories.Count() - 1; i++)
                 {
@@ -157,7 +147,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
                 // Render Tag Links
-                var tags = from cat in this.ContentItem.Terms where cat.VocabularyId == TagVocabulary.VocabularyId select cat;
+                var tags = from cat in this.ContentItem.Terms where cat.VocabularyId == this.TagVocabulary.VocabularyId select cat;
 
                 for (int i = 0; i <= tags.Count() - 1; i++)
                 {
@@ -353,21 +343,17 @@ namespace DotNetNuke.Web.UI.WebControls
                         if (existingTerm == null)
                         {
                             // Not tagged
-                            TermController termController = new TermController();
-                            Term term =
-                                (from te in termController.GetTermsByVocabulary(TagVocabulary.VocabularyId) where te.Name.Equals(tagName, StringComparison.OrdinalIgnoreCase) select te).
-                                    SingleOrDefault();
+                            Term term = this.termController.GetTermsByVocabulary(this.TagVocabulary.VocabularyId).SingleOrDefault(te => te.Name.Equals(tagName, StringComparison.OrdinalIgnoreCase));
                             if (term == null)
                             {
                                 // Add term
-                                term = new Term(TagVocabulary.VocabularyId);
-                                term.Name = tagName;
-                                termController.AddTerm(term);
+                                term = new Term(this.TagVocabulary.VocabularyId) { Name = tagName, };
+                                this.termController.AddTerm(term);
                             }
 
                             // Add term to content
                             this.ContentItem.Terms.Add(term);
-                            termController.AddTermToContent(term, this.ContentItem);
+                            this.termController.AddTermToContent(term, this.ContentItem);
                         }
                     }
                 }

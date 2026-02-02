@@ -37,6 +37,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly INavigationManager navigationManager;
         private readonly IHostSettings hostSettings;
         private readonly IEventLogger eventLogger;
+        private readonly ListController listController;
         private ProfilePropertyDefinitionCollection profileProperties;
         private bool requiredColumnHidden;
 
@@ -56,11 +57,27 @@ namespace DotNetNuke.Modules.Admin.Users
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="ProfileDefinitions"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ProfileDefinitions(INavigationManager navigationManager, IHostSettings hostSettings, IEventLogger eventLogger)
+            : this(navigationManager, hostSettings, eventLogger, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ProfileDefinitions"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="listController">The list controller.</param>
+        public ProfileDefinitions(INavigationManager navigationManager, IHostSettings hostSettings, IEventLogger eventLogger, ListController listController)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.listController = listController ?? this.DependencyProvider.GetRequiredService<ListController>();
         }
 
         /// <summary>Gets the Return Url for the page.</summary>
@@ -157,8 +174,7 @@ namespace DotNetNuke.Modules.Admin.Users
         public string DisplayDataType(ProfilePropertyDefinition definition)
         {
             string retValue = Null.NullString;
-            var listController = new ListController();
-            ListEntryInfo definitionEntry = listController.GetListEntryInfo("DataType", definition.DataType);
+            ListEntryInfo definitionEntry = this.listController.GetListEntryInfo("DataType", definition.DataType);
             if (definitionEntry != null)
             {
                 retValue = definitionEntry.Value;

@@ -9,6 +9,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Mobile;
     using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
@@ -19,7 +20,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
     using NUnit.Framework;
 
-    /// <summary>  Summary description for PreviewProfileControllerTests.</summary>
     [TestFixture]
     public class PreviewProfileControllerTests
     {
@@ -114,6 +114,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                 services =>
                 {
                     services.AddSingleton(this.dataProvider.Object);
+                    services.AddSingleton(Mock.Of<IPortalController>());
                 });
         }
 

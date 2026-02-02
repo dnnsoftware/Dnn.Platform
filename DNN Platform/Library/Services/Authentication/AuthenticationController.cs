@@ -9,6 +9,7 @@ namespace DotNetNuke.Services.Authentication
     using System.Web;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -193,10 +194,18 @@ namespace DotNetNuke.Services.Authentication
 
         /// <summary>GetAuthenticationServices fetches a list of all the Authentication Systems installed in the system.</summary>
         /// <returns>A List of AuthenticationInfo objects.</returns>
-        public static List<AuthenticationInfo> GetAuthenticationServices()
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial List<AuthenticationInfo> GetAuthenticationServices()
+            => GetAuthenticationServices(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
+
+        /// <summary>GetAuthenticationServices fetches a list of all the Authentication Systems installed in the system.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <returns>A List of AuthenticationInfo objects.</returns>
+        public static List<AuthenticationInfo> GetAuthenticationServices(IHostSettings hostSettings)
         {
             return
                 CBO.GetCachedObject<List<AuthenticationInfo>>(
+                    hostSettings,
                     new CacheItemArgs(DataCache.AuthenticationServicesCacheKey, DataCache.AuthenticationServicesCacheTimeOut, DataCache.AuthenticationServicesCachePriority),
                     GetAuthenticationServicesCallBack);
         }
@@ -206,7 +215,7 @@ namespace DotNetNuke.Services.Authentication
         public static AuthenticationInfo GetAuthenticationType()
         {
             AuthenticationInfo objAuthentication = null;
-            if (HttpContext.Current != null && HttpContext.Current.Request != null)
+            if (HttpContext.Current?.Request != null)
             {
                 try
                 {
@@ -223,10 +232,17 @@ namespace DotNetNuke.Services.Authentication
 
         /// <summary>GetEnabledAuthenticationServices fetches a list of all the Authentication Systems installed in the system that have been enabled by the Host user.</summary>
         /// <returns>A List of AuthenticationInfo objects.</returns>
-        public static List<AuthenticationInfo> GetEnabledAuthenticationServices()
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial List<AuthenticationInfo> GetEnabledAuthenticationServices()
+            => GetEnabledAuthenticationServices(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
+
+        /// <summary>GetEnabledAuthenticationServices fetches a list of all the Authentication Systems installed in the system that have been enabled by the Host user.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <returns>A List of AuthenticationInfo objects.</returns>
+        public static List<AuthenticationInfo> GetEnabledAuthenticationServices(IHostSettings hostSettings)
         {
             var enabled = new List<AuthenticationInfo>();
-            foreach (AuthenticationInfo authService in GetAuthenticationServices())
+            foreach (AuthenticationInfo authService in GetAuthenticationServices(hostSettings))
             {
                 if (authService.IsEnabled)
                 {

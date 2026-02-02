@@ -34,6 +34,7 @@ namespace DNNConnect.CKEditorProvider.Module
         private readonly IHostSettings hostSettings;
         private readonly IPortalController portalController;
         private readonly IModuleController moduleController;
+        private readonly IApplicationStatusInfo appStatus;
 
         /// <summary>Initializes a new instance of the <see cref="EditorConfigManager"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
@@ -46,11 +47,23 @@ namespace DNNConnect.CKEditorProvider.Module
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="moduleController">The module controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public EditorConfigManager(IHostSettings hostSettings, IPortalController portalController, IModuleController moduleController)
+            : this(hostSettings, portalController, moduleController, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EditorConfigManager"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="moduleController">The module controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        public EditorConfigManager(IHostSettings hostSettings, IPortalController portalController, IModuleController moduleController, IApplicationStatusInfo appStatus)
         {
             this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
             this.portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
             this.moduleController = moduleController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>();
+            this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
         }
 
         /// <summary>  Gets Current Language from Url.</summary>
@@ -302,24 +315,15 @@ namespace DNNConnect.CKEditorProvider.Module
             this.ModuleHeader.Text = Localization.GetString("ModuleHeader.Text", this.ResXFile, this.LangCode);
             this.PortalOnlyLabel.Text = Localization.GetString("PortalOnlyLabel.Text", this.ResXFile, this.LangCode);
             this.PortalOnly.Text = Localization.GetString("PortalOnly.Text", this.ResXFile, this.LangCode);
-            this.HostHasSettingLabel.Text = Localization.GetString(
-                "HostHasSettingLabel.Text", this.ResXFile, this.LangCode);
-            this.HostNoSettingLabel.Text = Localization.GetString(
-                "HostNoSettingLabel.Text", this.ResXFile, this.LangCode);
-            this.PortalHasSettingLabel.Text = Localization.GetString(
-                "PortalHasSettingLabel.Text", this.ResXFile, this.LangCode);
-            this.PortalNoSettingLabel.Text = Localization.GetString(
-                "PortalNoSettingLabel.Text", this.ResXFile, this.LangCode);
-            this.PageHasSettingLabel.Text = Localization.GetString(
-                "PageHasSettingLabel.Text", this.ResXFile, this.LangCode);
-            this.PageNoSettingLabel.Text = Localization.GetString(
-                "PageNoSettingLabel.Text", this.ResXFile, this.LangCode);
-            this.ModuleHasSettingLabel.Text = Localization.GetString(
-                "ModuleHasSettingLabel.Text", this.ResXFile, this.LangCode);
-            this.ModuleNoSettingLabel.Text = Localization.GetString(
-                "ModuleNoSettingLabel.Text", this.ResXFile, this.LangCode);
-            this.IconLegendLabel.Text = Localization.GetString(
-                "IconLegendLabel.Text", this.ResXFile, this.LangCode);
+            this.HostHasSettingLabel.Text = Localization.GetString("HostHasSettingLabel.Text", this.ResXFile, this.LangCode);
+            this.HostNoSettingLabel.Text = Localization.GetString("HostNoSettingLabel.Text", this.ResXFile, this.LangCode);
+            this.PortalHasSettingLabel.Text = Localization.GetString("PortalHasSettingLabel.Text", this.ResXFile, this.LangCode);
+            this.PortalNoSettingLabel.Text = Localization.GetString("PortalNoSettingLabel.Text", this.ResXFile, this.LangCode);
+            this.PageHasSettingLabel.Text = Localization.GetString("PageHasSettingLabel.Text", this.ResXFile, this.LangCode);
+            this.PageNoSettingLabel.Text = Localization.GetString("PageNoSettingLabel.Text", this.ResXFile, this.LangCode);
+            this.ModuleHasSettingLabel.Text = Localization.GetString("ModuleHasSettingLabel.Text", this.ResXFile, this.LangCode);
+            this.ModuleNoSettingLabel.Text = Localization.GetString("ModuleNoSettingLabel.Text", this.ResXFile, this.LangCode);
+            this.IconLegendLabel.Text = Localization.GetString("IconLegendLabel.Text", this.ResXFile, this.LangCode);
             this.ModuleInstanceInfo.Text = Localization.GetString("ModuleError.Text", this.ResXFile, this.LangCode);
         }
 
@@ -388,7 +392,7 @@ namespace DNNConnect.CKEditorProvider.Module
             };
 
             Dictionary<int, HashSet<TreeNode>> modulesNodes = GetModuleNodes(portal.PortalId, this.moduleController, editorHostSettings);
-            var tabs = TabController.GetPortalTabs(portal.PortalId, -1, false, null, true, false, true, true, false);
+            var tabs = TabController.GetPortalTabs(this.hostSettings, this.appStatus, portal.PortalId, -1, false, null, true, false, true, true, false);
 
             LoadNodesByTreeViewHelper(editorHostSettings, portalNode, modulesNodes, tabs);
 

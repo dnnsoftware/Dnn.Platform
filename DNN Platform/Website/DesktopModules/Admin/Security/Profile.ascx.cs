@@ -7,6 +7,7 @@ namespace DesktopModules.Admin.Security
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -16,19 +17,31 @@ namespace DesktopModules.Admin.Security
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.WebControls;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
     /// <summary>The Profile UserModuleBase is used to register Users.</summary>
     public partial class DNNProfile : ProfileUserControlBase
     {
-        /// <summary>Gets a value indicating whether the User is valid.</summary>
-        public bool IsValid
+        private readonly ListController listController;
+
+        /// <summary>Initializes a new instance of the <see cref="DNNProfile"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public DNNProfile()
+            : this(null)
         {
-            get
-            {
-                return this.ProfileProperties.IsValid || this.IsAdmin;
-            }
         }
+
+        /// <summary>Initializes a new instance of the <see cref="DNNProfile"/> class.</summary>
+        /// <param name="listController">The list controller.</param>
+        public DNNProfile(ListController listController)
+        {
+            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+        }
+
+        /// <summary>Gets a value indicating whether the User is valid.</summary>
+        public bool IsValid => this.ProfileProperties.IsValid || this.IsAdmin;
 
         /// <summary>Gets the UserProfile associated with this control.</summary>
         public UserProfile UserProfile
@@ -48,29 +61,15 @@ namespace DesktopModules.Admin.Security
         /// <summary>Gets or sets the EditorMode.</summary>
         public PropertyEditorMode EditorMode
         {
-            get
-            {
-                return this.ProfileProperties.EditMode;
-            }
-
-            set
-            {
-                this.ProfileProperties.EditMode = value;
-            }
+            get => this.ProfileProperties.EditMode;
+            set => this.ProfileProperties.EditMode = value;
         }
 
         /// <summary>Gets or sets a value indicating whether the Update button.</summary>
         public bool ShowUpdate
         {
-            get
-            {
-                return this.actionsRow.Visible;
-            }
-
-            set
-            {
-                this.actionsRow.Visible = value;
-            }
+            get => this.actionsRow.Visible;
+            set => this.actionsRow.Visible = value;
         }
 
         /// <summary>Gets a value indicating whether to display the Visibility controls.</summary>
@@ -88,7 +87,7 @@ namespace DesktopModules.Admin.Security
         {
             // Before we bind the Profile to the editor we need to "update" the visible data
             var properties = new ProfilePropertyDefinitionCollection();
-            var imageType = new ListController().GetListEntryInfo("DataType", "Image");
+            var imageType = this.listController.GetListEntryInfo("DataType", "Image");
             foreach (ProfilePropertyDefinition profProperty in this.UserProfile.ProfileProperties)
             {
                 if (this.IsAdmin && !this.IsProfile)

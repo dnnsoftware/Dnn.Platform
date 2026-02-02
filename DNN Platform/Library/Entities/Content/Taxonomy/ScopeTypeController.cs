@@ -3,32 +3,39 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Data;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>ScopeTypeController provides the business layer of ScopeType.</summary>
     /// <seealso cref="TermController"/>
-    public class ScopeTypeController : IScopeTypeController
+    public class ScopeTypeController(IDataService dataService, IHostSettings hostSettings) : IScopeTypeController
     {
         private const int CacheTimeOut = 20;
-        private readonly IDataService dataService;
+        private readonly IDataService dataService = dataService ?? Util.GetDataService();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="ScopeTypeController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ScopeTypeController()
-            : this(Util.GetDataService())
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ScopeTypeController"/> class.</summary>
         /// <param name="dataService">The data service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ScopeTypeController(IDataService dataService)
+            : this(dataService, null)
         {
-            this.dataService = dataService;
         }
 
         /// <inheritdoc />
@@ -68,7 +75,11 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         /// <inheritdoc />
         public IQueryable<ScopeType> GetScopeTypes()
         {
-            return CBO.GetCachedObject<List<ScopeType>>(new CacheItemArgs(DataCache.ScopeTypesCacheKey, CacheTimeOut), this.GetScopeTypesCallBack).AsQueryable();
+            var scopeTypes = CBO.GetCachedObject<List<ScopeType>>(
+                this.hostSettings,
+                new CacheItemArgs(DataCache.ScopeTypesCacheKey, CacheTimeOut),
+                this.GetScopeTypesCallBack);
+            return scopeTypes.AsQueryable();
         }
 
         /// <inheritdoc />

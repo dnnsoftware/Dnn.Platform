@@ -18,11 +18,6 @@ namespace DotNetNuke.Entities.Urls
     /// <summary>Abstract class to allow derived classes of different implementations of Url Rewriter.</summary>
     public abstract class UrlRewriterBase
     {
-        private readonly IHostSettings hostSettings;
-        private readonly IPortalAliasService portalAliasService;
-        private readonly IHostSettingsService hostSettingsService;
-        private readonly IPortalController portalController;
-
         /// <summary>Initializes a new instance of the <see cref="UrlRewriterBase"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         protected UrlRewriterBase()
@@ -37,11 +32,23 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="portalController">The portal controller.</param>
         protected UrlRewriterBase(IHostSettings hostSettings, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController)
         {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-            this.portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
-            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
-            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.HostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.PortalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
+            this.HostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.PortalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
         }
+
+        /// <summary>Gets the host settings.</summary>
+        protected IHostSettings HostSettings { get; }
+
+        /// <summary>Gets the portal alias service.</summary>
+        protected IPortalAliasService PortalAliasService { get; }
+
+        /// <summary>Gets the host settings service.</summary>
+        protected IHostSettingsService HostSettingsService { get; }
+
+        /// <summary>Gets the portal controller.</summary>
+        protected IPortalController PortalController { get; }
 
         internal abstract void RewriteUrl(object sender, EventArgs e);
 
@@ -81,8 +88,8 @@ namespace DotNetNuke.Entities.Urls
                 serviceProvider.GetRequiredService<IPortalController>());
         }
 
-        protected void AutoAddAlias(HttpContextBase context) => AutoAddAlias(this.hostSettings, this.portalAliasService, context);
+        protected void AutoAddAlias(HttpContextBase context) => AutoAddAlias(this.HostSettings, this.PortalAliasService, context);
 
-        protected bool AutoAddPortalAliasEnabled() => CanAutoAddPortalAlias(this.hostSettingsService, this.portalController);
+        protected bool AutoAddPortalAliasEnabled() => CanAutoAddPortalAlias(this.HostSettingsService, this.PortalController);
     }
 }

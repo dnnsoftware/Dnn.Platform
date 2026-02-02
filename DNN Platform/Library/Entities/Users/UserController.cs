@@ -14,6 +14,7 @@ namespace DotNetNuke.Entities.Users
     using System.Threading;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security;
@@ -772,11 +773,26 @@ namespace DotNetNuke.Entities.Users
         /// <summary>Gets the number of users in a site (portal).</summary>
         /// <param name="portalId">The id of the portal to search.</param>
         /// <returns>The no of users the portal contains.</returns>
-        public static int GetUserCountByPortal(int portalId)
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial int GetUserCountByPortal(int portalId)
+            => GetUserCountByPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId);
+
+        /// <summary>Gets the number of users in a site (portal).</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalId">The id of the portal to search.</param>
+        /// <returns>The no of users the portal contains.</returns>
+        public static int GetUserCountByPortal(IHostSettings hostSettings, int portalId)
         {
             portalId = GetEffectivePortalId(portalId);
             var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalUserCountCacheKey, portalId);
-            return CBO.GetCachedObject<int>(new CacheItemArgs(cacheKey, DataCache.PortalUserCountCacheTimeOut, DataCache.PortalUserCountCachePriority, portalId), GetUserCountByPortalCallBack);
+            return CBO.GetCachedObject<int>(
+                hostSettings,
+                new CacheItemArgs(
+                    cacheKey,
+                    DataCache.PortalUserCountCacheTimeOut,
+                    DataCache.PortalUserCountCachePriority,
+                    portalId),
+                GetUserCountByPortalCallBack);
         }
 
         /// <summary>Gets a localized string representing the user creation status.</summary>

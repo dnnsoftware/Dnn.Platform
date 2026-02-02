@@ -11,6 +11,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
     using System.Xml;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Security.Permissions;
@@ -34,6 +35,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
         private readonly INavigationManager navigationManager;
         private readonly IEventLogger eventLogger;
         private readonly IPermissionDefinitionService permissionDefinitionService;
+        private readonly IHostSettings hostSettings;
 
         private TabInfo tab;
 
@@ -68,12 +70,25 @@ namespace DotNetNuke.Modules.Admin.Tabs
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="permissionDefinitionService">The permission definition service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Import(IBusinessControllerProvider businessControllerProvider, INavigationManager navigationManager, IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService)
+            : this(businessControllerProvider, navigationManager, eventLogger, permissionDefinitionService, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public Import(IBusinessControllerProvider businessControllerProvider, INavigationManager navigationManager, IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings)
         {
             this.businessControllerProvider = businessControllerProvider ?? this.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
             this.permissionDefinitionService = permissionDefinitionService ?? this.DependencyProvider.GetRequiredService<IPermissionDefinitionService>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
         public TabInfo Tab => this.tab ??= TabController.Instance.GetTab(this.TabId, this.PortalId, false);
@@ -198,7 +213,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     }
 
                     objTab.TabPath = Globals.GenerateTabPath(objTab.ParentId, objTab.TabName);
-                    var tabId = TabController.GetTabByTabPath(objTab.PortalID, objTab.TabPath, Null.NullString);
+                    var tabId = TabController.GetTabByTabPath(this.hostSettings, objTab.PortalID, objTab.TabPath, Null.NullString);
 
                     // Check if tab exists
                     if (tabId != Null.NullInteger)

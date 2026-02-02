@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Content
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Common;
@@ -19,21 +20,35 @@ namespace DotNetNuke.Entities.Content
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class ContentController : ServiceLocator<IContentController, ContentController>, IContentController
     {
         private readonly IDataService dataService;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="ContentController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ContentController()
-            : this(Util.GetDataService())
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ContentController"/> class.</summary>
         /// <param name="dataService">The data service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ContentController(IDataService dataService)
+            : this(dataService, null)
         {
-            this.dataService = dataService;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ContentController"/> class.</summary>
+        /// <param name="dataService">The data service.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public ContentController(IDataService dataService, IHostSettings hostSettings)
+        {
+            this.dataService = dataService ?? Util.GetDataService();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />
@@ -94,8 +109,9 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNegative("contentItemId", contentItemId);
 
             return CBO.GetCachedObject<ContentItem>(
+                this.hostSettings,
                 new CacheItemArgs(GetContentItemCacheKey(contentItemId), DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority),
-                c => CBO.FillObject<ContentItem>(this.dataService.GetContentItem(contentItemId)));
+                _ => CBO.FillObject<ContentItem>(this.dataService.GetContentItem(contentItemId)));
         }
 
         public IQueryable<ContentItem> GetContentItems(int contentTypeId, int tabId, int moduleId)
@@ -253,7 +269,7 @@ namespace DotNetNuke.Entities.Content
         /// <inheritdoc />
         protected override Func<IContentController> GetFactory()
         {
-            return () => new ContentController();
+            return () => Globals.GetCurrentServiceProvider().GetRequiredService<IContentController>();
         }
 
         private static bool MetaDataChanged(

@@ -98,26 +98,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        public void RelationshipController_Constructor_Throws_On_Null_DataService()
-        {
-            // Arrange
-            var mockEventLogger = new Mock<IEventLogger>();
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => new RelationshipControllerImpl(null, mockEventLogger.Object));
-        }
-
-        [Test]
-        public void RelationshipController_Constructor_Throws_On_Null_EventLogController()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => new RelationshipControllerImpl(mockDataService.Object, null));
-        }
-
-        [Test]
         public void RelationshipController_DeleteRelationshipType_Throws_On_Null_RelationshipType()
         {
             // Arrange
@@ -781,7 +761,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             mockEventLogger.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogType>()));
             this.CreateLocalizationProvider();
 
-            var relationshipController = new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object);
+            var relationshipController = new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object, Mock.Of<IHostSettings>(), Mock.Of<IPortalController>(), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IPortalGroupController>());
             var userRelationship = new UserRelationship
             {
                 UserRelationshipId = Constants.SOCIAL_UserRelationshipIDUser10User11,
@@ -922,7 +902,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             mockEventLogger.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogType>()));
             this.CreateLocalizationProvider();
 
-            var relationshipController = new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object);
+            var relationshipController = new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object, Mock.Of<IHostSettings>(), Mock.Of<IPortalController>(), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IPortalGroupController>());
             var preference = new UserRelationshipPreference()
             {
                 PreferenceId = Constants.SOCIAL_PrefereceIDForUser11,
@@ -1202,13 +1182,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         private RelationshipControllerImpl CreateRelationshipController(Mock<IDataService> mockDataService)
         {
             var mockEventLogger = new Mock<IEventLogger>();
-            return new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object);
+            return new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object, Mock.Of<IHostSettings>(), Mock.Of<IPortalController>(), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IPortalGroupController>());
         }
 
         private RelationshipControllerImpl CreateRelationshipController(Mock<IEventLogger> mockEventLogger)
         {
             var mockDataService = new Mock<IDataService>();
-            return new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object);
+            return new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object, Mock.Of<IHostSettings>(), Mock.Of<IPortalController>(), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IPortalGroupController>());
         }
 
         private void SetupDataTables()

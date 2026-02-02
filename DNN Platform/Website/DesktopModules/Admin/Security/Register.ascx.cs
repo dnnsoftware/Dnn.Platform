@@ -53,6 +53,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly IClientResourceController clientResourceController;
         private readonly IApplicationStatusInfo appStatus;
         private readonly IEventLogger eventLogger;
+        private readonly ListController listController;
 
         /// <summary>Initializes a new instance of the <see cref="Register"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
@@ -90,7 +91,22 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="clientResourceController">The client resources controller.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public Register(INavigationManager navigationManager, IServiceProvider serviceProvider, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+            : this(navigationManager, serviceProvider, hostSettings, javaScript, clientResourceController, appStatus, eventLogger, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Register"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="listController">The list controller.</param>
+        public Register(INavigationManager navigationManager, IServiceProvider serviceProvider, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, ListController listController)
         {
             this.serviceProvider = serviceProvider ?? Globals.GetCurrentServiceProvider();
             this.navigationManager = navigationManager ?? this.serviceProvider.GetRequiredService<INavigationManager>();
@@ -99,6 +115,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.clientResourceController = clientResourceController ?? this.serviceProvider.GetRequiredService<IClientResourceController>();
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
         }
 
         protected string ExcludeTerms
@@ -286,7 +303,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (this.PortalSettings.Registration.UseAuthProviders)
             {
-                List<AuthenticationInfo> authSystems = AuthenticationController.GetEnabledAuthenticationServices();
+                List<AuthenticationInfo> authSystems = AuthenticationController.GetEnabledAuthenticationServices(this.hostSettings);
                 foreach (AuthenticationInfo authSystem in authSystems)
                 {
                     try
@@ -483,8 +500,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 return;
             }
 
-            var controller = new ListController();
-            ListEntryInfo imageType = controller.GetListEntryInfo("DataType", "Image");
+            ListEntryInfo imageType = this.listController.GetListEntryInfo("DataType", "Image");
             if (property.DataType != imageType.EntryID)
             {
                 var formItem = new DnnFormEditControlItem(this.appStatus, this.eventLogger, this.serviceProvider)

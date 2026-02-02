@@ -53,6 +53,7 @@ namespace DotNetNuke.Web.InternalServices
         private readonly IPortalController portalController;
         private readonly IPermissionDefinitionService permissionDefinitionService;
         private readonly IEventLogger eventLogger;
+        private readonly IHostSettings hostSettings;
         private readonly Components.Controllers.IControlBarController controller;
 
         /// <summary>Initializes a new instance of the <see cref="ControlBarController"/> class.</summary>
@@ -81,7 +82,23 @@ namespace DotNetNuke.Web.InternalServices
         /// <param name="portalController">The portal controller.</param>
         /// <param name="permissionDefinitionService">The permission definition service.</param>
         /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ControlBarController(IBusinessControllerProvider businessControllerProvider, PersonalizationController personalizationController, IApplicationStatusInfo appStatus, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController, IPermissionDefinitionService permissionDefinitionService, IEventLogger eventLogger)
+            : this(businessControllerProvider, personalizationController, appStatus, portalAliasService, hostSettingsService, portalController, permissionDefinitionService, eventLogger, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ControlBarController"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="personalizationController">The personalization controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public ControlBarController(IBusinessControllerProvider businessControllerProvider, PersonalizationController personalizationController, IApplicationStatusInfo appStatus, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController, IPermissionDefinitionService permissionDefinitionService, IEventLogger eventLogger, IHostSettings hostSettings)
         {
             this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
             this.personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
@@ -91,6 +108,7 @@ namespace DotNetNuke.Web.InternalServices
             this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
             this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.controller = Components.Controllers.ControlBarController.Instance;
         }
 
@@ -165,7 +183,7 @@ namespace DotNetNuke.Web.InternalServices
             List<TabInfo> tabList;
             if (this.PortalSettings.PortalId == portalSettings.PortalId)
             {
-                tabList = TabController.GetPortalTabs(portalSettings.PortalId, this.PortalSettings.ActiveTab.TabID, false, string.Empty, true, false, false, false, true);
+                tabList = TabController.GetPortalTabs(this.hostSettings, this.appStatus, portalSettings.PortalId, this.PortalSettings.ActiveTab.TabID, false, string.Empty, true, false, false, false, true);
             }
             else
             {
@@ -180,7 +198,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 if (myGroup != null && myGroup.Any(p => p.PortalId == portalSettings.PortalId))
                 {
-                    tabList = TabController.GetPortalTabs(portalSettings.PortalId, Null.NullInteger, false, string.Empty, true, false, false, false, false);
+                    tabList = TabController.GetPortalTabs(this.hostSettings, this.appStatus, portalSettings.PortalId, Null.NullInteger, false, string.Empty, true, false, false, false, false);
                 }
                 else
                 {
@@ -208,18 +226,16 @@ namespace DotNetNuke.Web.InternalServices
         [DnnPageEditor]
         public HttpResponseMessage GetTabModules(string tab)
         {
-            int tabID;
-
-            if (int.TryParse(tab, out tabID))
+            if (int.TryParse(tab, out var tabId))
             {
                 var result = new List<ModuleDefDTO>();
-                if (tabID > 0)
+                if (tabId > 0)
                 {
-                    var pageModules = GetModules(tabID);
+                    var pageModules = GetModules(tabId);
 
                     Dictionary<int, string> resultDict = pageModules.ToDictionary(module => module.ModuleID, module => module.ModuleTitle);
                     result.AddRange(from kvp in resultDict
-                                    let imageUrl = GetTabModuleImage(tabID, kvp.Key)
+                                    let imageUrl = GetTabModuleImage(tabId, kvp.Key)
                                     select new ModuleDefDTO { ModuleID = kvp.Key, ModuleName = kvp.Value, ModuleImage = imageUrl });
                 }
 
@@ -239,7 +255,7 @@ namespace DotNetNuke.Web.InternalServices
             if (TabPermissionController.CanManagePage() && UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators")
                                                         && this.ActiveTabHasChildren() && !this.PortalSettings.ActiveTab.IsSuperTab)
             {
-                TabController.CopyPermissionsToChildren(this.PortalSettings.ActiveTab, this.PortalSettings.ActiveTab.TabPermissions);
+                TabController.CopyPermissionsToChildren(this.eventLogger, this.PortalSettings.ActiveTab, this.PortalSettings.ActiveTab.TabPermissions);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
 

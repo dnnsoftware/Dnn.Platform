@@ -3,33 +3,40 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Data;
     using DotNetNuke.Entities.Users;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>VocabularyController provides the business layer of Vocabulary and VocabularyType.</summary>
     /// <seealso cref="TermController"/>
-    public class VocabularyController : IVocabularyController
+    public class VocabularyController(IDataService dataService, IHostSettings hostSettings) : IVocabularyController
     {
         private const int CacheTimeOut = 20;
-        private readonly IDataService dataService;
+        private readonly IDataService dataService = dataService ?? Util.GetDataService();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="VocabularyController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public VocabularyController()
-            : this(Util.GetDataService())
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="VocabularyController"/> class.</summary>
         /// <param name="dataService">The data service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public VocabularyController(IDataService dataService)
+            : this(dataService, null)
         {
-            this.dataService = dataService;
         }
 
         /// <inheritdoc />
@@ -70,7 +77,11 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         /// <inheritdoc />
         public IQueryable<Vocabulary> GetVocabularies()
         {
-            return CBO.GetCachedObject<List<Vocabulary>>(new CacheItemArgs(DataCache.VocabularyCacheKey, CacheTimeOut), this.GetVocabulariesCallBack).AsQueryable();
+            var vocabularies = CBO.GetCachedObject<List<Vocabulary>>(
+                this.hostSettings,
+                new CacheItemArgs(DataCache.VocabularyCacheKey, CacheTimeOut),
+                this.GetVocabulariesCallBack);
+            return vocabularies.AsQueryable();
         }
 
         /// <inheritdoc />

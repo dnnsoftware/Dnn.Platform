@@ -67,7 +67,7 @@ namespace Dnn.PersonaBar.UI.Components
             {
                 case "01.00.00":
                     this.UpdateControlPanel();
-                    CreateAdminLinks();
+                    CreateAdminLinks(this.hostSettings);
                     break;
                 case "01.04.00":
                     UpdateEditPermissions(this.hostSettings);
@@ -101,19 +101,19 @@ namespace Dnn.PersonaBar.UI.Components
             }
         }
 
-        private static void CreateAdminLinks()
+        private static void CreateAdminLinks(IHostSettings hostSettings)
         {
             foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
             {
-                CreatePageLinks(portal.PortalId, "Admin");
+                CreatePageLinks(hostSettings, portal.PortalId, "Admin");
             }
 
-            CreatePageLinks(Null.NullInteger, "Host");
+            CreatePageLinks(hostSettings, Null.NullInteger, "Host");
         }
 
-        private static void CreatePageLinks(int portalId, string parentPath)
+        private static void CreatePageLinks(IHostSettings hostSettings, int portalId, string parentPath)
         {
-            var parentTab = TabController.GetTabByTabPath(portalId, "//" + parentPath, string.Empty);
+            var parentTab = TabController.GetTabByTabPath(hostSettings, portalId, "//" + parentPath, string.Empty);
             if (parentTab == Null.NullInteger)
             {
                 return;

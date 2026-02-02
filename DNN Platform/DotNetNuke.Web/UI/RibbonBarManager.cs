@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.UI
     using System.Linq;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security.Permissions;
@@ -222,7 +223,15 @@ namespace DotNetNuke.Web.UI
 
         /// <summary>Gets the list of pages the current user can edit.</summary>
         /// <returns>A list of <see cref="TabInfo"/> instances.</returns>
-        public static IList<TabInfo> GetPagesList()
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial IList<TabInfo> GetPagesList()
+            => GetPagesList(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>());
+
+        /// <summary>Gets the list of pages the current user can edit.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <returns>A list of <see cref="TabInfo"/> instances.</returns>
+        public static IList<TabInfo> GetPagesList(IHostSettings hostSettings, IApplicationStatusInfo appStatus)
         {
             IList<TabInfo> portalTabs = null;
             UserInfo userInfo = UserController.Instance.GetCurrentUserInfo();
@@ -234,7 +243,7 @@ namespace DotNetNuke.Web.UI
                 }
                 else
                 {
-                    portalTabs = TabController.GetPortalTabs(PortalSettings.Current.PortalId, Null.NullInteger, false, Null.NullString, true, false, true, false, true);
+                    portalTabs = TabController.GetPortalTabs(hostSettings, appStatus, PortalSettings.Current.PortalId, Null.NullInteger, false, Null.NullString, true, false, true, false, true);
                 }
             }
 
@@ -520,7 +529,7 @@ namespace DotNetNuke.Web.UI
                         xmlDoc.Load(xmlReader);
                     }
 
-                    TabController.DeserializePanes(businessControllerProvider, xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
+                    TabController.DeserializePanes(businessControllerProvider, permissionDefinitionService, xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
 
                     // save tab permissions
                     DeserializeTabPermissions(permissionDefinitionService, xmlDoc.SelectNodes("//portal/tabs/tab/tabpermissions/permission"), tab);

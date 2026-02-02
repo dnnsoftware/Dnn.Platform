@@ -20,12 +20,15 @@ namespace DotNetNuke
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Taxonomy;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
@@ -37,6 +40,7 @@ namespace DotNetNuke
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
+    using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
@@ -132,6 +136,8 @@ namespace DotNetNuke
 #pragma warning restore CS0618 // Type or member is obsolete
             services.AddTransient<IPortalGroupController, PortalGroupController>();
             services.AddTransient<DotNetNuke.Entities.Portals.Data.IDataService, DotNetNuke.Entities.Portals.Data.DataService>();
+            services.AddTransient<DotNetNuke.Entities.Content.Data.IDataService, DotNetNuke.Entities.Content.Data.DataService>();
+            services.AddTransient<DotNetNuke.Entities.Users.Social.Data.IDataService, DotNetNuke.Entities.Users.Social.Data.DataService>();
             services.AddTransient<ILocaleController, LocaleController>();
             services.AddTransient<IUserRequestIPAddressController, UserRequestIPAddressController>();
             services.AddTransient<IRoleController, RoleController>();
@@ -149,6 +155,9 @@ namespace DotNetNuke
             services.AddTransient<IClientResourceSettings, ClientResourceSettings>();
             services.AddTransient<IWorkflowSecurity, WorkflowSecurity>();
             services.AddTransient<IWorkflowStateManager, WorkflowStateManager>();
+            services.AddTransient<IContentController, ContentController>();
+            services.AddTransient<IVocabularyController, VocabularyController>();
+            services.AddTransient<ITermController, TermController>();
             if (CryptoConfig.AllowOnlyFipsAlgorithms)
             {
                 services.AddTransient<ICryptographyProvider, FipsCompilanceCryptographyProvider>();
@@ -170,6 +179,7 @@ namespace DotNetNuke
             services.AddTransient<ModuleInjectionManager>();
             services.AddTransient<PersonalizationController>();
             services.AddTransient<PortalSecurity>();
+            services.AddTransient<ListController>();
             RegisterModuleInjectionFilters(services);
         }
 

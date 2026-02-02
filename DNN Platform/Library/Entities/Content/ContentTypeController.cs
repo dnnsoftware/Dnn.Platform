@@ -3,13 +3,17 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Content
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Data;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>ContentTypeController provides the business layer of ContentType.</summary>
     /// <example>
@@ -25,21 +29,24 @@ namespace DotNetNuke.Entities.Content
     /// }
     /// </code>
     /// </example>
-    public class ContentTypeController : IContentTypeController
+    public class ContentTypeController(IDataService dataService, IHostSettings hostSettings) : IContentTypeController
     {
-        private readonly IDataService dataService;
+        private readonly IDataService dataService = dataService ?? Util.GetDataService();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="ContentTypeController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ContentTypeController()
-            : this(Util.GetDataService())
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ContentTypeController"/> class.</summary>
         /// <param name="dataService">The data service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ContentTypeController(IDataService dataService)
+            : this(dataService, null)
         {
-            this.dataService = dataService;
         }
 
         /// <summary>Adds the type of the content.</summary>
@@ -87,12 +94,11 @@ namespace DotNetNuke.Entities.Content
         /// <returns>content type collection.</returns>
         public IQueryable<ContentType> GetContentTypes()
         {
-            return CBO.GetCachedObject<List<ContentType>>(
-                new CacheItemArgs(
-                DataCache.ContentTypesCacheKey,
-                DataCache.ContentTypesCacheTimeOut,
-                DataCache.ContentTypesCachePriority),
-                c => CBO.FillQueryable<ContentType>(this.dataService.GetContentTypes()).ToList()).AsQueryable();
+            var contentTypes = CBO.GetCachedObject<List<ContentType>>(
+                this.hostSettings,
+                new CacheItemArgs(DataCache.ContentTypesCacheKey, DataCache.ContentTypesCacheTimeOut, DataCache.ContentTypesCachePriority),
+                _ => CBO.FillQueryable<ContentType>(this.dataService.GetContentTypes()).ToList());
+            return contentTypes.AsQueryable();
         }
 
         /// <summary>Updates the type of the content.</summary>

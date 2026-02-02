@@ -9,6 +9,7 @@ namespace DNNConnect.CKEditorProvider
     using System.Text.RegularExpressions;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities.Modules;
@@ -24,6 +25,8 @@ namespace DNNConnect.CKEditorProvider
     public class Tabs : PortalModuleBase, IHttpHandler
     {
         private readonly IPortalController portalController;
+        private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appStatus;
 
         /// <summary>Initializes a new instance of the <see cref="Tabs"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
@@ -34,9 +37,21 @@ namespace DNNConnect.CKEditorProvider
 
         /// <summary>Initializes a new instance of the <see cref="Tabs"/> class.</summary>
         /// <param name="portalController">The portal controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Tabs(IPortalController portalController)
+            : this(portalController, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Tabs"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        public Tabs(IPortalController portalController, IHostSettings hostSettings, IApplicationStatusInfo appStatus)
         {
             this.portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
+            this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+            this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
         }
 
         /// <summary>Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler"/> instance.</summary>
@@ -56,8 +71,7 @@ namespace DNNConnect.CKEditorProvider
 
             var domainName = $"http://{Globals.GetDomainName(context.Request, true)}";
 
-            foreach (TabInfo tab in TabController.GetPortalTabs(
-                    portalId, -1, false, null, true, false, true, true, true))
+            foreach (TabInfo tab in TabController.GetPortalTabs(this.hostSettings, this.appStatus, portalId, -1, false, null, true, false, true, true, true))
             {
                 var tabUrl = PortalController.GetPortalSettingAsBoolean(this.portalController, "ContentLocalizationEnabled", portalId, false)
                                 && !string.IsNullOrEmpty(tab.CultureCode)

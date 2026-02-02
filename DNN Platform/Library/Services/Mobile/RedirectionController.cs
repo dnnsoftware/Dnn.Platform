@@ -8,7 +8,6 @@ namespace DotNetNuke.Services.Mobile
     using System.Globalization;
     using System.Linq;
     using System.Web;
-    using System.Web.Services.Description;
 
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
@@ -21,7 +20,6 @@ namespace DotNetNuke.Services.Mobile
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.ClientCapability;
-    using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
 

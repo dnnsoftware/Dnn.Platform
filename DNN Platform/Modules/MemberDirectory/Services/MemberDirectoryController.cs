@@ -12,6 +12,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
@@ -21,11 +22,28 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     [SupportedModules("DotNetNuke.Modules.MemberDirectory")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     public class MemberDirectoryController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MemberDirectoryController));
+        private readonly ListController listController;
+
+        /// <summary>Initializes a new instance of the <see cref="MemberDirectoryController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public MemberDirectoryController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="MemberDirectoryController"/> class.</summary>
+        /// <param name="listController">The list controller.</param>
+        public MemberDirectoryController(ListController listController)
+        {
+            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+        }
 
         [HttpGet]
         public HttpResponseMessage AdvancedSearch(int userId, int groupId, int pageIndex, int pageSize, string searchTerm1, string searchTerm2, string searchTerm3, string searchTerm4)
@@ -44,10 +62,10 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
                 var propertyNames = string.Empty;
                 var propertyValues = string.Empty;
-                AddSearchTerm(ref propertyNames, ref propertyValues, searchField1, searchTerm1);
-                AddSearchTerm(ref propertyNames, ref propertyValues, searchField2, searchTerm2);
-                AddSearchTerm(ref propertyNames, ref propertyValues, searchField3, searchTerm3);
-                AddSearchTerm(ref propertyNames, ref propertyValues, searchField4, searchTerm4);
+                AddSearchTerm(this.listController, ref propertyNames, ref propertyValues, searchField1, searchTerm1);
+                AddSearchTerm(this.listController, ref propertyNames, ref propertyValues, searchField2, searchTerm2);
+                AddSearchTerm(this.listController, ref propertyNames, ref propertyValues, searchField3, searchTerm3);
+                AddSearchTerm(this.listController, ref propertyNames, ref propertyValues, searchField4, searchTerm4);
 
                 var members = this.GetUsers(userId, groupId, searchTerm1, pageIndex, pageSize, propertyNames, propertyValues);
                 return this.Request.CreateResponse(HttpStatusCode.OK, this.GetMembers(members));
@@ -195,7 +213,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
         }
 
-        private static void AddSearchTerm(ref string propertyNames, ref string propertyValues, string name, string value)
+        private static void AddSearchTerm(ListController listController, ref string propertyNames, ref string propertyValues, string name, string value)
         {
             if (!string.IsNullOrEmpty(value))
             {
@@ -204,16 +222,16 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                 if (name.Equals("Country", StringComparison.InvariantCultureIgnoreCase) ||
                     name.Equals("Region", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    value = GetMatchedListEntryIds(name, value);
+                    value = GetMatchedListEntryIds(listController, name, value);
                 }
 
                 propertyValues += value + ",";
             }
         }
 
-        private static string GetMatchedListEntryIds(string name, string value)
+        private static string GetMatchedListEntryIds(ListController listController, string name, string value)
         {
-            var listEntries = new ListController().GetListEntryInfoItems(name)
+            var listEntries = listController.GetListEntryInfoItems(name)
                 .Where(i => i.Text.StartsWith(value, StringComparison.InvariantCultureIgnoreCase)
                             || i.TextNonLocalized.StartsWith(value, StringComparison.InvariantCultureIgnoreCase)
                             || i.Value.StartsWith(value, StringComparison.InvariantCultureIgnoreCase))
@@ -290,7 +308,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             if (string.IsNullOrEmpty(propertyNames))
             {
                 isBasicSearch = true;
-                AddSearchTerm(ref propertyNames, ref propertyValues, "DisplayName", searchTerm);
+                AddSearchTerm(this.listController, ref propertyNames, ref propertyValues, "DisplayName", searchTerm);
             }
 
             IList<UserInfo> users;
@@ -344,7 +362,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     break;
                 case "ProfileProperty":
                     var propertyValue = GetSetting(this.ActiveModule.ModuleSettings, "FilterPropertyValue", string.Empty);
-                    AddSearchTerm(ref propertyNames, ref propertyValues, filterValue, propertyValue);
+                    AddSearchTerm(this.listController, ref propertyNames, ref propertyValues, filterValue, propertyValue);
 
                     users = UserController.Instance.GetUsersAdvancedSearch(
                         portalId,

@@ -39,7 +39,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
     using NUnit.Framework;
 
-    /// <summary>  Summary description for RedirectionControllerTests.</summary>
     [TestFixture]
     public class RedirectionControllerTests
     {
@@ -116,12 +115,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             this.SetupClientCapabilityProvider();
             SetupRoleProvider();
 
-            var tabController = TabController.Instance;
-            var dataProviderField = tabController.GetType().GetField("dataProvider", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (dataProviderField != null)
-            {
-                dataProviderField.SetValue(tabController, this.dataProvider.Object);
-            }
+            TabController.SetTestableInstance(new TabController(eventLogger, this.dataProvider.Object, Mock.Of<IPermissionDefinitionService>(), Mock.Of<IHostSettings>(), Mock.Of<IApplicationStatusInfo>()));
         }
 
         [TearDown]
@@ -133,6 +127,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             CachingProvider.Instance().PurgeCache();
             MockComponentProvider.ResetContainer();
             UnitTestHelper.ClearHttpContext();
+            TabController.ClearInstance();
             if (this.dtRedirections != null)
             {
                 this.dtRedirections.Dispose();
@@ -293,13 +288,14 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             Assert.That(this.redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1), Is.EqualTo(NavigateUrl(AnotherPageOnSamePortal)));
         }
 
-        // [Test]
-        // public void RedirectionController_GetRedirectionUrl_Returns_HomePageOfOtherPortal_When_Surfing_AnyPageOfCurrentPortal_OnMobile()
-        // {
-        //    PrepareHomePageToHomePageRedirectionRule();
-        //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
-        //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 2));
-        // }
+        //// [Test]
+        //// public void RedirectionController_GetRedirectionUrl_Returns_HomePageOfOtherPortal_When_Surfing_AnyPageOfCurrentPortal_OnMobile()
+        //// {
+        ////    PrepareHomePageToHomePageRedirectionRule();
+        ////    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
+        ////    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 2));
+        //// }
+        ////
         [Test]
         public void RedirectionController_GetRedirectionUrl_Returns_ExternalSite_When_Surfing_AnyPageOfCurrentPortal_OnMobile()
         {

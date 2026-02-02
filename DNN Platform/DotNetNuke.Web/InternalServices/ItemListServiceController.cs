@@ -738,7 +738,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-                tabs = TabController.GetPortalTabs(portalId, includeActive ? Null.NullInteger : this.PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
+                tabs = TabController.GetPortalTabs(this.hostSettings, this.appStatus, portalId, includeActive ? Null.NullInteger : this.PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
                     .Where(tab => searchFunc(tab)
                                   && tab.ParentId == parentId
                                   && (includeDisabled || !tab.DisableLink)
@@ -876,7 +876,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-                tabs = TabController.GetPortalTabs(portalId, includeActive ? Null.NullInteger : this.PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
+                tabs = TabController.GetPortalTabs(this.hostSettings, this.appStatus, portalId, includeActive ? Null.NullInteger : this.PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
                     .Where(t => (!t.DisableLink || includeDisabled) && !t.IsSystem)
                     .ToList();
 
