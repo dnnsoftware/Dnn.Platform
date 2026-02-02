@@ -5,13 +5,10 @@
 namespace DotNetNuke.Web.MvcPipeline.Controllers
 {
     using System;
-    using System.Web.Mvc;
 
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Web.MvcPipeline.Routing;
-    using DotNetNuke.Web.MvcPipeline.Utils;
 
     /// <summary>
     /// Base controller for MVC module controllers, exposing common DNN context and services.
@@ -36,6 +33,7 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
         public UserInfo UserInfo
         {
             get { return this.PortalSettings.UserInfo; }
+            get { return UserController.Instance.GetCurrentUserInfo(); }
         }
 
         /// <summary>
