@@ -1,4 +1,4 @@
-# Razor Module Development Guide 
+# Razor+ Module Development Guide 
 
 ## Overview
 
@@ -15,7 +15,7 @@ This guide explains how to create DNN modules using `RazorModuleControlBase`, wh
 7. [Module Configuration](#module-configuration)
 8. [Available Properties and Methods](#available-properties-and-methods)
 9. [Return Types](#return-types)
-10. [Using Razor Modules in WebForms with WrapperModule](#using-razor-modules-in-webforms-with-wrappermodule)
+10. [Using Razor+ Modules in WebForms with WrapperModule](#using-razor-modules-in-webforms-with-wrappermodule)
 11. [Best Practices](#best-practices)
 
 ## Introduction
@@ -317,21 +317,21 @@ Displays an error message:
 return Error("Error Heading", "Error message details");
 ```
 
-## Using Razor Modules in WebForms with WrapperModule
+## Using Razor+ Modules in WebForms with WrapperModule
 
-The `WrapperModule` class allows you to use Razor module controls within the traditional WebForms pipeline. This is useful when you need to display Razor-based modules on pages that use the WebForms pipeline (`/default.aspx`).
+The `WrapperModule` class allows you to use Razor+ module controls within the traditional WebForms pipeline. This is useful when you need to display Razor-based modules on pages that use the WebForms pipeline (`/default.aspx`).
 
 ### How It Works
 
 The `WrapperModule` acts as a bridge between WebForms and the MVC pipeline. It:
 - Inherits from `PortalModuleBase` (WebForms compatible)
-- Creates and renders your Razor module control
+- Creates and renders your Razor+ module control
 - Handles module actions and page contributors automatically
 - Displays the rendered HTML within the WebForms page
 
 ### Module Configuration
 
-To use a Razor module control in WebForms, configure your module control in the `.dnn` manifest file as follows:
+To use a Razor+ module control in WebForms, configure your module control in the `.dnn` manifest file as follows:
 
 ```xml
 <moduleControl>

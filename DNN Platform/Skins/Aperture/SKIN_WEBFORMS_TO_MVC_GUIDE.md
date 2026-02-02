@@ -602,7 +602,7 @@ When transforming controls with attributes, convert them to named parameters in 
 @{
     @Html.DnnCssInclude(filePath: "css/navigation.css", pathNameAlias: "SkinPath")
     
-    var menuClass = Model.ActiveTab.Level == 0 ? "top-level-menu" : "sub-menu";
+    var menuClass = DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab.Level == 0 ? "top-level-menu" : "sub-menu";
 }
 
 <nav class="@menuClass">
@@ -615,7 +615,7 @@ When transforming controls with attributes, convert them to named parameters in 
 
 **Key Points:**
 - Functions defined in `<script runat="server">` become variables in `@{ }` blocks
-- Use `Model.ActiveTab` instead of `PortalSettings.ActiveTab`
+- Use `DotNetNuke.Entities.Portals.PortalSettings.Current.ActiveTab` instead of `PortalSettings.ActiveTab`
 - Inline code `<%= %>` becomes Razor `@variable`
 
 ---
@@ -656,7 +656,7 @@ Use this checklist when transforming a WebForms skin:
 - [ ] Add `@model PageModel` to each partial
 - [ ] Transform `<script runat="server">` blocks to `@{ }` blocks
 - [ ] Replace `this.SkinPath` with `Model.Skin.SkinPath`
-- [ ] Replace `PortalSettings.*` with `Model.*`
+- [ ] Replace `PortalSettings.*` with `DotNetNuke.Entities.Portals.PortalSettings.Current.*`
 - [ ] Test all partials
 
 ### Code Transformation
@@ -724,14 +724,10 @@ Use this checklist when transforming a WebForms skin:
 ### Model Properties Reference
 
 **PageModel Properties:**
-- `Model.ActiveTab` - Current page/tab information
+- `Model.TabId` - Current page/tab Id
 - `Model.Skin.SkinPath` - Path to current skin folder
-- `Model.PortalSettings` - Portal settings
-- `Model.User` - Current user information
+- `Model.PortalId` - Portal Id
 
-**ContainerModel Properties:**
-- `Model.ModuleInfo` - Current module information
-- `Model.Container` - Container information
 
 ### Common HTML Helper Methods
 

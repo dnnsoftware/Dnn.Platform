@@ -22,10 +22,10 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         /// Renders a Razor partial view located under the current skin's <c>Views</c> folder.
         /// </summary>
         /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
-        /// <param name="name">The partial view name (without path or extension).</param>
+        /// <param name="partialViewName">The partial view name (without path or extension).</param>
         /// <returns>An HTML string containing the rendered partial view.</returns>
         /// <exception cref="InvalidOperationException">Thrown when the page model is not available.</exception>
-        public static IHtmlString SkinPartial(this HtmlHelper<PageModel> helper, string name = "")
+        public static IHtmlString SkinPartial(this HtmlHelper<PageModel> helper, string partialViewName = "")
         {
             var model = helper.ViewData.Model;
             if (model == null)
@@ -33,7 +33,26 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                 throw new InvalidOperationException("The model need to be present.");
             }
 
-            return helper.Partial(model.Skin.RazorPath + name + ".cshtml");
+            return helper.Partial(model.Skin.RazorPath + partialViewName + ".cshtml", helper.ViewData);
+        }
+
+        /// <summary>
+        /// Renders a Razor partial view located under the current skin's <c>Views</c> folder.
+        /// </summary>
+        /// <param name="helper">The HTML helper for the current <see cref="PageModel"/>.</param>
+        /// <param name="partialViewName">The partial view name (without path or extension).</param>
+        /// <param name="model">The model for the partial view.</param>
+        /// <returns>An HTML string containing the rendered partial view.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the page model is not available.</exception>
+        public static MvcHtmlString SkinPartial(this HtmlHelper<PageModel> helper, string partialViewName, object model)
+        {
+            var pageModel = helper.ViewData.Model;
+            if (pageModel == null)
+            {
+                throw new InvalidOperationException("The model need to be present.");
+            }
+
+            return helper.Partial(pageModel.Skin.RazorPath + partialViewName, model, helper.ViewData);
         }
     }
 }

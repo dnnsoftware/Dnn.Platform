@@ -78,7 +78,7 @@
 </head>
 <body class="@(Model.Skin.BodyCssClass)">
     @Html.Raw(Model.ClientResourceController.RenderDependencies(ResourceType.All, "DnnBodyProvider", Globals.ApplicationPath))
-    <form id="Form">
+    <form id="Form" class="aspNetHidden">
         <div class="aspNetHidden">
             <input name="ScrollTop" type="hidden" id="ScrollTop" />
             <input name="__dnnVariable" type="hidden" id="__dnnVariable" autocomplete="off" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.ClientVariables)">
