@@ -201,14 +201,13 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.TabModuleId = this.Module.TabModuleID;
 
                     // get Settings Control
-                    ModuleControlInfo moduleControlInfo = ModuleControlController.GetModuleControlByControlKey("Settings", this.Module.ModuleDefID);
+                    ModuleControlInfo moduleControlInfo = ModuleControlController.GetModuleControlByControlKey(this.hostSettings, "Settings", this.Module.ModuleDefID);
 
                     if (moduleControlInfo != null)
                     {
                         this.control = this.moduleControlPipeline.LoadSettingsControl(this.Page, this.Module, moduleControlInfo.ControlSrc);
 
-                        var settingsControl = this.control as ISettingsControl;
-                        if (settingsControl != null)
+                        if (this.control is ISettingsControl settingsControl)
                         {
                             this.hlSpecificSettings.Text = Localization.GetString(
                                 "ControlTitle_settings",
@@ -616,9 +615,9 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             if (this.Module != null)
             {
-                var desktopModule = DesktopModuleController.GetDesktopModule(this.Module.DesktopModuleID, this.PortalId);
-                this.dgPermissions.ResourceFile = Globals.ApplicationPath + "/DesktopModules/" + desktopModule.FolderName + "/" + Localization.LocalResourceDirectory + "/" +
-                                             Localization.LocalSharedResourceFile;
+                var desktopModule = DesktopModuleController.GetDesktopModule(this.hostSettings, this.Module.DesktopModuleID, this.PortalId);
+                this.dgPermissions.ResourceFile =
+                    $"{Globals.ApplicationPath}/DesktopModules/{desktopModule.FolderName}/{Localization.LocalResourceDirectory}/{Localization.LocalSharedResourceFile}";
                 if (!this.Module.IsShared)
                 {
                     this.chkInheritPermissions.Checked = this.Module.InheritViewPermissions;

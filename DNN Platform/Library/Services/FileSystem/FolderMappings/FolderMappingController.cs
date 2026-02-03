@@ -12,6 +12,8 @@ namespace DotNetNuke.Services.FileSystem
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -19,14 +21,26 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.FileSystem.Internal;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class FolderMappingController : ComponentBase<IFolderMappingController, FolderMappingController>, IFolderMappingController
     {
         private const string CacheKeyPrefix = "GetFolderMappingSettings";
         private static readonly DataProvider DataProvider = DataProvider.Instance();
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="FolderMappingController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         internal FolderMappingController()
+            : this(null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="FolderMappingController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        internal FolderMappingController(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />
@@ -148,11 +162,9 @@ namespace DotNetNuke.Services.FileSystem
         {
             var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.FolderMappingCacheKey, portalId);
             return CBO.GetCachedObject<List<FolderMappingInfo>>(
-                new CacheItemArgs(
-                cacheKey,
-                DataCache.FolderMappingCacheTimeOut,
-                DataCache.FolderMappingCachePriority),
-                (c) => CBO.FillCollection<FolderMappingInfo>(DataProvider.GetFolderMappings(portalId)));
+                this.hostSettings,
+                new CacheItemArgs(cacheKey, DataCache.FolderMappingCacheTimeOut, DataCache.FolderMappingCachePriority),
+                _ => CBO.FillCollection<FolderMappingInfo>(DataProvider.GetFolderMappings(portalId)));
         }
 
         /// <inheritdoc />

@@ -122,7 +122,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>CreateObject creates a new object of Type TObject.</summary>
         /// <typeparam name="TObject">The type of object to create.</typeparam>
-        /// <param name="initialise">A flag that indicates whether to initialise the object (i.e. set all properties to <see langword="null"/>).</param>
+        /// <param name="initialise">A flag that indicates whether to initialize the object (i.e. set all properties to <see langword="null"/>).</param>
         /// <returns>The created object.</returns>
         public static TObject CreateObject<TObject>(bool initialise)
         {
@@ -484,7 +484,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>InitializeObject initialises all the properties of an object to their <see langword="null"/> Values.</summary>
-        /// <param name="objObject">The object to Initialise.</param>
+        /// <param name="objObject">The object to Initialize.</param>
         public static void InitializeObject(object objObject)
         {
             // initialize properties
@@ -498,7 +498,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>InitializeObject initialises all the properties of an object to their <see langword="null"/> Values.</summary>
-        /// <param name="objObject">The object to Initialise.</param>
+        /// <param name="objObject">The object to Initialize.</param>
         /// <param name="objType">The type of the object.</param>
         /// <returns><paramref name="objObject"/>.</returns>
         public static object InitializeObject(object objObject, Type objType)
@@ -552,7 +552,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>SerializeObject serializes an Object.</summary>
-        /// <param name="objObject">The object to Initialise.</param>
+        /// <param name="objObject">The object to Initialize.</param>
         /// <param name="textWriter">A TextWriter to serialize to.</param>
         public static void SerializeObject(object objObject, TextWriter textWriter)
         {
@@ -562,13 +562,12 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>SerializeObject serializes an Object.</summary>
-        /// <param name="objObject">The object to Initialise.</param>
+        /// <param name="objObject">The object to Initialize.</param>
         /// <param name="writer">An XmlWriter to serialize to.</param>
         public static void SerializeObject(object objObject, XmlWriter writer)
         {
             // Try to cast the Object as IXmlSerializable
-            var xmlSerializableObject = objObject as IXmlSerializable;
-            if (xmlSerializableObject == null)
+            if (objObject is not IXmlSerializable xmlSerializableObject)
             {
                 // Use XmlSerializer
                 var serializer = new XmlSerializer(objObject.GetType());
@@ -794,14 +793,9 @@ namespace DotNetNuke.Common.Utilities
             try
             {
                 // Determine if object is IHydratable
-                if (objObject is IHydratable)
+                if (objObject is IHydratable objHydratable)
                 {
-                    // Use IHydratable's Fill
-                    var objHydratable = objObject as IHydratable;
-                    if (objHydratable != null)
-                    {
-                        objHydratable.Fill(dr);
-                    }
+                    objHydratable.Fill(dr);
                 }
                 else
                 {

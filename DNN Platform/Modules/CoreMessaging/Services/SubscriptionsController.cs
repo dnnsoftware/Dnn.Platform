@@ -13,7 +13,9 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     using System.Web.Http;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Modules.CoreMessaging.ViewModels;
     using DotNetNuke.Services.Exceptions;
@@ -23,20 +25,36 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     using DotNetNuke.Services.Social.Subscriptions.Entities;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>Provides a web service to manage subscriptions.</summary>
     [DnnAuthorize]
     public class SubscriptionsController : DnnApiController
     {
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
         private const string ViewControlResources = "~/DesktopModules/CoreMessaging/App_LocalResources/View.ascx.resx";
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="SubscriptionsController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public SubscriptionsController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SubscriptionsController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public SubscriptionsController(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
 
         private string LocalizationFolder
         {
             get
             {
-                return string.Format(
-                    "~/DesktopModules/{0}/App_LocalResources/",
-                    DesktopModuleController.GetDesktopModuleByModuleName("DotNetNuke.Modules.CoreMessaging", this.PortalSettings.PortalId).FolderName);
+                var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(this.hostSettings, "DotNetNuke.Modules.CoreMessaging", this.PortalSettings.PortalId);
+                return $"~/DesktopModules/{desktopModule.FolderName}/App_LocalResources/";
             }
         }
 

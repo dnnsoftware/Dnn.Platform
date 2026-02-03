@@ -42,6 +42,8 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex UrlSlashesRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
         private static readonly Regex AliasUrlRegex = new Regex(@"(?:^(?<http>http[s]{0,1}://){0,1})(?:(?<alias>_ALIAS_)(?<path>$|\?[\w]*|/[\w]*))", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private readonly IPortalAliasService portalAliasService;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalGroupController portalGroupController;
         private FriendlyUrlSettings settings;
 
         /// <summary>Initializes a new instance of the <see cref="AdvancedUrlRewriter"/> class.</summary>
@@ -56,10 +58,25 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="portalAliasService">The portal alias service.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="portalController">The portal controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public AdvancedUrlRewriter(IHostSettings hostSettings, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController)
+            : this(hostSettings, portalAliasService, hostSettingsService, portalController, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="AdvancedUrlRewriter"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        public AdvancedUrlRewriter(IHostSettings hostSettings, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
             : base(hostSettings, portalAliasService, hostSettingsService, portalController)
         {
             this.portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
         }
 
         public void ProcessTestRequestWithContext(
@@ -1549,6 +1566,10 @@ namespace DotNetNuke.Entities.Urls
         }
 
         private static void CheckForRewrite(
+            IHostSettings hostSettings,
+            IPortalController portalController,
+            IApplicationStatusInfo appStatus,
+            IPortalGroupController portalGroupController,
             string fullUrl,
             string querystring,
             UrlAction result,
@@ -1586,7 +1607,7 @@ namespace DotNetNuke.Entities.Urls
                 if (!doSiteUrlProcessing)
                 {
                     // looks up the page index to find the correct Url
-                    bool doRewrite = RewriteController.IdentifyByTabPathEx(fullUrl, querystring, result, queryStringCol, settings, parentTraceId);
+                    bool doRewrite = RewriteController.IdentifyByTabPathEx(hostSettings, portalController, appStatus, portalGroupController, fullUrl, querystring, result, queryStringCol, settings, parentTraceId);
                     if (!doRewrite)
                     {
                         doSiteUrlProcessing = true;
@@ -2350,8 +2371,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        bool isPhysicalResource;
-                        CheckForRewrite(fullUrl, querystring, result, useFriendlyUrls, queryStringCol, settings, out isPhysicalResource, parentTraceId);
+                        CheckForRewrite(this.HostSettings, this.PortalController, this.appStatus, this.portalGroupController, fullUrl, querystring, result, useFriendlyUrls, queryStringCol, settings, out bool _, parentTraceId);
                     }
 
                     // return 404 if there is no portal alias for a rewritten request

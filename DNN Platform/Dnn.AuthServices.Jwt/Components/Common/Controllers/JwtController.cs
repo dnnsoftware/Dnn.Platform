@@ -16,12 +16,17 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
     using Dnn.AuthServices.Jwt.Auth;
     using Dnn.AuthServices.Jwt.Components.Entity;
     using Dnn.AuthServices.Jwt.Data;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Membership;
+    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Api;
 
     using Microsoft.IdentityModel.JsonWebTokens;
@@ -43,10 +48,32 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         private static readonly Encoding TextEncoder = Encoding.UTF8;
         private static object hasherLock = new object();
 
+        private readonly IHostSettings hostSettings;
+
         /// <summary>Initializes static members of the <see cref="JwtController"/> class.</summary>
         static JwtController()
         {
             ValidateConfiguration();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="JwtController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public JwtController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="JwtController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public JwtController(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ??
+                                new HostSettings(
+                                    new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                        new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                        new Lazy<IPortalController>(() => PortalController.Instance)));
         }
 
         /// <inheritdoc />
@@ -170,11 +197,11 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             }
 
             var valid =
-                status == UserLoginStatus.LOGIN_SUCCESS ||
-                status == UserLoginStatus.LOGIN_SUPERUSER ||
+                status is UserLoginStatus.LOGIN_SUCCESS
+                    or UserLoginStatus.LOGIN_SUPERUSER
 #pragma warning disable 618 // Obsolete
-                status == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD ||
-                status == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD;
+                    or UserLoginStatus.LOGIN_INSECUREADMINPASSWORD
+                    or UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD;
 #pragma warning restore 618 // Obsolete
 
             if (!valid)
@@ -320,12 +347,12 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         /// <inheritdoc />
         protected override Func<IJwtController> GetFactory()
         {
-            return () => new JwtController();
+            return () => new JwtController(null);
         }
 
         private static LoginResultData EmptyWithError(string error)
         {
-            return new LoginResultData { Error = error };
+            return new LoginResultData { Error = error, };
         }
 
         private static string CreateJwtToken(byte[] symmetricKey, string issuer, PersistedToken persistedToken, IEnumerable<string> roles)
@@ -665,7 +692,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return null;
             }
 
-            var userInfo = UserController.GetUserById(portalSettings.PortalId, persistedToken.UserId);
+            var userInfo = UserController.GetUserById(this.hostSettings, portalSettings.PortalId, persistedToken.UserId);
             if (userInfo == null)
             {
                 if (Logger.IsTraceEnabled)
@@ -677,10 +704,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             }
 
             var status = UserController.ValidateUser(userInfo, portalSettings.PortalId, false);
-            var valid =
-                status == UserValidStatus.VALID ||
-                status == UserValidStatus.UPDATEPROFILE ||
-                status == UserValidStatus.UPDATEPASSWORD;
+            var valid = status is UserValidStatus.VALID or UserValidStatus.UPDATEPROFILE or UserValidStatus.UPDATEPASSWORD;
 
             if (!valid)
             {

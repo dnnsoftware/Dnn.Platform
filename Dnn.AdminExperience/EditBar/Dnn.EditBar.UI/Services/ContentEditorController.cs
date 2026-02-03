@@ -37,18 +37,30 @@ namespace Dnn.EditBar.UI.Services
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentEditorController));
         private readonly IApplicationStatusInfo appSettings;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="ContentEditorController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ContentEditorController()
             : this(null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ContentEditorController"/> class.</summary>
-        /// <param name="appSettings">The application status.</param>
-        public ContentEditorController(IApplicationStatusInfo appSettings)
+        /// <param name="appStatus">The application status.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public ContentEditorController(IApplicationStatusInfo appStatus)
+            : this(appStatus, null)
         {
-            this.appSettings = appSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ContentEditorController"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public ContentEditorController(IApplicationStatusInfo appStatus, IHostSettings hostSettings)
+        {
+            this.appSettings = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
         }
 
         private static string LocalResourcesFile => Path.Combine(ContentEditorManager.ControlFolder, "ContentEditorManager/App_LocalResources/SharedResources.resx");
@@ -81,7 +93,7 @@ namespace Dnn.EditBar.UI.Services
         public HttpResponseMessage GetRecommendedModules()
         {
             var recommendedModuleNames = new List<string>();
-            var filteredList = DesktopModuleController.GetPortalDesktopModules(this.PortalSettings.PortalId)
+            var filteredList = DesktopModuleController.GetPortalDesktopModules(this.hostSettings, this.PortalSettings.PortalId)
                                         .Where(kvp => kvp.Value.DesktopModule.Category == "Recommended");
 
             var result = filteredList.Select(kvp => new ControlBarController.ModuleDefDTO
@@ -114,7 +126,7 @@ namespace Dnn.EditBar.UI.Services
         [HttpGet]
         public HttpResponseMessage LoadModuleScript(int desktopModuleId)
         {
-            var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
+            var desktopModule = DesktopModuleController.GetDesktopModule(this.hostSettings, desktopModuleId, Null.NullInteger);
             if (desktopModule == null)
             {
                 throw new ArgumentException("Can't find the desktop module");
@@ -144,7 +156,7 @@ namespace Dnn.EditBar.UI.Services
 
         private string GetDeskTopModuleImage(int moduleId)
         {
-            var portalDesktopModules = DesktopModuleController.GetDesktopModules(this.PortalSettings.PortalId);
+            var portalDesktopModules = DesktopModuleController.GetDesktopModules(this.hostSettings, this.PortalSettings.PortalId);
             var packages = PackageController.Instance.GetExtensionPackages(this.PortalSettings.PortalId);
 
             string imageUrl =

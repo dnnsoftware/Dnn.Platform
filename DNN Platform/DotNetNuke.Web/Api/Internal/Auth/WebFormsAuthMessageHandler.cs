@@ -35,6 +35,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
                 scope.ServiceProvider.GetRequiredService<IUserRequestIPAddressController>(),
                 scope.ServiceProvider.GetRequiredService<IRoleController>(),
                 scope.ServiceProvider.GetRequiredService<IEventLogger>(),
+                scope.ServiceProvider.GetRequiredService<IHostSettings>(),
                 request.GetHttpContext(),
                 allowUnknownExtensions: true);
 

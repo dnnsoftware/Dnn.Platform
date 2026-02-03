@@ -40,7 +40,6 @@ namespace DotNetNuke
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
-    using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
@@ -62,6 +61,7 @@ namespace DotNetNuke
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Services.Social.Subscriptions;
     using DotNetNuke.Services.UserRequest;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
@@ -138,6 +138,9 @@ namespace DotNetNuke
             services.AddTransient<DotNetNuke.Entities.Portals.Data.IDataService, DotNetNuke.Entities.Portals.Data.DataService>();
             services.AddTransient<DotNetNuke.Entities.Content.Data.IDataService, DotNetNuke.Entities.Content.Data.DataService>();
             services.AddTransient<DotNetNuke.Entities.Users.Social.Data.IDataService, DotNetNuke.Entities.Users.Social.Data.DataService>();
+            services.AddTransient<DotNetNuke.Services.Social.Notifications.Data.IDataService, DotNetNuke.Services.Social.Notifications.Data.DataService>();
+            services.AddTransient<DotNetNuke.Services.Social.Messaging.Data.IDataService, DotNetNuke.Services.Social.Messaging.Data.DataService>();
+            services.AddTransient<ISubscriptionTypeController, SubscriptionTypeController>();
             services.AddTransient<ILocaleController, LocaleController>();
             services.AddTransient<IUserRequestIPAddressController, UserRequestIPAddressController>();
             services.AddTransient<IRoleController, RoleController>();
@@ -158,6 +161,7 @@ namespace DotNetNuke
             services.AddTransient<IContentController, ContentController>();
             services.AddTransient<IVocabularyController, VocabularyController>();
             services.AddTransient<ITermController, TermController>();
+            services.AddTransient<ITabModulesController, TabModulesController>();
             if (CryptoConfig.AllowOnlyFipsAlgorithms)
             {
                 services.AddTransient<ICryptographyProvider, FipsCompilanceCryptographyProvider>();

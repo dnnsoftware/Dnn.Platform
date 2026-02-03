@@ -4,11 +4,13 @@
 namespace DotNetNuke.Entities.Modules.Definitions
 {
     using System;
+    using System.CodeDom;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -82,12 +84,18 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// <summary>GetModuleDefinitions gets a Dictionary of Module Definitions.</summary>
         /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping module definition ID to <see cref="ModuleDefinitionInfo"/>.</returns>
-        public static Dictionary<int, ModuleDefinitionInfo> GetModuleDefinitions()
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial Dictionary<int, ModuleDefinitionInfo> GetModuleDefinitions()
+            => GetModuleDefinitions(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
+
+        /// <summary>GetModuleDefinitions gets a Dictionary of Module Definitions.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping module definition ID to <see cref="ModuleDefinitionInfo"/>.</returns>
+        public static Dictionary<int, ModuleDefinitionInfo> GetModuleDefinitions(IHostSettings hostSettings)
         {
             return CBO.GetCachedObject<Dictionary<int, ModuleDefinitionInfo>>(
-                new CacheItemArgs(
-                DataCache.ModuleDefinitionCacheKey,
-                DataCache.ModuleDefinitionCachePriority),
+                hostSettings,
+                new CacheItemArgs(DataCache.ModuleDefinitionCacheKey, DataCache.ModuleDefinitionCachePriority),
                 GetModuleDefinitionsCallBack);
         }
 

@@ -558,7 +558,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             // Try and set password Q and A
-            UserInfo objUser = UserController.GetUserById(this.PortalId, this.UserId);
+            UserInfo objUser = UserController.GetUserById(this.hostSettings, this.PortalId, this.UserId);
             this.OnPasswordQuestionAnswerUpdated(UserController.ChangePasswordQuestionAndAnswer(this.eventLogger, objUser, this.txtQAPassword.Text, this.txtEditQuestion.Text, this.txtEditAnswer.Text)
                                                 ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
                                                 : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));

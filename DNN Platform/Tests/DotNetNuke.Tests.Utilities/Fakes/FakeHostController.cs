@@ -14,14 +14,21 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Controllers;
 
-public class FakeHostController(IReadOnlyDictionary<string, IConfigurationSetting> settings)
+public class FakeHostController(Dictionary<string, IConfigurationSetting> settings)
     : IHostController, IHostSettingsService
 {
+    public Dictionary<string, IConfigurationSetting> Settings { get; } = settings;
+
+    public void AddSetting(string key, string value, bool isSecure = false)
+    {
+        this.Settings[key] = new ConfigurationSetting { Key = key, Value = value, IsSecure = isSecure, };
+    }
+
     public bool GetBoolean(string key) => this.GetBoolean(key, Null.NullBoolean);
 
     public bool GetBoolean(string key, bool defaultValue)
     {
-        if (settings.TryGetValue(key, out var setting))
+        if (this.Settings.TryGetValue(key, out var setting))
         {
             return setting.Value.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Value.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
         }
@@ -45,16 +52,16 @@ public class FakeHostController(IReadOnlyDictionary<string, IConfigurationSettin
         => this.GetString(key, string.Empty);
 
     public string GetString(string key, string defaultValue)
-        => settings.TryGetValue(key, out var setting) ? setting.Value : defaultValue;
+        => this.Settings.TryGetValue(key, out var setting) ? setting.Value : defaultValue;
 
     public Dictionary<string, string> GetSettingsDictionary()
-        => settings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Value);
+        => this.Settings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Value);
 
     public IDictionary<string, IConfigurationSetting> GetSettings()
-        => settings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        => this.Settings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
     Dictionary<string, ConfigurationSetting> IHostController.GetSettings()
-        => settings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value as ConfigurationSetting);
+        => this.Settings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value as ConfigurationSetting);
 
     IDictionary<string, string> IHostSettingsService.GetSettingsDictionary()
         => this.GetSettingsDictionary();

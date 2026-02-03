@@ -57,6 +57,7 @@ namespace Dnn.ExportImport.Components.Services
         private readonly IPortalAliasService portalAliasService;
         private readonly IApplicationStatusInfo appStatus;
         private readonly IEventLogger eventLogger;
+        private readonly IHostSettings hostSettings;
         private ProgressTotals totals;
         private DataProvider dataProvider;
         private ITabController tabController;
@@ -89,12 +90,25 @@ namespace Dnn.ExportImport.Components.Services
         /// <param name="portalAliasService">The portal alias service.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public PagesExportService(IBusinessControllerProvider businessControllerProvider, IPortalAliasService portalAliasService, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+            : this(businessControllerProvider, portalAliasService, appStatus, eventLogger, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PagesExportService"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public PagesExportService(IBusinessControllerProvider businessControllerProvider, IPortalAliasService portalAliasService, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IHostSettings hostSettings)
         {
             this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
             this.portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />
@@ -1480,7 +1494,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             var moduleDef = ModuleDefinitionController.GetModuleDefinitionByID(localModule.ModuleDefID);
-            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, this.exportDto.PortalId);
+            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(this.hostSettings, moduleDef.DesktopModuleID, this.exportDto.PortalId);
             if (string.IsNullOrEmpty(desktopModuleInfo?.BusinessControllerClass))
             {
                 return 0;
@@ -1932,7 +1946,7 @@ namespace Dnn.ExportImport.Components.Services
                 var packageZipFile = $"{this.appStatus.ApplicationMapPath}{Constants.ExportFolder}{this.exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
                 var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(exportModule.ModuleDefID);
                 var desktopModuleId = moduleDefinition.DesktopModuleID;
-                var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
+                var desktopModule = DesktopModuleController.GetDesktopModule(this.hostSettings, desktopModuleId, Null.NullInteger);
                 var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == desktopModule.PackageID);
 
                 var filePath = InstallerUtil.GetPackageBackupPath(package);
@@ -2001,7 +2015,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             var moduleDef = ModuleDefinitionController.GetModuleDefinitionByID(exportModule.ModuleDefID);
-            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, this.exportDto.PortalId);
+            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(this.hostSettings, moduleDef.DesktopModuleID, this.exportDto.PortalId);
             if (string.IsNullOrEmpty(desktopModuleInfo?.BusinessControllerClass))
             {
                 return 0;

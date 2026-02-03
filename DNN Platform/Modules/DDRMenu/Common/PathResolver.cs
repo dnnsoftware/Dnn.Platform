@@ -9,15 +9,31 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
     using System.IO;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>Used to resolved paths.</summary>
     public class PathResolver
     {
+        private readonly IHostSettings hostSettings;
         private readonly string manifestFolder;
 
         /// <summary>Initializes a new instance of the <see cref="PathResolver"/> class.</summary>
         /// <param name="manifestFolder">The folder where the manifest is located.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public PathResolver(string manifestFolder)
+            : this(null, manifestFolder)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PathResolver"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="manifestFolder">The folder where the manifest is located.</param>
+        public PathResolver(IHostSettings hostSettings, string manifestFolder)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.manifestFolder = manifestFolder;
         }
 
@@ -66,7 +82,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
                 if (path.StartsWith(key, StringComparison.InvariantCultureIgnoreCase))
                 {
                     path = path.Substring(key.Length);
-                    roots = new[] { mappings[key] };
+                    roots = [mappings[key],];
                     break;
                 }
             }
@@ -85,14 +101,14 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
                     {
                         case RelativeTo.Container:
                             var container = context.HostControl;
-                            while ((container != null) && !(container is UI.Containers.Container))
+                            while (container != null && container is not UI.Containers.Container)
                             {
                                 container = container.Parent;
                             }
 
                             var containerRoot = (container == null)
-                                                    ? context.SkinPath
-                                                    : Path.GetDirectoryName(((UI.Containers.Container)container).AppRelativeVirtualPath).Replace('\\', '/') + "/";
+                                ? context.SkinPath
+                                : $"{Path.GetDirectoryName(((UI.Containers.Container)container).AppRelativeVirtualPath).Replace('\\', '/')}/";
                             resolvedPath = Path.Combine(containerRoot, path);
                             break;
                         case RelativeTo.Dnn:
@@ -106,7 +122,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 
                             break;
                         case RelativeTo.Module:
-                            resolvedPath = Path.Combine(DNNContext.ModuleFolder, path);
+                            resolvedPath = Path.Combine(DNNContext.GetModuleFolder(this.hostSettings), path);
                             break;
                         case RelativeTo.Portal:
                             resolvedPath = Path.Combine(context.PortalSettings.HomeDirectory, path);

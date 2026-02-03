@@ -10,6 +10,7 @@ namespace DotNetNuke.Services.Social.Notifications
     using System.Linq;
     using System.Text;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -22,41 +23,45 @@ namespace DotNetNuke.Services.Social.Notifications
     using DotNetNuke.Services.Social.Messaging.Internal;
     using DotNetNuke.Services.Social.Notifications.Data;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>Provides the methods to work with Notifications, NotificationTypes, NotificationTypeActions and NotificationActions.</summary>
-    public class NotificationsController
-                        : ServiceLocator<INotificationsController, NotificationsController>,
-                        INotificationsController
+    public class NotificationsController : ServiceLocator<INotificationsController, NotificationsController>, INotificationsController
     {
         internal const int ConstMaxSubject = 400;
         internal const int ConstMaxTo = 2000;
         private const string ToastsCacheKey = "GetToasts_{0}";
         private readonly IDataService dataService;
         private readonly Messaging.Data.IDataService messagingDataService;
+        private readonly IHostSettings hostSettings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationsController"/> class.
-        /// Default constructor.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="NotificationsController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public NotificationsController()
-            : this(DataService.Instance, Messaging.Data.DataService.Instance)
+            : this(null, null)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationsController"/> class.
-        /// Constructor from specifict data service.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="NotificationsController"/> class from a specific data service.</summary>
         /// <param name="dataService">Class with methods to do CRUD in database for the entities of types <see cref="NotificationType"></see>, <see cref="NotificationTypeAction"></see> and <see cref="Notification"></see>.</param>
         /// <param name="messagingDataService">Class with methods to do CRUD in database for the entities of types <see cref="Message"></see>, <see cref="MessageRecipient"></see> and <see cref="MessageAttachment"></see> and to interact with the stored procedures regarding messaging.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public NotificationsController(IDataService dataService, Messaging.Data.IDataService messagingDataService)
+            : this(dataService, messagingDataService, null)
         {
-            Requires.NotNull("dataService", dataService);
-            Requires.NotNull("messagingDataService", messagingDataService);
+        }
 
-            this.dataService = dataService;
-            this.messagingDataService = messagingDataService;
+        /// <summary>Initializes a new instance of the <see cref="NotificationsController"/> class from a specific data service.</summary>
+        /// <param name="dataService">Class with methods to do CRUD in database for the entities of types <see cref="NotificationType"></see>, <see cref="NotificationTypeAction"></see> and <see cref="Notification"></see>.</param>
+        /// <param name="messagingDataService">Class with methods to do CRUD in database for the entities of types <see cref="Message"></see>, <see cref="MessageRecipient"></see> and <see cref="MessageAttachment"></see> and to interact with the stored procedures regarding messaging.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public NotificationsController(IDataService dataService, Messaging.Data.IDataService messagingDataService, IHostSettings hostSettings)
+        {
+            this.dataService = dataService ?? DataService.Instance;
+            this.messagingDataService = messagingDataService ?? Messaging.Data.DataService.Instance;
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />
@@ -348,7 +353,7 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             var notificationTypeCacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.NotificationTypesCacheKey, notificationTypeId);
             var cacheItemArgs = new CacheItemArgs(notificationTypeCacheKey, DataCache.NotificationTypesTimeOut, DataCache.NotificationTypesCachePriority, notificationTypeId);
-            return CBO.GetCachedObject<NotificationType>(cacheItemArgs, this.GetNotificationTypeCallBack);
+            return CBO.GetCachedObject<NotificationType>(this.hostSettings, cacheItemArgs, this.GetNotificationTypeCallBack);
         }
 
         /// <inheritdoc />
@@ -358,7 +363,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
             var notificationTypeCacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.NotificationTypesCacheKey, name);
             var cacheItemArgs = new CacheItemArgs(notificationTypeCacheKey, DataCache.NotificationTypesTimeOut, DataCache.NotificationTypesCachePriority, name);
-            return CBO.GetCachedObject<NotificationType>(cacheItemArgs, this.GetNotificationTypeByNameCallBack);
+            return CBO.GetCachedObject<NotificationType>(this.hostSettings, cacheItemArgs, this.GetNotificationTypeByNameCallBack);
         }
 
         /// <inheritdoc />
@@ -366,7 +371,7 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             var notificationTypeActionCacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.NotificationTypeActionsCacheKey, notificationTypeActionId);
             var cacheItemArgs = new CacheItemArgs(notificationTypeActionCacheKey, DataCache.NotificationTypeActionsTimeOut, DataCache.NotificationTypeActionsPriority, notificationTypeActionId);
-            return CBO.GetCachedObject<NotificationTypeAction>(cacheItemArgs, this.GetNotificationTypeActionCallBack);
+            return CBO.GetCachedObject<NotificationTypeAction>(this.hostSettings, cacheItemArgs, this.GetNotificationTypeActionCallBack);
         }
 
         /// <inheritdoc />
@@ -376,7 +381,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
             var notificationTypeActionCacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.NotificationTypeActionsByNameCacheKey, notificationTypeId, name);
             var cacheItemArgs = new CacheItemArgs(notificationTypeActionCacheKey, DataCache.NotificationTypeActionsTimeOut, DataCache.NotificationTypeActionsPriority, notificationTypeId, name);
-            return CBO.GetCachedObject<NotificationTypeAction>(cacheItemArgs, this.GetNotificationTypeActionByNameCallBack);
+            return CBO.GetCachedObject<NotificationTypeAction>(this.hostSettings, cacheItemArgs, this.GetNotificationTypeActionByNameCallBack);
         }
 
         /// <inheritdoc />

@@ -10,6 +10,7 @@ namespace DotNetNuke.Modules.Html
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Workflow;
@@ -35,6 +36,7 @@ namespace DotNetNuke.Modules.Html
         private readonly INavigationManager navigationManager;
         private readonly HtmlTextController htmlTextController;
         private readonly IPortalAliasService portalAliasService;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="EditHtml"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
@@ -47,11 +49,25 @@ namespace DotNetNuke.Modules.Html
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="htmlTextController">The HTML/Text controller.</param>
         /// <param name="portalAliasService">The portal alias service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditHtml(INavigationManager navigationManager, HtmlTextController htmlTextController, IPortalAliasService portalAliasService)
+            : this(null, navigationManager, htmlTextController, portalAliasService, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EditHtml"/> class.</summary>
+        /// <param name="settingsRepository">The settings repository.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="htmlTextController">The HTML/Text controller.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public EditHtml(HtmlModuleSettingsRepository settingsRepository, INavigationManager navigationManager, HtmlTextController htmlTextController, IPortalAliasService portalAliasService, IHostSettings hostSettings)
+            : base(settingsRepository)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.htmlTextController = htmlTextController ?? this.DependencyProvider.GetRequiredService<HtmlTextController>();
             this.portalAliasService = portalAliasService ?? this.DependencyProvider.GetRequiredService<IPortalAliasService>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
         private enum WorkflowType
@@ -393,7 +409,7 @@ namespace DotNetNuke.Modules.Html
 
                 if (htmlContent.CreatedByUserID != -1)
                 {
-                    var createdByByUser = UserController.GetUserById(this.PortalId, htmlContent.CreatedByUserID);
+                    var createdByByUser = UserController.GetUserById(this.hostSettings, this.PortalId, htmlContent.CreatedByUserID);
                     if (createdByByUser != null)
                     {
                         createdBy = createdByByUser.DisplayName;

@@ -9,6 +9,7 @@ namespace DotNetNuke.Modules.Journal.Components
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -26,6 +27,8 @@ namespace DotNetNuke.Modules.Journal.Components
     /// <summary>The Controller class for Journal.</summary>
     public class FeatureController : ModuleSearchBase, IModuleSearchResultController
     {
+        private readonly IHostSettings hostSettings;
+
         /// <summary>Initializes a new instance of the <see cref="FeatureController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public FeatureController()
@@ -35,9 +38,19 @@ namespace DotNetNuke.Modules.Journal.Components
 
         /// <summary>Initializes a new instance of the <see cref="FeatureController"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public FeatureController(INavigationManager navigationManager)
+            : this(navigationManager, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="FeatureController"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public FeatureController(INavigationManager navigationManager, IHostSettings hostSettings)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         protected INavigationManager NavigationManager { get; }
@@ -220,9 +233,9 @@ namespace DotNetNuke.Modules.Journal.Components
 
             if (securityKeys.Any(s => s.StartsWith("F")))
             {
-                var targetUser = UserController.GetUserById(searchResult.PortalId, searchResult.AuthorUserId);
+                var targetUser = UserController.GetUserById(this.hostSettings, searchResult.PortalId, searchResult.AuthorUserId);
 
-                return targetUser != null && targetUser.Social.Friend != null && targetUser.Social.Friend.Status == RelationshipStatus.Accepted;
+                return targetUser?.Social.Friend is { Status: RelationshipStatus.Accepted, };
             }
 
             return false;

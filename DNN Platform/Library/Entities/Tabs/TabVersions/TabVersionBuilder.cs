@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -34,6 +35,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private readonly ITabVersionController tabVersionController;
         private readonly ITabVersionDetailController tabVersionDetailController;
         private readonly PortalSettings portalSettings;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="TabVersionBuilder"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
@@ -44,9 +46,19 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         /// <summary>Initializes a new instance of the <see cref="TabVersionBuilder"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public TabVersionBuilder(IBusinessControllerProvider businessControllerProvider)
+            : this(businessControllerProvider, null)
         {
-            this.businessControllerProvider = businessControllerProvider;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="TabVersionBuilder"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public TabVersionBuilder(IBusinessControllerProvider businessControllerProvider, IHostSettings hostSettings)
+        {
+            this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.tabController = TabController.Instance;
             this.moduleController = ModuleController.Instance;
             this.tabVersionSettings = TabVersionSettings.Instance;
@@ -255,10 +267,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PublishedTabModuleCacheKey, tabId);
             return CBO.GetCachedObject<IEnumerable<ModuleInfo>>(
-                new CacheItemArgs(
-                cacheKey,
-                DataCache.PublishedTabModuleCacheTimeOut,
-                DataCache.PublishedTabModuleCachePriority),
+                this.hostSettings,
+                new CacheItemArgs(cacheKey, DataCache.PublishedTabModuleCacheTimeOut, DataCache.PublishedTabModuleCachePriority),
                 c => this.GetCurrentModulesInternal(tabId));
         }
 

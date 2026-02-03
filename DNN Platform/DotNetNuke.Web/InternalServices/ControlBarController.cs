@@ -164,7 +164,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 ModuleID = kvp.Value.DesktopModuleID,
                 ModuleName = kvp.Key,
-                ModuleImage = GetDeskTopModuleImage(kvp.Value.DesktopModuleID),
+                ModuleImage = GetDeskTopModuleImage(this.hostSettings, kvp.Value.DesktopModuleID),
                 Bookmarked = bookmarkedModules.Any(m => m.Key == kvp.Key),
                 ExistsInBookmarkCategory = bookmarkCategoryModules.Any(m => m.Key == kvp.Key),
             }).ToList();
@@ -235,7 +235,7 @@ namespace DotNetNuke.Web.InternalServices
 
                     Dictionary<int, string> resultDict = pageModules.ToDictionary(module => module.ModuleID, module => module.ModuleTitle);
                     result.AddRange(from kvp in resultDict
-                                    let imageUrl = GetTabModuleImage(tabId, kvp.Key)
+                                    let imageUrl = GetTabModuleImage(this.hostSettings, tabId, kvp.Key)
                                     select new ModuleDefDTO { ModuleID = kvp.Key, ModuleName = kvp.Value, ModuleImage = imageUrl });
                 }
 
@@ -351,7 +351,7 @@ namespace DotNetNuke.Web.InternalServices
                         }
                         else
                         {
-                            tabModuleId = DoAddNewModule(string.Empty, moduleLstId, dto.Pane, positionId, permissionType, string.Empty);
+                            tabModuleId = DoAddNewModule(this.hostSettings, string.Empty, moduleLstId, dto.Pane, positionId, permissionType, string.Empty);
                         }
                     }
 
@@ -585,9 +585,9 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-        private static string GetDeskTopModuleImage(int moduleId)
+        private static string GetDeskTopModuleImage(IHostSettings hostSettings, int moduleId)
         {
-            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
+            var portalDesktopModules = DesktopModuleController.GetDesktopModules(hostSettings, PortalSettings.Current.PortalId);
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             string imageUrl =
@@ -600,11 +600,11 @@ namespace DotNetNuke.Web.InternalServices
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
         }
 
-        private static string GetTabModuleImage(int tabId, int moduleId)
+        private static string GetTabModuleImage(IHostSettings hostSettings, int tabId, int moduleId)
         {
             var tabModules = ModuleController.Instance.GetTabModules(tabId);
-            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
-            var moduleDefinitions = ModuleDefinitionController.GetModuleDefinitions();
+            var portalDesktopModules = DesktopModuleController.GetDesktopModules(hostSettings, PortalSettings.Current.PortalId);
+            var moduleDefinitions = ModuleDefinitionController.GetModuleDefinitions(hostSettings);
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             string imageUrl = (from package in packages
@@ -679,11 +679,11 @@ namespace DotNetNuke.Web.InternalServices
             return 0;
         }
 
-        private static int DoAddNewModule(string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
+        private static int DoAddNewModule(IHostSettings hostSettings, string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
         {
             try
             {
-                if (!DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId).TryGetValue(desktopModuleId, out _))
+                if (!DesktopModuleController.GetDesktopModules(hostSettings, PortalSettings.Current.PortalId).TryGetValue(desktopModuleId, out _))
                 {
                     throw new ArgumentException($"Could not find desktop module with given ID: {desktopModuleId}", nameof(desktopModuleId));
                 }

@@ -14,19 +14,41 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using System.Xml;
     using System.Xml.Xsl;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class TokenTemplateProcessor : ITemplateProcessor
     {
         private static readonly Dictionary<string, string> Aliases = new Dictionary<string, string>
-                                                                     { { "page", "node" }, { "name", "text" } };
+        {
+            { "page", "node" },
+            { "name", "text" },
+        };
 
         private static readonly Regex TemplatesRegex =
                 new Regex(
                     @"(\[(?<directive>(\*|\*\>|\/\*|\>|\/\>|\?|\?!|\/\?|\=))(?<nodename>[A-Z]*)(-(?<modename>[0-9A-Z]*))?\])",
                     RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        private readonly IHostSettings hostSettings;
         private XslCompiledTransform xsl;
+
+        /// <summary>Initializes a new instance of the <see cref="TokenTemplateProcessor"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public TokenTemplateProcessor()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="TokenTemplateProcessor"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public TokenTemplateProcessor(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
 
         /// <inheritdoc />
         public bool LoadDefinition(TemplateDefinition baseDefinition)
@@ -167,7 +189,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
         /// <inheritdoc />
         public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
         {
-            var resolver = new PathResolver(liveDefinition.Folder);
+            var resolver = new PathResolver(this.hostSettings, liveDefinition.Folder);
             var args = new XsltArgumentList();
             args.AddExtensionObject("urn:ddrmenu", new XsltFunctions());
             args.AddExtensionObject("urn:dnngarden", new XsltFunctions());

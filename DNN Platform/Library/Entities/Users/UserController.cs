@@ -613,10 +613,22 @@ namespace DotNetNuke.Entities.Users
         /// Retrieves the User from the Cache, or fetches a fresh copy if
         /// not in cache or if Cache settings are not set to HeavyCaching.
         /// </summary>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="username">The username of the user being retrieved.</param>
         /// <returns>The user as a <see cref="UserInfo"/> object.</returns>
-        public static UserInfo GetCachedUser(int portalId, string username)
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial UserInfo GetCachedUser(int portalId, string username)
+            => GetCachedUser(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId, username);
+
+        /// <summary>
+        /// Retrieves the User from the Cache, or fetches a fresh copy if
+        /// not in cache or if Cache settings are not set to HeavyCaching.
+        /// </summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
+        /// <param name="username">The username of the user being retrieved.</param>
+        /// <returns>The user as a <see cref="UserInfo"/> object.</returns>
+        public static UserInfo GetCachedUser(IHostSettings hostSettings, int portalId, string username)
         {
             var masterPortalId = GetEffectivePortalId(portalId);
 
@@ -625,7 +637,7 @@ namespace DotNetNuke.Entities.Users
 
             if (user != null)
             {
-                var lookUp = GetUserLookupDictionary(portalId);
+                var lookUp = GetUserLookupDictionary(hostSettings, portalId);
                 using (lookUp.GetWriteLock())
                 {
                     lookUp[user.UserID] = user.Username;
@@ -695,15 +707,23 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <inheritdoc cref="IUserController.GetUserById"/>
-        public static UserInfo GetUserById(int portalId, int userId)
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial UserInfo GetUserById(int portalId, int userId)
+            => GetUserById(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId, userId);
+
+        /// <inheritdoc cref="IUserController.GetUserById"/>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="userId">The user ID.</param>
+        public static UserInfo GetUserById(IHostSettings hostSettings, int portalId, int userId)
         {
-            // stop any sql calls for guest users
+            // stop any SQL calls for guest users
             if (userId == Null.NullInteger)
             {
                 return null;
             }
 
-            var lookUp = GetUserLookupDictionary(portalId);
+            var lookUp = GetUserLookupDictionary(hostSettings, portalId);
 
             UserInfo user;
             string userName;
@@ -715,7 +735,7 @@ namespace DotNetNuke.Entities.Users
 
             if (userFound)
             {
-                user = GetCachedUser(portalId, userName);
+                user = GetCachedUser(hostSettings, portalId, userName);
             }
             else
             {
@@ -2265,16 +2285,14 @@ namespace DotNetNuke.Entities.Users
             return portalUserCount;
         }
 
-        private static SharedDictionary<int, string> GetUserLookupDictionary(int portalId)
+        private static SharedDictionary<int, string> GetUserLookupDictionary(IHostSettings hostSettings, int portalId)
         {
             var masterPortalId = GetEffectivePortalId(portalId);
             var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.UserLookupCacheKey, masterPortalId);
             return CBO.GetCachedObject<SharedDictionary<int, string>>(
-                new CacheItemArgs(
-                    cacheKey,
-                    DataCache.UserLookupCacheTimeOut,
-                    DataCache.UserLookupCachePriority),
-                (c) => new SharedDictionary<int, string>(),
+                hostSettings,
+                new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut, DataCache.UserLookupCachePriority),
+                static _ => new SharedDictionary<int, string>(),
                 true);
         }
 

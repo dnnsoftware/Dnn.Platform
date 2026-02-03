@@ -12,6 +12,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Entities.Users;
@@ -30,19 +31,22 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MemberDirectoryController));
         private readonly ListController listController;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="MemberDirectoryController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public MemberDirectoryController()
-            : this(null)
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="MemberDirectoryController"/> class.</summary>
         /// <param name="listController">The list controller.</param>
-        public MemberDirectoryController(ListController listController)
+        /// <param name="hostSettings">The host settings.</param>
+        public MemberDirectoryController(ListController listController, IHostSettings hostSettings)
         {
             this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         [HttpGet]
@@ -98,7 +102,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             try
             {
                 var users = new List<UserInfo>();
-                var user = UserController.GetUserById(this.PortalSettings.PortalId, userId);
+                var user = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, userId);
                 users.Add(user);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, this.GetMembers(users));
@@ -134,9 +138,9 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
+                var friend = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, postData.FriendId);
                 FriendsController.Instance.AcceptFriend(friend);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
             }
             catch (Exception exc)
             {
@@ -151,9 +155,9 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
+                var friend = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, postData.FriendId);
                 FriendsController.Instance.AddFriend(friend);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
             }
             catch (Exception exc)
             {
@@ -168,9 +172,9 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var follow = UserController.GetUserById(this.PortalSettings.PortalId, postData.FollowId);
+                var follow = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, postData.FollowId);
                 FollowersController.Instance.FollowUser(follow);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
             }
             catch (Exception exc)
             {
@@ -185,9 +189,9 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
+                var friend = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, postData.FriendId);
                 FriendsController.Instance.DeleteFriend(friend);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
             }
             catch (Exception exc)
             {
@@ -202,9 +206,9 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var follow = UserController.GetUserById(this.PortalSettings.PortalId, postData.FollowId);
+                var follow = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, postData.FollowId);
                 FollowersController.Instance.UnFollowUser(follow);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
             }
             catch (Exception exc)
             {
@@ -315,7 +319,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             switch (filterBy)
             {
                 case "User":
-                    users = new List<UserInfo> { UserController.GetUserById(portalId, userId) };
+                    users = new List<UserInfo> { UserController.GetUserById(this.hostSettings, portalId, userId) };
                     break;
                 case "Group":
                     if (groupId == -1)

@@ -10,7 +10,6 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -26,13 +25,15 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>  The ViewProfile ProfileModuleUserControlBase is used to view a Users Profile.</summary>
+    /// <summary>The ViewProfile ProfileModuleUserControlBase is used to view a Users Profile.</summary>
     public partial class ViewProfile : ProfileModuleUserControlBase
     {
         private readonly INavigationManager navigationManager;
         private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ViewProfile()
             : this(null, null)
         {
@@ -41,20 +42,25 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
         /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ViewProfile(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript)
+            : this(navigationManager, javaScript, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public ViewProfile(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings)
         {
             this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />
-        public override bool DisplayModule
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DisplayModule => true;
 
         public bool IncludeButton
         {
@@ -286,15 +292,15 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
                 if (friendRelationship != null)
                 {
-                    if (action.ToLowerInvariant() == "acceptfriend")
+                    if (action.Equals("acceptfriend", StringComparison.OrdinalIgnoreCase))
                     {
-                        var friend = UserController.GetUserById(PortalSettings.Current.PortalId, friendRelationship.UserId);
+                        var friend = UserController.GetUserById(this.hostSettings, PortalSettings.Current.PortalId, friendRelationship.UserId);
                         FriendsController.Instance.AcceptFriend(friend);
                     }
 
-                    if (action.ToLowerInvariant() == "followback")
+                    if (action.Equals("followback", StringComparison.OrdinalIgnoreCase))
                     {
-                        var follower = UserController.GetUserById(PortalSettings.Current.PortalId, friendRelationship.UserId);
+                        var follower = UserController.GetUserById(this.hostSettings, PortalSettings.Current.PortalId, friendRelationship.UserId);
                         try
                         {
                             FollowersController.Instance.FollowUser(follower);

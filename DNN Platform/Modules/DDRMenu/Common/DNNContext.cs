@@ -10,11 +10,15 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
     using System.Web;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
 
-    /// <summary>Provides Dnn context for the DDR Menu.</summary>
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>Provides DNN context for the DDR Menu.</summary>
     public class DNNContext : IDisposable
     {
         private static string moduleName;
@@ -39,22 +43,11 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         }
 
         /// <summary>Gets the module name.</summary>
-        public static string ModuleName
-        {
-            get { return moduleName ?? (moduleName = GetModuleNameFromAssembly()); }
-        }
+        public static string ModuleName => moduleName ??= GetModuleNameFromAssembly();
 
         /// <summary>Gets the module folder.</summary>
-        public static string ModuleFolder
-        {
-            get
-            {
-                return moduleFolder ??
-                       (moduleFolder =
-                        string.Format(
-                            "~/DesktopModules/{0}/", DesktopModuleController.GetDesktopModuleByModuleName(ModuleName, PortalSettings.Current.PortalId).FolderName));
-            }
-        }
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use GetModuleFolder(IHostSettings). Scheduled removal in v12.0.0.")]
+        public static string ModuleFolder => GetModuleFolder(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
 
         /// <summary>Gets the current Dnn context.</summary>
         public static DNNContext Current
@@ -64,35 +57,29 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         }
 
         /// <summary>Gets a reference to the page.</summary>
-        public Page Page
-        {
-            get { return this.page ?? (this.page = this.HostControl.Page); }
-        }
+        public Page Page => this.page ??= this.HostControl.Page;
 
         /// <summary>Gets the current portal settings.</summary>
-        public PortalSettings PortalSettings
-        {
-            get { return this.portalSettings ?? (this.portalSettings = (PortalSettings)PortalController.Instance.GetCurrentSettings()); }
-        }
+        public PortalSettings PortalSettings => this.portalSettings ??= (PortalSettings)PortalController.Instance.GetCurrentSettings();
 
         /// <summary>Gets the currently active tab (page).</summary>
-        public TabInfo ActiveTab
-        {
-            get { return this.activeTab ?? (this.activeTab = this.PortalSettings.ActiveTab); }
-        }
+        public TabInfo ActiveTab => this.activeTab ??= this.PortalSettings.ActiveTab;
 
         /// <summary>Gets the path to the skin (theme).</summary>
-        public string SkinPath
-        {
-            get { return this.skinPath ?? (this.skinPath = this.ActiveTab.SkinPath); }
-        }
+        public string SkinPath => this.skinPath ??= this.ActiveTab.SkinPath;
 
         /// <summary>Gets the host control.</summary>
         public Control HostControl { get; private set; }
 
-        private static string DataName
+        private static string DataName => dataName ??= "DDRMenu.DNNContext." + ModuleName;
+
+        /// <summary>Gets the module folder.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <returns>The virtual rooted path.</returns>
+        public static string GetModuleFolder(IHostSettings hostSettings)
         {
-            get { return dataName ?? (dataName = "DDRMenu.DNNContext." + ModuleName); }
+            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(hostSettings, ModuleName, PortalSettings.Current.PortalId);
+            return moduleFolder ??= $"~/DesktopModules/{desktopModule.FolderName}/";
         }
 
         /// <summary>Converts a url into one that is usable on the requesting Client.</summary>

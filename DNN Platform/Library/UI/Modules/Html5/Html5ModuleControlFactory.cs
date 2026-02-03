@@ -6,16 +6,20 @@ namespace DotNetNuke.UI.Modules.Html5
     using System;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework;
 
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Module control factory for HTML modules.</summary>
     public class Html5ModuleControlFactory : BaseModuleControlFactory
     {
+        private readonly IServicesFramework servicesFramework;
         private readonly IBusinessControllerProvider businessControllerProvider;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="Html5ModuleControlFactory"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
@@ -26,9 +30,21 @@ namespace DotNetNuke.UI.Modules.Html5
 
         /// <summary>Initializes a new instance of the <see cref="Html5ModuleControlFactory"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Html5ModuleControlFactory(IBusinessControllerProvider businessControllerProvider)
+            : this(businessControllerProvider, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Html5ModuleControlFactory"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public Html5ModuleControlFactory(IBusinessControllerProvider businessControllerProvider, IServicesFramework servicesFramework, IHostSettings hostSettings)
         {
             this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />
@@ -44,7 +60,7 @@ namespace DotNetNuke.UI.Modules.Html5
         /// <inheritdoc />
         public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
-            return new Html5HostControl("~/" + controlSrc, this.businessControllerProvider);
+            return new Html5HostControl("~/" + controlSrc, this.businessControllerProvider, this.servicesFramework, this.hostSettings);
         }
 
         /// <inheritdoc />

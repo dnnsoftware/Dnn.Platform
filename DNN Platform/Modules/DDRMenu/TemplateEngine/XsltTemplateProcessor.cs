@@ -13,11 +13,30 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using System.Xml;
     using System.Xml.Xsl;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class XsltTemplateProcessor : ITemplateProcessor
     {
+        private readonly IHostSettings hostSettings;
         private XslCompiledTransform xsl;
+
+        /// <summary>Initializes a new instance of the <see cref="XsltTemplateProcessor"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public XsltTemplateProcessor()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="XsltTemplateProcessor"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public XsltTemplateProcessor(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
 
         /// <inheritdoc />
         public bool LoadDefinition(TemplateDefinition baseDefinition)
@@ -43,7 +62,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
         /// <inheritdoc />
         public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
         {
-            var resolver = new PathResolver(liveDefinition.Folder);
+            var resolver = new PathResolver(this.hostSettings, liveDefinition.Folder);
             var hostPage = DNNContext.Current.Page;
 
             var args = new XsltArgumentList();

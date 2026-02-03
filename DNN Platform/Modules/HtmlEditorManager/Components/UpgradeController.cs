@@ -13,13 +13,18 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Upgrade;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Class that contains upgrade procedures.</summary>
     public class UpgradeController : IUpgradeable
@@ -28,18 +33,36 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
         private const string ModuleFolder = "~/DesktopModules/Admin/HtmlEditorManager";
 
         private readonly IApplicationStatusInfo applicationStatusInfo;
+        private readonly IHostSettings hostSettings;
 
         /// <summary> Initializes a new instance of the <see cref="UpgradeController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public UpgradeController()
-            : this(new ApplicationStatusInfo(new Application()))
+            : this(null, null)
         {
         }
 
         /// <summary> Initializes a new instance of the <see cref="UpgradeController"/> class.</summary>
         /// <param name="applicationStatusInfo">The application status info.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public UpgradeController(IApplicationStatusInfo applicationStatusInfo)
+            : this(applicationStatusInfo, null)
         {
-            this.applicationStatusInfo = applicationStatusInfo;
+        }
+
+        /// <summary> Initializes a new instance of the <see cref="UpgradeController"/> class.</summary>
+        /// <param name="applicationStatusInfo">The application status info.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public UpgradeController(IApplicationStatusInfo applicationStatusInfo, IHostSettings hostSettings)
+        {
+            this.applicationStatusInfo = applicationStatusInfo ?? new ApplicationStatusInfo(new Application());
+            this.hostSettings = hostSettings ??
+                                new HostSettings(
+                                    new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                        new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                        new Lazy<IPortalController>(() => PortalController.Instance)));
         }
 
         /// <summary>Called when a module is upgraded.</summary>
@@ -66,7 +89,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                         var moduleDefId = this.GetModuleDefinitionId("DotNetNuke.HtmlEditorManager", "Html Editor Management");
                         Upgrade.AddModuleToPage(editorPage, moduleDefId, pageName, ModuleFolder + "/images/HtmlEditorManager_Standard_32x32.png", true);
 
-                        foreach (var item in DesktopModuleController.GetDesktopModules(Null.NullInteger))
+                        foreach (var item in DesktopModuleController.GetDesktopModules(this.hostSettings, Null.NullInteger))
                         {
                             var moduleInfo = item.Value;
 
@@ -223,11 +246,11 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
         /// <summary>Gets the module definition identifier.</summary>
         /// <param name="moduleName">Name of the module.</param>
         /// <param name="moduleDefinitionName">Name of the module definition.</param>
-        /// <returns>The Module Id for the HTML Editor Management module.</returns>
+        /// <returns>The Module ID for the HTML Editor Management module.</returns>
         private int GetModuleDefinitionId(string moduleName, string moduleDefinitionName)
         {
             // get desktop module
-            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, Null.NullInteger);
+            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(this.hostSettings, moduleName, Null.NullInteger);
             if (desktopModule == null)
             {
                 return -1;

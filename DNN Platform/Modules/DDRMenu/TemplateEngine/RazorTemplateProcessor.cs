@@ -13,12 +13,31 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using System.Web.UI;
     using System.Web.WebPages;
 
-    using DotNetNuke.Internal.SourceGenerators;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.Razor;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class RazorTemplateProcessor : ITemplateProcessor
     {
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="RazorTemplateProcessor"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public RazorTemplateProcessor()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="RazorTemplateProcessor"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public RazorTemplateProcessor(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
+
         /// <inheritdoc />
         public bool LoadDefinition(TemplateDefinition baseDefinition)
         {
@@ -38,7 +57,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
         {
             if (!string.IsNullOrEmpty(liveDefinition.TemplateVirtualPath))
             {
-                var resolver = new PathResolver(liveDefinition.Folder);
+                var resolver = new PathResolver(this.hostSettings, liveDefinition.Folder);
                 dynamic model = new ExpandoObject();
                 model.Source = source;
                 model.ControlID = DNNContext.Current.HostControl.ClientID;

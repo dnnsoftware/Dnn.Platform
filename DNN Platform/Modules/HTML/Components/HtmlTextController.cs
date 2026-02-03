@@ -51,11 +51,13 @@ namespace DotNetNuke.Modules.Html
         private readonly IPortalAliasService portalAliasService;
         private readonly IPortalController portalController;
         private readonly IApplicationStatusInfo appStatus;
+        private readonly IHostSettings hostSettings;
+        private readonly HtmlModuleSettingsRepository settingsRepository;
 
         /// <summary>Initializes a new instance of the <see cref="HtmlTextController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalAliasService. Scheduled removal in v12.0.0.")]
         public HtmlTextController()
-            : this(null, null, null, null)
+            : this(null, null, null, null, null, null)
         {
         }
 
@@ -63,7 +65,7 @@ namespace DotNetNuke.Modules.Html
         /// <param name="navigationManager">A navigation manager.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalAliasService. Scheduled removal in v12.0.0.")]
         public HtmlTextController(INavigationManager navigationManager)
-            : this(navigationManager, null, null, null)
+            : this(navigationManager, null, null, null, null, null)
         {
         }
 
@@ -72,12 +74,27 @@ namespace DotNetNuke.Modules.Html
         /// <param name="portalAliasService">A portal alias service.</param>
         /// <param name="portalController">A portal controller.</param>
         /// <param name="appStatus">The application status.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public HtmlTextController(INavigationManager navigationManager, IPortalAliasService portalAliasService, IPortalController portalController, IApplicationStatusInfo appStatus)
+            : this(navigationManager, portalAliasService, portalController, appStatus, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="HtmlTextController"/> class.</summary>
+        /// <param name="navigationManager">A navigation manager.</param>
+        /// <param name="portalAliasService">A portal alias service.</param>
+        /// <param name="portalController">A portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="settingsRepository">The HTML settings repository.</param>
+        public HtmlTextController(INavigationManager navigationManager, IPortalAliasService portalAliasService, IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, HtmlModuleSettingsRepository settingsRepository)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
             this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.settingsRepository = settingsRepository ?? Globals.GetCurrentServiceProvider().GetRequiredService<HtmlModuleSettingsRepository>();
         }
 
         protected INavigationManager NavigationManager { get; }
@@ -514,8 +531,7 @@ namespace DotNetNuke.Modules.Html
             var workflowId = this.GetWorkflow(modInfo.ModuleID, modInfo.TabID, modInfo.PortalID).Value;
             var searchDocuments = new List<SearchDocument>();
             var htmlTextInfo = this.GetTopHtmlText(modInfo.ModuleID, true, workflowId);
-            var repo = new HtmlModuleSettingsRepository();
-            var settings = repo.GetSettings(modInfo);
+            var settings = this.settingsRepository.GetSettings(modInfo);
 
             if (htmlTextInfo != null &&
                 (htmlTextInfo.LastModifiedOnDate.ToUniversalTime() > beginDateUtc &&
@@ -562,7 +578,7 @@ namespace DotNetNuke.Modules.Html
                     FileSystemUtils.DeleteFiles(this.appStatus, arrPaths);
                     break;
                 case "06.00.00":
-                    DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByModuleName("DNN_HTML", Null.NullInteger);
+                    DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(this.hostSettings, "DNN_HTML", Null.NullInteger);
                     desktopModule.Category = "Common";
                     DesktopModuleController.SaveDesktopModule(desktopModule, false, false);
                     break;
@@ -579,11 +595,11 @@ namespace DotNetNuke.Modules.Html
             return "Success";
         }
 
-        private static void AddHtmlNotification(string subject, string body, UserInfo user)
+        private static void AddHtmlNotification(IHostSettings hostSettings, string subject, string body, UserInfo user)
         {
             var notificationType = NotificationsController.Instance.GetNotificationType("HtmlNotification");
             var portalSettings = PortalController.Instance.GetCurrentSettings();
-            var sender = UserController.GetUserById(portalSettings.PortalId, portalSettings.AdministratorId);
+            var sender = UserController.GetUserById(hostSettings, portalSettings.PortalId, portalSettings.AdministratorId);
 
             var notification = new Notification { NotificationTypeID = notificationType.NotificationTypeId, Subject = subject, Body = body, IncludeDismissAction = true, SenderUserID = sender.UserID };
             NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, null, new List<UserInfo> { user });
@@ -712,10 +728,10 @@ namespace DotNetNuke.Modules.Html
                         // send an email notification to a user if the state indicates to do so
                         if (objHtmlText.Notify)
                         {
-                            user = UserController.GetUserById(objHtmlText.PortalID, intUserID);
+                            user = UserController.GetUserById(this.hostSettings, objHtmlText.PortalID, intUserID);
                             if (user != null)
                             {
-                                AddHtmlNotification(strSubject, strBody, user);
+                                AddHtmlNotification(this.hostSettings, strSubject, strBody, user);
                             }
                         }
                     }
@@ -724,7 +740,7 @@ namespace DotNetNuke.Modules.Html
                     if (objHtmlText.IsPublished && objHtmlText.Notify)
                     {
                         // send email notification to the author
-                        user = UserController.GetUserById(objHtmlText.PortalID, objHtmlText.CreatedByUserID);
+                        user = UserController.GetUserById(this.hostSettings, objHtmlText.PortalID, objHtmlText.CreatedByUserID);
                         if (user != null)
                         {
                             try

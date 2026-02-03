@@ -13,16 +13,19 @@ namespace DotNetNuke.Services.Search.Internals
     using System.Web;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Search.Entities;
     using Lucene.Net.Analysis;
     using Lucene.Net.Analysis.Tokenattributes;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     internal class SearchHelperImpl : ISearchHelper
     {
@@ -33,18 +36,40 @@ namespace DotNetNuke.Services.Search.Internals
         private const string LastIndexKeyFormat = "{0}_{1}";
         private const string SearchStopWordsCacheKey = "SearchStopWords";
         private const string ResourceFileRelativePathWithoutExt = "/App_GlobalResources/GlobalResources";
-        private readonly IList<string> emptySynonums = new List<string>(0);
+        private readonly IList<string> emptySynonyms = new List<string>(0);
+        private readonly IHostSettings hostSettings;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+
+        /// <summary>Initializes a new instance of the <see cref="SearchHelperImpl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public SearchHelperImpl()
+            : this(null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SearchHelperImpl"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        public SearchHelperImpl(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IPortalController portalController, IApplicationStatusInfo appStatus)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        }
 
         /// <inheritdoc />
         public IEnumerable<SearchType> GetSearchTypes()
         {
-            var cachArg = new CacheItemArgs(SearchTypesCacheKey, 120, CacheItemPriority.Default);
+            var cacheArg = new CacheItemArgs(SearchTypesCacheKey, 120, CacheItemPriority.Default);
             return CBO.GetCachedObject<IList<SearchType>>(
-                cachArg,
-                dataArgs =>
-                {
-                    return CBO.FillCollection<SearchType>(DataProvider.Instance().GetAllSearchTypes());
-                });
+                this.hostSettings,
+                cacheArg,
+                _ => CBO.FillCollection<SearchType>(DataProvider.Instance().GetAllSearchTypes()));
         }
 
         /// <inheritdoc />
@@ -59,7 +84,7 @@ namespace DotNetNuke.Services.Search.Internals
             var terms = this.GetSynonymTerms(portalId, cultureCode);
             if (terms == null || !terms.TryGetValue((term ?? string.Empty).ToLowerInvariant(), out var synonyms))
             {
-                synonyms = this.emptySynonums;
+                synonyms = this.emptySynonyms;
             }
 
             return synonyms;
@@ -69,8 +94,8 @@ namespace DotNetNuke.Services.Search.Internals
         public IEnumerable<SynonymsGroup> GetSynonymsGroups(int portalId, string cultureCode)
         {
             var cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SynonymGroupsCacheKey, portalId, cultureCode);
-            var cacheArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<IList<SynonymsGroup>>(cacheArg, GetSynonymsGroupsCallBack);
+            var cacheArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default, this.portalController, this.appStatus);
+            return CBO.GetCachedObject<IList<SynonymsGroup>>(this.hostSettings, cacheArg, GetSynonymsGroupsCallBack);
         }
 
         /// <inheritdoc />
@@ -182,7 +207,7 @@ namespace DotNetNuke.Services.Search.Internals
         {
             var cacheKey = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, SearchStopWordsCacheKey, portalId, cultureCode);
             var cacheArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
-            var list = CBO.GetCachedObject<IList<SearchStopWords>>(cacheArg, this.GetSearchStopWordsCallBack);
+            var list = CBO.GetCachedObject<IList<SearchStopWords>>(this.hostSettings, cacheArg, this.GetSearchStopWordsCallBack);
             return list?.FirstOrDefault();
         }
 
@@ -272,8 +297,8 @@ namespace DotNetNuke.Services.Search.Internals
             var requestedOn = SqlDateTime.MinValue.Value;
 
             var reindexRequest = portalId < 0
-                ? HostController.Instance.GetString(Constants.SearchReindexSettingName, Null.NullString) // host level setting
-                : PortalController.GetPortalSetting(Constants.SearchReindexSettingName, portalId, Null.NullString); // portal level setting
+                ? this.hostSettingsService.GetString(Constants.SearchReindexSettingName, Null.NullString) // host level setting
+                : PortalController.GetPortalSetting(this.portalController, Constants.SearchReindexSettingName, portalId, Null.NullString); // portal level setting
 
             if (reindexRequest != Null.NullString)
             {
@@ -292,12 +317,12 @@ namespace DotNetNuke.Services.Search.Internals
             if (portalId < 0)
             {
                 // host level setting
-                HostController.Instance.Update(Constants.SearchReindexSettingName, text, true);
+                this.hostSettingsService.Update(Constants.SearchReindexSettingName, text, true);
             }
             else
             {
                 // portal level setting
-                PortalController.UpdatePortalSetting(portalId, Constants.SearchReindexSettingName, text, true);
+                PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.SearchReindexSettingName, text, true);
             }
 
             return now;
@@ -306,13 +331,13 @@ namespace DotNetNuke.Services.Search.Internals
         /// <inheritdoc />
         public bool GetSearchCompactFlag()
         {
-            return HostController.Instance.GetString(Constants.SearchOptimizeFlagName, Null.NullString) == "1";
+            return this.hostSettingsService.GetString(Constants.SearchOptimizeFlagName, Null.NullString) == "1";
         }
 
         /// <inheritdoc />
         public void SetSearchReindexRequestTime(bool turnOn)
         {
-            HostController.Instance.Update(Constants.SearchOptimizeFlagName, turnOn ? "1" : "0", true);
+            this.hostSettingsService.Update(Constants.SearchOptimizeFlagName, turnOn ? "1" : "0", true);
         }
 
         /// <inheritdoc />
@@ -327,14 +352,14 @@ namespace DotNetNuke.Services.Search.Internals
         /// <returns>A sequence of portal IDs.</returns>
         public IEnumerable<int> GetPortalsToReindex(DateTime startDate)
         {
-            var portals2Reindex = PortalController.Instance.GetPortals().Cast<PortalInfo>()
-                .Where(portal => this.IsReindexRequested(portal.PortalID, startDate))
-                .Select(portal => portal.PortalID);
+            var portals2Reindex = PortalController.Instance.GetPortals().Cast<IPortalInfo>()
+                .Where(portal => this.IsReindexRequested(portal.PortalId, startDate))
+                .Select(portal => portal.PortalId);
 
             if (this.IsReindexRequested(-1, startDate))
             {
                 // Include Host Level
-                portals2Reindex = portals2Reindex.Concat(new[] { -1 });
+                portals2Reindex = portals2Reindex.Concat([-1,]);
             }
 
             return portals2Reindex.ToArray();
@@ -350,7 +375,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 // try to fallback to old location where this was stored
                 var name = string.Format(CultureInfo.InvariantCulture, LastIndexKeyFormat, Constants.SearchLastSuccessIndexName, scheduleId);
-                lastValue = HostController.Instance.GetString(name, Null.NullString);
+                lastValue = this.hostSettingsService.GetString(name, Null.NullString);
             }
 
             if (!string.IsNullOrEmpty(lastValue) &&
@@ -422,9 +447,8 @@ namespace DotNetNuke.Services.Search.Internals
         /// <inheritdoc />
         public Tuple<int, int> GetSearchMinMaxLength()
         {
-            var hostController = HostController.Instance;
-            var minWordLength = hostController.GetInteger(Constants.SearchMinLengthKey, Constants.DefaultMinLen);
-            var maxWordLength = hostController.GetInteger(Constants.SearchMaxLengthKey, Constants.DefaultMaxLen);
+            var minWordLength = this.hostSettingsService.GetInteger(Constants.SearchMinLengthKey, Constants.DefaultMinLen);
+            var maxWordLength = this.hostSettingsService.GetInteger(Constants.SearchMaxLengthKey, Constants.DefaultMaxLen);
 
             if (minWordLength < Constants.MinimumMinLen)
             {
@@ -652,12 +676,12 @@ namespace DotNetNuke.Services.Search.Internals
             return cleaned;
         }
 
-        private static void EnsurePortalDefaultsAreSet(int portalId)
+        private static void EnsurePortalDefaultsAreSet(IPortalController portalController, IApplicationStatusInfo appStatus, int portalId)
         {
             const string setting = "SearchAdminInitialization";
 
             // check portal settings first
-            if (PortalController.GetPortalSetting(setting, portalId, "false") != "false")
+            if (PortalController.GetPortalSetting(portalController, setting, portalId, "false") != "false")
             {
                 return;
             }
@@ -670,7 +694,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             foreach (var locale in LocaleController.Instance.GetLocales(portalId).Values)
             {
-                var resourceFile = GetResourceFile(locale.Code);
+                var resourceFile = GetResourceFile(appStatus, locale.Code);
 
                 var currentStopWords = CBO.FillCollection<SearchStopWords>(DataProvider.Instance().GetSearchStopWords(portalId, locale.Code));
                 if (currentStopWords == null || currentStopWords.Count == 0)
@@ -696,22 +720,24 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             // Update Portal Settings
-            PortalController.UpdatePortalSetting(portalId, setting, "true", true);
+            PortalController.UpdatePortalSetting(portalController, portalId, setting, "true", true);
         }
 
-        private static string GetResourceFile(string cultureCode)
+        private static string GetResourceFile(IApplicationStatusInfo appStatus, string cultureCode)
         {
             var cultureRelativePath = "~" + ResourceFileRelativePathWithoutExt + "." + cultureCode + ".resx";
             const string regularRelativePath = "~" + ResourceFileRelativePathWithoutExt + ".resx";
-            return File.Exists(Path.Combine(Globals.ApplicationMapPath, ResourceFileRelativePathWithoutExt + "." + cultureCode + ".resx")) ? cultureRelativePath : regularRelativePath;
+            return File.Exists(Path.Combine(appStatus.ApplicationMapPath, ResourceFileRelativePathWithoutExt + "." + cultureCode + ".resx")) ? cultureRelativePath : regularRelativePath;
         }
 
         private static object GetSynonymsGroupsCallBack(CacheItemArgs cacheItem)
         {
+            var portalController = (IPortalController)cacheItem.ParamList[0];
+            var appStatus = (IApplicationStatusInfo)cacheItem.ParamList[1];
             var portalId = int.Parse(cacheItem.CacheKey.Split('_')[1], CultureInfo.InvariantCulture);
             var cultureCode = cacheItem.CacheKey.Split('_')[2];
 
-            EnsurePortalDefaultsAreSet(portalId);
+            EnsurePortalDefaultsAreSet(portalController, appStatus, portalId);
 
             return CBO.FillCollection<SynonymsGroup>(DataProvider.Instance().GetAllSynonymsGroups(portalId, cultureCode));
         }
@@ -722,7 +748,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             var cleanedPhrase = searchPhrase.Trim('\0');
 
-            var asciiFilter = new ASCIIFoldingFilter(new WhitespaceTokenizer((TextReader)new StringReader(cleanedPhrase)));
+            var asciiFilter = new ASCIIFoldingFilter(new WhitespaceTokenizer(new StringReader(cleanedPhrase)));
 
             string space = string.Empty;
             while (asciiFilter.IncrementToken())
@@ -741,7 +767,7 @@ namespace DotNetNuke.Services.Search.Internals
         {
             var cacheKey = $"{SynonymTermsCacheKey}_{portalId}_{cultureCode}";
             var cacheArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<IDictionary<string, IList<string>>>(cacheArg, this.SynonymTermsCallBack);
+            return CBO.GetCachedObject<IDictionary<string, IList<string>>>(this.hostSettings, cacheArg, this.SynonymTermsCallBack);
         }
 
         private object SynonymTermsCallBack(CacheItemArgs cacheItem)
@@ -797,7 +823,7 @@ namespace DotNetNuke.Services.Search.Internals
             var portalId = int.Parse(splittedKeys[1], CultureInfo.InvariantCulture);
             var cultureCode = splittedKeys[2];
 
-            EnsurePortalDefaultsAreSet(portalId);
+            EnsurePortalDefaultsAreSet(this.portalController, this.appStatus, portalId);
 
             return CBO.FillCollection<SearchStopWords>(DataProvider.Instance().GetSearchStopWords(portalId, cultureCode));
         }

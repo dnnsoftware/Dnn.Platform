@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Tabs
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -18,8 +19,26 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Framework;
     using DotNetNuke.UI.Skins;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class TabModulesController : ServiceLocator<ITabModulesController, TabModulesController>, ITabModulesController
     {
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="TabModulesController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public TabModulesController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="TabModulesController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public TabModulesController(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
+
         /// <inheritdoc />
         public ArrayList GetTabModules(TabInfo tab)
         {
@@ -67,19 +86,18 @@ namespace DotNetNuke.Entities.Tabs
             var dataProvider = DataProvider.Instance();
             var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TabModuleSettingsNameCacheKey, portalId, settingName);
             var cachedItems = CBO.GetCachedObject<Dictionary<int, string>>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, DataCache.TabModuleCacheTimeOut, DataCache.TabModuleCachePriority),
-                c =>
+                _ =>
                 {
-                    using (var dr = dataProvider.GetTabModuleSettingsByName(portalId, settingName))
+                    using var dr = dataProvider.GetTabModuleSettingsByName(portalId, settingName);
+                    var result = new Dictionary<int, string>();
+                    while (dr.Read())
                     {
-                        var result = new Dictionary<int, string>();
-                        while (dr.Read())
-                        {
-                            result[dr.GetInt32(0)] = dr.GetString(1);
-                        }
-
-                        return result;
+                        result[dr.GetInt32(0)] = dr.GetString(1);
                     }
+
+                    return result;
                 });
 
             return cachedItems;
@@ -113,7 +131,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <inheritdoc />
         protected override Func<ITabModulesController> GetFactory()
         {
-            return () => new TabModulesController();
+            return () => Globals.DependencyProvider.GetRequiredService<ITabModulesController>();
         }
 
         private static void ConfigureModule(ModuleInfo cloneModule, TabInfo tab)

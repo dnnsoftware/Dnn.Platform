@@ -640,7 +640,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     StopWords = "los,de,el",
                 });
             this.mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
-                .Returns<string, bool, bool>(new SearchHelperImpl().RephraseSearchText);
+                .Returns<string, bool, bool>(new SearchHelperImpl(Mock.Of<IHostSettings>(), Mock.Of<IHostSettingsService>(), Mock.Of<IPortalController>(), Mock.Of<IApplicationStatusInfo>()).RephraseSearchText);
             this.mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
             SearchHelper.SetTestableInstance(this.mockSearchHelper.Object);
         }

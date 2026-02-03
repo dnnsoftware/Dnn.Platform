@@ -55,8 +55,8 @@ namespace DotNetNuke.Web.Services
         [HttpGet]
         public IHttpActionResult Monikers(string moduleList)
         {
-            var monikers = GetMonikersForList(moduleList);
-            return this.Ok(monikers.Select(kpv => new { tabModuleId = kpv.Key, moniker = kpv.Value }));
+            var monikers = GetMonikersForList(this.hostSettings, moduleList);
+            return this.Ok(monikers.Select(kpv => new { tabModuleId = kpv.Key, moniker = kpv.Value, }));
         }
 
         /// <summary>Gets the details about the modules in the site.</summary>
@@ -69,7 +69,7 @@ namespace DotNetNuke.Web.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, siteDetails);
         }
 
-        private static IEnumerable<KeyValuePair<int, string>> GetMonikersForList(string moduleList)
+        private static IEnumerable<KeyValuePair<int, string>> GetMonikersForList(IHostSettings hostSettings, string moduleList)
         {
             var portalId = PortalSettings.Current.PortalId;
             var tabsController = TabController.Instance;
@@ -84,7 +84,7 @@ namespace DotNetNuke.Web.Services
             {
                 foreach (var moduleName in (moduleList ?? string.Empty).Split(ModuleSeparator, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    var dtmRecord = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
+                    var dtmRecord = DesktopModuleController.GetDesktopModuleByModuleName(hostSettings, moduleName, portalId);
                     if (dtmRecord != null)
                     {
                         var allowedTabs = modules.Where(m => m.DesktopModuleID == dtmRecord.DesktopModuleID)
@@ -105,7 +105,7 @@ namespace DotNetNuke.Web.Services
         private static IEnumerable<TabModule> GetTabModules(IHostSettings hostSettings, ITabController tabController, string moduleName)
         {
             var portalId = PortalController.Instance.GetCurrentSettings().PortalId;
-            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
+            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(hostSettings, moduleName, portalId);
             if (desktopModule != null)
             {
                 var cacheKey = $"{string.Format(CultureInfo.InvariantCulture, DataCache.DesktopModuleCacheKey, portalId)}_{desktopModule.DesktopModuleID}";

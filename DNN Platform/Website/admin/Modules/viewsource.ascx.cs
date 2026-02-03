@@ -8,7 +8,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     using System.IO;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Exceptions;
@@ -20,20 +20,25 @@ namespace DotNetNuke.Modules.Admin.Modules
     public partial class ViewSource : PortalModuleBase
     {
         private readonly INavigationManager navigationManager;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="ViewSource"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ViewSource()
+            : this(null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        protected bool CanEditSource
+        /// <summary>Initializes a new instance of the <see cref="ViewSource"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public ViewSource(INavigationManager navigationManager, IHostSettings hostSettings)
         {
-            get
-            {
-                return this.Request.IsLocal;
-            }
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
+
+        protected bool CanEditSource => this.Request.IsLocal;
 
         protected int ModuleControlId
         {
@@ -49,13 +54,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
-        private string ReturnURL
-        {
-            get
-            {
-                return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this.navigationManager.NavigateURL();
-            }
-        }
+        private string ReturnUrl => UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this.navigationManager.NavigateURL();
 
         /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
@@ -65,11 +64,11 @@ namespace DotNetNuke.Modules.Admin.Modules
             this.cboFile.SelectedIndexChanged += this.OnFileIndexChanged;
             this.cmdUpdate.Click += this.OnUpdateClick;
 
-            if (this.Page.IsPostBack == false)
+            if (!this.Page.IsPostBack)
             {
-                this.cmdCancel.NavigateUrl = this.ReturnURL;
+                this.cmdCancel.NavigateUrl = this.ReturnUrl;
 
-                var objModuleControl = ModuleControlController.GetModuleControl(this.ModuleControlId);
+                var objModuleControl = ModuleControlController.GetModuleControl(this.hostSettings, this.ModuleControlId);
                 if (objModuleControl != null)
                 {
                     this.BindFiles(objModuleControl.ControlSrc);
@@ -151,7 +150,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private void DisplayFile()
         {
-            var objModuleControl = ModuleControlController.GetModuleControl(this.ModuleControlId);
+            var objModuleControl = ModuleControlController.GetModuleControl(this.hostSettings, this.ModuleControlId);
             if (objModuleControl != null)
             {
                 var srcVirtualPath = objModuleControl.ControlSrc;
@@ -184,7 +183,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 }
                 else
                 {
-                    var objModuleControl = ModuleControlController.GetModuleControl(this.ModuleControlId);
+                    var objModuleControl = ModuleControlController.GetModuleControl(this.hostSettings, this.ModuleControlId);
                     if (objModuleControl != null)
                     {
                         var srcVirtualPath = objModuleControl.ControlSrc;
@@ -198,7 +197,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         }
                     }
 
-                    this.Response.Redirect(this.ReturnURL, true);
+                    this.Response.Redirect(this.ReturnUrl, true);
                 }
             }
             catch (Exception exc)

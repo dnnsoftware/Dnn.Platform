@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.CoreMessaging
     using System.Web.Configuration;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -33,11 +34,12 @@ namespace DotNetNuke.Modules.CoreMessaging
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
         private readonly IClientResourceController clientResourceController;
         private readonly IServicesFramework servicesFramework;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="Subscriptions"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.0. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public Subscriptions()
-            : this(null, null)
+            : this(null, null, null)
         {
         }
 
@@ -45,17 +47,28 @@ namespace DotNetNuke.Modules.CoreMessaging
         /// <param name="clientResourceController">The client resources controller.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public Subscriptions(IClientResourceController clientResourceController)
-            : this(clientResourceController, null)
+            : this(clientResourceController, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Subscriptions"/> class.</summary>
         /// <param name="clientResourceController">The client resources controller.</param>
         /// <param name="servicesFramework">The web API service framework.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Subscriptions(IClientResourceController clientResourceController, IServicesFramework servicesFramework)
+            : this(clientResourceController, servicesFramework, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Subscriptions"/> class.</summary>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public Subscriptions(IClientResourceController clientResourceController, IServicesFramework servicesFramework, IHostSettings hostSettings)
         {
             this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
             this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets or sets the module context.</summary>
@@ -64,15 +77,15 @@ namespace DotNetNuke.Modules.CoreMessaging
         /// <summary>Gets or sets the module information.</summary>
         public ModuleInfo ModuleConfiguration
         {
-            get => this.ModuleContext != null ? this.ModuleContext.Configuration : null;
+            get => this.ModuleContext?.Configuration;
             set => this.ModuleContext.Configuration = value;
         }
 
         /// <summary>Gets or sets the localization resource file.</summary>
         public string LocalResourceFile { get; set; }
 
-        /// <summary>Gets the settings formatted as a json string.</summary>
-        /// <returns>The settings formatted as a json string.</returns>
+        /// <summary>Gets the settings formatted as a JSON string.</summary>
+        /// <returns>The settings formatted as a JSON string.</returns>
         public string GetSettingsAsJson()
         {
             var settings = GetModuleSettings(PortalSettings.Current, this.ModuleConfiguration, Null.NullInteger);
@@ -127,22 +140,18 @@ namespace DotNetNuke.Modules.CoreMessaging
                 !AuthenticationController.HasSocialAuthenticationEnabled();
 
             var navigationKey =
-                moduleInfo != null &&
-                moduleInfo.DesktopModule != null
+                moduleInfo is { DesktopModule: not null, }
                     ? GetHistoryNavigationKey(moduleInfo.DesktopModule.FriendlyName)
                     : null;
 
             var moduleRoot =
-                moduleInfo != null &&
-                moduleInfo.DesktopModule != null
+                moduleInfo is { DesktopModule: not null, }
                     ? moduleInfo.DesktopModule.FolderName
                     : null;
 
-            var moduleTitle = moduleInfo != null
-                ? moduleInfo.ModuleTitle
-                : null;
+            var moduleTitle = moduleInfo?.ModuleTitle;
 
-            var moduleId = moduleInfo != null ? moduleInfo.ModuleID : Null.NullInteger;
+            var moduleId = moduleInfo?.ModuleID ?? Null.NullInteger;
 
             var moduleSettings = moduleInfo != null ? moduleInfo.ModuleSettings : new Hashtable();
 
@@ -188,10 +197,7 @@ namespace DotNetNuke.Modules.CoreMessaging
         {
             try
             {
-                var sessionSection =
-                    WebConfigurationManager.GetSection("system.web/sessionState") as SessionStateSection;
-
-                if (sessionSection != null)
+                if (WebConfigurationManager.GetSection("system.web/sessionState") is SessionStateSection sessionSection)
                 {
                     return sessionSection.Timeout;
                 }
@@ -241,7 +247,7 @@ namespace DotNetNuke.Modules.CoreMessaging
         {
             var portalSettings = PortalSettings.Current;
             var userPreferenceController = UserPreferencesController.Instance;
-            var user = UserController.GetUserById(portalSettings.PortalId, portalSettings.UserId);
+            var user = UserController.GetUserById(this.hostSettings, portalSettings.PortalId, portalSettings.UserId);
             UserPreference userPreference = null;
             if (user != null)
             {
@@ -253,7 +259,7 @@ namespace DotNetNuke.Modules.CoreMessaging
 
             return new Hashtable
                    {
-                       { "moduleScope", string.Format("#{0}", this.ScopeWrapper.ClientID) },
+                       { "moduleScope", $"#{this.ScopeWrapper.ClientID}" },
                        { "pageSize", 25 },
                        { "notifyFrequency", userPreference != null ? (int)userPreference.NotificationsEmailFrequency : notifyFrequency },
                        { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : messageFrequency },

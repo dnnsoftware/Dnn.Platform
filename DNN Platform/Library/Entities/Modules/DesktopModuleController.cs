@@ -11,6 +11,7 @@ namespace DotNetNuke.Entities.Modules
     using System.Linq;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security.Permissions;
@@ -103,24 +104,36 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="desktopModuleID">The ID of the Desktop Module to get.</param>
         /// <param name="portalID">The ID of the portal.</param>
         /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
-        public static DesktopModuleInfo GetDesktopModule(int desktopModuleID, int portalID)
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial DesktopModuleInfo GetDesktopModule(int desktopModuleID, int portalID)
+            => GetDesktopModule(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), desktopModuleID, portalID);
+
+        /// <summary>GetDesktopModule gets a Desktop Module by its ID.</summary>
+        /// <remarks>This method uses the cached Dictionary of DesktopModules.  It first checks
+        /// if the DesktopModule is in the cache.  If it is not in the cache it then makes a call
+        /// to the Dataprovider.</remarks>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="desktopModuleId">The ID of the Desktop Module to get.</param>
+        /// <param name="portalId">The ID of the portal.</param>
+        /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
+        public static DesktopModuleInfo GetDesktopModule(IHostSettings hostSettings, int desktopModuleId, int portalId)
         {
-            var module = (from kvp in GetDesktopModulesInternal(portalID)
-                          where kvp.Value.DesktopModuleID == desktopModuleID
+            var module = (from kvp in GetDesktopModulesInternal(hostSettings, portalId)
+                          where kvp.Value.DesktopModuleID == desktopModuleId
                           select kvp.Value)
                    .FirstOrDefault();
 
             if (module == null)
             {
-                module = (from kvp in GetDesktopModulesInternal(Null.NullInteger)
-                          where kvp.Value.DesktopModuleID == desktopModuleID
+                module = (from kvp in GetDesktopModulesInternal(hostSettings, Null.NullInteger)
+                          where kvp.Value.DesktopModuleID == desktopModuleId
                           select kvp.Value)
                    .FirstOrDefault();
             }
 
             if (module == null)
             {
-                Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find module by module ID. ID:{0} PortalID:{1}", desktopModuleID, portalID);
+                Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find module by module ID. ID:{0} PortalID:{1}", desktopModuleId, portalId);
             }
 
             return module;
@@ -129,17 +142,25 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>GetDesktopModuleByPackageID gets a Desktop Module by its Package ID.</summary>
         /// <param name="packageID">The ID of the Package.</param>
         /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
-        public static DesktopModuleInfo GetDesktopModuleByPackageID(int packageID)
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial DesktopModuleInfo GetDesktopModuleByPackageID(int packageID)
+            => GetDesktopModuleByPackageID(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), packageID);
+
+        /// <summary>GetDesktopModuleByPackageID gets a Desktop Module by its Package ID.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="packageId">The ID of the Package.</param>
+        /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
+        public static DesktopModuleInfo GetDesktopModuleByPackageID(IHostSettings hostSettings, int packageId)
         {
             var desktopModuleByPackageId = (
-                    from kvp in GetDesktopModulesInternal(Null.NullInteger)
-                    where kvp.Value.PackageID == packageID
+                    from kvp in GetDesktopModulesInternal(hostSettings, Null.NullInteger)
+                    where kvp.Value.PackageID == packageId
                     select kvp.Value)
                 .FirstOrDefault();
 
             if (desktopModuleByPackageId == null)
             {
-                Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find module by package ID. ID:{0}", packageID);
+                Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find module by package ID. ID:{0}", packageId);
             }
 
             return desktopModuleByPackageId;
@@ -152,16 +173,28 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="moduleName">The name of the Desktop Module to get.</param>
         /// <param name="portalID">The ID of the portal.</param>
         /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
-        public static DesktopModuleInfo GetDesktopModuleByModuleName(string moduleName, int portalID)
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial DesktopModuleInfo GetDesktopModuleByModuleName(string moduleName, int portalID)
+            => GetDesktopModuleByModuleName(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), moduleName, portalID);
+
+        /// <summary>GetDesktopModuleByModuleName gets a Desktop Module by its Name.</summary>
+        /// <remarks>This method uses the cached Dictionary of DesktopModules.  It first checks
+        /// if the DesktopModule is in the cache.  If it is not in the cache it then makes a call
+        /// to the DataProvider.</remarks>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="moduleName">The name of the Desktop Module to get.</param>
+        /// <param name="portalId">The ID of the portal.</param>
+        /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
+        public static DesktopModuleInfo GetDesktopModuleByModuleName(IHostSettings hostSettings, string moduleName, int portalId)
         {
             var desktopModuleByModuleName =
-                (from kvp in GetDesktopModulesInternal(portalID)
+                (from kvp in GetDesktopModulesInternal(hostSettings, portalId)
                     where kvp.Value.ModuleName == moduleName
                     select kvp.Value).FirstOrDefault();
 
             if (desktopModuleByModuleName == null)
             {
-                Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find module by name. Name:{0} portalId:{1}", moduleName, portalID);
+                Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find module by name. Name:{0} portalId:{1}", moduleName, portalId);
             }
 
             return desktopModuleByModuleName;
@@ -170,14 +203,36 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>GetDesktopModules gets a Dictionary of Desktop Modules.</summary>
         /// <param name="portalID">The ID of the Portal (Use PortalID = Null.NullInteger (-1) to get all the DesktopModules including Modules not allowed for the current portal).</param>
         /// <returns>A new <see cref="Dictionary{TKey,TValue}"/> mapping desktop module ID to <see cref="DesktopModuleInfo"/>.</returns>
-        public static Dictionary<int, DesktopModuleInfo> GetDesktopModules(int portalID)
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial Dictionary<int, DesktopModuleInfo> GetDesktopModules(int portalID)
+            => GetDesktopModules(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalID);
+
+        /// <summary>GetDesktopModules gets a Dictionary of Desktop Modules.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalId">The ID of the Portal (Use PortalID = Null.NullInteger (-1) to get all the DesktopModules including Modules not allowed for the current portal).</param>
+        /// <returns>A new <see cref="Dictionary{TKey,TValue}"/> mapping desktop module ID to <see cref="DesktopModuleInfo"/>.</returns>
+        public static Dictionary<int, DesktopModuleInfo> GetDesktopModules(IHostSettings hostSettings, int portalId)
         {
-            return new Dictionary<int, DesktopModuleInfo>(GetDesktopModulesInternal(portalID));
+            return new Dictionary<int, DesktopModuleInfo>(GetDesktopModulesInternal(hostSettings, portalId));
         }
 
-        public static DesktopModuleInfo GetDesktopModuleByFriendlyName(string friendlyName)
+        /// <summary>Gets a Desktop Module by its friendly name.</summary>
+        /// <param name="friendlyName">The friendly name of the Desktop Module to get.</param>
+        /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial DesktopModuleInfo GetDesktopModuleByFriendlyName(string friendlyName)
+            => GetDesktopModuleByFriendlyName(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), friendlyName);
+
+        /// <summary>Gets a Desktop Module by its friendly name.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="friendlyName">The friendly name of the Desktop Module to get.</param>
+        /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
+        public static DesktopModuleInfo GetDesktopModuleByFriendlyName(IHostSettings hostSettings, string friendlyName)
         {
-            var module = (from kvp in GetDesktopModulesInternal(Null.NullInteger) where kvp.Value.FriendlyName == friendlyName select kvp.Value).FirstOrDefault();
+            var module =
+                (from kvp in GetDesktopModulesInternal(hostSettings, Null.NullInteger)
+                    where kvp.Value.FriendlyName == friendlyName
+                    select kvp.Value).FirstOrDefault();
 
             if (module == null)
             {
@@ -295,9 +350,24 @@ namespace DotNetNuke.Entities.Modules
             DataCache.ClearHostCache(true);
         }
 
-        public static void AddDesktopModulesToPortal(int portalId)
+        /// <summary>Adds each non-premium desktop module to the specified portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial void AddDesktopModulesToPortal(int portalId)
+            => AddDesktopModulesToPortal(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(),
+                portalId);
+
+        /// <summary>Adds each non-premium desktop module to the specified portal.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="portalId">The portal ID.</param>
+        public static void AddDesktopModulesToPortal(IHostSettings hostSettings, IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, int portalId)
         {
-            foreach (DesktopModuleInfo desktopModule in GetDesktopModulesInternal(Null.NullInteger).Values)
+            foreach (DesktopModuleInfo desktopModule in GetDesktopModulesInternal(hostSettings, Null.NullInteger).Values)
             {
                 if (!desktopModule.IsPremium)
                 {
@@ -308,7 +378,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                     else
                     {
-                        AddDesktopModuleToPortal(portalId, desktopModule.DesktopModuleID, !desktopModule.IsAdmin, false);
+                        AddDesktopModuleToPortal(eventLogger, permissionDefinitionService, portalId, desktopModule.DesktopModuleID, !desktopModule.IsAdmin, false);
                     }
                 }
             }
@@ -326,17 +396,41 @@ namespace DotNetNuke.Entities.Modules
             return CBO.FillDictionary<int, PortalDesktopModuleInfo>("PortalDesktopModuleID", DataProvider.Instance().GetPortalDesktopModules(Null.NullInteger, desktopModuleId));
         }
 
-        public static Dictionary<int, PortalDesktopModuleInfo> GetPortalDesktopModulesByPortalID(int portalId)
+        /// <summary>Gets the <see cref="PortalDesktopModuleInfo"/> values for the specified portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A dictionary of <see cref="PortalDesktopModuleInfo"/> instances by <see cref="PortalDesktopModuleInfo.PortalDesktopModuleID"/>.</returns>
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial Dictionary<int, PortalDesktopModuleInfo> GetPortalDesktopModulesByPortalID(int portalId)
+            => GetPortalDesktopModulesByPortalID(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId);
+
+        /// <summary>Gets the <see cref="PortalDesktopModuleInfo"/> values for the specified portal.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A dictionary of <see cref="PortalDesktopModuleInfo"/> instances by <see cref="PortalDesktopModuleInfo.PortalDesktopModuleID"/>.</returns>
+        public static Dictionary<int, PortalDesktopModuleInfo> GetPortalDesktopModulesByPortalID(IHostSettings hostSettings, int portalId)
         {
             string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalDesktopModuleCacheKey, portalId);
             return
                 CBO.GetCachedObject<Dictionary<int, PortalDesktopModuleInfo>>(
-                    new CacheItemArgs(cacheKey, DataCache.PortalDesktopModuleCacheTimeOut, DataCache.PortalDesktopModuleCachePriority, portalId), GetPortalDesktopModulesByPortalIDCallBack);
+                    hostSettings,
+                    new CacheItemArgs(cacheKey, DataCache.PortalDesktopModuleCacheTimeOut, DataCache.PortalDesktopModuleCachePriority, portalId),
+                    GetPortalDesktopModulesByPortalIDCallBack);
         }
 
-        public static SortedList<string, PortalDesktopModuleInfo> GetPortalDesktopModules(int portalId)
+        /// <summary>Gets the portal desktop modules.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A <see cref="SortedList{T,U}"/> of <see cref="PortalDesktopModuleInfo"/> instances by <see cref="PortalDesktopModuleInfo.FriendlyName"/>.</returns>
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial SortedList<string, PortalDesktopModuleInfo> GetPortalDesktopModules(int portalId)
+            => GetPortalDesktopModules(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId);
+
+        /// <summary>Gets the portal desktop modules.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A <see cref="SortedList{T,U}"/> of <see cref="PortalDesktopModuleInfo"/> instances by <see cref="PortalDesktopModuleInfo.FriendlyName"/>.</returns>
+        public static SortedList<string, PortalDesktopModuleInfo> GetPortalDesktopModules(IHostSettings hostSettings, int portalId)
         {
-            Dictionary<int, PortalDesktopModuleInfo> dicModules = GetPortalDesktopModulesByPortalID(portalId);
+            Dictionary<int, PortalDesktopModuleInfo> dicModules = GetPortalDesktopModulesByPortalID(hostSettings, portalId);
             var lstModules = new SortedList<string, PortalDesktopModuleInfo>();
             foreach (PortalDesktopModuleInfo desktopModule in dicModules.Values)
             {
@@ -660,14 +754,13 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        private static Dictionary<int, DesktopModuleInfo> GetDesktopModulesInternal(int portalID)
+        private static Dictionary<int, DesktopModuleInfo> GetDesktopModulesInternal(IHostSettings hostSettings, int portalId)
         {
-            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.DesktopModuleCacheKey, portalID);
-            var args = new CacheItemArgs(cacheKey, DataCache.DesktopModuleCacheTimeOut, DataCache.DesktopModuleCachePriority, portalID);
-            Dictionary<int, DesktopModuleInfo> desktopModules = (portalID == Null.NullInteger)
-                                        ? CBO.GetCachedObject<Dictionary<int, DesktopModuleInfo>>(args, GetDesktopModulesCallBack)
-                                        : CBO.GetCachedObject<Dictionary<int, DesktopModuleInfo>>(args, GetDesktopModulesByPortalCallBack);
-            return desktopModules;
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.DesktopModuleCacheKey, portalId);
+            var args = new CacheItemArgs(cacheKey, DataCache.DesktopModuleCacheTimeOut, DataCache.DesktopModuleCachePriority, portalId);
+            return portalId == Null.NullInteger
+                ? CBO.GetCachedObject<Dictionary<int, DesktopModuleInfo>>(hostSettings, args, GetDesktopModulesCallBack)
+                : CBO.GetCachedObject<Dictionary<int, DesktopModuleInfo>>(hostSettings, args, GetDesktopModulesByPortalCallBack);
         }
 
         private static object GetDesktopModulesCallBack(CacheItemArgs cacheItemArgs)
@@ -675,7 +768,7 @@ namespace DotNetNuke.Entities.Modules
             return CBO.FillDictionary("DesktopModuleID", DataProvider.GetDesktopModules(), new Dictionary<int, DesktopModuleInfo>());
         }
 
-        /// <summary>GetDesktopModulesByPortalCallBack gets a Dictionary of Desktop Modules by Portal from the the Database.</summary>
+        /// <summary>GetDesktopModulesByPortalCallBack gets a Dictionary of Desktop Modules by Portal from the Database.</summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters needed for the database call.</param>
         private static object GetDesktopModulesByPortalCallBack(CacheItemArgs cacheItemArgs)
         {

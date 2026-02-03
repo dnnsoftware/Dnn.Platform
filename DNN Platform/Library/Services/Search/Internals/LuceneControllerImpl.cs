@@ -157,7 +157,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             var luceneResults = new LuceneResults();
 
-            // validate whether index folder is exist and contains index files, otherwise return null.
+            // validate whether index folder exists and contains index files, otherwise return null.
             if (!this.ValidateIndexFolder())
             {
                 return luceneResults;
@@ -211,7 +211,7 @@ namespace DotNetNuke.Services.Search.Internals
                         }).ToList();
                     break;
                 }
-                catch (Exception ex) when (ex is IOException || ex is AlreadyClosedException)
+                catch (Exception ex) when (ex is IOException or AlreadyClosedException)
                 {
                     this.DisposeReaders();
                     this.DisposeWriter(false);

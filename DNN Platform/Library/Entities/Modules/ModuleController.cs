@@ -17,6 +17,7 @@ namespace DotNetNuke.Entities.Modules
     using System.Xml;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Security.Permissions;
@@ -53,6 +54,7 @@ namespace DotNetNuke.Entities.Modules
         private static readonly DataProvider DataProvider = DataProvider.Instance();
         private readonly IEventLogger eventLogger;
         private readonly IPermissionDefinitionService permissionDefinitionService;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
@@ -64,10 +66,21 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>Initializes a new instance of the <see cref="ModuleController"/> class.</summary>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="permissionDefinitionService">The permission definition service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ModuleController(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService)
+            : this(eventLogger, permissionDefinitionService, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleController"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public ModuleController(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings)
         {
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
             this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         private static Hashtable ParsedLocalizedModuleGuid => (Hashtable)(HttpContext.Current.Items["ParsedLocalizedModuleGuid"] ??= new Hashtable());
@@ -265,7 +278,18 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="module">The ModuleInfo object to serialize.</param>
         /// <param name="includeContent">A flag that determines whether the content of the module is serialized.</param>
         /// <returns>An <see cref="XmlNode"/> representing the module.</returns>
-        public static XmlNode SerializeModule(IBusinessControllerProvider businessControllerProvider, XmlDocument xmlModule, ModuleInfo module, bool includeContent)
+        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        public static partial XmlNode SerializeModule(IBusinessControllerProvider businessControllerProvider, XmlDocument xmlModule, ModuleInfo module, bool includeContent)
+            => SerializeModule(businessControllerProvider, Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), xmlModule, module, includeContent);
+
+        /// <summary>Serializes the metadata of a module (and optionally its contents) to an XML node.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="xmlModule">The XML Document to use for the Module.</param>
+        /// <param name="module">The ModuleInfo object to serialize.</param>
+        /// <param name="includeContent">A flag that determines whether the content of the module is serialized.</param>
+        /// <returns>An <see cref="XmlNode"/> representing the module.</returns>
+        public static XmlNode SerializeModule(IBusinessControllerProvider businessControllerProvider, IHostSettings hostSettings, XmlDocument xmlModule, ModuleInfo module, bool includeContent)
         {
             var serializer = new XmlSerializer(typeof(ModuleInfo));
             var sw = new StringWriter();
@@ -334,7 +358,7 @@ namespace DotNetNuke.Entities.Modules
 
             var newNode = xmlModule.CreateElement("definition");
             var objModuleDef = ModuleDefinitionController.GetModuleDefinitionByID(module.ModuleDefID);
-            newNode.InnerText = DesktopModuleController.GetDesktopModule(objModuleDef.DesktopModuleID, module.PortalID).ModuleName;
+            newNode.InnerText = DesktopModuleController.GetDesktopModule(hostSettings, objModuleDef.DesktopModuleID, module.PortalID).ModuleName;
             moduleNode?.AppendChild(newNode);
 
             // Add Module Definition Info
@@ -1104,8 +1128,9 @@ namespace DotNetNuke.Entities.Modules
         {
             var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.SingleTabModuleCacheKey, tabModuleID);
             return CBO.GetCachedObject<ModuleInfo>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, DataCache.TabModuleCacheTimeOut, DataCache.TabModuleCachePriority),
-                c => CBO.FillObject<ModuleInfo>(DataProvider.GetTabModule(tabModuleID)));
+                _ => CBO.FillObject<ModuleInfo>(DataProvider.GetTabModule(tabModuleID)));
         }
 
         /// <inheritdoc />
@@ -1113,11 +1138,9 @@ namespace DotNetNuke.Entities.Modules
         {
             var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TabModuleCacheKey, tabId);
             return CBO.GetCachedObject<Dictionary<int, ModuleInfo>>(
-                new CacheItemArgs(
-                cacheKey,
-                DataCache.TabModuleCacheTimeOut,
-                DataCache.TabModuleCachePriority),
-                c => GetModulesCurrentPage(tabId));
+                this.hostSettings,
+                new CacheItemArgs(cacheKey, DataCache.TabModuleCacheTimeOut, DataCache.TabModuleCachePriority),
+                _ => GetModulesCurrentPage(tabId));
         }
 
         /// <summary>  Get a list of all TabModule references of a module instance.</summary>
@@ -1281,7 +1304,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="module">ModuleInfo of the module to update.</param>
         public void UpdateModule(ModuleInfo module)
         {
-            // Update ContentItem If neccessary
+            // Update ContentItem If necessary
             if (module.ModuleID != Null.NullInteger)
             {
                 if (module.ContentItemId == Null.NullInteger)
@@ -1643,37 +1666,35 @@ namespace DotNetNuke.Entities.Modules
             string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.ModuleSettingsCacheKey, tabId);
 
             var moduleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(
-                new CacheItemArgs(
-                cacheKey,
-                DataCache.ModuleCacheTimeOut,
-                DataCache.ModuleCachePriority),
-                c =>
-                            {
-                                var moduleSettingsDic = new Dictionary<int, Hashtable>();
-                                IDataReader dr = DataProvider.Instance().GetModuleSettingsByTab(tabId);
-                                while (dr.Read())
-                                {
-                                    int mId = dr.GetInt32(0);
-                                    Hashtable settings;
-                                    if (!moduleSettingsDic.TryGetValue(mId, out settings))
-                                    {
-                                        settings = new Hashtable();
-                                        moduleSettingsDic[mId] = settings;
-                                    }
+                this.hostSettings,
+                new CacheItemArgs(cacheKey, DataCache.ModuleCacheTimeOut, DataCache.ModuleCachePriority),
+                _ =>
+                {
+                    var moduleSettingsDic = new Dictionary<int, Hashtable>();
+                    IDataReader dr = DataProvider.Instance().GetModuleSettingsByTab(tabId);
+                    while (dr.Read())
+                    {
+                        int mId = dr.GetInt32(0);
+                        Hashtable settings;
+                        if (!moduleSettingsDic.TryGetValue(mId, out settings))
+                        {
+                            settings = new Hashtable();
+                            moduleSettingsDic[mId] = settings;
+                        }
 
-                                    if (!dr.IsDBNull(2))
-                                    {
-                                        settings[dr.GetString(1)] = dr.GetString(2);
-                                    }
-                                    else
-                                    {
-                                        settings[dr.GetString(1)] = string.Empty;
-                                    }
-                                }
+                        if (!dr.IsDBNull(2))
+                        {
+                            settings[dr.GetString(1)] = dr.GetString(2);
+                        }
+                        else
+                        {
+                            settings[dr.GetString(1)] = string.Empty;
+                        }
+                    }
 
-                                CBO.CloseDataReader(dr, true);
-                                return moduleSettingsDic;
-                            });
+                    CBO.CloseDataReader(dr, true);
+                    return moduleSettingsDic;
+                });
 
             return moduleSettings.TryGetValue(moduleId, out var setting) ? setting : new Hashtable();
         }
@@ -1684,35 +1705,33 @@ namespace DotNetNuke.Entities.Modules
             string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TabModuleSettingsCacheKey, tabId);
 
             var tabModuleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(
-                new CacheItemArgs(
-                cacheKey,
-                DataCache.TabModuleCacheTimeOut,
-                DataCache.TabModuleCachePriority),
-                c =>
-                            {
-                                var tabModuleSettingsDic = new Dictionary<int, Hashtable>();
-                                using var dr = DataProvider.Instance().GetTabModuleSettingsByTab(tabId);
-                                while (dr.Read())
-                                {
-                                    int tMId = dr.GetInt32(0);
-                                    if (!tabModuleSettingsDic.TryGetValue(tMId, out var settings))
-                                    {
-                                        settings = new Hashtable();
-                                        tabModuleSettingsDic[tMId] = settings;
-                                    }
+                this.hostSettings,
+                new CacheItemArgs(cacheKey, DataCache.TabModuleCacheTimeOut, DataCache.TabModuleCachePriority),
+                _ =>
+                {
+                    var tabModuleSettingsDic = new Dictionary<int, Hashtable>();
+                    using var dr = DataProvider.Instance().GetTabModuleSettingsByTab(tabId);
+                    while (dr.Read())
+                    {
+                        int tMId = dr.GetInt32(0);
+                        if (!tabModuleSettingsDic.TryGetValue(tMId, out var settings))
+                        {
+                            settings = new Hashtable();
+                            tabModuleSettingsDic[tMId] = settings;
+                        }
 
-                                    if (!dr.IsDBNull(2))
-                                    {
-                                        settings[dr.GetString(1)] = dr.GetString(2);
-                                    }
-                                    else
-                                    {
-                                        settings[dr.GetString(1)] = string.Empty;
-                                    }
-                                }
+                        if (!dr.IsDBNull(2))
+                        {
+                            settings[dr.GetString(1)] = dr.GetString(2);
+                        }
+                        else
+                        {
+                            settings[dr.GetString(1)] = string.Empty;
+                        }
+                    }
 
-                                return tabModuleSettingsDic;
-                            });
+                    return tabModuleSettingsDic;
+                });
 
             return tabModuleSettings.TryGetValue(tabModuleId, out var setting) ? setting : new Hashtable();
         }

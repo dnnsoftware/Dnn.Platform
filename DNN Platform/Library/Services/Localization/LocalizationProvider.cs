@@ -15,6 +15,8 @@ namespace DotNetNuke.Services.Localization
     using System.Xml;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -23,9 +25,29 @@ namespace DotNetNuke.Services.Localization
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Cache;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class LocalizationProvider : ComponentBase<ILocalizationProvider, LocalizationProvider>, ILocalizationProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LocalizationProvider));
+        private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appStatus;
+
+        /// <summary>Initializes a new instance of the <see cref="LocalizationProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public LocalizationProvider()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="LocalizationProvider"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        public LocalizationProvider(IHostSettings hostSettings, IApplicationStatusInfo appStatus)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        }
 
         public enum CustomizedLocale
         {
@@ -67,7 +89,7 @@ namespace DotNetNuke.Services.Localization
             }
 
             string resourceValue = Null.NullString;
-            bool keyFound = TryGetStringInternal(key, language, resourceFileRoot, portalSettings, ref resourceValue);
+            bool keyFound = TryGetStringInternal(this.hostSettings, this.appStatus, key, language, resourceFileRoot, portalSettings, ref resourceValue);
 
             // If the key can't be found then it doesn't exist in the Localization Resources
             if (Localization.ShowMissingKeys && !disableShowMissingKeys)
@@ -185,22 +207,25 @@ namespace DotNetNuke.Services.Localization
         {
             return
                 CBO.GetCachedObject<Dictionary<string, string>>(
+                    this.hostSettings,
                     new CacheItemArgs(
-                        "Compiled-" + resourceFile + "-" + locale + "-" + portalSettings.PortalId,
+                        $"Compiled-{resourceFile}-{locale}-{portalSettings.PortalId}",
                         DataCache.ResourceFilesCacheTimeOut,
                         DataCache.ResourceFilesCachePriority,
                         resourceFile,
                         locale,
-                        portalSettings),
+                        portalSettings,
+                        this.hostSettings),
                     GetCompiledResourceFileCallBack,
                     true);
         }
 
         private static object GetCompiledResourceFileCallBack(CacheItemArgs cacheItemArgs)
         {
-            string resourceFile = (string)cacheItemArgs.Params[0];
-            string locale = (string)cacheItemArgs.Params[1];
-            PortalSettings portalSettings = (PortalSettings)cacheItemArgs.Params[2];
+            var resourceFile = (string)cacheItemArgs.Params[0];
+            var locale = (string)cacheItemArgs.Params[1];
+            var portalSettings = (IPortalSettings)cacheItemArgs.Params[2];
+            var hostSettings = (IHostSettings)cacheItemArgs.Params[3];
             string systemLanguage = Localization.SystemLocale;
             string defaultLanguage = portalSettings.DefaultLanguage;
             string fallbackLanguage = Localization.SystemLocale;
@@ -211,44 +236,44 @@ namespace DotNetNuke.Services.Localization
             }
 
             // get system default and merge the specific ones one by one
-            var res = GetResourceFile(resourceFile);
+            var res = GetResourceFile(hostSettings, resourceFile);
             if (res == null)
             {
                 return new Dictionary<string, string>();
             }
 
-            // clone the dictionart so that when merge values into dictionart, it won't
+            // clone the dictionary so that when merge values into dictionary, it won't
             // affect the cache data.
             res = res.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-            res = MergeResourceFile(res, GetResourceFileNameHost(resourceFile, systemLanguage));
-            res = MergeResourceFile(res, GetResourceFileName(resourceFile, systemLanguage, portalSettings.PortalId));
+            res = MergeResourceFile(hostSettings, res, GetResourceFileNameHost(resourceFile, systemLanguage));
+            res = MergeResourceFile(hostSettings, res, GetResourceFileName(resourceFile, systemLanguage, portalSettings.PortalId));
             if (defaultLanguage != systemLanguage)
             {
-                res = MergeResourceFile(res, GetResourceFileName(resourceFile, defaultLanguage));
-                res = MergeResourceFile(res, GetResourceFileNameHost(resourceFile, defaultLanguage));
-                res = MergeResourceFile(res, GetResourceFileName(resourceFile, defaultLanguage, portalSettings.PortalId));
+                res = MergeResourceFile(hostSettings, res, GetResourceFileName(resourceFile, defaultLanguage));
+                res = MergeResourceFile(hostSettings, res, GetResourceFileNameHost(resourceFile, defaultLanguage));
+                res = MergeResourceFile(hostSettings, res, GetResourceFileName(resourceFile, defaultLanguage, portalSettings.PortalId));
             }
 
             if (fallbackLanguage != defaultLanguage)
             {
-                res = MergeResourceFile(res, GetResourceFileName(resourceFile, fallbackLanguage));
-                res = MergeResourceFile(res, GetResourceFileNameHost(resourceFile, fallbackLanguage));
-                res = MergeResourceFile(res, GetResourceFileName(resourceFile, fallbackLanguage, portalSettings.PortalId));
+                res = MergeResourceFile(hostSettings, res, GetResourceFileName(resourceFile, fallbackLanguage));
+                res = MergeResourceFile(hostSettings, res, GetResourceFileNameHost(resourceFile, fallbackLanguage));
+                res = MergeResourceFile(hostSettings, res, GetResourceFileName(resourceFile, fallbackLanguage, portalSettings.PortalId));
             }
 
             if (locale != fallbackLanguage)
             {
-                res = MergeResourceFile(res, GetResourceFileName(resourceFile, locale));
-                res = MergeResourceFile(res, GetResourceFileNameHost(resourceFile, locale));
-                res = MergeResourceFile(res, GetResourceFileName(resourceFile, locale, portalSettings.PortalId));
+                res = MergeResourceFile(hostSettings, res, GetResourceFileName(resourceFile, locale));
+                res = MergeResourceFile(hostSettings, res, GetResourceFileNameHost(resourceFile, locale));
+                res = MergeResourceFile(hostSettings, res, GetResourceFileName(resourceFile, locale, portalSettings.PortalId));
             }
 
             return res;
         }
 
-        private static Dictionary<string, string> MergeResourceFile(Dictionary<string, string> current, string resourceFile)
+        private static Dictionary<string, string> MergeResourceFile(IHostSettings hostSettings, Dictionary<string, string> current, string resourceFile)
         {
-            var resFile = GetResourceFile(resourceFile);
+            var resFile = GetResourceFile(hostSettings, resourceFile);
             if (resFile == null)
             {
                 return current;
@@ -286,6 +311,7 @@ namespace DotNetNuke.Services.Localization
 
         private static object GetResourceFileCallBack(CacheItemArgs cacheItemArgs)
         {
+            var hostSettings = (IHostSettings)cacheItemArgs.ParamList[0];
             string cacheKey = cacheItemArgs.CacheKey;
             Dictionary<string, string> resources = null;
 
@@ -293,7 +319,7 @@ namespace DotNetNuke.Services.Localization
             try
             {
                 // Get resource file lookup to determine if the resource file even exists
-                SharedDictionary<string, bool> resourceFileExistsLookup = GetResourceFileLookupDictionary();
+                SharedDictionary<string, bool> resourceFileExistsLookup = GetResourceFileLookupDictionary(hostSettings);
 
                 if (ResourceFileMayExist(resourceFileExistsLookup, cacheKey))
                 {
@@ -364,19 +390,21 @@ namespace DotNetNuke.Services.Localization
             return resources;
         }
 
-        private static SharedDictionary<string, bool> GetResourceFileLookupDictionary()
+        private static SharedDictionary<string, bool> GetResourceFileLookupDictionary(IHostSettings hostSettings)
         {
             return
                 CBO.GetCachedObject<SharedDictionary<string, bool>>(
+                    hostSettings,
                     new CacheItemArgs(DataCache.ResourceFileLookupDictionaryCacheKey, DataCache.ResourceFileLookupDictionaryTimeOut, DataCache.ResourceFileLookupDictionaryCachePriority),
                     c => new SharedDictionary<string, bool>(),
                     true);
         }
 
-        private static Dictionary<string, string> GetResourceFile(string resourceFile)
+        private static Dictionary<string, string> GetResourceFile(IHostSettings hostSettings, string resourceFile)
         {
             return CBO.GetCachedObject<Dictionary<string, string>>(
-                new CacheItemArgs(resourceFile, DataCache.ResourceFilesCacheTimeOut, DataCache.ResourceFilesCachePriority),
+                hostSettings,
+                new CacheItemArgs(resourceFile, DataCache.ResourceFilesCacheTimeOut, DataCache.ResourceFilesCachePriority, hostSettings),
                 GetResourceFileCallBack,
                 true);
         }
@@ -469,46 +497,46 @@ namespace DotNetNuke.Services.Localization
             return mayExist;
         }
 
-        private static bool TryGetFromResourceFile(string key, string resourceFile, string userLanguage, string fallbackLanguage, string defaultLanguage, int portalID, ref string resourceValue)
+        private static bool TryGetFromResourceFile(IHostSettings hostSettings, string key, string resourceFile, string userLanguage, string fallbackLanguage, string defaultLanguage, int portalID, ref string resourceValue)
         {
             // Try the user's language first
-            bool bFound = TryGetFromResourceFile(key, GetResourceFileName(resourceFile, userLanguage), portalID, ref resourceValue);
+            bool bFound = TryGetFromResourceFile(hostSettings, key, GetResourceFileName(resourceFile, userLanguage), portalID, ref resourceValue);
 
             if (!bFound && fallbackLanguage != userLanguage)
             {
                 // Try fallback language next
-                bFound = TryGetFromResourceFile(key, GetResourceFileName(resourceFile, fallbackLanguage), portalID, ref resourceValue);
+                bFound = TryGetFromResourceFile(hostSettings, key, GetResourceFileName(resourceFile, fallbackLanguage), portalID, ref resourceValue);
             }
 
             if (!bFound && !(defaultLanguage == userLanguage || defaultLanguage == fallbackLanguage))
             {
                 // Try default Language last
-                bFound = TryGetFromResourceFile(key, GetResourceFileName(resourceFile, defaultLanguage), portalID, ref resourceValue);
+                bFound = TryGetFromResourceFile(hostSettings, key, GetResourceFileName(resourceFile, defaultLanguage), portalID, ref resourceValue);
             }
 
             return bFound;
         }
 
-        private static bool TryGetFromResourceFile(string key, string resourceFile, int portalID, ref string resourceValue)
+        private static bool TryGetFromResourceFile(IHostSettings hostSettings, string key, string resourceFile, int portalId, ref string resourceValue)
         {
             // Try Portal Resource File
-            bool bFound = TryGetFromResourceFile(key, resourceFile, portalID, CustomizedLocale.Portal, ref resourceValue);
+            bool bFound = TryGetFromResourceFile(hostSettings, key, resourceFile, portalId, CustomizedLocale.Portal, ref resourceValue);
             if (!bFound)
             {
                 // Try Host Resource File
-                bFound = TryGetFromResourceFile(key, resourceFile, portalID, CustomizedLocale.Host, ref resourceValue);
+                bFound = TryGetFromResourceFile(hostSettings, key, resourceFile, portalId, CustomizedLocale.Host, ref resourceValue);
             }
 
             if (!bFound)
             {
                 // Try Portal Resource File
-                bFound = TryGetFromResourceFile(key, resourceFile, portalID, CustomizedLocale.None, ref resourceValue);
+                bFound = TryGetFromResourceFile(hostSettings, key, resourceFile, portalId, CustomizedLocale.None, ref resourceValue);
             }
 
             return bFound;
         }
 
-        private static bool TryGetStringInternal(string key, string userLanguage, string resourceFile, PortalSettings portalSettings, ref string resourceValue)
+        private static bool TryGetStringInternal(IHostSettings hostSettings, IApplicationStatusInfo appStatus, string key, string userLanguage, string resourceFile, PortalSettings portalSettings, ref string resourceValue)
         {
             string defaultLanguage = Null.NullString;
             string fallbackLanguage = Localization.SystemLocale;
@@ -536,7 +564,7 @@ namespace DotNetNuke.Services.Localization
             Locale userLocale = null;
             try
             {
-                if (Globals.Status != Globals.UpgradeStatus.Install)
+                if (appStatus.Status != UpgradeStatus.Install)
                 {
                     // Get Fallback language, but not when we are installing (because we may not have a database yet)
                     userLocale = LocaleController.Instance.GetLocale(userLanguage);
@@ -558,7 +586,7 @@ namespace DotNetNuke.Services.Localization
             }
 
             // Try the resource file for the key
-            bool bFound = TryGetFromResourceFile(key, resourceFile, userLanguage, fallbackLanguage, defaultLanguage, portalId, ref resourceValue);
+            bool bFound = TryGetFromResourceFile(hostSettings, key, resourceFile, userLanguage, fallbackLanguage, defaultLanguage, portalId, ref resourceValue);
             if (!bFound)
             {
                 if (!Localization.SharedResourceFile.Equals(resourceFile, StringComparison.OrdinalIgnoreCase))
@@ -568,7 +596,7 @@ namespace DotNetNuke.Services.Localization
 
                     if (!localSharedFile.Equals(resourceFile, StringComparison.OrdinalIgnoreCase))
                     {
-                        bFound = TryGetFromResourceFile(key, localSharedFile, userLanguage, fallbackLanguage, defaultLanguage, portalId, ref resourceValue);
+                        bFound = TryGetFromResourceFile(hostSettings, key, localSharedFile, userLanguage, fallbackLanguage, defaultLanguage, portalId, ref resourceValue);
                     }
                 }
             }
@@ -577,14 +605,14 @@ namespace DotNetNuke.Services.Localization
             {
                 if (!Localization.SharedResourceFile.Equals(resourceFile, StringComparison.OrdinalIgnoreCase))
                 {
-                    bFound = TryGetFromResourceFile(key, Localization.SharedResourceFile, userLanguage, fallbackLanguage, defaultLanguage, portalId, ref resourceValue);
+                    bFound = TryGetFromResourceFile(hostSettings, key, Localization.SharedResourceFile, userLanguage, fallbackLanguage, defaultLanguage, portalId, ref resourceValue);
                 }
             }
 
             return bFound;
         }
 
-        private static bool TryGetFromResourceFile(string key, string resourceFile, int portalId, CustomizedLocale resourceType, ref string resourceValue)
+        private static bool TryGetFromResourceFile(IHostSettings hostSettings, string key, string resourceFile, int portalId, CustomizedLocale resourceType, ref string resourceValue)
         {
             bool bFound = Null.NullBoolean;
             string resourceFileName = resourceFile;
@@ -628,12 +656,12 @@ namespace DotNetNuke.Services.Localization
             }
 
             // Get resource file lookup to determine if the resource file even exists
-            SharedDictionary<string, bool> resourceFileExistsLookup = GetResourceFileLookupDictionary();
+            SharedDictionary<string, bool> resourceFileExistsLookup = GetResourceFileLookupDictionary(hostSettings);
 
             if (ResourceFileMayExist(resourceFileExistsLookup, cacheKey))
             {
                 // File is not in lookup or its value is true so we know it exists
-                Dictionary<string, string> dicResources = GetResourceFile(cacheKey);
+                Dictionary<string, string> dicResources = GetResourceFile(hostSettings, cacheKey);
                 if (dicResources != null)
                 {
                     bFound = dicResources.TryGetValue(key, out resourceValue);

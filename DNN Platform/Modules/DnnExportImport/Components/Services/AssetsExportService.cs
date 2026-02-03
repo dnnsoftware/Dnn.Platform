@@ -40,6 +40,7 @@ namespace Dnn.ExportImport.Components.Services
             @"users/\d+/\d+/(\d+)/",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        private readonly IHostSettings hostSettings;
         private readonly string assetsFolder;
 
         /// <summary>Initializes a new instance of the <see cref="AssetsExportService"/> class.</summary>
@@ -51,8 +52,18 @@ namespace Dnn.ExportImport.Components.Services
 
         /// <summary>Initializes a new instance of the <see cref="AssetsExportService"/> class.</summary>
         /// <param name="appStatus">The application status.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public AssetsExportService(IApplicationStatusInfo appStatus)
+            : this(appStatus, null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="AssetsExportService"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public AssetsExportService(IApplicationStatusInfo appStatus, IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             appStatus ??= Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.assetsFolder = $"{appStatus.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipFiles}";
         }
@@ -132,7 +143,7 @@ namespace Dnn.ExportImport.Components.Services
                                 isUserFolder = true;
                                 folder.UserId = userId;
                                 folder.Username =
-                                    UserController.GetUserById(portalId, userId)?.Username;
+                                    UserController.GetUserById(this.hostSettings, portalId, userId)?.Username;
                             }
 
                             if (folder.ParentId is > 0)
@@ -768,7 +779,7 @@ namespace Dnn.ExportImport.Components.Services
         private int GetLocalWorkFlowId(int? exportedWorkFlowId)
         {
             const int directPublishWorkflowId = 1;
-            if (exportedWorkFlowId != null && exportedWorkFlowId > directPublishWorkflowId)
+            if (exportedWorkFlowId is > directPublishWorkflowId)
             {
                 var state = this.Repository.GetItem<ExportWorkflow>(item => item.WorkflowID == exportedWorkFlowId);
                 return state?.LocalId ?? -1;
