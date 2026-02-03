@@ -11,6 +11,8 @@ namespace DotNetNuke.Web.InternalServices
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Dto;
@@ -21,16 +23,32 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>An API controller for managing content moving through its workflow.</summary>
     [DnnAuthorize]
     public partial class ContentWorkflowServiceController : DnnApiController
     {
+        private readonly ITabController tabController;
+        private readonly IContentController contentController;
         private readonly IWorkflowEngine workflowEngine;
 
         /// <summary>Initializes a new instance of the <see cref="ContentWorkflowServiceController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IContentController. Scheduled removal in v12.0.0.")]
         public ContentWorkflowServiceController()
+            : this(null, null, null)
         {
-            this.workflowEngine = WorkflowEngine.Instance;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ContentWorkflowServiceController"/> class.</summary>
+        /// <param name="contentController">The content controller.</param>
+        /// <param name="workflowEngine">The workflow engine.</param>
+        /// <param name="tabController">The tab controller.</param>
+        public ContentWorkflowServiceController(IContentController contentController, IWorkflowEngine workflowEngine, ITabController tabController)
+        {
+            this.contentController = contentController ?? ContentController.Instance;
+            this.workflowEngine = workflowEngine ?? WorkflowEngine.Instance;
+            this.tabController = tabController ?? TabController.Instance;
         }
 
         /// <summary>Rejects a workflow.</summary>
@@ -191,10 +209,9 @@ namespace DotNetNuke.Web.InternalServices
         {
             var portalId = this.PortalSettings.PortalId;
             var tabId = this.Request.FindTabId();
-            var currentPage = TabController.Instance.GetTab(tabId, portalId);
+            var currentPage = this.tabController.GetTab(tabId, portalId);
             var contentItemId = currentPage.ContentItemId;
-            var contentController = Util.GetContentController();
-            var contentItem = contentController.GetContentItem(contentItemId);
+            var contentItem = this.contentController.GetContentItem(contentItemId);
             var stateTransaction = new StateTransaction
             {
                 ContentItemId = contentItem.ContentItemId,

@@ -24,6 +24,8 @@ namespace DotNetNuke.Entities.Content.Workflow
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Social.Notifications;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class WorkflowEngine : ServiceLocator<IWorkflowEngine, WorkflowEngine>, IWorkflowEngine
     {
         private const string ContentWorkflowNotificationType = "ContentWorkflowNotification";
@@ -43,9 +45,15 @@ namespace DotNetNuke.Entities.Content.Workflow
         private readonly ISystemWorkflowManager systemWorkflowManager;
 
         /// <summary>Initializes a new instance of the <see cref="WorkflowEngine"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IContentController. Scheduled removal in v12.0.0.")]
         public WorkflowEngine()
+            : this(null)
         {
-            this.contentController = Util.GetContentController();
+        }
+
+        public WorkflowEngine(IContentController contentController)
+        {
+            this.contentController = contentController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IContentController>();
             this.workflowRepository = WorkflowRepository.Instance;
             this.workflowStateRepository = WorkflowStateRepository.Instance;
             this.workflowStatePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
@@ -336,7 +344,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <inheritdoc />
         protected override Func<IWorkflowEngine> GetFactory()
         {
-            return () => new WorkflowEngine();
+            return () => Globals.DependencyProvider.GetRequiredService<IWorkflowEngine>();
         }
 
         private static List<RoleInfo> GetRolesFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions)

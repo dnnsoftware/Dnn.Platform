@@ -113,7 +113,7 @@ namespace DotNetNuke
             services.AddTransient<IPortalTemplateController, PortalTemplateController>();
             services.AddTransient<ITabVersionBuilder, TabVersionBuilder>();
             services.AddTransient<ISearchController, SearchControllerImpl>();
-            services.AddTransient<IFolderMappingController, FolderMappingController>(_ => new FolderMappingController());
+            services.AddTransient<IFolderMappingController, FolderMappingController>(serviceProvider => new FolderMappingController(serviceProvider.GetRequiredService<IHostSettings>()));
             services.AddTransient<IServicesFramework, ServicesFrameworkImpl>(ActivatorUtilities.GetServiceOrCreateInstance<ServicesFrameworkImpl>);
 
             // TODO: LocalizationProvider can be overridden via the ComponentFactory, need to be able to get an instance registered via ComponentFactory without creating a dependency loop
@@ -156,11 +156,13 @@ namespace DotNetNuke
             services.AddTransient<ILogController, LogController>();
             services.AddTransient<ITabPublishingController, TabPublishingController>();
             services.AddTransient<IClientResourceSettings, ClientResourceSettings>();
+            services.AddTransient<IWorkflowEngine, WorkflowEngine>();
             services.AddTransient<IWorkflowSecurity, WorkflowSecurity>();
             services.AddTransient<IWorkflowStateManager, WorkflowStateManager>();
             services.AddTransient<IContentController, ContentController>();
             services.AddTransient<IVocabularyController, VocabularyController>();
             services.AddTransient<ITermController, TermController>();
+            services.AddTransient<IScopeTypeController, ScopeTypeController>();
             services.AddTransient<ITabModulesController, TabModulesController>();
             if (CryptoConfig.AllowOnlyFipsAlgorithms)
             {

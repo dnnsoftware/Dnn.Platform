@@ -24,7 +24,7 @@ namespace DotNetNuke.UI.Modules.Html5
         /// <summary>Initializes a new instance of the <see cref="Html5ModuleControlFactory"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public Html5ModuleControlFactory()
-            : this(null)
+            : this(null, null, null)
         {
         }
 

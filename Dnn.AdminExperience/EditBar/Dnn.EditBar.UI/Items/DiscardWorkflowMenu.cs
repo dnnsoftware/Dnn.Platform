@@ -8,9 +8,26 @@ namespace Dnn.EditBar.UI.Items
 
     using Dnn.EditBar.Library;
 
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Workflow;
+
     [Serializable]
     public class DiscardWorkflowMenu : WorkflowBaseMenuItem
     {
+        /// <summary>Initializes a new instance of the <see cref="DiscardWorkflowMenu"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IContentController. Scheduled removal in v12.0.0.")]
+        public DiscardWorkflowMenu()
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DiscardWorkflowMenu"/> class.</summary>
+        /// <param name="contentController">The content controller.</param>
+        /// <param name="workflowEngine">The workflow engine.</param>
+        public DiscardWorkflowMenu(IContentController contentController, IWorkflowEngine workflowEngine)
+            : base(contentController, workflowEngine)
+        {
+        }
+
         /// <inheritdoc />
         public override string Name { get; } = "DiscardWorkflow";
 
