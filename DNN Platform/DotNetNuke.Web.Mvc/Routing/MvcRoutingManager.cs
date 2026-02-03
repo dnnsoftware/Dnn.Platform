@@ -80,8 +80,10 @@ namespace DotNetNuke.Web.Mvc.Routing
                 route = MapRouteWithNamespace(fullRouteName, routeUrl, defaults, constraints, namespaces);
                 this.routes.Add(route);
                 Logger.Trace("Mapping route: " + fullRouteName + " @ " + routeUrl);
-                fullRouteName = "mvcpipeline" + fullRouteName;
-                routeUrl = routeUrl.Replace("/MVC/", "/");
+
+                // also map with "mvcpl-" prefix for MVC Pipeline compatibility
+                fullRouteName = "mvcpl-" + fullRouteName;
+                routeUrl = routeUrl.Replace("DesktopModules/MVC/", "DesktopModules/");
                 route = MapRouteWithNamespaceAndArea(fullRouteName, moduleFolderName, routeUrl, defaults, constraints, namespaces);
                 this.routes.Add(route);
                 Logger.Trace("Mapping route for mvcpipeline: " + fullRouteName + " Area=" + moduleFolderName + " @ " + routeUrl);

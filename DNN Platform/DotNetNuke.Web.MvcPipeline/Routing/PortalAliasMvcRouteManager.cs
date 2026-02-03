@@ -82,7 +82,7 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             Requires.NotNegative("count", count);
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
 
-            return $"{GeneratePrefixString(count)}DesktopModules/{url}";
+            return $"{GeneratePrefixString(count)}DesktopModules/{moduleFolderName}/{url}";
         }
 
         /// <inheritdoc/>
