@@ -22,15 +22,6 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     /// </summary>
     public sealed class ModuleHostModel
     {
-        private const string DefaultCssProvider = "DnnPageHeaderProvider";
-        private const string DefaultJsProvider = "DnnBodyProvider";
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleHostModel));
-
-        private static readonly Regex CdfMatchRegex = new Regex(
-            @"<\!--CDF\((?<type>JAVASCRIPT|CSS|JS-LIBRARY)\|(?<path>.+?)(\|(?<provider>.+?)\|(?<priority>\d+?))?\)-->",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
         private readonly ModuleInfo moduleConfiguration;
 
         /// <summary>
@@ -57,27 +48,5 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         /// Gets the CSS class applied to the module content.
         /// </summary>
         public string CssClass { get; private set; }
-
-        /// <summary>
-        /// Determines whether the specified module is currently in view mode.
-        /// </summary>
-        /// <param name="moduleInfo">The module configuration.</param>
-        /// <param name="settings">The current portal settings.</param>
-        /// <returns><c>true</c> if the module is in view mode; otherwise, <c>false</c>.</returns>
-        internal static bool IsViewMode(ModuleInfo moduleInfo, PortalSettings settings)
-        {
-            bool viewMode;
-
-            if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.ViewPermissions, Null.NullString, moduleInfo))
-            {
-                viewMode = false;
-            }
-            else
-            {
-                viewMode = !ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString, moduleInfo);
-            }
-
-            return viewMode || Personalization.GetUserMode() == PortalSettings.Mode.View;
-        }
     }
 }

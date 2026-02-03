@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
                 moduleContentPaneDiv.AddCssClass(model.ContentPaneCssClass);
             }
 
-            if (!ModuleHostModel.IsViewMode(model.ModuleConfiguration, model.PortalSettings) && htmlHelper.ViewContext.HttpContext.Request.QueryString["dnnprintmode"] != "true")
+            if (!DotNetNuke.UI.Modules.ModuleHost.IsViewMode(model.ModuleConfiguration, model.PortalSettings) && htmlHelper.ViewContext.HttpContext.Request.QueryString["dnnprintmode"] != "true")
             {
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 if (model.EditMode && model.ModuleConfiguration.ModuleID > 0 && moduleControl != null)

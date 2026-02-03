@@ -1,10 +1,9 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.MvcPipeline.Models
 {
     using System.Collections.Generic;
-    using System.IO;
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Entities.Modules;
@@ -77,13 +76,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         /// <summary>
         /// Gets the Razor view path that corresponds to the container control.
         /// </summary>
-        public string ContainerRazorFile
-        {
-            get
-            {
-                return this.ContainerRazorPath + Path.GetFileName(this.ContainerSrc).Replace(".ascx", ".cshtml");
-            }
-        }
+        public string ContainerRazorFile { get; internal set; }
 
         /// <summary>
         /// Gets the module configuration for this container.

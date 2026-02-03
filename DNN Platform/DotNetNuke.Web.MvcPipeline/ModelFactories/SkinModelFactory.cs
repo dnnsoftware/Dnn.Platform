@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -247,6 +247,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 ctlSkin.SkinPath = SkinController.FormatSkinPath(skinSrc);
                 ctlSkin.RazorPath = SkinHelpers.SkinPathToRazorPath(SkinController.FormatSkinPath(skinPath));
                 ctlSkin.RazorFile = ctlSkin.RazorPath + Path.GetFileName(ctlSkin.SkinSrc).Replace(".ascx", ".cshtml");
+                ctlSkin.BodyCssClass = Globals.IsEditMode() ? "dnnEditState" : string.Empty;
+                ctlSkin.PaneCssClass = /*Globals.IsEditMode() ? "dnnSortable" : */string.Empty;
 
                 // Load the Module Control(s)
                 var success = Globals.IsAdminControl() ? this.ProcessSlaveModule(page.PortalSettings, ctlSkin) : this.ProcessMasterModules(page.PortalSettings, ctlSkin);

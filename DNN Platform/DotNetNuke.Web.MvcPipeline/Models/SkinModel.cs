@@ -1,12 +1,10 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.MvcPipeline.Models
 {
     using System.Collections.Generic;
-
-    using DotNetNuke.Common;
 
     /// <summary>
     /// Represents the skin definition and resources used to render a page.
@@ -54,35 +52,12 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         /// <summary>
         /// Gets the CSS class applied to panes rendered by the skin.
         /// </summary>
-        public string PaneCssClass
-        {
-            get
-            {
-                /*
-                if (Globals.IsEditMode())
-                {
-                    return "dnnSortable";
-                }
-                */
-                return string.Empty;
-            }
-        }
+        public string PaneCssClass { get; internal set; }
 
         /// <summary>
         /// Gets the CSS class applied to the page body when the skin is rendered.
         /// </summary>
-        public string BodyCssClass
-        {
-            get
-            {
-                if (Globals.IsEditMode())
-                {
-                    return "dnnEditState";
-                }
-
-                return string.Empty;
-            }
-        }
+        public string BodyCssClass { get; internal set; }
 
         /// <summary>
         /// Gets or sets an error message associated with loading the skin.
