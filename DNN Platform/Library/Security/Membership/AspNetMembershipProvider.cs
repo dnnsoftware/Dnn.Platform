@@ -563,7 +563,9 @@ namespace DotNetNuke.Security.Membership
             FillUserMembership(aspnetUser, user);
 
             // Get Online Status
+#pragma warning disable CS0618 // Type or member is obsolete
             user.Membership.IsOnLine = this.IsUserOnline(user);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <inheritdoc />
