@@ -642,7 +642,7 @@ namespace DotNetNuke.Services.Upgrade
                 foreach (string file in files)
                 {
                     // Execute if script is a provider script
-                    if (file.Contains("." + DefaultProvider, StringComparison.OrdinalIgnoreCase))
+                    if (file.IndexOf("." + DefaultProvider, StringComparison.OrdinalIgnoreCase) >= 0)
                     {
                         ExecuteScript(file, true);
 
@@ -666,7 +666,7 @@ namespace DotNetNuke.Services.Upgrade
         public static void ExecuteScript(string file)
         {
             // Execute if script is a provider script
-            if (file.Contains("." + DefaultProvider, StringComparison.OrdinalIgnoreCase))
+            if (file.IndexOf("." + DefaultProvider, StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 ExecuteScript(file, true);
             }
@@ -956,7 +956,7 @@ namespace DotNetNuke.Services.Upgrade
                                     settingValue = settingValue.Substring(0, settingValue.IndexOf("/", StringComparison.Ordinal));
 
                                     // Remove port number
-                                    if (settingValue.Contains(":", StringComparison.Ordinal))
+                                    if (settingValue.IndexOf(":", StringComparison.Ordinal) >= 0)
                                     {
                                         settingValue = settingValue.Substring(0, settingValue.IndexOf(":", StringComparison.Ordinal));
                                     }
