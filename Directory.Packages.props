@@ -20,7 +20,7 @@
     <PackageVersion Include="Dnn.CakeUtils" Version="2.1.4" />
     <PackageVersion Include="Dnn.ClientDependency" Version="1.10.0" />
     <PackageVersion Include="Google.Apis.Auth" Version="1.69.0" />
-    <PackageVersion Include="HtmlSanitizer" Version="9.1.878-beta" />
+    <PackageVersion Include="HtmlSanitizer" Version="9.1.968-beta" />
     <PackageVersion Include="LiteDB" Version="5.0.21" />
     <PackageVersion Include="Lucene.Net.Contrib" Version="3.0.3" />
     <PackageVersion Include="MailKit" Version="4.16.0" />
