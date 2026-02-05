@@ -16,6 +16,7 @@ namespace DotNetNuke.HttpModules.Membership
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Pages;
+    using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
@@ -289,7 +290,7 @@ namespace DotNetNuke.HttpModules.Membership
         private static void OnPreSendRequestHeaders(object sender, EventArgs e)
         {
             var application = (HttpApplication)sender;
-            var serviceProvider = application.Context.GetScope().ServiceProvider;
+            var serviceProvider = GetOrCreateServiceProvider(application.Context);
             var portalController = serviceProvider.GetRequiredService<IPortalController>();
 
             var portalSettings = portalController.GetCurrentSettings();
@@ -336,6 +337,13 @@ namespace DotNetNuke.HttpModules.Membership
                 contextItems.Add(Skin.OnInitMessage, Localization.GetString("VerificationSuccess", Localization.SharedResourceFile, Thread.CurrentThread.CurrentCulture.Name));
                 contextItems.Add(Skin.OnInitMessageType, ModuleMessage.ModuleMessageType.GreenSuccess);
             }
+        }
+
+        private static IServiceProvider GetOrCreateServiceProvider(HttpContext context)
+        {
+            // NOTE: Using HttpContextDependencyInjectionExtensions.GetScope can cause an infinite loop/stack overflow, presumably due to timing issues
+            var scope = context.Items[typeof(IServiceScope)] as IServiceScope ?? Globals.DependencyProvider.CreateScope();
+            return scope.ServiceProvider;
         }
     }
 }
