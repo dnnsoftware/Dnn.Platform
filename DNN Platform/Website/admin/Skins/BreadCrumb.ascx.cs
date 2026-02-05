@@ -119,15 +119,6 @@ namespace DotNetNuke.UI.Skins.Controls
         /// </summary>
         public bool CleanerMarkup { get; set; }
 
-        /// <summary>
-        /// Gets or sets the version of the rendering to use.
-        /// </summary>
-        /// <remarks>
-        /// This allows opting-in into new more modern rendering behaviors.
-        /// v2 will render semantic markup (nav/ol/li) instead of the legacy span-based markup.
-        /// </remarks>
-        public int RenderingVersion { get; set; }
-
         private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
 
         /// <inheritdoc />

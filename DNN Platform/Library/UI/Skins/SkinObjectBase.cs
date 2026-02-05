@@ -29,5 +29,13 @@ namespace DotNetNuke.UI.Skins
 
         /// <summary>Gets or sets the associated ModuleControl for this SkinControl.</summary>
         public IModuleControl ModuleControl { get; set; }
+
+        /// <summary>
+        /// Gets or sets the version of the rendering to use.
+        /// </summary>
+        /// <remarks>
+        /// This allows opting-in into new more modern rendering behaviors.
+        /// </remarks>
+        protected int RenderingVersion { get; set; }
     }
 }
