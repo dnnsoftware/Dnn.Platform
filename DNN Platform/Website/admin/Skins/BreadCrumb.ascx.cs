@@ -115,7 +115,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public bool HideWithNoBreadCrumb { get; set; }
 
         /// <summary>Gets or sets a value indicating whether to take advantage of the enhanced markup
-        /// (remove extra wrapping elements). No effect when RenderingVersion is 2 or higher.
+        /// (remove extra wrapping elements). No effect when <see cref="SkinObjectBase.RenderingVersion" /> is 2 or higher.
         /// </summary>
         public bool CleanerMarkup { get; set; }
 
