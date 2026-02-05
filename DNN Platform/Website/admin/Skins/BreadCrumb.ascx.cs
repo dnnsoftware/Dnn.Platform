@@ -18,6 +18,10 @@ namespace DotNetNuke.UI.Skins.Controls
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A skin/theme object which displays the hierarchy of the current page.</summary>
+    /// <remarks>
+    /// The legacy renderings uses spans to mimic the old asp:Label output for backward compatibility.
+    /// v2 rendering uses nav/ol/li markup for better semantics and accessibility.
+    /// </remarks>
     public partial class BreadCrumb : SkinObjectBase
     {
         private const string MyFileName = "BreadCrumb.ascx";
