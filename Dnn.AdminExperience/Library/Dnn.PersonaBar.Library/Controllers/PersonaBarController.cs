@@ -31,13 +31,12 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         private readonly IPersonaBarRepository personaBarRepository;
         private readonly IServiceScopeFactory serviceScopeFactory;
-        private readonly Lazy<IPersonaBarContainer> personaBarContainer;
         private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="PersonaBarController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceScopeFactory. Scheduled removal in v12.0.0.")]
         public PersonaBarController()
-            : this(null, null, null, null)
+            : this(null, null, null)
         {
         }
 
@@ -46,20 +45,18 @@ namespace Dnn.PersonaBar.Library.Controllers
         /// <param name="personaBarRepository">The Persona Bar repository.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPersonaBarContainer. Scheduled removal in v12.0.0.")]
         public PersonaBarController(IServiceScopeFactory serviceScopeFactory, IPersonaBarRepository personaBarRepository)
-            : this(serviceScopeFactory, personaBarRepository, null, null)
+            : this(serviceScopeFactory, personaBarRepository, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PersonaBarController"/> class.</summary>
         /// <param name="serviceScopeFactory">The service scope factory.</param>
         /// <param name="personaBarRepository">The Persona Bar repository.</param>
-        /// <param name="personaBarContainer">The Persona Bar container.</param>
         /// <param name="hostSettings">The host settings.</param>
-        public PersonaBarController(IServiceScopeFactory serviceScopeFactory, IPersonaBarRepository personaBarRepository, Lazy<IPersonaBarContainer> personaBarContainer, IHostSettings hostSettings)
+        public PersonaBarController(IServiceScopeFactory serviceScopeFactory, IPersonaBarRepository personaBarRepository, IHostSettings hostSettings)
         {
             this.serviceScopeFactory = serviceScopeFactory ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServiceScopeFactory>();
             this.personaBarRepository = personaBarRepository ?? PersonaBarRepository.Instance;
-            this.personaBarContainer = personaBarContainer ?? Globals.GetCurrentServiceProvider().GetRequiredService<Lazy<IPersonaBarContainer>>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
@@ -69,12 +66,15 @@ namespace Dnn.PersonaBar.Library.Controllers
         {
             try
             {
+                using var scope = this.serviceScopeFactory.CreateScope();
+                var personaBarContainer = scope.ServiceProvider.GetRequiredService<IPersonaBarContainer>();
                 var personaBarMenu = this.personaBarRepository.GetMenu();
+                var rootItems = personaBarMenu.MenuItems.Where(m => personaBarContainer.RootItems.Contains(m.Identifier)).ToList();
+
                 var filteredMenu = new PersonaBarMenu();
-                var rootItems = personaBarMenu.MenuItems.Where(m => this.personaBarContainer.Value.RootItems.Contains(m.Identifier)).ToList();
                 this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, filteredMenu.MenuItems, rootItems);
 
-                this.personaBarContainer.Value.FilterMenu(filteredMenu);
+                personaBarContainer.FilterMenu(filteredMenu);
                 return filteredMenu;
             }
             catch (Exception e)

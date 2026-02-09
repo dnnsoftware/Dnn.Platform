@@ -23,6 +23,7 @@
     <PackageReference Include="AngleSharp" />
     <PackageReference Include="AngleSharp.Css" />
     <PackageReference Include="BouncyCastle.Cryptography" />
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-j92c-7v7g-gj3f" />
     <PackageReference Include="HtmlSanitizer" />
     <PackageReference Include="MailKit" />
     <PackageReference Include="Microsoft.AspNet.WebPages" />
@@ -94,5 +95,7 @@
     <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
     <Compile Include="..\..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
   </ItemGroup>
+
+  <Import Project="Library.build" Condition="Exists('Library.build')" />
 
 </Project>

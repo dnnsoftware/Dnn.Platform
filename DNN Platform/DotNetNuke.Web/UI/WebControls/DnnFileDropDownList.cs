@@ -13,6 +13,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Common;
@@ -27,14 +28,15 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Initializes a new instance of the <see cref="DnnFileDropDownList"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public DnnFileDropDownList()
-            : this(Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>())
+            : this(Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>(), Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>())
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DnnFileDropDownList"/> class.</summary>
         /// <param name="clientResourceController">The client resource controller.</param>
-        public DnnFileDropDownList(IClientResourceController clientResourceController)
-            : base(clientResourceController)
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public DnnFileDropDownList(IClientResourceController clientResourceController, IServicesFramework servicesFramework)
+            : base(clientResourceController, servicesFramework)
         {
         }
 

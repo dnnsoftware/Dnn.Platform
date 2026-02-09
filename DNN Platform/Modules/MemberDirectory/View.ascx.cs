@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.MemberDirectory
         private readonly IClientResourceController clientResourceController;
         private readonly IApplicationStatusInfo appStatus;
         private readonly IEventLogger eventLogger;
+        private readonly IServicesFramework servicesFramework;
 
         /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
@@ -39,11 +40,13 @@ namespace DotNetNuke.Modules.MemberDirectory
         /// <param name="clientResourceController">The client resource controller.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="eventLogger">The event logger.</param>
-        public View(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public View(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IServicesFramework servicesFramework)
         {
             this.clientResourceController = clientResourceController;
             this.appStatus = appStatus;
             this.eventLogger = eventLogger;
+            this.servicesFramework = servicesFramework;
         }
 
         /// <inheritdoc />
@@ -127,7 +130,7 @@ namespace DotNetNuke.Modules.MemberDirectory
         /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.DnnPlugins);
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.jQueryFileUpload);
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.Knockout);

@@ -12,6 +12,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Framework;
     using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Web.Mvc.Fakes;
     using DotNetNuke.UI.Modules;
@@ -87,7 +88,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var viewDataContainer = new Mock<IViewDataContainer>();
 
             // Act,Assert
-            Assert.Throws<ArgumentNullException>(() => new DnnHtmlHelper(new ViewContext(), viewDataContainer.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new DnnHtmlHelper(new ViewContext(), viewDataContainer.Object, null, Mock.Of<IServicesFramework>()));
         }
 
         [Test]
@@ -97,7 +98,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var viewDataContainer = new Mock<IViewDataContainer>();
 
             // Act,Assert
-            Assert.Throws<ArgumentNullException>(() => new DnnHtmlHelper<Dog>(new ViewContext(), viewDataContainer.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new DnnHtmlHelper<Dog>(new ViewContext(), viewDataContainer.Object, null, Mock.Of<IServicesFramework>()));
         }
 
         [Test]

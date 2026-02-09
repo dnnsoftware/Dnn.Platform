@@ -9,39 +9,50 @@ namespace DotNetNuke.ComponentModel
     using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common;
 
     public class SimpleContainer : AbstractContainer, IDisposable
     {
         private readonly string name;
+        private readonly IServiceProvider serviceProvider;
         private readonly ComponentBuilderCollection componentBuilders = new ComponentBuilderCollection();
-
         private readonly SharedDictionary<string, IDictionary> componentDependencies = new SharedDictionary<string, IDictionary>();
-
         private readonly ComponentTypeCollection componentTypes = new ComponentTypeCollection();
-
         private readonly SharedDictionary<Type, string> registeredComponents = new SharedDictionary<Type, string>();
 
         /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public SimpleContainer()
-            : this($"Container_{Guid.NewGuid()}")
+            : this(Globals.DependencyProvider)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
+        /// <param name="serviceProvider">The DI container scope.</param>
+        public SimpleContainer(IServiceProvider serviceProvider)
+            : this($"Container_{Guid.NewGuid()}", serviceProvider)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
         /// <param name="name">The container name.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public SimpleContainer(string name)
+            : this(name, Globals.DependencyProvider)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
+        /// <param name="name">The container name.</param>
+        /// <param name="serviceProvider">The DI container scope.</param>
+        public SimpleContainer(string name, IServiceProvider serviceProvider)
         {
             this.name = name;
+            this.serviceProvider = serviceProvider;
         }
 
         /// <inheritdoc />
-        public override string Name
-        {
-            get
-            {
-                return this.name;
-            }
-        }
+        public override string Name => this.name;
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
@@ -144,10 +155,10 @@ namespace DotNetNuke.ComponentModel
             switch (lifestyle)
             {
                 case ComponentLifeStyleType.Transient:
-                    builder = new TransientComponentBuilder(name, type);
+                    builder = new TransientComponentBuilder(this.serviceProvider, name, type);
                     break;
                 case ComponentLifeStyleType.Singleton:
-                    builder = new SingletonComponentBuilder(name, type);
+                    builder = new SingletonComponentBuilder(this.serviceProvider, name, type);
                     break;
             }
 

@@ -74,11 +74,12 @@ namespace DotNetNuke.Modules.Journal
         private readonly IClientResourceController clientResourceController;
         private readonly IApplicationStatusInfo appStatus;
         private readonly IEventLogger eventLogger;
+        private readonly IServicesFramework servicesFramework;
 
         /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public View()
-            : this(null, null, null, null)
+            : this(null, null, null, null, null)
         {
         }
 
@@ -87,12 +88,14 @@ namespace DotNetNuke.Modules.Journal
         /// <param name="clientResourceController">The client resource controller.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="eventLogger">The event logger.</param>
-        public View(INavigationManager navigationManager, IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public View(INavigationManager navigationManager, IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IServicesFramework servicesFramework)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
             this.appStatus = appStatus ?? this.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.servicesFramework = servicesFramework ?? this.DependencyProvider.GetRequiredService<IServicesFramework>();
             this.MaxUploadSize = Config.GetMaxUploadSize(this.appStatus);
         }
 
@@ -100,7 +103,7 @@ namespace DotNetNuke.Modules.Journal
         {
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.DnnPlugins);
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.jQueryFileUpload);
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.Knockout);
 
             this.clientResourceController.RegisterScript("~/DesktopModules/Journal/Scripts/journal.js");

@@ -12,6 +12,7 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -20,6 +21,8 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>
     /// The DNNRegionEditControl control provides a standard UI component for editing
     /// Regions.
@@ -27,6 +30,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
     public class DNNRegionEditControl : EditControl
     {
+        private readonly IServicesFramework servicesFramework;
         private DropDownList regions;
 
         private TextBox region;
@@ -36,16 +40,34 @@ namespace DotNetNuke.UI.WebControls
         private List<ListEntryInfo> listEntries;
 
         /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public DNNRegionEditControl()
+            : this((IServicesFramework)null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public DNNRegionEditControl(IServicesFramework servicesFramework)
+        {
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
             this.Init += this.DnnRegionControl_Init;
         }
 
         /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
         /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public DNNRegionEditControl(string type)
+            : this(type, null)
         {
-            this.Init += this.DnnRegionControl_Init;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
+        /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public DNNRegionEditControl(string type, IServicesFramework servicesFramework)
+            : this(servicesFramework)
+        {
             this.SystemType = type;
         }
 
@@ -237,7 +259,7 @@ namespace DotNetNuke.UI.WebControls
 
         private void DnnRegionControl_Init(object sender, System.EventArgs e)
         {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.js");
             ClientResourceManager.RegisterFeatureStylesheet(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.css");
             JavaScript.RequestRegistration(CommonJs.jQuery);

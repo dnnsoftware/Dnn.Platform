@@ -18,6 +18,10 @@ namespace DotNetNuke.UI.Skins.Controls
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A skin/theme object which displays the hierarchy of the current page.</summary>
+    /// <remarks>
+    /// The legacy renderings uses spans to mimic the old asp:Label output for backward compatibility.
+    /// v2 rendering uses nav/ol/li markup for better semantics and accessibility.
+    /// </remarks>
     public partial class BreadCrumb : SkinObjectBase
     {
         private const string MyFileName = "BreadCrumb.ascx";
@@ -26,8 +30,6 @@ namespace DotNetNuke.UI.Skins.Controls
         private readonly INavigationManager navigationManager;
         private readonly ITabController tabController;
 
-        private string separator = $"""<img alt="breadcrumb separator" src="{Globals.ApplicationPath}/images/breadcrumb.gif">""";
-        private string cssClass = "SkinObject";
         private int rootLevel;
         private bool showRoot;
 
@@ -45,12 +47,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
-            this.CleanerMarkup = false;
-
-            // Default to Legacy to avoid breaking changes.
-            this.UseListMarkup = false;
         }
 
+        /// <summary>
+        /// Gets the UserId of the profile being viewed, or -1 if not applicable.
+        /// </summary>
         public int ProfileUserId
         {
             get
@@ -61,6 +62,9 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        /// <summary>
+        /// Gets the GroupId of the group being viewed, or -1 if not applicable.
+        /// </summary>
         public int GroupId
         {
             get
@@ -71,21 +75,20 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        // Separator between breadcrumb elements
-        public string Separator
-        {
-            get { return this.separator; }
-            set { this.separator = value; }
-        }
+        /// <summary>
+        /// Gets or sets the separator between breadcrumb elements.
+        /// </summary>
+        public string Separator { get; set; } = $"""<img alt="breadcrumb separator" src="{Globals.ApplicationPath}/images/breadcrumb.gif">""";
 
-        public string CssClass
-        {
-            get { return this.cssClass; }
-            set { this.cssClass = value; }
-        }
+        /// <summary>
+        /// Gets or sets the CSS class name applied to the element for styling purposes.
+        /// </summary>
+        public string CssClass { get; set; } = "SkinObject";
 
-        // Level to begin processing breadcrumb at.
-        // -1 means show root breadcrumb
+        /// <summary>
+        /// Gets or sets the level to begin processing breadcrumb at.
+        /// </summary>
+        /// <remarks>-1 means show root breadcrumb.</remarks>
         public string RootLevel
         {
             get
@@ -104,20 +107,21 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        // Use the page title instead of page name
+        /// <summary>
+        /// Gets or sets a value indicating whether to use the page title instead of page name.
+        /// </summary>
         public bool UseTitle { get; set; }
 
-        // Do not show when there is no breadcrumb (only has current tab)
+        /// <summary>
+        /// Gets or sets a value indicating whether the control is hidden when no breadcrumb is available and only the
+        /// current tab is present.
+        /// </summary>
         public bool HideWithNoBreadCrumb { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether to take advantage of the enhanced markup (remove extra wrapping elements).</summary>
-        public bool CleanerMarkup { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether opt-in: render list-based semantic markup (nav/ol/li).
-        /// Default is false to preserve legacy output and reduce breaking changes.
+        /// <summary>Gets or sets a value indicating whether to take advantage of the enhanced markup
+        /// (remove extra wrapping elements). No effect when <see cref="SkinObjectBase.RenderingVersion" /> is 2 or higher.
         /// </summary>
-        public bool UseListMarkup { get; set; }
+        public bool CleanerMarkup { get; set; }
 
         private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
 
@@ -135,7 +139,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 return;
             }
 
-            this.lblBreadCrumb.Text = this.UseListMarkup
+            this.lblBreadCrumb.Text = this.RenderingVersion >= 2
                 ? this.BuildListMarkup(crumbCount)
                 : this.BuildLegacyMarkup(crumbCount);
         }
@@ -162,10 +166,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 breadcrumb.Append(
                     $"""
                      <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                         <a href="{homeUrl}" class="{this.cssClass}" itemprop="item"><span itemprop="name">{homeNameEncoded}</span></a>
+                         <a href="{homeUrl}" class="{this.CssClass}" itemprop="item"><span itemprop="name">{homeNameEncoded}</span></a>
                          <meta itemprop="position" content="{position++}" />
                      </span>
-                     {this.separator}
+                     {this.Separator}
                      """);
             }
 
@@ -173,7 +177,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 if (i > this.rootLevel)
                 {
-                    breadcrumb.Append(this.separator);
+                    breadcrumb.Append(this.Separator);
                 }
 
                 var tab = (TabInfo)this.PortalSettings.ActiveTab.BreadCrumbs[i];
@@ -190,7 +194,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         breadcrumb.AppendFormat(
                             CultureInfo.InvariantCulture,
                             """<span class="{0}">{1}</span>""",
-                            this.cssClass,
+                            this.CssClass,
                             tabNameEncoded);
                     }
                     else
@@ -198,7 +202,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         breadcrumb.AppendFormat(
                             CultureInfo.InvariantCulture,
                             """<span><span class="{0}">{1}</span></span>""",
-                            this.cssClass,
+                            this.CssClass,
                             tabNameEncoded);
                     }
                 }
@@ -207,7 +211,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     breadcrumb.Append(
                         $"""
                          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                             <a href="{tabUrl}" class="{this.cssClass}" itemprop="item"><span itemprop="name">{tabNameEncoded}</span></a>
+                             <a href="{tabUrl}" class="{this.CssClass}" itemprop="item"><span itemprop="name">{tabNameEncoded}</span></a>
                              <meta itemprop="position" content="{position++}" />
                          </span>
                          """);
@@ -239,7 +243,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 breadcrumb.Append(
                     $"""
                      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                         <a href="{homeUrl}" class="{this.cssClass}" itemprop="item"><span itemprop="name">{homeNameEncoded}</span></a>
+                         <a href="{homeUrl}" class="{this.CssClass}" itemprop="item"><span itemprop="name">{homeNameEncoded}</span></a>
                          <meta itemprop="position" content="{position++}" />
                      </li>
                      """);
@@ -267,7 +271,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     breadcrumb.AppendFormat(
                         CultureInfo.InvariantCulture,
                         """<span class="{0}" itemprop="name">{1}</span>""",
-                        this.cssClass,
+                        this.CssClass,
                         tabNameEncoded);
                 }
                 else
@@ -276,7 +280,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         CultureInfo.InvariantCulture,
                         """<a href="{0}" class="{1}" itemprop="item"><span itemprop="name">{2}</span></a>""",
                         tabUrl,
-                        this.cssClass,
+                        this.CssClass,
                         tabNameEncoded);
                 }
 
@@ -287,7 +291,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 if (!isLastCrumb)
                 {
-                    breadcrumb.AppendFormat("""<span aria-hidden="true">{0}</span>""", this.separator);
+                    breadcrumb.AppendFormat("""<span aria-hidden="true">{0}</span>""", this.Separator);
                 }
 
                 breadcrumb.Append("</li>");
@@ -362,12 +366,12 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private void ResolveSeparatorPaths()
         {
-            if (string.IsNullOrEmpty(this.separator))
+            if (string.IsNullOrEmpty(this.Separator))
             {
                 return;
             }
 
-            var urlMatches = Regex.Matches(this.separator, UrlRegex, RegexOptions.IgnoreCase);
+            var urlMatches = Regex.Matches(this.Separator, UrlRegex, RegexOptions.IgnoreCase);
             if (urlMatches.Count > 0)
             {
                 foreach (Match match in urlMatches)
@@ -404,7 +408,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             url,
                             match.Groups[4].Value);
 
-                        this.separator = this.separator.Replace(match.Value, newMatch);
+                        this.Separator = this.Separator.Replace(match.Value, newMatch);
                     }
                 }
             }

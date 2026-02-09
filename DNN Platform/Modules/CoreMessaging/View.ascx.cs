@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.CoreMessaging
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IPortalController portalController;
         private readonly IClientResourceController clientResourceController;
+        private readonly IServicesFramework servicesFramework;
 
         /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
@@ -47,11 +48,23 @@ namespace DotNetNuke.Modules.CoreMessaging
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public View(IJavaScriptLibraryHelper javaScript, IPortalController portalController, IClientResourceController clientResourceController)
+            : this(javaScript, portalController, clientResourceController, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public View(IJavaScriptLibraryHelper javaScript, IPortalController portalController, IClientResourceController clientResourceController, IServicesFramework servicesFramework)
         {
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
             this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
             this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
+            this.servicesFramework = servicesFramework ?? this.DependencyProvider.GetRequiredService<IServicesFramework>();
         }
 
         /// <summary>Gets the user id from the request parameters.</summary>
@@ -106,8 +119,8 @@ namespace DotNetNuke.Modules.CoreMessaging
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PermissionsNotProperlySet", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
             }
 
-            ServicesFramework.Instance.RequestAjaxScriptSupport();
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxScriptSupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
             this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
             this.javaScript.RequestRegistration(CommonJs.Knockout);
             this.clientResourceController.RegisterScript("~/DesktopModules/CoreMessaging/Scripts/CoreMessaging.js");

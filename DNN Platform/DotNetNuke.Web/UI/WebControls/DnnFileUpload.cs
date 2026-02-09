@@ -32,12 +32,13 @@ namespace DotNetNuke.Web.UI.WebControls
         private readonly IClientResourceController clientResourceController;
         private readonly IApplicationStatusInfo appStatus;
         private readonly IEventLogger eventLogger;
+        private readonly IServicesFramework servicesFramework;
         private readonly Lazy<DnnFileUploadOptions> options;
 
         /// <summary>Initializes a new instance of the <see cref="DnnFileUpload"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public DnnFileUpload()
-            : this(null, null, null, null, null)
+            : this(null, null, null, null, null, null)
         {
         }
 
@@ -47,11 +48,13 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="cryptographyProvider">The cryptography provider.</param>
-        public DnnFileUpload(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IHostSettings hostSettings, ICryptographyProvider cryptographyProvider)
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public DnnFileUpload(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IHostSettings hostSettings, ICryptographyProvider cryptographyProvider, IServicesFramework servicesFramework)
         {
             this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
             this.options = new Lazy<DnnFileUploadOptions>(() => new DnnFileUploadOptions(hostSettings, this.appStatus, cryptographyProvider));
         }
 
@@ -114,7 +117,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
 
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, CommonJs.jQueryFileUpload);
         }
 

@@ -59,6 +59,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private const string MyFileName = "filepickeruploader.ascx";
         private readonly IApplicationStatusInfo appStatus;
         private readonly IEventLogger eventLogger;
+        private readonly IServicesFramework servicesFramework;
         private int? portalId;
         private string fileFilter;
         private string folderPath = string.Empty;
@@ -67,17 +68,19 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Initializes a new instance of the <see cref="DnnFilePickerUploader"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public DnnFilePickerUploader()
-            : this(null, null)
+            : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DnnFilePickerUploader"/> class.</summary>
         /// <param name="appStatus">The application status.</param>
         /// <param name="eventLogger">The event logger.</param>
-        public DnnFilePickerUploader(IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public DnnFilePickerUploader(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IServicesFramework servicesFramework)
         {
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
         }
 
         /// <summary>Gets or sets a value indicating whether to use the user's personal folder.</summary>
@@ -239,7 +242,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.LoadFolders();
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, CommonJs.jQueryFileUpload);
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, CommonJs.DnnPlugins);
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
         }
 
         /// <inheritdoc />

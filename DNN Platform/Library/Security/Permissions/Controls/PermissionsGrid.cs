@@ -27,6 +27,8 @@ namespace DotNetNuke.Security.Permissions.Controls
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>A base class for permissions grid controls.</summary>
@@ -48,6 +50,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected DataGrid userPermissionsGrid;
 
+        private readonly IServicesFramework servicesFramework;
         private readonly int unAuthUsersRoleId = int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
         private readonly int allUsersRoleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
 
@@ -66,8 +69,17 @@ namespace DotNetNuke.Security.Permissions.Controls
         private HiddenField roleField;
 
         /// <summary>Initializes a new instance of the <see cref="PermissionsGrid"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public PermissionsGrid()
+            : this(null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PermissionsGrid"/> class.</summary>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public PermissionsGrid(IServicesFramework servicesFramework)
+        {
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
             this.dtUserPermissions = new DataTable();
             this.dtRolePermissions = new DataTable();
         }
@@ -589,7 +601,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             base.OnInit(e);
 
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
 
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
             ClientResourceManager.RegisterScript(this.Page, "~/js/dnn.permissiongrid.js");

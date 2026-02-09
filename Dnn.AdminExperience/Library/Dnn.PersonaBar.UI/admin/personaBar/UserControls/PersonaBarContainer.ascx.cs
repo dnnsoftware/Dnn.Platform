@@ -40,11 +40,12 @@ namespace Dnn.PersonaBar.UI.UserControls
         private readonly IHostSettings hostSettings;
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IClientResourceController clientResourceController;
+        private readonly IServicesFramework servicesFramework;
 
         /// <summary>Initializes a new instance of the <see cref="PersonaBarContainer"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public PersonaBarContainer()
-            : this(null, null, null, null, null)
+            : this(null, null, null, null, null, null, null, null)
         {
         }
 
@@ -56,7 +57,7 @@ namespace Dnn.PersonaBar.UI.UserControls
         /// <param name="clientResourceController">The client resources controller.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public PersonaBarContainer(IPersonaBarContainer personaBarContainer, IPersonaBarController personaBarController, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
-            : this(null, null, personaBarContainer, personaBarController, hostSettings, javaScript, clientResourceController)
+            : this(null, null, personaBarContainer, personaBarController, hostSettings, javaScript, clientResourceController, null)
         {
         }
 
@@ -68,7 +69,8 @@ namespace Dnn.PersonaBar.UI.UserControls
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
-        public PersonaBarContainer(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IPersonaBarContainer personaBarContainer, IPersonaBarController personaBarController, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public PersonaBarContainer(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IPersonaBarContainer personaBarContainer, IPersonaBarController personaBarController, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IServicesFramework servicesFramework)
             : base(eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>())
         {
             this.personaBarContainer = personaBarContainer ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPersonaBarContainer>();
@@ -76,6 +78,7 @@ namespace Dnn.PersonaBar.UI.UserControls
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
             this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
         }
 
         /// <summary>Gets a JSON representation of <see cref="IPersonaBarContainer.GetConfiguration"/>.</summary>
@@ -144,7 +147,7 @@ namespace Dnn.PersonaBar.UI.UserControls
             this.javaScript.RequestRegistration(CommonJs.DnnPlugins); // We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
             this.javaScript.RequestRegistration(CommonJs.KnockoutMapping);
 
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
 
             this.clientResourceController.RegisterScript("~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
             this.clientResourceController.RegisterStylesheet("~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");

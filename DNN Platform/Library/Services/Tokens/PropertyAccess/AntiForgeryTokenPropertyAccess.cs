@@ -4,13 +4,33 @@
 
 namespace DotNetNuke.Services.Tokens
 {
+    using System;
     using System.Globalization;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class AntiForgeryTokenPropertyAccess : IPropertyAccess
     {
+        private readonly IServicesFramework servicesFramework;
+
+        /// <summary>Initializes a new instance of the <see cref="AntiForgeryTokenPropertyAccess"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
+        public AntiForgeryTokenPropertyAccess()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="AntiForgeryTokenPropertyAccess"/> class.</summary>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public AntiForgeryTokenPropertyAccess(IServicesFramework servicesFramework)
+        {
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
+        }
+
         /// <inheritdoc />
         public CacheLevel Cacheability
         {
@@ -20,7 +40,7 @@ namespace DotNetNuke.Services.Tokens
         /// <inheritdoc />
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
 
             return string.Empty;
         }

@@ -27,7 +27,6 @@ namespace DotNetNuke.Framework
     {
         private const string AntiForgeryKey = "dnnAntiForgeryRequested";
         private const string ScriptKey = "dnnSFAjaxScriptRequested";
-        private readonly IClientResourceController clientResourceController;
         private readonly IApplicationStatusInfo appStatus;
         private readonly IEventLogger eventLogger;
 
@@ -44,9 +43,9 @@ namespace DotNetNuke.Framework
         /// <param name="eventLogger">The event logger.</param>
         public ServicesFrameworkImpl(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
         {
-            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            var servicesProvider = Globals.GetCurrentServiceProvider();
+            this.appStatus = appStatus ?? servicesProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? servicesProvider.GetRequiredService<IEventLogger>();
         }
 
         /// <inheritdoc />
@@ -105,7 +104,7 @@ namespace DotNetNuke.Framework
                 scriptPath = "~/js/dnn.servicesframework.js";
             }
 
-            this.clientResourceController.RegisterScript(scriptPath);
+            GetClientResourcesController().RegisterScript(scriptPath);
         }
 
         private static void SetKey(string key)
@@ -116,6 +115,12 @@ namespace DotNetNuke.Framework
         private static bool CheckKey(string antiForgeryKey)
         {
             return HttpContextSource.Current.Items.Contains(antiForgeryKey);
+        }
+
+        private static IClientResourceController GetClientResourcesController()
+        {
+            var serviceProvider = Globals.GetCurrentServiceProvider();
+            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
     }
 }

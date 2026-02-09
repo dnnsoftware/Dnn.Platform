@@ -27,17 +27,35 @@ namespace DotNetNuke.Modules.CoreMessaging
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>Implementes the logic of the Subscription view.</summary>
+    /// <summary>Implements the logic of the Subscription view.</summary>
     public partial class Subscriptions : UserControl
     {
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
         private readonly IClientResourceController clientResourceController;
+        private readonly IServicesFramework servicesFramework;
+
+        /// <summary>Initializes a new instance of the <see cref="Subscriptions"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.0. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
+        public Subscriptions()
+            : this(null, null)
+        {
+        }
 
         /// <summary>Initializes a new instance of the <see cref="Subscriptions"/> class.</summary>
         /// <param name="clientResourceController">The client resources controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public Subscriptions(IClientResourceController clientResourceController)
+            : this(clientResourceController, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Subscriptions"/> class.</summary>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public Subscriptions(IClientResourceController clientResourceController, IServicesFramework servicesFramework)
         {
             this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
         }
 
         /// <summary>Gets or sets the module context.</summary>
@@ -86,7 +104,7 @@ namespace DotNetNuke.Modules.CoreMessaging
         {
             base.OnLoad(e);
 
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
 
             if (this.Request.IsAuthenticated)
             {

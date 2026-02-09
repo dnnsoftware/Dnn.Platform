@@ -35,11 +35,12 @@ namespace DotNetNuke.Admin.Containers
         private readonly IModuleControlPipeline moduleControlPipeline;
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IClientResourceController clientResourceController;
+        private readonly IServicesFramework servicesFramework;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleActions"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public ModuleActions()
-            : this(null, null, null, null)
+            : this(null, null, null, null, null)
         {
         }
 
@@ -49,7 +50,7 @@ namespace DotNetNuke.Admin.Containers
         /// <param name="clientResourceController">The client resources controller.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public ModuleActions(IModuleControlPipeline moduleControlPipeline, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
-            : this(null, moduleControlPipeline, javaScript, clientResourceController)
+            : this(null, moduleControlPipeline, javaScript, clientResourceController, null)
         {
         }
 
@@ -58,12 +59,14 @@ namespace DotNetNuke.Admin.Containers
         /// <param name="moduleControlPipeline">The module control pipeline.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
-        public ModuleActions(IEventLogger eventLogger, IModuleControlPipeline moduleControlPipeline, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public ModuleActions(IEventLogger eventLogger, IModuleControlPipeline moduleControlPipeline, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IServicesFramework servicesFramework)
             : base(eventLogger)
         {
             this.moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
             this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
             this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
         }
 
         protected string AdminText => Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile);
@@ -108,7 +111,7 @@ namespace DotNetNuke.Admin.Containers
             this.clientResourceController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
             this.clientResourceController.RegisterScript("~/admin/menus/ModuleActions/ModuleActions.js");
 
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
         }
 
         /// <inheritdoc />

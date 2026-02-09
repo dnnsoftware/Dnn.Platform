@@ -25,13 +25,14 @@ namespace DotNetNuke.UI.Modules.Html5
     {
         private readonly string html5File;
         private readonly IBusinessControllerProvider businessControllerProvider;
+        private readonly IServicesFramework servicesFramework;
         private string fileContent;
 
         /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
         /// <param name="html5File">The path to the HTML file.</param>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public Html5HostControl(string html5File)
-            : this(html5File, null)
+            : this(html5File, null, null)
         {
             this.html5File = html5File;
         }
@@ -39,10 +40,21 @@ namespace DotNetNuke.UI.Modules.Html5
         /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
         /// <param name="html5File">The path to the HTML file.</param>
         /// <param name="businessControllerProvider">The business controller provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public Html5HostControl(string html5File, IBusinessControllerProvider businessControllerProvider)
+            : this(html5File, businessControllerProvider, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
+        /// <param name="html5File">The path to the HTML file.</param>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public Html5HostControl(string html5File, IBusinessControllerProvider businessControllerProvider, IServicesFramework servicesFramework)
         {
             this.html5File = html5File;
             this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
         }
 
         /// <inheritdoc />
@@ -77,7 +89,7 @@ namespace DotNetNuke.UI.Modules.Html5
             }
 
             // Register for Services Framework
-            ServicesFramework.Instance.RequestAjaxScriptSupport();
+            this.servicesFramework.RequestAjaxScriptSupport();
         }
 
         /// <inheritdoc />

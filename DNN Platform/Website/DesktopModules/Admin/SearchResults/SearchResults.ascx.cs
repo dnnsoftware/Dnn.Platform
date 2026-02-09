@@ -32,10 +32,12 @@ namespace DotNetNuke.Modules.SearchResults
 
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IClientResourceController clientResourceController;
+        private readonly IServicesFramework servicesFramework;
         private IList<string> searchContentSources;
         private IList<int> searchPortalIds;
 
         /// <summary>Initializes a new instance of the <see cref="SearchResults"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public SearchResults()
             : this(null, null)
         {
@@ -44,10 +46,21 @@ namespace DotNetNuke.Modules.SearchResults
         /// <summary>Initializes a new instance of the <see cref="SearchResults"/> class.</summary>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public SearchResults(IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
+            : this(javaScript, clientResourceController, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SearchResults"/> class.</summary>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public SearchResults(IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IServicesFramework servicesFramework)
         {
             this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
             this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
         }
 
         protected string SearchTerm
@@ -360,7 +373,7 @@ namespace DotNetNuke.Modules.SearchResults
         {
             base.OnLoad(e);
 
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
             this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
             this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.searchBox.js");
             this.clientResourceController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnn.searchBox.css", Abstractions.ClientResources.FileOrder.Css.ModuleCss);

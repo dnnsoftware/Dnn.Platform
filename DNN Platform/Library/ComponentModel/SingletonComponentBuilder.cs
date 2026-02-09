@@ -9,15 +9,18 @@ namespace DotNetNuke.ComponentModel
 
     internal class SingletonComponentBuilder : IComponentBuilder
     {
+        private readonly IServiceProvider serviceProvider;
         private readonly Type type;
         private object instance;
 
         /// <summary>Initializes a new instance of the <see cref="SingletonComponentBuilder"/> class.</summary>
+        /// <param name="serviceProvider">The DI container scope.</param>
         /// <param name="name">The name of the component.</param>
         /// <param name="type">The type of the component.</param>
-        public SingletonComponentBuilder(string name, Type type)
+        public SingletonComponentBuilder(IServiceProvider serviceProvider, string name, Type type)
         {
             this.Name = name;
+            this.serviceProvider = serviceProvider;
             this.type = type;
         }
 
@@ -27,7 +30,7 @@ namespace DotNetNuke.ComponentModel
         /// <inheritdoc />
         public object BuildComponent()
         {
-            return this.instance ??= Reflection.CreateObject(this.type);
+            return this.instance ??= Reflection.CreateObject(this.serviceProvider, this.type);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.UI.WebControls.Extensions;
 
@@ -29,14 +30,15 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Initializes a new instance of the <see cref="DnnPortalPageDropDownList"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public DnnPortalPageDropDownList()
-            : this(null)
+            : this(Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>(), Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>())
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DnnPortalPageDropDownList"/> class.</summary>
         /// <param name="clientResourceController">The client resource controller.</param>
-        public DnnPortalPageDropDownList(IClientResourceController clientResourceController)
-            : base(clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>())
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public DnnPortalPageDropDownList(IClientResourceController clientResourceController, IServicesFramework servicesFramework)
+            : base(clientResourceController, servicesFramework)
         {
         }
 

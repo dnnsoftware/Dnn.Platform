@@ -62,12 +62,13 @@ namespace Dnn.EditBar.UI.Controllers
         private readonly IHostSettings hostSettings;
         private readonly IUserController userController;
         private readonly IHostSettingsService hostSettingsService;
+        private readonly IServicesFramework servicesFramework;
         private bool supportAjax = true;
 
         /// <summary>Initializes a new instance of the <see cref="ContentEditorManager"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public ContentEditorManager()
-            : this(null, null, null, null, null, null, null)
+            : this(null, null, null, null, null, null, null, null)
         {
         }
 
@@ -79,7 +80,8 @@ namespace Dnn.EditBar.UI.Controllers
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="userController">The user controller.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
-        public ContentEditorManager(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalController portalController, IHostSettings hostSettings, IUserController userController, IHostSettingsService hostSettingsService)
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public ContentEditorManager(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalController portalController, IHostSettings hostSettings, IUserController userController, IHostSettingsService hostSettingsService, IServicesFramework servicesFramework)
         {
             this.clientResourceController = clientResourceController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IClientResourceController>();
             this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
@@ -88,6 +90,7 @@ namespace Dnn.EditBar.UI.Controllers
             this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
             this.userController = userController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IUserController>();
             this.hostSettingsService = hostSettingsService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettingsService>();
+            this.servicesFramework = servicesFramework ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IServicesFramework>();
         }
 
         /// <summary>Gets or sets the skin.</summary>
@@ -346,7 +349,7 @@ namespace Dnn.EditBar.UI.Controllers
             this.clientResourceController.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleService.js"));
             this.clientResourceController.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ContentEditor.js"));
             this.clientResourceController.RegisterStylesheet(Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css"), (FileOrder.Css)CssFileOrder);
-            ServicesFramework.Instance.RequestAjaxScriptSupport();
+            this.servicesFramework.RequestAjaxScriptSupport();
 
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.DnnPlugins);
 
@@ -360,7 +363,7 @@ namespace Dnn.EditBar.UI.Controllers
         private void RegisterEditBarResources()
         {
             JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.jQuery);
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
 
             ClientAPI.RegisterClientVariable(this.Page, "editbar_isAdmin", this.IsAdmin().ToString(), true);
 

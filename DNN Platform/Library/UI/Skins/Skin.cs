@@ -80,6 +80,7 @@ namespace DotNetNuke.UI.Skins
         private readonly IHostSettings hostSettings;
         private readonly IHostSettingsService hostSettingsService;
         private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IServicesFramework servicesFramework;
         private readonly ModuleCommunicate communicator = new ModuleCommunicate();
         private ArrayList actionEventListeners;
         private Control controlPanel;
@@ -95,6 +96,7 @@ namespace DotNetNuke.UI.Skins
         /// <summary>Initializes a new instance of the <see cref="Skin"/> class.</summary>
         /// <param name="moduleControlPipeline">The module control pipeline.</param>
         /// <param name="navigationManager">The navigation manager.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public Skin(IModuleControlPipeline moduleControlPipeline, INavigationManager navigationManager)
             : this(moduleControlPipeline, navigationManager, null, null, null)
         {
@@ -106,6 +108,7 @@ namespace DotNetNuke.UI.Skins
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public Skin(IModuleControlPipeline moduleControlPipeline, INavigationManager navigationManager, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IJavaScriptLibraryHelper javaScript)
             : this(moduleControlPipeline, navigationManager, hostSettings, hostSettingsService, javaScript, null)
         {
@@ -118,7 +121,21 @@ namespace DotNetNuke.UI.Skins
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="moduleInjectionManager">The module injection manager.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         internal Skin(IModuleControlPipeline moduleControlPipeline, INavigationManager navigationManager, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IJavaScriptLibraryHelper javaScript, ModuleInjectionManager moduleInjectionManager)
+            : this(moduleControlPipeline, navigationManager, hostSettings, hostSettingsService, javaScript, moduleInjectionManager, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Skin"/> class.</summary>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="moduleInjectionManager">The module injection manager.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        internal Skin(IModuleControlPipeline moduleControlPipeline, INavigationManager navigationManager, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IJavaScriptLibraryHelper javaScript, ModuleInjectionManager moduleInjectionManager, IServicesFramework servicesFramework)
         {
             this.ModuleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
@@ -126,6 +143,7 @@ namespace DotNetNuke.UI.Skins
             this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
             this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
             this.moduleInjectionManager = moduleInjectionManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<ModuleInjectionManager>();
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
         }
 
         /// <summary>Gets a Dictionary of Panes.</summary>
@@ -524,8 +542,8 @@ namespace DotNetNuke.UI.Skins
 
                 if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                 {
-                    ServicesFramework.Instance.RequestAjaxScriptSupport();
-                    ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+                    this.servicesFramework.RequestAjaxScriptSupport();
+                    this.servicesFramework.RequestAjaxAntiForgerySupport();
 
                     this.javaScript.RequestRegistration(CommonJs.jQueryUI);
                     JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
@@ -552,7 +570,7 @@ namespace DotNetNuke.UI.Skins
                 AddPageMessage(this, string.Empty, HttpContextSource.Current.Items[OnInitMessage].ToString(), messageType, string.Empty);
 
                 this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
-                ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+                this.servicesFramework.RequestAjaxAntiForgerySupport();
             }
 
             // Process the Panes attributes

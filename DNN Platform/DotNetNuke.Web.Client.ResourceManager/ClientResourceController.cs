@@ -11,12 +11,16 @@ namespace DotNetNuke.Web.Client.ResourceManager
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Instrumentation;
 
     /// <inheritdoc />
     public class ClientResourceController : IClientResourceController
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClientResourceController));
         private readonly IHostSettings hostSettings;
         private readonly IApplicationStatusInfo appStatus;
+        private readonly Guid controllerId;
+        private bool hasBegunRendering;
 
         /// <summary>Initializes a new instance of the <see cref="ClientResourceController"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
@@ -34,6 +38,8 @@ namespace DotNetNuke.Web.Client.ResourceManager
             this.hostSettings = hostSettings;
             this.appStatus = appStatus;
             this.RegisterPathNameAlias("SharedScripts", "~/Resources/Shared/Scripts/");
+            this.controllerId = Guid.NewGuid();
+            Logger.Debug($"ClientResourceController initialized with ID {this.controllerId}");
         }
 
         private List<IFontResource> Fonts { get; set; } = [];
@@ -198,6 +204,8 @@ namespace DotNetNuke.Web.Client.ResourceManager
         /// <inheritdoc />
         public string RenderDependencies(ResourceType resourceType, string provider, string applicationPath)
         {
+            this.hasBegunRendering = true;
+            Logger.Debug($"Rendering dependencies for CRC id {this.controllerId} with ResourceType={resourceType}, Provider={provider}, ApplicationPath={applicationPath}. We have {this.Scripts.Count} scripts, {this.Stylesheets.Count} stylesheets and {this.Fonts.Count} fonts.");
             var sortedList = new List<IResource>();
             if (resourceType is ResourceType.Font or ResourceType.All)
             {
@@ -241,7 +249,12 @@ namespace DotNetNuke.Web.Client.ResourceManager
 
                     var ext = Path.GetExtension(resource.ResolvedPath);
                     var rtlResolvedPath = Path.ChangeExtension(resource.ResolvedPath, ".rtl" + ext);
-                    if (!File.Exists(this.appStatus.ApplicationMapPath + rtlResolvedPath))
+                    var cleanRtlResolvedPath = rtlResolvedPath.TrimStart('~').Replace("/", "\\");
+                    var physicalPath = Path.Combine(
+                        this.appStatus.ApplicationMapPath,
+                        cleanRtlResolvedPath.TrimStart('\\'));
+
+                    if (!File.Exists(physicalPath))
                     {
                         return resource;
                     }
@@ -259,6 +272,15 @@ namespace DotNetNuke.Web.Client.ResourceManager
             where T : IResource
         {
             resource.ResolvedPath = this.ResolvePath(resource.FilePath, resource.PathNameAlias);
+            Logger.Debug($"Adding resource {resource.ResolvedPath} to CRC id {this.controllerId} which currently has {resources.Count} resources");
+
+            if (this.hasBegunRendering)
+            {
+                Logger.Error($"Cannot add resource {resource.ResolvedPath} to CRC id {this.controllerId} because rendering has already begun");
+
+                ////throw new InvalidOperationException("Cannot add resources after rendering has begun.");
+            }
+
             resources.RemoveAll(l => string.Equals(l.ResolvedPath, resource.ResolvedPath, StringComparison.OrdinalIgnoreCase)); // remove any existing link with the same key (i.e. exactly the same resolved path)
             if (!string.IsNullOrEmpty(resource.Name))
             {

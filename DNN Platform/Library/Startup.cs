@@ -35,6 +35,7 @@ namespace DotNetNuke
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
@@ -108,6 +109,7 @@ namespace DotNetNuke
             services.AddTransient<ITabVersionBuilder, TabVersionBuilder>();
             services.AddTransient<ISearchController, SearchControllerImpl>();
             services.AddTransient<IFolderMappingController, FolderMappingController>(_ => new FolderMappingController());
+            services.AddTransient<IServicesFramework, ServicesFrameworkImpl>(ActivatorUtilities.GetServiceOrCreateInstance<ServicesFrameworkImpl>);
 
             // TODO: LocalizationProvider can be overridden via the ComponentFactory, need to be able to get an instance registered via ComponentFactory without creating a dependency loop
             services.AddTransient<ILocalizationProvider, LocalizationProvider>();
@@ -158,7 +160,7 @@ namespace DotNetNuke
                 var dataProvider = serviceProvider.GetRequiredService<DataProvider>();
                 var defaultConnectionStringName = dataProvider.Settings["connectionStringName"];
 
-                return new PetaPocoDataContext(defaultConnectionStringName, DataProvider.Instance().ObjectQualifier);
+                return new PetaPocoDataContext(defaultConnectionStringName, dataProvider.ObjectQualifier);
             });
 
             services.AddTransient<ModuleInjectionManager>();

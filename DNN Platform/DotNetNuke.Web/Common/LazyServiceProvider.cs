@@ -18,12 +18,7 @@ namespace DotNetNuke.Web.Common
         /// <inheritdoc />
         public object GetService(Type serviceType)
         {
-            if (this.serviceProvider is null)
-            {
-                throw new InvalidOperationException("Cannot resolve services until the service provider is built.");
-            }
-
-            return this.serviceProvider.GetService(serviceType);
+            return this.serviceProvider?.GetService(serviceType);
         }
 
         /// <summary>Sets the service provider.</summary>

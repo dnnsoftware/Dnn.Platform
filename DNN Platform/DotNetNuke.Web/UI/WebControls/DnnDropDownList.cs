@@ -31,6 +31,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private readonly Lazy<DnnDropDownListOptions> options = new Lazy<DnnDropDownListOptions>(() => new DnnDropDownListOptions());
         private readonly IClientResourceController clientResourceController;
+        private readonly IServicesFramework servicesFramework;
 
         private DnnGenericHiddenField<DnnDropDownListState> stateControl;
         private HtmlAnchor selectedValue;
@@ -38,15 +39,17 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Initializes a new instance of the <see cref="DnnDropDownList"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public DnnDropDownList()
-            : this(null)
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DnnDropDownList"/> class.</summary>
         /// <param name="clientResourceController">The client resource controller.</param>
-        public DnnDropDownList(IClientResourceController clientResourceController)
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public DnnDropDownList(IClientResourceController clientResourceController, IServicesFramework servicesFramework)
         {
             this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
         }
 
         /// <summary>Occurs when the selection from the list control changes between posts to the server.</summary>
@@ -261,7 +264,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
             this.StateControl.Value = string.Empty; // for state persistence (stateControl)
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
         }
 
         /// <inheritdoc />
