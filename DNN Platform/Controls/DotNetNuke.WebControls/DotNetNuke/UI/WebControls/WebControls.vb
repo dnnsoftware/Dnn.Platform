@@ -63,6 +63,7 @@ Namespace DotNetNuke.UI.WebControls
             End If
         End Sub
 
+        <CLSCompliant(false)>
         Public Shared Sub RegisterClientScriptBlock(ByVal ThePage As Page, ByVal Key As String, ByVal priority As FileOrder.Js)
             If ClientAPI.UseExternalScripts Then
                 ClientResourceManager.RegisterScript(ThePage, (ClientAPI.ScriptPath & Key), priority)
