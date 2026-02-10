@@ -5,6 +5,7 @@ namespace Dnn.PersonaBar.Servers.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -119,12 +120,12 @@ namespace Dnn.PersonaBar.Servers.Services
                     this.hostSettingsService.Update("SMTPServer", request.SmtpServer, false);
                     this.hostSettingsService.Update("SMTPConnectionLimit", request.SmtpConnectionLimit, false);
                     this.hostSettingsService.Update("SMTPMaxIdleTime", request.SmtpMaxIdleTime, false);
-                    this.hostSettingsService.Update("SMTPAuthentication", request.SmtpAuthentication.ToString(), false);
+                    this.hostSettingsService.Update("SMTPAuthentication", request.SmtpAuthentication.ToString(CultureInfo.InvariantCulture), false);
                     this.hostSettingsService.Update("SMTPUsername", request.SmtpUsername, false);
                     this.hostSettingsService.UpdateEncryptedString("SMTPPassword", request.SmtpPassword, Config.GetDecryptionkey());
                     this.hostSettingsService.Update("HostEmail", request.SmtpHostEmail);
                     this.hostSettingsService.Update("SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
-                    this.hostSettingsService.Update("MessageSchedulerBatchSize", request.MessageSchedulerBatchSize.ToString(), false);
+                    this.hostSettingsService.Update("MessageSchedulerBatchSize", request.MessageSchedulerBatchSize.ToString(CultureInfo.InvariantCulture), false);
 
                     // OAuth authentication
                     if (request.SmtpAuthentication == 3)
@@ -159,7 +160,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     PortalController.UpdatePortalSetting(
                         portalId,
                         "SMTPAuthentication",
-                        request.SmtpAuthentication.ToString(),
+                        request.SmtpAuthentication.ToString(CultureInfo.InvariantCulture),
                         false);
                     PortalController.UpdatePortalSetting(portalId, "SMTPUsername", request.SmtpUsername, false);
                     PortalController.UpdateEncryptedString(portalId, "SMTPPassword", request.SmtpPassword, Config.GetDecryptionkey());
@@ -229,27 +230,28 @@ namespace Dnn.PersonaBar.Servers.Services
                     string.Empty,
                     string.Empty,
                     request.SmtpServer,
-                    request.SmtpAuthentication.ToString(),
+                    request.SmtpAuthentication.ToString(CultureInfo.InvariantCulture),
                     request.SmtpUsername,
                     request.SmtpPassword,
                     request.EnableSmtpSsl,
                     request.AuthProvider);
 
                 var success = string.IsNullOrEmpty(errMessage);
-                return this.Request.CreateResponse(success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new
-                {
-                    success,
-                    errMessage,
-                    confirmationMessage =
-                        success
-                            ? string.Format(
-                                Localization.GetString(
-                                    "EmailSentMessage",
-                                    Components.Constants.ServersResourcersPath),
-                                mailFrom,
-                                mailTo)
-                            : Localization.GetString("errorMessageSendingTestEmail"),
-                });
+                return this.Request.CreateResponse(
+                    success ? HttpStatusCode.OK : HttpStatusCode.BadRequest,
+                    new
+                    {
+                        success,
+                        errMessage,
+                        confirmationMessage =
+                            success
+                                ? string.Format(
+                                    CultureInfo.CurrentCulture,
+                                    Localization.GetString("EmailSentMessage", Components.Constants.ServersResourcersPath),
+                                    mailFrom,
+                                    mailTo)
+                                : Localization.GetString("errorMessageSendingTestEmail"),
+                    });
             }
             catch (Exception exc)
             {

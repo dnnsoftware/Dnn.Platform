@@ -38,12 +38,12 @@ namespace DotNetNuke.Tests.Data
             var provider1 = DatabaseConnectionProvider.Instance();
             var provider2 = DatabaseConnectionProvider.Instance();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(provider1, Is.InstanceOf<DatabaseConnectionProvider>());
                 Assert.That(provider2, Is.InstanceOf<DatabaseConnectionProvider>());
-            });
+            }
             Assert.That(provider2, Is.SameAs(provider1));
         }
     }

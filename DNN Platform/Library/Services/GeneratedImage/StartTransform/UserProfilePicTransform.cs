@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     using System.Diagnostics.CodeAnalysis;
     using System.Drawing;
     using System.Drawing.Drawing2D;
+    using System.Globalization;
     using System.IO;
 
     using DotNetNuke.Common;
@@ -92,7 +93,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
             if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
             {
-                photoFile = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
+                photoFile = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue, CultureInfo.InvariantCulture));
                 if (photoFile == null)
                 {
                     isVisible = false;
@@ -108,7 +109,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
         private static bool IsImageExtension(string extension)
         {
-            if (!extension.StartsWith("."))
+            if (!extension.StartsWith(".", StringComparison.Ordinal))
             {
                 extension = $".{extension}";
             }

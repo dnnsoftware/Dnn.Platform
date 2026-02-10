@@ -4,6 +4,7 @@
 namespace Dnn.ExportImport.Components.Services
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
 
@@ -11,30 +12,51 @@ namespace Dnn.ExportImport.Components.Services
     using Dnn.ExportImport.Components.Dto;
     using Dnn.ExportImport.Components.Entities;
     using Dnn.ExportImport.Dto.PageTemplates;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.FileSystem;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Newtonsoft.Json;
 
     using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
+    /// <summary>An export service for templates.</summary>
     public class PageTemplatesExportService : AssetsExportService
     {
-        private readonly string templatesFolder =
-            $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipTemplates}";
+        private readonly string templatesFolder;
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="PageTemplatesExportService"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        public PageTemplatesExportService()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PageTemplatesExportService"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        public PageTemplatesExportService(IApplicationStatusInfo appStatus)
+            : base(appStatus)
+        {
+            appStatus ??= Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.templatesFolder = $"{appStatus.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipTemplates}";
+        }
+
+        /// <inheritdoc />
         public override string Category => Constants.Category_Templates;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ParentCategory => null;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override uint Priority => 10;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckCancelled(exportJob))
@@ -55,7 +77,7 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = exportJob.PortalId;
             try
             {
-                var templatesFile = string.Format(this.templatesFolder, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
+                var templatesFile = string.Format(CultureInfo.InvariantCulture, this.templatesFolder, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
                 if (this.CheckPoint.Stage == 0)
                 {
@@ -83,7 +105,7 @@ namespace Dnn.ExportImport.Components.Services
                         this.Repository.CreateItem(template, null);
                         totalTemplatesExported += 1;
                         var folderOffset = portal.HomeDirectoryMapPath.Length +
-                                           (portal.HomeDirectoryMapPath.EndsWith("\\") ? 0 : 1);
+                                           (portal.HomeDirectoryMapPath.EndsWith(@"\", StringComparison.Ordinal) ? 0 : 1);
 
                         var folder = FolderManager.Instance.GetFolder(template.FolderId);
                         CompressionUtil.AddFileToArchive(
@@ -110,13 +132,13 @@ namespace Dnn.ExportImport.Components.Services
             }
             finally
             {
-                this.CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
+                this.CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex, }) : null;
                 this.CheckPointStageCallback(this);
-                this.Result.AddSummary("Exported Templates", totalTemplatesExported.ToString());
+                this.Result.AddSummary("Exported Templates", totalTemplatesExported.ToString(CultureInfo.InvariantCulture));
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob))
@@ -131,7 +153,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             var portalId = importJob.PortalId;
-            var templatesFile = string.Format(this.templatesFolder, importJob.Directory.TrimEnd('\\').TrimEnd('/'));
+            var templatesFile = string.Format(CultureInfo.InvariantCulture, this.templatesFolder, importJob.Directory.TrimEnd('\\').TrimEnd('/'));
             var totalTemplates = this.GetImportTotal();
 
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalTemplates : this.CheckPoint.TotalItems;
@@ -160,7 +182,7 @@ namespace Dnn.ExportImport.Components.Services
                         portal.HomeDirectoryMapPath,
                         importDto.CollisionResolution == CollisionResolution.Overwrite);
 
-                    this.Result.AddSummary("Imported templates", totalTemplates.ToString());
+                    this.Result.AddSummary("Imported templates", totalTemplates.ToString(CultureInfo.InvariantCulture));
                     this.CheckPoint.Stage++;
                     this.CheckPoint.StageData = null;
                     this.CheckPoint.Progress = 90;
@@ -185,7 +207,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportPageTemplate>();

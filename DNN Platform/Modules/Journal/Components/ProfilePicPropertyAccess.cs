@@ -21,12 +21,12 @@ namespace DotNetNuke.Modules.Journal.Components
             this.userId = userId;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CacheLevel Cacheability => CacheLevel.notCacheable;
 
         public int Size { get; set; } = 32;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             if (propertyName.ToLowerInvariant() == "relativeurl")

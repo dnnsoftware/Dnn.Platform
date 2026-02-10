@@ -4,6 +4,8 @@
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
+    using System.Globalization;
+
     using Dnn.PersonaBar.Library.Helper;
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -46,7 +48,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             this.contentVerifier = contentVerifier;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int PageId { get; set; }
@@ -55,7 +57,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
         private int ParentId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.PageId = this.GetFlagValue(FlagId, "Page Id", -1, false, true);
@@ -67,11 +69,11 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             TabInfo tab;
-            string message = string.Format(this.LocalizeString("PageNotFound"), this.PageId);
+            string message = string.Format(CultureInfo.CurrentCulture, this.LocalizeString("PageNotFound"), this.PageId);
 
             if (this.PageId > 0)
             {
@@ -89,7 +91,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
                 if (tab == null)
                 {
-                    message = string.Format(this.LocalizeString("PageNotFoundWithName"), this.PageName);
+                    message = string.Format(CultureInfo.CurrentCulture, this.LocalizeString("PageNotFoundWithName"), this.PageName);
                     return new ConsoleErrorResultModel(message);
                 }
             }
@@ -108,6 +110,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             if (string.IsNullOrEmpty(message))
             {
                 var successMessage = string.Format(
+                    CultureInfo.CurrentCulture,
                     this.LocalizeString("Prompt_PageRestoredSuccessfully"),
                     tab.TabID,
                     tab.TabName);

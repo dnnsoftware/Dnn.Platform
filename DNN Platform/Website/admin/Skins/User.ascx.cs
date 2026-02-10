@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Web;
 
     using DotNetNuke.Abstractions;
@@ -70,7 +71,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>Gets or sets a value indicating whether set this to true to show in custom 404/500 page.</summary>
         public bool ShowInErrorPage { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -78,7 +79,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.Visible = !this.PortalSettings.InErrorPageRequest() || this.ShowInErrorPage;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -180,8 +181,8 @@ namespace DotNetNuke.UI.Skins.Controls
                             var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(userInfo.UserID, PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, userInfo.PortalID));
                             var unreadAlerts = NotificationsController.Instance.CountNotifications(userInfo.UserID, PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, userInfo.PortalID));
 
-                            this.messageLink.Text = unreadMessages > 0 ? string.Format(Localization.GetString("Messages", Localization.GetResourceFile(this, MyFileName)), unreadMessages) : Localization.GetString("NoMessages", Localization.GetResourceFile(this, MyFileName));
-                            this.notificationLink.Text = unreadAlerts > 0 ? string.Format(Localization.GetString("Notifications", Localization.GetResourceFile(this, MyFileName)), unreadAlerts) : Localization.GetString("NoNotifications", Localization.GetResourceFile(this, MyFileName));
+                            this.messageLink.Text = unreadMessages > 0 ? string.Format(CultureInfo.CurrentCulture, Localization.GetString("Messages", Localization.GetResourceFile(this, MyFileName)), unreadMessages) : Localization.GetString("NoMessages", Localization.GetResourceFile(this, MyFileName));
+                            this.notificationLink.Text = unreadAlerts > 0 ? string.Format(CultureInfo.CurrentCulture, Localization.GetString("Notifications", Localization.GetResourceFile(this, MyFileName)), unreadAlerts) : Localization.GetString("NoNotifications", Localization.GetResourceFile(this, MyFileName));
 
                             this.messageLink.NavigateUrl = this.navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, $"userId={userInfo.UserID}");
                             this.notificationLink.NavigateUrl = this.navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, $"userId={userInfo.UserID}", "view=notifications", "action=notifications");
@@ -192,7 +193,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                             if (this.LegacyMode && unreadMessages > 0)
                             {
-                                this.registerLink.Text = this.registerLink.Text + string.Format(Localization.GetString("NewMessages", Localization.GetResourceFile(this, MyFileName)), unreadMessages);
+                                this.registerLink.Text = this.registerLink.Text + string.Format(CultureInfo.CurrentCulture, Localization.GetString("NewMessages", Localization.GetResourceFile(this, MyFileName)), unreadMessages);
                             }
                         }
                         else

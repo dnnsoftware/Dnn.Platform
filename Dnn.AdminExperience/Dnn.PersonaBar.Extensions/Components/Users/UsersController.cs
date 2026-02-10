@@ -6,6 +6,8 @@ namespace Dnn.PersonaBar.Users.Components
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Threading;
@@ -34,7 +36,7 @@ namespace Dnn.PersonaBar.Users.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Services.UsersController));
 
-        private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        private static PortalSettings PortalSettings => PortalSettings.Current;
 
         public static UserInfo GetUser(int userId, PortalSettings portalSettings, UserInfo userInfo, out KeyValuePair<HttpStatusCode, string> response)
         {
@@ -71,13 +73,13 @@ namespace Dnn.PersonaBar.Users.Components
             return user.IsSuperUser || user.IsInRole(portalSettings.AdministratorRoleName);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
         {
             return this.GetUsersFromDb(usersContract, isSuperUser, out totalRecords) ?? new List<UserBasicDto>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<KeyValuePair<string, int>> GetUserFilters(bool isSuperUser = false)
         {
             var userFilters = new List<KeyValuePair<string, int>>();
@@ -85,26 +87,26 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 userFilters.Add(
                     new KeyValuePair<string, int>(
-                        Localization.GetString(Convert.ToString(filter), Constants.LocalResourcesFile), (int)filter));
+                        Localization.GetString(Convert.ToString(filter, CultureInfo.InvariantCulture), Constants.LocalResourcesFile), (int)filter));
             }
 
             if (!isSuperUser)
             {
-                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.SuperUsers)));
+                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == (int)UserFilters.SuperUsers));
             }
 
             if (!PortalSettings.DataConsentActive)
             {
-                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.HasAgreedToTerms)));
-                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.HasNotAgreedToTerms)));
-                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.RequestedRemoval)));
+                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == (int)UserFilters.HasAgreedToTerms));
+                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == (int)UserFilters.HasNotAgreedToTerms));
+                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == (int)UserFilters.RequestedRemoval));
             }
 
-            userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.RegisteredUsers))); // Temporarily removed registered users.
+            userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == (int)UserFilters.RegisteredUsers)); // Temporarily removed registered users.
             return userFilters;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public UserDetailDto GetUserDetail(int portalId, int userId)
         {
             var user = UserController.Instance.GetUserById(portalId, userId);
@@ -117,7 +119,7 @@ namespace Dnn.PersonaBar.Users.Components
             return new UserDetailDto(user);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool ChangePassword(int portalId, int userId, string newPassword)
         {
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
@@ -182,7 +184,8 @@ namespace Dnn.PersonaBar.Users.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto, int requestPortalId = -1)
         {
             int portalId = PortalSettings.PortalId;
@@ -252,7 +255,7 @@ namespace Dnn.PersonaBar.Users.Components
                 UserBasicDto.FromUserInfo(UserController.Instance.GetUser(requestPortalSettings.PortalId, userBasicDto.UserId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public UserRoleDto SaveUserRole(int portalId, UserInfo currentUserInfo, UserRoleDto userRoleDto, bool notifyUser, bool isOwner)
         {
             PortalSettings portalSettings = PortalSettings;
@@ -302,7 +305,7 @@ namespace Dnn.PersonaBar.Users.Components
             throw new SecurityException(Localization.GetString("InSufficientPermissions", Constants.LocalResourcesFile));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool ForceChangePassword(UserInfo userInfo, int portalId, bool notify)
         {
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
@@ -321,7 +324,7 @@ namespace Dnn.PersonaBar.Users.Components
             return false;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddUserToRoles(UserInfo currentUserInfo, int userId, int portalId, string roleNames, string roleDelimiter = ",", DateTime? effectiveDate = null, DateTime? expiryDate = null)
         {
             var effDate = effectiveDate.GetValueOrDefault(Null.NullDate);
@@ -350,7 +353,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<UserRoleInfo> GetUserRoles(UserInfo user, string keyword, out int total, int pageIndex = -1, int pageSize = -1)
         {
             var roles = RoleController.Instance.GetUserRoles(user, true);
@@ -364,7 +367,7 @@ namespace Dnn.PersonaBar.Users.Components
             return pageIndex == -1 ? roles : roles.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<UserInfo> GetUsersInRole(PortalSettings portalSettings, string roleName, out int total, out KeyValuePair<HttpStatusCode, string> message, int pageIndex = -1, int pageSize = -1)
         {
             message = default(KeyValuePair<HttpStatusCode, string>);
@@ -388,7 +391,7 @@ namespace Dnn.PersonaBar.Users.Components
             return users.Skip(startIndex).Take(pageSize);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateAuthorizeStatus(UserInfo userInfo, int portalId, bool authorized)
         {
             userInfo.Membership.Approved = authorized;
@@ -412,7 +415,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IUsersController> GetFactory()
         {
             return () => new UsersController();
@@ -549,7 +552,7 @@ namespace Dnn.PersonaBar.Users.Components
                     {
                         IList<UserInfo> userInfos = RoleController.Instance.GetUsersByRole(
                             portalId,
-                            PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleName);
+                            PortalController.Instance.GetCurrentSettings().RegisteredRoleName);
                         if (!isSuperUser)
                         {
                             userInfos = (IList<UserInfo>)userInfos?.Where(x => !x.IsSuperUser);

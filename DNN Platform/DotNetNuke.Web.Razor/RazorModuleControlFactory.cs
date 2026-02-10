@@ -14,29 +14,29 @@ namespace DotNetNuke.Web.Razor
     [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class RazorModuleControlFactory : BaseModuleControlFactory
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Priority => 100;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsControl(ModuleInfo moduleConfiguration, string controlSrc)
         {
             return controlSrc.EndsWith(".cshtml", StringComparison.OrdinalIgnoreCase) ||
                    controlSrc.EndsWith(".vbhtml", StringComparison.OrdinalIgnoreCase);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
             return new RazorHostControl("~/" + controlSrc);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             return this.CreateControl(containerControl, string.Empty, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             return this.CreateControl(containerControl, string.Empty, controlSrc);

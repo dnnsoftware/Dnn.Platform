@@ -79,9 +79,9 @@ namespace DotNetNuke.Tests.Utilities.Mocks
             return CreateNew<EventLogController>();
         }
 
-        public static Mock<DataProvider> CreateDataProvider()
+        public static Mock<DataProvider> CreateDataProvider(IApplicationStatusInfo appStatus = null)
         {
-            return CreateNew<DataProvider>();
+            return CreateNew<DataProvider>(appStatus ?? Mock.Of<IApplicationStatusInfo>());
         }
 
         public static Mock<FolderProvider> CreateFolderProvider(string name)

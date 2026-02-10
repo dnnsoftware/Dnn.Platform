@@ -66,16 +66,16 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
         /// <summary>Gets the URL format.</summary>
         public UrlFormatType UrlFormat { get; private set; } = UrlFormatType.SearchFriendly;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string FriendlyUrl(TabInfo tab, string path) => this.providerInstance.FriendlyUrl(tab, path);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string FriendlyUrl(TabInfo tab, string path, string pageName) => this.providerInstance.FriendlyUrl(tab, path, pageName);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings) => this.providerInstance.FriendlyUrl(tab, path, pageName, settings);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias) => this.providerInstance.FriendlyUrl(tab, path, pageName, portalAlias);
     }
 }

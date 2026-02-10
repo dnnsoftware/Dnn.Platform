@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.Search.Controllers
     using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web.Caching;
 
@@ -55,7 +56,7 @@ namespace DotNetNuke.Services.Search.Controllers
             this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool HasViewPermission(SearchResult searchResult)
         {
             var viewable = false;
@@ -105,7 +106,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         // Returns the URL to the first instance of the module the user has access to view
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string GetDocUrl(SearchResult searchResult)
         {
             if (!string.IsNullOrEmpty(searchResult.Url))
@@ -147,13 +148,13 @@ namespace DotNetNuke.Services.Search.Controllers
             return url;
         }
 
-        private static ArrayList GetModuleTabs(int moduleID)
+        private static ArrayList GetModuleTabs(int moduleId)
         {
-            // no manual clearing of the cache exists; let is just expire
-            var cacheKey = string.Format(ModuleByIdCacheKey, moduleID);
+            // no manual clearing of the cache exists; let it just expire
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, ModuleByIdCacheKey, moduleId);
             return CBO.GetCachedObject<ArrayList>(
-                new CacheItemArgs(cacheKey, ModuleByIdCacheTimeOut, ModuleByIdCachePriority, moduleID),
-                (args) => CBO.FillCollection(DataProvider.Instance().GetModule(moduleID, Null.NullInteger), typeof(ModuleInfo)));
+                new CacheItemArgs(cacheKey, ModuleByIdCacheTimeOut, ModuleByIdCachePriority, moduleId),
+                (args) => CBO.FillCollection(DataProvider.Instance().GetModule(moduleId, Null.NullInteger), typeof(ModuleInfo)));
         }
 
         private static bool ModuleIsAvailable(TabInfo tab, ModuleInfo module)

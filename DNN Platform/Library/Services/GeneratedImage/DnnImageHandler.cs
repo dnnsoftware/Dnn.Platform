@@ -17,6 +17,7 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Web;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -45,22 +46,34 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private readonly IServiceProvider serviceProvider;
         private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalAliasService portalAliasService;
         private string defaultImageFile = string.Empty;
 
         /// <summary>Initializes a new instance of the <see cref="DnnImageHandler"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public DnnImageHandler()
-            : this(Globals.GetCurrentServiceProvider(), null)
+            : this(Globals.GetCurrentServiceProvider(), null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DnnImageHandler"/> class.</summary>
         /// <param name="serviceProvider">The DI container.</param>
         /// <param name="appStatus">The application status.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public DnnImageHandler(IServiceProvider serviceProvider, IApplicationStatusInfo appStatus)
+            : this(serviceProvider, appStatus, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnImageHandler"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        public DnnImageHandler(IServiceProvider serviceProvider, IApplicationStatusInfo appStatus, IPortalAliasService portalAliasService)
         {
             this.serviceProvider = serviceProvider;
             this.appStatus = appStatus ?? serviceProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.portalAliasService = portalAliasService ?? serviceProvider.GetRequiredService<IPortalAliasService>();
 
             // Set default settings here
             this.EnableClientCache = true;
@@ -119,7 +132,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         // Add image generation logic here and return an instance of ImageInfo
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ImageInfo GenerateImage(NameValueCollection parameters)
         {
             SetupCulture();
@@ -131,11 +144,11 @@ namespace DotNetNuke.Services.GeneratedImage
             string format = string.IsNullOrEmpty(parameters["format"]) ? "jpg" : parameters["format"].ToLowerInvariant();
 
             // Lets retrieve the color
-            Color color = string.IsNullOrEmpty(parameters["color"]) ? Color.White : (parameters["color"].StartsWith("#") ? ColorTranslator.FromHtml(parameters["color"]) : Color.FromName(parameters["color"]));
-            Color backColor = string.IsNullOrEmpty(parameters["backcolor"]) ? Color.White : (parameters["backcolor"].StartsWith("#") ? ColorTranslator.FromHtml(parameters["backcolor"]) : Color.FromName(parameters["backcolor"]));
+            Color color = string.IsNullOrEmpty(parameters["color"]) ? Color.White : (parameters["color"].StartsWith("#", StringComparison.Ordinal) ? ColorTranslator.FromHtml(parameters["color"]) : Color.FromName(parameters["color"]));
+            Color backColor = string.IsNullOrEmpty(parameters["backcolor"]) ? Color.White : (parameters["backcolor"].StartsWith("#", StringComparison.Ordinal) ? ColorTranslator.FromHtml(parameters["backcolor"]) : Color.FromName(parameters["backcolor"]));
 
             // Do we have a border ?
-            int border = string.IsNullOrEmpty(parameters["border"]) ? 0 : Convert.ToInt32(parameters["border"]);
+            int border = string.IsNullOrEmpty(parameters["border"]) ? 0 : Convert.ToInt32(parameters["border"], CultureInfo.InvariantCulture);
 
             // Do we have a resizemode defined ?
             var resizeMode = string.IsNullOrEmpty(parameters["resizemode"]) ? ImageResizeMode.Fit : (ImageResizeMode)Enum.Parse(typeof(ImageResizeMode), parameters["ResizeMode"], true);
@@ -215,7 +228,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         var secureFileTrans = new SecureFileTransform();
                         if (!string.IsNullOrEmpty(parameters["FileId"]))
                         {
-                            var fileId = Convert.ToInt32(parameters["FileId"]);
+                            var fileId = Convert.ToInt32(parameters["FileId"], CultureInfo.InvariantCulture);
                             var file = FileManager.Instance.GetFile(fileId);
                             if (file == null)
                             {
@@ -258,9 +271,8 @@ namespace DotNetNuke.Services.GeneratedImage
                             var url = parameters["Url"];
 
                             // allow only site resources when using the url parameter
-                            IPortalAliasController portalAliasController = PortalAliasController.Instance;
-                            var uriValidator = new UriValidator(portalAliasController);
-                            if (!url.StartsWith("http") || !uriValidator.UriBelongsToSite(new Uri(url)))
+                            var uriValidator = new UriValidator(this.portalAliasService);
+                            if (!url.StartsWith("http", StringComparison.OrdinalIgnoreCase) || !uriValidator.UriBelongsToSite(new Uri(url)))
                             {
                                 return this.GetEmptyImageInfo();
                             }
@@ -316,7 +328,7 @@ namespace DotNetNuke.Services.GeneratedImage
                                         switch (pi.PropertyType.Name)
                                         {
                                             case "Int32":
-                                                pi.SetValue(imageTransform, Convert.ToInt32(parameters[key]), null);
+                                                pi.SetValue(imageTransform, Convert.ToInt32(parameters[key], CultureInfo.InvariantCulture), null);
                                                 break;
                                             case "String":
                                                 pi.SetValue(imageTransform, parameters[key], null);
@@ -479,7 +491,7 @@ namespace DotNetNuke.Services.GeneratedImage
             var normalizeFilePath = NormalizeFilePath(filePath.Trim());
 
             // Resources file cannot be served
-            if (filePath.EndsWith(".resources"))
+            if (filePath.EndsWith(".resources", StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
@@ -490,8 +502,8 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private static string NormalizeFilePath(string filePath)
         {
-            var normalizeFilePath = filePath.Replace("\\", "/");
-            if (!normalizeFilePath.StartsWith("/"))
+            var normalizeFilePath = filePath.Replace(@"\", "/");
+            if (!normalizeFilePath.StartsWith("/", StringComparison.Ordinal))
             {
                 normalizeFilePath = "/" + normalizeFilePath;
             }
@@ -547,7 +559,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private static void SetupCulture()
         {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalSettings.Current;
             if (settings == null)
             {
                 return;
@@ -584,37 +596,37 @@ namespace DotNetNuke.Services.GeneratedImage
                 switch (name)
                 {
                     case "enableclientcache":
-                        this.EnableClientCache = Convert.ToBoolean(setting[1]);
+                        this.EnableClientCache = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "clientcacheexpiration":
-                        this.ClientCacheExpiration = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        this.ClientCacheExpiration = TimeSpan.FromSeconds(Convert.ToInt32(setting[1], CultureInfo.InvariantCulture));
                         break;
                     case "enableservercache":
-                        this.EnableServerCache = Convert.ToBoolean(setting[1]);
+                        this.EnableServerCache = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "servercacheexpiration":
-                        DiskImageStore.PurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        DiskImageStore.PurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1], CultureInfo.InvariantCulture));
                         break;
                     case "allowstandalone":
-                        this.AllowStandalone = Convert.ToBoolean(setting[1]);
+                        this.AllowStandalone = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "logsecurity":
-                        this.LogSecurity = Convert.ToBoolean(setting[1]);
+                        this.LogSecurity = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "imagecompression":
-                        this.ImageCompression = Convert.ToInt32(setting[1]);
+                        this.ImageCompression = Convert.ToInt32(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "alloweddomains":
                         this.AllowedDomains = setting[1].Split(',');
                         break;
                     case "enableipcount":
-                        this.EnableIPCount = Convert.ToBoolean(setting[1]);
+                        this.EnableIPCount = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "ipcountmax":
-                        this.IPCountMaxCount = Convert.ToInt32(setting[1]);
+                        this.IPCountMaxCount = Convert.ToInt32(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "ipcountpurgeinterval":
-                        this.IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        this.IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1], CultureInfo.InvariantCulture));
                         break;
                 }
             }

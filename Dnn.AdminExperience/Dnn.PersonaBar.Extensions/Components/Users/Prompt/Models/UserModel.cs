@@ -13,6 +13,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
     {
         // provide a default field order for use of callers
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public static new readonly string[] FieldOrder =
         [
             "UserId",

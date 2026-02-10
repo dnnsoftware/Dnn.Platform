@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Prompt
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
 
@@ -17,10 +18,10 @@ namespace DotNetNuke.Prompt
     /// <summary>The implementation of a Prompt command.</summary>
     public abstract class ConsoleCommand : IConsoleCommand
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract string LocalResourceFile { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ValidationMessage { get; private set; }
 
         /// <summary>Gets the result html.</summary>
@@ -47,7 +48,7 @@ namespace DotNetNuke.Prompt
         private static ISerializationManager SerializationManager =>
             Common.Globals.GetCurrentServiceProvider().GetRequiredService<ISerializationManager>();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
         {
             this.Args = args;
@@ -59,10 +60,10 @@ namespace DotNetNuke.Prompt
             this.ParseFlags();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract IConsoleResultModel Run();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual bool IsValid()
         {
             return string.IsNullOrEmpty(this.ValidationMessage);
@@ -90,7 +91,7 @@ namespace DotNetNuke.Prompt
         protected void ParseParameters<T>(T myCommand)
             where T : class, new()
         {
-            // LoadMapping();
+            ////LoadMapping();
             var mpg = this.CreateMapping();
             mpg.ForEach(mapping =>
             {
@@ -124,7 +125,7 @@ namespace DotNetNuke.Prompt
                 return string.Empty;
             }
 
-            if (flagName.StartsWith("--"))
+            if (flagName.StartsWith("--", StringComparison.Ordinal))
             {
                 flagName = flagName.Substring(2);
             }
@@ -139,7 +140,7 @@ namespace DotNetNuke.Prompt
             // loop through arguments, skipping the first one (the command)
             for (var i = 1; i <= this.Args.Length - 1; i++)
             {
-                if (!this.Args[i].StartsWith("--"))
+                if (!this.Args[i].StartsWith("--", StringComparison.Ordinal))
                 {
                     continue;
                 }
@@ -151,7 +152,7 @@ namespace DotNetNuke.Prompt
                 {
                     if (!string.IsNullOrEmpty(this.Args[i + 1]))
                     {
-                        if (this.Args[i + 1].StartsWith("--"))
+                        if (this.Args[i + 1].StartsWith("--", StringComparison.Ordinal))
                         {
                             // next value is another flag, so this flag has no value
                             flagValue = string.Empty;

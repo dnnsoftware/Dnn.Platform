@@ -5,10 +5,12 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -20,12 +22,18 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
-    /// <summary>  The FilePicker Class provides a File Picker Control for DotNetNuke.</summary>
+    /// <summary>The FilePicker Class provides a File Picker Control for DotNetNuke.</summary>
     public class DnnFilePicker : CompositeControl, ILocalizable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DnnFilePicker));
+        private readonly IHostSettings hostSettings;
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalGroupController portalGroupController;
 
         private Panel pnlContainer;
         private Panel pnlLeftDiv;
@@ -48,6 +56,26 @@ namespace DotNetNuke.Web.UI.WebControls
         private Image imgPreview;
         private bool localize = true;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnFilePicker"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public DnnFilePicker()
+            : this(null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnFilePicker"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        public DnnFilePicker(IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+        }
+
         /// <summary>  Represents a possible mode for the File Control.</summary>
         protected enum FileControlMode
         {
@@ -61,20 +89,20 @@ namespace DotNetNuke.Web.UI.WebControls
             Preview = 2,
         }
 
+        /// <summary>Gets or sets the maximum height in pixels.</summary>
         public int MaxHeight { get; set; } = 100;
 
+        /// <summary>Gets or sets the maximum width in pixels.</summary>
         public int MaxWidth { get; set; } = 135;
 
-        /// <summary>  Gets or sets the class to be used for the Labels.</summary>
-        /// <remarks>
-        ///   Defaults to 'CommandButton'.
-        /// </remarks>
+        /// <summary>Gets or sets the class to be used for the Labels.</summary>
+        /// <remarks>Defaults to 'CommandButton'.</remarks>
         /// <value>A String.</value>
         public string CommandCssClass
         {
             get
             {
-                var cssClass = Convert.ToString(this.ViewState["CommandCssClass"]);
+                var cssClass = Convert.ToString(this.ViewState["CommandCssClass"], CultureInfo.InvariantCulture);
                 return string.IsNullOrEmpty(cssClass) ? "dnnSecondaryAction" : cssClass;
             }
 
@@ -84,22 +112,13 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>  Gets or sets the file Filter to use.</summary>
-        /// <remarks>
-        ///   Defaults to ''.
-        /// </remarks>
-        /// <value>a comma seperated list of file extensions no wildcards or periods e.g. "jpg,png,gif".</value>
+        /// <summary>Gets or sets the file Filter to use.</summary>
+        /// <remarks>Defaults to <see cref="string.Empty"/>.</remarks>
+        /// <value>a comma separated list of file extensions no wildcards or periods e.g. "jpg,png,gif".</value>
         public string FileFilter
         {
-            get
-            {
-                return this.ViewState["FileFilter"] != null ? (string)this.ViewState["FileFilter"] : string.Empty;
-            }
-
-            set
-            {
-                this.ViewState["FileFilter"] = value;
-            }
+            get => this.ViewState["FileFilter"] != null ? (string)this.ViewState["FileFilter"] : string.Empty;
+            set => this.ViewState["FileFilter"] = value;
         }
 
         /// <summary>  Gets or sets the FileID for the control.</summary>
@@ -115,13 +134,13 @@ namespace DotNetNuke.Web.UI.WebControls
                     var fileId = Null.NullInteger;
                     if (this.cboFiles.SelectedItem != null)
                     {
-                        fileId = int.Parse(this.cboFiles.SelectedItem.Value);
+                        fileId = int.Parse(this.cboFiles.SelectedItem.Value, CultureInfo.InvariantCulture);
                     }
 
                     this.ViewState["FileID"] = fileId;
                 }
 
-                return Convert.ToInt32(this.ViewState["FileID"]);
+                return Convert.ToInt32(this.ViewState["FileID"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -139,37 +158,21 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>  Gets or sets the FilePath for the control.</summary>
+        /// <summary>Gets or sets the FilePath for the control.</summary>
         /// <value>A String.</value>
         public string FilePath
         {
-            get
-            {
-                return Convert.ToString(this.ViewState["FilePath"]);
-            }
-
-            set
-            {
-                this.ViewState["FilePath"] = value;
-            }
+            get => Convert.ToString(this.ViewState["FilePath"], CultureInfo.InvariantCulture);
+            set => this.ViewState["FilePath"] = value;
         }
 
-        /// <summary>  Gets or sets a value indicating whether to Include Personal Folder.</summary>
-        /// <remarks>
-        ///   Defaults to false.
-        /// </remarks>
+        /// <summary>Gets or sets a value indicating whether to Include Personal Folder.</summary>
+        /// <remarks>Defaults to <see langword="false"/>.</remarks>
         /// <value>A Boolean.</value>
         public bool UsePersonalFolder
         {
-            get
-            {
-                return this.ViewState["UsePersonalFolder"] != null && Convert.ToBoolean(this.ViewState["UsePersonalFolder"]);
-            }
-
-            set
-            {
-                this.ViewState["UsePersonalFolder"] = value;
-            }
+            get => this.ViewState["UsePersonalFolder"] != null && Convert.ToBoolean(this.ViewState["UsePersonalFolder"], CultureInfo.InvariantCulture);
+            set => this.ViewState["UsePersonalFolder"] = value;
         }
 
         /// <summary>  Gets or sets the class to be used for the Labels.</summary>
@@ -178,7 +181,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                var cssClass = Convert.ToString(this.ViewState["LabelCssClass"]);
+                var cssClass = Convert.ToString(this.ViewState["LabelCssClass"], CultureInfo.InvariantCulture);
                 return string.IsNullOrEmpty(cssClass) ? string.Empty : cssClass;
             }
 
@@ -188,11 +191,12 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the permission keys.</summary>
         public string Permissions
         {
             get
             {
-                var permissions = Convert.ToString(this.ViewState["Permissions"]);
+                var permissions = Convert.ToString(this.ViewState["Permissions"], CultureInfo.InvariantCulture);
                 return string.IsNullOrEmpty(permissions) ? "BROWSE,ADD" : permissions;
             }
 
@@ -202,72 +206,42 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>  Gets or sets a value indicating whether the combos have a "Not Specified" option.</summary>
-        /// <remarks>
-        ///   Defaults to True (ie no "Not Specified").
-        /// </remarks>
+        /// <summary>Gets or sets a value indicating whether the combos have a "Not Specified" option.</summary>
+        /// <remarks>Defaults to <see langword="true"/> (i.e. no "Not Specified").</remarks>
         /// <value>A Boolean.</value>
         public bool Required
         {
-            get
-            {
-                return this.ViewState["Required"] != null && Convert.ToBoolean(this.ViewState["Required"]);
-            }
-
-            set
-            {
-                this.ViewState["Required"] = value;
-            }
+            get => this.ViewState["Required"] != null && Convert.ToBoolean(this.ViewState["Required"], CultureInfo.InvariantCulture);
+            set => this.ViewState["Required"] = value;
         }
 
+        /// <summary>Gets or sets a value indicating whether to show folders.</summary>
         public bool ShowFolders
         {
-            get
-            {
-                return this.ViewState["ShowFolders"] == null || Convert.ToBoolean(this.ViewState["ShowFolders"]);
-            }
-
-            set
-            {
-                this.ViewState["ShowFolders"] = value;
-            }
+            get => this.ViewState["ShowFolders"] == null || Convert.ToBoolean(this.ViewState["ShowFolders"], CultureInfo.InvariantCulture);
+            set => this.ViewState["ShowFolders"] = value;
         }
 
-        /// <summary>  Gets or sets a value indicating whether to Show the Upload Button.</summary>
-        /// <remarks>
-        ///   Defaults to True.
-        /// </remarks>
+        /// <summary>Gets or sets a value indicating whether to Show the Upload Button.</summary>
+        /// <remarks>Defaults to <see langword="true"/>.</remarks>
         /// <value>A Boolean.</value>
         public bool ShowUpLoad
         {
-            get
-            {
-                return this.ViewState["ShowUpLoad"] == null || Convert.ToBoolean(this.ViewState["ShowUpLoad"]);
-            }
-
-            set
-            {
-                this.ViewState["ShowUpLoad"] = value;
-            }
+            get => this.ViewState["ShowUpLoad"] == null || Convert.ToBoolean(this.ViewState["ShowUpLoad"], CultureInfo.InvariantCulture);
+            set => this.ViewState["ShowUpLoad"] = value;
         }
 
+        /// <summary>Gets or sets the user.</summary>
         public UserInfo User { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Localize
         {
-            get
-            {
-                return this.localize;
-            }
-
-            set
-            {
-                this.localize = value;
-            }
+            get => this.localize;
+            set => this.localize = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string LocalResourceFile { get; set; }
 
         /// <summary>Gets a value indicating whether the control is on a Host or Portal Tab.</summary>
@@ -289,13 +263,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// <summary>  Gets the root folder for the control.</summary>
         /// <value>A String.</value>
-        protected string ParentFolder
-        {
-            get
-            {
-                return this.IsHost ? Globals.HostMapPath : this.PortalSettings.HomeDirectoryMapPath;
-            }
-        }
+        protected string ParentFolder => this.IsHost ? Globals.HostMapPath : this.PortalSettings.HomeDirectoryMapPath;
 
         /// <summary>  Gets the file PortalId to use.</summary>
         /// <remarks>
@@ -308,7 +276,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 if ((this.Page.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    return int.Parse(this.Page.Request.QueryString["pid"]);
+                    return int.Parse(this.Page.Request.QueryString["pid"], CultureInfo.InvariantCulture);
                 }
 
                 if (!this.IsHost)
@@ -320,34 +288,25 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>  Gets the current Portal Settings.</summary>
+        /// <summary>Gets the current Portal Settings.</summary>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        protected PortalSettings PortalSettings => PortalSettings.Current;
 
-        /// <summary>  Gets or sets the current mode of the control.</summary>
-        /// <remarks>
-        ///   Defaults to FileControlMode.Normal.
-        /// </remarks>
+        /// <summary>Gets or sets the current mode of the control.</summary>
+        /// <remarks>Defaults to <see cref="FileControlMode.Normal"/>.</remarks>
         /// <value>A FileControlMode enum.</value>
         protected FileControlMode Mode
         {
-            get
-            {
-                return this.ViewState["Mode"] == null ? FileControlMode.Normal : (FileControlMode)this.ViewState["Mode"];
-            }
-
-            set
-            {
-                this.ViewState["Mode"] = value;
-            }
+            get => this.ViewState["Mode"] == null ? FileControlMode.Normal : (FileControlMode)this.ViewState["Mode"];
+            set => this.ViewState["Mode"] = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void LocalizeStrings()
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -405,7 +364,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 string folderPath;
                 if (!string.IsNullOrEmpty(this.FilePath))
                 {
-                    fileName = this.FilePath.Substring(this.FilePath.LastIndexOf("/") + 1);
+                    fileName = this.FilePath.Substring(this.FilePath.LastIndexOf("/", StringComparison.Ordinal) + 1);
                     folderPath = string.IsNullOrEmpty(fileName) ? this.FilePath : this.FilePath.Replace(fileName, string.Empty);
                 }
                 else
@@ -433,7 +392,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 else
                 {
-                    this.FileID = int.Parse(this.cboFiles.SelectedItem.Value);
+                    this.FileID = int.Parse(this.cboFiles.SelectedItem.Value, CultureInfo.InvariantCulture);
                 }
 
                 if (this.cboFolders.Items.Count > 1 && this.ShowFolders)
@@ -579,7 +538,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private bool IsUserFolder(string folderPath)
         {
             UserInfo user = this.User ?? UserController.Instance.GetCurrentUserInfo();
-            return folderPath.StartsWith("users/", StringComparison.InvariantCultureIgnoreCase) && folderPath.EndsWith(string.Format("/{0}/", user.UserID));
+            return folderPath.StartsWith("users/", StringComparison.OrdinalIgnoreCase) && folderPath.EndsWith(string.Format(CultureInfo.InvariantCulture, "/{0}/", user.UserID), StringComparison.OrdinalIgnoreCase);
         }
 
         private void LoadFiles()
@@ -587,14 +546,14 @@ namespace DotNetNuke.Web.UI.WebControls
             int effectivePortalId = this.PortalId;
             if (this.IsUserFolder(this.cboFolders.SelectedItem.Value))
             {
-                effectivePortalId = PortalController.GetEffectivePortalId(this.PortalId);
+                effectivePortalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, this.PortalId);
             }
 
             this.cboFiles.DataSource = Globals.GetFileList(effectivePortalId, this.FileFilter, !this.Required, this.cboFolders.SelectedItem.Value);
             this.cboFiles.DataBind();
         }
 
-        /// <summary>  LoadFolders fetches the list of folders from the Database.</summary>
+        /// <summary>LoadFolders fetches the list of folders from the Database.</summary>
         private void LoadFolders()
         {
             UserInfo user = this.User ?? UserController.Instance.GetCurrentUserInfo();
@@ -688,7 +647,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 catch (Exception)
                 {
-                    Logger.WarnFormat("Unable to create thumbnail for {0}", image.PhysicalPath);
+                    Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to create thumbnail for {0}", image.PhysicalPath);
                     this.pnlRightDiv.Visible = false;
                 }
             }
@@ -696,7 +655,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.imgPreview.Visible = false;
 
-                Panel imageHolderPanel = new Panel { CssClass = "dnnFilePickerImageHolder" };
+                Panel imageHolderPanel = new Panel { CssClass = "dnnFilePickerImageHolder", };
                 this.pnlRightDiv.Controls.Add(imageHolderPanel);
                 this.pnlRightDiv.Visible = true;
             }
@@ -734,7 +693,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         localizedString = Utilities.GetLocalizedString("UploadError");
                     }
 
-                    this.lblMessage.Text = string.Format(localizedString, this.FileFilter, extension);
+                    this.lblMessage.Text = string.Format(CultureInfo.CurrentCulture, localizedString, this.FileFilter, extension);
                 }
                 else
                 {
@@ -747,7 +706,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     if (this.IsUserFolder(this.cboFolders.SelectedItem.Value))
                     {
                         // Make sure the user folder exists
-                        folder = folderManager.GetFolder(PortalController.GetEffectivePortalId(this.PortalId), folderPath);
+                        folder = folderManager.GetFolder(PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, this.PortalId), folderPath);
                         if (folder == null)
                         {
                             // Add User folder
@@ -771,27 +730,27 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                     catch (PermissionsNotMetException)
                     {
-                        this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
+                        this.lblMessage.Text += "<br />" + string.Format(CultureInfo.CurrentCulture, Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
                     }
                     catch (NoSpaceAvailableException)
                     {
-                        this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
+                        this.lblMessage.Text += "<br />" + string.Format(CultureInfo.CurrentCulture, Localization.GetString("DiskSpaceExceeded"), fileName);
                     }
                     catch (InvalidFileExtensionException)
                     {
-                        this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
+                        this.lblMessage.Text += "<br />" + string.Format(CultureInfo.CurrentCulture, Localization.GetString("RestrictedFileType"), fileName, this.hostSettings.AllowedExtensionAllowList.ToDisplayString());
                     }
                     catch (Exception ex)
                     {
                         Logger.Error(ex);
 
-                        this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("SaveFileError"), fileName);
+                        this.lblMessage.Text += "<br />" + string.Format(CultureInfo.CurrentCulture, Localization.GetString("SaveFileError"), fileName);
                     }
                 }
 
                 if (string.IsNullOrEmpty(this.lblMessage.Text))
                 {
-                    var fileName = this.txtFile.PostedFile.FileName.Substring(this.txtFile.PostedFile.FileName.LastIndexOf("\\") + 1);
+                    var fileName = this.txtFile.PostedFile.FileName.Substring(this.txtFile.PostedFile.FileName.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
                     this.SetFilePath(fileName);
                 }
             }

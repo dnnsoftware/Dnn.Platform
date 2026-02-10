@@ -11,7 +11,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
     /// <inheritdoc />
     public class Startup : IDnnStartup
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IClientResourceController, ClientResourceController>();

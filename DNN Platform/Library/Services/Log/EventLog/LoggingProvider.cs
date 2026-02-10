@@ -42,10 +42,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public abstract void DeleteLogTypeConfigInfo(string id);
 
-        public virtual List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
-        {
-            return new List<LogInfo>();
-        }
+        public virtual List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords) => [];
 
         public abstract ArrayList GetLogTypeConfigInfo();
 
@@ -53,10 +50,11 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public abstract LogTypeConfigInfo GetLogTypeConfigInfoByID(string id);
 
+        [Obsolete("Deprecated in DotNetNuke 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService.GetLog()' instead. Scheduled for removal in v11.0.0.")]
         public abstract object GetSingleLog(LogInfo logInfo, ReturnType returnType);
 
-        /// <summary>Retrieves a single event log via the Log Guid.</summary>
-        /// <param name="logGuid">A string reprenstation of the log Guid.</param>
+        /// <summary>Retrieves a single event log via the Log GUID.</summary>
+        /// <param name="logGuid">A string representation of the log GUID.</param>
         /// <returns>The <see cref="ILogInfo"/>.</returns>
         public abstract ILogInfo GetLog(string logGuid);
 

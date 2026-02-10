@@ -17,7 +17,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>Gets or sets formatted size of export file.</summary>
         public string ExportSize { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ConvertToLocal(UserInfo userInfo)
         {
             // Nothing to convert.

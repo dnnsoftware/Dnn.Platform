@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.GeneratedImage
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Threading;
     using System.Web;
@@ -171,7 +172,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     }
                 }
 
-                File.WriteAllText(path, count.ToString());
+                File.WriteAllText(path, count.ToString(CultureInfo.InvariantCulture));
                 return true;
             }
         }

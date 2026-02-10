@@ -12,9 +12,10 @@ namespace DotNetNuke.Web.Api.Internal
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
 
+    /// <summary>Requires that the user is an editor on the page.</summary>
     public sealed class DnnPageEditorAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsAuthorized(AuthFilterContext context)
         {
             Requires.NotNull("context", context);

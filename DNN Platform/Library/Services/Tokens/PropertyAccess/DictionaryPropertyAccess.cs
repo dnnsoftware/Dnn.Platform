@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Tokens
             this.nameValueCollection = list;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CacheLevel Cacheability
         {
             get
@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             if (this.nameValueCollection == null)
@@ -49,9 +49,9 @@ namespace DotNetNuke.Services.Tokens
                 switch (valueObject.GetType().Name)
                 {
                     case "String":
-                        return PropertyAccess.FormatString(Convert.ToString(valueObject), format);
+                        return PropertyAccess.FormatString(Convert.ToString(valueObject, CultureInfo.InvariantCulture), format);
                     case "Boolean":
-                        return PropertyAccess.Boolean2LocalizedYesNo(Convert.ToBoolean(valueObject), formatProvider);
+                        return PropertyAccess.Boolean2LocalizedYesNo(Convert.ToBoolean(valueObject, CultureInfo.InvariantCulture), formatProvider);
                     case "DateTime":
                     case "Double":
                     case "Single":

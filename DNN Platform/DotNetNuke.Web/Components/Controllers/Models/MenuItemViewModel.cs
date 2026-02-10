@@ -4,14 +4,19 @@
 
 namespace DotNetNuke.Web.Components.Controllers.Models
 {
+    /// <summary>A view model for a menu item.</summary>
     public class MenuItemViewModel
     {
+        /// <summary>Gets or sets the ID.</summary>
         public string ID { get; set; }
 
+        /// <summary>Gets or sets the text.</summary>
         public string Text { get; set; }
 
+        /// <summary>Gets or sets the source user control.</summary>
         public string Source { get; set; }
 
+        /// <summary>Gets or sets the order.</summary>
         public int Order { get; set; }
     }
 }

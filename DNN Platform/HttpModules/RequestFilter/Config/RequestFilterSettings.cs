@@ -66,26 +66,29 @@ namespace DotNetNuke.HttpModules.RequestFilter
                 string filePath = Config.GetPathToFile(appStatus, Config.ConfigFileType.DotNetNuke);
 
                 // Create a FileStream for the Config file
+                XPathDocument doc;
                 using (var fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var xmlReader = XmlReader.Create(fileReader))
                 {
-                    var doc = new XPathDocument(fileReader);
-                    XPathNodeIterator ruleList = doc.CreateNavigator().Select("/configuration/blockrequests/rule");
-                    while (ruleList.MoveNext())
+                    doc = new XPathDocument(xmlReader);
+                }
+
+                XPathNodeIterator ruleList = doc.CreateNavigator().Select("/configuration/blockrequests/rule");
+                while (ruleList.MoveNext())
+                {
+                    try
                     {
-                        try
-                        {
-                            string serverVar = ruleList.Current.GetAttribute("servervar", string.Empty);
-                            string values = ruleList.Current.GetAttribute("values", string.Empty);
-                            var ac = (RequestFilterRuleType)Enum.Parse(typeof(RequestFilterRuleType), ruleList.Current.GetAttribute("action", string.Empty));
-                            var op = (RequestFilterOperatorType)Enum.Parse(typeof(RequestFilterOperatorType), ruleList.Current.GetAttribute("operator", string.Empty));
-                            string location = ruleList.Current.GetAttribute("location", string.Empty);
-                            var rule = new RequestFilterRule(serverVar, values, op, ac, location);
-                            settings.Rules.Add(rule);
-                        }
-                        catch (Exception ex)
-                        {
-                            DotNetNuke.Services.Exceptions.Exceptions.LogException(new RequestFilterException($"Unable to read RequestFilter Rule: {ruleList.Current.OuterXml}:", ex));
-                        }
+                        string serverVar = ruleList.Current.GetAttribute("servervar", string.Empty);
+                        string values = ruleList.Current.GetAttribute("values", string.Empty);
+                        var ac = (RequestFilterRuleType)Enum.Parse(typeof(RequestFilterRuleType), ruleList.Current.GetAttribute("action", string.Empty));
+                        var op = (RequestFilterOperatorType)Enum.Parse(typeof(RequestFilterOperatorType), ruleList.Current.GetAttribute("operator", string.Empty));
+                        string location = ruleList.Current.GetAttribute("location", string.Empty);
+                        var rule = new RequestFilterRule(serverVar, values, op, ac, location);
+                        settings.Rules.Add(rule);
+                    }
+                    catch (Exception ex)
+                    {
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(new RequestFilterException($"Unable to read RequestFilter Rule: {ruleList.Current.OuterXml}:", ex));
                     }
                 }
 
@@ -121,7 +124,11 @@ namespace DotNetNuke.HttpModules.RequestFilter
             }
 
             var doc = new XmlDocument { XmlResolver = null };
-            doc.Load(filePath);
+            using (var xmlReader = XmlReader.Create(filePath, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                doc.Load(xmlReader);
+            }
+
             XmlNode ruleRoot = doc.SelectSingleNode("/configuration/blockrequests");
             ruleRoot.RemoveAll();
             foreach (RequestFilterRule rule in rules)

@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Host
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
     using System.Web;
@@ -33,7 +34,7 @@ namespace DotNetNuke.Entities.Host
             Deny = 2,
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int AddIPFilter(IPFilterInfo ipFilter)
         {
             Requires.NotNull("ipFilter", ipFilter);
@@ -48,7 +49,7 @@ namespace DotNetNuke.Entities.Host
             return id;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateIPFilter(IPFilterInfo ipFilter)
         {
             Requires.NotNull("ipFilter", ipFilter);
@@ -63,26 +64,26 @@ namespace DotNetNuke.Entities.Host
                 ipFilter.Notes);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteIPFilter(IPFilterInfo ipFilter)
         {
             Requires.PropertyNotNegative("ipFilter", "ipFilter.IPFilterID", ipFilter.IPFilterID);
             DataProvider.Instance().DeleteIPFilter(ipFilter.IPFilterID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IPFilterInfo GetIPFilter(int ipFilter)
         {
             return CBO.FillObject<IPFilterInfo>(DataProvider.Instance().GetIPFilter(ipFilter));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsIPBanned(string ipAddress)
         {
             return CheckIfBannedIPAddress(ipAddress);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool CanIPStillAccess(string myip, IList<IPFilterInfo> filterList)
         {
             var allowAllIPs = false;
@@ -139,7 +140,8 @@ namespace DotNetNuke.Entities.Host
             return false;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public bool IsAllowableDeny(string currentIP, IPFilterInfo ipFilter)
         {
             if (ipFilter.RuleType == (int)FilterType.Allow)
@@ -155,7 +157,7 @@ namespace DotNetNuke.Entities.Host
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         IList<IPFilterInfo> IIPFilterController.GetIPFilters()
         {
             return CBO.FillCollection<IPFilterInfo>(DataProvider.Instance().GetIPFilters());

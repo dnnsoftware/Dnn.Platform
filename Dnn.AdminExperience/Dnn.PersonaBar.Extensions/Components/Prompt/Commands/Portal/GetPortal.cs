@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
 {
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -19,12 +20,12 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
         [FlagParameter("id", "Prompt_GetPortal_FlagId", "Integer")]
         private const string FlagId = "id";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int PortalIdFlagValue { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             // default usage: return current portal if nothing else specified
@@ -47,7 +48,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var pc = new PortalController();
@@ -56,11 +57,23 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             var portal = pc.GetPortal((int)this.PortalIdFlagValue);
             if (portal == null)
             {
-                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_GetPortal_NotFound"), this.PortalIdFlagValue));
+                return new ConsoleErrorResultModel(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        this.LocalizeString("Prompt_GetPortal_NotFound"),
+                        this.PortalIdFlagValue));
             }
 
             lst.Add(new PortalModel(portal));
-            return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_GetPortal_Found"), this.PortalIdFlagValue) };
+            return new ConsoleResultModel(string.Empty)
+            {
+                Data = lst,
+                Records = lst.Count,
+                Output = string.Format(
+                    CultureInfo.CurrentCulture,
+                    this.LocalizeString("Prompt_GetPortal_Found"),
+                    this.PortalIdFlagValue),
+            };
         }
     }
 }

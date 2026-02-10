@@ -15,13 +15,13 @@ namespace DotNetNuke.Services.Connections
 
     public sealed class ConnectionsManager : ServiceLocator<IConnectionsManager, ConnectionsManager>, IConnectionsManager
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<IConnector> GetConnectors(IServiceProvider serviceProvider)
         {
             return serviceProvider.GetServices<IConnector>().Where(x => IsPackageInstalled(x.GetType().Assembly)).ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IConnectionsManager> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<IConnectionsManager>;

@@ -69,12 +69,12 @@ namespace Dnn.PersonaBar.Users.Tests
             // Act
             var result = this.RunCommand(userId.ToString(), "--firstname", "user4", "--lastname", "user4", attributeName, attributeValue);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.IsError, Is.False);
                 Assert.That(result.Records, Is.EqualTo(1));
-            });
+            }
         }
 
         [SetUp]

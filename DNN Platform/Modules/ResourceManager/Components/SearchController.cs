@@ -25,7 +25,7 @@ namespace Dnn.Modules.ResourceManager.Components
             this.permissionsManager = PermissionsManager.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<IFileInfo> SearchFolderContent(int moduleId, IFolderInfo folder, bool recursive, string search, int pageIndex, int pageSize, string sorting, int moduleMode, out int totalCount)
         {
             var noPermissionMessage = Localization.GetExceptionMessage(

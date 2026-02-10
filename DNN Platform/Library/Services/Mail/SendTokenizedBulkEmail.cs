@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.Mail
     using System.Text;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
@@ -43,7 +44,7 @@ namespace DotNetNuke.Services.Mail
         private UserInfo replyToUser;
         private bool smtpEnableSSL;
         private TokenReplace tokenReplace;
-        private PortalSettings portalSettings;
+        private IPortalSettings portalSettings;
         private UserInfo sendingUser;
         private string body = string.Empty;
         private string confirmBodyHTML;
@@ -100,6 +101,7 @@ namespace DotNetNuke.Services.Mail
         // Existing public API
         public enum AddressMethods
         {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
             /// <summary>Put the recipient's email address in the TO field.</summary>
             Send_TO = 1,
 
@@ -108,6 +110,7 @@ namespace DotNetNuke.Services.Mail
 
             /// <summary>Send via an email relay address.</summary>
             Send_Relay = 3,
+#pragma warning restore CA1707
         }
 
         /// <summary>Gets or sets priority of emails to be sent.</summary>
@@ -162,14 +165,13 @@ namespace DotNetNuke.Services.Mail
                 }
                 else
                 {
-                    PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                    this.strSenderLanguage = portalSettings.DefaultLanguage;
+                    this.strSenderLanguage = PortalController.Instance.GetCurrentSettings().DefaultLanguage;
                 }
             }
         }
 
         /// <summary>Gets or sets email of the user to be shown in the mail as replyTo address.</summary>
-        /// <remarks>if not set explicitely, sendingUser will be used.</remarks>
+        /// <remarks>if not set explicitly, sendingUser will be used.</remarks>
         public UserInfo ReplyTo
         {
             get
@@ -493,7 +495,7 @@ namespace DotNetNuke.Services.Mail
             this.SendMails();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             this.Dispose(true);
@@ -521,8 +523,8 @@ namespace DotNetNuke.Services.Mail
         /// <summary>internal method to initialize used objects, depending on parameters of construct method.</summary>
         private void Initialize()
         {
-            this.portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            this.PortalAlias = this.portalSettings.PortalAlias.HTTPAlias;
+            this.portalSettings = PortalController.Instance.GetCurrentSettings();
+            this.PortalAlias = ((IPortalAliasInfo)PortalSettings.Current.PortalAlias).HttpAlias;
             this.SendingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
             this.tokenReplace = new TokenReplace();
             this.confirmBodyHTML = Localization.GetString("EMAIL_BulkMailConf_Html_Body", Localization.GlobalResourceFile, this.strSenderLanguage);
@@ -565,7 +567,7 @@ namespace DotNetNuke.Services.Mail
             };
             this.tokenReplace.User = this.sendingUser;
             string body = this.tokenReplace.ReplaceEnvironmentTokens(this.BodyFormat == MailFormat.Html ? this.confirmBodyHTML : this.confirmBodyText, parameters, "Custom");
-            string strSubject = string.Format(this.confirmSubject, subject);
+            string strSubject = string.Format(CultureInfo.CurrentCulture, this.confirmSubject, subject);
             if (!this.SuppressTokenReplace)
             {
                 strSubject = this.tokenReplace.ReplaceEnvironmentTokens(strSubject);
@@ -578,7 +580,7 @@ namespace DotNetNuke.Services.Mail
 
         /// <summary>check, if the user's language matches the current language filter.</summary>
         /// <param name="userLanguage">Language of the user.</param>
-        /// <returns>userlanguage matches current languageFilter.</returns>
+        /// <returns><paramref name="userLanguage"></paramref> matches current <see cref="LanguageFilter"/>.</returns>
         /// <remarks>if filter not set, true is returned.</remarks>
         private bool MatchLanguageFilter(string userLanguage)
         {

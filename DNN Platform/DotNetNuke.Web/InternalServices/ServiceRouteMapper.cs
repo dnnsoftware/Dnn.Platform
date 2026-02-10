@@ -6,11 +6,12 @@ namespace DotNetNuke.Web.InternalServices
 {
     using DotNetNuke.Web.Api;
 
+    /// <summary>A web API service route mapper for internal services.</summary>
     public class ServiceRouteMapper : IServiceRouteMapper
     {
         private static readonly string[] Namespaces = ["DotNetNuke.Web.InternalServices",];
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
             mapRouteManager.MapHttpRoute(

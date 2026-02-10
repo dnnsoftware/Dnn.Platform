@@ -7,6 +7,7 @@ namespace Dnn.PersonaBar.Library.Prompt
     using System;
     using System.Collections;
     using System.ComponentModel;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Prompt.Models;
     using DotNetNuke.Entities.Portals;
@@ -18,13 +19,13 @@ namespace Dnn.PersonaBar.Library.Prompt
     [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Prompt in the core library project")]
     public abstract partial class ConsoleCommandBase : IConsoleCommand
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract string LocalResourceFile { get; }
 
         /// <summary>Gets resource key for the result html.</summary>
         public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ValidationMessage { get; private set; }
 
         protected PortalSettings PortalSettings { get; private set; }
@@ -106,7 +107,7 @@ namespace Dnn.PersonaBar.Library.Prompt
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.Args = args;
@@ -119,10 +120,10 @@ namespace Dnn.PersonaBar.Library.Prompt
             this.Init(args, portalSettings, userInfo, activeTabId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract ConsoleResultModel Run();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual bool IsValid()
         {
             return string.IsNullOrEmpty(this.ValidationMessage);
@@ -136,8 +137,8 @@ namespace Dnn.PersonaBar.Library.Prompt
 
         protected bool IsFlag(object input)
         {
-            var inputVal = Convert.ToString(input);
-            return !string.IsNullOrEmpty(inputVal) && inputVal.StartsWith("--");
+            var inputVal = Convert.ToString(input, CultureInfo.InvariantCulture);
+            return !string.IsNullOrEmpty(inputVal) && inputVal.StartsWith("--", StringComparison.Ordinal);
         }
 
         protected string LocalizeString(string key)
@@ -183,7 +184,7 @@ namespace Dnn.PersonaBar.Library.Prompt
                 return string.Empty;
             }
 
-            if (flagName.StartsWith("--"))
+            if (flagName.StartsWith("--", StringComparison.Ordinal))
             {
                 flagName = flagName.Substring(2);
             }
@@ -198,7 +199,7 @@ namespace Dnn.PersonaBar.Library.Prompt
             // loop through arguments, skipping the first one (the command)
             for (var i = 1; i <= this.Args.Length - 1; i++)
             {
-                if (!this.Args[i].StartsWith("--"))
+                if (!this.Args[i].StartsWith("--", StringComparison.Ordinal))
                 {
                     continue;
                 }
@@ -210,7 +211,7 @@ namespace Dnn.PersonaBar.Library.Prompt
                 {
                     if (!string.IsNullOrEmpty(this.Args[i + 1]))
                     {
-                        if (this.Args[i + 1].StartsWith("--"))
+                        if (this.Args[i + 1].StartsWith("--", StringComparison.Ordinal))
                         {
                             // next value is another flag, so this flag has no value
                             flagValue = string.Empty;

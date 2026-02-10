@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.workflowStateRepository = WorkflowStateRepository.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CreateSystemWorkflows(int portalId)
         {
             this.CreateDirectPublishWorkflow(portalId);
@@ -35,25 +35,25 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.CreateContentApprovalWorkflow(portalId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Entities.Workflow GetDirectPublishWorkflow(int portalId)
         {
             return this.workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == DirectPublishWorkflowKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Entities.Workflow GetSaveDraftWorkflow(int portalId)
         {
             return this.workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == SaveDraftWorkflowKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Entities.Workflow GetContentApprovalWorkflow(int portalId)
         {
             return this.workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == ContentAprovalWorkflowKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public WorkflowState GetDraftStateDefinition(int order)
         {
             var state = GetDefaultWorkflowState(order);
@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return state;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public WorkflowState GetPublishedStateDefinition(int order)
         {
             var state = GetDefaultWorkflowState(order);
@@ -69,7 +69,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return state;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public WorkflowState GetReadyForReviewStateDefinition(int order)
         {
             var state = GetDefaultWorkflowState(order);
@@ -79,7 +79,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return state;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ISystemWorkflowManager> GetFactory()
         {
             return () => new SystemWorkflowManager();

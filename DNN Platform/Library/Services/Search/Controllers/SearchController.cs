@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Search.Controllers
     [DnnDeprecated(10, 0, 0, "Please resolve ISearchController via Dependency Injection")]
     public partial class SearchController : ServiceLocator<ISearchController, SearchController>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ISearchController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<ISearchController>;

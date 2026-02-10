@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Search
 {
     using System;
+    using System.Globalization;
 
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
@@ -42,8 +43,8 @@ namespace DotNetNuke.Services.Search
             try
             {
                 var lastSuccessFulDateTime = SearchHelper.Instance.GetLastSuccessfulIndexingDateTime(this.ScheduleHistoryItem.ScheduleID);
-                Logger.Trace("Search: Site Crawler - Starting. Content change start time " + lastSuccessFulDateTime.ToString("g"));
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Starting. Content change start time <b>{0:g}</b>", lastSuccessFulDateTime));
+                Logger.Trace("Search: Site Crawler - Starting. Content change start time " + lastSuccessFulDateTime.ToString("g", CultureInfo.InvariantCulture));
+                this.ScheduleHistoryItem.AddLogNote(string.Format(CultureInfo.InvariantCulture, "Starting. Content change start time <b>{0:g}</b>", lastSuccessFulDateTime));
 
                 var searchEngine = new SearchEngine(this.ScheduleHistoryItem, lastSuccessFulDateTime, this.businessControllerProvider);
                 try

@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Installer.Writers
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Globalization;
     using System.IO;
     using System.Xml;
     using System.Xml.XPath;
@@ -92,7 +93,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <value>A DesktopModuleInfo object.</value>
         public DesktopModuleInfo DesktopModule { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Dictionary<string, string> Dependencies
         {
             get
@@ -112,7 +113,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void WriteManifestComponent(XmlWriter writer)
         {
             // Write Module Component
@@ -158,7 +159,7 @@ namespace DotNetNuke.Services.Installer.Writers
             string viewOrder = Util.ReadElement(controlNav, "vieworder");
             if (!string.IsNullOrEmpty(viewOrder))
             {
-                moduleControl.ViewOrder = int.Parse(viewOrder);
+                moduleControl.ViewOrder = int.Parse(viewOrder, CultureInfo.InvariantCulture);
             }
 
             moduleControl.HelpURL = Util.ReadElement(controlNav, "helpurl");
@@ -179,8 +180,8 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void Initialize(string folder)
         {
-            this.BasePath = Path.Combine("DesktopModules", folder).Replace("/", "\\");
-            this.AppCodePath = Path.Combine("App_Code", folder).Replace("/", "\\");
+            this.BasePath = Path.Combine("DesktopModules", folder).Replace("/", @"\");
+            this.AppCodePath = Path.Combine("App_Code", folder).Replace("/", @"\");
             this.AssemblyPath = "bin";
         }
 
@@ -189,7 +190,7 @@ namespace DotNetNuke.Services.Installer.Writers
             // we are going to drill down through the folders to add the files
             foreach (string fileName in Directory.GetFiles(folder))
             {
-                string name = fileName.Replace(basePath + "\\", string.Empty);
+                string name = fileName.Replace(basePath + @"\", string.Empty);
                 this.AddFile(name, name);
             }
         }
@@ -214,7 +215,7 @@ namespace DotNetNuke.Services.Installer.Writers
             string cacheTime = Util.ReadElement(moduleNav, "cachetime");
             if (!string.IsNullOrEmpty(cacheTime))
             {
-                definition.DefaultCacheTime = int.Parse(cacheTime);
+                definition.DefaultCacheTime = int.Parse(cacheTime, CultureInfo.InvariantCulture);
             }
 
             // Process legacy controls Node

@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.UserProfile
             ".ICO",
         };
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsReusable
         {
             get
@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.UserProfile
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ProcessRequest(HttpContext context)
         {
             SetupCulture();
@@ -51,12 +51,12 @@ namespace DotNetNuke.Services.UserProfile
             {
                 if (!string.IsNullOrEmpty(context.Request.QueryString["userid"]))
                 {
-                    userId = Convert.ToInt32(context.Request.QueryString["userid"]);
+                    userId = Convert.ToInt32(context.Request.QueryString["userid"], CultureInfo.InvariantCulture);
                 }
 
                 if (!string.IsNullOrEmpty(context.Request.QueryString["h"]))
                 {
-                    height = Convert.ToInt32(context.Request.QueryString["h"]);
+                    height = Convert.ToInt32(context.Request.QueryString["h"], CultureInfo.InvariantCulture);
                 }
             }
             catch (Exception)
@@ -155,7 +155,7 @@ namespace DotNetNuke.Services.UserProfile
             var isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, targetUser);
             if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
             {
-                photoFile = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
+                photoFile = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue, CultureInfo.InvariantCulture));
                 if (photoFile == null)
                 {
                     isVisible = false;
@@ -203,7 +203,7 @@ namespace DotNetNuke.Services.UserProfile
 
         private static bool IsImageExtension(string extension)
         {
-            if (!extension.StartsWith("."))
+            if (!extension.StartsWith(".", StringComparison.Ordinal))
             {
                 extension = $".{extension}";
             }
@@ -213,7 +213,7 @@ namespace DotNetNuke.Services.UserProfile
 
         private static void SetupCulture()
         {
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            PortalSettings settings = PortalSettings.Current;
             if (settings is null)
             {
                 return;

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Modules.RazorHost
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Web.UI.WebControls;
 
@@ -55,7 +56,7 @@ namespace DotNetNuke.Modules.RazorHost
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -67,7 +68,7 @@ namespace DotNetNuke.Modules.RazorHost
             this.scriptList.SelectedIndexChanged += this.ScriptList_SelectedIndexChanged;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -103,7 +104,7 @@ namespace DotNetNuke.Modules.RazorHost
             string scriptFile = string.Format(this.razorScriptFileFormatString, this.scriptList.SelectedValue);
             string srcFile = this.Server.MapPath(scriptFile);
 
-            this.lblSourceFile.Text = string.Format(Localization.GetString("SourceFile", this.LocalResourceFile), scriptFile);
+            this.lblSourceFile.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("SourceFile", this.LocalResourceFile), scriptFile);
 
             StreamReader objStreamReader = null;
             objStreamReader = File.OpenText(srcFile);

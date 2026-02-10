@@ -36,6 +36,7 @@ namespace DotNetNuke.Web.Client.Controls
         /// <summary>Gets the dependency type of the client resource to exclude.</summary>
         public ClientDependencyType DependencyType { get; internal set; }
 
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             switch (this.DependencyType)

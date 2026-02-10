@@ -36,7 +36,7 @@ namespace DotNetNuke.UI.WebControls
                 DateTime dteValue = Null.NullDate;
                 try
                 {
-                    var dteString = Convert.ToString(this.Value);
+                    var dteString = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
                     DateTime.TryParse(dteString, CultureInfo.InvariantCulture, DateTimeStyles.None, out dteValue);
                 }
                 catch (Exception exc)
@@ -115,9 +115,9 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 string stringValue = Null.NullString;
-                if (this.DateValue.ToUniversalTime().Date != DateTime.Parse("1754/01/01") && this.DateValue != Null.NullDate)
+                if (this.DateValue.ToUniversalTime().Date != new DateTime(1754, 1, 1) && this.DateValue != Null.NullDate)
                 {
-                    stringValue = this.DateValue.ToString(this.Format);
+                    stringValue = this.DateValue.ToString(this.Format, CultureInfo.InvariantCulture);
                 }
 
                 return stringValue;
@@ -125,11 +125,11 @@ namespace DotNetNuke.UI.WebControls
 
             set
             {
-                this.Value = DateTime.Parse(value);
+                this.Value = DateTime.Parse(value, CultureInfo.InvariantCulture);
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             this.EnsureChildControls();
@@ -138,14 +138,14 @@ namespace DotNetNuke.UI.WebControls
             string postedValue = postCollection[postDataKey + "date"];
             if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
             {
-                this.Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
+                this.Value = DateTime.Parse(postedValue, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
                 dataChanged = true;
             }
 
             return dataChanged;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -168,7 +168,7 @@ namespace DotNetNuke.UI.WebControls
         {
             if (this.DateValue != Null.NullDate)
             {
-                this.dateField.Text = this.DateValue.Date.ToString("d");
+                this.dateField.Text = this.DateValue.Date.ToString("d", CultureInfo.CurrentCulture);
             }
         }
 
@@ -183,7 +183,7 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

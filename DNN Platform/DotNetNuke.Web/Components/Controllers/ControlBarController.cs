@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.Components.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -22,6 +23,7 @@ namespace DotNetNuke.Web.Components.Controllers
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>The service locator and implementation for <see cref="IControlBarController"/>.</summary>
     public class ControlBarController : ServiceLocator<IControlBarController, ControlBarController>, IControlBarController
     {
         private const string BookmarkModulesTitle = "module";
@@ -51,7 +53,7 @@ namespace DotNetNuke.Web.Components.Controllers
             this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetCategoryDesktopModules(int portalId, string category, string searchTerm = "")
         {
             var formattedSearchTerm = string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.ToLower(CultureInfo.InvariantCulture);
@@ -63,7 +65,7 @@ namespace DotNetNuke.Web.Components.Controllers
             return DesktopModuleController.GetPortalDesktopModules(portalId).Where(filter);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetBookmarkedDesktopModules(int portalId, int userId, string searchTerm = "")
         {
             var formattedSearchTerm = string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.ToLower(CultureInfo.InvariantCulture);
@@ -72,7 +74,8 @@ namespace DotNetNuke.Web.Components.Controllers
                 .Where(kvp => kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void SaveBookMark(int portalId, int userId, string bookmarkTitle, string bookmarkValue)
         {
             var ensuredBookmarkValue = bookmarkValue;
@@ -87,10 +90,10 @@ namespace DotNetNuke.Web.Components.Controllers
             this.personalizationController.SaveProfile(personalization);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetBookmarkCategory(int portalId)
         {
-            var bookmarkCategory = PortalController.GetPortalSetting(BookmarkCategoryProperty, portalId, string.Empty);
+            var bookmarkCategory = PortalController.GetPortalSetting(this.portalController, BookmarkCategoryProperty, portalId, string.Empty);
             if (string.IsNullOrEmpty(bookmarkCategory))
             {
                 PortalController.UpdatePortalSetting(portalId, BookmarkCategoryProperty, "Common");
@@ -100,27 +103,27 @@ namespace DotNetNuke.Web.Components.Controllers
             return bookmarkCategory;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public UpgradeIndicatorViewModel GetUpgradeIndicator(Version version, bool isLocal, bool isSecureConnection)
         {
             var imageUrl = Upgrade.UpgradeIndicator(this.hostSettings, this.hostSettingsService, this.portalController, version, isLocal, isSecureConnection);
             return !string.IsNullOrEmpty(imageUrl) ? GetDefaultUpgradeIndicator(imageUrl) : null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetControlBarLogoURL()
         {
             return this.hostSettingsService.GetString("ControlBarLogoURL", "~/admin/controlpanel/controlbarimages/dnnLogo.png");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<MenuItemViewModel> GetCustomMenuItems()
         {
             var menuItemsExtensionPoints = this.mef.GetUserControlExtensionPoints("ControlBar", "CustomMenuItems");
             return menuItemsExtensionPoints.Select(GetMenuItemFromExtensionPoint);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IControlBarController> GetFactory()
         {
             return () => Globals.GetCurrentServiceProvider().GetRequiredService<IControlBarController>();

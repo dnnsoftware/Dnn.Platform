@@ -12,7 +12,7 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(SetVersion))]
     public sealed class BuildServerSetVersion : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             Console.WriteLine($"##vso[build.updatebuildnumber]{context.Version.FullSemVer}.{context.BuildId}");

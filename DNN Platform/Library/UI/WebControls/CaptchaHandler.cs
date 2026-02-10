@@ -15,7 +15,7 @@ namespace DotNetNuke.UI.WebControls
         private const int MAXIMAGEWIDTH = 600;
         private const int MAXIMAGEHEIGHT = 600;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsReusable
         {
             get
@@ -24,7 +24,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ProcessRequest(HttpContext context)
         {
             NameValueCollection queryString = context.Request.QueryString;

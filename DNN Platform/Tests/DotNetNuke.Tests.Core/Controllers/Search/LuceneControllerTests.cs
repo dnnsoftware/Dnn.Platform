@@ -183,12 +183,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(hits.Results.Count(), Is.EqualTo(1));
                 Assert.That(hits.Results.ElementAt(0).ContentSnippet, Is.EqualTo("brown <b>fox</b> jumps over the lazy dog"));
-            });
+            }
         }
 
         [Test]
@@ -211,12 +211,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(hits.Results.Count(), Is.EqualTo(1));
                 Assert.That(hits.Results.ElementAt(0).ContentSnippet, Is.EqualTo(expectedResult));
-            });
+            }
         }
 
         [Test]
@@ -248,12 +248,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")) }));
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(hits.TotalHits, Is.EqualTo(4));
                 Assert.That(hits.Results.Count(), Is.EqualTo(4));
-            });
+            }
         }
 
         [Test]
@@ -264,12 +264,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 1 }));
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(hits.TotalHits, Is.EqualTo(4));
                 Assert.That(hits.Results.Count(), Is.EqualTo(1));
-            });
+            }
         }
 
         [Test]
@@ -280,12 +280,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 4 }));
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(hits.TotalHits, Is.EqualTo(4));
                 Assert.That(hits.Results.Count(), Is.EqualTo(4));
-            });
+            }
         }
 
         [Test]
@@ -296,12 +296,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 4 }));
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(hits.TotalHits, Is.EqualTo(4));
                 Assert.That(hits.Results.Count(), Is.EqualTo(4));
-            });
+            }
         }
 
         [Test]
@@ -318,12 +318,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     PageSize = 10,
                 }));
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(hits.TotalHits, Is.EqualTo(4));
                 Assert.That(hits.Results.Count(), Is.EqualTo(0));
-            });
+            }
         }
 
         [Test]
@@ -341,7 +341,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(query));
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(hits.TotalHits, Is.EqualTo(3));
@@ -350,7 +350,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 // for some reason, this search's docs have scoring as
                 // Line1=0.3125, Line1=0.3125, Line2=0.3125, Line2=0.3750
                 Assert.That(hits.Results.ElementAt(0).Document.GetField(Constants.ContentTag).StringValue, Is.EqualTo(Line1));
-            });
+            }
         }
 
         [Test]
@@ -475,11 +475,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             if (customAlalyzer == ValidCustomAnalyzer)
             {
-                Assert.Multiple(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(hits.Results.Count(), Is.EqualTo(1));
                     Assert.That(hits.Results.ElementAt(0).ContentSnippet, Is.EqualTo(Line_Chinese.Replace(SearchKeyword_Chinese, string.Format("<b>{0}</b>", SearchKeyword_Chinese))));
-                });
+                }
             }
             else
             {
@@ -515,12 +515,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var hits = this.luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = keywordQuery }));
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(hits.Results.Count(), Is.EqualTo(1));
                 Assert.That(hits.Results.ElementAt(0).ContentSnippet, Is.EqualTo("brown <b>fox</b> jumps over the lazy dog"));
-            });
+            }
         }
 
         [Test]
@@ -702,11 +702,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             this.AddTestDocs();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(this.luceneController.MaxDocsCount(), Is.EqualTo(TotalTestDocs2Create));
                 Assert.That(this.luceneController.SearchbleDocsCount(), Is.EqualTo(TotalTestDocs2Create));
-            });
+            }
         }
 
         [Test]
@@ -716,12 +716,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.AddTestDocs();
             var delCount = this.DeleteTestDocs();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(this.luceneController.HasDeletions(), Is.True);
                 Assert.That(this.luceneController.MaxDocsCount(), Is.EqualTo(TotalTestDocs2Create));
                 Assert.That(this.luceneController.SearchbleDocsCount(), Is.EqualTo(TotalTestDocs2Create - delCount));
-            });
+            }
         }
 
         [Test]
@@ -733,11 +733,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             this.luceneController.OptimizeSearchIndex(true);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(this.luceneController.MaxDocsCount(), Is.EqualTo(TotalTestDocs2Create));
                 Assert.That(this.luceneController.SearchbleDocsCount(), Is.EqualTo(TotalTestDocs2Create - delCount));
-            });
+            }
         }
 
         [Test]
@@ -748,12 +748,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var delCount = this.DeleteTestDocs();
             var statistics = this.luceneController.GetSearchStatistics();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(statistics, Is.Not.Null);
                 Assert.That(delCount, Is.EqualTo(statistics.TotalDeletedDocuments));
                 Assert.That(addedCount - delCount, Is.EqualTo(statistics.TotalActiveDocuments));
-            });
+            }
         }
 
         [Test]

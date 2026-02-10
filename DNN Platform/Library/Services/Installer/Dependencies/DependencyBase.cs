@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
     /// <summary>The DependencyBase is a base class for Installer Dependencies.</summary>
     public abstract class DependencyBase : IDependency
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual string ErrorMessage
         {
             get
@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual bool IsValid
         {
             get
@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void ReadManifest(XPathNavigator dependencyNav)
         {
         }

@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     [DnnDeprecated(10, 2, 0, "Please use IClientResourceController instead.")]
     public partial class ClientResourceManager
     {
-        /// <summary>The default css provider.</summary>
+        /// <summary>The default CSS provider.</summary>
         internal const string DefaultCssProvider = "DnnPageHeaderProvider";
 
         /// <summary>The default javascript provider.</summary>
@@ -46,18 +46,24 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             }
 
             var xmlDoc = new XmlDocument { XmlResolver = null };
-            xmlDoc.Load(configPath);
+            using (var configReader = XmlReader.Create(configPath, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                xmlDoc.Load(configReader);
+            }
+
             XmlDocumentFragment xmlFrag;
 
             // Config Sections
             var sectionsConfig = xmlDoc.DocumentElement?.SelectSingleNode("configSections");
             if (sectionsConfig != null)
             {
-                var clientDependencySectionConfig = sectionsConfig.SelectSingleNode("section[@name='clientDependency']");
+                var clientDependencySectionConfig =
+                    sectionsConfig.SelectSingleNode("section[@name='clientDependency']");
                 if (clientDependencySectionConfig == null)
                 {
                     xmlFrag = xmlDoc.CreateDocumentFragment();
-                    xmlFrag.InnerXml = "<section name=\"clientDependency\" type=\"ClientDependency.Core.Config.ClientDependencySection, ClientDependency.Core\" requirePermission=\"false\" />";
+                    xmlFrag.InnerXml =
+                        """<section name="clientDependency" type="ClientDependency.Core.Config.ClientDependencySection, ClientDependency.Core" requirePermission="false" />""";
                     xmlDoc.DocumentElement.SelectSingleNode("configSections")?.AppendChild(xmlFrag);
                 }
             }
@@ -66,11 +72,13 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             var systemWebServerModulesConfig = xmlDoc.DocumentElement?.SelectSingleNode("system.webServer/modules");
             if (systemWebServerModulesConfig != null)
             {
-                var moduleConfig = systemWebServerModulesConfig.SelectSingleNode("add[@name=\"ClientDependencyModule\"]");
+                var moduleConfig =
+                    systemWebServerModulesConfig.SelectSingleNode("""add[@name="ClientDependencyModule"]""");
                 if (moduleConfig == null)
                 {
                     xmlFrag = xmlDoc.CreateDocumentFragment();
-                    xmlFrag.InnerXml = "<add name=\"ClientDependencyModule\" type=\"ClientDependency.Core.Module.ClientDependencyModule, ClientDependency.Core\"  preCondition=\"managedHandler\" />";
+                    xmlFrag.InnerXml =
+                        """<add name="ClientDependencyModule" type="ClientDependency.Core.Module.ClientDependencyModule, ClientDependency.Core"  preCondition="managedHandler" />""";
                     xmlDoc.DocumentElement.SelectSingleNode("system.webServer/modules")?.AppendChild(xmlFrag);
                 }
             }
@@ -79,11 +87,13 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             var systemWebServerHandlersConfig = xmlDoc.DocumentElement?.SelectSingleNode("system.webServer/handlers");
             if (systemWebServerHandlersConfig != null)
             {
-                var handlerConfig = systemWebServerHandlersConfig.SelectSingleNode("add[@name=\"ClientDependencyHandler\"]");
+                var handlerConfig =
+                    systemWebServerHandlersConfig.SelectSingleNode("add[@name=\"ClientDependencyHandler\"]");
                 if (handlerConfig == null)
                 {
                     xmlFrag = xmlDoc.CreateDocumentFragment();
-                    xmlFrag.InnerXml = "<add name=\"ClientDependencyHandler\" verb=\"*\" path=\"DependencyHandler.axd\" type=\"ClientDependency.Core.CompositeFiles.CompositeDependencyHandler, ClientDependency.Core\" preCondition=\"integratedMode\" />";
+                    xmlFrag.InnerXml =
+                        """<add name="ClientDependencyHandler" verb="*" path="DependencyHandler.axd" type="ClientDependency.Core.CompositeFiles.CompositeDependencyHandler, ClientDependency.Core" preCondition="integratedMode" />""";
                     xmlDoc.DocumentElement.SelectSingleNode("system.webServer/handlers")?.AppendChild(xmlFrag);
                 }
             }
@@ -93,24 +103,26 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             if (clientDependencyConfig == null)
             {
                 xmlFrag = xmlDoc.CreateDocumentFragment();
-                xmlFrag.InnerXml = @"<clientDependency version=""0"" fileDependencyExtensions="".js,.css"">
-                                            <fileRegistration defaultProvider=""DnnPageHeaderProvider"">
-                                              <providers>
-                                                <add name=""DnnBodyProvider"" type=""DotNetNuke.Web.Client.Providers.DnnBodyProvider, DotNetNuke.Web.Client"" enableCompositeFiles=""false"" />
-                                                <add name=""DnnPageHeaderProvider"" type=""DotNetNuke.Web.Client.Providers.DnnPageHeaderProvider, DotNetNuke.Web.Client"" enableCompositeFiles=""false"" />
-                                                <add name=""DnnFormBottomProvider"" type=""DotNetNuke.Web.Client.Providers.DnnFormBottomProvider, DotNetNuke.Web.Client"" enableCompositeFiles=""false"" />
-                                                <add name=""PageHeaderProvider"" type=""ClientDependency.Core.FileRegistration.Providers.PageHeaderProvider, ClientDependency.Core"" enableCompositeFiles=""false""/>
-                                                <add name=""LazyLoadProvider"" type=""ClientDependency.Core.FileRegistration.Providers.LazyLoadProvider, ClientDependency.Core"" enableCompositeFiles=""false""/>
-                                                <add name=""LoaderControlProvider"" type=""ClientDependency.Core.FileRegistration.Providers.LoaderControlProvider, ClientDependency.Core"" enableCompositeFiles=""false""/>
-                                              </providers>
-                                            </fileRegistration>
-                                            <compositeFiles defaultFileProcessingProvider=""DnnCompositeFileProcessor"" compositeFileHandlerPath=""~/DependencyHandler.axd"">
-                                              <fileProcessingProviders>
-                                                <!-- For webfarms update the urlType attribute to Base64QueryStrings, default setting is MappedId -->
-                                                <add name=""DnnCompositeFileProcessor"" type=""DotNetNuke.Web.Client.Providers.DnnCompositeFileProcessingProvider, DotNetNuke.Web.Client"" enableCssMinify=""false"" enableJsMinify=""true"" persistFiles=""true"" compositeFilePath=""~/App_Data/ClientDependency"" bundleDomains="""" urlType=""MappedId"" />
-                                              </fileProcessingProviders>
-                                            </compositeFiles>
-                                          </clientDependency>";
+                xmlFrag.InnerXml = """
+                                   <clientDependency version="0" fileDependencyExtensions=".js,.css">
+                                     <fileRegistration defaultProvider="DnnPageHeaderProvider">
+                                       <providers>
+                                         <add name="DnnBodyProvider" type="DotNetNuke.Web.Client.Providers.DnnBodyProvider, DotNetNuke.Web.Client" enableCompositeFiles="false" />
+                                         <add name="DnnPageHeaderProvider" type="DotNetNuke.Web.Client.Providers.DnnPageHeaderProvider, DotNetNuke.Web.Client" enableCompositeFiles="false" />
+                                         <add name="DnnFormBottomProvider" type="DotNetNuke.Web.Client.Providers.DnnFormBottomProvider, DotNetNuke.Web.Client" enableCompositeFiles="false" />
+                                         <add name="PageHeaderProvider" type="ClientDependency.Core.FileRegistration.Providers.PageHeaderProvider, ClientDependency.Core" enableCompositeFiles="false"/>
+                                         <add name="LazyLoadProvider" type="ClientDependency.Core.FileRegistration.Providers.LazyLoadProvider, ClientDependency.Core" enableCompositeFiles="false"/>
+                                         <add name="LoaderControlProvider" type="ClientDependency.Core.FileRegistration.Providers.LoaderControlProvider, ClientDependency.Core" enableCompositeFiles="false"/>
+                                       </providers>
+                                     </fileRegistration>
+                                     <compositeFiles defaultFileProcessingProvider="DnnCompositeFileProcessor" compositeFileHandlerPath="~/DependencyHandler.axd">
+                                       <fileProcessingProviders>
+                                         <!-- For webfarms update the urlType attribute to Base64QueryStrings, default setting is MappedId -->
+                                         <add name="DnnCompositeFileProcessor" type="DotNetNuke.Web.Client.Providers.DnnCompositeFileProcessingProvider, DotNetNuke.Web.Client" enableCssMinify="false" enableJsMinify="true" persistFiles="true" compositeFilePath="~/App_Data/ClientDependency" bundleDomains="" urlType="MappedId" />
+                                       </fileProcessingProviders>
+                                     </compositeFiles>
+                                   </clientDependency>
+                                   """;
 
                 xmlDoc.DocumentElement?.AppendChild(xmlFrag);
             }
@@ -119,6 +131,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             xmlDoc.Save(configPath);
         }
 
+        /// <summary>Remove the client dependency configuration from the <c>web.config</c>.</summary>
         public static void RemoveConfiguration()
         {
             Logger.Info("Removing ClientDependency from web.config");
@@ -130,7 +143,10 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             }
 
             var xmlDoc = new XmlDocument { XmlResolver = null };
-            xmlDoc.Load(configPath);
+            using (var configReader = XmlReader.Create(configPath, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                xmlDoc.Load(configReader);
+            }
 
             // Config Sections
             var sectionsConfig = xmlDoc.DocumentElement?.SelectSingleNode("configSections");
@@ -191,7 +207,10 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             }
 
             var xmlDoc = new XmlDocument { XmlResolver = null };
-            xmlDoc.Load(configPath);
+            using (var configReader = XmlReader.Create(configPath, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                xmlDoc.Load(configReader);
+            }
 
             return xmlDoc.DocumentElement?.SelectSingleNode("configSections")?.SelectSingleNode("section[@name='clientDependency']") != null;
         }

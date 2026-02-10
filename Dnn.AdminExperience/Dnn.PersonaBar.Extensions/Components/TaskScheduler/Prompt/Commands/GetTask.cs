@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -24,18 +25,18 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(GetTask));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int TaskId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.TaskId = this.GetFlagValue(FlagId, "Task Id", -1, true, true, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             try
@@ -43,11 +44,23 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
                 var task = SchedulingProvider.Instance().GetSchedule(this.TaskId);
                 if (task == null)
                 {
-                    return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_TaskNotFound"), this.TaskId));
+                    return new ConsoleErrorResultModel(
+                        string.Format(
+                            CultureInfo.CurrentCulture,
+                            this.LocalizeString("Prompt_TaskNotFound"),
+                            this.TaskId));
                 }
 
                 var tasks = new List<TaskModel> { new TaskModel(task) };
-                return new ConsoleResultModel { Data = tasks, Records = tasks.Count, Output = string.Format(this.LocalizeString("Prompt_TaskFound"), this.TaskId) };
+                return new ConsoleResultModel
+                {
+                    Data = tasks,
+                    Records = tasks.Count,
+                    Output = string.Format(
+                        CultureInfo.CurrentCulture,
+                        this.LocalizeString("Prompt_TaskFound"),
+                        this.TaskId),
+                };
             }
             catch (Exception exc)
             {

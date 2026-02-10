@@ -9,6 +9,7 @@ namespace DotNetNuke.UI.WebControls
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Web.UI;
@@ -234,7 +235,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -627,7 +628,7 @@ namespace DotNetNuke.UI.WebControls
             var strGroups = new string[arrGroups.Count];
             for (int i = 0; i <= arrGroups.Count - 1; i++)
             {
-                strGroups[i] = Convert.ToString(arrGroups[i]);
+                strGroups[i] = Convert.ToString(arrGroups[i], CultureInfo.InvariantCulture);
             }
 
             return strGroups;

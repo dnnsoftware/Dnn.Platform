@@ -4,6 +4,9 @@
 
 namespace Dnn.PersonaBar.Security.Components
 {
+    using System.Diagnostics.CodeAnalysis;
+
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public enum SeverityEnum
     {
         /// <summary>Pass successfully.</summary>

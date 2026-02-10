@@ -39,16 +39,22 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             var defaultResources = new XmlDocument { XmlResolver = null };
             XmlNode parent;
 
-            defaultResources.Load(this.GetResourceFile(string.Empty, Localization.SystemLocale, portalId));
+            using (var defaultResourcesReader = XmlReader.Create(this.GetResourceFile(string.Empty, Localization.SystemLocale, portalId), new XmlReaderSettings { XmlResolver = null, }))
+            {
+                defaultResources.Load(defaultResourcesReader);
+            }
+
             string filename = this.GetResourceFile("Portal", cultureCode, portalId);
 
             if (File.Exists(filename))
             {
-                portalResources.Load(filename);
+                using var portalResourcesReader = XmlReader.Create(filename, new XmlReaderSettings { XmlResolver = null, });
+                portalResources.Load(portalResourcesReader);
             }
             else
             {
-                portalResources.Load(this.GetResourceFile(string.Empty, Localization.SystemLocale, portalId));
+                using var portalResourcesReader = XmlReader.Create(this.GetResourceFile(string.Empty, Localization.SystemLocale, portalId), new XmlReaderSettings { XmlResolver = null, });
+                portalResources.Load(portalResourcesReader);
             }
 
             UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Text", propertyNameString);
@@ -101,7 +107,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             {
                 try
                 {
-                    analyzers.AddRange(from t in assembly.GetTypes() where IsAnalyzerType(t) && IsAllowType(t) select string.Format("{0}, {1}", t.FullName, assembly.GetName().Name));
+                    analyzers.AddRange(from t in assembly.GetTypes() where IsAnalyzerType(t) && IsAllowType(t) select $"{t.FullName}, {assembly.GetName().Name}");
                 }
                 catch (Exception)
                 {
@@ -124,7 +130,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             var fileName = Path.Combine(this.BasePath, "ResourcePack." + package.Name);
             var authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(authPackage.PackageID);
             var authPath = authSystem.LoginControlSrc.Substring(0, authSystem.LoginControlSrc.LastIndexOf("/", StringComparison.Ordinal));
-            return this.CreatePackage(cultureCode, package, authPackage.PackageID, authPath.Replace("/", "\\"), fileName, createZip);
+            return this.CreatePackage(cultureCode, package, authPackage.PackageID, authPath.Replace("/", @"\"), fileName, createZip);
         }
 
         public bool CreateCorePackage(string cultureCode, string fileName, bool createZip)
@@ -152,7 +158,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
 
             this.files = new Dictionary<string, InstallFile>();
             this.CreateCorePackage(cultureCode, fileName, false);
-            foreach (var desktopModule in DesktopModuleController.GetDesktopModules(Null.NullInteger).Values.Where(desktopModule => !desktopModule.FolderName.StartsWith("Admin/")))
+            foreach (var desktopModule in DesktopModuleController.GetDesktopModules(Null.NullInteger).Values.Where(desktopModule => !desktopModule.FolderName.StartsWith("Admin/", StringComparison.OrdinalIgnoreCase)))
             {
                 this.CreateModulePackage(cultureCode, desktopModule, false);
             }

@@ -363,12 +363,12 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             this.WriteToDebug(targetDoc);
 
             var nodes = targetDoc.SelectNodes("/configuration/appSettings/add");
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(nodes, Has.Count.EqualTo(3));
 
                 Assert.That(merge.ConfigUpdateChangedNodes, Is.False);
-            });
+            }
         }
 
         [Test]
@@ -382,12 +382,12 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             this.WriteToDebug(targetDoc);
 
             var nodes = targetDoc.SelectNodes("/configuration/appSettings/add");
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(nodes, Has.Count.EqualTo(3));
 
                 Assert.That(merge.ConfigUpdateChangedNodes, Is.True);
-            });
+            }
         }
 
         [Test]
@@ -462,7 +462,8 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
                     targetStream != null,
                     string.Format("Unable to location embedded resource for {0}Target.xml", testMethodName));
                 var targetDoc = new XmlDocument { XmlResolver = null };
-                targetDoc.Load(targetStream);
+                using var xmlReader = XmlReader.Create(targetStream, new XmlReaderSettings { XmlResolver = null, });
+                targetDoc.Load(xmlReader);
                 return targetDoc;
             }
         }

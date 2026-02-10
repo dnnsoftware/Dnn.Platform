@@ -102,12 +102,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
 
             if (!string.IsNullOrEmpty(servers))
             {
-                if (!servers.StartsWith(","))
+                if (!servers.StartsWith(",", StringComparison.Ordinal))
                 {
                     servers = "," + servers;
                 }
 
-                if (!servers.EndsWith(","))
+                if (!servers.EndsWith(",", StringComparison.Ordinal))
                 {
                     servers = servers + ",";
                 }
@@ -169,7 +169,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             var schedulerIds = hostSettingsService.GetString(SchedulersToRunOnSameWebServerKey, string.Empty)
                 .Split([',',], StringSplitOptions.RemoveEmptyEntries)
                 .Where(x => int.TryParse(x, out var id))
-                .Select(x => int.Parse(x))
+                .Select(x => int.Parse(x, CultureInfo.InvariantCulture))
                 .ToArray();
 
             if (!schedulerIds.Contains(schedulerId))

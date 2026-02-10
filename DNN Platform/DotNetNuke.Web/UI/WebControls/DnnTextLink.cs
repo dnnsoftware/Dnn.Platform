@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A text link control.</summary>
     public class DnnTextLink : WebControl, ILocalizable
     {
         private bool localize = true;
@@ -23,6 +24,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.DisabledCssClass = "dnnTextLink disabled";
         }
 
+        /// <summary>Gets or sets the text.</summary>
         [Bindable(true)]
         [Category("Appearance")]
         [DefaultValue("")]
@@ -40,7 +42,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Bindable(true)]
         [Category("Appearance")]
         [DefaultValue("")]
@@ -58,6 +60,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the URL.</summary>
         [Bindable(true)]
         [Category("Behavior")]
         [DefaultValue("")]
@@ -75,6 +78,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc cref="HyperLink.Target" />
         [Bindable(true)]
         [Category("Behavior")]
         [DefaultValue("")]
@@ -92,6 +96,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the CSS class to apply when the control is disabled.</summary>
         [Bindable(true)]
         [Category("Appearance")]
         [DefaultValue("")]
@@ -109,7 +114,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Localize
         {
             get
@@ -123,7 +128,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string LocalResourceFile { get; set; }
 
         private HyperLink TextHyperlinkControl
@@ -139,7 +144,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void LocalizeStrings()
         {
             if (this.Localize)
@@ -155,7 +160,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     if (string.IsNullOrEmpty(this.ToolTip))
                     {
-                        this.ToolTip = Localization.GetString(string.Format("{0}.ToolTip", this.Text), this.LocalResourceFile);
+                        this.ToolTip = Localization.GetString($"{this.Text}.ToolTip", this.LocalResourceFile);
                     }
 
                     if (string.IsNullOrEmpty(this.ToolTip))
@@ -166,21 +171,21 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
             this.Controls.Add(this.TextHyperlinkControl);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
             this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             this.LocalizeStrings();

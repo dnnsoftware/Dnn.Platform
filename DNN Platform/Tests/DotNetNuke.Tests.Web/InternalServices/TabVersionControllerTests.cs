@@ -152,7 +152,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
         private void SetupHostController()
         {
-            this.mockHostController.Setup(c => c.GetString(It.IsRegex("PerformanceSetting"))).Returns(Globals.PerformanceSettings.LightCaching.ToString());
+            this.mockHostController.Setup(c => c.GetString(It.IsRegex("PerformanceSetting"))).Returns(nameof(Globals.PerformanceSettings.LightCaching));
         }
 
         private class TabVersionControllerTestable : TabVersionController

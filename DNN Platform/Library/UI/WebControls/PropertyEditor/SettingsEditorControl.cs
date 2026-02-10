@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.WebControls
     using System;
     using System.Collections;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -49,21 +50,21 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void AddEditorRow(Table table, object obj)
         {
             var info = (SettingInfo)obj;
             this.AddEditorRow(table, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void AddEditorRow(Panel container, object obj)
         {
             var info = (SettingInfo)obj;
             this.AddEditorRow(container, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void AddEditorRow(object obj)
         {
             var info = (SettingInfo)obj;
@@ -76,10 +77,10 @@ namespace DotNetNuke.UI.WebControls
         protected override bool GetRowVisibility(object obj)
         {
             var info = (SettingInfo)obj;
-            bool isVisible = true;
-            if ((this.Visibility != null) && (this.Visibility[info.Name] != null))
+            var isVisible = true;
+            if (this.Visibility?[info.Name] != null)
             {
-                isVisible = Convert.ToBoolean(this.Visibility[info.Name]);
+                isVisible = Convert.ToBoolean(this.Visibility[info.Name], CultureInfo.InvariantCulture);
             }
 
             return isVisible;
@@ -90,13 +91,13 @@ namespace DotNetNuke.UI.WebControls
         {
             var settings = (Hashtable)this.DataSource;
             var arrSettings = new ArrayList();
-            IDictionaryEnumerator settingsEnumerator = settings.GetEnumerator();
+            var settingsEnumerator = settings.GetEnumerator();
             while (settingsEnumerator.MoveNext())
             {
                 var info = new SettingInfo(settingsEnumerator.Key, settingsEnumerator.Value);
-                if ((this.CustomEditors != null) && (this.CustomEditors[settingsEnumerator.Key] != null))
+                if (this.CustomEditors?[settingsEnumerator.Key] != null)
                 {
-                    info.Editor = Convert.ToString(this.CustomEditors[settingsEnumerator.Key]);
+                    info.Editor = Convert.ToString(this.CustomEditors[settingsEnumerator.Key], CultureInfo.InvariantCulture);
                 }
 
                 arrSettings.Add(info);

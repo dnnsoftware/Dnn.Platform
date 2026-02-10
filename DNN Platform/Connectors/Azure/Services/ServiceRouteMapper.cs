@@ -5,15 +5,15 @@ namespace Dnn.AzureConnector.Services
 {
     using DotNetNuke.Web.Api;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public class ServiceRouteMapper : IServiceRouteMapper
     {
         private static readonly string[] Namespaces = ["Dnn.AzureConnector.Services",];
 
-        /// <inheritdoc/>
-        public void RegisterRoutes(IMapRoute routeManager)
+        /// <inheritdoc />
+        public void RegisterRoutes(IMapRoute mapRouteManager)
         {
-            routeManager.MapHttpRoute(
+            mapRouteManager.MapHttpRoute(
                 "AzureConnector",
                 "default",
                 "{controller}/{action}",

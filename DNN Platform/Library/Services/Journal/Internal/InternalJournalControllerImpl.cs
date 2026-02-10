@@ -4,9 +4,11 @@
 namespace DotNetNuke.Services.Journal.Internal
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Common.Utilities;
 
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class InternalJournalControllerImpl : IInternalJournalController
     {
         private readonly IJournalDataService dataService;
@@ -17,7 +19,8 @@ namespace DotNetNuke.Services.Journal.Internal
             this.dataService = JournalDataService.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IList<JournalItem> GetJournalItemsByProfile(int portalId, int moduleId, int currentUserId, int profileId, int rowIndex, int maxRows)
         {
             return
@@ -31,7 +34,8 @@ namespace DotNetNuke.Services.Journal.Internal
                         maxRows));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IList<JournalItem> GetJournalItemsByGroup(int portalId, int moduleId, int currentUserId, int groupId, int rowIndex, int maxRows)
         {
             return
@@ -45,7 +49,8 @@ namespace DotNetNuke.Services.Journal.Internal
                         maxRows));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IList<JournalItem> GetJournalItems(int portalId, int moduleId, int currentUserId, int rowIndex, int maxRows)
         {
             return
@@ -58,13 +63,14 @@ namespace DotNetNuke.Services.Journal.Internal
                         maxRows));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteFilters(int portalId, int moduleId)
         {
             this.dataService.Journal_TypeFilters_Delete(portalId, moduleId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void SaveFilters(int portalId, int moduleId, int journalTypeId)
         {
             this.dataService.Journal_TypeFilters_Save(portalId, moduleId, journalTypeId);

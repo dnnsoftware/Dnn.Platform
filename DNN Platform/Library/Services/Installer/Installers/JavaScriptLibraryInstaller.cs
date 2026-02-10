@@ -5,6 +5,7 @@
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Xml.XPath;
 
@@ -16,12 +17,12 @@ namespace DotNetNuke.Services.Installer.Installers
         private JavaScriptLibrary library;
         private JavaScriptLibrary installedLibrary;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Commit()
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Install()
         {
             try
@@ -39,7 +40,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 JavaScriptLibraryController.Instance.SaveLibrary(this.library);
 
                 this.Completed = true;
-                this.Log.AddInfo(string.Format(Util.LIBRARY_Registered, this.library.LibraryName));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.LIBRARY_Registered, this.library.LibraryName));
             }
             catch (Exception ex)
             {
@@ -47,7 +48,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             // Load the JavaScript Library from the manifest
@@ -60,7 +61,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Rollback()
         {
             // If Temp Library exists then we need to update the DataStore with this
@@ -76,7 +77,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UnInstall()
         {
             this.DeleteLibrary();
@@ -93,7 +94,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     JavaScriptLibraryController.Instance.DeleteLibrary(library);
 
-                    this.Log.AddInfo(string.Format(Util.LIBRARY_UnRegistered, library.LibraryName));
+                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.LIBRARY_UnRegistered, library.LibraryName));
                 }
             }
             catch (Exception ex)

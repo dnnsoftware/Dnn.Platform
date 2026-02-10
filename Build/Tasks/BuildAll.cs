@@ -19,7 +19,7 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(GeneratePackagesChecksums))]
     public sealed class BuildAll : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             RevertSqlDataProvider(context);

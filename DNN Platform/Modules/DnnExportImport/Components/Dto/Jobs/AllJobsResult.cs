@@ -42,7 +42,7 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         /// <summary>Gets or sets the jobs (or <c>null</c> if there are no jobs).</summary>
         public IEnumerable<JobItem> Jobs { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ConvertToLocal(UserInfo userInfo)
         {
             this.LastExportTime = Util.ToLocalDateTime(this.LastExportTime, userInfo);

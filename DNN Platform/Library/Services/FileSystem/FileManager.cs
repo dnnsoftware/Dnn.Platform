@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.FileSystem
     using System.Text;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
@@ -50,7 +51,7 @@ namespace DotNetNuke.Services.FileSystem
             get { return FileContentTypeManager.Instance.ContentTypes; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public FileExtensionWhitelist WhiteList
         {
             get
@@ -160,7 +161,7 @@ namespace DotNetNuke.Services.FileSystem
             // DNN-2949 If IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
             if (!this.IsAllowedExtension(fileName) && ignoreWhiteList)
             {
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = nameof(EventLogType.HOST_ALERT), };
                 log.LogProperties.Add(new LogDetailInfo("Following file was imported/uploaded, but is not an authorized filetype: ", fileName));
                 LogController.Instance.AddLog(log);
             }
@@ -521,7 +522,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         public virtual IFileInfo GetFile(int fileID, bool retrieveUnpublishedFiles)
         {
-            if (fileID == 0 || fileID == -1)
+            if (fileID is 0 or -1)
             {
                 return null;
             }
@@ -533,7 +534,7 @@ namespace DotNetNuke.Services.FileSystem
                 file = CBO.Instance.FillObject<FileInfo>(DataProvider.Instance().GetFileById(fileID, retrieveUnpublishedFiles));
                 if (file != null)
                 {
-                    var intCacheTimeout = 20 * Convert.ToInt32(this.GetPerformanceSetting());
+                    var intCacheTimeout = 20 * (int)this.GetPerformanceSetting();
                     DataCache.SetCache(strCacheKey, file, TimeSpan.FromMinutes(intCacheTimeout));
                 }
             }
@@ -695,7 +696,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The flag as a boolean value.</returns>
         public virtual bool IsImageFile(IFileInfo file)
         {
-            return (Globals.glbImageFileTypes + ",").IndexOf(file.Extension.ToLowerInvariant().Replace(".", string.Empty) + ",") > -1;
+            return (Globals.ImageFileTypes + ",").Contains(file.Extension.Replace(".", string.Empty) + ",", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>Moves the specified file into the specified folder.</summary>
@@ -799,12 +800,12 @@ namespace DotNetNuke.Services.FileSystem
 
             if (!this.IsAllowedExtension(newFileName))
             {
-                throw new InvalidFileExtensionException(string.Format(Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(newFileName)));
+                throw new InvalidFileExtensionException(string.Format(CultureInfo.CurrentCulture, Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(newFileName)));
             }
 
             if (!this.IsValidFilename(newFileName))
             {
-                throw new InvalidFilenameException(string.Format(Localization.GetExceptionMessage("AddFilenameNotAllowed", "The file name '{0}' is not allowed. The file has not been added."), newFileName));
+                throw new InvalidFilenameException(string.Format(CultureInfo.CurrentCulture, Localization.GetExceptionMessage("AddFilenameNotAllowed", "The file name '{0}' is not allowed. The file has not been added."), newFileName));
             }
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
@@ -1225,7 +1226,7 @@ namespace DotNetNuke.Services.FileSystem
 
             var folderPath = PathUtils.Instance.RemoveTrailingSlash(zipFolder);
 
-            if (folderPath.IndexOf("/") == -1)
+            if (!folderPath.Contains("/", StringComparison.Ordinal))
             {
                 var newFolderPath = destinationFolder.FolderPath + PathUtils.Instance.FormatFolderPath(folderPath);
                 if (!folderManager.FolderExists(destinationFolder.PortalID, newFolderPath))
@@ -1274,12 +1275,12 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("stream", stream);
             var hashText = new StringBuilder();
-            using (var hasher = SHA1.Create())
+            using (var hasher = CryptographyUtils.CreateSHA256())
             {
                 var hashData = hasher.ComputeHash(stream);
                 foreach (var b in hashData)
                 {
-                    hashText.Append(b.ToString("x2"));
+                    hashText.Append(b.ToString("x2", CultureInfo.InvariantCulture));
                 }
             }
 
@@ -1592,7 +1593,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private static RotateFlipType OrientationToFlipType(string orientation)
         {
-            switch (int.Parse(orientation))
+            switch (int.Parse(orientation, CultureInfo.InvariantCulture))
             {
                 case 1:
                     return RotateFlipType.RotateNoneFlipNone;
@@ -1839,7 +1840,7 @@ namespace DotNetNuke.Services.FileSystem
                     return;
                 }
 
-                var flip = OrientationToFlipType(orientation.Value[0].ToString());
+                var flip = OrientationToFlipType(orientation.Value[0].ToString(CultureInfo.InvariantCulture));
                 if (flip == RotateFlipType.RotateNoneFlipNone)
                 {
                     return; // No rotation or flip required
@@ -1872,6 +1873,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 throw new InvalidFileExtensionException(
                     string.Format(
+                        CultureInfo.CurrentCulture,
                         Localization.GetExceptionMessage(
                             "AddFileExtensionNotAllowed",
                             "The extension '{0}' is not allowed. The file has not been added."),
@@ -1882,6 +1884,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 throw new InvalidFilenameException(
                     string.Format(
+                        CultureInfo.CurrentCulture,
                         Localization.GetExceptionMessage(
                             "AddFilenameNotAllowed",
                             "The file name '{0}' is not allowed. The file has not been added."),
@@ -1956,31 +1959,31 @@ namespace DotNetNuke.Services.FileSystem
             {
                 var defaultMessage = "The content of '{0}' is not valid. The file has not been added.";
                 var errorMessage = Localization.GetExceptionMessage("AddFileInvalidContent", defaultMessage);
-                throw new InvalidFileContentException(string.Format(errorMessage, fileName));
+                throw new InvalidFileContentException(string.Format(CultureInfo.CurrentCulture, errorMessage, fileName));
             }
 
             var checkWhiteList = !(UserController.Instance.GetCurrentUserInfo().IsSuperUser && ignoreWhiteList);
             if (checkWhiteList && !this.WhiteList.IsAllowedExtension(".exe") && !FileSecurityController.Instance.ValidateNotExectuable(fileContent))
             {
-                var defaultMessage = "The content of '{0}' is not valid. The file has not been added.";
+                const string defaultMessage = "The content of '{0}' is not valid. The file has not been added.";
                 var errorMessage = Localization.GetExceptionMessage("AddFileInvalidContent", defaultMessage);
-                throw new InvalidFileContentException(string.Format(errorMessage, fileName));
+                throw new InvalidFileContentException(string.Format(CultureInfo.CurrentCulture, errorMessage, fileName));
             }
         }
 
-        private void ManageFileAdding(int createdByUserID, Workflow folderWorkflow, bool fileExists, FileInfo file)
+        private void ManageFileAdding(int createdByUserId, Workflow folderWorkflow, bool fileExists, FileInfo file)
         {
             if (folderWorkflow == null || !fileExists)
             {
-                AddFile(file, createdByUserID);
+                AddFile(file, createdByUserId);
             }
             else
             {
-                // File Events for updating will not be fired. Only events for adding nust be fired
+                // File Events for updating will not be fired. Only events for adding must be fired
                 this.UpdateFile(file, true, false);
             }
 
-            if (folderWorkflow != null && StartWorkflow(createdByUserID, folderWorkflow, fileExists, file.ContentItemID))
+            if (folderWorkflow != null && StartWorkflow(createdByUserId, folderWorkflow, fileExists, file.ContentItemID))
             {
                 // if file exists it could have been published. So We don't have to update the field
                 if (!fileExists)

@@ -5,54 +5,64 @@ namespace DotNetNuke.Services.Users
 {
     using System;
 
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Scheduling;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class PurgeDeletedUsers : SchedulerClient
     {
+        private readonly IPortalController portalController;
+
         /// <summary>Initializes a new instance of the <see cref="PurgeDeletedUsers"/> class.</summary>
         /// <param name="objScheduleHistoryItem">The schedule history item.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public PurgeDeletedUsers(ScheduleHistoryItem objScheduleHistoryItem)
+            : this(Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), objScheduleHistoryItem)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PurgeDeletedUsers"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public PurgeDeletedUsers(IPortalController portalController, ScheduleHistoryItem objScheduleHistoryItem)
+        {
+            this.portalController = portalController;
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DoWork()
         {
             try
             {
-                foreach (PortalInfo portal in new PortalController().GetPortals())
+                foreach (IPortalInfo portal in this.portalController.GetPortals())
                 {
-                    var settings = new PortalSettings(portal.PortalID);
-                    if (settings.DataConsentActive)
+                    var settings = new PortalSettings(portal.PortalId);
+                    if (!settings.DataConsentActive || settings.DataConsentUserDeleteAction != PortalSettings.UserDeleteAction.DelayedHardDelete)
                     {
-                        if (settings.DataConsentUserDeleteAction == PortalSettings.UserDeleteAction.DelayedHardDelete)
-                        {
-                            var thresholdDate = DateTime.Now;
-                            switch (settings.DataConsentDelayMeasurement)
-                            {
-                                case "h":
-                                    thresholdDate = DateTime.Now.AddHours(-1 * settings.DataConsentDelay);
-                                    break;
-                                case "d":
-                                    thresholdDate = DateTime.Now.AddDays(-1 * settings.DataConsentDelay);
-                                    break;
-                                case "w":
-                                    thresholdDate = DateTime.Now.AddDays(-7 * settings.DataConsentDelay);
-                                    break;
-                            }
+                        continue;
+                    }
 
-                            var deletedUsers = UserController.GetDeletedUsers(portal.PortalID);
-                            foreach (UserInfo user in deletedUsers)
-                            {
-                                if (user.LastModifiedOnDate < thresholdDate && user.RequestsRemoval)
-                                {
-                                    UserController.RemoveUser(user);
-                                    this.ScheduleHistoryItem.AddLogNote(string.Format("Removed user {0}{1}", user.Username, Environment.NewLine));
-                                }
-                            }
+                    var thresholdDate = settings.DataConsentDelayMeasurement switch
+                    {
+                        "h" => DateTime.Now.AddHours(-1 * settings.DataConsentDelay),
+                        "d" => DateTime.Now.AddDays(-1 * settings.DataConsentDelay),
+                        "w" => DateTime.Now.AddDays(-7 * settings.DataConsentDelay),
+                        _ => DateTime.Now,
+                    };
+
+                    var deletedUsers = UserController.GetDeletedUsers(portal.PortalId);
+                    foreach (UserInfo user in deletedUsers)
+                    {
+                        if (user.LastModifiedOnDate < thresholdDate && user.RequestsRemoval)
+                        {
+                            UserController.RemoveUser(user);
+                            this.ScheduleHistoryItem.AddLogNote($"Removed user {user.Username}{Environment.NewLine}");
                         }
                     }
                 }
@@ -64,7 +74,7 @@ namespace DotNetNuke.Services.Users
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging deleted users task failed: {0}.", exc.ToString()));
+                this.ScheduleHistoryItem.AddLogNote($"Purging deleted users task failed: {exc}.");
 
                 // notification that we have errored
                 this.Errored(ref exc); // REQUIRED

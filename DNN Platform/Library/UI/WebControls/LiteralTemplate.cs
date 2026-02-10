@@ -24,7 +24,7 @@ namespace DotNetNuke.UI.WebControls
             this.objControl = ctl;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void InstantiateIn(Control container)
         {
             if (this.objControl == null)

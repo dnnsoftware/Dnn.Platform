@@ -4,20 +4,37 @@
 
 namespace DotNetNuke.Tests.Data
 {
-    using System;
     using System.Collections.Generic;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Tests.Data.Fakes;
-    using DotNetNuke.Tests.Utilities.Mocks;
+    using DotNetNuke.Tests.Utilities.Fakes;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
     using NUnit.Framework;
 
     [TestFixture]
     public class DataProviderTests
     {
+        private FakeServiceProvider serviceProvider;
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<IApplicationStatusInfo>()));
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
+        }
+
         [Test]
         public void DataProvider_Instance_Method_Returns_Instance()
         {
@@ -55,8 +72,7 @@ namespace DotNetNuke.Tests.Data
         public void DataProvider_DatabaseOwner_Property_Is_Valid(string databaseOwner)
         {
             // Arrange
-            var settings = new Dictionary<string, string>();
-            settings["databaseOwner"] = databaseOwner;
+            var settings = new Dictionary<string, string> { ["databaseOwner"] = databaseOwner, };
 
             ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.RegisterComponentInstance<DataProvider>(new FakeDataProvider(settings));

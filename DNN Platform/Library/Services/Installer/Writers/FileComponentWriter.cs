@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Installer.Writers
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Xml;
 
     using DotNetNuke.Common.Utilities;
@@ -116,12 +117,12 @@ namespace DotNetNuke.Services.Installer.Writers
             writer.WriteAttributeString("type", this.ComponentType);
             if (this.InstallOrder > Null.NullInteger)
             {
-                writer.WriteAttributeString("installOrder", this.InstallOrder.ToString());
+                writer.WriteAttributeString("installOrder", this.InstallOrder.ToString(CultureInfo.InvariantCulture));
             }
 
             if (this.UnInstallOrder > Null.NullInteger)
             {
-                writer.WriteAttributeString("unInstallOrder", this.UnInstallOrder.ToString());
+                writer.WriteAttributeString("unInstallOrder", this.UnInstallOrder.ToString(CultureInfo.InvariantCulture));
             }
 
             // Start files element
@@ -152,14 +153,14 @@ namespace DotNetNuke.Services.Installer.Writers
         /// The WriteCustomManifest method writes the custom manifest items (that subclasses
         /// of FileComponentWriter may need).
         /// </summary>
-        /// <param name="writer">The Xmlwriter to use.</param>
+        /// <param name="writer">The XmlWriter to use.</param>
         protected virtual void WriteCustomManifest(XmlWriter writer)
         {
         }
 
         protected virtual void WriteFileElement(XmlWriter writer, InstallFile file)
         {
-            this.Log.AddInfo(string.Format(Util.WRITER_AddFileToManifest, file.Name));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.WRITER_AddFileToManifest, file.Name));
 
             // Start file Element
             writer.WriteStartElement(this.ItemNodeName);
@@ -172,7 +173,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     if (file.Path.ToLowerInvariant().Contains(this.basePath.ToLowerInvariant()))
                     {
-                        path = file.Path.ToLowerInvariant().Replace(this.basePath.ToLowerInvariant() + "\\", string.Empty);
+                        path = file.Path.ToLowerInvariant().Replace(this.basePath.ToLowerInvariant() + @"\", string.Empty);
                     }
                 }
 

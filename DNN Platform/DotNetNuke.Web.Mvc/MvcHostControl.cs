@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.Mvc
             this.controlKey = controlKey;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleActionCollection ModuleActions { get; private set; }
 
         /// <summary>Gets or sets a value indicating whether the module controller should execute immediately (i.e. during <see cref="Control.OnInit"/> rather than <see cref="ISettingsControl.LoadSettings"/>).</summary>
@@ -72,7 +72,7 @@ namespace DotNetNuke.Web.Mvc
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -83,7 +83,7 @@ namespace DotNetNuke.Web.Mvc
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -95,9 +95,9 @@ namespace DotNetNuke.Web.Mvc
                 }
 
                 var mvcString = RenderModule(this.result);
-                if (!string.IsNullOrEmpty(Convert.ToString(mvcString)))
+                if (!string.IsNullOrEmpty(Convert.ToString(mvcString, CultureInfo.InvariantCulture)))
                 {
-                    this.Controls.Add(new LiteralControl(Convert.ToString(mvcString)));
+                    this.Controls.Add(new LiteralControl(Convert.ToString(mvcString, CultureInfo.InvariantCulture)));
                 }
             }
             catch (Exception exc)

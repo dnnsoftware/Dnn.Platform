@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.Admin.Sales
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.Admin.Sales
             this.InitializeComponent();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 int intUserID = -1;
                 if (this.Request.IsAuthenticated)
                 {
-                    objUserInfo = UserController.Instance.GetCurrentUserInfo();
+                    objUserInfo = this.UserController.GetCurrentUserInfo();
                     if (objUserInfo != null)
                     {
                         intUserID = objUserInfo.UserID;
@@ -71,13 +71,13 @@ namespace DotNetNuke.Modules.Admin.Sales
                 }
 
                 string strProcessorUserId = string.Empty;
-                PortalInfo objPortalInfo = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
+                PortalInfo objPortalInfo = this.PortalController.GetPortal(this.PortalSettings.PortalId);
                 if (objPortalInfo != null)
                 {
                     strProcessorUserId = objPortalInfo.ProcessorUserId;
                 }
 
-                Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(this.PortalSettings.PortalId);
+                Dictionary<string, string> settings = this.PortalController.GetPortalSettings(this.PortalSettings.PortalId);
                 string strPayPalURL;
                 if (intUserID != -1 && intRoleId != -1 && !string.IsNullOrEmpty(strProcessorUserId))
                 {

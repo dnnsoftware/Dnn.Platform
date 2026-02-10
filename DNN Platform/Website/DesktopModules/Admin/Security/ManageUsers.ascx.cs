@@ -6,6 +6,7 @@ namespace DotNetNuke.Modules.Admin.Users
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web;
 
     using DotNetNuke.Abstractions;
@@ -50,7 +51,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleActionCollection ModuleActions
         {
             get
@@ -409,7 +410,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         }
                         else
                         {
-                            this.lblTitle.Text = string.Format(Localization.GetString("UserTitle", this.LocalResourceFile), this.User.Username, this.User.UserID);
+                            this.lblTitle.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserTitle", this.LocalResourceFile), this.User.Username, this.User.UserID);
                         }
                     }
                 }
@@ -824,11 +825,11 @@ namespace DotNetNuke.Modules.Admin.Users
             string message = Null.NullString;
             if (e.Cancel)
             {
-                message = string.Format(Localization.GetString("UserUnSubscribed", this.LocalResourceFile), e.RoleName);
+                message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserUnSubscribed", this.LocalResourceFile), e.RoleName);
             }
             else
             {
-                message = string.Format(Localization.GetString("UserSubscribed", this.LocalResourceFile), e.RoleName);
+                message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserSubscribed", this.LocalResourceFile), e.RoleName);
             }
 
             this.AddLocalizedModuleMessage(message, ModuleMessage.ModuleMessageType.GreenSuccess, true);

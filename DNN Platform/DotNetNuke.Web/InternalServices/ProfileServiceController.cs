@@ -3,12 +3,17 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Urls;
@@ -17,28 +22,76 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Services.Registration;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A web API controller for a user's profile.</summary>
     [DnnAuthorize]
     public class ProfileServiceController : DnnApiController
     {
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalGroupController portalGroupController;
+        private readonly IHostSettings hostSettings;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IEventLogger eventLogger;
+
+        /// <summary>Initializes a new instance of the <see cref="ProfileServiceController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public ProfileServiceController()
+            : this(null, null, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ProfileServiceController"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public ProfileServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
+            : this(portalController, appStatus, portalGroupController, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ProfileServiceController"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public ProfileServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger)
+        {
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
+
+        /// <summary>Searches a registration profile.</summary>
+        /// <param name="q">The search criteria.</param>
+        /// <returns>A response with a list of objects containing <c>id</c> and <c>name</c> fields.</returns>
         [HttpGet]
         public HttpResponseMessage Search(string q)
         {
-            var results = RegistrationProfileController.Instance.Search(PortalController.GetEffectivePortalId(this.PortalSettings.PortalId), q);
+            var results = RegistrationProfileController.Instance.Search(PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, this.PortalSettings.PortalId), q);
             return this.Request.CreateResponse(
                 HttpStatusCode.OK,
                 results.OrderBy(sr => sr)
                         .Select(field => new { id = field, name = field }));
         }
 
+        /// <summary>Updates a user's vanity URL.</summary>
+        /// <param name="vanityUrl">The URL.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateVanityUrl(VanityUrlDTO vanityUrl)
         {
-            bool modified;
-
             // Clean Url
-            var options = UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.PortalSettings.PortalId));
-            var cleanUrl = FriendlyUrlController.CleanNameForUrl(vanityUrl.Url, options, out modified);
+            var options = UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.portalController, this.hostSettings, this.hostSettingsService, this.PortalSettings.PortalId));
+            var cleanUrl = FriendlyUrlController.CleanNameForUrl(vanityUrl.Url, options, out var modified);
 
             if (modified)
             {
@@ -71,26 +124,30 @@ namespace DotNetNuke.Web.InternalServices
 
             var user = this.PortalSettings.UserInfo;
             user.VanityUrl = uniqueUrl;
-            UserController.UpdateUser(this.PortalSettings.PortalId, user);
+            UserController.UpdateUser(this.eventLogger, this.PortalSettings.PortalId, user);
 
-            DataCache.RemoveCache(string.Format(CacheController.VanityUrlLookupKey, this.PortalSettings.PortalId));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, CacheController.VanityUrlLookupKey, this.PortalSettings.PortalId));
 
             // Url is clean and validated so we can update the User
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
         }
 
+        /// <summary>Gets the profile property values.</summary>
+        /// <returns>A response with a list of values.</returns>
         [DnnAuthorize]
         [HttpGet]
         public HttpResponseMessage ProfilePropertyValues()
         {
             string searchString = HttpContext.Current.Request.Params["SearchString"].NormalizeString();
             string propertyName = HttpContext.Current.Request.Params["PropName"].NormalizeString();
-            int portalId = int.Parse(HttpContext.Current.Request.Params["PortalId"]);
+            int portalId = int.Parse(HttpContext.Current.Request.Params["PortalId"], CultureInfo.InvariantCulture);
             return this.Request.CreateResponse(HttpStatusCode.OK, Entities.Profile.ProfileController.SearchProfilePropertyValues(portalId, propertyName, searchString));
         }
 
+        /// <summary>A data transfer object with information about a vanity URL.</summary>
         public class VanityUrlDTO
         {
+            /// <summary>Gets or sets the URL.</summary>
             public string Url { get; set; }
         }
     }

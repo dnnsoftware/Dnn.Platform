@@ -31,12 +31,12 @@ namespace DotNetNuke.Tests.Authentication
             // Act
             UserData sampleUser = Json.Deserialize<FacebookUserData>(SampleUserJson);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(sampleUser.FirstName, Is.EqualTo("Bret"), "Should correctly pull first name from first_name field, not by parsing name");
                 Assert.That(sampleUser.LastName, Is.EqualTo("Taylor"), "Should correctly pull first name from first_name field, not by parsing name");
-            });
+            }
         }
 
         [Test]

@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Library.Model
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Runtime.Serialization;
 
     using DotNetNuke.Common.Utilities;
@@ -42,25 +43,25 @@ namespace Dnn.PersonaBar.Library.Model
         [DataMember]
         public bool Enabled { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID
         {
             get { return this.ExtensionId; }
             set { this.ExtensionId = value; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
-            this.ExtensionId = Convert.ToInt32(dr["ExtensionId"]);
+            this.ExtensionId = Convert.ToInt32(dr["ExtensionId"], CultureInfo.InvariantCulture);
             this.Identifier = dr["Identifier"].ToString();
             this.FolderName = Null.SetNullString(dr["FolderName"]);
-            this.MenuId = Convert.ToInt32(dr["MenuId"]);
+            this.MenuId = Convert.ToInt32(dr["MenuId"], CultureInfo.InvariantCulture);
             this.Controller = dr["Controller"].ToString();
             this.Container = dr["Container"].ToString();
             this.Path = dr["Path"].ToString();
             this.Order = Null.SetNullInteger(dr["Order"]);
-            this.Enabled = Convert.ToBoolean(dr["Enabled"]);
+            this.Enabled = Convert.ToBoolean(dr["Enabled"], CultureInfo.InvariantCulture);
         }
     }
 }

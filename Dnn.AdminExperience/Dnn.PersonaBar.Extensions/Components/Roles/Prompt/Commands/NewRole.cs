@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Net;
 
     using Dnn.PersonaBar.Library.Prompt;
@@ -39,7 +40,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewRole));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public string RoleName { get; set; }
@@ -52,7 +53,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 
         public RoleStatus Status { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.RoleName = this.GetFlagValue(FlagRoleName, "Rolename", string.Empty, true, true);
@@ -72,12 +73,12 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                     this.Status = RoleStatus.Disabled;
                     break;
                 default:
-                    this.AddMessage(string.Format(this.LocalizeString("Prompt_InvalidRoleStatus"), FlagStatus));
+                    this.AddMessage(string.Format(CultureInfo.InvariantCulture, this.LocalizeString("Prompt_InvalidRoleStatus"), FlagStatus));
                     break;
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             try

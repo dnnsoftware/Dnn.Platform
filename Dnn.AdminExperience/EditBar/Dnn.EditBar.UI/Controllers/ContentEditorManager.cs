@@ -6,6 +6,7 @@ namespace Dnn.EditBar.UI.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -15,14 +16,21 @@ namespace Dnn.EditBar.UI.Controllers
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
@@ -30,10 +38,13 @@ namespace Dnn.EditBar.UI.Controllers
     using DotNetNuke.UI.Containers;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Newtonsoft.Json;
 
+    using FileOrder = DotNetNuke.Abstractions.ClientResources.FileOrder;
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>Content Editor Manager.</summary>
@@ -42,8 +53,45 @@ namespace Dnn.EditBar.UI.Controllers
         /// <summary>The folder that contains the control.</summary>
         public const string ControlFolder = "~/DesktopModules/admin/Dnn.EditBar/Resources";
 
-        private const int CssFileOrder = 40;
+        private const FileOrder.Css CssFileOrder = (FileOrder.Css)40;
+
+        private readonly IClientResourceController clientResourceController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
+        private readonly IPortalController portalController;
+        private readonly IHostSettings hostSettings;
+        private readonly IUserController userController;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IServicesFramework servicesFramework;
         private bool supportAjax = true;
+
+        /// <summary>Initializes a new instance of the <see cref="ContentEditorManager"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
+        public ContentEditorManager()
+            : this(null, null, null, null, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ContentEditorManager"/> class.</summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public ContentEditorManager(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalController portalController, IHostSettings hostSettings, IUserController userController, IHostSettingsService hostSettingsService, IServicesFramework servicesFramework)
+        {
+            this.clientResourceController = clientResourceController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IClientResourceController>();
+            this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IEventLogger>();
+            this.portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
+            this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+            this.userController = userController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IUserController>();
+            this.hostSettingsService = hostSettingsService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettingsService>();
+            this.servicesFramework = servicesFramework ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IServicesFramework>();
+        }
 
         /// <summary>Gets or sets the skin.</summary>
         public Skin Skin { get; set; }
@@ -67,8 +115,9 @@ namespace Dnn.EditBar.UI.Controllers
                 return false;
             }
 
-            var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
-            bool isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
+            var currentPortal = PortalController.Instance.GetCurrentSettings();
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            bool isAdminUser = currentUser.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
             if (isAdminUser)
             {
                 return true;
@@ -92,7 +141,7 @@ namespace Dnn.EditBar.UI.Controllers
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -108,7 +157,7 @@ namespace Dnn.EditBar.UI.Controllers
 
             if (user.UserID > 0)
             {
-                ClientAPI.RegisterClientVariable(this.Page, "dnn_current_userid", this.PortalSettings.UserInfo.UserID.ToString(), true);
+                ClientAPI.RegisterClientVariable(this.Page, "dnn_current_userid", this.PortalSettings.UserInfo.UserID.ToString(CultureInfo.InvariantCulture), true);
             }
 
             var isInViewMode = Personalization.GetUserMode() != PortalSettings.Mode.Edit;
@@ -134,7 +183,7 @@ namespace Dnn.EditBar.UI.Controllers
             this.EnsureChildControls();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -143,7 +192,7 @@ namespace Dnn.EditBar.UI.Controllers
             this.RegisterInitScripts();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -193,7 +242,7 @@ namespace Dnn.EditBar.UI.Controllers
                     && !this.Request.Form["__EVENTARGUMENT"].Equals("undefined", StringComparison.OrdinalIgnoreCase)
                     && this.Request.Form["__EVENTARGUMENT"].StartsWith("module-", StringComparison.OrdinalIgnoreCase))
                 {
-                    var moduleId = Convert.ToInt32(this.Request.Form["__EVENTARGUMENT"].Substring(7));
+                    var moduleId = Convert.ToInt32(this.Request.Form["__EVENTARGUMENT"].Substring(7), CultureInfo.InvariantCulture);
 
                     var moduleContainer = this.FindModuleContainer(moduleId);
                     if (moduleContainer != null)
@@ -201,9 +250,9 @@ namespace Dnn.EditBar.UI.Controllers
                         var moduleControl = this.FindModuleControl(moduleId);
                         var moduleInfo = this.FindModuleInfo(moduleId);
 
-                        if (moduleControl != null && moduleInfo != null && moduleContainer.Parent is HtmlContainerControl)
+                        if (moduleControl != null && moduleInfo != null && moduleContainer.Parent is HtmlContainerControl control)
                         {
-                            ((HtmlContainerControl)moduleContainer.Parent).Attributes["data-module-title"] = moduleInfo.ModuleTitle;
+                            control.Attributes["data-module-title"] = moduleInfo.ModuleTitle;
 
                             if (this.HaveContentLayoutModuleOnPage())
                             {
@@ -211,7 +260,7 @@ namespace Dnn.EditBar.UI.Controllers
                             }
                             else
                             {
-                                moduleControl.Page = new ProxyPage(this.Page);
+                                moduleControl.Page = new ProxyPage(this.portalController, this.appStatus, this.hostSettings, this.userController, this.hostSettingsService, this.Page);
                             }
 
                             this.ProcessDragTipShown(moduleContainer);
@@ -221,7 +270,7 @@ namespace Dnn.EditBar.UI.Controllers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             var scripts = ScriptManager.GetCurrent(this.Page).GetRegisteredStartupScripts()
@@ -277,47 +326,44 @@ namespace Dnn.EditBar.UI.Controllers
 
         private void RegisterClientResources()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             ClientResourceManager.EnableAsyncPostBackHandler();
+#pragma warning restore CS0618 // Type or member is obsolete
 
             // register drop down list required resources
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList.css", FileOrder.Css.ResourceCss);
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css", FileOrder.Css.ResourceCss);
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/components/DropDownList/dnn.DropDownList.css", FileOrder.Css.ResourceCss);
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css", FileOrder.Css.ResourceCss);
 
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.extensions.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.DataStructures.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/jquery/jquery.mousewheel.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/TreeView/dnn.TreeView.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/TreeView/dnn.DynamicTreeView.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Components/DropDownList/dnn.DropDownList.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.extensions.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.DataStructures.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/jquery/jquery.mousewheel.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/jquery/dnn.jScrollBar.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/TreeView/dnn.TreeView.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/TreeView/dnn.DynamicTreeView.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/Components/DropDownList/dnn.DropDownList.js");
 
-            ClientResourceManager.RegisterScript(this.Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleManager.js"));
-            ClientResourceManager.RegisterScript(this.Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleDialog.js"));
-            ClientResourceManager.RegisterScript(this.Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ExistingModuleDialog.js"));
-            ClientResourceManager.RegisterScript(this.Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleService.js"));
-            ClientResourceManager.RegisterScript(this.Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ContentEditor.js"));
-            ClientResourceManager.RegisterStyleSheet(
-                this.Page,
-                Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css"),
-                CssFileOrder);
-            ServicesFramework.Instance.RequestAjaxScriptSupport();
+            this.clientResourceController.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleManager.js"));
+            this.clientResourceController.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleDialog.js"));
+            this.clientResourceController.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ExistingModuleDialog.js"));
+            this.clientResourceController.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleService.js"));
+            this.clientResourceController.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ContentEditor.js"));
+            this.clientResourceController.RegisterStylesheet(Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css"), (FileOrder.Css)CssFileOrder);
+            this.servicesFramework.RequestAjaxScriptSupport();
 
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.DnnPlugins);
 
             // We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
-            JavaScript.RequestRegistration(CommonJs.KnockoutMapping);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.KnockoutMapping);
 
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
-            ClientResourceManager.RegisterStyleSheet(
-                this.Page,
-                "~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
         }
 
         private void RegisterEditBarResources()
         {
-            JavaScript.RequestRegistration(CommonJs.jQuery);
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.jQuery);
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
 
             ClientAPI.RegisterClientVariable(this.Page, "editbar_isAdmin", this.IsAdmin().ToString(), true);
 
@@ -325,9 +371,9 @@ namespace Dnn.EditBar.UI.Controllers
             var settingsScript = "window.editBarSettings = " + JsonConvert.SerializeObject(settings) + ";";
             this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "EditBarSettings", settingsScript, true);
 
-            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/admin/Dnn.EditBar/scripts/editBarContainer.js");
+            this.clientResourceController.RegisterScript("~/DesktopModules/admin/Dnn.EditBar/scripts/editBarContainer.js");
 
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/admin/Dnn.EditBar/css/editBarContainer.css");
+            this.clientResourceController.RegisterStylesheet("~/DesktopModules/admin/Dnn.EditBar/css/editBarContainer.css");
         }
 
         private List<List<string>> GetPaneClientIdCollection()
@@ -381,7 +427,8 @@ namespace Dnn.EditBar.UI.Controllers
             var panes = string.Join(",", this.PortalSettings.ActiveTab.Panes.Cast<string>());
             var panesClientIds = GetPanesClientIds(this.GetPaneClientIdCollection());
             var script = string.Format(
-                @"dnn.ContentEditorManager.init({{type: 'moduleManager', panes: '{0}', panesClientIds: '{2}', supportAjax: {1}}});",
+                CultureInfo.InvariantCulture,
+                "dnn.ContentEditorManager.init({{type: 'moduleManager', panes: '{0}', panesClientIds: '{2}', supportAjax: {1}}});",
                 HttpUtility.JavaScriptStringEncode(panes),
                 this.SupportAjax ? "true" : "false",
                 HttpUtility.JavaScriptStringEncode(panesClientIds));
@@ -453,9 +500,8 @@ namespace Dnn.EditBar.UI.Controllers
                 if (!string.IsNullOrEmpty(pendingData))
                 {
                     var tabId = this.PortalSettings.ActiveTab.TabID;
-                    int moduleId;
-                    if (pendingData.StartsWith("module-")
-                        && int.TryParse(pendingData.Substring(7), out moduleId))
+                    if (pendingData.StartsWith("module-", StringComparison.OrdinalIgnoreCase)
+                        && int.TryParse(pendingData.Substring(7), out var moduleId))
                     {
                         var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
                         if (module != null)
@@ -499,15 +545,15 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 var cookie = this.Request.Cookies["CEM_CallbackData"];
                 var callbackData = cookie.Value;
-                if (!string.IsNullOrEmpty(callbackData) && callbackData.StartsWith("module-"))
+                if (!string.IsNullOrEmpty(callbackData) && callbackData.StartsWith("module-", StringComparison.OrdinalIgnoreCase))
                 {
-                    var moduleId = Convert.ToInt32(callbackData.Substring(7));
+                    var moduleId = Convert.ToInt32(callbackData.Substring(7), CultureInfo.InvariantCulture);
 
                     var moduleContainer = this.FindModuleContainer(moduleId);
                     var moduleInfo = this.FindModuleInfo(moduleId);
-                    if (moduleContainer != null && moduleInfo != null && moduleContainer.Parent is HtmlContainerControl)
+                    if (moduleContainer != null && moduleInfo != null && moduleContainer.Parent is HtmlContainerControl parent)
                     {
-                        ((HtmlContainerControl)moduleContainer.Parent).Attributes["data-module-title"] = moduleInfo.ModuleTitle;
+                        parent.Attributes["data-module-title"] = moduleInfo.ModuleTitle;
                         this.ProcessDragTipShown(moduleContainer);
                     }
                 }
@@ -516,11 +562,11 @@ namespace Dnn.EditBar.UI.Controllers
 
         private void ProcessDragTipShown(Container moduleContainer)
         {
-            var dragTipShown = Convert.ToString(Personalization.GetProfile("Usability", "DragTipShown" + this.PortalSettings.PortalId));
-            if (string.IsNullOrEmpty(dragTipShown) && moduleContainer.Parent is HtmlContainerControl && this.Request.Cookies["noFloat"] == null)
+            var dragTipShown = Convert.ToString(Personalization.GetProfile("Usability", "DragTipShown" + this.PortalSettings.PortalId), CultureInfo.InvariantCulture);
+            if (string.IsNullOrEmpty(dragTipShown) && moduleContainer.Parent is HtmlContainerControl parent && this.Request.Cookies["noFloat"] == null)
             {
                 Personalization.SetProfile("Usability", "DragTipShown" + this.PortalSettings.PortalId, "true");
-                ((HtmlContainerControl)moduleContainer.Parent).Attributes["class"] += " dragtip";
+                parent.Attributes["class"] += " dragtip";
             }
         }
 
@@ -648,7 +694,14 @@ namespace Dnn.EditBar.UI.Controllers
         {
             private readonly Page originalPage;
 
+            [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
             public ProxyPage(Page originalPage)
+                : this(null, null, null, null, null, originalPage)
+            {
+            }
+
+            public ProxyPage(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IUserController userController, IHostSettingsService hostSettingsService, Page originalPage)
+                : base(portalController, appStatus, hostSettings, userController, hostSettingsService)
             {
                 this.originalPage = originalPage;
 
@@ -667,7 +720,7 @@ namespace Dnn.EditBar.UI.Controllers
                 }
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public override Control FindControl(string id)
             {
                 return this.originalPage.FindControl(id);

@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Portals
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Application;
@@ -46,7 +47,8 @@ namespace DotNetNuke.Entities.Portals
         public static IPortalSettingsController Instance() =>
             Globals.GetCurrentServiceProvider().GetRequiredService<IPortalSettingsController>();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public virtual void ConfigureActiveTab(PortalSettings portalSettings)
         {
             var activeTab = portalSettings.ActiveTab;
@@ -61,7 +63,7 @@ namespace DotNetNuke.Entities.Portals
             activeTab.BreadCrumbs = new ArrayList(this.GetBreadcrumbs(activeTab.TabID, portalSettings.PortalId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual TabInfo GetActiveTab(int tabId, PortalSettings portalSettings)
         {
             var portalId = portalSettings.PortalId;
@@ -100,7 +102,7 @@ namespace DotNetNuke.Entities.Portals
             return activeTab;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual PortalSettings.PortalAliasMapping GetPortalAliasMappingMode(int portalId)
         {
             var aliasMapping = PortalSettings.PortalAliasMapping.None;
@@ -123,13 +125,13 @@ namespace DotNetNuke.Entities.Portals
             return aliasMapping;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual IList<ModuleInfo> GetTabModules(PortalSettings portalSettings)
         {
             return portalSettings.ActiveTab.Modules.Cast<ModuleInfo>().Select(m => m).ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void LoadPortal(PortalInfo portal, PortalSettings portalSettings)
         {
             portalSettings.PortalName = portal.PortalName;
@@ -175,7 +177,7 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.CultureCode = portal.CultureCode;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void LoadPortalSettings(PortalSettings portalSettings)
         {
             var settings = PortalController.Instance.GetPortalSettings(portalSettings.PortalId);
@@ -265,15 +267,15 @@ namespace DotNetNuke.Entities.Portals
             setting = settings.GetValueOrDefault("DataConsentTermsLastChange", string.Empty);
             if (!string.IsNullOrEmpty(setting))
             {
-                portalSettings.DataConsentTermsLastChange = DateTime.Parse(setting, System.Globalization.CultureInfo.InvariantCulture);
+                portalSettings.DataConsentTermsLastChange = DateTime.Parse(setting, CultureInfo.InvariantCulture);
             }
 
             setting = settings.GetValueOrDefault("DataConsentConsentRedirect", "-1");
-            portalSettings.DataConsentConsentRedirect = int.Parse(setting);
+            portalSettings.DataConsentConsentRedirect = int.Parse(setting, CultureInfo.InvariantCulture);
             setting = settings.GetValueOrDefault("DataConsentUserDeleteAction", "0");
-            portalSettings.DataConsentUserDeleteAction = (PortalSettings.UserDeleteAction)int.Parse(setting);
+            portalSettings.DataConsentUserDeleteAction = (PortalSettings.UserDeleteAction)int.Parse(setting, CultureInfo.InvariantCulture);
             setting = settings.GetValueOrDefault("DataConsentDelay", "1");
-            portalSettings.DataConsentDelay = int.Parse(setting);
+            portalSettings.DataConsentDelay = int.Parse(setting, CultureInfo.InvariantCulture);
             setting = settings.GetValueOrDefault("DataConsentDelayMeasurement", "d");
             portalSettings.DataConsentDelayMeasurement = setting;
             setting = settings.GetValueOrDefault("AllowedExtensionsWhitelist", this.hostSettingsService.GetString("DefaultEndUserExtensionWhitelist"));

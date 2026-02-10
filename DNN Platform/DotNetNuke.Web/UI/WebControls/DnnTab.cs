@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    /// <summary>A tab control.</summary>
     [ParseChildren(true)]
     public class DnnTab : WebControl
     {
@@ -15,7 +16,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ControlCollection Controls
         {
             get
@@ -25,20 +26,22 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the header template.</summary>
         [TemplateInstance(TemplateInstance.Single)]
         public virtual ITemplate Header { get; set; }
 
+        /// <summary>Gets or sets the content template.</summary>
         [TemplateInstance(TemplateInstance.Single)]
         public virtual ITemplate Content { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Control FindControl(string id)
         {
             this.EnsureChildControls();
             return base.FindControl(id);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -49,7 +52,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             this.RenderBeginTag(writer);

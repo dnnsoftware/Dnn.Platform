@@ -189,7 +189,7 @@ namespace DotNetNuke.Services.Localization
             }
 
             var cacheArgs = new CacheItemArgs(
-                string.Format(DataCache.LocalesCacheKey, portalID),
+                string.Format(CultureInfo.InvariantCulture, DataCache.LocalesCacheKey, portalID),
                 DataCache.LocalesCacheTimeOut,
                 DataCache.LocalesCachePriority,
                 portalID,
@@ -220,7 +220,7 @@ namespace DotNetNuke.Services.Localization
                 bool enabled = false;
                 Dictionary<string, Locale> dicLocales = this.GetLocales(portalId);
 
-                // if ((!dicLocales.ContainsKey(localeCode)))
+                ////if ((!dicLocales.ContainsKey(localeCode)))
                 string locale = localeCode;
                 if (dicLocales.FirstOrDefault(x => string.Equals(x.Key, locale, StringComparison.OrdinalIgnoreCase)).Key == null)
                 {
@@ -259,7 +259,7 @@ namespace DotNetNuke.Services.Localization
         public void UpdatePortalLocale(Locale locale)
         {
             this.dataProvider.UpdatePortalLanguage(locale.PortalId, locale.LanguageId, locale.IsPublished, this.userController.GetCurrentUserInfo().UserID);
-            DataCache.RemoveCache(string.Format(DataCache.LocalesCacheKey, locale.PortalId));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.LocalesCacheKey, locale.PortalId));
         }
 
         /// <summary>Determines the language whether is default language.</summary>

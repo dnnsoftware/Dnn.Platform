@@ -4,9 +4,10 @@
 
 namespace DotNetNuke.Web.UI.WebControls
 {
+    /// <summary>A literal control.</summary>
     public class DnnFieldLiteral : DnnLiteral
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void LocalizeStrings()
         {
             base.LocalizeStrings();

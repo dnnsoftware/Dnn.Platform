@@ -4,6 +4,8 @@
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
     using Dnn.PersonaBar.Library.Prompt.Models;
@@ -13,7 +15,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("goto", Constants.PagesCategory, "Prompt_Goto_Description")]
-
+    [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
     public class Goto : ConsoleCommandBase
     {
         [FlagParameter("name", "Prompt_Goto_FlagName", "String")]
@@ -25,7 +27,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         [FlagParameter("parentid", "Prompt_Goto_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourceFile;
 
         private int PageId { get; set; } = -1;
@@ -34,7 +36,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         private int ParentId { get; set; } = -1;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.PageId = this.GetFlagValue(FlagId, "Page Id", -1, false, true);
@@ -47,7 +49,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var tab = this.PageId > 0

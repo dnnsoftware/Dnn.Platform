@@ -8,6 +8,7 @@ namespace DotNetNuke.Security.Membership
 
     public enum UserLoginStatus
     {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
         /// <summary>The login failed.</summary>
         LOGIN_FAILURE = 0,
 
@@ -30,5 +31,6 @@ namespace DotNetNuke.Security.Membership
         /// <summary>The user's password is a well-known default for host users.</summary>
         [Obsolete("Deprecated in DotNetNuke 9.8.1. No alternative method implemented. Scheduled for removal in v11.0.0.")]
         LOGIN_INSECUREHOSTPASSWORD = 6,
+#pragma warning restore CA1707
     }
 }

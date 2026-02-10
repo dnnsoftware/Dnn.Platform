@@ -61,7 +61,7 @@ namespace DotNetNuke.UI.Containers.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             this.javaScript.RequestRegistration(CommonJs.jQuery);
@@ -74,7 +74,7 @@ namespace DotNetNuke.UI.Containers.Controls
             this.Page.ClientScript.RegisterStartupScript(this.GetType(), this.ClientID, toggleScript);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             writer.AddAttribute("id", this.ClientID);

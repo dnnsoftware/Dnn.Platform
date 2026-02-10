@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
     {
         public ActionResult ResultOfLastInvoke { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override ActionExecutedContext InvokeActionMethodWithFilters(ControllerContext controllerContext, IList<IActionFilter> filters, ActionDescriptor actionDescriptor, IDictionary<string, object> parameters)
         {
             var context = base.InvokeActionMethodWithFilters(controllerContext, filters, actionDescriptor, parameters);
@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             return context;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override ExceptionContext InvokeExceptionFilters(ControllerContext controllerContext, IList<IExceptionFilter> filters, Exception exception)
         {
             var context = base.InvokeExceptionFilters(controllerContext, filters, exception);
@@ -28,7 +28,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             return context;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
         {
             // Do not invoke the action.  Instead, store it for later retrieval

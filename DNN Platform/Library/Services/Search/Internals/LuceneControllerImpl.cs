@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Search.Internals
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -146,7 +147,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public LuceneResults Search(LuceneSearchContext searchContext)
         {
             Requires.NotNull("LuceneQuery", searchContext.LuceneQuery);
@@ -229,7 +230,7 @@ namespace DotNetNuke.Services.Search.Internals
             return luceneResults;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Add(Document doc)
         {
             Requires.NotNull("searchDocument", doc);
@@ -251,14 +252,14 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Delete(Query query)
         {
             Requires.NotNull("luceneQuery", query);
             this.Writer.DeleteDocuments(query);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Commit()
         {
             if (this.writer != null)
@@ -275,7 +276,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool OptimizeSearchIndex(bool doWait)
         {
             var writer = this.writer;
@@ -303,7 +304,7 @@ namespace DotNetNuke.Services.Search.Internals
             return false;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HasDeletions()
         {
             this.CheckDisposed();
@@ -311,7 +312,7 @@ namespace DotNetNuke.Services.Search.Internals
             return searcher.IndexReader.HasDeletions;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int MaxDocsCount()
         {
             this.CheckDisposed();
@@ -319,7 +320,7 @@ namespace DotNetNuke.Services.Search.Internals
             return searcher.IndexReader.MaxDoc;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int SearchbleDocsCount()
         {
             this.CheckDisposed();
@@ -327,7 +328,7 @@ namespace DotNetNuke.Services.Search.Internals
             return searcher.IndexReader.NumDocs();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public SearchStatistics GetSearchStatistics()
         {
             this.CheckDisposed();
@@ -347,7 +348,7 @@ namespace DotNetNuke.Services.Search.Internals
             };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             var status = Interlocked.CompareExchange(ref this.isDisposed, DISPOSED, UNDISPOSED);
@@ -358,7 +359,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Analyzer GetCustomAnalyzer()
         {
             var analyzer = DataCache.GetCache<Analyzer>("Search_CustomAnalyzer");
@@ -377,14 +378,15 @@ namespace DotNetNuke.Services.Search.Internals
                         {
                             analyzer = Reflection.CreateInstance(analyzerType) as Analyzer;
                         }
-                        else if (analyzerType?.GetConstructor(new Type[] { typeof(Lucene.Net.Util.Version) }) != null)
+                        else if (analyzerType?.GetConstructor([typeof(Lucene.Net.Util.Version),]) != null)
                         {
-                            analyzer = Reflection.CreateInstance(analyzerType, new object[] { Constants.LuceneVersion }) as Analyzer;
+                            analyzer = Reflection.CreateInstance(analyzerType, [Constants.LuceneVersion,]) as Analyzer;
                         }
 
                         if (analyzer == null)
                         {
                             throw new ArgumentException(string.Format(
+                                CultureInfo.CurrentCulture,
                                 Localization.GetExceptionMessage("InvalidAnalyzerClass", "The class '{0}' cannot be created because it's invalid or is not an analyzer, will use default analyzer."),
                                 customAnalyzerType));
                         }
@@ -472,11 +474,11 @@ namespace DotNetNuke.Services.Search.Internals
             IndexSearcher searcher;
             if (this.idxReader != null)
             {
-                // use the Reopen() method for better near-realtime when the _writer ins't null
+                // use the Reopen() method for better near-realtime when the _writer isn't null
                 var newReader = this.idxReader.Reopen();
                 if (this.idxReader != newReader)
                 {
-                    // _idxReader.Dispose(); -- will get disposed upon disposing the searcher
+                    ////_idxReader.Dispose(); -- will get disposed upon disposing the searcher
                     Interlocked.Exchange(ref this.idxReader, newReader);
                 }
 

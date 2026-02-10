@@ -52,7 +52,7 @@ namespace DotNetNuke.ComponentModel
             this.providerInterface = providerInterface;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void InstallComponents(IContainer container)
         {
             ProviderConfiguration config = ProviderConfiguration.GetProviderConfiguration(this.providerType);
@@ -95,7 +95,7 @@ namespace DotNetNuke.ComponentModel
 
                 if (type == null)
                 {
-                    Logger.Error(new ConfigurationErrorsException(string.Format("Could not load provider {0}", provider.Type)));
+                    Logger.Error(new ConfigurationErrorsException($"Could not load provider {provider.Type}"));
                 }
                 else
                 {

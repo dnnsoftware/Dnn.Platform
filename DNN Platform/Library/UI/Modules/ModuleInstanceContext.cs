@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.Modules
     using System;
     using System.Collections;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web;
     using System.Web.UI;
 
@@ -95,7 +96,7 @@ namespace DotNetNuke.UI.Modules
         public int PortalId => this.PortalSettings.PortalId;
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        public PortalSettings PortalSettings => PortalSettings.Current;
 
         /// <summary>Gets the settings for this context.</summary>
         public Hashtable Settings
@@ -244,7 +245,7 @@ namespace DotNetNuke.UI.Modules
             string moduleIdParam = string.Empty;
             if (this.Configuration != null)
             {
-                moduleIdParam = string.Format("mid={0}", this.Configuration.ModuleID);
+                moduleIdParam = $"mid={this.Configuration.ModuleID}";
             }
 
             string[] parameters;
@@ -252,7 +253,7 @@ namespace DotNetNuke.UI.Modules
             {
                 parameters = new string[2 + additionalParameters.Length];
                 parameters[0] = moduleIdParam;
-                parameters[1] = string.Format("{0}={1}", keyName, keyValue);
+                parameters[1] = $"{keyName}={keyValue}";
                 Array.Copy(additionalParameters, 0, parameters, 2, additionalParameters.Length);
             }
             else
@@ -273,12 +274,12 @@ namespace DotNetNuke.UI.Modules
         public string NavigateUrl(int tabID, string controlKey, string pageName, bool pageRedirect, params string[] additionalParameters)
         {
             var isSuperTab = TestableGlobals.Instance.IsHostTab(tabID);
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalSettings.Current;
             var language = Globals.GetCultureCode(tabID, isSuperTab, settings);
             var url = TestableGlobals.Instance.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
 
             // Making URLs call popups
-            if (this.PortalSettings != null && this.PortalSettings.EnablePopUps)
+            if (this.PortalSettings is { EnablePopUps: true, })
             {
                 if (!UIUtilities.IsLegacyUI(this.ModuleId, controlKey, this.PortalId) && url.Contains("ctl"))
                 {
@@ -685,7 +686,7 @@ namespace DotNetNuke.UI.Modules
                         this.GetNextActionID(),
                         Localization.GetString(ModuleActionType.DeleteModule, Localization.GlobalResourceFile),
                         ModuleActionType.DeleteModule,
-                        this.Configuration.ModuleID.ToString(),
+                        this.Configuration.ModuleID.ToString(CultureInfo.InvariantCulture),
                         "action_delete.gif",
                         string.Empty,
                         confirmText,
@@ -701,7 +702,7 @@ namespace DotNetNuke.UI.Modules
                         this.GetNextActionID(),
                         Localization.GetString(ModuleActionType.ClearCache, Localization.GlobalResourceFile),
                         ModuleActionType.ClearCache,
-                        this.Configuration.ModuleID.ToString(),
+                        this.Configuration.ModuleID.ToString(CultureInfo.InvariantCulture),
                         "action_refresh.gif",
                         string.Empty,
                         false,

@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Web;
@@ -15,13 +16,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
     /// <summary>DatabaseProvider implements the OutputCachingProvider for database storage.</summary>
     public class DatabaseProvider : OutputCachingProvider
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetItemCount(int tabId)
         {
             return DataProvider.Instance().GetOutputCacheItemCount(tabId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override byte[] GetOutput(int tabId, string cacheKey)
         {
             IDataReader dr = null;
@@ -51,38 +52,38 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override OutputCacheResponseFilter GetResponseFilter(int tabId, int maxVaryByCount, Stream responseFilter, string cacheKey, TimeSpan cacheDuration)
         {
             return new DatabaseResponseFilter(tabId, maxVaryByCount, responseFilter, cacheKey, cacheDuration);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void PurgeCache(int portalId)
         {
             DataProvider.Instance().PurgeOutputCache();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void PurgeExpiredItems(int portalId)
         {
             DataProvider.Instance().PurgeExpiredOutputCacheItems();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Remove(int tabId)
         {
             DataProvider.Instance().RemoveOutputCacheItem(tabId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void SetOutput(int tabId, string cacheKey, TimeSpan duration, byte[] output)
         {
             string data = Encoding.UTF8.GetString(output);
             DataProvider.Instance().AddOutputCacheItem(tabId, cacheKey, data, DateTime.UtcNow.Add(duration));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool StreamOutput(int tabId, string cacheKey, HttpContext context)
         {
             IDataReader dr = null;
@@ -100,7 +101,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                         return false;
                     }
 
-                    var expireTime = Convert.ToDateTime(dr["Expiration"]);
+                    var expireTime = Convert.ToDateTime(dr["Expiration"], CultureInfo.InvariantCulture);
                     if (expireTime < DateTime.UtcNow)
                     {
                         DataProvider.Instance().RemoveOutputCacheItem(tabId);
@@ -113,10 +114,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
             finally
             {
-                if (dr != null)
-                {
-                    dr.Close();
-                }
+                dr?.Close();
             }
         }
     }

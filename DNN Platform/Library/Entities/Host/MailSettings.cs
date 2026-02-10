@@ -13,6 +13,7 @@ using DotNetNuke.Entities.Portals;
 /// <summary>The default <see cref="IMailSettings"/> implementation.</summary>
 /// <param name="hostSettingsService">The host settings service.</param>
 /// <param name="hostSettings">The host settings.</param>
+/// <param name="portalController">The portal controller.</param>
 public class MailSettings(IHostSettingsService hostSettingsService, IHostSettings hostSettings, IPortalController portalController) : IMailSettings
 {
     /// <inheritdoc />
@@ -78,7 +79,12 @@ public class MailSettings(IHostSettingsService hostSettingsService, IHostSetting
     /// <inheritdoc />
     public bool GetSecureConnectionEnabled(int portalId)
     {
-        throw new NotImplementedException();
+        if (this.IsPortalEnabled(portalId))
+        {
+            return PortalController.GetPortalSettingAsBoolean("SMTPEnableSSL", PortalSettings.Current.PortalId, false);
+        }
+
+        return hostSettingsService.GetBoolean("SMTPEnableSSL", false);
     }
 
     /// <inheritdoc />

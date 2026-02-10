@@ -92,7 +92,7 @@ namespace DotNetNuke.Entities.Modules
                 }
                 else
                 {
-                    userId = Convert.ToInt32(this.ViewState["UserId"]);
+                    userId = Convert.ToInt32(this.ViewState["UserId"], CultureInfo.InvariantCulture);
                 }
 
                 return userId;
@@ -253,13 +253,11 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="settings">The settings to update.</param>
         public static void UpdateSettings(int portalId, Hashtable settings)
         {
-            string key;
-            string setting;
-            IDictionaryEnumerator settingsEnumerator = settings.GetEnumerator();
+            var settingsEnumerator = settings.GetEnumerator();
             while (settingsEnumerator.MoveNext())
             {
-                key = Convert.ToString(settingsEnumerator.Key);
-                setting = Convert.ToString(settingsEnumerator.Value);
+                var key = Convert.ToString(settingsEnumerator.Key, CultureInfo.InvariantCulture);
+                var setting = Convert.ToString(settingsEnumerator.Value, CultureInfo.InvariantCulture);
                 UpdateSetting(portalId, key, setting);
             }
         }
@@ -330,7 +328,7 @@ namespace DotNetNuke.Entities.Modules
                 Localization.SetLanguage(newUser.Profile.PreferredLocale);
                 if (this.IsRegister && message == ModuleMessage.ModuleMessageType.RedError)
                 {
-                    this.AddLocalizedModuleMessage(string.Format(Localization.GetString("SendMail.Error", Localization.SharedResourceFile), strMessage), message, !string.IsNullOrEmpty(strMessage));
+                    this.AddLocalizedModuleMessage(string.Format(CultureInfo.CurrentCulture, Localization.GetString("SendMail.Error", Localization.SharedResourceFile), strMessage), message, !string.IsNullOrEmpty(strMessage));
                 }
                 else
                 {
@@ -413,16 +411,16 @@ namespace DotNetNuke.Entities.Modules
 
             newUser.Profile.PreferredLocale = lc;
 
-            // Set default countr
+            // Set default country
             string country = Null.NullString;
             country = this.LookupCountry();
             if (!string.IsNullOrEmpty(country))
             {
                 ListController listController = new ListController();
-                var listitem = listController.GetListEntryInfo("Country", country);
-                if (listitem != null)
+                var listItem = listController.GetListEntryInfo("Country", country);
+                if (listItem != null)
                 {
-                    country = listitem.EntryID.ToString();
+                    country = listItem.EntryID.ToString(CultureInfo.InvariantCulture);
                 }
 
                 newUser.Profile.Country = country;
@@ -432,7 +430,7 @@ namespace DotNetNuke.Entities.Modules
             int affiliateId = Null.NullInteger;
             if (this.Request.Cookies["AffiliateId"] != null)
             {
-                affiliateId = int.Parse(this.Request.Cookies["AffiliateId"].Value);
+                affiliateId = int.Parse(this.Request.Cookies["AffiliateId"].Value, CultureInfo.InvariantCulture);
             }
 
             newUser.AffiliateID = affiliateId;

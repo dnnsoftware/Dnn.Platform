@@ -11,28 +11,28 @@ namespace Dnn.EditBar.UI.Items
     [Serializable]
     public class DiscardWorkflowMenu : WorkflowBaseMenuItem
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Name { get; } = "DiscardWorkflow";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Text => "Discard";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CssClass => string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Template { get; } = string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Parent { get; } = Constants.LeftMenu;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Loader { get; } = "DiscardWorkflow";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Order { get; } = 81;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool Visible() => base.Visible()
             && !this.IsDirectPublishWorkflow
             && ((this.IsLastState == false && (this.IsDraftWithPermissions == true || this.IsReviewOrOtherIntermediateStateWithPermissions == true))

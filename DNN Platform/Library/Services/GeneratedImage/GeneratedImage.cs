@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private new Control BindingContainer => this.bindingContainer ?? base.BindingContainer;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnDataBinding(EventArgs e)
         {
             base.OnDataBinding(e);
@@ -80,7 +80,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

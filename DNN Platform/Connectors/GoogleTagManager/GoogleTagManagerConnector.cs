@@ -23,25 +23,25 @@ namespace DNN.Connectors.GoogleTagManager
 
         private string displayName;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Name
         {
             get { return "Core Google Tag Manager Connector"; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string IconUrl
         {
             get { return "~/DesktopModules/Connectors/GoogleTagManager/Images/GoogleTagManager_32X32_Standard.png"; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string PluginFolder
         {
             get { return "~/DesktopModules/Connectors/GoogleTagManager/"; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsEngageConnector
         {
             get
@@ -50,35 +50,35 @@ namespace DNN.Connectors.GoogleTagManager
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ConnectorCategories Type => ConnectorCategories.Analytics;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
         public bool SupportsMultiple => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DisplayName
         {
             get => string.IsNullOrEmpty(this.displayName) ? DefaultDisplayName : this.displayName;
             set => this.displayName = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Id { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {
             return new List<IConnector> { this };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteConnector(int portalId)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HasConfig(int portalId)
         {
             IDictionary<string, string> config = this.GetConfig(portalId);
@@ -86,7 +86,7 @@ namespace DNN.Connectors.GoogleTagManager
             return config.ContainsKey("GtmID") && !string.IsNullOrEmpty(config["GtmID"]);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, string> GetConfig(int portalId)
         {
             var gtmConfig = AnalyticsConfiguration.GetConfig("GoogleTagManager");
@@ -124,7 +124,7 @@ namespace DNN.Connectors.GoogleTagManager
             return configItems;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
         {
             // Delete / Deactivation functionality added into SaveConfig because
@@ -202,7 +202,11 @@ namespace DNN.Connectors.GoogleTagManager
             var applicationMapPath = HttpContext.Current.Server.MapPath(@"\");
             var file = applicationMapPath + @"\SiteAnalytics.config";
             var xdoc = new XmlDocument();
-            xdoc.Load(file);
+            using (var siteConfigReader = XmlReader.Create(file, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                xdoc.Load(siteConfigReader);
+            }
+
             var found = false;
             foreach (XmlNode engineTypeNode in xdoc.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine/EngineType"))
             {
@@ -217,7 +221,10 @@ namespace DNN.Connectors.GoogleTagManager
             {
                 var fileGtm = applicationMapPath + @"\DesktopModules\Connectors\GoogleTagManager\GoogleTagManager.config";
                 var xdocGtm = new XmlDocument();
-                xdocGtm.Load(fileGtm);
+                using (var googleConfigReader = XmlReader.Create(fileGtm, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xdocGtm.Load(googleConfigReader);
+                }
 
                 var enginesElement = xdoc.SelectSingleNode("/AnalyticsEngineConfig/Engines");
                 foreach (XmlNode engineNode in xdocGtm.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine"))

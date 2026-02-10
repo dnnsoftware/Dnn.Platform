@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Tabs
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -19,7 +20,7 @@ namespace DotNetNuke.Entities.Tabs
 
     public class TabModulesController : ServiceLocator<ITabModulesController, TabModulesController>, ITabModulesController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ArrayList GetTabModules(TabInfo tab)
         {
             var objPaneModules = new Dictionary<string, int>();
@@ -59,12 +60,12 @@ namespace DotNetNuke.Entities.Tabs
             return configuredModules;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Dictionary<int, string> GetTabModuleSettingsByName(string settingName)
         {
             var portalId = PortalSettings.Current.PortalId;
             var dataProvider = DataProvider.Instance();
-            var cacheKey = string.Format(DataCache.TabModuleSettingsNameCacheKey, portalId, settingName);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TabModuleSettingsNameCacheKey, portalId, settingName);
             var cachedItems = CBO.GetCachedObject<Dictionary<int, string>>(
                 new CacheItemArgs(cacheKey, DataCache.TabModuleCacheTimeOut, DataCache.TabModuleCachePriority),
                 c =>
@@ -84,7 +85,7 @@ namespace DotNetNuke.Entities.Tabs
             return cachedItems;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<int> GetTabModuleIdsBySetting(string settingName, string expectedValue)
         {
             var items = this.GetTabModuleSettingsByName(settingName);
@@ -109,7 +110,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ITabModulesController> GetFactory()
         {
             return () => new TabModulesController();

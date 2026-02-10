@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Writers
 {
+    using System;
     using System.IO;
     using System.Xml;
 
@@ -17,15 +18,15 @@ namespace DotNetNuke.Services.Installer.Writers
             : base(package)
         {
             string company = package.Name;
-            if (company.Contains("."))
+            if (company.Contains(".", StringComparison.Ordinal))
             {
-                company = company.Substring(0, company.IndexOf("."));
+                company = company.Substring(0, company.IndexOf(".", StringComparison.Ordinal));
             }
 
-            this.BasePath = Path.Combine("Resources\\Widgets\\User", company);
+            this.BasePath = Path.Combine(@"Resources\Widgets\User", company);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IncludeAssemblies
         {
             get
@@ -34,17 +35,17 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
             // Call base class method with includeAppCode = false
             base.GetFiles(includeSource, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void WriteFilesToManifest(XmlWriter writer)
         {
-            string company = this.Package.Name.Substring(0, this.Package.Name.IndexOf("."));
+            string company = this.Package.Name.Substring(0, this.Package.Name.IndexOf(".", StringComparison.Ordinal));
             var widgetFileWriter = new WidgetComponentWriter(company, this.Files, this.Package);
             widgetFileWriter.WriteManifest(writer);
         }

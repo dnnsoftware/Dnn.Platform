@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -19,7 +20,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
     public class BusinessController : IUpgradeable
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             switch (version)
@@ -55,12 +56,12 @@ namespace Dnn.PersonaBar.Extensions.Components
                     Config.BackupConfig();
 
                     // create a random Telerik encryption key and add it under <appSettings>
-                    var newKey = new PortalSecurity().CreateKey(32);
+                    var newKey = PortalSecurity.Instance.CreateKey(32);
                     newKey = Convert.ToBase64String(Encoding.ASCII.GetBytes(newKey));
                     Config.AddAppSetting(xmlConfig, keyName, newKey);
 
                     // save a copy of the existing web.config
-                    var backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
+                    var backupFolder = $@"{Globals.glbConfigFolder}Backup_{DateTime.Now.ToString("yyyyMMddHHmm", CultureInfo.InvariantCulture)}\";
                     strError += Config.Save(xmlConfig, backupFolder + "web_.config") + Environment.NewLine;
 
                     // save the web.config

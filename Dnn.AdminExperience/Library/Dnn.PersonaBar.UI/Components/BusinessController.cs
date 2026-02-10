@@ -34,6 +34,7 @@ namespace Dnn.PersonaBar.UI.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BusinessController));
         private readonly IHostSettingsService hostSettingsService;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="BusinessController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettingsService. Scheduled removal in v12.0.0.")]
@@ -44,12 +45,22 @@ namespace Dnn.PersonaBar.UI.Components
 
         /// <summary>Initializes a new instance of the <see cref="BusinessController"/> class.</summary>
         /// <param name="hostSettingsService">The host settings service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public BusinessController(IHostSettingsService hostSettingsService)
+            : this(hostSettingsService, null)
         {
-            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
         }
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="BusinessController"/> class.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public BusinessController(IHostSettingsService hostSettingsService, IHostSettings hostSettings)
+        {
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
+
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             switch (version)
@@ -59,7 +70,7 @@ namespace Dnn.PersonaBar.UI.Components
                     CreateAdminLinks();
                     break;
                 case "01.04.00":
-                    UpdateEditPermissions();
+                    UpdateEditPermissions(this.hostSettings);
                     break;
                 case "03.00.00":
                     RemovePersonaBarOldAssemblies();
@@ -115,7 +126,7 @@ namespace Dnn.PersonaBar.UI.Components
             }
         }
 
-        private static void UpdateEditPermissions()
+        private static void UpdateEditPermissions(IHostSettings hostSettings)
         {
             var menuItems = PersonaBarRepository.Instance.GetMenu().AllItems;
             foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
@@ -123,22 +134,22 @@ namespace Dnn.PersonaBar.UI.Components
                 var portalId = portal.PortalId;
                 if (MenuPermissionController.PermissionAlreadyInitialized(portalId))
                 {
-                    menuItems.ForEach(i => SaveEditPermission(portalId, i));
+                    menuItems.ForEach(i => SaveEditPermission(hostSettings, portalId, i));
                 }
             }
         }
 
-        private static void SaveEditPermission(int portalId, MenuItem menuItem)
+        private static void SaveEditPermission(IHostSettings hostSettings, int portalId, MenuItem menuItem)
         {
-            var viewPermission = MenuPermissionController.GetPermissions(menuItem.MenuId).FirstOrDefault(p => p.PermissionKey == "VIEW");
-            var editPermission = MenuPermissionController.GetPermissions(menuItem.MenuId).FirstOrDefault(p => p.PermissionKey == "EDIT");
+            var viewPermission = MenuPermissionController.GetPermissions(hostSettings, menuItem.MenuId).FirstOrDefault(p => p.PermissionKey == "VIEW");
+            var editPermission = MenuPermissionController.GetPermissions(hostSettings, menuItem.MenuId).FirstOrDefault(p => p.PermissionKey == "EDIT");
 
             if (viewPermission == null || editPermission == null)
             {
                 return;
             }
 
-            var permissions = MenuPermissionController.GetMenuPermissions(portalId, menuItem.Identifier).ToList();
+            var permissions = MenuPermissionController.GetMenuPermissions(hostSettings, portalId, menuItem.Identifier).ToList();
             permissions.ForEach((IPermissionInfo p) =>
             {
                 if (p.PermissionId != viewPermission.PermissionId)

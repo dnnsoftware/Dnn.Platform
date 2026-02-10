@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.Log.EventLog
     using System.Data.SqlClient;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -17,6 +18,7 @@ namespace DotNetNuke.Services.Log.EventLog
     {
         public enum ExceptionLogType
         {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
             /// <summary>A general exception.</summary>
             GENERAL_EXCEPTION = 0,
 
@@ -37,6 +39,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
             /// <summary>An exception related to data issues.</summary>
             DATA_EXCEPTION = 6,
+#pragma warning restore CA1707
         }
 
         public void AddLog(Exception objException)
@@ -97,8 +100,8 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 // Add ModuleLoadException Properties
                 var objModuleLoadException = (ModuleLoadException)objException;
-                log.LogProperties.Add(new LogDetailInfo("ModuleId", objModuleLoadException.ModuleId.ToString()));
-                log.LogProperties.Add(new LogDetailInfo("ModuleDefId", objModuleLoadException.ModuleDefId.ToString()));
+                log.LogProperties.Add(new LogDetailInfo("ModuleId", objModuleLoadException.ModuleId.ToString(CultureInfo.InvariantCulture)));
+                log.LogProperties.Add(new LogDetailInfo("ModuleDefId", objModuleLoadException.ModuleDefId.ToString(CultureInfo.InvariantCulture)));
                 log.LogProperties.Add(new LogDetailInfo("FriendlyName", objModuleLoadException.FriendlyName));
                 log.LogProperties.Add(new LogDetailInfo("ModuleControlSource", objModuleLoadException.ModuleControlSource));
             }

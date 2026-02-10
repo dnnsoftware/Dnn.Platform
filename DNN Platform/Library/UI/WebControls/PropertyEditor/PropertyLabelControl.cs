@@ -7,13 +7,22 @@ namespace DotNetNuke.UI.WebControls
     using System.ComponentModel;
     using System.Data;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>
     /// The PropertyLabelControl control provides a standard UI component for displaying
@@ -23,22 +32,42 @@ namespace DotNetNuke.UI.WebControls
     public class PropertyLabelControl : WebControl
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected LinkButton cmdHelp;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected HtmlGenericControl label;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblHelp;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblLabel;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel pnlTooltip;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel pnlHelp;
+
+        private readonly IClientResourceController clientResourceController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
+
         private string resourceKey;
 
         /// <summary>Initializes a new instance of the <see cref="PropertyLabelControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public PropertyLabelControl()
+            : this(null, null, null)
         {
+        }
+
+        public PropertyLabelControl(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+        {
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         /// <summary>Gets and sets the value of the Label Style.</summary>
@@ -137,7 +166,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>Gets or sets resourceKey is the root localization key for this control.</summary>
         /// <value>A string representing the Resource Key.</value>
-        /// <remarks>This control will "standardise" the resource key names, so for instance
+        /// <remarks>This control will "standardize" the resource key names, so for instance
         /// if the resource key is "Control", Control.Text is the label text key, Control.Help
         /// is the label help text, Control.ErrorMessage is the Validation Error Message for the
         /// control.
@@ -199,14 +228,8 @@ namespace DotNetNuke.UI.WebControls
 
         public bool Required { get; set; }
 
-        /// <inheritdoc/>
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
-            }
-        }
+        /// <inheritdoc />
+        protected override HtmlTextWriterTag TagKey => HtmlTextWriterTag.Div;
 
         /// <summary>CreateChildControls creates the control collection.</summary>
         protected override void CreateChildControls()
@@ -242,7 +265,7 @@ namespace DotNetNuke.UI.WebControls
             aHelpPin.Attributes.Add("aria-label", "Pin");
             this.pnlHelp.Controls.Add(aHelpPin);
 
-            // Controls.Add(label);
+            ////Controls.Add(label);
             this.Controls.Add(this.pnlTooltip);
         }
 
@@ -253,7 +276,7 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="e">The event arguments.</param>
         protected override void OnDataBinding(EventArgs e)
         {
-            // If there is a DataSource bind the relevent Properties
+            // If there is a DataSource bind the relevant Properties
             if (this.DataSource != null)
             {
                 this.EnsureChildControls();
@@ -263,25 +286,25 @@ namespace DotNetNuke.UI.WebControls
                     var dataRow = (DataRowView)this.DataSource;
                     if (this.ResourceKey == string.Empty)
                     {
-                        this.ResourceKey = Convert.ToString(dataRow[this.DataField]);
+                        this.ResourceKey = Convert.ToString(dataRow[this.DataField], CultureInfo.InvariantCulture);
                     }
 
                     if (this.DesignMode)
                     {
-                        this.label.InnerText = Convert.ToString(dataRow[this.DataField]);
+                        this.label.InnerText = Convert.ToString(dataRow[this.DataField], CultureInfo.InvariantCulture);
                     }
                 }
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
             JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, CommonJs.DnnPlugins);
+            this.clientResourceController.RegisterScript("~/Resources/Shared/Scripts/initTooltips.js");
         }
 
         /// <summary>
@@ -299,21 +322,21 @@ namespace DotNetNuke.UI.WebControls
                 this.lblLabel.CssClass += " dnnFormRequired";
             }
 
-            // DNNClientAPI.EnableMinMax(cmdHelp, pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
+            ////DNNClientAPI.EnableMinMax(cmdHelp, pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
             if (this.EditControl != null)
             {
-                this.label.Attributes.Add("for", this.EditControl is EditControl ? ((EditControl)this.EditControl).EditControlClientId : this.EditControl.ClientID);
+                this.label.Attributes.Add("for", this.EditControl is EditControl editControl ? editControl.EditControlClientId : this.EditControl.ClientID);
             }
 
             // make sure the help container have the default css class to active js handler.
             if (!this.pnlHelp.ControlStyle.CssClass.Contains("dnnClear"))
             {
-                this.pnlHelp.ControlStyle.CssClass = string.Format("dnnClear {0}", this.pnlHelp.ControlStyle.CssClass);
+                this.pnlHelp.ControlStyle.CssClass = $"dnnClear {this.pnlHelp.ControlStyle.CssClass}";
             }
 
             if (!this.pnlHelp.ControlStyle.CssClass.Contains("dnnFormHelpContent"))
             {
-                this.pnlHelp.ControlStyle.CssClass = string.Format("dnnFormHelpContent {0}", this.pnlHelp.ControlStyle.CssClass);
+                this.pnlHelp.ControlStyle.CssClass = $"dnnFormHelpContent {this.pnlHelp.ControlStyle.CssClass}";
             }
         }
     }

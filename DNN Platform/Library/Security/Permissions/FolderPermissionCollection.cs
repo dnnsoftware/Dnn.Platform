@@ -6,11 +6,14 @@ namespace DotNetNuke.Security.Permissions
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
+    using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
 
     [Serializable]
-    public class FolderPermissionCollection : CollectionBase
+    public class FolderPermissionCollection : GenericCollectionBase<FolderPermissionInfo>
     {
         /// <summary>Initializes a new instance of the <see cref="FolderPermissionCollection"/> class.</summary>
         public FolderPermissionCollection()
@@ -45,24 +48,6 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        public FolderPermissionInfo this[int index]
-        {
-            get
-            {
-                return (FolderPermissionInfo)this.List[index];
-            }
-
-            set
-            {
-                this.List[index] = value;
-            }
-        }
-
-        public int Add(FolderPermissionInfo value)
-        {
-            return this.List.Add(value);
-        }
-
         public int Add(FolderPermissionInfo value, bool checkForDuplicates)
         {
             int id = Null.NullInteger;
@@ -73,9 +58,9 @@ namespace DotNetNuke.Security.Permissions
             else
             {
                 bool isMatch = false;
-                foreach (PermissionInfoBase permission in this.List)
+                foreach (IPermissionInfo permission in this.List)
                 {
-                    if (permission.PermissionID == value.PermissionID && permission.UserID == value.UserID && permission.RoleID == value.RoleID)
+                    if (permission.PermissionId == value.PermissionID && permission.UserId == value.UserID && permission.RoleId == value.RoleID)
                     {
                         isMatch = true;
                         break;
@@ -115,26 +100,11 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        public int IndexOf(FolderPermissionInfo value)
-        {
-            return this.List.IndexOf(value);
-        }
-
-        public void Insert(int index, FolderPermissionInfo value)
-        {
-            this.List.Insert(index, value);
-        }
-
-        public void Remove(FolderPermissionInfo value)
-        {
-            this.List.Remove(value);
-        }
-
         public void Remove(int permissionID, int roleID, int userID)
         {
-            foreach (PermissionInfoBase permission in this.List)
+            foreach (IPermissionInfo permission in this.List)
             {
-                if (permission.PermissionID == permissionID && permission.UserID == userID && permission.RoleID == roleID)
+                if (permission.PermissionId == permissionID && permission.UserId == userID && permission.RoleId == roleID)
                 {
                     this.List.Remove(permission);
                     break;
@@ -142,17 +112,12 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        public bool Contains(FolderPermissionInfo value)
-        {
-            return this.List.Contains(value);
-        }
-
         public bool Contains(string key, int folderId, int roleId, int userId)
         {
             bool result = Null.NullBoolean;
-            foreach (FolderPermissionInfo permission in this.List)
+            foreach (IFolderPermissionInfo permission in this.List)
             {
-                if (permission.PermissionKey == key && permission.FolderID == folderId && permission.RoleID == roleId && permission.UserID == userId)
+                if (permission.PermissionKey == key && permission.FolderId == folderId && permission.RoleId == roleId && permission.UserId == userId)
                 {
                     result = true;
                     break;
@@ -173,7 +138,9 @@ namespace DotNetNuke.Security.Permissions
             objFolderPermissionCollection.InnerList.Sort(new CompareFolderPermissions());
             for (int i = 0; i <= this.Count - 1; i++)
             {
-                if (objFolderPermissionCollection[i].FolderPermissionID != this[i].FolderPermissionID || objFolderPermissionCollection[i].AllowAccess != this[i].AllowAccess)
+                IFolderPermissionInfo otherPermission = objFolderPermissionCollection[i];
+                IFolderPermissionInfo thisPermission = this[i];
+                if (otherPermission.FolderPermissionId != thisPermission.FolderPermissionId || otherPermission.AllowAccess != thisPermission.AllowAccess)
                 {
                     return false;
                 }
@@ -184,13 +151,7 @@ namespace DotNetNuke.Security.Permissions
 
         public List<PermissionInfoBase> ToList()
         {
-            var list = new List<PermissionInfoBase>();
-            foreach (PermissionInfoBase permission in this.List)
-            {
-                list.Add(permission);
-            }
-
-            return list;
+            return [..this.List.Cast<PermissionInfoBase>()];
         }
 
         public string ToString(string key)

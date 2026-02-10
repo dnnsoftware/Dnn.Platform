@@ -15,7 +15,7 @@ using SchwabenCode.QuickIO;
 /// <summary>The default <see cref="IDirectory"/> implementation.</summary>
 public class DirectoryWrapper : ComponentBase<IDirectory, DirectoryWrapper>, IDirectory
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Delete(string path, bool recursive)
     {
         if (this.Exists(path))
@@ -24,7 +24,7 @@ public class DirectoryWrapper : ComponentBase<IDirectory, DirectoryWrapper>, IDi
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task DeleteAsync(string path, bool recursive)
     {
         if (await this.ExistsAsync(path))
@@ -33,85 +33,85 @@ public class DirectoryWrapper : ComponentBase<IDirectory, DirectoryWrapper>, IDi
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool Exists(string path)
     {
         return Directory.Exists(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<bool> ExistsAsync(string path)
     {
         return await QuickIODirectory.ExistsAsync(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public string[] GetDirectories(string path)
     {
         return Directory.GetDirectories(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<IEnumerable<string>> GetDirectoriesAsync(string path)
     {
         return await QuickIODirectory.EnumerateDirectoryPathsAsync(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public string[] GetFiles(string path)
     {
         return Directory.GetFiles(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<IEnumerable<string>> GetFilesAsync(string path)
     {
         return await QuickIODirectory.EnumerateFilePathsAsync(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public string[] GetFiles(string path, string searchPattern, SearchOption searchOption)
     {
         return Directory.GetFiles(path, searchPattern, searchOption);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<IEnumerable<string>> GetFilesAsync(string path, string searchPattern, SearchOption searchOption)
     {
         return await QuickIODirectory.EnumerateFilePathsAsync(path, searchPattern, searchOption);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Move(string sourceDirName, string destDirName)
     {
         Directory.Move(sourceDirName, destDirName);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task MoveAsync(string sourceDirName, string destDirName)
     {
         await QuickIODirectory.MoveAsync(sourceDirName, destDirName);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void CreateDirectory(string path)
     {
         Directory.CreateDirectory(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task CreateDirectoryAsync(string path)
     {
         await QuickIODirectory.CreateAsync(path);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void CreateDirectory(string path, bool recursive)
     {
         QuickIODirectory.Create(path, recursive);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task CreateDirectoryAsync(string path, bool recursive)
     {
         await QuickIODirectory.CreateAsync(path, recursive);

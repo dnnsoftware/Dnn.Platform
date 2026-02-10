@@ -6,6 +6,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
@@ -368,7 +369,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             // Arrange
             var portalId = 1;
             var relationshipController = this.CreateRelationshipController();
-            var cacheKey = CachingProvider.GetCacheKey(string.Format(DataCache.RelationshipByPortalIDCacheKey, portalId));
+            var cacheKey = CachingProvider.GetCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.RelationshipByPortalIDCacheKey, portalId));
             var relationship = new Relationship()
             {
                 RelationshipId = Constants.SOCIAL_FollowerRelationshipID,
@@ -426,8 +427,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.dtRelationships.Clear();
             for (int i = 1; i <= 5; i++)
             {
-                this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, DefaultRelationshipTypes.Friends.ToString(),
-                                            DefaultRelationshipTypes.Friends.ToString(),
+                this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, nameof(DefaultRelationshipTypes.Friends),
+                                            nameof(DefaultRelationshipTypes.Friends),
                                             Constants.PORTAL_Zero,
                                             Constants.USER_ValidId,
                                             RelationshipStatus.None);
@@ -469,8 +470,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.dtRelationships.Clear();
             for (int i = 1; i <= 5; i++)
             {
-                this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, DefaultRelationshipTypes.Friends.ToString(),
-                                            DefaultRelationshipTypes.Friends.ToString(),
+                this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, nameof(DefaultRelationshipTypes.Friends),
+                                            nameof(DefaultRelationshipTypes.Friends),
                                             Constants.PORTAL_Zero,
                                             Constants.USER_Null,
                                             RelationshipStatus.None);
@@ -498,8 +499,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.dtRelationships.Clear();
             for (int i = 1; i <= 5; i++)
             {
-                this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, DefaultRelationshipTypes.Friends.ToString(),
-                                            DefaultRelationshipTypes.Friends.ToString(),
+                this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, nameof(DefaultRelationshipTypes.Friends),
+                                            nameof(DefaultRelationshipTypes.Friends),
                                             Constants.PORTAL_Zero,
                                             Constants.USER_Null,
                                             RelationshipStatus.None);
@@ -1225,8 +1226,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             this.dtRelationshipTypes.PrimaryKey = new[] { pkRelationshipTypeID };
 
-            this.dtRelationshipTypes.Rows.Add(DefaultRelationshipTypes.Friends, DefaultRelationshipTypes.Friends.ToString(), DefaultRelationshipTypes.Friends.ToString(), RelationshipDirection.TwoWay);
-            this.dtRelationshipTypes.Rows.Add(DefaultRelationshipTypes.Followers, DefaultRelationshipTypes.Followers.ToString(), DefaultRelationshipTypes.Followers.ToString(), RelationshipDirection.OneWay);
+            this.dtRelationshipTypes.Rows.Add(DefaultRelationshipTypes.Friends, nameof(DefaultRelationshipTypes.Friends), nameof(DefaultRelationshipTypes.Friends), RelationshipDirection.TwoWay);
+            this.dtRelationshipTypes.Rows.Add(DefaultRelationshipTypes.Followers, nameof(DefaultRelationshipTypes.Followers), nameof(DefaultRelationshipTypes.Followers), RelationshipDirection.OneWay);
 
             // Relationships
             this.dtRelationships = new DataTable("Relationships");
@@ -1244,8 +1245,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.dtRelationships.PrimaryKey = new[] { pkRelationshipID };
 
             // Create default Friend and Social Relationships
-            this.dtRelationships.Rows.Add(Constants.SOCIAL_FriendRelationshipID, DefaultRelationshipTypes.Friends, DefaultRelationshipTypes.Friends.ToString(), DefaultRelationshipTypes.Friends.ToString(), Constants.PORTAL_Zero, Constants.USER_Null, RelationshipStatus.None);
-            this.dtRelationships.Rows.Add(Constants.SOCIAL_FollowerRelationshipID, DefaultRelationshipTypes.Followers, DefaultRelationshipTypes.Followers.ToString(), DefaultRelationshipTypes.Followers.ToString(), Constants.PORTAL_Zero, Constants.USER_Null, RelationshipStatus.None);
+            this.dtRelationships.Rows.Add(Constants.SOCIAL_FriendRelationshipID, DefaultRelationshipTypes.Friends, nameof(DefaultRelationshipTypes.Friends), nameof(DefaultRelationshipTypes.Friends), Constants.PORTAL_Zero, Constants.USER_Null, RelationshipStatus.None);
+            this.dtRelationships.Rows.Add(Constants.SOCIAL_FollowerRelationshipID, DefaultRelationshipTypes.Followers, nameof(DefaultRelationshipTypes.Followers), nameof(DefaultRelationshipTypes.Followers), Constants.PORTAL_Zero, Constants.USER_Null, RelationshipStatus.None);
 
             // UserRelationships
             this.dtUserRelationships = new DataTable("UserRelationships");

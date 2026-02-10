@@ -4,6 +4,7 @@
 namespace DotNetNuke.ComponentModel
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>A base class for a Dnn component.</summary>
     /// <typeparam name="TContract">The contract type.</typeparam>
@@ -15,6 +16,7 @@ namespace DotNetNuke.ComponentModel
         private static bool useTestable;
 
         /// <summary>Gets an instance of the Component.</summary>
+        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "Breaking change")]
         public static TContract Instance
         {
             get
@@ -38,6 +40,7 @@ namespace DotNetNuke.ComponentModel
 
         /// <summary>Registers an instance of a component.</summary>
         /// <param name="instance">The instance to register.</param>
+        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "Breaking change")]
         public static void RegisterInstance(TContract instance)
         {
             if (ComponentFactory.GetComponent<TContract>() == null)

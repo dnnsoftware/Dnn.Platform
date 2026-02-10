@@ -69,11 +69,11 @@ namespace DotNetNuke.Tests.Content
             content.Metadata.Clear();
 
             var contentId = Util.GetContentController().AddContentItem(content);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(contentId, Is.EqualTo(Constants.CONTENT_AddContentItemId));
                 Assert.That(content.Metadata, Is.Empty);
-            });
+            }
 
             dataService.Setup(ds => ds.GetContentItem(It.IsAny<int>()))
                 .Returns<int>(y => MockHelper.CreateValidContentItemReader(content));
@@ -109,19 +109,19 @@ namespace DotNetNuke.Tests.Content
             Assert.That(contentItem, Is.Not.Null);
 
             var serialized = contentItem.Metadata[FileController.FilesKey];
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(serialized, Is.Not.Empty);
 
                 Assert.That(contentItem.Files, Is.Not.Empty);
-            });
+            }
             Assert.That(contentItem.Files, Has.Count.EqualTo(3));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(contentItem.Files[0].FileId, Is.EqualTo(0));
                 Assert.That(contentItem.Files[1].FileId, Is.EqualTo(1));
                 Assert.That(contentItem.Files[2].FileId, Is.EqualTo(2));
-            });
+            }
         }
 
         [Test]
@@ -155,11 +155,11 @@ namespace DotNetNuke.Tests.Content
             Assert.That(contentItem, Is.Not.Null);
 
             var serialized = contentItem.Metadata[FileController.FilesKey];
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(serialized, Is.Null);
                 Assert.That(contentItem.Files, Is.Empty);
-            });
+            }
 
             var fileManager = ComponentFactory.GetComponent<IFileManager>();
 
@@ -171,11 +171,11 @@ namespace DotNetNuke.Tests.Content
             contentItem = contentController.GetContentItem(Constants.CONTENT_ValidContentItemId);
 
             Assert.That(contentItem.Files, Has.Count.EqualTo(2));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(contentItem.Files[0].FileId, Is.EqualTo(0));
                 Assert.That(contentItem.Files[1].FileId, Is.EqualTo(1));
-            });
+            }
 
             dataService.Verify(
                 ds => ds.DeleteMetaData(It.IsAny<ContentItem>(), FileController.FilesKey, "[0]"), Times.Once());
@@ -204,11 +204,11 @@ namespace DotNetNuke.Tests.Content
             Assert.That(contentItem, Is.Not.Null);
 
             var serialized = contentItem.Metadata[FileController.FilesKey];
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(serialized, Is.Null);
                 Assert.That(contentItem.Files, Is.Empty);
-            });
+            }
 
             // Add some files.
             var fileController = ComponentFactory.GetComponent<IAttachmentController>();
@@ -218,11 +218,11 @@ namespace DotNetNuke.Tests.Content
             contentItem = contentController.GetContentItem(Constants.CONTENT_ValidContentItemId);
 
             Assert.That(contentItem.Files, Has.Count.EqualTo(2));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(contentItem.Files[0].FileId, Is.EqualTo(0));
                 Assert.That(contentItem.Files[1].FileId, Is.EqualTo(1));
-            });
+            }
             Assert.That(contentItem.Metadata[FileController.FilesKey], Is.Not.Empty);
 
             contentItem.Files.Clear();

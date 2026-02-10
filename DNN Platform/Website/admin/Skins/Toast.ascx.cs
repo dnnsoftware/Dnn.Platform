@@ -32,17 +32,26 @@ namespace DotNetNuke.UI.Skins.Controls
         private readonly INavigationManager navigationManager;
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IClientResourceController clientResourceController;
+        private readonly IServicesFramework servicesFramework;
 
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public Toast()
             : this(null, null, null)
         {
         }
 
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public Toast(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
+            : this(navigationManager, javaScript, clientResourceController, null)
+        {
+        }
+
+        public Toast(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IServicesFramework servicesFramework)
         {
             this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
             this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
         }
 
         protected string ServiceModuleName { get; private set; }
@@ -75,13 +84,13 @@ namespace DotNetNuke.UI.Skins.Controls
             return Localization.GetString("SeeAllNotification", Localization.GetResourceFile(this, MyFileName));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
             this.javaScript.RequestRegistration(CommonJs.jQueryUI);
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
 
             this.clientResourceController.RegisterScript("~/Resources/Shared/components/Toast/jquery.toastmessage.js", FileOrder.Js.jQuery);
             this.clientResourceController.RegisterStylesheet("~/Resources/Shared/components/Toast/jquery.toastmessage.css", FileOrder.Css.DefaultCss);
@@ -150,7 +159,11 @@ namespace DotNetNuke.UI.Skins.Controls
                     if (File.Exists(configFile))
                     {
                         var xmlDocument = new XmlDocument { XmlResolver = null };
-                        xmlDocument.Load(configFile);
+                        using (var configReader = XmlReader.Create(configFile, new XmlReaderSettings { XmlResolver = null, }))
+                        {
+                            xmlDocument.Load(configReader);
+                        }
+
                         var moduleNameNode = xmlDocument.DocumentElement?.SelectSingleNode("moduleName");
                         var actionNode = xmlDocument.DocumentElement?.SelectSingleNode("action");
                         var scriptsNode = xmlDocument.DocumentElement?.SelectSingleNode("scripts");

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web;
 
@@ -34,17 +35,17 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     + Localization.GetString("FileCreateCheck", this.LocalInstallResourceFile)
                     + Localization.GetString("FileDeleteCheck", this.LocalInstallResourceFile)
                     + Localization.GetString("FolderDeleteCheck", this.LocalInstallResourceFile);
-            Logger.TraceFormat("FilePermissionCheck - {0}", this.Details);
+            Logger.TraceFormat(CultureInfo.InvariantCulture, "FilePermissionCheck - {0}", this.Details);
 
             if (!verifiers.All(v => v.VerifyAll()))
             {
-                this.Errors.Add(string.Format(Localization.GetString("StepFailed", this.LocalInstallResourceFile), this.Details));
+                this.Errors.Add(string.Format(CultureInfo.CurrentCulture, Localization.GetString("StepFailed", this.LocalInstallResourceFile), this.Details));
             }
 
             this.Percentage = 100;
 
             this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
-            Logger.TraceFormat("FilePermissionCheck Status - {0}", this.Status);
+            Logger.TraceFormat(CultureInfo.InvariantCulture, "FilePermissionCheck Status - {0}", this.Status);
         }
     }
 }

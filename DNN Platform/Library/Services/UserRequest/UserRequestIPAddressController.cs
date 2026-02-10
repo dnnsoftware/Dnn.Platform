@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+#nullable enable
 namespace DotNetNuke.Services.UserRequest
 {
     using System;
@@ -16,91 +17,85 @@ namespace DotNetNuke.Services.UserRequest
 
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// Utilities to handle IP address of user making request to application.
-    /// </summary>
+    /// <summary>Utilities to handle IP address of user making request to application.</summary>
     public class UserRequestIPAddressController : ServiceLocator<IUserRequestIPAddressController, UserRequestIPAddressController>, IUserRequestIPAddressController
     {
         private readonly IHostSettingsService hostSettingsService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRequestIPAddressController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserRequestIPAddressController"/> class.</summary>
         public UserRequestIPAddressController()
             : this(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRequestIPAddressController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserRequestIPAddressController"/> class.</summary>
         /// <param name="hostSettingsService">Provides access to host settings.</param>
         public UserRequestIPAddressController(IHostSettingsService hostSettingsService)
         {
             this.hostSettingsService = hostSettingsService;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetUserRequestIPAddress(HttpRequestBase request)
         {
             return this.GetUserRequestIPAddress(request, IPAddressFamily.IPv4);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetUserRequestIPAddress(HttpRequestBase request, IPAddressFamily ipFamily)
         {
-            var userRequestIPHeader = this.hostSettingsService.GetString("UserRequestIPHeader");
-            var userIPAddress = string.Empty;
+            var userRequestIpHeader = this.hostSettingsService.GetString("UserRequestIPHeader");
+            var userIpAddress = string.Empty;
 
-            if (!string.IsNullOrEmpty(userRequestIPHeader) && request.Headers.AllKeys.Contains(userRequestIPHeader))
+            if (!string.IsNullOrEmpty(userRequestIpHeader) && request.Headers.AllKeys.Contains(userRequestIpHeader))
             {
-                userIPAddress = request.Headers[userRequestIPHeader];
-                userIPAddress = userIPAddress.Split(',')[0];
-                if (ipFamily == IPAddressFamily.IPv4 && userIPAddress.Contains(':'))
+                userIpAddress = request.Headers[userRequestIpHeader];
+                userIpAddress = userIpAddress.Split(',')[0];
+                if (ipFamily == IPAddressFamily.IPv4 && userIpAddress.Contains(':'))
                 {
-                    userIPAddress = userIPAddress.Split(':')[0];
+                    userIpAddress = userIpAddress.Split(':')[0];
                 }
                 else if (ipFamily == IPAddressFamily.IPv6
-                    && userIPAddress.StartsWith("[") && userIPAddress.Contains(']'))
+                    && userIpAddress.StartsWith("[", StringComparison.Ordinal) && userIpAddress.Contains(']'))
                 {
-                    userIPAddress = userIPAddress.Split(']')[0].Substring(1);
+                    userIpAddress = userIpAddress.Split(']')[0].Substring(1);
                 }
             }
 
-            if (string.IsNullOrEmpty(userIPAddress))
+            if (string.IsNullOrEmpty(userIpAddress))
             {
-                var remoteAddrVariable = "REMOTE_ADDR";
+                const string remoteAddrVariable = "REMOTE_ADDR";
                 if (request.ServerVariables.AllKeys.Contains(remoteAddrVariable))
                 {
-                    userIPAddress = request.ServerVariables[remoteAddrVariable];
+                    userIpAddress = request.ServerVariables[remoteAddrVariable];
                 }
             }
 
-            if (string.IsNullOrEmpty(userIPAddress))
+            if (string.IsNullOrEmpty(userIpAddress))
             {
-                userIPAddress = request.UserHostAddress;
+                userIpAddress = request.UserHostAddress;
             }
 
-            if (string.IsNullOrEmpty(userIPAddress) || userIPAddress.Trim() == "::1")
+            if (string.IsNullOrEmpty(userIpAddress) || userIpAddress.Trim() == "::1")
             {
-                userIPAddress = string.Empty;
+                userIpAddress = string.Empty;
             }
 
-            if (!string.IsNullOrEmpty(userIPAddress) && !ValidateIP(userIPAddress, ipFamily))
+            if (!string.IsNullOrEmpty(userIpAddress) && !ValidateIp(userIpAddress, ipFamily))
             {
-                userIPAddress = string.Empty;
+                userIpAddress = string.Empty;
             }
 
-            return userIPAddress;
+            return userIpAddress;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IUserRequestIPAddressController> GetFactory()
         {
             return () => new UserRequestIPAddressController();
         }
 
-        private static bool ValidateIP(string ipString, IPAddressFamily ipFamily)
+        private static bool ValidateIp(string ipString, IPAddressFamily ipFamily)
         {
             if (IPAddress.TryParse(ipString, out var address))
             {

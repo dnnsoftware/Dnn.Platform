@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Localization
 
         public string Text { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID
         {
             get
@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
             this.LanguageId = Null.SetNullInteger(dr["LanguageID"]);

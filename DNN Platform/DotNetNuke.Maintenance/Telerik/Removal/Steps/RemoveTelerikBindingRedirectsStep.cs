@@ -27,20 +27,20 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Name => this.Localize("UninstallStepRemoveBindingRedirects");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public override string RelativeFilePath => "Web.config";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ConfigureNamespaceManager()
         {
             this.NamespaceManager.AddNamespace("asm", "urn:schemas-microsoft-com:asm.v1");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ProcessXml(XmlDocument doc)
         {
             const string AssemblyBindingPath = "/configuration/runtime/asm:assemblyBinding";

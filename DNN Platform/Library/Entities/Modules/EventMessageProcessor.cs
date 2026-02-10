@@ -4,6 +4,7 @@
 namespace DotNetNuke.Entities.Modules
 {
     using System;
+    using System.Globalization;
     using System.Web;
 
     using DotNetNuke.Abstractions.Logging;
@@ -62,16 +63,16 @@ namespace DotNetNuke.Entities.Modules
 
             // Add custom Attributes for this message
             appStartMessage.Attributes.Add("BusinessControllerClass", objModule.DesktopModule.BusinessControllerClass);
-            appStartMessage.Attributes.Add("ModuleId", objModule.ModuleID.ToString());
+            appStartMessage.Attributes.Add("ModuleId", objModule.ModuleID.ToString(CultureInfo.InvariantCulture));
             appStartMessage.Attributes.Add("Content", content);
             appStartMessage.Attributes.Add("Version", version);
-            appStartMessage.Attributes.Add("UserID", userId.ToString());
+            appStartMessage.Attributes.Add("UserID", userId.ToString(CultureInfo.InvariantCulture));
 
             // send it to occur on next App_Start Event
             EventQueueController.SendMessage(appStartMessage, "Application_Start_FirstRequest");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool ProcessMessage(EventMessage message)
         {
             try
@@ -79,7 +80,7 @@ namespace DotNetNuke.Entities.Modules
                 switch (message.ProcessorCommand)
                 {
                     case "UpdateSupportedFeatures":
-                        UpdateSupportedFeatures(message);
+                        UpdateSupportedFeatures(this.eventLogger, message);
                         break;
                     case "UpgradeModule":
                         this.UpgradeModule(message);
@@ -102,14 +103,14 @@ namespace DotNetNuke.Entities.Modules
             return true;
         }
 
-        private static void UpdateSupportedFeatures(EventMessage message)
+        private static void UpdateSupportedFeatures(IEventLogger eventLogger, EventMessage message)
         {
             var businessControllerClass = message.Attributes["BusinessControllerClass"];
             var controllerType = Reflection.CreateType(businessControllerClass);
-            UpdateSupportedFeatures(controllerType, Convert.ToInt32(message.Attributes["DesktopModuleId"]));
+            UpdateSupportedFeatures(eventLogger, controllerType, Convert.ToInt32(message.Attributes["DesktopModuleId"], CultureInfo.InvariantCulture));
         }
 
-        private static void UpdateSupportedFeatures(Type controllerType, int desktopModuleId)
+        private static void UpdateSupportedFeatures(IEventLogger eventLogger, Type controllerType, int desktopModuleId)
         {
             try
             {
@@ -126,12 +127,12 @@ namespace DotNetNuke.Entities.Modules
                 desktopModule.IsPortable = typeof(IPortable).IsAssignableFrom(controllerType);
                 desktopModule.IsSearchable = typeof(ModuleSearchBase).IsAssignableFrom(controllerType);
                 desktopModule.IsUpgradeable = typeof(IUpgradeable).IsAssignableFrom(controllerType);
-                DesktopModuleController.SaveDesktopModule(desktopModule, false, false, false);
+                DesktopModuleController.SaveDesktopModule(eventLogger, desktopModule, false, false, false);
 
                 foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
                 {
-                    DataCache.RemoveCache(string.Format(DataCache.DesktopModuleCacheKey, portal.PortalId));
-                    DataCache.RemoveCache(string.Format(DataCache.PortalDesktopModuleCacheKey, portal.PortalId));
+                    DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.DesktopModuleCacheKey, portal.PortalId));
+                    DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.PortalDesktopModuleCacheKey, portal.PortalId));
                 }
             }
             catch (Exception exc)
@@ -150,10 +151,10 @@ namespace DotNetNuke.Entities.Modules
                     return;
                 }
 
-                var moduleId = Convert.ToInt32(message.Attributes["ModuleId"]);
+                var moduleId = Convert.ToInt32(message.Attributes["ModuleId"], CultureInfo.InvariantCulture);
                 var content = HttpUtility.HtmlDecode(message.Attributes["Content"]);
                 var version = message.Attributes["Version"];
-                var userId = Convert.ToInt32(message.Attributes["UserId"]);
+                var userId = Convert.ToInt32(message.Attributes["UserId"], CultureInfo.InvariantCulture);
 
                 // call the IPortable interface for the module/version
                 controller.ImportModule(moduleId, content, version, userId);
@@ -184,7 +185,7 @@ namespace DotNetNuke.Entities.Modules
                         var results = controller.UpgradeModule(version);
 
                         // log the upgrade results
-                        var log = new LogInfo { LogTypeKey = EventLogType.MODULE_UPDATED.ToString(), };
+                        var log = new LogInfo { LogTypeKey = nameof(EventLogType.MODULE_UPDATED), };
                         log.AddProperty("Module Upgraded", businessControllerClass);
                         log.AddProperty("Version", version);
                         if (!string.IsNullOrEmpty(results))
@@ -196,8 +197,8 @@ namespace DotNetNuke.Entities.Modules
                     }
                 }
 
-                var desktopModuleId = Convert.ToInt32(message.Attributes["DesktopModuleId"]);
-                UpdateSupportedFeatures(businessControllerType, desktopModuleId);
+                var desktopModuleId = Convert.ToInt32(message.Attributes["DesktopModuleId"], CultureInfo.InvariantCulture);
+                UpdateSupportedFeatures(this.eventLogger, businessControllerType, desktopModuleId);
             }
             catch (Exception exc)
             {

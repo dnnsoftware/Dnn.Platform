@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.Mvc
             this.controllerFactory = controllerFactory;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         IHttpHandler IRouteHandler.GetHttpHandler(RequestContext requestContext)
         {
             return this.GetHttpHandler(requestContext);

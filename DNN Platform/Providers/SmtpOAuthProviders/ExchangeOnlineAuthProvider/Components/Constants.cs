@@ -19,6 +19,12 @@ internal static class Constants
     /// <summary>The client secret setting name.</summary>
     public const string ClientSecretSettingName = "msauth_clientSecret";
 
+    /// <summary>The name of the algorithm used to encrypt the client secret.</summary>
+    public const string ClientSecretEncryptionAlgorithm = "msauth_clientSecret_algorithmName";
+
+    /// <summary>The initialization vector used to encrypt the client secret.</summary>
+    public const string ClientSecretInitializationVector = "msauth_clientSecret_initializationVector";
+
     /// <summary>The access token setting name.</summary>
     public const string AuthenticationSettingName = "msauth_authentication";
 

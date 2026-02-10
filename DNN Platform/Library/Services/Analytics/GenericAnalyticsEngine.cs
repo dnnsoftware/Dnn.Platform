@@ -6,7 +6,7 @@ namespace DotNetNuke.Services.Analytics
 {
     public class GenericAnalyticsEngine : AnalyticsEngineBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string EngineName
         {
             get
@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Analytics
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string RenderScript(string scriptTemplate)
         {
             return this.ReplaceTokens(scriptTemplate);

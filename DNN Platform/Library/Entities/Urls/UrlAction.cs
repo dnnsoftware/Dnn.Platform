@@ -96,6 +96,7 @@ namespace DotNetNuke.Entities.Urls
 
         public string DomainName { get; set; }
 
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public Exception Ex { get; set; }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
@@ -158,7 +159,9 @@ namespace DotNetNuke.Entities.Urls
         public bool CustomParmRewrite { get; set; }
 
         // 737 : mobile browser identification
+#pragma warning disable CS0618 // Type or member is obsolete
         public BrowserTypes BrowserType { get; private set; }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         public bool IsPhysicalResource { get; set; }
 
@@ -279,7 +282,7 @@ namespace DotNetNuke.Entities.Urls
 
         private void Constructor(string scheme, string applicationPath, string physicalPath)
         {
-            if (scheme.EndsWith("://") == false)
+            if (!scheme.EndsWith("://", StringComparison.Ordinal))
             {
                 this.Scheme = scheme + "://";
             }

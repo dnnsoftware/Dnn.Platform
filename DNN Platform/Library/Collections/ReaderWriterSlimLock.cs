@@ -25,7 +25,7 @@ namespace DotNetNuke.Collections.Internal
             this.Dispose(false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             this.Dispose(true);
@@ -44,7 +44,7 @@ namespace DotNetNuke.Collections.Internal
                     // free managed resources here
                 }
 
-                // free unmanaged resrources here
+                // free unmanaged resources here
                 if (this.@lock.IsReadLockHeld)
                 {
                     this.@lock.ExitReadLock();

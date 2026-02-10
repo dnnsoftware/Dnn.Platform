@@ -4,6 +4,7 @@
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
 {
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.PersonaBar.Library.Prompt;
@@ -16,10 +17,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
     [ConsoleCommand("list-portals", Constants.PortalCategory, "Prompt_ListPortals_Description")]
     public class ListPortals : ConsoleCommandBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             if (args.Length == 1)
@@ -32,16 +33,21 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var pc = PortalController.Instance;
 
             var alPortals = pc.GetPortals();
             var lst = (from PortalInfo portal in alPortals select new PortalModelBase(portal)).ToList();
-            var count = lst.Count > 0 ? lst.Count.ToString() : "No";
+            var count = lst.Count > 0 ? lst.Count.ToString(CultureInfo.CurrentCulture) : "No";
             var pluralSuffix = lst.Count > 1 ? "s" : string.Empty;
-            return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_ListPortals_Results"), count, pluralSuffix) };
+            return new ConsoleResultModel(string.Empty)
+            {
+                Data = lst,
+                Records = lst.Count,
+                Output = string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Prompt_ListPortals_Results"), count, pluralSuffix),
+            };
         }
     }
 }

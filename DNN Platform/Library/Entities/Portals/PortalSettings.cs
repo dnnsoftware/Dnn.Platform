@@ -80,10 +80,11 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portal">The portal info.</param>
         public PortalSettings(int tabId, PortalInfo portal)
         {
-            this.PortalId = portal != null ? portal.PortalID : Null.NullInteger;
+            this.PortalId = portal?.PortalID ?? Null.NullInteger;
             this.BuildPortalSettings(tabId, portal);
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public enum ControlPanelPermission
         {
             /// <summary>A page editor.</summary>
@@ -133,54 +134,36 @@ namespace DotNetNuke.Entities.Portals
             HardDelete = 3,
         }
 
-        public static PortalSettings Current
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
+        public static PortalSettings Current => PortalController.Instance.GetCurrentPortalSettings();
 
-        /// <inheritdoc/>
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
-            }
-        }
+        /// <inheritdoc />
+        public CacheLevel Cacheability => CacheLevel.fullyCacheable;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool ControlPanelVisible
         {
             get
             {
-                var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + this.PortalId));
-                return string.IsNullOrEmpty(setting) ? this.DefaultControlPanelVisibility : Convert.ToBoolean(setting);
+                var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + this.PortalId), CultureInfo.InvariantCulture);
+                return string.IsNullOrEmpty(setting) ? this.DefaultControlPanelVisibility : Convert.ToBoolean(setting, CultureInfo.InvariantCulture);
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DefaultPortalAlias
         {
             get
             {
-                foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId).Where(alias => alias.IsPrimary))
+                foreach (IPortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId).Where(alias => alias.IsPrimary))
                 {
-                    return alias.HTTPAlias;
+                    return alias.HttpAlias;
                 }
 
                 return string.Empty;
             }
         }
 
-        public PortalAliasMapping PortalAliasMappingMode
-        {
-            get
-            {
-                return PortalSettingsController.Instance().GetPortalAliasMappingMode(this.PortalId);
-            }
-        }
+        public PortalAliasMapping PortalAliasMappingMode => PortalSettingsController.Instance().GetPortalAliasMappingMode(this.PortalId);
 
         /// <inheritdoc />
         public int UserId
@@ -211,7 +194,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         public bool IsThisPortalLocked => PortalController.GetPortalSettingAsBoolean("IsLocked", this.PortalId, false);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string PageHeadText
         {
             get
@@ -229,15 +212,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /*
-         * add <a name="[moduleid]"></a> on the top of the module
-         *
-         * Desactivate this remove the html5 compatibility warnings
-         * (and make the output smaller)
-         *
-         */
-
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool InjectModuleHyperLink
         {
             get
@@ -246,13 +221,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /*
-         * generates a : Page.Response.AddHeader("X-UA-Compatible", "");
-         *
-
-         */
-
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string AddCompatibleHttpHeader
         {
             get
@@ -261,7 +230,7 @@ namespace DotNetNuke.Entities.Portals
                 string setting;
                 if (PortalController.Instance.GetPortalSettings(this.PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
                 {
-                    // Hack to store empty string portalsetting with non empty default value
+                    // Hack to store empty string portal setting with non-empty default value
                     compatibleHttpHeader = (setting == "false") ? string.Empty : setting;
                 }
 
@@ -270,183 +239,172 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <inheritdoc />
-        public bool AddCachebusterToResourceUris
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsBoolean("AddCachebusterToResourceUris", this.PortalId, true);
-            }
-        }
+        public bool AddCachebusterToResourceUris => PortalController.GetPortalSettingAsBoolean("AddCachebusterToResourceUris", this.PortalId, true);
 
         /// <inheritdoc />
-        public bool DisablePrivateMessage
-        {
-            get
-            {
-                return PortalController.GetPortalSetting("DisablePrivateMessage", this.PortalId, "N") == "Y";
-            }
-        }
+        public bool DisablePrivateMessage => PortalController.GetPortalSetting("DisablePrivateMessage", this.PortalId, "N") == "Y";
 
         public TabInfo ActiveTab { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int AdministratorId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int AdministratorRoleId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string AdministratorRoleName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int AdminTabId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string BackgroundFile { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int BannerAdvertising { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string CultureCode { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Currency { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DefaultLanguage { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Description { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Email { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public DateTime ExpiryDate { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string FooterText { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
         public Guid GUID { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string HomeDirectory { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string HomeSystemDirectory { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int HomeTabId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public float HostFee { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int HostSpace { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string KeyWords { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int LoginTabId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string LogoFile { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int PageQuota { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Pages { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int PortalId { get; set; }
 
         public PortalAliasInfo PortalAlias { get; set; }
 
         public PortalAliasInfo PrimaryAlias { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string PortalName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int RegisteredRoleId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string RegisteredRoleName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int RegisterTabId { get; set; }
 
         public RegistrationSettings Registration { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int SearchTabId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int SplashTabId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int SuperTabId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int UserQuota { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int UserRegistration { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Users { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int UserTabId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int TermsTabId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int PrivacyTabId { get; set; }
 
         /// <inheritdoc />
         public bool AllowUserUICulture { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int CdfVersion { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool ContentLocalizationEnabled { get; internal set; }
 
         public ControlPanelPermission ControlPanelSecurity { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DefaultAdminContainer { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DefaultAdminSkin { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DefaultAuthProvider { get; internal set; }
 
         public Mode DefaultControlPanelMode { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool DefaultControlPanelVisibility { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DefaultIconLocation { get; internal set; }
 
         /// <inheritdoc />
         public int DefaultModuleId { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DefaultModuleActionMenu { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DefaultPortalContainer { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DefaultPortalSkin { get; internal set; }
 
         /// <inheritdoc />
@@ -455,7 +413,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         public bool EnableBrowserLanguage { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool EnableCompositeFiles { get; internal set; }
 
         /// <inheritdoc />
@@ -480,10 +438,10 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         public bool EnableUrlLanguage { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int ErrorPage404 { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int ErrorPage500 { get; internal set; }
 
         /// <inheritdoc />
@@ -492,10 +450,10 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         public bool HideLoginControl { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string HomeDirectoryMapPath { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string HomeSystemDirectoryMapPath { get; internal set; }
 
         /// <inheritdoc />
@@ -522,28 +480,28 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         public int SearchMinWordlLength { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Abstractions.Security.SiteSslSetup SSLSetup { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SSLEnabled => this.SSLSetup != Abstractions.Security.SiteSslSetup.Off;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SSLEnforced { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string SSLURL { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string STDURL { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int SMTPConnectionLimit { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int SMTPMaxIdleTime { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public TimeZoneInfo TimeZone { get; set; } = TimeZoneInfo.Local;
 
         /// <inheritdoc />
@@ -571,16 +529,50 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>Gets whitelist of file extensions for end users.</summary>
         public FileExtensionWhitelist AllowedExtensionsWhitelist { get; internal set; }
 
-        /// <inheritdoc/>
-        public bool ShowQuickModuleAddMenu
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsBoolean("ShowQuickModuleAddMenu", this.PortalId, false);
-            }
-        }
+        /// <inheritdoc />
+        public bool ShowQuickModuleAddMenu => PortalController.GetPortalSettingAsBoolean("ShowQuickModuleAddMenu", this.PortalId, false);
 
-        /// <inheritdoc/>
+        /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
+        /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>
+        public static IPortalSettings Create()
+            => new PortalSettings();
+
+        /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
+        /// <param name="portalController">A portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>
+        public static IPortalSettings Create(IPortalController portalController, int portalId)
+            => new PortalSettings(Null.NullInteger, portalController.GetPortal(portalId));
+
+        /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
+        /// <param name="portalController">A portal controller.</param>
+        /// <param name="tabId">The active tab ID.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>
+        public static IPortalSettings Create(IPortalController portalController, int tabId, int portalId)
+            => new PortalSettings(tabId, portalController.GetPortal(portalId));
+
+        /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
+        /// <param name="tabId">The active tab ID.</param>
+        /// <param name="portalAlias">The portal alias.</param>
+        /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>
+        public static IPortalSettings Create(int tabId, IPortalAliasInfo portalAlias)
+            => portalAlias is PortalAliasInfo alias ? new PortalSettings(tabId, alias) : new PortalSettings(tabId, portalAlias.PortalId);
+
+        /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
+        /// <param name="portal">The portal info.</param>
+        /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>
+        public static IPortalSettings Create(IPortalInfo portal)
+            => portal is PortalInfo portalInfo ? new PortalSettings(portalInfo) : new PortalSettings(Null.NullInteger, portal.PortalId);
+
+        /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
+        /// <param name="tabId">The tab ID.</param>
+        /// <param name="portal">The portal info.</param>
+        /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>
+        public static IPortalSettings Create(int tabId, IPortalInfo portal)
+            => portal is PortalInfo portalInfo ? new PortalSettings(tabId, portalInfo) : new PortalSettings(tabId, portal.PortalId);
+
+        /// <inheritdoc />
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             var outputFormat = string.Empty;
@@ -646,7 +638,7 @@ namespace DotNetNuke.Entities.Portals
                     break;
                 case "footertext":
                     propertyNotFound = false;
-                    var footerText = this.FooterText.Replace("[year]", DateTime.Now.Year.ToString());
+                    var footerText = this.FooterText.Replace("[year]", DateTime.Now.Year.ToString(formatProvider));
                     result = PropertyAccess.FormatString(footerText, format);
                     break;
                 case "expirydate":
@@ -813,7 +805,7 @@ namespace DotNetNuke.Entities.Portals
 
             PortalSettingsController.Instance().LoadPortal(portal, this);
 
-            var key = string.Join(":", "ActiveTab", portal.PortalID.ToString(), tabId.ToString());
+            var key = string.Join(":", "ActiveTab", portal.PortalID.ToString(CultureInfo.InvariantCulture), tabId.ToString(CultureInfo.InvariantCulture));
             var items = HttpContext.Current != null ? HttpContext.Current.Items : null;
             if (items != null && items.Contains(key))
             {

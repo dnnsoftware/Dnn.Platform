@@ -16,38 +16,42 @@ namespace DotNetNuke.Web.Mvp
     [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public abstract partial class ModuleViewBase : ModuleUserControlBase, IModuleViewBase
     {
+        /// <summary>Initializes a new instance of the <see cref="ModuleViewBase"/> class.</summary>
         protected ModuleViewBase()
         {
             this.AutoDataBind = true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public event EventHandler Initialize;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public new event EventHandler Load;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool ThrowExceptionIfNoPresenterBound
         {
             get { return true; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool AutoDataBind { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ProcessModuleLoadException(Exception ex)
         {
             Exceptions.ProcessModuleLoadException(this, ex);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ShowMessage(string messageHeader, string message, ModuleMessage.ModuleMessageType messageType)
         {
             DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, messageHeader, message, messageType);
         }
 
+        /// <summary>Gets the data item.</summary>
+        /// <typeparam name="T">The type of item.</typeparam>
+        /// <returns>The item or a new <typeparamref name="T"/>.</returns>
         protected T DataItem<T>()
             where T : class, new()
         {
@@ -55,17 +59,24 @@ namespace DotNetNuke.Web.Mvp
             return t;
         }
 
+        /// <summary>Gets the data value.</summary>
+        /// <typeparam name="T">The type of value.</typeparam>
+        /// <returns>The value.</returns>
         protected T DataValue<T>()
         {
             return (T)this.Page.GetDataItem();
         }
 
+        /// <summary>Gets the formatted value.</summary>
+        /// <param name="format">The format string.</param>
+        /// <typeparam name="T">The type of value.</typeparam>
+        /// <returns>The formatted value.</returns>
         protected string DataValue<T>(string format)
         {
             return string.Format(CultureInfo.CurrentCulture, format, this.DataValue<T>());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             PageViewHost.Register(this, this.Context, false);

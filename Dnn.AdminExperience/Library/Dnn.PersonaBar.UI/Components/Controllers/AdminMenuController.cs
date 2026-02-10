@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CreateLinkMenu(TabInfo tab)
         {
             if (!this.ValidateTab(tab))
@@ -82,7 +82,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteLinkMenu(TabInfo tab)
         {
             var portalId = tab.PortalID;
@@ -93,7 +93,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             PersonaBarRepository.Instance.DeleteMenuItem(identifier);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IAdminMenuController> GetFactory()
         {
             return () => Globals.GetCurrentServiceProvider().GetRequiredService<IAdminMenuController>();
@@ -145,7 +145,11 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             var personaBarPath = Constants.PersonaBarRelativePath.Replace("~/", string.Empty);
             var dataPath = Path.Combine(this.appStatus.ApplicationMapPath, personaBarPath, "data/adminpages.resources");
             var xmlDocument = new XmlDocument { XmlResolver = null, };
-            xmlDocument.Load(dataPath);
+            using (var xmlReader = XmlReader.Create(dataPath, new XmlReaderSettings { XmlResolver = null, }))
+            {
+                xmlDocument.Load(xmlReader);
+            }
+
             var pages = xmlDocument.SelectNodes($"//pages//{type}//name")?.Cast<XmlNode>().Select(n => n.InnerXml.Trim()).ToList();
             this.knownPages.Add(type, pages);
 

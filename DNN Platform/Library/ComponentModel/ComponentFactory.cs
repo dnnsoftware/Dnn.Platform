@@ -7,8 +7,12 @@ namespace DotNetNuke.ComponentModel
     using System.Collections;
     using System.Collections.Generic;
 
+    using DotNetNuke.Instrumentation;
+
     public static class ComponentFactory
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ComponentFactory));
+
         public static IContainer Container { get; set; }
 
         public static void InstallComponents(params IComponentInstaller[] installers)
@@ -200,6 +204,7 @@ namespace DotNetNuke.ComponentModel
         {
             if (Container == null)
             {
+                Logger.Warn("Container was null, instantiating SimpleContainer");
                 Container = new SimpleContainer();
             }
         }

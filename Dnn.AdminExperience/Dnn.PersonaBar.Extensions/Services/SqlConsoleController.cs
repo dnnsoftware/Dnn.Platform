@@ -36,7 +36,7 @@ namespace Dnn.PersonaBar.SqlConsole.Services
 
         private ISqlQueryController controller = SqlQueryController.Instance;
 
-        // private const int MaxOutputRecords = 500;
+        ////private const int MaxOutputRecords = 500;
         [HttpGet]
         public HttpResponseMessage GetSavedQueries()
         {

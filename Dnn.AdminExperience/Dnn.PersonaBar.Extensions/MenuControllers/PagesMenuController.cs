@@ -24,18 +24,18 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
             this.securityService = SecurityService.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Visible(MenuItem menuItem)
         {
             return this.securityService.IsVisible(menuItem);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>

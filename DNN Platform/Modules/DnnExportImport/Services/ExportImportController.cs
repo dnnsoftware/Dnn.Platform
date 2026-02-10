@@ -15,9 +15,7 @@ namespace Dnn.ExportImport.Services
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
 
-    /// <summary>
-    /// REST APIs to manage import/export jobs.
-    /// </summary>
+    /// <summary>REST APIs to manage import/export jobs.</summary>
     [RequireHost]
     public class ExportImportController : DnnApiController
     {
@@ -25,6 +23,10 @@ namespace Dnn.ExportImport.Services
         private readonly ImportController importController;
         private readonly BaseController baseController;
 
+        /// <summary>Initializes a new instance of the <see cref="ExportImportController"/> class.</summary>
+        /// <param name="exportController">The export controller.</param>
+        /// <param name="importController">The import controller.</param>
+        /// <param name="baseController">The base controller.</param>
         public ExportImportController(ExportController exportController, ImportController importController, BaseController baseController)
         {
             this.exportController = exportController;
@@ -32,9 +34,7 @@ namespace Dnn.ExportImport.Services
             this.baseController = baseController;
         }
 
-        /// <summary>
-        /// Exports the specified site.
-        /// </summary>
+        /// <summary>Exports the specified site.</summary>
         /// <param name="exportDto">The details needed to export a site.</param>
         /// <returns>OK.</returns>
         [HttpPost]
@@ -46,9 +46,7 @@ namespace Dnn.ExportImport.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { jobId });
         }
 
-        /// <summary>
-        /// Imports a site.
-        /// </summary>
+        /// <summary>Imports a site.</summary>
         /// <param name="importDto">The details required to import a site.</param>
         /// <returns>OK or BadRequest with a message.</returns>
         [HttpPost]
@@ -64,9 +62,7 @@ namespace Dnn.ExportImport.Services
             return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
         }
 
-        /// <summary>
-        /// Verifies an import package validity.
-        /// </summary>
+        /// <summary>Verifies an import package validity.</summary>
         /// <param name="packageId">The ID of the package to validate.</param>
         /// <returns>OK with a summary or BadRequest with an error message.</returns>
         [HttpGet]

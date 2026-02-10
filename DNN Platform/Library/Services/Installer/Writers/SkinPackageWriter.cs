@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = Path.Combine(basePath, subFolder);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IncludeAssemblies
         {
             get
@@ -88,14 +88,14 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
             // Call base class method with includeAppCode = false
             base.GetFiles(includeSource, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ParseFiles(DirectoryInfo folder, string rootPath)
         {
             // Add the Files in the Folder
@@ -103,7 +103,7 @@ namespace DotNetNuke.Services.Installer.Writers
             foreach (FileInfo file in files)
             {
                 string filePath = folder.FullName.Replace(rootPath, string.Empty);
-                if (filePath.StartsWith("\\"))
+                if (filePath.StartsWith(@"\", StringComparison.Ordinal))
                 {
                     filePath = filePath.Substring(1);
                 }
@@ -123,7 +123,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void WriteFilesToManifest(XmlWriter writer)
         {
             var skinFileWriter = new SkinComponentWriter(this.SkinPackage.SkinName, this.BasePath, this.Files, this.Package);

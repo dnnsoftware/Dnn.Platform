@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override DataSourceView GetView(string viewName)
         {
             if (this.itemsView == null)

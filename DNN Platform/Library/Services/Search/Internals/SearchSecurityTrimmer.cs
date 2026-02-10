@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Search.Internals
             this.hitDocs = new List<ScoreDoc>(16);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool AcceptsDocsOutOfOrder
         {
             get { return false; }
@@ -70,19 +70,19 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void SetNextReader(IndexReader reader, int docBase)
         {
             this.docBase = docBase;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void SetScorer(Scorer scorer)
         {
             this.scorer = scorer;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Collect(int doc)
         {
             this.hitDocs.Add(new ScoreDoc(doc + this.docBase, this.scorer.Score()));

@@ -5,6 +5,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 {
     using System;
 
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     public class PrimaryKeyAttribute : Attribute
     {
         /// <summary>Initializes a new instance of the <see cref="PrimaryKeyAttribute"/> class.</summary>

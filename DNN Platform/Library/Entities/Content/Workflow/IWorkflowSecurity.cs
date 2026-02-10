@@ -8,7 +8,7 @@ namespace DotNetNuke.Entities.Content.Workflow
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Permissions;
 
-    /// <summary>This class is responsible of provide information around Workflow Review permission.</summary>
+    /// <summary>This class is responsible to provide information around Workflow Review permission.</summary>
     public interface IWorkflowSecurity
     {
         /// <summary>This method returns true if the user has review permission on the specified state.</summary>

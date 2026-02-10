@@ -9,6 +9,7 @@ namespace DotNetNuke.Services.Connections
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Dynamic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Web;
@@ -16,13 +17,13 @@ namespace DotNetNuke.Services.Connections
 
     public sealed class DynamicJsonConverter : JavaScriptConverter
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IEnumerable<Type> SupportedTypes
         {
             get { return new ReadOnlyCollection<Type>(new List<Type>([typeof(object)])); }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override object Deserialize(IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)
         {
             if (dictionary == null)
@@ -33,7 +34,7 @@ namespace DotNetNuke.Services.Connections
             return type == typeof(object) ? new DynamicJsonObject(dictionary) : null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IDictionary<string, object> Serialize(object obj, JavaScriptSerializer serializer)
         {
             throw new NotImplementedException();
@@ -120,7 +121,11 @@ namespace DotNetNuke.Services.Connections
                     var name = pair.Key;
                     if (value is string stringValue)
                     {
-                        sb.AppendFormat("{0}:{1}", HttpUtility.JavaScriptStringEncode(name, addDoubleQuotes: true), HttpUtility.JavaScriptStringEncode(stringValue, addDoubleQuotes: true));
+                        sb.AppendFormat(
+                            CultureInfo.InvariantCulture,
+                            "{0}:{1}",
+                            HttpUtility.JavaScriptStringEncode(name, addDoubleQuotes: true),
+                            HttpUtility.JavaScriptStringEncode(stringValue, addDoubleQuotes: true));
                     }
                     else if (value is IDictionary<string, object> dictValue)
                     {
@@ -157,7 +162,7 @@ namespace DotNetNuke.Services.Connections
                     }
                     else
                     {
-                        sb.AppendFormat("{0}:{1}", name, value);
+                        sb.AppendFormat(CultureInfo.InvariantCulture, "{0}:{1}", name, value);
                     }
                 }
 

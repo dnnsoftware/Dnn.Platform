@@ -5,12 +5,16 @@ namespace DotNetNuke.Services.Installer.Packages
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
     using System.Xml;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -25,12 +29,46 @@ namespace DotNetNuke.Services.Installer.Packages
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Skins;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The PackageController class provides the business class for the packages.</summary>
     public partial class PackageController : ServiceLocator<IPackageController, PackageController>, IPackageController
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
+        private readonly IHostSettings hostSettings;
+        private readonly IEventLogger eventLogger;
 
-        public static bool CanDeletePackage(PackageInfo package, PortalSettings portalSettings)
+        /// <summary>Initializes a new instance of the <see cref="PackageController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public PackageController()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PackageController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public PackageController(IHostSettings hostSettings, IEventLogger eventLogger)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
+
+        /// <summary>Gets a value indicating whether the package can be deleted.</summary>
+        /// <param name="package">The package.</param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <returns><see langword="true"/> if the package can be deleted, otherwise <see langword="false"/>.</returns>
+        [DnnDeprecated(10, 2, 2, "Please use overload taking IHostSettings")]
+        public static partial bool CanDeletePackage(PackageInfo package, PortalSettings portalSettings)
+            => CanDeletePackage(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), package, portalSettings);
+
+        /// <summary>Gets a value indicating whether the package can be deleted.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="package">The package.</param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <returns><see langword="true"/> if the package can be deleted, otherwise <see langword="false"/>.</returns>
+        public static bool CanDeletePackage(IHostSettings hostSettings, IApplicationStatusInfo appStatus, PackageInfo package, IPortalSettings portalSettings)
         {
             bool bCanDelete = true;
 
@@ -66,18 +104,18 @@ namespace DotNetNuke.Services.Installer.Packages
                         SkinPackageInfo skinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
                         string strFolderPath = Path.Combine(skinPackageInfo.PortalID == Null.NullInteger ? Path.Combine(Globals.HostMapPath, strRootSkin) : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), skinPackageInfo.SkinName);
 
-                        bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeSystemDirectoryMapPath);
+                        bCanDelete = SkinController.CanDeleteSkin(hostSettings, strFolderPath, portalSettings.HomeSystemDirectoryMapPath);
                         if (skinPackageInfo.PortalID != Null.NullInteger)
                         {
                             // To be compliant with all versions
                             strFolderPath = Path.Combine(Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), skinPackageInfo.SkinName);
-                            bCanDelete = bCanDelete && SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);
+                            bCanDelete = bCanDelete && SkinController.CanDeleteSkin(hostSettings, strFolderPath, portalSettings.HomeDirectoryMapPath);
                         }
 
                         break;
                     case "Provider":
                         // Check if the provider is the default provider
-                        XmlDocument configDoc = Config.Load();
+                        XmlDocument configDoc = Config.Load(appStatus);
                         string providerName = package.Name;
                         if (providerName.IndexOf(".", StringComparison.Ordinal) > Null.NullInteger)
                         {
@@ -128,7 +166,12 @@ namespace DotNetNuke.Services.Installer.Packages
                         var package = new PackageInfo { Manifest = manifest };
                         if (!string.IsNullOrEmpty(manifest))
                         {
-                            var doc = new XPathDocument(new StringReader(manifest));
+                            XPathDocument doc;
+                            using (var manifestReader = XmlReader.Create(new StringReader(manifest)))
+                            {
+                                doc = new XPathDocument(manifestReader);
+                            }
+
                             XPathNavigator rootNav = doc.CreateNavigator().SelectSingleNode("dotnetnuke");
                             string packageType = string.Empty;
                             if (rootNav.Name == "dotnetnuke")
@@ -166,13 +209,13 @@ namespace DotNetNuke.Services.Installer.Packages
                                 }
 
                                 package.Description = XmlUtils.GetNodeValue(nav, "description");
-                                package.FileName = file.Replace(installPath + "\\", string.Empty);
+                                package.FileName = file.Replace(installPath + @"\", string.Empty);
 
-                                XPathNavigator foldernameNav;
+                                XPathNavigator folderNameNav;
                                 switch (package.PackageType)
                                 {
                                     case "Module":
-                                        // In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
+                                        // In Dynamics modules, a component:type=File can have a basePath pointing to the App_Code folder. This is not a correct FolderName
                                         // To ensure that FolderName is DesktopModules...
                                         var folderNameValue = GetSpecificFolderName(nav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
                                         if (!string.IsNullOrEmpty(folderNameValue))
@@ -182,26 +225,26 @@ namespace DotNetNuke.Services.Installer.Packages
 
                                         break;
                                     case "Auth_System":
-                                        foldernameNav = nav.SelectSingleNode("components/component/files");
-                                        if (foldernameNav != null)
+                                        folderNameNav = nav.SelectSingleNode("components/component/files");
+                                        if (folderNameNav != null)
                                         {
-                                            package.FolderName = Util.ReadElement(foldernameNav, "basePath").Replace('\\', '/');
+                                            package.FolderName = Util.ReadElement(folderNameNav, "basePath").Replace('\\', '/');
                                         }
 
                                         break;
                                     case "Container":
-                                        foldernameNav = nav.SelectSingleNode("components/component/containerFiles");
-                                        if (foldernameNav != null)
+                                        folderNameNav = nav.SelectSingleNode("components/component/containerFiles");
+                                        if (folderNameNav != null)
                                         {
-                                            package.FolderName = Globals.glbContainersPath + Util.ReadElement(foldernameNav, "containerName").Replace('\\', '/');
+                                            package.FolderName = Globals.glbContainersPath + Util.ReadElement(folderNameNav, "containerName").Replace('\\', '/');
                                         }
 
                                         break;
                                     case "Skin":
-                                        foldernameNav = nav.SelectSingleNode("components/component/skinFiles");
-                                        if (foldernameNav != null)
+                                        folderNameNav = nav.SelectSingleNode("components/component/skinFiles");
+                                        if (folderNameNav != null)
                                         {
-                                            package.FolderName = Globals.glbSkinsPath + Util.ReadElement(foldernameNav, "skinName").Replace('\\', '/');
+                                            package.FolderName = Globals.glbSkinsPath + Util.ReadElement(folderNameNav, "skinName").Replace('\\', '/');
                                         }
 
                                         break;
@@ -214,18 +257,18 @@ namespace DotNetNuke.Services.Installer.Packages
                                 {
                                     if ((iconFileNav.Value != string.Empty) && (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Auth_System", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)))
                                     {
-                                        if (iconFileNav.Value.StartsWith("~/"))
+                                        if (iconFileNav.Value.StartsWith("~/", StringComparison.Ordinal))
                                         {
                                             package.IconFile = iconFileNav.Value;
                                         }
                                         else if (iconFileNav.Value.StartsWith("DesktopModules", StringComparison.InvariantCultureIgnoreCase))
                                         {
-                                            package.IconFile = string.Format("~/{0}", iconFileNav.Value);
+                                            package.IconFile = $"~/{iconFileNav.Value}";
                                         }
                                         else
                                         {
                                             package.IconFile = (string.IsNullOrEmpty(package.FolderName) ? string.Empty : package.FolderName + "/") + iconFileNav.Value;
-                                            package.IconFile = (!package.IconFile.StartsWith("~/")) ? "~/" + package.IconFile : package.IconFile;
+                                            package.IconFile = (!package.IconFile.StartsWith("~/", StringComparison.Ordinal)) ? "~/" + package.IconFile : package.IconFile;
                                         }
                                     }
                                 }
@@ -260,7 +303,7 @@ namespace DotNetNuke.Services.Installer.Packages
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteExtensionPackage(PackageInfo package)
         {
             switch (package.PackageType)
@@ -300,16 +343,16 @@ namespace DotNetNuke.Services.Installer.Packages
                     break;
             }
 
-            DeletePackageInternal(package);
+            DeletePackageInternal(this.eventLogger, package);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)
         {
             return this.GetExtensionPackage(portalId, predicate, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate, bool useCopy)
         {
             var package = this.GetExtensionPackages(portalId).FirstOrDefault(predicate);
@@ -322,17 +365,18 @@ namespace DotNetNuke.Services.Installer.Packages
             return package;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<PackageInfo> GetExtensionPackages(int portalId)
         {
-            var cacheKey = string.Format(DataCache.PackagesCacheKey, portalId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PackagesCacheKey, portalId);
             var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.PackagesCacheTimeout, DataCache.PackagesCachePriority, portalId);
             return CBO.GetCachedObject<List<PackageInfo>>(
+                this.hostSettings,
                 cacheItemArgs,
                 c => CBO.FillCollection<PackageInfo>(Provider.GetPackages(portalId)));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<PackageInfo> GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)
         {
             return this.GetExtensionPackages(portalId).Where(predicate).ToList();
@@ -344,48 +388,49 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             if (package.PackageID == Null.NullInteger)
             {
-                AddPackageInternal(package);
+                AddPackageInternal(this.eventLogger, package);
             }
             else
             {
-                UpdatePackageInternal(package);
+                UpdatePackageInternal(this.eventLogger, package);
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PackageType GetExtensionPackageType(Func<PackageType, bool> predicate)
         {
             return this.GetExtensionPackageTypes().SingleOrDefault(predicate);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<PackageType> GetExtensionPackageTypes()
         {
             return CBO.GetCachedObject<List<PackageType>>(
+                this.hostSettings,
                 new CacheItemArgs(
-                DataCache.PackageTypesCacheKey,
-                DataCache.PackageTypesCacheTimeout,
-                DataCache.PackageTypesCachePriority),
-                c => CBO.FillCollection<PackageType>(Provider.GetPackageTypes()));
+                    DataCache.PackageTypesCacheKey,
+                    DataCache.PackageTypesCacheTimeout,
+                    DataCache.PackageTypesCachePriority),
+                _ => CBO.FillCollection<PackageType>(Provider.GetPackageTypes()));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<PackageDependencyInfo> GetPackageDependencies(Func<PackageDependencyInfo, bool> predicate)
         {
-            return GetPackageDependencies().Where(predicate).ToList();
+            return GetPackageDependencies(this.hostSettings).Where(predicate).ToList();
         }
 
         internal static string GetSpecificFolderName(XPathNavigator manifestNav, string xpath, string elementName, string startWith)
         {
             string result = string.Empty;
-            var foldernameNav = manifestNav.Select(xpath);
+            var folderNameNav = manifestNav.Select(xpath);
 
-            if (foldernameNav != null)
+            if (folderNameNav != null)
             {
-                while (foldernameNav.MoveNext())
+                while (folderNameNav.MoveNext())
                 {
-                    var elementValue = Util.ReadElement(foldernameNav.Current, elementName);
-                    if (!string.IsNullOrEmpty(elementValue) && elementValue.StartsWith(startWith))
+                    var elementValue = Util.ReadElement(folderNameNav.Current, elementName);
+                    if (!string.IsNullOrEmpty(elementValue) && elementValue.StartsWith(startWith, StringComparison.OrdinalIgnoreCase))
                     {
                         result = elementValue;
                         break;
@@ -396,23 +441,23 @@ namespace DotNetNuke.Services.Installer.Packages
             return result;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IPackageController> GetFactory()
         {
-            return () => new PackageController();
+            return Globals.DependencyProvider.GetRequiredService<IPackageController>;
         }
 
-        private static void AddLog(PackageInfo package, EventLogController.EventLogType logType)
+        private static void AddLog(IEventLogger eventLogger, PackageInfo package, EventLogType logType)
         {
-            EventLogController.Instance.AddLog(
+            eventLogger.AddLog(
                 package,
-                PortalController.Instance.GetCurrentPortalSettings(),
+                PortalController.Instance.GetCurrentSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 string.Empty,
                 logType);
         }
 
-        private static void AddPackageInternal(PackageInfo package)
+        private static void AddPackageInternal(IEventLogger eventLogger, PackageInfo package)
         {
             package.PackageID = Provider.AddPackage(
                 package.PortalID,
@@ -439,7 +484,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 SavePackageDependency(dependency);
             }
 
-            AddLog(package, EventLogController.EventLogType.PACKAGE_CREATED);
+            AddLog(eventLogger, package, EventLogType.PACKAGE_CREATED);
 
             ClearCache(package.PortalID);
         }
@@ -454,10 +499,10 @@ namespace DotNetNuke.Services.Installer.Packages
             DataCache.RemoveCache(DataCache.PackageDependenciesCacheKey);
         }
 
-        private static void DeletePackageInternal(PackageInfo package)
+        private static void DeletePackageInternal(IEventLogger eventLogger, PackageInfo package)
         {
             Provider.DeletePackage(package.PackageID);
-            AddLog(package, EventLogController.EventLogType.PACKAGE_DELETED);
+            AddLog(eventLogger, package, EventLogType.PACKAGE_DELETED);
 
             if (PortalSettings.Current != null)
             {
@@ -467,17 +512,18 @@ namespace DotNetNuke.Services.Installer.Packages
             ClearCache(Null.NullInteger);
         }
 
-        private static List<PackageDependencyInfo> GetPackageDependencies()
+        private static List<PackageDependencyInfo> GetPackageDependencies(IHostSettings hostSettings)
         {
             return CBO.GetCachedObject<List<PackageDependencyInfo>>(
+                hostSettings,
                 new CacheItemArgs(
-                DataCache.PackageDependenciesCacheKey,
-                DataCache.PackagesCacheTimeout,
-                DataCache.PackagesCachePriority),
-                c => CBO.FillCollection<PackageDependencyInfo>(Provider.GetPackageDependencies()));
+                    DataCache.PackageDependenciesCacheKey,
+                    DataCache.PackagesCacheTimeout,
+                    DataCache.PackagesCachePriority),
+                _ => CBO.FillCollection<PackageDependencyInfo>(Provider.GetPackageDependencies()));
         }
 
-        private static void UpdatePackageInternal(PackageInfo package)
+        private static void UpdatePackageInternal(IEventLogger eventLogger, PackageInfo package)
         {
             Provider.UpdatePackage(
                 package.PackageID,
@@ -504,7 +550,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 SavePackageDependency(dependency);
             }
 
-            AddLog(package, EventLogController.EventLogType.PACKAGE_UPDATED);
+            AddLog(eventLogger, package, EventLogType.PACKAGE_UPDATED);
 
             ClearCache(package.PortalID);
         }

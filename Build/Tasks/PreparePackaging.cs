@@ -17,7 +17,7 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(CopyWebsiteBinFolder))]
     public sealed class PreparePackaging : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             context.PackagingPatterns = context.DeserializeJsonFromFile<PackagingPatterns>("./Build/Tasks/packaging.json");

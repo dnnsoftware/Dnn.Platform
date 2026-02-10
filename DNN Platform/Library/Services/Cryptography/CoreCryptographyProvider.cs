@@ -1,174 +1,88 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Cryptography
+namespace DotNetNuke.Services.Cryptography;
+
+using System.Security.Cryptography;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+/// <summary>The primary <see cref="CryptographyProvider"/> implementation.</summary>
+#pragma warning disable CS0618 // Type or member is obsolete
+internal partial class CoreCryptographyProvider : CryptographyProvider, DotNetNuke.Abstractions.Security.ICryptographyProvider
+#pragma warning restore CS0618 // Type or member is obsolete
 {
-    using System;
-    using System.IO;
-    using System.Security.Cryptography;
-    using System.Text;
+    private const string InterfaceEncryptStringHashAlgorithmName = nameof(SHA512);
+    private const string InterfaceEncryptStringSymmetricAlgorithmName = nameof(Aes);
 
-    internal class CoreCryptographyProvider : CryptographyProvider
+    /// <inheritdoc />
+    string DotNetNuke.Abstractions.Security.ICryptographyProvider.EncryptParameterAlgorithmName => nameof(Aes);
+
+    /// <inheritdoc />
+    string DotNetNuke.Abstractions.Security.ICryptographyProvider.EncryptStringAlgorithmName => $"{InterfaceEncryptStringHashAlgorithmName}|{InterfaceEncryptStringSymmetricAlgorithmName}";
+
+    /// <inheritdoc />
+    protected override string EncryptStringHashAlgorithmName => nameof(MD5CryptoServiceProvider);
+
+    /// <inheritdoc />
+    protected override string EncryptStringSymmetricAlgorithmName => nameof(TripleDESCryptoServiceProvider);
+
+    /// <inheritdoc />
+    [DnnDeprecated(10, 2, 2, "Use DotNetNuke.Abstractions.Security.ICryptographyProvider")]
+    public override partial string EncryptParameter(string message, string passphrase)
     {
-        /// <inheritdoc />
-        public override string EncryptParameter(string message, string passphrase)
-        {
-            string value;
-            if (!string.IsNullOrEmpty(passphrase))
-            {
-                // convert key to 16 characters for simplicity
-                if (passphrase.Length < 16)
-                {
-                    passphrase = passphrase + "XXXXXXXXXXXXXXXX".Substring(0, 16 - passphrase.Length);
-                }
-                else
-                {
-                    passphrase = passphrase.Substring(0, 16);
-                }
+        using var des = CreateSymmetricAlgorithm(this.EncryptParameterAlgorithmName);
+        return EncryptParameter(message, passphrase, des);
+    }
 
-                // create encryption keys
-                byte[] byteKey = Encoding.UTF8.GetBytes(passphrase.Substring(0, 8));
-                byte[] byteVector = Encoding.UTF8.GetBytes(passphrase.Substring(passphrase.Length - 8, 8));
+    /// <inheritdoc />
+    (string EncryptedMessage, string Algorithm) DotNetNuke.Abstractions.Security.ICryptographyProvider.EncryptParameter(string message, string passphrase)
+    {
+        var algorithmName = ((DotNetNuke.Abstractions.Security.ICryptographyProvider)this).EncryptParameterAlgorithmName;
+        using var aes = CreateSymmetricAlgorithm(algorithmName);
+        var encryptedMessage = EncryptParameter(message, passphrase, aes);
+        return (encryptedMessage, algorithmName);
+    }
 
-                // convert data to byte array
-                byte[] byteData = Encoding.UTF8.GetBytes(message);
+    /// <inheritdoc />
+    [DnnDeprecated(10, 2, 2, "Use DotNetNuke.Abstractions.Security.ICryptographyProvider")]
+    public override partial string DecryptParameter(string message, string passphrase)
+    {
+        return this.DecryptParameter(message, passphrase, this.EncryptParameterAlgorithmName);
+    }
 
-                // encrypt
-                using (var objDes = new DESCryptoServiceProvider())
-                using (var objMemoryStream = new MemoryStream())
-                using (var objCryptoStream = new CryptoStream(objMemoryStream, objDes.CreateEncryptor(byteKey, byteVector), CryptoStreamMode.Write))
-                {
-                    objCryptoStream.Write(byteData, 0, byteData.Length);
-                    objCryptoStream.FlushFinalBlock();
+    /// <inheritdoc />
+    [DnnDeprecated(10, 2, 2, "Use DotNetNuke.Abstractions.Security.ICryptographyProvider")]
+    public override partial string EncryptString(string message, string passphrase)
+    {
+        using var sha512 = CreateHashAlgorithm(this.EncryptStringHashAlgorithmName);
+        return EncryptString(
+                message,
+                passphrase,
+                sha512,
+                this.EncryptStringHashAlgorithmName,
+                key => CreateSymmetricAlgorithm(this.EncryptStringSymmetricAlgorithmName, key, null),
+                this.EncryptStringSymmetricAlgorithmName)
+            .EncryptedMessage;
+    }
 
-                    // convert to string and Base64 encode
-                    value = Convert.ToBase64String(objMemoryStream.ToArray());
-                }
-            }
-            else
-            {
-                value = message;
-            }
+    /// <inheritdoc />
+    (string EncryptedMessage, string Algorithm, string InitializationVector) Abstractions.Security.ICryptographyProvider.EncryptString(string message, string passphrase)
+    {
+        using var sha512 = CreateHashAlgorithm(InterfaceEncryptStringHashAlgorithmName);
+        return EncryptString(
+            message,
+            passphrase,
+            sha512,
+            InterfaceEncryptStringHashAlgorithmName,
+            key => CreateSymmetricAlgorithm(InterfaceEncryptStringSymmetricAlgorithmName, key, null),
+            InterfaceEncryptStringSymmetricAlgorithmName);
+    }
 
-            return value;
-        }
-
-        /// <inheritdoc />
-        public override string DecryptParameter(string message, string passphrase)
-        {
-            string strValue = string.Empty;
-            if (!string.IsNullOrEmpty(passphrase) && !string.IsNullOrEmpty(message))
-            {
-                try
-                {
-                    // convert key to 16 characters for simplicity
-                    if (passphrase.Length < 16)
-                    {
-                        passphrase = passphrase + "XXXXXXXXXXXXXXXX".Substring(0, 16 - passphrase.Length);
-                    }
-                    else
-                    {
-                        passphrase = passphrase.Substring(0, 16);
-                    }
-
-                    // create encryption keys
-                    byte[] byteKey = Encoding.UTF8.GetBytes(passphrase.Substring(0, 8));
-                    byte[] byteVector = Encoding.UTF8.GetBytes(passphrase.Substring(passphrase.Length - 8, 8));
-                    byte[] byteData = Convert.FromBase64String(message);
-
-                    // decrypt
-                    using (var objDes = new DESCryptoServiceProvider())
-                    using (var objMemoryStream = new MemoryStream())
-                    using (var objCryptoStream = new CryptoStream(objMemoryStream, objDes.CreateDecryptor(byteKey, byteVector), CryptoStreamMode.Write))
-                    {
-                        objCryptoStream.Write(byteData, 0, byteData.Length);
-                        objCryptoStream.FlushFinalBlock();
-
-                        // convert to string
-                        Encoding objEncoding = Encoding.UTF8;
-                        strValue = objEncoding.GetString(objMemoryStream.ToArray());
-                    }
-                }
-                catch
-                {
-                    // decryption error
-                    strValue = string.Empty;
-                }
-            }
-
-            return strValue;
-        }
-
-        /// <inheritdoc />
-        public override string EncryptString(string message, string passphrase)
-        {
-            byte[] results;
-            var utf8 = new UTF8Encoding();
-
-            // hash the passphrase using MD5 to create 128bit byte array
-            using (var hashProvider = new MD5CryptoServiceProvider())
-            {
-                byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
-
-                var tdesAlgorithm = new TripleDESCryptoServiceProvider
-                {
-                    Key = tdesKey,
-                    Mode = CipherMode.ECB,
-                    Padding = PaddingMode.PKCS7,
-                };
-
-                byte[] dataToEncrypt = utf8.GetBytes(message);
-
-                try
-                {
-                    ICryptoTransform encryptor = tdesAlgorithm.CreateEncryptor();
-                    results = encryptor.TransformFinalBlock(dataToEncrypt, 0, dataToEncrypt.Length);
-                }
-                finally
-                {
-                    // Clear the TripleDes and Hashprovider services of any sensitive information
-                    tdesAlgorithm.Clear();
-                    hashProvider.Clear();
-                }
-            }
-
-            // Return the encrypted string as a base64 encoded string
-            return Convert.ToBase64String(results);
-        }
-
-        /// <inheritdoc />
-        public override string DecryptString(string message, string passphrase)
-        {
-            byte[] results;
-            var utf8 = new UTF8Encoding();
-
-            // hash the passphrase using MD5 to create 128bit byte array
-            using (var hashProvider = new MD5CryptoServiceProvider())
-            {
-                byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
-
-                var tdesAlgorithm = new TripleDESCryptoServiceProvider
-                {
-                    Key = tdesKey,
-                    Mode = CipherMode.ECB,
-                    Padding = PaddingMode.PKCS7,
-                };
-
-                byte[] dataToDecrypt = Convert.FromBase64String(message);
-                try
-                {
-                    ICryptoTransform decryptor = tdesAlgorithm.CreateDecryptor();
-                    results = decryptor.TransformFinalBlock(dataToDecrypt, 0, dataToDecrypt.Length);
-                }
-                finally
-                {
-                    // Clear the TripleDes and Hashprovider services of any sensitive information
-                    tdesAlgorithm.Clear();
-                    hashProvider.Clear();
-                }
-            }
-
-            return utf8.GetString(results);
-        }
+    /// <inheritdoc />
+    [DnnDeprecated(10, 2, 2, "Use DotNetNuke.Abstractions.Security.ICryptographyProvider")]
+    public override partial string DecryptString(string message, string passphrase)
+    {
+        return this.DecryptString(message, passphrase, this.EncryptStringAlgorithmName, null);
     }
 }

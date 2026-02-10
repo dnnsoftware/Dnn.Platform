@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Localization.Internal
 
     internal class LocalizationImpl : ILocalization
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string BestCultureCodeBasedOnBrowserLanguages(IEnumerable<string> cultureCodes, string fallback)
         {
             if (cultureCodes == null)
@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.Localization.Internal
                     lang = lang.Substring(0, 2);
 
                     // check for language match e.g. en-GB == en-US because en == en
-                    var match = values.FirstOrDefault(x => x.StartsWith(lang));
+                    var match = values.FirstOrDefault(x => x.StartsWith(lang, StringComparison.OrdinalIgnoreCase));
                     if (match != null)
                     {
                         return match;
@@ -63,19 +63,19 @@ namespace DotNetNuke.Services.Localization.Internal
             return fallback;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string BestCultureCodeBasedOnBrowserLanguages(IEnumerable<string> cultureCodes)
         {
             return this.BestCultureCodeBasedOnBrowserLanguages(cultureCodes, Localization.SystemLocale);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CultureInfo GetPageLocale(PortalSettings portalSettings)
         {
             return Localization.GetPageLocale(portalSettings);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SetThreadCultures(CultureInfo cultureInfo, PortalSettings portalSettings)
         {
             Localization.SetThreadCultures(cultureInfo, portalSettings);

@@ -8,9 +8,10 @@ namespace DotNetNuke.Web.Api.Internal
     using System.Net.Http;
     using System.Web.Http.Controllers;
 
+    /// <summary>An implementation of <see cref="ValidateAntiForgeryTokenAttribute"/> that supports iframes.</summary>
     public class IFrameSupportedValidateAntiForgeryTokenAttribute : ValidateAntiForgeryTokenAttribute
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Tuple<bool, string> IsAuthorized(HttpActionContext actionContext)
         {
             var result = base.IsAuthorized(actionContext);

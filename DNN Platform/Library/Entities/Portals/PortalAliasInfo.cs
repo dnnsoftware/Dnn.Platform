@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Portals
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml;
     using System.Xml.Schema;
     using System.Xml.Serialization;
@@ -93,8 +94,8 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.BrowserType instead. Scheduled removal in v11.0.0.")]
         public BrowserTypes BrowserType
         {
-            get => (BrowserTypes)this.ThisAsInterface.BrowserType;
-            set => this.ThisAsInterface.BrowserType = (NewBrowserType)value;
+            get => this.ThisAsInterface.BrowserType.ToDeprecatedBrowserTypes();
+            set => this.ThisAsInterface.BrowserType = value.ToAbstractionsBrowserTypes();
         }
 
         /// <inheritdoc />
@@ -115,7 +116,7 @@ namespace DotNetNuke.Entities.Portals
 
         private IPortalAliasInfo ThisAsInterface => this;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
             this.FillInternal(dr);
@@ -132,13 +133,13 @@ namespace DotNetNuke.Entities.Portals
             this.Skin = Null.SetNullString(dr["Skin"]);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public XmlSchema GetSchema()
         {
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ReadXml(XmlReader reader)
         {
             while (reader.Read())
@@ -190,15 +191,15 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void WriteXml(XmlWriter writer)
         {
-            // Write start of main elemenst
+            // Write start of main elements
             writer.WriteStartElement("portalAlias");
 
             // write out properties
-            writer.WriteElementString("portalID", this.ThisAsInterface.PortalId.ToString());
-            writer.WriteElementString("portalAliasID", this.ThisAsInterface.PortalAliasId.ToString());
+            writer.WriteElementString("portalID", this.ThisAsInterface.PortalId.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("portalAliasID", this.ThisAsInterface.PortalAliasId.ToString(CultureInfo.InvariantCulture));
             writer.WriteElementString("HTTPAlias", this.ThisAsInterface.HttpAlias);
             writer.WriteElementString("skin", this.Skin);
             writer.WriteElementString("cultureCode", this.CultureCode);

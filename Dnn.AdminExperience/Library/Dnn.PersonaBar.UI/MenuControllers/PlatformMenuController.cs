@@ -13,18 +13,18 @@ namespace Dnn.PersonaBar.UI.MenuControllers
     /// <summary>The <see cref="IMenuItemController"/> for the DNN Platform logout action.</summary>
     public class PlatformMenuController : IMenuItemController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Visible(MenuItem menuItem)
         {
             return DotNetNukeContext.Current.Application.SKU == "DNN";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             return null;

@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -210,7 +211,7 @@ namespace DotNetNuke.UI.WebControls
                 }
                 else
                 {
-                    box.SelectedStateKey = Convert.ToString(DataBinder.Eval(container.DataItem, this.DataField));
+                    box.SelectedStateKey = Convert.ToString(DataBinder.Eval(container.DataItem, this.DataField), CultureInfo.InvariantCulture);
                 }
             }
             else
@@ -226,7 +227,7 @@ namespace DotNetNuke.UI.WebControls
                 }
                 else
                 {
-                    box.Enabled = Convert.ToBoolean(DataBinder.Eval(container.DataItem, this.EnabledField));
+                    box.Enabled = Convert.ToBoolean(DataBinder.Eval(container.DataItem, this.EnabledField), CultureInfo.InvariantCulture);
                 }
             }
             else

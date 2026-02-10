@@ -27,14 +27,14 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Name => this.Localize("UninstallStepRemoveRewriteRules");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public override string RelativeFilePath => "Config/SiteUrls.config";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ProcessXml(XmlDocument doc)
         {
             const string RulesPath = "/RewriterConfig/Rules";

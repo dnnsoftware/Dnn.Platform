@@ -42,10 +42,10 @@ namespace DotNetNuke.Services.Installer.Log
         /// <value>A LogType.</value>
         public LogType Type { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ToString()
         {
-            return string.Format("{0}:  {1}", this.Type, this.Description);
+            return $"{this.Type}:  {this.Description}";
         }
     }
 }

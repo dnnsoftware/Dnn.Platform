@@ -24,9 +24,9 @@ namespace DotNetNuke.Web.InternalServices
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Common.Utils;
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -40,36 +40,64 @@ namespace DotNetNuke.Web.InternalServices
 
     using Microsoft.Extensions.DependencyInjection;
 
-    using ContentDisposition = System.Net.Mime.ContentDisposition;
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
+    /// <summary>A web API for uploading files.</summary>
     [DnnAuthorize]
     public class FileUploadController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
         private static readonly Regex UserFolderEx = new Regex(@"users/\d+/\d+/(\d+)/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly List<string> ImageExtensions = Globals.ImageFileTypes.Split(',').ToList();
+
         private readonly IHostSettings hostSettings;
+        private readonly ICryptographyProvider cryptographyProvider;
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalGroupController portalGroupController;
 
         /// <summary>Initializes a new instance of the <see cref="FileUploadController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Use overload with ICryptographyProvider. Scheduled for removal in v12.0.0.")]
         public FileUploadController()
-            : this(null)
+            : this(null, null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="FileUploadController"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Use overload with ICryptographyProvider. Scheduled for removal in v12.0.0.")]
         public FileUploadController(IHostSettings hostSettings)
+            : this(hostSettings, null, null, null, null)
         {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
+        /// <summary>Initializes a new instance of the <see cref="FileUploadController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        public FileUploadController(IHostSettings hostSettings, ICryptographyProvider cryptographyProvider, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.cryptographyProvider = cryptographyProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+        }
+
+        /// <summary>Gets the URL for a file.</summary>
+        /// <param name="fileId">The ID of the file.</param>
+        /// <returns>The URL.</returns>
         public static string GetUrl(int fileId)
         {
             var file = FileManager.Instance.GetFile(fileId, true);
             return FileManager.Instance.GetUrl(file);
         }
 
+        /// <summary>Gets the files in the folder.</summary>
+        /// <param name="folderItem">Information about the folder.</param>
+        /// <returns>A response with a list of <see cref="FileItem"/> objects.</returns>
         [HttpPost]
         public HttpResponseMessage LoadFiles(FolderItemDTO folderItem)
         {
@@ -87,17 +115,16 @@ namespace DotNetNuke.Web.InternalServices
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            int userId;
-            if (IsUserFolder(folder.FolderPath, out userId))
+            if (IsUserFolder(folder.FolderPath, out var userId))
             {
                 var user = UserController.GetUserById(effectivePortalId, userId);
-                if (user != null && user.IsSuperUser)
+                if (user is { IsSuperUser: true, })
                 {
                     effectivePortalId = Null.NullInteger;
                 }
                 else
                 {
-                    effectivePortalId = PortalController.GetEffectivePortalId(effectivePortalId);
+                    effectivePortalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, effectivePortalId);
                 }
             }
 
@@ -107,6 +134,9 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, fileItems);
         }
 
+        /// <summary>Gets the URL of an image file.</summary>
+        /// <param name="fileId">The file ID.</param>
+        /// <returns>A response with either <c>null</c> or the image URL.</returns>
         [HttpGet]
         public HttpResponseMessage LoadImage(string fileId)
         {
@@ -123,6 +153,9 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
+        /// <summary>Uploads an image.</summary>
+        /// <returns>A response with an <see cref="SavedFileDTO"/> object.</returns>
+        /// <exception cref="HttpResponseException">If the request is not using a multipart MIME content type.</exception>
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
         public Task<HttpResponseMessage> PostFile()
@@ -137,11 +170,11 @@ namespace DotNetNuke.Web.InternalServices
             var provider = new MultipartMemoryStreamProvider();
 
             // local references for use in closure
-            var portalSettings = this.PortalSettings;
+            IPortalSettings portalSettings = this.PortalSettings;
             var currentSynchronizationContext = SynchronizationContext.Current;
             var userInfo = this.UserInfo;
             var task = request.Content.ReadAsMultipartAsync(provider)
-                .ContinueWith(o =>
+                .ContinueWith(_ =>
                     {
                         string folder = string.Empty;
                         string filter = string.Empty;
@@ -191,7 +224,7 @@ namespace DotNetNuke.Web.InternalServices
 
                                 case "\"POSTFILE\"":
                                     fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
-                                    if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
+                                    if (fileName.IndexOf(@"\", StringComparison.Ordinal) != -1)
                                     {
                                         fileName = Path.GetFileName(fileName);
                                     }
@@ -209,9 +242,9 @@ namespace DotNetNuke.Web.InternalServices
 
                             // The SynchronizationContext keeps the main thread context. Send method is synchronous
                             currentSynchronizationContext.Send(
-                                state =>
+                                _ =>
                                     {
-                                        returnFileDto = SaveFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
+                                        returnFileDto = SaveFile(stream, this.portalController, this.appStatus, this.portalGroupController, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
                                     },
                                 null);
                         }
@@ -231,6 +264,7 @@ namespace DotNetNuke.Web.InternalServices
                                 {
                                     AlreadyExists = alreadyExists,
                                     Message = string.Format(
+                                        CultureInfo.CurrentCulture,
                                         GetLocalizedString("ErrorMessage"),
                                         fileName,
                                         errorMessage),
@@ -245,6 +279,8 @@ namespace DotNetNuke.Web.InternalServices
             return task;
         }
 
+        /// <summary>Uploads a file to the current portal.</summary>
+        /// <returns>A response with a <see cref="FileUploadDto"/> object.</returns>
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
         [AllowAnonymous]
@@ -253,6 +289,10 @@ namespace DotNetNuke.Web.InternalServices
             return this.UploadFromLocal(this.PortalSettings.PortalId);
         }
 
+        /// <summary>Uploads a file.</summary>
+        /// <param name="portalId">The ID of the portal to which to upload it.</param>
+        /// <returns>A response with a <see cref="FileUploadDto"/> object.</returns>
+        /// <exception cref="HttpResponseException">If the request is not using a multipart MIME content type.</exception>
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
         [AllowAnonymous]
@@ -283,7 +323,7 @@ namespace DotNetNuke.Web.InternalServices
             var currentSynchronizationContext = SynchronizationContext.Current;
             var userInfo = this.UserInfo;
             var task = request.Content.ReadAsMultipartAsync(provider)
-                .ContinueWith(o =>
+                .ContinueWith(_ =>
                 {
                     var folder = string.Empty;
                     var filter = string.Empty;
@@ -347,7 +387,7 @@ namespace DotNetNuke.Web.InternalServices
                                 break;
                             case "\"POSTFILE\"":
                                 fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
-                                if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
+                                if (fileName.IndexOf(@"\", StringComparison.Ordinal) != -1)
                                 {
                                     fileName = Path.GetFileName(fileName);
                                 }
@@ -365,9 +405,9 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         // The SynchronizationContext keeps the main thread context. Send method is synchronous
                         currentSynchronizationContext.Send(
-                            state =>
+                            _ =>
                             {
-                                result = UploadFile(this.hostSettings, stream, portalId, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract, validationCode);
+                                result = UploadFile(this.cryptographyProvider, this.hostSettings, stream, portalId, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract, validationCode);
                             },
                             null);
                     }
@@ -391,7 +431,10 @@ namespace DotNetNuke.Web.InternalServices
 
         private static SavedFileDTO SaveFile(
             Stream stream,
-            PortalSettings portalSettings,
+            IPortalController portalController,
+            IApplicationStatusInfo appStatus,
+            IPortalGroupController portalGroupController,
+            IPortalSettings portalSettings,
             UserInfo userInfo,
             string folder,
             string filter,
@@ -416,7 +459,7 @@ namespace DotNetNuke.Web.InternalServices
                 var folderManager = FolderManager.Instance;
 
                 // Check if this is a User Folder
-                var effectivePortalId = isHostMenu ? Null.NullInteger : PortalController.GetEffectivePortalId(portalSettings.PortalId);
+                var effectivePortalId = isHostMenu ? Null.NullInteger : PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, portalSettings.PortalId);
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
                 if (IsUserFolder(folder, out var userId))
                 {
@@ -427,7 +470,6 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
 
-                var alreadyCheckedPermissions = false;
                 if (!PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("WRITE"))
                     && !PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("ADD")))
                 {
@@ -435,7 +477,7 @@ namespace DotNetNuke.Web.InternalServices
                     return savedFileDto;
                 }
 
-                alreadyCheckedPermissions = true;
+                const bool AlreadyCheckedPermissions = true;
                 if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
                 {
                     errorMessage = GetLocalizedString("AlreadyExists");
@@ -445,7 +487,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
 
                 var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
-                var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, !alreadyCheckedPermissions, contentType, userInfo.UserID);
+                var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, !AlreadyCheckedPermissions, contentType, userInfo.UserID);
 
                 if (extract && extension.Equals("zip", StringComparison.OrdinalIgnoreCase))
                 {
@@ -480,7 +522,7 @@ namespace DotNetNuke.Web.InternalServices
         private static bool IsUserFolder(string folderPath, out int userId)
         {
             var match = UserFolderEx.Match(folderPath);
-            userId = match.Success ? int.Parse(match.Groups[1].Value) : Null.NullInteger;
+            userId = match.Success ? int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture) : Null.NullInteger;
 
             return match.Success;
         }
@@ -509,17 +551,18 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         private static FileUploadDto UploadFile(
-                IHostSettings hostSettings,
-                Stream stream,
-                int portalId,
-                UserInfo userInfo,
-                string folder,
-                string filter,
-                string fileName,
-                bool overwrite,
-                bool isHostPortal,
-                bool extract,
-                string validationCode)
+            ICryptographyProvider cryptographyProvider,
+            IHostSettings hostSettings,
+            Stream stream,
+            int portalId,
+            UserInfo userInfo,
+            string folder,
+            string filter,
+            string fileName,
+            bool overwrite,
+            bool isHostPortal,
+            bool extract,
+            string validationCode)
         {
             var result = new FileUploadDto();
             BinaryReader reader = null;
@@ -538,7 +581,7 @@ namespace DotNetNuke.Web.InternalServices
                     validateParams.Add(portalId);
                 }
 
-                if (!ValidationUtils.ValidationCodeMatched(hostSettings, validateParams, validationCode))
+                if (!ValidationUtils.ValidationCodeMatched(cryptographyProvider, hostSettings, validateParams, validationCode))
                 {
                     throw new InvalidOperationException("Bad Request");
                 }
@@ -565,7 +608,6 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
 
-                bool alreadyCheckedPermssions = false;
                 if (!FolderPermissionController.HasFolderPermission(portalId, folder, "WRITE")
                     && !FolderPermissionController.HasFolderPermission(portalId, folder, "ADD"))
                 {
@@ -573,8 +615,7 @@ namespace DotNetNuke.Web.InternalServices
                     return result;
                 }
 
-                alreadyCheckedPermssions = true;
-
+                const bool AlreadyCheckedPermissions = true;
                 IFileInfo file;
                 if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
                 {
@@ -585,7 +626,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, !alreadyCheckedPermssions, FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)), userInfo.UserID);
+                    file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, !AlreadyCheckedPermissions, FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)), userInfo.UserID);
                     if (extract && extension.Equals("zip", StringComparison.OrdinalIgnoreCase))
                     {
                         var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
@@ -664,61 +705,14 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-        private static PortalInfo[] GetMyPortalGroup()
+        private static IPortalInfo[] GetMyPortalGroup()
         {
-            return (from @group in PortalGroupController.Instance.GetPortalGroups().ToArray()
-                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
-                into portals
+            return (
+                from @group in PortalGroupController.Instance.GetPortalGroups().ToArray()
+                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId) into portals
                 where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
-                select portals.ToArray()).FirstOrDefault();
-        }
-
-        private static string GetFileName(WebResponse response)
-        {
-            if (!response.Headers.AllKeys.Contains("Content-Disposition"))
-            {
-                return string.Empty;
-            }
-
-            var contentDisposition = response.Headers["Content-Disposition"];
-            return new ContentDisposition(contentDisposition).FileName;
-        }
-
-        private static bool VerifySafeUrl(string url)
-        {
-            Uri uri = new Uri(url);
-            if (uri.Scheme is "http" or "https")
-            {
-                if (!uri.Host.Contains("."))
-                {
-                    return false;
-                }
-
-                if (uri.IsLoopback)
-                {
-                    return false;
-                }
-
-                if (uri.PathAndQuery.Contains("#") || uri.PathAndQuery.Contains(":"))
-                {
-                    return false;
-                }
-
-                if (uri.Host.StartsWith("10") || uri.Host.StartsWith("172") || uri.Host.StartsWith("192"))
-                {
-                    // check nonroutable IP addresses
-                    if (NetworkUtils.IsIPInRange(uri.Host, "10.0.0.0", "8") ||
-                        NetworkUtils.IsIPInRange(uri.Host, "172.16.0.0", "12") ||
-                        NetworkUtils.IsIPInRange(uri.Host, "192.168.0.0", "16"))
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
-            return false;
+                select portals.Cast<IPortalInfo>().ToArray())
+                .FirstOrDefault();
         }
 
         private bool IsPortalIdValid(int portalId)
@@ -739,69 +733,94 @@ namespace DotNetNuke.Web.InternalServices
                 return false;
             }
 
-            var mygroup = GetMyPortalGroup();
-            return mygroup != null && mygroup.Any(p => p.PortalID == portalId);
+            var myGroup = GetMyPortalGroup();
+            return myGroup != null && myGroup.Any(p => p.PortalId == portalId);
         }
 
+        /// <summary>A data transfer object with information about a folder.</summary>
         public class FolderItemDTO
         {
+            /// <summary>Gets or sets the folder ID.</summary>
             public int FolderId { get; set; }
 
+            /// <summary>Gets or sets the file filter.</summary>
             public string FileFilter { get; set; }
 
+            /// <summary>Gets or sets a value indicating whether to include an entry for an unspecified file.</summary>
             public bool Required { get; set; }
         }
 
+        /// <summary>A data transfer object with information about a file that has been saved.</summary>
         public class SavedFileDTO
         {
+            /// <summary>Gets or sets the ID of the file.</summary>
             public string FileId { get; set; }
 
+            /// <summary>Gets or sets the path of the file.</summary>
             public string FilePath { get; set; }
         }
 
+        /// <summary>A data transfer object with information about an upload by URL request.</summary>
         public class UploadByUrlDto
         {
+            /// <summary>Gets or sets the URL.</summary>
             public string Url { get; set; }
 
+            /// <summary>Gets or sets the destination folder.</summary>
             public string Folder { get; set; }
 
+            /// <summary>Gets or sets a value indicating whether to overwrite an existing file.</summary>
             public bool Overwrite { get; set; }
 
+            /// <summary>Gets or sets a value indicating whether to unzip the resulting file.</summary>
             public bool Unzip { get; set; }
 
+            /// <summary>Gets or sets the filter.</summary>
             public string Filter { get; set; }
 
+            /// <summary>Gets or sets a value indicating whether the request is from the host menu.</summary>
             public bool IsHostMenu { get; set; }
 
+            /// <summary>Gets or sets the portal ID.</summary>
             public int PortalId { get; set; } = -1;
 
+            /// <summary>Gets or sets the validation code.</summary>
             public string ValidationCode { get; set; }
         }
 
+        /// <summary>A data transfer object with information about a file upload.</summary>
         [DataContract]
         public class FileUploadDto
         {
+            /// <summary>Gets or sets the file path.</summary>
             [DataMember(Name = "path")]
             public string Path { get; set; }
 
+            /// <summary>Gets or sets the image orientation.</summary>
             [DataMember(Name = "orientation")]
             public Orientation Orientation { get; set; }
 
+            /// <summary>Gets or sets a value indicating whether the file already exists.</summary>
             [DataMember(Name = "alreadyExists")]
             public bool AlreadyExists { get; set; }
 
+            /// <summary>Gets or sets an error message.</summary>
             [DataMember(Name = "message")]
             public string Message { get; set; }
 
+            /// <summary>Gets or sets the URL of the file type icon.</summary>
             [DataMember(Name = "fileIconUrl")]
             public string FileIconUrl { get; set; }
 
+            /// <summary>Gets or sets the ID of the file.</summary>
             [DataMember(Name = "fileId")]
             public int FileId { get; set; }
 
+            /// <summary>Gets or sets the name of the file.</summary>
             [DataMember(Name = "fileName")]
             public string FileName { get; set; }
 
+            /// <summary>Gets or sets a JSON string with <c>invalidFiles</c> and <c>totalCount</c> fields.</summary>
             [DataMember(Name = "prompt")]
             public string Prompt { get; set; }
         }

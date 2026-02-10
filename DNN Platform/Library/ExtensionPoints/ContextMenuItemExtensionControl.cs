@@ -6,6 +6,7 @@ namespace DotNetNuke.ExtensionPoints
 {
     using System;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using System.Web.UI;
 
@@ -17,7 +18,7 @@ namespace DotNetNuke.ExtensionPoints
     {
         private string content = string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -28,23 +29,27 @@ namespace DotNetNuke.ExtensionPoints
             foreach (var extension in extensionPointManager.GetContextMenuItemExtensionPoints(this.Module, this.Group))
             {
                 var icon = extension.Icon;
-                if (icon.StartsWith("~/"))
+                if (icon.StartsWith("~/", StringComparison.Ordinal))
                 {
                     icon = Globals.ResolveUrl(icon);
                 }
 
-                str.Append(@"<li id=""" + extension.CtxMenuItemId + @""" class=""" + extension.CssClass + @""">
-    <a id=""" + extension.CtxMenuItemId + @"_link"" href=""#"" onclick=""" + extension.Action + @""" >
-        <img id=""" + extension.CtxMenuItemId + @"_icon"" alt=""" + extension.AltText + @""" src=""" + icon + @""" title=""" + extension.AltText + @""">
-        <span id=""" + extension.CtxMenuItemId + @"_text"">" + extension.Text + @"</span>
-    </a>
-</li>");
+                str.Append(
+                    $"""
+                     <li id="{extension.CtxMenuItemId}" class="{extension.CssClass}">
+                         <a id="{extension.CtxMenuItemId}_link" href="#" onclick="{extension.Action}" >
+                             <img id="{extension.CtxMenuItemId}_icon" alt="{extension.AltText}" src="{icon}" title="{extension.AltText}">
+                             <span id="{extension.CtxMenuItemId}_text">{extension.Text}</span>
+                         </a>
+                     </li>
+                     """);
             }
 
             this.content = str.ToString();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void RenderContents(HtmlTextWriter output)
         {
             output.Write(this.content);

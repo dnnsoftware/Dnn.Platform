@@ -30,7 +30,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.systemWorkflowManager = SystemWorkflowManager.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteWorkflow(Entities.Workflow workflow)
         {
             var workflowToDelete = this.workflowRepository.GetWorkflow(workflow.WorkflowID);
@@ -53,13 +53,13 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.workflowRepository.DeleteWorkflow(workflowToDelete);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Entities.Workflow GetWorkflow(int workflowId)
         {
             return this.workflowRepository.GetWorkflow(workflowId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Entities.Workflow GetWorkflow(ContentItem contentItem)
         {
             if (contentItem.StateID == Null.NullInteger)
@@ -71,13 +71,13 @@ namespace DotNetNuke.Entities.Content.Workflow
             return state == null ? null : this.GetWorkflow(state.WorkflowID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<Entities.Workflow> GetWorkflows(int portalId)
         {
             return this.workflowRepository.GetWorkflows(portalId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddWorkflow(Entities.Workflow workflow)
         {
             this.workflowRepository.AddWorkflow(workflow);
@@ -98,25 +98,25 @@ namespace DotNetNuke.Entities.Content.Workflow
                               };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateWorkflow(Entities.Workflow workflow)
         {
             this.workflowRepository.UpdateWorkflow(workflow);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<WorkflowUsageItem> GetWorkflowUsage(int workflowId, int pageIndex, int pageSize)
         {
             return CBO.FillCollection<WorkflowUsageItem>(this.dataProvider.GetContentWorkflowUsage(workflowId, pageIndex, pageSize));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int GetWorkflowUsageCount(int workflowId)
         {
             return this.dataProvider.GetContentWorkflowUsageCount(workflowId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override System.Func<IWorkflowManager> GetFactory()
         {
             return () => new WorkflowManager();

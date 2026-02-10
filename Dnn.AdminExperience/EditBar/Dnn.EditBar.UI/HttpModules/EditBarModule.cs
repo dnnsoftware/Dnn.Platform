@@ -4,21 +4,29 @@
 
 namespace Dnn.EditBar.UI.HttpModules
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using Dnn.EditBar.UI.Controllers;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Skins.EventListeners;
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>An HTTP module which injects the <see cref="ContentEditorManager"/> control on requests that may need to contain the Edit Bar.</summary>
     public class EditBarModule : IHttpModule
     {
         private static readonly object LockAppStarted = new object();
@@ -27,6 +35,7 @@ namespace Dnn.EditBar.UI.HttpModules
         private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="EditBarModule"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditBarModule()
             : this(null)
         {
@@ -49,11 +58,18 @@ namespace Dnn.EditBar.UI.HttpModules
                 }
                 else
                 {
-                    this.hostSettings = new HostSettings(new HostController());
+                    this.hostSettings = new HostSettings(
+                        new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                            new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                            new Lazy<IPortalController>(() => PortalController.Instance)));
                 }
             }
         }
 
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication application)
         {
             if (hasAppStarted)
@@ -73,6 +89,7 @@ namespace Dnn.EditBar.UI.HttpModules
             }
         }
 
+        /// <inheritdoc />
         public void Dispose()
         {
         }
@@ -100,7 +117,16 @@ namespace Dnn.EditBar.UI.HttpModules
             {
                 if (PortalSettings.Current.UserId > 0)
                 {
-                    e.Skin.Page.Form.Controls.Add(new ContentEditorManager { Skin = e.Skin });
+                    var scope = HttpContextSource.Current.GetScope();
+                    var clientResourceController = scope.ServiceProvider.GetRequiredService<IClientResourceController>();
+                    var appStatus = scope.ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+                    var eventLogger = scope.ServiceProvider.GetRequiredService<IEventLogger>();
+                    var portalController = scope.ServiceProvider.GetRequiredService<IPortalController>();
+                    var userController = scope.ServiceProvider.GetRequiredService<IUserController>();
+                    var hostSettingsService = scope.ServiceProvider.GetRequiredService<IHostSettingsService>();
+                    var servicesFramework = scope.ServiceProvider.GetRequiredService<IServicesFramework>();
+
+                    e.Skin.Page.Form.Controls.Add(new ContentEditorManager(clientResourceController, appStatus, eventLogger, portalController, this.hostSettings, userController, hostSettingsService, servicesFramework) { Skin = e.Skin, });
                 }
             }
         }

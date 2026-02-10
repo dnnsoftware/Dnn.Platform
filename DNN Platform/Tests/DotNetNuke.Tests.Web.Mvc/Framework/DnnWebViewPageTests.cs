@@ -6,16 +6,42 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
 {
     using System.Web.Mvc;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Web.Mvc.Fakes;
     using DotNetNuke.Web.Mvc.Framework;
     using DotNetNuke.Web.Mvc.Framework.Controllers;
     using DotNetNuke.Web.Mvc.Helpers;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
     using NUnit.Framework;
 
     [TestFixture]
     public class DnnWebViewPageTests
     {
+        private FakeServiceProvider serviceProvider;
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.serviceProvider = FakeServiceProvider.Setup(services =>
+            {
+                services.AddSingleton(Mock.Of<IClientResourceController>());
+                services.AddSingleton(Mock.Of<IApplicationStatusInfo>());
+                services.AddSingleton(Mock.Of<IEventLogger>());
+            });
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
+        }
+
         [Test]
         public void InitHelpers_Sets_Dnn_Property()
         {

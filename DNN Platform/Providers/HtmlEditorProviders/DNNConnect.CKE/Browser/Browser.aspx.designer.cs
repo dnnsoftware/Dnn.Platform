@@ -56,13 +56,6 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder BodySCRIPTS;
 
-        /// <summary>scriptManager1 control.</summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.ScriptManager scriptManager1;
-
         /// <summary>lblModus control.</summary>
         /// <remarks>
         /// Auto-generated field.
@@ -706,12 +699,5 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder ClientResourceIncludes;
-
-        /// <summary>ClientResourceLoader control.</summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceLoader ClientResourceLoader;
     }
 }

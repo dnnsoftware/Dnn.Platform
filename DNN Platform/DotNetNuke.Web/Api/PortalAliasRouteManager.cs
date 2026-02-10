@@ -9,15 +9,33 @@ namespace DotNetNuke.Web.Api
     using System.Linq;
     using System.Web.Http.Routing;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Internal.SourceGenerators;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The default <see cref="IPortalAliasRouteManager"/> implementation.</summary>
     internal partial class PortalAliasRouteManager : IPortalAliasRouteManager
     {
+        private readonly IPortalAliasService portalAliasService;
         private List<int> prefixCounts;
+
+        /// <summary>Initializes a new instance of the <see cref="PortalAliasRouteManager"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalAliasService. Scheduled removal in v12.0.0.")]
+        public PortalAliasRouteManager()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PortalAliasRouteManager"/> class.</summary>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        public PortalAliasRouteManager(IPortalAliasService portalAliasService)
+        {
+            this.portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
+        }
 
         /// <summary>Gets the route URL for the old-style web API route.</summary>
         /// <param name="moduleFolderName">The module folder name.</param>
@@ -30,42 +48,18 @@ namespace DotNetNuke.Web.Api
             Requires.NotNegative("count", count);
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
 
-            return string.Format("{0}DesktopModules/{1}/API/{2}", GeneratePrefixString(count), moduleFolderName, url);
+            return $"{GeneratePrefixString(count)}DesktopModules/{moduleFolderName}/API/{url}";
         }
 
-        /// <inheritdoc/>
-        public string GetRouteName(string moduleFolderName, string routeName, int count)
-        {
-            Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
-            Requires.NotNegative("count", count);
-
-            return moduleFolderName + "-" + routeName + "-" + count.ToString(CultureInfo.InvariantCulture);
-        }
-
-        /// <inheritdoc/>
-        public string GetRouteName(string moduleFolderName, string routeName, PortalAliasInfo portalAlias)
-        {
-            var alias = portalAlias.HTTPAlias;
-            string appPath = TestableGlobals.Instance.ApplicationPath;
-            if (!string.IsNullOrEmpty(appPath))
-            {
-                int i = alias.IndexOf(appPath, StringComparison.OrdinalIgnoreCase);
-                if (i > 0)
-                {
-                    alias = alias.Remove(i, appPath.Length);
-                }
-            }
-
-            return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
-        }
-
-        /// <inheritdoc/>
-        public HttpRouteValueDictionary GetAllRouteValues(PortalAliasInfo portalAliasInfo, object routeValues)
+        /// <summary>Adds prefix route values to the <paramref name="routeValues"/>.</summary>
+        /// <param name="portalAliasInfo">The portal alias.</param>
+        /// <param name="routeValues">The route values.</param>
+        /// <returns>A new <see cref="HttpRouteValueDictionary"/> with prefixes added.</returns>
+        public static HttpRouteValueDictionary GetAllRouteValues(IPortalAliasInfo portalAliasInfo, object routeValues)
         {
             var allRouteValues = new HttpRouteValueDictionary(routeValues);
 
-            var segments = portalAliasInfo.HTTPAlias.Split('/');
-
+            var segments = portalAliasInfo.HttpAlias.Split('/');
             if (segments.Length > 1)
             {
                 for (int i = 1; i < segments.Length; i++)
@@ -79,52 +73,88 @@ namespace DotNetNuke.Web.Api
             return allRouteValues;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        public string GetRouteName(string moduleFolderName, string routeName, int count)
+        {
+            Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
+            Requires.NotNegative("count", count);
+
+            return moduleFolderName + "-" + routeName + "-" + count.ToString(CultureInfo.InvariantCulture);
+        }
+
+        /// <inheritdoc />
+        public string GetRouteName(string moduleFolderName, string routeName, PortalAliasInfo portalAlias)
+            => this.GetRouteName(moduleFolderName, routeName, (IPortalAliasInfo)portalAlias);
+
+        /// <summary>Gets the route name.</summary>
+        /// <param name="moduleFolderName">The module folder name.</param>
+        /// <param name="routeName">The route name.</param>
+        /// <param name="portalAlias">The portal alias.</param>
+        /// <returns>The complete route name.</returns>
+        public string GetRouteName(string moduleFolderName, string routeName, IPortalAliasInfo portalAlias)
+        {
+            var alias = portalAlias.HttpAlias;
+            string appPath = TestableGlobals.Instance.ApplicationPath;
+            if (!string.IsNullOrEmpty(appPath))
+            {
+                int i = alias.IndexOf(appPath, StringComparison.OrdinalIgnoreCase);
+                if (i > 0)
+                {
+                    alias = alias.Remove(i, appPath.Length);
+                }
+            }
+
+            return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
+        }
+
+        /// <inheritdoc />
+        public HttpRouteValueDictionary GetAllRouteValues(PortalAliasInfo portalAliasInfo, object routeValues)
+            => GetAllRouteValues((IPortalAliasInfo)portalAliasInfo, routeValues);
+
+        /// <inheritdoc />
         public string GetRouteUrl(string moduleFolderName, string url, int count)
         {
             Requires.NotNegative("count", count);
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
 
-            return string.Format("{0}API/{1}/{2}", GeneratePrefixString(count), moduleFolderName, url);
+            return $"{GeneratePrefixString(count)}API/{moduleFolderName}/{url}";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ClearCachedData()
         {
             this.prefixCounts = null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<int> GetRoutePrefixCounts()
         {
-            if (this.prefixCounts == null)
+            if (this.prefixCounts != null)
             {
-                // prefixCounts are required for each route that is mapped but they only change
-                // when a new portal is added so cache them until that time
-                var portals = PortalController.Instance.GetPortals();
+                return this.prefixCounts;
+            }
 
-                var segmentCounts1 = new List<int>();
+            // prefixCounts are required for each route that is mapped, but they only change
+            // when a new portal is added so cache them until that time
+            var segmentCounts = new List<int>();
 
-                foreach (PortalInfo portal in portals)
+            foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
+            {
+                var aliases = this.portalAliasService.GetPortalAliasesByPortalId(portal.PortalId).Select(x => x.HttpAlias);
+                aliases = StripApplicationPath(aliases);
+
+                foreach (var alias in aliases)
                 {
-                    IEnumerable<string> aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).Select(x => x.HTTPAlias);
+                    var count = CalcAliasPrefixCount(alias);
 
-                    aliases = StripApplicationPath(aliases);
-
-                    foreach (string alias in aliases)
+                    if (!segmentCounts.Contains(count))
                     {
-                        var count = CalcAliasPrefixCount(alias);
-
-                        if (!segmentCounts1.Contains(count))
-                        {
-                            segmentCounts1.Add(count);
-                        }
+                        segmentCounts.Add(count);
                     }
                 }
-
-                IEnumerable<int> segmentCounts = segmentCounts1;
-                this.prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
             }
+
+            this.prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
 
             return this.prefixCounts;
         }

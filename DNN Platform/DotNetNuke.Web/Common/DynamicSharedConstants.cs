@@ -6,30 +6,16 @@ namespace DotNetNuke.Web.Common
 {
     using DotNetNuke.Services.Localization;
 
+    /// <summary>Common localized values.</summary>
     public class DynamicSharedConstants
     {
-        public static string RootFolder
-        {
-            get
-            {
-                return Localization.GetString("RootFolder.Name", Localization.SharedResourceFile);
-            }
-        }
+        /// <summary>Gets the friendly name of the site root folder.</summary>
+        public static string RootFolder => Localization.GetString("RootFolder.Name", Localization.SharedResourceFile);
 
-        public static string HostRootFolder
-        {
-            get
-            {
-                return Localization.GetString("HostRootFolder.Name", Localization.SharedResourceFile);
-            }
-        }
+        /// <summary>Gets the friendly name of the host root folder.</summary>
+        public static string HostRootFolder => Localization.GetString("HostRootFolder.Name", Localization.SharedResourceFile);
 
-        public static string Unspecified
-        {
-            get
-            {
-                return "<" + Localization.GetString("None_Specified", Localization.SharedResourceFile) + ">";
-            }
-        }
+        /// <summary>Gets the friendly name an unspecified option.</summary>
+        public static string Unspecified => $"<{Localization.GetString("None_Specified", Localization.SharedResourceFile)}>";
     }
 }

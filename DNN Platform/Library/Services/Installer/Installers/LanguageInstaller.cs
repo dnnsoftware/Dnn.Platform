@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
+    using System.Globalization;
     using System.Xml.XPath;
 
     using DotNetNuke.Common.Utilities;
@@ -102,7 +103,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     // Update LanguagePack
                     LanguagePackController.SaveLanguagePack(this.languagePack);
 
-                    this.Log.AddInfo(string.Format(Util.LANGUAGE_Registered, this.language.Text));
+                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.LANGUAGE_Registered, this.language.Text));
 
                     // install (copy the files) by calling the base class
                     base.Install();
@@ -200,11 +201,11 @@ namespace DotNetNuke.Services.Installer.Installers
 
                 // fix DNN-26330     Removing a language pack extension removes the language
                 // we should not delete language when deleting language pack, as there is just a loose relationship
-                // if (language != null && tempLanguagePack.PackageType == LanguagePackType.Core)
-                // {
-                //    Localization.DeleteLanguage(language);
-                // }
-                this.Log.AddInfo(string.Format(Util.LANGUAGE_UnRegistered, language.Text));
+                ////if (language != null && tempLanguagePack.PackageType == LanguagePackType.Core)
+                ////{
+                ////   Localization.DeleteLanguage(language);
+                ////}
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.LANGUAGE_UnRegistered, language.Text));
             }
             catch (Exception ex)
             {

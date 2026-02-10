@@ -5,18 +5,26 @@
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
     using System;
-    using System.Net;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Text;
     using System.Web.Mvc;
 
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class AuthFilterContext
     {
+        private readonly IHostSettings hostSettings;
+
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public AuthFilterContext(AuthorizationContext filterContext, string authFailureMessage)
+            : this(null, filterContext, authFailureMessage)
         {
+        }
+
+        public AuthFilterContext(IHostSettings hostSettings, AuthorizationContext filterContext, string authFailureMessage)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.ActionContext = filterContext;
             this.AuthFailureMessage = authFailureMessage;
         }
@@ -32,7 +40,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         public virtual void HandleUnauthorizedRequest()
         {
             this.ActionContext.Result = new HttpUnauthorizedResult(this.AuthFailureMessage);
-            if (!Host.DebugMode)
+            if (!this.hostSettings.DebugMode)
             {
                 this.ActionContext.RequestContext.HttpContext.Response.SuppressFormsAuthenticationRedirect = true;
             }

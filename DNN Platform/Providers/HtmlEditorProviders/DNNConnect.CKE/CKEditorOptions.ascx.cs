@@ -22,10 +22,15 @@ namespace DNNConnect.CKEditorProvider
     using DNNConnect.CKEditorProvider.Extensions;
     using DNNConnect.CKEditorProvider.Objects;
     using DNNConnect.CKEditorProvider.Utilities;
+
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Portals;
@@ -35,11 +40,13 @@ namespace DNNConnect.CKEditorProvider
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Globals = DotNetNuke.Common.Globals;
 
@@ -56,6 +63,14 @@ namespace DNNConnect.CKEditorProvider
         private const string KeyIsHostMode = "IsHostMode";
         private const string KeyCurrentPortalOnly = "CurrentPortalOnly";
         private const string KeyCurrentSettingsMode = "CurrentSettingsMode";
+
+        private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
+        private readonly IClientResourceController clientResourceController;
+        private readonly IPortalAliasService portalAliasService;
+        private readonly IModuleController moduleController;
+        private readonly ITabController tabController;
 
         /// <summary>  The provider config.</summary>
         private readonly ProviderConfiguration provConfig = ProviderConfiguration.GetProviderConfiguration(ProviderType);
@@ -89,19 +104,38 @@ namespace DNNConnect.CKEditorProvider
         /// <summary>The _current module.</summary>
         private ModuleInfo currentModule;
 
+        /// <summary>Initializes a new instance of the <see cref="CKEditorOptions"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public CKEditorOptions()
+            : this(null, null, null, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CKEditorOptions"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="moduleController">The module controller.</param>
+        /// <param name="tabController">The tab controller.</param>
+        public CKEditorOptions(IHostSettings hostSettings, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController, IPortalAliasService portalAliasService, IModuleController moduleController, ITabController tabController)
+        {
+            this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+            this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IEventLogger>();
+            this.clientResourceController = clientResourceController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IClientResourceController>();
+            this.portalAliasService = portalAliasService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalAliasService>();
+            this.moduleController = moduleController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>();
+            this.tabController = tabController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<ITabController>();
+        }
+
         /// <summary>Gets or sets a value indicating whether this instance is host mode.</summary>
         /// <value><see langword="true"/> if this instance is host mode; otherwise, <see langword="false"/>.</value>
         public bool IsHostMode
         {
-            get
-            {
-                return this.ViewState[KeyIsHostMode] != null && (bool)this.ViewState[KeyIsHostMode];
-            }
-
-            set
-            {
-                this.ViewState[KeyIsHostMode] = value;
-            }
+            get => this.ViewState[KeyIsHostMode] != null && (bool)this.ViewState[KeyIsHostMode];
+            set => this.ViewState[KeyIsHostMode] = value;
         }
 
         /// <summary>Gets or sets a value indicating whether [current portal only].</summary>
@@ -131,30 +165,16 @@ namespace DNNConnect.CKEditorProvider
         /// <summary>Gets or sets the Current or selected Portal ID.</summary>
         public int CurrentOrSelectedPortalId
         {
-            get
-            {
-                return (int?)this.ViewState[KeyCurrentPortalId] ?? 0;
-            }
-
-            set
-            {
-                this.ViewState[KeyCurrentPortalId] = value;
-            }
+            get => (int?)this.ViewState[KeyCurrentPortalId] ?? 0;
+            set => this.ViewState[KeyCurrentPortalId] = value;
         }
 
         /// <summary>Gets or sets the default host load mode.</summary>
         /// <value> The default host load mode.</value>
         public int DefaultHostLoadMode
         {
-            get
-            {
-                return (int?)this.ViewState[KeyDefaultHostLoadMode] ?? 0;
-            }
-
-            set
-            {
-                this.ViewState[KeyDefaultHostLoadMode] = value;
-            }
+            get => (int?)this.ViewState[KeyDefaultHostLoadMode] ?? 0;
+            set => this.ViewState[KeyDefaultHostLoadMode] = value;
         }
 
         /// <summary>Gets Current Language from Url.</summary>
@@ -168,15 +188,8 @@ namespace DNNConnect.CKEditorProvider
         /// <summary>Gets or sets the current settings mode.</summary>
         private SettingsMode CurrentSettingsMode
         {
-            get
-            {
-                return (SettingsMode)this.ViewState[KeyCurrentSettingsMode];
-            }
-
-            set
-            {
-                this.ViewState[KeyCurrentSettingsMode] = value;
-            }
+            get => (SettingsMode)this.ViewState[KeyCurrentSettingsMode];
+            set => this.ViewState[KeyCurrentSettingsMode] = value;
         }
 
         /// <summary>Gets the Config Url Control.</summary>
@@ -211,7 +224,7 @@ namespace DNNConnect.CKEditorProvider
                     return this.currentModule;
                 }
 
-                this.currentModule = new ModuleController().GetModule(
+                this.currentModule = this.moduleController.GetModule(
                     this.Request.QueryString.GetValueOrDefault("ModuleId", -1),
                     this.TabId,
                     false);
@@ -272,7 +285,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else if (this.DefaultHostLoadMode.Equals(1))
                 {
-                    var currentTabName = new TabController().GetTab(this.CurrentOrSelectedTabId, this.portalSettings?.PortalId ?? Host.HostPortalID, false).TabName;
+                    var currentTabName = this.tabController.GetTab(this.CurrentOrSelectedTabId, this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId, false).TabName;
                     var pageLabel = Localization.GetString("lblPage.Text", this.ResXFile, this.LangCode);
                     var settingsLabel = Localization.GetString("lblSettings.Text", this.ResXFile, this.LangCode);
 
@@ -296,7 +309,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    var settingsDictionary = EditorController.GetEditorHostSettings();
+                    var settingsDictionary = EditorController.GetEditorHostSettings(this.hostSettings);
 
                     this.LoadSettings(SettingsUtil.CheckSettingsExistByKey(settingsDictionary, pageKey) ? 1 : 0);
                 }
@@ -359,7 +372,7 @@ namespace DNNConnect.CKEditorProvider
 
                 // Remove CKFinder from the Browser list if not installed
                 if (
-                    !File.Exists(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.js"))
+                    !File.Exists(this.appStatus.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.js"))
                 {
                     this.ddlBrowser.Items.RemoveAt(2);
                 }
@@ -395,7 +408,7 @@ namespace DNNConnect.CKEditorProvider
 
             int imageFileId = int.Parse(sXmlImport.Substring(7));
 
-            // FileInfo objFileInfo = objFileController.GetFileById(imageFileId, this.portalSettings.PortalId);
+            ////FileInfo objFileInfo = objFileController.GetFileById(imageFileId, this.portalSettings.PortalId);
             var objFileInfo = FileManager.Instance.GetFile(imageFileId);
 
             var homeDirectory = this.HomeDirectory;
@@ -457,22 +470,17 @@ namespace DNNConnect.CKEditorProvider
             this.upOptions.Update();
         }
 
-        /// <summary>Adds the Java scripts.</summary>
+        /// <summary>Adds the JavaScripts.</summary>
         private void AddJavaScripts()
         {
-            ClientResourceManager.RegisterStyleSheet(
-                this.Page,
-                this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/jquery.notification.css"));
-
-            ClientResourceManager.RegisterStyleSheet(
-                this.Page,
-                this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/Options.css"));
+            this.clientResourceController.RegisterStylesheet(this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/jquery.notification.css"));
+            this.clientResourceController.RegisterStylesheet(this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/Options.css"));
 
             JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
-            JavaScript.RequestRegistration(CommonJs.jQuery);
-            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
-            JavaScript.RequestRegistration(CommonJs.jQueryUI);
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.jQuery);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.jQueryMigrate);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.jQueryUI);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.DnnPlugins);
 
             ScriptManager.RegisterClientScriptInclude(
                 this,
@@ -542,7 +550,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    RoleInfo objRole = RoleController.Instance.GetRoleById(this.portalSettings?.PortalId ?? Host.HostPortalID, uploadSizeRole.RoleId);
+                    RoleInfo objRole = RoleController.Instance.GetRoleById(this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId, uploadSizeRole.RoleId);
 
                     if (objRole == null)
                     {
@@ -766,10 +774,10 @@ namespace DNNConnect.CKEditorProvider
 
             this.OverrideFileOnUpload.Checked = importedSettings.OverrideFileOnUpload;
 
-            // get the all-sites settings to be able to to show overridden values
+            // get the all-sites settings to be able to show overridden values
             // when we're not in all-sites mode
             var allPortalsSettings = SettingsUtil.LoadEditorSettingsByKey(
-                this.portalSettings, this.currentSettings, EditorController.GetEditorHostSettings(), SettingConstants.HostKey, new List<RoleInfo>());
+                this.portalSettings, this.currentSettings, EditorController.GetEditorHostSettings(this.hostSettings), SettingConstants.HostKey, new List<RoleInfo>());
 
             this.HostBrowserRootDir.ReadOnly = !this.IsHostMode || this.CurrentPortalOnly;
             this.HostBrowserRootDir.Text = this.HostBrowserRootDir.ReadOnly ? allPortalsSettings.HostBrowserRootDir : importedSettings.HostBrowserRootDir;
@@ -934,7 +942,7 @@ namespace DNNConnect.CKEditorProvider
         {
             var lic = new ListItemCollection();
 
-            var portalId = this.portalSettings?.PortalId != Null.NullInteger ? this.portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID;
+            var portalId = this.portalSettings?.PortalId != Null.NullInteger ? this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId : this.hostSettings.HostPortalId;
             foreach (var roleItem in
                 from RoleInfo objRole in RoleController.Instance.GetRoles(portalId)
                 select new ListItem { Text = objRole.RoleName, Value = objRole.RoleID.ToString() })
@@ -962,48 +970,45 @@ namespace DNNConnect.CKEditorProvider
             this.moduleInstanceName = this.request.QueryString["minc"];
             string moduleKey = $"DNNCKMI#{this.ModuleId}#INS#{this.moduleInstanceName}#";
 
-            var moduleController = new ModuleController();
-
-            foreach (PropertyInfo info in
-                SettingsUtil.GetEditorConfigProperties())
+            foreach (PropertyInfo info in SettingsUtil.GetEditorConfigProperties())
             {
-                moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{info.Name}");
+                this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{info.Name}");
             }
 
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SKIN}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CODEMIRRORTHEME}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSER}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.FILELISTPAGESIZE}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.FILELISTVIEWMODE}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.DEFAULTLINKMODE}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.USEANCHORSELECTOR}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SHOWPAGELINKSTABFIRST}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.OVERRIDEFILEONUPLOAD}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SUBDIRS}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSERROOTDIRID}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSERROOTDIRFORIMGID}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.UPLOADDIRID}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.UPLOADDIRFORIMGID}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.INJECTJS}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.WIDTH}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.HEIGHT}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BLANKTEXT}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CSS}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.TEMPLATEFILES}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CUSTOMJSFILE}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CONFIG}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.ROLES}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEHEIGHTUPLOAD}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEWIDTHUPLOAD}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEHEIGHT}");
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEWIDTH}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SKIN}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CODEMIRRORTHEME}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSER}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.FILELISTPAGESIZE}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.FILELISTVIEWMODE}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.DEFAULTLINKMODE}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.USEANCHORSELECTOR}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SHOWPAGELINKSTABFIRST}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.OVERRIDEFILEONUPLOAD}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SUBDIRS}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSERROOTDIRID}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSERROOTDIRFORIMGID}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.UPLOADDIRID}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.UPLOADDIRFORIMGID}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.INJECTJS}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.WIDTH}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.HEIGHT}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BLANKTEXT}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CSS}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.TEMPLATEFILES}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CUSTOMJSFILE}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CONFIG}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.ROLES}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEHEIGHTUPLOAD}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEWIDTHUPLOAD}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEHEIGHT}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEWIDTH}");
 
-            foreach (var objRole in RoleController.Instance.GetRoles(this.portalSettings?.PortalId ?? Host.HostPortalID))
+            foreach (var objRole in RoleController.Instance.GetRoles(this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId))
             {
-                moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{objRole.RoleID}#{SettingConstants.TOOLB}");
+                this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{objRole.RoleID}#{SettingConstants.TOOLB}");
             }
 
-            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}-1#{SettingConstants.TOOLB}");
+            this.moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}-1#{SettingConstants.TOOLB}");
 
             // Finally Clear Cache
             EditorController.ClearEditorCache();
@@ -1022,8 +1027,8 @@ namespace DNNConnect.CKEditorProvider
             this.lblPortal.Text += !this.IsAllInstances ? this.portalSettings.PortalName : "Host";
 
             ModuleDefinitionInfo moduleDefinitionInfo = null;
-            var portalId = this.portalSettings?.PortalId ?? Host.HostPortalID;
-            var moduleInfo = new ModuleController().GetModuleByDefinition(
+            var portalId = this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId;
+            var moduleInfo = this.moduleController.GetModuleByDefinition(
                 portalId, "User Accounts");
 
             if (this.CurrentModule != null)
@@ -1040,10 +1045,8 @@ namespace DNNConnect.CKEditorProvider
 
             try
             {
-                this.lblPage.Text += string.Format(
-                    "{0} - TabID {1}",
-                    new TabController().GetTab(this.CurrentOrSelectedTabId, portalId, false).TabName,
-                    this.CurrentOrSelectedTabId);
+                var tabName = this.tabController.GetTab(this.CurrentOrSelectedTabId, portalId, false).TabName;
+                this.lblPage.Text += $"{tabName} - TabID {this.CurrentOrSelectedTabId}";
             }
             catch (Exception)
             {
@@ -1086,7 +1089,7 @@ namespace DNNConnect.CKEditorProvider
         {
             this.chblBrowsGr.Items.Clear();
 
-            var portalId = this.portalSettings?.PortalId ?? Host.HostPortalID;
+            var portalId = this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId;
 
             foreach (var objRole in this.GetRoles(portalId))
             {
@@ -1130,7 +1133,7 @@ namespace DNNConnect.CKEditorProvider
         /// <returns>A sequence of <see cref="RoleInfo"/> instances.</returns>
         private IEnumerable<RoleInfo> GetRoles(int portalId)
         {
-            portalId = portalId == Null.NullInteger ? Host.HostPortalID : portalId;
+            portalId = portalId == Null.NullInteger ? this.hostSettings.HostPortalId : portalId;
             var roles = RoleController.Instance.GetRoles(portalId);
 
             if (!this.IsAllInstances)
@@ -1139,7 +1142,7 @@ namespace DNNConnect.CKEditorProvider
             }
 
             return (from role in roles
-                    let isCommon = PortalController.Instance.GetPortals().Cast<PortalInfo>().All(portal => RoleController.Instance.GetRoles(portal.PortalID).Any(r => r.RoleName == role.RoleName))
+                    let isCommon = PortalController.Instance.GetPortals().Cast<IPortalInfo>().All(portal => RoleController.Instance.GetRoles(portal.PortalId).Any(r => r.RoleName == role.RoleName))
                     where isCommon
                     select role).ToList();
         }
@@ -1151,7 +1154,7 @@ namespace DNNConnect.CKEditorProvider
         {
             this.ddlSkin.Items.Clear();
 
-            DirectoryInfo objDir = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/skins");
+            DirectoryInfo objDir = new DirectoryInfo(this.appStatus.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/skins");
 
             foreach (ListItem skinItem in
                 objDir.GetDirectories().Select(
@@ -1165,9 +1168,10 @@ namespace DNNConnect.CKEditorProvider
             // CodeMirror Themes
             this.CodeMirrorTheme.Items.Clear();
 
-            if (Directory.Exists(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/plugins/codemirror/theme"))
+            var themesPath = this.appStatus.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/plugins/codemirror/theme";
+            if (Directory.Exists(themesPath))
             {
-                var themesFolder = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/plugins/codemirror/theme");
+                var themesFolder = new DirectoryInfo(themesPath);
 
                 // add default theme
                 this.CodeMirrorTheme.Items.Add(new ListItem { Text = "default", Value = "default" });
@@ -1229,13 +1233,9 @@ namespace DNNConnect.CKEditorProvider
         }
 
         /// <summary>Gets the portal settings.</summary>
-        /// <returns>
-        /// Returns the Current Portal Settings.
-        /// </returns>
-        private PortalSettings GetPortalSettings()
+        /// <returns>Returns the Current Portal Settings.</returns>
+        private IPortalSettings GetPortalSettings()
         {
-            PortalSettings portalSettings;
-
             try
             {
                 if (this.IsHostMode && this.CurrentPortalOnly)
@@ -1261,16 +1261,14 @@ namespace DNNConnect.CKEditorProvider
 
                 var domainName = Globals.GetDomainName(this.Request, true);
 
-                var portalAlias = PortalAliasController.GetPortalAliasByPortal(this.CurrentOrSelectedPortalId, domainName);
+                var portalAlias = this.portalAliasService.GetPortalAliasByPortal(this.CurrentOrSelectedPortalId, domainName);
 
-                portalSettings = new PortalSettings(this.CurrentOrSelectedTabId, PortalAliasController.Instance.GetPortalAlias(portalAlias));
+                return PortalSettings.Create(this.CurrentOrSelectedTabId, this.portalAliasService.GetPortalAlias(portalAlias));
             }
             catch (Exception)
             {
-                portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
+                return (IPortalSettings)HttpContext.Current.Items["PortalSettings"];
             }
-
-            return portalSettings;
         }
 
         /// <summary>Hide Add Toolbar Button if all Priorities are used.</summary>
@@ -1570,7 +1568,7 @@ namespace DNNConnect.CKEditorProvider
                 return;
             }
 
-            var portalId = this.portalSettings?.PortalId != Null.NullInteger ? this.portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID;
+            var portalId = this.portalSettings?.PortalId != Null.NullInteger ? this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId : this.hostSettings.HostPortalId;
             var objRole = RoleController.Instance.GetRoleByName(portalId, label.Text);
 
             if (objRole == null && label.Text != UnauthenticatedUsersRoleName)
@@ -1580,7 +1578,7 @@ namespace DNNConnect.CKEditorProvider
 
             if (this.currentSettings == null)
             {
-                var settingsDictionary = EditorController.GetEditorHostSettings();
+                var settingsDictionary = EditorController.GetEditorHostSettings(this.hostSettings);
                 var pageKey = $"DNNCKT#{this.CurrentOrSelectedTabId}#";
                 this.LoadSettings(SettingsUtil.CheckSettingsExistByKey(settingsDictionary, pageKey) ? 1 : 0);
             }
@@ -1836,11 +1834,11 @@ namespace DNNConnect.CKEditorProvider
 
             this.LoadDefaultSettings();
 
-            var settingsDictionary = EditorController.GetEditorHostSettings();
-            var portalRoles = RoleController.Instance.GetRoles(this.portalSettings?.PortalId ?? Host.HostPortalID);
+            var settingsDictionary = EditorController.GetEditorHostSettings(this.hostSettings);
+            var portalRoles = RoleController.Instance.GetRoles(this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId);
 
             var hostKey = SettingConstants.HostKey;
-            var portalKey = SettingConstants.PortalKey(this.portalSettings?.PortalId ?? Host.HostPortalID);
+            var portalKey = SettingConstants.PortalKey(this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId);
             var pageKey = $"DNNCKT#{this.CurrentOrSelectedTabId}#";
             var moduleKey = $"DNNCKMI#{this.ModuleId}#INS#{this.moduleInstanceName}#";
 
@@ -1851,6 +1849,7 @@ namespace DNNConnect.CKEditorProvider
 
             this.currentSettings = SettingsUtil.GetDefaultSettings(
                 this.portalSettings,
+                this.hostSettings,
                 homeDirectory,
                 objProvider.Attributes["ck_configFolder"],
                 portalRoles);
@@ -1932,8 +1931,8 @@ namespace DNNConnect.CKEditorProvider
                             this.lnkRemove.Enabled = false;
                         }
 
-                        var currentTab = new TabController().GetTab(
-                            this.CurrentOrSelectedTabId, this.portalSettings?.PortalId ?? Host.HostPortalID, false);
+                        var currentTab = this.tabController.GetTab(
+                            this.CurrentOrSelectedTabId, this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId, false);
 
                         this.lnkRemoveChild.Enabled = currentTab.HasChildren;
 
@@ -1999,7 +1998,7 @@ namespace DNNConnect.CKEditorProvider
                 return inputUrl;
             }
 
-            return string.Format("FileID={0}", Utility.ConvertFilePathToFileId(inputUrl, this.portalSettings?.PortalId ?? Host.HostPortalID));
+            return string.Format("FileID={0}", Utility.ConvertFilePathToFileId(inputUrl, this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId));
         }
 
         /// <summary>Renders the editor config settings.</summary>
@@ -2017,7 +2016,7 @@ namespace DNNConnect.CKEditorProvider
                 // TODO : Load Localized Setting Name
                 if (!isSubSetting)
                 {
-                    var settingNameLabel = new Label { Text = string.Format("{0}:", info.Name) };
+                    var settingNameLabel = new Label { Text = $"{info.Name}:", };
                     settingNameLabel.Attributes.Add("class", "dnnLabel");
                     settingValueContainer.Controls.Add(settingNameLabel);
                 }
@@ -2153,7 +2152,7 @@ namespace DNNConnect.CKEditorProvider
                                 var settingValueContainer2 = new HtmlGenericControl("div");
                                 settingValueContainer2.Attributes.Add("class", "dnnFormItem");
 
-                                var settingNameLabel2 = new Label { Text = string.Format("{0} - {1}:", info.Name, codeMirrorInfo.Name) };
+                                var settingNameLabel2 = new Label { Text = $"{info.Name} - {codeMirrorInfo.Name}:", };
                                 settingNameLabel2.Attributes.Add("class", "dnnLabel");
                                 settingValueContainer2.Controls.Add(settingNameLabel2);
 
@@ -2259,8 +2258,6 @@ namespace DNNConnect.CKEditorProvider
             this.moduleInstanceName = this.request.QueryString["minc"];
             string key = $"DNNCKMI#{this.ModuleId}#INS#{this.moduleInstanceName}#";
 
-            var moduleController = new ModuleController();
-
             // Editor config settings
             foreach (var info in
                 SettingsUtil.GetEditorConfigProperties())
@@ -2275,7 +2272,7 @@ namespace DNNConnect.CKEditorProvider
 
                             if (textBox != null)
                             {
-                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", textBox.Text);
+                                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", textBox.Text);
                             }
                         }
 
@@ -2286,7 +2283,7 @@ namespace DNNConnect.CKEditorProvider
 
                             if (checkBox != null)
                             {
-                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", checkBox.Checked.ToString());
+                                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", checkBox.Checked.ToString());
                             }
                         }
 
@@ -2305,7 +2302,7 @@ namespace DNNConnect.CKEditorProvider
 
                             if (dropDownList?.SelectedItem != null)
                             {
-                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", dropDownList.SelectedValue);
+                                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", dropDownList.SelectedValue);
                             }
                         }
 
@@ -2325,7 +2322,7 @@ namespace DNNConnect.CKEditorProvider
 
                                             if (textBox != null)
                                             {
-                                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{codeMirrorInfo.Name}", textBox.Text);
+                                                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{codeMirrorInfo.Name}", textBox.Text);
                                             }
                                         }
 
@@ -2337,7 +2334,7 @@ namespace DNNConnect.CKEditorProvider
 
                                             if (checkBox != null)
                                             {
-                                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{codeMirrorInfo.Name}", checkBox.Checked.ToString());
+                                                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{codeMirrorInfo.Name}", checkBox.Checked.ToString());
                                             }
                                         }
 
@@ -2359,7 +2356,7 @@ namespace DNNConnect.CKEditorProvider
 
                                             if (textBox != null)
                                             {
-                                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{wordCountInfo.Name}", textBox.Text);
+                                                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{wordCountInfo.Name}", textBox.Text);
                                             }
                                         }
 
@@ -2371,7 +2368,7 @@ namespace DNNConnect.CKEditorProvider
 
                                             if (checkBox != null)
                                             {
-                                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{wordCountInfo.Name}", checkBox.Checked.ToString());
+                                                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{wordCountInfo.Name}", checkBox.Checked.ToString());
                                             }
                                         }
 
@@ -2385,72 +2382,72 @@ namespace DNNConnect.CKEditorProvider
             }
             ///////////////////
 
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SKIN}", this.ddlSkin.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CODEMIRRORTHEME}", this.CodeMirrorTheme.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSER}", this.ddlBrowser.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.IMAGEBUTTON}", this.ddlImageButton.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.FILELISTVIEWMODE}", this.FileListViewMode.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.DEFAULTLINKMODE}", this.DefaultLinkMode.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.USEANCHORSELECTOR}", this.UseAnchorSelector.Checked.ToString());
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SHOWPAGELINKSTABFIRST}", this.ShowPageLinksTabFirst.Checked.ToString());
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.OVERRIDEFILEONUPLOAD}", this.OverrideFileOnUpload.Checked.ToString());
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SUBDIRS}", this.cbBrowserDirs.Checked.ToString());
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERROOTDIRID}", this.BrowserRootDir.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERROOTDIRFORIMGID}", this.BrowserRootDirForImg.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.UPLOADDIRID}", this.UploadDir.SelectedValue);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.UPLOADDIRFORIMGID}", this.UploadDirForImg.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SKIN}", this.ddlSkin.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CODEMIRRORTHEME}", this.CodeMirrorTheme.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSER}", this.ddlBrowser.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.IMAGEBUTTON}", this.ddlImageButton.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.FILELISTVIEWMODE}", this.FileListViewMode.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.DEFAULTLINKMODE}", this.DefaultLinkMode.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.USEANCHORSELECTOR}", this.UseAnchorSelector.Checked.ToString());
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SHOWPAGELINKSTABFIRST}", this.ShowPageLinksTabFirst.Checked.ToString());
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.OVERRIDEFILEONUPLOAD}", this.OverrideFileOnUpload.Checked.ToString());
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SUBDIRS}", this.cbBrowserDirs.Checked.ToString());
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERROOTDIRID}", this.BrowserRootDir.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERROOTDIRFORIMGID}", this.BrowserRootDirForImg.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.UPLOADDIRID}", this.UploadDir.SelectedValue);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.UPLOADDIRFORIMGID}", this.UploadDirForImg.SelectedValue);
 
             if (Utility.IsNumeric(this.FileListPageSize.Text))
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.FILELISTPAGESIZE}", this.FileListPageSize.Text);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.FILELISTPAGESIZE}", this.FileListPageSize.Text);
             }
 
             if (Utility.IsNumeric(this.txtResizeWidthUpload.Text))
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEWIDTHUPLOAD}", this.txtResizeWidthUpload.Text);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEWIDTHUPLOAD}", this.txtResizeWidthUpload.Text);
             }
 
             if (Utility.IsNumeric(this.txtResizeHeightUpload.Text))
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEHEIGHTUPLOAD}", this.txtResizeHeightUpload.Text);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEHEIGHTUPLOAD}", this.txtResizeHeightUpload.Text);
             }
 
             if (Utility.IsNumeric(this.txtResizeWidth.Text))
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEWIDTH}", this.txtResizeWidth.Text);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEWIDTH}", this.txtResizeWidth.Text);
             }
 
             if (Utility.IsNumeric(this.txtResizeHeight.Text))
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEHEIGHT}", this.txtResizeHeight.Text);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEHEIGHT}", this.txtResizeHeight.Text);
             }
 
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.INJECTJS}", this.InjectSyntaxJs.Checked.ToString());
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.INJECTJS}", this.InjectSyntaxJs.Checked.ToString());
 
             if (Utility.IsUnit(this.txtWidth.Text))
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.WIDTH}", this.txtWidth.Text);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.WIDTH}", this.txtWidth.Text);
             }
 
             if (Utility.IsUnit(this.txtHeight.Text))
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.HEIGHT}", this.txtWidth.Text);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.HEIGHT}", this.txtWidth.Text);
             }
 
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERALLOWFOLLOWFOLDERPERMS}", this.BrowAllowFollowPerms.Checked.ToString());
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERALLOWFOLLOWFOLDERPERMS}", this.BrowAllowFollowPerms.Checked.ToString());
 
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BLANKTEXT}", this.txtBlanktext.Text);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CSS}", this.CssUrl.Url);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.TEMPLATEFILES}", this.TemplUrl.Url);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CUSTOMJSFILE}", this.CustomJsFile.Url);
-            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CONFIG}", this.ConfigUrl.Url);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BLANKTEXT}", this.txtBlanktext.Text);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CSS}", this.CssUrl.Url);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.TEMPLATEFILES}", this.TemplUrl.Url);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CUSTOMJSFILE}", this.CustomJsFile.Url);
+            this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CONFIG}", this.ConfigUrl.Url);
 
             string sRoles = this.chblBrowsGr.Items.Cast<ListItem>().Where(item => item.Selected).Aggregate(
                 string.Empty, (current, item) => current + (item.Value + ";"));
 
             if (sRoles != string.Empty)
             {
-                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.ROLES}", sRoles);
+                this.moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.ROLES}", sRoles);
             }
 
             // Save Toolbar Setting for every Role
@@ -2467,16 +2464,16 @@ namespace DNNConnect.CKEditorProvider
 
                 if (label.Text.Equals(UnauthenticatedUsersRoleName))
                 {
-                    moduleController.UpdateModuleSetting(
+                    this.moduleController.UpdateModuleSetting(
                         this.ModuleId,
                         string.Format("{0}{2}#{1}", key, "-1", SettingConstants.TOOLB),
                         ddLToolB.SelectedValue);
                 }
                 else
                 {
-                    var objRole = RoleController.Instance.GetRoleByName(this.portalSettings?.PortalId ?? Host.HostPortalID, label.Text);
+                    var objRole = RoleController.Instance.GetRoleByName(this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId, label.Text);
 
-                    moduleController.UpdateModuleSetting(
+                    this.moduleController.UpdateModuleSetting(
                         this.ModuleId,
                         string.Format("{0}{2}#{1}", key, objRole.RoleID, SettingConstants.TOOLB),
                         ddLToolB.SelectedValue);
@@ -2497,16 +2494,16 @@ namespace DNNConnect.CKEditorProvider
 
                 if (label.Text.Equals(UnauthenticatedUsersRoleName))
                 {
-                    moduleController.UpdateModuleSetting(
+                    this.moduleController.UpdateModuleSetting(
                         this.ModuleId,
                         $"{key}-1{SettingConstants.UPLOADFILELIMITS}",
                         sizeLimit.Text);
                 }
                 else
                 {
-                    var objRole = RoleController.Instance.GetRoleByName(this.portalSettings?.PortalId ?? Host.HostPortalID, label.Text);
+                    var objRole = RoleController.Instance.GetRoleByName(this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId, label.Text);
 
-                    moduleController.UpdateModuleSetting(
+                    this.moduleController.UpdateModuleSetting(
                         this.ModuleId,
                         string.Format("{0}{1}#{2}", key, objRole.RoleID, SettingConstants.UPLOADFILELIMITS),
                         sizeLimit.Text);
@@ -2742,7 +2739,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    RoleInfo objRole = RoleController.Instance.GetRoleByName(this.portalSettings?.PortalId != Null.NullInteger ? this.portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID, label.Text);
+                    RoleInfo objRole = RoleController.Instance.GetRoleByName(this.portalSettings?.PortalId != Null.NullInteger ? this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId : this.hostSettings.HostPortalId, label.Text);
 
                     EditorController.AddOrUpdateEditorHostSetting($"{key}toolb#{objRole.RoleID}", ddLToolB.SelectedValue);
                 }
@@ -2766,7 +2763,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    RoleInfo objRole = RoleController.Instance.GetRoleByName(this.portalSettings?.PortalId != Null.NullInteger ? this.portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID, label.Text);
+                    RoleInfo objRole = RoleController.Instance.GetRoleByName(this.portalSettings?.PortalId != Null.NullInteger ? this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId : this.hostSettings.HostPortalId, label.Text);
 
                     EditorController.AddOrUpdateEditorHostSetting($"{key}{objRole.RoleID}#{SettingConstants.UPLOADFILELIMITS}", sizeLimit.Text);
                 }
@@ -2776,18 +2773,16 @@ namespace DNNConnect.CKEditorProvider
         /// <summary>Save all Settings for the Current Selected Mode.</summary>
         private void SaveSettings()
         {
-            ModuleDefinitionInfo objm;
-            var db = new ModuleController();
-            var moduleInfo = db.GetModuleByDefinition(this.portalSettings?.PortalId ?? Host.HostPortalID, "User Accounts");
+            var moduleInfo = this.moduleController.GetModuleByDefinition(this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId, "User Accounts");
 
+            ModuleDefinitionInfo definition;
             try
             {
-                objm = ModuleDefinitionController.GetModuleDefinitionByID(this.CurrentModule.ModuleDefID);
+                definition = ModuleDefinitionController.GetModuleDefinitionByID(this.CurrentModule.ModuleDefID);
             }
             catch (Exception)
             {
-                objm = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(
-                    "User Accounts", moduleInfo.DesktopModuleID);
+                definition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("User Accounts", moduleInfo.DesktopModuleID);
             }
 
             switch (this.CurrentSettingsMode)
@@ -2796,13 +2791,13 @@ namespace DNNConnect.CKEditorProvider
                     this.SaveSettingsByKey(SettingConstants.HostKey);
                     break;
                 case SettingsMode.Portal:
-                    this.SaveSettingsByKey(SettingConstants.PortalKey(this.portalSettings?.PortalId ?? Host.HostPortalID));
+                    this.SaveSettingsByKey(SettingConstants.PortalKey(this.portalSettings?.PortalId ?? this.hostSettings.HostPortalId));
                     break;
                 case SettingsMode.Page:
                     this.SaveSettingsByKey($"DNNCKT#{this.CurrentOrSelectedTabId}#");
                     break;
                 default:
-                    if (this.CurrentSettingsMode.Equals(SettingsMode.ModuleInstance) && !objm.FriendlyName.Equals("User Accounts"))
+                    if (this.CurrentSettingsMode.Equals(SettingsMode.ModuleInstance) && !definition.FriendlyName.Equals("User Accounts"))
                     {
                         this.SaveModuleSettings();
                     }

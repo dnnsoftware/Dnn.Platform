@@ -4,18 +4,21 @@
 
 namespace Dnn.PersonaBar.Pages.Components
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Urls;
 
     public class FriendlyUrlWrapper : IFriendlyUrlWrapper
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string CleanNameForUrl(string urlPath, FriendlyUrlOptions options, out bool modified)
         {
             return FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void ValidateUrl(string urlPath, int tabld, PortalSettings portalSettings, out bool modified)
         {
             FriendlyUrlController.ValidateUrl(urlPath, tabld, portalSettings, out modified);

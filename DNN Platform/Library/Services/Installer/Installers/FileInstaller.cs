@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Xml.XPath;
 
@@ -36,13 +37,13 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                string physicalBasePath = this.PhysicalSitePath + "\\" + this.BasePath;
-                if (!physicalBasePath.EndsWith("\\"))
+                string physicalBasePath = this.PhysicalSitePath + @"\" + this.BasePath;
+                if (!physicalBasePath.EndsWith(@"\", StringComparison.Ordinal))
                 {
-                    physicalBasePath += "\\";
+                    physicalBasePath += @"\";
                 }
 
-                return physicalBasePath.Replace("/", "\\");
+                return physicalBasePath.Replace("/", @"\");
             }
         }
 
@@ -187,7 +188,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
                 else
                 {
-                    this.Log.AddFailure(string.Format(Util.FILE_NotAllowed, insFile.FullName));
+                    this.Log.AddFailure(string.Format(CultureInfo.InvariantCulture, Util.FILE_NotAllowed, insFile.FullName));
                     return false;
                 }
             }
@@ -242,7 +243,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             else
             {
-                fileName = pathNav.Value + "\\";
+                fileName = pathNav.Value + @"\";
             }
 
             // Get the name
@@ -284,7 +285,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     if (File.Exists(file.TempFileName))
                     {
-                        this.Log.AddInfo(string.Format(Util.FILE_Found, file.Path, file.Name));
+                        this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.FILE_Found, file.Path, file.Name));
                     }
                     else
                     {

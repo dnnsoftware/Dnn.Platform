@@ -12,6 +12,7 @@ namespace DotNetNuke.Data.PetaPoco
 
     public static class FluentMapperExtensions
     {
+#pragma warning disable CS3002 // Return type is not CLS-compliant
         public static FluentMapper<TModel> AddFluentMapper<TModel>(this IDataContext dataContext)
         {
             var petaPocoDataContext = dataContext as PetaPocoDataContext;
@@ -27,6 +28,7 @@ namespace DotNetNuke.Data.PetaPoco
             return mapper;
         }
 
+#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public static FluentMapper<TModel> Cache<TModel>(this FluentMapper<TModel> mapper, string cacheKey, int timeOut = 20, CacheItemPriority priority = CacheItemPriority.Default)
         {
             mapper.CacheKey = cacheKey;
@@ -83,6 +85,8 @@ namespace DotNetNuke.Data.PetaPoco
         }
 
         public static FluentMapper<TModel> TableName<TModel>(this FluentMapper<TModel> mapper, string tableName)
+#pragma warning restore CS3001
+#pragma warning restore CS3002
         {
             mapper.TableInfo.TableName = mapper.GetTablePrefix() + tableName;
 

@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Library.Helper
 {
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
 
     public class ContentVerifier : IContentVerifier
@@ -28,25 +29,25 @@ namespace Dnn.PersonaBar.Library.Helper
             this.portalGroupController = portalGroupController;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsContentExistsForRequestedPortal(int contentPortalId, PortalSettings portalSettings, bool checkForSiteGroup = false)
         {
-            var currentPortal = this.portalController.GetCurrentPortalSettings();
+            var currentPortal = this.portalController.GetCurrentSettings();
             return contentPortalId == portalSettings.PortalId
                 || portalSettings == currentPortal
                 || (checkForSiteGroup && this.IsRequestForSiteGroup(contentPortalId, portalSettings.PortalId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsRequestForSiteGroup(int portalId, int portalIdSiteGroup)
         {
             const int NO_SITE_GROUPID = -1;
             var isSiteGroupPage = false;
-            var portal = this.portalController.GetPortal(portalIdSiteGroup);
+            IPortalInfo portal = this.portalController.GetPortal(portalIdSiteGroup);
 
-            if (portal.PortalGroupID != NO_SITE_GROUPID)
+            if (portal.PortalGroupId != NO_SITE_GROUPID)
             {
-                isSiteGroupPage = this.portalGroupController.GetPortalsByGroup(portal.PortalGroupID).Any(p => p.PortalID == portalId);
+                isSiteGroupPage = this.portalGroupController.GetPortalsByGroup(portal.PortalGroupId).Any((IPortalInfo p) => p.PortalId == portalId);
             }
 
             return isSiteGroupPage;

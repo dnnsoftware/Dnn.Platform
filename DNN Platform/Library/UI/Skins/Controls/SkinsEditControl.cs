@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common.Utilities;
@@ -127,7 +128,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RaisePostBackEvent(string eventArgument)
         {
             PropertyEditorEventArgs args;
@@ -137,7 +138,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     args = new PropertyEditorEventArgs(this.Name);
                     args.Value = this.DictionaryValue;
                     args.OldValue = this.OldDictionaryValue;
-                    args.Key = int.Parse(eventArgument.Substring(7));
+                    args.Key = int.Parse(eventArgument.Substring(7), CultureInfo.InvariantCulture);
                     args.Changed = true;
                     this.OnItemDeleted(args);
                     break;
@@ -151,7 +152,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             bool dataChanged = false;
@@ -247,7 +248,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     writer.AddAttribute(HtmlTextWriterAttribute.Value, kvp.Value);
                     if (length > Null.NullInteger)
                     {
-                        writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
+                        writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString(CultureInfo.InvariantCulture));
                     }
 
                     writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_skin" + kvp.Key);
@@ -281,7 +282,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, Null.NullString);
                 if (length > Null.NullInteger)
                 {
-                    writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
+                    writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString(CultureInfo.InvariantCulture));
                 }
 
                 writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_skinnew");

@@ -11,7 +11,7 @@ namespace DotNetNuke.Security.Permissions
     /// </summary>
     internal class ComparePortalPermissions : IComparer
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Compare(object x, object y)
         {
             return ((PortalPermissionInfo)x).PortalPermissionID.CompareTo(((PortalPermissionInfo)y).PortalPermissionID);

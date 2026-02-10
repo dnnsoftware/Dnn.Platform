@@ -14,7 +14,7 @@ namespace DotNetNuke.Modules.Admin.Security
     /// <summary>A control which displays an access denied message.</summary>
     public partial class AccessDeniedPage : PortalModuleBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

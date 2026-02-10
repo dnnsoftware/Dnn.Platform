@@ -14,7 +14,7 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>A cake task to clean the temp directory.</summary>
     public sealed class CleanTemp : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             context.CleanDirectory(context.TempDir);

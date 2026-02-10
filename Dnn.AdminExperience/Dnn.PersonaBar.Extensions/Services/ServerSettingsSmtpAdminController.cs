@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Servers.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -110,7 +111,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 PortalController.UpdatePortalSetting(
                     portalId,
                     "SMTPAuthentication",
-                    request.SmtpAuthentication.ToString(),
+                    request.SmtpAuthentication.ToString(CultureInfo.InvariantCulture),
                     false);
                 PortalController.UpdatePortalSetting(portalId, "SMTPUsername", request.SmtpUsername, false);
                 PortalController.UpdateEncryptedString(
@@ -187,7 +188,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     string.Empty,
                     string.Empty,
                     smtpHostMode ? this.hostSettingsService.GetString("SMTPServer") : request.SmtpServer,
-                    smtpHostMode ? this.hostSettingsService.GetString("SMTPAuthentication") : request.SmtpAuthentication.ToString(),
+                    smtpHostMode ? this.hostSettingsService.GetString("SMTPAuthentication") : request.SmtpAuthentication.ToString(CultureInfo.InvariantCulture),
                     smtpHostMode ? this.hostSettingsService.GetString("SMTPUsername") : request.SmtpUsername,
                     smtpHostMode ? this.hostSettingsService.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey()) : request.SmtpPassword,
                     smtpHostMode ? this.hostSettingsService.GetBoolean("SMTPEnableSSL", false) : request.EnableSmtpSsl,
@@ -200,9 +201,8 @@ namespace Dnn.PersonaBar.Servers.Services
                     errMessage,
                     confirmationMessage =
                         string.Format(
-                            Localization.GetString(
-                                "EmailSentMessage",
-                                Components.Constants.ServersResourcersPath),
+                            CultureInfo.CurrentCulture,
+                            Localization.GetString("EmailSentMessage", Components.Constants.ServersResourcersPath),
                             mailFrom,
                             mailTo),
                 });

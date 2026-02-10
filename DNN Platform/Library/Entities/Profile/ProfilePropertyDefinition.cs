@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Profile
     using System.ComponentModel;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -48,10 +49,7 @@ namespace DotNetNuke.Entities.Profile
         public ProfilePropertyDefinition()
         {
             this.PropertyDefinitionId = Null.NullInteger;
-
-            // Get the default PortalSettings
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
-            this.PortalId = settings.PortalId;
+            this.PortalId = PortalController.Instance.GetCurrentSettings().PortalId;
         }
 
         /// <summary>Initializes a new instance of the <see cref="ProfilePropertyDefinition"/> class.</summary>

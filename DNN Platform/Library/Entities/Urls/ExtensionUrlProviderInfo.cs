@@ -70,10 +70,10 @@ namespace DotNetNuke.Entities.Urls
         /// <summary>Gets a list of TabIds where the module provider should be called when generating friendly urls.</summary>
         public List<int> TabIds { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
             this.ExtensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderId"]);

@@ -8,8 +8,12 @@ namespace DotNetNuke.Web.UI.WebControls.Extensions
     using System.Linq;
     using System.Web.UI.WebControls;
 
+    /// <summary>Extension methods for <see cref="WebControl"/> instances.</summary>
     public static class WebControlExtensions
     {
+        /// <summary>Adds the <paramref name="cssClass"/> to the <paramref name="control"/>.</summary>
+        /// <param name="control">The control.</param>
+        /// <param name="cssClass">The CSS class to add.</param>
         public static void AddCssClass(this WebControl control, string cssClass)
         {
             if (string.IsNullOrEmpty(control.CssClass))
@@ -28,6 +32,9 @@ namespace DotNetNuke.Web.UI.WebControls.Extensions
             }
         }
 
+        /// <summary>Removes the <paramref name="cssClass"/> from the <paramref name="control"/>.</summary>
+        /// <param name="control">The control.</param>
+        /// <param name="cssClass">The CSS class.</param>
         public static void RemoveCssClass(this WebControl control, string cssClass)
         {
             if (!string.IsNullOrEmpty(control.CssClass))
@@ -37,6 +44,9 @@ namespace DotNetNuke.Web.UI.WebControls.Extensions
             }
         }
 
+        /// <summary>Gets the orientation of the <paramref name="size"/>.</summary>
+        /// <param name="size">The size.</param>
+        /// <returns>The orientation.</returns>
         public static Orientation Orientation(this Size size)
         {
             return size.Width > size.Height ?

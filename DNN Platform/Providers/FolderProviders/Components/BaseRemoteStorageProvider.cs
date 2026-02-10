@@ -11,60 +11,52 @@ namespace DotNetNuke.Providers.FolderProviders.Components
     using System.Text.RegularExpressions;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
-    using DotNetNuke.Security;
     using DotNetNuke.Services.FileSystem;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc />
     public abstract class BaseRemoteStorageProvider : FolderProvider
     {
-        private readonly string encryptionKey = Host.GUID;
-        private readonly PortalSecurity portalSecurity = PortalSecurity.Instance;
-
-        /// <inheritdoc/>
-        public override bool SupportsMappedPaths
+        /// <summary>Initializes a new instance of the <see cref="BaseRemoteStorageProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        protected BaseRemoteStorageProvider()
+            : this(null)
         {
-            get { return true; }
         }
 
-        /// <inheritdoc/>
-        public override bool SupportsMoveFile
+        /// <summary>Initializes a new instance of the <see cref="BaseRemoteStorageProvider"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        protected BaseRemoteStorageProvider(IHostSettings hostSettings)
         {
-            get { return false; }
+            this.HostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
         }
 
-        /// <inheritdoc/>
-        public override bool SupportsMoveFolder
-        {
-            get { return true; }
-        }
+        /// <inheritdoc />
+        public override bool SupportsMappedPaths => true;
 
-        protected virtual string FileNotFoundMessage
-        {
-            get { return string.Empty; }
-        }
+        /// <inheritdoc />
+        public override bool SupportsMoveFile => false;
 
-        protected virtual string ObjectCacheKey
-        {
-            get { return string.Empty; }
-        }
+        /// <inheritdoc />
+        public override bool SupportsMoveFolder => true;
 
-        protected virtual int ObjectCacheTimeout
-        {
-            get { return 150; }
-        }
+        /// <summary>Gets the host settings.</summary>
+        protected IHostSettings HostSettings { get; }
 
-        protected virtual string ListObjectsCacheKey
-        {
-            get { return string.Empty; }
-        }
+        protected virtual string FileNotFoundMessage => string.Empty;
 
-        protected virtual int ListObjectsCacheTimeout
-        {
-            get { return 300; }
-        }
+        protected virtual string ObjectCacheKey => string.Empty;
+
+        protected virtual int ObjectCacheTimeout => 150;
+
+        protected virtual string ListObjectsCacheKey => string.Empty;
+
+        protected virtual int ListObjectsCacheTimeout => 300;
 
         /// <inheritdoc />
         public override void AddFolder(string folderPath, FolderMappingInfo folderMapping)
@@ -174,11 +166,11 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var list = this.GetObjectList(folderMapping, folder.MappedPath);
             var mappedPath = folder.MappedPath;
 
-            // return (from i in list
-            //        let f = i.Key
-            //        let r = (!string.IsNullOrEmpty(mappedPath) ? f.Replace(mappedPath, "") : f)
-            //        where f.StartsWith(mappedPath, true, CultureInfo.InvariantCulture) && f.Length > mappedPath.Length && r.IndexOf("/", StringComparison.Ordinal) == -1
-            //        select Path.GetFileName(f)).ToArray();
+            ////return (from i in list
+            ////       let f = i.Key
+            ////       let r = (!string.IsNullOrEmpty(mappedPath) ? f.Replace(mappedPath, "") : f)
+            ////       where f.StartsWith(mappedPath, true, CultureInfo.InvariantCulture) && f.Length > mappedPath.Length && r.IndexOf("/", StringComparison.Ordinal) == -1
+            ////       select Path.GetFileName(f)).ToArray();
             var pattern = "^" + mappedPath;
             return (from i in list
                     let f = i.Key
@@ -265,15 +257,15 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                                        && r.IndexOf("/", StringComparison.Ordinal) > -1
                     select folderPath + r.Substring(0, r.IndexOf("/", StringComparison.Ordinal)) + "/").Distinct().ToList();
 
-            // var mylist =  (from o in list
-            //        let f = o.Key
-            //        let r = (!string.IsNullOrEmpty(folderPath) ? RegexUtils.GetCachedRegex(Regex.Escape(folderPath)).Replace(f, string.Empty, 1) : f)
-            //        where f.StartsWith(folderPath)
-            //            && f.Length > folderPath.Length
-            //            && r.IndexOf("/", StringComparison.Ordinal) > -1
-            //        select folderPath + r.Substring(0, r.IndexOf("/", StringComparison.Ordinal)) + "/").Distinct().ToList();
-
-            // return mylist;
+            ////var mylist =  (from o in list
+            ////       let f = o.Key
+            ////       let r = (!string.IsNullOrEmpty(folderPath) ? RegexUtils.GetCachedRegex(Regex.Escape(folderPath)).Replace(f, string.Empty, 1) : f)
+            ////       where f.StartsWith(folderPath)
+            ////           && f.Length > folderPath.Length
+            ////           && r.IndexOf("/", StringComparison.Ordinal) > -1
+            ////       select folderPath + r.Substring(0, r.IndexOf("/", StringComparison.Ordinal)) + "/").Distinct().ToList();
+            ////
+            ////return mylist;
         }
 
         /// <remarks>For now, it returns false always until we find a better way to check if the file is synchronized.</remarks>
@@ -363,7 +355,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             this.UpdateFileInternal(content, folderMapping, folder.MappedPath + fileName);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string GetHashCode(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -379,7 +371,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             return (item.Size == file.Size) ? item.HashCode : string.Empty;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string GetHashCode(IFileInfo file, Stream fileContent)
         {
             if (this.FileExists(FolderManager.Instance.GetFolder(file.FolderId), file.FileName))
@@ -397,8 +389,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
         protected static int GetIntegerSetting(FolderMappingInfo folderMapping, string settingName, int defaultValue)
         {
-            int value;
-            if (int.TryParse(GetSetting(folderMapping, settingName), out value))
+            if (int.TryParse(GetSetting(folderMapping, settingName), out var value))
             {
                 return value;
             }
@@ -445,6 +436,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var cacheKey = string.Format(this.ObjectCacheKey, folderMapping.FolderMappingID, key);
 
             return CBO.GetCachedObject<IRemoteStorageItem>(
+                this.HostSettings,
                 new CacheItemArgs(
                 cacheKey,
                 this.ObjectCacheTimeout,
@@ -454,7 +446,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                 {
                     var list = this.GetObjectList(folderMapping, key);
 
-                    // return list.FirstOrDefault(i => i.Key == key);
+                    ////return list.FirstOrDefault(i => i.Key == key);
                     return list.FirstOrDefault(i => i.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase));
                 });
         }

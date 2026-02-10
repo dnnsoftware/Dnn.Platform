@@ -19,6 +19,7 @@ namespace DotNetNuke.Services.Tokens
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected Dictionary<string, IPropertyAccess> PropertySource;
@@ -135,7 +136,7 @@ namespace DotNetNuke.Services.Tokens
                 || this.Provider.ContainsTokens(strSourceText, this.TokenContext);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string replacedTokenValue(string objectName, string propertyName, string format)
         {
             string result = string.Empty;
@@ -155,7 +156,7 @@ namespace DotNetNuke.Services.Tokens
                     message = "Error accessing [{0}:{1}], {0} is an unknown datasource";
                 }
 
-                result = string.Format(message, objectName, propertyName);
+                result = string.Format(CultureInfo.CurrentCulture, message, objectName, propertyName);
             }
 
             if (this.DebugMessages && propertyNotFound)
@@ -175,13 +176,13 @@ namespace DotNetNuke.Services.Tokens
                     message = "Error accessing [{0}:{1}], {1} is unknown for datasource {0}";
                 }
 
-                result = string.Format(message, objectName, propertyName);
+                result = string.Format(CultureInfo.CurrentCulture, message, objectName, propertyName);
             }
 
             return result;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string ReplaceTokens(string sourceText)
         {
             return this.Provider is CoreTokenProvider ? base.ReplaceTokens(sourceText) : this.Provider.Tokenize(sourceText, this.TokenContext);

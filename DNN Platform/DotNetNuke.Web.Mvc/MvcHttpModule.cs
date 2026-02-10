@@ -14,12 +14,21 @@ namespace DotNetNuke.Web.Mvc
     using System.Web.Routing;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Mvc.Framework;
     using DotNetNuke.Web.Mvc.Framework.Modules;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class MvcHttpModule : IHttpModule
     {
@@ -29,13 +38,20 @@ namespace DotNetNuke.Web.Mvc
         {
             var engines = ViewEngines.Engines;
             engines.Clear();
-            engines.Add(new ModuleDelegatingViewEngine());
+            engines.Add(
+                new ModuleDelegatingViewEngine(
+                    new HostSettings(
+                        new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                            new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                            new Lazy<IPortalController>(() => PortalController.Instance)))));
             engines.Add(new RazorViewEngine());
         }
 
         public void Init(HttpApplication context)
         {
-            SuppressXFrameOptionsHeaderIfPresentInConfig();
+            SuppressXFrameOptionsHeaderIfPresentInConfig(context.Context.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>());
             ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(new ModuleExecutionEngine());
             context.BeginRequest += InitDnn;
         }
@@ -46,17 +62,16 @@ namespace DotNetNuke.Web.Mvc
 
         private static void InitDnn(object sender, EventArgs e)
         {
-            var app = sender as HttpApplication;
-            if (app != null && MvcServicePath.IsMatch(app.Context.Request.RawUrl))
+            if (sender is HttpApplication app && MvcServicePath.IsMatch(app.Context.Request.RawUrl))
             {
                 Initialize.Init(app);
             }
         }
 
         /// <summary>Suppress X-Frame-Options Header if there is configuration specified in web.config for it.</summary>
-        private static void SuppressXFrameOptionsHeaderIfPresentInConfig()
+        private static void SuppressXFrameOptionsHeaderIfPresentInConfig(IApplicationStatusInfo appStatus)
         {
-            var xmlConfig = Config.Load();
+            var xmlConfig = Config.Load(appStatus);
             var xmlCustomHeaders =
                 xmlConfig.SelectSingleNode("configuration/system.webServer/httpProtocol/customHeaders") ??
                 xmlConfig.SelectSingleNode("configuration/location/system.webServer/httpProtocol/customHeaders");

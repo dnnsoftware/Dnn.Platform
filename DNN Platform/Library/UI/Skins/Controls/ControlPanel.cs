@@ -34,7 +34,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public bool IsDockable { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

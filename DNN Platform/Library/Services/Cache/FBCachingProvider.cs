@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Cache
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Security.Cryptography;
     using System.Text;
@@ -37,7 +38,7 @@ namespace DotNetNuke.Services.Cache
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,                                    CacheItemRemovedCallback onRemoveCallback)
         {
             // initialize cache dependency
@@ -61,7 +62,7 @@ namespace DotNetNuke.Services.Cache
             base.Insert(cacheKey, itemToCache, d, absoluteExpiration, slidingExpiration, priority, onRemoveCallback);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsWebFarm()
         {
             bool isWebFarm = Null.NullBoolean;
@@ -73,14 +74,15 @@ namespace DotNetNuke.Services.Cache
             return isWebFarm;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string PurgeCache()
         {
             // called by scheduled job to remove cache files which are no longer active
             return PurgeCacheFiles(Globals.HostMapPath + CachingDirectory);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void Remove(string key)
         {
             base.Remove(key);
@@ -102,7 +104,7 @@ namespace DotNetNuke.Services.Cache
             var sOutput = new StringBuilder(arrInput.Length);
             for (i = 0; i <= arrInput.Length - 1; i++)
             {
-                sOutput.Append(arrInput[i].ToString("X2"));
+                sOutput.Append(arrInput[i].ToString("X2", CultureInfo.InvariantCulture));
             }
 
             return sOutput.ToString();
@@ -213,7 +215,7 @@ namespace DotNetNuke.Services.Cache
             }
 
             // return a summary message for the job
-            return string.Format("Cache Synchronization Files Processed: " + f.Length + ", Purged: " + purgedFiles + ", Errors: " + purgeErrors);
+            return $"Cache Synchronization Files Processed: {f.Length}, Purged: {purgedFiles}, Errors: {purgeErrors}";
         }
     }
 }

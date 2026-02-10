@@ -2,11 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+#nullable enable
 namespace DotNetNuke.Web.Api
 {
     using System.Collections.Generic;
     using System.Web.Routing;
 
+    /// <summary>A contract specifying the ability to map web API routes within DNN.</summary>
     public interface IMapRoute
     {
         /// <summary>Sets up the route(s) for DotNetNuke services.</summary>
@@ -17,8 +19,8 @@ namespace DotNetNuke.Web.Api
         /// <param name="constraints">The constraints.</param>
         /// <param name="namespaces">The namespace(s) in which to search for the controllers for this route.</param>
         /// <returns>A list of all routes that were registered.</returns>
-        /// <remarks>The combination of moduleFolderName and routeName must be unique for each route.</remarks>
-        IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, object defaults, object constraints, string[] namespaces);
+        /// <remarks>The combination of <paramref name="moduleFolderName"/> and <paramref name="routeName"/> must be unique for each route.</remarks>
+        IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, object? defaults, object? constraints, string[] namespaces);
 
         /// <summary>Sets up the route(s) for DotNetNuke services.</summary>
         /// <param name="moduleFolderName">The name of the folder under DesktopModules in which your module resides.</param>
@@ -27,8 +29,8 @@ namespace DotNetNuke.Web.Api
         /// <param name="defaults">Default values for the route parameters.</param>
         /// <param name="namespaces">The namespace(s) in which to search for the controllers for this route.</param>
         /// <returns>A list of all routes that were registered.</returns>
-        /// <remarks>The combination of moduleFolderName and routeName must be unique for each route.</remarks>
-        IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, object defaults, string[] namespaces);
+        /// <remarks>The combination of <paramref name="moduleFolderName"/> and <paramref name="routeName"/> must be unique for each route.</remarks>
+        IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, object? defaults, string[] namespaces);
 
         /// <summary>Sets up the route(s) for DotNetNuke services.</summary>
         /// <param name="moduleFolderName">The name of the folder under DesktopModules in which your module resides.</param>
@@ -36,7 +38,7 @@ namespace DotNetNuke.Web.Api
         /// <param name="url">The parameterized portion of the route.</param>
         /// <param name="namespaces">The namespace(s) in which to search for the controllers for this route.</param>
         /// <returns>A list of all routes that were registered.</returns>
-        /// <remarks>The combination of moduleFolderName and routeName must be unique for each route.</remarks>
+        /// <remarks>The combination of <paramref name="moduleFolderName"/> and <paramref name="routeName"/> must be unique for each route.</remarks>
         IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, string[] namespaces);
     }
 }

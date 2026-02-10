@@ -6,11 +6,14 @@ namespace DotNetNuke.ComponentModel;
 using System;
 using System.Collections;
 
+using DotNetNuke.Instrumentation;
+
 using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>A container which gets components from an <see cref="IServiceProvider"/> for components not registered.</summary>
 public class ContainerWithServiceProviderFallback : IContainer
 {
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContainerWithServiceProviderFallback));
     private readonly IContainer container;
     private readonly IServiceProvider serviceProvider;
 
@@ -115,7 +118,18 @@ public class ContainerWithServiceProviderFallback : IContainer
 
     /// <inheritdoc />
     public TContract GetComponent<TContract>()
-        => this.container.GetComponent<TContract>() ?? this.serviceProvider.GetService<TContract>();
+    {
+        Logger.Trace($"Getting component for {typeof(TContract).FullName}");
+        var service = this.container.GetComponent<TContract>();
+        if (service is not null)
+        {
+            Logger.Trace($"Got component for {typeof(TContract).FullName} from container");
+            return service;
+        }
+
+        Logger.Trace($"Getting component for {typeof(TContract).FullName} from service provider");
+        return this.serviceProvider.GetService<TContract>();
+    }
 
     /// <inheritdoc />
     public TContract GetComponent<TContract>(string name)

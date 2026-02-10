@@ -141,7 +141,7 @@ namespace DotNetNuke.Entities.Users.Membership
             const string listName = "BannedPasswords";
 
             var listController = new ListController();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentSettings();
 
             IEnumerable<ListEntryInfo> listEntryHostInfos = listController.GetListEntryInfoItems(
                 listName,

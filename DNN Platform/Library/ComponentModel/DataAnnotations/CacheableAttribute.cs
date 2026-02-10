@@ -6,32 +6,26 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
     using System;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
+
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     public class CacheableAttribute : Attribute
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CacheableAttribute"/> class.
-        /// Construct a new CacheableAttribute.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CacheableAttribute"/> class.</summary>
         public CacheableAttribute()
         {
             this.CachePriority = CacheItemPriority.Default;
             this.CacheTimeOut = 20;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CacheableAttribute"/> class.
-        /// Construct a new CacheableAttribute.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CacheableAttribute"/> class.</summary>
         /// <param name="cacheKey">The cacheKey to use.</param>
         public CacheableAttribute(string cacheKey)
             : this(cacheKey, CacheItemPriority.Default, 20)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CacheableAttribute"/> class.
-        /// Construct a new CacheableAttribute.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CacheableAttribute"/> class.</summary>
         /// <param name="cacheKey">The cacheKey to use.</param>
         /// <param name="priority">The priority of the cached item.</param>
         public CacheableAttribute(string cacheKey, CacheItemPriority priority)
@@ -39,10 +33,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CacheableAttribute"/> class.
-        /// Construct a new CacheableAttribute.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CacheableAttribute"/> class.</summary>
         /// <param name="cacheKey">The cacheKey to use.</param>
         /// <param name="priority">The priority of the cached item.</param>
         /// <param name="timeOut">The timeout multiplier used to cache the item.</param>
@@ -60,8 +51,8 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         public CacheItemPriority CachePriority { get; set; }
 
         /// <summary>
-        /// Gets or sets the timeout multiplier used to cache the item. This value is multiple by the Host
-        /// Performance Setting to determine the actual timeout value. The default value is 20.
+        /// Gets or sets the timeout multiplier used to cache the item. This value is multiplied by the
+        /// <see cref="IHostSettings.PerformanceSetting"/> to determine the actual timeout value. The default value is 20.
         /// </summary>
         public int CacheTimeOut { get; set; }
     }

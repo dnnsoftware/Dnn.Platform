@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.Localization
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -22,6 +23,7 @@ namespace DotNetNuke.Services.Localization
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Roles;
@@ -29,6 +31,8 @@ namespace DotNetNuke.Services.Localization
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.UI.Modules;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Localization class support localization in system.</summary>
     /// <remarks>
@@ -55,8 +59,8 @@ namespace DotNetNuke.Services.Localization
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Localization));
         private static string defaultKeyName = "resourcekey";
 
-        // private static readonly ILocaleController LocaleController.Instance = LocaleController.Instance;
-        // private static readonly ILocalizationProvider _localizationProvider = LocalizationProvider.Instance;
+        ////private static readonly ILocaleController LocaleController.Instance = LocaleController.Instance;
+        ////private static readonly ILocalizationProvider _localizationProvider = LocalizationProvider.Instance;
         private static bool? showMissingKeys;
 
         /// <summary>Gets <c>"~/App_GlobalResources"</c>.</summary>
@@ -198,57 +202,70 @@ namespace DotNetNuke.Services.Localization
             return count;
         }
 
-        public static void AddLanguageToPortal(int portalID, int languageID, bool clearCache)
+        /// <summary>Add the language to the portal.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="languageID">The language ID.</param>
+        /// <param name="clearCache">Whether to clear the cache after adding.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void AddLanguageToPortal(int portalID, int languageID, bool clearCache)
+            => AddLanguageToPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalID, languageID, clearCache);
+
+        /// <summary>Add the language to the portal.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="languageId">The language ID.</param>
+        /// <param name="clearCache">Whether to clear the cache after adding.</param>
+        public static void AddLanguageToPortal(IEventLogger eventLogger, int portalId, int languageId, bool clearCache)
         {
             // try to get valid locale reference
-            var newLocale = LocaleController.Instance.GetLocale(languageID);
+            var newLocale = LocaleController.Instance.GetLocale(languageId);
 
             // we can only add a valid locale
             if (newLocale != null)
             {
                 // check if locale has not been added to portal already
-                var portalLocale = LocaleController.Instance.GetLocale(portalID, newLocale.Code);
+                var portalLocale = LocaleController.Instance.GetLocale(portalId, newLocale.Code);
 
                 // locale needs to be added
                 if (portalLocale == null)
                 {
                     // We need to add a translator role for the language
-                    bool contentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalID, false);
+                    bool contentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalId, false);
                     if (contentLocalizationEnabled)
                     {
                         // Create new Translator Role
-                        AddTranslatorRole(portalID, newLocale);
+                        AddTranslatorRole(portalId, newLocale);
                     }
 
-                    DataProvider.Instance().AddPortalLanguage(portalID, languageID, false, UserController.Instance.GetCurrentUserInfo().UserID);
-                    string cacheKey = string.Format(DataCache.LocalesCacheKey, portalID);
+                    DataProvider.Instance().AddPortalLanguage(portalId, languageId, false, UserController.Instance.GetCurrentUserInfo().UserID);
+                    string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.LocalesCacheKey, portalId);
                     DataCache.RemoveCache(cacheKey);
 
-                    EventLogController.Instance.AddLog(
+                    eventLogger.AddLog(
                         "portalID/languageID",
-                        portalID + "/" + languageID,
-                        PortalController.Instance.GetCurrentPortalSettings(),
+                        $"{portalId}/{languageId}",
+                        PortalController.Instance.GetCurrentSettings(),
                         UserController.Instance.GetCurrentUserInfo().UserID,
-                        EventLogController.EventLogType.LANGUAGETOPORTAL_CREATED);
+                        EventLogType.LANGUAGETOPORTAL_CREATED);
 
-                    var portalInfo = PortalController.Instance.GetPortal(portalID);
+                    var portalInfo = PortalController.Instance.GetPortal(portalId);
                     if (portalInfo != null && newLocale.Code != portalInfo.DefaultLanguage)
                     {
                         // check to see if this is the first extra language being added to the portal
-                        var portalLocales = LocaleController.Instance.GetLocales(portalID);
+                        var portalLocales = LocaleController.Instance.GetLocales(portalId);
                         var firstExtraLanguage = (portalLocales != null) && portalLocales.Count == 2;
 
                         if (firstExtraLanguage)
                         {
-                            AddLanguageHttpAlias(portalID, LocaleController.Instance.GetLocale(portalID, portalInfo.DefaultLanguage));
+                            AddLanguageHttpAlias(portalId, LocaleController.Instance.GetLocale(portalId, portalInfo.DefaultLanguage));
                         }
 
-                        AddLanguageHttpAlias(portalID, newLocale);
+                        AddLanguageHttpAlias(portalId, newLocale);
                     }
 
                     if (clearCache)
                     {
-                        DataCache.ClearPortalCache(portalID, false);
+                        DataCache.ClearPortalCache(portalId, false);
                     }
                 }
             }
@@ -262,7 +279,7 @@ namespace DotNetNuke.Services.Localization
                 AddLanguageToPortal(portalID, language.LanguageId, false);
             }
 
-            DataCache.RemoveCache(string.Format(DataCache.LocalesCacheKey, portalID));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.LocalesCacheKey, portalID));
         }
 
         public static void AddLanguageToPortals(int languageID)
@@ -272,31 +289,30 @@ namespace DotNetNuke.Services.Localization
                 // Add Portal/Language to PortalLanguages
                 AddLanguageToPortal(portal.PortalID, languageID, false);
 
-                DataCache.RemoveCache(string.Format(DataCache.LocalesCacheKey, portal.PortalID));
+                DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.LocalesCacheKey, portal.PortalID));
             }
         }
 
         public static void AddTranslatorRole(int portalID, Locale language)
         {
             // Create new Translator Role
-            string roleName = string.Format("Translator ({0})", language.Code);
+            string roleName = $"Translator ({language.Code})";
             RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
 
             if (role == null)
             {
-                role = new RoleInfo();
-                role.RoleGroupID = Null.NullInteger;
-                role.PortalID = portalID;
-                role.RoleName = roleName;
-                role.Description = string.Format("A role for {0} translators", language.EnglishName);
-                role.SecurityMode = SecurityMode.SecurityRole;
-                role.Status = RoleStatus.Approved;
+                role = new RoleInfo
+                {
+                    RoleGroupID = Null.NullInteger, PortalID = portalID, RoleName = roleName, Description = $"A role for {language.EnglishName} translators",
+                    SecurityMode = SecurityMode.SecurityRole,
+                    Status = RoleStatus.Approved,
+                };
                 RoleController.Instance.AddRole(role);
             }
 
-            string roles = string.Format("Administrators;{0}", string.Format("Translator ({0})", language.Code));
+            string roles = $"Administrators;Translator ({language.Code})";
 
-            PortalController.UpdatePortalSetting(portalID, string.Format("DefaultTranslatorRoles-{0}", language.Code), roles);
+            PortalController.UpdatePortalSetting(portalID, $"DefaultTranslatorRoles-{language.Code}", roles);
         }
 
         /// <summary>Converts old TimeZoneOffset to new <see cref="TimeZoneInfo"/>.</summary>
@@ -427,18 +443,36 @@ namespace DotNetNuke.Services.Localization
             return timeZoneInfo;
         }
 
-        public static void DeleteLanguage(Locale language)
-        {
-            DeleteLanguage(language, false);
-        }
+        /// <summary>Delete the language.</summary>
+        /// <param name="language">The language/locale.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeleteLanguage(Locale language)
+            => DeleteLanguage(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), language);
 
-        public static void DeleteLanguage(Locale language, bool isInstalling)
+        /// <summary>Delete the language.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="language">The language/locale.</param>
+        public static void DeleteLanguage(IEventLogger eventLogger, Locale language)
+            => DeleteLanguage(eventLogger, language, false);
+
+        /// <summary>Delete the language.</summary>
+        /// <param name="language">The language/locale.</param>
+        /// <param name="isInstalling">Whether the site is installing.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeleteLanguage(Locale language, bool isInstalling)
+            => DeleteLanguage(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), language, isInstalling);
+
+        /// <summary>Delete the language.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="language">The language/locale.</param>
+        /// <param name="isInstalling">Whether the site is installing.</param>
+        public static void DeleteLanguage(IEventLogger eventLogger, Locale language, bool isInstalling)
         {
             // remove languages from all portals
             RemoveLanguageFromPortals(language.LanguageId, isInstalling);
 
             DataProvider.Instance().DeleteLanguage(language.LanguageId);
-            EventLogController.Instance.AddLog(language, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_DELETED);
+            eventLogger.AddLog(language, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.LANGUAGE_DELETED);
             DataCache.ClearHostCache(true);
         }
 
@@ -466,17 +500,17 @@ namespace DotNetNuke.Services.Localization
         {
             if (HttpContext.Current == null)
             {
-                return string.Format(defaultValue, @params);
+                return string.Format(CultureInfo.CurrentCulture, defaultValue, @params);
             }
 
             var content = GetString(key, ExceptionsResourceFile);
-            return string.Format(string.IsNullOrEmpty(content) ? defaultValue : GetString(key, ExceptionsResourceFile), @params);
+            return string.Format(CultureInfo.CurrentCulture, string.IsNullOrEmpty(content) ? defaultValue : GetString(key, ExceptionsResourceFile), @params);
         }
 
         public static string GetLanguageDisplayMode(int portalId)
         {
             string viewTypePersonalizationKey = "ViewType" + portalId;
-            string viewType = Convert.ToString(Personalization.Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
+            string viewType = Convert.ToString(Personalization.Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey), CultureInfo.InvariantCulture);
             if (string.IsNullOrEmpty(viewType))
             {
                 viewType = "NATIVE";
@@ -499,7 +533,7 @@ namespace DotNetNuke.Services.Localization
                     name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(info.EnglishName);
                     break;
                 case CultureDropDownTypes.Lcid:
-                    name = info.LCID.ToString();
+                    name = info.LCID.ToString(CultureInfo.CurrentCulture);
                     break;
                 case CultureDropDownTypes.Name:
                     name = info.Name;
@@ -629,30 +663,30 @@ namespace DotNetNuke.Services.Localization
 
         public static string GetResourceFileName(string resourceFileName, string language, string mode, int portalId)
         {
-            if (!resourceFileName.EndsWith(".resx"))
+            if (!resourceFileName.EndsWith(".resx", StringComparison.OrdinalIgnoreCase))
             {
                 resourceFileName += ".resx";
             }
 
             if (language != SystemLocale)
             {
-                if (resourceFileName.ToLowerInvariant().EndsWith(".en-us.resx"))
+                if (resourceFileName.EndsWith(".en-us.resx", StringComparison.OrdinalIgnoreCase))
                 {
-                    resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 11) + "." + language + ".resx";
+                    resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 11)}.{language}.resx";
                 }
                 else
                 {
-                    resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + language + ".resx";
+                    resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 5)}.{language}.resx";
                 }
             }
 
             if (mode == "Host")
             {
-                resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + "Host.resx";
+                resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 5)}.Host.resx";
             }
             else if (mode == "Portal")
             {
-                resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + "Portal-" + portalId + ".resx";
+                resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 5)}.Portal-{portalId}.resx";
             }
 
             return resourceFileName;
@@ -699,7 +733,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns>The localized Text.</returns>
         public static string GetString(string key)
         {
-            return GetString(key, null, PortalController.Instance.GetCurrentPortalSettings(), null, false);
+            return GetString(key, null, PortalSettings.Current, null, false);
         }
 
         /// <overloads>One of six overloads.</overloads>
@@ -720,7 +754,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns>The localized Text.</returns>
         public static string GetString(string key, string resourceFileRoot, bool disableShowMissingKeys)
         {
-            return GetString(key, resourceFileRoot, PortalController.Instance.GetCurrentPortalSettings(), null, disableShowMissingKeys);
+            return GetString(key, resourceFileRoot, PortalSettings.Current, null, disableShowMissingKeys);
         }
 
         /// <overloads>One of six overloads.</overloads>
@@ -775,18 +809,18 @@ namespace DotNetNuke.Services.Localization
         /// <returns>The localized Text.</returns>
         /// <remarks>
         /// This function should be used to retrieve strings to be used on URLs.
-        /// It is the same as <see cref="GetString(string, string)">GetString(name,ResourceFileRoot)</see> method
+        /// It is the same as <see cref="GetString(string, string)">GetString(name,ResourceFileRoot)</see> method,
         /// but it disables the ShowMissingKey flag, so even in testing scenarios, the correct string
         /// is returned.
         /// </remarks>
         public static string GetStringUrl(string key, string resourceFileRoot)
         {
-            return GetString(key, resourceFileRoot, PortalController.Instance.GetCurrentPortalSettings(), null, true);
+            return GetString(key, resourceFileRoot, PortalSettings.Current, null, true);
         }
 
-        /// <summary>this function will escape reserved character fields to their "safe" javascript equivalents.</summary>
+        /// <summary>this function will escape reserved character fields to their "safe" JavaScript equivalents.</summary>
         /// <param name="unsafeString">The string to be parsed for unsafe characters.</param>
-        /// <returns>the string that is safe to use in a javascript function.</returns>
+        /// <returns>the string that is safe to use in a JavaScript function.</returns>
         public static string GetSafeJSString(string unsafeString)
         {
             if (string.IsNullOrEmpty(unsafeString))
@@ -1110,7 +1144,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns>A sequence of new <see cref="ListItem"/> instances.</returns>
         public static IEnumerable<ListItem> LoadCultureInListItems(CultureDropDownTypes displayType, string selectedValue, string filter, bool host)
         {
-            PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var objPortalSettings = PortalController.Instance.GetCurrentSettings();
             Dictionary<string, Locale> enabledLanguages;
             if (host)
             {
@@ -1309,35 +1343,57 @@ namespace DotNetNuke.Services.Localization
             return roleDescription;
         }
 
-        public static void RemoveLanguageFromPortal(int portalID, int languageID)
-        {
-            RemoveLanguageFromPortal(portalID, languageID, false);
-        }
+        /// <summary>Remove the specified language from the specified portal.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="languageID">The language ID.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void RemoveLanguageFromPortal(int portalID, int languageID)
+            => RemoveLanguageFromPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalID, languageID);
 
-        public static void RemoveLanguageFromPortal(int portalID, int languageID, bool isInstalling)
+        /// <summary>Remove the specified language from the specified portal.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="languageId">The language ID.</param>
+        public static void RemoveLanguageFromPortal(IEventLogger eventLogger, int portalId, int languageId)
+            => RemoveLanguageFromPortal(eventLogger, portalId, languageId, false);
+
+        /// <summary>Remove the specified language from the specified portal.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="languageID">The language ID.</param>
+        /// <param name="isInstalling">Whether the site is installing.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void RemoveLanguageFromPortal(int portalID, int languageID, bool isInstalling)
+            => RemoveLanguageFromPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalID, languageID, isInstalling);
+
+        /// <summary>Remove the specified language from the specified portal.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="languageId">The language ID.</param>
+        /// <param name="isInstalling">Whether the site is installing.</param>
+        public static void RemoveLanguageFromPortal(IEventLogger eventLogger, int portalId, int languageId, bool isInstalling)
         {
             if (!isInstalling)
             {
-                var portalLocales = GetPortalLocalizations(portalID);
+                var portalLocales = GetPortalLocalizations(portalId);
                 if (portalLocales.Count <= 1)
                 {
                     throw new PortalLocalizationRequiredException("You are trying to delete the only Portal localization entry in the system. This is NOT allowed!");
                 }
             }
 
-            var language = LocaleController.Instance.GetLocale(languageID);
+            var language = LocaleController.Instance.GetLocale(languageId);
             if (language != null)
             {
                 if (Config.GetFriendlyUrlProvider() == "advanced")
                 {
                     // only do this with Advanced URL Management
-                    var portalInfo = PortalController.Instance.GetPortal(portalID);
+                    var portalInfo = PortalController.Instance.GetPortal(portalId);
                     if (portalInfo != null)
                     {
                         // check to see if this is the last extra language being added to the portal
-                        var lastLanguage = LocaleController.Instance.GetLocales(portalID).Count == 2;
+                        var lastLanguage = LocaleController.Instance.GetLocales(portalId).Count == 2;
 
-                        var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalID).ToList();
+                        var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
                         foreach (var portalAliasInfo in portalAliases)
                         {
                             if (portalAliasInfo.CultureCode == language.Code)
@@ -1353,11 +1409,7 @@ namespace DotNetNuke.Services.Localization
                                 var newDefaultAlias = portalAliases.SingleOrDefault(a => a.IsPrimary && a.CultureCode == string.Empty);
                                 if (newDefaultAlias != null)
                                 {
-                                    var settings = PortalController.Instance.GetCurrentPortalSettings();
-                                    if (settings != null)
-                                    {
-                                        settings.PortalAlias = newDefaultAlias;
-                                    }
+                                    PortalSettings.Current?.PortalAlias = newDefaultAlias;
                                 }
                             }
                         }
@@ -1365,8 +1417,8 @@ namespace DotNetNuke.Services.Localization
                 }
 
                 // Get Translator Role
-                string roleName = string.Format("Translator ({0})", language.Code);
-                RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
+                string roleName = $"Translator ({language.Code})";
+                RoleInfo role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
 
                 if (role != null)
                 {
@@ -1374,55 +1426,100 @@ namespace DotNetNuke.Services.Localization
                     RoleController.Instance.DeleteRole(role);
                 }
 
-                DataProvider.Instance().DeletePortalLanguages(portalID, languageID);
-                EventLogController.Instance.AddLog(
+                DataProvider.Instance().DeletePortalLanguages(portalId, languageId);
+                eventLogger.AddLog(
                     "portalID/languageID",
-                    portalID + "/" + languageID,
-                    PortalController.Instance.GetCurrentPortalSettings(),
+                    $"{portalId}/{languageId}",
+                    PortalController.Instance.GetCurrentSettings(),
                     UserController.Instance.GetCurrentUserInfo().UserID,
-                    EventLogController.EventLogType.LANGUAGETOPORTAL_DELETED);
+                    EventLogType.LANGUAGETOPORTAL_DELETED);
 
-                DataCache.ClearPortalCache(portalID, false);
+                DataCache.ClearPortalCache(portalId, false);
             }
         }
 
-        public static void RemoveLanguageFromPortals(int languageId)
-        {
-            RemoveLanguageFromPortals(languageId, false);
-        }
+        /// <summary>Removes the specified language from all portals.</summary>
+        /// <param name="languageId">The language ID.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void RemoveLanguageFromPortals(int languageId)
+            => RemoveLanguageFromPortals(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), languageId);
 
-        public static void RemoveLanguageFromPortals(int languageId, bool isInstalling)
+        /// <summary>Removes the specified language from all portals.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="languageId">The language ID.</param>
+        public static void RemoveLanguageFromPortals(IEventLogger eventLogger, int languageId)
+            => RemoveLanguageFromPortals(eventLogger, languageId, false);
+
+        /// <summary>Removes the specified language from all portals.</summary>
+        /// <param name="languageId">The language ID.</param>
+        /// <param name="isInstalling">Whether the site is installing.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void RemoveLanguageFromPortals(int languageId, bool isInstalling)
+            => RemoveLanguageFromPortals(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), languageId, isInstalling);
+
+        /// <summary>Removes the specified language from all portals.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="languageId">The language ID.</param>
+        /// <param name="isInstalling">Whether the site is installing.</param>
+        public static void RemoveLanguageFromPortals(IEventLogger eventLogger, int languageId, bool isInstalling)
         {
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
+            foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
             {
-                RemoveLanguageFromPortal(portal.PortalID, languageId, isInstalling);
+                RemoveLanguageFromPortal(eventLogger, portal.PortalId, languageId, isInstalling);
             }
         }
 
-        public static void RemoveLanguagesFromPortal(int portalId)
+        /// <summary>Removes all languages from the specified portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void RemoveLanguagesFromPortal(int portalId)
+            => RemoveLanguagesFromPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalId);
+
+        /// <summary>Removes all languages from the specified portal.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">The portal ID.</param>
+        public static void RemoveLanguagesFromPortal(IEventLogger eventLogger, int portalId)
         {
-            foreach (Locale locale in LocaleController.Instance.GetLocales(portalId).Values)
+            foreach (var locale in LocaleController.Instance.GetLocales(portalId).Values)
             {
-                RemoveLanguageFromPortal(portalId, locale.LanguageId);
+                RemoveLanguageFromPortal(eventLogger, portalId, locale.LanguageId);
             }
         }
 
-        public static void SaveLanguage(Locale locale)
-        {
-            SaveLanguage(locale, true);
-        }
+        /// <summary>Adds or updates the language.</summary>
+        /// <param name="locale">The language/locale.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void SaveLanguage(Locale locale)
+            => SaveLanguage(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), locale);
 
-        public static void SaveLanguage(Locale locale, bool clearCache)
+        /// <summary>Adds or updates the language.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="locale">The language/locale.</param>
+        public static void SaveLanguage(IEventLogger eventLogger, Locale locale)
+            => SaveLanguage(eventLogger, locale, true);
+
+        /// <summary>Adds or updates the language.</summary>
+        /// <param name="locale">The language/locale.</param>
+        /// <param name="clearCache">Whether to clear the cache afterwards.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void SaveLanguage(Locale locale, bool clearCache)
+            => SaveLanguage(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), locale, clearCache);
+
+        /// <summary>Adds or updates the language.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="locale">The language/locale.</param>
+        /// <param name="clearCache">Whether to clear the cache afterwards.</param>
+        public static void SaveLanguage(IEventLogger eventLogger, Locale locale, bool clearCache)
         {
             if (locale.LanguageId == Null.NullInteger)
             {
                 locale.LanguageId = DataProvider.Instance().AddLanguage(locale.Code, locale.Text, locale.Fallback, UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_CREATED);
+                eventLogger.AddLog(locale, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.LANGUAGE_CREATED);
             }
             else
             {
                 DataProvider.Instance().UpdateLanguage(locale.LanguageId, locale.Code, locale.Text, locale.Fallback, UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_UPDATED);
+                eventLogger.AddLog(locale, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.LANGUAGE_UPDATED);
             }
 
             if (clearCache)
@@ -1475,7 +1572,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="portalSettings">The current portal settings.</param>
         /// <remarks>
         ///   This method will configure the Thread culture codes.  Any page which does not derive from <see cref="PageBase" /> should
-        ///   be sure to call this method in <see cref="Control.OnInit" /> to ensure localization works correctly.  See the <see cref="TelerikDialogHandler" /> for an example.
+        ///   be sure to call this method in <see cref="Control.OnInit" /> to ensure localization works correctly.
         /// </remarks>
         [DnnDeprecated(9, 8, 0, "Use overload taking IPortalSettings instead")]
         public static partial void SetThreadCultures(CultureInfo cultureInfo, PortalSettings portalSettings)
@@ -1488,7 +1585,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="portalSettings">The current portal settings.</param>
         /// <remarks>
         ///   This method will configure the Thread culture codes.  Any page which does not derive from <see cref="PageBase" /> should
-        ///   be sure to call this method in <see cref="Control.OnInit" /> to ensure localization works correctly.  See the <see cref="TelerikDialogHandler" /> for an example.
+        ///   be sure to call this method in <see cref="Control.OnInit" /> to ensure localization works correctly.
         /// </remarks>
         public static void SetThreadCultures(CultureInfo cultureInfo, IPortalSettings portalSettings)
         {
@@ -1534,7 +1631,7 @@ namespace DotNetNuke.Services.Localization
             string oldCurrentCulture = this.CurrentUICulture;
             var newCulture = new CultureInfo(culture);
             Thread.CurrentThread.CurrentUICulture = newCulture;
-            string currencyStr = expression.ToString(newCulture.NumberFormat.CurrencySymbol);
+            string currencyStr = expression.ToString(newCulture.NumberFormat.CurrencySymbol, newCulture);
             var oldCulture = new CultureInfo(oldCurrentCulture);
             Thread.CurrentThread.CurrentUICulture = oldCulture;
             return currencyStr;
@@ -1545,7 +1642,7 @@ namespace DotNetNuke.Services.Localization
             string oldCurrentCulture = this.CurrentUICulture;
             var newCulture = new CultureInfo(culture);
             Thread.CurrentThread.CurrentUICulture = newCulture;
-            string dateStr = expression.ToString(newCulture.DateTimeFormat.FullDateTimePattern);
+            string dateStr = expression.ToString(newCulture.DateTimeFormat.FullDateTimePattern, newCulture);
             var oldCulture = new CultureInfo(oldCurrentCulture);
             Thread.CurrentThread.CurrentUICulture = oldCulture;
             return dateStr;
@@ -1556,7 +1653,7 @@ namespace DotNetNuke.Services.Localization
         /// If an exact match is not found (language-region), it will try to find a match for the language only.
         /// Ex: requested locale is "en-GB", requested language is "en", enabled locale is "en-US", so "en" is a match for "en-US".
         /// </summary>
-        /// <param name="portalId">Id of current portal.</param>
+        /// <param name="portalId">ID of current portal.</param>
         /// <param name="language">Language to be parsed.</param>
         /// <returns>A valid and enabled CultureInfo that matches the language passed if any.</returns>
         internal static CultureInfo GetCultureFromString(int portalId, string language)
@@ -1729,14 +1826,14 @@ namespace DotNetNuke.Services.Localization
                         }
                     }
 
-                    var alias = GetValidLanguageURL(portalId, httpAlias, locale.Code.ToLowerInvariant());
+                    var alias = GetValidLanguageUrl(portalId, httpAlias, locale.Code.ToLowerInvariant());
                     if (!string.IsNullOrEmpty(alias))
                     {
                         var newAlias = new PortalAliasInfo(currentAlias)
                         {
                             IsPrimary = true,
                             CultureCode = locale.Code,
-                            HTTPAlias = GetValidLanguageURL(portalId, httpAlias, locale.Code.ToLowerInvariant()),
+                            HTTPAlias = GetValidLanguageUrl(portalId, httpAlias, locale.Code.ToLowerInvariant()),
                         };
 
                         PortalAliasController.Instance.AddPortalAlias(newAlias);
@@ -1745,21 +1842,21 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        private static string GetValidLanguageURL(int portalId, string httpAlias, string locale)
+        private static string GetValidLanguageUrl(int portalId, string httpAlias, string locale)
         {
             string alias;
 
             bool isValid;
-            int counter = 0;
+            var counter = 0;
             do
             {
-                string modifiedLocale = locale;
+                var modifiedLocale = locale;
                 if (counter > 0)
                 {
                     modifiedLocale += counter.ToString(CultureInfo.InvariantCulture);
                 }
 
-                alias = string.Format("{0}/{1}", httpAlias, modifiedLocale);
+                alias = $"{httpAlias}/{modifiedLocale}";
 
                 var tab = TabController.Instance.GetTabByName(modifiedLocale, portalId);
                 isValid = tab == null;

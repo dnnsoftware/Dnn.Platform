@@ -131,7 +131,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ForcePurgeFromServerCache(string cacheId)
         {
             var files = new DirectoryInfo(CachePath).GetFiles();
@@ -146,13 +146,13 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         void IImageStore.Add(string id, byte[] data)
         {
             this.Add(id, data);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         bool IImageStore.TryTransmitIfContains(string id, HttpResponseBase response)
         {
             return this.TryTransmitIfContains(id, response);

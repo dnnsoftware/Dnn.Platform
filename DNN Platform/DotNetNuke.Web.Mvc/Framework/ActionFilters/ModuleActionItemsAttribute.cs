@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
     using System;
+    using System.Globalization;
     using System.Reflection;
     using System.Web.Mvc;
 
@@ -20,7 +21,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         public string MethodName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var controller = filterContext.Controller as IDnnController;
@@ -47,7 +48,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
             if (string.IsNullOrEmpty(this.MethodName))
             {
-                methodName = string.Format(MethodNameTemplate, filterContext.ActionDescriptor.ActionName);
+                methodName = string.Format(CultureInfo.InvariantCulture, MethodNameTemplate, filterContext.ActionDescriptor.ActionName);
             }
             else
             {

@@ -22,12 +22,13 @@ namespace DotNetNuke.HttpModules.Exceptions
 
         /// <summary>Initializes the error handling for the specified application.</summary>
         /// <param name="application">The application.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication application)
         {
             application.Error += this.OnErrorRequest;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
         }

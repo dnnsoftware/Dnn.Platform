@@ -10,9 +10,13 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     using System.Linq;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
+
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Auth;
     using Microsoft.WindowsAzure.Storage.Blob;
@@ -21,20 +25,37 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     public partial class Settings : FolderMappingSettingsControlBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
+        private readonly ICryptographyProvider cryptographyProvider;
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="Settings"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Use overload with ICryptographyProvider. Scheduled for removal in v12.0.0.")]
+        public Settings()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Settings"/> class.</summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public Settings(ICryptographyProvider cryptographyProvider, IHostSettings hostSettings)
+        {
+            this.cryptographyProvider = cryptographyProvider ?? this.DependencyProvider.GetRequiredService<ICryptographyProvider>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+        }
 
         /// <summary>Loads concrete settings.</summary>
         /// <param name="folderMappingSettings">The Hashtable containing the folder mapping settings.</param>
         public override void LoadSettings(Hashtable folderMappingSettings)
         {
-            var folderProvider = FolderProvider.Instance(Constants.FolderProviderType);
             if (folderMappingSettings.ContainsKey(Constants.AccountName))
             {
-                this.tbAccountName.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.AccountName);
+                this.tbAccountName.Text = FolderProvider.GetEncryptedSetting(this.cryptographyProvider, this.hostSettings, folderMappingSettings, Constants.AccountName);
             }
 
             if (folderMappingSettings.ContainsKey(Constants.AccountKey))
             {
-                this.tbAccountKey.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.AccountKey);
+                this.tbAccountKey.Text = FolderProvider.GetEncryptedSetting(this.cryptographyProvider, this.hostSettings, folderMappingSettings, Constants.AccountKey);
             }
 
             if (this.tbAccountName.Text.Length > 0 && this.tbAccountKey.Text.Length > 0)
@@ -65,7 +86,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
             if (folderMappingSettings.ContainsKey(Constants.CustomDomain))
             {
-                this.tbCustomDomain.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.CustomDomain);
+                this.tbCustomDomain.Text = FolderProvider.GetEncryptedSetting(this.cryptographyProvider, this.hostSettings, folderMappingSettings, Constants.CustomDomain);
             }
 
             if (folderMappingSettings.ContainsKey(Constants.SyncBatchSize) && folderMappingSettings[Constants.SyncBatchSize] != null)
@@ -92,12 +113,8 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             var folderMappingController = FolderMappingController.Instance;
             var folderMapping = folderMappingController.GetFolderMapping(folderMappingID);
 
-            var accountName = this.GetAccountName();
-            var accountKey = this.GetAccountKey();
+            var accountName = FolderProvider.EncryptValue(this.cryptographyProvider, this.hostSettings, this.tbAccountName.Text).EncryptedMessage;
             var container = this.GetContainer();
-            var useHttps = this.GetUseHttps();
-            var customDomain = this.GetCustomDomain();
-            var synchBatchSize = this.GetSynchBatchSize();
 
             if (AreThereFolderMappingsWithSameSettings(folderMapping, accountName, container))
             {
@@ -107,13 +124,13 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                 throw new Exception();
             }
 
-            folderMapping.FolderMappingSettings[Constants.AccountName] = accountName;
-            folderMapping.FolderMappingSettings[Constants.AccountKey] = accountKey;
+            this.SetEncryptedSetting(folderMapping, Constants.AccountName, this.tbAccountName.Text);
+            this.SetEncryptedSetting(folderMapping, Constants.AccountKey, this.tbAccountKey.Text);
             folderMapping.FolderMappingSettings[Constants.Container] = container;
-            folderMapping.FolderMappingSettings[Constants.UseHttps] = useHttps;
+            folderMapping.FolderMappingSettings[Constants.UseHttps] = this.GetUseHttps();
             folderMapping.FolderMappingSettings[Constants.DirectLink] = this.chkDirectLink.Checked;
-            folderMapping.FolderMappingSettings[Constants.CustomDomain] = customDomain;
-            folderMapping.FolderMappingSettings[Constants.SyncBatchSize] = synchBatchSize;
+            this.SetEncryptedSetting(folderMapping, Constants.CustomDomain, this.tbCustomDomain.Text);
+            folderMapping.FolderMappingSettings[Constants.SyncBatchSize] = this.GetSynchBatchSize();
 
             folderMappingController.UpdateFolderMapping(folderMapping);
         }
@@ -207,6 +224,14 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                 .Where(fm => fm.FolderMappingID != folderMapping.FolderMappingID && fm.FolderProviderType == folderMapping.FolderProviderType)
                 .Any(fm => fm.FolderMappingSettings[Constants.AccountName].ToString().Equals(accountName, StringComparison.InvariantCulture) &&
                            fm.FolderMappingSettings[Constants.Container].ToString().Equals(container, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private void SetEncryptedSetting(FolderMappingInfo folderMapping, string settingName, string settingValue)
+        {
+            var (encryptedValue, algorithmName, initializationVector) = FolderProvider.EncryptValue(this.cryptographyProvider, this.hostSettings, settingValue);
+            folderMapping.FolderMappingSettings[settingName] = encryptedValue;
+            folderMapping.FolderMappingSettings[FolderProvider.GetAlgorithmSettingKey(settingName)] = algorithmName;
+            folderMapping.FolderMappingSettings[FolderProvider.GetInitializationVectorSettingKey(settingName)] = initializationVector;
         }
 
         private string GetUseHttps()
@@ -314,21 +339,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
             this.valContainerName.IsValid = false;
             return false;
-        }
-
-        private string GetAccountKey()
-        {
-            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(this.tbAccountKey.Text);
-        }
-
-        private string GetAccountName()
-        {
-            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(this.tbAccountName.Text);
-        }
-
-        private string GetCustomDomain()
-        {
-            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(this.tbCustomDomain.Text);
         }
 
         private string GetSynchBatchSize()

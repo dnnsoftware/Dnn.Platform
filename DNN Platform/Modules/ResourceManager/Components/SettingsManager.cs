@@ -8,6 +8,9 @@ namespace Dnn.Modules.ResourceManager.Components
     using System.Collections.Generic;
 
     using Dnn.Modules.ResourceManager.Exceptions;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -15,6 +18,8 @@ namespace Dnn.Modules.ResourceManager.Components
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using static Dnn.Modules.ResourceManager.Components.Constants;
 
@@ -27,13 +32,20 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <summary>Initializes a new instance of the <see cref="SettingsManager"/> class.</summary>
         /// <param name="moduleId">The id of the module.</param>
         /// <param name="groupId">The id of the group.</param>
-        public SettingsManager(
-            int moduleId,
-            int groupId)
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IModuleController. Scheduled removal in v12.0.0.")]
+        public SettingsManager(int moduleId, int groupId)
+            : this(HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>(), moduleId, groupId)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SettingsManager"/> class.</summary>
+        /// <param name="moduleController">The module controller.</param>
+        /// <param name="moduleId">The id of the module.</param>
+        /// <param name="groupId">The id of the group.</param>
+        public SettingsManager(IModuleController moduleController, int moduleId, int groupId)
         {
             this.groupId = groupId;
-            var moduleController = new ModuleController();
-            var module = moduleController.GetModule(moduleId);
+            var module = moduleController.GetModule(moduleId, Null.NullInteger, false);
 
             this.moduleSettingsDictionary = module.ModuleSettings;
             this.LoadSettings();

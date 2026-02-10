@@ -7,6 +7,7 @@ namespace DotNetNuke.Entities.Tabs
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -386,7 +387,7 @@ namespace DotNetNuke.Entities.Tabs
                                 break;
                             case TabType.Tab:
                                 // alternate tab url
-                                fullUrl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(this.Url));
+                                fullUrl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(this.Url, CultureInfo.InvariantCulture));
                                 break;
                             case TabType.File:
                                 // file url
@@ -699,6 +700,7 @@ namespace DotNetNuke.Entities.Tabs
         public bool UseBaseFriendlyUrls { get; set; }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             string outputFormat = string.Empty;
@@ -851,7 +853,7 @@ namespace DotNetNuke.Entities.Tabs
                     break;
                 case "sitemappriority":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(this.SiteMapPriority.ToString(), format);
+                    result = PropertyAccess.FormatString(this.SiteMapPriority.ToString(formatProvider), format);
                     break;
             }
 
@@ -1075,7 +1077,8 @@ namespace DotNetNuke.Entities.Tabs
             var skinFileName = HttpContext.Current.Server.MapPath(this.SkinSrc.Replace(".ascx", ".doctype.xml"));
             if (File.Exists(skinFileName))
             {
-                xmlSkinDocType.Load(skinFileName);
+                using var doctypeReader = XmlReader.Create(skinFileName, new XmlReaderSettings { XmlResolver = null, });
+                xmlSkinDocType.Load(doctypeReader);
                 return xmlSkinDocType;
             }
 
@@ -1083,7 +1086,8 @@ namespace DotNetNuke.Entities.Tabs
             var packageFileName = HttpContext.Current.Server.MapPath(SkinSrcRegex.Replace(this.SkinSrc, "skin.doctype.xml"));
             if (File.Exists(packageFileName))
             {
-                xmlSkinDocType.Load(packageFileName);
+                using var doctypeReader = XmlReader.Create(packageFileName, new XmlReaderSettings { XmlResolver = null, });
+                xmlSkinDocType.Load(doctypeReader);
                 return xmlSkinDocType;
             }
 
@@ -1093,16 +1097,16 @@ namespace DotNetNuke.Entities.Tabs
 
         private void IconFileGetter(ref string iconFile, string iconRaw)
         {
-            if ((!string.IsNullOrEmpty(iconRaw) && iconRaw.StartsWith("~")) || this.PortalID == Null.NullInteger)
+            if ((!string.IsNullOrEmpty(iconRaw) && iconRaw.StartsWith("~", StringComparison.Ordinal)) || this.PortalID == Null.NullInteger)
             {
                 iconFile = iconRaw;
             }
             else if (iconFile == null && !string.IsNullOrEmpty(iconRaw) && this.PortalID != Null.NullInteger)
             {
                 IFileInfo fileInfo;
-                if (iconRaw.StartsWith("FileID=", StringComparison.InvariantCultureIgnoreCase))
+                if (iconRaw.StartsWith("FileID=", StringComparison.OrdinalIgnoreCase))
                 {
-                    var fileId = Convert.ToInt32(iconRaw.Substring(7));
+                    var fileId = Convert.ToInt32(iconRaw.Substring(7), CultureInfo.InvariantCulture);
                     fileInfo = FileManager.Instance.GetFile(fileId);
                 }
                 else

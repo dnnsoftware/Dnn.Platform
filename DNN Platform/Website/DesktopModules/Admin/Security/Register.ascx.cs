@@ -17,6 +17,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
@@ -44,24 +45,28 @@ namespace DotNetNuke.Modules.Admin.Users
         protected const string PasswordStrengthTextBoxCssClass = "password-strength";
         protected const string ConfirmPasswordTextBoxCssClass = "password-confirm";
 
-        private readonly List<AuthenticationLoginBase> loginControls = new List<AuthenticationLoginBase>();
+        private readonly List<AuthenticationLoginBase> loginControls = [];
         private readonly INavigationManager navigationManager;
         private readonly IServiceProvider serviceProvider;
         private readonly IHostSettings hostSettings;
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IClientResourceController clientResourceController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="Register"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public Register()
-            : this(null, null, null, null, null)
+            : this(null, null, null, null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Register"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="serviceProvider">The service provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public Register(INavigationManager navigationManager, IServiceProvider serviceProvider)
-            : this(navigationManager, serviceProvider, null, null, null)
+            : this(navigationManager, serviceProvider, null, null, null, null, null)
         {
         }
 
@@ -71,13 +76,29 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public Register(INavigationManager navigationManager, IServiceProvider serviceProvider, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
+            : this(navigationManager, serviceProvider, hostSettings, javaScript, clientResourceController, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Register"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public Register(INavigationManager navigationManager, IServiceProvider serviceProvider, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
         {
             this.serviceProvider = serviceProvider ?? Globals.GetCurrentServiceProvider();
             this.navigationManager = navigationManager ?? this.serviceProvider.GetRequiredService<INavigationManager>();
             this.hostSettings = hostSettings ?? this.serviceProvider.GetRequiredService<IHostSettings>();
             this.javaScript = javaScript ?? this.serviceProvider.GetRequiredService<IJavaScriptLibraryHelper>();
             this.clientResourceController = clientResourceController ?? this.serviceProvider.GetRequiredService<IClientResourceController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         protected string ExcludeTerms
@@ -94,46 +115,26 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        protected bool IsValid
-        {
-            get
-            {
-                return this.Validate();
-            }
-        }
+        protected bool IsValid => this.Validate();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override bool AddUser { get; } = true;
 
         protected string AuthenticationType
         {
-            get
-            {
-                return this.ViewState.GetValue("AuthenticationType", Null.NullString);
-            }
-
-            set
-            {
-                this.ViewState.SetValue("AuthenticationType", value, Null.NullString);
-            }
+            get => this.ViewState.GetValue("AuthenticationType", Null.NullString);
+            set => this.ViewState.SetValue("AuthenticationType", value, Null.NullString);
         }
 
         protected UserCreateStatus CreateStatus { get; set; }
 
         protected string UserToken
         {
-            get
-            {
-                return this.ViewState.GetValue("UserToken", string.Empty);
-            }
-
-            set
-            {
-                this.ViewState.SetValue("UserToken", value, string.Empty);
-            }
+            get => this.ViewState.GetValue("UserToken", string.Empty);
+            set => this.ViewState.SetValue("UserToken", value, string.Empty);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -313,7 +314,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -376,7 +377,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -391,7 +392,7 @@ namespace DotNetNuke.Modules.Admin.Users
             };
 
             var optionsAsJsonString = Json.Serialize(confirmPasswordOptions);
-            var script = string.Format("dnn.initializePasswordComparer({0});{1}", optionsAsJsonString, Environment.NewLine);
+            var script = $"dnn.initializePasswordComparer({optionsAsJsonString});{Environment.NewLine}";
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {
@@ -411,7 +412,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 return;
             }
 
-            var formItem = new DnnFormTextBoxItem
+            var formItem = new DnnFormTextBoxItem(this.appStatus, this.eventLogger)
             {
                 ID = dataField,
                 DataField = dataField,
@@ -434,7 +435,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (this.hostSettings.EnableStrengthMeter)
             {
-                formItem = new DnnFormPasswordItem
+                formItem = new DnnFormPasswordItem(this.appStatus, this.eventLogger, this.clientResourceController)
                 {
                     TextBoxCssClass = PasswordStrengthTextBoxCssClass,
                     ContainerCssClass = "password-strength-container",
@@ -442,7 +443,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             else
             {
-                formItem = new DnnFormTextBoxItem
+                formItem = new DnnFormTextBoxItem(this.appStatus, this.eventLogger)
                 {
                     TextMode = TextBoxMode.Password,
                     TextBoxCssClass = PasswordStrengthTextBoxCssClass,
@@ -460,7 +461,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void AddPasswordConfirmField(string dataField, string dataMember, bool required)
         {
-            var formItem = new DnnFormTextBoxItem
+            var formItem = new DnnFormTextBoxItem(this.appStatus, this.eventLogger)
             {
                 ID = dataField,
                 DataField = dataField,
@@ -486,10 +487,10 @@ namespace DotNetNuke.Modules.Admin.Users
             ListEntryInfo imageType = controller.GetListEntryInfo("DataType", "Image");
             if (property.DataType != imageType.EntryID)
             {
-                DnnFormEditControlItem formItem = new DnnFormEditControlItem(this.serviceProvider)
+                var formItem = new DnnFormEditControlItem(this.appStatus, this.eventLogger, this.serviceProvider)
                 {
                     ID = property.PropertyName,
-                    ResourceKey = string.Format("ProfileProperties_{0}", property.PropertyName),
+                    ResourceKey = $"ProfileProperties_{property.PropertyName}",
                     LocalResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx.resx",
                     ValidationMessageSuffix = ".Validation",
                     ControlType = EditorInfo.GetEditor(property.DataType),
@@ -543,13 +544,13 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 if (this.CreateStatus == UserCreateStatus.Success)
                 {
-                    // hide the succesful captcha
+                    // hide the successful captcha
                     this.captchaRow.Visible = false;
 
-                    // Assocate alternate Login with User and proceed with Login
+                    // Associate alternate Login with User and proceed with Login
                     if (!string.IsNullOrEmpty(this.AuthenticationType))
                     {
-                        AuthenticationController.AddUserAuthentication(this.User.UserID, this.AuthenticationType, this.UserToken);
+                        AuthenticationController.AddUserAuthentication(this.eventLogger, this.User.UserID, this.AuthenticationType, this.UserToken);
                     }
 
                     string strMessage = this.CompleteUserCreation(this.CreateStatus, user, true, this.IsRegister);

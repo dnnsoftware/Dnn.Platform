@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
     /// <summary>Business Layer to manage Messaging. Also contains CRUD methods.</summary>
     public class InternalMessagingController : ServiceLocator<IInternalMessagingController, InternalMessagingController>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IInternalMessagingController> GetFactory()
         {
             return () => new InternalMessagingControllerImpl();

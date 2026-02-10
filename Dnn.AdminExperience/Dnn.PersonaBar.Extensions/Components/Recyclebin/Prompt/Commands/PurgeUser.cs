@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -19,24 +20,24 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_PurgeUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int UserId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var userInfo = UserController.Instance.GetUser(this.PortalId, this.UserId);
             if (userInfo == null)
             {
-                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("UserNotFound"), this.UserId));
+                return new ConsoleErrorResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("UserNotFound"), this.UserId));
             }
 
             if (!userInfo.IsDeleted)
@@ -45,7 +46,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             }
 
             RecyclebinController.Instance.DeleteUsers(new List<UserInfo> { userInfo });
-            return new ConsoleResultModel(this.LocalizeString("Prompt_UserPurged")) { Records = 1 };
+            return new ConsoleResultModel(this.LocalizeString("Prompt_UserPurged")) { Records = 1, };
         }
     }
 }

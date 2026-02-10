@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.Client.Providers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Web;
@@ -24,7 +25,7 @@ namespace DotNetNuke.Web.Client.Providers
         /// <summary>The name of the placeholder in which the controls will be rendered.</summary>
         public const string DnnFormBottomPlaceHolderName = "ClientResourcesFormBottom";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)
         {
             // Assign the provider a default name if it doesn't have one
@@ -36,7 +37,7 @@ namespace DotNetNuke.Web.Client.Providers
             base.Initialize(name, config);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string RenderJsDependencies(IEnumerable<IClientDependencyFile> jsDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
             if (!jsDependencies.Any())
@@ -65,13 +66,13 @@ namespace DotNetNuke.Web.Client.Providers
             return sb.ToString();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string RenderSingleJsFile(string js, IDictionary<string, string> htmlAttributes)
         {
-            return string.Format(HtmlEmbedContants.ScriptEmbedWithSource, js, htmlAttributes.ToHtmlAttributes());
+            return string.Format(CultureInfo.InvariantCulture, HtmlEmbedContants.ScriptEmbedWithSource, js, htmlAttributes.ToHtmlAttributes());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string RenderCssDependencies(IEnumerable<IClientDependencyFile> cssDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
             if (!cssDependencies.Any())
@@ -100,10 +101,10 @@ namespace DotNetNuke.Web.Client.Providers
             return sb.ToString();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string RenderSingleCssFile(string css, IDictionary<string, string> htmlAttributes)
         {
-            return string.Format(HtmlEmbedContants.CssEmbedWithSource, css, htmlAttributes.ToHtmlAttributes());
+            return string.Format(CultureInfo.InvariantCulture, HtmlEmbedContants.CssEmbedWithSource, css, htmlAttributes.ToHtmlAttributes());
         }
 
         /// <summary>Registers the dependencies in the body of default.aspx.</summary>

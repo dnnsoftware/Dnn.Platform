@@ -119,13 +119,13 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             var module = provider.GetService<TestModule<IScopedService>>();
 
             // Assert
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(module, Is.Not.Null);
                 Assert.That(module.DependencyService, Is.EqualTo(module.ConstructorService));
                 Assert.That(serviceFromRequestScope, Is.EqualTo(module.ConstructorService));
                 Assert.That(serviceFromGlobalScope, Is.Not.EqualTo(module.ConstructorService));
-            });
+            }
         }
 
         private class ScopedService : IScopedService

@@ -24,7 +24,7 @@ namespace DotNetNuke.Web.Api
         /// <summary>Gets or sets the resource file used to localize the exception messages.</summary>
         public string LocalResourceFile { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
             if (actionExecutedContext.Exception != null)

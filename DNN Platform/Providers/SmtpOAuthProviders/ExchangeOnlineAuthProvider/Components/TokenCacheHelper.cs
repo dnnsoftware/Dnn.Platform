@@ -5,6 +5,7 @@
 namespace Dnn.ExchangeOnlineAuthProvider.Components;
 
 using System;
+using System.Security.Cryptography;
 using System.Text;
 
 using DotNetNuke.Abstractions.Application;
@@ -92,7 +93,7 @@ public class TokenCacheHelper
         }
         else
         {
-            PortalController.UpdateEncryptedString(this.hostSettings, this.portalId, Constants.AuthenticationSettingName, settingValue, Config.GetDecryptionkey());
+            PortalController.UpdateEncryptedString(this.hostSettings, HashAlgorithmName.SHA512, this.portalId, Constants.AuthenticationSettingName, settingValue, Config.GetDecryptionkey());
         }
     }
 }

@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -46,6 +47,7 @@ namespace DotNetNuke.UI.WebControls
             Multiple = 1,
 
             /// <summary>Single select.</summary>
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
             Single = 2,
         }
 
@@ -181,7 +183,7 @@ namespace DotNetNuke.UI.WebControls
                 if (GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture).Length < 2)
                 {
                     // return single language
-                    PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+                    var settings = PortalController.Instance.GetCurrentSettings();
                     foreach (string strLocale in LocaleController.Instance.GetLocales(settings.PortalId).Keys)
                     {
                         a.Add(strLocale);
@@ -323,7 +325,7 @@ namespace DotNetNuke.UI.WebControls
         private static CultureInfo[] GetCultures(bool specific)
         {
             var a = new ArrayList();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentSettings();
             foreach (string strLocale in LocaleController.Instance.GetLocales(settings.PortalId).Keys)
             {
                 var c = new CultureInfo(strLocale);

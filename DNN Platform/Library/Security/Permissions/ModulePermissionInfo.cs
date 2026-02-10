@@ -7,6 +7,7 @@ namespace DotNetNuke.Security.Permissions
     using System.Data;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
@@ -15,32 +16,31 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class ModulePermissionInfo : PermissionInfoBase, IHydratable
     {
-        private int moduleID;
+        private int moduleId;
+        private int modulePermissionId;
 
-        // local property declarations
-        private int modulePermissionID;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulePermissionInfo"/> class.
-        /// Constructs a new ModulePermissionInfo.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulePermissionInfo"/> class.</summary>
         public ModulePermissionInfo()
         {
-            this.modulePermissionID = Null.NullInteger;
-            this.moduleID = Null.NullInteger;
+            this.modulePermissionId = Null.NullInteger;
+            this.moduleId = Null.NullInteger;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulePermissionInfo"/> class.
-        /// Constructs a new ModulePermissionInfo.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulePermissionInfo"/> class.</summary>
         /// <param name="permission">A PermissionInfo object.</param>
         public ModulePermissionInfo(PermissionInfo permission)
+            : this((IPermissionDefinitionInfo)permission)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModulePermissionInfo"/> class.</summary>
+        /// <param name="permission">A PermissionInfo object.</param>
+        public ModulePermissionInfo(IPermissionDefinitionInfo permission)
             : this()
         {
-            this.ModuleDefID = permission.ModuleDefID;
+            ((IPermissionDefinitionInfo)this).ModuleDefId = permission.ModuleDefId;
             this.PermissionCode = permission.PermissionCode;
-            this.PermissionID = permission.PermissionID;
+            ((IPermissionDefinitionInfo)this).PermissionId = permission.PermissionId;
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
@@ -50,15 +50,8 @@ namespace DotNetNuke.Security.Permissions
         [XmlElement("modulepermissionid")]
         public int ModulePermissionID
         {
-            get
-            {
-                return this.modulePermissionID;
-            }
-
-            set
-            {
-                this.modulePermissionID = value;
-            }
+            get => this.modulePermissionId;
+            set => this.modulePermissionId = value;
         }
 
         /// <summary>Gets or sets the Module ID.</summary>
@@ -66,15 +59,8 @@ namespace DotNetNuke.Security.Permissions
         [XmlElement("moduleid")]
         public int ModuleID
         {
-            get
-            {
-                return this.moduleID;
-            }
-
-            set
-            {
-                this.moduleID = value;
-            }
+            get => this.moduleId;
+            set => this.moduleId = value;
         }
 
         /// <summary>Gets or sets the Key ID.</summary>
@@ -83,15 +69,8 @@ namespace DotNetNuke.Security.Permissions
         [JsonIgnore]
         public int KeyID
         {
-            get
-            {
-                return this.ModulePermissionID;
-            }
-
-            set
-            {
-                this.ModulePermissionID = value;
-            }
+            get => this.ModulePermissionID;
+            set => this.ModulePermissionID = value;
         }
 
         /// <summary>Fills a ModulePermissionInfo from a Data Reader.</summary>
@@ -158,12 +137,12 @@ namespace DotNetNuke.Security.Permissions
             return this.Equals((ModulePermissionInfo)obj);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked
             {
-                return (this.moduleID * 397) ^ this.modulePermissionID;
+                return (this.moduleId * 397) ^ this.modulePermissionId;
             }
         }
     }

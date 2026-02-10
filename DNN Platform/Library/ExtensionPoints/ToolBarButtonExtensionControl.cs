@@ -5,6 +5,8 @@
 namespace DotNetNuke.ExtensionPoints
 {
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Text;
     using System.Web;
     using System.Web.UI;
@@ -21,7 +23,8 @@ namespace DotNetNuke.ExtensionPoints
         [DefaultValue(false)]
         public bool IsHost { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void RenderContents(HtmlTextWriter output)
         {
             var extensionPointManager = new ExtensionPointManager();
@@ -37,20 +40,20 @@ namespace DotNetNuke.ExtensionPoints
                 if (extension is IToolBarMenuButtonExtensionPoint)
                 {
                     this.btnRenderer = new ToolBarMenuButtonRenderer();
-                    str.AppendFormat(this.btnRenderer.GetOutput(extension));
                 }
                 else
                 {
                     extension.ModuleContext = this.ModuleContext;
                     this.btnRenderer = new ToolBarButtonRenderer();
-                    str.AppendFormat(this.btnRenderer.GetOutput(extension));
                 }
+
+                str.AppendFormat(CultureInfo.InvariantCulture, this.btnRenderer.GetOutput(extension));
             }
 
             output.Write(str.ToString());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             this.RenderContents(writer);

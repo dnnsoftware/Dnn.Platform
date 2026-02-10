@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.ModuleCache
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Text;
     using System.Web.Caching;
 
@@ -16,7 +17,7 @@ namespace DotNetNuke.Services.ModuleCache
     {
         private const string CachePrefix = "ModuleCache:";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string GenerateCacheKey(int tabModuleId, SortedDictionary<string, string> varyBy)
         {
             var cacheKey = new StringBuilder();
@@ -24,45 +25,45 @@ namespace DotNetNuke.Services.ModuleCache
             {
                 foreach (KeyValuePair<string, string> kvp in varyBy)
                 {
-                    cacheKey.Append(string.Concat(kvp.Key.ToLowerInvariant(), "=", kvp.Value, "|"));
+                    cacheKey.Append($"{kvp.Key.ToLowerInvariant()}={kvp.Value}|");
                 }
             }
 
-            return string.Concat(CachePrefix, "|", tabModuleId.ToString(), "|", cacheKey.ToString());
+            return $"{CachePrefix}|{tabModuleId.ToString(CultureInfo.InvariantCulture)}|{cacheKey}";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetItemCount(int tabModuleId)
         {
             return GetCacheKeys(tabModuleId).Count;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override byte[] GetModule(int tabModuleId, string cacheKey)
         {
             return DataCache.GetCache<byte[]>(cacheKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void PurgeCache(int portalId)
         {
             DataCache.ClearCache(CachePrefix);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Remove(int tabModuleId)
         {
-            DataCache.ClearCache(string.Concat(CachePrefix, "|", tabModuleId.ToString()));
+            DataCache.ClearCache($"{CachePrefix}|{tabModuleId.ToString(CultureInfo.InvariantCulture)}");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void SetModule(int tabModuleId, string cacheKey, TimeSpan duration, byte[] moduleOutput)
         {
             DNNCacheDependency dep = null;
             DataCache.SetCache(cacheKey, moduleOutput, dep, DateTime.UtcNow.Add(duration), System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void PurgeExpiredItems(int portalId)
         {
             // throw new NotSupportedException();
@@ -74,7 +75,7 @@ namespace DotNetNuke.Services.ModuleCache
             IDictionaryEnumerator cacheEnum = CachingProvider.Instance().GetEnumerator();
             while (cacheEnum.MoveNext())
             {
-                if (cacheEnum.Key.ToString().StartsWith(string.Concat(CachePrefix, "|", tabModuleId.ToString(), "|")))
+                if (cacheEnum.Key.ToString().StartsWith($"{CachePrefix}|{tabModuleId.ToString(CultureInfo.InvariantCulture)}|", StringComparison.Ordinal))
                 {
                     keys.Add(cacheEnum.Key.ToString());
                 }

@@ -9,6 +9,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     using System.Runtime.Serialization;
 
     using Dnn.PersonaBar.Library.Common;
+
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
 
@@ -80,7 +82,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "isAdmin")]
         public bool IsAdmin { get; set; }
 
-        private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        private static IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         public static UserBasicDto FromUserInfo(UserInfo user)
         {

@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Analytics
     using System.Security.Cryptography;
     using System.Text;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Log.EventLog;
@@ -26,7 +27,7 @@ namespace DotNetNuke.Services.Analytics
         public void UpgradeModule(string version)
         {
             // MD5 Hash value of the old synchronous script config file (from previous module versions)
-            string[] traditionalFileHashes = { "aRUf9NsElvrpiASJHHlmZg==", "+R2k5mvFvVhWsCm4WinyAA==" };
+            string[] traditionalFileHashes = ["aRUf9NsElvrpiASJHHlmZg==", "+R2k5mvFvVhWsCm4WinyAA==",];
 
             switch (version)
             {
@@ -37,23 +38,23 @@ namespace DotNetNuke.Services.Analytics
                         if (fileReader != null)
                         {
                             var fileEncoding = new ASCIIEncoding();
-                            using (var md5 = new MD5CryptoServiceProvider())
+#pragma warning disable CA5351 // Do not use broken cryptographic algorithms
+                            using var md5 = new MD5CryptoServiceProvider();
+#pragma warning restore CA5351
+                            string currFileHashValue = string.Empty;
+
+                            // calculate md5 hash of existing file
+                            currFileHashValue = Convert.ToBase64String(md5.ComputeHash(fileEncoding.GetBytes(fileReader.ReadToEnd())));
+                            fileReader.Close();
+
+                            IEnumerable<string> result = from h in traditionalFileHashes where h == currFileHashValue select h;
+
+                            // compare md5 hash
+                            if (result.Any())
                             {
-                                string currFileHashValue = string.Empty;
-
-                                // calculate md5 hash of existing file
-                                currFileHashValue = Convert.ToBase64String(md5.ComputeHash(fileEncoding.GetBytes(fileReader.ReadToEnd())));
-                                fileReader.Close();
-
-                                IEnumerable<string> result = from h in traditionalFileHashes where h == currFileHashValue select h;
-
-                                // compare md5 hash
-                                if (result.Any())
-                                {
-                                    // Copy new config file from \Config
-                                    // True causes .config to be overwritten
-                                    Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteAnalytics, true);
-                                }
+                                // Copy new config file from \Config
+                                // True causes .config to be overwritten
+                                Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteAnalytics, true);
                             }
                         }
                     }
@@ -80,15 +81,12 @@ namespace DotNetNuke.Services.Analytics
             catch (Exception ex)
             {
                 // log it
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = nameof(EventLogType.HOST_ALERT), };
                 log.AddProperty("GoogleAnalytics.UpgradeModule", "GetConfigFile Failed");
                 log.AddProperty("FilePath", filePath);
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);
-                if (fileReader != null)
-                {
-                    fileReader.Close();
-                }
+                fileReader?.Close();
 
                 Logger.Error(ex);
             }

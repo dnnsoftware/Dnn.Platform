@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Tokens
             this.custom = list;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CacheLevel Cacheability
         {
             get
@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             if (this.custom == null)
@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Tokens
                 outputFormat = "g";
             }
 
-            int intIndex = int.Parse(propertyName);
+            int intIndex = int.Parse(propertyName, CultureInfo.InvariantCulture);
             if ((this.custom != null) && this.custom.Count > intIndex)
             {
                 valueObject = this.custom[intIndex].ToString();

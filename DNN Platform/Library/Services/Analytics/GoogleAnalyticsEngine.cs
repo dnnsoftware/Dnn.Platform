@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Analytics
 {
     using System;
+    using System.Globalization;
 
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -11,7 +12,7 @@ namespace DotNetNuke.Services.Analytics
 
     public class GoogleAnalyticsEngine : AnalyticsEngineBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string EngineName
         {
             get
@@ -20,7 +21,7 @@ namespace DotNetNuke.Services.Analytics
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string RenderScript(string scriptTemplate)
         {
             AnalyticsConfiguration config = this.GetConfig();
@@ -84,7 +85,7 @@ namespace DotNetNuke.Services.Analytics
             return scriptTemplate;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string RenderCustomScript(AnalyticsConfiguration config)
         {
             try
@@ -127,7 +128,7 @@ namespace DotNetNuke.Services.Analytics
 
                 if (trackingUserId)
                 {
-                    customScripts.AppendFormat("ga('set', 'userId', {0});", UserController.Instance.GetCurrentUserInfo().UserID);
+                    customScripts.AppendFormat(CultureInfo.InvariantCulture, "ga('set', 'userId', {0});", UserController.Instance.GetCurrentUserInfo().UserID);
                 }
 
                 return customScripts.ToString();

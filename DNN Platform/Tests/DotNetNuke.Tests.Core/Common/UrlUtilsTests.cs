@@ -22,6 +22,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
 
+using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
+
 [TestFixture]
 public class UrlUtilsTests
 {
@@ -38,10 +40,20 @@ public class UrlUtilsTests
         serviceCollection.AddSingleton(Mock.Of<IApplicationStatusInfo>());
         serviceCollection.AddSingleton(Mock.Of<INavigationManager>());
         serviceCollection.AddSingleton(Mock.Of<IPortalSettingsController>());
+        serviceCollection.AddSingleton<ICryptographyProvider>(new CoreCryptographyProvider());
         serviceCollection.AddSingleton<IHostSettingsService>(hostController);
         serviceCollection.AddSingleton<IHostSettings>(new HostSettings(hostController));
 
         Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+    }
+
+    [OneTimeTearDown]
+    public static void OneTimeTearDown()
+    {
+        if (Globals.DependencyProvider is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
     }
 
     [Test]

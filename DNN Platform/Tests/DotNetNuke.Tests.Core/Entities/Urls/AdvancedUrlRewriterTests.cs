@@ -11,6 +11,7 @@
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Abstractions.Settings;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
@@ -62,11 +63,12 @@
             const string UrlRewriteItemName = "UrlRewrite:OriginalUrl";
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
-            var portalController = new PortalController(
-                Mock.Of<IBusinessControllerProvider>(),
-                Mock.Of<IHostSettings>(),
-                Mock.Of<IApplicationStatusInfo>(),
-                Mock.Of<IEventLogger>());
+
+            PortalController portalController;
+            using (_ = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<ICryptographyProvider>())))
+            {
+                portalController = new PortalController(Mock.Of<IBusinessControllerProvider>(), Mock.Of<IHostSettings>(), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IEventLogger>());
+            }
 
             using var serviceProvider = FakeServiceProvider.Setup(services =>
             {
@@ -142,7 +144,12 @@
 
             var urlRewriter = new AdvancedUrlRewriter();
             var checkForRedirectsMethod = typeof(AdvancedUrlRewriter)
-                .GetMethod(CheckForRedirectsMethodName, BindingFlags.Static | BindingFlags.NonPublic);
+                .GetMethod(
+                    CheckForRedirectsMethodName,
+                    BindingFlags.Static | BindingFlags.NonPublic,
+                    null,
+                    [typeof(Uri), typeof(string), typeof(NameValueCollection), typeof(UrlAction), typeof(string), typeof(FriendlyUrlSettings), typeof(int)],
+                    null);
             var requestUri = new Uri(UriUrl);
             var queryStringCollection = new NameValueCollection();
             var friendlyUrlSettings = new FriendlyUrlSettings(portalController, GenericPortalId);
@@ -176,7 +183,7 @@
                     urlAction,
                     requestType,
                     friendlyUrlSettings,
-                    portalHomeTabId
+                    portalHomeTabId,
                 ]);
 
             // Assert

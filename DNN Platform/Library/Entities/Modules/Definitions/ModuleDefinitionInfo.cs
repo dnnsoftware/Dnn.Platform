@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.Xml;
     using System.Xml.Schema;
     using System.Xml.Serialization;
@@ -125,7 +126,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                     continue;
                 }
 
-                if (reader.NodeType == XmlNodeType.Element && reader.Name == "moduleControls")
+                if (reader is { NodeType: XmlNodeType.Element, Name: "moduleControls", })
                 {
                     this.ReadModuleControls(reader);
                 }
@@ -139,14 +140,14 @@ namespace DotNetNuke.Entities.Modules.Definitions
                             this.FriendlyName = reader.ReadElementContentAsString();
                             break;
                         case "defaultCacheTime":
-                            string elementvalue = reader.ReadElementContentAsString();
-                            if (!string.IsNullOrEmpty(elementvalue))
+                            string elementValue = reader.ReadElementContentAsString();
+                            if (!string.IsNullOrEmpty(elementValue))
                             {
-                                this.DefaultCacheTime = int.Parse(elementvalue);
+                                this.DefaultCacheTime = int.Parse(elementValue, CultureInfo.InvariantCulture);
                             }
 
                             break;
-                        case "permissions": // Ignore permissons node
+                        case "permissions": // Ignore permissions node
                             reader.Skip();
                             break;
                         case "definitionName":
@@ -174,7 +175,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             // write out properties
             writer.WriteElementString("friendlyName", this.FriendlyName);
             writer.WriteElementString("definitionName", this.DefinitionName);
-            writer.WriteElementString("defaultCacheTime", this.DefaultCacheTime.ToString());
+            writer.WriteElementString("defaultCacheTime", this.DefaultCacheTime.ToString(CultureInfo.InvariantCulture));
 
             // Write start of Module Controls
             writer.WriteStartElement("moduleControls");

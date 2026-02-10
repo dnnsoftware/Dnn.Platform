@@ -4,6 +4,7 @@
 namespace DotNetNuke.Abstractions.Portals
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// The PortalSettings class encapsulates all of the settings for the Portal,
@@ -169,6 +170,7 @@ namespace DotNetNuke.Abstractions.Portals
         string FooterText { get; set; }
 
         /// <summary>Gets or sets the portal GUID.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
         Guid GUID { get; set; }
 
         /// <summary>Gets a value indicating whether folders which are hidden or whose name begins with underscore are included in folder synchronization.</summary>
@@ -200,18 +202,10 @@ namespace DotNetNuke.Abstractions.Portals
         /// <summary>Gets or sets the host space.</summary>
         int HostSpace { get; set; }
 
-        /*
-         * add <a name="[moduleid]"></a> on the top of the module
-         *
-         * Desactivate this remove the html5 compatibility warnings
-         * (and make the output smaller)
-         *
-         */
-
         /// <summary>Gets a value indicating whether a module can inject a hyperlink.</summary>
         /// <remarks>
         /// add <![CDATA[<a name="[moduleid]"></a>]]> on the top of the module.
-        /// Desactivate this remove the html5 compatibility warnings
+        /// Deactivate this remove the html5 compatibility warnings
         /// (and make the output smaller).
         /// </remarks>
         bool InjectModuleHyperLink { get; }

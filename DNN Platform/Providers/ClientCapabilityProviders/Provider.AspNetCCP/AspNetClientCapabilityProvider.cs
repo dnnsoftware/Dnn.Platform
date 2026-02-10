@@ -7,6 +7,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web;
     using System.Web.Configuration;
@@ -24,7 +25,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         private static IDictionary<string, int> highPiorityCapabilityValues;
         private static IDictionary<string, string> sampleProperies;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsTabletDetection
         {
             get { return false; }
@@ -63,11 +64,11 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                             allClientCapabilityValues = new Dictionary<string, List<string>>();
 
                             // TODO :Implement
-                            // foreach (var property in DataProvider.Properties)
-                            // {
-                            //    var values = property.Values.Select(value => value.Name).ToList();
-                            //    _allClientCapabilityValues.Add(property.Name, values);
-                            // }
+                            ////foreach (var property in DataProvider.Properties)
+                            ////{
+                            ////   var values = property.Values.Select(value => value.Name).ToList();
+                            ////   _allClientCapabilityValues.Add(property.Name, values);
+                            ////}
                         }
                     }
 
@@ -143,7 +144,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             return browserCaps;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IClientCapability GetClientCapability(string userAgent)
         {
             if (string.IsNullOrEmpty(userAgent))
@@ -154,7 +155,8 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             return new AspNetClientCapability(userAgent, GetHttpBrowserCapabilities(new NameValueCollection(), userAgent));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override IClientCapability GetClientCapabilityById(string deviceId)
         {
             Requires.NotNullOrEmpty("deviceId", deviceId);
@@ -162,13 +164,13 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             throw new NotImplementedException($"Can't get device capability for the id '{deviceId}'");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IDictionary<string, List<string>> GetAllClientCapabilityValues()
         {
             return ClientCapabilityValues;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IQueryable<IClientCapability> GetAllClientCapabilities()
         {
             return AllCapabilities;

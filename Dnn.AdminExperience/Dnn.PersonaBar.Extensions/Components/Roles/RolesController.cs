@@ -69,7 +69,7 @@ namespace Dnn.PersonaBar.Roles.Components
             return foundRoles;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public RoleInfo GetRole(PortalSettings portalSettings, int roleId)
         {
             var isAdmin = IsAdmin(portalSettings);
@@ -82,7 +82,7 @@ namespace Dnn.PersonaBar.Roles.Components
             return role;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SaveRole(PortalSettings portalSettings, RoleDto roleDto, bool assignExistUsers, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = default(KeyValuePair<HttpStatusCode, string>);
@@ -144,7 +144,7 @@ namespace Dnn.PersonaBar.Roles.Components
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DeleteRole(PortalSettings portalSettings, int roleId, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = default(KeyValuePair<HttpStatusCode, string>);
@@ -178,7 +178,7 @@ namespace Dnn.PersonaBar.Roles.Components
             return role.RoleName;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IRolesController> GetFactory()
         {
             return () => new RolesController();

@@ -9,6 +9,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
     using Dnn.PersonaBar.Library.Prompt.Models;
+
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Log.EventLog;
 
@@ -27,7 +29,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
                 var log = new LogInfo
                 {
                     BypassBuffering = true,
-                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                    LogTypeKey = nameof(EventLogType.HOST_ALERT),
                 };
                 log.AddProperty("Message", this.LocalizeString("Prompt_UserRestart"));
                 LogController.Instance.AddLog(log);

@@ -19,7 +19,7 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(PreparePackaging))]
     public sealed class CreateNugetPackages : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             // look for solutions and start building them

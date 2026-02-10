@@ -11,7 +11,7 @@ namespace DotNetNuke.Web.Razor
 
     public class Startup : IDnnStartup
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ConfigureServices(IServiceCollection services)
         {
 #pragma warning disable CS0618 // Type or member is obsolete

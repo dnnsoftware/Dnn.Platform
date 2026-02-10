@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -35,10 +36,11 @@ namespace DotNetNuke.Services.Log.EventLog
 
         Dictionary<string, LogTypeInfo> GetLogTypeInfoDictionary();
 
+        [Obsolete("Deprecated in DotNetNuke 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService.GetLog()' instead. Scheduled for removal in v11.0.0.")]
         object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType);
 
-        /// <summary>Retrieves a single event log via the Log Guid.</summary>
-        /// <param name="logGuid">A string reprenstation of the log Guid.</param>
+        /// <summary>Retrieves a single event log via the Log GUID.</summary>
+        /// <param name="logGuid">A string representation of the log GUID.</param>
         /// <returns>The <see cref="ILogInfo"/>.</returns>
         ILogInfo GetLog(string logGuid);
 

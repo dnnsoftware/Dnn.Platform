@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
     public class ModuleExecutionEngine : IModuleExecutionEngine
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleRequestResult ExecuteModule(ModuleRequestContext moduleRequestContext)
         {
             Requires.NotNull("moduleRequestContext", moduleRequestContext);
@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void ExecuteModuleResult(ModuleRequestResult moduleResult, TextWriter writer)
         {
             var result = moduleResult.ActionResult as IDnnViewResult;

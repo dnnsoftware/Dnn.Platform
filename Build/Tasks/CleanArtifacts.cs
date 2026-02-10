@@ -14,7 +14,7 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>A cake task to clean the artifacts directory.</summary>
     public sealed class CleanArtifacts : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             context.CleanDirectory(context.ArtifactsDir);

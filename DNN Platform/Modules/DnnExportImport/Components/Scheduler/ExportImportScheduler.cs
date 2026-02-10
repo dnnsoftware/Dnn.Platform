@@ -5,6 +5,7 @@
 namespace Dnn.ExportImport.Components.Scheduler
 {
     using System;
+    using System.Globalization;
     using System.Text;
     using System.Threading;
 
@@ -62,7 +63,7 @@ namespace Dnn.ExportImport.Components.Scheduler
             this.engine = engine ?? Globals.DependencyProvider.GetRequiredService<ExportImportEngine>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DoWork()
         {
             try
@@ -165,7 +166,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                     var sb = new StringBuilder();
                     var jobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources);
                     var jobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources);
-                    sb.AppendFormat("<br/><b>{0} {1}</b>", jobType, jobStatus);
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "<br/><b>{0} {1}</b>", jobType, jobStatus);
                     var summary = result.Summary;
                     if (summary.Count > 0)
                     {
@@ -184,7 +185,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                     Logger.Trace("Site Export/Import: Job Finished");
                 }
 
-                // SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
+                ////SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
             }
             catch (Exception ex)
             {
@@ -193,10 +194,10 @@ namespace Dnn.ExportImport.Components.Scheduler
                 this.Errored(ref ex);
 
                 // this duplicates the logging
-                // if (ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
-                // {
-                //    Exceptions.LogException(ex);
-                // }
+                ////if (ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
+                ////{
+                ////   Exceptions.LogException(ex);
+                ////}
             }
         }
     }

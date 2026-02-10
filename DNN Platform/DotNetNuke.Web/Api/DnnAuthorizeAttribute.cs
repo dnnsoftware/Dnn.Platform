@@ -10,7 +10,7 @@ namespace DotNetNuke.Web.Api
     using System.Threading;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
 
     /// <summary>Provides Dnn specific details authorization filter.</summary>
     public sealed class DnnAuthorizeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
@@ -74,7 +74,7 @@ namespace DotNetNuke.Web.Api
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsAuthorized(AuthFilterContext context)
         {
             Requires.NotNull("context", context);
@@ -87,7 +87,7 @@ namespace DotNetNuke.Web.Api
 
             if (this.denyRolesSplit.Length != 0)
             {
-                var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
                 if (!currentUser.IsSuperUser && this.denyRolesSplit.Any(currentUser.IsInRole))
                 {
                     return false;
@@ -96,7 +96,7 @@ namespace DotNetNuke.Web.Api
 
             if (this.staticRolesSplit.Length != 0)
             {
-                var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
                 if (!this.staticRolesSplit.Any(currentUser.IsInRole))
                 {
                     return false;

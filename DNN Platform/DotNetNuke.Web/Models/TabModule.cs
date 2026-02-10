@@ -9,13 +9,17 @@ namespace DotNetNuke.Web.Models
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
 
+    /// <summary>Information about a module instance on a specific page/tab.</summary>
     [Serializable]
     public class TabModule
     {
+        /// <summary>Gets or sets the page/tab info.</summary>
         public TabInfo TabInfo { get; set; }
 
+        /// <summary>Gets or sets the module info.</summary>
         public ModuleInfo ModuleInfo { get; set; }
 
+        /// <summary>Gets or sets the module's desktop module version.</summary>
         public string ModuleVersion { get; set; }
     }
 }

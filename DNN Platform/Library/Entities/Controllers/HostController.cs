@@ -9,8 +9,10 @@ namespace DotNetNuke.Entities.Controllers
     using System.Data;
     using System.Globalization;
     using System.Linq;
+    using System.Security.Cryptography;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Settings;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -20,14 +22,33 @@ namespace DotNetNuke.Entities.Controllers
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Client;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc cref="IHostSettingsService" />
     public partial class HostController : IHostSettingsService
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(HostController));
         private static PerformanceSettings performanceSettings = PerformanceSettings.ModerateCaching;
+        private readonly IEventLogger eventLogger;
+        private readonly Lazy<IPortalController> portalController;
+
+        /// <summary>Initializes a new instance of the <see cref="HostController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public HostController()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="HostController"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public HostController(IEventLogger eventLogger, Lazy<IPortalController> portalController)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<Lazy<IPortalController>>();
+        }
 
         /// <inheritdoc cref="IHostSettingsService.GetBoolean(string)" />
         public bool GetBoolean(string key)
@@ -109,7 +130,7 @@ namespace DotNetNuke.Entities.Controllers
             return retValue;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         IDictionary<string, IConfigurationSetting> IHostSettingsService.GetSettings()
         {
             return DataCache.GetCachedData<Dictionary<string, IConfigurationSetting>>(
@@ -122,7 +143,7 @@ namespace DotNetNuke.Entities.Controllers
                 true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         IDictionary<string, string> IHostSettingsService.GetSettingsDictionary()
         {
             return ((IHostSettingsService)this).GetSettings()
@@ -135,7 +156,9 @@ namespace DotNetNuke.Entities.Controllers
             Requires.NotNullOrEmpty("key", key);
             Requires.NotNullOrEmpty("passPhrase", passPhrase);
             var cipherText = this.GetString(key);
-            return Security.FIPSCompliant.DecryptAES(cipherText, passPhrase, HostSettings.GetHostGuid(this));
+            var algorithmName = this.GetString(CryptographyUtils.GetAlgorithmNameSettingKey(key));
+            var algorithm = string.IsNullOrWhiteSpace(algorithmName) ? HashAlgorithmName.SHA1 : new HashAlgorithmName(algorithmName);
+            return Security.FIPSCompliant.DecryptAES(algorithm, cipherText, passPhrase, HostSettings.GetHostGuid(this));
         }
 
         /// <inheritdoc cref="IHostSettingsService.GetString(string)" />
@@ -158,7 +181,7 @@ namespace DotNetNuke.Entities.Controllers
             return value.Value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         void IHostSettingsService.Update(IDictionary<string, string> settings)
         {
             foreach (var settingKvp in settings)
@@ -169,13 +192,13 @@ namespace DotNetNuke.Entities.Controllers
             DataCache.ClearHostCache(false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Update(IConfigurationSetting config)
         {
             this.Update(config, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Update(IConfigurationSetting config, bool clearCache)
         {
             try
@@ -189,23 +212,23 @@ namespace DotNetNuke.Entities.Controllers
                     if (settings.TryGetValue(config.Key, out var currentConfig) && currentConfig?.Value != config.Value)
                     {
                         dbProvider.UpdateHostSetting(config.Key, config.Value, config.IsSecure, userId);
-                        EventLogController.Instance.AddLog(
+                        this.eventLogger.AddLog(
                             config.Key,
                             config.Value,
                             portalSettings,
                             userId,
-                            EventLogController.EventLogType.HOST_SETTING_UPDATED);
+                            EventLogType.HOST_SETTING_UPDATED);
                     }
                 }
                 else
                 {
                     dbProvider.UpdateHostSetting(config.Key, config.Value, config.IsSecure, userId);
-                    EventLogController.Instance.AddLog(
+                    this.eventLogger.AddLog(
                         config.Key,
                         config.Value,
                         portalSettings,
                         userId,
-                        EventLogController.EventLogType.HOST_SETTING_CREATED);
+                        EventLogType.HOST_SETTING_CREATED);
                 }
             }
             catch (Exception ex)
@@ -237,8 +260,9 @@ namespace DotNetNuke.Entities.Controllers
             Requires.NotNullOrEmpty("key", key);
             Requires.PropertyNotNull("value", value);
             Requires.NotNullOrEmpty("passPhrase", passPhrase);
-            var cipherText = Security.FIPSCompliant.EncryptAES(value, passPhrase, HostSettings.GetHostGuid(this));
+            var cipherText = Security.FIPSCompliant.EncryptAES(HashAlgorithmName.SHA512, value, passPhrase, HostSettings.GetHostGuid(this));
             this.Update(key, cipherText);
+            this.Update(CryptographyUtils.GetAlgorithmNameSettingKey(key), HashAlgorithmName.SHA512.Name);
         }
 
         /// <inheritdoc cref="IHostSettingsService.IncrementCrmVersion" />
@@ -250,7 +274,7 @@ namespace DotNetNuke.Entities.Controllers
 
             if (includeOverridingPortals)
             {
-                PortalController.IncrementOverridingPortalsCrmVersion();
+                PortalController.IncrementOverridingPortalsCrmVersion(this.portalController.Value);
             }
         }
 
@@ -269,7 +293,7 @@ namespace DotNetNuke.Entities.Controllers
                     var config = new ConfigurationSetting
                     {
                         Key = key,
-                        IsSecure = Convert.ToBoolean(dr[2]),
+                        IsSecure = Convert.ToBoolean(dr[2], CultureInfo.InvariantCulture),
                         Value = dr.IsDBNull(1) ? string.Empty : dr.GetString(1),
                     };
 

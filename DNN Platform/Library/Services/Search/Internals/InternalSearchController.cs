@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Search.Internals
     /// <summary>Internal Search Controller. This is an Internal class and should not be used outside of Core.</summary>
     public class InternalSearchController : ServiceLocator<IInternalSearchController, InternalSearchController>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IInternalSearchController> GetFactory()
         {
             return () => new InternalSearchControllerImpl();

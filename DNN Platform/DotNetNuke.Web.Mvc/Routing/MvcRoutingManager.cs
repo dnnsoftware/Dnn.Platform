@@ -5,9 +5,11 @@ namespace DotNetNuke.Web.Mvc.Routing
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Web.Http;
     using System.Web.Routing;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
@@ -19,37 +21,48 @@ namespace DotNetNuke.Web.Mvc.Routing
     public sealed class MvcRoutingManager : IMapRoute, IRoutingManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MvcRoutingManager));
-        private readonly Dictionary<string, int> moduleUsage = new Dictionary<string, int>();
         private readonly RouteCollection routes;
         private readonly PortalAliasMvcRouteManager portalAliasMvcRouteManager;
 
+        /// <summary>Initializes a new instance of the <see cref="MvcRoutingManager"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalAliasService. Scheduled removal in v12.0.0.")]
         public MvcRoutingManager()
-            : this(RouteTable.Routes)
+            : this(null)
         {
         }
 
-        internal MvcRoutingManager(RouteCollection routes)
+        /// <summary>Initializes a new instance of the <see cref="MvcRoutingManager"/> class.</summary>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        public MvcRoutingManager(IPortalAliasService portalAliasService)
+            : this(portalAliasService, RouteTable.Routes)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="MvcRoutingManager"/> class.</summary>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="routes">The routes.</param>
+        internal MvcRoutingManager(IPortalAliasService portalAliasService, RouteCollection routes)
         {
             this.routes = routes;
-            this.portalAliasMvcRouteManager = new PortalAliasMvcRouteManager();
+            this.portalAliasMvcRouteManager = new PortalAliasMvcRouteManager(portalAliasService);
             this.TypeLocator = new TypeLocator();
         }
 
         internal ITypeLocator TypeLocator { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Route MapRoute(string moduleFolderName, string routeName, string url, string[] namespaces)
         {
             return this.MapRoute(moduleFolderName, routeName, url, null /* defaults */, null /* constraints */, namespaces);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Route MapRoute(string moduleFolderName, string routeName, string url, object defaults, string[] namespaces)
         {
             return this.MapRoute(moduleFolderName, routeName, url, defaults, null /* constraints */, namespaces);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Route MapRoute(string moduleFolderName, string routeName, string url, object defaults, object constraints, string[] namespaces)
         {
             if (namespaces == null || namespaces.Length == 0 || string.IsNullOrEmpty(namespaces[0]))
@@ -78,7 +91,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                 var routeUrl = this.portalAliasMvcRouteManager.GetRouteUrl(moduleFolderName, url, count);
                 route = MapRouteWithNamespace(fullRouteName, routeUrl, defaults, constraints, namespaces);
                 this.routes.Add(route);
-                Logger.Trace("Mapping route: " + fullRouteName + " @ " + routeUrl);
+                Logger.Trace($"Mapping route: {fullRouteName} @ {routeUrl}");
             }
 
             return route;
@@ -90,16 +103,16 @@ namespace DotNetNuke.Web.Mvc.Routing
             GlobalConfiguration.Configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
             using (this.routes.GetWriteLock())
             {
-                // routes.Clear(); -- don't use; it will remove original WEP API maps
+                ////routes.Clear(); -- don't use; it will remove original WEP API maps
                 this.LocateServicesAndMapRoutes();
             }
 
-            Logger.TraceFormat("Registered a total of {0} routes", this.routes.Count);
+            Logger.TraceFormat(CultureInfo.InvariantCulture, "Registered a total of {0} routes", this.routes.Count);
         }
 
         internal static bool IsValidServiceRouteMapper(Type t)
         {
-            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IMvcRouteMapper).IsAssignableFrom(t);
+            return t is { IsClass: true, IsAbstract: false, IsVisible: true, } && typeof(IMvcRouteMapper).IsAssignableFrom(t);
         }
 
         private static bool IsTracingEnabled()
@@ -111,7 +124,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         private static void RegisterSystemRoutes()
         {
-            // routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            ////routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
         }
 
         private static Route MapRouteWithNamespace(string name, string url, object defaults, object constraints, string[] namespaces)
@@ -138,8 +151,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         private static RouteValueDictionary CreateRouteValueDictionaryUncached(object values)
         {
-            var dictionary = values as IDictionary<string, object>;
-            return dictionary != null ? new RouteValueDictionary(dictionary) : TypeHelper.ObjectToDictionary(values);
+            return values is IDictionary<string, object> dictionary ? new RouteValueDictionary(dictionary) : TypeHelper.ObjectToDictionary(values);
         }
 
         private void LocateServicesAndMapRoutes()
@@ -147,7 +159,6 @@ namespace DotNetNuke.Web.Mvc.Routing
             RegisterSystemRoutes();
             this.ClearCachedRouteData();
 
-            this.moduleUsage.Clear();
             foreach (var routeMapper in this.GetServiceRouteMappers())
             {
                 try
@@ -156,7 +167,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("{0}.RegisterRoutes threw an exception.  {1}\r\n{2}", routeMapper.GetType().FullName, e.Message, e.StackTrace);
+                    Logger.ErrorFormat(CultureInfo.InvariantCulture, "{0}.RegisterRoutes threw an exception.  {1}\r\n{2}", routeMapper.GetType().FullName, e.Message, e.StackTrace);
                 }
             }
         }
@@ -179,7 +190,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("Unable to create {0} while registering service routes.  {1}", routeMapperType.FullName, e.Message);
+                    Logger.ErrorFormat(CultureInfo.InvariantCulture, "Unable to create {0} while registering service routes.  {1}", routeMapperType.FullName, e.Message);
                     routeMapper = null;
                 }
 

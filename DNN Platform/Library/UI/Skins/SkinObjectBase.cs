@@ -21,7 +21,7 @@ namespace DotNetNuke.UI.Skins
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        public PortalSettings PortalSettings => PortalSettings.Current;
 
         /// <summary>Gets a value indicating whether we are in Admin Mode.</summary>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
@@ -29,5 +29,13 @@ namespace DotNetNuke.UI.Skins
 
         /// <summary>Gets or sets the associated ModuleControl for this SkinControl.</summary>
         public IModuleControl ModuleControl { get; set; }
+
+        /// <summary>
+        /// Gets or sets the version of the rendering to use.
+        /// </summary>
+        /// <remarks>
+        /// This allows opting-in into new more modern rendering behaviors.
+        /// </remarks>
+        public int RenderingVersion { get; set; }
     }
 }

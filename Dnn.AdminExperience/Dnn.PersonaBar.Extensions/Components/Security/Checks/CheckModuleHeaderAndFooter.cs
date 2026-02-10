@@ -5,19 +5,20 @@
 namespace Dnn.PersonaBar.Security.Components.Checks
 {
     using System;
+    using System.Globalization;
     using System.Web;
 
     using DotNetNuke.Data;
 
     public class CheckModuleHeaderAndFooter : IAuditCheck
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Id => "CheckModuleHeaderAndFooter";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool LazyLoad => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);
@@ -28,17 +29,17 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 while (dr.Read())
                 {
                     result.Severity = SeverityEnum.Warning;
-                    var note = string.Format("<b>TabId:</b> {0}, Module Id: {1}", dr["TabId"], dr["ModuleId"]);
+                    var note = string.Format(CultureInfo.CurrentCulture, "<b>TabId:</b> {0}, Module Id: {1}", dr["TabId"], dr["ModuleId"]);
                     var headerValue = dr["Header"].ToString();
                     var footerValue = dr["Footer"].ToString();
                     if (!string.IsNullOrEmpty(headerValue))
                     {
-                        note += string.Format("<br />Header: {0}", HttpUtility.HtmlEncode(headerValue));
+                        note += $"<br />Header: {HttpUtility.HtmlEncode(headerValue)}";
                     }
 
                     if (!string.IsNullOrEmpty(footerValue))
                     {
-                        note += string.Format("<br />Footer: {0}", HttpUtility.HtmlEncode(footerValue));
+                        note += $"<br />Footer: {HttpUtility.HtmlEncode(footerValue)}";
                     }
 
                     note += "< br />";

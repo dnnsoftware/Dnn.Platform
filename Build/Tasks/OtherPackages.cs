@@ -31,7 +31,7 @@ namespace DotNetNuke.Build.Tasks
     {
         private static readonly string[] IncludeAll = ["**/*",];
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             var otherPackages = context.DeserializeJsonFromFile<IEnumerable<OtherPackage>>("./Build/Tasks/thirdparty.json");

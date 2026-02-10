@@ -8,87 +8,104 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Collections;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A base class for a control that is an item in a form.</summary>
     public abstract class DnnFormItemBase : WebControl, INamingContainer
     {
         private object value;
-        private string requiredMessageSuffix = ".Required";
-        private string validationMessageSuffix = ".RegExError";
 
+        /// <summary>Initializes a new instance of the <see cref="DnnFormItemBase"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         protected DnnFormItemBase()
+            : this(null, null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnFormItemBase"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        protected DnnFormItemBase(IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+        {
+            this.AppStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.EventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+
             this.FormMode = DnnFormMode.Inherit;
             this.IsValid = true;
 
-            this.Validators = new List<IValidator>();
+            this.Validators = [];
         }
 
+        /// <summary>Gets or sets the value.</summary>
         public object Value
         {
-            get { return this.value; }
-            set { this.value = value; }
+            get => this.value;
+            set => this.value = value;
         }
 
+        /// <summary>Gets or sets the data field.</summary>
         public string DataField { get; set; }
 
+        /// <summary>Gets or sets the data member.</summary>
         public string DataMember { get; set; }
 
+        /// <summary>Gets or sets the form mode.</summary>
         public DnnFormMode FormMode { get; set; }
 
+        /// <summary>Gets a value indicating whether the item is valid.</summary>
         public bool IsValid { get; private set; }
 
+        /// <summary>Gets or sets the client click event handler.</summary>
         public string OnClientClicked { get; set; }
 
+        /// <summary>Gets or sets the path to the local resource file.</summary>
         public string LocalResourceFile { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether the item is required.</summary>
         public bool Required { get; set; }
 
+        /// <summary>Gets or sets the resource key for the label.</summary>
         public string ResourceKey { get; set; }
 
-        public string RequiredMessageSuffix
-        {
-            get
-            {
-                return this.requiredMessageSuffix;
-            }
+        /// <summary>Gets or sets the suffix to the message indicating the field is required.</summary>
+        public string RequiredMessageSuffix { get; set; } = ".Required";
 
-            set
-            {
-                this.requiredMessageSuffix = value;
-            }
-        }
+        /// <summary>Gets or sets the suffix to the validation message.</summary>
+        public string ValidationMessageSuffix { get; set; } = ".RegExError";
 
-        public string ValidationMessageSuffix
-        {
-            get
-            {
-                return this.validationMessageSuffix;
-            }
-
-            set
-            {
-                this.validationMessageSuffix = value;
-            }
-        }
-
+        /// <summary>Gets the validators.</summary>
         [Category("Behavior")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<IValidator> Validators { get; private set; }
 
+        /// <summary>Gets or sets the validation expression.</summary>
         public string ValidationExpression { get; set; }
 
+        /// <summary>Gets or sets the data source.</summary>
         internal object DataSource { get; set; }
 
+        /// <summary>Gets the application status.</summary>
+        protected IApplicationStatusInfo AppStatus { get; }
+
+        /// <summary>Gets the event logger.</summary>
+        protected IEventLogger EventLogger { get; }
+
+        /// <summary>Gets the property of <see cref="Property"/> specified by <see cref="DataField"/>.</summary>
         protected PropertyInfo ChildProperty
         {
             get
@@ -99,9 +116,11 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets the current portal settings.</summary>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        protected PortalSettings PortalSettings => PortalSettings.Current;
 
+        /// <summary>Gets the property from the <see cref="DataSource"/> matching the <see cref="DataMember"/> (or falling back to <see cref="DataField"/>).</summary>
         protected PropertyInfo Property
         {
             get
@@ -114,15 +133,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
-            }
-        }
+        /// <inheritdoc />
+        protected override HtmlTextWriterTag TagKey => HtmlTextWriterTag.Div;
 
+        /// <summary>Checks whether this item is valid, setting <see cref="IsValid"/>.</summary>
         public void CheckIsValid()
         {
             this.IsValid = true;
@@ -137,6 +151,8 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Data-binds the item.</summary>
+        /// <param name="useDataSource">Whether to use the data source.</param>
         public void DataBindItem(bool useDataSource)
         {
             if (useDataSource)
@@ -160,6 +176,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Creates the control hierarchy.</summary>
         protected virtual void CreateControlHierarchy()
         {
             // Load Item Style
@@ -172,7 +189,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             // Add Label
-            var label = new DnnFormLabel
+            var label = new DnnFormLabel(this.AppStatus, this.EventLogger)
             {
                 LocalResourceFile = this.LocalResourceFile,
                 ResourceKey = this.ResourceKey + ".Text",
@@ -200,7 +217,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             // CreateChildControls re-creates the children (the items)
@@ -211,6 +228,9 @@ namespace DotNetNuke.Web.UI.WebControls
             this.CreateControlHierarchy();
         }
 
+        /// <summary>Does the data binding.</summary>
+        /// <param name="dataField">The data field.</param>
+        /// <param name="value">The value.</param>
         protected void DataBindInternal(string dataField, ref object value)
         {
             var dictionary = this.DataSource as IDictionary;
@@ -253,11 +273,16 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Does the data binding.</summary>
         protected virtual void DataBindInternal()
         {
             this.DataBindInternal(this.DataField, ref this.value);
         }
 
+        /// <summary>Updates the data source.</summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        /// <param name="dataField">The data field.</param>
         protected void UpdateDataSource(object oldValue, object newValue, string dataField)
         {
             this.CheckIsValid();
@@ -267,25 +292,29 @@ namespace DotNetNuke.Web.UI.WebControls
             this.UpdateDataSourceInternal(oldValue, newValue, dataField);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void LoadControlState(object state)
         {
             this.value = state;
         }
 
+        /// <summary>Gets the localized string corresponding to the <paramref name="key"/>.</summary>
+        /// <param name="key">The resource key to find.</param>
+        /// <returns>The localized text.</returns>
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             this.Page.RegisterRequiresControlState(this);
             base.OnInit(e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override object SaveControlState()
         {
             return this.value;
@@ -341,17 +370,15 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (this.DataSource != null)
             {
-                if (this.DataSource is IDictionary<string, string>)
+                if (this.DataSource is IDictionary<string, string> dict)
                 {
-                    var dictionary = this.DataSource as IDictionary<string, string>;
-                    if (dictionary.ContainsKey(dataField) && !ReferenceEquals(newValue, oldValue))
+                    if (dict.ContainsKey(dataField) && !ReferenceEquals(newValue, oldValue))
                     {
-                        dictionary[dataField] = newValue as string;
+                        dict[dataField] = newValue as string;
                     }
                 }
-                else if (this.DataSource is IIndexable)
+                else if (this.DataSource is IIndexable indexer)
                 {
-                    var indexer = this.DataSource as IIndexable;
                     indexer[dataField] = newValue;
                 }
                 else
@@ -368,7 +395,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                 }
                                 else
                                 {
-                                    this.Property.SetValue(this.DataSource, Convert.ChangeType(newValue, this.Property.PropertyType), null);
+                                    this.Property.SetValue(this.DataSource, Convert.ChangeType(newValue, this.Property.PropertyType, CultureInfo.InvariantCulture), null);
                                 }
                             }
                         }
@@ -380,18 +407,16 @@ namespace DotNetNuke.Web.UI.WebControls
                             object parentValue = this.Property.GetValue(this.DataSource, null);
                             if (parentValue != null)
                             {
-                                if (parentValue is IDictionary<string, string>)
+                                if (parentValue is IDictionary<string, string> parentDict)
                                 {
-                                    var dictionary = parentValue as IDictionary<string, string>;
-                                    if (dictionary.ContainsKey(dataField) && !ReferenceEquals(newValue, oldValue))
+                                    if (parentDict.ContainsKey(dataField) && !ReferenceEquals(newValue, oldValue))
                                     {
-                                        dictionary[dataField] = newValue as string;
+                                        parentDict[dataField] = newValue as string;
                                     }
                                 }
-                                else if (parentValue is IIndexable)
+                                else if (parentValue is IIndexable parentIndexer)
                                 {
-                                    var indexer = parentValue as IIndexable;
-                                    indexer[dataField] = newValue;
+                                    parentIndexer[dataField] = newValue;
                                 }
                                 else if (this.ChildProperty != null)
                                 {
@@ -401,7 +426,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                     }
                                     else
                                     {
-                                        this.ChildProperty.SetValue(parentValue, Convert.ChangeType(newValue, this.ChildProperty.PropertyType), null);
+                                        this.ChildProperty.SetValue(parentValue, Convert.ChangeType(newValue, this.ChildProperty.PropertyType, CultureInfo.InvariantCulture), null);
                                     }
                                 }
                             }

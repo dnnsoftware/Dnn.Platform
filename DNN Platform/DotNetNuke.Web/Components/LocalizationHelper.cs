@@ -6,10 +6,14 @@ namespace DotNetNuke.Web.Components
 {
     using DotNetNuke.Services.Localization;
 
+    /// <summary>Localization helper for the control bar.</summary>
     public class LocalizationHelper
     {
         private const string ResourceFile = "admin/ControlPanel/App_LocalResources/ControlBar";
 
+        /// <summary>Gets the localized string corresponding to the <paramref name="key"/>, for the control bar.</summary>
+        /// <param name="key">The resource key to find.</param>
+        /// <returns>The localized Text.</returns>
         public static string GetControlBarString(string key)
         {
             return Localization.GetString(key, ResourceFile);

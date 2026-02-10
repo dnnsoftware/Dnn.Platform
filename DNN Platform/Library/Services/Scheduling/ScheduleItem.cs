@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Scheduling
     using System;
     using System.Collections;
     using System.Data;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
@@ -39,10 +40,10 @@ namespace DotNetNuke.Services.Scheduling
             this.ScheduleStartDate = Null.NullDate;
         }
 
-        /// <summary>Gets or sets the the event this item attaches to.</summary>
+        /// <summary>Gets or sets the event this item attaches to.</summary>
         public string AttachToEvent { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether cath-up is enabled.</summary>
+        /// <summary>Gets or sets a value indicating whether catch-up is enabled.</summary>
         public bool CatchUpEnabled { get; set; }
 
         /// <summary>Gets or sets a value indicating whether the item is enabled.</summary>
@@ -51,7 +52,7 @@ namespace DotNetNuke.Services.Scheduling
         /// <summary>Gets or sets the schedule start date.</summary>
         public DateTime ScheduleStartDate { get; set; }
 
-        /// <summary>Gets or sets the friednly name for the item.</summary>
+        /// <summary>Gets or sets the friendly name for the item.</summary>
         public string FriendlyName { get; set; }
 
         /// <summary>Gets or sets the next start date.</summary>
@@ -79,10 +80,42 @@ namespace DotNetNuke.Services.Scheduling
         /// <summary>Gets or sets a value indicating how many history items to keep.</summary>
         public int RetainHistoryNum { get; set; }
 
-        /// <summary>Gets or sets the retry time lapse value.</summary>
+        /// <summary>Gets or sets the retry time-lapse value.</summary>
         public int RetryTimeLapse { get; set; }
 
-        /// <summary>Gets or sets the unit of measure for the retry time lapse value.</summary>
+        /// <summary>Gets or sets the unit of measure for the retry time-lapse value.</summary>
+        /// <value>
+        /// Options include the following:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term><c>"s"</c></term>
+        ///         <description>Seconds</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"m"</c></term>
+        ///         <description>Minutes</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"h"</c></term>
+        ///         <description>Hours</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"d"</c></term>
+        ///         <description>Days</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"mo"</c></term>
+        ///         <description>Months</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"y"</c></term>
+        ///         <description>Years</description>
+        ///     </item>
+        /// </list></value>
         public string RetryTimeLapseMeasurement { get; set; }
 
         /// <summary>Gets or sets the ID of the scheduled item.</summary>
@@ -91,10 +124,42 @@ namespace DotNetNuke.Services.Scheduling
         /// <summary>Gets or sets the servers this task should run on.</summary>
         public string Servers { get; set; }
 
-        /// <summary>Gets or sets the recurrence time lapse value.</summary>
+        /// <summary>Gets or sets the recurrence time-lapse value.</summary>
         public int TimeLapse { get; set; }
 
-        /// <summary>Gets or sets the unit of measure for the recurrence time lapse value.</summary>
+        /// <summary>Gets or sets the unit of measure for the recurrence time-lapse value.</summary>
+        /// <value>
+        /// Options include the following:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term><c>"s"</c></term>
+        ///         <description>Seconds</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"m"</c></term>
+        ///         <description>Minutes</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"h"</c></term>
+        ///         <description>Hours</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"d"</c></term>
+        ///         <description>Days</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"mo"</c></term>
+        ///         <description>Months</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"y"</c></term>
+        ///         <description>Years</description>
+        ///     </item>
+        /// </list></value>
         public string TimeLapseMeasurement { get; set; }
 
         /// <summary>Gets or sets the full type name.</summary>
@@ -109,21 +174,14 @@ namespace DotNetNuke.Services.Scheduling
         /// <summary>Gets or sets the ID of the running thread.</summary>
         public int ThreadID { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID
         {
-            get
-            {
-                return this.ScheduleID;
-            }
-
-            set
-            {
-                this.ScheduleID = value;
-            }
+            get => this.ScheduleID;
+            set => this.ScheduleID = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void Fill(IDataReader dr)
         {
             this.FillInternal(dr);
@@ -134,20 +192,18 @@ namespace DotNetNuke.Services.Scheduling
         /// <returns>A value indicating whether the item has object dependencies.</returns>
         public bool HasObjectDependencies(string strObjectDependencies)
         {
-            if (strObjectDependencies.IndexOf(",") > -1)
+            if (strObjectDependencies.IndexOf(",", StringComparison.Ordinal) > -1)
             {
-                string[] a;
-                a = strObjectDependencies.ToLowerInvariant().Split(',');
-                int i;
-                for (i = 0; i <= a.Length - 1; i++)
+                var dependencies = strObjectDependencies.Split(',');
+                for (var i = 0; i <= dependencies.Length - 1; i++)
                 {
-                    if (this.ObjectDependencies.IndexOf(a[i].Trim(), StringComparison.InvariantCultureIgnoreCase) > -1)
+                    if (this.ObjectDependencies.Contains(dependencies[i].Trim(), StringComparison.OrdinalIgnoreCase))
                     {
                         return true;
                     }
                 }
             }
-            else if (this.ObjectDependencies.IndexOf(strObjectDependencies, StringComparison.InvariantCultureIgnoreCase) > -1)
+            else if (this.ObjectDependencies.Contains(strObjectDependencies, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -175,7 +231,7 @@ namespace DotNetNuke.Services.Scheduling
 
             if (this.scheduleItemSettings != null && this.scheduleItemSettings.ContainsKey(key))
             {
-                return Convert.ToString(this.scheduleItemSettings[key]);
+                return Convert.ToString(this.scheduleItemSettings[key], CultureInfo.InvariantCulture);
             }
             else
             {
@@ -191,7 +247,7 @@ namespace DotNetNuke.Services.Scheduling
             return this.scheduleItemSettings;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void FillInternal(IDataReader dr)
         {
             this.ScheduleID = Null.SetNullInteger(dr["ScheduleID"]);

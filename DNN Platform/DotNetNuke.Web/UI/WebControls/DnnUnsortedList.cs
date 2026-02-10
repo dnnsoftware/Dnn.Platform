@@ -8,9 +8,9 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    /// <summary>Creates a control that renders its childs as a bulleted list.</summary>
+    /// <summary>Creates a control that renders its children as a bulleted list.</summary>
     /// <remarks>
-    /// Control renders an unordered list HTML contol.
+    /// Control renders an unordered list HTML control.
     /// Each child control in <see cref="DnnUnsortedList"/> is rendered as a separate list item.
     /// To obtain a control over list item style, add a <see cref="DnnUnsortedListItem" /> to a controls list,
     /// and tune this object appropriately.
@@ -25,6 +25,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
+        /// <summary>Gets the list items.</summary>
         [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
         [MergableProperty(false)]
         public virtual UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem> ListItems
@@ -45,13 +46,13 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ListItems.Add(listItem);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override sealed ControlCollection CreateControlCollection()
         {
             return new TypedControlCollection<DnnUnsortedListItem>(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void AddAttributesToRender(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);

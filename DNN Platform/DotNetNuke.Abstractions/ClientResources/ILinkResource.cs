@@ -4,7 +4,7 @@
 
 namespace DotNetNuke.Abstractions.ClientResources;
 
-/// <summary>Marker interface for resources that resolve to a link in html.</summary>
+/// <summary>Marker interface for resources that resolve to a link in HTML.</summary>
 public interface ILinkResource : IResource
 {
     /// <summary>

@@ -6,9 +6,12 @@ namespace DotNetNuke.Entities.Profile
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.IO;
+    using System.Runtime.CompilerServices;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
@@ -77,8 +80,16 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Adds a Property Definition to the Data Store.</summary>
         /// <param name="definition">An ProfilePropertyDefinition object.</param>
-        /// <returns>The Id of the definition (or if negative the errorcode of the error).</returns>
-        public static int AddPropertyDefinition(ProfilePropertyDefinition definition)
+        /// <returns>The ID of the definition (or if negative the errorcode of the error).</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial int AddPropertyDefinition(ProfilePropertyDefinition definition)
+            => AddPropertyDefinition(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), definition);
+
+        /// <summary>Adds a Property Definition to the Data Store.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="definition">An ProfilePropertyDefinition object.</param>
+        /// <returns>The ID of the definition (or if negative the errorcode of the error).</returns>
+        public static int AddPropertyDefinition(IEventLogger eventLogger, ProfilePropertyDefinition definition)
         {
             int portalId = GetEffectivePortalId(definition.PortalId);
             if (definition.Required)
@@ -101,7 +112,7 @@ namespace DotNetNuke.Entities.Profile
                 definition.Length,
                 (int)definition.DefaultVisibility,
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
+            eventLogger.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.PROFILEPROPERTY_CREATED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
             return intDefinition;
@@ -116,10 +127,17 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Deletes a Property Definition from the Data Store.</summary>
         /// <param name="definition">The ProfilePropertyDefinition object to delete.</param>
-        public static void DeletePropertyDefinition(ProfilePropertyDefinition definition)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeletePropertyDefinition(ProfilePropertyDefinition definition)
+            => DeletePropertyDefinition(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), definition);
+
+        /// <summary>Deletes a Property Definition from the Data Store.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="definition">The ProfilePropertyDefinition object to delete.</param>
+        public static void DeletePropertyDefinition(IEventLogger eventLogger, ProfilePropertyDefinition definition)
         {
             DataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
+            eventLogger.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.PROFILEPROPERTY_DELETED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }
@@ -128,8 +146,8 @@ namespace DotNetNuke.Entities.Profile
         /// <param name="portalId">The portal ID.</param>
         public static void ClearAllUsersInfoProfileCacheByPortal(int portalId)
         {
-            DataCache.ClearCache(string.Format(DataCache.UserCacheKey, portalId, string.Empty));
-            DataCache.ClearCache(string.Format(DataCache.UserProfileCacheKey, portalId, string.Empty));
+            DataCache.ClearCache(string.Format(CultureInfo.InvariantCulture, DataCache.UserCacheKey, portalId, string.Empty));
+            DataCache.ClearCache(string.Format(CultureInfo.InvariantCulture, DataCache.UserProfileCacheKey, portalId, string.Empty));
         }
 
         /// <summary>Gets a Property Definition from the Data Store by id.</summary>
@@ -296,7 +314,14 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Updates a Property Definition in the Data Store.</summary>
         /// <param name="definition">The ProfilePropertyDefinition object to update.</param>
-        public static void UpdatePropertyDefinition(ProfilePropertyDefinition definition)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void UpdatePropertyDefinition(ProfilePropertyDefinition definition)
+            => UpdatePropertyDefinition(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), definition);
+
+        /// <summary>Updates a Property Definition in the Data Store.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="definition">The ProfilePropertyDefinition object to update.</param>
+        public static void UpdatePropertyDefinition(IEventLogger eventLogger, ProfilePropertyDefinition definition)
         {
             if (definition.Required)
             {
@@ -317,7 +342,7 @@ namespace DotNetNuke.Entities.Profile
                 definition.Length,
                 (int)definition.DefaultVisibility,
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
+            eventLogger.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.PROFILEPROPERTY_UPDATED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }
@@ -383,9 +408,9 @@ namespace DotNetNuke.Entities.Profile
             {
                 try
                 {
-                    if (!string.IsNullOrEmpty(user.Profile.Photo) && int.Parse(user.Profile.Photo) > 0)
+                    if (!string.IsNullOrEmpty(user.Profile.Photo) && int.Parse(user.Profile.Photo, CultureInfo.InvariantCulture) > 0)
                     {
-                        CreateThumbnails(int.Parse(user.Profile.Photo));
+                        CreateThumbnails(int.Parse(user.Profile.Photo, CultureInfo.InvariantCulture));
                     }
                 }
                 catch (Exception ex)
@@ -434,10 +459,10 @@ namespace DotNetNuke.Entities.Profile
                 return res;
             }
 
-            using IDataReader ir = Data.DataProvider.Instance().SearchProfilePropertyValues(portalId, propertyName, searchString);
-            while (ir.Read())
+            using var reader = Data.DataProvider.Instance().SearchProfilePropertyValues(portalId, propertyName, searchString);
+            while (reader.Read())
             {
-                res.Add(Convert.ToString(ir[0]));
+                res.Add(Convert.ToString(reader[0], CultureInfo.InvariantCulture));
             }
 
             return res;
@@ -510,31 +535,31 @@ namespace DotNetNuke.Entities.Profile
                 return null;
             }
 
-            int portalid = 0;
-            portalid = Convert.ToInt32(Null.SetNull(dr["PortalId"], portalid));
-            definition = new ProfilePropertyDefinition(portalid);
-            definition.PropertyDefinitionId = Convert.ToInt32(Null.SetNull(dr["PropertyDefinitionId"], definition.PropertyDefinitionId));
-            definition.ModuleDefId = Convert.ToInt32(Null.SetNull(dr["ModuleDefId"], definition.ModuleDefId));
-            definition.DataType = Convert.ToInt32(Null.SetNull(dr["DataType"], definition.DataType));
-            definition.DefaultValue = Convert.ToString(Null.SetNull(dr["DefaultValue"], definition.DefaultValue));
-            definition.PropertyCategory = Convert.ToString(Null.SetNull(dr["PropertyCategory"], definition.PropertyCategory));
-            definition.PropertyName = Convert.ToString(Null.SetNull(dr["PropertyName"], definition.PropertyName));
-            definition.Length = Convert.ToInt32(Null.SetNull(dr["Length"], definition.Length));
+            var portalId = 0;
+            portalId = Convert.ToInt32(Null.SetNull(dr["PortalId"], portalId), CultureInfo.InvariantCulture);
+            definition = new ProfilePropertyDefinition(portalId);
+            definition.PropertyDefinitionId = Convert.ToInt32(Null.SetNull(dr["PropertyDefinitionId"], definition.PropertyDefinitionId), CultureInfo.InvariantCulture);
+            definition.ModuleDefId = Convert.ToInt32(Null.SetNull(dr["ModuleDefId"], definition.ModuleDefId), CultureInfo.InvariantCulture);
+            definition.DataType = Convert.ToInt32(Null.SetNull(dr["DataType"], definition.DataType), CultureInfo.InvariantCulture);
+            definition.DefaultValue = Convert.ToString(Null.SetNull(dr["DefaultValue"], definition.DefaultValue), CultureInfo.InvariantCulture);
+            definition.PropertyCategory = Convert.ToString(Null.SetNull(dr["PropertyCategory"], definition.PropertyCategory), CultureInfo.InvariantCulture);
+            definition.PropertyName = Convert.ToString(Null.SetNull(dr["PropertyName"], definition.PropertyName), CultureInfo.InvariantCulture);
+            definition.Length = Convert.ToInt32(Null.SetNull(dr["Length"], definition.Length), CultureInfo.InvariantCulture);
             if (dr.GetSchemaTable().Select("ColumnName = 'ReadOnly'").Length > 0)
             {
-                definition.ReadOnly = Convert.ToBoolean(Null.SetNull(dr["ReadOnly"], definition.ReadOnly));
+                definition.ReadOnly = Convert.ToBoolean(Null.SetNull(dr["ReadOnly"], definition.ReadOnly), CultureInfo.InvariantCulture);
             }
 
-            definition.Required = Convert.ToBoolean(Null.SetNull(dr["Required"], definition.Required));
-            definition.ValidationExpression = Convert.ToString(Null.SetNull(dr["ValidationExpression"], definition.ValidationExpression));
-            definition.ViewOrder = Convert.ToInt32(Null.SetNull(dr["ViewOrder"], definition.ViewOrder));
-            definition.Visible = Convert.ToBoolean(Null.SetNull(dr["Visible"], definition.Visible));
-            definition.DefaultVisibility = (UserVisibilityMode)Convert.ToInt32(Null.SetNull(dr["DefaultVisibility"], definition.DefaultVisibility));
+            definition.Required = Convert.ToBoolean(Null.SetNull(dr["Required"], definition.Required), CultureInfo.InvariantCulture);
+            definition.ValidationExpression = Convert.ToString(Null.SetNull(dr["ValidationExpression"], definition.ValidationExpression), CultureInfo.InvariantCulture);
+            definition.ViewOrder = Convert.ToInt32(Null.SetNull(dr["ViewOrder"], definition.ViewOrder), CultureInfo.InvariantCulture);
+            definition.Visible = Convert.ToBoolean(Null.SetNull(dr["Visible"], definition.Visible), CultureInfo.InvariantCulture);
+            definition.DefaultVisibility = (UserVisibilityMode)Convert.ToInt32(Null.SetNull(dr["DefaultVisibility"], definition.DefaultVisibility), CultureInfo.InvariantCulture);
             definition.ProfileVisibility = new ProfileVisibility
             {
                 VisibilityMode = definition.DefaultVisibility,
             };
-            definition.Deleted = Convert.ToBoolean(Null.SetNull(dr["Deleted"], definition.Deleted));
+            definition.Deleted = Convert.ToBoolean(Null.SetNull(dr["Deleted"], definition.Deleted), CultureInfo.InvariantCulture);
 
             return definition;
         }
@@ -574,7 +599,7 @@ namespace DotNetNuke.Entities.Profile
         private static List<ProfilePropertyDefinition> GetPropertyDefinitions(IHostSettings hostSettings, int portalId)
         {
             // Get the Cache Key
-            string key = string.Format(DataCache.ProfileDefinitionsCacheKey, portalId);
+            string key = string.Format(CultureInfo.InvariantCulture, DataCache.ProfileDefinitionsCacheKey, portalId);
 
             // Try fetching the List from the Cache
             var definitions = (List<ProfilePropertyDefinition>)DataCache.GetCache(key);
@@ -584,7 +609,7 @@ namespace DotNetNuke.Entities.Profile
             }
 
             // definitions caching settings
-            int timeOut = DataCache.ProfileDefinitionsCacheTimeOut * Convert.ToInt32(hostSettings.PerformanceSetting);
+            int timeOut = DataCache.ProfileDefinitionsCacheTimeOut * (int)hostSettings.PerformanceSetting;
 
             // Get the List from the database
             definitions = FillPropertyDefinitionInfoCollection(DataProvider.GetPropertyDefinitionsByPortal(portalId));

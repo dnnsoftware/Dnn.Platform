@@ -8,7 +8,7 @@ namespace DotNetNuke.Authentication.Twitter.Components
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Authentication.OAuth;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public class TwitterClient : OAuthClientBase
     {
         /// <summary>Initializes a new instance of the <see cref="TwitterClient"/> class.</summary>

@@ -4,6 +4,7 @@
 namespace Dnn.PersonaBar.Security.Components.Checks
 {
     using System;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.PersonaBar.Pages.Components;
@@ -142,7 +143,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         private bool PageIsPublic(TabInfo tabInfo)
         {
-            var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
+            var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
 
             var permissions = this.pagesController.GetPermissionsData(tabInfo.TabID);
 

@@ -6,6 +6,7 @@ namespace DotNetNuke.Tests.Content
     using System;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Content.Data;
@@ -44,6 +45,7 @@ namespace DotNetNuke.Tests.Content
                     services.AddSingleton(vocabularyController.Object);
                     services.AddSingleton(dataProvider.Object);
                     services.AddSingleton(this.mockCache.Object);
+                    services.AddSingleton(Mock.Of<ICryptographyProvider>());
                 });
         }
 
@@ -380,12 +382,12 @@ namespace DotNetNuke.Tests.Content
             // Act
             var term = termController.GetTerm(Constants.TERM_ValidTermId);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(term.TermId, Is.EqualTo(Constants.TERM_ValidTermId));
                 Assert.That(term.Name, Is.EqualTo(Constants.TERM_ValidName));
-            });
+            }
         }
 
         [Test]
@@ -437,11 +439,11 @@ namespace DotNetNuke.Tests.Content
 
             for (int i = 0; i < Constants.TERM_ValidCountForContent1; i++)
             {
-                Assert.Multiple(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(terms[i].TermId, Is.EqualTo(i + Constants.TERM_ValidTermId));
                     Assert.That(terms[i].Name, Is.EqualTo(ContentTestHelper.GetTermName(i + Constants.TERM_ValidTermId)));
-                });
+                }
             }
         }
 
@@ -478,11 +480,11 @@ namespace DotNetNuke.Tests.Content
 
             for (int i = 0; i < Constants.TERM_ValidCountForVocabulary1; i++)
             {
-                Assert.Multiple(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(terms[i].TermId, Is.EqualTo(i + Constants.TERM_ValidTermId));
                     Assert.That(terms[i].Name, Is.EqualTo(ContentTestHelper.GetTermName(i + Constants.TERM_ValidTermId)));
-                });
+                }
             }
         }
 

@@ -10,6 +10,7 @@ namespace DotNetNuke.Services.FileSystem
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
 
@@ -35,7 +36,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsMoveFile
         {
             get
@@ -44,13 +45,13 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsMoveFolder
         {
             get { return true; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
         {
             Requires.PropertyNotNull("folderPath", folderPath);
@@ -72,7 +73,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void AddFile(IFolderInfo folder, string fileName, Stream content)
         {
             Requires.NotNull("folder", folder);
@@ -82,12 +83,12 @@ namespace DotNetNuke.Services.FileSystem
             this.UpdateFile(folder, fileName, content);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void AddFolder(string folderPath, FolderMappingInfo folderMapping)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DeleteFile(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -101,12 +102,12 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DeleteFolder(IFolderInfo folder)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool FileExists(IFolderInfo folder, string fileName)
         {
             Requires.NotNull("folder", folder);
@@ -115,7 +116,7 @@ namespace DotNetNuke.Services.FileSystem
             return FileWrapper.Instance.Exists(this.GetActualPath(folder, fileName));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool FolderExists(string folderPath, FolderMappingInfo folderMapping)
         {
             Requires.PropertyNotNull("folderPath", folderPath);
@@ -124,7 +125,7 @@ namespace DotNetNuke.Services.FileSystem
             return DirectoryWrapper.Instance.Exists(this.GetActualPath(folderMapping, folderPath));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override FileAttributes? GetFileAttributes(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -143,7 +144,7 @@ namespace DotNetNuke.Services.FileSystem
             return fileAttributes;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string[] GetFiles(IFolderInfo folder)
         {
             Requires.NotNull("folder", folder);
@@ -158,7 +159,7 @@ namespace DotNetNuke.Services.FileSystem
             return fileNames;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override long GetFileSize(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -168,7 +169,7 @@ namespace DotNetNuke.Services.FileSystem
             return physicalFile.Length;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Stream GetFileStream(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -176,7 +177,7 @@ namespace DotNetNuke.Services.FileSystem
             return this.GetFileStreamInternal(this.GetActualPath(file));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Stream GetFileStream(IFolderInfo folder, string fileName)
         {
             Requires.NotNull("folder", folder);
@@ -184,7 +185,7 @@ namespace DotNetNuke.Services.FileSystem
             return this.GetFileStreamInternal(this.GetActualPath(folder, fileName));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string GetFileUrl(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -211,26 +212,26 @@ namespace DotNetNuke.Services.FileSystem
                     portalSettings.GUID.ToString());
             }
 
-            // Does site management want the cachebuster parameter?
+            // Does site management want the cache-buster parameter?
             if (portalSettings.AddCachebusterToResourceUris)
             {
-                var cachebusterToken = UrlUtils.EncryptParameter(
-                    file.LastModificationTime.GetHashCode().ToString(),
+                var cacheBusterToken = UrlUtils.EncryptParameter(
+                    file.LastModificationTime.GetHashCode().ToString(CultureInfo.InvariantCulture),
                     portalSettings.GUID.ToString());
 
-                return TestableGlobals.Instance.ResolveUrl(fullPath + "?ver=" + cachebusterToken);
+                return TestableGlobals.Instance.ResolveUrl(fullPath + "?ver=" + cacheBusterToken);
             }
 
             return TestableGlobals.Instance.ResolveUrl(fullPath);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string GetFolderProviderIconPath()
         {
             return IconControllerWrapper.Instance.IconURL("FolderStandard", "32x32");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override DateTime GetLastModificationTime(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -249,7 +250,7 @@ namespace DotNetNuke.Services.FileSystem
             return lastModificationTime;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IEnumerable<string> GetSubFolders(string folderPath, FolderMappingInfo folderMapping)
         {
             Requires.PropertyNotNull("folderPath", folderPath);
@@ -259,7 +260,7 @@ namespace DotNetNuke.Services.FileSystem
                 .Select(directory => this.GetRelativePath(folderMapping, directory));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsInSync(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -267,7 +268,7 @@ namespace DotNetNuke.Services.FileSystem
             return Convert.ToInt32((file.LastModificationTime - this.GetLastModificationTime(file)).TotalSeconds) == 0;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void MoveFile(IFileInfo file, IFolderInfo destinationFolder)
         {
             Requires.NotNull("file", file);
@@ -281,13 +282,13 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void MoveFolder(string folderPath, string newFolderPath, FolderMappingInfo folderMapping)
         {
             // The folder has already been moved in filesystem
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RenameFile(IFileInfo file, string newFileName)
         {
             Requires.NotNull("file", file);
@@ -302,13 +303,13 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RenameFolder(IFolderInfo folder, string newFolderName)
         {
             // The folder has already been moved in filesystem
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void SetFileAttributes(IFileInfo file, FileAttributes fileAttributes)
         {
             Requires.NotNull("file", file);
@@ -316,13 +317,13 @@ namespace DotNetNuke.Services.FileSystem
             FileWrapper.Instance.SetAttributes(this.GetActualPath(file), fileAttributes);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsFileAttributes()
         {
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdateFile(IFileInfo file, Stream content)
         {
             Requires.NotNull("file", file);
@@ -331,7 +332,7 @@ namespace DotNetNuke.Services.FileSystem
             this.UpdateFile(FolderManager.Instance.GetFolder(file.FolderId), file.FileName, content);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdateFile(IFolderInfo folder, string fileName, Stream content)
         {
             Requires.NotNull("folder", folder);

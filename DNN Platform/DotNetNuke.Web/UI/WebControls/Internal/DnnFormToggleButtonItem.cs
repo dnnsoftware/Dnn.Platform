@@ -4,10 +4,16 @@
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Web.UI.WebControls;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnFormToggleButtonItem : DnnFormItemBase
@@ -16,11 +22,22 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         private CheckBox checkBox;
 
         /// <summary>Initializes a new instance of the <see cref="DnnFormToggleButtonItem"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public DnnFormToggleButtonItem()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnFormToggleButtonItem"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public DnnFormToggleButtonItem(IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+            : base(appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>())
         {
             this.Mode = CheckBoxMode.TrueFalse;
         }
 
+        /// <summary>The checkbox mode.</summary>
         public enum CheckBoxMode
         {
             /// <summary>True and False.</summary>
@@ -33,9 +50,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             YesNo = 2,
         }
 
+        /// <summary>Gets or sets the checkbox mode.</summary>
         public CheckBoxMode Mode { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override WebControl CreateControlInternal(Control container)
         {
             // _checkBox = new DnnRadButton {ID = ID + "_CheckBox", ButtonType = RadButtonType.ToggleButton, ToggleType = ButtonToggleType.CheckBox, AutoPostBack = false};
@@ -53,22 +71,21 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 case CheckBoxMode.YN:
                 case CheckBoxMode.YesNo:
-                    var stringValue = this.Value as string;
-                    if (stringValue != null)
+                    if (this.Value is string stringValue)
                     {
                         this.checkBox.Checked = stringValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase);
                     }
 
                     break;
                 default:
-                    this.checkBox.Checked = Convert.ToBoolean(this.Value);
+                    this.checkBox.Checked = Convert.ToBoolean(this.Value, CultureInfo.InvariantCulture);
                     break;
             }
 
             return this.checkBox;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

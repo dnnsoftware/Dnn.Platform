@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 using DotNetNuke.Abstractions.Application;
 using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Abstractions.Security;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Extensions;
@@ -28,20 +29,21 @@ using Google.Apis.Auth.OAuth2.Responses;
 
 using Microsoft.Extensions.DependencyInjection;
 
-/// <inheritdoc/>
+/// <inheritdoc />
 public class GoogleMailOAuthProvider : ISmtpOAuthProvider
 {
     private readonly IHostSettingsService hostSettingsService;
     private readonly IPortalAliasService portalAliasService;
     private readonly IHostSettings hostSettings;
     private readonly IPortalController portalController;
+    private readonly ICryptographyProvider cryptographyProvider;
 
     /// <summary>Initializes a new instance of the <see cref="GoogleMailOAuthProvider"/> class.</summary>
     /// <param name="hostSettingsService">The host settings service.</param>
     /// <param name="portalAliasService">The portal alias service.</param>
     [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
     public GoogleMailOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService)
-        : this(hostSettingsService, portalAliasService, null, null)
+        : this(hostSettingsService, portalAliasService, null, null, null)
     {
     }
 
@@ -49,13 +51,25 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
     /// <param name="hostSettingsService">The host settings service.</param>
     /// <param name="portalAliasService">The portal alias service.</param>
     /// <param name="hostSettings">The host settings.</param>
-    /// <param name="portalController">The portal contoller.</param>
+    /// <param name="portalController">The portal controller.</param>
     public GoogleMailOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService, IHostSettings hostSettings, IPortalController portalController)
+        : this(hostSettingsService, portalAliasService, hostSettings, portalController, null)
+    {
+    }
+
+    /// <summary>Initializes a new instance of the <see cref="GoogleMailOAuthProvider"/> class.</summary>
+    /// <param name="hostSettingsService">The host settings service.</param>
+    /// <param name="portalAliasService">The portal alias service.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="cryptographyProvider">The cryptography provider.</param>
+    public GoogleMailOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService, IHostSettings hostSettings, IPortalController portalController, ICryptographyProvider cryptographyProvider)
     {
         this.hostSettingsService = hostSettingsService;
         this.portalAliasService = portalAliasService;
         this.hostSettings = hostSettings ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ?? new HostSettings(hostSettingsService);
         this.portalController = portalController ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
+        this.cryptographyProvider = cryptographyProvider ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<ICryptographyProvider>();
     }
 
     /// <inheritdoc />
@@ -102,7 +116,7 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
         var portalAlias = this.portalAliasService.GetPortalAliasesByPortalId(portalId == Null.NullInteger ? this.hostSettings.HostPortalId : portalId)
             .OrderByDescending(a => a.IsPrimary)
             .First();
-        var sslEnabled = portalSettings.SSLEnabled && portalSettings.SSLSetup == DotNetNuke.Abstractions.Security.SiteSslSetup.On;
+        var sslEnabled = portalSettings.SSLEnabled && portalSettings.SSLSetup == SiteSslSetup.On;
 
         var siteUrl = $"{(sslEnabled ? "https" : "http")}://{portalAlias.HttpAlias}";
 
@@ -112,7 +126,7 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
     /// <inheritdoc />
     public IList<SmtpOAuthSetting> GetSettings(int portalId)
     {
-        return portalId > Null.NullInteger ? GetSettingsFromPortal(portalId) : this.GetSettingsFromHost();
+        return portalId > Null.NullInteger ? this.GetSettingsFromPortal(portalId) : this.GetSettingsFromHost();
     }
 
     /// <inheritdoc />
@@ -223,7 +237,7 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
             });
     }
 
-    private static IList<SmtpOAuthSetting> GetSettingsFromPortal(int portalId)
+    private IList<SmtpOAuthSetting> GetSettingsFromPortal(int portalId)
     {
         var portalSettings = PortalController.Instance.GetPortalSettings(portalId);
         if (portalSettings == null)
@@ -236,7 +250,18 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
         var clientSecret = portalSettings.GetValueOrDefault(Constants.ClientSecretSettingName, string.Empty);
         if (!string.IsNullOrWhiteSpace(clientSecret))
         {
-            clientSecret = PortalSecurity.Instance.Decrypt(Config.GetDecryptionkey(), clientSecret);
+            var algorithmName = portalSettings.GetValueOrDefault(Constants.ClientSecretEncryptionAlgorithm, string.Empty);
+            if (!string.IsNullOrWhiteSpace(algorithmName))
+            {
+                var initializationVector = portalSettings.GetValueOrDefault(Constants.ClientSecretInitializationVector, string.Empty);
+                clientSecret = this.cryptographyProvider.DecryptString(clientSecret, Config.GetDecryptionkey(), algorithmName, initializationVector);
+            }
+            else
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                clientSecret = PortalSecurity.Instance.Decrypt(Config.GetDecryptionkey(), clientSecret);
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
         }
 
         return new List<SmtpOAuthSetting>
@@ -279,14 +304,25 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
 
     private IList<SmtpOAuthSetting> GetSettingsFromHost()
     {
-        var hostSettings = this.hostSettingsService.GetSettingsDictionary().ToDictionary(i => i.Key, i => i.Value);
+        var settingsDictionary = this.hostSettingsService.GetSettingsDictionary().ToDictionary(i => i.Key, i => i.Value);
 
-        var accountEmail = hostSettings.GetValueOrDefault(Constants.AccountEmailSettingName, string.Empty);
-        var clientId = hostSettings.GetValueOrDefault(Constants.ClientIdSettingName, string.Empty);
-        var clientSecret = hostSettings.GetValueOrDefault(Constants.ClientSecretSettingName, string.Empty);
+        var accountEmail = settingsDictionary.GetValueOrDefault(Constants.AccountEmailSettingName, string.Empty);
+        var clientId = settingsDictionary.GetValueOrDefault(Constants.ClientIdSettingName, string.Empty);
+        var clientSecret = settingsDictionary.GetValueOrDefault(Constants.ClientSecretSettingName, string.Empty);
         if (!string.IsNullOrWhiteSpace(clientSecret))
         {
-            clientSecret = PortalSecurity.Instance.Decrypt(Config.GetDecryptionkey(), clientSecret);
+            var algorithmName = settingsDictionary.GetValueOrDefault(Constants.ClientSecretEncryptionAlgorithm, string.Empty);
+            if (!string.IsNullOrWhiteSpace(algorithmName))
+            {
+                var initializationVector = settingsDictionary.GetValueOrDefault(Constants.ClientSecretInitializationVector, (string)null);
+                clientSecret = this.cryptographyProvider.DecryptString(clientSecret, Config.GetDecryptionkey(), algorithmName, initializationVector);
+            }
+            else
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                clientSecret = PortalSecurity.Instance.Decrypt(Config.GetDecryptionkey(), clientSecret);
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
         }
 
         return new List<SmtpOAuthSetting>
@@ -324,6 +360,7 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
         var accountEmail = this.GetSetting(Null.NullInteger, Constants.AccountEmailSettingName);
         var clientId = this.GetSetting(Null.NullInteger, Constants.ClientIdSettingName);
         var clientSecret = this.GetSetting(Null.NullInteger, Constants.ClientSecretSettingName);
+        var clientSecretEncryptionAlgorithm = this.GetSetting(Null.NullInteger, Constants.ClientSecretEncryptionAlgorithm);
 
         var changed = false;
         if (settings.ContainsKey(Constants.AccountEmailSettingName) && settings[Constants.AccountEmailSettingName] != accountEmail)
@@ -338,11 +375,16 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
             changed = true;
         }
 
-        if (settings.ContainsKey(Constants.ClientSecretSettingName) && settings[Constants.ClientSecretSettingName] != clientSecret)
+        if (settings.ContainsKey(Constants.ClientSecretSettingName))
         {
-            var encryptedSecret = PortalSecurity.Instance.Encrypt(Config.GetDecryptionkey(), settings[Constants.ClientSecretSettingName]);
-            this.hostSettingsService.Update(Constants.ClientSecretSettingName, encryptedSecret, false);
-            changed = true;
+            if (settings[Constants.ClientSecretSettingName] != clientSecret || string.IsNullOrWhiteSpace(clientSecretEncryptionAlgorithm))
+            {
+                var (encryptedSecret, algorithmName, initializationVector) = this.cryptographyProvider.EncryptString(Config.GetDecryptionkey(), settings[Constants.ClientSecretSettingName]);
+                this.hostSettingsService.Update(Constants.ClientSecretSettingName, encryptedSecret, false);
+                this.hostSettingsService.Update(Constants.ClientSecretEncryptionAlgorithm, algorithmName, false);
+                this.hostSettingsService.Update(Constants.ClientSecretInitializationVector, initializationVector, false);
+                changed = true;
+            }
         }
 
         if (changed)
@@ -358,6 +400,7 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
         var accountEmail = this.GetSetting(portalId, Constants.AccountEmailSettingName);
         var clientId = this.GetSetting(portalId, Constants.ClientIdSettingName);
         var clientSecret = this.GetSetting(portalId, Constants.ClientSecretSettingName);
+        var clientSecretEncryptionAlgorithm = this.GetSetting(portalId, Constants.ClientSecretEncryptionAlgorithm);
 
         var changed = false;
         if (settings.ContainsKey(Constants.AccountEmailSettingName) && settings[Constants.AccountEmailSettingName] != accountEmail)
@@ -372,11 +415,16 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
             changed = true;
         }
 
-        if (settings.ContainsKey(Constants.ClientSecretSettingName) && settings[Constants.ClientSecretSettingName] != clientSecret)
+        if (settings.ContainsKey(Constants.ClientSecretSettingName))
         {
-            var encryptedSecret = PortalSecurity.Instance.Encrypt(Config.GetDecryptionkey(), settings[Constants.ClientSecretSettingName]);
-            PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.ClientSecretSettingName, encryptedSecret, false);
-            changed = true;
+            if (settings[Constants.ClientSecretSettingName] != clientSecret || string.IsNullOrWhiteSpace(clientSecretEncryptionAlgorithm))
+            {
+                var (encryptedSecret, algorithmName, initializationVector) = this.cryptographyProvider.EncryptString(Config.GetDecryptionkey(), settings[Constants.ClientSecretSettingName]);
+                PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.ClientSecretSettingName, encryptedSecret, false);
+                PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.ClientSecretEncryptionAlgorithm, algorithmName, false);
+                PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.ClientSecretInitializationVector, initializationVector, false);
+                changed = true;
+            }
         }
 
         if (changed)

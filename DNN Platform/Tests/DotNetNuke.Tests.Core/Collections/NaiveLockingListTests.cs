@@ -44,11 +44,11 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             var list = new NaiveLockingList<int> { 0, 1, 2, 3 };
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(list, Has.Some.EqualTo(2));
                 Assert.That(list, Has.None.EqualTo(9999));
-            });
+            }
         }
 
         [Test]

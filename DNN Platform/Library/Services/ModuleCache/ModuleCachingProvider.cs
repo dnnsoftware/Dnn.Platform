@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.ModuleCache
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Text;
 
     using DotNetNuke.ComponentModel;
@@ -55,7 +56,7 @@ namespace DotNetNuke.Services.ModuleCache
             var sOutput = new StringBuilder(arrInput.Length);
             for (i = 0; i <= arrInput.Length - 1; i++)
             {
-                sOutput.Append(arrInput[i].ToString("X2"));
+                sOutput.Append(arrInput[i].ToString("X2", CultureInfo.InvariantCulture));
             }
 
             return sOutput.ToString();

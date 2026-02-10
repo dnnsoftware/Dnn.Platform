@@ -9,32 +9,40 @@ namespace DNNConnect.CKEditorProvider
     using System.Web.UI;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The options page.</summary>
     public partial class Options : PageBase
     {
-        private readonly IHostSettings hostSettings;
+        private readonly IEventLogger eventLogger;
+        private readonly IClientResourceController clientResourceController;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IPortalAliasService portalAliasService;
+        private readonly IModuleController moduleController;
 
         /// <summary>The request.</summary>
         private readonly HttpRequest request = HttpContext.Current.Request;
 
-        /// <summary>The _portal settings.</summary>
-        private PortalSettings curPortalSettings;
+        /// <summary>The portal settings.</summary>
+        private IPortalSettings curPortalSettings;
 
         /// <summary>Initializes a new instance of the <see cref="Options"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
         public Options()
-            : this(null, null, null)
+            : this(null, null, null, null, null, null, null, null, null)
         {
         }
 
@@ -42,10 +50,30 @@ namespace DNNConnect.CKEditorProvider
         /// <param name="portalController">The portal controller.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
         public Options(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings)
-            : base(portalController, appStatus, hostSettings)
+            : this(portalController, appStatus, hostSettings, null, null, null, null, null, null)
         {
-            this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Options"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="moduleController">The module controller.</param>
+        public Options(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IUserController userController, IEventLogger eventLogger, IClientResourceController clientResourceController, IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService, IModuleController moduleController)
+            : base(portalController, appStatus, hostSettings, userController)
+        {
+            this.eventLogger = eventLogger ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IEventLogger>();
+            this.clientResourceController = clientResourceController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IClientResourceController>();
+            this.hostSettingsService = hostSettingsService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettingsService>();
+            this.portalAliasService = portalAliasService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalAliasService>();
+            this.moduleController = moduleController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>();
         }
 
         /// <summary>  Gets Current Language from Url.</summary>
@@ -58,29 +86,21 @@ namespace DNNConnect.CKEditorProvider
             {
                 string[] page = this.Request.ServerVariables["SCRIPT_NAME"].Split('/');
 
-                string fileRoot = string.Format(
-                    "{0}/{1}/{2}.resx",
-                    this.TemplateSourceDirectory,
-                    Localization.LocalResourceDirectory,
-                    page[page.GetUpperBound(0)]);
-
-                return fileRoot;
+                return $"{this.TemplateSourceDirectory}/{Localization.LocalResourceDirectory}/{page[page.GetUpperBound(0)]}.resx";
             }
         }
 
-        /// <summary>Register the java scripts and CSS.</summary>
-        /// <param name="e">
-        /// The Event Args.
-        /// </param>
+        /// <summary>Register the JavaScripts and CSS.</summary>
+        /// <param name="e">The Event Args.</param>
         protected override void OnPreRender(EventArgs e)
         {
-            JavaScript.RequestRegistration(CommonJs.jQuery);
-            JavaScript.RequestRegistration(CommonJs.jQueryUI);
-            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.notification.js"));
-            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/Options.js"));
-            ClientResourceManager.RegisterStyleSheet(this.Page, "https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css");
-            ClientResourceManager.RegisterStyleSheet(this.Page, this.ResolveUrl("css/jquery.notification.css"));
-            ClientResourceManager.RegisterStyleSheet(this.Page, this.ResolveUrl("css/Options.css"));
+            JavaScript.RequestRegistration(this.AppStatus, this.eventLogger, this.PortalSettings, CommonJs.jQuery);
+            JavaScript.RequestRegistration(this.AppStatus, this.eventLogger, this.PortalSettings, CommonJs.jQueryUI);
+            this.clientResourceController.CreateScript(this.ResolveUrl("js/jquery.notification.js")).Register();
+            this.clientResourceController.CreateScript(this.ResolveUrl("js/Options.js")).Register();
+            this.clientResourceController.CreateStylesheet("https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css").Register();
+            this.clientResourceController.CreateStylesheet(this.ResolveUrl("css/jquery.notification.css")).Register();
+            this.clientResourceController.CreateStylesheet(this.ResolveUrl("css/Options.css")).Register();
 
             base.OnPreRender(e);
         }
@@ -103,7 +123,6 @@ namespace DNNConnect.CKEditorProvider
         protected void Page_Load(object sender, EventArgs e)
         {
             ModuleInfo modInfo = null;
-            ModuleController db = new ModuleController();
 
             try
             {
@@ -123,7 +142,7 @@ namespace DNNConnect.CKEditorProvider
 
                 if (moduleId != -1 && tabId != -1)
                 {
-                    modInfo = db.GetModule(moduleId, tabId, false);
+                    modInfo = this.moduleController.GetModule(moduleId, tabId, false);
                 }
                 else
                 {
@@ -163,14 +182,12 @@ namespace DNNConnect.CKEditorProvider
         }
 
         /// <summary>Gets the portal settings.</summary>
-        /// <returns>
-        /// The Portal Settings.
-        /// </returns>
-        private PortalSettings GetPortalSettings()
+        /// <returns>The Portal Settings.</returns>
+        private IPortalSettings GetPortalSettings()
         {
             int iTabId = 0, iPortalId = 0;
 
-            PortalSettings portalSettings;
+            IPortalSettings portalSettings;
 
             try
             {
@@ -186,15 +203,14 @@ namespace DNNConnect.CKEditorProvider
 
                 string sDomainName = Globals.GetDomainName(this.Request, true);
 
-                string sPortalAlias = PortalAliasController.GetPortalAliasByPortal(iPortalId, sDomainName);
+                string sPortalAlias = this.portalAliasService.GetPortalAliasByPortal(iPortalId, sDomainName);
 
-                PortalAliasInfo objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(sPortalAlias);
-
-                portalSettings = new PortalSettings(iTabId, objPortalAliasInfo);
+                var objPortalAliasInfo = this.portalAliasService.GetPortalAlias(sPortalAlias);
+                portalSettings = PortalSettings.Create(iTabId, objPortalAliasInfo);
             }
             catch (Exception)
             {
-                portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
+                portalSettings = (IPortalSettings)HttpContext.Current.Items["PortalSettings"];
             }
 
             return portalSettings;
@@ -207,15 +223,12 @@ namespace DNNConnect.CKEditorProvider
         private void InitializeComponent()
         {
             this.curPortalSettings = this.GetPortalSettings();
-
-            this.ClientResourceLoader.DataBind();
-            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.Page);
         }
 
         /// <summary>Load Favicon from Current Portal Home Directory.</summary>
         private void LoadFavIcon()
         {
-            this.favicon.Controls.Add(new LiteralControl(DotNetNuke.UI.Internals.FavIcon.GetHeaderLink(this.hostSettings, this.curPortalSettings.PortalId)));
+            this.favicon.Controls.Add(new LiteralControl(DotNetNuke.UI.Internals.FavIcon.GetHeaderLink(this.HostSettings, this.curPortalSettings.PortalId)));
         }
     }
 }

@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.Api.Auth
         /// <summary>Gets the name of the authentication scheme.</summary>
         public override string AuthScheme => "Basic";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (this.NeedsAuthentication(request))
@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.Api.Auth
             return base.OnInboundRequest(request, cancellationToken);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             if (response.StatusCode == HttpStatusCode.Unauthorized && SupportsBasicAuth(response.RequestMessage))

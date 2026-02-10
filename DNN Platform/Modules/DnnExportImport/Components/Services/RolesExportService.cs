@@ -6,6 +6,7 @@ namespace Dnn.ExportImport.Components.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.ExportImport.Components.Common;
@@ -13,21 +14,54 @@ namespace Dnn.ExportImport.Components.Services
     using Dnn.ExportImport.Components.Entities;
     using Dnn.ExportImport.Components.Providers;
     using Dnn.ExportImport.Dto.Roles;
+
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Roles;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>An export service for roles.</summary>
     public class RolesExportService : BasePortableService
     {
-        /// <inheritdoc/>
+        private readonly RoleProvider roleProvider;
+        private readonly IEventLogger eventLogger;
+        private readonly IUserController userController;
+        private readonly IPortalController portalController;
+
+        /// <summary>Initializes a new instance of the <see cref="RolesExportService"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with RoleProvider. Scheduled removal in v12.0.0.")]
+        public RolesExportService()
+            : this(null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="RolesExportService"/> class.</summary>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public RolesExportService(RoleProvider roleProvider, IEventLogger eventLogger, IUserController userController, IPortalController portalController)
+        {
+            this.roleProvider = roleProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        }
+
+        /// <inheritdoc />
         public override string Category => Constants.Category_Roles;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ParentCategory => null;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override uint Priority => 5;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
@@ -63,7 +97,7 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPointStageCallback(this);
 
                 this.Repository.CreateItems(roleGroups);
-                this.Result.AddSummary("Exported Role Groups", roleGroups.Count.ToString());
+                this.Result.AddSummary("Exported Role Groups", roleGroups.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.ProcessedItems = roleGroups.Count;
                 this.CheckPoint.Progress = 30;
                 this.CheckPoint.Stage++;
@@ -87,7 +121,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 this.Repository.CreateItems(roles);
-                this.Result.AddSummary("Exported Roles", roles.Count.ToString());
+                this.Result.AddSummary("Exported Roles", roles.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 80;
                 this.CheckPoint.ProcessedItems += roles.Count;
                 this.CheckPoint.Stage++;
@@ -111,7 +145,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 this.Repository.CreateItems(roleSettings);
-                this.Result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
+                this.Result.AddSummary("Exported Role Settings", roleSettings.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 100;
                 this.CheckPoint.ProcessedItems += roleSettings.Count;
                 this.CheckPoint.Completed = true;
@@ -120,7 +154,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckPoint.Stage > 2)
@@ -142,7 +176,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 this.ProcessRoleGroups(importJob, importDto, otherRoleGroups);
                 this.Repository.UpdateItems(otherRoleGroups);
-                this.Result.AddSummary("Imported Role Groups", otherRoleGroups.Count.ToString());
+                this.Result.AddSummary("Imported Role Groups", otherRoleGroups.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 40;
                 this.CheckPoint.ProcessedItems = otherRoleGroups.Count;
                 this.CheckPoint.Stage++;
@@ -160,7 +194,7 @@ namespace Dnn.ExportImport.Components.Services
             var otherRoles = this.Repository.GetAllItems<ExportRole>().ToList();
             if (this.CheckPoint.Stage == 1)
             {
-                this.Result.AddSummary("Imported Roles", otherRoles.Count.ToString());
+                this.Result.AddSummary("Imported Roles", otherRoles.Count.ToString(CultureInfo.InvariantCulture));
                 this.ProcessRoles(importJob, importDto, otherRoleGroups, otherRoles);
                 this.Repository.UpdateItems(otherRoles);
                 this.CheckPoint.Progress = 50;
@@ -182,7 +216,7 @@ namespace Dnn.ExportImport.Components.Services
                 var otherRoleSettings = this.Repository.GetAllItems<ExportRoleSetting>().ToList();
                 this.ProcessRoleSettings(importJob, importDto, otherRoles, otherRoleSettings);
                 this.Repository.UpdateItems(otherRoleSettings);
-                this.Result.AddSummary("Imported Role Settings", otherRoleSettings.Count.ToString());
+                this.Result.AddSummary("Imported Role Settings", otherRoleSettings.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 100;
                 this.CheckPoint.ProcessedItems += otherRoleSettings.Count;
                 this.CheckPoint.Completed = true;
@@ -191,7 +225,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportRoleGroup>() + this.Repository.GetCount<ExportRole>() +
@@ -273,7 +307,7 @@ namespace Dnn.ExportImport.Components.Services
                             };
                             RoleController.UpdateRoleGroup(roleGroup, false);
                             changedGroups.Add(new RoleGroupItem(roleGroup.RoleGroupID, createdBy, modifiedBy));
-                            DataCache.ClearCache(string.Format(DataCache.RoleGroupsCacheKey, local.RoleGroupID));
+                            DataCache.ClearCache(string.Format(CultureInfo.InvariantCulture, DataCache.RoleGroupsCacheKey, local.RoleGroupID));
                             this.Result.AddLogEntry("Updated role group", other.RoleGroupName);
                             break;
                         default:
@@ -288,7 +322,7 @@ namespace Dnn.ExportImport.Components.Services
                         RoleGroupName = other.RoleGroupName,
                         Description = other.Description,
                     };
-                    other.LocalId = RoleController.AddRoleGroup(roleGroup);
+                    other.LocalId = RoleController.AddRoleGroup(this.roleProvider, this.eventLogger, this.userController, PortalSettings.Create(this.portalController, portalId), roleGroup);
                     changedGroups.Add(new RoleGroupItem(roleGroup.RoleGroupID, createdBy, modifiedBy));
                     this.Result.AddLogEntry("Added role group", other.RoleGroupName);
                 }

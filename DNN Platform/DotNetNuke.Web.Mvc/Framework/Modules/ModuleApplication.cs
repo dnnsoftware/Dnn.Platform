@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             this.ControllerFactory = Globals.GetCurrentServiceProvider().GetRequiredService<IControllerFactory>();
             this.ViewEngines = new ViewEngineCollection();
 
-            // ViewEngines.Add(new ModuleDelegatingViewEngine());
+            ////ViewEngines.Add(new ModuleDelegatingViewEngine());
         }
 
         public RequestContext RequestContext { get; private set; }
@@ -111,11 +111,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
                 moduleController.ModuleContext = context.ModuleContext;
 
-                moduleController.LocalResourceFile = string.Format(
-                    "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                    context.ModuleContext.Configuration.DesktopModule.FolderName,
-                    Localization.LocalResourceDirectory,
-                    controllerName);
+                moduleController.LocalResourceFile =
+                    $"~/DesktopModules/MVC/{context.ModuleContext.Configuration.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{controllerName}.resx";
 
                 moduleController.ViewEngineCollectionEx = this.ViewEngines;
 

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Modules.Groups
 {
     using System;
+    using System.Web;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
@@ -121,16 +122,16 @@ namespace DotNetNuke.Modules.Groups
         {
             get
             {
-                string template = this.LocalizeString("GroupViewTemplate.Text");
+                var template = this.LocalizeHtml("GroupViewTemplate.Text");
                 if (this.Settings.ContainsKey(Constants.GroupViewTemplate))
                 {
                     if (!string.IsNullOrEmpty(this.Settings[Constants.GroupViewTemplate].ToString()))
                     {
-                        template = this.Settings[Constants.GroupViewTemplate].ToString();
+                        template = new HtmlString(this.Settings[Constants.GroupViewTemplate].ToString());
                     }
                 }
 
-                return template;
+                return template.ToHtmlString();
             }
         }
 
@@ -138,16 +139,16 @@ namespace DotNetNuke.Modules.Groups
         {
             get
             {
-                string template = this.LocalizeString("GroupListTemplate.Text");
+                var template = this.LocalizeHtml("GroupListTemplate.Text");
                 if (this.Settings.ContainsKey(Constants.GroupListTemplate))
                 {
                     if (!string.IsNullOrEmpty(this.Settings[Constants.GroupListTemplate].ToString()))
                     {
-                        template = this.Settings[Constants.GroupListTemplate].ToString();
+                        template = new HtmlString(this.Settings[Constants.GroupListTemplate].ToString());
                     }
                 }
 
-                return template;
+                return template.ToHtmlString();
             }
         }
 
@@ -275,7 +276,7 @@ namespace DotNetNuke.Modules.Groups
 
         public string GetCreateUrl()
         {
-            return this.ModuleContext.EditUrl("Create"); // .NavigateUrl(GroupCreateTabId,"",true,null);
+            return this.ModuleContext.EditUrl("Create"); ////.NavigateUrl(GroupCreateTabId,"",true,null);
         }
 
         public string GetClearFilterUrl()

@@ -28,7 +28,7 @@ namespace DotNetNuke.Build.Tasks
             return $"{context.Version.Major:00}.{context.Version.Minor:00}.{context.Version.Patch:00}";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             var unversionedManifests = context.FileReadLines("./Build/Tasks/unversionedManifests.txt");

@@ -5,6 +5,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -57,7 +58,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             this.pagesController = pagesController;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourceFile;
 
         private string Title { get; set; }
@@ -74,7 +75,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         private bool? Visible { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.ParentId = this.GetFlagValue<int?>(FlagParentId, "Parent Id", null, false, false, true);
@@ -94,11 +95,11 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             var testTab = TabController.Instance.GetTab((int)this.ParentId, this.PortalId);
             if (testTab == null)
             {
-                this.AddMessage(string.Format(this.LocalizeString("Prompt_UnableToFindSpecified"), FlagParentId, this.ParentId));
+                this.AddMessage(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Prompt_UnableToFindSpecified"), FlagParentId, this.ParentId));
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             try

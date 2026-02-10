@@ -5,32 +5,23 @@ namespace DotNetNuke.ComponentModel
 {
     using System;
 
-    internal class ComponentType
+    internal sealed class ComponentType : IDisposable
     {
-        private readonly Type baseType;
-        private readonly ComponentBuilderCollection componentBuilders = new ComponentBuilderCollection();
-
         /// <summary>Initializes a new instance of the <see cref="ComponentType"/> class.</summary>
         /// <param name="baseType">The base type of Components of this ComponentType.</param>
         public ComponentType(Type baseType)
         {
-            this.baseType = baseType;
+            this.BaseType = baseType;
         }
 
-        public Type BaseType
-        {
-            get
-            {
-                return this.baseType;
-            }
-        }
+        public Type BaseType { get; }
 
-        public ComponentBuilderCollection ComponentBuilders
+        public ComponentBuilderCollection ComponentBuilders { get; } = new ComponentBuilderCollection();
+
+        /// <inheritdoc />
+        public void Dispose()
         {
-            get
-            {
-                return this.componentBuilders;
-            }
+            this.ComponentBuilders?.Dispose();
         }
     }
 }

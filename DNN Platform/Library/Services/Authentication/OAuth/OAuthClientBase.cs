@@ -23,10 +23,10 @@ namespace DotNetNuke.Services.Authentication.OAuth
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A base class for an OAuth client.</summary>
     public abstract class OAuthClientBase
     {
         protected const string OAuthTokenKey = "oauth_token";
-        private const string HMACSHA1SignatureType = "HMAC-SHA1";
 
         // oAuth 1
         private const string OAuthParameterPrefix = "oauth_";
@@ -120,6 +120,12 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         protected string UserGuid { get; set; }
 
+        protected string SignatureMethod { get; set; } = "HMAC-SHA1";
+
+#pragma warning disable CA5350
+        protected Func<KeyedHashAlgorithm> SignatureMethodAlgorithm { get; set; } = () => new HMACSHA1();
+#pragma warning restore CA5350
+
         // oAuth 1 and 2
         protected Uri AuthorizationEndpoint { get; set; }
 
@@ -161,7 +167,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 }
                 else
                 {
-                    result.Append('%' + string.Format("{0:X2}", (int)symbol));
+                    result.Append('%' + string.Format(CultureInfo.InvariantCulture, "{0:X2}", (int)symbol));
                 }
             }
 
@@ -292,13 +298,13 @@ namespace DotNetNuke.Services.Authentication.OAuth
             return this.AuthorizeV2();
         }
 
-        /// <summary>Generates a signature using the HMAC-SHA1 algorithm.</summary>
+        /// <summary>Generates a signature using the <see cref="SignatureMethodAlgorithm"/>.</summary>
         /// <param name="url">The full url that needs to be signed including its non OAuth url parameters.</param>
-        /// <param name="token">The token, if available. If not available pass null or an empty string.</param>
-        /// <param name="tokenSecret">The token secret, if available. If not available pass null or an empty string.</param>
+        /// <param name="token">The token, if available. If not available pass <see langword="null"/> or <see cref="string.Empty"/>.</param>
+        /// <param name="tokenSecret">The token secret, if available. If not available pass <see langword="null"/> or <see cref="string.Empty"/>.</param>
         /// <param name="callbackurl">The callback URL.</param>
-        /// <param name="oauthVerifier">This value MUST be included when exchanging Request Tokens for Access Tokens. Otherwise pass a null or an empty string.</param>
-        /// <param name="httpMethod">The http method used. Must be a valid HTTP method verb (POST,GET,PUT, etc).</param>
+        /// <param name="oauthVerifier">This value MUST be included when exchanging Request Tokens for Access Tokens. Otherwise, pass <see langword="null"/> or <see cref="string.Empty"/>.</param>
+        /// <param name="httpMethod">The http method used. Must be a valid HTTP method verb (POST, GET, PUT, etc.).</param>
         /// <param name="timeStamp">The Unix-formatted timestamp.</param>
         /// <param name="nonce">The nonce.</param>
         /// <param name="normalizedUrl">A normalized version of <paramref name="url"/>.</param>
@@ -308,12 +314,10 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             string signatureBase = this.GenerateSignatureBase(url, token, callbackurl, oauthVerifier, httpMethod, timeStamp, nonce, out normalizedUrl, out requestParameters);
 
-            var hmacsha1 = new HMACSHA1
-            {
-                Key = Encoding.ASCII.GetBytes($"{UrlEncode(this.APISecret)}&{(string.IsNullOrEmpty(tokenSecret) ? string.Empty : UrlEncode(tokenSecret))}"),
-            };
+            using var hashAlgorithm = this.SignatureMethodAlgorithm();
+            hashAlgorithm.Key = Encoding.ASCII.GetBytes($"{UrlEncode(this.APISecret)}&{(string.IsNullOrEmpty(tokenSecret) ? string.Empty : UrlEncode(tokenSecret))}");
 
-            return GenerateSignatureUsingHash(signatureBase, hmacsha1);
+            return GenerateSignatureUsingHash(signatureBase, hashAlgorithm);
         }
 
         public virtual TUserData GetCurrentUser<TUserData>()
@@ -426,7 +430,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private static List<QueryParameter> GetQueryParameters(string parameters)
         {
-            if (parameters.StartsWith("?"))
+            if (parameters.StartsWith("?", StringComparison.Ordinal))
             {
                 parameters = parameters.Remove(0, 1);
             }
@@ -438,7 +442,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 string[] p = parameters.Split('&');
                 foreach (string s in p)
                 {
-                    if (!string.IsNullOrEmpty(s) && !s.StartsWith(OAuthParameterPrefix))
+                    if (!string.IsNullOrEmpty(s) && !s.StartsWith(OAuthParameterPrefix, StringComparison.OrdinalIgnoreCase))
                     {
                         if (s.IndexOf('=') > -1)
                         {
@@ -623,7 +627,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                            new QueryParameter(OAuthConsumerKeyKey, this.APIKey),
                                            new QueryParameter(OAuthNonceKey, nonce),
                                            new QueryParameter(OAuthSignatureKey, sig),
-                                           new QueryParameter(OAuthSignatureMethodKey, HMACSHA1SignatureType),
+                                           new QueryParameter(OAuthSignatureMethodKey, this.SignatureMethod),
                                            new QueryParameter(OAuthTimestampKey, timeStamp),
                                            new QueryParameter(OAuthTokenKey, this.AuthToken),
                                            new QueryParameter(OAuthVersionKey, this.OAuthVersion),
@@ -650,7 +654,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 request.Method = "POST";
                 request.ContentType = "application/x-www-form-urlencoded";
 
-                // request.ContentType = "text/xml";
+                ////request.ContentType = "text/xml";
                 request.ContentLength = byteArray.Length;
 
                 if (!string.IsNullOrEmpty(this.OAuthHeaderCode))
@@ -698,15 +702,11 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
             catch (WebException ex)
             {
-                using (Stream responseStream = ex.Response.GetResponseStream())
+                using var responseStream = ex.Response.GetResponseStream();
+                if (responseStream != null)
                 {
-                    if (responseStream != null)
-                    {
-                        using (var responseReader = new StreamReader(responseStream))
-                        {
-                            Logger.ErrorFormat("WebResponse exception: {0}", responseReader.ReadToEnd());
-                        }
-                    }
+                    using var responseReader = new StreamReader(responseStream);
+                    Logger.ErrorFormat(CultureInfo.InvariantCulture, "WebResponse exception: {0}", responseReader.ReadToEnd());
                 }
             }
 
@@ -729,7 +729,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             requestParameters.Add(new QueryParameter(OAuthVersionKey, this.OAuthVersion));
             requestParameters.Add(new QueryParameter(OAuthNonceKey, nonce));
             requestParameters.Add(new QueryParameter(OAuthTimestampKey, timeStamp));
-            requestParameters.Add(new QueryParameter(OAuthSignatureMethodKey, HMACSHA1SignatureType));
+            requestParameters.Add(new QueryParameter(OAuthSignatureMethodKey, this.SignatureMethod));
             requestParameters.Add(new QueryParameter(OAuthConsumerKeyKey, this.APIKey));
 
             if (!string.IsNullOrEmpty(callbackUrl))
@@ -759,9 +759,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
             string normalizedRequestParameters = requestParameters.ToNormalizedString();
 
             var signatureBase = new StringBuilder();
-            signatureBase.AppendFormat("{0}&", httpMethod.ToUpperInvariant());
-            signatureBase.AppendFormat("{0}&", UrlEncode(normalizedUrl));
-            signatureBase.AppendFormat("{0}", UrlEncode(normalizedRequestParameters));
+            signatureBase.AppendFormat(CultureInfo.InvariantCulture, "{0}&", httpMethod.ToUpperInvariant());
+            signatureBase.AppendFormat(CultureInfo.InvariantCulture, "{0}&", UrlEncode(normalizedUrl));
+            signatureBase.AppendFormat(CultureInfo.InvariantCulture, "{0}", UrlEncode(normalizedRequestParameters));
 
             return signatureBase.ToString();
         }
@@ -789,7 +789,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                            new QueryParameter(OAuthConsumerKeyKey, this.APIKey),
                                            new QueryParameter(OAuthNonceKey, nonce),
                                            new QueryParameter(OAuthSignatureKey, sig),
-                                           new QueryParameter(OAuthSignatureMethodKey, HMACSHA1SignatureType),
+                                           new QueryParameter(OAuthSignatureMethodKey, this.SignatureMethod),
                                            new QueryParameter(OAuthTimestampKey, timeStamp),
                                            new QueryParameter(OAuthVersionKey, this.OAuthVersion),
                                        };

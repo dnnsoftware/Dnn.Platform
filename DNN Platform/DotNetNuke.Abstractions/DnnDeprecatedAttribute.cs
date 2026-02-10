@@ -8,6 +8,7 @@ using System.Diagnostics;
 
 /// <summary>Marks a type or member as deprecated.</summary>
 [Conditional("DNN_SOURCE_GENERATOR")]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct | AttributeTargets.Method)]
 public class DnnDeprecatedAttribute : Attribute
 {
     /// <summary>Initializes a new instance of the <see cref="DnnDeprecatedAttribute"/> class.</summary>

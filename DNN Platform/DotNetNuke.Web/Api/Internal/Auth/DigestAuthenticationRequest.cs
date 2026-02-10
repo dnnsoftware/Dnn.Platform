@@ -8,10 +8,17 @@ namespace DotNetNuke.Web.Api.Internal.Auth
     using System.Collections.Specialized;
     using System.Text.RegularExpressions;
 
-    internal class DigestAuthenticationRequest
+    using DotNetNuke.Internal.SourceGenerators;
+
+    /// <summary>A digest authentication request.</summary>
+    [DnnDeprecated(10, 2, 2, "Use JWT or API token authentication")]
+    internal partial class DigestAuthenticationRequest
     {
         private static readonly Regex AuthHeaderRegex = new Regex("\\s?(?'name'\\w+)=(\"(?'value'[^\"]+)\"|(?'value'[^,]+))", RegexOptions.Compiled);
 
+        /// <summary>Initializes a new instance of the <see cref="DigestAuthenticationRequest"/> class.</summary>
+        /// <param name="authorizationHeader">The value of the Authorization header.</param>
+        /// <param name="httpMethod">The HTTP method (e.g. <c>"GET"</c> or <c>"POST"</c>).</param>
         public DigestAuthenticationRequest(string authorizationHeader, string httpMethod)
         {
             // Authorization: Digest
@@ -33,11 +40,11 @@ namespace DotNetNuke.Web.Api.Internal.Auth
                 }
 
                 this.HttpMethod = httpMethod;
-                this.RawUsername = this.RequestParams["username"].Replace("\\\\", "\\");
+                this.RawUsername = this.RequestParams["username"].Replace(@"\\", @"\");
                 this.CleanUsername = this.RawUsername;
-                if (this.CleanUsername.LastIndexOf("\\", System.StringComparison.Ordinal) > 0)
+                if (this.CleanUsername.LastIndexOf(@"\", StringComparison.Ordinal) > 0)
                 {
-                    this.CleanUsername = this.CleanUsername.Substring(this.CleanUsername.LastIndexOf("\\", System.StringComparison.Ordinal) + 2 - 1);
+                    this.CleanUsername = this.CleanUsername.Substring(this.CleanUsername.LastIndexOf(@"\", StringComparison.Ordinal) + 2 - 1);
                 }
             }
             catch (Exception)
@@ -46,12 +53,16 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             }
         }
 
+        /// <summary>Gets or sets the request params from the Authorization header.</summary>
         public NameValueCollection RequestParams { get; set; }
 
+        /// <summary>Gets the clean username from the <see cref="RequestParams"/>.</summary>
         public string CleanUsername { get; private set; }
 
+        /// <summary>Gets the raw username from the <see cref="RequestParams"/>.</summary>
         public string RawUsername { get; private set; }
 
+        /// <summary>Gets or sets the HTTP method.</summary>
         public string HttpMethod { get; set; }
     }
 }

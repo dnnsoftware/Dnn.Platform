@@ -1432,4 +1432,16 @@
   <data name="plAllowRichTextModuleTitle.Help" xml:space="preserve">
     <value>If enabled, HTML content will be allowed as module titles.</value>
   </data>
+  <data name="CheckKnownHostGuidFailure.Text" xml:space="preserve">
+    <value>A known common Host GUID value has been found in your installation. This is a minor issue that slightly weakens encryption of secure settings. You can delete the GUID row in the HostSettings SQL table and a fresh one will be generated for you by visiting any module that loads HostSettings, however this will make all encrypted settings invalid and may break some licensing solutions.</value>
+  </data>
+  <data name="CheckKnownHostGuidName.Text" xml:space="preserve">
+    <value>Checks for the presence of known common Host GUID values</value>
+  </data>
+  <data name="CheckKnownHostGuidSuccess.Text" xml:space="preserve">
+    <value>No known comment Host GUID value found.</value>
+  </data>
+  <data name="CheckKnownHostGuidReason.Text" xml:space="preserve">
+    <value>Some DNN versions came accidently with a common Host GUID and this value should be unique per installation.</value>
+  </data>
 </root>
