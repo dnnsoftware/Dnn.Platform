@@ -57,10 +57,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="DotNetNuke.WebControls">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
-    </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
     </Reference>
@@ -77,6 +73,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="..\Controls\CountryListBox\CountryListBox.csproj" />
+    <ProjectReference Include="..\Controls\DotNetNuke.WebControls\DotNetNuke.WebControls.vbproj" />
     <ProjectReference Include="..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj" />
     <ProjectReference Include="..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj" />
     <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj" />
