@@ -170,7 +170,7 @@ Namespace DotNetNuke.UI.WebControls
                 hashtable.Add("mod", Me.MouseOutDelay)
             End If
             If (Strings.Len(Me.Visible) > 0) Then
-                hashtable.Add("vis", CInt(-Me.Visible))
+                hashtable.Add("vis", If(Me.Visible, 1, 0))
             End If
             Dim builder As New StringBuilder
             builder.Append("[")

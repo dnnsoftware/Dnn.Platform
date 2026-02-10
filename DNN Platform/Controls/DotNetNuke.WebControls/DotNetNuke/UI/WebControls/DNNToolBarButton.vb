@@ -189,7 +189,7 @@ Namespace DotNetNuke.UI.WebControls
                 hashtable.Add("alt", Me.SafeJSONString(Me.ToolTip))
             End If
             If Not Me.Visible Then
-                hashtable.Add("vis", CInt(-Me.Visible))
+                hashtable.Add("vis", If(Me.Visible, 1, 0))
             End If
             builder.Append("{")
             Try 
