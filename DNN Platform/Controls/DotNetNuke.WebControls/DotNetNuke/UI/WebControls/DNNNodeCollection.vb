@@ -248,19 +248,18 @@ Namespace DotNetNuke.UI.WebControls
                     End If
                     Dim current As Dictionary(Of String, Object) = DirectCast(enumerator.Current, Dictionary(Of String, Object))
                     Dim objNode As New DNNNode
-                    Using enumerator2 = current.Keys.GetEnumerator
-                        Do While True
-                            If Not enumerator2.MoveNext Then
-                                Exit Do
-                            End If
-                            Dim str As String = enumerator2.Current
-                            If (str = "nodes") Then
-                                objNode.DNNNodes.LoadJSON(DirectCast(current("nodes"), IEnumerable))
-                                Continue Do
-                            End If
-                            objNode.CustomAttribute(str) = current(str).ToString
-                        Loop
-                    End Using
+                    Dim enumerator2 = current.Keys.GetEnumerator
+                    Do While True
+                        If Not enumerator2.MoveNext Then
+                            Exit Do
+                        End If
+                        Dim str As String = enumerator2.Current
+                        If (str = "nodes") Then
+                            objNode.DNNNodes.LoadJSON(DirectCast(current("nodes"), IEnumerable))
+                            Continue Do
+                        End If
+                        objNode.CustomAttribute(str) = current(str).ToString
+                    Loop
                     Me.Add(objNode)
                 Loop
             Finally
@@ -280,19 +279,18 @@ Namespace DotNetNuke.UI.WebControls
                     End If
                     Dim current As Dictionary(Of String, Object) = DirectCast(enumerator.Current, Dictionary(Of String, Object))
                     Dim objNode As New DNNNode
-                    Using enumerator2 = current.Keys.GetEnumerator
-                        Do While True
-                            If Not enumerator2.MoveNext Then
-                                Exit Do
-                            End If
-                            Dim str As String = enumerator2.Current
-                            If (str = "nodes") Then
-                                objNode.DNNNodes.LoadJSON(DirectCast(current("nodes"), IEnumerable))
-                                Continue Do
-                            End If
-                            objNode.CustomAttribute(str) = current(str).ToString
-                        Loop
-                    End Using
+                    Dim enumerator2 = current.Keys.GetEnumerator
+                    Do While True
+                        If Not enumerator2.MoveNext Then
+                            Exit Do
+                        End If
+                        Dim str As String = enumerator2.Current
+                        If (str = "nodes") Then
+                            objNode.DNNNodes.LoadJSON(DirectCast(current("nodes"), IEnumerable))
+                            Continue Do
+                        End If
+                        objNode.CustomAttribute(str) = current(str).ToString
+                    Loop
                     Me.Add(objNode)
                 Loop
             Finally
