@@ -11,6 +11,8 @@ namespace DotNetNuke.Modules.Admin.Security
     using System.Globalization;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -20,8 +22,16 @@ namespace DotNetNuke.Modules.Admin.Security
     using DotNetNuke.Services.Localization;
 
     /// <summary>The MemberServices UserModuleBase is used to manage a User's services.</summary>
-    public partial class MemberServices : UserModuleBase
+    public partial class MemberServices(ListController listController, IHostSettings hostSettings)
+        : UserModuleBase(listController, hostSettings)
     {
+        /// <summary>Initializes a new instance of the <see cref="MemberServices"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public MemberServices()
+            : this(null, null)
+        {
+        }
+
         public delegate void SubscriptionUpdatedEventHandler(object sender, SubscriptionUpdatedEventArgs e);
 
         public event SubscriptionUpdatedEventHandler SubscriptionUpdated;

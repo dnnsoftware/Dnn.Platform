@@ -30,16 +30,17 @@ namespace Dnn.PersonaBar.UI.Components
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Provides upgrade logic for the Persona Bar.</summary>
-    public class BusinessController : IUpgradeable
+    public class BusinessController(IHostSettingsService hostSettingsService, IHostSettings hostSettings, IPortalController portalController) : IUpgradeable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BusinessController));
-        private readonly IHostSettingsService hostSettingsService;
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettingsService hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
 
         /// <summary>Initializes a new instance of the <see cref="BusinessController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettingsService. Scheduled removal in v12.0.0.")]
         public BusinessController()
-            : this(null)
+            : this(null, null, null)
         {
         }
 
@@ -47,17 +48,17 @@ namespace Dnn.PersonaBar.UI.Components
         /// <param name="hostSettingsService">The host settings service.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public BusinessController(IHostSettingsService hostSettingsService)
-            : this(hostSettingsService, null)
+            : this(hostSettingsService, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="BusinessController"/> class.</summary>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public BusinessController(IHostSettingsService hostSettingsService, IHostSettings hostSettings)
+            : this(hostSettingsService, hostSettings, null)
         {
-            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />
@@ -70,7 +71,7 @@ namespace Dnn.PersonaBar.UI.Components
                     CreateAdminLinks(this.hostSettings);
                     break;
                 case "01.04.00":
-                    UpdateEditPermissions(this.hostSettings);
+                    UpdateEditPermissions(this.hostSettings, this.portalController);
                     break;
                 case "03.00.00":
                     RemovePersonaBarOldAssemblies();
@@ -126,7 +127,7 @@ namespace Dnn.PersonaBar.UI.Components
             }
         }
 
-        private static void UpdateEditPermissions(IHostSettings hostSettings)
+        private static void UpdateEditPermissions(IHostSettings hostSettings, IPortalController portalController)
         {
             var menuItems = PersonaBarRepository.Instance.GetMenu().AllItems;
             foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
@@ -134,12 +135,12 @@ namespace Dnn.PersonaBar.UI.Components
                 var portalId = portal.PortalId;
                 if (MenuPermissionController.PermissionAlreadyInitialized(portalId))
                 {
-                    menuItems.ForEach(i => SaveEditPermission(hostSettings, portalId, i));
+                    menuItems.ForEach(i => SaveEditPermission(hostSettings, portalController, portalId, i));
                 }
             }
         }
 
-        private static void SaveEditPermission(IHostSettings hostSettings, int portalId, MenuItem menuItem)
+        private static void SaveEditPermission(IHostSettings hostSettings, IPortalController portalController, int portalId, MenuItem menuItem)
         {
             var viewPermission = MenuPermissionController.GetPermissions(hostSettings, menuItem.MenuId).FirstOrDefault(p => p.PermissionKey == "VIEW");
             var editPermission = MenuPermissionController.GetPermissions(hostSettings, menuItem.MenuId).FirstOrDefault(p => p.PermissionKey == "EDIT");
@@ -149,7 +150,7 @@ namespace Dnn.PersonaBar.UI.Components
                 return;
             }
 
-            var permissions = MenuPermissionController.GetMenuPermissions(hostSettings, portalId, menuItem.Identifier).ToList();
+            var permissions = MenuPermissionController.GetMenuPermissions(hostSettings, portalController, portalId, menuItem.Identifier).ToList();
             permissions.ForEach((IPermissionInfo p) =>
             {
                 if (p.PermissionId != viewPermission.PermissionId)

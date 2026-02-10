@@ -8,12 +8,17 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Services.ClientDependency;
+    using DotNetNuke.Web.Client.ResourceManager;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -21,22 +26,45 @@ namespace DotNetNuke.UI.WebControls
     public class DnnCountryAutocompleteControl : EditControl
     {
         private readonly IServicesFramework servicesFramework;
-        private TextBox countryName;
+        private readonly ListController listController;
+        private readonly IClientResourceController clientResourceController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
+        private readonly IPortalController portalController;
 
+        private TextBox countryName;
         private HiddenField countryId;
 
         /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public DnnCountryAutocompleteControl()
-            : this((IServicesFramework)null)
+            : this(null, null, null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
         /// <param name="servicesFramework">The web API service framework.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public DnnCountryAutocompleteControl(IServicesFramework servicesFramework)
+            : this(servicesFramework, null, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public DnnCountryAutocompleteControl(IServicesFramework servicesFramework, ListController listController, IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalController portalController)
         {
             this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
+            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
             this.Init += this.DnnCountryRegionControl_Init;
         }
 
@@ -44,15 +72,29 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public DnnCountryAutocompleteControl(string type)
-            : this(type, null)
+            : this(type, null, null, null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
         /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
         /// <param name="servicesFramework">The web API service framework.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public DnnCountryAutocompleteControl(string type, IServicesFramework servicesFramework)
-            : this(servicesFramework)
+            : this(type, servicesFramework, null, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
+        /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public DnnCountryAutocompleteControl(string type, IServicesFramework servicesFramework, ListController listController, IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalController portalController)
+            : this(servicesFramework, listController, clientResourceController, appStatus, eventLogger, portalController)
         {
             this.SystemType = type;
         }
@@ -159,7 +201,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <inheritdoc />
-        protected override void OnPreRender(System.EventArgs e)
+        protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 
@@ -178,24 +220,22 @@ namespace DotNetNuke.UI.WebControls
             this.RenderChildren(writer);
         }
 
-        private void DnnCountryRegionControl_Init(object sender, System.EventArgs e)
+        private void DnnCountryRegionControl_Init(object sender, EventArgs e)
         {
             this.servicesFramework.RequestAjaxAntiForgerySupport();
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.js");
-            ClientResourceManager.RegisterFeatureStylesheet(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.css");
-            JavaScript.RequestRegistration(CommonJs.jQuery);
-            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            this.clientResourceController.RegisterScript("~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.js");
+            this.clientResourceController.CreateStylesheet("~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.css").SetPriority(FileOrder.Css.FeatureCss).Register();
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.portalController.GetCurrentSettings(), CommonJs.jQuery);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.portalController.GetCurrentSettings(), CommonJs.jQueryUI);
         }
 
         private void LoadControls()
         {
             this.CountryName.Text = this.StringValue;
-            int countryId = -1;
             string countryCode = CountryLookup.CodeByName(this.StringValue);
-            if (!string.IsNullOrEmpty(this.StringValue) && int.TryParse(this.StringValue, out countryId))
+            if (!string.IsNullOrEmpty(this.StringValue) && int.TryParse(this.StringValue, out var countryId))
             {
-                var listController = new ListController();
-                var c = listController.GetListEntryInfo(countryId);
+                var c = this.listController.GetListEntryInfo(countryId);
                 this.CountryName.Text = c.Text;
                 countryCode = c.Value;
             }
@@ -203,18 +243,14 @@ namespace DotNetNuke.UI.WebControls
             this.CountryId.Value = this.StringValue;
 
             var regionControl2 = ControlUtilities.FindFirstDescendent<DNNRegionEditControl>(this.Page, c => this.IsCoupledRegionControl(c));
-            if (regionControl2 != null)
-            {
-                regionControl2.ParentKey = "Country." + countryCode;
-            }
+            regionControl2?.ParentKey = "Country." + countryCode;
         }
 
         private bool IsCoupledRegionControl(Control ctr)
         {
-            if (ctr is DNNRegionEditControl)
+            if (ctr is DNNRegionEditControl regionEditControl)
             {
-                var c = (DNNRegionEditControl)ctr;
-                if (c.Category == this.Category)
+                if (regionEditControl.Category == this.Category)
                 {
                     return true;
                 }

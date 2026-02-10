@@ -59,6 +59,7 @@ namespace DotNetNuke
     using DotNetNuke.Services.Mobile;
     using DotNetNuke.Services.Pages;
     using DotNetNuke.Services.Personalization;
+    using DotNetNuke.Services.Registration;
     using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Services.Social.Subscriptions;
@@ -164,6 +165,8 @@ namespace DotNetNuke
             services.AddTransient<ITermController, TermController>();
             services.AddTransient<IScopeTypeController, ScopeTypeController>();
             services.AddTransient<ITabModulesController, TabModulesController>();
+            services.AddTransient<IRegistrationProfileController, RegistrationProfileController>();
+            services.AddTransient<IFileSecurityController, FileSecurityController>();
             if (CryptoConfig.AllowOnlyFipsAlgorithms)
             {
                 services.AddTransient<ICryptographyProvider, FipsCompilanceCryptographyProvider>();

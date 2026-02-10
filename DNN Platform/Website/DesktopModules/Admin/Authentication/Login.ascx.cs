@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
@@ -54,19 +55,17 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private const string LOGINPATH = "/login";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
 
-        private static readonly Regex UserLanguageRegex = new Regex(
-            "(.*)(&|\\?)(language=)([^&\\?]+)(.*)",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex UserLanguageRegex = new Regex("(.*)(&|\\?)(language=)([^&\\?]+)(.*)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private readonly INavigationManager navigationManager;
         private readonly IEventLogger eventLogger;
-        private readonly IHostSettings hostSettings;
 
         private readonly List<AuthenticationLoginBase> loginControls = new List<AuthenticationLoginBase>();
-        private readonly List<AuthenticationLoginBase> defaultauthLogin = new List<AuthenticationLoginBase>();
+        private readonly List<AuthenticationLoginBase> defaultAuthLogin = new List<AuthenticationLoginBase>();
         private readonly List<OAuthLoginBase> oAuthControls = new List<OAuthLoginBase>();
 
         /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public Login()
             : this(null, null, null)
         {
@@ -76,11 +75,22 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public Login(INavigationManager navigationManager, IEventLogger eventLogger, IHostSettings hostSettings)
+            : this(navigationManager, eventLogger, hostSettings, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="listController">The list controller.</param>
+        public Login(INavigationManager navigationManager, IEventLogger eventLogger, IHostSettings hostSettings, ListController listController)
+            : base(listController, hostSettings)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
-            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets the Redirect URL (after successful login).</summary>
@@ -158,7 +168,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             && this.User.Profile.PreferredLocale != CultureInfo.CurrentCulture.Name
                             && this.LocaleEnabled(this.User.Profile.PreferredLocale))
                     {
-                        redirectURL = ReplaceLanguage(this.hostSettings, redirectURL, CultureInfo.CurrentCulture.Name, this.User.Profile.PreferredLocale);
+                        redirectURL = ReplaceLanguage(this.HostSettings, redirectURL, CultureInfo.CurrentCulture.Name, this.User.Profile.PreferredLocale);
                     }
                 }
 
@@ -647,9 +657,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                     break;
                 case UserLoginStatus.LOGIN_USERLOCKEDOUT:
-                    if (this.hostSettings.AutoAccountUnlockDuration > TimeSpan.Zero)
+                    if (this.HostSettings.AutoAccountUnlockDuration > TimeSpan.Zero)
                     {
-                        this.AddLocalizedModuleMessage(string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserLockedOut", this.LocalResourceFile), this.hostSettings.AutoAccountUnlockDuration.TotalMinutes), ModuleMessage.ModuleMessageType.RedError, true);
+                        this.AddLocalizedModuleMessage(string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserLockedOut", this.LocalResourceFile), this.HostSettings.AutoAccountUnlockDuration.TotalMinutes), ModuleMessage.ModuleMessageType.RedError, true);
                     }
                     else
                     {
@@ -732,15 +742,14 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <param name="e">The event arguments.</param>
         protected void UserCreateCompleted(object sender, UserUserControlBase.UserCreatedEventArgs e)
         {
-            var strMessage = string.Empty;
             try
             {
                 if (e.CreateStatus == UserCreateStatus.Success)
                 {
-                    // Assocate alternate Login with User and proceed with Login
+                    // Associate alternate Login with User and proceed with Login
                     AuthenticationController.AddUserAuthentication(e.NewUser.UserID, this.AuthenticationType, this.UserToken);
 
-                    strMessage = this.CompleteUserCreation(e.CreateStatus, e.NewUser, e.Notify, true);
+                    var strMessage = this.CompleteUserCreation(e.CreateStatus, e.NewUser, e.Notify, true);
                     if (string.IsNullOrEmpty(strMessage))
                     {
                         // First update the profile (if any properties have been passed)
@@ -847,7 +856,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             {
                                 if (authLoginControl.AuthenticationType == defaultAuthProvider)
                                 {
-                                    this.defaultauthLogin.Add(authLoginControl);
+                                    this.defaultAuthLogin.Add(authLoginControl);
                                 }
                                 else
                                 {
@@ -864,7 +873,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
             }
 
-            int authCount = this.loginControls.Count + this.defaultauthLogin.Count;
+            int authCount = this.loginControls.Count + this.defaultAuthLogin.Count;
             switch (authCount)
             {
                 case 0:
@@ -891,8 +900,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 case 1:
                     // We don't want the control to render with tabbed interface
                     this.DisplayLoginControl(
-                        this.defaultauthLogin.Count == 1
-                                            ? this.defaultauthLogin[0]
+                        this.defaultAuthLogin.Count == 1
+                                            ? this.defaultAuthLogin[0]
                                             : this.loginControls.Count == 1
                                                 ? this.loginControls[0]
                                                 : this.oAuthControls[0],
@@ -901,9 +910,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     break;
                 default:
                     // make sure defaultAuth provider control is diplayed first
-                    if (this.defaultauthLogin.Count > 0)
+                    if (this.defaultAuthLogin.Count > 0)
                     {
-                        this.DisplayTabbedLoginControl(this.defaultauthLogin[0], this.tsLogin.Tabs);
+                        this.DisplayTabbedLoginControl(this.defaultAuthLogin[0], this.tsLogin.Tabs);
                     }
 
                     foreach (AuthenticationLoginBase authLoginControl in this.loginControls)
@@ -1269,12 +1278,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <param name="ignoreExpiring">Ignore the situation where the password is expiring (but not yet expired).</param>
         private void ValidateUser(UserInfo objUser, bool ignoreExpiring)
         {
-            UserValidStatus validStatus = UserValidStatus.VALID;
-            string strMessage = Null.NullString;
+            string strMessage;
             DateTime expiryDate = Null.NullDate;
             bool okToShowPanel = true;
 
-            validStatus = UserController.ValidateUser(objUser, this.PortalId, ignoreExpiring);
+            var validStatus = UserController.ValidateUser(objUser, this.PortalId, ignoreExpiring);
 
             if (PasswordConfig.PasswordExpiry > 0)
             {

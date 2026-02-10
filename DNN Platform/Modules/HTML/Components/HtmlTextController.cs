@@ -418,7 +418,7 @@ namespace DotNetNuke.Modules.Html
                 intMaximumVersionHistory = 5;
 
                 // default
-                PortalController.UpdatePortalSetting(portalID, "MaximumVersionHistory", intMaximumVersionHistory.ToString());
+                PortalController.UpdatePortalSetting(this.portalController, portalID, "MaximumVersionHistory", intMaximumVersionHistory.ToString());
             }
 
             return intMaximumVersionHistory;
@@ -441,7 +441,7 @@ namespace DotNetNuke.Modules.Html
             var objPortalSettings = PortalController.Instance.GetCurrentSettings();
             if (PortalSecurity.IsInRole(objPortalSettings.AdministratorRoleName))
             {
-                PortalController.UpdatePortalSetting(portalID, "MaximumVersionHistory", maximumVersionHistory.ToString());
+                PortalController.UpdatePortalSetting(this.portalController, portalID, "MaximumVersionHistory", maximumVersionHistory.ToString());
             }
         }
 

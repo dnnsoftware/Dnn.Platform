@@ -7,6 +7,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using System.IO;
     using System.Threading;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Security;
@@ -15,8 +17,15 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using DotNetNuke.Services.Localization;
 
     /// <summary>The Logoff UserModuleBase is used to log off a registered user.</summary>
-    public partial class Logoff : UserModuleBase
+    public partial class Logoff(ListController listController, IHostSettings hostSettings) : UserModuleBase(listController, hostSettings)
     {
+        /// <summary>Initializes a new instance of the <see cref="Logoff"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public Logoff()
+            : this(null, null)
+        {
+        }
+
         /// <summary>Page_Load runs when the control is loaded.</summary>
         /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)

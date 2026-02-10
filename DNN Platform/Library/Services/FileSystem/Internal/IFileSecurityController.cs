@@ -15,10 +15,10 @@ namespace DotNetNuke.Services.FileSystem.Internal
         bool Validate(string fileName, Stream fileContent);
 
         /// <summary>
-        /// Checks the file content isn't an exectuable file.
+        /// Checks the file content isn't an executable file.
         /// </summary>
         /// <param name="fileContent">The File Content.</param>
-        /// <returns>Whether the file is an exectuable file.</returns>
+        /// <returns>Whether the file is an executable file.</returns>
         bool ValidateNotExectuable(Stream fileContent);
     }
 }

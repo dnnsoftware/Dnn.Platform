@@ -11,7 +11,6 @@ namespace DotNetNuke.Web.InternalServices
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Threading;
     using System.Web;
     using System.Web.Http;
 
@@ -48,7 +47,7 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage Countries()
         {
             var searchString = (HttpContext.Current.Request.Params["SearchString"] ?? string.Empty).NormalizeString();
-            var countries = CachedCountryList.GetCountryList(Thread.CurrentThread.CurrentCulture.Name);
+            var countries = CachedCountryList.GetCountryList(this.listController);
             return this.Request.CreateResponse(HttpStatusCode.OK, countries.Values.Where(
                 x => x.NormalizedFullName.IndexOf(searchString, StringComparison.CurrentCulture) > -1).OrderBy(x => x.NormalizedFullName));
         }

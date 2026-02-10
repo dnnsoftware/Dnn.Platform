@@ -9,7 +9,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using System.IO;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content;
@@ -122,6 +124,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                     services.AddSingleton(this.pathUtils.Object);
                     services.AddSingleton(this.mockFileLockingController.Object);
                     services.AddSingleton(this.mockFileDeletionController.Object);
+                    services.AddSingleton(new ListController(Mock.Of<IEventLogger>(), Mock.Of<IHostSettings>()));
+                    services.AddSingleton(Mock.Of<IApplicationStatusInfo>());
+                    services.AddSingleton(Mock.Of<IPortalGroupController>());
+                    services.AddTransient<IFileSecurityController, FileSecurityController>();
                 });
         }
 

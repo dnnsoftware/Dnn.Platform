@@ -256,7 +256,7 @@ namespace DotNetNuke.Web.InternalServices
                                                         && this.ActiveTabHasChildren() && !this.PortalSettings.ActiveTab.IsSuperTab)
             {
                 TabController.CopyPermissionsToChildren(this.eventLogger, this.PortalSettings.ActiveTab, this.PortalSettings.ActiveTab.TabPermissions);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
 
             return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
@@ -376,7 +376,7 @@ namespace DotNetNuke.Web.InternalServices
             if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 DataCache.ClearCache();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
 
             return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
@@ -454,7 +454,7 @@ namespace DotNetNuke.Web.InternalServices
                         personalization.Profile["Usability:UICulture"] = dto.Language;
                         personalization.IsModified = true;
                         this.personalizationController.SaveProfile(personalization);
-                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
                     }
                 }
             }
@@ -484,7 +484,7 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             this.ToggleUserMode(userMode.UserMode);
-            var response = this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            var response = this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
 
             if (userMode.UserMode.Equals("VIEW", StringComparison.OrdinalIgnoreCase))
             {
@@ -516,7 +516,7 @@ namespace DotNetNuke.Web.InternalServices
 
             this.controller.SaveBookMark(this.PortalSettings.PortalId, this.UserInfo.UserID, bookmark.Title, bookmark.Bookmark);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
         }
 
         /// <summary>Locks or unlocks the instance.</summary>

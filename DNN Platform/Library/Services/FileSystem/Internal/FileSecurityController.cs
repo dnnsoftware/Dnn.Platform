@@ -12,12 +12,21 @@ namespace DotNetNuke.Services.FileSystem.Internal
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>Internal class to check file security.</summary>
-    public class FileSecurityController : ServiceLocator<IFileSecurityController, FileSecurityController>, IFileSecurityController
+    public class FileSecurityController(IServiceProvider serviceProvider) : ServiceLocator<IFileSecurityController, FileSecurityController>, IFileSecurityController
     {
         private const int BufferSize = 4096;
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSecurityController));
+        private readonly IServiceProvider serviceProvider = serviceProvider ?? Globals.GetCurrentServiceProvider();
+
+        /// <summary>Initializes a new instance of the <see cref="FileSecurityController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public FileSecurityController()
+            : this(null)
+        {
+        }
 
         /// <inheritdoc />
         public bool Validate(string fileName, Stream fileContent)
@@ -26,7 +35,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             Requires.NotNull("fileContent", fileContent);
 
             var extension = Path.GetExtension(fileName);
-            var checker = GetSecurityChecker(extension?.ToLowerInvariant().TrimStart('.'));
+            var checker = this.GetSecurityChecker(extension?.ToLowerInvariant().TrimStart('.'));
 
             // when there is no specific file check for the file type, then treat it as validated.
             if (checker == null)
@@ -35,10 +44,8 @@ namespace DotNetNuke.Services.FileSystem.Internal
             }
 
             // use copy of the stream as we can't make sure how the check process the stream.
-            using (var copyStream = CopyStream(fileContent))
-            {
-                return checker.Validate(copyStream);
-            }
+            using var copyStream = CopyStream(fileContent);
+            return checker.Validate(copyStream);
         }
 
         /// <inheritdoc />
@@ -57,26 +64,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
         /// <inheritdoc />
         protected override Func<IFileSecurityController> GetFactory()
         {
-            return () => new FileSecurityController();
-        }
-
-        private static IFileSecurityChecker GetSecurityChecker(string extension)
-        {
-            var listEntry = new ListController().GetListEntryInfo("FileSecurityChecker", extension);
-            if (listEntry != null && !string.IsNullOrEmpty(listEntry.Text))
-            {
-                try
-                {
-                    var cacheKey = $"FileSecurityChecker_{extension}";
-                    return Reflection.CreateObject(listEntry.Text, cacheKey) as IFileSecurityChecker;
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error($"Create File Security Checker for '{extension}' failed.", ex);
-                }
-            }
-
-            return null;
+            return () => Globals.DependencyProvider.GetRequiredService<IFileSecurityController>();
         }
 
         private static Stream CopyStream(Stream stream)
@@ -103,6 +91,26 @@ namespace DotNetNuke.Services.FileSystem.Internal
             fileStream.Position = 0;
 
             return fileStream;
+        }
+
+        private IFileSecurityChecker GetSecurityChecker(string extension)
+        {
+            var listController = ActivatorUtilities.GetServiceOrCreateInstance<ListController>(this.serviceProvider);
+            var listEntry = listController.GetListEntryInfo("FileSecurityChecker", extension);
+            if (listEntry != null && !string.IsNullOrEmpty(listEntry.Text))
+            {
+                try
+                {
+                    var cacheKey = $"FileSecurityChecker_{extension}";
+                    return Reflection.CreateObject(this.serviceProvider, listEntry.Text, cacheKey) as IFileSecurityChecker;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error($"Create File Security Checker for '{extension}' failed.", ex);
+                }
+            }
+
+            return null;
         }
     }
 }

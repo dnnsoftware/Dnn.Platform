@@ -17,9 +17,19 @@ namespace DotNetNuke.Entities.Users.Membership
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
 
-    public class MembershipPasswordController
+    using Microsoft.Extensions.DependencyInjection;
+
+    public class MembershipPasswordController(ListController listController, DataProvider dataProvider)
     {
-        private readonly DataProvider dataProvider = DataProvider.Instance();
+        private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+        private readonly DataProvider dataProvider = dataProvider ?? DataProvider.Instance();
+
+        /// <summary> Initializes a new instance of the <see cref="MembershipPasswordController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public MembershipPasswordController()
+            : this(null, null)
+        {
+        }
 
         /// <summary>returns the password history of the supplied user.</summary>
         /// <param name="userId">The user ID.</param>
@@ -138,17 +148,13 @@ namespace DotNetNuke.Entities.Users.Membership
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool FoundBannedPassword(string inputString)
         {
-            const string listName = "BannedPasswords";
+            const string ListName = "BannedPasswords";
 
-            var listController = new ListController();
             var settings = PortalController.Instance.GetCurrentSettings();
 
-            IEnumerable<ListEntryInfo> listEntryHostInfos = listController.GetListEntryInfoItems(
-                listName,
-                string.Empty,
-                Null.NullInteger);
+            IEnumerable<ListEntryInfo> listEntryHostInfos = this.listController.GetListEntryInfoItems(ListName, string.Empty, Null.NullInteger);
             IEnumerable<ListEntryInfo> listEntryPortalInfos =
-                listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
+                this.listController.GetListEntryInfoItems($"{ListName}-{settings.PortalId}", string.Empty, settings.PortalId);
 
             IEnumerable<ListEntryInfo> query2 = listEntryHostInfos.Where(test => test.Text == inputString);
             IEnumerable<ListEntryInfo> query3 = listEntryPortalInfos.Where(test => test.Text == inputString);

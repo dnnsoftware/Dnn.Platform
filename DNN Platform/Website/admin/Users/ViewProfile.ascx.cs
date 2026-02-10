@@ -6,11 +6,11 @@ namespace DotNetNuke.Modules.Admin.Users
     using System;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Security;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Profile;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Exceptions;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +28,18 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
         /// <param name="cryptographyProvider">The cryptography provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public ViewProfile(ICryptographyProvider cryptographyProvider)
+            : this(cryptographyProvider, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public ViewProfile(ICryptographyProvider cryptographyProvider, ListController listController, IHostSettings hostSettings)
+            : base(listController, hostSettings)
         {
             this.cryptographyProvider = cryptographyProvider ?? this.DependencyProvider.GetRequiredService<ICryptographyProvider>();
         }

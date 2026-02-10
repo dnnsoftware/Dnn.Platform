@@ -5,13 +5,17 @@ namespace DotNetNuke.UI.WebControls
 {
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The EditorInfo class provides a helper class for the Property Editor.</summary>
-    public class EditorInfo
+    public partial class EditorInfo
     {
         /// <summary>Initializes a new instance of the <see cref="EditorInfo"/> class.</summary>
         public EditorInfo()
@@ -50,15 +54,22 @@ namespace DotNetNuke.UI.WebControls
         public ProfileVisibility ProfileVisibility { get; set; }
 
         /// <summary>GetEditor gets the appropriate Editor based on ID properties.</summary>
-        /// <param name="editorType">The Id of the Editor.</param>
+        /// <param name="editorType">The ID of the Editor.</param>
         /// <returns>The non-localized name of the editor.</returns>
-        public static string GetEditor(int editorType)
+        [DnnDeprecated(10, 2, 3, "Please use overload with ListController")]
+        public static partial string GetEditor(int editorType)
+            => GetEditor(Globals.GetCurrentServiceProvider().GetRequiredService<ListController>(), editorType);
+
+        /// <summary>GetEditor gets the appropriate Editor based on ID properties.</summary>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="editorType">The ID of the Editor.</param>
+        /// <returns>The non-localized name of the editor.</returns>
+        public static string GetEditor(ListController listController, int editorType)
         {
             string editor = "UseSystemType";
             if (editorType != Null.NullInteger)
             {
-                var objListController = new ListController();
-                ListEntryInfo definitionEntry = objListController.GetListEntryInfo("DataType", editorType);
+                ListEntryInfo definitionEntry = listController.GetListEntryInfo("DataType", editorType);
                 if (definitionEntry != null)
                 {
                     editor = definitionEntry.TextNonLocalized;
@@ -68,11 +79,21 @@ namespace DotNetNuke.UI.WebControls
             return editor;
         }
 
-        public static string GetEditor(string editorValue)
+        /// <summary>GetEditor gets the appropriate Editor based on ID properties.</summary>
+        /// <param name="editorValue">The value of the editor list item.</param>
+        /// <returns>The non-localized name of the editor.</returns>
+        [DnnDeprecated(10, 2, 3, "Please use overload with ListController")]
+        public static partial string GetEditor(string editorValue)
+            => GetEditor(Globals.GetCurrentServiceProvider().GetRequiredService<ListController>(), editorValue);
+
+        /// <summary>GetEditor gets the appropriate Editor based on ID properties.</summary>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="editorValue">The value of the editor list item.</param>
+        /// <returns>The non-localized name of the editor.</returns>
+        public static string GetEditor(ListController listController, string editorValue)
         {
             string editor = "UseSystemType";
-            var objListController = new ListController();
-            ListEntryInfo definitionEntry = objListController.GetListEntryInfo("DataType", editorValue);
+            ListEntryInfo definitionEntry = listController.GetListEntryInfo("DataType", editorValue);
             if (definitionEntry != null)
             {
                 editor = definitionEntry.TextNonLocalized;

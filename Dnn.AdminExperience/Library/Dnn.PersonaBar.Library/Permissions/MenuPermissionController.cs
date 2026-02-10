@@ -57,9 +57,19 @@ namespace Dnn.PersonaBar.Library.Permissions
         /// <param name="portalId">The portal ID.</param>
         /// <param name="menu">The menu.</param>
         /// <returns><see langword="true"/> if the user can view the menu, otherwise <see langword="false"/>.</returns>
-        public static bool CanView(IHostSettings hostSettings, int portalId, MenuItem menu)
+        [DnnDeprecated(10, 2, 3, "Please use overload taking IPortalController")]
+        public static partial bool CanView(IHostSettings hostSettings, int portalId, MenuItem menu)
+            => CanView(hostSettings, Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), portalId, menu);
+
+        /// <summary>Gets a value indicating whether the current user can view the specified <paramref name="menu"/>.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="menu">The menu.</param>
+        /// <returns><see langword="true"/> if the user can view the menu, otherwise <see langword="false"/>.</returns>
+        public static bool CanView(IHostSettings hostSettings, IPortalController portalController, int portalId, MenuItem menu)
         {
-            return HasMenuPermission(GetMenuPermissions(hostSettings, portalId, menu.MenuId), ViewPermissionKey);
+            return HasMenuPermission(GetMenuPermissions(hostSettings, portalController, portalId, menu.MenuId), ViewPermissionKey);
         }
 
         public static void DeleteMenuPermissions(int portalId, MenuItem menu)
@@ -79,7 +89,16 @@ namespace Dnn.PersonaBar.Library.Permissions
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="portalId">The portal ID.</param>
         /// <returns>A <see cref="MenuPermissionCollection"/>.</returns>
-        public static MenuPermissionCollection GetMenuPermissions(IHostSettings hostSettings, int portalId)
+        [DnnDeprecated(10, 2, 3, "Please use overload taking IPortalController")]
+        public static partial MenuPermissionCollection GetMenuPermissions(IHostSettings hostSettings, int portalId)
+            => GetMenuPermissions(hostSettings, Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), portalId);
+
+        /// <summary>Gets the menu permissions.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A <see cref="MenuPermissionCollection"/>.</returns>
+        public static MenuPermissionCollection GetMenuPermissions(IHostSettings hostSettings, IPortalController portalController, int portalId)
         {
             var cacheKey = GetCacheKey(portalId);
             var permissions = DataCache.GetCache<MenuPermissionCollection>(cacheKey);
@@ -91,7 +110,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                     if (permissions == null)
                     {
                         permissions = new MenuPermissionCollection();
-                        EnsureMenuDefaultPermissions(hostSettings, portalId);
+                        EnsureMenuDefaultPermissions(hostSettings, portalController, portalId);
                         var reader = DataService.GetPersonbaBarMenuPermissionsByPortal(portalId);
                         try
                         {
@@ -131,7 +150,17 @@ namespace Dnn.PersonaBar.Library.Permissions
         /// <param name="portalId">The portal ID.</param>
         /// <param name="identifier">The menu identifier.</param>
         /// <returns>A <see cref="MenuPermissionCollection"/>.</returns>
-        public static MenuPermissionCollection GetMenuPermissions(IHostSettings hostSettings, int portalId, string identifier)
+        [DnnDeprecated(10, 2, 3, "Please use overload taking IPortalController")]
+        public static partial MenuPermissionCollection GetMenuPermissions(IHostSettings hostSettings, int portalId, string identifier)
+            => GetMenuPermissions(hostSettings, Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), portalId, identifier);
+
+        /// <summary>Gets the menu permissions.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="identifier">The menu identifier.</param>
+        /// <returns>A <see cref="MenuPermissionCollection"/>.</returns>
+        public static MenuPermissionCollection GetMenuPermissions(IHostSettings hostSettings, IPortalController portalController, int portalId, string identifier)
         {
             var menu = PersonaBarRepository.Instance.GetMenuItem(identifier);
             if (menu == null)
@@ -139,7 +168,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                 return null;
             }
 
-            return GetMenuPermissions(hostSettings, portalId, menu.MenuId);
+            return GetMenuPermissions(hostSettings, portalController, portalId, menu.MenuId);
         }
 
         /// <summary>Gets the menu permissions.</summary>
@@ -155,9 +184,19 @@ namespace Dnn.PersonaBar.Library.Permissions
         /// <param name="portalId">The portal ID.</param>
         /// <param name="menuId">The menu ID.</param>
         /// <returns>A <see cref="MenuPermissionCollection"/>.</returns>
-        public static MenuPermissionCollection GetMenuPermissions(IHostSettings hostSettings, int portalId, int menuId)
+        [DnnDeprecated(10, 2, 3, "Please use overload taking IPortalController")]
+        public static partial MenuPermissionCollection GetMenuPermissions(IHostSettings hostSettings, int portalId, int menuId)
+            => GetMenuPermissions(hostSettings, Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), portalId, menuId);
+
+        /// <summary>Gets the menu permissions.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="menuId">The menu ID.</param>
+        /// <returns>A <see cref="MenuPermissionCollection"/>.</returns>
+        public static MenuPermissionCollection GetMenuPermissions(IHostSettings hostSettings, IPortalController portalController, int portalId, int menuId)
         {
-            var permissions = GetMenuPermissions(hostSettings, portalId)
+            var permissions = GetMenuPermissions(hostSettings, portalController, portalId)
                     .Cast<MenuPermissionInfo>()
                     .Where(p => p.MenuId == menuId && (p.PortalId == Null.NullInteger || p.PortalId == portalId)).ToList();
             return new MenuPermissionCollection(permissions);
@@ -178,10 +217,19 @@ namespace Dnn.PersonaBar.Library.Permissions
         /// <param name="menu">The menu.</param>
         /// <param name="permissionKey">The permission key.</param>
         /// <returns><see langword="true"/> if the user has permission, otherwise <see langword="false"/>.</returns>
-        public static bool HasMenuPermission(IHostSettings hostSettings, int portalId, MenuItem menu, string permissionKey)
-        {
-            return HasMenuPermission(GetMenuPermissions(hostSettings, portalId, menu.MenuId), permissionKey);
-        }
+        [DnnDeprecated(10, 2, 3, "Please use overload taking IPortalController")]
+        public static partial bool HasMenuPermission(IHostSettings hostSettings, int portalId, MenuItem menu, string permissionKey)
+            => HasMenuPermission(hostSettings, Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), portalId, menu, permissionKey);
+
+        /// <summary>Gets a value indicating whether the current user has the specified menu permission.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="menu">The menu.</param>
+        /// <param name="permissionKey">The permission key.</param>
+        /// <returns><see langword="true"/> if the user has permission, otherwise <see langword="false"/>.</returns>
+        public static bool HasMenuPermission(IHostSettings hostSettings, IPortalController portalController, int portalId, MenuItem menu, string permissionKey)
+            => HasMenuPermission(GetMenuPermissions(hostSettings, portalController, portalId, menu.MenuId), permissionKey);
 
         public static bool HasMenuPermission(MenuPermissionCollection menuPermissions, string permissionKey)
         {
@@ -252,8 +300,18 @@ namespace Dnn.PersonaBar.Library.Permissions
         /// <param name="portalId">The portal ID.</param>
         /// <param name="menuItem">The menu item.</param>
         /// <param name="roleName">The role name.</param>
-        public static void SaveMenuDefaultPermissions(IHostSettings hostSettings, int portalId, MenuItem menuItem, string roleName)
-            => SaveMenuDefaultPermissions(hostSettings, portalId, menuItem, roleName, false);
+        [DnnDeprecated(10, 2, 3, "Please use overload taking IPortalController")]
+        public static partial void SaveMenuDefaultPermissions(IHostSettings hostSettings, int portalId, MenuItem menuItem, string roleName)
+            => SaveMenuDefaultPermissions(hostSettings, Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), portalId, menuItem, roleName);
+
+        /// <summary>Saves the menu's default permissions.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="menuItem">The menu item.</param>
+        /// <param name="roleName">The role name.</param>
+        public static void SaveMenuDefaultPermissions(IHostSettings hostSettings, IPortalController portalController, int portalId, MenuItem menuItem, string roleName)
+            => SaveMenuDefaultPermissions(hostSettings, portalController, portalId, menuItem, roleName, false);
 
         public static void SavePersonaBarPermission(string menuIdentifier, string permissionKey, string permissionName)
         {
@@ -303,12 +361,12 @@ namespace Dnn.PersonaBar.Library.Permissions
             return PortalController.Instance.GetPortalSettings(portalId).ContainsKey(PermissionInitializedKey);
         }
 
-        private static void SetPermissionInitialized(int portalId)
+        private static void SetPermissionInitialized(IPortalController portalController, int portalId)
         {
-            PortalController.UpdatePortalSetting(portalId, PermissionInitializedKey, "Y");
+            PortalController.UpdatePortalSetting(portalController, portalId, PermissionInitializedKey, "Y");
         }
 
-        private static void EnsureMenuDefaultPermissions(IHostSettings hostSettings, int portalId)
+        private static void EnsureMenuDefaultPermissions(IHostSettings hostSettings, IPortalController portalController, int portalId)
         {
             try
             {
@@ -330,13 +388,13 @@ namespace Dnn.PersonaBar.Library.Permissions
                                     {
                                         if (!string.IsNullOrEmpty(roleName.Trim()))
                                         {
-                                            SaveMenuDefaultPermissions(hostSettings, portalId, menuItem, roleName.Trim(), true);
+                                            SaveMenuDefaultPermissions(hostSettings, portalController, portalId, menuItem, roleName.Trim(), true);
                                         }
                                     }
                                 }
                             }
 
-                            SetPermissionInitialized(portalId);
+                            SetPermissionInitialized(portalController, portalId);
                         }
                     }
                 }
@@ -347,7 +405,7 @@ namespace Dnn.PersonaBar.Library.Permissions
             }
         }
 
-        private static void SaveMenuDefaultPermissions(IHostSettings hostSettings, int portalId, MenuItem menuItem, string roleName, bool ignoreExists)
+        private static void SaveMenuDefaultPermissions(IHostSettings hostSettings, IPortalController portalController, int portalId, MenuItem menuItem, string roleName, bool ignoreExists)
         {
             try
             {
@@ -393,7 +451,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                 {
                     if (!ignoreExists)
                     {
-                        var menuPermissions = GetMenuPermissions(hostSettings, portalId, menuItem.MenuId);
+                        var menuPermissions = GetMenuPermissions(hostSettings, portalController, portalId, menuItem.MenuId);
                         permissions = permissions.Where(x => !menuPermissions.Any((IPermissionInfo y) => y.PermissionId == x.PermissionId && y.RoleId == roleId));
                     }
 

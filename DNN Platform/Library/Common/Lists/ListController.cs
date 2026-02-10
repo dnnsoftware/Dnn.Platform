@@ -372,7 +372,7 @@ namespace DotNetNuke.Common.Lists
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ListInfoCollection GetListInfoCollection(string listName, string parentKey, int portalId)
         {
-            IList lists = new ListInfoCollection();
+            IList lists = new ListInfoCollection(this);
             foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(this.hostSettings, portalId).OrderBy(l => l.Value.DisplayName))
             {
                 ListInfo list = listPair.Value;

@@ -428,7 +428,7 @@ namespace DotNetNuke.Common
         {
             get
             {
-                var listController = new ListController();
+                var listController = GetCurrentServiceProvider().GetRequiredService<ListController>();
                 var listEntries = listController.GetListEntryInfoItems("ImageTypes");
                 if (listEntries == null || !listEntries.Any())
                 {

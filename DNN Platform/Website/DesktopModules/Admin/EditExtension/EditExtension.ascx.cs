@@ -23,9 +23,10 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     using DotNetNuke.UI.WebControls;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>The EditExtension control is used to edit a Extension.</summary>
+    /// <summary>The EditExtension control is used to edit an Extension.</summary>
     public partial class EditExtension : ModuleUserControlBase
     {
+        private readonly IServiceProvider serviceProvider;
         private readonly INavigationManager navigationManager;
         private readonly IApplicationStatusInfo appStatus;
         private readonly IJavaScriptLibraryHelper javaScript;
@@ -37,7 +38,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         /// <summary>Initializes a new instance of the <see cref="EditExtension"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditExtension()
-            : this(null, null, null, null)
+            : this(null, null, null, null, null)
         {
         }
 
@@ -47,7 +48,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         /// <param name="javaScript">The JavaScript library helper.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditExtension(INavigationManager navigationManager, IApplicationStatusInfo appStatus, IJavaScriptLibraryHelper javaScript)
-            : this(navigationManager, appStatus, javaScript, null)
+            : this(navigationManager, appStatus, javaScript, null, null)
         {
         }
 
@@ -56,12 +57,25 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         /// <param name="appStatus">The application status.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public EditExtension(INavigationManager navigationManager, IApplicationStatusInfo appStatus, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings)
+            : this(navigationManager, appStatus, javaScript, hostSettings, null)
         {
-            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EditExtension"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="serviceProvider">The dependency injection container.</param>
+        public EditExtension(INavigationManager navigationManager, IApplicationStatusInfo appStatus, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings, IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider ?? Globals.GetCurrentServiceProvider();
+            this.navigationManager = navigationManager ?? this.serviceProvider.GetRequiredService<INavigationManager>();
+            this.appStatus = appStatus ?? this.serviceProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.javaScript = javaScript ?? this.serviceProvider.GetRequiredService<IJavaScriptLibraryHelper>();
+            this.hostSettings = hostSettings ?? this.serviceProvider.GetRequiredService<IHostSettings>();
         }
 
         public string Mode => Convert.ToString(this.ModuleContext.Settings["Extensions_Mode"]);
@@ -143,14 +157,14 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             this.cmdDelete.Click += this.OnDeleteClick;
             this.cmdPackage.Click += this.OnPackageClick;
             this.cmdUpdate.Click += this.OnUpdateClick;
-            this.Page.PreRenderComplete += (sender, args) =>
-                                          {
-                                              if (UrlUtils.InPopUp())
-                                              {
-                                                  var title = $"{this.Page.Title} > {this.Package.FriendlyName}";
-                                                  this.Page.Title = title;
-                                              }
-                                          };
+            this.Page.PreRenderComplete += (_, _) =>
+            {
+                if (UrlUtils.InPopUp())
+                {
+                    var title = $"{this.Page.Title} > {this.Package.FriendlyName}";
+                    this.Page.Title = title;
+                }
+            };
 
             this.BindData();
 
@@ -285,7 +299,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 }
 
                 // Determine if Package is ready for packaging
-                PackageWriterBase writer = PackageWriterFactory.GetWriter(this.Package);
+                PackageWriterBase writer = PackageWriterFactory.GetWriter(this.serviceProvider, this.Package);
                 this.cmdPackage.Visible = this.IsSuperTab && writer != null && Directory.Exists(Path.Combine(this.appStatus.ApplicationMapPath, writer.BasePath));
 
                 this.cmdDelete.Visible = this.IsSuperTab && (!this.Package.IsSystemPackage) && PackageController.CanDeletePackage(this.hostSettings, this.appStatus, this.Package, this.ModuleContext.PortalSettings);
@@ -308,11 +322,11 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             if (this.packageForm.IsValid)
             {
-                if (this.packageForm.DataSource is PackageInfo package)
+                if (this.packageForm.DataSource is PackageInfo packageInfo)
                 {
-                    var pkgIconFile = Util.ParsePackageIconFileName(package);
-                    package.IconFile = (pkgIconFile.Trim().Length > 0) ? Util.ParsePackageIconFile(package) : null;
-                    PackageController.Instance.SaveExtensionPackage(package);
+                    var pkgIconFile = Util.ParsePackageIconFileName(packageInfo);
+                    packageInfo.IconFile = (pkgIconFile.Trim().Length > 0) ? Util.ParsePackageIconFile(packageInfo) : null;
+                    PackageController.Instance.SaveExtensionPackage(packageInfo);
                 }
 
                 if (displayMessage)

@@ -14,6 +14,7 @@ namespace DotNetNuke.Security
     using System.Web;
     using System.Web.Security;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
@@ -32,7 +33,9 @@ namespace DotNetNuke.Security
     /// <summary>A variety of security-related utility functions.</summary>
     public partial class PortalSecurity
     {
+        /// <summary>A <see cref="PortalSecurity"/> instance.</summary>
         public static readonly PortalSecurity Instance = ActivatorUtilities.GetServiceOrCreateInstance<PortalSecurity>(Globals.DependencyProvider);
+
         private const string RoleFriendPrefix = "FRIEND:";
         private const string RoleFollowerPrefix = "FOLLOWER:";
         private const string RoleOwnerPrefix = "OWNER:";
@@ -97,18 +100,39 @@ namespace DotNetNuke.Security
         private static readonly Regex DangerElementContentRegex = new Regex(@"on.*?\=(['""]*)[\s\S]*?(\1)( *)", RxOptions);
 
         private readonly ICryptographyProvider cryptographyProvider;
+        private readonly ListController listController;
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalGroupController portalGroupController;
 
         /// <summary>Initializes a new instance of the <see cref="PortalSecurity"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public PortalSecurity()
-            : this(null)
+            : this(null, null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalSecurity"/> class.</summary>
         /// <param name="cryptographyProvider">The cryptography provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public PortalSecurity(ICryptographyProvider cryptographyProvider)
+            : this(cryptographyProvider, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PortalSecurity"/> class.</summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        public PortalSecurity(ICryptographyProvider cryptographyProvider, ListController listController, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
         {
             this.cryptographyProvider = cryptographyProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>();
+            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
         }
 
         /// <summary>
@@ -212,18 +236,31 @@ namespace DotNetNuke.Security
         /// <summary>Gets the cookie domain for the portal group or from web.config.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <returns>Cookie domain for the portal group or from web.config.</returns>
-        public static string GetCookieDomain(int portalId)
+        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        public static partial string GetCookieDomain(int portalId)
+            => GetCookieDomain(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                portalId);
+
+        /// <summary>Gets the cookie domain for the portal group or from web.config.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>Cookie domain for the portal group or from web.config.</returns>
+        public static string GetCookieDomain(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, int portalId)
         {
             string cookieDomain = string.Empty;
-            if (PortalController.IsMemberOfPortalGroup(portalId))
+            if (PortalController.IsMemberOfPortalGroup(portalController, portalId))
             {
                 // set cookie domain for portal group
-                var groupController = new PortalGroupController();
-                var group = groupController.GetPortalGroups().SingleOrDefault(p => p.MasterPortalId == PortalController.GetEffectivePortalId(portalId));
+                var group = portalGroupController.GetPortalGroups().SingleOrDefault(p => p.MasterPortalId == PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, portalId));
 
                 if (@group != null
                         && !string.IsNullOrEmpty(@group.AuthenticationDomain)
-                        && PortalSettings.Current.PortalAlias.HTTPAlias.Contains(@group.AuthenticationDomain))
+                        && ((IPortalAliasInfo)PortalSettings.Current.PortalAlias).HttpAlias.Contains(@group.AuthenticationDomain))
                 {
                     cookieDomain = @group.AuthenticationDomain;
                 }
@@ -535,8 +572,6 @@ namespace DotNetNuke.Security
                     const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;
                     const string listName = "ProfanityFilter";
 
-                    var listController = new ListController();
-
                     IPortalSettings settings;
 
                     IEnumerable<ListEntryInfo> listEntryHostInfos;
@@ -545,19 +580,19 @@ namespace DotNetNuke.Security
                     switch (filterScope)
                     {
                         case FilterScope.SystemList:
-                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
+                            listEntryHostInfos = this.listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             break;
                         case FilterScope.SystemAndPortalList:
                             settings = PortalController.Instance.GetCurrentSettings();
-                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
-                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
+                            listEntryHostInfos = this.listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
+                            listEntryPortalInfos = this.listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             break;
                         case FilterScope.PortalList:
                             settings = PortalController.Instance.GetCurrentSettings();
-                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
+                            listEntryPortalInfos = this.listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             break;
                     }
@@ -594,8 +629,6 @@ namespace DotNetNuke.Security
                     const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;
                     const string listName = "ProfanityFilter";
 
-                    var listController = new ListController();
-
                     IPortalSettings settings;
 
                     IEnumerable<ListEntryInfo> listEntryHostInfos;
@@ -604,19 +637,19 @@ namespace DotNetNuke.Security
                     switch (filterScope)
                     {
                         case FilterScope.SystemList:
-                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
+                            listEntryHostInfos = this.listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             break;
                         case FilterScope.SystemAndPortalList:
                             settings = PortalController.Instance.GetCurrentSettings();
-                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
-                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
+                            listEntryHostInfos = this.listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
+                            listEntryPortalInfos = this.listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             break;
                         case FilterScope.PortalList:
                             settings = PortalController.Instance.GetCurrentSettings();
-                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
+                            listEntryPortalInfos = this.listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             break;
                     }
@@ -639,14 +672,14 @@ namespace DotNetNuke.Security
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void SignIn(UserInfo user, bool createPersistentCookie)
         {
-            if (PortalController.IsMemberOfPortalGroup(user.PortalID) || createPersistentCookie)
+            if (PortalController.IsMemberOfPortalGroup(this.portalController, user.PortalID) || createPersistentCookie)
             {
                 // Create a custom auth cookie
 
                 // first, create the authentication ticket
                 var authenticationTicket = createPersistentCookie
-                    ? new FormsAuthenticationTicket(user.Username, true, Config.GetPersistentCookieTimeout())
-                    : new FormsAuthenticationTicket(user.Username, false, Config.GetAuthCookieTimeout());
+                    ? new FormsAuthenticationTicket(user.Username, true, Config.GetPersistentCookieTimeout(this.appStatus))
+                    : new FormsAuthenticationTicket(user.Username, false, Config.GetAuthCookieTimeout(this.appStatus));
 
                 // encrypt it
                 var encryptedAuthTicket = FormsAuthentication.Encrypt(authenticationTicket);
@@ -655,7 +688,7 @@ namespace DotNetNuke.Security
                 var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedAuthTicket)
                 {
                     Expires = authenticationTicket.Expiration,
-                    Domain = GetCookieDomain(user.PortalID),
+                    Domain = GetCookieDomain(this.portalController, this.appStatus, this.portalGroupController, user.PortalID),
                     Path = FormsAuthentication.FormsCookiePath,
                     Secure = FormsAuthentication.RequireSSL,
                 };
@@ -668,9 +701,9 @@ namespace DotNetNuke.Security
                 HttpContext.Current.Response.Cookies.Set(authCookie);
                 AuthCookieController.Instance.Update(authCookie.Value, authCookie.Expires.ToUniversalTime(), user.UserID);
 
-                if (PortalController.IsMemberOfPortalGroup(user.PortalID))
+                if (PortalController.IsMemberOfPortalGroup(this.portalController, user.PortalID))
                 {
-                    var domain = GetCookieDomain(user.PortalID);
+                    var domain = GetCookieDomain(this.portalController, this.appStatus, this.portalGroupController, user.PortalID);
                     var siteGroupCookie = new HttpCookie("SiteGroup", domain)
                     {
                         Expires = authenticationTicket.Expiration,
@@ -848,7 +881,7 @@ namespace DotNetNuke.Security
                     var newValue = portalExts.RestrictBy(masterList).ToStorageString();
                     if (newValue != portalSettings[portalId])
                     {
-                        PortalController.UpdatePortalSetting(portalId, "AllowedExtensionsWhitelist", newValue, false);
+                        PortalController.UpdatePortalSetting(this.portalController, portalId, "AllowedExtensionsWhitelist", newValue, false);
                     }
                 }
             }

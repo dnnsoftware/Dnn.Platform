@@ -14,6 +14,7 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Urls;
@@ -28,6 +29,7 @@ namespace DotNetNuke.Web.InternalServices
     [DnnAuthorize]
     public class ProfileServiceController : DnnApiController
     {
+        private readonly ListController listController;
         private readonly IPortalController portalController;
         private readonly IApplicationStatusInfo appStatus;
         private readonly IPortalGroupController portalGroupController;
@@ -59,7 +61,21 @@ namespace DotNetNuke.Web.InternalServices
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public ProfileServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger)
+            : this(portalController, appStatus, portalGroupController, hostSettings, hostSettingsService, eventLogger, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ProfileServiceController"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="listController">The list controller.</param>
+        public ProfileServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger, ListController listController)
         {
             this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
@@ -67,6 +83,7 @@ namespace DotNetNuke.Web.InternalServices
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
         }
 
         /// <summary>Searches a registration profile.</summary>
@@ -141,7 +158,7 @@ namespace DotNetNuke.Web.InternalServices
             string searchString = HttpContext.Current.Request.Params["SearchString"].NormalizeString();
             string propertyName = HttpContext.Current.Request.Params["PropName"].NormalizeString();
             int portalId = int.Parse(HttpContext.Current.Request.Params["PortalId"], CultureInfo.InvariantCulture);
-            return this.Request.CreateResponse(HttpStatusCode.OK, Entities.Profile.ProfileController.SearchProfilePropertyValues(portalId, propertyName, searchString));
+            return this.Request.CreateResponse(HttpStatusCode.OK, Entities.Profile.ProfileController.SearchProfilePropertyValues(this.listController, this.hostSettings, this.portalController, this.appStatus, this.portalGroupController, portalId, propertyName, searchString));
         }
 
         /// <summary>A data transfer object with information about a vanity URL.</summary>

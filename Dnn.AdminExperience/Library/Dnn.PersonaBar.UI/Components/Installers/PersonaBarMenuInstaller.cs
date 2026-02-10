@@ -25,9 +25,10 @@ namespace Dnn.PersonaBar.UI.Components.Installers
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Installer for persona bar menus.</summary>
-    public class PersonaBarMenuInstaller : ComponentInstallerBase
+    public class PersonaBarMenuInstaller(IHostSettings hostSettings, IPortalController portalController) : ComponentInstallerBase
     {
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
         private readonly List<MenuItem> menuItems = [];
         private readonly List<PersonaBarExtension> extensions = [];
         private readonly List<PermissionDefinition> permissionDefinitions = [];
@@ -36,16 +37,18 @@ namespace Dnn.PersonaBar.UI.Components.Installers
         private readonly Dictionary<string, string> parentMaps = new Dictionary<string, string>();
 
         /// <summary>Initializes a new instance of the <see cref="PersonaBarMenuInstaller"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public PersonaBarMenuInstaller()
-            : this(null)
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PersonaBarMenuInstaller"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public PersonaBarMenuInstaller(IHostSettings hostSettings)
+            : this(hostSettings, null)
         {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />
@@ -111,7 +114,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             this.DeleteMenus();
         }
 
-        private static void SaveMenuPermission(IHostSettings hostSettings, MenuItem menuItem, string roleName)
+        private static void SaveMenuPermission(IHostSettings hostSettings, IPortalController portalController, MenuItem menuItem, string roleName)
         {
             var portals = PortalController.Instance.GetPortals();
             foreach (IPortalInfo portal in portals)
@@ -121,7 +124,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 // when default permission already initialized, then package need to save default permission immediately.
                 if (MenuPermissionController.PermissionAlreadyInitialized(portalId))
                 {
-                    MenuPermissionController.SaveMenuDefaultPermissions(hostSettings, portalId, menuItem, roleName);
+                    MenuPermissionController.SaveMenuDefaultPermissions(hostSettings, portalController, portalId, menuItem, roleName);
                 }
             }
         }
@@ -264,7 +267,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             {
                 if (!string.IsNullOrEmpty(roleName.Trim()))
                 {
-                    SaveMenuPermission(this.hostSettings, menuItem, roleName.Trim());
+                    SaveMenuPermission(this.hostSettings, this.portalController, menuItem, roleName.Trim());
                 }
             }
         }

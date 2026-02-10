@@ -7,10 +7,13 @@ namespace DesktopModules.Admin.Security
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
@@ -22,22 +25,19 @@ namespace DesktopModules.Admin.Security
     using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
     /// <summary>The Profile UserModuleBase is used to register Users.</summary>
-    public partial class DNNProfile : ProfileUserControlBase
+    public partial class DNNProfile(ListController listController, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IEventLogger eventLogger) : ProfileUserControlBase
     {
-        private readonly ListController listController;
+        private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IPortalGroupController portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
 
         /// <summary>Initializes a new instance of the <see cref="DNNProfile"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public DNNProfile()
-            : this(null)
+            : this(null, null, null, null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="DNNProfile"/> class.</summary>
-        /// <param name="listController">The list controller.</param>
-        public DNNProfile(ListController listController)
-        {
-            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
         }
 
         /// <summary>Gets a value indicating whether the User is valid.</summary>
@@ -107,7 +107,7 @@ namespace DesktopModules.Admin.Security
             this.ProfileProperties.DataBind();
         }
 
-        /// <summary>Page_Init runs when the control is initialised.</summary>
+        /// <summary>Page_Init runs when the control is initialized.</summary>
         /// <param name="e">The event arguments.</param>
         protected override void OnInit(EventArgs e)
         {
@@ -115,8 +115,7 @@ namespace DesktopModules.Admin.Security
             this.ID = "Profile.ascx";
 
             // Get the base Page
-            var basePage = this.Page as PageBase;
-            if (basePage != null)
+            if (this.Page is PageBase basePage)
             {
                 // Check if culture is RTL
                 this.ProfileProperties.LabelMode = basePage.PageCulture.TextInfo.IsRightToLeft ? LabelMode.Right : LabelMode.Left;
@@ -165,7 +164,7 @@ namespace DesktopModules.Admin.Security
                 var properties = (ProfilePropertyDefinitionCollection)this.ProfileProperties.DataSource;
 
                 // Update User's profile
-                this.User = ProfileController.UpdateUserProfile(this.User, properties);
+                this.User = ProfileController.UpdateUserProfile(this.portalController, this.appStatus, this.portalGroupController, this.eventLogger, this.User, properties);
 
                 this.OnProfileUpdated(EventArgs.Empty);
                 this.OnProfileUpdateCompleted(EventArgs.Empty);

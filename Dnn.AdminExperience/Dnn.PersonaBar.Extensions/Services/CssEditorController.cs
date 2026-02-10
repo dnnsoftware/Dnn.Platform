@@ -132,7 +132,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
                     ClientResourceManager.ClearFileExistsCache(relativePath);
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
                 }
                 catch (Exception exc)
                 {

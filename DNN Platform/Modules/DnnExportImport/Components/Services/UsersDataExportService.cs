@@ -18,13 +18,14 @@ namespace Dnn.ExportImport.Components.Services
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.FileSystem;
 
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Supplementary service to import users additional data.</summary>
-    public class UsersDataExportService : BasePortableService
+    public class UsersDataExportService(IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController) : BasePortableService
     {
         private static readonly Tuple<string, Type>[] UserRolesDatasetColumns =
         {
@@ -53,20 +54,24 @@ namespace Dnn.ExportImport.Components.Services
             Tuple.Create("IsSuperUser", typeof(bool)),
         };
 
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IPortalGroupController portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
 
         /// <summary>Initializes a new instance of the <see cref="UsersDataExportService"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public UsersDataExportService()
-            : this(null)
+            : this(null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="UsersDataExportService"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public UsersDataExportService(IHostSettings hostSettings)
+            : this(hostSettings, null, null, null)
         {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />
@@ -208,6 +213,9 @@ namespace Dnn.ExportImport.Components.Services
                                         {
                                             var profileDefinitionId = Util.GetProfilePropertyId(
                                                 this.hostSettings,
+                                                this.portalController,
+                                                this.appStatus,
+                                                this.portalGroupController,
                                                 importJob.PortalId,
                                                 userProfile.PropertyDefinitionId,
                                                 userProfile.PropertyName);

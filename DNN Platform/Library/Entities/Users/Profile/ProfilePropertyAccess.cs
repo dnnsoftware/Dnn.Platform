@@ -27,6 +27,8 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Security;
     using DotNetNuke.Services.Tokens;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>Provides access to profile properties.</summary>
     public partial class ProfilePropertyAccess : IPropertyAccess
     {
@@ -198,14 +200,21 @@ namespace DotNetNuke.Entities.Users
         /// <summary>Gets the date type for a profile property definition.</summary>
         /// <param name="definition">The <see cref="ProfilePropertyDefinition"/> to check.</param>
         /// <returns>A string representing the data type such as: truefalse, date, datetime, integer, page, image or richtext.</returns>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public static string DisplayDataType(ProfilePropertyDefinition definition)
+            => DisplayDataType(Globals.GetCurrentServiceProvider().GetRequiredService<ListController>(), definition);
+
+        /// <summary>Gets the date type for a profile property definition.</summary>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="definition">The <see cref="ProfilePropertyDefinition"/> to check.</param>
+        /// <returns>A string representing the data type such as: truefalse, date, datetime, integer, page, image or richtext.</returns>
+        public static string DisplayDataType(ListController listController, ProfilePropertyDefinition definition)
         {
             string cacheKey = string.Format(CultureInfo.InvariantCulture, "DisplayDataType:{0}", definition.DataType);
             string strDataType = Convert.ToString(DataCache.GetCache(cacheKey), CultureInfo.InvariantCulture) + string.Empty;
             if (strDataType == string.Empty)
             {
-                var objListController = new ListController();
-                strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
+                strDataType = listController.GetListEntryInfo("DataType", definition.DataType).Value;
                 DataCache.SetCache(cacheKey, strDataType);
             }
 

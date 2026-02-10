@@ -12,6 +12,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
@@ -26,11 +27,12 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The ViewProfile ProfileModuleUserControlBase is used to view a Users Profile.</summary>
-    public partial class ViewProfile : ProfileModuleUserControlBase
+    public partial class ViewProfile(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings, ListController listController) : ProfileModuleUserControlBase
     {
-        private readonly INavigationManager navigationManager;
-        private readonly IJavaScriptLibraryHelper javaScript;
-        private readonly IHostSettings hostSettings;
+        private readonly INavigationManager navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        private readonly IJavaScriptLibraryHelper javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
 
         /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
@@ -44,19 +46,8 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
         /// <param name="javaScript">The JavaScript library helper.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ViewProfile(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript)
-            : this(navigationManager, javaScript, null)
+            : this(navigationManager, javaScript, null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
-        /// <param name="navigationManager">The navigation manager.</param>
-        /// <param name="javaScript">The JavaScript library helper.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public ViewProfile(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings)
-        {
-            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
-            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />
@@ -188,7 +179,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
                 foreach (ProfilePropertyDefinition property in this.ProfileUser.Profile.ProfileProperties)
                 {
-                    var displayDataType = ProfilePropertyAccess.DisplayDataType(property).ToLowerInvariant();
+                    var displayDataType = ProfilePropertyAccess.DisplayDataType(this.listController, property).ToLowerInvariant();
                     string value = propertyAccess.GetProperty(
                         property.PropertyName,
                         string.Empty,

@@ -16,6 +16,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -41,7 +42,6 @@ namespace DotNetNuke.Modules.Admin.Users
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditUser));
         private readonly INavigationManager navigationManager;
         private readonly IJavaScriptLibraryHelper javaScript;
-        private readonly IHostSettings hostSettings;
         private readonly IPortalController portalController;
         private readonly IHostSettingsService hostSettingsService;
         private readonly IEventLogger eventLogger;
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>Initializes a new instance of the <see cref="EditUser"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditUser()
-            : this(null, null, null, null, null, null)
+            : this(null, null, null, null, null, null, null)
         {
         }
 
@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="portalController">The portal controller.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettingsService. Scheduled removal in v12.0.0.")]
         public EditUser(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings, IPortalController portalController)
-            : this(navigationManager, javaScript, hostSettings, portalController, null, null)
+            : this(navigationManager, javaScript, hostSettings, portalController, null, null, null)
         {
         }
 
@@ -71,11 +71,25 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="portalController">The portal controller.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public EditUser(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings, IPortalController portalController, IHostSettingsService hostSettingsService, IEventLogger eventLogger)
+            : this(navigationManager, javaScript, hostSettings, portalController, hostSettingsService, eventLogger, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EditUser"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="listController">The list controller.</param>
+        public EditUser(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings, IPortalController portalController, IHostSettingsService hostSettingsService, IEventLogger eventLogger, ListController listController)
+            : base(listController, hostSettings)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
-            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
             this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
             this.hostSettingsService = hostSettingsService ?? this.DependencyProvider.GetRequiredService<IHostSettingsService>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
@@ -431,7 +445,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.dnnServicesDetails.Visible = this.DisplayServices;
 
-                var urlSettings = new FriendlyUrlSettings(this.portalController, this.hostSettings, this.hostSettingsService, this.PortalSettings.PortalId);
+                var urlSettings = new FriendlyUrlSettings(this.portalController, this.HostSettings, this.hostSettingsService, this.PortalSettings.PortalId);
                 var showVanityUrl = (Config.GetFriendlyUrlProvider() == "advanced") && !this.UserInfo.IsSuperUser;
                 if (showVanityUrl)
                 {
@@ -616,7 +630,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 // store PreferredLocale in cookie, if none specified set to portal default.
                 if (this.UserInfo.Profile.PreferredLocale == string.Empty)
                 {
-                    Localization.SetLanguage(PortalController.GetPortalDefaultLanguage(this.hostSettings, this.UserInfo.PortalID));
+                    Localization.SetLanguage(PortalController.GetPortalDefaultLanguage(this.HostSettings, this.UserInfo.PortalID));
                 }
                 else
                 {

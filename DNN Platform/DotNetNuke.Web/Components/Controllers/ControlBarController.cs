@@ -96,7 +96,7 @@ namespace DotNetNuke.Web.Components.Controllers
             var bookmarkCategory = PortalController.GetPortalSetting(this.portalController, BookmarkCategoryProperty, portalId, string.Empty);
             if (string.IsNullOrEmpty(bookmarkCategory))
             {
-                PortalController.UpdatePortalSetting(portalId, BookmarkCategoryProperty, "Common");
+                PortalController.UpdatePortalSetting(this.portalController, portalId, BookmarkCategoryProperty, "Common");
                 return "Common";
             }
 
