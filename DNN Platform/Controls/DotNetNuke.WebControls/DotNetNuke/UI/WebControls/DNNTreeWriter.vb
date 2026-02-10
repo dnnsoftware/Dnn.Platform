@@ -47,7 +47,7 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Protected Overrides Sub RenderChildren(ByVal writer As HtmlTextWriter)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Try 
                 enumerator = Me._tree.TreeNodes.GetEnumerator
                 Do While True

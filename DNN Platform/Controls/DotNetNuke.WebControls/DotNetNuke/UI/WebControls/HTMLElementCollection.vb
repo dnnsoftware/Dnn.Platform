@@ -53,7 +53,7 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Public Function ToJSON(ByVal KeyAttribute As String) As String
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Dim builder As New StringBuilder
             builder.Append("{")
             Try 
@@ -86,7 +86,7 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Public Overrides Function ToString() As String
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Dim builder As New StringBuilder
             Try 
                 enumerator = Me.List.GetEnumerator

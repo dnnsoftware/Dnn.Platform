@@ -73,7 +73,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Private Function GetImage(ByVal strUrl As String) As NodeImage
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Try 
                 enumerator = Me.List.GetEnumerator
                 Do While True
@@ -148,7 +148,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Public Function SaveViewState() As Object Implements IStateManager.SaveViewState
-            Dim obj2 As Object
+            Dim obj2 As Object = Nothing
             If (Me.Count = 0) Then
                 obj2 = Nothing
             Else
@@ -169,7 +169,7 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Public Function ToArray() As NodeImage()
-            Dim imageArray As NodeImage()
+            Dim imageArray As NodeImage() = Nothing
             imageArray = DirectCast(Utils.CopyArray(DirectCast(imageArray, Array), New NodeImage(((Me.Count - 1) + 1)  - 1) {}), NodeImage())
             Me.CopyTo(imageArray, 0)
             Return imageArray

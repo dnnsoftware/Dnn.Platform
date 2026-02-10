@@ -60,7 +60,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Public Sub ClearSelections()
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Try 
                 enumerator = Me.TreeNodes.GetEnumerator
                 Do While True
@@ -78,7 +78,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Public Sub ClearSelections(ByVal Parent As TreeNode)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Parent.Selected = False
             Try 
                 enumerator = Parent.TreeNodes.GetEnumerator
@@ -256,7 +256,7 @@ Namespace DotNetNuke.UI.WebControls
                     Else
                         Dim flag4 As Boolean = Not Me.CheckBoxes
                         If flag4 Then
-                            Dim enumerator As IEnumerator
+                            Dim enumerator As IEnumerator = Nothing
                             Try 
                                 enumerator = Me.TreeNodes.FindSelectedNodes.GetEnumerator
                                 Do While True
@@ -313,7 +313,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Protected Overrides Sub Render(ByVal writer As HtmlTextWriter)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Me.TreeWriter.RenderTree(writer, Me)
             Try 
                 enumerator = Me.Controls.GetEnumerator
@@ -382,7 +382,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Private Sub UpdateNodes(ByVal objNodes As TreeNodeCollection)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Try 
                 enumerator = objNodes.GetEnumerator
                 Do While True

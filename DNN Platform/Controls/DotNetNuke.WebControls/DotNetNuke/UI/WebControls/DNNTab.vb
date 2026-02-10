@@ -141,7 +141,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Friend Sub RenderLabel(ByVal writer As HtmlTextWriter)
-            Dim cssClassSelected As String
+            Dim cssClassSelected As String = Nothing
             Dim flag As Boolean = Not Object.ReferenceEquals(Me.ParentControl, Nothing)
             Dim label As New Label
             label.Controls.Clear()

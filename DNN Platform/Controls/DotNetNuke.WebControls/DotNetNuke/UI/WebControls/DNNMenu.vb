@@ -133,7 +133,7 @@ Namespace DotNetNuke.UI.WebControls
             Dim hashtable2 As New Hashtable
             Dim flag As Boolean = (Me.ImageList.Count > 0)
             If flag Then
-                Dim enumerator As IEnumerator
+                Dim enumerator As IEnumerator = Nothing
                 Dim list As New SortedList
                 Dim expression As String = ""
                 Dim str As String = ""
@@ -279,7 +279,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Protected Overrides Sub Render(ByVal writer As HtmlTextWriter)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Me.MenuWriter.RenderMenu(writer, Me)
             Try 
                 enumerator = Me.Controls.GetEnumerator
@@ -311,7 +311,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Private Sub UpdateNodes(ByVal objNodes As MenuNodeCollection)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Try 
                 enumerator = objNodes.GetEnumerator
                 Do While True

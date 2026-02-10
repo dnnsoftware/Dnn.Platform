@@ -35,7 +35,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Protected Sub RenderChildren(ByVal writer As HtmlTextWriter)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Try 
                 enumerator = Me._Node.TreeNodes.GetEnumerator
                 Do While True

@@ -17,7 +17,7 @@ Namespace DotNetNuke.UI.WebControls
             Dim objA As ClientEventAttribute = Nothing
             Dim attribute2 As ClientPropertyNameAttribute = Nothing
             Dim attribute3 As ClientPropertyAttribute = Nothing
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Dim service As IUrlResolutionService = DirectCast(instance, IUrlResolutionService)
             Dim key As String = ""
             Dim descriptors As PropertyDescriptorCollection = TypeDescriptor.GetProperties(instance)

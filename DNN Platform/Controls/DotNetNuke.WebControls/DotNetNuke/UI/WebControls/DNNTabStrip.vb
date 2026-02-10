@@ -139,7 +139,7 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Private Function GetScripts(ByVal HTML As String) As HTMLElementCollection
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Dim regex As New Regex("(?i:" & ChrW(9) & "(?<element>(?:<script" & ChrW(9) & ChrW(9) & "(?:\s*" & ChrW(9) & ChrW(9) & "(?:" & ChrW(9) & ChrW(9) & ChrW(9) & "(?<attr>[^=>]*?)" & ChrW(9) & ChrW(9) & ChrW(9) & "=(?:""|')" & ChrW(9) & ChrW(9) & ChrW(9) & "(?<attrv>[^""|']*?)" & ChrW(9) & ChrW(9) & ChrW(9) & "(?:""|')" & ChrW(9) & ChrW(9) & "))*        )" & ChrW(9) & "((?(?=\s*?/>)\s*?/>|                (?:\s*?>" & ChrW(9) & "(?:[\s\r\n]*?<!--)?(?<text>[\s\S]*?)                </script>))" & ChrW(9) & ")))", (RegexOptions.IgnorePatternWhitespace Or (RegexOptions.Singleline Or RegexOptions.IgnoreCase)))
             Dim elements2 As New HTMLElementCollection
             Try 
@@ -153,8 +153,8 @@ Namespace DotNetNuke.UI.WebControls
                     Dim num3 As Integer = (current.Groups.Count - 1)
                     Dim i As Integer = 0
                     Do While True
-                        Dim collection As Collection
-                        Dim enumerator2 As IEnumerator
+                        Dim collection As Collection = Nothing
+                        Dim enumerator2 As IEnumerator = Nothing
                         Dim num4 As Integer = num3
                         If (i > num4) Then
                             If Not Object.ReferenceEquals(objA, Nothing) Then
@@ -246,7 +246,7 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Private Function GetTabIds() As String
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Dim expression As String = ""
             Try 
                 enumerator = Me.Tabs.GetEnumerator
@@ -316,7 +316,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Public Function RaiseClientAPICallbackEvent(ByVal eventArgument As String) As String Implements IClientAPICallbackEventHandler.RaiseClientAPICallbackEvent
-            Dim tabContents As String
+            Dim tabContents As String = Nothing
             Dim objA As DNNTab = Me.Tabs.FindTab(eventArgument)
             If Not Object.ReferenceEquals(objA, Nothing) Then
                 tabContents = Me.GetTabContents(objA)
@@ -340,7 +340,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Private Sub RaisePreLoadPostDataEvents()
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Try 
                 enumerator = Me.Tabs.GetEnumerator
                 Do While True
@@ -362,7 +362,7 @@ Namespace DotNetNuke.UI.WebControls
         Private Sub RegisterClientScript()
             Dim flag2 As Boolean = Not Me.IsDownLevel
             If flag2 Then
-                Dim enumerator As IEnumerator
+                Dim enumerator As IEnumerator = Nothing
                 ClientAPI.RegisterClientReference(Me.Page, ClientAPI.ClientNamespaceReferences.dnn_dom)
                 Dim flag As Boolean = (Me.TabRenderMode = eTabRenderMode.CallBack)
                 Try 
@@ -404,7 +404,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Protected Overrides Sub RenderContents(ByVal writer As HtmlTextWriter)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Select Case Me.TabAlignment
                 Case Alignment.Top, Alignment.Left
                     Me.RenderTabs(writer)
@@ -451,7 +451,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Private Sub RenderTabs(ByVal writer As HtmlTextWriter)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             writer.AddAttribute("id", (Me.ClientID & "_lc"))
             If (Strings.Len(Me.CssTabContainer) > 0) Then
                 writer.AddAttribute("class", Me.CssTabContainer)

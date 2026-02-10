@@ -37,7 +37,7 @@ Namespace DotNetNuke.UI.WebControls
         Friend Sub SetDirty()
             Dim flag As Boolean = Not Object.ReferenceEquals(Me._state, Nothing)
             If flag Then
-                Dim enumerator As IEnumerator
+                Dim enumerator As IEnumerator = Nothing
                 Try 
                     enumerator = Me._state.Keys.GetEnumerator
                     Do While True

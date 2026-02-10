@@ -58,7 +58,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Public Function FindTab(ByVal strId As String) As DNNTab
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Try 
                 enumerator = Me.GetEnumerator
                 Do While True
@@ -108,8 +108,8 @@ Namespace DotNetNuke.UI.WebControls
 
         Public Function ToJSON() As String
             Dim flag As Boolean
-            Dim enumerator As IEnumerator
-            Dim enumerator2 As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
+            Dim enumerator2 As IEnumerator = Nothing
             Dim builder As New StringBuilder
             builder.Append("tabs:[")
             Try 

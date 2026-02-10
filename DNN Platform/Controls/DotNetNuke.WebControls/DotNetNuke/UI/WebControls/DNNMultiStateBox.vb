@@ -117,7 +117,7 @@ Namespace DotNetNuke.UI.WebControls
             Get
                 Dim selectedStateKey As String = Me.SelectedStateKey
                 If Not String.IsNullOrEmpty(selectedStateKey) Then
-                    Dim enumerator As IEnumerator
+                    Dim enumerator As IEnumerator = Nothing
                     Try 
                         enumerator = Me.States.GetEnumerator
                         Do While True

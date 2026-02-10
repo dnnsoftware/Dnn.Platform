@@ -107,7 +107,7 @@ Namespace DotNetNuke.UI.WebControls
 
         Private ReadOnly Property SyncRoot As Object Implements ICollection.SyncRoot
             Get
-                Dim obj2 As Object
+                Dim obj2 As Object = Nothing
                 Return obj2
             End Get
         End Property
@@ -128,7 +128,7 @@ Namespace DotNetNuke.UI.WebControls
 
         Private Property Item(ByVal index As Integer) As Object Implements IList.Item
             Get
-                Dim obj2 As Object
+                Dim obj2 As Object = Nothing
                 Return obj2
             End Get
             Set(ByVal Value As Object)

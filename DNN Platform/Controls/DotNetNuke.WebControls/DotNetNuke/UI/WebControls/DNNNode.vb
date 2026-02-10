@@ -49,7 +49,7 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Public Function ToJSON(ByVal blnDeep As Boolean) As String
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Dim builder As New StringBuilder
             Try 
                 enumerator = Me.XmlNode.Attributes.GetEnumerator

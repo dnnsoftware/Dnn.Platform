@@ -86,7 +86,7 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Public Function GetProperties(ByVal attributes As Attribute()) As PropertyDescriptorCollection Implements ICustomTypeDescriptor.GetProperties
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Dim descriptors3 As New PropertyDescriptorCollection(Nothing)
             Dim properties As PropertyDescriptorCollection = TypeDescriptor.GetProperties(Me.GetType, attributes)
             Try 
@@ -158,7 +158,7 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Public Function ToJSON() As String
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Dim hashtable As New Hashtable
             Dim builder As New StringBuilder
             If (Strings.Len(Me.CssClass) > 0) Then

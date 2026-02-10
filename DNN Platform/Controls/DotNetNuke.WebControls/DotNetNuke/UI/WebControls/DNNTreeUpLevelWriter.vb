@@ -49,7 +49,7 @@ Namespace DotNetNuke.UI.WebControls
             Dim hashtable2 As New Hashtable
             Dim flag As Boolean = (Me._tree.ImageList.Count > 0)
             If flag Then
-                Dim enumerator As IEnumerator
+                Dim enumerator As IEnumerator = Nothing
                 Dim expression As String = ""
                 Try 
                     enumerator = Me._tree.ImageList.GetEnumerator
@@ -83,7 +83,7 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Protected Overrides Sub RenderChildren(ByVal writer As HtmlTextWriter)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Try 
                 enumerator = Me._tree.TreeNodes.GetEnumerator
                 Do While True

@@ -84,7 +84,7 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Public Sub CopyTo(ByVal myArr As Array, ByVal index As Integer)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Try 
                 enumerator = MyBase.InnerXMLNode.ChildNodes.GetEnumerator
                 Do While True
@@ -125,7 +125,7 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Friend Function FindFast(ByVal Key As String, ByVal Value As String, ByVal Parent As XmlNode, ByVal OptimizedForSmallData As Boolean) As XmlNode
-            Dim node As XmlNode
+            Dim node As XmlNode = Nothing
             Try 
                 If Not OptimizedForSmallData Then
                     node = Parent.SelectSingleNode($".//n[@{Key}='{Value}']")
@@ -173,7 +173,7 @@ Namespace DotNetNuke.UI.WebControls
             Dim collection As New Collection
             Dim flag As Boolean = Not Object.ReferenceEquals(Me.XMLNode, Nothing)
             If flag Then
-                Dim enumerator As IEnumerator
+                Dim enumerator As IEnumerator = Nothing
                 Dim list As XmlNodeList = Me.XMLNode.SelectNodes("//n[@selected='1']")
                 Try 
                     enumerator = list.GetEnumerator
@@ -237,7 +237,7 @@ Namespace DotNetNuke.UI.WebControls
 
         <Obsolete("Use LoadJSON IEnumerable instead")> _
         Public Sub LoadJSON(ByVal JSONNodes As ArrayList)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Try 
                 enumerator = JSONNodes.GetEnumerator
                 Do While True
@@ -269,7 +269,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Public Sub LoadJSON(ByVal JSONNodes As IEnumerable)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Try 
                 enumerator = JSONNodes.GetEnumerator
                 Do While True
@@ -313,7 +313,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Public Function ToJSON() As String
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Dim builder As New StringBuilder
             builder.Append("nodes:[")
             Try 

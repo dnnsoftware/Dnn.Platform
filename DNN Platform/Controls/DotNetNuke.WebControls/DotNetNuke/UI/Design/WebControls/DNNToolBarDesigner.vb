@@ -12,7 +12,7 @@ Namespace DotNetNuke.UI.Design.WebControls
         Inherits ControlDesigner
         ' Methods
         Public Overrides Function GetDesignTimeHtml() As String
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Dim component As DNNToolBar = DirectCast(MyBase.Component, DNNToolBar)
             Dim writer As New StringWriter
             Dim writer2 As New HtmlTextWriter(writer)

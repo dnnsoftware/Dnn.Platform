@@ -83,7 +83,7 @@ Namespace DotNetNuke.UI.WebControls
             If Object.ReferenceEquals(ThePage, Nothing) Then
                 str2 = [Text]
             Else
-                Dim str3 As String
+                Dim str3 As String = Nothing
                 Dim absoluteUri As String
                 Select Case Type
                     Case UrlFormatType.AbsoluteWithoutServer
@@ -105,7 +105,7 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Public Shared Function ToJSON(ByVal hash As Hashtable) As String
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Dim builder As New StringBuilder
             Dim s As String = ""
             builder.Append("{")

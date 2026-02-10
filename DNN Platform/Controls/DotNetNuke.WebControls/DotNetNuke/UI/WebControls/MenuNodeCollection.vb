@@ -94,7 +94,7 @@ Namespace DotNetNuke.UI.WebControls
             Dim collection As New Collection
             Dim flag As Boolean = Not Object.ReferenceEquals(Me.XMLNode, Nothing)
             If flag Then
-                Dim enumerator As IEnumerator
+                Dim enumerator As IEnumerator = Nothing
                 Dim list As XmlNodeList = Me.XMLNode.SelectNodes("//n[@selected='1']")
                 Try 
                     enumerator = list.GetEnumerator

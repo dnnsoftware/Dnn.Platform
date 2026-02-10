@@ -29,7 +29,7 @@ Namespace DotNetNuke.UI.WebControls
         Public Sub Click()
             Me.Selected = Not Me.Selected
             If Me.DNNMenu.IsDownLevel Then
-                Dim enumerator As IEnumerator
+                Dim enumerator As IEnumerator = Nothing
                 Try 
                     enumerator = Me.DNNMenu.SelectedMenuNodes.GetEnumerator
                     Do While True

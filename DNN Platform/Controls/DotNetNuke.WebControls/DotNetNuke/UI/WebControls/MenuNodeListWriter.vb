@@ -44,7 +44,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Protected Sub RenderChildren(ByVal writer As HtmlTextWriter)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Try 
                 enumerator = Me.m_Node.MenuNodes.GetEnumerator
                 Do While True

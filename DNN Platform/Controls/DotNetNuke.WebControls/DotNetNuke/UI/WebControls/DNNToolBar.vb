@@ -66,7 +66,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Private Function FindAttachedControl(ByVal objControl As Control) As Control
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             If (TypeOf objControl Is IDNNToolBar AndAlso (DirectCast(objControl, IDNNToolBar).ToolBarId = Me.ID)) Then
                 Return objControl
             End If
@@ -131,7 +131,7 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Private Function RegisterToolbarScript() As String
-            Dim str As String
+            Dim str As String = Nothing
             Dim uniqueID As String = Me.UniqueID
             If Me.ReuseToolBar Then
                 uniqueID = If(Not String.IsNullOrEmpty(Me.BehaviorID), Me.BehaviorID, Me.ID)
@@ -154,8 +154,8 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Friend Function ToJSON() As String
-            Dim enumerator As IEnumerator
-            Dim enumerator2 As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
+            Dim enumerator2 As IEnumerator = Nothing
             Dim hashtable As New Hashtable
             If (Strings.Len(Me.CssClass) > 0) Then
                 hashtable.Add("css", ("'" & Me.CssClass & "'"))

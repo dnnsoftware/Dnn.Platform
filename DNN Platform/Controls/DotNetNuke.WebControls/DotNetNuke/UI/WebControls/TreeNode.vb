@@ -61,7 +61,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Public Function SaveViewState() As Object Implements IStateManager.SaveViewState
-            Dim obj2 As Object
+            Dim obj2 As Object = Nothing
             Return obj2
         End Function
 

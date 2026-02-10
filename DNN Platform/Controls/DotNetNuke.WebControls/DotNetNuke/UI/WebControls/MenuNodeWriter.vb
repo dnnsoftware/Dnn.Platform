@@ -36,8 +36,8 @@ Namespace DotNetNuke.UI.WebControls
         End Function
 
         Protected Sub Render(ByVal writer As HtmlTextWriter)
-            Dim node As MenuNode
-            Dim iD As String
+            Dim node As MenuNode = Nothing
+            Dim iD As String = Nothing
             If (Me.m_Node.DNNMenu.SelectedMenuNodes.Count > 0) Then
                 node = DirectCast(Me.m_Node.DNNMenu.SelectedMenuNodes(Me.m_Node.DNNMenu.SelectedMenuNodes.Count), MenuNode)
             End If
@@ -68,7 +68,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Protected Sub RenderChildren(ByVal writer As HtmlTextWriter)
-            Dim enumerator As IEnumerator
+            Dim enumerator As IEnumerator = Nothing
             Try 
                 enumerator = Me.m_Node.MenuNodes.GetEnumerator
                 Do While True

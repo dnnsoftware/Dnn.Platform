@@ -11,7 +11,7 @@
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<AnalysisLevel>latest</AnalysisLevel>
 		<AnalysisMode>Recommended</AnalysisMode>
-		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
