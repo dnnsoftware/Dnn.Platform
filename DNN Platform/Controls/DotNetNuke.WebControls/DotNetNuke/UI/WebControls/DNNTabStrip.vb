@@ -123,6 +123,8 @@ Namespace DotNetNuke.UI.WebControls
                 End If
                 Return form
             Loop
+
+            Return Nothing
         End Function
 
         Private Function GetFormHTML() As String

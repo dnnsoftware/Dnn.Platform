@@ -110,6 +110,8 @@ Namespace DotNetNuke.UI.WebControls
                 End If
                 Return num
             Loop
+
+            Return Nothing
         End Function
 
         Public Function IndexOf(ByVal value As NodeImage) As Integer

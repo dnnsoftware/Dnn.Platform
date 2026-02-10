@@ -134,6 +134,8 @@ Namespace DotNetNuke.UI.WebControls
                 End If
                 Return num2
             Loop
+
+            Return Nothing
         End Function
 
         Public Sub Insert(ByVal index As Integer, ByVal value As MenuNode)

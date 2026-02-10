@@ -215,6 +215,8 @@ Namespace DotNetNuke.UI.WebControls
                 End If
                 Return obj2
             Loop
+
+            Return Nothing
         End Function
 
         Friend Sub SetParent(ByVal Parent As DNNTabStrip)

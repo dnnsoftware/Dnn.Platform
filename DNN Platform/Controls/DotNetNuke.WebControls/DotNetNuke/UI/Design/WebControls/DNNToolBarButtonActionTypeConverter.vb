@@ -42,6 +42,8 @@ Namespace DotNetNuke.UI.Design.WebControls
                 values.Add(item, Nothing, Nothing, Nothing)
                 index += 1
             Loop
+
+            Return Nothing
         End Function
 
         Public Overrides Function GetStandardValuesExclusive(ByVal context As ITypeDescriptorContext) As Boolean

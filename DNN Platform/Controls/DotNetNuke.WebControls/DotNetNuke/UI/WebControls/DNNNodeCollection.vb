@@ -223,6 +223,8 @@ Namespace DotNetNuke.UI.WebControls
                 End If
                 Return num2
             Loop
+
+            Return Nothing
         End Function
 
         Public Sub InsertAfter(ByVal index As Integer, ByVal value As DNNNode)
