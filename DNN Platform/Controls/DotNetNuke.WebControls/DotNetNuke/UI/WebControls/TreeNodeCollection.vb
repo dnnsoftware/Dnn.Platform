@@ -33,11 +33,11 @@ Namespace DotNetNuke.UI.WebControls
             Me.m_DNNTree = objControl
         End Sub
 
-        Public Function Add() As Integer
+        Public Shadows Function Add() As Integer
             Return Me.Add("")
         End Function
 
-        Public Function Add(ByVal objNode As TreeNode) As Integer
+        Public Shadows Function Add(ByVal objNode As TreeNode) As Integer
             Dim num2 As Integer = MyBase.Add(objNode)
             objNode.SetDNNTree(Me.m_DNNTree)
             If (Strings.Len(objNode.ID) = 0) Then
@@ -46,18 +46,18 @@ Namespace DotNetNuke.UI.WebControls
             Return num2
         End Function
 
-        Public Function Add(ByVal strText As String) As Integer
+        Public Shadows Function Add(ByVal strText As String) As Integer
             Dim objNode As New TreeNode(Me.m_DNNTree)
             Dim num2 As Integer = Me.Add(objNode)
             objNode.Text = strText
             Return num2
         End Function
 
-        Public Function Add(ByVal strID As String, ByVal strKey As String, ByVal strText As String, ByVal strNavigateURL As String) As Integer
+        Public Shadows Function Add(ByVal strID As String, ByVal strKey As String, ByVal strText As String, ByVal strNavigateURL As String) As Integer
             Return Me.Add(strID, strKey, strText, strNavigateURL, "", "", "", True, "", "", "", False, eClickAction.Navigate, "", -1)
         End Function
 
-        Public Function Add(ByVal strID As String, ByVal strKey As String, ByVal strText As String, ByVal strNavigateURL As String, ByVal strJSFunction As String, ByVal strTarget As String, ByVal strToolTip As String, ByVal blnEnabled As Boolean, ByVal strCSSClass As String, ByVal strCSSClassSelected As String, ByVal strCSSClassHover As String, ByVal blnSelected As Boolean, ByVal enumClickAction As eClickAction, ByVal strCssClassOver As String, ByVal intImageIndex As Integer) As Integer
+        Public Shadows Function Add(ByVal strID As String, ByVal strKey As String, ByVal strText As String, ByVal strNavigateURL As String, ByVal strJSFunction As String, ByVal strTarget As String, ByVal strToolTip As String, ByVal blnEnabled As Boolean, ByVal strCSSClass As String, ByVal strCSSClassSelected As String, ByVal strCSSClassHover As String, ByVal blnSelected As Boolean, ByVal enumClickAction As eClickAction, ByVal strCssClassOver As String, ByVal intImageIndex As Integer) As Integer
             Dim num2 As Integer = Me.Add
             Dim node As TreeNode = Me(num2)
             node.ID = If((Strings.Len(strID) <= 0), (node.ParentNameSpace & "_" & Conversions.ToString(Me.XMLNode.ChildNodes.Count)), strID)
@@ -78,7 +78,7 @@ Namespace DotNetNuke.UI.WebControls
             Return num2
         End Function
 
-        Public Sub Clear()
+        Public Shadows Sub Clear()
             Dim num As Integer = (Me.XMLNode.ChildNodes.Count - 1)
             Do While True
                 Dim num2 As Integer = 0
@@ -90,16 +90,16 @@ Namespace DotNetNuke.UI.WebControls
             Loop
         End Sub
 
-        Public Function Contains(ByVal value As TreeNode) As Boolean
+        Public Shadows Function Contains(ByVal value As TreeNode) As Boolean
             Return Not Object.ReferenceEquals(Me.FindNode(value.ID), Nothing)
         End Function
 
-        Public Function FindNode(ByVal ID As String) As TreeNode
+        Public Shadows Function FindNode(ByVal ID As String) As TreeNode
             Dim objA As XmlNode = Me.FindFast("id", ID, Me.XMLNode, True)
             Return If(Object.ReferenceEquals(objA, Nothing), Nothing, New TreeNode(objA, Me.m_DNNTree))
         End Function
 
-        Public Function FindNodeByKey(ByVal Key As String) As TreeNode
+        Public Shadows Function FindNodeByKey(ByVal Key As String) As TreeNode
             Dim objA As XmlNode = Me.FindFast("key", Key, Me.XMLNode, True)
             Return If(Object.ReferenceEquals(objA, Nothing), Nothing, New TreeNode(objA, Me.m_DNNTree))
         End Function
@@ -129,11 +129,11 @@ Namespace DotNetNuke.UI.WebControls
             Return collection
         End Function
 
-        Public Function GetEnumerator() As IEnumerator
+        Public Shadows Function GetEnumerator() As IEnumerator
             Return New TreeNodeEnumerator(Me.XMLNode, Me.m_DNNTree)
         End Function
 
-        Public Function IndexOf(ByVal value As TreeNode) As Integer
+        Public Shadows Function IndexOf(ByVal value As TreeNode) As Integer
             Dim count As Integer = Me.XMLNode.ChildNodes.Count
             Dim num As Integer = 0
             Do While True
@@ -157,7 +157,7 @@ Namespace DotNetNuke.UI.WebControls
         Public Sub LoadViewState(ByVal state As Object) Implements IStateManager.LoadViewState
         End Sub
 
-        Public Sub Remove(ByVal value As TreeNode)
+        Public Shadows Sub Remove(ByVal value As TreeNode)
             Me.XMLNode.RemoveChild(value.XmlNode)
         End Sub
 
@@ -171,7 +171,7 @@ Namespace DotNetNuke.UI.WebControls
 
 
         ' Properties
-        Public Default Property Item(ByVal index As Integer) As TreeNode
+        Public Default Shadows Property Item(ByVal index As Integer) As TreeNode
             Get
                 Return New TreeNode(Me.XMLNode.ChildNodes(index), Me.m_DNNTree)
             End Get

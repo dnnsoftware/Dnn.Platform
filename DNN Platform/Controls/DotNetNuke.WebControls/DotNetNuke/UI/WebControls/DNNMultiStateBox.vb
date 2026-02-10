@@ -190,7 +190,7 @@ Namespace DotNetNuke.UI.WebControls
         End Property
 
         <DefaultValue(True), ClientPropertyName("enabled"), ClientProperty> _
-        Public Property Enabled As Boolean
+        Public Shadows Property Enabled As Boolean
             Get
                 Return Me.m_Enabled
             End Get

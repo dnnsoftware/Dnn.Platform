@@ -74,7 +74,7 @@ Namespace DotNetNuke.UI.WebControls
 
 
         ' Properties
-        Public Property CssClass As String
+        Public Shadows Property CssClass As String
             Get
                 Return MyBase.CSSClass
             End Get
@@ -83,7 +83,7 @@ Namespace DotNetNuke.UI.WebControls
             End Set
         End Property
 
-        Public Property NavigateUrl As String
+        Public Shadows Property NavigateUrl As String
             Get
                 Return MyBase.NavigateURL
             End Get
@@ -168,7 +168,7 @@ Namespace DotNetNuke.UI.WebControls
             End Set
         End Property
 
-        Public ReadOnly Property ParentNode As TreeNode
+        Public ReadOnly Shadows Property ParentNode As TreeNode
             Get
                 Return If(((Me.XmlNode.ParentNode Is Nothing) OrElse (Me.XmlNode.ParentNode.NodeType = XmlNodeType.Document)), Nothing, New TreeNode(Me.XmlNode.ParentNode, Me.m_objDNNTree))
             End Get

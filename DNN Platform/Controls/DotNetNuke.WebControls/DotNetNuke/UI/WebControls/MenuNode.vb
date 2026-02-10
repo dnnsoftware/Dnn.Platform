@@ -132,7 +132,7 @@ Namespace DotNetNuke.UI.WebControls
             End Set
         End Property
 
-        Public ReadOnly Property ParentNode As MenuNode
+        Public ReadOnly Shadows Property ParentNode As MenuNode
             Get
                 Return If(((Me.XmlNode.ParentNode Is Nothing) OrElse (Me.XmlNode.ParentNode.NodeType = XmlNodeType.Document)), Nothing, New MenuNode(Me.XmlNode.ParentNode, Me.m_DNNMenu))
             End Get

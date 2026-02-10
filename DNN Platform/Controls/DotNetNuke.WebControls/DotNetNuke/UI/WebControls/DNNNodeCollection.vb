@@ -194,7 +194,7 @@ Namespace DotNetNuke.UI.WebControls
             Return collection
         End Function
 
-        Public Function GetEnumerator() As IEnumerator
+        Public Shadows Function GetEnumerator() As IEnumerator
             Return New DNNNodeEnumerator(MyBase.InnerXMLNode)
         End Function
 
@@ -308,7 +308,7 @@ Namespace DotNetNuke.UI.WebControls
             Me.XMLNode.RemoveChild(Me.XMLNode.ChildNodes(index))
         End Sub
 
-        Public Sub RemoveAt(ByVal index As Integer)
+        Public Shadows Sub RemoveAt(ByVal index As Integer)
             Me.Remove(index)
         End Sub
 
@@ -366,7 +366,7 @@ Namespace DotNetNuke.UI.WebControls
             End Set
         End Property
 
-        Public ReadOnly Property Count As Integer
+        Public ReadOnly Shadows Property Count As Integer
             Get
                 Return MyBase.InnerXMLNode.ChildNodes.Count
             End Get

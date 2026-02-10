@@ -304,7 +304,7 @@ Namespace DotNetNuke.UI.WebControls
         End Property
 
         <Browsable(False), Bindable(False)> _
-        Public Property Visible As Boolean
+        Public Shadows Property Visible As Boolean
             Get
                 Return MyBase.Visible
             End Get
