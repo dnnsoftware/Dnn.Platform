@@ -580,7 +580,7 @@ Namespace DotNetNuke.UI.WebControls
             End Get
             Set(ByVal Value As Integer)
                 If (If(((Me.m_objTabs Is Nothing) OrElse (Value <= (Me.Tabs.Count - 1))), 0, 1) <> 0) Then
-                    Throw New Exception("Invalid SelectedIndex")
+                    Throw New InvalidOperationException("Invalid SelectedIndex")
                 End If
                 Me.m_iSelectedIndex = Value
                 Me.ViewState("SelectedIndex") = Value

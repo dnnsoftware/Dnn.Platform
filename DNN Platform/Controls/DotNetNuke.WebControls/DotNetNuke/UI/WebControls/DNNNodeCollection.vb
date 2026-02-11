@@ -369,7 +369,7 @@ Namespace DotNetNuke.UI.WebControls
                 Return New DNNNode(MyBase.InnerXMLNode.ChildNodes(index))
             End Get
             Set(ByVal Value As DNNNode)
-                Throw New Exception("Cannot Assign Node Directly")
+                Throw New NotSupportedException("Cannot Assign Node Directly")
             End Set
         End Property
 

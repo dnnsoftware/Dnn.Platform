@@ -178,7 +178,7 @@ Namespace DotNetNuke.UI.WebControls
                 Return New TreeNode(Me.XMLNode.ChildNodes(index), Me.m_DNNTree)
             End Get
             Set(ByVal Value As TreeNode)
-                Throw New Exception("Cannot Assign Node Directly")
+                Throw New NotSupportedException("Cannot Assign Node Directly")
             End Set
         End Property
 

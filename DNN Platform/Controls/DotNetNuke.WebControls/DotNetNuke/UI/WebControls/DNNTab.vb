@@ -108,7 +108,7 @@ Namespace DotNetNuke.UI.WebControls
                                     End If
                                 End If
                                 If Object.ReferenceEquals(parentControl, Nothing) Then
-                                    Throw New Exception("Could not find form control")
+                                    Throw New InvalidOperationException("Could not find form control")
                                 End If
                                 hashtable2.Add("postmode", parentControl.ClientID)
                                 Exit Do

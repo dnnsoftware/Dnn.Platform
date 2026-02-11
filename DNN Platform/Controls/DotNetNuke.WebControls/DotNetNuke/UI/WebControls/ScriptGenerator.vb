@@ -45,7 +45,7 @@ Namespace DotNetNuke.UI.WebControls
                         If (current.ShouldSerializeValue(instance) OrElse current.IsReadOnly) Then
                             Dim obj2 As Object = current.GetValue(instance)
                             If (If(((objA Is Nothing) OrElse Object.ReferenceEquals(current.PropertyType, GetType(String))), 0, 1) <> 0) Then
-                                Throw New Exception("Events properties can only be of type string")
+                                Throw New InvalidOperationException("Events properties can only be of type string")
                             End If
                             If ((If((current.PropertyType.IsPrimitive OrElse current.PropertyType.IsEnum), 0, 1) <> 0) AndAlso Object.ReferenceEquals(current.PropertyType, GetType(Color))) Then
                                 Dim color1 As Color

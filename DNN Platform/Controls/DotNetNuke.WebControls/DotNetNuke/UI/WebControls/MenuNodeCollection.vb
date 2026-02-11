@@ -153,7 +153,7 @@ Namespace DotNetNuke.UI.WebControls
                 Return New MenuNode(Me.XMLNode.ChildNodes(index), Me.m_objDNNMenu)
             End Get
             Set(ByVal Value As MenuNode)
-                Throw New Exception("Cannot Assign Node Directly")
+                Throw New NotSupportedException("Cannot Assign Node Directly")
             End Set
         End Property
 
