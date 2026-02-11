@@ -120,7 +120,7 @@ Namespace DotNetNuke.UI.WebControls
                     End If
                     Dim current As DNNTab = DirectCast(enumerator.Current, DNNTab)
                     If flag Then
-                        builder.Append(",")
+                        builder.Append(","c)
                     End If
                     flag = True
                     builder.Append(ScriptGenerator.GetMarshalledPropertyJSON(current, current.MarshalledProperties))
@@ -130,7 +130,7 @@ Namespace DotNetNuke.UI.WebControls
                     TryCast(enumerator,IDisposable).Dispose
                 End If
             End Try
-            builder.Append("]")
+            builder.Append("]"c)
             flag = False
             builder.Append(",tablabels:[")
             Try 
@@ -141,7 +141,7 @@ Namespace DotNetNuke.UI.WebControls
                     End If
                     Dim current As DNNTab = DirectCast(enumerator2.Current, DNNTab)
                     If flag Then
-                        builder.Append(",")
+                        builder.Append(","c)
                     End If
                     flag = True
                     builder.Append(ScriptGenerator.GetMarshalledPropertyJSON(current.Label))
@@ -151,7 +151,7 @@ Namespace DotNetNuke.UI.WebControls
                     TryCast(enumerator2,IDisposable).Dispose
                 End If
             End Try
-            builder.Append("]")
+            builder.Append("]"c)
             Return builder.ToString
         End Function
 

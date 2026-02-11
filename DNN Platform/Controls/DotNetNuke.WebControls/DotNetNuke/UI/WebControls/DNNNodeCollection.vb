@@ -328,7 +328,7 @@ Namespace DotNetNuke.UI.WebControls
                     End If
                     Dim current As DNNNode = DirectCast(enumerator.Current, DNNNode)
                     If flag Then
-                        builder.Append(",")
+                        builder.Append(","c)
                     End If
                     flag = True
                     builder.Append(current.ToJSON(True))
@@ -338,7 +338,7 @@ Namespace DotNetNuke.UI.WebControls
                     TryCast(enumerator,IDisposable).Dispose
                 End If
             End Try
-            builder.Append("]")
+            builder.Append("]"c)
             Return builder.ToString
         End Function
 

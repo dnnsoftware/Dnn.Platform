@@ -26,9 +26,9 @@ Namespace DotNetNuke.UI.WebControls
                     End If
                     Dim str2 As String = Conversions.ToString(enumerator.Current)
                     If (builder.Length = 0) Then
-                        builder.Append("{")
+                        builder.Append("{"c)
                     Else
-                        builder.Append(",")
+                        builder.Append(","c)
                     End If
                     builder.Append($"{str2}:{Me.SafeJSONString(Conversions.ToString(Me.Attributes(str2)))}")
                 Loop
@@ -39,13 +39,13 @@ Namespace DotNetNuke.UI.WebControls
             End Try
             If (Strings.Len(Me.Text) > 0) Then
                 If (builder.Length = 0) Then
-                    builder.Append("{")
+                    builder.Append("{"c)
                 Else
-                    builder.Append(",")
+                    builder.Append(","c)
                 End If
                 builder.Append($"{"__text"}:{Me.SafeJSONString(Me.Text)}")
             End If
-            builder.Append("}")
+            builder.Append("}"c)
             Return builder.ToString
         End Function
 

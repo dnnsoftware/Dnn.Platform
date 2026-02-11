@@ -59,9 +59,9 @@ Namespace DotNetNuke.UI.WebControls
                     End If
                     Dim current As XmlAttribute = DirectCast(enumerator.Current, XmlAttribute)
                     If (builder.Length = 0) Then
-                        builder.Append("{")
+                        builder.Append("{"c)
                     Else
-                        builder.Append(",")
+                        builder.Append(","c)
                     End If
                     If blnDeep Then
                         builder.Append(current.Name)
@@ -77,7 +77,7 @@ Namespace DotNetNuke.UI.WebControls
                             builder.Append(current.Name)
                         End If
                     End If
-                    builder.Append(":")
+                    builder.Append(":"c)
                     builder.Append(("""" & ClientAPI.GetSafeJSString(current.Value) & """"))
                 Loop
             Finally
@@ -86,10 +86,10 @@ Namespace DotNetNuke.UI.WebControls
                 End If
             End Try
             If blnDeep Then
-                builder.Append(",")
+                builder.Append(","c)
                 builder.Append(Me.DNNNodes.ToJSON)
             End If
-            builder.Append("}")
+            builder.Append("}"c)
             Return builder.ToString
         End Function
 

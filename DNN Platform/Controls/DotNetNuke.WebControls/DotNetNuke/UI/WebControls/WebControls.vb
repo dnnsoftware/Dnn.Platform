@@ -143,7 +143,7 @@ Namespace DotNetNuke.UI.WebControls
             Dim enumerator As IEnumerator = Nothing
             Dim builder As New StringBuilder
             Dim s As String = ""
-            builder.Append("{")
+            builder.Append("{"c)
             Try 
                 enumerator = hash.Keys.GetEnumerator
                 Do While True
@@ -152,7 +152,7 @@ Namespace DotNetNuke.UI.WebControls
                     End If
                     Dim str3 As String = Conversions.ToString(enumerator.Current)
                     If (builder.Length > 1) Then
-                        builder.Append(",")
+                        builder.Append(","c)
                     End If
                     If Not True Then
                         s = Conversions.ToString(hash(str3))
@@ -167,7 +167,7 @@ Namespace DotNetNuke.UI.WebControls
                     TryCast(enumerator,IDisposable).Dispose
                 End If
             End Try
-            builder.Append("}")
+            builder.Append("}"c)
             Return builder.ToString
         End Function
 

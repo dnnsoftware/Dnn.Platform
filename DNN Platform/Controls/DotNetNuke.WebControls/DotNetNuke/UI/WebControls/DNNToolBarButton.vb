@@ -191,7 +191,7 @@ Namespace DotNetNuke.UI.WebControls
             If Not Me.Visible Then
                 hashtable.Add("vis", If(Me.Visible, 1, 0))
             End If
-            builder.Append("{")
+            builder.Append("{"c)
             Try 
                 enumerator = hashtable.Keys.GetEnumerator
                 Do While True
@@ -200,7 +200,7 @@ Namespace DotNetNuke.UI.WebControls
                     End If
                     Dim str2 As String = Conversions.ToString(enumerator.Current)
                     If (builder.Length > 1) Then
-                        builder.Append(",")
+                        builder.Append(","c)
                     End If
                     builder.Append((str2 & ":" & Conversions.ToString(hashtable(str2))))
                 Loop
@@ -209,7 +209,7 @@ Namespace DotNetNuke.UI.WebControls
                     TryCast(enumerator,IDisposable).Dispose
                 End If
             End Try
-            builder.Append("}")
+            builder.Append("}"c)
             Return builder.ToString
         End Function
 

@@ -173,7 +173,7 @@ Namespace DotNetNuke.UI.WebControls
                 hashtable.Add("vis", If(Me.Visible, 1, 0))
             End If
             Dim builder As New StringBuilder
-            builder.Append("[")
+            builder.Append("["c)
             Try 
                 enumerator = Me.Buttons.GetEnumerator
                 Do While True
@@ -182,7 +182,7 @@ Namespace DotNetNuke.UI.WebControls
                     End If
                     Dim current As DNNToolBarButton = DirectCast(enumerator.Current, DNNToolBarButton)
                     If (builder.Length > 1) Then
-                        builder.Append(",")
+                        builder.Append(","c)
                     End If
                     builder.Append(current.ToJSON)
                 Loop
@@ -191,10 +191,10 @@ Namespace DotNetNuke.UI.WebControls
                     TryCast(enumerator,IDisposable).Dispose
                 End If
             End Try
-            builder.Append("]")
+            builder.Append("]"c)
             hashtable.Add("btns", builder.ToString)
             builder = New StringBuilder
-            builder.Append("{")
+            builder.Append("{"c)
             Try 
                 enumerator2 = hashtable.Keys.GetEnumerator
                 Do While True
@@ -203,7 +203,7 @@ Namespace DotNetNuke.UI.WebControls
                     End If
                     Dim str2 As String = Conversions.ToString(enumerator2.Current)
                     If (builder.Length > 1) Then
-                        builder.Append(",")
+                        builder.Append(","c)
                     End If
                     builder.Append((str2 & ":" & Conversions.ToString(hashtable(str2))))
                 Loop
@@ -212,7 +212,7 @@ Namespace DotNetNuke.UI.WebControls
                     TryCast(enumerator2,IDisposable).Dispose
                 End If
             End Try
-            builder.Append("}")
+            builder.Append("}"c)
             Return builder.ToString
         End Function
 

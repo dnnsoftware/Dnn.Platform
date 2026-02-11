@@ -55,7 +55,7 @@ Namespace DotNetNuke.UI.WebControls
         Public Function ToJSON(ByVal KeyAttribute As String) As String
             Dim enumerator As IEnumerator = Nothing
             Dim builder As New StringBuilder
-            builder.Append("{")
+            builder.Append("{"c)
             Try 
                 enumerator = Me.List.GetEnumerator
                 Do While True
@@ -65,7 +65,7 @@ Namespace DotNetNuke.UI.WebControls
                     End If
                     Dim current As HTMLElement = DirectCast(enumerator.Current, HTMLElement)
                     If (builder.Length > 1) Then
-                        builder.Append(",")
+                        builder.Append(","c)
                     End If
                     If current.Attributes.Contains(KeyAttribute) Then
                         str = Conversions.ToString(current.Attributes(KeyAttribute))
@@ -81,7 +81,7 @@ Namespace DotNetNuke.UI.WebControls
                     TryCast(enumerator,IDisposable).Dispose
                 End If
             End Try
-            builder.Append("}")
+            builder.Append("}"c)
             Return builder.ToString
         End Function
 
