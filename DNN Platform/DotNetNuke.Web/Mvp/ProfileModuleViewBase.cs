@@ -29,10 +29,10 @@ namespace DotNetNuke.Web.Mvp
             this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract bool DisplayModule { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int ProfileUserId
         {
             get
@@ -40,15 +40,17 @@ namespace DotNetNuke.Web.Mvp
                 int userId = Null.NullInteger;
                 if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
                 {
-                    userId = int.Parse(this.Request.Params["UserId"]);
+                    userId = int.Parse(this.Request.Params["UserId"], CultureInfo.InvariantCulture);
                 }
 
                 return userId;
             }
         }
 
+        /// <summary>Gets the navigation manager.</summary>
         protected INavigationManager NavigationManager { get; }
 
+        /// <summary>Gets a value indicating whether the profile is for the current user.</summary>
         protected bool IsUser
         {
             get
@@ -57,12 +59,13 @@ namespace DotNetNuke.Web.Mvp
             }
         }
 
+        /// <summary>Gets the info about the user displayed in the profile.</summary>
         protected UserInfo ProfileUser
         {
             get { return UserController.GetUserById(this.ModuleContext.PortalId, this.ProfileUserId); }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             if (this.ProfileUserId == Null.NullInteger &&

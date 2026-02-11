@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
     using DotNetNuke.Entities.Content.Taxonomy;
 
+    /// <summary>Information about an event related to a <see cref="Term"/> being selected.</summary>
     public class TermsEventArgs : EventArgs
     {
         private readonly Term selectedTerm;
@@ -18,6 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.selectedTerm = selectedTerm;
         }
 
+        /// <summary>Gets the selected term.</summary>
         public Term SelectedTerm
         {
             get

@@ -280,7 +280,7 @@ namespace DotNetNuke.Services.Messaging.Data
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID
         {
             get
@@ -296,22 +296,22 @@ namespace DotNetNuke.Services.Messaging.Data
 
         public Message GetReplyMessage()
         {
-            var message = new Message();
-            message.AllowReply = this.AllowReply;
-            message.Body = string.Format("<br><br><br>On {0} {1} wrote ", this.MessageDate, this.FromUserName) + this.Body;
-            message.Conversation = this.Conversation;
-            message.FromUserID = this.ToUserID;
-            message.ToUserID = this.FromUserID;
-            message.ToUserName = this.FromUserName;
-            message.PortalID = this.PortalID;
-            message.ReplyTo = this.MessageID;
-            message.SkipInbox = this.SkipInbox;
-            message.Subject = "RE:" + this.Subject;
-
-            return message;
+            return new Message
+            {
+                AllowReply = this.AllowReply,
+                Body = $"<br><br><br>On {this.MessageDate} {this.FromUserName} wrote {this.Body}",
+                Conversation = this.Conversation,
+                FromUserID = this.ToUserID,
+                ToUserID = this.FromUserID,
+                ToUserName = this.FromUserName,
+                PortalID = this.PortalID,
+                ReplyTo = this.MessageID,
+                SkipInbox = this.SkipInbox,
+                Subject = "RE:" + this.Subject,
+            };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
             this.MessageID = Null.SetNullInteger(dr["MessageID"]);
@@ -320,7 +320,7 @@ namespace DotNetNuke.Services.Messaging.Data
             this.FromUserName = Null.SetNullString(dr["FromUserName"]);
             this.ToUserID = Null.SetNullInteger(dr["ToUserID"]);
 
-            // '_ToUserName = Null.SetNullString(dr.Item("ToUserName"))
+            ////'_ToUserName = Null.SetNullString(dr.Item("ToUserName"))
             this.ReplyTo = Null.SetNullInteger(dr["ReplyTo"]);
             this.Status = (MessageStatusType)Enum.Parse(typeof(MessageStatusType), Null.SetNullString(dr["Status"]));
             this.Body = Null.SetNullString(dr["Body"]);
@@ -336,7 +336,7 @@ namespace DotNetNuke.Services.Messaging.Data
             this.EmailSchedulerInstance = Null.SetNullGuid(dr["EmailSchedulerInstance"]);
             this.Conversation = Null.SetNullGuid(dr["Conversation"]);
 
-            // 'Conversation = New Guid(g)
+            ////'Conversation = New Guid(g)
         }
     }
 }

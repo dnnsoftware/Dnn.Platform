@@ -6,6 +6,7 @@ namespace DotNetNuke.Abstractions.Application;
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 /// <summary>The method for triggering scheduled tasks.</summary>
 public enum SchedulerMode
@@ -19,6 +20,7 @@ public enum SchedulerMode
     /// <inheritdoc cref="TimerMethod"/>
     [Obsolete("Use TimerMethod instead")]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
     TIMER_METHOD = TimerMethod,
 
     /// <summary>The scheduler is running when triggered by HTTP requests.</summary>
@@ -27,5 +29,6 @@ public enum SchedulerMode
     /// <inheritdoc cref="RequestMethod"/>
     [Obsolete("Use RequestMethod instead")]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
     REQUEST_METHOD = RequestMethod,
 }

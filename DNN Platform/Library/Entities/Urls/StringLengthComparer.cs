@@ -10,7 +10,7 @@ namespace DotNetNuke.Entities.Urls
     /// <summary>The StringLengthComparer class is a comparer override used for sorting portal aliases by length.</summary>
     internal class StringLengthComparer : Comparer<string>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Compare(string x, string y)
         {
             if (x == null && y == null)

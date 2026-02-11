@@ -28,12 +28,12 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void LoadSettings()
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void UpdateSettings()
         {
         }

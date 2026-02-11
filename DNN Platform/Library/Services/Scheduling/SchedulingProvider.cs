@@ -36,11 +36,13 @@ namespace DotNetNuke.Services.Scheduling
         // it will not reliably complete
 
         /// <summary>The application starting.</summary>
+        [SuppressMessage("Microsoft.Design", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "Breaking change")]
         APPLICATION_START = 0,
     }
 
     public enum ScheduleSource
     {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
         /// <summary>The source is not known.</summary>
         NOT_SET = 0,
 
@@ -55,10 +57,12 @@ namespace DotNetNuke.Services.Scheduling
 
         /// <summary>The beginning of a request triggered the scheduled task.</summary>
         STARTED_FROM_BEGIN_REQUEST = 4,
+#pragma warning restore CA1707
     }
 
     public enum ScheduleStatus
     {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
         /// <summary>The status is not set.</summary>
         NOT_SET = 0,
 
@@ -82,11 +86,13 @@ namespace DotNetNuke.Services.Scheduling
 
         /// <summary>The scheduler is stopped.</summary>
         STOPPED = 7,
+#pragma warning restore CA1707
     }
 
     /// <inheritdoc cref="Abstractions.Application.SchedulerMode"/>
     public enum SchedulerMode
     {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
         /// <inheritdoc cref="Abstractions.Application.SchedulerMode.Disabled"/>
         DISABLED = 0,
 
@@ -95,11 +101,13 @@ namespace DotNetNuke.Services.Scheduling
 
         /// <inheritdoc cref="Abstractions.Application.SchedulerMode.REQUEST_METHOD"/>
         REQUEST_METHOD = 2,
+#pragma warning restore CA1707
     }
 
     public abstract class SchedulingProvider
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public EventName EventName;
 
         /// <summary>Initializes a new instance of the <see cref="SchedulingProvider"/> class.</summary>
@@ -126,10 +134,10 @@ namespace DotNetNuke.Services.Scheduling
 
                 MaxThreads = value;
 
-                // if (!settings.TryGetValue("delayAtAppStart", out str) || !int.TryParse(str, out value))
-                // {
-                //    value = 60;
-                // }
+                ////if (!settings.TryGetValue("delayAtAppStart", out str) || !int.TryParse(str, out value))
+                ////{
+                ////   value = 60;
+                ////}
                 if (DotNetNuke.Common.Globals.Status != Globals.UpgradeStatus.Install)
                 {
                     DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1) * 60;

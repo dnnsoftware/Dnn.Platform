@@ -7,25 +7,25 @@ namespace DotNetNuke.Authentication.Google.Components
 
     using DotNetNuke.Services.Authentication.OAuth;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     [DataContract]
     public class GoogleUserData : UserData
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string FirstName
         {
             get { return this.GivenName; }
             set { }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LastName
         {
             get { return this.FamilyName; }
             set { }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ProfileImage
         {
             get { return this.Picture; }

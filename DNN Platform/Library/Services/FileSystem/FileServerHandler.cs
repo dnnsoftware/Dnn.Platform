@@ -23,17 +23,17 @@ namespace DotNetNuke.Services.FileSystem
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileServerHandler));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsReusable => true;
 
         /// <summary>
-        /// This handler handles requests for LinkClick.aspx, but only those specifc
+        /// This handler handles requests for LinkClick.aspx, but only those specific
         /// to file serving.
         /// </summary>
-        /// <param name="context">System.Web.HttpContext).</param>
+        /// <param name="context">System.Web.HttpContext.</param>
         public void ProcessRequest(HttpContext context)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var tabId = -1;
             var moduleId = -1;
             try
@@ -113,8 +113,8 @@ namespace DotNetNuke.Services.FileSystem
                 TabType urlType = Globals.GetURLType(url);
                 if (urlType == TabType.Tab)
                 {
-                    // verify whether the tab is exist, otherwise throw out 404.
-                    if (TabController.Instance.GetTab(int.Parse(url), portalSettings.PortalId, false) == null)
+                    // verify whether the tab exists, otherwise throw out 404.
+                    if (TabController.Instance.GetTab(int.Parse(url, CultureInfo.InvariantCulture), portalSettings.PortalId, false) == null)
                     {
                         Handle404Exception(context, context.Request.RawUrl);
                     }
@@ -125,7 +125,7 @@ namespace DotNetNuke.Services.FileSystem
                     url = Globals.LinkClick(url, tabId, moduleId, false);
                 }
 
-                if (urlType == TabType.File && url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
+                if (urlType == TabType.File && !url.StartsWith("fileid=", StringComparison.OrdinalIgnoreCase))
                 {
                     // to handle legacy scenarios before the introduction of the FileServerHandler
                     var fileName = Path.GetFileName(url);
@@ -159,7 +159,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         case TabType.File:
                             var download = false;
-                            var file = fileManager.GetFile(int.Parse(UrlUtils.GetParameterValue(url)));
+                            var file = fileManager.GetFile(int.Parse(UrlUtils.GetParameterValue(url), CultureInfo.InvariantCulture));
                             if (file != null)
                             {
                                 if (!file.IsEnabled || !HasAPublishedVersion(file))
@@ -270,7 +270,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception)
             {
-                UrlUtils.Handle404Exception(context.Response, PortalController.Instance.GetCurrentPortalSettings());
+                UrlUtils.Handle404Exception(context.Response, PortalSettings.Current);
             }
         }
     }

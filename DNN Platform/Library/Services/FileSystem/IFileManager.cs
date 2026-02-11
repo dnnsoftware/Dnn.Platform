@@ -148,7 +148,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The direct Url to the file.</returns>
         string GetUrl(IFileInfo file);
 
-        /// <summary>Gets a flag that dertermines if the file is an Image.</summary>
+        /// <summary>Gets a flag that determines if the file is an Image.</summary>
         /// <param name="file">The file to test.</param>
         /// <returns>The flag as a boolean value.</returns>
         bool IsImageFile(IFileInfo file);

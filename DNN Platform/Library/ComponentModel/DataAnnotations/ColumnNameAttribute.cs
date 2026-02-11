@@ -5,6 +5,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 {
     using System;
 
+    [AttributeUsage(AttributeTargets.Property)]
     public class ColumnNameAttribute : Attribute
     {
         /// <summary>Initializes a new instance of the <see cref="ColumnNameAttribute"/> class.</summary>

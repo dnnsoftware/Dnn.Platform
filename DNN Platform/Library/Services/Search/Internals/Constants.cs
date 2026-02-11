@@ -40,10 +40,10 @@ namespace DotNetNuke.Services.Search.Internals
         internal const string StatusTag = "status";
         internal const string RoleIdTag = "role";
 
-        // internal const string FolderIdTag = "folderid";
-        // internal const string FileIdTag = "fileid";
-        // internal const string FolderNameTag = "foldername";
-        // internal const string FileNameTag = "filename";
+        ////internal const string FolderIdTag = "folderid";
+        ////internal const string FileIdTag = "fileid";
+        ////internal const string FolderNameTag = "foldername";
+        ////internal const string FileNameTag = "filename";
         internal const string DateTimeFormat = "yyyyMMddHHmmssfff";
         internal const string ReindexDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
 
@@ -55,7 +55,7 @@ namespace DotNetNuke.Services.Search.Internals
         internal const int DefaultSearchAuthorBoost = 15;
         internal const int StandardLuceneBoost = 10; // Lucene's default boost is 1.0f
 
-        // Field Bosst Setting Names
+        // Field Boost Setting Names
         internal const string SearchTitleBoostSetting = "Search_Title_Boost";
         internal const string SearchTagBoostSetting = "Search_Tag_Boost";
         internal const string SearchContentBoostSetting = "Search_Content_Boost";

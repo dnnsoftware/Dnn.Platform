@@ -388,6 +388,7 @@ namespace DotNetNuke.Modules.Journal
 
             var ps = PortalSecurity.Instance;
 
+#pragma warning disable CS0618 // Type or member is obsolete
             ji.Title = ps.InputFilter(ji.Title, PortalSecurity.FilterFlag.NoScripting);
             ji.Title = Utilities.RemoveHTML(ji.Title);
             ji.Title = ps.InputFilter(ji.Title, PortalSecurity.FilterFlag.NoMarkup);
@@ -395,6 +396,7 @@ namespace DotNetNuke.Modules.Journal
             ji.Summary = ps.InputFilter(ji.Summary, PortalSecurity.FilterFlag.NoScripting);
             ji.Summary = Utilities.RemoveHTML(ji.Summary);
             ji.Summary = ps.InputFilter(ji.Summary, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             // parse the mentions context in post data
             var originalSummary = ji.Summary;

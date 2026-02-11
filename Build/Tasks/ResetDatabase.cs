@@ -21,7 +21,7 @@ namespace DotNetNuke.Build.Tasks
 
         private static readonly string[] GoStatement = { "\r\nGO\r\n", "\nGO\n", "\nGO\r\n", "\r\nGO\n", };
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             var script = ReplaceScriptVariables(context, LoadScript(context, "db-connections-drop"));

@@ -187,7 +187,7 @@ namespace Dnn.Modules.ResourceManager.Components
             AssetManager.Instance.DeleteFolder(folderId, unlinkAllowedStatus, nonDeletedSubfolders);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void MoveFile(int sourceFileId, int destinationFolderId, int moduleMode, int groupId)
         {
             var file = FileManager.Instance.GetFile(sourceFileId);
@@ -211,7 +211,7 @@ namespace Dnn.Modules.ResourceManager.Components
             FileManager.Instance.MoveFile(file, destinationFolder);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void MoveFolder(int sourceFolderId, int destinationFolderId, int moduleMode, int groupId)
         {
             var sourceFolder = FolderManager.Instance.GetFolder(sourceFolderId);

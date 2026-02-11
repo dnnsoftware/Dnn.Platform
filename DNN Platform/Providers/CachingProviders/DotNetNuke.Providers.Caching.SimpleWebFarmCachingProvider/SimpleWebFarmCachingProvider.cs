@@ -4,49 +4,80 @@
 namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
+    using System.Security.Cryptography;
     using System.Threading;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Log.EventLog;
 
     using HttpWebRequest = System.Net.HttpWebRequest;
+    using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public class SimpleWebFarmCachingProvider : CachingProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SimpleWebFarmCachingProvider));
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly ICryptographyProvider cryptographyProvider;
+        private readonly IApplicationStatusInfo appStatus;
 
         private readonly int executionTimeout = 5000; // Limit timeout to 5 seconds as cache operations should be quick
 
         /// <summary>Initializes a new instance of the <see cref="SimpleWebFarmCachingProvider"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public SimpleWebFarmCachingProvider()
-            : this(null)
+            : this(null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="SimpleWebFarmCachingProvider"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public SimpleWebFarmCachingProvider(IHostSettings hostSettings)
-            : base(hostSettings)
+            : this(hostSettings, null, null, null)
         {
         }
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="SimpleWebFarmCachingProvider"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        public SimpleWebFarmCachingProvider(IHostSettings hostSettings, IApplicationStatusInfo appStatus, IHostSettingsService hostSettingsService, ICryptographyProvider cryptographyProvider)
+            : base(hostSettings)
+        {
+            this.appStatus = appStatus ?? new ApplicationStatusInfo(new Application());
+            this.hostSettingsService = hostSettingsService ??
+                                       new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                           new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                           new Lazy<IPortalController>(() => PortalController.Instance));
+#pragma warning disable CS0618 // Type or member is obsolete
+            this.cryptographyProvider = cryptographyProvider ?? CryptographyProvider.Instance() as ICryptographyProvider;
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        /// <inheritdoc />
         public override void Clear(string type, string data)
         {
             // Clear the local cache
             this.ClearCacheInternal(type, data, true);
 
-            // Per API implementation standards only notify others if expiration has not been desabled
+            // Per API implementation standards only notify others if expiration has not been disabled
             if (CacheExpirationDisable)
             {
                 return;
@@ -56,7 +87,8 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             this.NotifyOtherServers("Clear~" + type, data);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void Remove(string key)
         {
             // Remove from local cache
@@ -108,7 +140,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         private void NotifyOtherServers(string command, string detail)
         {
             // Do not send notifications to other servers if currently upgrading
-            if (Globals.Status != Globals.UpgradeStatus.None)
+            if (this.appStatus.Status != UpgradeStatus.None)
             {
                 return;
             }
@@ -133,9 +165,9 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             foreach (var server in additionalServers)
             {
                 // Setup parameters for sending
-                var commandParameter = Host.DebugMode ? command : UrlUtils.EncryptParameter(command, Host.GUID);
-                var detailParameter = Host.DebugMode ? detail : UrlUtils.EncryptParameter(detail, Host.GUID);
-                var protocol = HostController.Instance.GetBoolean("UseSSLForCacheSync", false) ? "https://" : "http://";
+                var commandParameter = this.HostSettings.DebugMode ? command : UrlUtils.EncryptParameter(this.cryptographyProvider, command, this.HostSettings.Guid);
+                var detailParameter = this.HostSettings.DebugMode ? detail : UrlUtils.EncryptParameter(this.cryptographyProvider, detail, this.HostSettings.Guid);
+                var protocol = this.hostSettingsService.GetBoolean("UseSSLForCacheSync", false) ? "https://" : "http://";
                 var notificationUrl =
                     $"{protocol}{server.Url}/SimpleWebFarmSync.axd?command={commandParameter}&detail={detailParameter}";
 

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 using DotNetNuke.Abstractions.Application;
 using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Abstractions.Security;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Extensions;
@@ -25,20 +26,21 @@ using DotNetNuke.Services.Mail.OAuth;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
 
-/// <inheritdoc/>
+/// <inheritdoc />
 public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
 {
     private readonly IHostSettingsService hostSettingsService;
     private readonly IPortalAliasService portalAliasService;
     private readonly IPortalController portalController;
     private readonly IHostSettings hostSettings;
+    private readonly ICryptographyProvider cryptographyProvider;
 
     /// <summary>Initializes a new instance of the <see cref="ExchangeOnlineOAuthProvider"/> class.</summary>
     /// <param name="hostSettingsService">The host settings service.</param>
     /// <param name="portalAliasService">The portal alias service.</param>
     [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
     public ExchangeOnlineOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService)
-        : this(hostSettingsService, portalAliasService, null, null)
+        : this(hostSettingsService, portalAliasService, null, null, null)
     {
     }
 
@@ -47,12 +49,25 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
     /// <param name="portalAliasService">The portal alias service.</param>
     /// <param name="hostSettings">The host settings.</param>
     /// <param name="portalController">The portal controller.</param>
+    [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with ICryptographyProvider. Scheduled for removal in v12.0.0.")]
     public ExchangeOnlineOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService, IHostSettings hostSettings, IPortalController portalController)
+        : this(hostSettingsService, portalAliasService, hostSettings, portalController, null)
+    {
+    }
+
+    /// <summary>Initializes a new instance of the <see cref="ExchangeOnlineOAuthProvider"/> class.</summary>
+    /// <param name="hostSettingsService">The host settings service.</param>
+    /// <param name="portalAliasService">The portal alias service.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="cryptographyProvider">The cryptography provider.</param>
+    public ExchangeOnlineOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService, IHostSettings hostSettings, IPortalController portalController, ICryptographyProvider cryptographyProvider)
     {
         this.hostSettingsService = hostSettingsService;
         this.portalAliasService = portalAliasService;
         this.hostSettings = hostSettings ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ?? new HostSettings(hostSettingsService);
         this.portalController = portalController ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
+        this.cryptographyProvider = cryptographyProvider ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<ICryptographyProvider>();
     }
 
     /// <inheritdoc />
@@ -104,7 +119,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
         var portalAlias = this.portalAliasService.GetPortalAliasesByPortalId(portalId == Null.NullInteger ? this.hostSettings.HostPortalId : portalId)
             .OrderByDescending(a => a.IsPrimary)
             .First();
-        var sslEnabled = portalSettings.SSLEnabled && portalSettings.SSLSetup == DotNetNuke.Abstractions.Security.SiteSslSetup.On;
+        var sslEnabled = portalSettings.SSLEnabled && portalSettings.SSLSetup == SiteSslSetup.On;
 
         var siteUrl = $"{(sslEnabled ? "https" : "http")}://{portalAlias.HttpAlias}";
 
@@ -164,7 +179,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
     /// <inheritdoc />
     public async Task AuthorizeAsync(int portalId, IOAuth2SmtpClient smtpClient, CancellationToken cancellationToken = default)
     {
-        if (await this.IsAuthorizedAsync(portalId, cancellationToken) == false)
+        if (!await this.IsAuthorizedAsync(portalId, cancellationToken))
         {
             return;
         }
@@ -197,10 +212,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
 
     /// <summary>Get the authentication scopes list.</summary>
     /// <returns>The scopes.</returns>
-    internal static IList<string> GetAuthenticationScopes()
-    {
-        return new[] { "https://outlook.office365.com/.default", };
-    }
+    internal static IList<string> GetAuthenticationScopes() => ["https://outlook.office365.com/.default",];
 
     private static ConfidentialClientApplication CreateClientApplication(ISmtpOAuthProvider authProvider, IHostSettingsService hostSettingsService, IHostSettings hostSettings, IPortalController portalController, int portalId)
     {
@@ -254,11 +266,22 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
         var clientSecret = portalSettings.GetValueOrDefault(Constants.ClientSecretSettingName, string.Empty);
         if (!string.IsNullOrWhiteSpace(clientSecret))
         {
-            clientSecret = PortalSecurity.Instance.Decrypt(Config.GetDecryptionkey(), clientSecret);
+            var algorithmName = portalSettings.GetValueOrDefault(Constants.ClientSecretEncryptionAlgorithm, string.Empty);
+            if (!string.IsNullOrWhiteSpace(algorithmName))
+            {
+                var initializationVector = portalSettings.GetValueOrDefault(Constants.ClientSecretInitializationVector, string.Empty);
+                clientSecret = this.cryptographyProvider.DecryptString(clientSecret, Config.GetDecryptionkey(), algorithmName, initializationVector);
+            }
+            else
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                clientSecret = PortalSecurity.Instance.Decrypt(Config.GetDecryptionkey(), clientSecret);
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
         }
 
-        return new List<SmtpOAuthSetting>
-        {
+        return
+        [
             new SmtpOAuthSetting
             {
                 Name = Constants.TenantIdSettingName,
@@ -284,7 +307,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
                 IsSecure = true,
                 IsRequired = true,
             },
-        };
+        ];
     }
 
     private IList<SmtpOAuthSetting> GetSettingsFromHost()
@@ -294,7 +317,18 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
         var clientSecret = this.hostSettingsService.GetString(Constants.ClientSecretSettingName, string.Empty);
         if (!string.IsNullOrWhiteSpace(clientSecret))
         {
-            clientSecret = PortalSecurity.Instance.Decrypt(Config.GetDecryptionkey(), clientSecret);
+            var algorithmName = this.hostSettingsService.GetString(Constants.ClientSecretEncryptionAlgorithm, string.Empty);
+            if (!string.IsNullOrWhiteSpace(algorithmName))
+            {
+                var initializationVector = this.hostSettingsService.GetString(Constants.ClientSecretInitializationVector, string.Empty);
+                clientSecret = this.cryptographyProvider.DecryptString(clientSecret, Config.GetDecryptionkey(), algorithmName, initializationVector);
+            }
+            else
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                clientSecret = PortalSecurity.Instance.Decrypt(Config.GetDecryptionkey(), clientSecret);
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
         }
 
         return new List<SmtpOAuthSetting>
@@ -332,6 +366,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
         var tenantId = this.GetSetting(Null.NullInteger, Constants.TenantIdSettingName);
         var clientId = this.GetSetting(Null.NullInteger, Constants.ClientIdSettingName);
         var clientSecret = this.GetSetting(Null.NullInteger, Constants.ClientSecretSettingName);
+        var clientSecretEncryptionAlgorithm = this.GetSetting(Null.NullInteger, Constants.ClientSecretEncryptionAlgorithm);
 
         var changed = false;
         if (settings.ContainsKey(Constants.TenantIdSettingName) && settings[Constants.TenantIdSettingName] != tenantId)
@@ -346,11 +381,16 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
             changed = true;
         }
 
-        if (settings.ContainsKey(Constants.ClientSecretSettingName) && settings[Constants.ClientSecretSettingName] != clientSecret)
+        if (settings.ContainsKey(Constants.ClientSecretSettingName))
         {
-            var encryptedSecret = PortalSecurity.Instance.Encrypt(Config.GetDecryptionkey(), settings[Constants.ClientSecretSettingName]);
-            this.hostSettingsService.Update(Constants.ClientSecretSettingName, encryptedSecret, false);
-            changed = true;
+            if (settings[Constants.ClientSecretSettingName] != clientSecret || string.IsNullOrWhiteSpace(clientSecretEncryptionAlgorithm))
+            {
+                var (encryptedSecret, algorithmName, initializationVector) = this.cryptographyProvider.EncryptString(settings[Constants.ClientSecretSettingName], Config.GetDecryptionkey());
+                this.hostSettingsService.Update(Constants.ClientSecretSettingName, encryptedSecret, false);
+                this.hostSettingsService.Update(Constants.ClientSecretEncryptionAlgorithm, algorithmName, false);
+                this.hostSettingsService.Update(Constants.ClientSecretInitializationVector, initializationVector, false);
+                changed = true;
+            }
         }
 
         if (changed)
@@ -366,6 +406,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
         var tenantId = this.GetSetting(portalId, Constants.TenantIdSettingName);
         var clientId = this.GetSetting(portalId, Constants.ClientIdSettingName);
         var clientSecret = this.GetSetting(portalId, Constants.ClientSecretSettingName);
+        var clientSecretEncryptionAlgorithm = this.GetSetting(portalId, Constants.ClientSecretEncryptionAlgorithm);
 
         var changed = false;
         if (settings.ContainsKey(Constants.TenantIdSettingName) && settings[Constants.TenantIdSettingName] != tenantId)
@@ -380,11 +421,16 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
             changed = true;
         }
 
-        if (settings.ContainsKey(Constants.ClientSecretSettingName) && settings[Constants.ClientSecretSettingName] != clientSecret)
+        if (settings.ContainsKey(Constants.ClientSecretSettingName))
         {
-            var encryptedSecret = PortalSecurity.Instance.Encrypt(Config.GetDecryptionkey(), settings[Constants.ClientSecretSettingName]);
-            PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.ClientSecretSettingName, encryptedSecret, false);
-            changed = true;
+            if (settings[Constants.ClientSecretSettingName] != clientSecret || string.IsNullOrWhiteSpace(clientSecretEncryptionAlgorithm))
+            {
+                var (encryptedSecret, algorithmName, initializationVector) = this.cryptographyProvider.EncryptString(settings[Constants.ClientSecretSettingName], Config.GetDecryptionkey());
+                PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.ClientSecretSettingName, encryptedSecret, false);
+                PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.ClientSecretEncryptionAlgorithm, algorithmName, false);
+                PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.ClientSecretInitializationVector, initializationVector, false);
+                changed = true;
+            }
         }
 
         if (changed)

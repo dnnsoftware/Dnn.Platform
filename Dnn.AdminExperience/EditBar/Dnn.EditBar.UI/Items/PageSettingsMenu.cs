@@ -37,22 +37,22 @@ namespace Dnn.EditBar.UI.Items
             this.hostSettings = hostSettings ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Name => "PageSettings";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Text => "PageSettings";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Parent => Constants.LeftMenu;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Loader => "PageSettings";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Order => 15;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool Visible()
         {
             var isInEditMode = Personalization.GetUserMode() == PortalSettings.Mode.Edit;

@@ -43,11 +43,11 @@ namespace DotNetNuke.Tests.Utilities
 
             while (actualEnumerator.MoveNext())
             {
-                Assert.Multiple(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(expectedEnumerator.MoveNext(), Is.True);
                     Assert.That(matcher(expectedEnumerator.Current, actualEnumerator.Current), Is.True, () => string.Format(message, args));
-                });
+                }
             }
         }
     }

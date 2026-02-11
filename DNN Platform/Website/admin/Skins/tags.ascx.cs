@@ -42,7 +42,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public bool ShowTags { get; set; } = true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

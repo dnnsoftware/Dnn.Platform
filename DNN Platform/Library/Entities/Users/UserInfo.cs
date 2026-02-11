@@ -10,9 +10,11 @@ namespace DotNetNuke.Entities.Users
     using System;
     using System.Collections.Concurrent;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Abstractions.Users;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -24,6 +26,8 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.UI.WebControls;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The UserInfo class provides Business Layer model for Users.</summary>
     [Serializable]
@@ -70,7 +74,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Browsable(false)]
         public CacheLevel Cacheability
         {
@@ -197,7 +201,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Browsable(false)]
         public string[] Roles
         {
@@ -239,7 +243,7 @@ namespace DotNetNuke.Entities.Users
         [Required(true)]
         public string Username { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string VanityUrl { get; set; }
 
         /// <summary>Property access, initially provided for TokenReplace.</summary>
@@ -250,16 +254,17 @@ namespace DotNetNuke.Entities.Users
         /// <param name="currentScope">requested maximum access level, might be restricted due to user level.</param>
         /// <param name="propertyNotFound">out: flag, if property could be retrieved.</param>
         /// <returns>current value of the property for this userinfo object.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             Scope internScope;
             if (this.UserID == -1 && currentScope > Scope.Configuration)
             {
-                internScope = Scope.Configuration; // anonymous users only get access to displayname
+                internScope = Scope.Configuration; // anonymous users only get access to display name
             }
             else if (this.UserID != accessingUser.UserID && !this.IsAdminUser(ref accessingUser) && currentScope > Scope.DefaultSettings)
             {
-                internScope = Scope.DefaultSettings; // registerd users can access username and userID as well
+                internScope = Scope.DefaultSettings; // registered users can access username and userID as well
             }
             else
             {
@@ -276,8 +281,8 @@ namespace DotNetNuke.Entities.Users
                         return PropertyAccess.ContentLocked;
                     }
 
-                    var ps = PortalSecurity.Instance;
-                    var code = ps.Encrypt(Config.GetDecryptionkey(), this.PortalID + "-" + this.GetMembershipUserId());
+                    var cryptographyProvider = Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>();
+                    var code = cryptographyProvider.EncryptParameter($"{this.PortalID}-{this.GetMembershipUserId()}", Config.GetDecryptionkey()).EncryptedMessage;
                     return code.Replace("+", ".").Replace("/", "-").Replace("=", "_");
                 case "affiliateid":
                     if (internScope < Scope.SystemMessages)
@@ -430,7 +435,7 @@ namespace DotNetNuke.Entities.Users
                 return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, this.Profile.PreferredTimeZone);
             }
 
-            return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, PortalController.Instance.GetCurrentPortalSettings().TimeZone);
+            return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, PortalController.Instance.GetCurrentSettings().TimeZone);
         }
 
         /// <summary>UpdateDisplayName updates the displayname to the format provided.</summary>

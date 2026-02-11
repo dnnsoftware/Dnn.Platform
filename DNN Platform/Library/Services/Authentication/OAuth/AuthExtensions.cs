@@ -5,6 +5,7 @@
 namespace DotNetNuke.Services.Authentication.OAuth
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Text;
 
     internal static class AuthExtensions
@@ -14,12 +15,12 @@ namespace DotNetNuke.Services.Authentication.OAuth
             var sb = new StringBuilder();
             sb.Append("OAuth ");
 
-            for (int i = 0; i < parameters.Count; i++)
+            for (var i = 0; i < parameters.Count; i++)
             {
-                string format = "{0}=\"{1}\"";
+                const string format = "{0}=\"{1}\"";
 
-                QueryParameter p = parameters[i];
-                sb.AppendFormat(format, OAuthClientBase.UrlEncode(p.Name), OAuthClientBase.UrlEncode(p.Value));
+                var p = parameters[i];
+                sb.AppendFormat(CultureInfo.InvariantCulture, format, OAuthClientBase.UrlEncode(p.Name), OAuthClientBase.UrlEncode(p.Value));
 
                 if (i < parameters.Count - 1)
                 {
@@ -33,10 +34,10 @@ namespace DotNetNuke.Services.Authentication.OAuth
         public static string ToNormalizedString(this IList<QueryParameter> parameters)
         {
             var sb = new StringBuilder();
-            for (int i = 0; i < parameters.Count; i++)
+            for (var i = 0; i < parameters.Count; i++)
             {
-                QueryParameter p = parameters[i];
-                sb.AppendFormat("{0}={1}", p.Name, p.Value);
+                var p = parameters[i];
+                sb.AppendFormat(CultureInfo.InvariantCulture, "{0}={1}", p.Name, p.Value);
 
                 if (i < parameters.Count - 1)
                 {

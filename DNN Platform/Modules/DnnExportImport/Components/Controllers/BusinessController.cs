@@ -8,10 +8,10 @@ namespace Dnn.ExportImport.Components.Controllers
 
     using DotNetNuke.Entities.Modules;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public class BusinessController : IUpgradeable
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             try
@@ -19,7 +19,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 switch (version)
                 {
                     case "09.01.00":
-                        // AddNewLogTypes(); // moved to SQL migration script
+                        ////AddNewLogTypes(); // moved to SQL migration script
                         break;
                 }
 

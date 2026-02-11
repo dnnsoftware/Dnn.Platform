@@ -14,7 +14,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
     internal class WorkflowLogRepository : ServiceLocator<IWorkflowLogRepository, WorkflowLogRepository>, IWorkflowLogRepository
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<WorkflowLog> GetWorkflowLogs(int contentItemId, int workflowId)
         {
             using (var context = DataContext.Instance())
@@ -26,7 +26,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteWorkflowLogs(int contentItemId, int workflowId)
         {
             using (var context = DataContext.Instance())
@@ -36,7 +36,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddWorkflowLog(WorkflowLog workflowLog)
         {
             using (var context = DataContext.Instance())
@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IWorkflowLogRepository> GetFactory()
         {
             return () => new WorkflowLogRepository();

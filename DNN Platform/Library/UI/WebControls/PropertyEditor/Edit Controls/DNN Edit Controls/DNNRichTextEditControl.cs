@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -59,7 +60,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             var dataChanged = false;
@@ -74,7 +75,7 @@ namespace DotNetNuke.UI.WebControls
             return dataChanged;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             if (this.EditMode == PropertyEditorMode.Edit)
@@ -86,7 +87,7 @@ namespace DotNetNuke.UI.WebControls
                 }
                 else
                 {
-                    pnlEditor.CssClass = string.Format("{0} dnnLeft", this.CssClass);
+                    pnlEditor.CssClass = $"{this.CssClass} dnnLeft";
                 }
 
                 this.richTextEditor = HtmlEditorProvider.Instance();
@@ -123,29 +124,29 @@ namespace DotNetNuke.UI.WebControls
             base.CreateChildControls();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnDataChanged(EventArgs e)
         {
-            var strValue = RemoveBaseTags(Convert.ToString(this.Value));
-            var strOldValue = RemoveBaseTags(Convert.ToString(this.OldValue));
+            var strValue = RemoveBaseTags(Convert.ToString(this.Value, CultureInfo.InvariantCulture));
+            var strOldValue = RemoveBaseTags(Convert.ToString(this.OldValue, CultureInfo.InvariantCulture));
             var args = new PropertyEditorEventArgs(this.Name) { Value = this.Page.Server.HtmlEncode(strValue), OldValue = this.Page.Server.HtmlEncode(strOldValue), StringValue = this.Page.Server.HtmlEncode(RemoveBaseTags(this.StringValue)) };
             this.OnValueChanged(args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             this.EnsureChildControls();
             base.OnInit(e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
             if (this.EditMode == PropertyEditorMode.Edit)
             {
-                this.EditorText = this.Page.Server.HtmlDecode(Convert.ToString(this.Value));
+                this.EditorText = this.Page.Server.HtmlDecode(Convert.ToString(this.Value, CultureInfo.InvariantCulture));
             }
 
             if (this.Page != null && this.EditMode == PropertyEditorMode.Edit)
@@ -154,16 +155,16 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
-            string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value));
+            string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value, CultureInfo.InvariantCulture));
             this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
             writer.Write(propValue);

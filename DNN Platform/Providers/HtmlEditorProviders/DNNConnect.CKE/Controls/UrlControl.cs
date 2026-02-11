@@ -6,6 +6,7 @@ namespace DNNConnect.CKEditorProvider.Controls
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI;
     using System.Web.UI.WebControls;
@@ -195,7 +196,7 @@ namespace DNNConnect.CKEditorProvider.Controls
 
             this.ReloadFiles = false;
 
-            var url = Convert.ToString(this.ViewState["Url"]);
+            var url = Convert.ToString(this.ViewState["Url"], CultureInfo.InvariantCulture);
 
             if (string.IsNullOrEmpty(url))
             {
@@ -205,9 +206,9 @@ namespace DNNConnect.CKEditorProvider.Controls
             var urlType = Globals.GetURLType(url).ToString("g").Substring(0, 1);
             if (urlType == "F")
             {
-                if (url.ToLower().StartsWith("fileid="))
+                if (url.StartsWith("fileid=", StringComparison.OrdinalIgnoreCase))
                 {
-                    var objFile = FileManager.Instance.GetFile(int.Parse(url.Substring(7)));
+                    var objFile = FileManager.Instance.GetFile(int.Parse(url.Substring(7), CultureInfo.InvariantCulture));
 
                     if (objFile != null)
                     {

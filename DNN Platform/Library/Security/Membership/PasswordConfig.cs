@@ -4,6 +4,7 @@
 namespace DotNetNuke.Security.Membership
 {
     using System.ComponentModel;
+    using System.Globalization;
 
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
@@ -25,13 +26,13 @@ namespace DotNetNuke.Security.Membership
 
             set
             {
-                HostController.Instance.Update("PasswordExpiry", value.ToString());
+                HostController.Instance.Update("PasswordExpiry", value.ToString(CultureInfo.InvariantCulture));
             }
         }
 
         /// <summary>
-        /// Gets or sets and sets the a Reminder time in days (to remind the user that theire password
-        /// is about to expire.
+        /// Gets or sets the Reminder time in days (to remind the user that their password
+        /// is about to expire).
         /// </summary>
         /// <returns>An integer.</returns>
         [SortOrder(1)]
@@ -45,7 +46,7 @@ namespace DotNetNuke.Security.Membership
 
             set
             {
-                HostController.Instance.Update("PasswordExpiryReminder", value.ToString());
+                HostController.Instance.Update("PasswordExpiryReminder", value.ToString(CultureInfo.InvariantCulture));
             }
         }
     }

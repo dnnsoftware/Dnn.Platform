@@ -1,14 +1,19 @@
-﻿namespace Dnn.PersonaBar.Security.Tests.Checks
+﻿﻿namespace Dnn.PersonaBar.Security.Tests.Checks
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Dto;
     using Dnn.PersonaBar.Pages.Components;
     using Dnn.PersonaBar.Pages.Services.Dto;
     using Dnn.PersonaBar.Security.Components;
     using Dnn.PersonaBar.Security.Components.Checks;
+
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Portals;
@@ -51,12 +56,12 @@
                 unexpectedException = ex;
             }
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // assert
                 Assert.That(unexpectedException, Is.Null);
                 Assert.That(argumentNullException, Is.Not.Null);
-            });
+            }
             Assert.That(argumentNullException.ParamName, Is.EqualTo(nullParamName));
         }
 
@@ -248,12 +253,12 @@
 
         private static void RegisterTestablePermissionProvider()
         {
-            var mock = new Mock<PermissionProvider>();
+            var permissionProviderMock = new Mock<PermissionProvider>(Mock.Of<IEventLogger>(), Mock.Of<IPermissionDefinitionService>(), Mock.Of<IHostSettings>());
 
-            mock.Setup(x => x.ImplicitRolesForPages(It.IsAny<int>()))
+            permissionProviderMock.Setup(x => x.ImplicitRolesForPages(It.IsAny<int>()))
                 .Returns(new List<RoleInfo>());
 
-            ComponentFactory.RegisterComponentInstance<PermissionProvider>(mock.Object);
+            ComponentFactory.RegisterComponentInstance<PermissionProvider>(permissionProviderMock.Object);
         }
 
         private static Mock<IPagesController> SetupPagesControllerMock(
@@ -277,24 +282,17 @@
 
         private static PagePermissions BuildPermissionsData(bool allUsersCanView)
         {
-            var permissionsData = new PagePermissions(false);
+            var permissionsData = new PagePermissions(Mock.Of<IPermissionDefinitionService>(), false);
             if (allUsersCanView)
             {
-                permissionsData.RolePermissions = new List<RolePermission>
-                {
+                permissionsData.RolePermissions =
+                [
                     new RolePermission
                     {
-                        RoleId = int.Parse(Globals.glbRoleAllUsers),
-                        Permissions = new List<Permission>
-                        {
-                            new Permission
-                            {
-                                PermissionName = CheckUserProfilePage.ViewTab,
-                                AllowAccess = true,
-                            },
-                        },
+                        RoleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture),
+                        Permissions = [new Permission { PermissionName = CheckUserProfilePage.ViewTab, AllowAccess = true, },],
                     },
-                };
+                ];
             }
 
             return permissionsData;

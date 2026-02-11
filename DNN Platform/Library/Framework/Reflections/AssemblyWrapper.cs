@@ -20,7 +20,7 @@ namespace DotNetNuke.Framework.Reflections
             this.assembly = assembly;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Type[] GetTypes()
         {
             return this.assembly.GetTypes();

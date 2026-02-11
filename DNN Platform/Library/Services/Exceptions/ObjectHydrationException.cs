@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Exceptions
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Message
         {
             get

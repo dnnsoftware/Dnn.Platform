@@ -12,6 +12,8 @@ namespace DotNetNuke.Tests.Content.Mocks
     using System.Linq.Expressions;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Security;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Content;
@@ -19,7 +21,11 @@ namespace DotNetNuke.Tests.Content.Mocks
     using DotNetNuke.Entities.Content.Taxonomy;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Web.Validators;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
 
     using FileController = DotNetNuke.Entities.Content.AttachmentController;
@@ -30,17 +36,22 @@ namespace DotNetNuke.Tests.Content.Mocks
         {
             get
             {
-                List<Vocabulary> vocabularies = new List<Vocabulary>();
+                List<Vocabulary> vocabularies = [];
 
                 for (int i = Constants.VOCABULARY_ValidVocabularyId; i < Constants.VOCABULARY_ValidVocabularyId + Constants.VOCABULARY_ValidCount; i++)
                 {
-                    Vocabulary vocabulary = new Vocabulary();
-                    vocabulary.VocabularyId = i;
-                    vocabulary.Name = ContentTestHelper.GetVocabularyName(i);
-                    vocabulary.Type = (i == Constants.VOCABULARY_HierarchyVocabularyId) ? VocabularyType.Hierarchy : VocabularyType.Simple;
-                    vocabulary.Description = ContentTestHelper.GetVocabularyName(i);
-                    vocabulary.ScopeTypeId = Constants.SCOPETYPE_ValidScopeTypeId;
-                    vocabulary.Weight = Constants.VOCABULARY_ValidWeight;
+                    Vocabulary vocabulary = new Vocabulary
+                    {
+                        VocabularyId = i,
+                        Name = ContentTestHelper.GetVocabularyName(i),
+                        Type =
+                            (i == Constants.VOCABULARY_HierarchyVocabularyId)
+                                ? VocabularyType.Hierarchy
+                                : VocabularyType.Simple,
+                        Description = ContentTestHelper.GetVocabularyName(i),
+                        ScopeTypeId = Constants.SCOPETYPE_ValidScopeTypeId,
+                        Weight = Constants.VOCABULARY_ValidWeight,
+                    };
 
                     vocabularies.Add(vocabulary);
                 }
@@ -80,12 +91,24 @@ namespace DotNetNuke.Tests.Content.Mocks
 
         internal static Mock<IVocabularyController> CreateMockVocabularyController()
         {
-            // Create the mock
-            var mockVocabularies = new Mock<IVocabularyController>();
-            mockVocabularies.Setup(v => v.GetVocabularies()).Returns(TestVocabularies);
+            var needsServiceProvider = Globals.DependencyProvider is null;
+            var provider = needsServiceProvider ? FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<ICryptographyProvider>())) : Globals.DependencyProvider;
+            try
+            {
+                // Create the mock
+                var mockVocabularies = new Mock<IVocabularyController>();
+                mockVocabularies.Setup(v => v.GetVocabularies()).Returns(TestVocabularies);
 
-            // Register Mock
-            return RegisterMockController(mockVocabularies);
+                // Register Mock
+                return RegisterMockController(mockVocabularies);
+            }
+            finally
+            {
+                if (provider is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
+            }
         }
 
         internal static IDataReader CreateValidContentItemReader()

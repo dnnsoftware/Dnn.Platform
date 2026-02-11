@@ -15,9 +15,9 @@ namespace DotNetNuke.Entities.Users.Social.Internal
     {
         internal const string FriendRequest = "FriendRequest";
 
-        // static FriendsControllerImpl()
-        // {
-        // }
+        ////static FriendsControllerImpl()
+        ////{
+        ////}
 
         /// <summary>AcceptFriend - Current User accepts a Friend Request to the Target User.</summary>
         /// <param name="targetUser">UserInfo for Target User.</param>
@@ -49,7 +49,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// <summary>AddFriend - Initiating User initiates a Friend Request to the Target User.</summary>
         /// <param name="initiatingUser">UserInfo for Initiating User.</param>
         /// <param name="targetUser">UserInfo for Target User.</param>
-        /// <remarks>If the Friend Relationship is setup for auto-acceptance at the Portal level, the UserRelationship
+        /// <remarks>If the Friend Relationship is set up for auto-acceptance at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>
         public void AddFriend(UserInfo initiatingUser, UserInfo targetUser)
@@ -60,7 +60,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             var targetUserRelationship = RelationshipController.Instance.GetFriendRelationship(
                 targetUser,
                 initiatingUser);
-            if (targetUserRelationship != null && targetUserRelationship.Status == RelationshipStatus.Pending)
+            if (targetUserRelationship is { Status: RelationshipStatus.Pending, } && targetUserRelationship.RelatedUserId == initiatingUser.UserID)
             {
                 RelationshipController.Instance.AcceptUserRelationship(targetUserRelationship.UserRelationshipId);
                 return;
@@ -106,10 +106,12 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             var notificationType = NotificationsController.Instance.GetNotificationType(FriendRequest);
             var language = GetUserPreferredLocale(targetUser)?.Name;
             var subject = string.Format(
+                CultureInfo.CurrentCulture,
                 Localization.GetString("AddFriendRequestSubject", Localization.GlobalResourceFile, language),
                 initiatingUser.DisplayName);
 
             var body = string.Format(
+                CultureInfo.CurrentCulture,
                 Localization.GetString("AddFriendRequestBody", Localization.GlobalResourceFile, language),
                 initiatingUser.DisplayName);
 

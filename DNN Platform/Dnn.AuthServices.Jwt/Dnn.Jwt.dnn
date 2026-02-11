@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNNJWT" type="Provider" version="10.01.00">
+    <package name="DNNJWT" type="Provider" version="10.02.02">
       <friendlyName>DNN JWT Auth Handler</friendlyName>
       <description>DNN Json Web Token Authentication (JWT) library for cookie-less Mobile authentication clients</description>
       <dependencies/>
@@ -134,6 +134,12 @@
                     <add name="JWTAuth" type="Dnn.AuthServices.Jwt.Auth.JwtAuthMessageHandler, Dnn.AuthServices.Jwt"
                          enabled="true" defaultInclude="false" forceSSL="true" />
                   </node>
+                  <node path="/configuration/appSettings" action="update" key="key" collision="ignore">
+                    <add key="Jwt.SessionTokenTtlMinutes" value="60" />
+                  </node>
+                  <node path="/configuration/appSettings" action="update" key="key" collision="ignore">
+                    <add key="Jwt.RenewalTokenTtlMinutes" value="20160" />
+                  </node>
                 </nodes>
               </configuration>
             </install>
@@ -141,6 +147,8 @@
               <configuration>
                 <nodes>
                   <node path="/configuration/dotnetnuke/authServices/messageHandlers/add[@name='JWTAuth']" action="remove" />
+                  <node path="/configuration/appSettings/add[@key='Jwt.SessionTokenTtlMinutes']" action="remove" />
+                  <node path="/configuration/appSettings/add[@key='Jwt.RenewalTokenTtlMinutes']" action="remove" />
                 </nodes>
               </configuration>
             </uninstall>

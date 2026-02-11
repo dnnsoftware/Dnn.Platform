@@ -32,11 +32,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", CreateFriendlyUrlOptions(), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.False);
                 Assert.That(result, Is.EqualTo("abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-            });
+            }
         }
 
         [Test]
@@ -45,11 +45,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("123 abc", CreateFriendlyUrlOptions(), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.False);
                 Assert.That(result, Is.EqualTo("123abc"));
-            });
+            }
         }
 
         [Test]
@@ -58,11 +58,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("123 abc", CreateFriendlyUrlOptions(replaceSpaceWith: "-"), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.False);
                 Assert.That(result, Is.EqualTo("123-abc"));
-            });
+            }
         }
 
         [Test]
@@ -71,11 +71,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("Fred's House", CreateFriendlyUrlOptions(), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.True);
                 Assert.That(result, Is.EqualTo("FredsHouse"));
-            });
+            }
         }
 
         [Test]
@@ -84,11 +84,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl(@"a b&c$d+e,f/g?h~i#j<k>l(m)n¿o¡p«q»r!s""t", CreateFriendlyUrlOptions(), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.True);
                 Assert.That(result, Is.EqualTo("abcdefghijklmnopqrst"));
-            });
+            }
         }
 
         [Test]
@@ -97,11 +97,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl(@"a b&c$d+e,f/g?h~i#j<k>l(m)n¿o¡p«q»r!s""t", CreateFriendlyUrlOptions(replaceSpaceWith: "_"), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.True);
                 Assert.That(result, Is.EqualTo("a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_q_r_s_t"));
-            });
+            }
         }
 
         [Test]
@@ -110,11 +110,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl(@"a b&c$d+e,f/g?h~i#j<k>l(m)n¿o¡p«q»r!s""t", CreateFriendlyUrlOptions(replaceSpaceWith: "."), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.True);
                 Assert.That(result, Is.EqualTo("abcdefghijklmnopqrst"));
-            });
+            }
         }
 
         [Test]
@@ -123,11 +123,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("Dr. Cousteau, where are you?", CreateFriendlyUrlOptions(), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.True);
                 Assert.That(result, Is.EqualTo("DrCousteauwhereareyou"));
-            });
+            }
         }
 
         [Test]
@@ -136,11 +136,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("This, .Has Lots Of---Replacements   Don't you think?", CreateFriendlyUrlOptions(replaceSpaceWith: "-"), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.True);
                 Assert.That(result, Is.EqualTo("This-Has-Lots-Of-Replacements-Dont-you-think"));
-            });
+            }
         }
 
         [Test]
@@ -149,11 +149,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("This, ,Has Lots Of---Replacements   Don't you think?", CreateFriendlyUrlOptions(replaceDoubleChars: false, replaceSpaceWith: "-"), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.True);
                 Assert.That(result, Is.EqualTo("This---Has-Lots-Of---Replacements---Dont-you-think"));
-            });
+            }
         }
 
         [Test]
@@ -162,11 +162,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("DấuNgãSắcHuyềnNặngHỏi", CreateFriendlyUrlOptions(), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.False);
                 Assert.That(result, Is.EqualTo("DấuNgãSắcHuyềnNặngHỏi"));
-            });
+            }
         }
 
         [Test]
@@ -175,11 +175,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("CrèmeFraîcheCédille", CreateFriendlyUrlOptions(), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.False);
                 Assert.That(result, Is.EqualTo("CrèmeFraîcheCédille"));
-            });
+            }
         }
 
         [Test]
@@ -188,11 +188,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("писа́тьбо́льшая", CreateFriendlyUrlOptions(), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.False);
                 Assert.That(result, Is.EqualTo("писа́тьбо́льшая"));
-            });
+            }
         }
 
         [Test]
@@ -201,11 +201,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("ñavidá", CreateFriendlyUrlOptions(), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.False);
                 Assert.That(result, Is.EqualTo("ñavidá"));
-            });
+            }
         }
 
         [Test]
@@ -214,11 +214,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("DấuNgãSắcHuyềnNặngHỏi", CreateFriendlyUrlOptions(autoAsciiConvert: true), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.True);
                 Assert.That(result, Is.EqualTo("DauNgaSacHuyenNangHoi"));
-            });
+            }
         }
 
         [Test]
@@ -227,11 +227,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("CrèmeFraîcheCédille", CreateFriendlyUrlOptions(autoAsciiConvert: true), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.True);
                 Assert.That(result, Is.EqualTo("CremeFraicheCedille"));
-            });
+            }
         }
 
         [Test]
@@ -240,11 +240,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("писа́тьбо́льшая", CreateFriendlyUrlOptions(autoAsciiConvert: true), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.True);
                 Assert.That(result, Is.EqualTo("писатьбольшая"));
-            });
+            }
         }
 
         [Test]
@@ -253,11 +253,11 @@ namespace DotNetNuke.Tests.Core
             bool replacedUnwantedChars;
             string result = FriendlyUrlController.CleanNameForUrl("ñavidá", CreateFriendlyUrlOptions(autoAsciiConvert: true), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.True);
                 Assert.That(result, Is.EqualTo("navida"));
-            });
+            }
         }
 
         [Test]
@@ -267,11 +267,11 @@ namespace DotNetNuke.Tests.Core
             var replacements = new Dictionary<string, string>(1) { { "ñ", "nn" }, };
             string result = FriendlyUrlController.CleanNameForUrl("Carreño", CreateFriendlyUrlOptions(replaceCharacterDictionary: replacements), out replacedUnwantedChars);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(replacedUnwantedChars, Is.True);
                 Assert.That(result, Is.EqualTo("Carrenno"));
-            });
+            }
         }
 
         private static FriendlyUrlOptions CreateFriendlyUrlOptions(

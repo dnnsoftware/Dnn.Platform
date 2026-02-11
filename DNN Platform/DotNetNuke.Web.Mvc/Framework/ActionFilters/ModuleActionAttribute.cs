@@ -38,7 +38,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         /// <summary>Gets or sets the TitleKey property is the localization key for the title for the Module Action.</summary>
         public string TitleKey { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var controller = filterContext.Controller as IDnnController;

@@ -6,24 +6,20 @@
 namespace DotNetNuke.Entities.Portals
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Internal.SourceGenerators;
-    using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
 
     /// <content>The obsolete methods for <see cref="PortalAliasController"/>.</content>
+#pragma warning disable CS0618 // Type or member is obsolete
     public partial class PortalAliasController : ServiceLocator<IPortalAliasController, PortalAliasController>, IPortalAliasController
+#pragma warning restore CS0618 // Type or member is obsolete
     {
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead. Scheduled removal in v11.0.0.")]
         public static new IPortalAliasController Instance
@@ -31,7 +27,7 @@ namespace DotNetNuke.Entities.Portals
             get
             {
                 var portalAliasSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
-                return portalAliasSettingsService is IPortalAliasController castedController ? castedController : new PortalAliasController();
+                return portalAliasSettingsService as IPortalAliasController ?? new PortalAliasController();
             }
         }
 

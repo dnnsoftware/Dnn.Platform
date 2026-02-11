@@ -15,7 +15,7 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(SetVersion))]
     public sealed class SetPackageVersions : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             if (context.Settings.Version == "off")

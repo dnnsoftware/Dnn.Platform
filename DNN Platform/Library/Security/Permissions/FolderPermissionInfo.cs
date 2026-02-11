@@ -51,7 +51,7 @@ namespace DotNetNuke.Security.Permissions
         public FolderPermissionInfo(IPermissionDefinitionInfo permission)
             : this()
         {
-            var @this = (IPermissionDefinitionInfo)this;
+            IPermissionDefinitionInfo @this = this;
             @this.ModuleDefId = permission.ModuleDefId;
             @this.PermissionCode = permission.PermissionCode;
             @this.PermissionId = permission.PermissionId;
@@ -65,15 +65,8 @@ namespace DotNetNuke.Security.Permissions
 #pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int FolderPermissionID
         {
-            get
-            {
-                return ((IFolderPermissionInfo)this).FolderPermissionId;
-            }
-
-            set
-            {
-                ((IFolderPermissionInfo)this).FolderPermissionId = value;
-            }
+            get => ((IFolderPermissionInfo)this).FolderPermissionId;
+            set => ((IFolderPermissionInfo)this).FolderPermissionId = value;
         }
 #pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
@@ -81,15 +74,8 @@ namespace DotNetNuke.Security.Permissions
         [JsonIgnore]
         int IFolderPermissionInfo.FolderPermissionId
         {
-            get
-            {
-                return this.folderPermissionId;
-            }
-
-            set
-            {
-                this.folderPermissionId = value;
-            }
+            get => this.folderPermissionId;
+            set => this.folderPermissionId = value;
         }
 
         [XmlIgnore]
@@ -98,15 +84,8 @@ namespace DotNetNuke.Security.Permissions
 #pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int FolderID
         {
-            get
-            {
-                return ((IFolderPermissionInfo)this).FolderId;
-            }
-
-            set
-            {
-                ((IFolderPermissionInfo)this).FolderId = value;
-            }
+            get => ((IFolderPermissionInfo)this).FolderId;
+            set => ((IFolderPermissionInfo)this).FolderId = value;
         }
 #pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
@@ -115,15 +94,8 @@ namespace DotNetNuke.Security.Permissions
         [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IFolderPermissionInfo)}.{nameof(IFolderPermissionInfo.FolderId)} instead. Scheduled for removal in v11.0.0.")]
         int IFolderPermissionInfo.FolderId
         {
-            get
-            {
-                return this.folderId;
-            }
-
-            set
-            {
-                this.folderId = value;
-            }
+            get => this.folderId;
+            set => this.folderId = value;
         }
 
         [XmlIgnore]
@@ -132,15 +104,8 @@ namespace DotNetNuke.Security.Permissions
 #pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int PortalID
         {
-            get
-            {
-                return ((IFolderPermissionInfo)this).PortalId;
-            }
-
-            set
-            {
-                ((IFolderPermissionInfo)this).PortalId = value;
-            }
+            get => ((IFolderPermissionInfo)this).PortalId;
+            set => ((IFolderPermissionInfo)this).PortalId = value;
         }
 #pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
@@ -149,29 +114,15 @@ namespace DotNetNuke.Security.Permissions
         [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IFolderPermissionInfo)}.{nameof(IFolderPermissionInfo.PortalId)} instead. Scheduled for removal in v11.0.0.")]
         int IFolderPermissionInfo.PortalId
         {
-            get
-            {
-                return this.portalId;
-            }
-
-            set
-            {
-                this.portalId = value;
-            }
+            get => this.portalId;
+            set => this.portalId = value;
         }
 
         [XmlElement("folderpath")]
         public string FolderPath
         {
-            get
-            {
-                return this.folderPath;
-            }
-
-            set
-            {
-                this.folderPath = value;
-            }
+            get => this.folderPath;
+            set => this.folderPath = value;
         }
 
         /// <summary>Gets or sets the Key ID.</summary>
@@ -180,15 +131,8 @@ namespace DotNetNuke.Security.Permissions
         [JsonIgnore]
         public int KeyID
         {
-            get
-            {
-                return ((IFolderPermissionInfo)this).FolderPermissionId;
-            }
-
-            set
-            {
-                ((IFolderPermissionInfo)this).FolderPermissionId = value;
-            }
+            get => ((IFolderPermissionInfo)this).FolderPermissionId;
+            set => ((IFolderPermissionInfo)this).FolderPermissionId = value;
         }
 
         /// <summary>Fills a FolderPermissionInfo from a Data Reader.</summary>
@@ -197,7 +141,7 @@ namespace DotNetNuke.Security.Permissions
         {
             this.FillInternal(dr);
 
-            var @this = (IFolderPermissionInfo)this;
+            IFolderPermissionInfo @this = this;
             @this.FolderPermissionId = Null.SetNullInteger(dr["FolderPermissionID"]);
             @this.FolderId = Null.SetNullInteger(dr["FolderID"]);
             @this.PortalId = Null.SetNullInteger(dr["PortalID"]);

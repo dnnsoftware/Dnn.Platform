@@ -28,10 +28,10 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
             this.Quiet = true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Name => this.Localize("UninstallStepClearCache");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ExecuteInternal()
         {
             this.dataCache.ClearCache();

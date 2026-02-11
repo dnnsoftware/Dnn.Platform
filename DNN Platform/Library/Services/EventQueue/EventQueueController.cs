@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.EventQueue
 {
     using System;
     using System.Data;
+    using System.Globalization;
 
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
@@ -230,21 +231,21 @@ namespace DotNetNuke.Services.EventQueue
             if (canContinue)
             {
                 message = new EventMessage();
-                message.EventMessageID = Convert.ToInt32(Null.SetNull(dr["EventMessageID"], message.EventMessageID));
-                message.Priority = (MessagePriority)Enum.Parse(typeof(MessagePriority), Convert.ToString(Null.SetNull(dr["Priority"], message.Priority)));
-                message.ProcessorType = Convert.ToString(Null.SetNull(dr["ProcessorType"], message.ProcessorType));
-                message.ProcessorCommand = Convert.ToString(Null.SetNull(dr["ProcessorCommand"], message.ProcessorCommand));
-                message.Body = Convert.ToString(Null.SetNull(dr["Body"], message.Body));
-                message.Sender = Convert.ToString(Null.SetNull(dr["Sender"], message.Sender));
-                message.Subscribers = Convert.ToString(Null.SetNull(dr["Subscriber"], message.Subscribers));
-                message.AuthorizedRoles = Convert.ToString(Null.SetNull(dr["AuthorizedRoles"], message.AuthorizedRoles));
-                message.ExceptionMessage = Convert.ToString(Null.SetNull(dr["ExceptionMessage"], message.ExceptionMessage));
-                message.SentDate = Convert.ToDateTime(Null.SetNull(dr["SentDate"], message.SentDate));
-                message.ExpirationDate = Convert.ToDateTime(Null.SetNull(dr["ExpirationDate"], message.ExpirationDate));
+                message.EventMessageID = Convert.ToInt32(Null.SetNull(dr["EventMessageID"], message.EventMessageID), CultureInfo.InvariantCulture);
+                message.Priority = (MessagePriority)Enum.Parse(typeof(MessagePriority), Convert.ToString(Null.SetNull(dr["Priority"], message.Priority), CultureInfo.InvariantCulture));
+                message.ProcessorType = Convert.ToString(Null.SetNull(dr["ProcessorType"], message.ProcessorType), CultureInfo.InvariantCulture);
+                message.ProcessorCommand = Convert.ToString(Null.SetNull(dr["ProcessorCommand"], message.ProcessorCommand), CultureInfo.InvariantCulture);
+                message.Body = Convert.ToString(Null.SetNull(dr["Body"], message.Body), CultureInfo.InvariantCulture);
+                message.Sender = Convert.ToString(Null.SetNull(dr["Sender"], message.Sender), CultureInfo.InvariantCulture);
+                message.Subscribers = Convert.ToString(Null.SetNull(dr["Subscriber"], message.Subscribers), CultureInfo.InvariantCulture);
+                message.AuthorizedRoles = Convert.ToString(Null.SetNull(dr["AuthorizedRoles"], message.AuthorizedRoles), CultureInfo.InvariantCulture);
+                message.ExceptionMessage = Convert.ToString(Null.SetNull(dr["ExceptionMessage"], message.ExceptionMessage), CultureInfo.InvariantCulture);
+                message.SentDate = Convert.ToDateTime(Null.SetNull(dr["SentDate"], message.SentDate), CultureInfo.InvariantCulture);
+                message.ExpirationDate = Convert.ToDateTime(Null.SetNull(dr["ExpirationDate"], message.ExpirationDate), CultureInfo.InvariantCulture);
 
                 // Deserialize Attributes
                 string xmlAttributes = Null.NullString;
-                xmlAttributes = Convert.ToString(Null.SetNull(dr["Attributes"], xmlAttributes));
+                xmlAttributes = Convert.ToString(Null.SetNull(dr["Attributes"], xmlAttributes), CultureInfo.InvariantCulture);
                 message.DeserializeAttributes(xmlAttributes);
             }
             else

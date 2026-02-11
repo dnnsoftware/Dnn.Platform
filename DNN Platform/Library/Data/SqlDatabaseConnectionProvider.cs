@@ -11,7 +11,7 @@ namespace DotNetNuke.Data
 
     public class SqlDatabaseConnectionProvider : DatabaseConnectionProvider
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int ExecuteNonQuery(string connectionString, CommandType commandType, int commandTimeout, string query)
         {
             using (var connection = new SqlConnection(connectionString))
@@ -34,38 +34,38 @@ namespace DotNetNuke.Data
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExecuteNonQuery(string connectionString, CommandType commandType, int commandTimeout, string procedure, object[] commandParameters)
         {
             PetaPocoHelper.ExecuteNonQuery(connectionString, commandType, commandTimeout, procedure, commandParameters);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IDataReader ExecuteSql(string connectionString, CommandType commandType, int commandTimeout, string query)
         {
-            // return SqlHelper.ExecuteReader(ConnectionString, CommandType, Query);
+            ////return SqlHelper.ExecuteReader(ConnectionString, CommandType, Query);
             return PetaPocoHelper.ExecuteReader(connectionString, commandType, commandTimeout, query);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IDataReader ExecuteReader(string connectionString, CommandType commandType, int commandTimeout, string procedureName, params object[] commandParameters)
         {
             return PetaPocoHelper.ExecuteReader(connectionString, commandType, commandTimeout, procedureName, commandParameters);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override T ExecuteScalar<T>(string connectionString, CommandType commandType, int commandTimeout, string procedureName, params object[] commandParameters)
         {
             return PetaPocoHelper.ExecuteScalar<T>(connectionString, commandType, commandTimeout, procedureName, commandParameters);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void BulkInsert(string connectionString, int commandTimeout, string procedureName, string tableParameterName, DataTable dataTable)
         {
             PetaPocoHelper.BulkInsert(connectionString, commandTimeout, procedureName, tableParameterName, dataTable);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void BulkInsert(string connectionString, int commandTimeout, string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters)
         {
             PetaPocoHelper.BulkInsert(connectionString, procedureName, tableParameterName, dataTable, commandTimeout, commandParameters);

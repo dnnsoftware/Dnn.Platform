@@ -7,10 +7,14 @@ namespace DotNetNuke.Tests.Data
     using System.Collections.Generic;
     using System.Configuration;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Data;
     using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.Tests.Data.Models;
     using DotNetNuke.Tests.Utilities;
+
+    using Moq;
+
     using NUnit.Framework;
     using PetaPoco;
 
@@ -37,8 +41,8 @@ namespace DotNetNuke.Tests.Data
             // Arrange
 
             // Act, Assert
-            Assert.Throws<ArgumentException>(() => new PetaPocoDataContext(null));
-            Assert.Throws<ArgumentException>(() => new PetaPocoDataContext(null, tablePrefix));
+            Assert.Throws<ArgumentException>(() => new PetaPocoDataContext(Mock.Of<IHostSettings>(), null));
+            Assert.Throws<ArgumentException>(() => new PetaPocoDataContext(Mock.Of<IHostSettings>(), null, tablePrefix));
         }
 
         [Test]
@@ -83,12 +87,12 @@ namespace DotNetNuke.Tests.Data
             // Act
             var context = new PetaPocoDataContext(connectionStringName);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(Util.GetPrivateMember<PetaPocoDataContext, IMapper>(context, "_mapper"), Is.InstanceOf<IMapper>());
                 Assert.That(Util.GetPrivateMember<PetaPocoDataContext, PetaPocoMapper>(context, "_mapper"), Is.InstanceOf<PetaPocoMapper>());
-            });
+            }
         }
 
         [Test]

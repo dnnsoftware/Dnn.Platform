@@ -9,14 +9,22 @@ namespace DotNetNuke.Web.Mvc
     using System.Web.Routing;
     using System.Web.SessionState;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.HttpModules.Membership;
+    using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.UserRequest;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Mvc.Common;
     using DotNetNuke.Web.Mvc.Framework.Modules;
     using DotNetNuke.Web.Mvc.Routing;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class DnnMvcHandler : IHttpHandler, IRequiresSessionState
     {
@@ -33,40 +41,29 @@ namespace DotNetNuke.Web.Mvc
 
         public RequestContext RequestContext { get; private set; }
 
-        /// <inheritdoc/>
-        bool IHttpHandler.IsReusable
-        {
-            get { return this.IsReusable; }
-        }
+        /// <inheritdoc />
+        bool IHttpHandler.IsReusable => this.IsReusable;
 
         internal ControllerBuilder ControllerBuilder
         {
-            get
-            {
-                if (this.controllerBuilder == null)
-                {
-                    this.controllerBuilder = ControllerBuilder.Current;
-                }
-
-                return this.controllerBuilder;
-            }
-
-            set
-            {
-                this.controllerBuilder = value;
-            }
+            get => this.controllerBuilder ??= ControllerBuilder.Current;
+            set => this.controllerBuilder = value;
         }
 
-        protected virtual bool IsReusable
-        {
-            get { return false; }
-        }
+        protected virtual bool IsReusable => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         void IHttpHandler.ProcessRequest(HttpContext httpContext)
         {
             SetThreadCulture();
-            MembershipModule.AuthenticateRequest(this.RequestContext.HttpContext, allowUnknownExtensions: true);
+            MembershipModule.AuthenticateRequest(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(),
+                PortalController.Instance,
+                UserRequestIPAddressController.Instance,
+                RoleController.Instance,
+                Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                this.RequestContext.HttpContext,
+                allowUnknownExtensions: true);
             this.ProcessRequest(httpContext);
         }
 

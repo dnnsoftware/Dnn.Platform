@@ -86,7 +86,11 @@ namespace DotNetNuke.Services.EventQueue.Config
             if (!string.IsNullOrEmpty(configXml))
             {
                 var xmlDoc = new XmlDocument { XmlResolver = null };
-                xmlDoc.LoadXml(configXml);
+                using (var configReader = XmlReader.Create(new StringReader(configXml), new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xmlDoc.Load(configReader);
+                }
+
                 foreach (XmlElement xmlItem in xmlDoc.SelectNodes("/EventQueueConfig/PublishedEvents/Event"))
                 {
                     var oPublishedEvent = new PublishedEvent();

@@ -13,7 +13,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnScriptBlock : Control
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             if (!this.DesignMode)

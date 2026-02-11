@@ -31,7 +31,7 @@ public class PermissionProviderTests
         var fakeCachingProvider = new FakeCachingProvider(cache);
         ComponentFactory.RegisterComponentInstance<CachingProvider>(fakeCachingProvider);
 
-        ComponentFactory.RegisterComponentInstance<DataProvider>(Mock.Of<DataProvider>());
+        ComponentFactory.RegisterComponentInstance<DataProvider>(new Mock<DataProvider>(Mock.Of<IApplicationStatusInfo>()).Object);
         using var serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<IHostSettings>()));
 
         var permissionProvider = new PermissionProvider();
@@ -49,7 +49,7 @@ public class PermissionProviderTests
         var fakeCachingProvider = new FakeCachingProvider(cache);
         ComponentFactory.RegisterComponentInstance<CachingProvider>(fakeCachingProvider);
 
-        ComponentFactory.RegisterComponentInstance<DataProvider>(Mock.Of<DataProvider>());
+        ComponentFactory.RegisterComponentInstance<DataProvider>(new Mock<DataProvider>(Mock.Of<IApplicationStatusInfo>()).Object);
         using var serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<IHostSettings>()));
 
         var permissionProvider = new PermissionProvider();

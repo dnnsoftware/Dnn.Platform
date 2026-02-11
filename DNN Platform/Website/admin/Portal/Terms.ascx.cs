@@ -12,7 +12,7 @@ namespace DotNetNuke.Common.Controls
     /// <summary>A control which displays the terms of the website.</summary>
     public partial class Terms : PortalModuleBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

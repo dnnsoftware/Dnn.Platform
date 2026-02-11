@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Pages.Components
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -14,6 +15,8 @@ namespace Dnn.PersonaBar.Pages.Components
     using Dnn.PersonaBar.Pages.Components.Exceptions;
     using Dnn.PersonaBar.Pages.Services.Dto;
     using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -32,24 +35,36 @@ namespace Dnn.PersonaBar.Pages.Components
         private const string DefaultPageTemplate = "Default.page.template";
         private static readonly Regex TabNameRegex = new Regex(">*(.*)", RegexOptions.Compiled);
         private readonly IBusinessControllerProvider businessControllerProvider;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
 
         /// <summary>Initializes a new instance of the <see cref="BulkPagesController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public BulkPagesController()
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="BulkPagesController"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPermissionDefinitionService. Scheduled removal in v12.0.0.")]
         public BulkPagesController(IBusinessControllerProvider businessControllerProvider)
+            : this(businessControllerProvider, null)
         {
-            this.businessControllerProvider = businessControllerProvider;
         }
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="BulkPagesController"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        public BulkPagesController(IBusinessControllerProvider businessControllerProvider, IPermissionDefinitionService permissionDefinitionService)
+        {
+            this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+            this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
+        }
+
+        /// <inheritdoc />
         public BulkPageResponse AddBulkPages(BulkPage page, bool validateOnly)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var portalId = portalSettings.PortalId;
             var response = new BulkPageResponse();
             var parentId = page.ParentId;
@@ -58,10 +73,9 @@ namespace Dnn.PersonaBar.Pages.Components
             var strValue = page.BulkPages;
             strValue = strValue.Replace("\r", "\n").Replace("\n\n", "\n").Trim();
 
-            string invalidType;
-            if (!TabController.IsValidTabName(strValue, out invalidType))
+            if (!TabController.IsValidTabName(strValue, out var invalidType))
             {
-                throw new BulkPagesException("bulkPages", string.Format(Localization.GetString(invalidType), strValue));
+                throw new BulkPagesException("bulkPages", string.Format(CultureInfo.CurrentCulture, Localization.GetString(invalidType), strValue));
             }
 
             if (page.StartDate.HasValue && page.EndDate.HasValue && page.StartDate > page.EndDate)
@@ -113,7 +127,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     {
                         if (string.IsNullOrWhiteSpace(oTab.TabName))
                         {
-                            errorMessage = string.Format(Localization.GetString("EmptyTabName"), oTab.TabName);
+                            errorMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("EmptyTabName"), oTab.TabName);
                         }
                         else
                         {
@@ -142,7 +156,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return response;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IBulkPagesController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<IBulkPagesController>;
@@ -240,7 +254,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var cultureCode = tab.CultureCode;
             if (string.IsNullOrEmpty(cultureCode))
             {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
                 cultureCode = portalSettings.DefaultLanguage;
             }
 
@@ -249,7 +263,7 @@ namespace Dnn.PersonaBar.Pages.Components
             if (tabId != Null.NullInteger && tabId != tab.TabID)
             {
                 var existingTab = TabController.Instance.GetTab(tabId, tab.PortalID, false);
-                if (existingTab != null && existingTab.IsDeleted)
+                if (existingTab is { IsDeleted: true, })
                 {
                     errorMessage = Localization.GetString("TabRecycled");
                 }
@@ -261,17 +275,17 @@ namespace Dnn.PersonaBar.Pages.Components
                 valid = false;
             }
 
-            // check whether have conflict between tab path and portal alias.
+            // check whether there are conflicts between tab path and portal alias.
             if (TabController.IsDuplicateWithPortalAlias(tab.PortalID, newTabPath))
             {
-                errorMessage = string.Format(Localization.GetString("PathDuplicateWithAlias"), tab.TabName, newTabPath);
+                errorMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("PathDuplicateWithAlias"), tab.TabName, newTabPath);
                 valid = false;
             }
 
             return valid;
         }
 
-        private int CreateTabFromParent(PortalSettings portalSettings, TabInfo objRoot, TabInfo oTab, int parentId, bool validateOnly, out string errorMessage)
+        private int CreateTabFromParent(IPortalSettings portalSettings, TabInfo objRoot, TabInfo oTab, int parentId, bool validateOnly, out string errorMessage)
         {
             var tab = new TabInfo
             {
@@ -299,7 +313,7 @@ namespace Dnn.PersonaBar.Pages.Components
             if (objRoot != null)
             {
                 // TODO: To be retrieved once the parent tab  is selected?
-                // tab.IsVisible = objRoot.IsVisible;
+                ////tab.IsVisible = objRoot.IsVisible;
                 tab.DisableLink = objRoot.DisableLink;
                 tab.SkinSrc = objRoot.SkinSrc;
                 tab.ContainerSrc = objRoot.ContainerSrc;
@@ -319,7 +333,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
             else
             {
-                // return Null.NullInteger;
+                ////return Null.NullInteger;
                 tab.PortalID = portalSettings.PortalId;
                 tab.ParentId = Null.NullInteger;
             }
@@ -327,10 +341,9 @@ namespace Dnn.PersonaBar.Pages.Components
             tab.TabPath = Globals.GenerateTabPath(tab.ParentId, tab.TabName);
 
             // Check for invalid
-            string invalidType;
-            if (!TabController.IsValidTabName(tab.TabName, out invalidType))
+            if (!TabController.IsValidTabName(tab.TabName, out var invalidType))
             {
-                errorMessage = string.Format(Localization.GetString(invalidType), tab.TabName);
+                errorMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString(invalidType), tab.TabName);
                 return Null.NullInteger;
             }
 
@@ -349,18 +362,16 @@ namespace Dnn.PersonaBar.Pages.Components
             else if (tab.PortalID != Null.NullInteger)
             {
                 // Give admin full permission
-                ArrayList permissions = PermissionController.GetPermissionsByTab();
-
-                foreach (PermissionInfo permission in permissions)
+                foreach (var permission in this.permissionDefinitionService.GetDefinitionsByTab())
                 {
                     var newTabPermission = new TabPermissionInfo
                     {
-                        PermissionID = permission.PermissionID,
                         PermissionKey = permission.PermissionKey,
                         PermissionName = permission.PermissionName,
                         AllowAccess = true,
-                        RoleID = portalSettings.AdministratorRoleId,
                     };
+                    ((IPermissionInfo)newTabPermission).PermissionId = permission.PermissionId;
+                    ((IPermissionInfo)newTabPermission).RoleId = portalSettings.AdministratorRoleId;
                     tab.TabPermissions.Add(newTabPermission);
                 }
             }
@@ -369,9 +380,9 @@ namespace Dnn.PersonaBar.Pages.Components
             if (objRoot != null)
             {
                 // TODO: To be retrieved once the parent tab  is selected?
-                // tab.Terms.Clear();
-                // tab.StartDate = objRoot.StartDate;
-                // tab.EndDate = objRoot.EndDate;
+                ////tab.Terms.Clear();
+                ////tab.StartDate = objRoot.StartDate;
+                ////tab.EndDate = objRoot.EndDate;
                 tab.RefreshInterval = objRoot.RefreshInterval;
                 tab.SiteMapPriority = objRoot.SiteMapPriority;
                 tab.PageHeadText = objRoot.PageHeadText;
@@ -398,8 +409,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private void ApplyDefaultTabTemplate(TabInfo tab)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var templateFile = Path.Combine(portalSettings.HomeDirectoryMapPath, "Templates\\" + DefaultPageTemplate);
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
+            var templateFile = Path.Combine(portalSettings.HomeDirectoryMapPath, $@"Templates\{DefaultPageTemplate}");
 
             if (!File.Exists(templateFile))
             {
@@ -409,7 +420,11 @@ namespace Dnn.PersonaBar.Pages.Components
             var xmlDoc = new XmlDocument { XmlResolver = null };
             try
             {
-                xmlDoc.Load(templateFile);
+                using (var xmlReader = XmlReader.Create(templateFile, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xmlDoc.Load(xmlReader);
+                }
+
                 TabController.DeserializePanes(this.businessControllerProvider, xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
             }
             catch (Exception ex)

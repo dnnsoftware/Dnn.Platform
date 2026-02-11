@@ -6,104 +6,114 @@ namespace Dnn.AzureConnector.Components
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections;
+    using DotNetNuke.Common;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Connections;
+    using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Auth;
     using Microsoft.WindowsAzure.Storage.RetryPolicies;
 
-    /// <inheritdoc/>
+    using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
+
+    /// <inheritdoc />
     public class AzureConnector : IConnector
     {
         private const string DefaultDisplayName = "Azure Storage";
         private static readonly DataProvider DataProvider = DataProvider.Instance();
 
         private readonly IFolderMappingController folderMappingController;
+        private readonly ICryptographyProvider cryptographyProvider;
+        private readonly IHostSettings hostSettings;
         private string displayName;
 
         /// <summary>Initializes a new instance of the <see cref="AzureConnector"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IFolderMappingController. Scheduled removal in v12.0.0.")]
         public AzureConnector()
-            : this(null)
+            : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="AzureConnector"/> class.</summary>
         /// <param name="folderMappingController">The folder mapping controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Use overload with ICryptographyProvider. Scheduled for removal in v12.0.0.")]
         public AzureConnector(IFolderMappingController folderMappingController)
+            : this(folderMappingController, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="AzureConnector"/> class.</summary>
+        /// <param name="folderMappingController">The folder mapping controller.</param>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public AzureConnector(IFolderMappingController folderMappingController, ICryptographyProvider cryptographyProvider, IHostSettings hostSettings)
         {
             this.folderMappingController = folderMappingController ?? FolderMappingController.Instance;
+#pragma warning disable CS0618 // Type or member is obsolete
+            this.cryptographyProvider = cryptographyProvider ?? (ICryptographyProvider)CryptographyProvider.Instance();
+#pragma warning restore CS0618 // Type or member is obsolete
+            this.hostSettings = hostSettings ??
+                                new HostSettings(
+                                    new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                        new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                        new Lazy<IPortalController>(() => PortalController.Instance)));
         }
 
-        /// <inheritdoc/>
-        public string Name
-        {
-            get { return "Azure"; }
-        }
+        /// <inheritdoc />
+        public string Name => "Azure";
 
-        /// <inheritdoc/>
-        public string IconUrl
-        {
-            get { return "~/DesktopModules/Connectors/Azure/Images/Azure.png"; }
-        }
+        /// <inheritdoc />
+        public string IconUrl => "~/DesktopModules/Connectors/Azure/Images/Azure.png";
 
-        /// <inheritdoc/>
-        public string PluginFolder
-        {
-            get { return "~/DesktopModules/Connectors/Azure/"; }
-        }
+        /// <inheritdoc />
+        public string PluginFolder => "~/DesktopModules/Connectors/Azure/";
 
-        /// <inheritdoc/>
-        public bool IsEngageConnector
-        {
-            get
-            {
-                return false;
-            }
-        }
+        /// <inheritdoc />
+        public bool IsEngageConnector => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ConnectorCategories Type => ConnectorCategories.FileSystem;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SupportsMultiple => true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DisplayName
         {
-            get
-            {
-                return
-                    string.IsNullOrEmpty(this.displayName) ? DefaultDisplayName : this.displayName;
-            }
-
-            set
-            {
-                this.displayName = value;
-            }
+            get => string.IsNullOrEmpty(this.displayName) ? DefaultDisplayName : this.displayName;
+            set => this.displayName = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Id { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {
             var connectors = this.FindAzureFolderMappings(portalId);
             if (connectors != null && connectors.Count != 0)
             {
-                connectors.ForEach(x => { this.Id = x.FolderMappingID.ToString(); });
+                connectors.ForEach(x => { this.Id = x.FolderMappingID.ToString(CultureInfo.InvariantCulture); });
                 var finalCon = connectors.Select(x => (IConnector)Activator.CreateInstance(this.GetType())).ToList();
                 finalCon.ForEach(x =>
                 {
-                    x.Id = connectors[finalCon.IndexOf(x)].FolderMappingID.ToString();
+                    x.Id = connectors[finalCon.IndexOf(x)].FolderMappingID.ToString(CultureInfo.InvariantCulture);
                     x.DisplayName = connectors[finalCon.IndexOf(x)].MappingName;
                 });
                 return finalCon;
@@ -112,7 +122,7 @@ namespace Dnn.AzureConnector.Components
             return new List<IConnector> { this };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteConnector(int portalId)
         {
             if (!string.IsNullOrEmpty(this.Id))
@@ -126,15 +136,15 @@ namespace Dnn.AzureConnector.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HasConfig(int portalId)
         {
             var folderMapping = this.FindAzureFolderMapping(portalId, false, true);
-            this.Id = Convert.ToString(folderMapping?.FolderMappingID);
+            this.Id = Convert.ToString(folderMapping?.FolderMappingID, CultureInfo.InvariantCulture);
             return this.GetConfig(portalId)["Connected"] == "true";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, string> GetConfig(int portalId)
         {
             var configs = new Dictionary<string, string>();
@@ -143,18 +153,18 @@ namespace Dnn.AzureConnector.Components
 
             var settings = folderMapping != null ? folderMapping.FolderMappingSettings : new Hashtable();
 
-            configs.Add("AccountName", GetSetting(settings, Constants.AzureAccountName, true));
-            configs.Add("AccountKey", GetSetting(settings, Constants.AzureAccountKey, true));
-            configs.Add("Container", GetSetting(settings, Constants.AzureContainerName));
-            configs.Add("Connected", !string.IsNullOrEmpty(GetSetting(settings, Constants.AzureAccountName)) && !string.IsNullOrEmpty(GetSetting(settings, Constants.AzureContainerName)) ? "true" : "false");
+            configs.Add("AccountName", this.GetSetting(settings, Constants.AzureAccountName, true));
+            configs.Add("AccountKey", this.GetSetting(settings, Constants.AzureAccountKey, true));
+            configs.Add("Container", this.GetSetting(settings, Constants.AzureContainerName));
+            configs.Add("Connected", !string.IsNullOrEmpty(this.GetSetting(settings, Constants.AzureAccountName)) && !string.IsNullOrEmpty(this.GetSetting(settings, Constants.AzureContainerName)) ? "true" : "false");
 
             // This setting will improve the UI to set password-type inputs on secure settings
             configs.Add("SecureSettings", "AccountKey");
-            configs.Add("Id", Convert.ToString(folderMapping?.FolderMappingID));
+            configs.Add("Id", Convert.ToString(folderMapping?.FolderMappingID, CultureInfo.InvariantCulture));
             return configs;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
         {
             customErrorMessage = string.Empty;
@@ -182,7 +192,7 @@ namespace Dnn.AzureConnector.Components
                 return true;
             }
 
-            if (this.FolderMappingNameExists(portalId, this.DisplayName, Convert.ToInt32(!string.IsNullOrEmpty(this.Id) ? this.Id : null)))
+            if (this.FolderMappingNameExists(portalId, this.DisplayName, Convert.ToInt32(!string.IsNullOrEmpty(this.Id) ? this.Id : null, CultureInfo.InvariantCulture)))
             {
                 throw new AzureConnectorException(Localization.GetString("ErrorMappingNameExists", Constants.LocalResourceFile));
             }
@@ -193,7 +203,7 @@ namespace Dnn.AzureConnector.Components
                 FolderMappingInfo folderMapping;
                 if (this.SupportsMultiple && !string.IsNullOrEmpty(this.Id))
                 {
-                    folderMapping = folderMappings.FirstOrDefault(x => x.FolderMappingID.ToString() == this.Id);
+                    folderMapping = folderMappings.FirstOrDefault(x => x.FolderMappingID.ToString(CultureInfo.InvariantCulture) == this.Id);
                 }
                 else
                 {
@@ -202,9 +212,9 @@ namespace Dnn.AzureConnector.Components
 
                 var settings = folderMapping.FolderMappingSettings;
 
-                var savedAccount = GetSetting(settings, Constants.AzureAccountName, true);
-                var savedKey = GetSetting(settings, Constants.AzureAccountKey, true);
-                var savedContainer = GetSetting(settings, Constants.AzureContainerName);
+                var savedAccount = this.GetSetting(settings, Constants.AzureAccountName, true);
+                var savedKey = this.GetSetting(settings, Constants.AzureAccountKey, true);
+                var savedContainer = this.GetSetting(settings, Constants.AzureContainerName);
 
                 var accountChanged = savedAccount != azureAccountName || savedKey != azureAccountKey;
 
@@ -219,10 +229,15 @@ namespace Dnn.AzureConnector.Components
                     this.DeleteAzureFolders(portalId, folderMapping.FolderMappingID);
                 }
 
-                var folderProvider = FolderProvider.Instance(Constants.FolderProviderType);
+                var (encryptedAccountName, accountNameAlgorithm, accountNameIv) = FolderProvider.EncryptValue(this.cryptographyProvider, this.hostSettings, azureAccountName);
+                settings[Constants.AzureAccountName] = encryptedAccountName;
+                settings[FolderProvider.GetAlgorithmSettingKey(Constants.AzureAccountName)] = accountNameAlgorithm;
+                settings[FolderProvider.GetInitializationVectorSettingKey(Constants.AzureAccountName)] = accountNameIv;
 
-                settings[Constants.AzureAccountName] = folderProvider.EncryptValue(azureAccountName);
-                settings[Constants.AzureAccountKey] = folderProvider.EncryptValue(azureAccountKey);
+                var (encryptedAccountKey, accountKeyAlgorithm, accountKeyIv) = FolderProvider.EncryptValue(this.cryptographyProvider, this.hostSettings, azureAccountKey);
+                settings[Constants.AzureAccountKey] = encryptedAccountKey;
+                settings[FolderProvider.GetAlgorithmSettingKey(Constants.AzureAccountKey)] = accountKeyAlgorithm;
+                settings[FolderProvider.GetInitializationVectorSettingKey(Constants.AzureAccountKey)] = accountKeyIv;
 
                 if (values.TryGetValue(Constants.AzureContainerName, out var container) && !string.IsNullOrEmpty(container))
                 {
@@ -251,7 +266,7 @@ namespace Dnn.AzureConnector.Components
 
                 if (!folderMapping.FolderMappingSettings.ContainsKey(Constants.SyncBatchSize))
                 {
-                    folderMapping.FolderMappingSettings[Constants.SyncBatchSize] = Constants.DefaultSyncBatchSize.ToString();
+                    folderMapping.FolderMappingSettings[Constants.SyncBatchSize] = Constants.DefaultSyncBatchSize.ToString(CultureInfo.InvariantCulture);
                 }
 
                 this.folderMappingController.UpdateFolderMapping(folderMapping);
@@ -383,7 +398,7 @@ namespace Dnn.AzureConnector.Components
             }
         }
 
-        private static string GetSetting(Hashtable settings, string name, bool encrypt = false)
+        private string GetSetting(Hashtable settings, string name, bool encrypt = false)
         {
             if (!settings.ContainsKey(name))
             {
@@ -392,8 +407,7 @@ namespace Dnn.AzureConnector.Components
 
             if (encrypt)
             {
-                var folderProvider = FolderProvider.Instance(Constants.FolderProviderType);
-                return folderProvider.GetEncryptedSetting(settings, name);
+                return FolderProvider.GetEncryptedSetting(this.cryptographyProvider, this.hostSettings, settings, name);
             }
 
             return settings[name].ToString();
@@ -438,10 +452,8 @@ namespace Dnn.AzureConnector.Components
                 var removableFolders =
                     folders.Where(
                         f => f.FolderMappingID == folderMappingId && !folders1.Any(f2 => f2.FolderID != f.FolderID &&
-                                                                                         f2.FolderPath.StartsWith(
-                                                                                             f.FolderPath) &&
-                                                                                         f2.FolderMappingID !=
-                                                                                         folderMappingId));
+                                                                                         f2.FolderPath.StartsWith(f.FolderPath, StringComparison.OrdinalIgnoreCase) &&
+                                                                                         f2.FolderMappingID != folderMappingId));
 
                 if (removableFolders.Any())
                 {
@@ -486,7 +498,7 @@ namespace Dnn.AzureConnector.Components
                 return folderMappings.FirstOrDefault();
             }
 
-            var folderMapping = folderMappings.FirstOrDefault(x => x.FolderMappingID.ToString() == this.Id);
+            var folderMapping = folderMappings.FirstOrDefault(x => x.FolderMappingID.ToString(CultureInfo.InvariantCulture) == this.Id);
 
             if (folderMapping == null && autoCreate)
             {
@@ -514,7 +526,7 @@ namespace Dnn.AzureConnector.Components
         private FolderMappingInfo CreateAzureFolderMapping(int portalId, string mappingName = "")
         {
             var folderMapping = CreateAzureFolderMappingStatic(this.folderMappingController, portalId, mappingName);
-            this.Id = folderMapping.FolderMappingID.ToString();
+            this.Id = folderMapping.FolderMappingID.ToString(CultureInfo.InvariantCulture);
             return folderMapping;
         }
     }

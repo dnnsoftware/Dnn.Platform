@@ -10,10 +10,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A text button control.</summary>
     public class DnnTextButton : LinkButton, ILocalizable
     {
         private bool localize = true;
 
+        /// <summary>Gets or sets a confirmation message to display when the button is clicked.</summary>
         [Bindable(true)]
         [Category("Appearance")]
         [DefaultValue("")]
@@ -31,7 +33,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Bindable(true)]
         [Category("Appearance")]
         [DefaultValue("")]
@@ -49,6 +51,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the CSS class to apply when the control is disabled.</summary>
         [Bindable(true)]
         [Category("Appearance")]
         [DefaultValue("")]
@@ -66,6 +69,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>Gets or sets the text.</summary>
         [Bindable(true)]
         [Category("Appearance")]
         [DefaultValue("")]
@@ -83,7 +87,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Localize
         {
             get
@@ -97,10 +101,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string LocalResourceFile { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void LocalizeStrings()
         {
             if (this.Localize)
@@ -116,7 +120,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     if (string.IsNullOrEmpty(this.ToolTip))
                     {
-                        this.ToolTip = Localization.GetString(string.Format("{0}.ToolTip", this.Text), this.LocalResourceFile);
+                        this.ToolTip = Localization.GetString($"{this.Text}.ToolTip", this.LocalResourceFile);
                     }
 
                     if (string.IsNullOrEmpty(this.ToolTip))
@@ -127,7 +131,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -135,7 +139,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             this.LocalizeStrings();

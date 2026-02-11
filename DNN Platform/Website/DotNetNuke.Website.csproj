@@ -55,7 +55,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DotNetNuke.Website.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>SA1600</WarningsNotAsErrors>
@@ -68,7 +67,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DotNetNuke.Website.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>SA1600</WarningsNotAsErrors>
@@ -1203,6 +1201,7 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.04.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.08.SqlDataProvider" />
     <Content Include="Install\Config\10.02.00.config" />
+    <Content Include="Install\Config\10.02.01.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -2960,7 +2959,9 @@
     </Content>
     <Content Include="App_GlobalResources\List_Country.resx" />
     <Content Include="App_GlobalResources\Prompt.resx" />
-    <Content Include="App_GlobalResources\SharedResources.resx" />
+    <Content Include="App_GlobalResources\SharedResources.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_GlobalResources\WebControls.resx" />
     <Content Include="controls\App_LocalResources\Address.ascx.resx" />
     <Content Include="controls\App_LocalResources\DualListControl.ascx.resx" />
@@ -3359,12 +3360,7 @@
     <Content Include="Portals\_default\Default Website.template.resources" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
-      <Version>1.2.0-beta.556</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

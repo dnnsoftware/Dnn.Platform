@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
@@ -30,7 +31,7 @@ namespace DotNetNuke.UI.WebControls
             this.fieldName = fieldName;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public EditorInfo CreateEditControl()
         {
             var info = (SettingInfo)this.dataMember;
@@ -68,22 +69,20 @@ namespace DotNetNuke.UI.WebControls
             return editInfo;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool UpdateValue(PropertyEditorEventArgs e)
         {
-            string key;
             string name = e.Name;
             bool changed = e.Changed;
             object oldValue = e.OldValue;
             object newValue = e.Value;
-            object stringValue = e.StringValue;
             bool isDirty = Null.NullBoolean;
 
             var settings = (Hashtable)this.dataSource;
-            IDictionaryEnumerator settingsEnumerator = settings.GetEnumerator();
+            var settingsEnumerator = settings.GetEnumerator();
             while (settingsEnumerator.MoveNext())
             {
-                key = Convert.ToString(settingsEnumerator.Key);
+                var key = Convert.ToString(settingsEnumerator.Key, CultureInfo.InvariantCulture);
 
                 // Do we have the item in the Hashtable being changed
                 if (key == name)
@@ -101,7 +100,7 @@ namespace DotNetNuke.UI.WebControls
             return isDirty;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool UpdateVisibility(PropertyEditorEventArgs e)
         {
             return false;

@@ -6,6 +6,7 @@ namespace DotNetNuke.Security
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
@@ -24,10 +25,14 @@ namespace DotNetNuke.Security
     using DotNetNuke.Security.Cookies;
     using DotNetNuke.Services.Cryptography;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
+
     /// <summary>A variety of security-related utility functions.</summary>
     public partial class PortalSecurity
     {
-        public static readonly PortalSecurity Instance = new PortalSecurity();
+        public static readonly PortalSecurity Instance = ActivatorUtilities.GetServiceOrCreateInstance<PortalSecurity>(Globals.DependencyProvider);
         private const string RoleFriendPrefix = "FRIEND:";
         private const string RoleFollowerPrefix = "FOLLOWER:";
         private const string RoleOwnerPrefix = "OWNER:";
@@ -84,12 +89,27 @@ namespace DotNetNuke.Security
             new Regex("javascript:", RxOptions),
             new Regex("vbscript:", RxOptions),
             new Regex("unescape", RxOptions),
-            new Regex("alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?", RxOptions),
+            new Regex(@"alert[\s(&nbsp;)]*\([\s(&nbsp;)]*'?[\s(&nbsp;)]*[""(&quot;)]?", RxOptions),
             new Regex(@"eval*.\(", RxOptions),
         };
 
         private static readonly Regex DangerElementsRegex = new Regex(@"(<[^>]*?) on.*?\=(['""]*)[\s\S]*?(\2)( *)([^>]*?>)", RxOptions);
         private static readonly Regex DangerElementContentRegex = new Regex(@"on.*?\=(['""]*)[\s\S]*?(\1)( *)", RxOptions);
+
+        private readonly ICryptographyProvider cryptographyProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="PortalSecurity"/> class.</summary>
+        public PortalSecurity()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PortalSecurity"/> class.</summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        public PortalSecurity(ICryptographyProvider cryptographyProvider)
+        {
+            this.cryptographyProvider = cryptographyProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>();
+        }
 
         /// <summary>
         /// The FilterFlag enum determines which filters are applied by the InputFilter
@@ -98,6 +118,7 @@ namespace DotNetNuke.Security
         /// together.
         /// </summary>
         [Flags]
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public enum FilterFlag
         {
             /// <summary>Replaces line breaks with <c>&lt;br&gt;</c> tags.</summary>
@@ -161,9 +182,7 @@ namespace DotNetNuke.Security
             Owner = 3,
         }
 
-        /// <summary>
-        /// Forces the secure connection.
-        /// </summary>
+        /// <summary>Forces the secure connection.</summary>
         public static void ForceSecureConnection()
         {
             // get current url
@@ -190,10 +209,8 @@ namespace DotNetNuke.Security
             }
         }
 
-        /// <summary>
-        /// Gets the cookie domain for the portal group or from web.config.
-        /// </summary>
-        /// <param name="portalId">The portal identifier.</param>
+        /// <summary>Gets the cookie domain for the portal group or from web.config.</summary>
+        /// <param name="portalId">The portal ID.</param>
         /// <returns>Cookie domain for the portal group or from web.config.</returns>
         public static string GetCookieDomain(int portalId)
         {
@@ -225,32 +242,32 @@ namespace DotNetNuke.Security
             return cookieDomain;
         }
 
-        /// <summary>
-        /// Determines whether the current user is denied for the given role(s).
-        /// </summary>
+        /// <summary>Determines whether the current user is denied for the given role(s).</summary>
         /// <param name="roles">The semicolon separated list of roles.</param>
-        /// <returns>
-        ///   <see langword="true"/> if the current user is denied from the provided specified roles; otherwise, <see langword="false"/>.
-        /// </returns>
+        /// <returns><see langword="true"/> if the current user is denied from the provided specified roles; otherwise, <see langword="false"/>.</returns>
         public static bool IsDenied(string roles)
         {
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentSettings();
             return IsDenied(objUserInfo, settings, roles);
         }
 
-        /// <summary>
-        /// Determines whether the specified user is denied for the given roles.
-        /// </summary>
+        /// <summary>Determines whether the specified user is denied for the given roles.</summary>
         /// <param name="objUserInfo">The user information.</param>
         /// <param name="settings">The settings.</param>
         /// <param name="roles">The semicolon separated list of roles.</param>
-        /// <returns>
-        ///   <see langword="true"/> if the specified user is denied; otherwise, <see langword="false"/>.
-        /// </returns>
+        /// <returns><see langword="true"/> if the specified user is denied; otherwise, <see langword="false"/>.</returns>
         public static bool IsDenied(UserInfo objUserInfo, PortalSettings settings, string roles)
+            => IsDenied(objUserInfo, (IPortalSettings)settings, roles);
+
+        /// <summary>Determines whether the specified user is denied for the given roles.</summary>
+        /// <param name="objUserInfo">The user information.</param>
+        /// <param name="settings">The settings.</param>
+        /// <param name="roles">The semicolon separated list of roles.</param>
+        /// <returns><see langword="true"/> if the specified user is denied; otherwise, <see langword="false"/>.</returns>
+        public static bool IsDenied(UserInfo objUserInfo, IPortalSettings settings, string roles)
         {
-            // super user always has full access
+            // superuser always has full access
             if (objUserInfo.IsSuperUser)
             {
                 return false;
@@ -266,7 +283,7 @@ namespace DotNetNuke.Security
                     if (!string.IsNullOrEmpty(role))
                     {
                         // Deny permission
-                        if (role.StartsWith("!"))
+                        if (role.StartsWith("!", StringComparison.Ordinal))
                         {
                             // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
                             if (settings != null && !(settings.PortalId == objUserInfo.PortalID && objUserInfo.IsInRole(settings.AdministratorRoleName)))
@@ -296,45 +313,33 @@ namespace DotNetNuke.Security
                 return true;
             }
 
-            return IsInRoles(UserController.Instance.GetCurrentUserInfo(), PortalController.Instance.GetCurrentPortalSettings(), role);
+            return IsInRoles(UserController.Instance.GetCurrentUserInfo(), PortalController.Instance.GetCurrentSettings(), role);
         }
 
-        /// <summary>
-        /// Determines whether the current user belongs to the specified roles.
-        /// </summary>
+        /// <summary>Determines whether the current user belongs to the specified roles.</summary>
         /// <param name="roles">The semicolon separated list of roles.</param>
-        /// <returns>
-        ///   <see langword="true"/> if user belongs to the specified roles; otherwise, <see langword="false"/>.
-        /// </returns>
+        /// <returns><see langword="true"/> if user belongs to the specified roles; otherwise, <see langword="false"/>.</returns>
         public static bool IsInRoles(string roles)
         {
-            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var objUserInfo = UserController.Instance.GetCurrentUserInfo();
+            var settings = PortalController.Instance.GetCurrentSettings();
             return IsInRoles(objUserInfo, settings, roles);
         }
 
-        /// <summary>
-        /// Determines whether the provided user belongs to the specified roles.
-        /// </summary>
+        /// <summary>Determines whether the provided user belongs to the specified roles.</summary>
         /// <param name="objUserInfo">The user information.</param>
         /// <param name="settings">The settings.</param>
         /// <param name="roles">The semicolon separated list of roles.</param>
-        /// <returns>
-        ///   <see langword="true"/> if the provided user belongs to the specific roles; otherwise, <see langword="false"/>.
-        /// </returns>
+        /// <returns><see langword="true"/> if the provided user belongs to the specific roles; otherwise, <see langword="false"/>.</returns>
         [DnnDeprecated(10, 0, 2, "Use overload taking IPortalSettings")]
         public static partial bool IsInRoles(UserInfo objUserInfo, PortalSettings settings, string roles)
             => IsInRoles(objUserInfo, (IPortalSettings)settings, roles);
 
-        /// <summary>
-        /// Determines whether the provided user belongs to the specified roles.
-        /// </summary>
+        /// <summary>Determines whether the provided user belongs to the specified roles.</summary>
         /// <param name="objUserInfo">The user information.</param>
         /// <param name="settings">The settings.</param>
         /// <param name="roles">The semicolon separated list of roles.</param>
-        /// <returns>
-        ///   <see langword="true"/> if the provided user belongs to the specific roles; otherwise, <see langword="false"/>.
-        /// </returns>
+        /// <returns><see langword="true"/> if the provided user belongs to the specific roles; otherwise, <see langword="false"/>.</returns>
         public static bool IsInRoles(UserInfo objUserInfo, IPortalSettings settings, string roles)
         {
             if (objUserInfo.IsSuperUser)
@@ -359,45 +364,33 @@ namespace DotNetNuke.Security
             return false;
         }
 
-        /// <summary>
-        /// Determines whether the specified user is a friend of the current user.
-        /// </summary>
+        /// <summary>Determines whether the specified user is a friend of the current user.</summary>
         /// <param name="userId">The user identifier.</param>
-        /// <returns>
-        ///   <see langword="true"/> if the specified user is a friend of the current user; otherwise, <see langword="false"/>.
-        /// </returns>
+        /// <returns><see langword="true"/> if the specified user is a friend of the current user; otherwise, <see langword="false"/>.</returns>
         public static bool IsFriend(int userId)
         {
-            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var objUserInfo = UserController.Instance.GetCurrentUserInfo();
+            var settings = PortalController.Instance.GetCurrentSettings();
             return IsInRoles(objUserInfo, settings, RoleFriendPrefix + userId);
         }
 
-        /// <summary>
-        /// Determines whether the specified user is a follower of the current user.
-        /// </summary>
+        /// <summary>Determines whether the specified user is a follower of the current user.</summary>
         /// <param name="userId">The user identifier.</param>
-        /// <returns>
-        ///   <see langword="true"/> if the specified user is a follower of the current user; otherwise, <see langword="false"/>.
-        /// </returns>
+        /// <returns><see langword="true"/> if the specified user is a follower of the current user; otherwise, <see langword="false"/>.</returns>
         public static bool IsFollower(int userId)
         {
-            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var objUserInfo = UserController.Instance.GetCurrentUserInfo();
+            var settings = PortalController.Instance.GetCurrentSettings();
             return IsInRoles(objUserInfo, settings, RoleFollowerPrefix + userId);
         }
 
-        /// <summary>
-        /// Determines whether the specified user is an owner.
-        /// </summary>
+        /// <summary>Determines whether the specified user is an owner.</summary>
         /// <param name="userId">The user identifier.</param>
-        /// <returns>
-        ///   <see langword="true"/> if the specified user is an owner; otherwise, <see langword="false"/>.
-        /// </returns>
+        /// <returns><see langword="true"/> if the specified user is an owner; otherwise, <see langword="false"/>.</returns>
         public static bool IsOwner(int userId)
         {
-            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var objUserInfo = UserController.Instance.GetCurrentUserInfo();
+            var settings = PortalController.Instance.GetCurrentSettings();
             return IsInRoles(objUserInfo, settings, RoleOwnerPrefix + userId);
         }
 
@@ -414,52 +407,48 @@ namespace DotNetNuke.Security
             return BytesToHexString(buff);
         }
 
-        /// <summary>
-        /// Decrypts the provided string data using a supplied key.
-        /// </summary>
+        /// <summary>Decrypts the provided string data using a supplied key.</summary>
         /// <param name="strKey">The encryption key.</param>
         /// <param name="strData">The encrypted data.</param>
         /// <returns>The decrypted string.</returns>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public string Decrypt(string strKey, string strData)
+        [DnnDeprecated(10, 2, 2, "Use DotNetNuke.Abstractions.Security.ICryptographyProvider")]
+        public partial string Decrypt(string strKey, string strData)
         {
-            return CryptographyProvider.Instance().DecryptParameter(strData, strKey);
+            return this.cryptographyProvider.DecryptParameter(strData, strKey, CryptographyProvider.Instance().EncryptParameterAlgorithmName);
         }
 
-        /// <summary>
-        /// Decrypts a string using a provided passphrase.
-        /// </summary>
+        /// <summary>Decrypts a string using a provided passphrase.</summary>
         /// <param name="message">The encrypted message.</param>
         /// <param name="passphrase">The passphrase.</param>
         /// <returns>The decrypted string.</returns>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public string DecryptString(string message, string passphrase)
+        [DnnDeprecated(10, 2, 2, "Use DotNetNuke.Abstractions.Security.ICryptographyProvider")]
+        public partial string DecryptString(string message, string passphrase)
         {
-            return CryptographyProvider.Instance().DecryptString(message, passphrase);
+            return this.cryptographyProvider.DecryptString(message, passphrase, CryptographyProvider.Instance().EncryptStringAlgorithmName, null);
         }
 
-        /// <summary>
-        /// Encrypts the specified key.
-        /// </summary>
+        /// <summary>Encrypts the specified key.</summary>
         /// <param name="key">The key.</param>
         /// <param name="data">The data.</param>
         /// <returns>The encrypted string.</returns>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public string Encrypt(string key, string data)
+        [DnnDeprecated(10, 2, 2, "Use DotNetNuke.Abstractions.Security.ICryptographyProvider")]
+        public partial string Encrypt(string key, string data)
         {
-            return CryptographyProvider.Instance().EncryptParameter(data, key);
+            return this.cryptographyProvider.EncryptParameter(data, key).EncryptedMessage;
         }
 
-        /// <summary>
-        /// Encrypts a string using a provided passphrase.
-        /// </summary>
+        /// <summary>Encrypts a string using a provided passphrase.</summary>
         /// <param name="message">The message.</param>
         /// <param name="passphrase">The passphrase.</param>
         /// <returns>The encrypted string.</returns>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public string EncryptString(string message, string passphrase)
+        [DnnDeprecated(10, 2, 2, "Use DotNetNuke.Abstractions.Security.ICryptographyProvider")]
+        public partial string EncryptString(string message, string passphrase)
         {
-            return CryptographyProvider.Instance().EncryptString(message, passphrase);
+            return this.cryptographyProvider.EncryptString(message, passphrase).EncryptedMessage;
         }
 
         /// <summary>This function applies security filtering to the UserInput string.</summary>
@@ -540,7 +529,7 @@ namespace DotNetNuke.Security
 
                     var listController = new ListController();
 
-                    PortalSettings settings;
+                    IPortalSettings settings;
 
                     IEnumerable<ListEntryInfo> listEntryHostInfos;
                     IEnumerable<ListEntryInfo> listEntryPortalInfos;
@@ -552,14 +541,14 @@ namespace DotNetNuke.Security
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             break;
                         case FilterScope.SystemAndPortalList:
-                            settings = PortalController.Instance.GetCurrentPortalSettings();
+                            settings = PortalController.Instance.GetCurrentSettings();
                             listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
                             listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             break;
                         case FilterScope.PortalList:
-                            settings = PortalController.Instance.GetCurrentPortalSettings();
+                            settings = PortalController.Instance.GetCurrentSettings();
                             listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             break;
@@ -599,7 +588,7 @@ namespace DotNetNuke.Security
 
                     var listController = new ListController();
 
-                    PortalSettings settings;
+                    IPortalSettings settings;
 
                     IEnumerable<ListEntryInfo> listEntryHostInfos;
                     IEnumerable<ListEntryInfo> listEntryPortalInfos;
@@ -611,14 +600,14 @@ namespace DotNetNuke.Security
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             break;
                         case FilterScope.SystemAndPortalList:
-                            settings = PortalController.Instance.GetCurrentPortalSettings();
+                            settings = PortalController.Instance.GetCurrentSettings();
                             listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
                             listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             break;
                         case FilterScope.PortalList:
-                            settings = PortalController.Instance.GetCurrentPortalSettings();
+                            settings = PortalController.Instance.GetCurrentSettings();
                             listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             break;
@@ -803,11 +792,11 @@ namespace DotNetNuke.Security
                 cookie.Expires = DateTime.Now.AddYears(-30);
             }
 
-            // clear any authentication provider tokens that match *UserToken convention e.g FacebookUserToken ,TwitterUserToken, LiveUserToken and GoogleUserToken
+            // clear any authentication provider tokens that match *UserToken convention e.g. FacebookUserToken ,TwitterUserToken, LiveUserToken and GoogleUserToken
             var authCookies = HttpContext.Current.Request.Cookies.AllKeys;
             foreach (var authCookie in authCookies)
             {
-                if (authCookie.EndsWith("UserToken"))
+                if (authCookie.EndsWith("UserToken", StringComparison.OrdinalIgnoreCase))
                 {
                     var auth = HttpContext.Current.Response.Cookies[authCookie];
                     if (auth != null)
@@ -929,7 +918,7 @@ namespace DotNetNuke.Security
             if (!string.IsNullOrEmpty(roleName))
             {
                 // Deny permission
-                if (roleName.StartsWith("!"))
+                if (roleName.StartsWith("!", StringComparison.Ordinal))
                 {
                     // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
                     if (settings != null && !(settings.PortalId == user.PortalID && user.IsInRole(settings.AdministratorRoleName)))
@@ -978,7 +967,7 @@ namespace DotNetNuke.Security
             var hexString = new StringBuilder();
             foreach (var b in bytes)
             {
-                hexString.Append(string.Format("{0:X2}", b));
+                hexString.Append(string.Format(CultureInfo.InvariantCulture, "{0:X2}", b));
             }
 
             return hexString.ToString();

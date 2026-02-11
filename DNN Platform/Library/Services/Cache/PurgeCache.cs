@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Cache
 {
     using System;
+    using System.Globalization;
 
     using DotNetNuke.Services.Scheduling;
 
@@ -16,7 +17,7 @@ namespace DotNetNuke.Services.Cache
             this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DoWork()
         {
             try
@@ -30,7 +31,7 @@ namespace DotNetNuke.Services.Cache
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging cache task failed: {0}.", exc.ToString()));
+                this.ScheduleHistoryItem.AddLogNote(string.Format(CultureInfo.InvariantCulture, "Purging cache task failed: {0}.", exc.ToString()));
 
                 // notification that we have errored
                 this.Errored(ref exc); // REQUIRED

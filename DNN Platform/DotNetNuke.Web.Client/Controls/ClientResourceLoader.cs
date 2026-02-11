@@ -4,10 +4,12 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
+    using System;
     using System.Web;
     using System.Web.UI;
 
     using DotNetNuke.Abstractions.ClientResources;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The central control with which all client resources are registered.</summary>
     [ParseChildren(typeof(ClientResourcePath), ChildrenAsProperties = true)]
@@ -15,24 +17,29 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     {
         private readonly IClientResourceController clientResourceController;
 
-#pragma warning disable IDE0290
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClientResourceLoader"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ClientResourceLoader"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.1. Use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
+        public ClientResourceLoader()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ClientResourceLoader"/> class.</summary>
         /// <param name="clientResourceController">The client resources controller to use for resource registration.</param>
         public ClientResourceLoader(IClientResourceController clientResourceController)
         {
-            this.clientResourceController = clientResourceController;
-            this.Paths = new ClientResourcePathCollection();
+            this.clientResourceController = clientResourceController ?? DependencyInjection.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.Paths = [];
         }
-#pragma warning restore IDE0290
 
+        /// <summary>Gets the paths collection.</summary>
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public ClientResourcePathCollection Paths { get; private set; }
 
         private static bool AsyncPostBackHandlerEnabled =>
             HttpContext.Current != null && HttpContext.Current.Items.Contains("AsyncPostBackHandlerEnabled");
 
+        /// <inheritdoc />
         protected override void OnInit(System.EventArgs e)
         {
             if (AsyncPostBackHandlerEnabled && ScriptManager.GetCurrent(this.Page) == null)
@@ -43,6 +50,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             base.OnInit(e);
         }
 
+        /// <inheritdoc />
         protected override void OnLoad(System.EventArgs e)
         {
             foreach (var path in this.Paths)
@@ -53,7 +61,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             base.OnLoad(e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(System.EventArgs e)
         {
             foreach (var path in this.Paths)

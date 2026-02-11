@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.RazorHost
             this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.RazorHost
             this.scriptFileType.SelectedIndexChanged += this.ScriptFileType_SelectedIndexChanged;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

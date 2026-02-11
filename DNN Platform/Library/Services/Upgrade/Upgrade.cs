@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Upgrade
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
@@ -16,6 +17,7 @@ namespace DotNetNuke.Services.Upgrade
     using System.Xml.XPath;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Abstractions.Security.Permissions;
@@ -44,7 +46,6 @@ namespace DotNetNuke.Services.Upgrade
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Upgrade.InternalController.Steps;
     using DotNetNuke.Services.Upgrade.Internals;
-    using DotNetNuke.Services.Upgrade.Internals.Steps;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -62,13 +63,7 @@ namespace DotNetNuke.Services.Upgrade
         private static readonly object ThreadLocker = new object();
         private static DateTime startTime;
 
-        public static string DefaultProvider
-        {
-            get
-            {
-                return Config.GetDefaultProvider("data").Name;
-            }
-        }
+        public static string DefaultProvider => Config.GetDefaultProvider("data").Name;
 
         public static TimeSpan RunTime
         {
@@ -79,13 +74,7 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
-        private static Version ApplicationVersion
-        {
-            get
-            {
-                return Assembly.GetExecutingAssembly().GetName().Version;
-            }
-        }
+        private static Version ApplicationVersion => Assembly.GetExecutingAssembly().GetName().Version;
 
         public static int RemoveModule(string desktopModuleName, string tabName, int parentId, bool removeTab)
         {
@@ -122,7 +111,16 @@ namespace DotNetNuke.Services.Upgrade
             return moduleDefId;
         }
 
-        public static void MakeModulePremium(string moduleName)
+        /// <summary>Make the module premium.</summary>
+        /// <param name="moduleName">The desktop module name.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void MakeModulePremium(string moduleName)
+            => MakeModulePremium(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), moduleName);
+
+        /// <summary>Make the module premium.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="moduleName">The desktop module name.</param>
+        public static void MakeModulePremium(IEventLogger eventLogger, string moduleName)
         {
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, -1);
             if (desktopModule != null)
@@ -132,7 +130,7 @@ namespace DotNetNuke.Services.Upgrade
                 DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
 
                 // Remove Portal/Module to PortalDesktopModules
-                DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
+                DesktopModuleController.RemoveDesktopModuleFromPortals(eventLogger, desktopModule.DesktopModuleID);
             }
         }
 
@@ -146,7 +144,22 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name="moduleTitle">The Module's title.</param>
         /// <param name="moduleIconFile">The Module's icon.</param>
         /// <param name="inheritPermissions">Modules Inherit the Pages View Permissions.</param>
-        public static void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionService")]
+        public static partial void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
+            => AddAdminPages(Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), tabName, description, tabIconFile, tabIconFileLarge, isVisible, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
+
+        /// <summary>AddAdminPages adds an Admin Page and an associated Module to all configured Portals.</summary>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="tabName">The Name to give this new tab.</param>
+        /// <param name="description">The page description.</param>
+        /// <param name="tabIconFile">The icon for this new tab.</param>
+        /// <param name="tabIconFileLarge">The large icon for this new tab.</param>
+        /// <param name="isVisible">A flag indicating whether the tab is visible.</param>
+        /// <param name="moduleDefId">The Module Definition ID for the module to be added to this tab.</param>
+        /// <param name="moduleTitle">The Module's title.</param>
+        /// <param name="moduleIconFile">The Module's icon.</param>
+        /// <param name="inheritPermissions">Modules Inherit the Pages View Permissions.</param>
+        public static void AddAdminPages(IPermissionDefinitionService permissionDefinitionService, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
             ArrayList portals = PortalController.Instance.GetPortals();
 
@@ -156,7 +169,7 @@ namespace DotNetNuke.Services.Upgrade
                 var portal = (PortalInfo)portals[index];
 
                 // Create New Admin Page (or get existing one)
-                var newPage = AddAdminPage(portal, tabName, description, tabIconFile, tabIconFileLarge, isVisible);
+                var newPage = AddAdminPage(permissionDefinitionService, portal, tabName, description, tabIconFile, tabIconFileLarge, isVisible);
 
                 // Add Module To Page
                 AddModuleToPage(newPage, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
@@ -171,16 +184,29 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name="tabIconFileLarge">The large icon for this new tab.</param>
         /// <param name="isVisible">A flag indicating whether the tab is visible.</param>
         /// <returns>A <see cref="TabInfo"/> instance or <see langword="null"/>.</returns>
-        public static TabInfo AddAdminPage(PortalInfo portal, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionService")]
+        public static partial TabInfo AddAdminPage(PortalInfo portal, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
+            => AddAdminPage(Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), portal, tabName, description, tabIconFile, tabIconFileLarge, isVisible);
+
+        /// <summary>AddAdminPage adds an Admin Tab Page.</summary>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="portal">The Portal.</param>
+        /// <param name="tabName">The Name to give this new tab.</param>
+        /// <param name="description">The page description.</param>
+        /// <param name="tabIconFile">The icon for this new tab.</param>
+        /// <param name="tabIconFileLarge">The large icon for this new tab.</param>
+        /// <param name="isVisible">A flag indicating whether the tab is visible.</param>
+        /// <returns>A <see cref="TabInfo"/> instance or <see langword="null"/>.</returns>
+        public static TabInfo AddAdminPage(IPermissionDefinitionService permissionDefinitionService, IPortalInfo portal, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddAdminPage:" + tabName);
-            TabInfo adminPage = TabController.Instance.GetTab(portal.AdminTabId, portal.PortalID, false);
+            var adminPage = TabController.Instance.GetTab(portal.AdminTabId, portal.PortalId, false);
 
             if (adminPage != null)
             {
                 var tabPermissionCollection = new TabPermissionCollection();
-                AddPagePermission(tabPermissionCollection, "View", Convert.ToInt32(portal.AdministratorRoleId));
-                AddPagePermission(tabPermissionCollection, "Edit", Convert.ToInt32(portal.AdministratorRoleId));
+                AddPagePermission(permissionDefinitionService, tabPermissionCollection, "View", Convert.ToInt32(portal.AdministratorRoleId));
+                AddPagePermission(permissionDefinitionService, tabPermissionCollection, "Edit", Convert.ToInt32(portal.AdministratorRoleId));
                 return AddPage(adminPage, tabName, description, tabIconFile, tabIconFileLarge, isVisible, tabPermissionCollection, true);
             }
 
@@ -257,12 +283,12 @@ namespace DotNetNuke.Services.Upgrade
         public static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions, bool displayTitle, string paneName)
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddModuleToPage:" + moduleDefId);
-            ModuleInfo moduleInfo;
             int moduleId = Null.NullInteger;
 
             if (page != null)
             {
                 bool isDuplicate = false;
+                ModuleInfo moduleInfo;
                 foreach (var kvp in ModuleController.Instance.GetTabModules(page.TabID))
                 {
                     moduleInfo = kvp.Value;
@@ -324,10 +350,10 @@ namespace DotNetNuke.Services.Upgrade
         {
             int moduleId = Null.NullInteger;
 
-            int tabID = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
-            if (tabID != Null.NullInteger)
+            int tabId = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
+            if (tabId != Null.NullInteger)
             {
-                TabInfo tab = TabController.Instance.GetTab(tabID, portalId, true);
+                TabInfo tab = TabController.Instance.GetTab(tabId, portalId, true);
                 if (tab != null)
                 {
                     moduleId = AddModuleToPage(tab, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
@@ -340,12 +366,12 @@ namespace DotNetNuke.Services.Upgrade
         public static void AddModuleToPages(string tabPath, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
             var portals = PortalController.Instance.GetPortals();
-            foreach (PortalInfo portal in portals)
+            foreach (IPortalInfo portal in portals)
             {
-                int tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
-                if (tabID != Null.NullInteger)
+                int tabId = TabController.GetTabByTabPath(portal.PortalId, tabPath, Null.NullString);
+                if (tabId != Null.NullInteger)
                 {
-                    var tab = TabController.Instance.GetTab(tabID, portal.PortalID, true);
+                    var tab = TabController.Instance.GetTab(tabId, portal.PortalId, true);
                     if (tab != null)
                     {
                         AddModuleToPage(tab, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
@@ -360,7 +386,19 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name="indent">The indentation level of the status messages.</param>
         /// <param name="superUser">The admin user for the portal or <see langword="null"/> to create a new user.</param>
         /// <returns>The ID of the new portal, or <c>-1</c> to indicate failure.</returns>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public static int AddPortal(XmlNode node, bool status, int indent, UserInfo superUser = null)
+            => AddPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), node, status, indent, superUser);
+
+        /// <summary>AddPortal manages the Installation of a new DotNetNuke Portal.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="node">The portal XML node.</param>
+        /// <param name="status">Whether to write status messages to the HTTP response.</param>
+        /// <param name="indent">The indentation level of the status messages.</param>
+        /// <param name="superUser">The admin user for the portal or <see langword="null"/> to create a new user.</param>
+        /// <returns>The ID of the new portal, or <c>-1</c> to indicate failure.</returns>
+        public static int AddPortal(IEventLogger eventLogger, IApplicationStatusInfo appStatus, XmlNode node, bool status, int indent, UserInfo superUser = null)
         {
             int portalId = -1;
             try
@@ -395,7 +433,7 @@ namespace DotNetNuke.Services.Upgrade
                     string description = XmlUtils.GetNodeValue(node.CreateNavigator(), "description");
                     string keyWords = XmlUtils.GetNodeValue(node.CreateNavigator(), "keywords");
                     string templateFileName = XmlUtils.GetNodeValue(node.CreateNavigator(), "templatefile");
-                    string serverPath = Globals.ApplicationMapPath + "\\";
+                    string serverPath = appStatus.ApplicationMapPath + @"\";
                     bool isChild = bool.Parse(XmlUtils.GetNodeValue(node.CreateNavigator(), "ischild"));
                     string homeDirectory = XmlUtils.GetNodeValue(node.CreateNavigator(), "homedirectory");
 
@@ -419,9 +457,9 @@ namespace DotNetNuke.Services.Upgrade
                         email = "admin@" + domain.Replace("www.", string.Empty);
 
                         // Remove any domain subfolder information ( if it exists )
-                        if (email.IndexOf("/") != -1)
+                        if (email.IndexOf("/", StringComparison.Ordinal) != -1)
                         {
-                            email = email.Substring(0, email.IndexOf("/"));
+                            email = email.Substring(0, email.IndexOf("/", StringComparison.Ordinal));
                         }
                     }
 
@@ -472,7 +510,7 @@ namespace DotNetNuke.Services.Upgrade
                         PortalInfo portal = PortalController.Instance.GetPortal(portalId);
                         UserInfo adminUser = UserController.GetUserById(portalId, portal.AdministratorId);
                         adminUser.Membership.UpdatePassword = true;
-                        UserController.UpdateUser(portalId, adminUser);
+                        UserController.UpdateUser(eventLogger, portalId, adminUser);
                     }
 
                     return portalId;
@@ -506,7 +544,7 @@ namespace DotNetNuke.Services.Upgrade
             return AddPortal(node, status, indent, null);
         }
 
-        /// <summary>DeleteInstallerFiles - clean up install config and installwizard files. If installwizard is ran again this will be recreated via the dotnetnuke.install.config.resources file.</summary>
+        /// <summary>DeleteInstallerFiles - clean up install config and installwizard files. If installwizard is run again this will be recreated via the dotnetnuke.install.config.resources file.</summary>
         /// <remarks>uses FileSystemUtils.DeleteFile as it checks for readonly attribute status and changes it if required, as well as verifying file exists.</remarks>
         public static void DeleteInstallerFiles()
         {
@@ -554,7 +592,7 @@ namespace DotNetNuke.Services.Upgrade
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Cleaning Up Files: " + stringVersion);
             }
 
-            string listFile = Globals.InstallMapPath + "Cleanup\\" + stringVersion + ".txt";
+            string listFile = $@"{Globals.InstallMapPath}Cleanup\{stringVersion}.txt";
             try
             {
                 if (File.Exists(listFile))
@@ -597,14 +635,14 @@ namespace DotNetNuke.Services.Upgrade
         public static void ExecuteScripts(string strProviderPath)
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "ExecuteScripts:" + strProviderPath);
-            string scriptPath = Globals.ApplicationMapPath + "\\Install\\Scripts\\";
+            string scriptPath = $@"{Globals.ApplicationMapPath}\Install\Scripts\";
             if (Directory.Exists(scriptPath))
             {
                 string[] files = Directory.GetFiles(scriptPath);
                 foreach (string file in files)
                 {
                     // Execute if script is a provider script
-                    if (file.IndexOf("." + DefaultProvider) != -1)
+                    if (file.Contains("." + DefaultProvider, StringComparison.OrdinalIgnoreCase))
                     {
                         ExecuteScript(file, true);
 
@@ -628,7 +666,7 @@ namespace DotNetNuke.Services.Upgrade
         public static void ExecuteScript(string file)
         {
             // Execute if script is a provider script
-            if (file.IndexOf("." + DefaultProvider) != -1)
+            if (file.Contains("." + DefaultProvider, StringComparison.OrdinalIgnoreCase))
             {
                 ExecuteScript(file, true);
             }
@@ -643,7 +681,8 @@ namespace DotNetNuke.Services.Upgrade
             string installTemplate = Config.GetSetting("InstallTemplate");
             try
             {
-                xmlDoc.Load(Globals.ApplicationMapPath + "\\Install\\" + installTemplate);
+                using var xmlReader = XmlReader.Create($@"{Globals.ApplicationMapPath}\Install\{installTemplate}", new XmlReaderSettings { XmlResolver = null, });
+                xmlDoc.Load(xmlReader);
             }
             catch
             {
@@ -655,13 +694,13 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>SetInstallTemplate saves the XmlDocument back to Installation Template specified in web.config.</summary>
-        /// <param name="xmlDoc">The Xml Document to save.</param>
-        /// <returns>A string which contains the error massage - if appropriate.</returns>
+        /// <param name="xmlDoc">The XML Document to save.</param>
+        /// <returns>A string which contains the error message - if appropriate.</returns>
         public static string SetInstallTemplate(XmlDocument xmlDoc)
         {
             string errorMessage = Null.NullString;
             string installTemplate = Config.GetSetting("InstallTemplate");
-            string filePath = Globals.ApplicationMapPath + "\\Install\\" + installTemplate;
+            string filePath = $@"{Globals.ApplicationMapPath}\Install\{installTemplate}";
             try
             {
                 // ensure the file is not read-only
@@ -741,7 +780,7 @@ namespace DotNetNuke.Services.Upgrade
                 }
                 else
                 {
-                    stringVersion += versionArray[i].ToString();
+                    stringVersion += versionArray[i].ToString(CultureInfo.InvariantCulture);
                 }
 
                 if (i < 2)
@@ -815,7 +854,7 @@ namespace DotNetNuke.Services.Upgrade
             string[] files = Directory.GetFiles(providerPath, "*." + DefaultProvider);
             Array.Sort(files); // The order of the returned file names is not guaranteed on certain NAS systems; use the Sort method if a specific sort order is required.
 
-            Logger.TraceFormat("GetUpgradedScripts databaseVersion:{0} applicationVersion:{1}", databaseVersion, ApplicationVersion);
+            Logger.TraceFormat(CultureInfo.InvariantCulture, "GetUpgradedScripts databaseVersion:{0} applicationVersion:{1}", databaseVersion, ApplicationVersion);
 
             foreach (string file in files)
             {
@@ -832,30 +871,30 @@ namespace DotNetNuke.Services.Upgrade
                             scriptFiles.Add(file);
 
                             // check if any incrementals exist
-                            var incrementalfiles = AddAvailableIncrementalFiles(providerPath, version);
-                            if (incrementalfiles != null)
+                            var incrementalFiles = AddAvailableIncrementalFiles(providerPath, version);
+                            if (incrementalFiles != null)
                             {
-                                scriptFiles.AddRange(incrementalfiles);
+                                scriptFiles.AddRange(incrementalFiles);
                             }
 
-                            Logger.TraceFormat("GetUpgradedScripts including {0}", file);
+                            Logger.TraceFormat(CultureInfo.InvariantCulture, "GetUpgradedScripts including {0}", file);
                         }
 
                         if (version == databaseVersion && version <= ApplicationVersion && GetFileName(file).Length == 9 + DefaultProvider.Length)
                         {
-                            var incrementalfiles = AddAvailableIncrementalFiles(providerPath, version);
-                            if (incrementalfiles != null)
+                            var incrementalFiles = AddAvailableIncrementalFiles(providerPath, version);
+                            if (incrementalFiles != null)
                             {
-                                scriptFiles.AddRange(incrementalfiles);
+                                scriptFiles.AddRange(incrementalFiles);
                             }
 
-                            Logger.TraceFormat("GetUpgradedScripts including {0}", file);
+                            Logger.TraceFormat(CultureInfo.InvariantCulture, "GetUpgradedScripts including {0}", file);
                         }
 
-                        // else
-                        // {
-                        //    Logger.TraceFormat("GetUpgradedScripts excluding {0}", file);
-                        // }
+                        ////else
+                        ////{
+                        ////   Logger.TraceFormat("GetUpgradedScripts excluding {0}", file);
+                        ////}
                     }
                 }
             }
@@ -914,12 +953,12 @@ namespace DotNetNuke.Services.Upgrade
                                     settingValue = "support@" + domainName;
 
                                     // Remove any folders
-                                    settingValue = settingValue.Substring(0, settingValue.IndexOf("/"));
+                                    settingValue = settingValue.Substring(0, settingValue.IndexOf("/", StringComparison.Ordinal));
 
                                     // Remove port number
-                                    if (settingValue.IndexOf(":") != -1)
+                                    if (settingValue.Contains(":", StringComparison.Ordinal))
                                     {
-                                        settingValue = settingValue.Substring(0, settingValue.IndexOf(":"));
+                                        settingValue = settingValue.Substring(0, settingValue.IndexOf(":", StringComparison.Ordinal));
                                     }
                                 }
 
@@ -1151,13 +1190,13 @@ namespace DotNetNuke.Services.Upgrade
                     }
                     else if (Globals.Status != Globals.UpgradeStatus.None)
                     {
-                        var message = string.Format(Localization.GetString("InstallPackageError", Localization.ExceptionsResourceFile), file, "Manifest file missing");
+                        var message = string.Format(CultureInfo.InvariantCulture, Localization.GetString("InstallPackageError", Localization.ExceptionsResourceFile), file, "Manifest file missing");
                         DnnInstallLogger.InstallLogError(message);
                     }
                 }
                 else
                 {
-                    // log the failure log when installer is invalid and not caught by mainfest file missing.
+                    // log the failure log when installer is invalid and not caught by manifest file missing.
                     foreach (var log in installer.InstallerInfo.Log.Logs
                                                 .Where(l => l.Type == LogType.Failure))
                     {
@@ -1357,7 +1396,7 @@ namespace DotNetNuke.Services.Upgrade
                 Logger.Error(ex);
                 var log = new LogInfo
                 {
-                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                    LogTypeKey = nameof(EventLogType.HOST_ALERT),
                     BypassBuffering = true,
                 };
                 log.AddProperty("Upgraded DotNetNuke", "General");
@@ -1418,7 +1457,7 @@ namespace DotNetNuke.Services.Upgrade
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                exceptions += string.Format("Error: {0}{1}", ex.Message + ex.StackTrace, Environment.NewLine);
+                exceptions += $"Error: {ex.Message + ex.StackTrace}{Environment.NewLine}";
 
                 // log the results
                 if (string.IsNullOrEmpty(exceptions))
@@ -1483,11 +1522,11 @@ namespace DotNetNuke.Services.Upgrade
         public static string UpdateConfig(string configFile, Version version, string reason)
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
-            string exceptions = string.Empty;
+            var exceptions = string.Empty;
             if (File.Exists(configFile))
             {
                 // Create XmlMerge instance from config file source
-                StreamReader stream = File.OpenText(configFile);
+                var stream = File.OpenText(configFile);
                 try
                 {
                     var merge = new XmlMerge(stream, version.ToString(3), reason);
@@ -1497,7 +1536,7 @@ namespace DotNetNuke.Services.Upgrade
                 }
                 catch (Exception ex)
                 {
-                    exceptions += string.Format("Error: {0}{1}", ex.Message + ex.StackTrace, Environment.NewLine);
+                    exceptions += $"Error: {ex.Message + ex.StackTrace}{Environment.NewLine}";
                     Exceptions.Exceptions.LogException(ex);
                 }
                 finally
@@ -1526,7 +1565,7 @@ namespace DotNetNuke.Services.Upgrade
             if (File.Exists(configFile))
             {
                 // Create XmlMerge instance from config file source
-                StreamReader stream = File.OpenText(configFile);
+                var stream = File.OpenText(configFile);
                 try
                 {
                     var merge = new XmlMerge(stream, version.ToString(3), reason);
@@ -1537,16 +1576,14 @@ namespace DotNetNuke.Services.Upgrade
                 catch (Exception ex)
                 {
                     Logger.Error(ex);
-                    exceptions += string.Format("Error: {0}{1}", ex.Message + ex.StackTrace, Environment.NewLine);
+                    exceptions += $"Error: {ex.Message + ex.StackTrace}{Environment.NewLine}";
 
                     // log the results
                     try
                     {
-                        using (StreamWriter streamWriter = File.CreateText(providerPath + Globals.FormatVersion(version) + "_Config.log"))
-                        {
-                            streamWriter.WriteLine(exceptions);
-                            streamWriter.Close();
-                        }
+                        using var streamWriter = File.CreateText(providerPath + Globals.FormatVersion(version) + "_Config.log");
+                        streamWriter.WriteLine(exceptions);
+                        streamWriter.Close();
                     }
                     catch (Exception exc)
                     {
@@ -1815,10 +1852,10 @@ namespace DotNetNuke.Services.Upgrade
 
                 var log = new LogInfo
                 {
-                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                    LogTypeKey = nameof(EventLogType.HOST_ALERT),
                     BypassBuffering = true,
                 };
-                log.AddProperty("Upgraded DotNetNuke", "Version: " + Globals.FormatVersion(version) + ", Iteration:" + version.Revision);
+                log.AddProperty("Upgraded DotNetNuke", $"Version: {Globals.FormatVersion(version)}, Iteration:{version.Revision}");
                 if (exceptions.Length > 0)
                 {
                     log.AddProperty("Warnings", exceptions);
@@ -1982,9 +2019,9 @@ namespace DotNetNuke.Services.Upgrade
                 exceptions += InstallMemberRoleProviderScript(providerPath, "InstallMembership", writeFeedback);
 
                 // Install Profile
-                // exceptions += InstallMemberRoleProviderScript(providerPath, "InstallProfile", writeFeedback);
+                ////exceptions += InstallMemberRoleProviderScript(providerPath, "InstallProfile", writeFeedback);
                 // Install Roles
-                // exceptions += InstallMemberRoleProviderScript(providerPath, "InstallRoles", writeFeedback);
+                ////exceptions += InstallMemberRoleProviderScript(providerPath, "InstallRoles", writeFeedback);
             }
 
             if (string.IsNullOrEmpty(exceptions))
@@ -2318,14 +2355,14 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>AddPagePermission adds a TabPermission to a TabPermission Collection.</summary>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
         /// <param name="permissions">Page Permissions Collection for this page.</param>
         /// <param name="key">The Permission key.</param>
         /// <param name="roleId">The role given the permission.</param>
-        private static void AddPagePermission(TabPermissionCollection permissions, string key, int roleId)
+        private static void AddPagePermission(IPermissionDefinitionService permissionDefinitionService, TabPermissionCollection permissions, string key, int roleId)
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddPagePermission:" + key);
-            var permissionController = new PermissionController();
-            var permission = (IPermissionInfo)permissionController.GetPermissionByCodeAndKey("SYSTEM_TAB", key)[0];
+            var permission = permissionDefinitionService.GetDefinitionsByCodeAndKey("SYSTEM_TAB", key).First();
 
             var tabPermission = new TabPermissionInfo();
             ((IPermissionInfo)tabPermission).PermissionId = permission.PermissionId;
@@ -2400,7 +2437,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 var fileName = XmlUtils.GetNodeValue(fileNode.CreateNavigator(), "filename");
                 var extension = XmlUtils.GetNodeValue(fileNode.CreateNavigator(), "extension");
-                var size = long.Parse(XmlUtils.GetNodeValue(fileNode.CreateNavigator(), "size"));
+                var size = long.Parse(XmlUtils.GetNodeValue(fileNode.CreateNavigator(), "size"), CultureInfo.InvariantCulture);
                 var width = XmlUtils.GetNodeValueInt(fileNode, "width");
                 var height = XmlUtils.GetNodeValueInt(fileNode, "height");
                 var contentType = XmlUtils.GetNodeValue(fileNode.CreateNavigator(), "contentType");
@@ -2477,7 +2514,7 @@ namespace DotNetNuke.Services.Upgrade
             var stringVersion = GetStringVersion(version);
             if (version.Revision > 0)
             {
-                stringVersion += "." + version.Revision.ToString("D2");
+                stringVersion += "." + version.Revision.ToString("D2", CultureInfo.InvariantCulture);
             }
 
             return stringVersion;
@@ -2719,7 +2756,10 @@ namespace DotNetNuke.Services.Upgrade
                 }
 
                 var xmlDocument = new XmlDocument { XmlResolver = null };
-                xmlDocument.Load(languageFilePath);
+                using (var xmlReader = XmlReader.Create(languageFilePath, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xmlDocument.Load(xmlReader);
+                }
 
                 resourcesDict.Add(cultureCode, xmlDocument);
 

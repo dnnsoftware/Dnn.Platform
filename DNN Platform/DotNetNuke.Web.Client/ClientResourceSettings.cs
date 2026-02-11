@@ -21,18 +21,31 @@ namespace DotNetNuke.Web.Client
     public partial class ClientResourceSettings
     {
         // public keys used to identify the dictionaries stored in the application context
+
+        /// <summary>The host settings dictionary key.</summary>
         public static readonly string HostSettingsDictionaryKey = "HostSettingsDictionary";
+
+        /// <summary>The portal settings dictionary key.</summary>
         public static readonly string PortalSettingsDictionaryKey = "PortalSettingsDictionary";
 
         // public keys used to identify the various host and portal level settings
+
+        /// <summary>The composite files key.</summary>
         public static readonly string EnableCompositeFilesKey = "CrmEnableCompositeFiles";
+
+        /// <summary>The minify CSS key.</summary>
         public static readonly string MinifyCssKey = "CrmMinifyCss";
+
+        /// <summary>The minify JS key.</summary>
         public static readonly string MinifyJsKey = "CrmMinifyJs";
+
+        /// <summary>The override default settings key.</summary>
         public static readonly string OverrideDefaultSettingsKey = "CrmUseApplicationSettings";
+
+        /// <summary>The version key.</summary>
         public static readonly string VersionKey = "CrmVersion";
 
         private static readonly Type PortalControllerType;
-        private static readonly Type CommonGlobalsType;
 
         private bool statusChecked;
         private UpgradeStatus status;
@@ -41,8 +54,6 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                // all these types are part of the same library, so we don't need a separate catch for each one
-                CommonGlobalsType = Type.GetType("DotNetNuke.Common.Globals, DotNetNuke");
                 PortalControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalController, DotNetNuke");
             }
             catch (Exception exception)
@@ -73,6 +84,9 @@ namespace DotNetNuke.Web.Client
             return this.IsOverridingDefaultSettingsEnabled(portalId);
         }
 
+        /// <summary>Gets a value indicating whether overriding the default settings is enabled.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns><see langword="true"/> if it's enabled, otherwise <see langword="false"/>.</returns>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool IsOverridingDefaultSettingsEnabled(int? portalId)
         {
@@ -92,6 +106,9 @@ namespace DotNetNuke.Web.Client
             return this.GetVersion(portalId);
         }
 
+        /// <summary>Gets the version.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>The version or <see langword="null"/>.</returns>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public int? GetVersion(int? portalId)
         {
@@ -116,18 +133,24 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
+        /// <summary>Gets a value indicating whether composite files are enabled.</summary>
+        /// <returns>Whether it's enabled.</returns>
         public bool? AreCompositeFilesEnabled()
         {
             int? portalId = GetPortalIdThroughReflection();
             return this.IsBooleanSettingEnabled(portalId, EnableCompositeFilesKey);
         }
 
+        /// <summary>Gets a value indicating whether CSS minification is enabled.</summary>
+        /// <returns>Whether it's enabled.</returns>
         public bool? EnableCssMinification()
         {
             int? portalId = GetPortalIdThroughReflection();
             return this.IsBooleanSettingEnabled(portalId, MinifyCssKey);
         }
 
+        /// <summary>Gets a value indicating whether JS minification is enabled.</summary>
+        /// <returns>Whether it's enabled.</returns>
         public bool? EnableJsMinification()
         {
             int? portalId = GetPortalIdThroughReflection();
@@ -186,13 +209,6 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
-        private static IServiceScope GetServiceScope()
-        {
-            var getOrCreateServiceScopeMethod = CommonGlobalsType.GetMethod("GetOrCreateServiceScope", BindingFlags.NonPublic | BindingFlags.Static);
-            var serviceScope = getOrCreateServiceScopeMethod.Invoke(null, Array.Empty<object>());
-            return (IServiceScope)serviceScope;
-        }
-
         private static string GetPortalSettingThroughReflection(int? portalId, string settingKey)
         {
             if (portalId is null)
@@ -202,10 +218,10 @@ namespace DotNetNuke.Web.Client
 
             try
             {
-                using var scope = GetServiceScope();
+                using var scope = DependencyInjection.GetOrCreateServiceScope();
                 var portalController = ActivatorUtilities.GetServiceOrCreateInstance(scope.ServiceProvider, PortalControllerType);
-                var method = PortalControllerType.GetMethod("GetPortalSettings", BindingFlags.Public | BindingFlags.Instance);
-                var dictionary = (Dictionary<string, string>)method.Invoke(portalController, new object[] { portalId.Value, });
+                var method = PortalControllerType.GetMethod("GetPortalSettings", BindingFlags.Public | BindingFlags.Instance, null, [typeof(int),], null);
+                var dictionary = (Dictionary<string, string>)method.Invoke(portalController, [portalId.Value,]);
 
                 if (dictionary.TryGetValue(settingKey, out var value))
                 {
@@ -229,7 +245,7 @@ namespace DotNetNuke.Web.Client
                     return null;
                 }
 
-                using var scope = GetServiceScope();
+                using var scope = DependencyInjection.GetOrCreateServiceScope();
                 var portalAliasService = scope.ServiceProvider.GetRequiredService<IPortalAliasService>();
                 var alias = portalAliasService.GetPortalAlias(HttpContext.Current.Request.Url.Host);
 
@@ -247,7 +263,7 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                using var scope = GetServiceScope();
+                using var scope = DependencyInjection.GetOrCreateServiceScope();
                 var hostSettingsService = scope.ServiceProvider.GetRequiredService<IHostSettingsService>();
 
                 var dictionary = hostSettingsService.GetSettingsDictionary();
@@ -268,7 +284,7 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                using var scope = GetServiceScope();
+                using var scope = DependencyInjection.GetOrCreateServiceScope();
                 var applicationStatusInfo = scope.ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
                 return applicationStatusInfo.Status;
             }

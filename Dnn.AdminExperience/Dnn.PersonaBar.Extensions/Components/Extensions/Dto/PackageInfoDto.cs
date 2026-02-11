@@ -68,8 +68,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             var authService = AuthenticationController.GetAuthenticationServiceByPackageID(this.PackageId);
             this.ReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
 
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var tabId = portalSettings.ActiveTab.TabID;
+            var currentPage = TabController.CurrentPage;
+            var tabId = currentPage.TabID;
             this.SiteSettingsLink = this.NavigationManager.NavigateURL(
                 tabId,
                 "EditExtension",

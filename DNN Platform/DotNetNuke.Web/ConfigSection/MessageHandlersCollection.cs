@@ -4,10 +4,19 @@
 
 namespace DotNetNuke.Web.ConfigSection
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Configuration;
 
-    public class MessageHandlersCollection : ConfigurationElementCollection
+    /// <summary>A collection of <see cref="MessageHandlerEntry"/> instances.</summary>
+    public class MessageHandlersCollection : ConfigurationElementCollection, ICollection<ConfigurationElement>
     {
+        /// <inheritdoc />
+        bool ICollection<ConfigurationElement>.IsReadOnly => this.IsReadOnly();
+
+        /// <summary>Gets or sets the <see cref="MessageHandlerEntry"/> at the given <paramref name="index"/>.</summary>
+        /// <param name="index">The index.</param>
         public MessageHandlerEntry this[int index]
         {
             get
@@ -26,16 +35,61 @@ namespace DotNetNuke.Web.ConfigSection
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        public void Add(ConfigurationElement item) => this.BaseAdd(item);
+
+        /// <inheritdoc />
+        public void Clear() => this.BaseClear();
+
+        /// <inheritdoc />
+        public bool Contains(ConfigurationElement item) => this.BaseGet(this.GetElementKey(item)) is not null;
+
+        /// <inheritdoc />
+        public bool Remove(ConfigurationElement item)
+        {
+            if (!this.Contains(item))
+            {
+                return false;
+            }
+
+            this.BaseRemove(this.GetElementKey(item));
+            return true;
+        }
+
+        /// <inheritdoc />
+        IEnumerator<ConfigurationElement> IEnumerable<ConfigurationElement>.GetEnumerator()
+        {
+            return new ConfigurationElementEnumerator(this.GetEnumerator());
+        }
+
+        /// <inheritdoc />
         protected override ConfigurationElement CreateNewElement()
         {
             return new MessageHandlerEntry();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override object GetElementKey(ConfigurationElement element)
         {
             return (element as MessageHandlerEntry ?? new MessageHandlerEntry()).Name;
+        }
+
+        private class ConfigurationElementEnumerator(IEnumerator enumerator) : IEnumerator<ConfigurationElement>
+        {
+            /// <inheritdoc />
+            public ConfigurationElement Current => (ConfigurationElement)enumerator.Current;
+
+            /// <inheritdoc />
+            object IEnumerator.Current => this.Current;
+
+            /// <inheritdoc />
+            public void Dispose() => (enumerator as IDisposable)?.Dispose();
+
+            /// <inheritdoc />
+            public bool MoveNext() => enumerator.MoveNext();
+
+            /// <inheritdoc />
+            public void Reset() => enumerator.Reset();
         }
     }
 }

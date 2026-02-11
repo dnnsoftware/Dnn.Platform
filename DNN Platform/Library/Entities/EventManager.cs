@@ -4,6 +4,7 @@
 namespace DotNetNuke.Entities
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
@@ -223,7 +224,7 @@ namespace DotNetNuke.Entities
 
         private event EventHandler<UpdateUserEventArgs> UserUpdated;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFileAdded(FileAddedEventArgs args)
         {
             if (this.FileAdded != null)
@@ -234,7 +235,7 @@ namespace DotNetNuke.Entities
             this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_ADDED);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFileChanged(FileChangedEventArgs args)
         {
             if (this.FileChanged != null)
@@ -245,7 +246,7 @@ namespace DotNetNuke.Entities
             this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_CHANGED);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFileDeleted(FileDeletedEventArgs args)
         {
             if (this.FileDeleted != null)
@@ -256,7 +257,7 @@ namespace DotNetNuke.Entities
             this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_DELETED);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFileMetadataChanged(FileChangedEventArgs args)
         {
             if (this.FileMetadataChanged != null)
@@ -267,7 +268,8 @@ namespace DotNetNuke.Entities
             this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_METADATACHANGED);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public virtual void OnFileDownloaded(FileDownloadedEventArgs args)
         {
             if (this.FileDownloaded != null)
@@ -278,7 +280,7 @@ namespace DotNetNuke.Entities
             this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_DOWNLOADED);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFileMoved(FileMovedEventArgs args)
         {
             if (this.FileMoved != null)
@@ -289,7 +291,7 @@ namespace DotNetNuke.Entities
             this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_MOVED);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFileOverwritten(FileChangedEventArgs args)
         {
             if (this.FileOverwritten != null)
@@ -300,7 +302,7 @@ namespace DotNetNuke.Entities
             this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_OVERWRITTEN);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFileRenamed(FileRenamedEventArgs args)
         {
             if (this.FileRenamed != null)
@@ -311,7 +313,7 @@ namespace DotNetNuke.Entities
             this.AddLog(args.FileInfo, args.UserId, EventLogType.FILE_RENAMED);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFolderAdded(FolderChangedEventArgs args)
         {
             if (this.FolderAdded != null)
@@ -320,7 +322,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFolderDeleted(FolderDeletedEventArgs args)
         {
             if (this.FolderDeleted != null)
@@ -329,7 +331,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFolderMoved(FolderMovedEventArgs args)
         {
             if (this.FolderMoved != null)
@@ -338,7 +340,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFolderRenamed(FolderRenamedEventArgs args)
         {
             if (this.FolderRenamed != null)
@@ -347,7 +349,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFollowRequested(RelationshipEventArgs args)
         {
             if (this.FollowRequested != null)
@@ -356,7 +358,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFriendshipAccepted(RelationshipEventArgs args)
         {
             if (this.FriendshipAccepted != null)
@@ -365,7 +367,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFriendshipDeleted(RelationshipEventArgs args)
         {
             if (this.FriendshipDeleted != null)
@@ -374,7 +376,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnFriendshipRequested(RelationshipEventArgs args)
         {
             if (this.FriendshipRequested != null)
@@ -383,7 +385,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnModuleCreated(ModuleEventArgs args)
         {
             if (this.ModuleCreated != null)
@@ -392,7 +394,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnModuleDeleted(ModuleEventArgs args)
         {
             if (this.ModuleDeleted != null)
@@ -401,7 +403,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnModuleRemoved(ModuleEventArgs args)
         {
             if (this.ModuleRemoved != null)
@@ -410,7 +412,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnModuleUpdated(ModuleEventArgs args)
         {
             if (this.ModuleUpdated != null)
@@ -419,7 +421,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnPortalCreated(PortalCreatedEventArgs args)
         {
             if (this.PortalCreated != null)
@@ -428,7 +430,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnPortalSettingUpdated(PortalSettingUpdatedEventArgs args)
         {
             if (this.PortalSettingUpdated != null)
@@ -437,7 +439,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnPortalTemplateCreated(PortalTemplateEventArgs args)
         {
             if (this.PortalTemplateCreated != null)
@@ -446,7 +448,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnProfileUpdated(ProfileEventArgs args)
         {
             if (this.ProfileUpdated != null)
@@ -455,7 +457,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnRoleCreated(RoleEventArgs args)
         {
             if (this.RoleCreated != null)
@@ -464,13 +466,13 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnRoleUpdated(RoleEventArgs args)
         {
             this.RoleUpdated?.Invoke(this, args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnRoleDeleted(RoleEventArgs args)
         {
             if (this.RoleDeleted != null)
@@ -479,7 +481,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnRoleJoined(RoleEventArgs args)
         {
             if (this.RoleJoined != null)
@@ -488,7 +490,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnRoleLeft(RoleEventArgs args)
         {
             if (this.RoleLeft != null)
@@ -497,7 +499,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnTabCreated(TabEventArgs args)
         {
             if (this.TabCreated != null)
@@ -506,7 +508,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnTabDeleted(TabEventArgs args)
         {
             if (this.TabDeleted != null)
@@ -515,7 +517,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnTabDeserialize(TabSyncEventArgs args)
         {
             if (this.TabDeserialize != null)
@@ -524,7 +526,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnTabMarkedAsPublished(TabEventArgs args)
         {
             if (this.TabMarkedAsPublished != null)
@@ -533,7 +535,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnTabRemoved(TabEventArgs args)
         {
             if (this.TabRemoved != null)
@@ -542,7 +544,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnTabRestored(TabEventArgs args)
         {
             if (this.TabRestored != null)
@@ -551,7 +553,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnTabSerialize(TabSyncEventArgs args)
         {
             if (this.TabSerialize != null)
@@ -560,7 +562,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnTabUpdated(TabEventArgs args)
         {
             if (this.TabUpdated != null)
@@ -569,7 +571,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnUnfollowRequested(RelationshipEventArgs args)
         {
             if (this.UnfollowRequested != null)
@@ -578,7 +580,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnUserApproved(UserEventArgs args)
         {
             if (this.UserApproved != null)
@@ -587,7 +589,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnUserAuthenticated(UserEventArgs args)
         {
             if (this.UserAuthenticated != null)
@@ -596,7 +598,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnUserCreated(UserEventArgs args)
         {
             if (this.UserCreated != null)
@@ -605,7 +607,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnUserDeleted(UserEventArgs args)
         {
             if (this.UserDeleted != null)
@@ -614,7 +616,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnUserRemoved(UserEventArgs args)
         {
             if (this.UserRemoved != null)
@@ -623,7 +625,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void OnUserUpdated(UpdateUserEventArgs args)
         {
             if (this.UserUpdated != null)
@@ -632,7 +634,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RefreshTabSyncHandlers()
         {
             foreach (var handlers in new EventHandlersContainer<ITabSyncEventHandler>().EventHandlers)
@@ -642,7 +644,7 @@ namespace DotNetNuke.Entities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IEventManager> GetFactory()
         {
             return () => new EventManager(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>());

@@ -7,7 +7,6 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     using System.Collections.Generic;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -108,7 +107,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
                 node.TabId = -1;
             }
 
-            node.Children.ForEach(this.LocaliseNode);
+            node.Children.ForEach(child => this.LocaliseNode(child, portalId));
         }
 
         private TabInfo LocaliseTab(TabInfo tab, int portalId)

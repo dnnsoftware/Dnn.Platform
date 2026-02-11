@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             this.contentVerifier = contentVerifier;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourceFile;
 
         private int PageId { get; set; } = -1;
@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         private int ParentId { get; set; } = -1;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.PageId = this.GetFlagValue(FlagId, "Page Id", -1, false, true);
@@ -68,7 +68,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var lst = new List<PageModel>();

@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common.Utilities;
@@ -32,13 +33,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>Gets oldStringValue returns the Boolean representation of the OldValue.</summary>
         /// <value>A String representing the OldValue.</value>
-        protected string OldStringValue
-        {
-            get
-            {
-                return Convert.ToString(this.OldValue);
-            }
-        }
+        protected string OldStringValue => Convert.ToString(this.OldValue, CultureInfo.InvariantCulture);
 
         /// <summary>Gets or sets stringValue is the value of the control expressed as a String.</summary>
         /// <value>A string representing the Value.</value>
@@ -49,7 +44,7 @@ namespace DotNetNuke.UI.WebControls
                 string strValue = Null.NullString;
                 if (this.Value != null)
                 {
-                    strValue = Convert.ToString(this.Value);
+                    strValue = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
                 }
 
                 return strValue;
@@ -81,10 +76,9 @@ namespace DotNetNuke.UI.WebControls
             {
                 foreach (Attribute attribute in this.CustomAttributes)
                 {
-                    if (attribute is MaxLengthAttribute)
+                    if (attribute is MaxLengthAttribute maxLengthAttribute)
                     {
-                        var lengthAtt = (MaxLengthAttribute)attribute;
-                        length = lengthAtt.Length;
+                        length = maxLengthAttribute.Length;
                         break;
                     }
                 }
@@ -95,7 +89,7 @@ namespace DotNetNuke.UI.WebControls
             writer.AddAttribute(HtmlTextWriterAttribute.Value, this.StringValue);
             if (length > Null.NullInteger)
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
+                writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString(CultureInfo.InvariantCulture));
             }
 
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);

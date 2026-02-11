@@ -15,13 +15,13 @@ namespace DotNetNuke.Web.Mvc
             this.ExecuteModuleImmediately = false;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void LoadSettings()
         {
             this.ExecuteModule();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateSettings()
         {
             this.ExecuteModule();

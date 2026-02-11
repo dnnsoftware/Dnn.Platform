@@ -5,7 +5,9 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
+    using System.Xml;
     using System.Xml.XPath;
 
     using DotNetNuke.Common;
@@ -35,8 +37,13 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Package = package;
             if (!string.IsNullOrEmpty(package.Manifest))
             {
-                // Create an XPathDocument from the Xml
-                var doc = new XPathDocument(new StringReader(package.Manifest));
+                // Create an XPathDocument from the XML
+                XPathDocument doc;
+                using (var manifestReader = XmlReader.Create(new StringReader(package.Manifest)))
+                {
+                    doc = new XPathDocument(manifestReader);
+                }
+
                 XPathNavigator nav = doc.CreateNavigator().SelectSingleNode("package");
                 this.ReadComponents(nav);
             }
@@ -69,8 +76,13 @@ namespace DotNetNuke.Services.Installer.Installers
 
             if (!string.IsNullOrEmpty(packageManifest))
             {
-                // Create an XPathDocument from the Xml
-                var doc = new XPathDocument(new StringReader(packageManifest));
+                // Create an XPathDocument from the XML
+                XPathDocument doc;
+                using (var xmlReader = XmlReader.Create(new StringReader(packageManifest)))
+                {
+                    doc = new XPathDocument(xmlReader);
+                }
+
                 XPathNavigator nav = doc.CreateNavigator().SelectSingleNode("package");
                 this.ReadManifest(nav);
             }
@@ -99,7 +111,7 @@ namespace DotNetNuke.Services.Installer.Installers
             // Add Event Message
             if (this.eventMessage != null && !string.IsNullOrEmpty(this.eventMessage.Attributes["UpgradeVersionsList"]))
             {
-                this.eventMessage.Attributes.Set("desktopModuleID", Null.NullInteger.ToString());
+                this.eventMessage.Attributes.Set("desktopModuleID", Null.NullInteger.ToString(CultureInfo.InvariantCulture));
                 EventQueueController.SendMessage(this.eventMessage, "Application_Start");
             }
 
@@ -309,18 +321,18 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 if (iconFileNav.Value != string.Empty)
                 {
-                    if (iconFileNav.Value.StartsWith("~/"))
+                    if (iconFileNav.Value.StartsWith("~/", StringComparison.Ordinal))
                     {
                         this.Package.IconFile = iconFileNav.Value;
                     }
-                    else if (iconFileNav.Value.StartsWith("DesktopModules", StringComparison.InvariantCultureIgnoreCase))
+                    else if (iconFileNav.Value.StartsWith("DesktopModules", StringComparison.OrdinalIgnoreCase))
                     {
-                        this.Package.IconFile = string.Format("~/{0}", iconFileNav.Value);
+                        this.Package.IconFile = $"~/{iconFileNav.Value}";
                     }
                     else
                     {
                         this.Package.IconFile = (string.IsNullOrEmpty(this.Package.FolderName) ? string.Empty : this.Package.FolderName + "/") + iconFileNav.Value;
-                        this.Package.IconFile = (!this.Package.IconFile.StartsWith("~/")) ? "~/" + this.Package.IconFile : this.Package.IconFile;
+                        this.Package.IconFile = (!this.Package.IconFile.StartsWith("~/", StringComparison.Ordinal)) ? "~/" + this.Package.IconFile : this.Package.IconFile;
                     }
                 }
             }
@@ -503,7 +515,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     string installOrder = componentNav.GetAttribute("installOrder", string.Empty);
                     if (!string.IsNullOrEmpty(installOrder))
                     {
-                        order = int.Parse(installOrder);
+                        order = int.Parse(installOrder, CultureInfo.InvariantCulture);
                     }
                 }
                 else
@@ -511,7 +523,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     string unInstallOrder = componentNav.GetAttribute("unInstallOrder", string.Empty);
                     if (!string.IsNullOrEmpty(unInstallOrder))
                     {
-                        order = int.Parse(unInstallOrder);
+                        order = int.Parse(unInstallOrder, CultureInfo.InvariantCulture);
                     }
                 }
 
@@ -542,7 +554,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
             try
             {
-                return FileSystemUtils.ReadFile(this.Package.InstallerInfo.TempInstallFolder + "\\" + source);
+                return FileSystemUtils.ReadFile(this.Package.InstallerInfo.TempInstallFolder + @"\" + source);
             }
             catch (PathNotFoundException)
             {

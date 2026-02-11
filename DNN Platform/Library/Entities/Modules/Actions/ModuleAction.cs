@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules.Actions
 {
+    using System;
+
     using DotNetNuke.Security;
 
     /// <summary>
@@ -13,7 +15,7 @@ namespace DotNetNuke.Entities.Modules.Actions
     /// Each module can define one or more actions which the portal will present to the
     /// user.  These actions may be presented as a menu, a dropdown list or even a group
     /// of linkbuttons.
-    /// <seealso cref="DotNetNuke.ModuleActionCollection" /></remarks>
+    /// <seealso cref="ModuleActionCollection" /></remarks>
     public class ModuleAction
     {
         /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
@@ -160,7 +162,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// </summary>
         /// <value>Returns a collection of ModuleActions.</value>
         /// <remarks>Each action may contain one or more child actions.  When displayed via
-        /// the <see cref="DotNetNuke.Containers.Actions"/> control, these subactions are
+        /// the <c>Actions</c> control, these subactions are
         /// shown as sub-menus.  If other Action controls are implemented, then
         /// sub-actions may or may not be supported for that control type.</remarks>
         public ModuleActionCollection Actions { get; set; }
@@ -169,8 +171,8 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// Gets or sets a Module Action ID is an identifier that can be used in a Module Action Collection
         /// to find a specific Action.
         /// </summary>
-        /// <value>The integer ID of the current <see cref="DotNetNuke.ModuleAction"/>.</value>
-        /// <remarks>When building a hierarchy of <see cref="DotNetNuke.ModuleAction">ModuleActions</see>,
+        /// <value>The integer ID of the current <see cref="ModuleAction"/>.</value>
+        /// <remarks>When building a hierarchy of <see cref="ModuleAction">ModuleActions</see>,
         /// the ID is used to link the child and parent actions.</remarks>
         public int ID { get; set; }
 
@@ -178,17 +180,17 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <value>A boolean value that determines if the current action should be displayed.</value>
         /// <remarks>If Visible is false, then the action is always hidden.  If Visible
         /// is true then the action may be visible depending on the security access rights
-        /// specified by the <see cref="DotNetNuke.ModuleAction.Secure"/> property.  By
+        /// specified by the <see cref="Secure"/> property.  By
         /// utilizing a custom method in your module, you can encapsulate specific business
         /// rules to determine if the Action should be visible.</remarks>
         public bool Visible { get; set; }
 
         /// <summary>
-        /// Gets or sets the value indicating the <see cref="DotnetNuke.SecurityAccessLevel" /> that is required
-        /// to access this <see cref="DotNetNuke.ModuleAction" />.
+        /// Gets or sets the value indicating the <see cref="SecurityAccessLevel" /> that is required
+        /// to access this <see cref="ModuleAction" />.
         /// </summary>
-        /// <value>The value indicating the <see cref="DotnetNuke.SecurityAccessLevel" /> that is required
-        /// to access this <see cref="DotNetNuke.ModuleAction" />.</value>
+        /// <value>The value indicating the <see cref="SecurityAccessLevel" /> that is required
+        /// to access this <see cref="ModuleAction" />.</value>
         /// <remarks>The security access level determines the roles required by the current user in
         /// order to access this module action.</remarks>
         public SecurityAccessLevel Secure { get; set; }
@@ -212,7 +214,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <value>A string that contains the argument for the command.</value>
         /// <remarks>
         /// The CommandArgument can contain any string set by the programmer. The
-        /// CommandArgument property complements the <see cref="DotNetNuke.ModuleAction.CommandName" />
+        /// CommandArgument property complements the <see cref="CommandName" />
         ///  property by allowing you to provide any additional information for the command.
         /// For example, you can set the CommandName property to "Sort" and set the
         /// CommandArgument property to "Ascending" to specify a command to sort in ascending
@@ -231,7 +233,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// <summary>
         /// Gets or sets the URL for the icon file that is displayed for the given
-        /// <see cref="DotNetNuke.ModuleAction" />.
+        /// <see cref="ModuleAction" />.
         /// </summary>
         /// <value>The URL for the icon that is displayed with the module action.</value>
         /// <remarks>The URL for the icon is a simple string and is not checked for formatting.</remarks>
@@ -261,7 +263,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// <summary>
         /// Gets or sets a value indicating whether a local ActionEvent is fired when the
-        /// <see cref="DotNetNuke.ModuleAction" /> contains a URL.
+        /// <see cref="ModuleAction" /> contains a URL.
         /// </summary>
         /// <value>A boolean indicating whether to fire the ActionEvent.</value>
         /// <remarks>When a MenuAction is clicked, an event is fired within the Actions
@@ -286,20 +288,20 @@ namespace DotNetNuke.Entities.Modules.Actions
                 string controlKey = string.Empty;
                 if (!string.IsNullOrEmpty(this.Url))
                 {
-                    int startIndex = this.Url.IndexOf("/ctl/");
+                    int startIndex = this.Url.IndexOf("/ctl/", StringComparison.OrdinalIgnoreCase);
                     int endIndex = -1;
                     if (startIndex > -1)
                     {
                         startIndex += 4;
-                        endIndex = this.Url.IndexOf("/", startIndex + 1);
+                        endIndex = this.Url.IndexOf("/", startIndex + 1, StringComparison.Ordinal);
                     }
                     else
                     {
-                        startIndex = this.Url.IndexOf("ctl=");
+                        startIndex = this.Url.IndexOf("ctl=", StringComparison.OrdinalIgnoreCase);
                         if (startIndex > -1)
                         {
                             startIndex += 4;
-                            endIndex = this.Url.IndexOf("&", startIndex + 1);
+                            endIndex = this.Url.IndexOf("&", startIndex + 1, StringComparison.Ordinal);
                         }
                     }
 
@@ -316,8 +318,8 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <summary>Determines whether the action node contains any child actions.</summary>
         /// <returns>True if child actions exist, false if child actions do not exist.</returns>
         /// <remarks>Each action may contain one or more child actions in the
-        /// <see cref="DotNetNuke.ModuleAction.Actions"/> property.  When displayed via
-        /// the <see cref="DotNetNuke.Containers.Actions"/> control, these subactions are
+        /// <see cref="Actions"/> property.  When displayed via
+        /// the <c>Actions</c> control, these subactions are
         /// shown as sub-menus.</remarks>
         public bool HasChildren()
         {

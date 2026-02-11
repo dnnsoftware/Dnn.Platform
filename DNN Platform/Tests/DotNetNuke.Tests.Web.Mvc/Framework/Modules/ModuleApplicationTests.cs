@@ -163,12 +163,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             // Act
             ModuleRequestResult result = app.ExecuteRequest(moduleRequestContext);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.ActionResult, Is.SameAs(actionResult));
                 Assert.That(result.ControllerContext, Is.SameAs(controllerContext));
-            });
+            }
         }
 
         [Test]

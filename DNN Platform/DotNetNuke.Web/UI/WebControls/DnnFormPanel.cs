@@ -7,13 +7,16 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    /// <summary>A form panel control.</summary>
     public class DnnFormPanel : WebControl
     {
+        /// <summary>Gets or sets a value indicating whether the panel is expanded.</summary>
         public bool Expanded { get; set; }
 
+        /// <summary>Gets or sets the text.</summary>
         public string Text { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);

@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.Mvp
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using DotNetNuke.Internal.SourceGenerators;
 
@@ -27,30 +28,34 @@ namespace DotNetNuke.Web.Mvp
             this.TabModuleSettings = new Dictionary<string, string>();
         }
 
+        /// <summary>Gets or sets the module settings.</summary>
         public Dictionary<string, string> ModuleSettings { get; set; }
 
+        /// <summary>Gets or sets the tab-module settings.</summary>
         public Dictionary<string, string> TabModuleSettings { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void LoadFromContext()
         {
             base.LoadFromContext();
 
             foreach (var key in this.ModuleContext.Configuration.ModuleSettings.Keys)
             {
-                this.ModuleSettings.Add(Convert.ToString(key), Convert.ToString(this.ModuleContext.Configuration.ModuleSettings[key]));
+                this.ModuleSettings.Add(Convert.ToString(key, CultureInfo.InvariantCulture), Convert.ToString(this.ModuleContext.Configuration.ModuleSettings[key], CultureInfo.InvariantCulture));
             }
 
             foreach (var key in this.ModuleContext.Configuration.TabModuleSettings.Keys)
             {
-                this.TabModuleSettings.Add(Convert.ToString(key), Convert.ToString(this.ModuleContext.Configuration.TabModuleSettings[key]));
+                this.TabModuleSettings.Add(Convert.ToString(key, CultureInfo.InvariantCulture), Convert.ToString(this.ModuleContext.Configuration.TabModuleSettings[key], CultureInfo.InvariantCulture));
             }
         }
 
+        /// <summary>A method which is called when the settings view is loaded.</summary>
         protected virtual void LoadSettings()
         {
         }
 
+        /// <summary>A method which is called when the settings are saved.</summary>
         protected virtual void SaveSettings()
         {
         }

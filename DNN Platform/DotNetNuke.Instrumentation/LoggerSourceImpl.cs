@@ -5,6 +5,7 @@
 namespace DotNetNuke.Instrumentation
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
 
@@ -16,15 +17,16 @@ namespace DotNetNuke.Instrumentation
     using log4net.Util;
 
     /// <summary>An <see cref="ILoggerSource"/> implementation.</summary>
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class LoggerSourceImpl : ILoggerSource
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ILog GetLogger(Type type)
         {
             return new Logger(LogManager.GetLogger(type).Logger, type);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ILog GetLogger(string name)
         {
             return new Logger(LogManager.GetLogger(name).Logger, null);
@@ -248,7 +250,7 @@ namespace DotNetNuke.Instrumentation
             {
                 try
                 {
-                    GlobalContext.Properties["appdomain"] = AppDomain.CurrentDomain.Id.ToString("D");
+                    GlobalContext.Properties["appdomain"] = AppDomain.CurrentDomain.Id.ToString("D", CultureInfo.InvariantCulture);
                 }
                 catch
                 {

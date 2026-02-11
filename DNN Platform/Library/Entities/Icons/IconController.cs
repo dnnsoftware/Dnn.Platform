@@ -74,7 +74,7 @@ namespace DotNetNuke.Entities.Icons
                 style = DefaultIconStyle;
             }
 
-            string fileName = string.Format("{0}/{1}_{2}_{3}.png", PortalSettings.Current.DefaultIconLocation, key, size, style);
+            string fileName = $"{PortalSettings.Current.DefaultIconLocation}/{key}_{size}_{style}.png";
 
             // In debug mode, we want to warn (only once) if icon is not present on disk
 #if DEBUG
@@ -119,6 +119,9 @@ namespace DotNetNuke.Entities.Icons
         }
 
         private static void CheckIconOnDisk(string path)
+            => CheckIconOnDisk(Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), path);
+
+        private static void CheckIconOnDisk(IApplicationStatusInfo appStatus, string path)
         {
             using (IconsStatusOnDisk.GetReadLock())
             {
@@ -133,10 +136,10 @@ namespace DotNetNuke.Entities.Icons
                 if (!IconsStatusOnDisk.ContainsKey(path))
                 {
                     IconsStatusOnDisk.Add(path, true);
-                    var iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, path.Replace('/', '\\'));
+                    var iconPhysicalPath = Path.Combine(appStatus.ApplicationMapPath, path.Replace('/', '\\'));
                     if (!File.Exists(iconPhysicalPath))
                     {
-                        Logger.WarnFormat(string.Format("Icon Not Present on Disk {0}", iconPhysicalPath));
+                        Logger.Warn($"Icon Not Present on Disk {iconPhysicalPath}");
                     }
                 }
             }

@@ -15,6 +15,7 @@
 		<DocumentationFile>bin/$(Configuration)/DotNetNuke.BulkInstall.DeployClient.xml</DocumentationFile>
 		<NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
 	</PropertyGroup>
 
 	<ItemGroup>

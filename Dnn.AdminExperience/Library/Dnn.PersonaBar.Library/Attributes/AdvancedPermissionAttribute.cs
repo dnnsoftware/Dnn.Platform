@@ -10,10 +10,15 @@ namespace Dnn.PersonaBar.Library.Attributes
     using Dnn.PersonaBar.Library.Model;
     using Dnn.PersonaBar.Library.Permissions;
     using Dnn.PersonaBar.Library.Repository;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security;
     using DotNetNuke.Web.Api;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
     public class AdvancedPermissionAttribute : AuthorizeAttributeBase
@@ -29,7 +34,7 @@ namespace Dnn.PersonaBar.Library.Attributes
         /// <summary>Gets or sets a value indicating whether when true, it will force admin to have explicit Permission. When false, admin is passed without checking the Permission.</summary>
         public bool CheckPermissionForAdmin { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsAuthorized(AuthFilterContext context)
         {
             var menuItem = this.GetMenuByIdentifier();
@@ -47,8 +52,9 @@ namespace Dnn.PersonaBar.Library.Attributes
 
             // Permissions separated by & should be treated with AND operand.
             // Permissions separated by , are internally treated with OR operand.
+            var hostSettings = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             var allPermissionGroups = this.Permission.Split(PermissionCombiner, StringSplitOptions.RemoveEmptyEntries);
-            return allPermissionGroups.All(allPermissions => MenuPermissionController.HasMenuPermission(portalSettings.PortalId, menuItem, allPermissions));
+            return allPermissionGroups.All(allPermissions => MenuPermissionController.HasMenuPermission(hostSettings, portalSettings.PortalId, menuItem, allPermissions));
         }
 
         private MenuItem GetMenuByIdentifier()

@@ -224,7 +224,7 @@ namespace DotNetNuke.Web.Common.Internal
             {
                 var log = new LogInfo
                 {
-                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                    LogTypeKey = nameof(EventLogType.HOST_ALERT),
                 };
                 log.AddProperty("Summary", Localization.GetString("PotentialDangerousFile.Text"));
                 log.AddProperty("File Name", path);

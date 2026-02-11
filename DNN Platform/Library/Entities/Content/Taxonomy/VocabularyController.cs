@@ -32,7 +32,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             this.dataService = dataService;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int AddVocabulary(Vocabulary vocabulary)
         {
             // Argument Contract
@@ -48,13 +48,13 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             return vocabulary.VocabularyId;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ClearVocabularyCache()
         {
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteVocabulary(Vocabulary vocabulary)
         {
             // Argument Contract
@@ -67,13 +67,13 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IQueryable<Vocabulary> GetVocabularies()
         {
             return CBO.GetCachedObject<List<Vocabulary>>(new CacheItemArgs(DataCache.VocabularyCacheKey, CacheTimeOut), this.GetVocabulariesCallBack).AsQueryable();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateVocabulary(Vocabulary vocabulary)
         {
             // Argument Contract

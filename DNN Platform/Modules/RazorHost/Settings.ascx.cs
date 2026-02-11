@@ -16,7 +16,7 @@ namespace DotNetNuke.Modules.RazorHost
     {
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void LoadSettings()
         {
             string basePath = this.Server.MapPath(this.razorScriptFolder);
@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.RazorHost
             base.LoadSettings();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdateSettings()
         {
             ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "ScriptFile", this.scriptList.SelectedValue);

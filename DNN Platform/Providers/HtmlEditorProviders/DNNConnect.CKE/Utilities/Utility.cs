@@ -221,7 +221,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             input = regS.Replace(input, "s");
             input = regSS.Replace(input, "S");
             input = regDot.Replace(input, ".");         // full-width dot       -> ASCII period
-            input = regBackslash.Replace(input, "\\");  // backslash-like chars -> ASCII backslash
+            input = regBackslash.Replace(input, @"\");  // backslash-like chars -> ASCII backslash
 
             input = input.Replace("�", string.Empty);
 
@@ -271,11 +271,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
         {
             if (!string.IsNullOrEmpty(portalSettings.HomeDirectoryMapPath) && folderPath.Length >= portalSettings.HomeDirectoryMapPath.Length)
             {
-                folderPath = folderPath.Substring(portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
+                folderPath = folderPath.Substring(portalSettings.HomeDirectoryMapPath.Length).Replace(@"\", "/");
             }
             else
             {
-                folderPath = folderPath.Replace("\\", "/");
+                folderPath = folderPath.Replace(@"\", "/");
             }
 
             return FolderManager.Instance.GetFolder(portalSettings.PortalId, folderPath);
@@ -406,7 +406,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             where T : Control
         {
             // this is null by default
-            T found = default(T);
+            T found = null;
 
             int controlCount = startingControl.Controls.Count;
 
@@ -420,7 +420,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     {
                         found = startingControl.Controls[i] as T;
 
-                        if (found.ID.ToLower().Contains(id.ToLower()))
+                        if (found.ID.Contains(id, StringComparison.OrdinalIgnoreCase))
                         {
                             break;
                         }
@@ -443,7 +443,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         }
 
         /// <summary>Gets the size of the max upload.</summary>
-        /// <param name="inkilobytes">if set to <see langword="true"/> Returns Value as kilo byte otherwise as byte.</param>
+        /// <param name="inkilobytes">if set to <see langword="true"/> Returns Value as kilobyte otherwise as byte.</param>
         /// <returns>
         /// Returns the Max. Upload Size.
         /// </returns>
@@ -524,6 +524,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             {
                 return false;
             }
+        }
+
+        private static bool Contains(this string @this, string value, StringComparison comparisonType)
+        {
+            return @this.IndexOf(value, comparisonType) > -1;
         }
     }
 }

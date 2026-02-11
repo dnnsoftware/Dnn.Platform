@@ -15,13 +15,13 @@ namespace DotNetNuke.UI.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules.Html5;
 
-    /// <inheritdoc cref="DotNetNuke.ModulePipeline.ModuleControlPipeline" />
+    /// <inheritdoc cref="IModuleControlPipeline" />
     [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
     public partial class ModuleControlFactory
     {
         private static readonly ILog TracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
 
-        /// <inheritdoc cref="DotNetNuke.ModulePipeline.ModuleControlPipeline.LoadModuleControl" />
+        /// <inheritdoc cref="IModuleControlPipeline.LoadModuleControl(TemplateControl,ModuleInfo,string,string)" />
         [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
         {
@@ -60,7 +60,7 @@ namespace DotNetNuke.UI.Modules
             return control;
         }
 
-        /// <inheritdoc cref="DotNetNuke.ModulePipeline.ModuleControlPipeline.LoadModuleControl" />
+        /// <inheritdoc cref="IModuleControlPipeline.LoadModuleControl(TemplateControl,ModuleInfo)" />
         [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
@@ -99,7 +99,7 @@ namespace DotNetNuke.UI.Modules
             return control;
         }
 
-        /// <inheritdoc cref="DotNetNuke.ModulePipeline.ModuleControlPipeline.LoadSettingsControl" />
+        /// <inheritdoc cref="IModuleControlPipeline.LoadSettingsControl" />
         [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control LoadSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
@@ -142,7 +142,7 @@ namespace DotNetNuke.UI.Modules
             return control;
         }
 
-        /// <inheritdoc cref="DotNetNuke.ModulePipeline.ModuleControlPipeline.CreateCachedControl" />
+        /// <inheritdoc cref="IModuleControlPipeline.CreateCachedControl" />
         [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control CreateCachedControl(string cachedContent, ModuleInfo moduleConfiguration)
         {
@@ -151,7 +151,7 @@ namespace DotNetNuke.UI.Modules
             return moduleControl;
         }
 
-        /// <inheritdoc cref="DotNetNuke.ModulePipeline.ModuleControlPipeline.CreateModuleControl" />
+        /// <inheritdoc cref="IModuleControlPipeline.CreateModuleControl" />
         [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control CreateModuleControl(ModuleInfo moduleConfiguration)
         {
@@ -164,11 +164,7 @@ namespace DotNetNuke.UI.Modules
                 case ".mvc":
                     var segments = moduleConfiguration.ModuleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
 
-                    moduleControl.LocalResourceFile = string.Format(
-                        "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                        moduleConfiguration.DesktopModule.FolderName,
-                        Localization.LocalResourceDirectory,
-                        segments[0]);
+                    moduleControl.LocalResourceFile = $"~/DesktopModules/MVC/{moduleConfiguration.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{segments[0]}.resx";
                     break;
                 default:
                     moduleControl.LocalResourceFile = moduleConfiguration.ModuleControl.ControlSrc.Replace(Path.GetFileName(moduleConfiguration.ModuleControl.ControlSrc), string.Empty) +

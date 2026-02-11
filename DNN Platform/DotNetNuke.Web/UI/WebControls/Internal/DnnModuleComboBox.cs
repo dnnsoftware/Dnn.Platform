@@ -7,6 +7,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
@@ -14,6 +18,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Installer.Packages;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnModuleComboBox : DnnComboBox
@@ -23,49 +29,48 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         private DnnComboBox moduleCombo;
         private string originalValue;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnModuleComboBox"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        public DnnModuleComboBox()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnModuleComboBox"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        public DnnModuleComboBox(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController)
+            : base(
+                appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>())
+        {
+        }
+
+        /// <summary>An event which triggers when the item changes.</summary>
         public event EventHandler ItemChanged;
 
-        public int ItemCount
-        {
-            get
-            {
-                return this.moduleCombo.Items.Count;
-            }
-        }
+        /// <summary>Gets the item count.</summary>
+        public int ItemCount => this.moduleCombo.Items.Count;
 
-        public string RadComboBoxClientId
-        {
-            get
-            {
-                return this.moduleCombo.ClientID;
-            }
-        }
+        /// <summary>Gets the client ID of the <see cref="DnnComboBox"/>.</summary>
+        public string RadComboBoxClientId => this.moduleCombo.ClientID;
 
+        /// <summary>Gets or sets the filter.</summary>
         public Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter { get; set; }
 
-        /// <inheritdoc/>
-        public override string SelectedValue
-        {
-            get
-            {
-                return this.moduleCombo.SelectedValue;
-            }
-        }
+        /// <inheritdoc />
+        public override string SelectedValue => this.moduleCombo.SelectedValue;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool Enabled
         {
-            get
-            {
-                return this.moduleCombo.Enabled;
-            }
-
-            set
-            {
-                this.moduleCombo.Enabled = value;
-            }
+            get => this.moduleCombo.Enabled;
+            set => this.moduleCombo.Enabled = value;
         }
 
+        /// <summary>Binds the portal desktop modules to the list.</summary>
         public void BindAllPortalDesktopModules()
         {
             this.moduleCombo.SelectedValue = null;
@@ -74,6 +79,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             BindPortalDesktopModuleImages();
         }
 
+        /// <summary>Binds the modules from the page to the list.</summary>
+        /// <param name="tabID">The tab ID.</param>
         public void BindTabModulesByTabID(int tabID)
         {
             this.moduleCombo.SelectedValue = null;
@@ -82,28 +89,31 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             BindTabModuleImages(tabID);
         }
 
+        /// <summary>Sets the module.</summary>
+        /// <param name="code">The item's value.</param>
         public void SetModule(string code)
         {
             this.moduleCombo.SelectedIndex = this.moduleCombo.FindItemIndexByValue(code);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            this.moduleCombo = new DnnComboBox();
+            this.moduleCombo = new DnnComboBox(this.AppStatus, this.EventLogger, this.ClientResourceController);
             this.moduleCombo.DataValueField = "key";
             this.moduleCombo.DataTextField = "value";
             this.Controls.Add(this.moduleCombo);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             this.originalValue = this.SelectedValue;
         }
 
+        /// <summary>A method which triggers the <see cref="ItemChanged"/> event.</summary>
         protected virtual void OnItemChanged()
         {
             if (this.ItemChanged != null)
@@ -112,7 +122,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             if (this.moduleCombo.FindItemByValue(this.originalValue) != null)

@@ -195,7 +195,11 @@ namespace DotNetNuke.Entities.Modules
                     if (package != null && !string.IsNullOrEmpty(package.Manifest))
                     {
                         var xmlDocument = new XmlDocument { XmlResolver = null };
-                        xmlDocument.LoadXml(package.Manifest);
+                        using (var manifestReader = XmlReader.Create(new StringReader(package.Manifest), new XmlReaderSettings { XmlResolver = null, }))
+                        {
+                            xmlDocument.Load(manifestReader);
+                        }
+
                         var pageNode = xmlDocument.SelectSingleNode("//package//components//component[@type=\"Module\"]//page");
                         if (pageNode != null)
                         {
@@ -584,13 +588,13 @@ namespace DotNetNuke.Entities.Modules
                 return this.Type.IndexOf("host", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public XmlSchema GetSchema()
             {
                 return null;
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public void ReadXml(XmlReader reader)
             {
                 while (!reader.EOF)
@@ -643,7 +647,7 @@ namespace DotNetNuke.Entities.Modules
                 }
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public void WriteXml(XmlWriter writer)
             {
                 // Write start of main elements

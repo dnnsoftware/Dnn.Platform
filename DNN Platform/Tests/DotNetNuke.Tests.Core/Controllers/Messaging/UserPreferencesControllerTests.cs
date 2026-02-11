@@ -114,13 +114,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             // Assert
             Assert.That(userPreference, Is.Not.Null);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(userPreference.MessagesEmailFrequency, Is.EqualTo(expectedUserPreference.MessagesEmailFrequency));
                 Assert.That(userPreference.NotificationsEmailFrequency, Is.EqualTo(expectedUserPreference.NotificationsEmailFrequency));
                 Assert.That(userPreference.PortalId, Is.EqualTo(user.PortalID));
                 Assert.That(userPreference.UserId, Is.EqualTo(user.UserID));
-            });
+            }
         }
 
         private static UserInfo GetValidUser()

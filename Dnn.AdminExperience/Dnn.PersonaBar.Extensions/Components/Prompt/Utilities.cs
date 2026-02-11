@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Prompt.Components
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Text.RegularExpressions;
 
     using DotNetNuke.Entities.Users;
@@ -209,7 +210,7 @@ namespace Dnn.PersonaBar.Prompt.Components
 
         private static string TranslateToCommandOptionText(string string1, string string2)
         {
-            return string.Format(Localization.GetString("CommandOptionText", Constants.LocalResourcesFile), string1, string2);
+            return string.Format(CultureInfo.InvariantCulture, Localization.GetString("CommandOptionText", Constants.LocalResourcesFile), string1, string2);
         }
     }
 }

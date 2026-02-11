@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Pages.Services.Dto
 {
     using System;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -44,15 +45,15 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
                 if (this.ModuleId == this.DefaultModuleId)
                 {
-                    return string.Format(this.LocalizeString("Reference.Text"), pageName);
+                    return string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Reference.Text"), pageName);
                 }
 
                 if (this.IsTranslated)
                 {
-                    return string.Format(this.LocalizeString("Translated.Text"), pageName);
+                    return string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Translated.Text"), pageName);
                 }
 
-                return string.Format(this.LocalizeString("NotTranslated.Text"), pageName);
+                return string.Format(CultureInfo.CurrentCulture, this.LocalizeString("NotTranslated.Text"), pageName);
             }
         }
 
@@ -73,10 +74,10 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
                 if (this.ModuleId == this.DefaultModuleId)
                 {
-                    return string.Format(this.LocalizeString("ReferenceDefault.Text"), pageName);
+                    return string.Format(CultureInfo.CurrentCulture, this.LocalizeString("ReferenceDefault.Text"), pageName);
                 }
 
-                return string.Format(this.LocalizeString("Detached.Text"), pageName);
+                return string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Detached.Text"), pageName);
             }
         }
 
@@ -162,6 +163,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
                 {
                     returnValue = ModulePermissionController.CanAdminModule(moduleInfo)
                         ? string.Format(
+                            CultureInfo.CurrentCulture,
                             this.LocalizeString("ModuleInfo.Text"),
                             moduleInfo.ModuleDefinition.FriendlyName,
                             moduleInfo.ModuleTitle,

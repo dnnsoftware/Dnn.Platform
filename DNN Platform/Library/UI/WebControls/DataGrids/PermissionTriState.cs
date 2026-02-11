@@ -68,25 +68,20 @@ namespace DotNetNuke.UI.WebControls.Internal
         {
             LookupScriptValues(ctl, out var grantImagePath, out var denyImagePath, out var nullImagePath, out _, out var grantAltText, out var denyAltText, out var nullAltText);
 
-            return string.Format(
-                @"jQuery(document).ready(
-                            function() {{
-                                var images = {{ 'True': '{0}', 'False': '{1}', 'Null': '{2}' }};
-                                var toolTips = {{ 'True': '{3}', 'False': '{4}', 'Null': '{5}' }};
-                                var tsm = dnn.controls.triStateManager(images, toolTips);
-                                jQuery('.tristate').each( function(i, elem) {{
-                                  tsm.initControl( elem );
-                                }});
-                             }});",
-                HttpUtility.JavaScriptStringEncode(grantImagePath),
-                HttpUtility.JavaScriptStringEncode(denyImagePath),
-                HttpUtility.JavaScriptStringEncode(nullImagePath),
-                HttpUtility.JavaScriptStringEncode(grantAltText),
-                HttpUtility.JavaScriptStringEncode(denyAltText),
-                HttpUtility.JavaScriptStringEncode(nullAltText));
+            return $$"""
+                     jQuery(document).ready(
+                     function() {
+                         var images = { 'True': '{{HttpUtility.JavaScriptStringEncode(grantImagePath)}}', 'False': '{{HttpUtility.JavaScriptStringEncode(denyImagePath)}}', 'Null': '{{HttpUtility.JavaScriptStringEncode(nullImagePath)}}' };
+                         var toolTips = { 'True': '{{HttpUtility.JavaScriptStringEncode(grantAltText)}}', 'False': '{{HttpUtility.JavaScriptStringEncode(denyAltText)}}', 'Null': '{{HttpUtility.JavaScriptStringEncode(nullAltText)}}' };
+                         var tsm = dnn.controls.triStateManager(images, toolTips);
+                         jQuery('.tristate').each( function(i, elem) {
+                           tsm.initControl( elem );
+                         });
+                      });
+                     """;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -94,7 +89,7 @@ namespace DotNetNuke.UI.WebControls.Internal
             RegisterScripts(this.Page, this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             string imagePath;

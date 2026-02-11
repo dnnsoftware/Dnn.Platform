@@ -5,22 +5,23 @@
 namespace Dnn.PersonaBar.Library.Prompt.Common
 {
     using System;
+    using System.Globalization;
 
     public static class Extensions
     {
         public static string ToPromptShortDateString(this DateTime input)
         {
-            return input.ToString("yyyy-MM-dd");
+            return input.ToString("yyyy-MM-dd", CultureInfo.CurrentCulture);
         }
 
         public static string ToPromptShortDateAndTimeString(this DateTime input)
         {
-            return input.ToString("yyyy-MM-dd HH:mm");
+            return input.ToString("yyyy-MM-dd HH:mm", CultureInfo.CurrentCulture);
         }
 
         public static string ToPromptLongDateString(this DateTime input)
         {
-            return input.ToString("F");
+            return input.ToString("F", CultureInfo.CurrentCulture);
         }
     }
 }

@@ -57,11 +57,11 @@ namespace DotNetNuke.Tests.Web.Api.Internals
 
             var container = ServiceScopeContainer.GetRequestOrCreateScope();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(container.ShouldDispose, Is.False);
                 Assert.That(container.ServiceScope, Is.EqualTo(scope));
-            });
+            }
         }
     }
 }

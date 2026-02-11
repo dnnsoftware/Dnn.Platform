@@ -31,7 +31,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             this.dataService = dataService;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int AddScopeType(ScopeType scopeType)
         {
             // Argument Contract
@@ -46,13 +46,13 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             return scopeType.ScopeTypeId;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ClearScopeTypeCache()
         {
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteScopeType(ScopeType scopeType)
         {
             // Argument Contract
@@ -65,13 +65,13 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IQueryable<ScopeType> GetScopeTypes()
         {
             return CBO.GetCachedObject<List<ScopeType>>(new CacheItemArgs(DataCache.ScopeTypesCacheKey, CacheTimeOut), this.GetScopeTypesCallBack).AsQueryable();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateScopeType(ScopeType scopeType)
         {
             // Argument Contract

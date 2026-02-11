@@ -88,23 +88,23 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         public void ValidUserLoginShouldPass()
         {
             var token = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(token.AccessToken, Is.Not.Null);
                 Assert.That(token.DisplayName, Is.Not.Null);
                 Assert.That(token.RenewalToken, Is.Not.Null);
-            });
+            }
 
             var parts = token.AccessToken.Split('.');
             var decoded = DecodeBase64(parts[1]);
             dynamic claims = JsonConvert.DeserializeObject(decoded);
             long claimExpiry = claims.exp;
             var expiryInToken = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(claimExpiry);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(DateTime.UtcNow, Is.LessThan(expiryInToken));
                 Assert.That(expiryInToken, Is.LessThanOrEqualTo(DateTime.UtcNow.AddHours(1)));
-            });
+            }
         }
 
         [Test]
@@ -144,11 +144,11 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
                 Assert.That(content.IndexOf("You are authenticated through JWT", StringComparison.Ordinal), Is.GreaterThanOrEqualTo(0));
-            });
+            }
         }
 
         [Test]
@@ -159,12 +159,12 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result = this._httpClient.PostAsJsonAsync(TestPostQuery, new { text = "Integraton Testing Rocks!" }).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
                 Assert.That(content.IndexOf("You are authenticated through JWT", StringComparison.Ordinal), Is.GreaterThanOrEqualTo(0));
                 Assert.That(content.IndexOf("You said: (Integraton Testing Rocks!)", StringComparison.Ordinal), Is.GreaterThanOrEqualTo(0));
-            });
+            }
         }
 
         [Test]
@@ -172,12 +172,12 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         {
             var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             var token2 = this.RenewAuthorizationToken(token1);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(token2.AccessToken, Is.Not.EqualTo(token1.AccessToken));
                 Assert.That(token2.RenewalToken, Is.EqualTo(token1.RenewalToken));
                 Assert.That(token2.DisplayName, Is.EqualTo(token1.DisplayName));
-            });
+            }
         }
 
         [Test]
@@ -185,12 +185,12 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         {
             var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             var token2 = this.RenewAuthorizationToken(token1);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(token2.AccessToken, Is.Not.EqualTo(token1.AccessToken));
                 Assert.That(token2.RenewalToken, Is.EqualTo(token1.RenewalToken));
                 Assert.That(token2.DisplayName, Is.EqualTo(token1.DisplayName));
-            });
+            }
 
             this.SetAuthHeaderToken(token1.AccessToken);
             var result = this._httpClient.GetAsync(TestGetQuery).Result;
@@ -224,12 +224,12 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         {
             var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             var token2 = this.RenewAuthorizationToken(token1);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(token2.AccessToken, Is.Not.EqualTo(token1.AccessToken));
                 Assert.That(token2.RenewalToken, Is.EqualTo(token1.RenewalToken));
                 Assert.That(token2.DisplayName, Is.EqualTo(token1.DisplayName));
-            });
+            }
 
             this.SetAuthHeaderToken(token2.AccessToken);
             var result = this._httpClient.GetAsync(TestGetQuery).Result;
@@ -286,20 +286,20 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             claims = JsonConvert.DeserializeObject(decoded);
             long claimExpiry = claims.exp;
             var expiryInToken = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(claimExpiry);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(DateTime.UtcNow, Is.LessThan(expiryInToken));
                 Assert.That(expiryInToken, Is.LessThanOrEqualTo(DateTime.UtcNow.AddMinutes(31))); // appears the library rounds the time
-            });
+            }
 
             var record = DatabaseHelper.GetRecordById("JsonWebTokens", "TokenId", sessionId);
             var accessExpiry = (DateTime)record["TokenExpiry"];
             var renewalExpiry = (DateTime)record["RenewalExpiry"];
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(renewalExpiry, Is.EqualTo(accessExpiry));
                 Assert.That(DateTime.UtcNow, Is.LessThan(renewalExpiry));
-            });
+            }
             Assert.That(renewalExpiry, Is.LessThanOrEqualTo(DateTime.UtcNow.AddMinutes(31)));
             Assert.That(expiryInToken, Is.EqualTo(accessExpiry));
         }
@@ -372,11 +372,11 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var result = this._httpClient.GetAsync(query + HttpUtility.UrlEncode("ViewProfile")).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(content, Is.Not.Null);
                 Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            });
+            }
         }
 
         [Test]

@@ -57,24 +57,30 @@ namespace DotNetNuke.UI.Skins
         public const string OnInitMessage = "Skin_InitMessage";
         public const string OnInitMessageType = "Skin_InitMessageType";
 
+#pragma warning disable CA1707 // Identifiers should not contain underscores
         // ReSharper disable InconsistentNaming
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public static readonly string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public static readonly string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public static readonly string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
+#pragma warning restore CA1707
 
         // ReSharper restore InconsistentNaming
         private readonly ModuleInjectionManager moduleInjectionManager;
         private readonly IHostSettings hostSettings;
         private readonly IHostSettingsService hostSettingsService;
         private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IServicesFramework servicesFramework;
         private readonly ModuleCommunicate communicator = new ModuleCommunicate();
         private ArrayList actionEventListeners;
         private Control controlPanel;
@@ -90,6 +96,7 @@ namespace DotNetNuke.UI.Skins
         /// <summary>Initializes a new instance of the <see cref="Skin"/> class.</summary>
         /// <param name="moduleControlPipeline">The module control pipeline.</param>
         /// <param name="navigationManager">The navigation manager.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public Skin(IModuleControlPipeline moduleControlPipeline, INavigationManager navigationManager)
             : this(moduleControlPipeline, navigationManager, null, null, null)
         {
@@ -101,6 +108,7 @@ namespace DotNetNuke.UI.Skins
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public Skin(IModuleControlPipeline moduleControlPipeline, INavigationManager navigationManager, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IJavaScriptLibraryHelper javaScript)
             : this(moduleControlPipeline, navigationManager, hostSettings, hostSettingsService, javaScript, null)
         {
@@ -113,7 +121,21 @@ namespace DotNetNuke.UI.Skins
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="moduleInjectionManager">The module injection manager.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         internal Skin(IModuleControlPipeline moduleControlPipeline, INavigationManager navigationManager, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IJavaScriptLibraryHelper javaScript, ModuleInjectionManager moduleInjectionManager)
+            : this(moduleControlPipeline, navigationManager, hostSettings, hostSettingsService, javaScript, moduleInjectionManager, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Skin"/> class.</summary>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="moduleInjectionManager">The module injection manager.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        internal Skin(IModuleControlPipeline moduleControlPipeline, INavigationManager navigationManager, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IJavaScriptLibraryHelper javaScript, ModuleInjectionManager moduleInjectionManager, IServicesFramework servicesFramework)
         {
             this.ModuleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
@@ -121,6 +143,7 @@ namespace DotNetNuke.UI.Skins
             this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
             this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
             this.moduleInjectionManager = moduleInjectionManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<ModuleInjectionManager>();
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
         }
 
         /// <summary>Gets a Dictionary of Panes.</summary>
@@ -391,7 +414,7 @@ namespace DotNetNuke.UI.Skins
                 hostSettings ??= Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
                 // DNN-6170 ensure skin value is culture specific
-                // skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
+                ////skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
                 skinSource = Globals.IsAdminSkin() ? PortalController.GetPortalSetting("DefaultAdminSkin", page.PortalSettings.PortalId, hostSettings.DefaultPortalSkin, page.PortalSettings.CultureCode) : page.PortalSettings.ActiveTab.SkinSrc;
                 if (!string.IsNullOrEmpty(skinSource))
                 {
@@ -421,10 +444,10 @@ namespace DotNetNuke.UI.Skins
             var list = new List<InstalledSkinInfo>();
             foreach (string folder in Directory.GetDirectories(Path.Combine(Globals.HostMapPath, "Skins")))
             {
-                if (!folder.EndsWith(Globals.glbHostSkinFolder))
+                if (!folder.EndsWith(Globals.glbHostSkinFolder, StringComparison.OrdinalIgnoreCase))
                 {
                     var skin = new InstalledSkinInfo();
-                    skin.SkinName = folder.Substring(folder.LastIndexOf("\\") + 1);
+                    skin.SkinName = folder.Substring(folder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
                     skin.InUse = IsFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, string.Empty);
                     list.Add(skin);
                 }
@@ -519,8 +542,8 @@ namespace DotNetNuke.UI.Skins
 
                 if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                 {
-                    ServicesFramework.Instance.RequestAjaxScriptSupport();
-                    ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+                    this.servicesFramework.RequestAjaxScriptSupport();
+                    this.servicesFramework.RequestAjaxAntiForgerySupport();
 
                     this.javaScript.RequestRegistration(CommonJs.jQueryUI);
                     JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
@@ -531,7 +554,7 @@ namespace DotNetNuke.UI.Skins
             if (!TabPermissionController.CanAdminPage() && !success)
             {
                 // only display the warning to non-administrators (administrators will see the errors)
-                AddPageMessage(this, Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), this.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning, string.Empty);
+                AddPageMessage(this, Localization.GetString("ModuleLoadWarning.Error"), string.Format(CultureInfo.CurrentCulture, Localization.GetString("ModuleLoadWarning.Text"), this.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning, string.Empty);
             }
 
             this.InvokeSkinEvents(SkinEventType.OnSkinInit);
@@ -547,7 +570,7 @@ namespace DotNetNuke.UI.Skins
                 AddPageMessage(this, string.Empty, HttpContextSource.Current.Items[OnInitMessage].ToString(), messageType, string.Empty);
 
                 this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
-                ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+                this.servicesFramework.RequestAjaxAntiForgerySupport();
             }
 
             // Process the Panes attributes
@@ -672,7 +695,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     // only display the error to administrators
                     var skinError = (Label)page.FindControl("SkinError");
-                    skinError.Text = string.Format(Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
+                    skinError.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
                     skinError.Visible = true;
                 }
 
@@ -685,8 +708,8 @@ namespace DotNetNuke.UI.Skins
         private static bool IsFallbackSkin(string skinPath)
         {
             SkinDefaults defaultSkin = SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo);
-            string defaultSkinPath = (Globals.HostMapPath + SkinController.RootSkin + defaultSkin.Folder).Replace("/", "\\");
-            if (defaultSkinPath.EndsWith("\\"))
+            string defaultSkinPath = (Globals.HostMapPath + SkinController.RootSkin + defaultSkin.Folder).Replace("/", @"\");
+            if (defaultSkinPath.EndsWith(@"\", StringComparison.Ordinal))
             {
                 defaultSkinPath = defaultSkinPath.Substring(0, defaultSkinPath.Length - 1);
             }
@@ -920,7 +943,7 @@ namespace DotNetNuke.UI.Skins
                     AddPageMessage(
                         this,
                         string.Empty,
-                        string.Format(Localization.GetString("ContractExpired.Error"), this.PortalSettings.PortalName, Globals.GetMediumDate(this.PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), this.PortalSettings.Email),
+                        string.Format(CultureInfo.CurrentCulture, Localization.GetString("ContractExpired.Error"), this.PortalSettings.PortalName, Globals.GetMediumDate(this.PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), this.PortalSettings.Email),
                         ModuleMessage.ModuleMessageType.RedError,
                         string.Empty);
                 }

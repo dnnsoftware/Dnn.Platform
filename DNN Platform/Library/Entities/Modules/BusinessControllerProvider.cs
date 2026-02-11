@@ -21,7 +21,7 @@ public class BusinessControllerProvider : IBusinessControllerProvider
         this.serviceProvider = serviceProvider;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public T GetInstance<T>(string businessControllerTypeName)
         where T : class
     {
@@ -33,7 +33,7 @@ public class BusinessControllerProvider : IBusinessControllerProvider
         return this.GetInstance<T>(Reflection.CreateType(businessControllerTypeName));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public T GetInstance<T>(Type businessControllerType)
         where T : class
     {
@@ -46,7 +46,7 @@ public class BusinessControllerProvider : IBusinessControllerProvider
         return null;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public object GetInstance(string businessControllerTypeName)
     {
         if (string.IsNullOrEmpty(businessControllerTypeName))
@@ -57,7 +57,7 @@ public class BusinessControllerProvider : IBusinessControllerProvider
         return this.GetInstance(Reflection.CreateType(businessControllerTypeName));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public object GetInstance(Type businessControllerType)
     {
         return Reflection.CreateObject(this.serviceProvider, businessControllerType);

@@ -5,8 +5,15 @@ namespace DotNetNuke.Tests.Core.Framework
 {
     using System;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
     using DotNetNuke.Tests.Utilities.Fakes;
+
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Moq;
 
     using NUnit.Framework;
 
@@ -17,7 +24,7 @@ namespace DotNetNuke.Tests.Core.Framework
         [SetUp]
         public void Setup()
         {
-            this.serviceProvider = FakeServiceProvider.Setup();
+            this.serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<IPortalController>()));
 
             var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", "c:\\");
             simulator.SimulateRequest(new Uri("http://localhost/dnn/Default.aspx"));
@@ -32,20 +39,21 @@ namespace DotNetNuke.Tests.Core.Framework
         [Test]
         public void RequestingAjaxAntiForgeryIsNoted()
         {
-            // Arrange
+            var servicesFramework = new ServicesFrameworkImpl(
+                Mock.Of<IApplicationStatusInfo>(),
+                Mock.Of<IEventLogger>());
+            servicesFramework.RequestAjaxAntiForgerySupport();
 
-            // Act
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-
-            // Assert
-            Assert.That(ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired, Is.True);
+            Assert.That(servicesFramework.IsAjaxAntiForgerySupportRequired, Is.True);
         }
 
         [Test]
         public void NoAjaxAntiForgeryRequestMeansNotRequired()
         {
-            // Assert
-            Assert.That(ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired, Is.False);
+            var servicesFramework = new ServicesFrameworkImpl(
+                Mock.Of<IApplicationStatusInfo>(),
+                Mock.Of<IEventLogger>());
+            Assert.That(servicesFramework.IsAjaxAntiForgerySupportRequired, Is.False);
         }
     }
 }

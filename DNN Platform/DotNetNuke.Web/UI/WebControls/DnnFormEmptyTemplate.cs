@@ -6,10 +6,11 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    /// <summary>An empty control.</summary>
     [ParseChildren(true)]
     public class DnnFormEmptyTemplate : WebControl, INamingContainer
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override HtmlTextWriterTag TagKey
         {
             get

@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Pages.Components
             this.tabController = TabController.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string SaveAsTemplate(PageTemplate template)
         {
             string filename;
@@ -58,7 +58,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 var folder = GetTemplateFolder() ?? CreateTemplateFolder();
 
                 filename = $"{folder.FolderPath}{template.Name}.page.template";
-                filename = filename.Replace("/", "\\");
+                filename = filename.Replace("/", @"\");
 
                 var xmlTemplate = new XmlDocument { XmlResolver = null };
                 var nodePortal = xmlTemplate.AppendChild(xmlTemplate.CreateElement("portal"));
@@ -96,7 +96,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return filename;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<Template> GetTemplates()
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -105,7 +105,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return LoadTemplates(portalSettings.PortalId, templateFolder);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int GetDefaultTemplateId(IEnumerable<Template> templates)
         {
             var firstOrDefault = templates.FirstOrDefault(t => t.Id == "Default");
@@ -117,7 +117,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return Null.NullInteger;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CreatePageFromTemplate(int templateId, TabInfo tab, int portalId)
         {
             // create the page from a template
@@ -129,7 +129,9 @@ namespace Dnn.PersonaBar.Pages.Components
                     // open the XML file
                     var fileId = Convert.ToInt32(templateId);
                     var templateFile = FileManager.Instance.GetFile(fileId);
-                    xmlDoc.Load(FileManager.Instance.GetFileContent(templateFile));
+                    using var templateStream = FileManager.Instance.GetFileContent(templateFile);
+                    using var templateReader = XmlReader.Create(templateStream, new XmlReaderSettings { XmlResolver = null, });
+                    xmlDoc.Load(templateReader);
                 }
                 catch (Exception ex)
                 {
@@ -158,7 +160,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         catch (Exception ex)
                         {
                             DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                            exceptions += string.Format("Template Tab # {0}. Error {1}<br/>", tabIndex + 1, ex.Message);
+                            exceptions += $"Template Tab # {tabIndex + 1}. Error {ex.Message}<br/>";
                         }
                     }
                     else
@@ -192,7 +194,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ITemplateController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<ITemplateController>;

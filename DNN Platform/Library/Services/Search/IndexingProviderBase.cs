@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Search
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -92,7 +93,7 @@ namespace DotNetNuke.Services.Search
         {
             Requires.NotNullOrEmpty("propertyId", propertyId);
             var t = this.GetType();
-            return string.Join("_", "Search", t.Name, t.FullName.GetHashCode().ToString("x8"), portalId.ToString(), propertyId);
+            return string.Join("_", "Search", t.Name, t.FullName.GetHashCode().ToString("x8", CultureInfo.InvariantCulture), portalId.ToString(CultureInfo.InvariantCulture), propertyId);
         }
     }
 }

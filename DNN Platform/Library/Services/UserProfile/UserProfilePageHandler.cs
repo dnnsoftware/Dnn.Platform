@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.UserProfile
 {
     using System;
+    using System.Globalization;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -16,7 +17,7 @@ namespace DotNetNuke.Services.UserProfile
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserProfilePageHandler));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsReusable
         {
             get
@@ -25,14 +26,11 @@ namespace DotNetNuke.Services.UserProfile
             }
         }
 
-        /// <summary>
-        ///   This handler handles requests for LinkClick.aspx, but only those specifc
-        ///   to file serving.
-        /// </summary>
-        /// <param name="context">System.Web.HttpContext).</param>
+        /// <summary>This handler handles requests for LinkClick.aspx, but only those specific to file serving.</summary>
+        /// <param name="context">System.Web.HttpContext.</param>
         public void ProcessRequest(HttpContext context)
         {
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             int userId = Null.NullInteger;
             int portalId = portalSettings.PortalId;
 
@@ -41,7 +39,7 @@ namespace DotNetNuke.Services.UserProfile
                 // try UserId
                 if (!string.IsNullOrEmpty(context.Request.QueryString["UserId"]))
                 {
-                    userId = int.Parse(context.Request.QueryString["UserId"]);
+                    userId = int.Parse(context.Request.QueryString["UserId"], CultureInfo.InvariantCulture);
                     if (UserController.GetUserById(portalId, userId) == null)
                     {
                         // The user cannot be found (potential DOS)

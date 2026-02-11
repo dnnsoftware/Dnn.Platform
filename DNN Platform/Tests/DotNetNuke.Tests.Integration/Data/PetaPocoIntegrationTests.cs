@@ -275,11 +275,11 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             Assert.That(dog, Is.InstanceOf<Dog>());
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(dog.Age, Is.EqualTo(Constants.PETAPOCO_ValidDogAge));
                 Assert.That(dog.Name, Is.EqualTo(Constants.PETAPOCO_ValidDogName));
-            });
+            }
         }
 
         [Test]
@@ -299,11 +299,11 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             Assert.That(dog, Is.InstanceOf<Dog>());
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(dog.Age, Is.EqualTo(Constants.PETAPOCO_ValidDogAge));
                 Assert.That(dog.Name, Is.EqualTo(Constants.PETAPOCO_ValidDogName));
-            });
+            }
         }
 
         [Test]
@@ -337,11 +337,11 @@ namespace DotNetNuke.Tests.Data
             {
                 if ((int)row["ID"] == Constants.PETAPOCO_UpdateDogId)
                 {
-                    Assert.Multiple(() =>
+                    using (Assert.EnterMultipleScope())
                     {
                         Assert.That(row["Age"], Is.EqualTo(Constants.PETAPOCO_UpdateDogAge));
                         Assert.That(row["Name"], Is.EqualTo(Constants.PETAPOCO_UpdateDogName));
-                    });
+                    }
                 }
             }
         }
@@ -377,11 +377,11 @@ namespace DotNetNuke.Tests.Data
             {
                 if ((int)row["ID"] == Constants.PETAPOCO_UpdateDogId)
                 {
-                    Assert.Multiple(() =>
+                    using (Assert.EnterMultipleScope())
                     {
                         Assert.That(row["Age"], Is.EqualTo(Constants.PETAPOCO_UpdateDogAge));
                         Assert.That(row["Name"], Is.EqualTo(Constants.PETAPOCO_UpdateDogName));
-                    });
+                    }
                 }
             }
         }
@@ -410,11 +410,11 @@ namespace DotNetNuke.Tests.Data
             {
                 if ((int)row["ID"] == Constants.PETAPOCO_UpdateDogId)
                 {
-                    Assert.Multiple(() =>
+                    using (Assert.EnterMultipleScope())
                     {
                         Assert.That(row["Age"], Is.EqualTo(Constants.PETAPOCO_UpdateDogAge));
                         Assert.That(row["Name"], Is.EqualTo(Constants.PETAPOCO_UpdateDogName));
-                    });
+                    }
                 }
             }
         }

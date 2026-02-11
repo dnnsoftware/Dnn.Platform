@@ -23,7 +23,7 @@ namespace DotNetNuke.UI.Containers
         /// <summary>Gets or sets the CSS class on the <c>img</c> element.</summary>
         public string CssClass { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -7,55 +7,70 @@ namespace DotNetNuke.Framework
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.WebControls;
 
-    public class AJAX
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A class for managing <see cref="ScriptManager"/> instances.</summary>
+    public partial class AJAX
     {
         /// <summary>AddScriptManager is used internally by the framework to add a ScriptManager control to the page.</summary>
         /// <param name="page">The <see cref="Page"/>.</param>
-        public static void AddScriptManager(Page page)
-        {
-            AddScriptManager(page, true);
-        }
+        [DnnDeprecated(10, 2, 2, "Use overload with IHostSettings")]
+        public static partial void AddScriptManager(Page page)
+            => AddScriptManager(page, true);
 
         /// <summary>AddScriptManager is used internally by the framework to add a ScriptManager control to the page.</summary>
-        /// <param name="page">the page instance.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="page">The <see cref="Page"/>.</param>
+        public static void AddScriptManager(IHostSettings hostSettings, Page page)
+            => AddScriptManager(hostSettings, page, true);
+
+        /// <summary>AddScriptManager is used internally by the framework to add a ScriptManager control to the page.</summary>
+        /// <param name="page">The page instance.</param>
         /// <param name="checkCdn">Whether check cdn settings from host settings.</param>
-        public static void AddScriptManager(Page page, bool checkCdn)
+        [DnnDeprecated(10, 2, 2, "Use overload with IHostSettings")]
+        public static partial void AddScriptManager(Page page, bool checkCdn)
+            => AddScriptManager(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), page, checkCdn);
+
+        /// <summary>AddScriptManager is used internally by the framework to add a ScriptManager control to the page.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="page">The page instance.</param>
+        /// <param name="checkCdn">Whether check cdn settings from host settings.</param>
+        public static void AddScriptManager(IHostSettings hostSettings, Page page, bool checkCdn)
         {
-            if (GetScriptManager(page) == null)
+            if (GetScriptManager(page) != null || page.Form == null)
             {
-                if (page.Form != null)
+                return;
+            }
+
+            try
+            {
+                using (var scriptManager = new ScriptManager())
                 {
-                    try
+                    scriptManager.ID = "ScriptManager";
+                    scriptManager.EnableScriptGlobalization = true;
+                    scriptManager.SupportsPartialRendering = true;
+                    if (checkCdn)
                     {
-                        using (var scriptManager = new ScriptManager // RadScriptManager
-                        {
-                            ID = "ScriptManager",
-                            EnableScriptGlobalization = true,
-                            SupportsPartialRendering = true,
-                        })
-                        {
-                            if (checkCdn)
-                            {
-                                scriptManager.EnableCdn = Host.EnableMsAjaxCdn;
-                                scriptManager.EnableCdnFallback = Host.EnableMsAjaxCdn;
-                            }
-
-                            page.Form.Controls.AddAt(0, scriptManager);
-                        }
-
-                        if (HttpContext.Current.Items["System.Web.UI.ScriptManager"] == null)
-                        {
-                            HttpContext.Current.Items.Add("System.Web.UI.ScriptManager", true);
-                        }
+                        scriptManager.EnableCdn = hostSettings.EnableMsAjaxCdn;
+                        scriptManager.EnableCdnFallback = hostSettings.EnableMsAjaxCdn;
                     }
-                    catch
-                    {
-                        // suppress error adding script manager to support edge-case of module developers custom aspx pages that inherit from basepage and use code blocks
-                    }
+
+                    page.Form.Controls.AddAt(0, scriptManager);
                 }
+
+                if (HttpContext.Current.Items["System.Web.UI.ScriptManager"] == null)
+                {
+                    HttpContext.Current.Items.Add("System.Web.UI.ScriptManager", true);
+                }
+            }
+            catch
+            {
+                // suppress error adding script manager to support edge-case of module developers custom aspx pages that inherit from basepage and use code blocks
             }
         }
 
@@ -75,10 +90,8 @@ namespace DotNetNuke.Framework
             {
                 return false;
             }
-            else
-            {
-                return (bool)HttpContext.Current.Items["System.Web.UI.ScriptManager"];
-            }
+
+            return (bool)HttpContext.Current.Items["System.Web.UI.ScriptManager"];
         }
 
         /// <summary>IsInstalled can be used to determine if AJAX is installed on the server.</summary>
@@ -92,11 +105,8 @@ namespace DotNetNuke.Framework
         /// <param name="objControl">The control to register for postback.</param>
         public static void RegisterPostBackControl(Control objControl)
         {
-            ScriptManager objScriptManager = GetScriptManager(objControl.Page);
-            if (objScriptManager != null)
-            {
-                objScriptManager.RegisterPostBackControl(objControl);
-            }
+            var objScriptManager = GetScriptManager(objControl.Page);
+            objScriptManager?.RegisterPostBackControl(objControl);
         }
 
         /// <summary>RegisterScriptManager must be used by developers to instruct the framework that AJAX is required on the page.</summary>

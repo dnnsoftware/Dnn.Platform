@@ -12,7 +12,7 @@
     <ModuleFolderName>$(WebsitePath)\DesktopModules\Dnn\ContactList</ModuleFolderName>
     <InstallPath>$(PathToArtifacts)\SampleModules</InstallPath>
   </PropertyGroup>
-  <Target Name="CopySqlDataProviderFiles" AfterTargets="Build" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <Target Name="CopySqlDataProviderFiles" BeforeTargets="Build" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <CreateItem Include="$(MSBuildProjectDirectory)\..\Dnn.ContactList.Api\Providers\DataProviders\SqlDataProvider\*.SqlDataProvider">
       <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
     </CreateItem>
@@ -24,7 +24,7 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.ContactList.Api.pdb" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.ContactList.Api.xml" DestinationFolder="$(WebsitePath)/bin" />
   </Target>
-  <Target Name="PostBuild" AfterTargets="CopySqlDataProviderFiles" DependsOnTargets="CopyBinOrNot;GetFiles;UpdateFiles;DebugProject;Package">
+  <Target Name="PostBuild" AfterTargets="Package" DependsOnTargets="CopyBinOrNot;GetFiles;UpdateFiles;DebugProject;Package">
     <CreateItem Include="$(MSBuildProjectDirectory)\Providers\DataProviders\SqlDataProvider\*.SqlDataProvider">
       <Output TaskParameter="Include" ItemName="CopiedSqlDataProviderFiles" />
     </CreateItem>

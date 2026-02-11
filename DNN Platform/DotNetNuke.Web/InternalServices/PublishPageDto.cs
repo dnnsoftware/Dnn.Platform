@@ -4,8 +4,10 @@
 
 namespace DotNetNuke.Web.InternalServices
 {
+    /// <summary>A data transfer object with information about a request to publish the current page.</summary>
     public class PublishPageDto
     {
+        /// <summary>Gets or sets a value indicating whether to publish.</summary>
         public bool Publish { get; set; }
     }
 }

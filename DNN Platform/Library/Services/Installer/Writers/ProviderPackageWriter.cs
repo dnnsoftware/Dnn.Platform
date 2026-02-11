@@ -27,11 +27,11 @@ namespace DotNetNuke.Services.Installer.Writers
 
             if (!string.IsNullOrEmpty(providerPath))
             {
-                this.BasePath = providerPath.Replace("~/", string.Empty).Replace("/", "\\");
+                this.BasePath = providerPath.Replace("~/", string.Empty).Replace("/", @"\");
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
             base.GetFiles(includeSource, false);

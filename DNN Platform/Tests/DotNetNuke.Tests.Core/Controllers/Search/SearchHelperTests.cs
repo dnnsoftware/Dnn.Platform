@@ -78,12 +78,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Act
             var synonyms = this.searchHelper.GetSynonyms(PortalId0, CultureEnUs, TermDNN).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(synonyms.Count(), Is.EqualTo(1));
                 Assert.That(synonyms[0], Is.EqualTo(TermDotNetNuke.ToLowerInvariant()));
-            });
+            }
         }
 
         [Test]
@@ -94,13 +94,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Act
             var synonyms = this.searchHelper.GetSynonyms(PortalId0, CultureEnUs, TermHop).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(synonyms.Count(), Is.EqualTo(2));
                 Assert.That(synonyms[0], Is.EqualTo(TermJump.ToLowerInvariant()));
                 Assert.That(synonyms[1], Is.EqualTo(TermLeap.ToLowerInvariant()));
-            });
+            }
         }
 
         [Test]

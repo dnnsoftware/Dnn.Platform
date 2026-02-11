@@ -59,19 +59,19 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.systemWorkflowManager = SystemWorkflowManager.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public UserInfo GetStartedDraftStateUser(ContentItem contentItem)
         {
             return this.GetUserByWorkflowLogType(contentItem, WorkflowLogType.WorkflowStarted);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public UserInfo GetSubmittedDraftStateUser(ContentItem contentItem)
         {
             return this.GetUserByWorkflowLogType(contentItem, WorkflowLogType.DraftCompleted);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void StartWorkflow(int workflowId, int contentItemId, int userId)
         {
             Requires.NotNegative("workflowId", workflowId);
@@ -114,7 +114,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(initialTransaction, WorkflowActionTypes.StartWorkflow);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CompleteState(StateTransaction stateTransaction)
         {
             var contentItem = this.contentController.GetContentItem(stateTransaction.ContentItemId);
@@ -175,7 +175,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.CompleteState);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DiscardState(StateTransaction stateTransaction)
         {
             var contentItem = this.contentController.GetContentItem(stateTransaction.ContentItemId);
@@ -237,14 +237,14 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.DiscardState);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsWorkflowCompleted(int contentItemId)
         {
             var contentItem = this.contentController.GetContentItem(contentItemId);
             return this.IsWorkflowCompleted(contentItem);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsWorkflowCompleted(ContentItem contentItem)
         {
             var workflow = this.workflowManager.GetWorkflow(contentItem);
@@ -256,14 +256,14 @@ namespace DotNetNuke.Entities.Content.Workflow
             return contentItem.StateID == Null.NullInteger || workflow.LastState.StateID == contentItem.StateID;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsWorkflowOnDraft(int contentItemId)
         {
             var contentItem = this.contentController.GetContentItem(contentItemId); // Ensure DB values
             return this.IsWorkflowOnDraft(contentItem);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsWorkflowOnDraft(ContentItem contentItem)
         {
             var workflow = this.workflowManager.GetWorkflow(contentItem);
@@ -275,7 +275,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return contentItem.StateID == workflow.FirstState.StateID;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DiscardWorkflow(StateTransaction stateTransaction)
         {
             var contentItem = this.contentController.GetContentItem(stateTransaction.ContentItemId);
@@ -304,7 +304,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.DiscardWorkflow);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CompleteWorkflow(StateTransaction stateTransaction)
         {
             var contentItem = this.contentController.GetContentItem(stateTransaction.ContentItemId);
@@ -333,7 +333,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.CompleteWorkflow);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IWorkflowEngine> GetFactory()
         {
             return () => new WorkflowEngine();
@@ -548,7 +548,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 var user = this.GetUserThatHaveStartedOrSubmittedDraftState(workflow, contentItem, stateTransaction);
                 if (user == null)
                 {
-                    // Services.Exceptions.Exceptions.LogException(new WorkflowException(Localization.GetExceptionMessage("WorkflowAuthorNotFound", "Author cannot be found. Notification won't be sent")));
+                    ////Services.Exceptions.Exceptions.LogException(new WorkflowException(Localization.GetExceptionMessage("WorkflowAuthorNotFound", "Author cannot be found. Notification won't be sent")));
                     return;
                 }
 

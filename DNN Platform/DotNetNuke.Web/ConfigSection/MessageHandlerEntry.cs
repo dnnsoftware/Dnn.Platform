@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.ConfigSection
 
     using DotNetNuke.Web.Api;
 
+    /// <summary>A <see cref="ConfigurationElement"/> for an auth message handler.</summary>
     public class MessageHandlerEntry : ConfigurationElement
     {
         private const string NameTag = "name";
@@ -16,9 +17,9 @@ namespace DotNetNuke.Web.ConfigSection
         private const string DefaultIncludeTag = "defaultInclude";
         private const string ForceSslTag = "forceSSL";
 
+        /// <summary>Gets or sets the name of the message handler.</summary>
         [ConfigurationProperty(NameTag, DefaultValue = "", IsRequired = true)]
-
-        // [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 60)]
+        ////[StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 60)]
         public string Name
         {
             get
@@ -32,9 +33,9 @@ namespace DotNetNuke.Web.ConfigSection
             }
         }
 
+        /// <summary>Gets or sets the fully qualified name of the class that implements this message handler.</summary>
         [ConfigurationProperty(ClassNameTag, DefaultValue = "", IsRequired = true)]
-
-        // [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 300)]
+        ////[StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 300)]
         public string ClassName
         {
             get
@@ -48,6 +49,7 @@ namespace DotNetNuke.Web.ConfigSection
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether this message handler is enabled.</summary>
         [ConfigurationProperty(EnabledNameTag, DefaultValue = false, IsRequired = true)]
         public bool Enabled
         {
@@ -79,6 +81,7 @@ namespace DotNetNuke.Web.ConfigSection
             }
         }
 
+        /// <summary>Gets or sets a value indicating whether this message handler always uses HTTPS.</summary>
         [ConfigurationProperty(ForceSslTag, DefaultValue = true, IsRequired = true)]
         public bool ForceSsl
         {

@@ -19,9 +19,15 @@ namespace DotNetNuke.Web.Mvc.Routing
     /// <summary>Gets MVC routes.</summary>
     internal partial class PortalAliasMvcRouteManager : IPortalAliasMvcRouteManager
     {
+        private readonly IPortalAliasService portalAliasService;
         private List<int> prefixCounts;
 
-        /// <inheritdoc/>
+        public PortalAliasMvcRouteManager(IPortalAliasService portalAliasService)
+        {
+            this.portalAliasService = portalAliasService;
+        }
+
+        /// <inheritdoc />
         public string GetRouteName(string moduleFolderName, string routeName, int count)
         {
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
@@ -82,7 +88,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             return allRouteValues;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetRouteUrl(string moduleFolderName, string url, int count)
         {
             Requires.NotNegative("count", count);
@@ -91,13 +97,13 @@ namespace DotNetNuke.Web.Mvc.Routing
             return $"{GeneratePrefixString(count)}DesktopModules/MVC/{moduleFolderName}/{url}";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ClearCachedData()
         {
             this.prefixCounts = null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<int> GetRoutePrefixCounts()
         {
             if (this.prefixCounts != null)
@@ -105,7 +111,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                 return this.prefixCounts;
             }
 
-            // prefixCounts are required for each route that is mapped but they only change
+            // prefixCounts are required for each route that is mapped, but they only change
             // when a new portal is added so cache them until that time
             var portals = PortalController.Instance.GetPortals();
             var segmentCounts1 = new List<int>();
@@ -113,15 +119,9 @@ namespace DotNetNuke.Web.Mvc.Routing
             foreach (
                 var count in
                 portals.Cast<IPortalInfo>()
-                    .Select(
-                        portal =>
-                            PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalId)
-                                .Cast<IPortalAliasInfo>()
-                                .Select(x => x.HttpAlias))
+                    .Select(portal => this.portalAliasService.GetPortalAliasesByPortalId(portal.PortalId).Select(x => x.HttpAlias))
                     .Select(this.StripApplicationPath)
-                    .SelectMany(
-                        aliases =>
-                            aliases.Select(CalcAliasPrefixCount).Where(count => !segmentCounts1.Contains(count))))
+                    .SelectMany(aliases => aliases.Select(CalcAliasPrefixCount).Where(count => !segmentCounts1.Contains(count))))
             {
                 segmentCounts1.Add(count);
             }

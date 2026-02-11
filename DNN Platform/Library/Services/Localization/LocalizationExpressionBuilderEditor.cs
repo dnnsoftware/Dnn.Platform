@@ -8,7 +8,7 @@ namespace DotNetNuke.Services.Localization
 
     public class LocalizationExpressionBuilderEditor : ExpressionEditor
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override object EvaluateExpression(string expression, object parseTimeData, Type propertyType, IServiceProvider serviceProvider)
         {
             return string.Concat("[dnnLoc:", expression, "]");

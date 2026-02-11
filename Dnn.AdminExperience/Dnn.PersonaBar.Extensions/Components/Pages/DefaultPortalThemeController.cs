@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Pages.Components
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetDefaultPortalContainer()
         {
             var portalSettings = PortalSettings.Current;
@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId, this.hostSettings.DefaultPortalContainer, portalSettings.CultureCode);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetDefaultPortalLayout()
         {
             var portalSettings = PortalSettings.Current;
@@ -53,7 +53,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId, this.hostSettings.DefaultPortalSkin, portalSettings.CultureCode);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IDefaultPortalThemeController> GetFactory()
         {
             return () => Globals.GetCurrentServiceProvider().GetRequiredService<IDefaultPortalThemeController>();

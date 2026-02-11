@@ -10,7 +10,7 @@ namespace DotNetNuke.Common.Controls
     /// <summary>A control which displays a message.</summary>
     public partial class Message : PortalModuleBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

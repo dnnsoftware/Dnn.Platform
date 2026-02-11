@@ -37,7 +37,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             bool dataChanged = false;
@@ -57,14 +57,13 @@ namespace DotNetNuke.UI.WebControls
 
             if (postedHours != "12" || this.is24HourClock)
             {
-                int hours = 0;
-                if (int.TryParse(postedHours, out hours))
+                if (int.TryParse(postedHours, out var hours))
                 {
                     postedValue = postedValue.AddHours(hours);
                 }
             }
 
-            postedValue = postedValue.AddMinutes(int.Parse(postedMinutes));
+            postedValue = postedValue.AddMinutes(int.Parse(postedMinutes, CultureInfo.InvariantCulture));
             if (!this.is24HourClock && postedAMPM.Equals("PM", StringComparison.Ordinal))
             {
                 postedValue = postedValue.AddHours(12);
@@ -79,7 +78,7 @@ namespace DotNetNuke.UI.WebControls
             return dataChanged;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -89,7 +88,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -105,7 +104,7 @@ namespace DotNetNuke.UI.WebControls
 
             for (int i = minHour; i <= maxHour; i++)
             {
-                this.hourField.Items.Add(new ListItem(i.ToString("00"), i.ToString()));
+                this.hourField.Items.Add(new ListItem(i.ToString("00", CultureInfo.CurrentCulture), i.ToString(CultureInfo.InvariantCulture)));
             }
 
             this.hourField.ControlStyle.CopyFrom(this.ControlStyle);
@@ -115,7 +114,7 @@ namespace DotNetNuke.UI.WebControls
             this.minutesField = new DropDownList();
             for (int i = 0; i <= 59; i++)
             {
-                this.minutesField.Items.Add(new ListItem(i.ToString("00"), i.ToString()));
+                this.minutesField.Items.Add(new ListItem(i.ToString("00", CultureInfo.CurrentCulture), i.ToString(CultureInfo.InvariantCulture)));
             }
 
             this.minutesField.ControlStyle.CopyFrom(this.ControlStyle);
@@ -133,7 +132,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void LoadDateControls()
         {
             base.LoadDateControls();
@@ -154,15 +153,8 @@ namespace DotNetNuke.UI.WebControls
                 }
             }
 
-            if (this.hourField.Items.FindByValue(hour.ToString()) != null)
-            {
-                this.hourField.Items.FindByValue(hour.ToString()).Selected = true;
-            }
-
-            if (this.minutesField.Items.FindByValue(minute.ToString()) != null)
-            {
-                this.minutesField.Items.FindByValue(minute.ToString()).Selected = true;
-            }
+            this.hourField.Items.FindByValue(hour.ToString(CultureInfo.InvariantCulture))?.Selected = true;
+            this.minutesField.Items.FindByValue(minute.ToString(CultureInfo.InvariantCulture))?.Selected = true;
 
             if (!this.is24HourClock)
             {

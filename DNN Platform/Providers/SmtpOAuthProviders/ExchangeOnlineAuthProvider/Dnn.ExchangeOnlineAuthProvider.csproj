@@ -28,7 +28,6 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Dnn.ExchangeOnlineAuthProvider.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
-    <NoWarn>1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -40,7 +39,6 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Dnn.ExchangeOnlineAuthProvider.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
-    <NoWarn>1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Debug|AnyCPU' ">
@@ -53,7 +51,6 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Dnn.ExchangeOnlineAuthProvider.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
-    <NoWarn>1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Release|AnyCPU' ">
@@ -65,7 +62,6 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Dnn.ExchangeOnlineAuthProvider.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
-    <NoWarn>1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
@@ -131,13 +127,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.68.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Microsoft.Identity.Client" />
     <PackageReference Include="StyleCop.Analyzers">
-      <Version>1.2.0-beta.556</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

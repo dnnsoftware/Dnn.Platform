@@ -12,10 +12,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Utilities
 
     public class Echo : ConsoleCommandBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             if (this.Args.Length > 1)

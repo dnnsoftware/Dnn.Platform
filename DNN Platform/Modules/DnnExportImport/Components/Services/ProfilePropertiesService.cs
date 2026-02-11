@@ -4,6 +4,7 @@
 namespace Dnn.ExportImport.Components.Services
 {
     using System;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.ExportImport.Components.Common;
@@ -14,18 +15,19 @@ namespace Dnn.ExportImport.Components.Services
 
     using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
+    /// <summary>An export service for profile properties.</summary>
     public class ProfilePropertiesService : BasePortableService
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Category => Constants.Category_ProfileProps;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ParentCategory => null;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override uint Priority => 5;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
@@ -65,7 +67,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             this.Repository.CreateItems(profileProperties);
-            this.Result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString());
+            this.Result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString(CultureInfo.InvariantCulture));
             this.CheckPoint.Progress = 100;
             this.CheckPoint.ProcessedItems = profileProperties.Count;
             this.CheckPoint.Completed = true;
@@ -73,7 +75,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -122,7 +124,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
             }
 
-            this.Result.AddSummary("Imported Profile Properties", profileProperties.Count.ToString());
+            this.Result.AddSummary("Imported Profile Properties", profileProperties.Count.ToString(CultureInfo.InvariantCulture));
             this.CheckPoint.ProcessedItems = profileProperties.Count;
             this.CheckPoint.Completed = true;
             this.CheckPoint.Progress = 100;
@@ -130,7 +132,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportProfileProperty>();

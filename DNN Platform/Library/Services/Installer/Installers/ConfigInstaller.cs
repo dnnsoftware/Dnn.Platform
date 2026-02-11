@@ -99,7 +99,10 @@ namespace DotNetNuke.Services.Installer.Installers
 
                     // Create an XmlDocument for the config file
                     this.targetConfig = new XmlDocument { XmlResolver = null };
-                    this.TargetConfig.Load(Path.Combine(this.PhysicalSitePath, this.TargetFile.FullName));
+                    using (var targetConfigReader = XmlReader.Create(Path.Combine(this.PhysicalSitePath, this.TargetFile.FullName), new XmlReaderSettings { XmlResolver = null, }))
+                    {
+                        this.TargetConfig.Load(targetConfigReader);
+                    }
 
                     // Create XmlMerge instance from InstallConfig source
                     this.xmlMerge = new XmlMerge(new StringReader(this.InstallConfig), this.Package.Version.ToString(), this.Package.Name);
@@ -206,7 +209,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     // Create an XmlDocument for the config file
                     this.targetConfig = new XmlDocument { XmlResolver = null };
-                    this.TargetConfig.Load(Path.Combine(this.PhysicalSitePath, this.TargetFile.FullName));
+                    using (var targetConfigReader = XmlReader.Create(Path.Combine(this.PhysicalSitePath, this.TargetFile.FullName), new XmlReaderSettings { XmlResolver = null, }))
+                    {
+                        this.TargetConfig.Load(targetConfigReader);
+                    }
 
                     // Create XmlMerge instance from UnInstallConfig source
                     var merge = new XmlMerge(new StringReader(this.UnInstallConfig), this.Package.Version.ToString(), this.Package.Name);

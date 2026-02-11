@@ -6,43 +6,56 @@ namespace DotNetNuke.ComponentModel
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common;
 
-    public class SimpleContainer : AbstractContainer
+    public class SimpleContainer : AbstractContainer, IDisposable
     {
         private readonly string name;
+        private readonly IServiceProvider serviceProvider;
         private readonly ComponentBuilderCollection componentBuilders = new ComponentBuilderCollection();
-
         private readonly SharedDictionary<string, IDictionary> componentDependencies = new SharedDictionary<string, IDictionary>();
-
         private readonly ComponentTypeCollection componentTypes = new ComponentTypeCollection();
-
         private readonly SharedDictionary<Type, string> registeredComponents = new SharedDictionary<Type, string>();
 
         /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public SimpleContainer()
-            : this(string.Format("Container_{0}", Guid.NewGuid()))
+            : this(Globals.DependencyProvider)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
+        /// <param name="serviceProvider">The DI container scope.</param>
+        public SimpleContainer(IServiceProvider serviceProvider)
+            : this($"Container_{Guid.NewGuid()}", serviceProvider)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
         /// <param name="name">The container name.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public SimpleContainer(string name)
+            : this(name, Globals.DependencyProvider)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
+        /// <param name="name">The container name.</param>
+        /// <param name="serviceProvider">The DI container scope.</param>
+        public SimpleContainer(string name, IServiceProvider serviceProvider)
         {
             this.name = name;
+            this.serviceProvider = serviceProvider;
         }
 
-        /// <inheritdoc/>
-        public override string Name
-        {
-            get
-            {
-                return this.name;
-            }
-        }
+        /// <inheritdoc />
+        public override string Name => this.name;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void RegisterComponent(string name, Type type)
         {
             using (this.registeredComponents.GetWriteLock())
@@ -51,7 +64,7 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override object GetComponent(string name)
         {
             IComponentBuilder builder = this.GetComponentBuilder(name);
@@ -59,7 +72,7 @@ namespace DotNetNuke.ComponentModel
             return GetComponent(builder);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override object GetComponent(Type contractType)
         {
             ComponentType componentType = this.GetComponentType(contractType);
@@ -85,7 +98,7 @@ namespace DotNetNuke.ComponentModel
             return component;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override object GetComponent(string name, Type contractType)
         {
             ComponentType componentType = this.GetComponentType(contractType);
@@ -101,7 +114,7 @@ namespace DotNetNuke.ComponentModel
             return component;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string[] GetComponentList(Type contractType)
         {
             var components = new List<string>();
@@ -120,7 +133,7 @@ namespace DotNetNuke.ComponentModel
             return components.ToArray();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IDictionary GetComponentSettings(string name)
         {
             IDictionary settings;
@@ -132,7 +145,8 @@ namespace DotNetNuke.ComponentModel
             return settings;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void RegisterComponent(string name, Type contractType, Type type, ComponentLifeStyleType lifestyle)
         {
             this.AddComponentType(contractType);
@@ -141,10 +155,10 @@ namespace DotNetNuke.ComponentModel
             switch (lifestyle)
             {
                 case ComponentLifeStyleType.Transient:
-                    builder = new TransientComponentBuilder(name, type);
+                    builder = new TransientComponentBuilder(this.serviceProvider, name, type);
                     break;
                 case ComponentLifeStyleType.Singleton:
-                    builder = new SingletonComponentBuilder(name, type);
+                    builder = new SingletonComponentBuilder(this.serviceProvider, name, type);
                     break;
             }
 
@@ -153,7 +167,7 @@ namespace DotNetNuke.ComponentModel
             this.RegisterComponent(name, type);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RegisterComponentInstance(string name, Type contractType, object instance)
         {
             this.AddComponentType(contractType);
@@ -163,12 +177,30 @@ namespace DotNetNuke.ComponentModel
             this.RegisterComponent(name, instance.GetType());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RegisterComponentSettings(string name, IDictionary dependencies)
         {
             using (this.componentDependencies.GetWriteLock())
             {
                 this.componentDependencies[name] = dependencies;
+            }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.componentBuilders?.Dispose();
+                this.componentDependencies?.Dispose();
+                this.componentTypes?.Dispose();
+                this.registeredComponents?.Dispose();
             }
         }
 

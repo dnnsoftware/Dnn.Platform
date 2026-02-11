@@ -37,23 +37,23 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
                 throw new ArgumentNullException(nameof(applicationStatusInfo));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public string RelativePath { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public string SearchPattern { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public SearchOption SearchOption { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ExecuteInternal()
         {
             var count = 0;
-            var appPath = this.applicationStatusInfo.ApplicationMapPath + "\\";
+            var appPath = this.applicationStatusInfo.ApplicationMapPath + @"\";
             var fullPath = Path.GetFullPath(Path.Combine(appPath, this.RelativePath));
             var files = this.fileSystemProvider.EnumerateFiles(fullPath, this.SearchPattern, this.SearchOption);
 

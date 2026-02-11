@@ -11,28 +11,28 @@ namespace DotNetNuke.Authentication.Twitter
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public partial class Login : OAuthLoginBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsRegistration
         {
             get { return true; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string AuthSystemApplicationName
         {
             get { return "Twitter"; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override UserData GetCurrentUser()
         {
             return this.OAuthClient.GetCurrentUser<TwitterUserData>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void AddCustomProperties(System.Collections.Specialized.NameValueCollection properties)
         {
             base.AddCustomProperties(properties);
@@ -40,7 +40,7 @@ namespace DotNetNuke.Authentication.Twitter
             properties.Add("Twitter", string.Format("http://twitter.com/{0}", this.OAuthClient.GetCurrentUser<TwitterUserData>().ScreenName));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

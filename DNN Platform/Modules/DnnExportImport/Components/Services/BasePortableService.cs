@@ -43,14 +43,14 @@ namespace Dnn.ExportImport.Components.Services
 
         /// <summary>
         /// Gets or sets a data structure representing a checkpoint for the export/import task. This can be used to tell the
-        /// implementor where to resume it's operation if the job was interrupted previously.
+        /// implementor where to resume its operation if the job was interrupted previously.
         /// </summary>
         /// <remarks>It is up to each BasePortableService implementor to track its own stages and status values to
         /// properly export/import all of its items in/when and interruption occurs.</remarks>
         public ExportImportChekpoint CheckPoint { get; set; }
 
         /// <summary>
-        /// Gets or sets a callback to the export/import engine to check if the undergoing export/import process was cancelled.
+        /// Gets or sets a callback to the export/import engine to check if the undergoing export/import process was canceled.
         /// <para>The interface concrete classes should keep checking continuously for the cancellation flag to be true.</para>
         /// <para>If the callback returns true, the BasePortableService implementations should stop any work they do and
         /// return control to the caller immediately or as soon as possible.</para>
@@ -59,17 +59,25 @@ namespace Dnn.ExportImport.Components.Services
 
         /// <summary>
         /// Gets or sets callback function to provide a checkpoint mechanism for an <see cref="BasePortableService"/> implementation.
-        /// The actual method shoul persist the reported checkpoint in the engine so if the process is interrupted,
-        /// it can be resumed. If the reponse to calling this function was false, then the task should stop
+        /// The actual method should persist the reported checkpoint in the engine so if the process is interrupted,
+        /// it can be resumed. If the response to calling this function was false, then the task should stop
         /// processing and return control immediately to the caller.
         /// </summary>
         /// <returns>True if the implementation to abort progress; false to continue.</returns>
         public Func<BasePortableService, bool> CheckPointStageCallback { get; set; }
 
+        /// <summary>Export the data.</summary>
+        /// <param name="exportJob">The export job.</param>
+        /// <param name="exportDto">The export info.</param>
         public abstract void ExportData(ExportImportJob exportJob, ExportDto exportDto);
 
+        /// <summary>Import the data.</summary>
+        /// <param name="importJob">The import job.</param>
+        /// <param name="importDto">The import info.</param>
         public abstract void ImportData(ExportImportJob importJob, ImportDto importDto);
 
+        /// <summary>Gets the total count of import items.</summary>
+        /// <returns>The count.</returns>
         public abstract int GetImportTotal();
     }
 }

@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.Admin.Security
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Threading;
     using System.Web.UI;
@@ -77,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Security
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleActionCollection ModuleActions => new();
 
         /// <summary>Gets or sets the ParentModule (if one exists).</summary>
@@ -428,10 +429,10 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     if (this.Role != null)
                     {
-                        // cboRoles.Items.Add(new ListItem(Role.RoleName, Role.RoleID.ToString()));
+                        ////cboRoles.Items.Add(new ListItem(Role.RoleName, Role.RoleID.ToString()));
                         this.cboRoles.AddItem(this.Role.RoleName, this.Role.RoleID.ToString());
                         this.cboRoles.Items[0].Selected = true;
-                        this.lblTitle.Text = string.Format(Localization.GetString("RoleTitle.Text", this.LocalResourceFile), this.Role.RoleName, this.Role.RoleID);
+                        this.lblTitle.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("RoleTitle.Text", this.LocalResourceFile), this.Role.RoleName, this.Role.RoleID);
                     }
 
                     this.cboRoles.Visible = false;
@@ -458,7 +459,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     {
                         foreach (UserInfo objUser in UserController.GetUsers(this.PortalId))
                         {
-                            // cboUsers.Items.Add(new ListItem(objUser.DisplayName + " (" + objUser.Username + ")", objUser.UserID.ToString()));
+                            ////cboUsers.Items.Add(new ListItem(objUser.DisplayName + " (" + objUser.Username + ")", objUser.UserID.ToString()));
                             this.cboUsers.AddItem(objUser.DisplayName + " (" + objUser.Username + ")", objUser.UserID.ToString());
                         }
                     }
@@ -479,7 +480,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 if (this.User != null)
                 {
                     this.txtUsers.Text = this.User.UserID.ToString();
-                    this.lblTitle.Text = string.Format(Localization.GetString("UserTitle.Text", this.LocalResourceFile), this.User.Username, this.User.UserID);
+                    this.lblTitle.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UserTitle.Text", this.LocalResourceFile), this.User.Username, this.User.UserID);
                 }
 
                 this.txtUsers.Visible = false;
@@ -699,11 +700,11 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     if (this.roleId == Null.NullInteger)
                     {
-                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(Localization.GetString("DeleteRoleFromUser.Text", this.LocalResourceFile), role.FullName, role.RoleName));
+                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(CultureInfo.CurrentCulture, Localization.GetString("DeleteRoleFromUser.Text", this.LocalResourceFile), role.FullName, role.RoleName));
                     }
                     else
                     {
-                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(Localization.GetString("DeleteUsersFromRole.Text", this.LocalResourceFile), role.FullName, role.RoleName));
+                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(CultureInfo.CurrentCulture, Localization.GetString("DeleteUsersFromRole.Text", this.LocalResourceFile), role.FullName, role.RoleName));
                     }
 
                     cmdDeleteUserRole.Attributes.Add("roleId", role.RoleID.ToString());

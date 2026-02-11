@@ -5,6 +5,7 @@
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
     using System;
+    using System.Globalization;
     using System.Web;
 
     using Microsoft.Win32;
@@ -47,13 +48,8 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
         private static int GetVersion()
         {
-            int release = 0;
-            using (RegistryKey key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full\\"))
-            {
-                release = Convert.ToInt32(key.GetValue("Release"));
-            }
-
-            return release;
+            using var key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\");
+            return Convert.ToInt32(key.GetValue("Release"), CultureInfo.InvariantCulture);
         }
     }
 }

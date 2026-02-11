@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -25,24 +26,30 @@ namespace DotNetNuke.UI.UserControls
     public abstract class LabelControl : UserControl
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected LinkButton cmdHelp;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected HtmlGenericControl label;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblHelp;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblLabel;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Panel pnlHelp;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected Label lblNoHelpLabel;
 
-        /// <summary>Gets or sets controlName is the Id of the control that is associated with the label.</summary>
+        /// <summary>Gets or sets controlName is the ID of the control that is associated with the label.</summary>
         /// <value>A string representing the id of the associated control.</value>
         public string ControlName { get; set; }
 
         /// <summary>
-        /// Gets or sets set the associate control id format, combined used with ControlName for controls
+        /// Gets or sets the associate control ID format, combined used with ControlName for controls
         ///  which have child edit control and want that child control focus when click label.
         /// </summary>
         public string AssociateFormat { get; set; }
@@ -136,7 +143,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -155,13 +162,13 @@ namespace DotNetNuke.UI.UserControls
                 {
                     this.Text = localText + this.Suffix;
 
-                    // NoHelpLabelText = Text;
+                    ////NoHelpLabelText = Text;
                 }
                 else
                 {
                     this.Text += this.Suffix;
 
-                    // NoHelpLabelText = Text;
+                    ////NoHelpLabelText = Text;
                 }
             }
 
@@ -181,8 +188,8 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.pnlHelp.Visible = this.cmdHelp.Visible = false;
 
-                // lblHelp.Visible = false;
-                // lblNoHelpLabel.Visible = true;
+                ////lblHelp.Visible = false;
+                ////lblNoHelpLabel.Visible = true;
             }
 
             if (!string.IsNullOrEmpty(this.CssClass))
@@ -202,7 +209,7 @@ namespace DotNetNuke.UI.UserControls
 
                 if (!string.IsNullOrEmpty(this.AssociateFormat))
                 {
-                    clientId = string.Format(this.AssociateFormat, clientId);
+                    clientId = string.Format(CultureInfo.InvariantCulture, this.AssociateFormat, clientId);
                 }
 
                 this.label.Attributes["for"] = clientId;
@@ -214,7 +221,7 @@ namespace DotNetNuke.UI.UserControls
             JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-            // ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
+            ////ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
         }
     }
 }

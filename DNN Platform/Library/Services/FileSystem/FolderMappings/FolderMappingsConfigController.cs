@@ -29,18 +29,18 @@ namespace DotNetNuke.Services.FileSystem
             this.LoadConfig();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ConfigNode
         {
             get { return ConfigNodeValue; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<FolderTypeConfig> FolderTypes { get; internal set; }
 
         private Dictionary<string, string> FolderMappings { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void LoadConfig()
         {
             try
@@ -48,7 +48,11 @@ namespace DotNetNuke.Services.FileSystem
                 if (File.Exists(DefaultConfigFilePath))
                 {
                     var configDocument = new XmlDocument { XmlResolver = null };
-                    configDocument.Load(DefaultConfigFilePath);
+                    using (var configReader = XmlReader.Create(DefaultConfigFilePath, new XmlReaderSettings { XmlResolver = null, }))
+                    {
+                        configDocument.Load(configReader);
+                    }
+
                     this.FillFolderMappings(configDocument);
                     this.FillFolderTypes(configDocument);
                 }
@@ -59,7 +63,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SaveConfig(string folderMappinsSettings)
         {
             if (!File.Exists(DefaultConfigFilePath))
@@ -67,13 +71,17 @@ namespace DotNetNuke.Services.FileSystem
                 var folderMappingsConfigContent = "<" + this.ConfigNode + ">" + folderMappinsSettings + "</" + this.ConfigNode + ">";
                 File.AppendAllText(DefaultConfigFilePath, folderMappingsConfigContent);
                 var configDocument = new XmlDocument { XmlResolver = null };
-                configDocument.LoadXml(folderMappingsConfigContent);
+                using (var configReader = XmlReader.Create(new StringReader(folderMappingsConfigContent), new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    configDocument.Load(configReader);
+                }
+
                 this.FillFolderMappings(configDocument);
                 this.FillFolderTypes(configDocument);
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public FolderMappingInfo GetFolderMapping(int portalId, string folderPath)
         {
             if (!this.FolderMappings.TryGetValue(folderPath, out var mapping))
@@ -84,7 +92,7 @@ namespace DotNetNuke.Services.FileSystem
             return FolderMappingController.Instance.GetFolderMapping(portalId, mapping);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IFolderMappingsConfigController> GetFactory()
         {
             return () => new FolderMappingsConfigController();

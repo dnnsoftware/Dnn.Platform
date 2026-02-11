@@ -52,7 +52,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 CanAddContentToPage = TabPermissionController.CanAddContentToPage(tab),
                 CanNavigateToPage = TabPermissionController.CanNavigateToPage(tab),
                 LastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")),
-                FriendlyLastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt"),
+                FriendlyLastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CurrentCulture),
                 PublishDate = tab.HasBeenPublished ? WorkflowHelper.GetTabLastPublishedOn(tab).ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")) : string.Empty,
                 PublishStatus = GetTabPublishStatus(tab),
                 Tags = tab.Terms.Select(t => t.Name).ToArray(),
@@ -178,13 +178,12 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private static IFileInfo GetFileRedirection(string tabUrl)
         {
-            if (tabUrl == null || !tabUrl.StartsWith("FileId="))
+            if (tabUrl == null || !tabUrl.StartsWith("FileId=", StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }
 
-            int fileRedirectionId;
-            if (int.TryParse(tabUrl.Substring(7), out fileRedirectionId))
+            if (int.TryParse(tabUrl.Substring(7), out var fileRedirectionId))
             {
                 return FileManager.Instance.GetFile(fileRedirectionId);
             }

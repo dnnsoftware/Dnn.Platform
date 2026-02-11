@@ -10,6 +10,7 @@ namespace DotNetNuke.Modules.Html
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
@@ -27,15 +28,26 @@ namespace DotNetNuke.Modules.Html
     /// <summary>  The HtmlModule Class provides the UI for displaying the Html.</summary>
     public partial class HtmlModule : HtmlModuleBase, IActionable
     {
-        private readonly INavigationManager navigationManager;
         private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
+        private readonly INavigationManager navigationManager;
+        private readonly HtmlTextController htmlTextController;
         private bool editorEnabled;
         private int workflowID;
 
         /// <summary>Initializes a new instance of the <see cref="HtmlModule"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public HtmlModule()
+            : this(null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="HtmlModule"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="htmlTextController">The HTML/Text controller.</param>
+        public HtmlModule(INavigationManager navigationManager, HtmlTextController htmlTextController)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.htmlTextController = htmlTextController ?? this.DependencyProvider.GetRequiredService<HtmlTextController>();
         }
 
         /// <summary>  Gets moduleActions is an interface property that returns the module actions collection for the module.</summary>
@@ -83,7 +95,7 @@ namespace DotNetNuke.Modules.Html
             this.editorEnabled = this.PortalSettings.InlineEditorEnabled;
             try
             {
-                this.workflowID = new HtmlTextController(this.navigationManager).GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
+                this.workflowID = this.htmlTextController.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
 
                 // Add an Action Event Handler to the Skin
                 this.AddActionHandler(this.ModuleAction_Click);
@@ -101,8 +113,6 @@ namespace DotNetNuke.Modules.Html
             base.OnLoad(e);
             try
             {
-                var objHTML = new HtmlTextController(this.navigationManager);
-
                 // edit in place
                 if (this.editorEnabled && this.IsEditable && Personalization.GetUserMode() == PortalSettings.Mode.Edit)
                 {
@@ -117,7 +127,7 @@ namespace DotNetNuke.Modules.Html
                 HtmlTextInfo htmlTextInfo = null;
                 string contentString = string.Empty;
 
-                htmlTextInfo = objHTML.GetTopHtmlText(this.ModuleId, !this.IsEditable, this.workflowID);
+                htmlTextInfo = this.htmlTextController.GetTopHtmlText(this.ModuleId, !this.IsEditable, this.workflowID);
 
                 if (htmlTextInfo != null)
                 {
@@ -196,15 +206,14 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             try
             {
                 // verify security
-                if (!PortalSecurity.Instance.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting).Equals(e.Text))
+                if (HtmlUtils.ContainsJavaScript(e.Text))
                 {
                     throw new SecurityException();
                 }
                 else if (this.editorEnabled && this.IsEditable && Personalization.GetUserMode() == PortalSettings.Mode.Edit)
                 {
                     // get content
-                    var objHTML = new HtmlTextController(this.navigationManager);
-                    HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.workflowID);
+                    HtmlTextInfo objContent = this.htmlTextController.GetTopHtmlText(this.ModuleId, false, this.workflowID);
                     if (objContent == null)
                     {
                         objContent = new HtmlTextInfo();
@@ -218,7 +227,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                     objContent.StateID = this.workflowManager.GetWorkflow(this.workflowID).FirstState.StateID;
 
                     // save the content
-                    objHTML.UpdateHtmlText(objContent, objHTML.GetMaximumVersionHistory(this.PortalId));
+                    this.htmlTextController.UpdateHtmlText(objContent, this.htmlTextController.GetMaximumVersionHistory(this.PortalId));
                 }
                 else
                 {
@@ -242,8 +251,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                     if (this.IsEditable && Personalization.GetUserMode() == PortalSettings.Mode.Edit)
                     {
                         // get content
-                        var objHTML = new HtmlTextController(this.navigationManager);
-                        HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.workflowID);
+                        HtmlTextInfo objContent = this.htmlTextController.GetTopHtmlText(this.ModuleId, false, this.workflowID);
                         var workflow = this.workflowManager.GetWorkflow(this.workflowID);
                         if (objContent.StateID == workflow.FirstState.StateID)
                         {
@@ -251,7 +259,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                             objContent.StateID = workflow.LastState.StateID;
 
                             // save the content
-                            objHTML.UpdateHtmlText(objContent, objHTML.GetMaximumVersionHistory(this.PortalId));
+                            this.htmlTextController.UpdateHtmlText(objContent, this.htmlTextController.GetMaximumVersionHistory(this.PortalId));
 
                             // refresh page
                             this.Response.Redirect(this.navigationManager.NavigateURL(), true);

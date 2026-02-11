@@ -6,12 +6,15 @@ namespace DotNetNuke.Security.Permissions
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
+    using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
 
     /// <summary>DesktopModulePermissionCollection provides a custom collection for <see cref="DesktopModulePermissionInfo"/> objects.</summary>
     [Serializable]
-    public class DesktopModulePermissionCollection : CollectionBase
+    public class DesktopModulePermissionCollection : GenericCollectionBase<DesktopModulePermissionInfo>
     {
         /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.</summary>
         public DesktopModulePermissionCollection()
@@ -46,24 +49,6 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        public DesktopModulePermissionInfo this[int index]
-        {
-            get
-            {
-                return (DesktopModulePermissionInfo)this.List[index];
-            }
-
-            set
-            {
-                this.List[index] = value;
-            }
-        }
-
-        public int Add(DesktopModulePermissionInfo value)
-        {
-            return this.List.Add(value);
-        }
-
         public int Add(DesktopModulePermissionInfo value, bool checkForDuplicates)
         {
             int id = Null.NullInteger;
@@ -74,9 +59,9 @@ namespace DotNetNuke.Security.Permissions
             else
             {
                 bool isMatch = false;
-                foreach (PermissionInfoBase permission in this.List)
+                foreach (IPermissionInfo permission in this.List)
                 {
-                    if (permission.PermissionID == value.PermissionID && permission.UserID == value.UserID && permission.RoleID == value.RoleID)
+                    if (permission.PermissionId == value.PermissionID && permission.UserId == value.UserID && permission.RoleId == value.RoleID)
                     {
                         isMatch = true;
                         break;
@@ -128,26 +113,6 @@ namespace DotNetNuke.Security.Permissions
             return true;
         }
 
-        public bool Contains(DesktopModulePermissionInfo value)
-        {
-            return this.List.Contains(value);
-        }
-
-        public int IndexOf(DesktopModulePermissionInfo value)
-        {
-            return this.List.IndexOf(value);
-        }
-
-        public void Insert(int index, DesktopModulePermissionInfo value)
-        {
-            this.List.Insert(index, value);
-        }
-
-        public void Remove(DesktopModulePermissionInfo value)
-        {
-            this.List.Remove(value);
-        }
-
         public void Remove(int permissionID, int roleID, int userID)
         {
             foreach (PermissionInfoBase permission in this.List)
@@ -162,13 +127,7 @@ namespace DotNetNuke.Security.Permissions
 
         public List<PermissionInfoBase> ToList()
         {
-            var list = new List<PermissionInfoBase>();
-            foreach (PermissionInfoBase permission in this.List)
-            {
-                list.Add(permission);
-            }
-
-            return list;
+            return [..this.List.Cast<PermissionInfoBase>()];
         }
 
         public string ToString(string key)

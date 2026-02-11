@@ -6,10 +6,10 @@ namespace Dnn.ExchangeOnlineAuthProvider.Services;
 
 using DotNetNuke.Web.Api;
 
-/// <inheritdoc/>
+/// <inheritdoc />
 public class ServiceRouteMapper : IServiceRouteMapper
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void RegisterRoutes(IMapRoute routeManager)
     {
         routeManager.MapHttpRoute(

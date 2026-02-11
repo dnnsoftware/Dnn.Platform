@@ -6,6 +6,7 @@ namespace Dnn.ExportImport.Components.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
 
@@ -13,30 +14,50 @@ namespace Dnn.ExportImport.Components.Services
     using Dnn.ExportImport.Components.Dto;
     using Dnn.ExportImport.Components.Entities;
     using Dnn.ExportImport.Dto.Pages;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.UI.Skins;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>An export service for themes.</summary>
     public class ThemesExportService : BasePortableService
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesExportService));
 
+        private readonly IApplicationStatusInfo appStatus;
         private ExportImportJob exportImportJob;
         private PortalSettings portalSettings;
         private int importCount;
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="ThemesExportService"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        public ThemesExportService()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ThemesExportService"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        public ThemesExportService(IApplicationStatusInfo appStatus)
+        {
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        }
+
+        /// <inheritdoc />
         public override string Category => Constants.Category_Themes;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ParentCategory => Constants.Category_Pages;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override uint Priority => 10;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckCancelled(exportJob))
@@ -58,8 +79,8 @@ namespace Dnn.ExportImport.Components.Services
             var totalThemesExported = 0;
             try
             {
-                var packagesZipFileFormat = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipThemes}";
-                var packagesZipFile = string.Format(packagesZipFileFormat, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
+                var packagesZipFileFormat = $@"{this.appStatus.ApplicationMapPath}{Constants.ExportFolder}{{0}}\{Constants.ExportZipThemes}";
+                var packagesZipFile = string.Format(CultureInfo.InvariantCulture, packagesZipFileFormat, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
                 if (this.CheckPoint.Stage == 0)
                 {
@@ -79,12 +100,12 @@ namespace Dnn.ExportImport.Components.Services
                         foreach (var theme in exportThemes)
                         {
                             var filePath = SkinController.FormatSkinSrc(theme, this.portalSettings);
-                            var physicalPath = Path.Combine(Globals.ApplicationMapPath, filePath.TrimStart('/'));
+                            var physicalPath = Path.Combine(this.appStatus.ApplicationMapPath, filePath.TrimStart('/'));
                             if (Directory.Exists(physicalPath))
                             {
                                 foreach (var file in Directory.GetFiles(physicalPath, "*.*", SearchOption.AllDirectories))
                                 {
-                                    var folderOffset = Path.Combine(Globals.ApplicationMapPath, "Portals").Length + 1;
+                                    var folderOffset = Path.Combine(this.appStatus.ApplicationMapPath, "Portals").Length + 1;
                                     CompressionUtil.AddFileToArchive(archive, file, folderOffset);
                                 }
 
@@ -111,11 +132,11 @@ namespace Dnn.ExportImport.Components.Services
             finally
             {
                 this.CheckPointStageCallback(this);
-                this.Result.AddSummary("Exported Themes", totalThemesExported.ToString());
+                this.Result.AddSummary("Exported Themes", totalThemesExported.ToString(CultureInfo.InvariantCulture));
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob))
@@ -131,7 +152,7 @@ namespace Dnn.ExportImport.Components.Services
 
             this.exportImportJob = importJob;
 
-            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{this.exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipThemes}";
+            var packageZipFile = $"{this.appStatus.ApplicationMapPath}{Constants.ExportFolder}{this.exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipThemes}";
             var tempFolder = $"{Path.GetDirectoryName(packageZipFile)}\\{DateTime.Now.Ticks}";
             if (File.Exists(packageZipFile))
             {
@@ -154,15 +175,15 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             try
                             {
-                                var checkFolder = file.Replace(tempFolder + "\\", string.Empty).Split('\\')[0];
-                                var relativePath = file.Substring((tempFolder + "\\" + checkFolder + "\\").Length);
+                                var checkFolder = file.Replace($@"{tempFolder}\", string.Empty).Split('\\')[0];
+                                var relativePath = file.Substring($@"{tempFolder}\{checkFolder}\".Length);
                                 string targetPath;
 
                                 if (checkFolder == "_default")
                                 {
                                     targetPath = Path.Combine(Globals.HostMapPath, relativePath);
                                 }
-                                else if (checkFolder.EndsWith("-System"))
+                                else if (checkFolder.EndsWith("-System", StringComparison.OrdinalIgnoreCase))
                                 {
                                     targetPath = Path.Combine(portalSettings.HomeSystemDirectoryMapPath, relativePath);
                                 }
@@ -213,7 +234,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetImportTotal()
         {
             return this.importCount;

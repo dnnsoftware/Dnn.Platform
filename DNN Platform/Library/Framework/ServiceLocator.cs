@@ -5,6 +5,7 @@
 namespace DotNetNuke.Framework
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>Provides a readily testable way to manage a Singleton.</summary>
     /// <typeparam name="TContract">The interface that the controller provides.</typeparam>
@@ -17,6 +18,7 @@ namespace DotNetNuke.Framework
         private static bool useTestable;
 
         /// <summary>Gets a singleton of T.</summary>
+        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "Breaking change")]
         public static TContract Instance
         {
             get
@@ -36,6 +38,7 @@ namespace DotNetNuke.Framework
         /// <summary>Registers an instance to use for the Singleton.</summary>
         /// <remarks>Intended for unit testing purposes, not thread safe.</remarks>
         /// <param name="instance">The instance to set.</param>
+        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "Breaking change")]
         public static void SetTestableInstance(TContract instance)
         {
             testableInstance = instance;
@@ -44,6 +47,7 @@ namespace DotNetNuke.Framework
 
         /// <summary>Clears the current instance, a new instance will be initialized when next requested.</summary>
         /// <remarks>Intended for unit testing purposes, not thread safe.</remarks>
+        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "Breaking change")]
         public static void ClearInstance()
         {
             useTestable = false;

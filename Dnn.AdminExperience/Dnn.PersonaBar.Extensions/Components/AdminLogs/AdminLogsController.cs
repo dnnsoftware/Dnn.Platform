@@ -15,6 +15,8 @@ namespace Dnn.PersonaBar.AdminLogs.Components
     using System.Web;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -23,29 +25,30 @@ namespace Dnn.PersonaBar.AdminLogs.Components
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Mail;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class AdminLogsController
     {
+        private readonly IEventLogger eventLogger;
         private Dictionary<string, LogTypeInfo> logTypeDictionary;
 
-        private PortalSettings portalSettings;
-
-        protected Dictionary<string, LogTypeInfo> LogTypeDictionary
+        /// <summary>Initializes a new instance of the <see cref="AdminLogsController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public AdminLogsController()
+            : this(null)
         {
-            get
-            {
-                this.logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
-                return this.logTypeDictionary;
-            }
         }
 
-        private PortalSettings PortalSettings
+        /// <summary>Initializes a new instance of the <see cref="AdminLogsController"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        public AdminLogsController(IEventLogger eventLogger)
         {
-            get
-            {
-                this.portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                return this.portalSettings;
-            }
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
+
+        protected Dictionary<string, LogTypeInfo> LogTypeDictionary => this.logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
+
+        private static IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         public LogTypeInfo GetMyLogType(string logTypeKey)
         {
@@ -93,17 +96,18 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             return str.ToString();
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void ClearLog()
         {
             LogController.Instance.ClearLog();
 
             // add entry to log recording it was cleared
-            EventLogController.Instance.AddLog(
+            this.eventLogger.AddLog(
                 Localization.GetString("LogCleared", Constants.LocalResourcesFile),
                 Localization.GetString("Username", Constants.LocalResourcesFile) + ":" + UserController.Instance.GetCurrentUserInfo().Username,
-                this.PortalSettings,
+                PortalSettings,
                 -1,
-                EventLogController.EventLogType.ADMIN_ALERT);
+                EventLogType.ADMIN_ALERT);
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
@@ -229,18 +233,19 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             return LogController.Instance.GetLogTypeConfigInfoByID(logTypeConfigId);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string EmailLogItems(string subject, string fromEmailAddress, string toEmailAddress, string message, IEnumerable<string> logItemIds, out string error)
         {
             if (string.IsNullOrEmpty(subject))
             {
-                subject = this.PortalSettings.PortalName + @" Exceptions";
+                subject = PortalSettings.PortalName + @" Exceptions";
             }
 
             string returnMsg;
             if (Globals.EmailValidatorRegex.IsMatch(fromEmailAddress))
             {
                 const string tempFileName = "errorlog.xml";
-                var filePath = this.PortalSettings.HomeDirectoryMapPath + tempFileName;
+                var filePath = PortalSettings.HomeDirectoryMapPath + tempFileName;
                 var xmlDoc = GetExceptions(logItemIds);
                 xmlDoc.Save(filePath);
 
@@ -267,7 +272,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             }
             else
             {
-                returnMsg = string.Format(Localization.GetString("InavlidEmailAddress", Constants.LocalResourcesFile), fromEmailAddress);
+                returnMsg = string.Format(CultureInfo.CurrentCulture, Localization.GetString("InavlidEmailAddress", Constants.LocalResourcesFile), fromEmailAddress);
                 error = Localization.GetString("EmailFailure", Constants.LocalResourcesFile);
             }
 
@@ -277,7 +282,11 @@ namespace Dnn.PersonaBar.AdminLogs.Components
         private static XmlDocument GetExceptions(IEnumerable<string> logIds)
         {
             var objXml = new XmlDocument { XmlResolver = null };
-            objXml.LoadXml("<LogEntries></LogEntries>");
+            using (var logEntriesReader = XmlReader.Create(new StringReader("<LogEntries></LogEntries>"), new XmlReaderSettings { XmlResolver = null, }))
+            {
+                objXml.Load(logEntriesReader);
+            }
+
             foreach (var logId in logIds)
             {
                 var log = LogController.Instance.GetLog(logId);
@@ -285,7 +294,8 @@ namespace Dnn.PersonaBar.AdminLogs.Components
 
                 if (log is LogInfo logInfo)
                 {
-                    xmlDoc.LoadXml(logInfo.Serialize());
+                    using var logReader = XmlReader.Create(new StringReader(logInfo.Serialize()), new XmlReaderSettings { XmlResolver = null, });
+                    xmlDoc.Load(logReader);
                 }
 
                 var objNode = objXml.ImportNode(xmlDoc.DocumentElement, true);

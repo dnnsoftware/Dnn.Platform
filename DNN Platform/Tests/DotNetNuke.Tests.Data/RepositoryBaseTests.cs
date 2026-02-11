@@ -77,12 +77,12 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             var cacheArgs = Util.GetPrivateMember<FakeRepository<CacheableDog>, CacheItemArgs>(repo, "CacheArgs");
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(cacheArgs.CacheKey, Is.EqualTo(Constants.CACHE_DogsKey));
                 Assert.That(cacheArgs.CachePriority, Is.EqualTo(Constants.CACHE_Priority));
                 Assert.That(cacheArgs.CacheTimeOut, Is.EqualTo(Constants.CACHE_TimeOut));
-            });
+            }
         }
 
         [Test]
@@ -254,12 +254,12 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             var cacheArgs = Util.GetPrivateMember<FakeRepository<Dog>, CacheItemArgs>(repo, "CacheArgs");
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(cacheArgs.CacheKey, Is.EqualTo(Constants.CACHE_DogsKey));
                 Assert.That(cacheArgs.CachePriority, Is.EqualTo(Constants.CACHE_Priority));
                 Assert.That(cacheArgs.CacheTimeOut, Is.EqualTo(Constants.CACHE_TimeOut));
-            });
+            }
         }
 
         [Test]

@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.Razor
 
                     if (!File.Exists(this.Server.MapPath(scriptFile)))
                     {
-                        // Return ""
+                        ////Return ""
                         scriptFile = string.Empty;
                     }
                 }
@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.Razor
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

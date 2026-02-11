@@ -39,7 +39,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <summary>Gets or sets location of the content delivery network (CDN) where the script is loaded from when CDN has been enabled in host.</summary>
         public string CDNPath { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public XmlSchema GetSchema()
         {
             throw new NotImplementedException();

@@ -11,17 +11,20 @@ namespace DotNetNuke.Web.Api
 
     using DotNetNuke.Instrumentation;
 
+    /// <summary>A <see cref="ITraceWriter"/> implementation.</summary>
     internal sealed class TraceWriter : ITraceWriter
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TraceWriter));
         private readonly bool enabled;
 
+        /// <summary>Initializes a new instance of the <see cref="TraceWriter"/> class.</summary>
+        /// <param name="isTracingEnabled">Whether tracing is enabled.</param>
         public TraceWriter(bool isTracingEnabled)
         {
             this.enabled = isTracingEnabled;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Trace(HttpRequestMessage request, string category, TraceLevel level, Action<TraceRecord> traceAction)
         {
             if (!this.enabled || level == TraceLevel.Off)

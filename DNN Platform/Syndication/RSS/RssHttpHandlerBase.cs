@@ -4,17 +4,20 @@
 namespace DotNetNuke.Services.Syndication
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
     using System.Xml;
 
     /// <summary>A function which handles the <see cref="RssHttpHandlerBase{TRssChannelType,TRssItemType,TRssImageType}.Init"/> event.</summary>
     /// <param name="source">The event source, i.e. the <see cref="RssHttpHandlerBase{TRssChannelType,TRssItemType,TRssImageType}"/> instance.</param>
     /// <param name="e">Empty event args.</param>
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public delegate void InitEventHandler(object source, EventArgs e);
 
     /// <summary>A function which handles the <see cref="RssHttpHandlerBase{TRssChannelType,TRssItemType,TRssImageType}.PreRender"/> event.</summary>
     /// <param name="source">The event source, i.e. the <see cref="RssHttpHandlerBase{TRssChannelType,TRssItemType,TRssImageType}"/> instance.</param>
     /// <param name="e">Empty event args.</param>
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public delegate void PreRenderEventHandler(object source, EventArgs e);
 
     /// <summary>Base class for RssHttpHandler - Generic handler and strongly typed ones are derived from it.</summary>
@@ -32,7 +35,7 @@ namespace DotNetNuke.Services.Syndication
         /// <summary>An event which is fired just before the handler's contents are rendered.</summary>
         public event PreRenderEventHandler PreRender;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         bool IHttpHandler.IsReusable => false;
 
         /// <summary>Gets the channel.</summary>
@@ -41,7 +44,7 @@ namespace DotNetNuke.Services.Syndication
         /// <summary>Gets the HTTP context.</summary>
         protected HttpContext Context { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         void IHttpHandler.ProcessRequest(HttpContext context)
         {
             this.InternalInit(context);

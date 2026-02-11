@@ -27,21 +27,21 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListRoles));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public int Page { get; set; }
 
         public int Max { get; set; } = 10;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.Page = this.GetFlagValue(FlagPage, "Page", 1);
             this.Max = this.GetFlagValue(FlagMax, "Max", 10);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var max = this.Max <= 0 ? 10 : (this.Max > 500 ? 500 : this.Max);

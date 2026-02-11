@@ -6,6 +6,7 @@ namespace Dnn.ExportImport.Components.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.ExportImport.Components.Common;
@@ -18,18 +19,19 @@ namespace Dnn.ExportImport.Components.Services
 
     using Util = DotNetNuke.Entities.Content.Common.Util;
 
+    /// <summary>An export service for vocabularies.</summary>
     public class VocabularyService : BasePortableService
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Category => Constants.Category_Vocabularies;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ParentCategory => null;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override uint Priority => 5;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -68,8 +70,8 @@ namespace Dnn.ExportImport.Components.Services
 
                     this.Repository.CreateItems(scopeTypes);
 
-                    // Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
-                    // CheckPoint.ProcessedItems += scopeTypes.Count;
+                    ////Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
+                    ////CheckPoint.ProcessedItems += scopeTypes.Count;
                 }
 
                 this.CheckPoint.Progress = 25;
@@ -88,12 +90,12 @@ namespace Dnn.ExportImport.Components.Services
 
                     this.Repository.CreateItems(vocabularyTypes);
 
-                    // Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
-                    // CheckPoint.ProcessedItems += vocabularyTypes.Count;
+                    ////Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
+                    ////CheckPoint.ProcessedItems += vocabularyTypes.Count;
                 }
 
                 this.Repository.CreateItems(taxonomyTerms);
-                this.Result.AddSummary("Exported Vocabularies", taxonomyTerms.Count.ToString());
+                this.Result.AddSummary("Exported Vocabularies", taxonomyTerms.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 75;
                 this.CheckPoint.ProcessedItems += taxonomyTerms.Count;
                 this.CheckPoint.Stage++;
@@ -108,7 +110,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 this.Repository.CreateItems(taxonomyVocabularies);
-                this.Result.AddSummary("Exported Terms", taxonomyVocabularies.Count.ToString());
+                this.Result.AddSummary("Exported Terms", taxonomyVocabularies.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 100;
                 this.CheckPoint.ProcessedItems += taxonomyVocabularies.Count;
                 this.CheckPoint.Stage++;
@@ -117,7 +119,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -137,7 +139,7 @@ namespace Dnn.ExportImport.Components.Services
                 var otherScopeTypes = this.Repository.GetAllItems<TaxonomyScopeType>().ToList();
 
                 // the table Taxonomy_ScopeTypes is used for lookup only and never changed/updated in the database
-                // CheckPoint.Progress = 10;
+                ////CheckPoint.Progress = 10;
 
                 // var otherVocabularyTypes = Repository.GetAllItems<TaxonomyVocabularyType>().ToList();
                 // the table Taxonomy_VocabularyTypes is used for lookup only and never changed/updated in the database
@@ -146,14 +148,14 @@ namespace Dnn.ExportImport.Components.Services
                 var otherVocabularies = this.Repository.GetAllItems<TaxonomyVocabulary>().ToList();
                 this.ProcessVocabularies(importJob, importDto, otherScopeTypes, otherVocabularies);
                 this.Repository.UpdateItems(otherVocabularies);
-                this.Result.AddSummary("Imported Vocabularies", otherVocabularies.Count.ToString());
+                this.Result.AddSummary("Imported Vocabularies", otherVocabularies.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 60;
                 this.CheckPoint.ProcessedItems += otherVocabularies.Count;
 
                 var otherTaxonomyTerms = this.Repository.GetAllItems<TaxonomyTerm>().ToList();
                 this.ProcessTaxonomyTerms(importJob, importDto, otherVocabularies, otherTaxonomyTerms);
                 this.Repository.UpdateItems(otherTaxonomyTerms);
-                this.Result.AddSummary("Imported Terms", otherTaxonomyTerms.Count.ToString());
+                this.Result.AddSummary("Imported Terms", otherTaxonomyTerms.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 100;
                 this.CheckPoint.ProcessedItems += otherTaxonomyTerms.Count;
                 this.CheckPoint.Stage++;
@@ -162,7 +164,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<TaxonomyVocabulary>() + this.Repository.GetCount<TaxonomyTerm>();
@@ -249,7 +251,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var dataService = Util.GetDataService();
 
-            // var vocabularyController = new VocabularyController();
+            ////var vocabularyController = new VocabularyController();
             var localTaxonomyTerms = GetTaxonomyTerms(importDto.PortalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null);
             foreach (var other in otherTaxonomyTerms)
             {
@@ -289,7 +291,7 @@ namespace Dnn.ExportImport.Components.Services
                                 dataService.UpdateSimpleTerm(term, modifiedBy);
                             }
 
-                            DataCache.ClearCache(string.Format(DataCache.TermCacheKey, term.TermId));
+                            DataCache.ClearCache(string.Format(CultureInfo.InvariantCulture, DataCache.TermCacheKey, term.TermId));
                             this.Result.AddLogEntry("Updated taxonomy", other.Name);
                             break;
                         default:

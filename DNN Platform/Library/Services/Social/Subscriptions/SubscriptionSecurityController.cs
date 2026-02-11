@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
     /// <summary>This controller provides permission info about the User Subscription.</summary>
     public class SubscriptionSecurityController : ServiceLocator<ISubscriptionSecurityController, SubscriptionSecurityController>, ISubscriptionSecurityController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HasPermission(Subscription subscription)
         {
             var userInfo = GetUserFromSubscription(subscription);
@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ISubscriptionSecurityController> GetFactory()
         {
             return () => new SubscriptionSecurityController();

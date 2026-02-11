@@ -32,6 +32,8 @@
     <sitemapincludehidden>False</sitemapincludehidden>
     <sitemaplevelmode>False</sitemaplevelmode>
     <sitemapminpriority>0.2</sitemapminpriority>
+    <allowjsinmoduleheaders>False</allowjsinmoduleheaders>
+    <allowjsinmodulefooters>False</allowjsinmodulefooters>
   </settings>
   <profiledefinitions>
     <profiledefinition>

@@ -50,7 +50,7 @@ namespace Dnn.Modules.ResourceManager.Components.Common
 
             var prefixLength = Constants.GroupFolderPathStart.Length;
             var folderGroupIdString = folderPath.Substring(prefixLength - 1);
-            folderGroupIdString = folderGroupIdString.Substring(0, folderGroupIdString.IndexOf("/"));
+            folderGroupIdString = folderGroupIdString.Substring(0, folderGroupIdString.IndexOf("/", StringComparison.Ordinal));
 
             if (!int.TryParse(folderGroupIdString, out var folderGroupId))
             {

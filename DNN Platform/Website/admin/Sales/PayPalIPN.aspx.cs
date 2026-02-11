@@ -10,6 +10,7 @@ namespace DotNetNuke.Modules.Admin.Sales
     using System.Web;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -46,7 +47,7 @@ namespace DotNetNuke.Modules.Admin.Sales
             this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -54,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.Sales
             this.InitializeComponent();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -135,7 +136,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 // postback to verify the source
                 if (blnValid)
                 {
-                    Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(this.PortalSettings.PortalId);
+                    Dictionary<string, string> settings = this.PortalController.GetPortalSettings(this.PortalSettings.PortalId);
                     string strPayPalURL;
 
                     // Sandbox mode
@@ -181,7 +182,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 {
                     int intAdministratorRoleId = 0;
                     string strProcessorID = Null.NullString;
-                    PortalInfo objPortalInfo = PortalController.Instance.GetPortal(intPortalID);
+                    PortalInfo objPortalInfo = this.PortalController.GetPortal(intPortalID);
                     if (objPortalInfo != null)
                     {
                         intAdministratorRoleId = objPortalInfo.AdministratorRoleId;
@@ -195,7 +196,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         float portalPrice = objPortalInfo.HostFee;
                         if ((portalPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLowerInvariant()) == strProcessorID))
                         {
-                            PortalController.Instance.UpdatePortalExpiry(intPortalID, PortalController.GetActivePortalLanguage(intPortalID));
+                            this.PortalController.UpdatePortalExpiry(intPortalID, DotNetNuke.Entities.Portals.PortalController.GetActivePortalLanguage(intPortalID));
                         }
                         else
                         {
@@ -204,7 +205,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                                 LogPortalID = intPortalID,
                                 LogPortalName = this.PortalSettings.PortalName,
                                 LogUserID = intUserID,
-                                LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString(),
+                                LogTypeKey = nameof(EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD),
                             };
                             LogController.Instance.AddLog(log);
                         }
@@ -226,7 +227,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                                 LogPortalID = intPortalID,
                                 LogPortalName = this.PortalSettings.PortalName,
                                 LogUserID = intUserID,
-                                LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString(),
+                                LogTypeKey = nameof(EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD),
                             };
                             LogController.Instance.AddLog(log);
                         }

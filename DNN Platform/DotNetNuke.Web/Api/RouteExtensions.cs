@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.Api
     using System.Web.Http.Routing;
     using System.Web.Routing;
 
+    /// <summary>Extension methods for <see cref="Route"/> and <see cref="IHttpRoute"/>.</summary>
     public static class RouteExtensions
     {
         private const string NamespaceKey = "namespaces";
@@ -28,11 +29,17 @@ namespace DotNetNuke.Web.Api
             return (string)route.DataTokens[NameKey];
         }
 
+        /// <summary>Set the namespaces for the route.</summary>
+        /// <param name="route">The route.</param>
+        /// <param name="namespaces">The namespaces.</param>
         internal static void SetNameSpaces(this Route route, string[] namespaces)
         {
             route.DataTokens[NamespaceKey] = namespaces;
         }
 
+        /// <summary>Set the namespaces for the route.</summary>
+        /// <param name="route">The route.</param>
+        /// <param name="namespaces">The namespaces.</param>
         internal static void SetNameSpaces(this IHttpRoute route, string[] namespaces)
         {
             route.DataTokens[NamespaceKey] = namespaces;
@@ -54,11 +61,17 @@ namespace DotNetNuke.Web.Api
             return (string[])route.DataTokens[NamespaceKey];
         }
 
+        /// <summary>Set the name for the route.</summary>
+        /// <param name="route">The route.</param>
+        /// <param name="name">The name.</param>
         internal static void SetName(this Route route, string name)
         {
             route.DataTokens[NameKey] = name;
         }
 
+        /// <summary>Set the name for the route.</summary>
+        /// <param name="route">The route.</param>
+        /// <param name="name">The name.</param>
         internal static void SetName(this IHttpRoute route, string name)
         {
             route.DataTokens[NameKey] = name;

@@ -32,7 +32,7 @@ namespace DotNetNuke.Security.Permissions
         [XmlElement("permissioncode")]
         public string PermissionCode { get; set; }
 
-        /// <inheritdoc cref="IPermissionDefinitionInfo.PermissionID" />
+        /// <inheritdoc cref="IPermissionDefinitionInfo.PermissionId" />
         [XmlElement("permissionid")]
         [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IPermissionDefinitionInfo)}.{nameof(IPermissionDefinitionInfo.PermissionId)} instead. Scheduled for removal in v11.0.0.")]
 #pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant

@@ -56,12 +56,12 @@ namespace DotNetNuke.Tests.Core
             var secondRetry = this._sleepMonitor.SleepPeriod[1];
             var thirdRetry = this._sleepMonitor.SleepPeriod[2];
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(firstRetry, Is.EqualTo(5));
                 Assert.That(secondRetry, Is.EqualTo(50));
                 Assert.That(thirdRetry, Is.EqualTo(500));
-            });
+            }
         }
 
         [Test]

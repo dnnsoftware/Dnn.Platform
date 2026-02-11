@@ -17,7 +17,7 @@ namespace DotNetNuke.Web.Mvp
     {
         private TModel model;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public TModel Model
         {
             get
@@ -37,7 +37,7 @@ namespace DotNetNuke.Web.Mvp
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void LoadViewState(object savedState)
         {
             // Call the base class to load any View State
@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.Mvp
             AttributeBasedViewStateSerializer.DeSerialize(this.Model, this.ViewState);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override object SaveViewState()
         {
             AttributeBasedViewStateSerializer.Serialize(this.Model, this.ViewState);

@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
+    using System.Globalization;
 
     using DotNetNuke.Instrumentation;
 
@@ -18,11 +19,11 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="value">The setting value.</param>
         public SettingInfo(object name, object value)
         {
-            this.Name = Convert.ToString(name);
+            this.Name = Convert.ToString(name, CultureInfo.InvariantCulture);
             this.Value = value;
             this.type = value.GetType();
             this.Editor = EditorInfo.GetEditor(-1);
-            string strValue = Convert.ToString(value);
+            string strValue = Convert.ToString(value, CultureInfo.InvariantCulture);
             bool isFound = false;
             if (this.type.IsEnum)
             {
@@ -47,7 +48,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 try
                 {
-                    int intValue = int.Parse(strValue);
+                    int intValue = int.Parse(strValue, CultureInfo.InvariantCulture);
                     this.Editor = EditorInfo.GetEditor("Integer");
                     isFound = true;
                 }

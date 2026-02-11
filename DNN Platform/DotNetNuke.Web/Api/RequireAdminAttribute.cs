@@ -8,11 +8,12 @@ namespace DotNetNuke.Web.Api
 
     using DotNetNuke.Entities.Users;
 
+    /// <summary>A web API authorization filter which requires the user to be a site administrator.</summary>
     public class RequireAdminAttribute : AuthorizeAttributeBase
     {
         /// <summary>Tests if the request passes the authorization requirements.</summary>
         /// <param name="context">The auth filter context.</param>
-        /// <returns>True when authorization is succesful.</returns>
+        /// <returns>True when authorization is successful.</returns>
         public override bool IsAuthorized(AuthFilterContext context)
         {
             var principal = Thread.CurrentPrincipal;

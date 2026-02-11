@@ -6,24 +6,13 @@ namespace DotNetNuke.Web.Api.Internal
 {
     using DotNetNuke.Common;
 
+    /// <summary>Requires the user to have access to the page.</summary>
     public sealed class DnnPagePermissionAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
-        private string permissionKey = "EDIT";
+        /// <summary>Gets or sets the permission key for the access.</summary>
+        public string PermissionKey { get; set; } = "EDIT";
 
-        public string PermissionKey
-        {
-            get
-            {
-                return this.permissionKey;
-            }
-
-            set
-            {
-                this.permissionKey = value;
-            }
-        }
-
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsAuthorized(AuthFilterContext context)
         {
             Requires.NotNull("context", context);

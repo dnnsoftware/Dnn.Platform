@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
@@ -21,12 +22,12 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_GetRole_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
-        public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing);
+        public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.RoleId = this.GetFlagValue(FlagId, "Role Id", -1, true, true);
@@ -37,18 +38,26 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var lst = new List<RoleModel>();
             var role = RolesController.Instance.GetRole(this.PortalSettings, this.RoleId);
             if (role == null)
             {
-                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_NoRoleWithId"), this.RoleId));
+                return new ConsoleErrorResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("Prompt_NoRoleWithId"), this.RoleId));
             }
 
             lst.Add(new RoleModel(role));
-            return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_RoleFound"), this.RoleId) };
+            return new ConsoleResultModel
+            {
+                Data = lst,
+                Records = lst.Count,
+                Output = string.Format(
+                    CultureInfo.CurrentCulture,
+                    this.LocalizeString("Prompt_RoleFound"),
+                    this.RoleId),
+            };
         }
     }
 }

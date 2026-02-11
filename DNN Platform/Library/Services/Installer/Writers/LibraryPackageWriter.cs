@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.AssemblyPath = "bin";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
             base.GetFiles(includeSource, false);

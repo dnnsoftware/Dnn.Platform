@@ -18,10 +18,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClearCache));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             try

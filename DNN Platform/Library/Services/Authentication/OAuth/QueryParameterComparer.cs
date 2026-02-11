@@ -8,7 +8,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
     /// <summary>Comparer class used to perform the sorting of the query parameters.</summary>
     internal class QueryParameterComparer : IComparer<QueryParameter>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Compare(QueryParameter x, QueryParameter y)
         {
             if (x.Name == y.Name)

@@ -47,14 +47,14 @@ namespace DotNetNuke.Services.Search.Controllers
             this.serviceProvider = serviceProvider ?? Globals.DependencyProvider;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public SearchResults SiteSearch(SearchQuery searchQuery)
         {
             var results = this.GetResults(searchQuery);
             return new SearchResults { TotalHits = results.Item1, Results = results.Item2 };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public SearchResults ModuleSearch(SearchQuery searchQuery)
         {
             searchQuery.SearchTypeIds = new List<int> { this.moduleSearchTypeId };
@@ -152,12 +152,11 @@ namespace DotNetNuke.Services.Search.Controllers
 
                         break;
                     case Constants.ModifiedTimeTag:
-                        DateTime modifiedTimeUtc;
-                        DateTime.TryParseExact(field.StringValue, Constants.DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out modifiedTimeUtc);
+                        DateTime.TryParseExact(field.StringValue, Constants.DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var modifiedTimeUtc);
                         result.ModifiedTimeUtc = modifiedTimeUtc;
                         break;
                     default:
-                        if (field.Name.StartsWith(Constants.NumericKeyPrefixTag))
+                        if (field.Name.StartsWith(Constants.NumericKeyPrefixTag, StringComparison.Ordinal))
                         {
                             var key = field.Name.Substring(Constants.NumericKeyPrefixTag.Length);
                             if (int.TryParse(field.StringValue, out intField))
@@ -168,7 +167,7 @@ namespace DotNetNuke.Services.Search.Controllers
                                 }
                             }
                         }
-                        else if (field.Name.StartsWith(Constants.KeywordsPrefixTag))
+                        else if (field.Name.StartsWith(Constants.KeywordsPrefixTag, StringComparison.Ordinal))
                         {
                             var key = field.Name.Substring(Constants.KeywordsPrefixTag.Length);
                             if (!result.Keywords.ContainsKey(key))
@@ -342,7 +341,18 @@ namespace DotNetNuke.Services.Search.Controllers
 
             if (searchQuery.BeginModifiedTimeUtc > DateTime.MinValue && searchQuery.EndModifiedTimeUtc >= searchQuery.BeginModifiedTimeUtc)
             {
-                query.Add(NumericRangeQuery.NewLongRange(Constants.ModifiedTimeTag, long.Parse(searchQuery.BeginModifiedTimeUtc.ToString(Constants.DateTimeFormat)), long.Parse(searchQuery.EndModifiedTimeUtc.ToString(Constants.DateTimeFormat)), true, true), Occur.MUST);
+                query.Add(
+                    NumericRangeQuery.NewLongRange(
+                        Constants.ModifiedTimeTag,
+                        long.Parse(
+                            searchQuery.BeginModifiedTimeUtc.ToString(Constants.DateTimeFormat, CultureInfo.InvariantCulture),
+                            CultureInfo.CurrentCulture),
+                        long.Parse(
+                            searchQuery.EndModifiedTimeUtc.ToString(Constants.DateTimeFormat, CultureInfo.InvariantCulture),
+                            CultureInfo.CurrentCulture),
+                        true,
+                        true),
+                    Occur.MUST);
             }
 
             if (searchQuery.RoleId > 0)

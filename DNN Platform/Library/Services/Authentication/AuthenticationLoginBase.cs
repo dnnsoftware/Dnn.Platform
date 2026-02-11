@@ -26,6 +26,7 @@ namespace DotNetNuke.Services.Authentication
             this.Mode = AuthMode.Login;
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public delegate void UserAuthenticatedEventHandler(object sender, UserAuthenticatedEventArgs e);
 
         public event UserAuthenticatedEventHandler UserAuthenticated;

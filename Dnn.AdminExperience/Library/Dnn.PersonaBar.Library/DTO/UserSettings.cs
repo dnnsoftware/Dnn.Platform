@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Library.Dto
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Runtime.Serialization;
     using System.Xml;
     using System.Xml.Schema;
@@ -23,7 +24,7 @@ namespace Dnn.PersonaBar.Library.Dto
         {
             get
             {
-                return Convert.ToBoolean(this["expandPersonaBar"]);
+                return Convert.ToBoolean(this["expandPersonaBar"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -32,13 +33,13 @@ namespace Dnn.PersonaBar.Library.Dto
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public XmlSchema GetSchema()
         {
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ReadXml(XmlReader reader)
         {
             bool wasEmpty = reader.IsEmptyElement;
@@ -55,12 +56,14 @@ namespace Dnn.PersonaBar.Library.Dto
                     this.ReadSettings(reader);
                     break;
                 default:
+#pragma warning disable CS0618 // Type or member is obsolete
                     this.ReadLegacySettings(reader);
+#pragma warning restore CS0618 // Type or member is obsolete
                     break;
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteStartElement("data");
@@ -106,7 +109,7 @@ namespace Dnn.PersonaBar.Library.Dto
                     switch (settingName)
                     {
                         case "ExpandPersonaBar":
-                            this["expandPersonaBar"] = Convert.ToBoolean(settingValue);
+                            this["expandPersonaBar"] = Convert.ToBoolean(settingValue, CultureInfo.InvariantCulture);
                             break;
                         case "ActiveIdentifier":
                             this["activeIdentifier"] = settingValue;
@@ -115,13 +118,13 @@ namespace Dnn.PersonaBar.Library.Dto
                             this["activePath"] = settingValue;
                             break;
                         case "ExpandTasksPane":
-                            this["expandTasksPane"] = Convert.ToBoolean(settingValue);
+                            this["expandTasksPane"] = Convert.ToBoolean(settingValue, CultureInfo.InvariantCulture);
                             break;
                         case "ComparativeTerm":
                             this["comparativeTerm"] = settingValue;
                             break;
                         case "EndDate":
-                            this["endDate"] = Convert.ToDateTime(settingValue);
+                            this["endDate"] = Convert.ToDateTime(settingValue, CultureInfo.InvariantCulture);
                             break;
                         case "Legends":
                             this["legends"] = settingValue.Split(',');
@@ -130,7 +133,7 @@ namespace Dnn.PersonaBar.Library.Dto
                             this["period"] = settingValue;
                             break;
                         case "StartDate":
-                            this["startDate"] = Convert.ToDateTime(settingValue);
+                            this["startDate"] = Convert.ToDateTime(settingValue, CultureInfo.InvariantCulture);
                             break;
                     }
                 }

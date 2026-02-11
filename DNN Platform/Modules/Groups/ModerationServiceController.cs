@@ -11,9 +11,12 @@ namespace DotNetNuke.Modules.Groups
     using System.Web.Http;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Modules.Groups.Components;
@@ -24,19 +27,49 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     [DnnAuthorize]
     public class ModerationServiceController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModerationServiceController));
+        private readonly RoleProvider roleProvider;
+        private readonly IRoleController roleController;
+        private readonly IEventManager eventManager;
+        private readonly IPortalController portalController;
+        private readonly IUserController userController;
+        private readonly IEventLogger eventLogger;
         private int tabId;
         private int moduleId;
         private int roleId;
         private int memberId;
         private RoleInfo roleInfo;
 
+        /// <summary>Initializes a new instance of the <see cref="ModerationServiceController"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with RoleProvider. Scheduled removal in v12.0.0.")]
         public ModerationServiceController(INavigationManager navigationManager)
+            : this(navigationManager, null, null, null, null, null, null)
         {
-            this.NavigationManager = navigationManager;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModerationServiceController"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="eventManager">The event manager.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public ModerationServiceController(INavigationManager navigationManager, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger)
+        {
+            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.roleProvider = roleProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>();
+            this.roleController = roleController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>();
+            this.eventManager = eventManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventManager>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         protected INavigationManager NavigationManager { get; }
@@ -194,7 +227,7 @@ namespace DotNetNuke.Modules.Groups
                     {
                         if (this.UserInfo.IsInRole(this.roleInfo.RoleName))
                         {
-                            RoleController.DeleteUserRole(this.UserInfo, this.roleInfo, this.PortalSettings, false);
+                            RoleController.DeleteUserRole(this.roleProvider, this.roleController, this.eventManager, this.portalController, this.userController, this.eventLogger, this.UserInfo, this.roleInfo, this.PortalSettings, false);
                         }
 
                         success = true;
@@ -292,7 +325,7 @@ namespace DotNetNuke.Modules.Groups
 
                 if (member != null)
                 {
-                    RoleController.DeleteUserRole(member, this.roleInfo, this.PortalSettings, false);
+                    RoleController.DeleteUserRole(this.roleProvider, this.roleController, this.eventManager, this.portalController, this.userController, this.eventLogger, member, this.roleInfo, this.PortalSettings, false);
                     var notifications = new Notifications();
                     var groupOwner = UserController.GetUserById(this.PortalSettings.PortalId, this.roleInfo.CreatedByUserID);
                     notifications.AddMemberNotification(Constants.MemberRejectedNotification, this.tabId, this.moduleId, this.roleInfo, groupOwner, member);

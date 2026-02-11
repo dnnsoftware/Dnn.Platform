@@ -7,6 +7,7 @@ namespace Dnn.ExportImport.Components.Controllers
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
 
@@ -16,8 +17,10 @@ namespace Dnn.ExportImport.Components.Controllers
     using Dnn.ExportImport.Components.Entities;
     using Dnn.ExportImport.Components.Services;
     using Dnn.ExportImport.Interfaces;
+
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
@@ -33,13 +36,15 @@ namespace Dnn.ExportImport.Components.Controllers
     /// <summary>The import/export controller.</summary>
     public class BaseController
     {
+        /// <summary>The full path to the folder used for import/export.</summary>
         public static readonly string ExportFolder;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BaseController));
 
         static BaseController()
         {
-            ExportFolder = Globals.ApplicationMapPath + Constants.ExportFolder;
+            var appStatus = Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            ExportFolder = appStatus.ApplicationMapPath + Constants.ExportFolder;
             if (!Directory.Exists(ExportFolder))
             {
                 Directory.CreateDirectory(ExportFolder);
@@ -60,6 +65,7 @@ namespace Dnn.ExportImport.Components.Controllers
             this.PortableServices = portableServices ?? Globals.GetCurrentServiceProvider().GetServices<BasePortableService>();
         }
 
+        /// <summary>Gets the portable services.</summary>
         protected IEnumerable<BasePortableService> PortableServices { get; }
 
         /// <summary>Cancels the job.</summary>
@@ -288,21 +294,23 @@ namespace Dnn.ExportImport.Components.Controllers
             var objSecurity = PortalSecurity.Instance;
             var portalInfo = PortalController.Instance.GetPortal(portalId);
             var userInfo = UserController.Instance.GetUser(portalId, userId);
+#pragma warning disable CS0618 // Type or member is obsolete
             var username = objSecurity.InputFilter(
                 userInfo.Username,
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
 
-            var log = new LogInfo
+            ILogInfo log = new LogInfo
             {
                 LogTypeKey = logTypeKey,
-                LogPortalID = portalId,
                 LogPortalName = portalInfo.PortalName,
                 LogUserName = username,
-                LogUserID = userId,
             };
+            log.LogPortalId = portalId;
+            log.LogUserId = userId;
 
-            log.AddProperty("JobID", jobId.ToString());
-            LogController.Instance.AddLog(log);
+            log.AddProperty("JobID", jobId.ToString(CultureInfo.InvariantCulture));
+            LogController.Instance.AddLog((LogInfo)log);
         }
 
         private static JobItem ToJobItem(ExportImportJob job)
@@ -314,7 +322,7 @@ namespace Dnn.ExportImport.Components.Controllers
             {
                 JobId = job.JobId,
                 PortalId = job.PortalId,
-                User = user?.DisplayName ?? user?.Username ?? job.CreatedByUserId.ToString(),
+                User = user?.DisplayName ?? user?.Username ?? job.CreatedByUserId.ToString(CultureInfo.InvariantCulture),
                 JobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources),
                 Status = (int)job.JobStatus,
                 Cancelled = job.IsCancelled,

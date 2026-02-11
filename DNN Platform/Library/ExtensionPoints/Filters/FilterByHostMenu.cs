@@ -15,7 +15,7 @@ namespace DotNetNuke.ExtensionPoints.Filters
             this.isHostMenu = isHostMenu;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Condition(IExtensionPointData m)
         {
             return !this.isHostMenu || !m.DisableOnHost;

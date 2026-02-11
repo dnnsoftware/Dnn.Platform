@@ -51,7 +51,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             this.serviceProvider = serviceProvider;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override void RewriteUrl(object sender, EventArgs e)
         {
             var app = (HttpApplication)sender;
@@ -78,7 +78,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             // the application should always use the exact relative location of the resource it is requesting
             var strURL = request.Url.AbsolutePath;
             var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.RawUrl)) ?? string.Empty;
-            if (Globals.FileEscapingRegex.Match(strURL).Success || Globals.FileEscapingRegex.Match(strDoubleDecodeURL).Success)
+            if (Globals.FileEscapingRegex.IsMatch(strURL) || Globals.FileEscapingRegex.IsMatch(strDoubleDecodeURL))
             {
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessHttpException(request);
             }
@@ -86,7 +86,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             try
             {
                 // fix for ASP.NET canonicalization issues http://support.microsoft.com/?kbid=887459
-                if (request.Path.IndexOf("\\", StringComparison.Ordinal) >= 0 || Path.GetFullPath(request.PhysicalPath) != request.PhysicalPath)
+                if (request.Path.IndexOf(@"\", StringComparison.Ordinal) >= 0 || Path.GetFullPath(request.PhysicalPath) != request.PhysicalPath)
                 {
                     DotNetNuke.Services.Exceptions.Exceptions.ProcessHttpException(request);
                 }
@@ -192,9 +192,9 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             // if the TabId is not for the correct domain
                             // see if the correct domain can be found and redirect it
                             portalAliasInfo = this.portalAliasService.GetPortalAlias(domainName);
-                            if (portalAliasInfo != null && !request.Url.LocalPath.ToLowerInvariant().EndsWith("/linkclick.aspx"))
+                            if (portalAliasInfo != null && !request.Url.LocalPath.EndsWith("/linkclick.aspx", StringComparison.OrdinalIgnoreCase))
                             {
-                                if (app.Request.Url.AbsoluteUri.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
+                                if (app.Request.Url.AbsoluteUri.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
                                 {
                                     strURL = "https://" + portalAliasInfo.HttpAlias.Replace("*.", string.Empty);
                                 }
@@ -203,7 +203,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                     strURL = "http://" + portalAliasInfo.HttpAlias.Replace("*.", string.Empty);
                                 }
 
-                                if (strURL.IndexOf(domainName, StringComparison.InvariantCultureIgnoreCase) == -1)
+                                if (!strURL.Contains(domainName, StringComparison.OrdinalIgnoreCase))
                                 {
                                     strURL += app.Request.Url.PathAndQuery;
                                 }
@@ -326,10 +326,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                             break;
                         case Abstractions.Security.SiteSslSetup.Advanced:
-                            // if site is secure or else page is secure and connection is not secure orelse ssloffload is enabled and server value exists
+                            // if site is secure or else page is secure and connection is not secure or else SSL offload is enabled and server value exists
                             if (portalSettings.ActiveTab.IsSecure &&
                                 !request.IsSecureConnection &&
-                                (UrlUtils.IsSslOffloadEnabled(request) == false))
+                                !UrlUtils.IsSslOffloadEnabled(this.hostSettingsService, request))
                             {
                                 // switch to secure connection
                                 strURL = requestedPath.Replace("http://", "https://");
@@ -341,7 +341,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 // if page is not secure and connection is secure
                                 if (!portalSettings.ActiveTab.IsSecure && request.IsSecureConnection)
                                 {
-                                    // check if connection has already been forced to secure orelse ssloffload is disabled
+                                    // check if connection has already been forced to secure or else SSL offload is disabled
                                     if (request.QueryString["ssl"] == null)
                                     {
                                         strURL = requestedPath.Replace("https://", "http://");
@@ -490,7 +490,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     if (parameters.Trim().Length > 0)
                     {
                         // split the value into an array based on "/" ( ie. /tabid/##/ )
-                        parameters = parameters.Replace("\\", "/");
+                        parameters = parameters.Replace(@"\", "/");
                         string[] splitParameters = parameters.Split('/');
 
                         // icreate a well formed querystring based on the array of parameters
@@ -577,7 +577,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             // if a match was found to the urlrewrite rules
             if (matchIndex != -1)
             {
-                if (rules[matchIndex].SendTo.StartsWith("~"))
+                if (rules[matchIndex].SendTo.StartsWith("~", StringComparison.Ordinal))
                 {
                     // rewrite the URL for internal processing
                     RewriterUtils.RewriteUrl(app.Context, sendTo);
@@ -611,13 +611,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                         // Identify Tab Name
                         string tabPath = url;
-                        if (tabPath.StartsWith(myAlias))
+                        if (tabPath.StartsWith(myAlias, StringComparison.OrdinalIgnoreCase))
                         {
                             tabPath = url.Remove(0, myAlias.Length);
                         }
 
                         // Default Page has been Requested
-                        if (tabPath == "/" + Globals.glbDefaultPage.ToLowerInvariant())
+                        if (string.Equals(tabPath, "/" + Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
                         {
                             return;
                         }
@@ -806,7 +806,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                         tabPath = tabPath.Replace("/", "//");
                         tabPath = tabPath.Replace(".aspx", string.Empty);
-                        var objTabs = TabController.Instance.GetTabsByPortal(tabPath.StartsWith("//host") ? Null.NullInteger : portalId);
+                        var objTabs = TabController.Instance.GetTabsByPortal(tabPath.StartsWith("//host", StringComparison.OrdinalIgnoreCase) ? Null.NullInteger : portalId);
                         foreach (var kvp in objTabs)
                         {
                             if (!kvp.Value.IsDeleted && kvp.Value.TabPath.Equals(tabPath, StringComparison.OrdinalIgnoreCase))

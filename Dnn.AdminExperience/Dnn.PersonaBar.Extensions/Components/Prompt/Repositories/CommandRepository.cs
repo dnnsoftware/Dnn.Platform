@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
             this.serviceScopeFactory = serviceScopeFactory ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServiceScopeFactory>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public SortedDictionary<string, Command> GetCommands()
         {
             return
@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                     c => this.GetCommandsInternal());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CommandHelp GetCommandHelp(string[] args, IConsoleCommand consoleCommand)
         {
             var cacheKey = (string.Join("_", args) + "_" + PortalController.Instance.GetCurrentSettings()?.DefaultLanguage).Replace("-", "_");
@@ -58,7 +58,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                 c => this.GetCommandHelpInternal(consoleCommand));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ICommandRepository> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<ICommandRepository>;

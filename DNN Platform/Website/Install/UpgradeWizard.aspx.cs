@@ -38,6 +38,7 @@ namespace DotNetNuke.Services.Install
     using Newtonsoft.Json;
 
     using Globals = DotNetNuke.Common.Globals;
+    using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>The InstallWizard class provides the Installation Wizard for DotNetNuke.</summary>
@@ -85,6 +86,7 @@ namespace DotNetNuke.Services.Install
         private readonly IApplicationStatusInfo applicationStatus;
         private readonly IHostSettings hostSettings;
         private readonly IApplicationInfo application;
+        private readonly ICryptographyProvider cryptographyProvider;
 
         static UpgradeWizard()
         {
@@ -92,8 +94,9 @@ namespace DotNetNuke.Services.Install
         }
 
         /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.1. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
         public UpgradeWizard()
-            : this(null, null, null, null)
+            : this(null, null, null, null, null)
         {
         }
 
@@ -102,12 +105,37 @@ namespace DotNetNuke.Services.Install
         /// <param name="appStatus">The application status.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="application">The application info.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.1. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
         public UpgradeWizard(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IApplicationInfo application)
-            : base(portalController, appStatus, hostSettings)
+            : this(portalController, appStatus, hostSettings, null, application, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="application">The application info.</param>
+        public UpgradeWizard(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IUserController userController, IApplicationInfo application)
+            : this(portalController, appStatus, hostSettings, userController, application, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="application">The application info.</param>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        public UpgradeWizard(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IUserController userController, IApplicationInfo application, ICryptographyProvider cryptographyProvider)
+            : base(portalController, appStatus, hostSettings, userController)
         {
             this.applicationStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.application = application ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>();
+            this.cryptographyProvider = cryptographyProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>();
         }
 
         /// <summary>Gets the application version.</summary>
@@ -120,116 +148,30 @@ namespace DotNetNuke.Services.Install
 
         private static bool IsAuthenticated { get; set; }
 
-        /// <summary>
-        /// Validates the user input.
-        /// </summary>
+        /// <summary>Validates the user input.</summary>
         /// <param name="accountInfo">The account information.</param>
         /// <returns>A tuple with the result and a message.</returns>
         [WebMethod]
         public static Tuple<bool, string> ValidateInput(Dictionary<string, string> accountInfo)
         {
-            string errorMsg;
-            var result = VerifyHostUser(accountInfo, out errorMsg);
+            var result = VerifyHostUser(accountInfo, out var errorMsg);
 
             return new Tuple<bool, string>(result, errorMsg);
         }
 
-        /// <summary>Returns information to render the Security tab.</summary>
-        /// <param name="accountInfo">Username and password to validate host user.</param>
-        /// <returns>An instance of <see cref="SecurityTabResult"/>.</returns>
-        [WebMethod]
-        public static Tuple<bool, string, SecurityTabResult> GetSecurityTab(Dictionary<string, string> accountInfo)
-        {
-            if (!VerifyHostUser(accountInfo, out var errorMsg))
-            {
-                return Tuple.Create(false, errorMsg, default(SecurityTabResult));
-            }
-
-            var telerikUtils = CreateTelerikUtils();
-
-            if (!telerikUtils.TelerikIsInstalled())
-            {
-                return Tuple.Create(
-                    true,
-                    default(string),
-                    GetTelerikNotInstalledResult());
-            }
-
-            var version = telerikUtils.GetTelerikVersion();
-            if (!telerikUtils.IsTelerikVersionVulnerable(version))
-            {
-                return Tuple.Create(
-                    true,
-                    default(string),
-                    GetTelerikInstalledWithVersionNotKnownToBeVulnerable(version));
-            }
-
-            var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
-                .Select(a => Path.GetFileName(a));
-
-            if (!assemblies.Any())
-            {
-                return Tuple.Create(
-                    true,
-                    default(string),
-                    GetTelerikInstalledButNotUsedResult(version));
-            }
-
-            return Tuple.Create(
-                true,
-                default(string),
-                GetTelerikInstalledAndUsedResult(assemblies, version));
-        }
-
-        /// <summary>
-        /// Runs the upgrade.
-        /// </summary>
-        /// <param name="accountInfo">The account information.</param>
-        [WebMethod]
-        public static void RunUpgrade(Dictionary<string, string> accountInfo)
-        {
-            string errorMsg;
-            var result = VerifyHostUser(accountInfo, out errorMsg);
-
-            if (result == true)
-            {
-                if (!TelerikAntiForgeryTokenIsValid(accountInfo))
-                {
-                    throw new InvalidOperationException(LocalizeStringStatic("TelerikInvalidAntiForgeryToken"));
-                }
-
-                if (!accountInfo.ContainsKey(TelerikUninstallOptionClientID))
-                {
-                    throw new InvalidOperationException(LocalizeStringStatic("TelerikUninstallOptionMissing"));
-                }
-
-                var option = accountInfo[TelerikUninstallOptionClientID];
-                SetHostSetting(DotNetNuke.Maintenance.Constants.TelerikUninstallOptionSettingKey, option);
-
-                upgradeRunning = false;
-                LaunchUpgrade();
-
-                // DNN-9355: reset the installer files check flag after each upgrade, to make sure the installer files removed.
-                var hostSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
-                hostSettingsService.Update("InstallerFilesRemoved", "False", true);
-            }
-        }
-
-        /// <summary>
-        /// Gets the installation log.
-        /// </summary>
+        /// <summary>Gets the installation log.</summary>
         /// <param name="startRow">At which line to start obtaining log lines.</param>
         /// <returns>Log string from the provided line number forward.</returns>
         [WebMethod]
         public static object GetInstallationLog(int startRow)
         {
-            var maxLines = 500;
-            if (IsAuthenticated == false)
+            const int maxLines = 500;
+            if (!IsAuthenticated)
             {
                 return string.Empty;
             }
 
-            var logFile = "InstallerLog" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + ".resources";
+            var logFile = $"InstallerLog{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}.resources";
             try
             {
                 var lines = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Portals", "_default", "logs", logFile));
@@ -277,9 +219,85 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <summary>
-        /// Localizes a string.
-        /// </summary>
+        /// <summary>Returns information to render the Security tab.</summary>
+        /// <param name="accountInfo">Username and password to validate host user.</param>
+        /// <returns>An instance of <see cref="SecurityTabResult"/>.</returns>
+        [WebMethod]
+        public static Tuple<bool, string, SecurityTabResult> GetSecurityTab(Dictionary<string, string> accountInfo)
+        {
+            if (!VerifyHostUser(accountInfo, out var errorMsg))
+            {
+                return Tuple.Create(false, errorMsg, default(SecurityTabResult));
+            }
+
+            var cryptographyProvider = CreateCryptographyProvider();
+            var telerikUtils = CreateTelerikUtils();
+            if (!telerikUtils.TelerikIsInstalled())
+            {
+                return Tuple.Create(
+                    true,
+                    default(string),
+                    GetTelerikNotInstalledResult(cryptographyProvider));
+            }
+
+            var version = telerikUtils.GetTelerikVersion();
+            if (!telerikUtils.IsTelerikVersionVulnerable(version))
+            {
+                return Tuple.Create(
+                    true,
+                    default(string),
+                    GetTelerikInstalledWithVersionNotKnownToBeVulnerable(cryptographyProvider, version));
+            }
+
+            var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
+                .Select(a => Path.GetFileName(a));
+
+            if (!assemblies.Any())
+            {
+                return Tuple.Create(
+                    true,
+                    default(string),
+                    GetTelerikInstalledButNotUsedResult(cryptographyProvider, version));
+            }
+
+            return Tuple.Create(
+                true,
+                default(string),
+                GetTelerikInstalledAndUsedResult(cryptographyProvider, assemblies, version));
+        }
+
+        /// <summary>Runs the upgrade.</summary>
+        /// <param name="accountInfo">The account information.</param>
+        [WebMethod]
+        public static void RunUpgrade(Dictionary<string, string> accountInfo)
+        {
+            if (!VerifyHostUser(accountInfo, out _))
+            {
+                return;
+            }
+
+            var cryptograpyProvider = CreateCryptographyProvider();
+            if (!TelerikAntiForgeryTokenIsValid(cryptograpyProvider, accountInfo))
+            {
+                throw new InvalidOperationException(LocalizeStringStatic("TelerikInvalidAntiForgeryToken"));
+            }
+
+            if (!accountInfo.TryGetValue(TelerikUninstallOptionClientID, out var option))
+            {
+                throw new InvalidOperationException(LocalizeStringStatic("TelerikUninstallOptionMissing"));
+            }
+
+            SetHostSetting(DotNetNuke.Maintenance.Constants.TelerikUninstallOptionSettingKey, option);
+
+            upgradeRunning = false;
+            LaunchUpgrade();
+
+            // DNN-9355: reset the installer files check flag after each upgrade, to make sure the installer files removed.
+            var hostSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            hostSettingsService.Update("InstallerFilesRemoved", "False", true);
+        }
+
+        /// <summary>Localizes a string.</summary>
         /// <param name="key">The key.</param>
         /// <returns>The localized value for the key.</returns>
         protected string LocalizeString(string key)
@@ -287,7 +305,7 @@ namespace DotNetNuke.Services.Install
             return Localization.GetString(key, localResourceFile, culture);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnError(EventArgs e)
         {
             HttpContext.Current.Response.Clear();
@@ -341,67 +359,10 @@ namespace DotNetNuke.Services.Install
             return Globals.GetCurrentServiceProvider().GetRequiredService<ITelerikUtils>();
         }
 
-        private static SecurityTabResult GetTelerikNotInstalledResult()
+        private static ICryptographyProvider CreateCryptographyProvider()
         {
-            return new SecurityTabResult
-            {
-                CanProceed = true,
-                View = RenderControls(
-                    CreateTelerikAntiForgeryTokenField(),
-                    CreateHiddenField(TelerikUninstallOptionClientID, OptionNo),
-                    CreateHeading("TelerikNotInstalledHeading"),
-                    CreateParagraph("TelerikNotInstalledInfo")),
-            };
+            return Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>();
         }
-
-        private static SecurityTabResult GetTelerikInstalledWithVersionNotKnownToBeVulnerable(Version version)
-        {
-            return new SecurityTabResult
-            {
-                CanProceed = true,
-                View = RenderControls(
-                    CreateTelerikAntiForgeryTokenField(),
-                    CreateHiddenField(TelerikUninstallOptionClientID, DotNetNuke.Maintenance.Constants.TelerikUninstallNoValue),
-                    CreateTelerikInstalledHeader(version),
-                    CreateParagraph("TelerikVersionNotKnownToBeVulnerableInfo")),
-            };
-        }
-
-        private static SecurityTabResult GetTelerikInstalledButNotUsedResult(Version version)
-        {
-            return new SecurityTabResult
-            {
-                CanProceed = true,
-                View = RenderControls(
-                    CreateTelerikAntiForgeryTokenField(),
-                    CreateHiddenField(TelerikUninstallOptionClientID, DotNetNuke.Maintenance.Constants.TelerikUninstallYesValue),
-                    CreateTelerikInstalledHeader(version),
-                    CreateParagraph("TelerikInstalledBulletin"),
-                    CreateParagraph("TelerikInstalledButNotUsedInfo"),
-                    CreateParagraph("TelerikUninstallInfo")),
-            };
-        }
-
-        private static SecurityTabResult GetTelerikInstalledAndUsedResult(
-            IEnumerable<string> assemblies, Version version)
-        {
-            return new SecurityTabResult
-            {
-                CanProceed = true,
-                View = RenderControls(
-                    CreateTelerikAntiForgeryTokenField(),
-                    CreateHiddenField(TelerikUninstallOptionClientID, DotNetNuke.Maintenance.Constants.TelerikUninstallYesValue),
-                    CreateTelerikInstalledHeader(version),
-                    CreateParagraph("TelerikInstalledBulletin"),
-                    CreateParagraph("TelerikInstalledAndUsedInfo"),
-                    CreateTable(assemblies, maxRows: 3, maxColumns: 4),
-                    new Literal { Text = "<br />" },
-                    CreateParagraph("TelerikInstalledAndUsedWarning")),
-            };
-        }
-
-        private static Control CreateTelerikAntiForgeryTokenField() =>
-            CreateHiddenField(TelerikAntiForgeryTokenClientID, CreateTelerikAntiForgeryToken());
 
         private static Control CreateTelerikInstalledHeader(Version version)
         {
@@ -526,53 +487,6 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        private static string CreateTelerikAntiForgeryToken()
-        {
-            var secret = GetHostSetting("GUID");
-            var salt = new Random().Next(int.MaxValue);
-            var token = new { secret, salt };
-            var json = JsonConvert.SerializeObject(token);
-
-            return Encrypt(json);
-        }
-
-        private static bool TelerikAntiForgeryTokenIsValid(Dictionary<string, string> accountInfo)
-        {
-            if (!accountInfo.ContainsKey(TelerikAntiForgeryTokenClientID))
-            {
-                return false; // token missing somehow.
-            }
-
-            try
-            {
-                var encrypted = accountInfo[TelerikAntiForgeryTokenClientID];
-                var json = Decrypt(encrypted);
-                dynamic token = JsonConvert.DeserializeObject(json);
-                var expected = GetHostSetting("GUID");
-                if (token.secret != expected)
-                {
-                    return false; // token mismatch.
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return false; // malformed token.
-            }
-
-            return true;
-        }
-
-        private static string Encrypt(string token)
-        {
-            return CryptographyProvider.Instance().EncryptString(token, GetHostSetting("GUID"));
-        }
-
-        private static string Decrypt(string token)
-        {
-            return CryptographyProvider.Instance().DecryptString(token, GetHostSetting("GUID"));
-        }
-
         private static string GetHostSetting(string key)
         {
             return Globals.GetCurrentServiceProvider()
@@ -596,7 +510,7 @@ namespace DotNetNuke.Services.Install
 
         private static void GetInstallerLocales(IApplicationStatusInfo applicationStatus)
         {
-            var filePath = applicationStatus.ApplicationMapPath + LocalesFile.Replace("/", "\\");
+            var filePath = applicationStatus.ApplicationMapPath + LocalesFile.Replace("/", @"\");
 
             if (File.Exists(filePath))
             {
@@ -768,7 +682,7 @@ namespace DotNetNuke.Services.Install
             UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
             var userRequestIpAddressController = UserRequestIPAddressController.Instance;
             var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));
-            UserInfo hostUser = UserController.ValidateUser(-1, accountInfo["username"], accountInfo["password"], "DNN", string.Empty, string.Empty, ipAddress, ref loginStatus);
+            UserInfo hostUser = DotNetNuke.Entities.Users.UserController.ValidateUser(-1, accountInfo["username"], accountInfo["password"], "DNN", string.Empty, string.Empty, ipAddress, ref loginStatus);
 
             if (loginStatus == UserLoginStatus.LOGIN_FAILURE || !hostUser.IsSuperUser)
             {
@@ -781,6 +695,115 @@ namespace DotNetNuke.Services.Install
             }
 
             return result;
+        }
+
+        private static Control CreateTelerikAntiForgeryTokenField(ICryptographyProvider cryptographyProvider) =>
+            CreateHiddenField(TelerikAntiForgeryTokenClientID, CreateTelerikAntiForgeryToken(cryptographyProvider));
+
+        private static string CreateTelerikAntiForgeryToken(ICryptographyProvider cryptographyProvider)
+        {
+            var secret = GetHostSetting("GUID");
+            var salt = new Random().Next(int.MaxValue);
+            var token = new { secret, salt };
+            var json = JsonConvert.SerializeObject(token);
+
+            return Encrypt(cryptographyProvider, json);
+        }
+
+        private static bool TelerikAntiForgeryTokenIsValid(ICryptographyProvider cryptographyProvider, Dictionary<string, string> accountInfo)
+        {
+            if (!accountInfo.TryGetValue(TelerikAntiForgeryTokenClientID, out var encryptedToken))
+            {
+                return false; // token missing somehow.
+            }
+
+            try
+            {
+                var json = Decrypt(cryptographyProvider, encryptedToken);
+                dynamic token = JsonConvert.DeserializeObject(json);
+                var expected = GetHostSetting("GUID");
+                if (token.secret != expected)
+                {
+                    return false; // token mismatch.
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return false; // malformed token.
+            }
+
+            return true;
+        }
+
+        private static string Encrypt(ICryptographyProvider cryptographyProvider, string token)
+        {
+            var (encryptedMessage, _, initializationVector) = cryptographyProvider.EncryptString(token, GetHostSetting("GUID"));
+            return $"{encryptedMessage}|{initializationVector}";
+        }
+
+        private static string Decrypt(ICryptographyProvider cryptographyProvider, string token)
+        {
+            var tokenParts = token.Split(['|',], 2);
+            return cryptographyProvider.DecryptString(tokenParts[0], GetHostSetting("GUID"), cryptographyProvider.EncryptStringAlgorithmName, tokenParts[1]);
+        }
+
+        private static SecurityTabResult GetTelerikNotInstalledResult(ICryptographyProvider cryptographyProvider)
+        {
+            return new SecurityTabResult
+            {
+                CanProceed = true,
+                View = RenderControls(
+                    CreateTelerikAntiForgeryTokenField(cryptographyProvider),
+                    CreateHiddenField(TelerikUninstallOptionClientID, OptionNo),
+                    CreateHeading("TelerikNotInstalledHeading"),
+                    CreateParagraph("TelerikNotInstalledInfo")),
+            };
+        }
+
+        private static SecurityTabResult GetTelerikInstalledWithVersionNotKnownToBeVulnerable(ICryptographyProvider cryptographyProvider, Version version)
+        {
+            return new SecurityTabResult
+            {
+                CanProceed = true,
+                View = RenderControls(
+                    CreateTelerikAntiForgeryTokenField(cryptographyProvider),
+                    CreateHiddenField(TelerikUninstallOptionClientID, DotNetNuke.Maintenance.Constants.TelerikUninstallNoValue),
+                    CreateTelerikInstalledHeader(version),
+                    CreateParagraph("TelerikVersionNotKnownToBeVulnerableInfo")),
+            };
+        }
+
+        private static SecurityTabResult GetTelerikInstalledButNotUsedResult(ICryptographyProvider cryptographyProvider, Version version)
+        {
+            return new SecurityTabResult
+            {
+                CanProceed = true,
+                View = RenderControls(
+                    CreateTelerikAntiForgeryTokenField(cryptographyProvider),
+                    CreateHiddenField(TelerikUninstallOptionClientID, DotNetNuke.Maintenance.Constants.TelerikUninstallYesValue),
+                    CreateTelerikInstalledHeader(version),
+                    CreateParagraph("TelerikInstalledBulletin"),
+                    CreateParagraph("TelerikInstalledButNotUsedInfo"),
+                    CreateParagraph("TelerikUninstallInfo")),
+            };
+        }
+
+        private static SecurityTabResult GetTelerikInstalledAndUsedResult(ICryptographyProvider cryptographyProvider, IEnumerable<string> assemblies, Version version)
+        {
+            return new SecurityTabResult
+            {
+                CanProceed = true,
+                View = RenderControls(
+                    CreateTelerikAntiForgeryTokenField(cryptographyProvider),
+                    CreateHiddenField(TelerikUninstallOptionClientID, DotNetNuke.Maintenance.Constants.TelerikUninstallYesValue),
+                    CreateTelerikInstalledHeader(version),
+                    CreateParagraph("TelerikInstalledBulletin"),
+                    CreateParagraph("TelerikInstalledAndUsedInfo"),
+                    CreateTable(assemblies, maxRows: 3, maxColumns: 4),
+                    new Literal { Text = "<br />", },
+                    CreateParagraph("TelerikInstalledAndUsedWarning")),
+            };
         }
 
         private void LocalizePage()

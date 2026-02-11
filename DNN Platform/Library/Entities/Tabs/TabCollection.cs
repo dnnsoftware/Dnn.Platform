@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Tabs
             this.AddRange(tabs);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void OnDeserialization(object sender)
         {
             base.OnDeserialization(sender);

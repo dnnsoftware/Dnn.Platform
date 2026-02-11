@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Mobile
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml.Serialization;
 
     using DotNetNuke.Entities.Modules;
@@ -82,13 +83,13 @@ namespace DotNetNuke.Services.Mobile
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            this.Id = Convert.ToInt32(dr["Id"]);
-            this.PortalId = Convert.ToInt32(dr["PortalId"]);
+            this.Id = Convert.ToInt32(dr["Id"], CultureInfo.InvariantCulture);
+            this.PortalId = Convert.ToInt32(dr["PortalId"], CultureInfo.InvariantCulture);
             this.Name = dr["Name"].ToString();
-            this.Width = Convert.ToInt32(dr["Width"]);
-            this.Height = Convert.ToInt32(dr["Height"]);
+            this.Width = Convert.ToInt32(dr["Width"], CultureInfo.InvariantCulture);
+            this.Height = Convert.ToInt32(dr["Height"], CultureInfo.InvariantCulture);
             this.UserAgent = dr["UserAgent"].ToString();
-            this.SortOrder = Convert.ToInt32(dr["SortOrder"]);
+            this.SortOrder = Convert.ToInt32(dr["SortOrder"], CultureInfo.InvariantCulture);
         }
     }
 }

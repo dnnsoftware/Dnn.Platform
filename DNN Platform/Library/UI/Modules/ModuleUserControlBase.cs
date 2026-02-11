@@ -10,7 +10,7 @@ namespace DotNetNuke.UI.Modules
 
     /// <summary>
     /// ModuleUserControlBase is a base class for Module Controls that inherits from the
-    /// UserControl base class.  As with all MontrolControl base classes it implements
+    /// UserControl base class.  As with all ModuleControl base classes it implements
     /// IModuleControl.
     /// </summary>
     public class ModuleUserControlBase : UserControl, IModuleControl
@@ -20,48 +20,19 @@ namespace DotNetNuke.UI.Modules
 
         /// <summary>Gets the underlying base control for this ModuleControl.</summary>
         /// <returns>A String.</returns>
-        public Control Control
-        {
-            get
-            {
-                return this;
-            }
-        }
+        public Control Control => this;
 
         /// <summary>Gets the Path for this control (used primarily for UserControls).</summary>
         /// <returns>A String.</returns>
-        public string ControlPath
-        {
-            get
-            {
-                return this.TemplateSourceDirectory + "/";
-            }
-        }
+        public string ControlPath => this.TemplateSourceDirectory + "/";
 
         /// <summary>Gets the Name for this control.</summary>
         /// <returns>A String.</returns>
-        public string ControlName
-        {
-            get
-            {
-                return this.GetType().Name.Replace("_", ".");
-            }
-        }
+        public string ControlName => this.GetType().Name.Replace("_", ".");
 
         /// <summary>Gets the Module Context for this control.</summary>
         /// <returns>A ModuleInstanceContext.</returns>
-        public ModuleInstanceContext ModuleContext
-        {
-            get
-            {
-                if (this.moduleContext == null)
-                {
-                    this.moduleContext = new ModuleInstanceContext(this);
-                }
-
-                return this.moduleContext;
-            }
-        }
+        public ModuleInstanceContext ModuleContext => this.moduleContext ??= new ModuleInstanceContext(this);
 
         /// <summary>Gets or sets the local resource file for this control.</summary>
         /// <returns>A String.</returns>
@@ -96,9 +67,9 @@ namespace DotNetNuke.UI.Modules
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
-        /// <summary>Gets a localized string with special characters escape for safe use in javascript.</summary>
+        /// <summary>Gets a localized string with special characters escape for safe use in JavaScript.</summary>
         /// <param name="key">The key to find the localized value.</param>
-        /// <returns>The localized text cleaned up for javascript usage.</returns>
+        /// <returns>The localized text cleaned up for JavaScript usage.</returns>
         protected string LocalizeSafeJsString(string key)
         {
             return Localization.GetSafeJSString(key, this.LocalResourceFile);

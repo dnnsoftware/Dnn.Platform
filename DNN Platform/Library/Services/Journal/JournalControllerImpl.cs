@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.Journal;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -335,43 +336,43 @@ internal class JournalControllerImpl : IJournalController
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId)
     {
         return this.GetJournalItem(portalId, currentUserId, journalId, false, false);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems)
     {
         return this.GetJournalItem(portalId, currentUserId, journalId, includeAllItems, false);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted)
     {
         return this.GetJournalItem(portalId, currentUserId, journalId, includeAllItems, isDeleted, false);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck)
     {
         return CBO.FillObject<JournalItem>(this.dataService.Journal_Get(portalId, currentUserId, journalId, includeAllItems, isDeleted, securityCheck));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalItem GetJournalItemByKey(int portalId, string objectKey)
     {
         return this.GetJournalItemByKey(portalId, objectKey, false, false);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems)
     {
         return this.GetJournalItemByKey(portalId, objectKey, includeAllItems, false);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems, bool isDeleted)
     {
         if (string.IsNullOrEmpty(objectKey))
@@ -382,7 +383,7 @@ internal class JournalControllerImpl : IJournalController
         return CBO.FillObject<JournalItem>(this.dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IFileInfo SaveJourmalFile(ModuleInfo module, UserInfo userInfo, string fileName, Stream fileContent)
     {
         var userFolder = this.folderManager.GetUserFolder(userInfo);
@@ -403,7 +404,7 @@ internal class JournalControllerImpl : IJournalController
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void SaveJournalItem(JournalItem journalItem, ModuleInfo module)
     {
         var tabId = module?.TabID ?? Null.NullInteger;
@@ -412,7 +413,7 @@ internal class JournalControllerImpl : IJournalController
         this.SaveJournalItem(journalItem, tabId, tabModuleId);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void UpdateJournalItem(JournalItem journalItem, ModuleInfo module)
     {
         var tabId = module?.TabID ?? Null.NullInteger;
@@ -421,25 +422,25 @@ internal class JournalControllerImpl : IJournalController
         this.UpdateJournalItem(journalItem, tabId, tabModuleId);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void DisableComments(int portalId, int journalId)
     {
         this.dataService.Journal_Comments_ToggleDisable(portalId, journalId, true);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void EnableComments(int portalId, int journalId)
     {
         this.dataService.Journal_Comments_ToggleDisable(portalId, journalId, false);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void HideComments(int portalId, int journalId)
     {
         this.dataService.Journal_Comments_ToggleHidden(portalId, journalId, true);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void ShowComments(int portalId, int journalId)
     {
         this.dataService.Journal_Comments_ToggleHidden(portalId, journalId, false);
@@ -497,20 +498,20 @@ internal class JournalControllerImpl : IJournalController
         this.dataService.Journal_SoftDeleteByGroupId(portalId, groupId);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IList<CommentInfo> GetCommentsByJournalIds(List<int> journalIdList)
     {
         var journalIds = journalIdList.Aggregate(string.Empty, (current, journalId) => current + journalId + ";");
         return CBO.FillCollection<CommentInfo>(this.dataService.Journal_Comment_ListByJournalIds(journalIds));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void LikeJournalItem(int journalId, int userId, string displayName)
     {
         this.dataService.Journal_Like(journalId, userId, displayName);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void SaveComment(CommentInfo comment)
     {
         if (!string.IsNullOrEmpty(comment.Comment))
@@ -520,7 +521,7 @@ internal class JournalControllerImpl : IJournalController
         }
 
         // TODO: enable once the profanity filter is working properly.
-        // objCommentInfo.Comment = portalSecurity.Remove(objCommentInfo.Comment, DotNetNuke.Security.PortalSecurity.ConfigType.ListController, "ProfanityFilter", DotNetNuke.Security.PortalSecurity.FilterScope.PortalList);
+        ////objCommentInfo.Comment = portalSecurity.Remove(objCommentInfo.Comment, DotNetNuke.Security.PortalSecurity.ConfigType.ListController, "ProfanityFilter", DotNetNuke.Security.PortalSecurity.FilterScope.PortalList);
         string xml = null;
         if (comment.CommentXML != null)
         {
@@ -534,13 +535,13 @@ internal class JournalControllerImpl : IJournalController
         comment.DateUpdated = newComment.DateUpdated;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public CommentInfo GetComment(int commentId)
     {
         return CBO.FillObject<CommentInfo>(this.dataService.Journal_Comment_Get(commentId));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void DeleteComment(int journalId, int commentId)
     {
         this.dataService.Journal_Comment_Delete(journalId, commentId);
@@ -548,31 +549,31 @@ internal class JournalControllerImpl : IJournalController
         // UNDONE: update the parent journal item and content item so this comment gets removed from search index
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void LikeComment(int journalId, int commentId, int userId, string displayName)
     {
         this.dataService.Journal_Comment_Like(journalId, commentId, userId, displayName);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalTypeInfo GetJournalType(string journalType)
     {
         return CBO.FillObject<JournalTypeInfo>(this.dataService.Journal_Types_Get(journalType));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalTypeInfo GetJournalTypeById(int journalTypeId)
     {
         return CBO.FillObject<JournalTypeInfo>(this.dataService.Journal_Types_GetById(journalTypeId));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IEnumerable<JournalTypeInfo> GetJournalTypes(int portalId)
     {
         return CBO.GetCachedObject<IEnumerable<JournalTypeInfo>>(
             this.hostSettings,
             new CacheItemArgs(
-                string.Format(DataCache.JournalTypesCacheKey, portalId),
+                string.Format(CultureInfo.InvariantCulture, DataCache.JournalTypesCacheKey, portalId),
                 DataCache.JournalTypesTimeOut,
                 DataCache.JournalTypesCachePriority,
                 portalId),
@@ -664,7 +665,7 @@ internal class JournalControllerImpl : IJournalController
         {
             journalItem.SecuritySet = "E,";
         }
-        else if (!journalItem.SecuritySet.EndsWith(","))
+        else if (!journalItem.SecuritySet.EndsWith(",", StringComparison.Ordinal))
         {
             journalItem.SecuritySet += ",";
             originalSecuritySet = journalItem.SecuritySet;
@@ -745,7 +746,7 @@ internal class JournalControllerImpl : IJournalController
         for (var i = 0; i < role.Settings.Keys.Count; i++)
         {
             var key = role.Settings.Keys.ElementAt(i);
-            if (key.StartsWith("stat_"))
+            if (key.StartsWith("stat_", StringComparison.OrdinalIgnoreCase))
             {
                 role.Settings[key] = "0";
             }
@@ -801,9 +802,9 @@ internal class JournalControllerImpl : IJournalController
         {
             PortalId = portalId,
             AuthorUserId = currentUserId,
-            UniqueKey = ji.ContentItemId.ToString("D"),
+            UniqueKey = ji.ContentItemId.ToString("D", CultureInfo.InvariantCulture),
 
-            // QueryString = "journalid=" + journalId,
+            ////QueryString = "journalid=" + journalId,
             SearchTypeId = this.searchHelper.GetSearchTypeByName("module").SearchTypeId,
         };
 

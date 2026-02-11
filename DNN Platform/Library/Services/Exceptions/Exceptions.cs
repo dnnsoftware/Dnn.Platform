@@ -5,12 +5,15 @@ namespace DotNetNuke.Services.Exceptions
 {
     using System;
     using System.Diagnostics;
+    using System.Globalization;
     using System.Reflection;
     using System.Threading;
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -192,7 +195,7 @@ namespace DotNetNuke.Services.Exceptions
                     moduleTitle = ctrlModule.ModuleContext.Configuration.ModuleTitle;
                 }
 
-                friendlyMessage = string.Format(Localization.GetString("ModuleUnavailable"), moduleTitle);
+                friendlyMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("ModuleUnavailable"), moduleTitle);
             }
 
             ProcessModuleLoadException(friendlyMessage, ctrl, exc, displayErrorMessage);
@@ -226,7 +229,6 @@ namespace DotNetNuke.Services.Exceptions
                 return;
             }
 
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             try
             {
                 if (!Host.UseCustomErrorMessages)
@@ -273,12 +275,12 @@ namespace DotNetNuke.Services.Exceptions
                             // hide the module
                             ctrl.Visible = false;
                             errorPlaceholder.Visible = true;
-                            errorPlaceholder.Controls.Add(new ErrorContainer(portalSettings, friendlyMessage, lex).Container);
+                            errorPlaceholder.Controls.Add(new ErrorContainer(friendlyMessage, lex).Container);
                         }
                         else
                         {
                             // there's no ErrorPlaceholder, add it to the module's control collection
-                            ctrl.Controls.Add(new ErrorContainer(portalSettings, friendlyMessage, lex).Container);
+                            ctrl.Controls.Add(new ErrorContainer(friendlyMessage, lex).Container);
                         }
                     }
                 }
@@ -289,16 +291,15 @@ namespace DotNetNuke.Services.Exceptions
                 ProcessPageLoadException(exc2);
             }
 
-            Logger.ErrorFormat("FriendlyMessage=\"{0}\" ctrl=\"{1}\" exc=\"{2}\"", friendlyMessage, ctrl, exc);
+            Logger.ErrorFormat(CultureInfo.InvariantCulture, "FriendlyMessage=\"{0}\" ctrl=\"{1}\" exc=\"{2}\"", friendlyMessage, ctrl, exc);
         }
 
         /// <summary>Processes the page load exception.</summary>
         /// <param name="exc">The exception.</param>
         public static void ProcessPageLoadException(Exception exc)
         {
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string appURL = Globals.ApplicationURL();
-            if (appURL.IndexOf("?") == Null.NullInteger)
+            if (appURL.IndexOf("?", StringComparison.Ordinal) == Null.NullInteger)
             {
                 appURL += "?def=ErrorMessage";
             }
@@ -321,7 +322,6 @@ namespace DotNetNuke.Services.Exceptions
                 return;
             }
 
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (!Host.UseCustomErrorMessages)
             {
                 throw new PageLoadException(exc == null ? string.Empty : exc.Message, exc);
@@ -336,7 +336,7 @@ namespace DotNetNuke.Services.Exceptions
                 if (!string.IsNullOrEmpty(url))
                 {
                     // redirect
-                    if (url.IndexOf("error=terminate") != -1)
+                    if (url.Contains("error=terminate", StringComparison.OrdinalIgnoreCase))
                     {
                         HttpContext.Current.Response.Clear();
                         HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
@@ -436,7 +436,7 @@ namespace DotNetNuke.Services.Exceptions
             var log = new LogInfo
             {
                 BypassBuffering = true,
-                LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                LogTypeKey = nameof(EventLogType.HOST_ALERT),
             };
             log.LogProperties.Add(new LogDetailInfo(notFoundErrorString, "URL"));
             var context = HttpContext.Current;

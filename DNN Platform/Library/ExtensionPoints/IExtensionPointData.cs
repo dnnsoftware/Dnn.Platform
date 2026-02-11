@@ -5,9 +5,11 @@
 namespace DotNetNuke.ExtensionPoints
 {
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
 
     public interface IExtensionPointData
     {
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         string Module { get; }
 
         string Name { get; }

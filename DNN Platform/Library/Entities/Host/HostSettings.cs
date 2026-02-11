@@ -5,6 +5,7 @@
 namespace DotNetNuke.Entities.Host;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 using DotNetNuke.Abstractions.Application;
 using DotNetNuke.Abstractions.Security;
@@ -212,6 +213,7 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
         new FileExtensionWhitelist(hostSettingsService.GetString("DefaultEndUserExtensionWhitelist"));
 
     /// <inheritdoc />
+    [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
     public string Guid => GetHostGuid(hostSettingsService);
 
     /// <inheritdoc />

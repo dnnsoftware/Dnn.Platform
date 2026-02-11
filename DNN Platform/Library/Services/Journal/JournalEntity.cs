@@ -4,6 +4,8 @@
 
 namespace DotNetNuke.Services.Journal
 {
+    using System.Globalization;
+    using System.IO;
     using System.Xml;
 
     using DotNetNuke.Services.Tokens;
@@ -21,8 +23,12 @@ namespace DotNetNuke.Services.Journal
         {
             if (!string.IsNullOrEmpty(entityXML))
             {
-                XmlDocument xDoc = new XmlDocument { XmlResolver = null };
-                xDoc.LoadXml(entityXML);
+                var xDoc = new XmlDocument { XmlResolver = null, };
+                using (var entityReader = XmlReader.Create(new StringReader(entityXML), new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xDoc.Load(entityReader);
+                }
+
                 if (xDoc != null)
                 {
                     XmlNode xRoot = xDoc.DocumentElement;
@@ -30,7 +36,7 @@ namespace DotNetNuke.Services.Journal
                     xNode = xRoot.SelectSingleNode("//entity");
                     if (xNode != null)
                     {
-                        this.Id = int.Parse(xNode["id"].InnerText);
+                        this.Id = int.Parse(xNode["id"].InnerText, CultureInfo.InvariantCulture);
                         this.Name = xNode["name"].InnerText.ToString();
                         if (xNode["vanity"] != null)
                         {
@@ -41,7 +47,7 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CacheLevel Cacheability
         {
             get { return CacheLevel.fullyCacheable; }
@@ -55,7 +61,7 @@ namespace DotNetNuke.Services.Journal
 
         public string Avatar { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             string outputFormat = string.Empty;
@@ -72,13 +78,13 @@ namespace DotNetNuke.Services.Journal
             switch (propertyName)
             {
                 case "id":
-                    return PropertyAccess.FormatString(this.Id.ToString(), format);
+                    return PropertyAccess.FormatString(this.Id.ToString(formatProvider), format);
                 case "name":
-                    return PropertyAccess.FormatString(this.Name.ToString(), format);
+                    return PropertyAccess.FormatString(this.Name, format);
                 case "vanity":
-                    return PropertyAccess.FormatString(this.Vanity.ToString(), format);
+                    return PropertyAccess.FormatString(this.Vanity, format);
                 case "avatar":
-                    return PropertyAccess.FormatString(this.Avatar.ToString(), format);
+                    return PropertyAccess.FormatString(this.Avatar, format);
             }
 
             propertyNotFound = true;

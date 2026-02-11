@@ -19,13 +19,13 @@ namespace DotNetNuke.Services.Syndication
             this.owner = owner;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Select(DataSourceSelectArguments arguments, DataSourceViewSelectCallback callback)
         {
             callback(this.ExecuteSelect(arguments));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override IEnumerable ExecuteSelect(DataSourceSelectArguments arguments)
         {
             return this.owner.Channel.SelectItems(this.owner.MaxItems);

@@ -12,6 +12,7 @@ namespace DotNetNuke.Web.Mvp
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
     public partial class ViewStateAttribute : Attribute
     {
+        /// <summary>Gets or sets the view state key.</summary>
         public string ViewStateKey { get; set; }
     }
 }

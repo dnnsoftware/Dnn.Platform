@@ -20,10 +20,10 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<IStep> Steps { get; protected set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ExecuteInternal()
         {
             this.Success = true;

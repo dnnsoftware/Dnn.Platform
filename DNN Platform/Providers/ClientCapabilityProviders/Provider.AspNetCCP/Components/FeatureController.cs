@@ -3,11 +3,14 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
@@ -17,12 +20,32 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mobile;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The FeatureController class for the ASP.NET Client Capability Provider.</summary>
     public class FeatureController : IUpgradeable
     {
         private const string ResourceFileRelativePath = "~/Providers/ClientCapabilityProviders/AspNetClientCapabilityProvider/App_LocalResources/SharedResources.resx";
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IRedirectionController redirectionController;
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="FeatureController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        public FeatureController()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="FeatureController"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="redirectionController">The redirection controller.</param>
+        public FeatureController(IApplicationStatusInfo appStatus, IRedirectionController redirectionController)
+        {
+            this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.redirectionController = redirectionController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IRedirectionController>();
+        }
+
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             switch (version)
@@ -36,7 +59,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                         return string.Empty;
                     }
 
-                    RemoveWurflProvider();
+                    RemoveWurflProvider(this.appStatus, this.redirectionController);
                     break;
             }
 
@@ -69,23 +92,22 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
             return mappingCapabilities;
         }
 
-        private static void RemoveWurflProvider()
+        private static void RemoveWurflProvider(IApplicationStatusInfo appStatus, IRedirectionController redirectionController)
         {
             var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.WURFLClientCapabilityProvider");
             if (package != null)
             {
-                var installer = new Installer(package, Globals.ApplicationMapPath);
+                var installer = new Installer(package, appStatus.ApplicationMapPath);
                 installer.UnInstall(true);
             }
 
-            UpdateRules();
+            UpdateRules(redirectionController);
         }
 
-        private static void UpdateRules()
+        private static void UpdateRules(IRedirectionController redirectionController)
         {
             var mapCapabilities = CreateMappedCapabilities();
-            var controller = new RedirectionController();
-            var redirections = controller.GetAllRedirections();
+            var redirections = redirectionController.GetAllRedirections();
             foreach (var redirection in redirections.Where(redirection => redirection.MatchRules.Count > 0))
             {
                 var deletedRules = new List<IMatchRule>();
@@ -133,11 +155,11 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                 // remove the deleted rules
                 foreach (var deletedRule in deletedRules)
                 {
-                    controller.DeleteRule(redirection.PortalId, redirection.Id, deletedRule.Id);
+                    redirectionController.DeleteRule(redirection.PortalId, redirection.Id, deletedRule.Id);
                     redirection.MatchRules.Remove(deletedRule);
                 }
 
-                controller.Save(redirection);
+                redirectionController.Save(redirection);
             }
         }
     }

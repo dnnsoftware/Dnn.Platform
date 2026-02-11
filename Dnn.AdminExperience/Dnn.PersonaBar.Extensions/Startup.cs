@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Extensions;
 
+using Dnn.PersonaBar.ConfigConsole.Components;
 using Dnn.PersonaBar.Pages.Components;
 using Dnn.PersonaBar.Prompt.Components.Repositories;
 using Dnn.PersonaBar.Themes.Components;
@@ -14,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 /// <summary>Registers services for the Persona Bar Extensions.</summary>
 public class Startup : IDnnStartup
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void ConfigureServices(IServiceCollection services)
     {
 #pragma warning disable CS0618
@@ -26,5 +27,6 @@ public class Startup : IDnnStartup
         services.AddTransient<IBulkPagesController, BulkPagesController>();
         services.AddTransient<IThemesController, ThemesController>();
         services.AddTransient<IDefaultPortalThemeController, DefaultPortalThemeController>();
+        services.AddTransient<ConfigConsoleController>();
     }
 }

@@ -3,6 +3,10 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.BulkInstall.DeployClient
 {
+    /// <summary>The result of uploading a package.</summary>
+    /// <param name="UploadTask">The upload task to await.</param>
+    /// <param name="PackageName">The name of the package.</param>
+    /// <param name="Stream">The package stream.</param>
     public sealed record UploadPackageResult(Task UploadTask, string PackageName, Stream Stream) : IAsyncDisposable
     {
         /// <summary>The upload progress event handler.</summary>

@@ -675,7 +675,10 @@
                                     if (valid.Item1) {
                                         $('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");
                                         //Restart app to refresh config from web.config
-                                        window.location.replace(window.location + "?culture=" + $("#PageLocale")[0].value + "&initiateinstall");
+                                        var installUrl = new URL(window.location);
+                                        installUrl.searchParams.set("culture", $("#PageLocale")[0].value);
+                                        installUrl.searchParams.set("initiateinstall", '1');
+                                        window.location.replace(installUrl);
                                     } else {
                                         $("#databaseError").show();
                                         $('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");

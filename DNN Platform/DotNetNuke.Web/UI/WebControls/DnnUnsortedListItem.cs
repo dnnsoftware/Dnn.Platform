@@ -16,6 +16,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
+        /// <summary>Adds the controls.</summary>
+        /// <param name="childControls">The controls to add.</param>
         public void AddControls(params Control[] childControls)
         {
             foreach (var childControl in childControls)
@@ -27,7 +29,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void AddAttributesToRender(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);

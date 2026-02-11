@@ -87,7 +87,9 @@ namespace DotNetNuke.Services.Installer
         }
 
         [Obsolete("Deprecated in DotNetNuke 9.11.0. Replaced with .NET compression types. Scheduled for removal in v11.0.0.")]
+#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
+#pragma warning restore CS3001
         {
             this.Encoding = TextEncoding.UTF8;
             this.InstallerInfo = info;
@@ -180,7 +182,7 @@ namespace DotNetNuke.Services.Installer
         /// <param name="fileName">A String representing the file name.</param>
         private void ParseFileName(string fileName)
         {
-            int i = fileName.Replace("\\", "/").LastIndexOf("/", StringComparison.Ordinal);
+            int i = fileName.Replace(@"\", "/").LastIndexOf("/", StringComparison.Ordinal);
             if (i < 0)
             {
                 this.Name = fileName.Substring(0);
@@ -192,7 +194,7 @@ namespace DotNetNuke.Services.Installer
                 this.Path = fileName.Substring(0, i);
             }
 
-            if (string.IsNullOrEmpty(this.Path) && fileName.StartsWith("[app_code]"))
+            if (string.IsNullOrEmpty(this.Path) && fileName.StartsWith("[app_code]", StringComparison.OrdinalIgnoreCase))
             {
                 this.Name = fileName.Substring(10);
                 this.Path = fileName.Substring(0, 10);
@@ -230,7 +232,7 @@ namespace DotNetNuke.Services.Installer
                         {
                             this.Type = InstallFileType.Script;
                         }
-                        else if (this.Path.StartsWith("[app_code]"))
+                        else if (this.Path.StartsWith("[app_code]", StringComparison.OrdinalIgnoreCase))
                         {
                             this.Type = InstallFileType.AppCode;
                         }
@@ -247,7 +249,7 @@ namespace DotNetNuke.Services.Installer
             this.Path = this.Path.Replace("[app_code]", string.Empty);
 
             // remove starting "\"
-            if (this.Path.StartsWith("\\"))
+            if (this.Path.StartsWith(@"\", StringComparison.Ordinal))
             {
                 this.Path = this.Path.Substring(1);
             }

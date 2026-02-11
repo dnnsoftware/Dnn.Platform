@@ -4,11 +4,13 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.UI.WebControls;
     using DotNetNuke.Web.UI.WebControls.Extensions;
 
+    /// <summary>A time zone edit control.</summary>
     public class DnnTimeZoneEditControl : TextEditControl
     {
         private DnnTimeZoneComboBox timeZones;
@@ -18,7 +20,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string EditControlClientId
         {
             get
@@ -28,7 +30,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
         {
             bool dataChanged = false;
@@ -43,7 +45,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return dataChanged;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             this.timeZones = new DnnTimeZoneComboBox();
@@ -55,7 +57,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.CreateChildControls();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnDataChanged(EventArgs e)
         {
             var args = new PropertyEditorEventArgs(this.Name);
@@ -65,14 +67,14 @@ namespace DotNetNuke.Web.UI.WebControls
             this.OnValueChanged(args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(System.EventArgs e)
         {
             this.EnsureChildControls();
             base.OnInit(e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(System.EventArgs e)
         {
             base.OnPreRender(e);
@@ -85,16 +87,16 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RenderEditMode(System.Web.UI.HtmlTextWriter writer)
         {
             this.RenderChildren(writer);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RenderViewMode(System.Web.UI.HtmlTextWriter writer)
         {
-            string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value));
+            string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value, CultureInfo.InvariantCulture));
             this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
             writer.Write(propValue);

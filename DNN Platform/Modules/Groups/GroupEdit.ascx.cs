@@ -54,7 +54,7 @@ public partial class GroupEdit : GroupsModuleBase
         this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override void OnInit(EventArgs e)
     {
         this.Load += this.Page_Load;
@@ -130,10 +130,12 @@ public partial class GroupEdit : GroupsModuleBase
 
         var ps = Security.PortalSecurity.Instance;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         this.txtGroupName.Text = ps.InputFilter(this.txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoScripting);
         this.txtGroupName.Text = ps.InputFilter(this.txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
         this.txtDescription.Text = ps.InputFilter(this.txtDescription.Text, Security.PortalSecurity.FilterFlag.NoScripting);
         this.txtDescription.Text = ps.InputFilter(this.txtDescription.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
 
         var roleInfo = this.roleController.GetRoleById(this.PortalId, this.GroupId);
         if (roleInfo != null)

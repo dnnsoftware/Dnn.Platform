@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = "Portals\\_default\\Containers\\" + skinPackage.SkinName;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void WriteFilesToManifest(XmlWriter writer)
         {
             var containerFileWriter = new ContainerComponentWriter(this.SkinPackage.SkinName, this.BasePath, this.Files, this.Package);

@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.Api
     using System.Net.Http;
     using System.Web.Http.Controllers;
 
+    /// <summary>Context information passed to an authorization filter.</summary>
     public class AuthFilterContext
     {
         /// <summary>Initializes a new instance of the <see cref="AuthFilterContext"/> class.</summary>
@@ -19,8 +20,10 @@ namespace DotNetNuke.Web.Api
             this.AuthFailureMessage = authFailureMessage;
         }
 
+        /// <summary>Gets the action context.</summary>
         public HttpActionContext ActionContext { get; private set; }
 
+        /// <summary>Gets or sets the failure message.</summary>
         public string AuthFailureMessage { get; set; }
 
         /// <summary>

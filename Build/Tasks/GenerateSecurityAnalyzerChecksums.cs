@@ -15,7 +15,7 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(SetVersion))]
     public sealed class GenerateSecurityAnalyzerChecksums : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             context.Information("Generating default.aspx checksum…");

@@ -554,11 +554,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var actualNotificationTypeActions = this.notificationsController.GetNotificationTypeActions(Constants.Messaging_NotificationTypeId);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(actualNotificationTypeActions, Has.Count.EqualTo(1));
                 Assert.That(actualNotificationTypeActions[0], Is.EqualTo(expectedNotificationTypeAction).Using(new NotificationTypeActionComparer()));
-            });
+            }
         }
 
         [Test]

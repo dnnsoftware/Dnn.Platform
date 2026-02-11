@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.Api.Internal
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
@@ -12,6 +13,7 @@ namespace DotNetNuke.Web.Api.Internal
     using System.Web.Http.Tracing;
     using System.Web.Routing;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
@@ -25,35 +27,47 @@ namespace DotNetNuke.Web.Api.Internal
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>Allows registering web API routes.</summary>
     public sealed class ServicesRoutingManager : IMapRoute, IRoutingManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesRoutingManager));
-        private readonly Dictionary<string, int> moduleUsage = new Dictionary<string, int>();
         private readonly IServiceProvider serviceProvider;
         private readonly RouteCollection routes;
         private readonly PortalAliasRouteManager portalAliasRouteManager;
 
         /// <summary>Initializes a new instance of the <see cref="ServicesRoutingManager"/> class.</summary>
         /// <param name="serviceProvider">The dependency injection container.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalAliasService. Scheduled removal in v12.0.0.")]
         public ServicesRoutingManager(IServiceProvider serviceProvider)
-            : this(serviceProvider, RouteTable.Routes)
+            : this(serviceProvider, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ServicesRoutingManager"/> class.</summary>
         /// <param name="serviceProvider">The dependency injection container.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        public ServicesRoutingManager(IServiceProvider serviceProvider, IPortalAliasService portalAliasService)
+            : this(serviceProvider, portalAliasService, RouteTable.Routes)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ServicesRoutingManager"/> class.</summary>
+        /// <param name="serviceProvider">The dependency injection container.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
         /// <param name="routes">The route collection.</param>
-        internal ServicesRoutingManager(IServiceProvider serviceProvider, RouteCollection routes)
+        internal ServicesRoutingManager(IServiceProvider serviceProvider, IPortalAliasService portalAliasService, RouteCollection routes)
         {
             this.serviceProvider = serviceProvider;
             this.routes = routes;
-            this.portalAliasRouteManager = new PortalAliasRouteManager();
+            portalAliasService ??= Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
+            this.portalAliasRouteManager = new PortalAliasRouteManager(portalAliasService);
             this.TypeLocator = new TypeLocator();
         }
 
+        /// <summary>Gets or sets the type locator.</summary>
         internal ITypeLocator TypeLocator { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, object defaults, object constraints, string[] namespaces)
         {
             if (namespaces == null || namespaces.Length == 0 || string.IsNullOrEmpty(namespaces[0]))
@@ -68,15 +82,15 @@ namespace DotNetNuke.Web.Api.Internal
 
             url = url.Trim('/', '\\');
 
-            IEnumerable<int> prefixCounts = this.portalAliasRouteManager.GetRoutePrefixCounts();
-            var routes = new List<Route>();
+            var prefixCounts = this.portalAliasRouteManager.GetRoutePrefixCounts();
+            var mappedRoutes = new List<Route>();
 
-            foreach (int count in prefixCounts)
+            foreach (var count in prefixCounts)
             {
-                string fullRouteName = this.portalAliasRouteManager.GetRouteName(moduleFolderName, routeName, count);
-                string routeUrl = this.portalAliasRouteManager.GetRouteUrl(moduleFolderName, url, count);
-                Route route = this.MapHttpRouteWithNamespace(fullRouteName, routeUrl, defaults, constraints, namespaces);
-                routes.Add(route);
+                var fullRouteName = this.portalAliasRouteManager.GetRouteName(moduleFolderName, routeName, count);
+                var routeUrl = this.portalAliasRouteManager.GetRouteUrl(moduleFolderName, url, count);
+                var route = this.MapHttpRouteWithNamespace(fullRouteName, routeUrl, defaults, constraints, namespaces);
+                mappedRoutes.Add(route);
                 if (Logger.IsTraceEnabled)
                 {
                     Logger.Trace("Mapping route: " + fullRouteName + " @ " + routeUrl);
@@ -84,30 +98,35 @@ namespace DotNetNuke.Web.Api.Internal
 
                 // compatible with old service path: DesktopModules/{namespace}/API/{controller}/{action}.
                 var oldRouteName = $"{fullRouteName}-old";
+
+#pragma warning disable CS0618 // Type or member is obsolete
                 var oldRouteUrl = PortalAliasRouteManager.GetOldRouteUrl(moduleFolderName, url, count);
+#pragma warning restore CS0618 // Type or member is obsolete
+
                 var oldRoute = this.MapHttpRouteWithNamespace(oldRouteName, oldRouteUrl, defaults, constraints, namespaces);
-                routes.Add(oldRoute);
+                mappedRoutes.Add(oldRoute);
                 if (Logger.IsTraceEnabled)
                 {
                     Logger.Trace("Mapping route: " + oldRouteName + " @ " + oldRouteUrl);
                 }
             }
 
-            return routes;
+            return mappedRoutes;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, object defaults, string[] namespaces)
         {
             return this.MapHttpRoute(moduleFolderName, routeName, url, defaults, null, namespaces);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, string[] namespaces)
         {
             return this.MapHttpRoute(moduleFolderName, routeName, url, null, null, namespaces);
         }
 
+        /// <inheritdoc />
         public void RegisterRoutes()
         {
             // register routes is ONLY called from within DNN application initialization
@@ -138,13 +157,13 @@ namespace DotNetNuke.Web.Api.Internal
                 GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerSelector), new DnnHttpControllerSelector(GlobalConfiguration.Configuration));
                 GlobalConfiguration.Configuration.DependencyResolver = new DnnDependencyResolver(Globals.DependencyProvider);
 
-                // tracwriter for dotnetnuke.instrumentation
+                // trace writer for dotnetnuke.instrumentation
                 GlobalConfiguration.Configuration.Services.Replace(typeof(ITraceWriter), new TraceWriter(IsTracingEnabled()));
 
                 // replace the default action filter provider with our own
                 GlobalConfiguration.Configuration.Services.Add(typeof(IFilterProvider), Globals.DependencyProvider.GetRequiredService<IFilterProvider>());
-                var defaultprovider = GlobalConfiguration.Configuration.Services.GetFilterProviders().Where(x => x is ActionDescriptorFilterProvider);
-                GlobalConfiguration.Configuration.Services.Remove(typeof(IFilterProvider), defaultprovider);
+                var defaultProvider = GlobalConfiguration.Configuration.Services.GetFilterProviders().Where(x => x is ActionDescriptorFilterProvider);
+                GlobalConfiguration.Configuration.Services.Remove(typeof(IFilterProvider), defaultProvider);
 
                 // add standard tab and module id provider
                 GlobalConfiguration.Configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
@@ -156,12 +175,15 @@ namespace DotNetNuke.Web.Api.Internal
                 this.LocateServicesAndMapRoutes();
             }
 
-            Logger.TraceFormat("Registered a total of {0} routes", this.routes.Count);
+            Logger.TraceFormat(CultureInfo.InvariantCulture, "Registered a total of {0} routes", this.routes.Count);
         }
 
-        internal static bool IsValidServiceRouteMapper(Type t)
+        /// <summary>Determines whether the given <paramref name="type"/> is a valid <see cref="IServiceRouteMapper"/>.</summary>
+        /// <param name="type">The type to check.</param>
+        /// <returns><see langword="true"/> if the <paramref name="type"/> is an accessible concrete class, otherwise <see langword="false"/>.</returns>
+        internal static bool IsValidServiceRouteMapper(Type type)
         {
-            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IServiceRouteMapper).IsAssignableFrom(t);
+            return type is { IsClass: true, IsAbstract: false, IsVisible: true, } && typeof(IServiceRouteMapper).IsAssignableFrom(type);
         }
 
         private static bool IsTracingEnabled()
@@ -241,19 +263,16 @@ namespace DotNetNuke.Web.Api.Internal
             RegisterSystemRoutes();
             this.ClearCachedRouteData();
 
-            this.moduleUsage.Clear();
-            using (var serviceScope = Globals.DependencyProvider.CreateScope())
+            using var serviceScope = Globals.DependencyProvider.CreateScope();
+            foreach (var routeMapper in this.GetServiceRouteMappers(serviceScope.ServiceProvider))
             {
-                foreach (IServiceRouteMapper routeMapper in this.GetServiceRouteMappers(serviceScope.ServiceProvider))
+                try
                 {
-                    try
-                    {
-                        routeMapper.RegisterRoutes(this);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.ErrorFormat("{0}.RegisterRoutes threw an exception.  {1}\r\n{2}", routeMapper.GetType().FullName, e.Message, e.StackTrace);
-                    }
+                    routeMapper.RegisterRoutes(this);
+                }
+                catch (Exception e)
+                {
+                    Logger.ErrorFormat(CultureInfo.InvariantCulture, "{0}.RegisterRoutes threw an exception.  {1}\r\n{2}", routeMapper.GetType().FullName, e.Message, e.StackTrace);
                 }
             }
         }
@@ -263,20 +282,18 @@ namespace DotNetNuke.Web.Api.Internal
             this.portalAliasRouteManager.ClearCachedData();
         }
 
-        private IEnumerable<IServiceRouteMapper> GetServiceRouteMappers(IServiceProvider serviceProvider)
+        private IEnumerable<IServiceRouteMapper> GetServiceRouteMappers(IServiceProvider scopedServiceProvider)
         {
-            IEnumerable<Type> types = this.GetAllServiceRouteMapperTypes();
-
-            foreach (Type routeMapperType in types)
+            foreach (var routeMapperType in this.GetAllServiceRouteMapperTypes())
             {
                 IServiceRouteMapper routeMapper;
                 try
                 {
-                    routeMapper = ActivatorUtilities.CreateInstance(serviceProvider, routeMapperType) as IServiceRouteMapper;
+                    routeMapper = ActivatorUtilities.CreateInstance(scopedServiceProvider, routeMapperType) as IServiceRouteMapper;
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("Unable to create {0} while registering service routes.  {1}", routeMapperType.FullName, e.Message);
+                    Logger.ErrorFormat(CultureInfo.InvariantCulture, "Unable to create {0} while registering service routes.  {1}", routeMapperType.FullName, e.Message);
                     routeMapper = null;
                 }
 
@@ -294,8 +311,7 @@ namespace DotNetNuke.Web.Api.Internal
 
         private Route MapHttpRouteWithNamespace(string name, string url, object defaults, object constraints, string[] namespaces)
         {
-            Route route = this.routes.MapHttpRoute(name, url, defaults, constraints);
-
+            var route = this.routes.MapHttpRoute(name, url, defaults, constraints);
             if (route.DataTokens == null)
             {
                 route.DataTokens = new RouteValueDictionary();

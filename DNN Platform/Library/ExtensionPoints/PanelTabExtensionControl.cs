@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.ExtensionPoints
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -10,22 +11,23 @@ namespace DotNetNuke.ExtensionPoints
     {
         public string PanelId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RenderBeginTag(HtmlTextWriter writer)
         {
             writer.Write(string.Empty);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RenderEndTag(HtmlTextWriter writer)
         {
             writer.Write(string.Empty);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void RenderContents(HtmlTextWriter op)
         {
-            op.Write("<div class=\"ehccContent dnnClear\" id=\"" + this.PanelId + "\">");
+            op.Write($"<div class=\"ehccContent dnnClear\" id=\"{this.PanelId}\">");
             base.RenderContents(op);
             op.Write("</div>");
         }

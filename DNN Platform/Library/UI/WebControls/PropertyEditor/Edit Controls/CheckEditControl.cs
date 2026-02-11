@@ -20,7 +20,7 @@ namespace DotNetNuke.UI.WebControls
             this.SystemType = "System.Boolean";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             string postedValue = postCollection[postDataKey];
@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.WebControls
             return false;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -49,7 +49,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
@@ -70,7 +70,7 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");

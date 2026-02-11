@@ -6,6 +6,7 @@ namespace Dnn.GoogleMailAuthProvider.Components;
 
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 using DotNetNuke.Abstractions.Application;
@@ -171,7 +172,7 @@ public class GoogleCredentialDataStore : IDataStore
         }
         else
         {
-            PortalController.UpdateEncryptedString(this.hostSettings, this.portalId, settingName, settingValue, Config.GetDecryptionkey());
+            PortalController.UpdateEncryptedString(this.hostSettings, HashAlgorithmName.SHA512, this.portalId, settingName, settingValue, Config.GetDecryptionkey());
         }
     }
 }

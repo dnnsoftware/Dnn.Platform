@@ -13,7 +13,7 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(SetVersion))]
     public sealed class GenerateSqlDataProvider : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             var fileName = context.GetTwoDigitsVersionNumber()[..8] + ".SqlDataProvider";

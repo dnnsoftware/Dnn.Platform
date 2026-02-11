@@ -26,19 +26,19 @@ namespace Dnn.PersonaBar.Extensions.MenuControllers
         /// <summary>Gets an <see cref="INavigationManager"/> instance to provide navigation services.</summary>
         protected INavigationManager NavigationManager { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Visible(MenuItem menuItem)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
             return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>();

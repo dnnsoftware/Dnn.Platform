@@ -6,10 +6,10 @@ namespace DNNConnect.CKEditorProvider.Browser;
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -27,13 +27,16 @@ using DNNConnect.CKEditorProvider.Objects;
 using DNNConnect.CKEditorProvider.Utilities;
 
 using DotNetNuke.Abstractions.Application;
+using DotNetNuke.Abstractions.ClientResources;
 using DotNetNuke.Abstractions.Logging;
 using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Abstractions.Security;
 using DotNetNuke.Abstractions.Security.Permissions;
+using DotNetNuke.Abstractions.Users;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Extensions;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
@@ -43,9 +46,9 @@ using DotNetNuke.Framework.Providers;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Client.ClientResourceManagement;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JScript;
@@ -71,9 +74,7 @@ public partial class Browser : PageBase
     /// <summary>The request.</summary>
     private readonly HttpRequest request = HttpContext.Current.Request;
 
-    private readonly IHostSettings hostSettings;
     private readonly IHostSettingsService hostSettingsService;
-    private readonly IApplicationStatusInfo appStatus;
     private readonly IEventLogger eventLogger;
     private readonly IPortalController portalController;
     private readonly IPermissionDefinitionService permissionDefinitionService;
@@ -81,6 +82,10 @@ public partial class Browser : PageBase
     private readonly IFileManager fileManager;
     private readonly IFolderManager folderManager;
     private readonly IFileContentTypeManager fileContentTypeManager;
+    private readonly DataProvider dataProvider;
+    private readonly IPackageController packageController;
+    private readonly ITabController tabController;
+    private readonly IClientResourceController clientResourceController;
 
     /// <summary>Current Settings Base.</summary>
     private EditorProviderSettings currentSettings = new EditorProviderSettings();
@@ -100,7 +105,7 @@ public partial class Browser : PageBase
     /// <summary>Initializes a new instance of the <see cref="Browser"/> class.</summary>
     [Obsolete("Deprecated in DotNetNuke 10.1.1. Please use overload with IFileManager. Scheduled removal in v12.0.0.")]
     public Browser()
-        : this(null, null, null, null, null, null, null, null, null, null)
+        : this(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
     {
     }
 
@@ -114,7 +119,7 @@ public partial class Browser : PageBase
     /// <param name="portalAliasService">The portal alias service.</param>
     [Obsolete("Deprecated in DotNetNuke 10.1.1. Please use overload with IFileManager. Scheduled removal in v12.0.0.")]
     public Browser(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalController portalController, IPermissionDefinitionService permissionDefinitionService, IPortalAliasService portalAliasService)
-        : this(hostSettings, hostSettingsService, appStatus, eventLogger, portalController, permissionDefinitionService, portalAliasService, null, null, null)
+        : this(hostSettings, hostSettingsService, appStatus, eventLogger, portalController, permissionDefinitionService, portalAliasService, null, null, null, null, null, null, null, null)
     {
     }
 
@@ -129,12 +134,32 @@ public partial class Browser : PageBase
     /// <param name="fileManager">The file manager.</param>
     /// <param name="folderManager">The folder manager.</param>
     /// <param name="fileContentTypeManager">The file content type manager.</param>
+    [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
     public Browser(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalController portalController, IPermissionDefinitionService permissionDefinitionService, IPortalAliasService portalAliasService, IFileManager fileManager, IFolderManager folderManager, IFileContentTypeManager fileContentTypeManager)
-        : base(portalController, appStatus, hostSettings)
+        : this(hostSettings, hostSettingsService, appStatus, eventLogger, portalController, permissionDefinitionService, portalAliasService, fileManager, folderManager, fileContentTypeManager, null, null, null, null, null)
     {
-        this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+    }
+
+    /// <summary>Initializes a new instance of the <see cref="Browser"/> class.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="hostSettingsService">The host settings service.</param>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="permissionDefinitionService">The permission definition service.</param>
+    /// <param name="portalAliasService">The portal alias service.</param>
+    /// <param name="fileManager">The file manager.</param>
+    /// <param name="folderManager">The folder manager.</param>
+    /// <param name="fileContentTypeManager">The file content type manager.</param>
+    /// <param name="userController">The user controller.</param>
+    /// <param name="dataProvider">The data provider.</param>
+    /// <param name="packageController">The package controller.</param>
+    /// <param name="tabController">The tab controller.</param>
+    /// <param name="clientResourceController">The client resource controller.</param>
+    public Browser(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalController portalController, IPermissionDefinitionService permissionDefinitionService, IPortalAliasService portalAliasService, IFileManager fileManager, IFolderManager folderManager, IFileContentTypeManager fileContentTypeManager, IUserController userController, DataProvider dataProvider, IPackageController packageController, ITabController tabController, IClientResourceController clientResourceController)
+        : base(portalController, appStatus, hostSettings, userController)
+    {
         this.hostSettingsService = hostSettingsService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettingsService>();
-        this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
         this.eventLogger = eventLogger ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IEventLogger>();
         this.portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
         this.permissionDefinitionService = permissionDefinitionService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPermissionDefinitionService>();
@@ -142,6 +167,10 @@ public partial class Browser : PageBase
         this.fileManager = fileManager ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IFileManager>();
         this.folderManager = folderManager ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IFolderManager>();
         this.fileContentTypeManager = fileContentTypeManager ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IFileContentTypeManager>();
+        this.dataProvider = dataProvider ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<DataProvider>();
+        this.packageController = packageController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPackageController>();
+        this.tabController = tabController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<ITabController>();
+        this.clientResourceController = clientResourceController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IClientResourceController>();
     }
 
     /// <summary>Gets or sets the accept file types.</summary>
@@ -375,7 +404,7 @@ public partial class Browser : PageBase
 
                     return null;
                 default:
-                    if (extension.StartsWith("."))
+                    if (extension.StartsWith(".", StringComparison.Ordinal))
                     {
                         extension = extension.Replace(".", string.Empty);
                     }
@@ -417,16 +446,16 @@ public partial class Browser : PageBase
     {
         this.LoadFavIcon();
 
-        JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.portalSettings, CommonJs.jQuery);
-        JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.portalSettings, CommonJs.jQueryUI);
-        ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/Browser.js"));
-        ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.ImageSlider.js"));
-        ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.cropzoom.js"));
-        ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.ImageResizer.js"));
-        ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.pagemethod.js"));
-        ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.fileupload.comb.min.js"));
-        ClientResourceManager.RegisterStyleSheet(this.Page, "https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css");
-        ClientResourceManager.RegisterStyleSheet(this.Page, this.ResolveUrl("Browser.comb.min.css"));
+        JavaScript.RequestRegistration(this.AppStatus, this.eventLogger, this.portalSettings, CommonJs.jQuery);
+        JavaScript.RequestRegistration(this.AppStatus, this.eventLogger, this.portalSettings, CommonJs.jQueryUI);
+        this.clientResourceController.CreateScript(this.ResolveUrl("js/Browser.js")).Register();
+        this.clientResourceController.CreateScript(this.ResolveUrl("js/jquery.ImageSlider.js")).Register();
+        this.clientResourceController.CreateScript(this.ResolveUrl("js/jquery.cropzoom.js")).Register();
+        this.clientResourceController.CreateScript(this.ResolveUrl("js/jquery.ImageResizer.js")).Register();
+        this.clientResourceController.CreateScript(this.ResolveUrl("js/jquery.pagemethod.js")).Register();
+        this.clientResourceController.CreateScript(this.ResolveUrl("js/jquery.fileupload.comb.min.js")).Register();
+        this.clientResourceController.CreateStylesheet("https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css").Register();
+        this.clientResourceController.CreateStylesheet(this.ResolveUrl("Browser.comb.min.css")).Register();
 
         this.GetSelectedImageOrLink();
 
@@ -445,9 +474,7 @@ public partial class Browser : PageBase
                 return;
             }
 
-            var tabController = new TabController();
-
-            var selectTab = tabController.GetTab(
+            var selectTab = this.tabController.GetTab(
                 int.Parse(this.dnntreeTabs.SelectedValue), this.portalSettings.PortalId, true);
 
             string fileName = null;
@@ -551,7 +578,7 @@ public partial class Browser : PageBase
         if (!string.IsNullOrEmpty(fileUrl) && !string.IsNullOrEmpty(fileName))
         {
             // If we have both, combine them
-            fileUrl = !fileUrl.EndsWith("/")
+            fileUrl = !fileUrl.EndsWith("/", StringComparison.Ordinal)
                 ? $"{fileUrl}/{fileName}"
                 : $"{fileUrl}{fileName}";
         }
@@ -576,7 +603,7 @@ public partial class Browser : PageBase
             }
         }
 
-        // string _CKEditorName = httpRequest.QueryString["CKEditor"];
+        ////string _CKEditorName = httpRequest.QueryString["CKEditor"];
         string funcNum = HttpContext.Current.Request.QueryString["CKEditorFuncNum"];
 
         string errorMsg = string.Empty;
@@ -597,11 +624,11 @@ public partial class Browser : PageBase
     /// <returns>Returns the formatted JavaScript block.</returns>
     protected virtual string GetJsUploadCode(string fileName, string fileUrl)
     {
-        fileUrl = string.Format(!fileUrl.EndsWith("/") ? "{0}/{1}" : "{0}{1}", fileUrl, fileName);
+        fileUrl = string.Format(!fileUrl.EndsWith("/", StringComparison.Ordinal) ? "{0}/{1}" : "{0}{1}", fileUrl, fileName);
 
         var httpRequest = HttpContext.Current.Request;
 
-        // var _CKEditorName = request.QueryString["CKEditor"];
+        ////var _CKEditorName = request.QueryString["CKEditor"];
         // funcNum is null when EasyImageUpload is being used
         var funcNum = httpRequest.QueryString["CKEditorFuncNum"];
 
@@ -728,11 +755,11 @@ public partial class Browser : PageBase
     /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
     protected void Page_Load(object sender, EventArgs e)
     {
-        JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.portalSettings, CommonJs.jQuery);
+        JavaScript.RequestRegistration(this.AppStatus, this.eventLogger, this.portalSettings, CommonJs.jQuery);
 
         this.SetSortButtonClasses();
 
-        this.extensionWhiteList = this.hostSettings.AllowedExtensionAllowList;
+        this.extensionWhiteList = this.HostSettings.AllowedExtensionAllowList;
 
         if (!string.IsNullOrEmpty(this.request.QueryString["mode"]))
         {
@@ -743,7 +770,7 @@ public partial class Browser : PageBase
         ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
         Provider objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
 
-        var settingsDictionary = EditorController.GetEditorHostSettings();
+        var settingsDictionary = EditorController.GetEditorHostSettings(this.HostSettings);
         var portalRoles = RoleController.Instance.GetRoles(this.portalSettings.PortalId);
 
         this.allPortalsSettings = SettingsUtil.LoadEditorSettingsByKey(
@@ -757,6 +784,7 @@ public partial class Browser : PageBase
         {
             SettingsMode.Default => SettingsUtil.GetDefaultSettings(
                 this.portalSettings,
+                this.HostSettings,
                 this.portalSettings.HomeDirectoryMapPath,
                 objProvider.Attributes["ck_configFolder"],
                 portalRoles),
@@ -1289,7 +1317,7 @@ public partial class Browser : PageBase
         string sAppPath = HttpContext.Current.Server.MapPath("~");
 
         return HttpContext.Current.Request.ApplicationPath +
-               sPath.Replace(sAppPath, string.Empty).Replace("\\", "/");
+               sPath.Replace(sAppPath, string.Empty).Replace(@"\", "/");
     }
 
     /// <summary>Get File Name without .resources extension.</summary>
@@ -1381,19 +1409,23 @@ public partial class Browser : PageBase
                 permission.PermissionKey.Equals("READ", StringComparison.OrdinalIgnoreCase)
                 || permission.PermissionKey.Equals("WRITE", StringComparison.OrdinalIgnoreCase)
                 || permission.PermissionKey.Equals("BROWSE", StringComparison.OrdinalIgnoreCase)
-            select new FolderPermissionInfo(permission)
-                {
-                    FolderID = folderInfo.FolderID,
-                    UserID = currentUserInfo.UserID,
-                    RoleID = Convert.ToInt32(Globals.glbRoleNothing),
-                    AllowAccess = true,
-                };
+            select InitializeFolderPermission(permission, folderInfo, currentUserInfo);
         foreach (var folderPermission in folderPermissions)
         {
             folderInfo.FolderPermissions.Add(folderPermission, true);
         }
 
         FolderPermissionController.SaveFolderPermissions((FolderInfo)folderInfo);
+        return;
+
+        static FolderPermissionInfo InitializeFolderPermission(IPermissionDefinitionInfo permission, IFolderInfo folderInfo, IUserInfo currentUserInfo)
+        {
+            IFolderPermissionInfo folderPermission = new FolderPermissionInfo(permission) { AllowAccess = true, };
+            folderPermission.FolderId = folderInfo.FolderID;
+            folderPermission.UserId = currentUserInfo.UserID;
+            folderPermission.RoleId = Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
+            return (FolderPermissionInfo)folderPermission;
+        }
     }
 
     /// <summary>Sets the sort button classes.</summary>
@@ -1457,7 +1489,7 @@ public partial class Browser : PageBase
         //      Value = list of child folders
         // this will let us possible to create folders tree much faster on a recursion below
         var readableFolders =
-            this.folderManager.GetFolders(UserController.Instance.GetCurrentUserInfo())
+            this.folderManager.GetFolders(this.UserController.GetCurrentUserInfo())
                 .GroupBy(folder => folder.ParentID)
                 .ToDictionary(
                     key => key.Key,
@@ -1579,7 +1611,7 @@ public partial class Browser : PageBase
 
         var folderStart = startingFolderInfo.PhysicalPath;
 
-        folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
+        folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace(@"\", "/");
 
         startingFolderInfo = this.folderManager.AddFolder(this.portalSettings.PortalId, folderStart);
 
@@ -1604,7 +1636,7 @@ public partial class Browser : PageBase
         {
             var folderStart = userFolderPath;
 
-            folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
+            folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace(@"\", "/");
 
             userFolderInfo = this.folderManager.AddFolder(this.portalSettings.PortalId, folderStart);
 
@@ -1614,13 +1646,13 @@ public partial class Browser : PageBase
         }
 
         // Create user folder based on the user id
-        userFolderPath = Path.Combine(userFolderPath, $"{UserController.Instance.GetCurrentUserInfo().UserID}\\");
+        userFolderPath = Path.Combine(userFolderPath, $"{this.UserController.GetCurrentUserInfo().UserID}\\");
 
         if (!Directory.Exists(userFolderPath))
         {
             var folderStart = userFolderPath;
 
-            folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
+            folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace(@"\", "/");
 
             userFolderInfo = this.folderManager.AddFolder(this.portalSettings.PortalId, folderStart);
 
@@ -1628,14 +1660,14 @@ public partial class Browser : PageBase
 
             this.SetFolderPermission(userFolderInfo);
 
-            this.SetUserFolderPermission(userFolderInfo, UserController.Instance.GetCurrentUserInfo());
+            this.SetUserFolderPermission(userFolderInfo, this.UserController.GetCurrentUserInfo());
         }
         else
         {
             userFolderInfo = Utility.ConvertFilePathToFolderInfo(userFolderPath, this.portalSettings);
 
             // make sure the user has the correct permissions set
-            this.SetUserFolderPermission(userFolderInfo, UserController.Instance.GetCurrentUserInfo());
+            this.SetUserFolderPermission(userFolderInfo, this.UserController.GetCurrentUserInfo());
         }
 
         return userFolderInfo;
@@ -1666,19 +1698,16 @@ public partial class Browser : PageBase
         this.BrowserMode.SelectedIndexChanged += this.BrowserMode_SelectedIndexChanged;
         this.dnntreeTabs.SelectedNodeChanged += this.TreeTabs_NodeClick;
 
-        // this.FoldersTree.SelectedNodeChanged += new EventHandler(FoldersTree_SelectedNodeChanged);
+        ////this.FoldersTree.SelectedNodeChanged += new EventHandler(FoldersTree_SelectedNodeChanged);
         this.FoldersTree.SelectedNodeChanged += this.FoldersTree_NodeClick;
 
         this.FilesList.ItemCommand += this.FilesList_ItemCommand;
-
-        this.ClientResourceLoader.DataBind();
-        this.ClientResourceLoader.PreRender += (_, _) => JavaScript.Register(this.hostSettings, this.hostSettingsService, this.appStatus, this.eventLogger, this.portalSettings, this.Page);
     }
 
     /// <summary>Load Favicon from Current Portal Home Directory.</summary>
     private void LoadFavIcon()
     {
-        this.favicon.Controls.Add(new LiteralControl(DotNetNuke.UI.Internals.FavIcon.GetHeaderLink(this.hostSettings, this.portalSettings.PortalId)));
+        this.favicon.Controls.Add(new LiteralControl(DotNetNuke.UI.Internals.FavIcon.GetHeaderLink(this.HostSettings, this.portalSettings.PortalId)));
     }
 
     /// <summary>Render all Directories and subdirectories recursive.</summary>
@@ -1711,7 +1740,7 @@ public partial class Browser : PageBase
     private void GetLanguageList()
     {
         var languageListItems =
-            new LocaleController().GetLocales(this.portalSettings.PortalId)
+            new LocaleController(this.HostSettings, this.AppStatus, this.dataProvider, this.PortalController, this.tabController, this.UserController, this.packageController).GetLocales(this.portalSettings.PortalId)
                 .Values.Select(language => new ListItem { Text = language.Text, Value = language.Code });
         foreach (var languageListItem in languageListItems)
         {
@@ -1730,7 +1759,7 @@ public partial class Browser : PageBase
                 return;
             }
 
-            var currentTab = new TabController().GetTab(
+            var currentTab = this.tabController.GetTab(
                 int.Parse(this.request.QueryString["tabid"]), this.portalSettings.PortalId, false);
 
             if (currentTab == null || string.IsNullOrEmpty(currentTab.CultureCode))
@@ -2117,7 +2146,7 @@ public partial class Browser : PageBase
 
         this.PagerFileLinks.Visible = filesPagedDataSource.PageCount > 1;
 
-        // this.FilesList.DataSource = this.GetFiles(directory);
+        ////this.FilesList.DataSource = this.GetFiles(directory);
         this.FilesList.DataSource = filesPagedDataSource;
         this.FilesList.DataBind();
     }
@@ -2290,7 +2319,7 @@ public partial class Browser : PageBase
 
             if (command == "EasyImageUpload")
             {
-                var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
+                var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/", StringComparison.Ordinal) ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
                 this.Response.ClearContent();
                 this.Response.ContentType = "application/json";
                 this.Response.Write($$"""{"default": {{HttpUtility.JavaScriptStringEncode(fileUrl, addDoubleQuotes: true)}}}""");
@@ -2300,7 +2329,7 @@ public partial class Browser : PageBase
                 // querystring parameter responseType equals "json" when the request comes from drag/drop
                 if (this.Request.QueryString["responseType"]?.Equals("json", StringComparison.InvariantCultureIgnoreCase) == true)
                 {
-                    var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
+                    var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/", StringComparison.Ordinal) ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
                     this.Response.ClearContent();
                     this.Response.ContentType = "application/json";
                     this.Response.Write($$"""{"uploaded": 1, "fileName": {{HttpUtility.JavaScriptStringEncode(fileName, addDoubleQuotes: true)}}, "url": {{HttpUtility.JavaScriptStringEncode(fileUrl, addDoubleQuotes: true)}}}""");
@@ -2704,9 +2733,7 @@ public partial class Browser : PageBase
 
         this.SetDefaultLinkTypeText();
 
-        var tabController = new TabController();
-
-        var selectTab = tabController.GetTab(
+        var selectTab = this.tabController.GetTab(
             int.Parse(this.dnntreeTabs.SelectedValue), this.portalSettings.PortalId, true);
 
         string sDomainName = $"http://{Globals.GetDomainName(this.Request, true)}";
@@ -2783,7 +2810,7 @@ public partial class Browser : PageBase
 
             var tabUrl = selectedTab.FullUrl;
 
-            if (tabUrl.StartsWith("/"))
+            if (tabUrl.StartsWith("/", StringComparison.Ordinal))
             {
                 var requestUrl = HttpContext.Current.Request.Url;
                 tabUrl = $"{requestUrl.Scheme}://{requestUrl.Authority}{tabUrl}";

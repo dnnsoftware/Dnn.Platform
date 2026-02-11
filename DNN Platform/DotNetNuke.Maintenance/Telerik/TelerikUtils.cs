@@ -18,13 +18,13 @@ namespace DotNetNuke.Maintenance.Telerik
         /// <summary>The file name of the Telerik Web UI assembly.</summary>
         public static readonly string TelerikWebUIFileName = "Telerik.Web.UI.dll";
 
-        private static readonly string[] Vendors = new[]
-        {
+        private static readonly string[] Vendors =
+        [
             "Microsoft",
             "System",
-        };
+        ];
 
-        private static readonly string[] WellKnownAssemblies = new[]
+        private static readonly HashSet<string> WellKnownAssemblies = new(StringComparer.OrdinalIgnoreCase)
         {
             "Telerik.Web.UI.Skins.dll",
             "DotNetNuke.Website.Deprecated.dll",
@@ -50,7 +50,7 @@ namespace DotNetNuke.Maintenance.Telerik
         /// <inheritdoc />
         public string BinPath => Path.Combine(this.applicationStatusInfo.ApplicationMapPath, "bin");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<string> GetAssembliesThatDependOnTelerik()
         {
             // use a temp AppDomain to avoid locking files in the bin folder
@@ -122,7 +122,7 @@ namespace DotNetNuke.Maintenance.Telerik
         {
             var fileName = Path.GetFileName(path);
             return !WellKnownAssemblies.Contains(fileName) &&
-                !Vendors.Any(vendor => fileName.StartsWith($"{vendor}."));
+                !Vendors.Any(vendor => fileName.StartsWith($"{vendor}.", StringComparison.OrdinalIgnoreCase));
         }
 
         private bool AssemblyDependsOnTelerik(string path, AppDomain domain)

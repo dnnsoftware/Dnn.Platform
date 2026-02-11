@@ -116,7 +116,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 TemplatePath = filename,
             });
 
-            return (true, string.Format(Localization.GetString("ExportedMessage", LocalResourcesFile), filename));
+            return (true, string.Format(CultureInfo.CurrentCulture, Localization.GetString("ExportedMessage", LocalResourcesFile), filename));
         }
 
         private static void SerializePortalSettings(XmlWriter writer, PortalInfo portal, bool isMultilanguage)
@@ -288,6 +288,72 @@ namespace DotNetNuke.Entities.Portals.Templates
                 writer.WriteElementString("showquickmoduleaddmenu", setting);
             }
 
+            settingsDictionary.TryGetValue("AllowJsInModuleHeaders", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("allowjsinmoduleheaders", setting);
+            }
+
+            settingsDictionary.TryGetValue("AllowJsInModuleFooters", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("allowjsinmodulefooters", setting);
+            }
+
+            settingsDictionary.TryGetValue("AllowUserUICulture", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("allowuseruiculture", setting);
+            }
+
+            settingsDictionary.TryGetValue("EnableBrowserLanguage", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("enablebrowserlanguage", setting);
+            }
+
+            settingsDictionary.TryGetValue("SitemapCacheDays", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("sitemapcachedays", setting);
+            }
+
+            settingsDictionary.TryGetValue("SitemapExcludePriority", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("sitemapexcludepriority", setting);
+            }
+
+            settingsDictionary.TryGetValue("SitemmpIncludeHidden", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("sitemapincludehidden", setting);
+            }
+
+            settingsDictionary.TryGetValue("SitemapLevelMode", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("sitemaplevelmode", setting);
+            }
+
+            settingsDictionary.TryGetValue("SitemapMinPriority", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("sitemapminpriority", setting);
+            }
+
+            settingsDictionary.TryGetValue(PortalTemplateImporter.HtmlTextAutoSaveEnabled, out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("enableautosave", setting);
+            }
+
+            settingsDictionary.TryGetValue(PortalTemplateImporter.HtmlTextTimeToAutoSave, out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("timetoautosave", setting);
+            }
+
             // End Portal Settings
             writer.WriteEndElement();
         }
@@ -363,25 +429,25 @@ namespace DotNetNuke.Entities.Portals.Templates
             writer.WriteEndElement();
         }
 
-        private static void SerializeFolders(XmlWriter writer, PortalInfo objportal, ref ZipArchive zipFile)
+        private static void SerializeFolders(XmlWriter writer, IPortalInfo portal, ref ZipArchive zipFile)
         {
             // Sync db and filesystem before exporting so all required files are found
             var folderManager = FolderManager.Instance;
-            folderManager.Synchronize(objportal.PortalID);
+            folderManager.Synchronize(portal.PortalId);
             writer.WriteStartElement("folders");
 
-            foreach (var folder in folderManager.GetFolders(objportal.PortalID))
+            foreach (var folder in folderManager.GetFolders(portal.PortalId))
             {
                 writer.WriteStartElement("folder");
 
                 writer.WriteElementString("folderpath", folder.FolderPath);
-                writer.WriteElementString("storagelocation", folder.StorageLocation.ToString());
+                writer.WriteElementString("storagelocation", folder.StorageLocation.ToString(CultureInfo.InvariantCulture));
 
                 // Serialize Folder Permissions
-                SerializeFolderPermissions(writer, objportal, folder.FolderPath);
+                SerializeFolderPermissions(writer, portal, folder.FolderPath);
 
                 // Serialize files
-                SerializeFiles(writer, objportal, folder.FolderPath, ref zipFile);
+                SerializeFiles(writer, portal, folder.FolderPath, ref zipFile);
 
                 writer.WriteEndElement();
             }
@@ -432,9 +498,9 @@ namespace DotNetNuke.Entities.Portals.Templates
                 : objFile.FileName;
         }
 
-        private static void SerializeFolderPermissions(XmlWriter writer, PortalInfo objportal, string folderPath)
+        private static void SerializeFolderPermissions(XmlWriter writer, IPortalInfo portal, string folderPath)
         {
-            var permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(objportal.PortalID, folderPath);
+            var permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portal.PortalId, folderPath);
 
             writer.WriteStartElement("folderpermissions");
 
@@ -453,13 +519,13 @@ namespace DotNetNuke.Entities.Portals.Templates
             writer.WriteEndElement();
         }
 
-        private static void SerializeProfileDefinitions(XmlWriter writer, PortalInfo objportal)
+        private static void SerializeProfileDefinitions(XmlWriter writer, IPortalInfo portal)
         {
             var objListController = new ListController();
 
             writer.WriteStartElement("profiledefinitions");
             foreach (ProfilePropertyDefinition objProfileProperty in
-                ProfileController.GetPropertyDefinitionsByPortal(objportal.PortalID, false, false))
+                ProfileController.GetPropertyDefinitionsByPortal(portal.PortalId, false, false))
             {
                 writer.WriteStartElement("profiledefinition");
 
@@ -469,7 +535,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 var objList = objListController.GetListEntryInfo("DataType", objProfileProperty.DataType);
                 writer.WriteElementString("datatype", objList == null ? "Unknown" : objList.Value);
                 writer.WriteElementString("length", objProfileProperty.Length.ToString(CultureInfo.InvariantCulture));
-                writer.WriteElementString("defaultvisibility", Convert.ToInt32(objProfileProperty.DefaultVisibility).ToString(CultureInfo.InvariantCulture));
+                writer.WriteElementString("defaultvisibility", ((int)objProfileProperty.DefaultVisibility).ToString(CultureInfo.InvariantCulture));
                 writer.WriteEndElement();
             }
 

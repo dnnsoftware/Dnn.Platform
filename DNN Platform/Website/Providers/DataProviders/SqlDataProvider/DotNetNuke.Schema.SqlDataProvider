@@ -15348,6 +15348,9 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetHostSettings]
 AS
 BEGIN
+	IF NOT EXISTS ( select 1 from {databaseOwner}{objectQualifier}HostSettings where SettingName = 'GUID' )
+	INSERT INTO {databaseOwner}{objectQualifier}HostSettings ( SettingName, SettingValue, SettingIsSecure ) values ( 'GUID', newid(), 0 )
+
 	SELECT SettingName,
 		   CASE WHEN Lower(SettingValue) Like N'fileid=%'
 		        THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)

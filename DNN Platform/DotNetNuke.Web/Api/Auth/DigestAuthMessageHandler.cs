@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.Api.Auth
 {
     using System;
+    using System.Globalization;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -12,11 +13,13 @@ namespace DotNetNuke.Web.Api.Auth
     using System.Threading;
 
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Web.Api.Internal.Auth;
 
     /// <summary>Digest authentication message handler.</summary>
-    public class DigestAuthMessageHandler : AuthMessageHandlerBase
+    [DnnDeprecated(10, 2, 2, "Use JWT or API token authentication")]
+    public partial class DigestAuthMessageHandler : AuthMessageHandlerBase
     {
         /// <summary>Initializes a new instance of the <see cref="DigestAuthMessageHandler"/> class.</summary>
         /// <param name="includeByDefault">Should this handler be included by default on all routes.</param>
@@ -26,10 +29,10 @@ namespace DotNetNuke.Web.Api.Auth
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string AuthScheme => DigestAuthentication.AuthenticationScheme;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (this.NeedsAuthentication(request))
@@ -52,7 +55,7 @@ namespace DotNetNuke.Web.Api.Auth
             return base.OnInboundRequest(request, cancellationToken);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             if (response.StatusCode == HttpStatusCode.Unauthorized && SupportsDigestAuth(response.RequestMessage))
@@ -66,7 +69,7 @@ namespace DotNetNuke.Web.Api.Auth
         private static string CreateNewNonce()
         {
             DateTime nonceTime = DateTime.Now + TimeSpan.FromMinutes(1);
-            string expireStr = nonceTime.ToString("G");
+            string expireStr = nonceTime.ToString("G", CultureInfo.InvariantCulture);
 
             byte[] expireBytes = Encoding.Default.GetBytes(expireStr);
             string nonce = Convert.ToBase64String(expireBytes);

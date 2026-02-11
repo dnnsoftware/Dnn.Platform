@@ -7,12 +7,19 @@ namespace DNNConnect.CKEditorProvider.Utilities
     using System.Collections.Generic;
 
     using DNNConnect.CKEditorProvider.Objects;
+
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Host;
+    using DotNetNuke.Internal.SourceGenerators;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Editor controller.</summary>
-    public static class EditorController
+    public static partial class EditorController
     {
         /// <summary>Deletes all module settings of the Editor, for the specified <paramref name="tabId"/>.</summary>
         /// <param name="tabId">The tab id.</param>
@@ -81,7 +88,14 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
         /// <summary>Gets the editor host settings.</summary>
         /// <returns>Returns the list of all Editor Host Settings.</returns>
-        public static List<EditorHostSetting> GetEditorHostSettings()
+        [DnnDeprecated(10, 2, 2, "Please use overload with IHostSettings")]
+        public static partial List<EditorHostSetting> GetEditorHostSettings()
+            => GetEditorHostSettings(HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>());
+
+        /// <summary>Gets the editor host settings.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <returns>Returns the list of all Editor Host Settings.</returns>
+        public static List<EditorHostSetting> GetEditorHostSettings(IHostSettings hostSettings)
         {
             var editorHostSettings = new List<EditorHostSetting>();
 
@@ -89,7 +103,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             if (cache == null)
             {
-                var timeOut = 20 * Convert.ToInt32(Host.PerformanceSetting);
+                var timeOut = 20 * Convert.ToInt32(hostSettings.PerformanceSetting);
 
                 using (var dr = DataProvider.Instance().ExecuteReader("CKE_GetEditorHostSettings"))
                 {

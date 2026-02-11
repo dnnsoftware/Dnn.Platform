@@ -4,6 +4,8 @@
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
+    using System.Globalization;
+
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Library.Prompt.Attributes;
     using Dnn.PersonaBar.Library.Prompt.Models;
@@ -38,26 +40,25 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             this.recyclebinController = instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int UserId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
-            UserInfo userInfo;
-            this.userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo);
+            this.userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out var userInfo);
 
             if (userInfo == null)
             {
-                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("UserNotFound"), this.UserId));
+                return new ConsoleErrorResultModel(string.Format(CultureInfo.CurrentCulture, this.LocalizeString("UserNotFound"), this.UserId));
             }
 
             if (!userInfo.IsDeleted)
@@ -65,10 +66,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_RestoreNotRequired"));
             }
 
-            string message;
-            var restoredUser = this.recyclebinController.RestoreUser(userInfo, out message);
+            var restoredUser = this.recyclebinController.RestoreUser(userInfo, out var message);
             return restoredUser
-                ? new ConsoleResultModel(this.LocalizeString("UserRestored")) { Records = 1 }
+                ? new ConsoleResultModel(this.LocalizeString("UserRestored")) { Records = 1, }
                 : new ConsoleErrorResultModel(message);
         }
     }

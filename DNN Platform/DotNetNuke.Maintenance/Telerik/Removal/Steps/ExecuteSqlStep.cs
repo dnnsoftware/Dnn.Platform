@@ -27,14 +27,14 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
                 throw new ArgumentNullException(nameof(dataProvider));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public string CommandText { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader Result { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ExecuteInternal()
         {
             this.Result = this.dataProvider.ExecuteSQL(this.CommandText);

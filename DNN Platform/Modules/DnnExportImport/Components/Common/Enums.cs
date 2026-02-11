@@ -29,7 +29,7 @@ namespace Dnn.ExportImport.Components.Common
         /// <summary>The job completed but failed.</summary>
         Failed = 3,
 
-        /// <summary>The job was cancelled.</summary>
+        /// <summary>The job was canceled.</summary>
         Cancelled = 4,
     }
 

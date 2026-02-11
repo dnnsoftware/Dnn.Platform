@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.PersonaBar.Library.Prompt;
@@ -55,7 +56,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             this.rolesController = rolesController;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int UserId { get; set; }
@@ -66,7 +67,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         private DateTime? EndDate { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
@@ -84,7 +85,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             ConsoleErrorResultModel errorResultModel;
@@ -128,7 +129,11 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 int notFoundCount = roleFiltersSet.Count;
                 if (notFoundCount > 0)
                 {
-                    var message = string.Format(this.LocalizeString("Prompt_AddRoles_NotFound"), notFoundCount > 1 ? "s" : string.Empty, string.Join(",", roleFiltersSet));
+                    var message = string.Format(
+                        CultureInfo.CurrentCulture,
+                        this.LocalizeString("Prompt_AddRoles_NotFound"),
+                        notFoundCount > 1 ? "s" : string.Empty,
+                        string.Join(",", roleFiltersSet));
                     throw new RoleNotFoundException(message);
                 }
             }

@@ -7,17 +7,16 @@ namespace DotNetNuke.Build
     using Cake.Common;
     using Cake.Common.Diagnostics;
     using Cake.Core;
-    using Cake.Core.Diagnostics;
     using Cake.Core.IO;
     using Cake.Frosting;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public sealed class Lifetime : FrostingLifetime<Context>
     {
         private static readonly string[] CorepackToolNames = ["corepack", "corepack.cmd",];
 
-        /// <inheritdoc/>
-        public override void Setup(Context context, ISetupContext setupContext)
+        /// <inheritdoc />
+        public override void Setup(Context context, ISetupContext info)
         {
             context.IsRunningInCI = context.HasEnvironmentVariable("TF_BUILD");
             context.Information("Is Running in CI : {0}", context.IsRunningInCI);
@@ -34,7 +33,7 @@ namespace DotNetNuke.Build
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Teardown(Context context, ITeardownContext info)
         {
             if (context.Settings.Version == "auto" && !context.IsRunningInCI)

@@ -7,24 +7,22 @@ namespace DotNetNuke.Web.Common
     using System;
     using System.ComponentModel;
 
+    /// <summary>An <see cref="IServiceProvider"/> implementation which wraps a provider that can be replaced or set after initialization.</summary>
     public class LazyServiceProvider : IServiceProvider, INotifyPropertyChanged
     {
         private IServiceProvider serviceProvider;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public object GetService(Type serviceType)
         {
-            if (this.serviceProvider is null)
-            {
-                throw new InvalidOperationException("Cannot resolve services until the service provider is built.");
-            }
-
-            return this.serviceProvider.GetService(serviceType);
+            return this.serviceProvider?.GetService(serviceType);
         }
 
+        /// <summary>Sets the service provider.</summary>
+        /// <param name="serviceProvider">The service provider.</param>
         internal void SetProvider(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;

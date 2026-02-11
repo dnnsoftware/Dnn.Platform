@@ -10,13 +10,13 @@ using DotNetNuke.Entities.Icons;
 /// <summary>The default <see cref="IIconController"/> implementation.</summary>
 internal class IconControllerWrapper : ComponentBase<IIconController, IconControllerWrapper>, IIconController
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public string IconURL(string key)
     {
         return IconController.IconURL(key);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public string IconURL(string key, string size)
     {
         return IconController.IconURL(key, size);

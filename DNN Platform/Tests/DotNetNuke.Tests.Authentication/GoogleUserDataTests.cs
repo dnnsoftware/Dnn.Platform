@@ -29,12 +29,12 @@ namespace DotNetNuke.Tests.Authentication
             // Act
             UserData dukesUser = Json.Deserialize<GoogleUserData>(SampleUserJson);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(dukesUser.FirstName, Is.EqualTo("Frederick"), "Should correctly pull first name from given_name field, not by parsing name");
                 Assert.That(dukesUser.LastName, Is.EqualTo("Franklin"), "Should correctly pull first name from family_name field, not by parsing name");
-            });
+            }
         }
 
         [Test]

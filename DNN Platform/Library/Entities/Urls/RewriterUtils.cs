@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             // String does not contain a ~, so just return Url
-            if (url.StartsWith("~") == false)
+            if (!url.StartsWith("~", StringComparison.Ordinal))
             {
                 return url;
             }
@@ -70,8 +70,8 @@ namespace DotNetNuke.Entities.Urls
                 return appPath;
             }
 
-            var seperatorChar = url.ToCharArray()[1];
-            if (seperatorChar == '/' || seperatorChar == '\\')
+            var separatorChar = url.ToCharArray()[1];
+            if (separatorChar is '/' or '\\')
             {
                 // Url looks like ~/ or ~\
                 if (appPath.Length > 1)
@@ -109,8 +109,7 @@ namespace DotNetNuke.Entities.Urls
 
             var omissions = omitSettings.Split('|');
 
-            bool shouldOmit = omissions.Any(x => localPath.EndsWith(x));
-
+            bool shouldOmit = omissions.Any(x => localPath.EndsWith(x, StringComparison.OrdinalIgnoreCase));
             if (!shouldOmit)
             {
                 shouldOmit = Globals.ServicesFrameworkRegex.IsMatch(localPath);

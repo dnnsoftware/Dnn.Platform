@@ -24,6 +24,7 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
@@ -68,7 +69,7 @@ namespace DotNetNuke.Framework
         /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public DefaultPage()
-            : this(null, null, null, null, null, null, null, null, null, null)
+            : this(null, null, null, null, null, null, null, null, null, null, null, null)
         {
         }
 
@@ -83,6 +84,7 @@ namespace DotNetNuke.Framework
         /// <param name="portalSettingsController">The portal settings controller.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
         /// <param name="pageService">The page service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
         public DefaultPage(
             INavigationManager navigationManager,
             IApplicationInfo appInfo,
@@ -94,7 +96,37 @@ namespace DotNetNuke.Framework
             IPortalSettingsController portalSettingsController,
             IClientResourceController clientResourceController,
             IPageService pageService)
-            : base(portalController, appStatus, hostSettings)
+            : this(navigationManager, appInfo, appStatus, moduleControlPipeline, hostSettings, eventLogger, portalController, portalSettingsController, clientResourceController, pageService, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="appInfo">The application info.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalSettingsController">The portal settings controller.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="pageService">The page service.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public DefaultPage(
+            INavigationManager navigationManager,
+            IApplicationInfo appInfo,
+            IApplicationStatusInfo appStatus,
+            IModuleControlPipeline moduleControlPipeline,
+            IHostSettings hostSettings,
+            IEventLogger eventLogger,
+            IPortalController portalController,
+            IPortalSettingsController portalSettingsController,
+            IClientResourceController clientResourceController,
+            IPageService pageService,
+            IUserController userController,
+            IHostSettingsService hostSettingsService)
+            : base(portalController, appStatus, hostSettings, userController, hostSettingsService)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.appInfo = appInfo ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>();
@@ -177,7 +209,7 @@ namespace DotNetNuke.Framework
 
         private IPortalAliasInfo PrimaryPortalAlias => this.PortalSettings.PrimaryAlias;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string RaiseClientAPICallbackEvent(string eventArgument)
         {
             var dict = this.ParsePageCallBackArgs(eventArgument);
@@ -226,6 +258,8 @@ namespace DotNetNuke.Framework
             this.InitializePage();
 
             var ctlSkin = this.GetSkin();
+
+            this.clientResourceController.RegisterPathNameAlias("SkinPath", this.CurrentSkinPath);
 
             // check for and read skin package level doctype
             this.SetSkinDoctype();
@@ -346,7 +380,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs evt)
         {
             base.OnPreRender(evt);
@@ -406,7 +440,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             if (Personalization.GetUserMode() == PortalSettings.Mode.Edit)
@@ -450,7 +484,8 @@ namespace DotNetNuke.Framework
             // Configure the ActiveTab with Skin/Container information
             this.portalSettingsController.ConfigureActiveTab(this.PortalSettings);
 
-            this.clientResourceController.RegisterPathNameAlias("SkinPath", this.CurrentSkinPath);
+            // moved this call to OnInit to avoid incorrect CurrentSkinPath if using fallback skin
+            ////this.clientResourceController.RegisterPathNameAlias("SkinPath", this.CurrentSkinPath);
 
             // redirect to a specific tab based on name
             if (!string.IsNullOrEmpty(this.Request.QueryString["tabname"]))
@@ -841,7 +876,7 @@ namespace DotNetNuke.Framework
 
         private string GetCssVariablesStylesheet()
         {
-            var cacheKey = string.Format(DataCache.PortalStylesCacheKey, this.PortalSettings.PortalId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalStylesCacheKey, this.PortalSettings.PortalId);
             var cacheArgs = new CacheItemArgs(
                 cacheKey,
                 DataCache.PortalCacheTimeOut,

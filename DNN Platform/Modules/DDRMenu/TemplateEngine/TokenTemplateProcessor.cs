@@ -28,7 +28,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         private XslCompiledTransform xsl;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool LoadDefinition(TemplateDefinition baseDefinition)
         {
             if (!baseDefinition.TemplateVirtualPath.EndsWith(".txt", StringComparison.InvariantCultureIgnoreCase))
@@ -39,19 +39,23 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             var templateText = Utilities.CachedFileContent(baseDefinition.TemplatePath);
             var xml = new XmlDocument { XmlResolver = null };
             const string xmlNs = "http://www.w3.org/1999/XSL/Transform";
-            xml.LoadXml(
-                @"
-				<xsl:stylesheet version='1.0' xmlns:xsl='" + xmlNs + @"' xmlns:ddr='urn:ddrmenu'>
-					<xsl:output method='html'/>
-					<xsl:template match='/*'>
-						<xsl:apply-templates select='root' />
-					</xsl:template>
-					<xsl:template match='root'>
-					</xsl:template>
-				</xsl:stylesheet>");
+            const string xslXml = $"""
+                                   	<xsl:stylesheet version='1.0' xmlns:xsl='{xmlNs}' xmlns:ddr='urn:ddrmenu'>
+                                   		<xsl:output method='html'/>
+                                   		<xsl:template match='/*'>
+                                   			<xsl:apply-templates select='root' />
+                                   		</xsl:template>
+                                   		<xsl:template match='root'>
+                                   		</xsl:template>
+                                   	</xsl:stylesheet>
+                                   """;
+            using (var xmlReader = XmlReader.Create(new StringReader(xslXml), new XmlReaderSettings { XmlResolver = null, }))
+            {
+                xml.Load(xmlReader);
+            }
 
             var validParams = baseDefinition.DefaultTemplateArguments.ConvertAll(a => a.Name.ToLowerInvariant());
-            validParams.AddRange(new[] { "controlid", "options", "dnnpath", "manifestpath", "portalpath", "skinpath" });
+            validParams.AddRange(["controlid", "options", "dnnpath", "manifestpath", "portalpath", "skinpath",]);
 
             var docElt = xml.DocumentElement;
             var outputElt = (XmlElement)docElt.GetElementsByTagName("output", xmlNs)[0];
@@ -160,7 +164,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
         {
             var resolver = new PathResolver(liveDefinition.Folder);
@@ -182,7 +186,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             {
                 Utilities.SerialiserFor(source.GetType()).Serialize(xmlStream, source);
                 xmlStream.Seek(0, SeekOrigin.Begin);
-                this.xsl.Transform(XmlReader.Create(xmlStream), args, outputWriter);
+                using var xmlReader = XmlReader.Create(xmlStream);
+                this.xsl.Transform(xmlReader, args, outputWriter);
             }
 
             htmlWriter.Write(HttpUtility.HtmlDecode(sb.ToString()));

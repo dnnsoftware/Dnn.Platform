@@ -5,9 +5,13 @@ namespace DotNetNuke.UI.Containers
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
@@ -21,17 +25,30 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
-    /// <summary>ActionManager is a helper class that provides common Action Behaviours that can be used by any <see cref="IActionControl"/> implementation.</summary>
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>ActionManager is a helper class that provides common Action Behaviors that can be used by any <see cref="IActionControl"/> implementation.</summary>
     public class ActionManager
     {
-        private readonly PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+        private readonly IPortalSettings portalSettings = PortalController.Instance.GetCurrentSettings();
         private readonly HttpRequest request = HttpContext.Current.Request;
         private readonly HttpResponse response = HttpContext.Current.Response;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="ActionManager"/> class.</summary>
         /// <param name="actionControl">The action control.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public ActionManager(IActionControl actionControl)
+            : this(null, actionControl)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ActionManager"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="actionControl">The action control.</param>
+        public ActionManager(IEventLogger eventLogger, IActionControl actionControl)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
             this.ActionControl = actionControl;
         }
 
@@ -39,13 +56,7 @@ namespace DotNetNuke.UI.Containers
         public IActionControl ActionControl { get; set; }
 
         /// <summary>Gets the ModuleInstanceContext instance that is connected to this ActionManager instance.</summary>
-        protected ModuleInstanceContext ModuleContext
-        {
-            get
-            {
-                return this.ActionControl.ModuleControl.ModuleContext;
-            }
-        }
+        protected ModuleInstanceContext ModuleContext => this.ActionControl.ModuleControl.ModuleContext;
 
         /// <summary>DisplayControl determines whether the associated Action control should be displayed.</summary>
         /// <param name="objNodes">The nav nodes.</param>
@@ -109,8 +120,7 @@ namespace DotNetNuke.UI.Containers
                     script = script.Substring(jSPos + 11);
                 }
 
-                string formatScript = "javascript: return {0};";
-                control.Attributes.Add("onClick", string.Format(formatScript, script));
+                control.Attributes.Add("onClick", $"javascript: return {script};");
             }
         }
 
@@ -119,7 +129,7 @@ namespace DotNetNuke.UI.Containers
         /// <returns><see langword="true"/> if the action is visible, otherwise <see langword="false"/>.</returns>
         public bool IsVisible(ModuleAction action)
         {
-            bool isVisible = false;
+            bool isVisible;
             if (action.Visible && ModulePermissionController.HasModuleAccess(action.Secure, Null.NullString, this.ModuleContext.Configuration))
             {
                 if ((Personalization.GetUserMode() == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
@@ -140,15 +150,15 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>ProcessAction processes the action.</summary>
-        /// <param name="id">The Id of the Action.</param>
+        /// <param name="id">The ID of the Action.</param>
         /// <returns><see langword="true"/> if the action was processed, otherwise <see langword="false"/> (if it's a custom action that can't be found).</returns>
         public bool ProcessAction(string id)
         {
             bool bProcessed = true;
-            int nid = 0;
-            if (int.TryParse(id, out nid))
+            int actionId;
+            if (int.TryParse(id, out actionId))
             {
-                bProcessed = this.ProcessAction(this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByID(nid));
+                bProcessed = this.ProcessAction(this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByID(actionId));
             }
 
             return bProcessed;
@@ -229,7 +239,7 @@ namespace DotNetNuke.UI.Containers
 
         private void Delete(ModuleAction command)
         {
-            var module = ModuleController.Instance.GetModule(int.Parse(command.CommandArgument), this.ModuleContext.TabId, true);
+            var module = ModuleController.Instance.GetModule(int.Parse(command.CommandArgument, CultureInfo.InvariantCulture), this.ModuleContext.TabId, true);
 
             // Check if this is the owner instance of a shared module.
             var user = UserController.Instance.GetCurrentUserInfo();
@@ -241,13 +251,13 @@ namespace DotNetNuke.UI.Containers
                     {
                         // HARD Delete Shared Instance
                         ModuleController.Instance.DeleteTabModule(instance.TabID, instance.ModuleID, false);
-                        EventLogController.Instance.AddLog(instance, this.portalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_DELETED);
+                        this.eventLogger.AddLog(instance, this.portalSettings, user.UserID, string.Empty, EventLogType.MODULE_DELETED);
                     }
                 }
             }
 
-            ModuleController.Instance.DeleteTabModule(this.ModuleContext.TabId, int.Parse(command.CommandArgument), true);
-            EventLogController.Instance.AddLog(module, this.portalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
+            ModuleController.Instance.DeleteTabModule(this.ModuleContext.TabId, int.Parse(command.CommandArgument, CultureInfo.InvariantCulture), true);
+            this.eventLogger.AddLog(module, this.portalSettings, user.UserID, string.Empty, EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
 
             // Redirect to the same page to pick up changes
             this.response.Redirect(this.request.RawUrl, true);

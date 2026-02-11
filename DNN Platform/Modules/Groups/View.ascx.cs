@@ -6,29 +6,39 @@ namespace DotNetNuke.Modules.Groups
     using System;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Actions;
-    using DotNetNuke.Framework;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Modules.Groups.Components;
-    using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
+
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The ViewSocialGroups class displays the content.</summary>
     public partial class View : GroupsModuleBase
     {
         private readonly INavigationManager navigationManager;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public View()
+            : this(null, null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public View(INavigationManager navigationManager, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.appStatus = appStatus ?? this.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+        }
+
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             this.InitializeComponent();
@@ -45,7 +55,7 @@ namespace DotNetNuke.Modules.Groups
         {
             try
             {
-                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.DnnPlugins);
                 if (this.GroupId < 0)
                 {
                     if (this.TabId != this.GroupListTabId && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))

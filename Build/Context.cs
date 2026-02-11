@@ -15,7 +15,7 @@ namespace DotNetNuke.Build
     using Cake.Frosting;
     using Cake.Json;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public class Context : FrostingContext
     {
         /// <summary>Initializes a new instance of the <see cref="Context"/> class.</summary>

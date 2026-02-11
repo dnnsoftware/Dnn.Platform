@@ -40,7 +40,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
             this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HaveApi()
         {
             if (!this.haveChecked)
@@ -86,13 +86,13 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
             return this.locTab != null || this.locNodes != null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public TabInfo LocaliseTab(TabInfo tab, int portalId)
         {
             return (TabInfo)this.locTab?.Invoke(this.locApi, new object[] { tab, portalId });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
         {
             return (DNNNodeCollection)this.locNodes?.Invoke(this.locApi, new object[] { nodes });

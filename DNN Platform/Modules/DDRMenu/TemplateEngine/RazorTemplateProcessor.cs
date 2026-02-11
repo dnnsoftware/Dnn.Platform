@@ -13,12 +13,13 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using System.Web.UI;
     using System.Web.WebPages;
 
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.Razor;
 
     public class RazorTemplateProcessor : ITemplateProcessor
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool LoadDefinition(TemplateDefinition baseDefinition)
         {
             var virtualPath = baseDefinition.TemplateVirtualPath;
@@ -32,7 +33,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
         {
             if (!string.IsNullOrEmpty(liveDefinition.TemplateVirtualPath))
@@ -104,7 +105,9 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             }
             else
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 var razorEngine = new RazorEngine(virtualPath, null, null);
+#pragma warning restore CS0618 // Type or member is obsolete
                 razorEngine.Render<dynamic>(writer, model);
             }
 

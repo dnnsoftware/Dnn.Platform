@@ -11,31 +11,32 @@ namespace Dnn.EditBar.UI.Items
     [Serializable]
     public class CompleteWorkflowMenu : WorkflowBaseMenuItem
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Name { get; } = "CompleteWorkflow";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Text => "Publish";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CssClass => string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Template { get; } = string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Parent { get; } = Constants.LeftMenu;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Loader { get; } = "CompleteWorkflow";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Order { get; } = 79;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool Visible() => base.Visible()
+            && !this.IsDirectPublishWorkflow
             && (this.IsReviewOrOtherIntermediateStateWithPermissions == true
                 || (this.IsPriorState == true && this.IsDraftWithPermissions == true) // for Save Draft workflow
-                || (this.IsLastState == true && this.HasUnpublishVersion && this.HasDraftPermission == true)); // for Direct Publish workflow
+                || (this.IsLastState == true && this.HasUnpublishVersion && this.HasDraftPermission == true)); // handles other workflow scenarios (not Direct Publish)
     }
 }

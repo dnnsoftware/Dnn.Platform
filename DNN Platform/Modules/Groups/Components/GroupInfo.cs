@@ -13,7 +13,7 @@ namespace DotNetNuke.Entities.Groups
 
     public class GroupInfo : RoleInfo, IPropertyAccess
     {
-        // private RoleInfo roleInfo;
+        ////private RoleInfo roleInfo;
 
         /// <summary>Initializes a new instance of the <see cref="GroupInfo"/> class.</summary>
         public GroupInfo()
@@ -33,21 +33,21 @@ namespace DotNetNuke.Entities.Groups
             this.RSVPCode = roleInfo.RSVPCode;
         }
 
-        // public RoleInfo Role {
-        //    get {
-        //        return roleInfo;
-        //    }
-        //    set {
-        //        roleInfo = value;
-        //    }
-        // }
-        // public int GroupId {
-        //    get {
-        //        return RoleID;
-        //    }
-        // }
+        ////public RoleInfo Role {
+        ////   get {
+        ////       return roleInfo;
+        ////   }
+        ////   set {
+        ////       roleInfo = value;
+        ////   }
+        ////}
+        ////public int GroupId {
+        ////   get {
+        ////       return RoleID;
+        ////   }
+        ////}
 
-        // public int ModuleId { get; set; }
+        ////public int ModuleId { get; set; }
         public string Street
         {
             get

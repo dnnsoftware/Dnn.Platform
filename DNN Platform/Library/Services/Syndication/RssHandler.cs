@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Syndication
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -40,8 +41,7 @@ namespace DotNetNuke.Services.Syndication
         /// <inheritdoc />
         protected override void PopulateChannel(string channelName, string userName)
         {
-            ModuleInfo objModule;
-            if (this.Request == null || this.Settings == null || this.Settings.ActiveTab == null || this.ModuleId == Null.NullInteger)
+            if (this.Request == null || this.Settings?.ActiveTab == null || this.ModuleId == Null.NullInteger)
             {
                 return;
             }
@@ -58,15 +58,17 @@ namespace DotNetNuke.Services.Syndication
             }
 
             this.Channel["language"] = this.Settings.DefaultLanguage;
-            this.Channel["copyright"] = !string.IsNullOrEmpty(this.Settings.FooterText) ? this.Settings.FooterText.Replace("[year]", DateTime.Now.Year.ToString()) : string.Empty;
+            this.Channel["copyright"] = !string.IsNullOrEmpty(this.Settings.FooterText) ? this.Settings.FooterText.Replace("[year]", DateTime.Now.Year.ToString(CultureInfo.CurrentCulture)) : string.Empty;
             this.Channel["webMaster"] = this.Settings.Email;
 
             IList<SearchResult> searchResults = null;
-            var query = new SearchQuery();
-            query.PortalIds = new[] { this.Settings.PortalId };
-            query.TabId = this.TabId;
-            query.ModuleId = this.ModuleId;
-            query.SearchTypeIds = new[] { SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId };
+            var query = new SearchQuery
+            {
+                PortalIds = [this.Settings.PortalId,],
+                TabId = this.TabId,
+                ModuleId = this.ModuleId,
+                SearchTypeIds = [SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,],
+            };
 
             try
             {
@@ -81,12 +83,12 @@ namespace DotNetNuke.Services.Syndication
             {
                 foreach (var result in searchResults)
                 {
-                    if (!result.UniqueKey.StartsWith(Constants.ModuleMetaDataPrefixTag) && TabPermissionController.CanViewPage())
+                    if (!result.UniqueKey.StartsWith(Constants.ModuleMetaDataPrefixTag, StringComparison.Ordinal) && TabPermissionController.CanViewPage())
                     {
                         if (this.Settings.ActiveTab.StartDate < DateTime.Now && this.Settings.ActiveTab.EndDate > DateTime.Now)
                         {
-                            objModule = ModuleController.Instance.GetModule(result.ModuleId, query.TabId, false);
-                            if (objModule != null && objModule.DisplaySyndicate && objModule.IsDeleted == false)
+                            var objModule = ModuleController.Instance.GetModule(result.ModuleId, query.TabId, false);
+                            if (objModule is { DisplaySyndicate: true, IsDeleted: false, })
                             {
                                 if (ModulePermissionController.CanViewModule(objModule))
                                 {

@@ -14,6 +14,7 @@ namespace DotNetNuke.Services.Install
     using System.Xml;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -45,8 +46,10 @@ namespace DotNetNuke.Services.Install
         private static readonly object InstallLocker = new object();
 
         private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="Install"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public Install()
             : this(null)
         {
@@ -54,12 +57,22 @@ namespace DotNetNuke.Services.Install
 
         /// <summary>Initializes a new instance of the <see cref="Install"/> class.</summary>
         /// <param name="appStatus">The application status.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public Install(IApplicationStatusInfo appStatus)
+            : this(appStatus, null)
         {
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="Install"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public Install(IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+        {
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
+
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -77,7 +90,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -224,6 +237,7 @@ namespace DotNetNuke.Services.Install
             }
             else
             {
+                bool cleanupLocker = false;
                 try
                 {
                     var synchConnectionString = new SynchConnectionStringStep();
@@ -259,6 +273,7 @@ namespace DotNetNuke.Services.Install
                                 return;
                             }
 
+                            cleanupLocker = true;
                             RegisterInstallBegining();
                         }
 
@@ -276,7 +291,7 @@ namespace DotNetNuke.Services.Install
                         if (!installConfig.InstallCulture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
                         {
                             var locale = LocaleController.Instance.GetLocale("en-US");
-                            Localization.RemoveLanguageFromPortal(0, locale.LanguageId, true);
+                            Localization.RemoveLanguageFromPortal(this.eventLogger, 0, locale.LanguageId, true);
                         }
 
                         var installVersion = DataProvider.Instance().GetInstallVersion();
@@ -314,7 +329,10 @@ namespace DotNetNuke.Services.Install
                 }
                 finally
                 {
-                    RegisterInstallEnd();
+                    if (cleanupLocker)
+                    {
+                        RegisterInstallEnd();
+                    }
                 }
             }
         }
@@ -352,6 +370,7 @@ namespace DotNetNuke.Services.Install
 
         private void UpgradeApplication()
         {
+            bool cleanupLocker = false;
             try
             {
                 if (Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie())
@@ -377,6 +396,7 @@ namespace DotNetNuke.Services.Install
                         return;
                     }
 
+                    cleanupLocker = true;
                     RegisterInstallBegining();
                 }
 
@@ -498,7 +518,10 @@ namespace DotNetNuke.Services.Install
             }
             finally
             {
-                RegisterInstallEnd();
+                if (cleanupLocker)
+                {
+                    RegisterInstallEnd();
+                }
             }
         }
 
@@ -513,11 +536,14 @@ namespace DotNetNuke.Services.Install
             this.Response.Flush();
 
             // install new portal(s)
-            string strNewFile = this.appStatus.ApplicationMapPath + "\\Install\\Portal\\Portals.resources";
+            string strNewFile = $@"{this.appStatus.ApplicationMapPath}\Install\Portal\Portals.resources";
             if (File.Exists(strNewFile))
             {
-                XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
-                xmlDoc.Load(strNewFile);
+                var xmlDoc = new XmlDocument { XmlResolver = null, };
+                using (var xmlReader = XmlReader.Create(strNewFile, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xmlDoc.Load(xmlReader);
+                }
 
                 // parse portal(s) if available
                 var nodes = xmlDoc.SelectNodes("//dotnetnuke/portals/portal");
@@ -527,7 +553,7 @@ namespace DotNetNuke.Services.Install
                     {
                         if (node != null)
                         {
-                            Upgrade.Upgrade.AddPortal(node, true, 0, null);
+                            Upgrade.Upgrade.AddPortal(this.eventLogger, this.appStatus, node, true, 0, null);
                         }
                     }
                 }

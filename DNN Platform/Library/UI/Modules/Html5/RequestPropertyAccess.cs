@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.UI.Modules.Html5
 {
+    using System;
     using System.Globalization;
     using System.Web;
 
@@ -22,13 +23,13 @@ namespace DotNetNuke.UI.Modules.Html5
             this.request = request;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual CacheLevel Cacheability
         {
             get { return CacheLevel.notCacheable; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             switch (propertyName.ToLowerInvariant())
@@ -39,7 +40,7 @@ namespace DotNetNuke.UI.Modules.Html5
                     return this.request.ApplicationPath;
                 case "relativeapppath":
                     // RelativeAppPath is like ApplicationPath, but will always end with a forward slash (/)
-                    return this.request.ApplicationPath.EndsWith("/")
+                    return this.request.ApplicationPath.EndsWith("/", StringComparison.Ordinal)
                         ? this.request.ApplicationPath
                         : $"{this.request.ApplicationPath}/";
             }

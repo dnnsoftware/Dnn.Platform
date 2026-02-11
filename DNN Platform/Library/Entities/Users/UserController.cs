@@ -8,12 +8,16 @@ namespace DotNetNuke.Entities.Users
     using System.Collections;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -35,6 +39,8 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Mail;
     using DotNetNuke.Services.Messaging.Data;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
@@ -67,36 +73,56 @@ namespace DotNetNuke.Entities.Users
         /// <summary>Gets or sets the site (portal) id.</summary>
         public int PortalId { get; set; }
 
-        /// <summary>Gets the number count for all duplicate e-mail adresses in the database.</summary>
+        /// <summary>Gets the number count for all duplicate e-mail addresses in the database.</summary>
         /// <returns>An integer representing the amount of duplicate emails.</returns>
         public static int GetDuplicateEmailCount()
         {
             return DataProvider.Instance().GetDuplicateEmailCount(PortalSettings.Current.PortalId);
         }
 
-        /// <summary>add new userportal record (used for creating sites with existing user).</summary>
-        /// <param name="portalId">portalid.</param>
-        /// <param name="userId">userid.</param>
+        /// <summary>add new user portal record (used for creating sites with existing user).</summary>
+        /// <param name="portalId">portal ID.</param>
+        /// <param name="userId">user ID.</param>
         public static void AddUserPortal(int portalId, int userId)
         {
-            Requires.NotNullOrEmpty("portalId", portalId.ToString());
-            Requires.NotNullOrEmpty("userId", userId.ToString());
+            Requires.NotNullOrEmpty("portalId", portalId.ToString(CultureInfo.InvariantCulture));
+            Requires.NotNullOrEmpty("userId", userId.ToString(CultureInfo.InvariantCulture));
 
             MembershipProvider.Instance().AddUserPortal(portalId, userId);
         }
 
         /// <summary>ApproveUser removes the Unverified Users role from the user and adds the auto assigned roles.</summary>
         /// <param name="user">The user to update.</param>
-        public static void ApproveUser(UserInfo user)
+        [DnnDeprecated(10, 2, 2, "Use overload taking RoleProvider")]
+        public static partial void ApproveUser(UserInfo user)
+            => ApproveUser(
+                Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IEventManager>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                PortalSettings.Current,
+                user);
+
+        /// <summary>ApproveUser removes the Unverified Users role from the user and adds the auto assigned roles.</summary>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="eventManager">The event manager.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="user">The user to update.</param>
+        public static void ApproveUser(RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger, PortalSettings portalSettings, UserInfo user)
         {
             Requires.NotNull("user", user);
 
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-            var role = RoleController.Instance.GetRole(settings.PortalId, r => r.RoleName == "Unverified Users");
+            var role = RoleController.Instance.GetRole(portalSettings.PortalId, r => r.RoleName == "Unverified Users");
 
-            RoleController.DeleteUserRole(user, role, settings, false);
+            RoleController.DeleteUserRole(roleProvider, roleController, eventManager, portalController, userController, eventLogger, user, role, portalSettings, false);
 
-            AutoAssignUsersToRoles(user, settings.PortalId);
+            AutoAssignUsersToRoles(user, portalSettings.PortalId);
         }
 
         /// <summary>User has agreed to terms and conditions. The time is recorded at the same time in SQL.</summary>
@@ -302,9 +328,20 @@ namespace DotNetNuke.Entities.Users
         /// <param name="passwordQuestion">The new password question.</param>
         /// <param name="passwordAnswer">The new password answer.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
-        public static bool ChangePasswordQuestionAndAnswer(UserInfo user, string password, string passwordQuestion, string passwordAnswer)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial bool ChangePasswordQuestionAndAnswer(UserInfo user, string password, string passwordQuestion, string passwordAnswer)
+            => ChangePasswordQuestionAndAnswer(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), user, password, passwordQuestion, passwordAnswer);
+
+        /// <summary>Attempts to change the users password reset question and answer.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="user">The user to update.</param>
+        /// <param name="password">The password.</param>
+        /// <param name="passwordQuestion">The new password question.</param>
+        /// <param name="passwordAnswer">The new password answer.</param>
+        /// <returns>A Boolean indicating success or failure.</returns>
+        public static bool ChangePasswordQuestionAndAnswer(IEventLogger eventLogger, UserInfo user, string password, string passwordQuestion, string passwordAnswer)
         {
-            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentSettings(), GetCurrentUserInternal().UserID, string.Empty, EventLogController.EventLogType.USER_UPDATED);
+            eventLogger.AddLog(user, PortalController.Instance.GetCurrentSettings(), GetCurrentUserInternal().UserID, string.Empty, EventLogType.USER_UPDATED);
             return MembershipProvider.Instance().ChangePasswordQuestionAndAnswer(user, password, passwordQuestion, passwordAnswer);
         }
 
@@ -387,7 +424,16 @@ namespace DotNetNuke.Entities.Users
         /// <param name="user">The <see cref="UserInfo"/> object to persist to the Database.</param>
         /// <param name="sendEmailNotification">A value indicating whether a registration email will be sent to user.</param>
         /// <returns>The <see cref="UserCreateStatus"/> of the User.</returns>
-        public static UserCreateStatus CreateUser(ref UserInfo user, bool sendEmailNotification)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial UserCreateStatus CreateUser(ref UserInfo user, bool sendEmailNotification)
+            => CreateUser(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), ref user, sendEmailNotification);
+
+        /// <summary>Creates a new User in the Data Store optionally sending an email notification.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="user">The <see cref="UserInfo"/> object to persist to the Database.</param>
+        /// <param name="sendEmailNotification">A value indicating whether a registration email will be sent to user.</param>
+        /// <returns>The <see cref="UserCreateStatus"/> of the User.</returns>
+        public static UserCreateStatus CreateUser(IEventLogger eventLogger, ref UserInfo user, bool sendEmailNotification)
         {
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
@@ -407,8 +453,8 @@ namespace DotNetNuke.Entities.Users
                 user.PasswordResetExpiration = passwordExpiry;
                 user.PasswordResetToken = passwordGuid;
                 UpdateUser(user.PortalID, user);
-                EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentSettings(), GetCurrentUserInternal().UserID, string.Empty, EventLogController.EventLogType.USER_CREATED);
-                CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, portalId));
+                eventLogger.AddLog(user, PortalController.Instance.GetCurrentSettings(), GetCurrentUserInternal().UserID, string.Empty, EventLogType.USER_CREATED);
+                CachingProvider.Instance().Remove(string.Format(CultureInfo.InvariantCulture, DataCache.PortalUserCountCacheKey, portalId));
                 if (!user.IsSuperUser)
                 {
                     // autoassign user to portal roles
@@ -446,14 +492,24 @@ namespace DotNetNuke.Entities.Users
         /// <param name="notify">A flag that indicates whether an email notification should be sent.</param>
         /// <param name="deleteAdmin">A flag that indicates whether the Portal Administrator should be deleted.</param>
         /// <returns>A Boolean value that indicates whether the User was successfully deleted.</returns>
-        public static bool DeleteUser(ref UserInfo user, bool notify, bool deleteAdmin)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial bool DeleteUser(ref UserInfo user, bool notify, bool deleteAdmin)
+            => DeleteUser(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), ref user, notify, deleteAdmin);
+
+        /// <summary>Deletes an existing User from the Data Store.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="user">The userInfo object to delete from the Database.</param>
+        /// <param name="notify">A flag that indicates whether an email notification should be sent.</param>
+        /// <param name="deleteAdmin">A flag that indicates whether the Portal Administrator should be deleted.</param>
+        /// <returns>A Boolean value that indicates whether the User was successfully deleted.</returns>
+        public static bool DeleteUser(IEventLogger eventLogger, ref UserInfo user, bool notify, bool deleteAdmin)
         {
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
 
             // If the HTTP Current Context is unavailable (e.g. when called from within a SchedulerClient) GetCurrentPortalSettings() returns null and the
             // PortalSettings are created/loaded for the portal (originally) assigned to the user.
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings() ?? new PortalSettings(portalId);
+            var portalSettings = PortalSettings.Current ?? new PortalSettings(portalId);
 
             var canDelete = deleteAdmin || (user.UserID != portalSettings.AdministratorId);
 
@@ -467,7 +523,7 @@ namespace DotNetNuke.Entities.Users
             if (canDelete)
             {
                 // Obtain PortalSettings from Current Context or from the users (original) portal if the HTTP Current Context is unavailable.
-                EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_DELETED);
+                eventLogger.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogType.USER_DELETED);
                 if (notify && !user.IsSuperUser)
                 {
                     // send email notification to portal administrator that the user was removed from the portal
@@ -698,7 +754,7 @@ namespace DotNetNuke.Entities.Users
         public static int GetUserCountByPortal(int portalId)
         {
             portalId = GetEffectivePortalId(portalId);
-            var cacheKey = string.Format(DataCache.PortalUserCountCacheKey, portalId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalUserCountCacheKey, portalId);
             return CBO.GetCachedObject<int>(new CacheItemArgs(cacheKey, DataCache.PortalUserCountCacheTimeOut, DataCache.PortalUserCountCachePriority, portalId), GetUserCountByPortalCallBack);
         }
 
@@ -717,8 +773,8 @@ namespace DotNetNuke.Entities.Users
                     return Localization.GetString("InvalidEmail");
                 case UserCreateStatus.InvalidPassword:
                     string strInvalidPassword = Localization.GetString("InvalidPassword");
-                    strInvalidPassword = strInvalidPassword.Replace("[PasswordLength]", MembershipProviderConfig.MinPasswordLength.ToString());
-                    strInvalidPassword = strInvalidPassword.Replace("[NoneAlphabet]", MembershipProviderConfig.MinNonAlphanumericCharacters.ToString());
+                    strInvalidPassword = strInvalidPassword.Replace("[PasswordLength]", MembershipProviderConfig.MinPasswordLength.ToString(CultureInfo.CurrentCulture));
+                    strInvalidPassword = strInvalidPassword.Replace("[NoneAlphabet]", MembershipProviderConfig.MinNonAlphanumericCharacters.ToString(CultureInfo.CurrentCulture));
                     return strInvalidPassword;
                 case UserCreateStatus.PasswordMismatch:
                     return Localization.GetString("PasswordMismatch");
@@ -797,7 +853,7 @@ namespace DotNetNuke.Entities.Users
             {
                 foreach (KeyValuePair<string, string> kvp in settingsDictionary)
                 {
-                    int index = kvp.Key.IndexOf("_");
+                    int index = kvp.Key.IndexOf("_", StringComparison.Ordinal);
                     if (index > 0)
                     {
                         // Get the prefix
@@ -814,13 +870,13 @@ namespace DotNetNuke.Entities.Users
                                 switch (kvp.Key)
                                 {
                                     case "Display_Mode":
-                                        settings[kvp.Key] = (DisplayMode)Convert.ToInt32(kvp.Value);
+                                        settings[kvp.Key] = (DisplayMode)Convert.ToInt32(kvp.Value, CultureInfo.InvariantCulture);
                                         break;
                                     case "Profile_DefaultVisibility":
-                                        settings[kvp.Key] = (UserVisibilityMode)Convert.ToInt32(kvp.Value);
+                                        settings[kvp.Key] = (UserVisibilityMode)Convert.ToInt32(kvp.Value, CultureInfo.InvariantCulture);
                                         break;
                                     case "Security_UsersControl":
-                                        settings[kvp.Key] = (UsersControl)Convert.ToInt32(kvp.Value);
+                                        settings[kvp.Key] = (UsersControl)Convert.ToInt32(kvp.Value, CultureInfo.InvariantCulture);
                                         break;
                                     default:
                                         // update value or add any new values
@@ -836,7 +892,7 @@ namespace DotNetNuke.Entities.Users
 
             if (currentPortalSettings != null)
             {
-                foreach (var kvp in currentPortalSettings.Where(kvp => kvp.Key.StartsWith("Redirect_")))
+                foreach (var kvp in currentPortalSettings.Where(kvp => kvp.Key.StartsWith("Redirect_", StringComparison.OrdinalIgnoreCase)))
                 {
                     settings[kvp.Key] = kvp.Value;
                 }
@@ -1044,8 +1100,19 @@ namespace DotNetNuke.Entities.Users
         /// not a member of any other portal.
         /// </summary>
         /// <param name="user">The user to delete.</param>
-        /// <returns>A value indicating whether the user removal was successfull.</returns>
+        /// <returns>A value indicating whether the user removal was successful.</returns>
         public static bool RemoveUser(UserInfo user)
+            => RemoveUser(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), user);
+
+        /// <summary>
+        /// Permanently remove a user and the associated user folder on disk.
+        /// This also deletes the membership user if the user is
+        /// not a member of any other portal.
+        /// </summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="user">The user to delete.</param>
+        /// <returns>A value indicating whether the user removal was successful.</returns>
+        public static bool RemoveUser(IEventLogger eventLogger, UserInfo user)
         {
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
@@ -1056,19 +1123,17 @@ namespace DotNetNuke.Entities.Users
             {
                 var portalSettings = PortalController.Instance.GetCurrentSettings();
 
-                EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
+                eventLogger.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogType.USER_REMOVED);
 
-                var portal = PortalController.Instance.GetPortal(user.PortalID);
-                var portalGroup = (from p in PortalGroupController.Instance.GetPortalGroups()
-                                   where p.PortalGroupId == portal.PortalGroupID
-                                   select p)
-                                .SingleOrDefault();
+                IPortalInfo portal = PortalController.Instance.GetPortal(user.PortalID);
+                var portalGroup = PortalGroupController.Instance.GetPortalGroups()
+                    .SingleOrDefault(p => p.PortalGroupId == portal.PortalGroupId);
                 if (portalGroup != null)
                 {
                     var portalsInGroup = PortalGroupController.Instance.GetPortalsByGroup(portalGroup.PortalGroupId);
-                    foreach (var portalInGroup in portalsInGroup)
+                    foreach (IPortalInfo portalInGroup in portalsInGroup)
                     {
-                        ClearPortalAndUserCache(user, portalInGroup.PortalID);
+                        ClearPortalAndUserCache(user, portalInGroup.PortalId);
                     }
                 }
                 else
@@ -1076,7 +1141,7 @@ namespace DotNetNuke.Entities.Users
                     ClearPortalAndUserCache(user, portalId);
                 }
 
-                EventManager.Instance.OnUserRemoved(new UserEventArgs { User = user });
+                EventManager.Instance.OnUserRemoved(new UserEventArgs { User = user, });
             }
 
             // Reset PortalId
@@ -1171,7 +1236,7 @@ namespace DotNetNuke.Entities.Users
 
             if (sendEmail)
             {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalSettings.Current;
                 return Mail.SendMail(user, MessageType.PasswordReminder, portalSettings) == string.Empty;
             }
 
@@ -1181,7 +1246,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>Resets the password reset token with a timeout value.</summary>
         /// <param name="user">The user for which to update the password reset token.</param>
         /// <param name="minutesValid">A value indication for how many minutes the generated token will be valid for.</param>
-        /// <remarks>This method does not return anything, it updates the reset token and the token expiraiton directly in the provided <see cref="UserInfo"/> object.</remarks>
+        /// <remarks>This method does not return anything, it updates the reset token and the token expiration directly in the provided <see cref="UserInfo"/> object.</remarks>
         public static void ResetPasswordToken(UserInfo user, int minutesValid)
         {
             user.PasswordResetExpiration = DateTime.Now.AddMinutes(minutesValid);
@@ -1193,11 +1258,25 @@ namespace DotNetNuke.Entities.Users
         /// <param name="user">The user to restore.</param>
         /// <returns>A value indicating whether the user restore succeeded.</returns>
         /// <remarks>
-        /// Dnn supports deleting and restoring them. A deleted using in Dnn means a "soft-delete" or in other words disabling the user.
+        /// DNN supports deleting and restoring them. A deleted using in Dnn means a "soft-delete" or in other words disabling the user.
         /// This method can only be used for those "soft-deleted" users, if a user was removed (hard-deleted), this method cannot restore the user
         /// as that action cannot be undone.
         /// </remarks>
-        public static bool RestoreUser(ref UserInfo user)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial bool RestoreUser(ref UserInfo user)
+            => RestoreUser(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), ref user);
+
+        /// <summary>Restores a deleted user.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="user">The user to restore.</param>
+        /// <returns>A value indicating whether the user restore succeeded.</returns>
+        /// <remarks>
+        /// DNN supports deleting and restoring them. A deleted using in Dnn means a "soft-delete" or in other words disabling the user.
+        /// This method can only be used for those "soft-deleted" users, if a user was removed (hard-deleted), this method cannot restore the user
+        /// as that action cannot be undone.
+        /// </remarks>
+        public static bool RestoreUser(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, ref UserInfo user)
         {
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
@@ -1208,13 +1287,13 @@ namespace DotNetNuke.Entities.Users
             if (retValue)
             {
                 // restore user permissions
-                RestoreUserPermissions(user);
+                RestoreUserPermissions(permissionDefinitionService, user);
 
                 // Obtain PortalSettings from Current Context
                 var portalSettings = PortalController.Instance.GetCurrentSettings();
 
                 // Log event
-                EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_RESTORED);
+                eventLogger.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogType.USER_RESTORED);
 
                 DataCache.ClearPortalUserCountCache(user.PortalID);
                 DataCache.ClearUserCache(user.PortalID, user.Username);
@@ -1222,7 +1301,7 @@ namespace DotNetNuke.Entities.Users
 
             // Reset PortalId
             FixMemberPortalId(user, portalId);
-            UpdateUser(portalId, GetUserById(portalId, user.UserID));
+            UpdateUser(eventLogger, portalId, GetUserById(portalId, user.UserID));
             return retValue;
         }
 
@@ -1238,42 +1317,74 @@ namespace DotNetNuke.Entities.Users
         /// <param name="user">The user whose account is being Unlocked.</param>
         /// <returns>A value indicating whether the user unlock attempt succeeded.</returns>
         /// <remarks>A user can be locked in some situations as when the user attempted too many invalid passwords.</remarks>
-        public static bool UnLockUser(UserInfo user)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial bool UnLockUser(UserInfo user)
+            => UnLockUser(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), user);
+
+        /// <summary>Attempts to unlock the user's account.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="user">The user whose account is being Unlocked.</param>
+        /// <returns>A value indicating whether the user unlock attempt succeeded.</returns>
+        /// <remarks>A user can be locked in some situations as when the user attempted too many invalid passwords.</remarks>
+        public static bool UnLockUser(IEventLogger eventLogger, UserInfo user)
         {
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
 
             var retValue = MembershipProvider.Instance().UnLockUser(user);
             DataCache.ClearUserCache(portalId, user.Username);
-            UpdateUser(portalId, GetUserById(portalId, user.UserID));
+            UpdateUser(eventLogger, portalId, GetUserById(portalId, user.UserID));
             return retValue;
         }
 
         /// <summary>Updates a user and logs the action.</summary>
         /// <param name="portalId">The id of the site (portal) on which to update the user.</param>
         /// <param name="user">The use to update.</param>
-        public static void UpdateUser(int portalId, UserInfo user)
-        {
-            UpdateUser(portalId, user, true);
-        }
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void UpdateUser(int portalId, UserInfo user)
+            => UpdateUser(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalId, user);
+
+        /// <summary>Updates a user and logs the action.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">The id of the site (portal) on which to update the user.</param>
+        /// <param name="user">The use to update.</param>
+        public static void UpdateUser(IEventLogger eventLogger, int portalId, UserInfo user)
+            => UpdateUser(eventLogger, portalId, user, true);
 
         /// <summary>Updates a user.</summary>
-        /// <param name="portalId">The portalid of the user to update.</param>
+        /// <param name="portalId">The portal id of the user to update.</param>
         /// <param name="user">The user to update.</param>
-        /// <param name="loggedAction">A value indicating whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
-        public static void UpdateUser(int portalId, UserInfo user, bool loggedAction)
-        {
-            UpdateUser(portalId, user, loggedAction, true);
-        }
+        /// <param name="loggedAction">A value indicating whether the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void UpdateUser(int portalId, UserInfo user, bool loggedAction)
+            => UpdateUser(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalId, user, loggedAction);
+
+        /// <summary>Updates a user.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">The portal id of the user to update.</param>
+        /// <param name="user">The user to update.</param>
+        /// <param name="loggedAction">A value indicating whether the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
+        public static void UpdateUser(IEventLogger eventLogger, int portalId, UserInfo user, bool loggedAction)
+            => UpdateUser(eventLogger, portalId, user, loggedAction, true);
 
         /// <summary>Updates a user.</summary>
         /// <param name="portalId">The id of the site (portal).</param>
         /// <param name="user">The user object.</param>
-        /// <param name="loggedAction">Whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
+        /// <param name="loggedAction">Whether the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
         /// <param name="sendNotification">Whether to send notification to the user about the update (i.e. a notification if the user was approved).</param>
-        public static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool sendNotification)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool sendNotification)
+            => UpdateUser(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalId, user, loggedAction, sendNotification);
+
+        /// <summary>Updates a user.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">The id of the site (portal).</param>
+        /// <param name="user">The user object.</param>
+        /// <param name="loggedAction">Whether the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
+        /// <param name="sendNotification">Whether to send notification to the user about the update (i.e. a notification if the user was approved).</param>
+        public static void UpdateUser(IEventLogger eventLogger, int portalId, UserInfo user, bool loggedAction, bool sendNotification)
         {
-            UpdateUser(portalId, user, loggedAction, sendNotification, true);
+            UpdateUser(eventLogger, portalId, user, loggedAction, sendNotification, true);
         }
 
         /// <summary>Validates a User's credentials against the Data Store, and sets the Forms Authentication Ticket.</summary>
@@ -1459,7 +1570,7 @@ namespace DotNetNuke.Entities.Users
             // Check if Profile needs updating
             if (validStatus == UserValidStatus.VALID)
             {
-                var validProfile = Convert.ToBoolean(UserModuleBase.GetSetting(portalId, "Security_RequireValidProfileAtLogin"));
+                var validProfile = Convert.ToBoolean(UserModuleBase.GetSetting(portalId, "Security_RequireValidProfileAtLogin"), CultureInfo.InvariantCulture);
                 if (validProfile && (!ProfileController.ValidateProfile(portalId, objUser.Profile)))
                 {
                     validStatus = UserValidStatus.UPDATEPROFILE;
@@ -1474,12 +1585,21 @@ namespace DotNetNuke.Entities.Users
         /// <exception cref="DotNetNuke.Entities.Users.UserAlreadyVerifiedException">Thrown when provided verification code has been already used.</exception>
         /// <exception cref="DotNetNuke.Entities.Users.InvalidVerificationCodeException">Thrown when the provided verification code is invalid.</exception>
         /// <exception cref="DotNetNuke.Entities.Users.UserDoesNotExistException">Thrown when the user does not exist.</exception>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Use overload with ICryptographyProvider. Scheduled for removal in v12.0.0.")]
         public static void VerifyUser(string verificationCode)
+            => VerifyUser(Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>(), verificationCode);
+
+        /// <summary>Tries to validate a verification code sent after a user is registered in a portal configured to use a verified registration.</summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="verificationCode">The verification code.</param>
+        /// <exception cref="DotNetNuke.Entities.Users.UserAlreadyVerifiedException">Thrown when provided verification code has been already used.</exception>
+        /// <exception cref="DotNetNuke.Entities.Users.InvalidVerificationCodeException">Thrown when the provided verification code is invalid.</exception>
+        /// <exception cref="DotNetNuke.Entities.Users.UserDoesNotExistException">Thrown when the user does not exist.</exception>
+        public static void VerifyUser(ICryptographyProvider cryptographyProvider, string verificationCode)
         {
             Requires.NotNullOrEmpty("verificationCode", verificationCode);
 
-            var portalSecurity = PortalSecurity.Instance;
-            var decryptString = portalSecurity.Decrypt(Config.GetDecryptionkey(), verificationCode);
+            var decryptString = cryptographyProvider.DecryptParameter(verificationCode, Config.GetDecryptionkey(), cryptographyProvider.EncryptParameterAlgorithmName);
             var strings = decryptString.Split('-');
 
             if (strings.Length != 2)
@@ -1487,16 +1607,14 @@ namespace DotNetNuke.Entities.Users
                 throw new InvalidVerificationCodeException();
             }
 
-            int portalId;
-            int userId;
             var userIdString = strings[1];
 
-            if (!int.TryParse(strings[0], out portalId) || string.IsNullOrWhiteSpace(userIdString))
+            if (!int.TryParse(strings[0], out var portalId) || string.IsNullOrWhiteSpace(userIdString))
             {
                 throw new InvalidVerificationCodeException();
             }
 
-            var user = int.TryParse(userIdString, out userId) ? GetUserById(portalId, userId) : GetUserByMembershipUserKey(portalId, userIdString);
+            var user = int.TryParse(userIdString, out var userId) ? GetUserById(portalId, userId) : GetUserByMembershipUserKey(portalId, userIdString);
 
             if (user == null)
             {
@@ -1519,7 +1637,7 @@ namespace DotNetNuke.Entities.Users
             ApproveUser(user);
         }
 
-        /// <summary>Returns a absolute URL for the user profile image while removing that of the deleted and super users.</summary>
+        /// <summary>Returns an absolute URL for the user profile image while removing that of the deleted and super users.</summary>
         /// <param name="portalId">The site (portal) id.</param>
         /// <param name="user">The user to get the profile image from.</param>
         /// <param name="width">Width in pixels.</param>
@@ -1609,7 +1727,7 @@ namespace DotNetNuke.Entities.Users
             var childPortalAlias = GetChildPortalAlias();
             var cdv = GetProfilePictureCdv(userId);
 
-            return childPortalAlias.StartsWith(Globals.ApplicationPath)
+            return childPortalAlias.StartsWith(Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase)
                 ? childPortalAlias + url + cdv
                 : Globals.ApplicationPath + childPortalAlias + url + cdv;
         }
@@ -1640,7 +1758,7 @@ namespace DotNetNuke.Entities.Users
             var childPortalAlias = Globals.ResolveUrl(this.GetUserProfilePictureUrl(userId, width, height));
             var cdv = GetProfilePictureCdv(portalId, userId);
 
-            return childPortalAlias.StartsWith(Globals.ApplicationPath)
+            return childPortalAlias.StartsWith(Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase)
                 ? childPortalAlias + url + cdv
                 : Globals.ApplicationPath + childPortalAlias + url + cdv;
         }
@@ -1729,7 +1847,7 @@ namespace DotNetNuke.Entities.Users
             }
             else
             {
-                settings["Display_Mode"] = (DisplayMode)Convert.ToInt32(settings["Display_Mode"]);
+                settings["Display_Mode"] = (DisplayMode)Convert.ToInt32(settings["Display_Mode"], CultureInfo.InvariantCulture);
             }
 
             if (settings["Display_SuppressPager"] == null)
@@ -1748,7 +1866,7 @@ namespace DotNetNuke.Entities.Users
             }
             else
             {
-                settings["Profile_DefaultVisibility"] = (UserVisibilityMode)Convert.ToInt32(settings["Profile_DefaultVisibility"]);
+                settings["Profile_DefaultVisibility"] = (UserVisibilityMode)Convert.ToInt32(settings["Profile_DefaultVisibility"], CultureInfo.InvariantCulture);
             }
 
             if (settings["Profile_DisplayVisibility"] == null)
@@ -1833,7 +1951,7 @@ namespace DotNetNuke.Entities.Users
             }
             else
             {
-                settings["Security_UsersControl"] = (UsersControl)Convert.ToInt32(settings["Security_UsersControl"]);
+                settings["Security_UsersControl"] = (UsersControl)Convert.ToInt32(settings["Security_UsersControl"], CultureInfo.InvariantCulture);
             }
 
             // Display name format
@@ -1890,23 +2008,22 @@ namespace DotNetNuke.Entities.Users
             return settings;
         }
 
-        /// <summary>  updates a user.</summary>
-        /// <param name="portalId">the portalid of the user.</param>
+        /// <summary>Updates a user.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">the portal ID of the user.</param>
         /// <param name="user">the user object.</param>
-        /// <param name="loggedAction">whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur.</param>
+        /// <param name="loggedAction">whether the update calls the event log - the event log type must still be enabled for logging to occur.</param>
         /// <param name="sendNotification">Whether to send notification to the user about the update (i.e. a notification if the user was approved).</param>
         /// <param name="clearCache">Whether clear cache after update user.</param>
-        /// <remarks>
-        /// This method is used internal because it should be use carefully, or it will caught cache doesn't clear correctly.
-        /// </remarks>
-        internal static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool sendNotification, bool clearCache)
+        /// <remarks>This method is used internal because it should be used carefully, or it will caught cache doesn't clear correctly.</remarks>
+        internal static void UpdateUser(IEventLogger eventLogger, int portalId, UserInfo user, bool loggedAction, bool sendNotification, bool clearCache)
         {
             var originalPortalId = user.PortalID;
             portalId = GetEffectivePortalId(portalId);
             user.PortalID = portalId;
 
             // clear the cache so that can get original info from database.
-            DataCache.RemoveCache(string.Format(DataCache.UserProfileCacheKey, portalId, user.Username));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.UserProfileCacheKey, portalId, user.Username));
             var oldUser = MembershipProvider.Instance().GetUser(user.PortalID, user.UserID);
             var oldProfile = oldUser.Profile; // access the profile property to reload data from database.
 
@@ -1914,7 +2031,7 @@ namespace DotNetNuke.Entities.Users
             MembershipProvider.Instance().UpdateUser(user);
             if (loggedAction)
             {
-                // if the httpcontext is null, then get portal settings by portal id.
+                // if the HttpContext is null, then get portal settings by portal id.
                 IPortalSettings portalSettings = null;
                 if (HttpContext.Current != null)
                 {
@@ -1925,7 +2042,7 @@ namespace DotNetNuke.Entities.Users
                     portalSettings = new PortalSettings(portalId);
                 }
 
-                EventLogController.Instance.AddLog(user, portalSettings, GetCurrentUserInternal().UserID, string.Empty, EventLogController.EventLogType.USER_UPDATED);
+                eventLogger.AddLog(user, portalSettings, GetCurrentUserInternal().UserID, string.Empty, EventLogType.USER_UPDATED);
             }
 
             EventManager.Instance.OnUserUpdated(new UpdateUserEventArgs { User = user, OldUser = oldUser });
@@ -2036,7 +2153,7 @@ namespace DotNetNuke.Entities.Users
             TabPermissionController.DeleteTabPermissionsByUser(user);
         }
 
-        private static void RestoreUserPermissions(UserInfo user)
+        private static void RestoreUserPermissions(IPermissionDefinitionService permissionDefinitionService, UserInfo user)
         {
             // restore user's folder permission
             var userFolderPath = PathUtils.GetUserFolderPathInternal(user);
@@ -2045,19 +2162,16 @@ namespace DotNetNuke.Entities.Users
 
             if (userFolder != null)
             {
-                foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
+                foreach (var permission in permissionDefinitionService.GetDefinitionsByFolder())
                 {
                     if (permission.PermissionKey.Equals("READ", StringComparison.OrdinalIgnoreCase)
                             || permission.PermissionKey.Equals("WRITE", StringComparison.OrdinalIgnoreCase)
                             || permission.PermissionKey.Equals("BROWSE", StringComparison.OrdinalIgnoreCase))
                     {
-                        var folderPermission = new FolderPermissionInfo(permission)
-                        {
-                            FolderID = userFolder.FolderID,
-                            UserID = user.UserID,
-                            RoleID = int.Parse(Globals.glbRoleNothing),
-                            AllowAccess = true,
-                        };
+                        var folderPermission = new FolderPermissionInfo(permission) { AllowAccess = true, };
+                        ((IPermissionInfo)folderPermission).RoleId = int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
+                        ((IPermissionInfo)folderPermission).UserId = user.UserID;
+                        ((IFolderPermissionInfo)folderPermission).FolderId = userFolder.FolderID;
 
                         userFolder.FolderPermissions.Add(folderPermission, true);
                     }
@@ -2115,7 +2229,7 @@ namespace DotNetNuke.Entities.Users
         private static SharedDictionary<int, string> GetUserLookupDictionary(int portalId)
         {
             var masterPortalId = GetEffectivePortalId(portalId);
-            var cacheKey = string.Format(DataCache.UserLookupCacheKey, masterPortalId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.UserLookupCacheKey, masterPortalId);
             return CBO.GetCachedObject<SharedDictionary<int, string>>(
                 new CacheItemArgs(
                     cacheKey,
@@ -2193,8 +2307,9 @@ namespace DotNetNuke.Entities.Users
 
         private static string GetChildPortalAlias()
         {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-            var currentAlias = settings.PortalAlias.HTTPAlias;
+            var settings = PortalSettings.Current;
+            IPortalAliasInfo alias = settings.PortalAlias;
+            var currentAlias = alias.HttpAlias;
             var index = currentAlias.IndexOf('/');
             var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : string.Empty;
             return childPortalAlias;

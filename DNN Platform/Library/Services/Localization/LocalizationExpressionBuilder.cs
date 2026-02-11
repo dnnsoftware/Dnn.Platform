@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Localization
     [ExpressionEditor("DotNetNuke.Services.Localization.LocalizationExpressionBuilderEditor")]
     public class LocalizationExpressionBuilder : ExpressionBuilder
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsEvaluate
         {
             get
@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Localization
 
             if (value == null)
             {
-                throw new InvalidOperationException(string.Format("Localized Value '{0}' not found.", key));
+                throw new InvalidOperationException($"Localized Value '{key}' not found.");
             }
 
             // check if value can be converted to property type
@@ -57,9 +57,10 @@ namespace DotNetNuke.Services.Localization
                     // Type mismatch - make sure that the value can be converted to the Web control property type
                     if (propDesc.Converter != null)
                     {
-                        if (propDesc.Converter.CanConvertFrom(value.GetType()) == false)
+                        if (!propDesc.Converter.CanConvertFrom(value.GetType()))
                         {
-                            throw new InvalidOperationException(string.Format("Localized value '{0}' cannot be converted to type {1}.", key, propDesc.PropertyType));
+                            throw new InvalidOperationException(
+                                $"Localized value '{key}' cannot be converted to type {propDesc.PropertyType}.");
                         }
 
                         return propDesc.Converter.ConvertFrom(value);
@@ -71,7 +72,7 @@ namespace DotNetNuke.Services.Localization
             return value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override CodeExpression GetCodeExpression(BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
         {
             var inputParams = new CodeExpression[]
@@ -85,7 +86,7 @@ namespace DotNetNuke.Services.Localization
             return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(this.GetType()), "GetLocalizedResource", inputParams);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override object EvaluateExpression(object target, BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
         {
             string key = entry.Expression.Trim();

@@ -5,9 +5,11 @@ namespace DotNetNuke.Entities.Urls.Config
 {
     using System;
     using System.IO;
+    using System.Xml;
     using System.Xml.Serialization;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Cache;
@@ -37,7 +39,6 @@ namespace DotNetNuke.Entities.Urls.Config
         public static RewriterConfiguration GetConfig()
         {
             var config = new RewriterConfiguration { Rules = new RewriterRuleCollection() };
-            FileStream fileReader = null;
             string filePath = string.Empty;
             try
             {
@@ -52,8 +53,13 @@ namespace DotNetNuke.Entities.Urls.Config
                             filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteUrls);
 
                             // Create a FileStream for the Config file
-                            fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                            var doc = new XPathDocument(fileReader);
+                            XPathDocument doc;
+                            using (var fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                            using (var xmlReader = XmlReader.Create(fileReader))
+                            {
+                                doc = new XPathDocument(xmlReader);
+                            }
+
                             config = new RewriterConfiguration { Rules = new RewriterRuleCollection() };
                             foreach (XPathNavigator nav in doc.CreateNavigator().Select("RewriterConfig/Rules/RewriterRule"))
                             {
@@ -77,20 +83,12 @@ namespace DotNetNuke.Entities.Urls.Config
             catch (Exception ex)
             {
                 // log it
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = nameof(EventLogType.HOST_ALERT) };
                 log.AddProperty("UrlRewriter.RewriterConfiguration", "GetConfig Failed");
                 log.AddProperty("FilePath", filePath);
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);
                 Logger.Error(log);
-            }
-            finally
-            {
-                if (fileReader != null)
-                {
-                    // Close the Reader
-                    fileReader.Close();
-                }
             }
 
             return config;

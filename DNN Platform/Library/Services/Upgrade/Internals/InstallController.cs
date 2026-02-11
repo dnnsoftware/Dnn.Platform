@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
     /// <summary>Business Layer to manage Messaging. Also contains CRUD methods.</summary>
     public class InstallController : ServiceLocator<IInstallController, InstallController>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IInstallController> GetFactory()
         {
             return () => new InstallControllerImpl();

@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
 
@@ -35,7 +36,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         [FlagParameter("max", "Prompt_ListUsers_FlagMax", "Integer", "10")]
         private const string FlagMax = "max";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private string Email { get; set; }
@@ -48,7 +49,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         private int Max { get; set; } = 10;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.Email = this.GetFlagValue(FlagEmail, "Email", string.Empty);
@@ -93,13 +94,13 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
                     if (numFilters != 1)
                     {
-                        this.AddMessage(string.Format(this.LocalizeString("Prompt_OnlyOneFlagRequired"), FlagEmail, FlagUsername, FlagRole));
+                        this.AddMessage(string.Format(CultureInfo.InvariantCulture, this.LocalizeString("Prompt_OnlyOneFlagRequired"), FlagEmail, FlagUsername, FlagRole));
                     }
                 }
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var usersList = new List<UserModelBase>();

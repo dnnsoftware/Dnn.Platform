@@ -5,7 +5,7 @@ import { security as SecurityActions } from "../../actions";
 import BulletinItemRow from "./bulletinItemRow";
 import resx from "../../resources";
 import styles from "./style.module.less";
-import WarningIcon from "./../svg/error.svg";
+import WarningIcon from "./../svg/error.svg?react";
 
 class SecurityBulletinsPanelBody extends Component {
     constructor() {
@@ -75,7 +75,7 @@ class SecurityBulletinsPanelBody extends Component {
         }
     }
 
-     
+
     render() {
         const {props, state} = this;
         if (state.error) {

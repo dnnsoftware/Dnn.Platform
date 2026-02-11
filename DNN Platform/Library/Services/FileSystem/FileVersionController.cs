@@ -5,6 +5,7 @@
 namespace DotNetNuke.Services.FileSystem
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
 
@@ -19,7 +20,7 @@ namespace DotNetNuke.Services.FileSystem
 
     public class FileVersionController : ComponentBase<IFileVersionController, FileVersionController>, IFileVersionController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string AddFileVersion(IFileInfo file, int userId, bool published, bool removeOldestVersions, Stream content = null)
         {
             Requires.NotNull("file", file);
@@ -81,7 +82,8 @@ namespace DotNetNuke.Services.FileSystem
             return GetVersionedFilename(file, newVersion);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void SetPublishedVersion(IFileInfo file, int newPublishedVersion)
         {
             DataProvider.Instance().SetPublishedVersion(file.FileId, newPublishedVersion);
@@ -106,7 +108,7 @@ namespace DotNetNuke.Services.FileSystem
             OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int DeleteFileVersion(IFileInfo file, int version)
         {
             Requires.NotNull("file", file);
@@ -151,14 +153,14 @@ namespace DotNetNuke.Services.FileSystem
             return newVersion;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public FileVersionInfo GetFileVersion(IFileInfo file, int version)
         {
             Requires.NotNull("file", file);
             return CBO.FillObject<FileVersionInfo>(DataProvider.Instance().GetFileVersion(file.FileId, version));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteAllUnpublishedVersions(IFileInfo file, bool resetPublishedVersionNumber)
         {
             Requires.NotNull("file", file);
@@ -185,38 +187,38 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<FileVersionInfo> GetFileVersions(IFileInfo file)
         {
             Requires.NotNull("file", file);
             return CBO.FillCollection<FileVersionInfo>(DataProvider.Instance().GetFileVersions(file.FileId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsFolderVersioned(int folderId)
         {
             return this.IsFolderVersioned(FolderManager.Instance.GetFolder(folderId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsFolderVersioned(IFolderInfo folder)
         {
             return this.IsFileVersionEnabled(folder.PortalID) && folder.IsVersioned;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsFileVersionEnabled(int portalId)
         {
             return PortalController.GetPortalSettingAsBoolean("FileVersionEnabled", portalId, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int MaxFileVersions(int portalId)
         {
             return PortalController.GetPortalSettingAsInteger("MaxFileVersions", portalId, 5);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<FileVersionInfo> GetFileVersionsInFolder(int folderId)
         {
             Requires.NotNegative("folderId", folderId);
@@ -224,7 +226,7 @@ namespace DotNetNuke.Services.FileSystem
             return CBO.FillCollection<FileVersionInfo>(DataProvider.Instance().GetFileVersionsInFolder(folderId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Stream GetVersionContent(IFileInfo file, int version)
         {
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
@@ -238,7 +240,7 @@ namespace DotNetNuke.Services.FileSystem
             return GetVersionContent(folderProvider, folder, file, version);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RollbackFileVersion(IFileInfo file, int version, int userId)
         {
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);

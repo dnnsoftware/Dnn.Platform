@@ -15,16 +15,25 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using System.Web.UI;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class TemplateDefinition
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public List<ClientOption> ClientOptions = new List<ClientOption>();
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public List<TemplateArgument> TemplateArguments = new List<TemplateArgument>();
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal readonly Dictionary<string, Tuple<Version, SpecificVersion?>> ScriptLibraries = new Dictionary<string, Tuple<Version, SpecificVersion?>>();
@@ -56,6 +65,28 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             new Regex(
                 "( (href|src)=['\"]?)(?!http:|ftp:|mailto:|file:|javascript:|/)([^'\">]+['\">])",
                 RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private readonly IClientResourceController clientResourceController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
+
+        /// <summary>Initializes a new instance of the <see cref="TemplateDefinition"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
+        public TemplateDefinition()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="TemplateDefinition"/> class.</summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public TemplateDefinition(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+        {
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
 
         public TemplateDefinition Clone()
         {
@@ -122,17 +153,20 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         internal static TemplateDefinition FromManifest(string manifestUrl)
         {
-            var httpContext = HttpContext.Current;
+            var httpContext = HttpContextSource.Current;
             var cache = httpContext.Cache;
             var manifestPath = httpContext.Server.MapPath(manifestUrl);
 
-            var baseDef = cache[manifestPath] as TemplateDefinition;
-            if (baseDef == null)
+            if (cache[manifestPath] is not TemplateDefinition baseDef)
             {
-                baseDef = new TemplateDefinition { Folder = Path.GetDirectoryName(manifestUrl) };
+                baseDef = ActivatorUtilities.CreateInstance<TemplateDefinition>(Globals.DependencyProvider);
+                baseDef.Folder = Path.GetDirectoryName(manifestUrl);
 
                 var xml = new XmlDocument { XmlResolver = null };
-                xml.Load(manifestPath);
+                using (var manifestReader = XmlReader.Create(manifestPath, new XmlReaderSettings { XmlResolver = null, }))
+                {
+                    xml.Load(manifestReader);
+                }
 
                 var resolver = new PathResolver(baseDef.Folder);
 
@@ -273,10 +307,10 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
                 if (baseDef.Processor == null)
                 {
-                    throw new ApplicationException(string.Format("Can't find processor for manifest {0}", manifestPath));
+                    throw new ApplicationException($"Can't find processor for manifest {manifestPath}");
                 }
 
-                cache.Insert(manifestPath, baseDef, new CacheDependency(new[] { manifestPath, baseDef.TemplatePath }));
+                cache.Insert(manifestPath, baseDef, new CacheDependency([manifestPath, baseDef.TemplatePath]));
             }
 
             var result = baseDef.Clone();
@@ -290,31 +324,29 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
             foreach (var stylesheet in this.StyleSheets)
             {
-                ClientResourceManager.RegisterStyleSheet(page, stylesheet);
+                this.clientResourceController.RegisterStylesheet(stylesheet);
             }
 
             foreach (var scriptUrl in this.ScriptUrls)
             {
-                ClientResourceManager.RegisterScript(page, scriptUrl);
+                this.clientResourceController.RegisterScript(scriptUrl);
             }
 
             foreach (var libraryInfo in this.ScriptLibraries)
             {
                 var libraryName = libraryInfo.Key;
-                var parameters = libraryInfo.Value;
-                var libraryVersion = parameters.Item1;
-                var specificVersion = parameters.Item2;
+                var (libraryVersion, specificVersion) = libraryInfo.Value;
                 if (libraryVersion == null)
                 {
-                    JavaScript.RequestRegistration(libraryName);
+                    JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, libraryName);
                 }
                 else if (specificVersion == null)
                 {
-                    JavaScript.RequestRegistration(libraryName, libraryVersion);
+                    JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, libraryName, libraryVersion);
                 }
                 else
                 {
-                    JavaScript.RequestRegistration(libraryName, libraryVersion, specificVersion.Value);
+                    JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, libraryName, libraryVersion, specificVersion.Value);
                 }
             }
 

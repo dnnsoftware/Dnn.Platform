@@ -6,11 +6,13 @@ namespace DotNetNuke.UI.WebControls
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -19,6 +21,8 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>
     /// The DNNRegionEditControl control provides a standard UI component for editing
     /// Regions.
@@ -26,6 +30,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
     public class DNNRegionEditControl : EditControl
     {
+        private readonly IServicesFramework servicesFramework;
         private DropDownList regions;
 
         private TextBox region;
@@ -35,16 +40,34 @@ namespace DotNetNuke.UI.WebControls
         private List<ListEntryInfo> listEntries;
 
         /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public DNNRegionEditControl()
+            : this((IServicesFramework)null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public DNNRegionEditControl(IServicesFramework servicesFramework)
+        {
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
             this.Init += this.DnnRegionControl_Init;
         }
 
         /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
         /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public DNNRegionEditControl(string type)
+            : this(type, null)
         {
-            this.Init += this.DnnRegionControl_Init;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
+        /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public DNNRegionEditControl(string type, IServicesFramework servicesFramework)
+            : this(servicesFramework)
+        {
             this.SystemType = type;
         }
 
@@ -53,7 +76,7 @@ namespace DotNetNuke.UI.WebControls
 
         protected string OldStringValue
         {
-            get { return Convert.ToString(this.OldValue); }
+            get { return Convert.ToString(this.OldValue, CultureInfo.InvariantCulture); }
         }
 
         /// <summary>Gets the ListEntryInfo objects associated with the control.</summary>
@@ -74,7 +97,7 @@ namespace DotNetNuke.UI.WebControls
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected int PortalId => PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string StringValue
         {
             get
@@ -82,7 +105,7 @@ namespace DotNetNuke.UI.WebControls
                 string strValue = Null.NullString;
                 if (this.Value != null)
                 {
-                    strValue = Convert.ToString(this.Value);
+                    strValue = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
                 }
 
                 return strValue;
@@ -133,7 +156,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
         {
             bool dataChanged = false;
@@ -167,7 +190,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnDataChanged(EventArgs e)
         {
             PropertyEditorEventArgs args = new PropertyEditorEventArgs(this.Name);
@@ -177,7 +200,7 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -199,7 +222,7 @@ namespace DotNetNuke.UI.WebControls
             this.Controls.Add(this.RegionCode);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(System.EventArgs e)
         {
             base.OnPreRender(e);
@@ -213,14 +236,14 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             if (this.ListEntries != null && this.ListEntries.Any())
             {
                 foreach (ListEntryInfo item in this.ListEntries)
                 {
-                    this.Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.EntryID.ToString() });
+                    this.Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.EntryID.ToString(CultureInfo.InvariantCulture), });
                 }
             }
 
@@ -236,7 +259,7 @@ namespace DotNetNuke.UI.WebControls
 
         private void DnnRegionControl_Init(object sender, System.EventArgs e)
         {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.js");
             ClientResourceManager.RegisterFeatureStylesheet(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.css");
             JavaScript.RequestRegistration(CommonJs.jQuery);

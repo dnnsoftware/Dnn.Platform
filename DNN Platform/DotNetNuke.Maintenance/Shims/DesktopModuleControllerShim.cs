@@ -12,7 +12,7 @@ namespace DotNetNuke.Maintenance.Shims
     /// </summary>
     internal sealed class DesktopModuleControllerShim : IDesktopModuleController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public DesktopModuleInfo GetDesktopModuleByModuleName(string moduleName, int portalID)
         {
             return DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalID);

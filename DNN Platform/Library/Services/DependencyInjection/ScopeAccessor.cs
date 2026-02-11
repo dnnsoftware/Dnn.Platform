@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 /// <summary>An <see cref="IScopeAccessor"/> implementation using <see cref="HttpContextSource.Current"/>.</summary>
 public class ScopeAccessor : IScopeAccessor
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IServiceScope GetScope()
     {
         return HttpContextSource.Current.GetScope();

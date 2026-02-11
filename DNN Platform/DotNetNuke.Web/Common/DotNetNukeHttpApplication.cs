@@ -4,11 +4,14 @@
 namespace DotNetNuke.Web.Common.Internal
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Web;
     using System.Web.Security;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
@@ -43,17 +46,14 @@ namespace DotNetNuke.Web.Common.Internal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));
 
-        private static readonly string[] Endings = [".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd"];
+        private static readonly string[] Endings = [".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd",];
 
         static DotNetNukeHttpApplication()
         {
             var dependencyProvider = new LazyServiceProvider();
             Globals.DependencyProvider = dependencyProvider;
-            dependencyProvider.SetProvider(DependencyInjectionInitialize.BuildServiceProvider());
-            ServiceRequestScopeModule.SetServiceProvider(Globals.DependencyProvider);
-            HttpRuntime.WebObjectActivator = new WebFormsServiceProvider();
 
-            ComponentFactory.Container = new ContainerWithServiceProviderFallback(new SimpleContainer(), Globals.DependencyProvider);
+            ComponentFactory.Container = new ContainerWithServiceProviderFallback(new SimpleContainer(Globals.DependencyProvider), Globals.DependencyProvider);
 
             ComponentFactory.InstallComponents(new ProviderInstaller("databaseConnection", typeof(DatabaseConnectionProvider), typeof(SqlDatabaseConnectionProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("data", typeof(DataProvider), typeof(SqlDataProvider)));
@@ -77,9 +77,15 @@ namespace DotNetNuke.Web.Common.Internal
             ComponentFactory.InstallComponents(new ProviderInstaller("htmlEditor", typeof(HtmlEditorProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("navigationControl", typeof(NavigationProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("clientcapability", typeof(ClientCapabilityProvider)));
+#pragma warning disable CS0618 // Type or member is obsolete
             ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(FipsCompilanceCryptographyProvider)));
+#pragma warning restore CS0618 // Type or member is obsolete
             ComponentFactory.InstallComponents(new ProviderInstaller("tokens", typeof(TokenProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("mail", typeof(MailProvider)));
+
+            dependencyProvider.SetProvider(DependencyInjectionInitialize.BuildServiceProvider());
+            ServiceRequestScopeModule.SetServiceProvider(Globals.DependencyProvider);
+            HttpRuntime.WebObjectActivator = new WebFormsServiceProvider();
         }
 
         private static void RegisterIfNotAlreadyRegistered<TConcrete>()
@@ -108,14 +114,14 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static bool IsInstallOrUpgradeRequest(HttpRequest request)
         {
-            var url = request.Url.LocalPath.ToLowerInvariant();
+            var url = request.Url.LocalPath;
 
-            return url.EndsWith("webresource.axd")
-                   || url.EndsWith("scriptresource.axd")
-                   || url.EndsWith("captcha.aspx")
-                   || url.Contains("upgradewizard.aspx")
-                   || url.Contains("installwizard.aspx")
-                   || url.EndsWith("install.aspx");
+            return url.EndsWith("webresource.axd", StringComparison.OrdinalIgnoreCase)
+                   || url.EndsWith("scriptresource.axd", StringComparison.OrdinalIgnoreCase)
+                   || url.EndsWith("captcha.aspx", StringComparison.OrdinalIgnoreCase)
+                   || url.Contains("upgradewizard.aspx", StringComparison.OrdinalIgnoreCase)
+                   || url.Contains("installwizard.aspx", StringComparison.OrdinalIgnoreCase)
+                   || url.EndsWith("install.aspx", StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool IsInstallInProgress(HttpApplication app)
@@ -146,11 +152,11 @@ namespace DotNetNuke.Web.Common.Internal
             }
 
             // Shutdown Lucene, but not when we are installing
-            if (Globals.Status != Globals.UpgradeStatus.Install)
+            var appStatus = new ApplicationStatusInfo(new Application());
+            if (appStatus.Status != UpgradeStatus.Install)
             {
                 Logger.Trace("Disposing Lucene");
-                var lucene = LuceneController.Instance as IDisposable;
-                if (lucene != null)
+                if (LuceneController.Instance is IDisposable lucene)
                 {
                     lucene.Dispose();
                 }
@@ -174,18 +180,18 @@ namespace DotNetNuke.Web.Common.Internal
 
         private void Application_Start(object sender, EventArgs eventArgs)
         {
-            Logger.InfoFormat("Application Starting ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
+            Logger.InfoFormat(CultureInfo.InvariantCulture, "Application Starting ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
 
             var name = Config.GetSetting("ServerName");
             Globals.ServerName = string.IsNullOrEmpty(name) ? Dns.GetHostName() : name;
 
-            Logger.InfoFormat("Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
-            DotNetNukeShutdownOverload.InitializeFcnSettings();
+            Logger.InfoFormat(CultureInfo.InvariantCulture, "Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
+            DotNetNukeShutdownOverload.InitializeFcnSettings(new ApplicationStatusInfo(new Application()));
 
             // register the assembly-lookup to correct the breaking rename in DNN 9.2
             DotNetNuke.Services.Zip.SharpZipLibRedirect.RegisterSharpZipLibRedirect();
 
-            // DotNetNukeSecurity.Initialize();
+            ////DotNetNukeSecurity.Initialize();
         }
 
         private void Application_Error(object sender, EventArgs eventArgs)
@@ -218,8 +224,8 @@ namespace DotNetNuke.Web.Common.Internal
                 }
             }
 
-            var requestUrl = app.Request.Url.LocalPath.ToLowerInvariant();
-            if (!requestUrl.EndsWith(".aspx") && !requestUrl.EndsWith("/") && Endings.Any(requestUrl.EndsWith))
+            var requestUrl = app.Request.Url.LocalPath;
+            if (!requestUrl.EndsWith(".aspx", StringComparison.OrdinalIgnoreCase) && !requestUrl.EndsWith("/", StringComparison.Ordinal) && Endings.Any(ending => requestUrl.EndsWith(ending, StringComparison.OrdinalIgnoreCase)))
             {
                 return;
             }

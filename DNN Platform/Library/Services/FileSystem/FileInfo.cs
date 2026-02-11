@@ -6,10 +6,12 @@ namespace DotNetNuke.Services.FileSystem
     using System;
     using System.Data;
     using System.Drawing;
+    using System.Globalization;
     using System.IO;
     using System.Web;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
@@ -108,7 +110,7 @@ namespace DotNetNuke.Services.FileSystem
             this.SHA1Hash = hash;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("height")]
         public int Height
         {
@@ -128,21 +130,21 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("iscached")]
         public bool IsCached { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("physicalpath")]
         public string PhysicalPath
         {
             get
             {
                 string physicalPath = Null.NullString;
-                PortalSettings portalSettings = null;
+                IPortalSettings portalSettings = null;
                 if (HttpContext.Current != null)
                 {
-                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                    portalSettings = PortalController.Instance.GetCurrentSettings();
                 }
 
                 if (this.PortalId == Null.NullInteger)
@@ -168,14 +170,14 @@ namespace DotNetNuke.Services.FileSystem
 
                 if (!string.IsNullOrEmpty(physicalPath))
                 {
-                    physicalPath = physicalPath.Replace("/", "\\");
+                    physicalPath = physicalPath.Replace("/", @"\");
                 }
 
                 return physicalPath;
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string RelativePath
         {
             get
@@ -184,7 +186,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public FileAttributes? FileAttributes
         {
             get
@@ -201,7 +203,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SupportsFileAttributes
         {
             get
@@ -238,31 +240,31 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("contenttype")]
         public string ContentType { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("extension")]
         public string Extension { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("fileid")]
         public int FileId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("uniqueid")]
         public Guid UniqueId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("versionguid")]
         public Guid VersionGuid { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("filename")]
         public string FileName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("folder")]
         public string Folder
         {
@@ -274,7 +276,7 @@ namespace DotNetNuke.Services.FileSystem
             set
             {
                 // Make sure folder name ends with /
-                if (!string.IsNullOrEmpty(value) && !value.EndsWith("/"))
+                if (!string.IsNullOrEmpty(value) && !value.EndsWith("/", StringComparison.Ordinal))
                 {
                     value = value + "/";
                 }
@@ -283,24 +285,24 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("folderid")]
         public int FolderId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlIgnore]
         [JsonIgnore]
         public int PortalId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("size")]
         public int Size { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("storagelocation")]
         public int StorageLocation { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("width")]
         public int Width
         {
@@ -320,7 +322,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("sha1hash")]
         public string SHA1Hash
         {
@@ -340,7 +342,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public DateTime LastModificationTime
         {
             get
@@ -368,7 +370,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int FolderMappingID
         {
             get
@@ -415,7 +417,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>Gets or sets a metadata field with an optional title associated to the file.</summary>
         public string Title { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Description { get; set; }
 
         /// <summary>Gets or sets the date on which the file starts to be published.</summary>
@@ -438,7 +440,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>Gets or sets a reference to ContentItem, to use in Workflows.</summary>
         public int ContentItemID { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -454,7 +456,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
             this.ContentType = Null.SetNullString(dr["ContentType"]);
@@ -481,7 +483,7 @@ namespace DotNetNuke.Services.FileSystem
             this.EndDate = Null.SetNullDateTime(dr["EndDate"]);
             this.ContentItemID = Null.SetNullInteger(dr["ContentItemID"]);
             this.PublishedVersion = Null.SetNullInteger(dr["PublishedVersion"]);
-            this.HasBeenPublished = Convert.ToBoolean(dr["HasBeenPublished"]);
+            this.HasBeenPublished = Convert.ToBoolean(dr["HasBeenPublished"], CultureInfo.InvariantCulture);
             this.FillBaseProperties(dr);
         }
 

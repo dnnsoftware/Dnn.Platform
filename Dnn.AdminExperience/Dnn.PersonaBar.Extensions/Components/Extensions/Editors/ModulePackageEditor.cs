@@ -6,11 +6,15 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.PersonaBar.Extensions.Components.Dto;
     using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
     using Dnn.PersonaBar.Library.Helper;
+
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -20,13 +24,28 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Installer.Packages;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Newtonsoft.Json;
 
-    public class ModulePackageEditor : IPackageEditor
+    /// <summary>An <see cref="IPackageEditor"/> implementation for modules.</summary>
+    /// <param name="permissionDefinitionService">The permission definition service.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    public class ModulePackageEditor(IPermissionDefinitionService permissionDefinitionService, IEventLogger eventLogger) : IPackageEditor
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulePackageEditor));
+        private readonly IPermissionDefinitionService permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="ModulePackageEditor"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPermissionDefinitionService. Scheduled removal in v12.0.0.")]
+        public ModulePackageEditor()
+            : this(null, null)
+        {
+        }
+
+        /// <inheritdoc />
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(package.PackageID);
@@ -42,12 +61,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                                         : new ModulePackagePermissionsDto(portalId, package);
 
             detail.DesktopModuleId = desktopModule.DesktopModuleID;
-            detail.Permissions = GetPermissionsData(portalId, desktopModule.DesktopModuleID);
+            detail.Permissions = GetPermissionsData(this.permissionDefinitionService, portalId, desktopModule.DesktopModuleID);
 
             return detail;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SavePackageSettings(PackageSettingsDto packageSettings, out string errorMessage)
         {
             errorMessage = string.Empty;
@@ -63,12 +82,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
                 var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
 
-                UpdatePermissions(desktopModule, packageSettings);
+                UpdatePermissions(this.permissionDefinitionService, this.eventLogger, desktopModule, packageSettings);
 
                 if (isHostUser)
                 {
-                    UpdateModuleProperties(desktopModule, packageSettings.Settings);
-                    UpdateModuleProperties(desktopModule, packageSettings.EditorActions);
+                    UpdateModuleProperties(this.permissionDefinitionService, this.eventLogger, desktopModule, packageSettings.Settings);
+                    UpdateModuleProperties(this.permissionDefinitionService, this.eventLogger, desktopModule, packageSettings.EditorActions);
 
                     DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
                 }
@@ -83,31 +102,31 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
         }
 
-        private static void UnassignPortals(DesktopModuleInfo desktopModule, IList<ListItemDto> portals)
+        private static void UnassignPortals(IEventLogger eventLogger, DesktopModuleInfo desktopModule, IList<ListItemDto> portals)
         {
             foreach (var portal in portals)
             {
-                DesktopModuleController.RemoveDesktopModuleFromPortal(portal.Id, desktopModule.DesktopModuleID, true);
+                DesktopModuleController.RemoveDesktopModuleFromPortal(eventLogger, portal.Id, desktopModule.DesktopModuleID, true);
             }
         }
 
-        private static void AssignPortals(DesktopModuleInfo desktopModule, IList<ListItemDto> portals)
+        private static void AssignPortals(IPermissionDefinitionService permissionDefinitionService, IEventLogger eventLogger, DesktopModuleInfo desktopModule, IList<ListItemDto> portals)
         {
             foreach (var portal in portals)
             {
-                DesktopModuleController.AddDesktopModuleToPortal(portal.Id, desktopModule.DesktopModuleID, true, true);
+                DesktopModuleController.AddDesktopModuleToPortal(eventLogger, permissionDefinitionService, portal.Id, desktopModule.DesktopModuleID, true, true);
             }
         }
 
-        private static void SaveModuleDefinition(ModuleDefinitionDto definitionDto)
+        private static void SaveModuleDefinition(IPermissionDefinitionService permissionDefinitionService, ModuleDefinitionDto definitionDto)
         {
             var moduleDefinition = definitionDto.ToModuleDefinitionInfo();
-            ModuleDefinitionController.SaveModuleDefinition(moduleDefinition, false, true);
+            ModuleDefinitionController.SaveModuleDefinition(permissionDefinitionService, moduleDefinition, false, true);
         }
 
-        private static void DeleteModuleDefinition(int defId)
+        private static void DeleteModuleDefinition(IPermissionDefinitionService permissionDefinitionService, int defId)
         {
-            new ModuleDefinitionController().DeleteModuleDefinition(defId);
+            new ModuleDefinitionController(permissionDefinitionService).DeleteModuleDefinition(defId);
         }
 
         private static void SaveModuleControl(ModuleControlDto moduleControlDto)
@@ -121,7 +140,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             ModuleControlController.DeleteModuleControl(controlId);
         }
 
-        private static void UpdateModuleProperties(DesktopModuleInfo desktopModule, IDictionary<string, string> settings)
+        private static void UpdateModuleProperties(IPermissionDefinitionService permissionDefinitionService, IEventLogger eventLogger, DesktopModuleInfo desktopModule, IDictionary<string, string> settings)
         {
             foreach (var setting in settings)
             {
@@ -149,27 +168,27 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                         desktopModule.IsPremium = Convert.ToBoolean(settingValue);
                         break;
                     case "shareable":
-                        desktopModule.Shareable = (ModuleSharing)Convert.ToInt32(settingValue);
+                        desktopModule.Shareable = (ModuleSharing)Convert.ToInt32(settingValue, CultureInfo.InvariantCulture);
                         break;
                     case "assignportal":
-                        AssignPortals(desktopModule, JsonConvert.DeserializeObject<IList<ListItemDto>>(settingValue));
+                        AssignPortals(permissionDefinitionService, eventLogger, desktopModule, JsonConvert.DeserializeObject<IList<ListItemDto>>(settingValue));
                         break;
                     case "unassignportal":
-                        UnassignPortals(desktopModule, JsonConvert.DeserializeObject<IList<ListItemDto>>(settingValue));
+                        UnassignPortals(eventLogger, desktopModule, JsonConvert.DeserializeObject<IList<ListItemDto>>(settingValue));
                         break;
                     case "savedefinition":
                         var definition = JsonConvert.DeserializeObject<ModuleDefinitionDto>(settingValue);
-                        SaveModuleDefinition(definition);
+                        SaveModuleDefinition(permissionDefinitionService, definition);
                         break;
                     case "deletedefinition":
-                        DeleteModuleDefinition(Convert.ToInt32(settingValue));
+                        DeleteModuleDefinition(permissionDefinitionService, Convert.ToInt32(settingValue, CultureInfo.InvariantCulture));
                         break;
                     case "savemodulecontrol":
                         var moduleControl = JsonConvert.DeserializeObject<ModuleControlDto>(settingValue);
                         SaveModuleControl(moduleControl);
                         break;
                     case "deletemodulecontrol":
-                        DeleteModuleControl(Convert.ToInt32(settingValue));
+                        DeleteModuleControl(Convert.ToInt32(settingValue, CultureInfo.InvariantCulture));
                         break;
                     case "friendlyname":
                         desktopModule.FriendlyName = settingValue;
@@ -178,9 +197,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
         }
 
-        private static PermissionsDto GetPermissionsData(int portalId, int desktopModuleId)
+        private static PermissionsDto GetPermissionsData(IPermissionDefinitionService permissionDefinitionService, int portalId, int desktopModuleId)
         {
-            var permissions = new PermissionsDto(true);
+            var permissions = new PermissionsDto(permissionDefinitionService, true);
             if (desktopModuleId > 0)
             {
                 var portalModule = DesktopModuleController.GetPortalDesktopModule(portalId, desktopModuleId);
@@ -189,9 +208,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                     permissions.DesktopModuleId = desktopModuleId;
 
                     var modulePermissions = DesktopModulePermissionController.GetDesktopModulePermissions(portalModule.PortalDesktopModuleID);
-                    foreach (DesktopModulePermissionInfo permission in modulePermissions)
+                    foreach (IPermissionInfo permission in modulePermissions)
                     {
-                        if (permission.UserID != Null.NullInteger)
+                        if (permission.UserId != Null.NullInteger)
                         {
                             permissions.AddUserPermission(permission);
                         }
@@ -213,7 +232,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             return permissions;
         }
 
-        private static void UpdatePermissions(DesktopModuleInfo desktopModule, PackageSettingsDto packageSettings)
+        private static void UpdatePermissions(IPermissionDefinitionService permissionDefinitionService, IEventLogger eventLogger, DesktopModuleInfo desktopModule, PackageSettingsDto packageSettings)
         {
             if (!packageSettings.EditorActions.TryGetValue("permissions", out var permissionsJson) || string.IsNullOrEmpty(permissionsJson))
             {
@@ -236,18 +255,17 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             if (!hasAdmin || (permissions.RolePermissions.Count == 0 && permissions.UserPermissions.Count == 0))
             {
                 // add default permissions
-                var permissionController = new PermissionController();
-                var permissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_DESKTOPMODULE", "DEPLOY");
-                foreach (PermissionInfo permissionInfo in permissionsList)
+                var permissionsList = permissionDefinitionService.GetDefinitionsByCodeAndKey("SYSTEM_DESKTOPMODULE", "DEPLOY");
+                foreach (var permissionInfo in permissionsList)
                 {
                     var permission = new DesktopModulePermissionInfo(permissionInfo)
                     {
-                        RoleID = portalSettings.AdministratorRoleId,
-                        UserID = Null.NullInteger,
                         PortalDesktopModuleID = portalModule.PortalDesktopModuleID,
                         AllowAccess = true,
                         RoleName = portalSettings.AdministratorRoleName,
                     };
+                    ((IPermissionInfo)permission).RoleId = portalSettings.AdministratorRoleId;
+                    ((IPermissionInfo)permission).UserId = Null.NullInteger;
                     desktopModulePermissions.Add(permission);
                 }
             }
@@ -259,14 +277,15 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 {
                     foreach (var permission in rolePermission.Permissions)
                     {
-                        desktopModulePermissions.Add(new DesktopModulePermissionInfo()
+                        var info = new DesktopModulePermissionInfo
                         {
-                            PermissionID = permission.PermissionId,
-                            RoleID = rolePermission.RoleId,
-                            UserID = Null.NullInteger,
                             PortalDesktopModuleID = portalModule.PortalDesktopModuleID,
                             AllowAccess = permission.AllowAccess,
-                        });
+                        };
+                        ((IPermissionInfo)info).PermissionId = permission.PermissionId;
+                        ((IPermissionInfo)info).RoleId = rolePermission.RoleId;
+                        ((IPermissionInfo)info).UserId = Null.NullInteger;
+                        desktopModulePermissions.Add(info);
                     }
                 }
             }
@@ -283,14 +302,15 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                             roleId = -4;
                         }
 
-                        desktopModulePermissions.Add(new DesktopModulePermissionInfo()
+                        var desktopModulePermissionInfo = new DesktopModulePermissionInfo
                         {
-                            PermissionID = permission.PermissionId,
-                            RoleID = roleId,
-                            UserID = userPermission.UserId,
                             PortalDesktopModuleID = portalModule.PortalDesktopModuleID,
                             AllowAccess = permission.AllowAccess,
-                        });
+                        };
+                        ((IPermissionInfo)desktopModulePermissionInfo).PermissionId = permission.PermissionId;
+                        ((IPermissionInfo)desktopModulePermissionInfo).RoleId = roleId;
+                        ((IPermissionInfo)desktopModulePermissionInfo).UserId = userPermission.UserId;
+                        desktopModulePermissions.Add(desktopModulePermissionInfo);
                     }
                 }
             }
@@ -299,14 +319,14 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             var currentPermissions = DesktopModulePermissionController.GetDesktopModulePermissions(portalModule.PortalDesktopModuleID);
             if (!currentPermissions.CompareTo(desktopModulePermissions))
             {
-                DesktopModulePermissionController.DeleteDesktopModulePermissionsByPortalDesktopModuleID(portalModule.PortalDesktopModuleID);
+                DesktopModulePermissionController.DeleteDesktopModulePermissionsByPortalDesktopModuleID(eventLogger, portalModule.PortalDesktopModuleID);
                 foreach (DesktopModulePermissionInfo objPermission in desktopModulePermissions)
                 {
-                    DesktopModulePermissionController.AddDesktopModulePermission(objPermission);
+                    DesktopModulePermissionController.AddDesktopModulePermission(eventLogger, objPermission);
                 }
             }
 
-            DataCache.RemoveCache(string.Format(DataCache.PortalDesktopModuleCacheKey, portalSettings.PortalId));
+            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.PortalDesktopModuleCacheKey, portalSettings.PortalId));
         }
     }
 }

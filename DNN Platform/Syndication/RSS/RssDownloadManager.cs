@@ -87,7 +87,7 @@ namespace DotNetNuke.Services.Syndication
             try
             {
                 var uri = new Uri(url);
-                return string.Format("{0}_{1:x8}", uri.Host.Replace('.', '_'), uri.AbsolutePath.GetHashCode());
+                return $"{uri.Host.Replace('.', '_')}_{uri.AbsolutePath.GetHashCode():x8}";
             }
             catch
             {
@@ -110,7 +110,10 @@ namespace DotNetNuke.Services.Syndication
 
             // parse it as XML
             var doc = new XmlDocument { XmlResolver = null };
-            doc.Load(new MemoryStream(feed));
+            using (var feedReader = XmlReader.Create(new MemoryStream(feed), new XmlReaderSettings { XmlResolver = null, }))
+            {
+                doc.Load(feedReader);
+            }
 
             // parse into DOM
             dom = RssXmlHelper.ParseChannelXml(doc);
@@ -151,7 +154,10 @@ namespace DotNetNuke.Services.Syndication
                 try
                 {
                     rssDoc = new XmlDocument { XmlResolver = null };
-                    rssDoc.Load(rssFilename);
+                    using (var rssReader = XmlReader.Create(rssFilename, new XmlReaderSettings { XmlResolver = null, }))
+                    {
+                        rssDoc.Load(rssReader);
+                    }
 
                     // look for special XML comment (before the root tag)'
                     // containing expiration and url
@@ -213,9 +219,9 @@ namespace DotNetNuke.Services.Syndication
                 return;
             }
 
-            doc.InsertBefore(doc.CreateComment(string.Format("{0}@{1}", utcExpiry.ToBinary(), url)), doc.DocumentElement);
+            doc.InsertBefore(doc.CreateComment($"{utcExpiry.ToBinary()}@{url}"), doc.DocumentElement);
 
-            string fileName = string.Format("{0}_{1:x8}.rss.resources", GetTempFileNamePrefixFromUrl(url), Guid.NewGuid().ToString().GetHashCode());
+            string fileName = $"{GetTempFileNamePrefixFromUrl(url)}_{Guid.NewGuid().ToString().GetHashCode():x8}.rss.resources";
 
             try
             {

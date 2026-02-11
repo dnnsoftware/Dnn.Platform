@@ -5,6 +5,8 @@ namespace Dnn.PersonaBar.Prompt.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
 
@@ -26,14 +28,14 @@ namespace Dnn.PersonaBar.Prompt.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public List<ModuleInfo> AddNewModule(PortalSettings portalSettings, string title, int desktopModuleId, int tabId, string paneName, int position, int permissionType, string align, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = default(KeyValuePair<HttpStatusCode, string>);
             var page = TabController.Instance.GetTab(tabId, portalSettings.PortalId);
             if (page == null)
             {
-                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), tabId));
+                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), tabId));
                 return null;
             }
 
@@ -105,7 +107,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             return moduleList;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleInfo CopyModule(PortalSettings portalSettings, int moduleId, int sourcePageId, int targetPageId, string pane, bool includeSettings, out KeyValuePair<HttpStatusCode, string> message, bool moveBahaviour = false)
         {
             var sourceModule = this.GetModule(portalSettings, moduleId, sourcePageId, out message);
@@ -117,14 +119,14 @@ namespace Dnn.PersonaBar.Prompt.Components
 
             var targetPage = TabController.Instance.GetTab(targetPageId, portalSettings.PortalId);
 
-            message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), targetPageId));
+            message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), targetPageId));
 
             if (targetPage == null)
             {
                 return null;
             }
 
-            var currentPortalSetting = PortalController.Instance.GetCurrentPortalSettings();
+            var currentPortalSetting = PortalController.Instance.GetCurrentSettings();
 
             if (
                 currentPortalSetting == portalSettings ||
@@ -159,7 +161,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteModule(PortalSettings portalSettings, int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
             var module = this.GetModule(portalSettings, moduleId, pageId, out message);
@@ -174,22 +176,22 @@ namespace Dnn.PersonaBar.Prompt.Components
                 catch (Exception ex)
                 {
                     Logger.Error(ex);
-                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
+                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
                 }
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleInfo GetModule(PortalSettings portalSettings, int moduleId, int? pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
-            message = default(KeyValuePair<HttpStatusCode, string>);
+            message = default;
             if (pageId.HasValue)
             {
                 var module = ModuleController.Instance.GetModule(moduleId, pageId.Value, true);
 
                 if (module != null)
                 {
-                    var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
+                    var currentPortal = PortalController.Instance.GetCurrentSettings();
 
                     if (
                         portalSettings == currentPortal ||
@@ -201,7 +203,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                 }
                 else
                 {
-                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_ModuleNotFound", Constants.LocalResourcesFile), moduleId, pageId));
+                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_ModuleNotFound", Constants.LocalResourcesFile), moduleId, pageId));
                     return null;
                 }
             }
@@ -214,15 +216,16 @@ namespace Dnn.PersonaBar.Prompt.Components
                 }
             }
 
-            message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_NoModule", Constants.LocalResourcesFile), moduleId));
+            message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_NoModule", Constants.LocalResourcesFile), moduleId));
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null, int? pageId = null, int pageIndex = 0, int pageSize = 10)
         {
             pageIndex = pageIndex < 0 ? 0 : pageIndex;
-            pageSize = pageSize > 0 && pageSize <= 100 ? pageSize : 10;
+            pageSize = pageSize is > 0 and <= 100 ? pageSize : 10;
             moduleName = moduleName?.Replace("*", string.Empty);
             moduleTitle = moduleTitle?.Replace("*", string.Empty);
             var modules = ModuleController.Instance.GetModules(portalSettings.PortalId)
@@ -255,7 +258,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             return moduleInfos.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IModulesController> GetFactory()
         {
             return () => new ModulesController();

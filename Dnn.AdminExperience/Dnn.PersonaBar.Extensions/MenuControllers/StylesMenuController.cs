@@ -40,19 +40,19 @@ namespace Dnn.PersonaBar.Styles.MenuControllers
             this.userController = userController;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
            return new Dictionary<string, object>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateParameters(MenuItem menuItem)
         {
             menuItem.AllowHost = true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Visible(MenuItem menuItem)
         {
             var allowAdminEdits = this.portalController

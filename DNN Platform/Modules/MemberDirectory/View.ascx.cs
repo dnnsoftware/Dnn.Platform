@@ -9,56 +9,69 @@ namespace DotNetNuke.Modules.MemberDirectory
     using System.Web.Routing;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     /// <summary>Display member directory.</summary>
     public partial class View : ProfileModuleUserControlBase
     {
-        /// <inheritdoc/>
-        public override bool DisplayModule
+        private readonly IClientResourceController clientResourceController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
+        private readonly IServicesFramework servicesFramework;
+
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
+        public View()
         {
-            get
-            {
-                return !(this.ProfileUserId == this.ModuleContext.PortalSettings.UserId && this.FilterBy == "User") && this.ModuleContext.PortalSettings.UserId > -1;
-            }
         }
+
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public View(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IServicesFramework servicesFramework)
+        {
+            this.clientResourceController = clientResourceController;
+            this.appStatus = appStatus;
+            this.eventLogger = eventLogger;
+            this.servicesFramework = servicesFramework;
+        }
+
+        /// <inheritdoc />
+        public override bool DisplayModule
+            => !(this.ProfileUserId == this.ModuleContext.PortalSettings.UserId && this.FilterBy == "User") && this.ModuleContext.PortalSettings.UserId > -1;
 
         public string ProfileResourceFile
-        {
-            get { return "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx"; }
-        }
+            => "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
 
         protected string AlternateItemTemplate
-        {
-            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "AlternateItemTemplate", Settings.DefaultAlternateItemTemplate); }
-        }
+#pragma warning disable CS0618 // Type or member is obsolete
+            => GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "AlternateItemTemplate", Settings.DefaultAlternateItemTemplate);
+#pragma warning restore CS0618 // Type or member is obsolete
 
         protected bool DisablePaging
-        {
-            get { return bool.Parse(this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "DisablePaging", "false")); }
-        }
+            => bool.Parse(GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "DisablePaging", "false"));
 
         protected string DisplaySearch
-        {
-            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "DisplaySearch", "Both"); }
-        }
+            => GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "DisplaySearch", "Both");
 
         protected bool EnablePopUp
-        {
-            get { return bool.Parse(this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "EnablePopUp", "false")); }
-        }
+            => bool.Parse(GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "EnablePopUp", "false"));
 
         protected string FilterBy
-        {
-            get { return this.GetSetting(this.ModuleContext.Configuration.ModuleSettings, "FilterBy", "None"); }
-        }
+            => GetSetting(this.ModuleContext.Configuration.ModuleSettings, "FilterBy", "None");
 
         protected int GroupId
         {
@@ -75,87 +88,54 @@ namespace DotNetNuke.Modules.MemberDirectory
         }
 
         protected string ItemTemplate
-        {
-            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "ItemTemplate", Settings.DefaultItemTemplate); }
-        }
+#pragma warning disable CS0618 // Type or member is obsolete
+            => GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "ItemTemplate", Settings.DefaultItemTemplate);
+#pragma warning restore CS0618 // Type or member is obsolete
 
         protected int PageSize
-        {
-            get
-            {
-                return this.GetSettingAsInt32(this.ModuleContext.Configuration.TabModuleSettings, "PageSize", Settings.DefaultPageSize);
-            }
-        }
+#pragma warning disable CS0618 // Type or member is obsolete
+            => GetSettingAsInt32(this.ModuleContext.Configuration.TabModuleSettings, "PageSize", Settings.DefaultPageSize);
+#pragma warning restore CS0618 // Type or member is obsolete
 
         protected string PopUpTemplate
-        {
-            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "PopUpTemplate", Settings.DefaultPopUpTemplate); }
-        }
+#pragma warning disable CS0618 // Type or member is obsolete
+            => GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "PopUpTemplate", Settings.DefaultPopUpTemplate);
+#pragma warning restore CS0618 // Type or member is obsolete
 
         protected string ProfileUrlUserToken
-        {
-            get
-            {
-                return "PROFILEUSER";
-            }
-        }
+            => "PROFILEUSER";
 
         protected string SearchField1
-        {
-            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField1", "DisplayName"); }
-        }
+            => GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField1", "DisplayName");
 
         protected string SearchField2
-        {
-            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField2", "Email"); }
-        }
+            => GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField2", "Email");
 
         protected string SearchField3
-        {
-            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField3", "City"); }
-        }
+            => GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField3", "City");
 
         protected string SearchField4
-        {
-            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField4", "Country"); }
-        }
+            => GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField4", "Country");
 
         protected string ViewProfileUrl
-        {
-            get
-            {
-                return this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.UserTabId, string.Empty, "userId=PROFILEUSER");
-            }
-        }
+            => this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.UserTabId, string.Empty, "userId=PROFILEUSER");
 
         protected bool DisablePrivateMessage
-        {
-            get
-            {
-                return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
-                    && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
-            }
-        }
+            => this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
 
-        protected PortalSettings PortalSettings
-        {
-            get { return PortalController.Instance.GetCurrentPortalSettings(); }
-        }
+        protected PortalSettings PortalSettings => PortalSettings.Current;
 
-        protected UserInfo UserInfo
-        {
-            get { return UserController.Instance.GetCurrentUserInfo(); }
-        }
+        protected UserInfo UserInfo => UserController.Instance.GetCurrentUserInfo();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
-            JavaScript.RequestRegistration(CommonJs.Knockout);
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.jQueryFileUpload);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.Knockout);
 
-            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/MemberDirectory/Scripts/MemberDirectory.js");
+            this.clientResourceController.RegisterScript("~/DesktopModules/MemberDirectory/Scripts/MemberDirectory.js");
             this.AddIe7StyleSheet();
 
             this.searchBar.Visible = this.DisplaySearch != "None";
@@ -166,17 +146,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             base.OnInit(e);
         }
 
-        private void AddIe7StyleSheet()
-        {
-            var browser = this.Request.Browser;
-            if (browser.Type == "IE" || browser.MajorVersion < 8)
-            {
-                const string cssLink = @"<link href=""/DesktopModules/MemberDirectory/ie-member-directory.css"" rel=""stylesheet"" type=""text/css"" />";
-                this.Page.Header.Controls.Add(new LiteralControl(cssLink));
-            }
-        }
-
-        private string GetSetting(Hashtable settings, string key, string defaultValue)
+        private static string GetSetting(Hashtable settings, string key, string defaultValue)
         {
             string setting = defaultValue;
             if (settings[key] != null)
@@ -187,7 +157,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             return setting;
         }
 
-        private int GetSettingAsInt32(Hashtable settings, string key, int defaultValue)
+        private static int GetSettingAsInt32(Hashtable settings, string key, int defaultValue)
         {
             int setting = defaultValue;
             if (settings[key] != null)
@@ -196,6 +166,16 @@ namespace DotNetNuke.Modules.MemberDirectory
             }
 
             return setting;
+        }
+
+        private void AddIe7StyleSheet()
+        {
+            var browser = this.Request.Browser;
+            if (browser.Type == "IE" || browser.MajorVersion < 8)
+            {
+                const string cssLink = """<link href="/DesktopModules/MemberDirectory/ie-member-directory.css" rel="stylesheet" type="text/css" />""";
+                this.Page.Header.Controls.Add(new LiteralControl(cssLink));
+            }
         }
     }
 }

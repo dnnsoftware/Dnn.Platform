@@ -4,10 +4,11 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
+    using System;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    /// <summary>    Emit a fallback block for a script in the same part of the page.</summary>
+    /// <summary>Emit a fallback block for a script in the same part of the page.</summary>
     public class DnnJsIncludeFallback : WebControl
     {
         /// <summary>Initializes a new instance of the <see cref="DnnJsIncludeFallback"/> class.</summary>
@@ -19,11 +20,13 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.FileName = fileName;
         }
 
+        /// <summary>Gets or sets the object name.</summary>
         public string ObjectName { get; set; }
 
+        /// <summary>Gets or sets the file name.</summary>
         public string FileName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RenderControl(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text/javascript");
@@ -32,15 +35,15 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             if (this.ObjectName.Contains("."))
             {
                 // generate function check
-                writer.Write("if (typeof " + this.ObjectName + " != 'function') {");
+                writer.Write($"if (typeof {this.ObjectName} != 'function') {{");
             }
             else
             {
                 // generate object check
-                writer.Write("if (typeof " + this.ObjectName + " == 'undefined') {");
+                writer.Write($"if (typeof {this.ObjectName} == 'undefined') {{");
             }
 
-            writer.Write("document.write('<script src=\"" + this.FileName + "\" type=\"text/javascript\"></' + 'script>');");
+            writer.Write($"document.write('<script src=\"{this.FileName}\" type=\"text/javascript\"></' + 'script>');");
             writer.Write("}");
             writer.RenderEndTag();
         }

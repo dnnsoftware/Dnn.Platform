@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 /// <summary>Register <see cref="IConnector"/> types in the dependency injection container.</summary>
 public sealed class Startup : IDnnStartup
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddTransient<IConnectionsManager, ConnectionsManager>();

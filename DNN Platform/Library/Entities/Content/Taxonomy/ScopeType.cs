@@ -30,7 +30,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public int ScopeTypeId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID
         {
             get
@@ -44,14 +44,14 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
             this.ScopeTypeId = Null.SetNullInteger(dr["ScopeTypeID"]);
             this.ScopeType = Null.SetNullString(dr["ScopeType"]);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ToString()
         {
             return this.ScopeType;
