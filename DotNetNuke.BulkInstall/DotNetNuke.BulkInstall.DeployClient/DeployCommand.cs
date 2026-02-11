@@ -24,7 +24,7 @@ public class DeployCommand : AsyncCommand<DeployInput>
     }
 
     /// <inheritdoc/>
-    public override async Task<int> ExecuteAsync(CommandContext context, DeployInput input)
+    public override async Task<int> ExecuteAsync(CommandContext context, DeployInput input, CancellationToken cancellationToken)
     {
         var exitCode = await this.deployer.StartAsync(input);
         return (int)exitCode;

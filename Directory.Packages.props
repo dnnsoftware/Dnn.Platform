@@ -18,7 +18,7 @@
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="Dnn.CakeUtils" Version="2.1.0" />
     <PackageVersion Include="Dnn.ClientDependency" Version="1.10.0" />
-    <PackageVersion Include="FakeItEasy" Version="8.1.0" />
+    <PackageVersion Include="FakeItEasy" Version="9.0.1" />
     <PackageVersion Include="Google.Apis.Auth" Version="1.69.0" />
     <PackageVersion Include="HtmlSanitizer" Version="9.1.878-beta" />
     <PackageVersion Include="IsCI" Version="1.0.0" />
@@ -33,14 +33,13 @@
     <PackageVersion Include="Microsoft.AspNet.WebPages" Version="3.3.0" />
     <PackageVersion Include="Microsoft.AspNet.WebPages.WebData" Version="3.3.0" />
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
-    
     <!-- NOTE: this version also needs to be managed in DotNetNuke.Internal.SourceGenerators.csproj -->
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.1.3" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.FileSystemGlobbing" Version="5.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.3" />
     <PackageVersion Include="Microsoft.Identity.Client" Version="4.68.0" />
     <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.4.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
@@ -59,22 +58,22 @@
     <PackageVersion Include="Portable.BouncyCastle" Version="1.9.0" />
     <PackageVersion Include="QuickIO.NET" Version="2.6.2" />
     <PackageVersion Include="SharpZipLib" Version="1.4.2" />
-    <PackageVersion Include="Shouldly" Version="4.2.1" />
-    <PackageVersion Include="Spectre.Console" Version="0.48.0" />
-    <PackageVersion Include="Spectre.Console.Analyzer" Version="0.48.0" />
-    <PackageVersion Include="Spectre.Console.Cli" Version="0.48.0" />
-    <PackageVersion Include="Spectre.Console.Registrars.Microsoft-Di" Version="0.4.0" />
-    <PackageVersion Include="Spectre.Console.Testing" Version="0.48.0" />
+    <PackageVersion Include="Shouldly" Version="4.3.0" />
+    <PackageVersion Include="Spectre.Console" Version="0.54.0" />
+    <PackageVersion Include="Spectre.Console.Analyzer" Version="1.0.0" />
+    <PackageVersion Include="Spectre.Console.Cli" Version="0.53.1" />
+    <PackageVersion Include="Spectre.Console.Registrars.Microsoft-Di" Version="0.6.0" />
+    <PackageVersion Include="Spectre.Console.Testing" Version="0.54.0" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
     <PackageVersion Include="System.Collections.Immutable" Version="9.0.2" />
-    <PackageVersion Include="System.IO.Abstractions" Version="20.0.4" />
+    <PackageVersion Include="System.IO.Abstractions" Version="22.1.0" />
     <PackageVersion Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
     <PackageVersion Include="TestStack.Dossier" Version="4.0.0" />
     <PackageVersion Include="Verify.NUnit" Version="31.8.0" />
     <PackageVersion Include="Verify.SourceGenerators" Version="2.5.0" />
     <PackageVersion Include="WebFormsMvp" Version="1.4.5" />
-    <PackageVersion Include="xunit" Version="2.6.5" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.6" />
+    <PackageVersion Include="xunit.v3" Version="3.2.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
   </ItemGroup>
   <ItemGroup>
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />

@@ -15,7 +15,6 @@
 		<DocumentationFile>bin/$(Configuration)/DotNetNuke.BulkInstall.DeployClient.xml</DocumentationFile>
 		<NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -29,25 +28,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="IsCI" Version="1.0.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+		<PackageReference Include="IsCI" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" VersionOverride ="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride ="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+		<PackageReference Include="Spectre.Console" />
+		<PackageReference Include="Spectre.Console.Analyzer">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Spectre.Console" Version="0.48.0" />
-		<PackageReference Include="Spectre.Console.Analyzer" Version="0.48.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Spectre.Console.Cli" Version="0.48.0" />
-		<PackageReference Include="Spectre.Console.Registrars.Microsoft-Di" Version="0.4.0" />
-		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+		<PackageReference Include="Spectre.Console.Cli" />
+		<PackageReference Include="Spectre.Console.Registrars.Microsoft-Di" />
+		<PackageReference Include="StyleCop.Analyzers">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.IO.Abstractions" Version="20.0.4" />
+		<PackageReference Include="System.IO.Abstractions" />
 	</ItemGroup>
 
   <ItemGroup>

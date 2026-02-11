@@ -80,7 +80,7 @@ public class InstallerTests
         var innerContent = formContent.ShouldHaveSingleItem();
         var disposition = innerContent.Headers.ContentDisposition.ShouldNotBeNull();
         disposition.FileName.ShouldBe("Jamestown_install_5.5.7.zip");
-        (await innerContent.ReadAsStringAsync()).ShouldBe("XYZ");
+        (await innerContent.ReadAsStringAsync(TestContext.Current.CancellationToken)).ShouldBe("XYZ");
     }
 
     [Theory]
