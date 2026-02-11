@@ -1,6 +1,7 @@
 ﻿Imports System
 
 Namespace DotNetNuke.UI.WebControls
+    <AttributeUsage(AttributeTargets.Property)>
     Public Class ClientPropertyNameAttribute
         Inherits Attribute
         ' Methods
