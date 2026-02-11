@@ -109,7 +109,8 @@ Namespace DotNetNuke.UI.WebControls
             End If
         End Sub
 
-        Private Shared Function FindForm(ByVal oCtl As Control) As HtmlForm
+        Private Shared Function FindForm(ByVal tabStrip As DNNTabStrip) As HtmlForm
+            Dim oCtl As Control = tabStrip
             Do While True
                 Dim form As HtmlForm
                 If TypeOf oCtl Is HtmlForm Then
