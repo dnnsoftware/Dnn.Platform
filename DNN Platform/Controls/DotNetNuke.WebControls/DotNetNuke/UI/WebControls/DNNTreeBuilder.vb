@@ -7,7 +7,7 @@ Namespace DotNetNuke.UI.WebControls
         Inherits ControlBuilder
         ' Methods
         Public Overrides Function GetChildControlType(ByVal tagName As String, ByVal attribs As IDictionary) As Type
-            Return If(Not tagName.ToUpper.EndsWith("TreeNode"), Nothing, GetType(TreeNode))
+            Return If(Not tagName.EndsWith("TreeNode", StringComparison.OrdinalIgnoreCase), Nothing, GetType(TreeNode))
         End Function
 
     End Class

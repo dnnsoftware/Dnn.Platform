@@ -219,9 +219,9 @@ Namespace DotNetNuke.UI.WebControls
                             Dim str As String = ""
                             Select Case Me.IDToken
                                 Case eIDTokenChar.Brackets
-                                    Dim length As Integer = expression.LastIndexOf(" [")
+                                    Dim length As Integer = expression.LastIndexOf(" [", StringComparison.Ordinal)
                                     Dim startIndex As Integer = (length + " [".Length)
-                                    Dim num2 As Integer = expression.LastIndexOf("]")
+                                    Dim num2 As Integer = expression.LastIndexOf("]", StringComparison.Ordinal)
                                     If (If(((length <= -1) OrElse (num2 <= startIndex)), 0, 1) <> 0) Then
                                         strText = expression.Substring(0, length)
                                         str = expression.Substring(startIndex, (num2 - startIndex))

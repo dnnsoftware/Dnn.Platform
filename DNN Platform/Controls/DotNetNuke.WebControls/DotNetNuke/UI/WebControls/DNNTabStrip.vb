@@ -300,7 +300,7 @@ Namespace DotNetNuke.UI.WebControls
                     Case eTabRenderMode.CallBack
                         If ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.XMLHTTP) Then
                             Dim str As String = ClientAPI.GetCallbackEventReference(Me, "'[TABID]'", "this.callBackSuccess", "this", "this.callBackFail", "this.callBackStatus", "[POST]", ClientAPICallBackResponse.CallBackTypeCode.Simple)
-                            Dim length As Integer = ((str.IndexOf("'[POST]'") + "'[POST]'".Length) + 1)
+                            Dim length As Integer = ((str.IndexOf("'[POST]'", StringComparison.Ordinal) + "'[POST]'".Length) + 1)
                             str = (str.Substring(0, length) & "'[CBTYPE]'" & str.Substring((length + 1)))
                             hashtable2.Add("callback", str)
                         ElseIf Me.IsDownLevel Then

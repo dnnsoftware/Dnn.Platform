@@ -145,9 +145,9 @@ Namespace DotNetNuke.UI.WebControls
                             Exit Do
                         End If
                         Dim current As NodeImage = DirectCast(enumerator.Current, NodeImage)
-                        If (current.ImageUrl.IndexOf("/") > -1) Then
-                            Dim str4 As String = current.ImageUrl.Substring(0, (current.ImageUrl.LastIndexOf("/") + 1))
-                            Dim str3 As String = current.ImageUrl.Substring((current.ImageUrl.LastIndexOf("/") + 1))
+                        If (current.ImageUrl.IndexOf("/", StringComparison.Ordinal) > -1) Then
+                            Dim str4 As String = current.ImageUrl.Substring(0, (current.ImageUrl.LastIndexOf("/", StringComparison.Ordinal) + 1))
+                            Dim str3 As String = current.ImageUrl.Substring((current.ImageUrl.LastIndexOf("/", StringComparison.Ordinal) + 1))
                             If Not list.ContainsValue(str4) Then
                                 list.Add(list.Count, str4)
                             End If

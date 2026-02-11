@@ -110,14 +110,14 @@ Namespace DotNetNuke.UI.WebControls
                 }
                 Dim expression As String = ""
                 If (Strings.Len(Me._Node.JSFunction) > 0) Then
-                    If Not Me._Node.JSFunction.EndsWith(";") Then
+                    If Not Me._Node.JSFunction.EndsWith(";", StringComparison.Ordinal) Then
                         Dim node As TreeNode = Me._Node
                         node.JSFunction = (node.JSFunction & ";")
                     End If
                     expression = (expression & Me._Node.JSFunction)
                 End If
                 If (Strings.Len(Me._Node.DNNTree.JSFunction) > 0) Then
-                    If Not Me._Node.DNNTree.JSFunction.EndsWith(";") Then
+                    If Not Me._Node.DNNTree.JSFunction.EndsWith(";", StringComparison.Ordinal) Then
                         Dim dNNTree As DnnTree = Me._Node.DNNTree
                         dNNTree.JSFunction = (dNNTree.JSFunction & ";")
                     End If
@@ -159,13 +159,13 @@ Namespace DotNetNuke.UI.WebControls
             Dim expression As String = ""
             link.Text = Me._Node.Text
             If (Strings.Len(Me._Node.JSFunction) > 0) Then
-                If Not Me._Node.JSFunction.EndsWith(";") Then
+                If Not Me._Node.JSFunction.EndsWith(";", StringComparison.Ordinal) Then
                     Dim node As TreeNode = Me._Node
                     node.JSFunction = (node.JSFunction & ";")
                 End If
                 expression = (expression & Me._Node.JSFunction)
             ElseIf (Strings.Len(Me._Node.DNNTree.JSFunction) > 0) Then
-                If Not Me._Node.DNNTree.JSFunction.EndsWith(";") Then
+                If Not Me._Node.DNNTree.JSFunction.EndsWith(";", StringComparison.Ordinal) Then
                     Dim dNNTree As DnnTree = Me._Node.DNNTree
                     dNNTree.JSFunction = (dNNTree.JSFunction & ";")
                 End If

@@ -17,7 +17,7 @@ Namespace DotNetNuke.UI.WebControls
     Public NotInheritable Class WebControls
         ' Methods
         Private Shared Function FixJs(ByVal js As String) As String
-            Return If((String.IsNullOrEmpty(js) OrElse js.EndsWith(";")), js, (js & ";"))
+            Return If((String.IsNullOrEmpty(js) OrElse js.EndsWith(";", StringComparison.Ordinal)), js, (js & ";"))
         End Function
 
         Public Shared Function GetNodeJS(ByVal NavControl As Control, ByVal Node As DNNNode, ByVal DefaultJS As String, ByVal Target As String, ByVal NoneDoesPostBack As Boolean) As String
@@ -126,8 +126,8 @@ Namespace DotNetNuke.UI.WebControls
                         str3 = absoluteUri.Substring(0, (absoluteUri.Length - ThePage.Request.Url.PathAndQuery.Length))
                         Exit Select
                     Case UrlFormatType.Relative
-                        absoluteUri = ThePage.Request.Path.Substring((ThePage.Request.Path.LastIndexOf("/") + 1))
-                        str3 = ThePage.Request.Url.AbsoluteUri.Substring(0, ThePage.Request.Url.AbsoluteUri.IndexOf(absoluteUri))
+                        absoluteUri = ThePage.Request.Path.Substring((ThePage.Request.Path.LastIndexOf("/", StringComparison.Ordinal) + 1))
+                        str3 = ThePage.Request.Url.AbsoluteUri.Substring(0, ThePage.Request.Url.AbsoluteUri.IndexOf(absoluteUri, StringComparison.Ordinal))
                         Exit Select
                     Case Else
                         Exit Select
