@@ -2,6 +2,7 @@
 Imports Microsoft.VisualBasic
 Imports System
 Imports System.Collections
+Imports System.Globalization
 Imports System.Web.UI
 Imports System.Web.UI.WebControls
 
@@ -161,7 +162,7 @@ Namespace DotNetNuke.UI.WebControls
             If (If((Me.ForceFullMenu OrElse (Me.Orientation = Orientation.Vertical)), 1, 0) = 0) Then
                 writer.RenderBeginTag(HtmlTextWriterTag.Span)
             Else
-                writer.AddStyleAttribute("padding-left", ((Me.m_Node.Level * 20).ToString & "px"))
+                writer.AddStyleAttribute("padding-left", ((Me.m_Node.Level * 20).ToString(CultureInfo.InvariantCulture) & "px"))
                 writer.RenderBeginTag(HtmlTextWriterTag.Div)
             End If
         End Sub

@@ -1,6 +1,7 @@
 ﻿Imports Microsoft.VisualBasic
 Imports System
 Imports System.Collections
+Imports System.Globalization
 Imports System.Reflection
 Imports System.Text
 
@@ -25,7 +26,7 @@ Namespace DotNetNuke.UI.WebControls
         Public Sub AddAt(ByVal index As Integer, ByVal row As DNNTab)
             Me.owner.Controls.AddAt(index, row)
             If (Strings.Len(row.ID) = 0) Then
-                row.ID = Me.owner.Controls.Count.ToString
+                row.ID = Me.owner.Controls.Count.ToString(CultureInfo.InvariantCulture)
             End If
         End Sub
 

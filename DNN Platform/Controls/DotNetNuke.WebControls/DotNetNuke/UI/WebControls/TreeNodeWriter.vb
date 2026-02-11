@@ -2,6 +2,7 @@
 Imports Microsoft.VisualBasic
 Imports System
 Imports System.Collections
+Imports System.Globalization
 Imports System.Web.UI
 Imports System.Web.UI.WebControls
 
@@ -212,7 +213,7 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Protected Sub RenderSpacer(ByVal writer As HtmlTextWriter, ByVal Width As Integer)
-            writer.AddStyleAttribute("width", (Width.ToString & "px"))
+            writer.AddStyleAttribute("width", (Width.ToString(CultureInfo.InvariantCulture) & "px"))
             writer.AddStyleAttribute("height", "1px")
             writer.AddAttribute("src", (Me._Node.DNNTree.SystemImagesPath & "spacer.gif"))
             writer.RenderBeginTag(HtmlTextWriterTag.Img)

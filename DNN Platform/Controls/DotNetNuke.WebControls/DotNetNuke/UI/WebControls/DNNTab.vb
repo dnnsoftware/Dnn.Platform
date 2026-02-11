@@ -6,6 +6,7 @@ Imports System.Collections
 Imports System.Collections.Generic
 Imports System.ComponentModel
 Imports System.Diagnostics
+Imports System.Globalization
 Imports System.Runtime.CompilerServices
 Imports System.Web.UI
 Imports System.Web.UI.HtmlControls
@@ -119,7 +120,7 @@ Namespace DotNetNuke.UI.WebControls
                     End Select
                 End If
                 If (Me.CallBackType <> Me.ParentControl.CallBackType) Then
-                    hashtable2.Add("cbtype", CInt(Me.CallBackType).ToString)
+                    hashtable2.Add("cbtype", CInt(Me.CallBackType).ToString(CultureInfo.InvariantCulture))
                 End If
             End If
             Return hashtable2

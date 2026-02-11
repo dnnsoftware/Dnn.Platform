@@ -1,6 +1,7 @@
 ﻿Imports Microsoft.VisualBasic.CompilerServices
 Imports System
 Imports System.Collections
+Imports System.Globalization
 Imports System.Reflection
 Imports System.Text
 
@@ -72,7 +73,7 @@ Namespace DotNetNuke.UI.WebControls
                     Else
                         Dim num As Integer
                         num += 1
-                        str = ("__" & num.ToString)
+                        str = ("__" & num.ToString(CultureInfo.InvariantCulture))
                     End If
                     builder.Append((str & ":" & current.ToJSON))
                 Loop

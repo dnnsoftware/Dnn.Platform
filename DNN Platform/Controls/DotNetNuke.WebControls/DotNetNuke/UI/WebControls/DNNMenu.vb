@@ -9,6 +9,7 @@ Imports System.Collections.Generic
 Imports System.Collections.Specialized
 Imports System.ComponentModel
 Imports System.Diagnostics
+Imports System.Globalization
 Imports System.Runtime.CompilerServices
 Imports System.Web
 Imports System.Web.UI
@@ -151,7 +152,7 @@ Namespace DotNetNuke.UI.WebControls
                             If Not list.ContainsValue(str4) Then
                                 list.Add(list.Count, str4)
                             End If
-                            current.ImageUrl = $"[{list.IndexOfValue(str4).ToString}]{str3}"
+                            current.ImageUrl = $"[{list.IndexOfValue(str4).ToString(CultureInfo.InvariantCulture)}]{str3}"
                         End If
                         expression = (expression & Conversions.ToString(Interaction.IIf((Strings.Len(expression) > 0), ",", "")) & current.ImageUrl)
                     Loop
