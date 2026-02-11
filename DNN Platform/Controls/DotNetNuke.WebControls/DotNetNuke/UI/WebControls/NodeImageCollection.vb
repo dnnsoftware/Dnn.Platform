@@ -172,7 +172,9 @@ Namespace DotNetNuke.UI.WebControls
 
         Public Function ToArray() As NodeImage()
             Dim imageArray As NodeImage() = Nothing
+#Disable Warning CA1861
             imageArray = DirectCast(Utils.CopyArray(DirectCast(imageArray, Array), New NodeImage(((Me.Count - 1) + 1)  - 1) {}), NodeImage())
+#Enable Warning CA1861
             Me.CopyTo(imageArray, 0)
             Return imageArray
         End Function
