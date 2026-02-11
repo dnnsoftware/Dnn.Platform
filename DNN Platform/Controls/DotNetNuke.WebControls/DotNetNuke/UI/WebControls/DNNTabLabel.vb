@@ -110,7 +110,7 @@ Namespace DotNetNuke.UI.WebControls
 
 
         ' Fields
-        Private m_bMarked As Boolean = False
+        Private m_bMarked As Boolean
         Private m_oState As StateBag
     End Class
 End Namespace
