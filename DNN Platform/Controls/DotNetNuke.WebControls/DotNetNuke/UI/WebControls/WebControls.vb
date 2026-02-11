@@ -1,5 +1,4 @@
 ﻿Imports DotNetNuke.UI.Utilities
-Imports DotNetNuke.Web.Client
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports Microsoft.VisualBasic
 Imports Microsoft.VisualBasic.CompilerServices
@@ -9,6 +8,9 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Web
 Imports System.Web.UI
+Imports DotNetNuke.Abstractions.ClientResources
+Imports DotNetNuke.Internal.SourceGenerators
+Imports DotNetNuke.Web.Client.ResourceManager
 
 Namespace DotNetNuke.UI.WebControls
     <StandardModule> _
@@ -55,27 +57,59 @@ Namespace DotNetNuke.UI.WebControls
             Return Object.ReferenceEquals(HttpContext.Current, Nothing)
         End Function
 
+        
+        <Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")>
         Public Shared Sub RegisterClientScriptBlock(ByVal ThePage As Page, ByVal Key As String)
             If ClientAPI.UseExternalScripts Then
+#Disable Warning BC40000
                 ClientResourceManager.RegisterScript(ThePage, (ClientAPI.ScriptPath & Key))
+#Enable Warning BC40000
             Else
                 MSAJAX.RegisterClientScript(ThePage, Key, "DotNetNuke.WebControls")
+            End If
+        End Sub
+
+        Public Shared Sub RegisterClientScriptBlock(clientResourceController As IClientResourceController, thePage As Page, key As String)
+            If ClientAPI.UseExternalScripts Then
+                clientResourceController.CreateScript(ClientAPI.ScriptPath & key).Register()
+            Else
+                MSAJAX.RegisterClientScript(thePage, key, "DotNetNuke.WebControls")
             End If
         End Sub
 
         <CLSCompliant(false)>
-        Public Shared Sub RegisterClientScriptBlock(ByVal ThePage As Page, ByVal Key As String, ByVal priority As FileOrder.Js)
+        <Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")>
+        Public Shared Sub RegisterClientScriptBlock(ByVal ThePage As Page, ByVal Key As String, ByVal priority As DotNetNuke.Web.Client.FileOrder.Js)
             If ClientAPI.UseExternalScripts Then
+#Disable Warning BC40000
                 ClientResourceManager.RegisterScript(ThePage, (ClientAPI.ScriptPath & Key), priority)
+#Enable Warning BC40000
             Else
                 MSAJAX.RegisterClientScript(ThePage, Key, "DotNetNuke.WebControls")
             End If
         End Sub
 
+        <CLSCompliant(False)>
+        Public Shared Sub RegisterClientScriptBlock(clientResourceController As IClientResourceController, thePage As Page, key As String, priority As DotNetNuke.Web.Client.FileOrder.Js)
+            If ClientAPI.UseExternalScripts Then
+                clientResourceController.CreateScript(ClientAPI.ScriptPath & Key).SetPriority(priority).Register()
+            Else
+                MSAJAX.RegisterClientScript(ThePage, Key, "DotNetNuke.WebControls")
+            End If
+        End Sub
+
+        <Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")>
         Public Shared Sub RegisterSubmitComponent(ByVal ThePage As Page)
             If Not ThePage.ClientScript.IsOnSubmitStatementRegistered(ThePage.GetType, "dnn.controls.submitComp") Then
-                WebControls.RegisterClientScriptBlock(ThePage, "dnn.controls.js", FileOrder.Js.DnnControlsLabelEdit)
+                WebControls.RegisterClientScriptBlock(ThePage, "dnn.controls.js", DotNetNuke.Web.Client.FileOrder.Js.DnnControlsLabelEdit)
                 ThePage.ClientScript.RegisterOnSubmitStatement(ThePage.GetType, "dnn.controls.submitComp", "dnn.controls.submitComp.onsubmit()")
+            End If
+        End Sub
+
+        Public Shared Sub RegisterSubmitComponent(clientResourceController As IClientResourceController, thePage As Page)
+            If Not ThePage.ClientScript.IsOnSubmitStatementRegistered(thePage.GetType, "dnn.controls.submitComp") Then
+                WebControls.RegisterClientScriptBlock(clientResourceController, thePage, "dnn.controls.js", DotNetNuke.Web.Client.FileOrder.Js.DnnControlsLabelEdit)
+                ThePage.ClientScript.RegisterOnSubmitStatement(thePage.GetType, "dnn.controls.submitComp", "dnn.controls.submitComp.onsubmit()")
             End If
         End Sub
 

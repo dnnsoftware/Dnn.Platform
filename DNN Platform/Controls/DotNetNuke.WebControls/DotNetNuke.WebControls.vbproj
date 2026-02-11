@@ -12,6 +12,7 @@
 		<AnalysisLevel>latest</AnalysisLevel>
 		<AnalysisMode>Recommended</AnalysisMode>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>BC40000</WarningsNotAsErrors>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>

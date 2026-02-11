@@ -29,7 +29,7 @@ Namespace DotNetNuke.UI.WebControls
 
         Public Sub New(ByVal RootNamespace As String, ByVal JSONDict As Dictionary(Of String, Object))
             MyBase.New(RootNamespace)
-            Me.LoadJSON(DirectCast(JSONDict("nodes"), ArrayList))
+            Me.LoadJSON(DirectCast(JSONDict("nodes"), IEnumerable))
         End Sub
 
         Public Sub New(ByVal strXML As String, ByVal strXSLFile As String)
@@ -109,12 +109,15 @@ Namespace DotNetNuke.UI.WebControls
         Private Function DoTransform(ByVal XML As String, ByVal XSL As String, ByVal Params As XsltArgumentList) As String
             Dim str As String
             Try 
-                Dim transform As New XslTransform
+                Dim transform As New XslCompiledTransform
                 transform.Load(XSL)
                 Dim sb As New StringBuilder
-                Dim writer As New StringWriter(sb, Nothing)
-                transform.Transform(DirectCast(New XPathDocument(New XmlTextReader(XML, XmlNodeType.Document, Nothing)), IXPathNavigable), Params, DirectCast(writer, TextWriter), New XmlUrlResolver)
-                writer.Close
+                Using writer As New StringWriter(sb, Nothing)
+                Using xmlWriter As XmlWriter = XmlWriter.Create(writer)
+                    transform.Transform(New XPathDocument(New XmlTextReader(XML, XmlNodeType.Document, Nothing)), Params, xmlWriter, New XmlUrlResolver)
+                    writer.Close
+                End Using
+                End Using
                 str = sb.ToString
             Catch exception1 As Exception
                 Dim ex As Exception = exception1

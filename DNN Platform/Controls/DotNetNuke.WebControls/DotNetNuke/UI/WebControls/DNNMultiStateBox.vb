@@ -1,6 +1,5 @@
 ﻿Imports DotNetNuke.UI.Design.WebControls
 Imports DotNetNuke.UI.Utilities
-Imports DotNetNuke.Web.Client
 Imports Microsoft.VisualBasic
 Imports Microsoft.VisualBasic.CompilerServices
 Imports System
@@ -12,6 +11,7 @@ Imports System.Diagnostics
 Imports System.Web.UI
 Imports System.Web.UI.Design
 Imports System.Web.UI.WebControls
+Imports DotNetNuke.Abstractions.ClientResources
 
 Namespace DotNetNuke.UI.WebControls
     <PersistChildren(False), ParseChildren(True, "States"), ToolboxData("<{0}:DNNMultiStateBox runat=server></{0}:DNNMultiStateBox>"), Designer(GetType(DNNMultiStateBoxDesigner))> _
@@ -85,7 +85,7 @@ Namespace DotNetNuke.UI.WebControls
 
         Public Sub RegisterClientScript()
             ClientAPI.RegisterClientReference(Me.Page, ClientAPI.ClientNamespaceReferences.dnn_dom)
-            WebControls.RegisterClientScriptBlock(Me.Page, "dnn.controls.js", FileOrder.Js.DnnControlsLabelEdit)
+            WebControls.RegisterClientScriptBlock(Me.Page, "dnn.controls.js", DotNetNuke.Web.Client.FileOrder.Js.DnnControlsLabelEdit)
             WebControls.RegisterClientScriptBlock(Me.Page, "dnn.controls.dnnmultistatebox.js")
         End Sub
 
