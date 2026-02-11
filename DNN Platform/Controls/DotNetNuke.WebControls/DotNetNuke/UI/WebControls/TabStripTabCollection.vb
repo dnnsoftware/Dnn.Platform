@@ -31,7 +31,7 @@ Namespace DotNetNuke.UI.WebControls
 
         Public Sub AddRange(ByVal rows As DNNTab())
             If (rows Is Nothing) Then
-                Throw New ArgumentNullException("tabs")
+                Throw New ArgumentNullException(NameOf(rows))
             End If
             Dim tab As DNNTab
             For Each tab In rows

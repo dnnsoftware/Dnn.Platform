@@ -14,7 +14,7 @@ Namespace DotNetNuke.UI.WebControls
         Public Sub New(ByVal NewImageUrl As String)
             Me._marked = False
             If Object.ReferenceEquals(Me.ImageUrl, Nothing) Then
-                Throw New ArgumentNullException
+                Throw New ArgumentNullException(NameOf(NewImageUrl))
             End If
             DirectCast(Me, IStateManager).TrackViewState
             Me.ImageUrl = NewImageUrl

@@ -8,6 +8,7 @@ Imports System.Xml
 
 Namespace DotNetNuke.UI.WebControls
     Public Class DNNNode
+
         ' Methods
         Public Sub New()
             Me.New(New XmlDocument().CreateNode(XmlNodeType.Element, "n", ""))
@@ -24,8 +25,11 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Public Sub New(ByVal NodeText As String, ByVal navigateUrl As String)
-            If ((NodeText Is Nothing) OrElse (navigateUrl Is Nothing)) Then
-                Throw New ArgumentNullException
+            If (NodeText Is Nothing) Then
+                Throw New ArgumentNullException(NameOf(NodeText))
+            End If
+            If (navigateUrl Is Nothing) Then
+                Throw New ArgumentNullException(NameOf(navigateUrl))
             End If
             Me.Text = NodeText
             navigateUrl = navigateUrl

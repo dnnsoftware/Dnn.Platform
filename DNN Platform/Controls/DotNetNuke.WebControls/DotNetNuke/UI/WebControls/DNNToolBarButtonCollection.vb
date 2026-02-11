@@ -26,7 +26,7 @@ Namespace DotNetNuke.UI.WebControls
 
         Public Sub AddRange(ByVal rows As DNNToolBarButton())
             If (rows Is Nothing) Then
-                Throw New ArgumentNullException("tabs")
+                Throw New ArgumentNullException(NameOf(rows))
             End If
             Dim button As DNNToolBarButton
             For Each button In rows
