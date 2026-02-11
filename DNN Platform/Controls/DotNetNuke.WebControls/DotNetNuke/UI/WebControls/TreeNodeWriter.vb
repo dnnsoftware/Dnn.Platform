@@ -6,7 +6,7 @@ Imports System.Web.UI
 Imports System.Web.UI.WebControls
 
 Namespace DotNetNuke.UI.WebControls
-    Friend Class TreeNodeWriter
+    Friend NotInheritable Class TreeNodeWriter
         Implements ITreeNodeWriter
         ' Methods
         Private Function GetNodeCss(ByVal oNode As TreeNode) As String

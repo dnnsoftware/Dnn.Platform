@@ -3,7 +3,7 @@ Imports System.Collections
 Imports System.Xml
 
 Namespace DotNetNuke.UI.WebControls
-    Friend Class DNNNodeEnumerator
+    Friend NotInheritable Class DNNNodeEnumerator
         Implements IEnumerator
         ' Methods
         Public Sub New(ByVal objRoot As XmlNode)

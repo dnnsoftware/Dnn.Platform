@@ -6,7 +6,7 @@ Imports System.Web.UI
 Imports System.Web.UI.WebControls
 
 Namespace DotNetNuke.UI.WebControls
-    Friend Class DNNTreeWriter
+    Friend NotInheritable Class DNNTreeWriter
         Inherits WebControl
         Implements IDNNTreeWriter
         ' Methods

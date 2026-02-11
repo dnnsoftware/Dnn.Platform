@@ -3,7 +3,7 @@ Imports System.Collections
 Imports System.Xml
 
 Namespace DotNetNuke.UI.WebControls
-    Friend Class TreeNodeEnumerator
+    Friend NotInheritable Class TreeNodeEnumerator
         Implements IEnumerator
         ' Methods
         Public Sub New(ByVal objRoot As XmlNode, ByVal objControl As DnnTree)

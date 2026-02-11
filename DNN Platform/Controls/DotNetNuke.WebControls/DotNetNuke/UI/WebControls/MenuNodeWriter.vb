@@ -6,7 +6,7 @@ Imports System.Web.UI
 Imports System.Web.UI.WebControls
 
 Namespace DotNetNuke.UI.WebControls
-    Friend Class MenuNodeWriter
+    Friend NotInheritable Class MenuNodeWriter
         Implements IMenuNodeWriter
         ' Methods
         Public Sub New()
