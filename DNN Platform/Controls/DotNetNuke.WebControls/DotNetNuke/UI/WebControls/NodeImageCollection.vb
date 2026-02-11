@@ -192,15 +192,23 @@ Namespace DotNetNuke.UI.WebControls
             End Set
         End Property
 
-        Public ReadOnly Property IsTrackingViewState As Boolean Implements IStateManager.IsTrackingViewState
+        Public Property IsTrackingViewState As Boolean Implements IStateManager.IsTrackingViewState
             Get
+#Disable Warning BC40000
                 Return Me.m_isTrackingViewState
             End Get
+            Protected Set(value As Boolean)
+                Me.m_isTrackingViewState = value
+#Enable Warning BC40000
+            End Set
         End Property
 
 
         ' Fields
+#Disable Warning CA1051
+        <Obsolete("Deprecated in DotNetNuke 10.2.3. Please use IsTrackingViewState property. Scheduled removal in v12.0.0.")>
         Protected m_isTrackingViewState As Boolean
+#Enable Warning CA1051
     End Class
 End Namespace
 
