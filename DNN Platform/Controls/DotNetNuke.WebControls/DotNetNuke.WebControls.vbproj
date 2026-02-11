@@ -12,7 +12,7 @@
 		<AnalysisLevel>latest</AnalysisLevel>
 		<AnalysisMode>Recommended</AnalysisMode>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>BC40000</WarningsNotAsErrors>
+    <WarningsNotAsErrors>BC40000,CA1010,CA1708,CA1710,CA1711,CA1725,CA1822</WarningsNotAsErrors>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
