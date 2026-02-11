@@ -1,6 +1,7 @@
 ﻿Imports Microsoft.VisualBasic
 Imports System
 Imports System.Collections
+Imports System.IO
 Imports System.Xml
 
 Namespace DotNetNuke.UI.WebControls
@@ -39,9 +40,13 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Public Sub New(ByVal strXML As String, ByVal strXSLFile As String)
-            Me.InnerXMLDoc = New XmlDocument
+            Me.InnerXMLDoc = New XmlDocument With { .XmlResolver = Nothing }
             If (Strings.Len(strXSLFile) <= 0) Then
-                Me.InnerXMLDoc.LoadXml(strXML)
+                Using stringReader = New StringReader(strXML)
+                Using xmlReader As XmlReader = XmlReader.Create(stringReader, New XmlReaderSettings With { .XmlResolver = Nothing })
+                    Me.InnerXMLDoc.Load(xmlReader)
+                End Using
+                End Using
             End If
             Me.InnerXMLNode = Me.InnerXMLDoc.SelectSingleNode("//root")
         End Sub

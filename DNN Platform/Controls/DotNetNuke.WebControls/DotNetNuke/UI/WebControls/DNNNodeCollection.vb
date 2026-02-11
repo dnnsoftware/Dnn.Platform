@@ -114,8 +114,12 @@ Namespace DotNetNuke.UI.WebControls
                 Dim sb As New StringBuilder
                 Using writer As New StringWriter(sb, Nothing)
                 Using xmlWriter As XmlWriter = XmlWriter.Create(writer)
-                    transform.Transform(New XPathDocument(New XmlTextReader(XML, XmlNodeType.Document, Nothing)), Params, xmlWriter, New XmlUrlResolver)
+                Using reader As New StringReader(XML)
+                Using xmlReader As XmlReader = XmlReader.Create(reader, New XmlReaderSettings With { .XmlResolver = Nothing })
+                    transform.Transform(xmlReader, Params, xmlWriter, New XmlUrlResolver)
                     writer.Close
+                End Using
+                End Using
                 End Using
                 End Using
                 str = sb.ToString
