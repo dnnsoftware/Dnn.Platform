@@ -1,26 +1,19 @@
-﻿using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
-using Dnn.Modules.BulkInstall.Components.Logging;
-using Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters;
-using DotNetNuke.Web.Api;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Web.Http;
-using System.Web.Script.Serialization;
-
-namespace Dnn.Modules.BulkInstall.Components.WebAPI
+﻿namespace Dnn.Modules.BulkInstall.Components.WebAPI
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
     using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
     using Dnn.Modules.BulkInstall.Components.Logging;
+    using Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters;
+    using DotNetNuke.Web.Api;
 
-    //[RequireHost]
-    //[ValidateAntiForgeryToken]
-    //[InWhitelist]
-    [AllowAnonymous]
+    [RequireHost]
+    [ValidateAntiForgeryToken]
+    [InWhitelist]
     public class EventLogController : DnnApiController
     {
         [HttpGet]
@@ -41,14 +34,6 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
             int rowCount = EventLogManager.BrowseCount(pageIndex, pageSize, eventType, actualSeverity);
             int pageCount = (int)Math.Ceiling(rowCount / (double)pageSize);
 
-            // Start building meta.
-            Dictionary<string, dynamic> pagination = new Dictionary<string, dynamic>();
-
-            // Add basics.
-            pagination.Add("Records", rowCount);
-            pagination.Add("Pages", pageCount);
-            pagination.Add("CurrentPage", pageIndex);
-
             // Build navigation.
             Dictionary<string, string> navigation = new Dictionary<string, string>();
 
@@ -58,29 +43,29 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
             // Page size.
             if (pageSize != 30)
             {
-                fixedParams += string.Format("pageSize={0}", pageSize);
+                fixedParams += $"pageSize={pageSize}";
             }
 
             // Event type.
             if (eventType != null)
             {
-                fixedParams += string.Format("eventType={0}", eventType);
+                fixedParams += $"eventType={eventType}";
             }
 
             // Severity.
             if (severity != -1)
             {
-                fixedParams += string.Format("eventType={0}", severity);
+                fixedParams += $"eventType={severity}";
             }
 
             // Is there a next page?
             if (pageIndex < pageCount)
             {
-                string nextLink = string.Format("Browse?pageIndex={0}", pageIndex + 1);
+                string nextLink = $"Browse?pageIndex={pageIndex + 1}";
 
                 if (!string.IsNullOrEmpty(fixedParams))
                 {
-                    nextLink = string.Format("{0}&{1}", nextLink, fixedParams);
+                    nextLink = $"{nextLink}&{fixedParams}";
                 }
 
                 navigation.Add("Next", nextLink);
@@ -89,37 +74,24 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
             // Is there a previous page?
             if (pageIndex > 0)
             {
-                string prevLink = string.Format("Browse?pageIndex={0}", pageIndex - 1);
+                string prevLink = $"Browse?pageIndex={pageIndex - 1}";
 
                 if (!string.IsNullOrEmpty(fixedParams))
                 {
-                    prevLink = string.Format("{0}&{1}", prevLink, fixedParams);
+                    prevLink = $"{prevLink}&{fixedParams}";
                 }
 
                 navigation.Add("Previous", prevLink);
             }
 
-            // Add navigation.
-            pagination.Add("Navigation", navigation);
-
-            Dictionary<string, dynamic> payload = new Dictionary<string, dynamic>();
-
-            payload.Add("Data", eventLogs);
-            payload.Add("Pagination", pagination);
-
-            string json = JsonConvert.SerializeObject(payload);
-
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-
-            response.Content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            return response;
+            var pagination = new { Records = rowCount, Pages = pageCount, CurrentPage = pageIndex, Navigation = navigation, };
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Data = eventLogs, Pagination = pagination, });
         }
 
         [HttpGet]
         public HttpResponseMessage Count()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, EventLogManager.EventCount());
+            return this.Request.CreateResponse(HttpStatusCode.OK, EventLogManager.EventCount());
         }
 
         [HttpGet]
@@ -127,7 +99,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         {
             List<string> eventTypes = EventLogManager.GetEventTypes().ToList();
 
-            return Request.CreateResponse(HttpStatusCode.OK, eventTypes);
+            return this.Request.CreateResponse(HttpStatusCode.OK, eventTypes);
         }
     }
 }

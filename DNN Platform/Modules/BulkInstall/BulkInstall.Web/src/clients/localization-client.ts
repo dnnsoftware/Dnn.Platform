@@ -45,6 +45,10 @@ export interface BulkInstallLocalization {
     EnableIpSafeList: string;
     EncryptionKey: string;
     Events: string;
+    EventLogSeverity_Info: string;
+    EventLogSeverity_Warning: string;
+    EventLogSeverity_Alert: string;
+    EventLogSeverity_Critical: string;
     Install: string;
     IPAddress: string;
     IPSafeList: string;
@@ -60,5 +64,6 @@ export interface BulkInstallLocalization {
     NewApiUser: string;
     NewIpSafelistEntry: any;
     Save: any;
+    Severity: string;
     Type: string;
-};
+}

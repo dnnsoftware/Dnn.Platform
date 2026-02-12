@@ -5,9 +5,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.BulkInstall.Components.WebAPI
 {
-    /// <summary>
-    /// Provides REST APIs for localization.
-    /// </summary>
+    /// <summary>Provides REST APIs for localization.</summary>
     [RequireHost]
     [ValidateAntiForgeryToken]
     [InWhitelist]
@@ -24,9 +22,9 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         public IHttpActionResult GetResources()
         {
             var culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
-            var resourceFile = "~/DesktopModules/BulkInstall/App_LocalResources/BulkInstall.resx";
-            var resources = localizationProvider.GetCompiledResourceFile(this.PortalSettings, resourceFile, culture);
-            return Ok(resources);
+            const string resourceFile = "~/DesktopModules/BulkInstall/App_LocalResources/BulkInstall.resx";
+            var resources = this.localizationProvider.GetCompiledResourceFile(this.PortalSettings, resourceFile, culture);
+            return this.Ok(resources);
         }
     }
 }
