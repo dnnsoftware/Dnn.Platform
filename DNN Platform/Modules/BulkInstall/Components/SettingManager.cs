@@ -1,14 +1,14 @@
-﻿using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
-using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-using DotNetNuke.BulkInstall.Components.Exceptions;
+﻿using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
+using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+using Dnn.Modules.BulkInstall.Components.Exceptions;
 using DotNetNuke.Common.Utilities;
 using System;
 
-namespace DotNetNuke.BulkInstall.Components
+namespace Dnn.Modules.BulkInstall.Components
 {
-    using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
-    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-    using DotNetNuke.BulkInstall.Components.Exceptions;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+    using Dnn.Modules.BulkInstall.Components.Exceptions;
 
     internal class SettingManager
     {

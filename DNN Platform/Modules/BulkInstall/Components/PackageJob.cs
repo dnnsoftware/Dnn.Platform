@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.XPath;
 
-namespace DotNetNuke.BulkInstall.Components
+namespace Dnn.Modules.BulkInstall.Components
 {
     internal class PackageJob
     {

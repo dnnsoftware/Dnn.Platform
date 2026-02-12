@@ -1,6 +1,6 @@
-﻿using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-using DotNetNuke.BulkInstall.Components.Logging;
-using DotNetNuke.BulkInstall.Components.WebAPI.ActionFilters;
+﻿using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+using Dnn.Modules.BulkInstall.Components.Logging;
+using Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters;
 using DotNetNuke.Web.Api;
 using Newtonsoft.Json;
 using System;
@@ -12,10 +12,10 @@ using System.Text;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 
-namespace DotNetNuke.BulkInstall.Components.WebAPI
+namespace Dnn.Modules.BulkInstall.Components.WebAPI
 {
-    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-    using DotNetNuke.BulkInstall.Components.Logging;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+    using Dnn.Modules.BulkInstall.Components.Logging;
 
     //[RequireHost]
     //[ValidateAntiForgeryToken]

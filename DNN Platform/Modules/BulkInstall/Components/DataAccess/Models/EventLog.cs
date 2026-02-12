@@ -1,10 +1,10 @@
-﻿using DotNetNuke.BulkInstall.Components.Logging;
+﻿using Dnn.Modules.BulkInstall.Components.Logging;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
 
-namespace DotNetNuke.BulkInstall.Components.DataAccess.Models
+namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
 {
-    using DotNetNuke.BulkInstall.Components.Logging;
+    using Dnn.Modules.BulkInstall.Components.Logging;
 
     [TableName("Cantarus_PolyDeploy_EventLogs")]
     [PrimaryKey("EventLogID")]

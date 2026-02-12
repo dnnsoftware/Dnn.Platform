@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.XPath;
 
-namespace DotNetNuke.BulkInstall.Components
+namespace Dnn.Modules.BulkInstall.Components
 {
     internal class PackageDependency
     {

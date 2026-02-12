@@ -1,14 +1,14 @@
-﻿using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-using DotNetNuke.BulkInstall.Components.Logging;
+﻿using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+using Dnn.Modules.BulkInstall.Components.Logging;
 using DotNetNuke.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DotNetNuke.BulkInstall.Components.DataAccess.DataControllers
+namespace Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers
 {
-    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-    using DotNetNuke.BulkInstall.Components.Logging;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+    using Dnn.Modules.BulkInstall.Components.Logging;
 
     internal class EventLogDataController
     {

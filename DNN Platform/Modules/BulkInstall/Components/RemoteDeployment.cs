@@ -1,11 +1,11 @@
-﻿using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+﻿using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
 using DotNetNuke.Services.Log.EventLog;
 using System;
 using System.Collections.Generic;
 
-namespace DotNetNuke.BulkInstall.Components
+namespace Dnn.Modules.BulkInstall.Components
 {
-    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
 
     internal class RemoteDeployment : Deployment
     {

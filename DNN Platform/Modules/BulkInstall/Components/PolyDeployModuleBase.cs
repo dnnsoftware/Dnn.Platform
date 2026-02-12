@@ -1,6 +1,6 @@
 using DotNetNuke.Entities.Modules;
 
-namespace DotNetNuke.BulkInstall.Components
+namespace Dnn.Modules.BulkInstall.Components
 {
     public class PolyDeployModuleBase : PortalModuleBase
     {

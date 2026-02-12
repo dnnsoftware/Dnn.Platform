@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 
-namespace DotNetNuke.BulkInstall.Components.WebAPI
+namespace Dnn.Modules.BulkInstall.Components.WebAPI
 {
     internal static class HttpRequestMessageExtensions
     {

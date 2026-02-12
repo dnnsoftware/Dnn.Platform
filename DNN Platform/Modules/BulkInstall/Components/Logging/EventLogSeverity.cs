@@ -1,4 +1,4 @@
-﻿namespace DotNetNuke.BulkInstall.Components.Logging
+﻿namespace Dnn.Modules.BulkInstall.Components.Logging
 {
     public enum EventLogSeverity
     {

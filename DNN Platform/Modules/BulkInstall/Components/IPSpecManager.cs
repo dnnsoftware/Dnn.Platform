@@ -1,15 +1,15 @@
-﻿using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
-using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-using DotNetNuke.BulkInstall.Components.Exceptions;
+﻿using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
+using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+using Dnn.Modules.BulkInstall.Components.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Net;
 
-namespace DotNetNuke.BulkInstall.Components
+namespace Dnn.Modules.BulkInstall.Components
 {
-    using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
-    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-    using DotNetNuke.BulkInstall.Components.Exceptions;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+    using Dnn.Modules.BulkInstall.Components.Exceptions;
 
     internal static class IPSpecManager
     {

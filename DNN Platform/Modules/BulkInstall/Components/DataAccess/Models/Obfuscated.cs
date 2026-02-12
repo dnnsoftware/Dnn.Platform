@@ -1,6 +1,6 @@
 ﻿using DotNetNuke.BulkInstall.Encryption;
 
-namespace DotNetNuke.BulkInstall.Components.DataAccess.Models
+namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
 {
     public class Obfuscated
     {

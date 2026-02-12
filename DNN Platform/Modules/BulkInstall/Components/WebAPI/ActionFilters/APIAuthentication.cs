@@ -1,15 +1,15 @@
-﻿using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-using DotNetNuke.BulkInstall.Components.Logging;
+﻿using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+using Dnn.Modules.BulkInstall.Components.Logging;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace DotNetNuke.BulkInstall.Components.WebAPI.ActionFilters
+namespace Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters
 {
-    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-    using DotNetNuke.BulkInstall.Components.Logging;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+    using Dnn.Modules.BulkInstall.Components.Logging;
 
     internal class APIAuthentication : ActionFilterAttribute
     {

@@ -2,7 +2,7 @@
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
 
-namespace DotNetNuke.BulkInstall.Components.DataAccess.Models
+namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
 {
     [TableName("Cantarus_PolyDeploy_APIUsers")]
     [PrimaryKey("APIUserID")]

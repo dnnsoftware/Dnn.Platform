@@ -1,11 +1,11 @@
-﻿using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+﻿using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
 using DotNetNuke.Data;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DotNetNuke.BulkInstall.Components.DataAccess.DataControllers
+namespace Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers
 {
-    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
 
     internal class IPSpecDataController
     {

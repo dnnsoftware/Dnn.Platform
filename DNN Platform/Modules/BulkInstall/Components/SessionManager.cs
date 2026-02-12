@@ -1,12 +1,12 @@
-﻿using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
-using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+﻿using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
+using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
 using System;
 using System.IO;
 
-namespace DotNetNuke.BulkInstall.Components
+namespace Dnn.Modules.BulkInstall.Components
 {
-    using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
-    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
 
     internal static class SessionManager
     {

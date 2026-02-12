@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace DotNetNuke.BulkInstall.Components.Exceptions
+namespace Dnn.Modules.BulkInstall.Components.Exceptions
 {
     [Serializable]
     public class IPSpecExistsException : Exception

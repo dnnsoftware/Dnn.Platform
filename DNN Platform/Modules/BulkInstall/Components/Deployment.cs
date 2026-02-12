@@ -1,17 +1,17 @@
-﻿using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
-using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-using DotNetNuke.BulkInstall.Components.Logging;
+﻿using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
+using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+using Dnn.Modules.BulkInstall.Components.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Web.Script.Serialization;
 
-namespace DotNetNuke.BulkInstall.Components
+namespace Dnn.Modules.BulkInstall.Components
 {
-    using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
-    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-    using DotNetNuke.BulkInstall.Components.Logging;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+    using Dnn.Modules.BulkInstall.Components.Logging;
 
     internal class Deployment
     {

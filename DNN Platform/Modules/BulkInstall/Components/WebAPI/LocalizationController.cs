@@ -1,5 +1,5 @@
 ﻿using System.Web.Http;
-using DotNetNuke.BulkInstall.Components.WebAPI.ActionFilters;
+using Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 

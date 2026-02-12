@@ -1,6 +1,6 @@
 ﻿using DotNetNuke.ComponentModel.DataAnnotations;
 
-namespace DotNetNuke.BulkInstall.Components.DataAccess.Models
+namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
 {
     [TableName("Cantarus_PolyDeploy_Settings")]
     [PrimaryKey("SettingID")]

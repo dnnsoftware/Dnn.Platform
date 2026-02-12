@@ -1,22 +1,16 @@
 ﻿using DotNetNuke.BulkInstall.Encryption;
-using DotNetNuke.BulkInstall.Components.DataAccess.Models;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DotNetNuke.BulkInstall.Components
+namespace Dnn.Modules.BulkInstall.Components
 {
-    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The Controller class for PolyDeploy
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The Controller class for PolyDeploy</summary>
     public class FeatureController : IUpgradeable
     {
-
         #region Optional Interfaces
 
         /// -----------------------------------------------------------------------------
