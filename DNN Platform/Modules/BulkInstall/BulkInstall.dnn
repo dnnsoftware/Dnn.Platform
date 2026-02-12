@@ -51,6 +51,12 @@
                 </moduleControls>
               </moduleDefinition>
             </moduleDefinitions>
+            <page type="host" common="false">
+              <name>Bulk Install</name>
+              <icon>~/Icons/Sigma/Extensions_16x16_Standard.png</icon>
+              <largeIcon>~/Icons/Sigma/Extensions_32x32_Standard.png</largeIcon>
+              <description>Install multiple extension packages at once</description>
+            </page>
           </desktopModule>
           <eventMessage>
             <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
