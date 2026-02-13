@@ -1,36 +1,37 @@
-﻿using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
-using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
-using Dnn.Modules.BulkInstall.Components.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Net;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.Modules.BulkInstall.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+
     using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
     using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
     using Dnn.Modules.BulkInstall.Components.Exceptions;
 
-    internal static class IPSpecManager
+    /// <summary>A manager for <see cref="IPSpec"/>.</summary>
+    /// <param name="dataController">The data controller.</param>
+    public sealed class IPSpecManager(IPSpecDataController dataController)
     {
-        private static IPSpecDataController IPSpecDC = new IPSpecDataController();
+        private readonly IPSpecDataController dataController = dataController;
 
-        /// <summary>
-        /// Create a new IPSpec object using the passed name and address.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="address"></param>
-        /// <returns></returns>
-        public static IPSpec Create(string name, string address)
+        /// <summary>Create a new IPSpec object using the passed name and address.</summary>
+        /// <param name="name">The label.</param>
+        /// <param name="address">The IP address.</param>
+        /// <returns>The new <see cref="IPSpec"/>.</returns>
+        public IPSpec Create(string name, string address)
         {
-            IPSpec ipSpec = IPSpecDC.GetByName(name);
+            IPSpec ipSpec = this.dataController.GetByName(name);
 
             if (ipSpec != null)
             {
                 throw new IPSpecExistsException($"An entry named '{ipSpec.Name}' already exists.");
             }
 
-            ipSpec = IPSpecDC.Get(address);
+            ipSpec = this.dataController.Get(address);
 
             if (ipSpec != null)
             {
@@ -39,36 +40,30 @@ namespace Dnn.Modules.BulkInstall.Components
 
             ipSpec = new IPSpec(name, address);
 
-            IPSpecDC.Create(ipSpec);
+            this.dataController.Create(ipSpec);
 
             return ipSpec;
         }
 
-        /// <summary>
-        /// Retrieve all the IPSpec objects from the database.
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<IPSpec> GetAll()
+        /// <summary>Retrieve all the <see cref="IPSpec"/> objects from the database.</summary>
+        /// <returns>A sequence of <see cref="IPSpec"/>.</returns>
+        public IEnumerable<IPSpec> GetAll()
         {
-            return IPSpecDC.Get();
+            return this.dataController.Get();
         }
 
-        /// <summary>
-        /// Get single IPSpec by its id.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static IPSpec GetById(int id)
+        /// <summary>Gets a single <see cref="IPSpec"/> by its ID.</summary>
+        /// <param name="id">The IP spec ID.</param>
+        /// <returns>The <see cref="IPSpec"/> or <see langword="null"/>.</returns>
+        public IPSpec GetById(int id)
         {
-            return IPSpecDC.Get(id);
+            return this.dataController.Get(id);
         }
 
-        /// <summary>
-        /// Check to see if the passed address is whitelisted.
-        /// </summary>
-        /// <param name="address"></param>
-        /// <returns></returns>
-        public static bool IsWhitelisted(string address)
+        /// <summary>Check to see if the passed address is allowed.</summary>
+        /// <param name="address">The IP address.</param>
+        /// <returns><see langword="true"/> if the address is allowed, otherwise <see langword="false"/>.</returns>
+        public bool IsAllowed(string address)
         {
             if (!IPAddress.TryParse(address, out _))
             {
@@ -84,18 +79,16 @@ namespace Dnn.Modules.BulkInstall.Components
                 }
             }
 
-            IPSpec ipSpec = IPSpecDC.Get(address);
+            IPSpec ipSpec = this.dataController.Get(address);
 
             return ipSpec != null;
         }
 
-        /// <summary>
-        /// Delete the passed IPSpec.
-        /// </summary>
-        /// <param name="ipSpec"></param>
-        public static void Delete(IPSpec ipSpec)
+        /// <summary>Delete the passed <see cref="IPSpec"/>.</summary>
+        /// <param name="ipSpec">The IP spec to delete.</param>
+        public void Delete(IPSpec ipSpec)
         {
-            IPSpecDC.Delete(ipSpec);
+            this.dataController.Delete(ipSpec);
         }
     }
 }

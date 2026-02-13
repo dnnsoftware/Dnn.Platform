@@ -1,65 +1,80 @@
-﻿using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
-using Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters;
-using DotNetNuke.Web.Api;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Script.Serialization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.Modules.BulkInstall.Components.WebAPI
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+    using System.Web.Script.Serialization;
+
     using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
     using Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters;
 
+    using DotNetNuke.Web.Api;
+
+    /// <summary>A web API controller for <see cref="APIUser"/>.</summary>
+    /// <param name="apiUserManager">The API user manager.</param>
     [RequireHost]
     [ValidateAntiForgeryToken]
     [InWhitelist]
-    public class APIUserController : DnnApiController
+    public class APIUserController(APIUserManager apiUserManager) : DnnApiController
     {
+        private readonly APIUserManager apiUserManager = apiUserManager;
+
+        /// <summary>Gets all <see cref="APIUser"/> instances.</summary>
+        /// <returns>A response with a list of <see cref="APIUser"/>.</returns>
         [HttpGet]
         public HttpResponseMessage GetAll()
         {
-            List<APIUser> apiUsers = APIUserManager.GetAll().ToList();
+            List<APIUser> apiUsers = this.apiUserManager.GetAll().ToList();
 
             // Loop and remove sensitive information.
             foreach (APIUser apiUser in apiUsers)
             {
-                apiUser.APIKey_Sha = null;
-                apiUser.EncryptionKey_Enc = null;
+                apiUser.ApiKeySha = null;
+                apiUser.EncryptedEncryptionKey = null;
                 apiUser.Salt = null;
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, apiUsers);
+            return this.Request.CreateResponse(HttpStatusCode.OK, apiUsers);
         }
 
+        /// <summary>Creates a new <see cref="APIUser"/>.</summary>
+        /// <param name="name">The label.</param>
+        /// <param name="bypass">Whether the user can bypass the IP address allow list.</param>
+        /// <returns>A response with the new <see cref="APIUser"/>.</returns>
         [HttpPost]
         public HttpResponseMessage Create(string name, bool bypass = false)
         {
             // Check we have a name.
             if (string.IsNullOrEmpty(name))
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
             // Create user.
-            APIUser apiUser = APIUserManager.Create(name, bypass);
+            APIUser apiUser = this.apiUserManager.Create(name, bypass);
 
-            apiUser.APIKey_Sha = null;
-            apiUser.EncryptionKey_Enc = null;
+            apiUser.ApiKeySha = null;
+            apiUser.EncryptedEncryptionKey = null;
             apiUser.Salt = null;
 
-            return Request.CreateResponse(HttpStatusCode.Created, apiUser);
+            return this.Request.CreateResponse(HttpStatusCode.Created, apiUser);
         }
 
+        /// <summary>Updates an existing user.</summary>
+        /// <returns>A response with the updated <see cref="APIUser"/>.</returns>
         [HttpPut]
         public HttpResponseMessage Update()
         {
             JavaScriptSerializer jsonSer = new JavaScriptSerializer();
 
-            string json = Request.Content.ReadAsStringAsync().Result;
+            string json = this.Request.Content.ReadAsStringAsync().Result;
 
             APIUser apiUser;
 
@@ -67,47 +82,50 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
             {
                 apiUser = jsonSer.Deserialize<APIUser>(json);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Deserialization failure.");
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Deserialization failure.");
             }
 
             try
             {
-                apiUser = APIUserManager.Update(apiUser);
+                apiUser = this.apiUserManager.Update(apiUser);
 
-                apiUser.APIKey_Sha = null;
-                apiUser.EncryptionKey_Enc = null;
+                apiUser.ApiKeySha = null;
+                apiUser.EncryptedEncryptionKey = null;
                 apiUser.Salt = null;
             }
-            catch(Exception ex)
+            catch (Exception)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Failed to update API user.");
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Failed to update API user.");
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, apiUser);
+            return this.Request.CreateResponse(HttpStatusCode.OK, apiUser);
         }
 
+        /// <summary>Deletes an <see cref="APIUser"/>.</summary>
+        /// <param name="id">The API user ID.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpDelete]
         public HttpResponseMessage Delete(int id)
         {
-            APIUser apiUser = APIUserManager.GetById(id);
+            APIUser apiUser = this.apiUserManager.GetById(id);
 
             if (apiUser == null)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "API user not found.");
+                return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "API user not found.");
             }
 
             try
             {
-                APIUserManager.Delete(apiUser);
+                this.apiUserManager.Delete(apiUser);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Failed to delete API user.");
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Failed to delete API user.");
             }
 
-            return Request.CreateResponse(HttpStatusCode.NoContent);
+            return this.Request.CreateResponse(HttpStatusCode.NoContent);
         }
     }
 }

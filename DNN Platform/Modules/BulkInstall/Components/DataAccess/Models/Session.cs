@@ -1,32 +1,62 @@
-﻿using DotNetNuke.ComponentModel.DataAnnotations;
-using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
 {
+    using System;
+
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
+    /// <summary>The status of a <see cref="Session"/>.</summary>
     public enum SessionStatus
     {
+        /// <summary>A session that has not started its installation.</summary>
         NotStarted = 0,
+
+        /// <summary>A session that with an in progress installation.</summary>
         InProgess = 1,
-        Complete = 2
+
+        /// <summary>A session that has completed its installation.</summary>
+        Complete = 2,
     }
 
+    /// <summary>A session to which packages can be added and then installed.</summary>
     [TableName("Cantarus_PolyDeploy_Sessions")]
     [PrimaryKey("SessionID")]
     public class Session
     {
-        public int SessionID { get; set; }
-        public string Guid { get; set; }
-        public SessionStatus Status { get; set; }
-        public string Response { get; set; }
-        public DateTime LastUsed { get; set; }
-
-        public Session() { }
-
-        public Session(string guid)
+        /// <summary>Initializes a new instance of the <see cref="Session"/> class.</summary>
+        public Session()
         {
-            Guid = guid;
-            Status = SessionStatus.NotStarted;
-            LastUsed = DateTime.Now;
         }
+
+        /// <summary>Initializes a new instance of the <see cref="Session"/> class.</summary>
+        /// <param name="guid">The public identifier of the session.</param>
+#pragma warning disable CA1720 // Identifier contains type name
+        public Session(string guid)
+#pragma warning restore CA1720 // Identifier contains type name
+        {
+            this.Guid = guid;
+            this.Status = SessionStatus.NotStarted;
+            this.LastUsed = DateTime.Now;
+        }
+
+        /// <summary>Gets or sets the internal ID of the session.</summary>
+        public int SessionID { get; set; }
+
+        /// <summary>Gets or sets the public ID of the session.</summary>
+#pragma warning disable CA1720 // Identifier contains type name
+        public string Guid { get; set; }
+#pragma warning restore CA1720 // Identifier contains type name
+
+        /// <summary>Gets or sets the status of the session.</summary>
+        public SessionStatus Status { get; set; }
+
+        /// <summary>Gets or sets the session response (as a JSON string).</summary>
+        public string Response { get; set; }
+
+        /// <summary>Gets or sets the date/time the session was last used.</summary>
+        public DateTime LastUsed { get; set; }
     }
 }

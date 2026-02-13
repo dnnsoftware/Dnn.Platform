@@ -1,47 +1,81 @@
-﻿using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
-using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
-using System;
-using System.Collections.Generic;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.Modules.BulkInstall.Components.Logging
 {
+    using System;
+    using System.Collections.Generic;
+
     using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
     using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
 
-    internal static class EventLogManager
+    /// <summary>A manager for <see cref="EventLog"/>.</summary>
+    /// <param name="dataController">The data controller.</param>
+    public sealed class EventLogManager(EventLogDataController dataController)
     {
-        private static EventLogDataController LogDC = new EventLogDataController();
+        private readonly EventLogDataController dataController = dataController;
 
-        public static IEnumerable<EventLog> Browse(int pageIndex, int pageSize, string eventType, EventLogSeverity? severity)
+        /// <summary>Gets a page of <see cref="EventLog"/> entries.</summary>
+        /// <param name="pageIndex">The 0-based page index.</param>
+        /// <param name="pageSize">The page size.</param>
+        /// <param name="eventType">The event type to filter by, or <see langword="null"/>.</param>
+        /// <param name="severity">The severity to filter by, or <see langword="null"/>.</param>
+        /// <returns>A sequence of <see cref="EventLog"/>.</returns>
+        public IEnumerable<EventLog> Browse(int pageIndex, int pageSize, string eventType, EventLogSeverity? severity)
         {
-            return LogDC.Browse(pageIndex, pageSize, eventType, severity);
+            return this.dataController.Browse(pageIndex, pageSize, eventType, severity);
         }
 
-        public static int BrowseCount(int pageIndex, int pageSize, string eventType, EventLogSeverity? severity)
+        /// <summary>Gets the total count of event logs for the given filters.</summary>
+        /// <param name="pageIndex">Page index is not used.</param>
+        /// <param name="pageSize">Page size is not used.</param>
+        /// <param name="eventType">The event type or <see langword="null"/>.</param>
+        /// <param name="severity">The severity or <see langword="null"/>.</param>
+        /// <returns>The total count.</returns>
+        public int BrowseCount(int pageIndex, int pageSize, string eventType, EventLogSeverity? severity)
         {
-            return LogDC.BrowseCount(pageIndex, pageSize, eventType, severity);
+            return this.dataController.BrowseCount(pageIndex, pageSize, eventType, severity);
         }
 
-        public static IEnumerable<string> GetEventTypes()
+        /// <summary>Gets all the event types.</summary>
+        /// <returns>A sequence of <see cref="string"/> values.</returns>
+        public IEnumerable<string> GetEventTypes()
         {
-            return LogDC.GetEventTypes();
+            return this.dataController.GetEventTypes();
         }
 
-        public static int EventCount()
+        /// <summary>Gets the total count of <see cref="EventLog"/> rows.</summary>
+        /// <returns>The count.</returns>
+        public int EventCount()
         {
-            return LogDC.EventCount();
+            return this.dataController.EventCount();
         }
 
-        public static void Log(string eventType, EventLogSeverity severity, string message = null, Exception ex = null)
+        /// <summary>Creates a new <see cref="EventLog"/>.</summary>
+        /// <param name="eventType">The event type.</param>
+        /// <param name="severity">The severity.</param>
+        /// <param name="message">The message.</param>
+        public void Log(string eventType, EventLogSeverity severity, string message)
+            => this.Log(eventType, severity, message, null);
+
+        /// <summary>Creates a new <see cref="EventLog"/>.</summary>
+        /// <param name="eventType">The event type.</param>
+        /// <param name="severity">The severity.</param>
+        /// <param name="ex">An exception.</param>
+        public void Log(string eventType, EventLogSeverity severity, Exception ex)
+            => this.Log(eventType, severity, null, ex);
+
+        private void Log(string eventType, EventLogSeverity severity, string message = null, Exception ex = null)
         {
             // TODO: Internal logging switched on?
-            LogInternal(eventType, severity, message, ex);
+            this.LogInternal(eventType, severity, message, ex);
 
             // TODO: DNN logging switched on?
             // Log to DNN event log.
         }
 
-        private static void LogInternal(string eventType, EventLogSeverity severity, string message, Exception ex)
+        private void LogInternal(string eventType, EventLogSeverity severity, string message, Exception ex)
         {
             EventLog eventLog;
 
@@ -54,7 +88,7 @@ namespace Dnn.Modules.BulkInstall.Components.Logging
                 eventLog = new EventLog(eventType, severity, message);
             }
 
-            LogDC.Create(eventLog);
+            this.dataController.Create(eventLog);
         }
     }
 }

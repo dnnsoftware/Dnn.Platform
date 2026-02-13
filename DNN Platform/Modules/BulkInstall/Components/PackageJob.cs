@@ -1,29 +1,57 @@
-﻿using DotNetNuke.Services.Installer.Installers;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml.XPath;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.Modules.BulkInstall.Components
 {
-    internal class PackageJob
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Services.Installer.Installers;
+
+    /// <summary>Information about a package to be installed.</summary>
+    internal sealed class PackageJob
     {
-        public string Name { get; set; }
-        public List<PackageDependency> Dependencies { get; set; }
-        
-        public string VersionStr
+        /// <summary>Initializes a new instance of the <see cref="PackageJob"/> class.</summary>
+        /// <param name="packageInstaller">The installer.</param>
+        public PackageJob(PackageInstaller packageInstaller)
         {
-            get
+            this.Name = packageInstaller.Package.Name;
+            this.Version = packageInstaller.Package.Version;
+            this.Dependencies = new List<PackageDependency>();
+
+            using var stringReader = new StringReader(packageInstaller.Package.Manifest);
+            using var xmlReader = XmlReader.Create(stringReader, new XmlReaderSettings { XmlResolver = null, });
+            XPathDocument document = new XPathDocument(xmlReader);
+
+            XPathNavigator rootNav = document.CreateNavigator();
+
+            rootNav.MoveToFirstChild();
+
+            foreach (XPathNavigator nav in rootNav.Select("dependencies/dependency"))
             {
-                return Version.ToString();
+                this.Dependencies.Add(new PackageDependency(nav));
             }
         }
 
+        /// <summary>Gets or sets the package name.</summary>
+        public string Name { get; set; }
+
+        /// <summary>Gets or sets the package dependencies.</summary>
+        public List<PackageDependency> Dependencies { get; set; }
+
+        /// <summary>Gets the version as a <see cref="string"/>.</summary>
+        public string VersionStr => this.Version.ToString();
+
+        /// <summary>Gets a value indicating whether this package can be installed (i.e. if all of its <see cref="Dependencies"/> have been met).</summary>
         public bool CanInstall
         {
             get
             {
-                foreach (PackageDependency dependency in Dependencies)
+                foreach (PackageDependency dependency in this.Dependencies)
                 {
                     if (!dependency.IsMet)
                     {
@@ -36,23 +64,5 @@ namespace Dnn.Modules.BulkInstall.Components
         }
 
         private Version Version { get; set; }
-
-        public PackageJob(PackageInstaller packageInstaller)
-        {
-            Name = packageInstaller.Package.Name;
-            Version = packageInstaller.Package.Version;
-            Dependencies = new List<PackageDependency>();
-
-            XPathDocument document = new XPathDocument(new StringReader(packageInstaller.Package.Manifest));
-
-            XPathNavigator rootNav = document.CreateNavigator();
-
-            rootNav.MoveToFirstChild();
-
-            foreach (XPathNavigator nav in rootNav.Select("dependencies/dependency"))
-            {
-                Dependencies.Add(new PackageDependency(nav));
-            }
-        }
     }
 }

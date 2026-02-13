@@ -1,36 +1,59 @@
-﻿using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
-using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
-using System;
-using System.IO;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.Modules.BulkInstall.Components
 {
+    using System;
+    using System.IO;
+
     using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
     using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
 
-    internal static class SessionManager
-    {
-        private static SessionDataController SessionDC = new SessionDataController();
+    using DotNetNuke.Abstractions.Application;
 
-        public static Session CreateSession()
+    /// <summary>The <see cref="Session"/> manager.</summary>
+    /// <param name="dataController">The data controller.</param>
+    /// <param name="appStatus">The application status.</param>
+    public sealed class SessionManager(SessionDataController dataController, IApplicationStatusInfo appStatus)
+    {
+        private readonly IApplicationStatusInfo appStatus = appStatus;
+        private readonly SessionDataController dataController = dataController;
+
+        /// <summary>Creates a session.</summary>
+        /// <returns>A new <see cref="Session"/> instance.</returns>
+        public Session CreateSession()
         {
-            string directory = new DirectoryInfo(AvailableSessionDirectory()).Name;
+            string directory = new DirectoryInfo(this.AvailableSessionDirectory()).Name;
 
             Session session = new Session(directory);
 
-            SessionDC.Create(session);
+            this.dataController.Create(session);
 
             return session;
         }
 
-        public static Session GetSession(string sessionGuid)
+        /// <summary>Gets the <see cref="Session"/> by its <see cref="Session.Guid"/>.</summary>
+        /// <param name="sessionGuid">The session GUID.</param>
+        /// <returns>The session or <see langword="null"/>.</returns>
+        public Session GetSession(string sessionGuid)
         {
-            return SessionDC.FindByGuid(sessionGuid); ;
+            return this.dataController.FindByGuid(sessionGuid);
         }
 
-        public static bool SessionExists(string sessionGuid)
+        /// <summary>Updates a <see cref="Session"/>.</summary>
+        /// <param name="session">The new session data.</param>
+        public void UpdateSession(Session session)
         {
-            Session session = SessionDC.FindByGuid(sessionGuid);
+            this.dataController.Update(session);
+        }
+
+        /// <summary>Gets a value indicating whether a <see cref="Session"/> exists with the specified <paramref name="sessionGuid"/>.</summary>
+        /// <param name="sessionGuid">The session GUID.</param>
+        /// <returns><see langword="true"/> if the session exists, otherwise <see langword="false"/>.</returns>
+        public bool SessionExists(string sessionGuid)
+        {
+            Session session = this.dataController.FindByGuid(sessionGuid);
 
             if (session == null)
             {
@@ -39,42 +62,49 @@ namespace Dnn.Modules.BulkInstall.Components
 
             session.LastUsed = DateTime.Now;
 
-            SessionDC.Update(session);
+            this.dataController.Update(session);
 
             return true;
         }
 
-        public static void AddPackage(string sessionGuid, Stream packageStream, string filename)
+        /// <summary>Adds a package to a session's folder.</summary>
+        /// <param name="sessionGuid">The session GUID.</param>
+        /// <param name="packageStream">A stream of the package file.</param>
+        /// <param name="filename">The package's file name.</param>
+        /// <exception cref="ArgumentException">No session exists with the provided <paramref name="sessionGuid"/>.</exception>
+        public void AddPackage(string sessionGuid, Stream packageStream, string filename)
         {
-            Session session = SessionDC.FindByGuid(sessionGuid);
+            Session session = this.dataController.FindByGuid(sessionGuid);
 
             if (session == null)
             {
-                throw new Exception(string.Format("No session exists with guid: {0}", sessionGuid));
+                throw new ArgumentException($"No session exists with guid: {sessionGuid}", nameof(sessionGuid));
             }
 
-            using (FileStream fs = File.Create(Path.Combine(Utilities.ModulePath, "Sessions", session.Guid, filename)))
-            {
-                packageStream.CopyTo(fs);
-            }
+            using FileStream fs = File.Create(Path.Combine(Utilities.GetModulePath(this.appStatus), "Sessions", session.Guid, filename));
+            packageStream.CopyTo(fs);
         }
 
-        public static string PathForSession (string sessionGuid)
+        /// <summary>Gets the path to the session folder.</summary>
+        /// <param name="sessionGuid">The session GUID.</param>
+        /// <returns>Absolute/mapped path to the session folder.</returns>
+        /// <exception cref="ArgumentException">No session exists with the provided <paramref name="sessionGuid"/>.</exception>
+        public string PathForSession(string sessionGuid)
         {
-            Session session = SessionDC.FindByGuid(sessionGuid);
+            Session session = this.dataController.FindByGuid(sessionGuid);
 
             if (session == null)
             {
-                throw new Exception(string.Format("No session exists with guid: {0}", sessionGuid));
+                throw new ArgumentException($"No session exists with guid: {sessionGuid}", nameof(sessionGuid));
             }
 
-            return Path.Combine(Utilities.ModulePath, "Sessions", session.Guid);
+            return Path.Combine(Utilities.GetModulePath(this.appStatus), "Sessions", session.Guid);
         }
 
-        private static string AvailableSessionDirectory()
+        private string AvailableSessionDirectory()
         {
             // Start with the module root.
-            string basePath = Utilities.ModulePath;
+            string basePath = Utilities.GetModulePath(this.appStatus);
 
             // Check we found the module directory.
             if (Directory.Exists(basePath))
@@ -97,7 +127,7 @@ namespace Dnn.Modules.BulkInstall.Components
             if (Directory.Exists(dir))
             {
                 // My mistake, try again!
-                return AvailableSessionDirectory();
+                return this.AvailableSessionDirectory();
             }
 
             // Create the folder.

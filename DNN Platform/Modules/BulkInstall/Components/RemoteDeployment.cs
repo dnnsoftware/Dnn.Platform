@@ -1,39 +1,67 @@
-﻿using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
-using DotNetNuke.Services.Log.EventLog;
-using System;
-using System.Collections.Generic;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.Modules.BulkInstall.Components
 {
+    using System;
+    using System.Collections.Generic;
+
     using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+    using Dnn.Modules.BulkInstall.Components.Logging;
 
-    internal class RemoteDeployment : Deployment
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+
+    /// <summary>A deployment created via the API.</summary>
+    internal sealed class RemoteDeployment : Deployment
     {
-        private APIUser APIUser { get; set; }
+        private readonly IEventLogger eventLogger;
 
-        public RemoteDeployment(Session session, string ipAddress, string apiKey) : base(session, ipAddress)
+        /// <summary>Initializes a new instance of the <see cref="RemoteDeployment"/> class.</summary>
+        /// <param name="apiUserManager">The API user manager.</param>
+        /// <param name="sessionManager">The session manager.</param>
+        /// <param name="eventLogManager">The event log manager.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="session">The session.</param>
+        /// <param name="ipAddress">The IP address.</param>
+        /// <param name="apiKey">The API key.</param>
+        public RemoteDeployment(
+            APIUserManager apiUserManager,
+            SessionManager sessionManager,
+            EventLogManager eventLogManager,
+            IEventLogger eventLogger,
+            IApplicationStatusInfo appStatus,
+            Session session,
+            string ipAddress,
+            string apiKey)
+            : base(sessionManager, eventLogManager, appStatus, session, ipAddress)
         {
+            this.eventLogger = eventLogger;
+
             // Retrieve our API user.
-            APIUser = APIUserManager.GetByAPIKey(apiKey);
+            this.APIUser = apiUserManager.GetByAPIKey(apiKey);
 
             // Did we find an API user?
-            if (APIUser == null)
+            if (this.APIUser == null)
             {
-                throw new Exception("API user not found, cannot continue. Shouldn't have been able to get here.");
+                throw new InvalidOperationException("API user not found, cannot continue. Shouldn't have been able to get here.");
             }
         }
 
+        private APIUser APIUser { get; set; }
+
+        /// <inheritdoc />
         protected override void LogAnyFailures(List<InstallJob> jobs)
         {
-            EventLogController elc = new EventLogController();
-
             foreach (InstallJob job in jobs)
             {
                 foreach (string failure in job.Failures)
                 {
-                    string log = string.Format("(IP: {0} | APIUserID: {1}) {2}", IPAddress, APIUser.APIUserId, failure);
+                    string log = $"(IP: {this.IPAddress} | APIUserID: {this.APIUser.APIUserId}) {failure}";
 
-                    elc.AddLog("PolyDeploy", log, EventLogController.EventLogType.HOST_ALERT);
+                    this.eventLogger.AddLog("PolyDeploy", log, EventLogType.HOST_ALERT);
                 }
             }
         }

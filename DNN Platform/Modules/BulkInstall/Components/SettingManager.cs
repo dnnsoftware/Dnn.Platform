@@ -1,22 +1,31 @@
-﻿using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
-using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
-using Dnn.Modules.BulkInstall.Components.Exceptions;
-using DotNetNuke.Common.Utilities;
-using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.Modules.BulkInstall.Components
 {
+    using System;
+
     using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
     using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
     using Dnn.Modules.BulkInstall.Components.Exceptions;
 
-    internal class SettingManager
+    using DotNetNuke.Common.Utilities;
+
+    /// <summary>The manager for <see cref="Setting"/>.</summary>
+    /// <param name="dataController">The data controller.</param>
+    public sealed class SettingManager(SettingDataController dataController)
     {
         private const string SettingCacheKey = "Cantarus:PolyDeploy:Setting_";
 
-        private static SettingDataController SettingDC = new SettingDataController();
+        private readonly SettingDataController dataController = dataController;
 
-        public static Setting GetSetting(string group, string key)
+        /// <summary>Gets a setting.</summary>
+        /// <param name="group">The group.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>The setting.</returns>
+        /// <exception cref="SettingNotFoundException">The setting was not found.</exception>
+        public Setting GetSetting(string group, string key)
         {
             Setting setting;
 
@@ -29,7 +38,7 @@ namespace Dnn.Modules.BulkInstall.Components
             if (setting == null)
             {
                 // Not in cache, go to database.
-                setting = SettingDC.GetSetting(group, key);
+                setting = this.dataController.GetSetting(group, key);
 
                 // Was in db?
                 if (setting != null)
@@ -46,10 +55,14 @@ namespace Dnn.Modules.BulkInstall.Components
             return setting;
         }
 
-        public static void SetSetting(string group, string key, string value)
+        /// <summary>Creates or updates a setting.</summary>
+        /// <param name="group">The setting group.</param>
+        /// <param name="key">The setting key.</param>
+        /// <param name="value">The setting value.</param>
+        public void SetSetting(string group, string key, string value)
         {
             // Retrieve setting.
-            Setting setting = SettingDC.GetSetting(group, key);
+            Setting setting = this.dataController.GetSetting(group, key);
 
             // Does it already exist?
             if (setting == null)
@@ -59,17 +72,17 @@ namespace Dnn.Modules.BulkInstall.Components
                 {
                     Group = group,
                     Key = key,
-                    Value = value
+                    Value = value,
                 };
 
-                SettingDC.Create(setting);
+                this.dataController.Create(setting);
             }
             else
             {
                 // Yes, Update it.
                 setting.Value = value;
 
-                SettingDC.Update(setting);
+                this.dataController.Update(setting);
             }
 
             // Clear cache.

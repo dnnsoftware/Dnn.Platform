@@ -1,10 +1,24 @@
-﻿namespace Dnn.Modules.BulkInstall.Components.Logging
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
+namespace Dnn.Modules.BulkInstall.Components.Logging
 {
+    using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+
+    /// <summary>The severity of an <see cref="EventLog"/>.</summary>
     public enum EventLogSeverity
     {
+        /// <summary>Information.</summary>
         Info = 0,
+
+        /// <summary>Warning.</summary>
         Warning = 1,
+
+        /// <summary>Alert.</summary>
         Alert = 2,
-        Critical = 3
+
+        /// <summary>Critical.</summary>
+        Critical = 3,
     }
 }

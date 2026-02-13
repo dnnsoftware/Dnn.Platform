@@ -1,20 +1,33 @@
-﻿using DotNetNuke.Common;
-using System;
-using System.IO;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.Modules.BulkInstall.Components
 {
-    internal class Utilities
-    {
-        public static string ModulePath = Path.Combine(Globals.ApplicationMapPath, "DesktopModules", "Cantarus", "PolyDeploy");
+    using System;
+    using System.IO;
 
-        public static string AvailableTempDirectory(string basePath = null)
+    using DotNetNuke.Abstractions.Application;
+
+    /// <summary>Utility methods.</summary>
+    internal static class Utilities
+    {
+        /// <summary>Gets the module's path.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <returns>The absolute/mapped path to the module directory.</returns>
+        public static string GetModulePath(IApplicationStatusInfo appStatus) => Path.Combine(appStatus.ApplicationMapPath, "DesktopModules", "Cantarus", "PolyDeploy");
+
+        /// <summary>Gets the path to a temp folder.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="basePath">The base path, or <see langword="null"/> to create a temporary folder.</param>
+        /// <returns>The absolute/mapped path to a temp directory.</returns>
+        public static string AvailableTempDirectory(IApplicationStatusInfo appStatus, string basePath = null)
         {
             // Need to set sensible base?
             if (basePath == null)
             {
                 // We'll create a temporary folder in the module folder.
-                basePath = ModulePath;
+                basePath = GetModulePath(appStatus);
 
                 // Check we found the module directory.
                 if (Directory.Exists(basePath))
@@ -43,19 +56,21 @@ namespace Dnn.Modules.BulkInstall.Components
             if (Directory.Exists(dir))
             {
                 // My mistake, try again!
-                return AvailableTempDirectory();
+                return AvailableTempDirectory(appStatus);
             }
 
             return dir;
         }
 
+        /// <summary>Gets a random name.</summary>
+        /// <returns>The name.</returns>
         public static string RandomName()
         {
             // Get new guid as string.
             string guidString = Guid.NewGuid().ToString();
 
             // Remove hyphens, uppercase and return.
-            return guidString.Replace("-", null).ToUpper();
+            return guidString.Replace("-", null).ToUpperInvariant();
         }
     }
 }
