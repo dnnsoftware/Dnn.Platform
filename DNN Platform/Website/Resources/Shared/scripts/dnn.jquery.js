@@ -1,4 +1,12 @@
-﻿(function ($) {
+﻿document.addEventListener("DOMContentLoaded", function () {
+    console.warn(
+        "Do not reference this file directly.\n" +
+        "Use DNN ClientResourcesController to register DnnPlugins instead.\n" +
+        "This file is unmaintained, may include breaking changes and will be removed in DNN v12."
+    );
+});
+
+(function ($) {
     $.fn.dnnTabs = function (options) {
         var opts = $.extend({}, $.fn.dnnTabs.defaultOptions, options),
         $wrap = this;
