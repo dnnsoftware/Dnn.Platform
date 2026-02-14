@@ -40,15 +40,19 @@ public class StylesheetResource : LinkResource, IStylesheetResource
         if (this.Preload)
         {
             htmlString.Append($" rel=\"preload\" as=\"style\"");
+            this.RenderedAttributes.Add("rel");
+            this.RenderedAttributes.Add("as");
         }
         else
         {
             htmlString.Append($" rel=\"stylesheet\"");
+            this.RenderedAttributes.Add("rel");
         }
 
         if (this.Disabled)
         {
             htmlString.Append(" disabled");
+            this.RenderedAttributes.Add("disabled");
         }
 
         this.RenderMedia(htmlString);

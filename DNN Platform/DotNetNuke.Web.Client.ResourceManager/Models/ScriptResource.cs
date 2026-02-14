@@ -44,19 +44,23 @@ public class ScriptResource : ResourceBase, IScriptResource
     {
         var htmlString = new StringBuilder("<script");
         htmlString.Append($" src=\"{WebUtility.HtmlEncode(this.GetVersionedPath(crmVersion, useCdn, applicationPath))}\"");
+        this.RenderedAttributes.Add("type");
         if (this.Async)
         {
             htmlString.Append(" async");
+            this.RenderedAttributes.Add("async");
         }
 
         if (this.Defer)
         {
             htmlString.Append(" defer");
+            this.RenderedAttributes.Add("defer");
         }
 
         if (this.NoModule)
         {
             htmlString.Append(" nomodule");
+            this.RenderedAttributes.Add("nomodule");
         }
 
         this.RenderType(htmlString);

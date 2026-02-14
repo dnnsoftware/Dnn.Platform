@@ -36,10 +36,13 @@ public class FontResource : LinkResource, IFontResource
         if (this.Preload)
         {
             htmlString.Append($" rel=\"preload\" as=\"font\"");
+            this.RenderedAttributes.Add("rel");
+            this.RenderedAttributes.Add("as");
         }
         else
         {
             htmlString.Append($" rel=\"font\"");
+            this.RenderedAttributes.Add("rel");
         }
 
         this.RenderType(htmlString);

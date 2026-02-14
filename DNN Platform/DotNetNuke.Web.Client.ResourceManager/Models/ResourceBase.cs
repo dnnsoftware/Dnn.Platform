@@ -68,6 +68,11 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <inheritdoc />
         public Dictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
 
+        /// <summary>
+        /// Gets a list used to track which attributes have been rendered for the resource to avoid rendering duplicates.
+        /// </summary>
+        protected HashSet<string> RenderedAttributes { get; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
         /// <inheritdoc />
         public abstract void Register();
 
@@ -116,6 +121,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             if (this.Blocking)
             {
                 htmlString.Append(" blocking=\"render\"");
+                this.RenderedAttributes.Add("blocking");
             }
         }
 
@@ -127,9 +133,11 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             {
                 case CrossOrigin.UseCredentials:
                     htmlString.Append($" crossorigin=\"use-credentials\"");
+                    this.RenderedAttributes.Add("crossorigin");
                     return;
                 case CrossOrigin.Anonymous:
                     htmlString.Append($" crossorigin=\"anonymous\"");
+                    this.RenderedAttributes.Add("crossorigin");
                     return;
                 case CrossOrigin.None:
                     return;
@@ -146,9 +154,11 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             {
                 case FetchPriority.High:
                     htmlString.Append($" fetchpriority=\"high\"");
+                    this.RenderedAttributes.Add("fetchpriority");
                     return;
                 case FetchPriority.Low:
                     htmlString.Append($" fetchpriority=\"low\"");
+                    this.RenderedAttributes.Add("fetchpriority");
                     return;
                 case FetchPriority.Auto:
                     return;
@@ -164,6 +174,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             if (!string.IsNullOrEmpty(this.Integrity))
             {
                 htmlString.Append($" integrity=\"{WebUtility.HtmlEncode(this.Integrity)}\"");
+                this.RenderedAttributes.Add("integrity");
             }
         }
 
@@ -175,27 +186,35 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             {
                 case ReferrerPolicy.NoReferrer:
                     htmlString.Append(" referrerpolicy=\"no-referrer\"");
+                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.NoReferrerWhenDowngrade:
                     htmlString.Append(" referrerpolicy=\"no-referrer-when-downgrade\"");
+                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.Origin:
                     htmlString.Append(" referrerpolicy=\"origin\"");
+                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.OriginWhenCrossOrigin:
                     htmlString.Append(" referrerpolicy=\"origin-when-cross-origin\"");
+                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.SameOrigin:
                     htmlString.Append(" referrerpolicy=\"same-origin\"");
+                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.StrictOrigin:
                     htmlString.Append(" referrerpolicy=\"strict-origin\"");
+                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.StrictOriginWhenCrossOrigin:
                     htmlString.Append(" referrerpolicy=\"strict-origin-when-cross-origin\"");
+                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.UnsafeUrl:
                     htmlString.Append(" referrerpolicy=\"unsafe-url\"");
+                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.None:
                     return;
@@ -211,6 +230,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             if (!string.IsNullOrEmpty(this.Type))
             {
                 htmlString.Append($" type=\"{WebUtility.HtmlEncode(this.Type)}\"");
+                this.RenderedAttributes.Add("type");
             }
         }
 
@@ -220,6 +240,11 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         {
             foreach (var attribute in this.Attributes)
             {
+                if (this.RenderedAttributes.Contains(attribute.Key))
+                {
+                    continue;
+                }
+
                 htmlString.Append($" {attribute.Key}=\"{WebUtility.HtmlEncode(attribute.Value)}\"");
             }
         }

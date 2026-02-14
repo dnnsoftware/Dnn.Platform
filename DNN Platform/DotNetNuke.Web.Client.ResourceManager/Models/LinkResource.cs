@@ -29,6 +29,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             if (!string.IsNullOrEmpty(this.Media))
             {
                 htmlString.Append($" media=\"{WebUtility.HtmlEncode(this.Media)}\"");
+                this.RenderedAttributes.Add("media");
             }
         }
     }
