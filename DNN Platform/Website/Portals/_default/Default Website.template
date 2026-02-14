@@ -3176,7 +3176,7 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>[Tab.WebsiteAdministration.Name.Text]</name>
+      <name>Admin</name>
       <title>[Tab.WebsiteAdministration.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>
