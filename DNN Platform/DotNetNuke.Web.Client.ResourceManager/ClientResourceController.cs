@@ -361,7 +361,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             {
                 if (this.PathNameAliases.TryGetValue(pathNameAlias, out var alias))
                 {
-                    return $"{alias}/{filePath.TrimStart('/')}";
+                    return $"{alias.TrimEnd('/')}/{filePath.TrimStart('/')}";
                 }
             }
 
