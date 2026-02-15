@@ -26,10 +26,9 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderMedia(StringBuilder htmlString)
         {
-            if (!string.IsNullOrEmpty(this.Media))
+            if (!string.IsNullOrEmpty(this.Media) && !this.Attributes.ContainsKey("media"))
             {
                 htmlString.Append($" media=\"{WebUtility.HtmlEncode(this.Media)}\"");
-                this.RenderedAttributes.Add("media");
             }
         }
     }

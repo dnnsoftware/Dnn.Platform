@@ -68,11 +68,6 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <inheritdoc />
         public Dictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
 
-        /// <summary>
-        /// Gets a list used to track which attributes have been rendered for the resource to avoid rendering duplicates.
-        /// </summary>
-        protected HashSet<string> RenderedAttributes { get; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
         /// <inheritdoc />
         public abstract void Register();
 
@@ -118,10 +113,9 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderBlocking(StringBuilder htmlString)
         {
-            if (this.Blocking)
+            if (this.Blocking && !this.Attributes.ContainsKey("blocking"))
             {
                 htmlString.Append(" blocking=\"render\"");
-                this.RenderedAttributes.Add("blocking");
             }
         }
 
@@ -129,15 +123,18 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderCrossOriginAttribute(StringBuilder htmlString)
         {
+            if (this.Attributes.ContainsKey("crossorigin"))
+            {
+                return;
+            }
+
             switch (this.CrossOrigin)
             {
                 case CrossOrigin.UseCredentials:
                     htmlString.Append($" crossorigin=\"use-credentials\"");
-                    this.RenderedAttributes.Add("crossorigin");
                     return;
                 case CrossOrigin.Anonymous:
                     htmlString.Append($" crossorigin=\"anonymous\"");
-                    this.RenderedAttributes.Add("crossorigin");
                     return;
                 case CrossOrigin.None:
                     return;
@@ -150,15 +147,18 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderFetchPriority(StringBuilder htmlString)
         {
+            if (this.Attributes.ContainsKey("fetchpriority"))
+            {
+                return;
+            }
+
             switch (this.FetchPriority)
             {
                 case FetchPriority.High:
                     htmlString.Append($" fetchpriority=\"high\"");
-                    this.RenderedAttributes.Add("fetchpriority");
                     return;
                 case FetchPriority.Low:
                     htmlString.Append($" fetchpriority=\"low\"");
-                    this.RenderedAttributes.Add("fetchpriority");
                     return;
                 case FetchPriority.Auto:
                     return;
@@ -171,10 +171,9 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderIntegrity(StringBuilder htmlString)
         {
-            if (!string.IsNullOrEmpty(this.Integrity))
+            if (!string.IsNullOrEmpty(this.Integrity) && !this.Attributes.ContainsKey("integrity"))
             {
                 htmlString.Append($" integrity=\"{WebUtility.HtmlEncode(this.Integrity)}\"");
-                this.RenderedAttributes.Add("integrity");
             }
         }
 
@@ -182,39 +181,36 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderReferrerPolicy(StringBuilder htmlString)
         {
+            if (this.Attributes.ContainsKey("referrerpolicy"))
+            {
+                return;
+            }
+
             switch (this.ReferrerPolicy)
             {
                 case ReferrerPolicy.NoReferrer:
                     htmlString.Append(" referrerpolicy=\"no-referrer\"");
-                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.NoReferrerWhenDowngrade:
                     htmlString.Append(" referrerpolicy=\"no-referrer-when-downgrade\"");
-                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.Origin:
                     htmlString.Append(" referrerpolicy=\"origin\"");
-                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.OriginWhenCrossOrigin:
                     htmlString.Append(" referrerpolicy=\"origin-when-cross-origin\"");
-                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.SameOrigin:
                     htmlString.Append(" referrerpolicy=\"same-origin\"");
-                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.StrictOrigin:
                     htmlString.Append(" referrerpolicy=\"strict-origin\"");
-                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.StrictOriginWhenCrossOrigin:
                     htmlString.Append(" referrerpolicy=\"strict-origin-when-cross-origin\"");
-                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.UnsafeUrl:
                     htmlString.Append(" referrerpolicy=\"unsafe-url\"");
-                    this.RenderedAttributes.Add("referrerpolicy");
                     break;
                 case ReferrerPolicy.None:
                     return;
@@ -227,10 +223,9 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderType(StringBuilder htmlString)
         {
-            if (!string.IsNullOrEmpty(this.Type))
+            if (!string.IsNullOrEmpty(this.Type) && !this.Attributes.ContainsKey("type"))
             {
                 htmlString.Append($" type=\"{WebUtility.HtmlEncode(this.Type)}\"");
-                this.RenderedAttributes.Add("type");
             }
         }
 
@@ -240,11 +235,6 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         {
             foreach (var attribute in this.Attributes)
             {
-                if (this.RenderedAttributes.Contains(attribute.Key))
-                {
-                    continue;
-                }
-
                 if (string.IsNullOrEmpty(attribute.Value))
                 {
                     htmlString.Append($" {attribute.Key}");

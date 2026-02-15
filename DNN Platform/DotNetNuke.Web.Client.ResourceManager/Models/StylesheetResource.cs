@@ -37,22 +37,18 @@ public class StylesheetResource : LinkResource, IStylesheetResource
     {
         var htmlString = new StringBuilder("<link");
         htmlString.Append($" href=\"{WebUtility.HtmlEncode(this.GetVersionedPath(crmVersion, useCdn, applicationPath))}\"");
-        if (this.Preload)
+        if (this.Preload && !this.Attributes.ContainsKey("rel") && !this.Attributes.ContainsKey("as"))
         {
             htmlString.Append($" rel=\"preload\" as=\"style\"");
-            this.RenderedAttributes.Add("rel");
-            this.RenderedAttributes.Add("as");
         }
-        else
+        else if (!this.Attributes.ContainsKey("rel"))
         {
             htmlString.Append($" rel=\"stylesheet\"");
-            this.RenderedAttributes.Add("rel");
         }
 
-        if (this.Disabled)
+        if (this.Disabled && !this.Attributes.ContainsKey("disabled"))
         {
             htmlString.Append(" disabled");
-            this.RenderedAttributes.Add("disabled");
         }
 
         this.RenderMedia(htmlString);
