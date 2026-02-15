@@ -120,6 +120,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 return;
             }
 
+            var charArray = attributes.ToCharArray();
             var key = string.Empty;
             var val = string.Empty;
             var isKey = true;
@@ -127,11 +128,19 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             var isValDelimited = false;
             for (var i = 0; i < attributes.Length; i++)
             {
-                var c = attributes.ToCharArray()[i];
+                var c = charArray[i];
                 if (isKey && c == ':')
                 {
                     isKey = false;
                     isVal = true;
+                    continue;
+                }
+
+                if (isKey && c == ' ')
+                {
+                    // this means we have a key without a value, we should add it to the dictionary with an empty value and start a new key
+                    destination[key] = string.Empty;
+                    key = string.Empty;
                     continue;
                 }
 
