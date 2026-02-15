@@ -90,6 +90,10 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             {
                 return path;
             }
+            else if (path.StartsWith("//", StringComparison.OrdinalIgnoreCase))
+            {
+                return path;
+            }
             else if (path.StartsWith("~", StringComparison.Ordinal))
             {
                 if (string.IsNullOrEmpty(applicationPath))
