@@ -245,7 +245,14 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
                     continue;
                 }
 
-                htmlString.Append($" {attribute.Key}=\"{WebUtility.HtmlEncode(attribute.Value)}\"");
+                if (string.IsNullOrEmpty(attribute.Value))
+                {
+                    htmlString.Append($" {attribute.Key}");
+                }
+                else
+                {
+                    htmlString.Append($" {attribute.Key}=\"{WebUtility.HtmlEncode(attribute.Value)}\"");
+                }
             }
         }
     }
