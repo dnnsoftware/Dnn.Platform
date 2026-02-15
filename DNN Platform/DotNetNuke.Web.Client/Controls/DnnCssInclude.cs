@@ -42,14 +42,34 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
-            var stylesheet = this.clientResourceController.CreateStylesheet(this.FilePath, this.PathNameAlias)
-                .SetMedia(this.CssMedia);
-            if (this.Preload)
+            switch (this.FilePath.Substring(this.FilePath.LastIndexOf('.')).ToLowerInvariant())
             {
-                stylesheet.SetPreload();
+                case ".eot":
+                case ".woff":
+                case ".woff2":
+                case ".ttf":
+                case ".svg":
+                case ".otf":
+                    var font = this.clientResourceController.CreateFont(this.FilePath, this.PathNameAlias);
+                    if (this.Preload)
+                    {
+                        font.SetPreload();
+                    }
+
+                    this.RegisterResource(font);
+                    break;
+                default:
+                    var stylesheet = this.clientResourceController.CreateStylesheet(this.FilePath, this.PathNameAlias)
+                        .SetMedia(this.CssMedia);
+                    if (this.Preload)
+                    {
+                        stylesheet.SetPreload();
+                    }
+
+                    this.RegisterResource(stylesheet);
+                    break;
             }
 
-            this.RegisterResource(stylesheet);
             base.OnLoad(e);
         }
 
