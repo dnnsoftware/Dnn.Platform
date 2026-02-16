@@ -177,7 +177,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         {
             if (!string.IsNullOrEmpty(this.Integrity) && !this.Attributes.ContainsKey("integrity"))
             {
-                htmlString.Append($" integrity=\"{WebUtility.HtmlEncode(this.Integrity)}\"");
+                htmlString.Append($" integrity=\"{this.Integrity}\"");
             }
         }
 
@@ -229,7 +229,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         {
             if (!string.IsNullOrEmpty(this.Type) && !this.Attributes.ContainsKey("type"))
             {
-                htmlString.Append($" type=\"{WebUtility.HtmlEncode(this.Type)}\"");
+                htmlString.Append($" type=\"{this.Type}\"");
             }
         }
 
@@ -245,7 +245,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
                 }
                 else
                 {
-                    htmlString.Append($" {attribute.Key}=\"{WebUtility.HtmlEncode(attribute.Value)}\"");
+                    htmlString.Append($" {attribute.Key}=\"{attribute.Value}\"");
                 }
             }
         }
