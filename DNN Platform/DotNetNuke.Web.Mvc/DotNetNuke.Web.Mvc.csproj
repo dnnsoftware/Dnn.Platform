@@ -23,10 +23,6 @@
     <PackageReference Include="Microsoft.AspNet.WebHelpers" />
     <PackageReference Include="Microsoft.Web.Infrastructure" />
     <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="StyleCop.Analyzers">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
