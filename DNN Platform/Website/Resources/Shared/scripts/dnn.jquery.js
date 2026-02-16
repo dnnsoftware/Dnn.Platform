@@ -1,7 +1,8 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
     console.warn(
         "Do not reference this file directly.\n" +
-        "Use DNN ClientResourcesController to register DnnPlugins instead.\n" +
+        "Use JavaScript.RequestRegistration(CommonJs.DnnPlugins) instead.\n" +
+        "Or other appropriate CommonJs registration methods as described in https://docs.dnncommunity.org/content/tutorials/client-resources/index.html#javascript-libraries.\n" +
         "This file is unmaintained, may include breaking changes and will be removed in DNN v12."
     );
 });
