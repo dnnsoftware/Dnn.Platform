@@ -697,6 +697,17 @@
 
             $pd.on('mousemove', function (e) {
                 var x = e.pageX; var y = e.pageY;
+                
+                // Fix: Check if tooltip overflows the right edge of the window    
+                var tipWidth = pd.tooltipWrapperInner.outerWidth();    
+                var winWidth = $(window).width();    
+    
+                // Safety buffer of 20px for vertical scrollbar    
+                if ((x + tipWidth) > (winWidth - 20)) {        
+                    // Clamp x position to fit inside the screen        
+                    x = winWidth - tipWidth - 20;     
+                }
+                
                 var pos = $('body').css('position');
                 if (pos == 'relative') y -= 38;
                 pd.tooltipWrapper.css({ left: x + 'px', top: y + 'px', 'z-index': '99999' });
@@ -4328,4 +4339,5 @@
     $(dnnInitCustomisedCtrls);
     $(registerEvents);
     handlerSendVerificationMailLink();
+
 })(jQuery);
