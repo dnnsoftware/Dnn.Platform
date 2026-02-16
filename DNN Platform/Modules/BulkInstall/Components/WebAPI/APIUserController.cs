@@ -41,7 +41,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                 apiUser.Salt = null;
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, apiUsers);
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Users = apiUsers, });
         }
 
         /// <summary>Creates a new <see cref="APIUser"/>.</summary>
@@ -64,7 +64,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
             apiUser.EncryptedEncryptionKey = null;
             apiUser.Salt = null;
 
-            return this.Request.CreateResponse(HttpStatusCode.Created, apiUser);
+            return this.Request.CreateResponse(HttpStatusCode.Created, new { User = apiUser, });
         }
 
         /// <summary>Updates an existing user.</summary>
