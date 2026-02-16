@@ -236,8 +236,7 @@
               $.stopProgressbarOnError();
             });
             disable('#seeLogs, #visitSite, #retry');
-            //Making sure that progress indicate 0
-            $("#progressbar")[0].value = 0;
+            document.querySelector("#progressbar").value = 0;
             $("#percentage").text('0% ');
             $("#timer").html('0:00 ' + '<%=LocalizeString("TimerMinutes") %>');
       };
@@ -353,9 +352,10 @@
     $.updateProgressbar = function (status) {
       var result = jQuery.parseJSON(status);
       if (result !== null) {
-        if (result.progress < $("#progressbar")[0].value) return;
+        const progressBar = document.querySelector("#progressbar");   
+        if (result.progress < progressBar.value) return;
         //Updating progress
-        $("#progressbar")[0].value = result.progress;
+        progressBar.value = result.progress;
         $("#percentage").text(result.progress + '% ' + result.details);
         var upgradeError = result.details.toUpperCase().indexOf('<%= Localization.GetSafeJSString(LocalizeString("Error"))%>') > -1;
         if (upgradeError) {
@@ -416,12 +416,12 @@
     $.startProgressbar = function () {
       //Disabling button
       disable('#seeLogs, #visitSite, #retry');
-      //Making sure that progress indicate 0
-      $("#progressbar")[0].value = 0;
+      const progressBar = document.querySelector("#progressbar");
+      progressBar.value = 0;
       $("#percentage").text('0%');
       upgradeWizard.startProgressBar();
-      $("#progressbar").removeClass('stoppedProgress');
-      $("#progressbar").addClass('inProgress');
+      progressBar.classList.remove('stoppedProgress');
+      progressBar.classList.add('inProgress');
     };
 
     //Stop update progress bar on errors
@@ -433,8 +433,9 @@
       }
       $('#installation-steps > p.step-running').attr('class', 'step-error');
       upgradeWizard.stopProgressBar();
-      $("#progressbar").removeClass('inProgress');
-      $("#progressbar").addClass('stoppedProgress');
+      const progressBar = document.querySelector("#progressbar");
+      progressBar.classList.remove('inProgress');
+      progressBar.classList.add('stoppedProgress');
     };
 
     $(document).ready(function () {
@@ -443,7 +444,7 @@
       $('.flag[value=' + $("#PageLocale")[0].value + ']').addClass("selectedFlag");
 
       //Progressbar and button initialization
-      $("#progressbar")[0].value = 0;
+      document.querySelector("#progressbar").value = 0;
       disable('#visitSite, #seeLogs, #retry');
 
       $("#retry").click(function (e) {

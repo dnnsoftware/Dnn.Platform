@@ -512,8 +512,7 @@
                     $.stopProgressbarOnError();
                 });
                 $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
-                //Making sure that progress indicate 0
-                $("#progressbar")[0].value = 0;
+                document.querySelector("#progressbar").value = 0;
                 $("#percentage").text('0% ');
                 $("#timer").html('0:00 ' + '<%=LocalizeString("TimerMinutes") %>');
             };
@@ -726,9 +725,9 @@
         $.updateProgressbar = function (status) {
             var result = jQuery.parseJSON(status);
             if (result !== null) {
-                if (result.progress < $("#progressbar")[0].value) return;
-                //Updating progress
-                $("#progressbar")[0].value = result.progress;
+                const progressBar = document.querySelector("#progressbar");
+                if (result.progress < progressBar.value) return;
+                progressBar.value = result.progress;
                 $("#percentage").text(result.progress + '% ' + result.details);
                 var installationError = result.details.toUpperCase().indexOf('ERROR') > -1;
                 if (installationError) {
@@ -779,16 +778,14 @@
             }
         };
 
-        //Start progress bar
         $.startProgressbar = function () {
-            //Disabling button
             $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
-            //Making sure that progress indicate 0
-            $("#progressbar")[0].value = 0;
+            const progressBar = document.querySelector("#progressbar");                 
+            progressBar.value = 0;
             $("#percentage").text('0%');
             installWizard.startProgressBar();
-            $("#progressbar").removeClass('stoppedProgress');
-            $("#progressbar").addClass('inProgress');
+            progressBar.classList.remove('stoppedProgress');
+            progressBar.classList.add('inProgress');
         };
 
         //Stop update progress bar on errors
@@ -800,13 +797,14 @@
             }
             $('#installation-steps > p.step-running').attr('class', 'step-error');
             installWizard.stopProgressBar();
-            $("#progressbar").removeClass('inProgress');
-            $("#progressbar").addClass('stoppedProgress');
+            const progressBar = document.querySelector("#progressbar");
+            progressBar.classList.remove('inProgress');
+            progressBar.classList.add('stoppedProgress');
         };
 
         $(document).ready(function () {
             //Progressbar and button initialization
-            $("#progressbar")[0].value = 0;
+            document.querySelector("#progressbar").value = 0;
             $('#visitSite, #seeLogs, #retry').addClass('dnnDisabledAction');
 
             $("#retry").click(function (e) {
