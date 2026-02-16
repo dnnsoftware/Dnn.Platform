@@ -42,7 +42,14 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
-            switch (this.FilePath.Substring(this.FilePath.LastIndexOf('.')).ToLowerInvariant())
+            var extension = ".css";
+            var hit = this.FilePath.LastIndexOf('.');
+            if (hit > 0)
+            {
+                extension = this.FilePath.Substring(hit).ToLowerInvariant();
+            }
+
+            switch (extension)
             {
                 case ".eot":
                 case ".woff":
