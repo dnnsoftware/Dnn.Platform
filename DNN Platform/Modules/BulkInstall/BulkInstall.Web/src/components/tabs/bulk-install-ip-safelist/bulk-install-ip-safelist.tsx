@@ -1,6 +1,7 @@
-import { Component, Host, h } from '@stencil/core';
-import { Ip } from './bulk-install-ip-safelist.model';
+import { Component, Host, h, State, } from '@stencil/core';
+import { Ip, } from './bulk-install-ip-safelist.model';
 import state from "../../../stores/store";
+import { IpSafelistClient, } from "../../../clients/ip-safelist-client";
 
 @Component({
   tag: 'bulk-install-ip-safelist',
@@ -9,26 +10,46 @@ import state from "../../../stores/store";
 })
 export class BulkInstallIpSafelist {
 
-  private ipSafelist: Ip[] = [];
-  private newIp: Ip = {
+  @State() private ipSafelist: Ip[] = [];
+  @State() private newIp: Ip = {
+    id: -1,
     name: '',
     ipAddress: '',
   }
-  private enableIpSafelist: boolean = false;
+  @State() private enableIpSafelist: boolean = false;
 
-  private createIp(_newIp: Ip): (event: MouseEvent) => void {
-    alert('Method not implemented.');
-    return;
+  private ipSafelistClient: IpSafelistClient;
+
+  constructor(){
+    this.ipSafelistClient = new IpSafelistClient(state.moduleId);
   }
 
-  private deleteIp(_ip: Ip): (event: MouseEvent) => void {
-    alert('Method not implemented.');
-    return;
+  async componentWillLoad() {
+    try {
+      this.ipSafelist = await this.ipSafelistClient.getAll();
+      this.enableIpSafelist = await this.ipSafelistClient.getIpSafelistConfiguration();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  private saveIpSafelistConfiguration(_enableIpSafelist: boolean): (event: MouseEvent) => void {
-    alert('Method not implemented.');
-    return;
+  private async createIp(_newIp: Ip): Promise<void> {
+    const createdIp = await this.ipSafelistClient.create(_newIp.name, _newIp.ipAddress);
+    this.ipSafelist = [...this.ipSafelist, createdIp];
+    this.newIp = {
+      id: -1,
+      name: '',
+      ipAddress: '',
+    };
+  }
+
+  private async deleteIp(_ip: Ip): Promise<void> {
+    await this.ipSafelistClient.delete(_ip.id);
+    this.ipSafelist = await this.ipSafelistClient.getAll();
+  }
+
+  private async saveIpSafelistConfiguration(_enableIpSafelist: boolean): Promise<void> {
+    await this.ipSafelistClient.saveIpSafelistConfiguration(_enableIpSafelist);
   }
 
   render() {
@@ -48,12 +69,16 @@ export class BulkInstallIpSafelist {
                       label={state.resx.IPSafeListItemNameText}
                       helpText={state.resx.IPSafeListItemNameHelp}
                       required
+                      value={this.newIp.name}
+                      onValueInput={e => this.newIp = { ...this.newIp, name: (e.detail as string), } }
                     />
                     <dnn-input
                       type="text"
                       label={state.resx.IPSafeListItemIpAddressText}
                       helpText={state.resx.IPSafeListItemIpAddressHelp}
                       required
+                      value={this.newIp.ipAddress}
+                      onValueInput={e => this.newIp = { ...this.newIp, ipAddress: (e.detail as string), } }
                     />
                     <dnn-button
                       onClick={() => this.createIp(this.newIp)}
@@ -62,7 +87,7 @@ export class BulkInstallIpSafelist {
                     </dnn-button>
                   </div>
                 </div>
-  
+
                 <div class="clearfix"></div>
               </div>
             </div>
@@ -111,9 +136,12 @@ export class BulkInstallIpSafelist {
                 <div class="form-horizontal">
                   <div class="form-group">
                     <label>
-                      <dnn-toggle name="enableIpSafelist" checked={this.enableIpSafelist}></dnn-toggle>
+                      <dnn-toggle
+                        name="enableIpSafelist"
+                        checked={this.enableIpSafelist}
+                        onCheckChanged={e => this.enableIpSafelist = e.detail.checked }/>
                       {state.resx.EnableIpSafeList}
-                    </label> 
+                    </label>
                     <dnn-button
                       onClick={() => this.saveIpSafelistConfiguration(this.enableIpSafelist)}
                     >
