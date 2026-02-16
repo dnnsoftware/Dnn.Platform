@@ -1,4 +1,7 @@
-﻿Imports DotNetNuke.UI.Design.WebControls
+﻿' Copyright (c) .NET Foundation. All rights reserved.
+' Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
+Imports DotNetNuke.UI.Design.WebControls
 Imports DotNetNuke.UI.Utilities
 Imports Microsoft.VisualBasic
 Imports Microsoft.VisualBasic.CompilerServices
