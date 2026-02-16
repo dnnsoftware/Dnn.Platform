@@ -71,6 +71,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Directory.Packages.props" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="log4net\Appender\AdoNetAppender.cs">
