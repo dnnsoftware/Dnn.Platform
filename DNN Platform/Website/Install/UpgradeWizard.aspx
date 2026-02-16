@@ -280,12 +280,11 @@
         });
         $("#tabs").tabs();
         $("#tabs").tabs({ disabled: [1, 2, 3] });
-                $('.dnnFormMessage.dnnFormError').each(function () {
-                  if ($(this).html().length)
-                    $(this).css('display', 'block');
-                });
-              });
-            });
+        $('.dnnFormMessage.dnnFormError').each(function () {
+            if ($(this).html().length)
+            $(this).css('display', 'block');
+        });
+    });
 
       //****************************************************************************************
       // EVENT HANDLER FUNCTIONS
