@@ -19,6 +19,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Skins;
+    using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     /// <summary>
@@ -48,35 +49,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         }
 
         /// <inheritdoc/>
-        public PaneModel InjectModule(PaneModel pane, ModuleInfo moduleInfo, PortalSettings portalSettings)
+        public PaneModel InjectModule(DnnPageController page, PaneModel pane, ModuleInfo moduleInfo, PortalSettings portalSettings)
         {
-            // this.containerWrapperControl = new HtmlGenericControl("div");
-            // this.PaneControl.Controls.Add(this.containerWrapperControl);
-
-            // inject module classes
-            var classFormatString = "DnnModule DnnModule-{0} DnnModule-{1}";
-            var sanitizedModuleName = Null.NullString;
-
-            if (!string.IsNullOrEmpty(moduleInfo.DesktopModule.ModuleName))
-            {
-                sanitizedModuleName = Globals.CreateValidClass(moduleInfo.DesktopModule.ModuleName, false);
-            }
-
-            if (this.IsVesionableModule(moduleInfo))
-            {
-                classFormatString += " DnnVersionableControl";
-            }
-
-            // this.containerWrapperControl.Attributes["class"] = string.Format(classFormatString, sanitizedModuleName, module.ModuleID);
             try
             {
-                if (!Globals.IsAdminControl() && (portalSettings.InjectModuleHyperLink || Personalization.GetUserMode() != PortalSettings.Mode.View))
-                {
-                    // this.containerWrapperControl.Controls.Add(new LiteralControl("<a name=\"" + module.ModuleID + "\"></a>"));
-                }
-
                 // Load container control
-                var container = this.LoadModuleContainer(moduleInfo, portalSettings);
+                var container = this.LoadModuleContainer(page, moduleInfo, portalSettings);
 
                 // Add Container to Dictionary
                 pane.Containers.Add(container.ID, container);
@@ -100,78 +78,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return pane;
         }
 
-        /// <inheritdoc/>
-        public PaneModel ProcessPane(PaneModel pane)
-        {
-            if (Globals.IsLayoutMode())
-            {
-                /*
-                this.PaneControl.Visible = true;
-
-                // display pane border
-                string cssclass = this.PaneControl.Attributes["class"];
-                if (string.IsNullOrEmpty(cssclass))
-                {
-                    this.PaneControl.Attributes["class"] = CPaneOutline;
-                }
-                else
-                {
-                    this.PaneControl.Attributes["class"] = cssclass.Replace(CPaneOutline, string.Empty).Trim().Replace("  ", " ") + " " + CPaneOutline;
-                }
-
-                // display pane name
-                var ctlLabel = new Label { Text = "<center>" + this.Name + "</center><br />", CssClass = "SubHead" };
-                this.PaneControl.Controls.AddAt(0, ctlLabel);
-                */
-            }
-
-            /*
-            else
-            {
-                if (this.CanCollapsePane(pane))
-                {
-                    pane.CssClass += " DNNEmptyPane";
-                }
-
-                // Add support for drag and drop
-                if (Globals.IsEditMode())
-                {
-                    pane.CssClass += " dnnSortable";
-
-                }
-            }
-            */
-            return pane;
-        }
-
-        private bool CanCollapsePane(PaneModel pane)
-        {
-            // This section sets the width to "0" on panes that have no modules.
-            // This preserves the integrity of the HTML syntax so we don't have to set
-            // the visiblity of a pane to false. Setting the visibility of a pane to
-            // false where there are colspans and rowspans can render the skin incorrectly.
-            var canCollapsePane = true;
-            if (pane.Containers.Count > 0)
-            {
-                canCollapsePane = false;
-            }
-
-            return canCollapsePane;
-        }
-
-        private bool IsVesionableModule(ModuleInfo moduleInfo)
-        {
-            if (string.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
-            {
-                return false;
-            }
-
-            // TODO: Replace with DI-based resolution when business controller classes are migrated.
-            var controller = DotNetNuke.Framework.Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, string.Empty);
-            return controller is IVersionable;
-        }
-
-        private ContainerModel LoadContainerFromCookie(HttpRequest request, PortalSettings portalSettings)
+        private ContainerModel LoadContainerFromCookie(HttpRequestBase request, PortalSettings portalSettings)
         {
             ContainerModel container = null;
             var cookie = request.Cookies["_ContainerSrc" + portalSettings.PortalId];
@@ -186,7 +93,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return container;
         }
 
-        private ContainerModel LoadModuleContainer(ModuleInfo module, PortalSettings portalSettings)
+        private ContainerModel LoadModuleContainer(DnnPageController page, ModuleInfo module, PortalSettings portalSettings)
         {
             var containerSrc = Null.NullString;
 
@@ -215,25 +122,27 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             }
             else
             {
-                /*
-                container = (this.LoadContainerFromQueryString(module, request) ?? this.LoadContainerFromCookie(request)) ?? this.LoadNoContainer(module);
+                container = (this.LoadContainerFromQueryString(module, page.Request, portalSettings) ?? this.LoadContainerFromCookie(page.Request, portalSettings)) ?? this.LoadNoContainer(module, portalSettings);
+                /* not sur what this dous
                 if (container == null)
                 {
-                    // Check Skin for Container
-                    var masterModules = this.PortalSettings.ActiveTab.ChildModules;
-                    if (masterModules.ContainsKey(module.ModuleID) && string.IsNullOrEmpty(masterModules[module.ModuleID].ContainerSrc))
-                    {
-                        // look for a container specification in the skin pane
-                        if (this.PaneControl != null)
-                        {
-                            if (this.PaneControl.Attributes["ContainerSrc"] != null)
-                            {
-                                container = this.LoadContainerFromPane();
-                            }
-                        }
+                   // Check Skin for Container
+                   var masterModules = portalSettings.ActiveTab.ChildModules;
+                   if (masterModules.ContainsKey(module.ModuleID) && string.IsNullOrEmpty(masterModules[module.ModuleID].ContainerSrc))
+                   {
+                       // look for a container specification in the skin pane
+
+                       if (this.PaneControl != null)
+                       {
+                           if (this.PaneControl.Attributes["ContainerSrc"] != null)
+                           {
+                               container = this.LoadContainerFromPane();
+                           }
+                       }
                     }
                 }
                 */
+
                 // else load assigned container
                 if (container == null)
                 {
@@ -312,6 +221,54 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 }
 
                 Exceptions.LogException(lex);
+            }
+
+            return container;
+        }
+
+        private ContainerModel LoadContainerFromQueryString(ModuleInfo module, HttpRequestBase request, PortalSettings portalSettings)
+        {
+            ContainerModel container = null;
+            int previewModuleId = -1;
+            if (request.QueryString["ModuleId"] != null)
+            {
+                if (!int.TryParse(request.QueryString["ModuleId"], out previewModuleId))
+                {
+                    previewModuleId = -1;
+                }
+            }
+
+            // load user container ( based on cookie )
+            if (request.QueryString["ContainerSrc"] != null && (module.ModuleID == previewModuleId || previewModuleId == -1))
+            {
+                string containerSrc = SkinController.FormatSkinSrc(Globals.QueryStringDecode(request.QueryString["ContainerSrc"]) + ".ascx", portalSettings);
+                container = this.LoadContainerByPath(containerSrc, module, portalSettings);
+            }
+
+            return container;
+        }
+
+        private ContainerModel LoadNoContainer(ModuleInfo module, PortalSettings portalSettings)
+        {
+            string noContainerSrc = "[G]" + SkinController.RootContainer + "/_default/No Container.ascx";
+            ContainerModel container = null;
+
+            // if the module specifies that no container should be used
+            if (module.DisplayTitle == false)
+            {
+                // always display container if the current user is the administrator or the module is being used in an admin case
+                bool displayTitle = ModulePermissionController.CanEditModuleContent(module) || Globals.IsAdminSkin();
+
+                // unless the administrator is in view mode
+                if (displayTitle)
+                {
+                    displayTitle = Personalization.GetUserMode() != PortalSettings.Mode.View;
+                }
+
+                if (displayTitle == false)
+                {
+                    container = this.LoadContainerByPath(SkinController.FormatSkinSrc(noContainerSrc, portalSettings), module, portalSettings);
+                }
             }
 
             return container;

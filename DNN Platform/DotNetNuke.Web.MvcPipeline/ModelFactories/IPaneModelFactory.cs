@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 {
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     /// <summary>
@@ -23,17 +24,11 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         /// <summary>
         /// Injects a module into the specified pane.
         /// </summary>
+        /// <param name="page">The page controller.</param>
         /// <param name="pane">The target pane.</param>
         /// <param name="moduleInfo">The module to inject.</param>
         /// <param name="portalSettings">The current portal settings.</param>
         /// <returns>The updated <see cref="PaneModel"/>.</returns>
-        PaneModel InjectModule(PaneModel pane, ModuleInfo moduleInfo, PortalSettings portalSettings);
-
-        /// <summary>
-        /// Applies layout and behavior rules to the specified pane.
-        /// </summary>
-        /// <param name="pane">The pane to process.</param>
-        /// <returns>The processed <see cref="PaneModel"/>.</returns>
-        PaneModel ProcessPane(PaneModel pane);
+        PaneModel InjectModule(DnnPageController page, PaneModel pane, ModuleInfo moduleInfo, PortalSettings portalSettings);
     }
 }

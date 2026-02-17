@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -231,7 +231,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return skin;
         }
 
-        private SkinModel LoadSkin(DnnPageController page, string skinPath)
+        protected virtual SkinModel LoadSkin(DnnPageController page, string skinPath)
         {
             SkinModel ctlSkin = null;
             try
@@ -251,7 +251,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 ctlSkin.PaneCssClass = /*Globals.IsEditMode() ? "dnnSortable" : */string.Empty;
 
                 // Load the Module Control(s)
-                var success = Globals.IsAdminControl() ? this.ProcessSlaveModule(page.PortalSettings, ctlSkin) : this.ProcessMasterModules(page.PortalSettings, ctlSkin);
+                var success = Globals.IsAdminControl() ? this.ProcessSlaveModule(page, ctlSkin) : this.ProcessMasterModules(page, ctlSkin);
 
                 // Load the Control Panel
                 this.InjectControlPanel(ctlSkin, page.Request);
@@ -292,22 +292,13 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                     ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
                 }
 
-                // Process the Panes attributes
-                foreach (var key in ctlSkin.Panes.Keys)
-                {
-                    this.paneModelFactory.ProcessPane(ctlSkin.Panes[key]);
-                }
-
                 var isSpecialPageMode = UrlUtils.InPopUp() || page.Request.QueryString["dnnprintmode"] == "true";
                 if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !isSpecialPageMode)
                 {
                     // Register Drag and Drop plugin
                     JavaScript.RequestRegistration(this.appStatus, this.eventLogger, page.PortalSettings, CommonJs.DnnPlugins);
 
-                    // MvcClientResourceManager.RegisterStyleSheet(page.ControllerContext, "~/resources/shared/stylesheets/dnn.dragDrop.css", FileOrder.Css.FeatureCss);
                     ctlSkin.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = "~/resources/shared/stylesheets/dnn.dragDrop.css", FileOrder = FileOrder.Css.FeatureCss });
-
-                    // MvcClientResourceManager.RegisterScript(page.ControllerContext, "~/resources/shared/scripts/dnn.dragDrop.js");
                     ctlSkin.RegisteredScripts.Add(new RegisteredScript() { Script = "~/resources/shared/scripts/dnn.dragDrop.js" });
 
                     // Register Client Script
@@ -348,9 +339,10 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return ctlSkin;
         }
 
-        private bool ProcessMasterModules(PortalSettings portalSettings, SkinModel skin)
+        private bool ProcessMasterModules(DnnPageController page, SkinModel skin)
         {
             var success = true;
+            var portalSettings = page.PortalSettings;
             if (TabPermissionController.CanViewPage())
             {
                 // We need to ensure that Content Item exists since in old versions Content Items are not needed for tabs
@@ -386,7 +378,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                     {
                         foreach (var objModule in PortalSettingsController.Instance().GetTabModules(portalSettings))
                         {
-                            success = this.ProcessModule(portalSettings, skin, objModule);
+                            success = this.ProcessModule(page, portalSettings, skin, objModule);
                         }
                     }
                     else
@@ -414,20 +406,18 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                     redirectUrl = new LanguageTokenReplace { Language = currentLocale.Code }.ReplaceEnvironmentTokens("[URL]");
                 }
 
-                throw new AccesDeniedException("TabAccess.Error", redirectUrl);
-                /*
-                this.Response.Redirect(redirectUrl, true);
-                */
+                throw new AccesDeniedException(Localization.GetString("TabAccess.Error"), redirectUrl);
             }
 
             return success;
         }
 
-        private bool ProcessSlaveModule(PortalSettings portalSettings, SkinModel skin)
+        private bool ProcessSlaveModule(DnnPageController page, SkinModel skin)
         {
             var success = true;
             var key = UIUtilities.GetControlKey();
             var moduleId = UIUtilities.GetModuleId(key);
+            var portalSettings = page.PortalSettings;
             var slaveModule = UIUtilities.GetSlaveModule(moduleId, key, portalSettings.ActiveTab.TabID);
 
             PaneModel pane;
@@ -473,18 +463,19 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
                 if (ModulePermissionController.HasModuleAccess(slaveModule.ModuleControl.ControlType, permissionKey, slaveModule))
                 {
-                    success = this.InjectModule(portalSettings, pane, slaveModule);
+                    success = this.InjectModule(page, portalSettings, pane, slaveModule);
                 }
                 else
                 {
-                    throw new AccesDeniedException("AccesDenied", Globals.AccessDeniedURL(Localization.GetString("ModuleAccess.Error")));
+                    var message = Localization.GetString("AccesDenied");
+                    throw new AccesDeniedException(message, Globals.AccessDeniedURL(Localization.GetString("ModuleAccess.Error")));
                 }
             }
 
             return success;
         }
 
-        private bool ProcessModule(PortalSettings portalSettings, SkinModel skin, ModuleInfo module)
+        private bool ProcessModule(DnnPageController page, PortalSettings portalSettings, SkinModel skin, ModuleInfo module)
         {
             var success = true;
             var x = Globals.GetCurrentServiceProvider().GetService<ModuleInjectionManager>();
@@ -497,13 +488,11 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
                 if (pane != null)
                 {
-                    success = this.InjectModule(portalSettings, pane, module);
+                    success = this.InjectModule(page, portalSettings, pane, module);
                 }
                 else
                 {
                     var lex = new ModuleLoadException(Localization.GetString("PaneNotFound.Error"));
-
-                    // this.Controls.Add(new ErrorContainer(portalSettings, MODULELOAD_ERROR, lex).Container);
                     Exceptions.LogException(lex);
                 }
             }
@@ -525,9 +514,18 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return pane;
         }
 
-        private void HandleAccesDenied(bool v)
+        private void HandleAccesDenied(bool redirect)
         {
-            throw new NotImplementedException();
+            var message = Localization.GetString("TabAccess.Error");
+            if (redirect)
+            {
+                var redirectUrl = Globals.AccessDeniedURL(message);
+                throw new AccesDeniedException(message, redirectUrl);
+            }
+            else
+            {
+                this.pageService.AddMessage(string.Empty, message, PageMessageType.Warning, string.Empty);
+            }
         }
 
         private bool CheckExpired(PortalSettings portalSettings)
@@ -577,7 +575,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             }
         }
 
-        private bool InjectModule(PortalSettings portalSettings, PaneModel pane, ModuleInfo module)
+        private bool InjectModule(DnnPageController page, PortalSettings portalSettings, PaneModel pane, ModuleInfo module)
         {
             var bSuccess = true;
 
@@ -596,7 +594,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 }
                 else
                 {
-                    this.paneModelFactory.InjectModule(pane, module, portalSettings);
+                    this.paneModelFactory.InjectModule(page, pane, module, portalSettings);
                 }
             }
             catch (ThreadAbortException)

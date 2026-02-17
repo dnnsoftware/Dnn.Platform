@@ -11,6 +11,8 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     /// <summary>
@@ -68,6 +70,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                     moduleDiv.AddCssClass("DnnModule-" + container.Value.ModuleConfiguration.ModuleID);
                     moduleDiv.AddCssClass("DnnModule-" + sanitizedModuleName);
                     moduleDiv.AddCssClass("DnnModule");
+
                     if (model.IsEditMode)
                     {
                         moduleDiv.Attributes["data-module-title"] = container.Value.ModuleConfiguration.ModuleTitle;
@@ -78,9 +81,13 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                         moduleDiv.AddCssClass("DnnModule-Admin");
                     }
 
-                    var anchor = new TagBuilder("a");
-                    anchor.Attributes["name"] = container.Value.ModuleConfiguration.ModuleID.ToString();
-                    moduleDiv.InnerHtml += anchor.ToString();
+                    if (!Globals.IsAdminControl() && (container.Value.PortalSettings.InjectModuleHyperLink || Personalization.GetUserMode() != PortalSettings.Mode.View))
+                    {
+                        var anchor = new TagBuilder("a");
+                        anchor.Attributes["name"] = container.Value.ModuleConfiguration.ModuleID.ToString();
+                        moduleDiv.InnerHtml += anchor.ToString();
+                    }
+
                     moduleDiv.InnerHtml += htmlHelper.Partial(container.Value.ContainerRazorFile, container.Value).ToHtmlString();
                     paneDiv.InnerHtml += moduleDiv.ToString();
                 }
