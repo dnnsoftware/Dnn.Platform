@@ -12,6 +12,7 @@ namespace DotNetNuke.UI.Skins
     using System.Xml;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer;

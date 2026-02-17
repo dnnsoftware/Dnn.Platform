@@ -8,6 +8,7 @@ namespace DotNetNuke.Common.Lists
     using System.Collections.Generic;
 
     using DotNetNuke.Collections;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
     /// <summary>Represents a collection of <see cref="ListInfo"/>.</summary>

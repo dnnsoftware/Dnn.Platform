@@ -2742,7 +2742,7 @@ namespace DotNetNuke.Entities.Urls
                             pathWithNoQs = pathWithNoQs.Substring(0, pathWithNoQs.IndexOf("?", StringComparison.Ordinal));
                         }
 
-                        if (!pathWithNoQs.AsSpan(pathWithNoQs.Length - 5, 5).Contains(".", StringComparison.Ordinal))
+                        if (!pathWithNoQs.Substring(pathWithNoQs.Length - 5, 5).Contains(".", StringComparison.Ordinal))
                         {
                             // no page extension, output a 404 if the Url is not found
                             // 766 : check for physical path before passing off as a 404 error
