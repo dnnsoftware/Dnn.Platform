@@ -6,31 +6,45 @@ namespace DotNetNuke.Services.FileSystem.Internal
 {
     using System;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    public class FileDeletionController : ServiceLocator<IFileDeletionController, FileDeletionController>, IFileDeletionController
+    public class FileDeletionController(IFileLockingController fileLockingController, IFileVersionController fileVersionController, IFolderMappingController folderMappingController, IContentController contentController, DataProvider dataProvider)
+        : ServiceLocator<IFileDeletionController, FileDeletionController>, IFileDeletionController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileDeletionController));
+        private readonly IFileLockingController fileLockingController = fileLockingController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IFileLockingController>();
+        private readonly IFileVersionController fileVersionController = fileVersionController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IFileVersionController>();
+        private readonly IFolderMappingController folderMappingController = folderMappingController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IFolderMappingController>();
+        private readonly IContentController contentController = contentController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IContentController>();
+        private readonly DataProvider dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
+
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IFileLockingController. Scheduled removal in v12.0.0.")]
+        public FileDeletionController()
+            : this(null, null, null, null, null)
+        {
+        }
 
         /// <inheritdoc />
         public void DeleteFile(IFileInfo file)
         {
-            string lockReason;
-            if (FileLockingController.Instance.IsFileLocked(file, out lockReason))
+            if (this.fileLockingController.IsFileLocked(file, out var lockReason))
             {
                 throw new FileLockedException(Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
             }
 
-            FileVersionController.Instance.DeleteAllUnpublishedVersions(file, false);
+            this.fileVersionController.DeleteAllUnpublishedVersions(file, false);
             try
             {
-                var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
+                var folderMapping = this.folderMappingController.GetFolderMapping(file.PortalId, file.FolderMappingID);
                 FolderProvider.Instance(folderMapping.FolderProviderType).DeleteFile(file);
             }
             catch (Exception ex)
@@ -47,13 +61,12 @@ namespace DotNetNuke.Services.FileSystem.Internal
         /// <inheritdoc />
         public void UnlinkFile(IFileInfo file)
         {
-            string lockReason;
-            if (FileLockingController.Instance.IsFileLocked(file, out lockReason))
+            if (this.fileLockingController.IsFileLocked(file, out var lockReason))
             {
                 throw new FileLockedException(Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
             }
 
-            FileVersionController.Instance.DeleteAllUnpublishedVersions(file, false);
+            this.fileVersionController.DeleteAllUnpublishedVersions(file, false);
 
             this.DeleteFileData(file);
         }
@@ -61,24 +74,24 @@ namespace DotNetNuke.Services.FileSystem.Internal
         /// <inheritdoc />
         public void DeleteFileData(IFileInfo file)
         {
-            DataProvider.Instance().DeleteFile(file.PortalId, file.FileName, file.FolderId);
-            DeleteContentItem(file.ContentItemID);
+            this.dataProvider.DeleteFile(file.PortalId, file.FileName, file.FolderId);
+            this.DeleteContentItem(file.ContentItemID);
         }
 
         /// <inheritdoc />
         protected override Func<IFileDeletionController> GetFactory()
         {
-            return () => new FileDeletionController();
+            return () => Globals.DependencyProvider.GetRequiredService<IFileDeletionController>();
         }
 
-        private static void DeleteContentItem(int contentItemId)
+        private void DeleteContentItem(int contentItemId)
         {
             if (contentItemId == Null.NullInteger)
             {
                 return;
             }
 
-            Util.GetContentController().DeleteContentItem(contentItemId);
+            this.contentController.DeleteContentItem(contentItemId);
         }
     }
 }

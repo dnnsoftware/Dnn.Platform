@@ -159,14 +159,22 @@ namespace DotNetNuke
             services.AddTransient<IClientResourceSettings, ClientResourceSettings>();
             services.AddTransient<IWorkflowEngine, WorkflowEngine>();
             services.AddTransient<IWorkflowSecurity, WorkflowSecurity>();
+            services.AddTransient<IWorkflowManager, WorkflowManager>();
             services.AddTransient<IWorkflowStateManager, WorkflowStateManager>();
+            services.AddTransient<ISystemWorkflowManager, SystemWorkflowManager>();
             services.AddTransient<IContentController, ContentController>();
+            services.AddTransient<IContentTypeController, ContentTypeController>();
             services.AddTransient<IVocabularyController, VocabularyController>();
             services.AddTransient<ITermController, TermController>();
             services.AddTransient<IScopeTypeController, ScopeTypeController>();
             services.AddTransient<ITabModulesController, TabModulesController>();
             services.AddTransient<IRegistrationProfileController, RegistrationProfileController>();
             services.AddTransient<IFileSecurityController, FileSecurityController>();
+            services.AddTransient<IFileLockingController, FileLockingController>();
+            services.AddTransient<IFileDeletionController, FileDeletionController>();
+            services.AddTransient<IFileVersionController, FileVersionController>();
+            services.AddTransient<IFolderPermissionController, FolderPermissionController>();
+            services.AddTransient<IPathUtils>(_ => new PathUtils());
             if (CryptoConfig.AllowOnlyFipsAlgorithms)
             {
                 services.AddTransient<ICryptographyProvider, FipsCompilanceCryptographyProvider>();
