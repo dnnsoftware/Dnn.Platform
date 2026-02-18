@@ -40,6 +40,10 @@ export class BulkInstallInstall {
                       dragAndDropFile: store.resx["DropZone.DragAndDropFile"],
                       or: store.resx["DropZone.Or"],
                       uploadFile: store.resx["DropZone.UploadFile"],
+                      uploadSizeTooLarge: store.resx["DropZone.UploadSizeTooLarge"],
+                      fileSizeLimit: store.resx["DropZone.FileSizeLimit"],
+                      invalidExtension: store.resx["DropZone.InvalidExtension"],
+                      allowedFileExtensions: store.resx["DropZone.AllowedFileExtensions"],
                     }
                 }></dnn-dropzone>
                 {this.selectedFiles.length > 0 && <ul>

@@ -66,4 +66,11 @@ export interface BulkInstallLocalization {
     Save: any;
     Severity: string;
     Type: string;
+    "DropZone.DragAndDropFile": string;
+    "DropZone.Or": string;
+    "DropZone.UploadFile": string;
+    "DropZone.UploadSizeTooLarge": string;
+    "DropZone.FileSizeLimit": string;
+    "DropZone.InvalidExtension": string;
+    "DropZone.AllowedFileExtensions": string;
 }

@@ -228,4 +228,25 @@
   <data name="Severity" xml:space="preserve">
     <value>Severity</value>
   </data>
+  <data name="DropZone.UploadSizeTooLarge" xml:space="preserve">
+    <value>The file you tried to upload is too large.</value>
+  </data>
+  <data name="DropZone.DragAndDropFile" xml:space="preserve">
+    <value>Drag and drop a file</value>
+  </data>
+  <data name="DropZone.Or" xml:space="preserve">
+    <value>or</value>
+  </data>
+  <data name="DropZone.UploadFile" xml:space="preserve">
+    <value>Upload a file</value>
+  </data>
+  <data name="DropZone.FileSizeLimit" xml:space="preserve">
+    <value>The maximum size is {0}</value>
+  </data>
+  <data name="DropZone.InvalidExtension" xml:space="preserve">
+    <value>The file you tried to upload has an invalid extension.</value>
+  </data>
+  <data name="DropZone.AllowedFileExtensions" xml:space="preserve">
+    <value>Allowed file extensions: {0}</value>
+  </data>
 </root>
