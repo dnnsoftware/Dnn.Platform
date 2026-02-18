@@ -42,29 +42,25 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
             return this.Request.CreateResponse(HttpStatusCode.OK, session);
         }
 
-        /// <summary>Gets a session by its <paramref name="guid"/>.</summary>
-        /// <param name="guid">The public identifier for the <see cref="Session"/>.</param>
+        /// <summary>Gets a session by its <paramref name="sessionGuid"/>.</summary>
+        /// <param name="sessionGuid">The public identifier for the <see cref="Session"/>.</param>
         /// <returns>A response with either the <see cref="Session"/> or <see langword="null"/>.</returns>
         [HttpGet]
-#pragma warning disable CA1720 // Identifier contains type name
-        public HttpResponseMessage Get(string guid)
-#pragma warning restore CA1720 // Identifier contains type name
+        public HttpResponseMessage Get(string sessionGuid)
         {
-            var session = this.sessionManager.GetSession(guid);
+            var session = this.sessionManager.GetSession(sessionGuid);
 
             return this.Request.CreateResponse(HttpStatusCode.OK, session);
         }
 
         /// <summary>Adds a package file to the session.</summary>
-        /// <param name="guid">The public identifier for the <see cref="Session"/>.</param>
+        /// <param name="sessionGuid">The public identifier for the <see cref="Session"/>.</param>
         /// <returns>A response indicating success.</returns>
         /// <exception cref="HttpResponseException">The request is not a multipart MIME type.</exception>
         [HttpPost]
-#pragma warning disable CA1720 // Identifier contains type name
-        public async Task<HttpResponseMessage> AddPackage(string guid)
-#pragma warning restore CA1720 // Identifier contains type name
+        public async Task<HttpResponseMessage> AddPackage(string sessionGuid)
         {
-            if (!this.sessionManager.SessionExists(guid))
+            if (!this.sessionManager.SessionExists(sessionGuid))
             {
                 // Session doesn't exist.
                 return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid session.");
@@ -101,14 +97,12 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         }
 
         /// <summary>Gets the summary of a session.</summary>
-        /// <param name="guid">The public identifier for the <see cref="Session"/>.</param>
+        /// <param name="sessionGuid">The public identifier for the <see cref="Session"/>.</param>
         /// <returns>A response with a sorted list of <see cref="InstallJob"/>.</returns>
         [HttpGet]
-#pragma warning disable CA1720 // Identifier contains type name
-        public HttpResponseMessage Summary(string guid)
-#pragma warning restore CA1720 // Identifier contains type name
+        public HttpResponseMessage Summary(string sessionGuid)
         {
-            if (!this.sessionManager.SessionExists(guid))
+            if (!this.sessionManager.SessionExists(sessionGuid))
             {
                 // Session doesn't exist.
                 return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid session.");
@@ -120,7 +114,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                 string ipAddress = HttpContext.Current.Request.UserHostAddress;
 
                 // Get the session.
-                Session sessionObj = this.sessionManager.GetSession(guid);
+                Session sessionObj = this.sessionManager.GetSession(sessionGuid);
 
                 // Create a deploy operation.
                 Deployment deployOperation = new Deployment(this.sessionManager, this.eventLogManager, this.appStatus, sessionObj, ipAddress);
@@ -138,14 +132,12 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         }
 
         /// <summary>Starts the installation for the session.</summary>
-        /// <param name="guid">The public identifier for the <see cref="Session"/>.</param>
+        /// <param name="sessionGuid">The public identifier for the <see cref="Session"/>.</param>
         /// <returns>A response indicating success.</returns>
-        [HttpGet]
-#pragma warning disable CA1720 // Identifier contains type name
-        public HttpResponseMessage Install(string guid)
-#pragma warning restore CA1720 // Identifier contains type name
+        [HttpPost]
+        public HttpResponseMessage Install(string sessionGuid)
         {
-            if (!this.sessionManager.SessionExists(guid))
+            if (!this.sessionManager.SessionExists(sessionGuid))
             {
                 // Session doesn't exist.
                 return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid session.");
@@ -157,7 +149,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                 string ipAddress = HttpContext.Current.Request.UserHostAddress;
 
                 // Get the session.
-                Session sessionObj = this.sessionManager.GetSession(guid);
+                Session sessionObj = this.sessionManager.GetSession(sessionGuid);
 
                 // Create a deploy operation.
                 Deployment deployOperation = new Deployment(this.sessionManager, this.eventLogManager, this.appStatus, sessionObj, ipAddress);

@@ -69,7 +69,7 @@ namespace Dnn.Modules.BulkInstall.Components
         }
 
         /// <summary>Gets the path to a temp folder for this deployment.</summary>
-        protected string TempPath => Path.Combine(this.sessionManager.PathForSession(this.Session.Guid), "temp");
+        protected string TempPath => Path.Combine(this.sessionManager.PathForSession(this.Session.SessionGuid), "temp");
 
         /// <summary>Gets or sets the IP address requesting this deployment.</summary>
         protected string IPAddress { get; set; }
@@ -112,7 +112,7 @@ namespace Dnn.Modules.BulkInstall.Components
                 // Log package installs.
                 foreach (PackageJob package in job.Packages)
                 {
-                    string log = $"Package successfully installed: {package.Name} @ {package.VersionStr}, session: {this.Session.Guid}.";
+                    string log = $"Package successfully installed: {package.Name} @ {package.VersionStr}, session: {this.Session.SessionGuid}.";
 
                     this.eventLogManager.Log("PACKAGE_INSTALLED", EventLogSeverity.Info, log);
                 }
@@ -204,7 +204,7 @@ namespace Dnn.Modules.BulkInstall.Components
         /// <returns>A list of file paths.</returns>
         protected List<string> IdentifyPackages()
         {
-            return this.IdentifyPackagesInDirectory(this.sessionManager.PathForSession(this.Session.Guid));
+            return this.IdentifyPackagesInDirectory(this.sessionManager.PathForSession(this.Session.SessionGuid));
         }
 
         /// <summary>Gets a list of package files for the specified <paramref name="directoryPath" />.</summary>

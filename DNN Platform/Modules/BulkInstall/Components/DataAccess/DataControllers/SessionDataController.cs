@@ -17,17 +17,15 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers
     {
         private readonly IHostSettings hostSettings = hostSettings;
 
-        /// <summary>Gets the <see cref="Session"/> by its <see cref="Session.Guid"/>.</summary>
-        /// <param name="guid">The session GUID.</param>
+        /// <summary>Gets the <see cref="Session"/> by its <see cref="Session.SessionGuid"/>.</summary>
+        /// <param name="sessionGuid">The session GUID.</param>
         /// <returns>The session or <see langword="null"/>.</returns>
-#pragma warning disable CA1720 // Identifier contains type name
-        public Session FindByGuid(string guid)
-#pragma warning restore CA1720 // Identifier contains type name
+        public Session FindByGuid(string sessionGuid)
         {
             using IDataContext context = DataContext.Instance(this.hostSettings);
             var repo = context.GetRepository<Session>();
 
-            return repo.Find("WHERE Guid = @0", guid).FirstOrDefault<Session>();
+            return repo.Find("WHERE Guid = @0", sessionGuid).FirstOrDefault<Session>();
         }
 
         /// <summary>Creates the <see cref="Session"/>.</summary>
