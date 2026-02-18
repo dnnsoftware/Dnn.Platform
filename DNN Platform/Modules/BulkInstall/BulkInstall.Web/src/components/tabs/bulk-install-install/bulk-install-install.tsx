@@ -33,7 +33,7 @@ export class BulkInstallInstall {
               </div>
               <div class="panel-body">
                 <dnn-dropzone
-                  allowed-extensions={['zip']}
+                  allowedExtensions={['zip']}
                   onFilesSelected={e => this.selectedFiles = [...this.selectedFiles, ...e.detail] }
                   resx={
                     {
