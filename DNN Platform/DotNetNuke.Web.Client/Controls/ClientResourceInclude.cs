@@ -139,7 +139,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 if (isKey && c == ' ')
                 {
                     // this means we have a key without a value, we should add it to the dictionary with an empty value and start a new key
-                    destination[key] = string.Empty;
+                    destination[key] = null;
                     key = string.Empty;
                     continue;
                 }

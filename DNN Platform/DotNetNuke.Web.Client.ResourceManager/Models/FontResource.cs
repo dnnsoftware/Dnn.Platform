@@ -37,7 +37,7 @@ public class FontResource : LinkResource, IFontResource
         {
             htmlString.Append($" rel=\"preload\" as=\"font\"");
         }
-        else if (!this.Attributes.ContainsKey("rel"))
+        else if (!this.Preload && !this.Attributes.ContainsKey("rel"))
         {
             htmlString.Append($" rel=\"font\"");
         }

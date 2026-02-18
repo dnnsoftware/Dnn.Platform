@@ -239,7 +239,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         {
             foreach (var attribute in this.Attributes)
             {
-                if (string.IsNullOrEmpty(attribute.Value))
+                if (attribute.Value is null)
                 {
                     htmlString.Append($" {attribute.Key}");
                 }

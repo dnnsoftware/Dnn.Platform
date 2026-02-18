@@ -41,7 +41,7 @@ public class StylesheetResource : LinkResource, IStylesheetResource
         {
             htmlString.Append($" rel=\"preload\" as=\"style\"");
         }
-        else if (!this.Attributes.ContainsKey("rel"))
+        else if (!this.Preload && !this.Attributes.ContainsKey("rel"))
         {
             htmlString.Append($" rel=\"stylesheet\"");
         }
