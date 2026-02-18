@@ -22,13 +22,6 @@
 		<Using Include="System.Threading.Tasks" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="StyleCop.Analyzers">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-	</ItemGroup>
-
   <ItemGroup>
     <Compile Include="..\..\SolutionInfo.cs" Link="SolutionInfo.cs" />
     <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />

@@ -39,10 +39,6 @@
 		</PackageReference>
 		<PackageReference Include="Spectre.Console.Cli" />
 		<PackageReference Include="Spectre.Console.Registrars.Microsoft-Di" />
-		<PackageReference Include="StyleCop.Analyzers">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="System.IO.Abstractions" />
 	</ItemGroup>
 
