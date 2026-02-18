@@ -39,7 +39,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         {
             var session = this.sessionManager.CreateSession();
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, session);
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Session = session, });
         }
 
         /// <summary>Gets a session by its <paramref name="sessionGuid"/>.</summary>
@@ -53,12 +53,12 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
             return this.Request.CreateResponse(HttpStatusCode.OK, session);
         }
 
-        /// <summary>Adds a package file to the session.</summary>
+        /// <summary>Adds package files to the session.</summary>
         /// <param name="sessionGuid">The public identifier for the <see cref="Session"/>.</param>
         /// <returns>A response indicating success.</returns>
         /// <exception cref="HttpResponseException">The request is not a multipart MIME type.</exception>
         [HttpPost]
-        public async Task<HttpResponseMessage> AddPackage(string sessionGuid)
+        public async Task<HttpResponseMessage> AddPackages(string sessionGuid)
         {
             if (!this.sessionManager.SessionExists(sessionGuid))
             {
