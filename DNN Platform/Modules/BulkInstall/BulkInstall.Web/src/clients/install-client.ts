@@ -1,4 +1,4 @@
-import { DnnServicesFramework } from "@dnncommunity/dnn-elements";
+import { DnnServicesFramework, } from "@dnncommunity/dnn-elements";
 
 export class InstallClient {
   private readonly sf: DnnServicesFramework;
@@ -21,18 +21,18 @@ export class InstallClient {
   }
 
   public async addPackages(sessionGuid: string, files: File[]): Promise<void> {
-    const requestBody = new FormData();
     for (const file of files) {
+      const requestBody = new FormData();
       requestBody.append(file.name, file);
-    }
 
-    await fetch(
-      `${this.requestUrl}AddPackages?sessionGuid=${sessionGuid}`,
-      {
-        method: 'POST',
-        body: requestBody,
-        headers: this.sf.getModuleHeaders(),
-      });
+      await fetch(
+        `${this.requestUrl}AddPackages?sessionGuid=${sessionGuid}`,
+        {
+          method: 'POST',
+          body: requestBody,
+          headers: this.sf.getModuleHeaders(),
+        });
+    }
   }
 }
 
