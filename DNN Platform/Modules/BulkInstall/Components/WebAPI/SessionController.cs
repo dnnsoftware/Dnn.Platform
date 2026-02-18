@@ -77,13 +77,17 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                 // Receive files.
                 MultipartMemoryStreamProvider provider = await this.Request.Content.ReadAsMultipartAsync();
 
-                // TODO: Add filtering so that non .zip archives are not added.
                 foreach (HttpContent file in provider.Contents)
                 {
                     string filename = file.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
+                    if (!string.Equals(Path.GetExtension(filename), ".zip", StringComparison.OrdinalIgnoreCase))
+                    {
+                        this.eventLogManager.Log("INVALID_PACKAGE", EventLogSeverity.Warning, "Package files must be zip archives");
+                        return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Package files must be zip archives");
+                    }
 
                     using MemoryStream ms = new MemoryStream(await file.ReadAsByteArrayAsync());
-                    this.sessionManager.AddPackage(guid, ms, filename);
+                    this.sessionManager.AddPackage(sessionGuid, ms, filename);
                 }
             }
             catch (Exception ex)
