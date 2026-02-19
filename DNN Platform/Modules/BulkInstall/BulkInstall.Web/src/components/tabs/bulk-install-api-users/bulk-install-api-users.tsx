@@ -61,7 +61,7 @@ export class BulkInstallApiUsers {
             <div class="button-row">
               <dnn-button
                 size="small"
-                onClick={() => this.newUserModal.show()}
+                onClick={() => { this.newUserModal.show().catch(console.error); return; } }
               >
                 {state.resx.NewApiUser}
               </dnn-button>
@@ -92,7 +92,7 @@ export class BulkInstallApiUsers {
                           <dnn-button
                             appearance="danger"
                             size="small"
-                            onClick={() => this.deleteUser(user)}
+                            onClick={() => { this.deleteUser(user).catch(console.error); return; } }
                           >
                             {state.resx.Delete}
                           </dnn-button>
@@ -107,13 +107,14 @@ export class BulkInstallApiUsers {
         </div>
         <dnn-modal
           ref={(el) => this.newUserModal = el}
-          backdropDismiss
+
         >
           <form
             class="create-user"
-            onSubmit={async (event) => {
+            onSubmit={(event) => {
               event.preventDefault();
-              await this.createUser(this.newUser);
+              this.createUser(this.newUser).catch(console.error);
+              return;
             }}
           >
             <h4>{state.resx.NewApiUser}</h4>
@@ -131,7 +132,7 @@ export class BulkInstallApiUsers {
                 onCheckedchange={e => this.newUser = { ...this.newUser, bypassIPWhitelist: e.detail === 'checked', } } />
               {state.resx.BypassIpAllowList}
             </label>
-            <dnn-button formButtonType="submit">{state.resx.Create}</dnn-button>
+            <dnn-button type="submit">{state.resx.Create}</dnn-button>
           </form>
         </dnn-modal>
       </Host>

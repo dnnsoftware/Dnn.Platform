@@ -39,7 +39,7 @@ export class EventLogClient
         case EventLogSeverityResponse.Critical:
           return eventLogSeverity.critical;
         default:
-          throw new Error(`Unknown severity: ${severity}`);
+          throw new Error(`Unknown severity: ${severity as number}`);
       }
     }
 

@@ -81,7 +81,7 @@ export class BulkInstallIpSafelist {
                       onValueInput={e => this.newIp = { ...this.newIp, ipAddress: (e.detail as string), } }
                     />
                     <dnn-button
-                      onClick={() => this.createIp(this.newIp)}
+                      onClick={() => { this.createIp(this.newIp).catch(console.error); return; } }
                     >
                       {state.resx.Add}
                     </dnn-button>
@@ -115,7 +115,7 @@ export class BulkInstallIpSafelist {
                           <dnn-button
                             appearance="danger"
                             size="small"
-                            onClick={() => this.deleteIp(ip)}
+                            onClick={() => { this.deleteIp(ip).catch(console.error); return; } }
                           >
                             {state.resx.Delete}
                           </dnn-button>
@@ -143,7 +143,7 @@ export class BulkInstallIpSafelist {
                       {state.resx.EnableIpSafeList}
                     </label>
                     <dnn-button
-                      onClick={() => this.saveIpSafelistConfiguration(this.enableIpSafelist)}
+                      onClick={() => { this.saveIpSafelistConfiguration(this.enableIpSafelist).catch(console.error); return; } }
                     >
                       {state.resx.Save}
                     </dnn-button>

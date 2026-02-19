@@ -119,7 +119,7 @@ export class InstallClient {
       case SessionStatusResponse.Complete:
         return sessionStatus.complete;
       default:
-        throw new Error(`Unknown status: ${status}`);
+        throw new Error(`Unknown status: ${status as number}`);
     }
   }
 }

@@ -48,7 +48,7 @@ export class BulkInstallInstall {
         this.apiError = true;
         console.error('Error getting install session, retrying', error);
       }
-      setTimeout(() => updateSummary(), summaryWait);
+      setTimeout(() => { updateSummary().catch(console.error); return; }, summaryWait);
     };
     await updateSummary();
   }
@@ -85,13 +85,13 @@ export class BulkInstallInstall {
                     <div class="form-group">
                       <dnn-button
                         disabled={ this.selectedFiles.length < 1 || this.session !== undefined }
-                        onClick={_ => this.installPackages() }>
+                        onClick={() => { this.installPackages().catch(console.error); return; } }>
                           {store.resx.Install}
                       </dnn-button>
                       <dnn-button
                         appearance="tertiary"
                         reversed
-                        onClick={_ => this.selectedFiles = [] }>
+                        onClick={() => this.selectedFiles = [] }>
                           {store.resx.Reset}
                       </dnn-button>
                     </div>

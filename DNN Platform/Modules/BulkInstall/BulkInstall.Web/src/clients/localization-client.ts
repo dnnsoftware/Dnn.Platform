@@ -23,7 +23,7 @@ export class LocalizationClient
             {
                 headers: this.sf.getModuleHeaders(),
             });
-        var vm = await response.json() as BulkInstallLocalization;
+        const vm = await response.json() as BulkInstallLocalization;
         sessionStorage.setItem(LocalizationStorageKey, JSON.stringify(vm));
         return vm;
     }
