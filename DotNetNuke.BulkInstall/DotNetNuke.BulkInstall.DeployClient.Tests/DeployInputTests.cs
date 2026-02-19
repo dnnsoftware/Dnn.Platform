@@ -26,6 +26,36 @@ public class DeployInputTests
         validate.Message.ShouldBe(isSuccess ? null : "--target-uri must be a valid URI");
     }
 
+    [InlineData("", false)]
+    [InlineData(" ", false)]
+    [InlineData("\t", false)]
+    [InlineData("123-654", true)]
+    [Theory]
+    public void Validate_ApiKey(string apiKey, bool isSuccess)
+    {
+        var input = TestHelpers.CreateDeployInput(apiKey: apiKey);
+        var validate = ValidateInput(input);
+
+        validate.Successful.ShouldBe(isSuccess);
+
+        validate.Message.ShouldBe(isSuccess ? null : "--api-key must be supplied");
+    }
+
+    [InlineData("", false)]
+    [InlineData(" ", false)]
+    [InlineData("\t", false)]
+    [InlineData("123-654", true)]
+    [Theory]
+    public void Validate_EncryptionKey(string encryptionKey, bool isSuccess)
+    {
+        var input = TestHelpers.CreateDeployInput(encryptionKey: encryptionKey);
+        var validate = ValidateInput(input);
+
+        validate.Successful.ShouldBe(isSuccess);
+
+        validate.Message.ShouldBe(isSuccess ? null : "--encryption-key must be supplied");
+    }
+
     [InlineData(-1, false)]
     [InlineData(0, true)]
     [InlineData(1, true)]

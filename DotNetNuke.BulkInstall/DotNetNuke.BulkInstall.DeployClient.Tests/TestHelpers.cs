@@ -12,8 +12,8 @@ public static class TestHelpers
         return new DeployInput
         {
             TargetUri = targetUri ?? "https://test.com",
-            ApiKey = apiKey ?? A.Dummy<string>(),
-            EncryptionKey = encryptionKey ?? A.Dummy<string>(),
+            ApiKey = apiKey ?? "some-api-key",
+            EncryptionKey = encryptionKey ?? "some-encryption-key",
             InstallationStatusTimeout = installationStatusTimeout ?? 0,
             PackagesDirectoryPath = packagesDirectoryPath ?? A.Dummy<string>(),
             LogLevel = logLevel ?? A.Dummy<LogLevel>(),

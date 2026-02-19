@@ -43,6 +43,16 @@ public class DeployCommand : AsyncCommand<DeployInput>
             return ValidationResult.Error("--target-uri must be a valid URI");
         }
 
+        if (string.IsNullOrWhiteSpace(settings.ApiKey))
+        {
+            return ValidationResult.Error("--api-key must be supplied");
+        }
+
+        if (string.IsNullOrWhiteSpace(settings.EncryptionKey))
+        {
+            return ValidationResult.Error("--encryption-key must be supplied");
+        }
+
         if (settings.InstallationStatusTimeout < 0)
         {
             return ValidationResult.Error("--installation-status-timeout must be non-negative");
