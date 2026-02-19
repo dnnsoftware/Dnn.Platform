@@ -5,6 +5,7 @@
 namespace Dnn.Modules.BulkInstall.Components.WebAPI
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Net;
     using System.Net.Http;
@@ -18,6 +19,8 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Web.Api;
+
+    using Newtonsoft.Json;
 
     /// <summary>A web API controller for <see cref="Session"/>.</summary>
     /// <param name="sessionManager">The session manager.</param>
@@ -39,7 +42,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         {
             var session = this.sessionManager.CreateSession();
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Session = session, });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Session = new SessionDto(session), });
         }
 
         /// <summary>Gets a session by its <paramref name="sessionGuid"/>.</summary>
@@ -50,7 +53,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         {
             var session = this.sessionManager.GetSession(sessionGuid);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, session);
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Session = new SessionDto(session), });
         }
 
         /// <summary>Adds package files to the session.</summary>
@@ -82,7 +85,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                     string filename = file.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
                     if (!string.Equals(Path.GetExtension(filename), ".zip", StringComparison.OrdinalIgnoreCase))
                     {
-                        this.eventLogManager.Log("INVALID_PACKAGE", EventLogSeverity.Warning, "Package files must be zip archives");
+                        this.eventLogManager.Log("INVALID_PACKAGE", EventLogSeverity.Warning, $"Attempted to upload {filename}, only zip archives are allowed");
                         return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Package files must be zip archives");
                     }
 
@@ -125,7 +128,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
 
                 var summary = deployOperation.Summary();
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, summary);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { InstallJobs = summary.Values, });
             }
             catch (Exception ex)
             {
@@ -168,6 +171,20 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
 
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
             }
+        }
+
+        private sealed class SessionDto(Session session)
+        {
+            public DateTime LastUsed => session.LastUsed;
+
+            public string SessionGuid => session.SessionGuid;
+
+            public SessionStatus Status => session.Status;
+
+            public IList<InstallJob> Response =>
+                string.IsNullOrWhiteSpace(session.Response)
+                    ? Array.Empty<InstallJob>()
+                    : JsonConvert.DeserializeObject<SortedList<string, InstallJob>>(session.Response).Values;
         }
     }
 }

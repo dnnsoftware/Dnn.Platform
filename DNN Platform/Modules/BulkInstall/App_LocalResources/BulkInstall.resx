@@ -225,25 +225,49 @@
   <data name="Severity" xml:space="preserve">
     <value>Severity</value>
   </data>
-  <data name="DropZone.UploadSizeTooLarge" xml:space="preserve">
+  <data name="DropZone_UploadSizeTooLarge" xml:space="preserve">
     <value>The file you tried to upload is too large.</value>
   </data>
-  <data name="DropZone.DragAndDropFile" xml:space="preserve">
+  <data name="DropZone_DragAndDropFile" xml:space="preserve">
     <value>Drag and drop a file</value>
   </data>
-  <data name="DropZone.Or" xml:space="preserve">
+  <data name="DropZone_Or" xml:space="preserve">
     <value>or</value>
   </data>
-  <data name="DropZone.UploadFile" xml:space="preserve">
+  <data name="DropZone_UploadFile" xml:space="preserve">
     <value>Upload a file</value>
   </data>
-  <data name="DropZone.FileSizeLimit" xml:space="preserve">
+  <data name="DropZone_FileSizeLimit" xml:space="preserve">
     <value>The maximum size is {0}</value>
   </data>
-  <data name="DropZone.InvalidExtension" xml:space="preserve">
+  <data name="DropZone_InvalidExtension" xml:space="preserve">
     <value>The file you tried to upload has an invalid extension.</value>
   </data>
-  <data name="DropZone.AllowedFileExtensions" xml:space="preserve">
+  <data name="DropZone_AllowedFileExtensions" xml:space="preserve">
     <value>Allowed file extensions: {0}</value>
+  </data>
+  <data name="InstallingPackages" xml:space="preserve">
+    <value>Installing Package(s)</value>
+  </data>
+  <data name="CannotInstall" xml:space="preserve">
+    <value>One or more of the uploaded packages cannot be installed</value>
+  </data>
+  <data name="InstallationComplete" xml:space="preserve">
+    <value>Installation Complete!!!!</value>
+  </data>
+  <data name="SessionStatus_NotStarted" xml:space="preserve">
+    <value>Not Started</value>
+  </data>
+  <data name="SessionStatus_InProgress" xml:space="preserve">
+    <value>In Progress</value>
+  </data>
+  <data name="SessionStatus_Complete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="ApiError" xml:space="preserve">
+    <value>There was an error communicating with the API, please check the Admin Logs for more details</value>
   </data>
 </root>

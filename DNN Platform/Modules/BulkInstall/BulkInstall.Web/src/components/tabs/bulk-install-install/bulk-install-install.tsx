@@ -1,6 +1,8 @@
-import { Component, Host, h, State } from '@stencil/core';
+import { Component, Fragment, Host, h, State, } from '@stencil/core';
 import store from '../../../stores/store'
-import {InstallClient} from "../../../clients/install-client";
+import { InstallJob, Session, } from "./bulk-install-install.model";
+import { InstallClient, } from "../../../clients/install-client";
+import {sessionStatus} from "../../../enums/SessionStatus";
 
 @Component({
   tag: 'bulk-install-install',
@@ -9,17 +11,46 @@ import {InstallClient} from "../../../clients/install-client";
 })
 export class BulkInstallInstall {
   @State() private selectedFiles: File[] = [];
+  @State() private installationSummary: InstallJob[];
+  @State() private cannotInstall = false;
+  @State() private installationComplete = false;
+  @State() private apiError = false;
+  @State() private session: Session;
 
-  private sessionGuid: string;
   private installClient: InstallClient;
 
-  constructor(){
+  constructor() {
     this.installClient = new InstallClient(store.moduleId);
   }
 
   async installPackages() {
-    this.sessionGuid = await this.installClient.create();
-    await this.installClient.addPackages(this.sessionGuid, this.selectedFiles);
+    this.session = await this.installClient.create();
+    await this.installClient.addPackages(this.session.sessionGuid, this.selectedFiles);
+    this.installationSummary = await this.installClient.summary(this.session.sessionGuid);
+    if (this.installationSummary.some(installJob => !installJob.canInstall)) {
+      this.cannotInstall = true;
+      return;
+    }
+
+    await this.installClient.install(this.session.sessionGuid);
+
+    const summaryWait = 1000;
+    const updateSummary = async () => {
+      try {
+        this.session = await this.installClient.getSession(this.session.sessionGuid);
+        this.apiError = false;
+        this.installationSummary = this.session.response;
+        if (this.session.status === sessionStatus.complete) {
+          this.installationComplete = true;
+          return;
+        }
+      } catch (error) {
+        this.apiError = true;
+        console.error('Error getting install session, retrying', error);
+      }
+      setTimeout(() => updateSummary(), summaryWait);
+    };
+    await updateSummary();
   }
 
   render() {
@@ -28,32 +59,72 @@ export class BulkInstallInstall {
         <div class="row">
           <div class="col">
             <div class="panel">
-              <div class="panel-heading">
-                <h3 class="panel-title">Upload Install Package(s)</h3>
-              </div>
-              <div class="panel-body">
-                <dnn-dropzone
-                  allowedExtensions={['zip']}
-                  onFilesSelected={e => this.selectedFiles = [...this.selectedFiles, ...e.detail] }
-                  resx={
-                    {
-                      dragAndDropFile: store.resx["DropZone.DragAndDropFile"],
-                      or: store.resx["DropZone.Or"],
-                      uploadFile: store.resx["DropZone.UploadFile"],
-                      uploadSizeTooLarge: store.resx["DropZone.UploadSizeTooLarge"],
-                      fileSizeLimit: store.resx["DropZone.FileSizeLimit"],
-                      invalidExtension: store.resx["DropZone.InvalidExtension"],
-                      allowedFileExtensions: store.resx["DropZone.AllowedFileExtensions"],
-                    }
-                }></dnn-dropzone>
-                {this.selectedFiles.length > 0 && <ul>
-                  {this.selectedFiles.map(file => <li key={file.name}>{file.name}</li>)}
-                </ul>}
-                <div class="form-group">
-                  <dnn-button disabled={ this.selectedFiles.length < 1 } onClick={_ => this.installPackages() }>Install</dnn-button>
-                  <dnn-button appearance="tertiary" reversed onClick={_ => this.selectedFiles = [] }>Reset</dnn-button>
-                </div>
-              </div>
+              {!this.installationSummary &&
+                <>
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Upload Install Package(s)</h3>
+                  </div>
+                  <div class="panel-body">
+                    <dnn-dropzone
+                      allowedExtensions={['zip']}
+                      onFilesSelected={e => this.selectedFiles = [...this.selectedFiles, ...e.detail] }
+                      resx={
+                        {
+                          dragAndDropFile: store.resx.DropZone_DragAndDropFile,
+                          or: store.resx.DropZone_Or,
+                          uploadFile: store.resx.DropZone_UploadFile,
+                          uploadSizeTooLarge: store.resx.DropZone_UploadSizeTooLarge,
+                          fileSizeLimit: store.resx.DropZone_FileSizeLimit,
+                          invalidExtension: store.resx.DropZone_InvalidExtension,
+                          allowedFileExtensions: store.resx.DropZone_AllowedFileExtensions,
+                        }
+                    } />
+                    {this.selectedFiles.length > 0 && <ul>
+                      {this.selectedFiles.map(file => <li>{file.name}</li>)}
+                    </ul>}
+                    <div class="form-group">
+                      <dnn-button
+                        disabled={ this.selectedFiles.length < 1 || this.session !== undefined }
+                        onClick={_ => this.installPackages() }>
+                          {store.resx.Install}
+                      </dnn-button>
+                      <dnn-button
+                        appearance="tertiary"
+                        reversed
+                        onClick={_ => this.selectedFiles = [] }>
+                          {store.resx.Reset}
+                      </dnn-button>
+                    </div>
+                  </div>
+                </>}
+              {this.installationSummary &&
+                <>
+                  <div class="panel-heading">
+                    <h3 class="panel-title">{store.resx.InstallingPackages}</h3>
+                  </div>
+                  <div class={ "panel-body " + (this.session.status === sessionStatus.complete ? "session__complete" : this.session.status === sessionStatus.inProgress ? "session__in-progress" : "session__not-started") }>
+                    { this.apiError && <h4 class="danger">{store.resx.ApiError}</h4> }
+                    { this.cannotInstall && <h4 class="danger">{store.resx.CannotInstall}</h4> }
+                    { this.installationComplete && <h4 class={ this.installationSummary.every(j => j.success) ? "success" : "danger" }>{store.resx.InstallationComplete}</h4> }
+                    <ol>{this.installationSummary.map(installJob =>
+                      <li class={ !installJob.canInstall ? "install__invalid" : installJob.success ? "install__success" : installJob.attempted ? "install__failed" : "install__pending" }>
+                        <h3>{installJob.name}</h3>
+                        {installJob.failures?.length > 0 &&
+                          <ul>
+                            {installJob.failures.map(failure =>
+                              <li>{failure}</li>)}
+                          </ul>}
+                        <ul>
+                          {installJob.packages.map(packageJob =>
+                          <li class={ !packageJob.canInstall ? "package__invalid" : "package__valid" }>
+                            <h4>{packageJob.name}</h4>
+                            {packageJob.version}
+                          </li>)}
+                        </ul>
+                      </li>)}
+                    </ol>
+                  </div>
+                </>}
             </div>
           </div>
         </div>
