@@ -18,8 +18,6 @@ export class EventLogSeverityInfo{
    readonly eventLogSeverityKey: string;
 
      get localizedName(){
-       console.log(state.resx);
-       console.log(`EventLogSeverity_${this.eventLogSeverityKey}`);
          return state.resx[`EventLogSeverity_${this.eventLogSeverityKey}`];
      }
 
