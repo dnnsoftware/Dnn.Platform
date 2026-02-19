@@ -8,7 +8,7 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
 
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Web.MvcPipeline.Routing;
+    using DotNetNuke.Web.Mvc.Routing;
 
     /// <summary>
     /// Base controller for MVC module controllers, exposing common DNN context and services.

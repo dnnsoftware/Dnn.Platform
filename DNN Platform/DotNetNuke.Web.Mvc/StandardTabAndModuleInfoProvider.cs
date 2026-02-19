@@ -99,6 +99,11 @@ namespace DotNetNuke.Web.Mvc
                 value = requestBase.Headers[key];
             }
 
+            if (requestBase.Form[key] != null)
+            {
+                value = requestBase.Form[key];
+            }
+
             if (string.IsNullOrEmpty(value) && requestBase.Url != null)
             {
                 var queryString = HttpUtility.ParseQueryString(requestBase.Url.Query);

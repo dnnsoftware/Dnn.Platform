@@ -9,7 +9,7 @@ namespace DotNetNuke.Web.MvcPipeline
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.DependencyInjection;
-    using DotNetNuke.Web.Mvc.Extensions;
+    using DotNetNuke.Web.MvcPipeline.Extensions;
     using DotNetNuke.Web.MvcPipeline.ModelFactories;
     using DotNetNuke.Web.MvcPipeline.Routing;
     using Microsoft.Extensions.DependencyInjection;

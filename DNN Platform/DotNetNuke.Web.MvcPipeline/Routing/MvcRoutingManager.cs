@@ -16,7 +16,10 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.MvcPipeline.Commons;
+    using DotNetNuke.Web.Mvc.Common;
+    using DotNetNuke.Web.Mvc.Routing;
+
+    // using DotNetNuke.Web.MvcPipeline.Commons;
 
     /// <summary>
     /// Provides routing registration and mapping for DNN MVC modules and pages.
@@ -110,7 +113,6 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
         public void RegisterRoutes()
         {
             // add standard tab and module id provider
-            GlobalConfiguration.Configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
             using (this.routes.GetWriteLock())
             {
                 // routes.Clear(); -- don't use; it will remove original WEP API maps
@@ -165,14 +167,18 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
         {
             var dataTokens = new RouteValueDictionary();
             var ns = new string[] { "DotNetNuke.Website.Controllers" };
-            dataTokens["Namespaces"] = ns;
 
             var route = new Route(
-                "DesktopModules/{controller}/{action}/{tabid}/{language}",
-                new RouteValueDictionary(new { action = "Index", tabid = UrlParameter.Optional, language = UrlParameter.Optional }),
+                "DesktopModules/Default/Page/{tabid}/{language}",
+                new RouteValueDictionary(new { controller = "Default", action = "Page", tabid = UrlParameter.Optional, language = UrlParameter.Optional }),
                 null, // No constraints
                 dataTokens,
                 new DnnMvcPageRouteHandler());
+
+            route.SetNameSpaces(ns);
+            route.SetName("mvc-pipeline-default");
+
+            Logger.Trace("Mapping route: " + "mvc-pipeline-default" + " @ " + "DesktopModules/{controller}/{action}/{tabid}/{language}");
 
             this.routes.Add(route);
         }
