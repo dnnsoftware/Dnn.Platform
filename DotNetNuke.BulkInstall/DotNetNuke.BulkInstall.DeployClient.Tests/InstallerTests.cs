@@ -371,7 +371,7 @@ public class InstallerTests
         var request = handler.Request.ShouldNotBeNull();
         var userAgent = request.Headers.UserAgent.ShouldHaveSingleItem();
         var product = userAgent.Product.ShouldNotBeNull();
-        product.Name.ShouldBe("PolyDeploy");
+        product.Name.ShouldBe("DotNetNuke.BulkInstall.DeployClient");
         product.Version.ShouldBe(Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion.Replace(" ", "_"));
 
         sessionId.ShouldBe(expectedSessionId);

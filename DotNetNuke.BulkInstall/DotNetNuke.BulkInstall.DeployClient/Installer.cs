@@ -162,7 +162,7 @@ public class Installer : IInstaller
             request.Content = content;
 
             request.Headers.Add("x-api-key", options.ApiKey);
-            request.Headers.UserAgent.Add(new ProductInfoHeaderValue("PolyDeploy", DeployClientVersion.Replace(" ", "_")));
+            request.Headers.UserAgent.Add(new ProductInfoHeaderValue("DotNetNuke.BulkInstall.DeployClient", DeployClientVersion.Replace(" ", "_")));
 
             try
             {
