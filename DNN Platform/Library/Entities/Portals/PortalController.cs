@@ -1266,11 +1266,11 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalId">The portal ID.</param>
         public static void IncrementCrmVersion(IPortalController portalController, int portalId)
         {
-            var versionSetting = GetPortalSetting(portalController, ClientResourceSettings.VersionKey, portalId, "1");
+            var versionSetting = GetPortalSetting(portalController, Web.Client.ClientResourceSettings.VersionKey, portalId, "1");
             if (int.TryParse(versionSetting, out var currentVersion))
             {
                 var newVersion = currentVersion + 1;
-                UpdatePortalSetting(portalController, portalId, ClientResourceSettings.VersionKey, newVersion.ToString(CultureInfo.InvariantCulture), true);
+                UpdatePortalSetting(portalController, portalId, Web.Client.ClientResourceSettings.VersionKey, newVersion.ToString(CultureInfo.InvariantCulture), true);
             }
         }
 
@@ -1285,7 +1285,7 @@ namespace DotNetNuke.Entities.Portals
         {
             foreach (IPortalInfo portal in portalController.GetPortals())
             {
-                var setting = GetPortalSetting(portalController, ClientResourceSettings.OverrideDefaultSettingsKey, portal.PortalId, "False");
+                var setting = GetPortalSetting(portalController, Web.Client.ClientResourceSettings.OverrideDefaultSettingsKey, portal.PortalId, "False");
 
                 // if this portal is overriding the host level...
                 if (bool.TryParse(setting, out var overriden) && overriden)

@@ -14,7 +14,7 @@ import WebTab from "../Tabs/Web";
 import DatabaseTab from "../Tabs/Database/Database";
 import ServersTab from "../Tabs/Servers/Servers";
 import SmtpServerTab from "../Tabs/SmtpServer";
-import PerformanceTab from "../Tabs/Performance";
+import PerformanceTab from "../Tabs/Performance/Index";
 import LogsTab from "../Tabs/Logs";
 import application from "../../globals/application";
 import utils from "../../utils";

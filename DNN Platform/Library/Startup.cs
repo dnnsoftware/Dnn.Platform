@@ -9,6 +9,7 @@ namespace DotNetNuke
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Pages;
@@ -145,6 +146,7 @@ namespace DotNetNuke
             services.AddTransient<IDirectory, DirectoryWrapper>();
             services.AddTransient<ILogController, LogController>();
             services.AddTransient<ITabPublishingController, TabPublishingController>();
+            services.AddTransient<IClientResourceSettings, ClientResourceSettings>();
             services.AddTransient<IWorkflowSecurity, WorkflowSecurity>();
             if (CryptoConfig.AllowOnlyFipsAlgorithms)
             {

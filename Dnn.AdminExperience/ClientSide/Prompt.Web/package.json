@@ -1,6 +1,6 @@
 {
   "name": "prompt",
-  "version": "10.1.0",
+  "version": "10.2.3",
   "description": "DNN Prompt",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
     "lint": "eslint --fix"
   },
   "devDependencies": {
-    "@dnnsoftware/dnn-react-common": "10.1.0",
+    "@dnnsoftware/dnn-react-common": "10.2.3",
     "@rsbuild/core": "^1.6.3",
     "@rsbuild/plugin-less": "^1.5.0",
     "@rsbuild/plugin-react": "^1.4.2",

@@ -9,7 +9,7 @@
 
 | Property            | Attribute | Description       | Type   | Default     |
 | ------------------- | --------- | ----------------- | ------ | ----------- |
-| `item` _(required)_ | `item`    | The item to edit. | `Item` | `undefined` |
+| `item` _(required)_ | --        | The item to edit. | `Item` | `undefined` |
 
 
 ## Dependencies

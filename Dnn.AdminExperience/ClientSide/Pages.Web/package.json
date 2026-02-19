@@ -1,6 +1,6 @@
 {
   "name": "pages",
-  "version": "10.1.0",
+  "version": "10.2.3",
   "private": true,
   "scripts": {
     "start": "npm run webpack",
@@ -24,7 +24,7 @@
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.28.5",
-    "@dnnsoftware/dnn-react-common": "10.1.0",
+    "@dnnsoftware/dnn-react-common": "10.2.3",
     "@svgr/webpack": "^8.1.0",
     "@types/knockout": "^3.4.77",
     "@types/redux": "3.6.31",

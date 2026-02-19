@@ -22,18 +22,9 @@ const getPerformanceSettings = function () {
                 authCacheability: response.AuthCacheability,
                 unauthCacheability: response.UnauthCacheability,
                 sslForCacheSynchronization: response.SslForCacheSynchronization,
-                clientResourcesManagementMode: response.ClientResourcesManagementMode,
-                
+                crmOverrideDefaultSettings: response.CrmOverrideDefaultSettings,
                 currentHostVersion: response.CurrentHostVersion,
-                hostEnableCompositeFiles: response.HostEnableCompositeFiles,
-                hostMinifyCss: response.HostMinifyCss,
-                hostMinifyJs: response.HostMinifyJs,
-                
                 currentPortalVersion: response.CurrentPortalVersion,
-                portalEnableCompositeFiles: response.PortalEnableCompositeFiles,
-                portalMinifyCss: response.PortalMinifyCss,
-                portalMinifyJs: response.PortalMinifyJs,
-                
                 cachingProviderOptions: convertKeyValueToLabelValue(response.CachingProviderOptions),
                 pageStatePersistenceOptions: convertKeyValueToLabelValue(response.PageStatePersistenceOptions),
                 moduleCacheProviders: convertKeyValueToLabelValue(response.ModuleCacheProviders),
@@ -47,38 +38,27 @@ const getPerformanceSettings = function () {
 
 const save = function (performanceSettings) {
     const request = {
-        CachingProvider: performanceSettings.cachingProvider, 
-        PageStatePersistence: performanceSettings.pageStatePersistence, 
-        ModuleCacheProvider: performanceSettings.moduleCacheProvider, 
-        PageCacheProvider: performanceSettings.pageCacheProvider, 
-        CacheSetting: performanceSettings.cacheSetting, 
-        AuthCacheability: performanceSettings.authCacheability, 
-        UnauthCacheability: performanceSettings.unauthCacheability, 
-        SslForCacheSynchronization: performanceSettings.sslForCacheSynchronization, 
-        ClientResourcesManagementMode: performanceSettings.clientResourcesManagementMode
+        CachingProvider: performanceSettings.cachingProvider,
+        PageStatePersistence: performanceSettings.pageStatePersistence,
+        ModuleCacheProvider: performanceSettings.moduleCacheProvider,
+        PageCacheProvider: performanceSettings.pageCacheProvider,
+        CacheSetting: performanceSettings.cacheSetting,
+        AuthCacheability: performanceSettings.authCacheability,
+        UnauthCacheability: performanceSettings.unauthCacheability,
+        SslForCacheSynchronization: performanceSettings.sslForCacheSynchronization,
+        CrmOverrideDefaultSettings: performanceSettings.crmOverrideDefaultSettings,
+        CurrentHostVersion: performanceSettings.currentHostVersion,
+        CurrentPortalVersion: performanceSettings.currentPortalVersion,
     };
-    
-    if (performanceSettings.clientResourcesManagementMode === "h") {
-        request.CurrentHostVersion = performanceSettings.currentHostVersion; 
-        request.HostEnableCompositeFiles = performanceSettings.hostEnableCompositeFiles; 
-        request.HostMinifyCss = performanceSettings.hostMinifyCss; 
-        request.HostMinifyJs = performanceSettings.hostMinifyJs; 
-        
-    } else {
-        request.CurrentPortalVersion = performanceSettings.currentPortalVersion; 
-        request.PortalEnableCompositeFiles = performanceSettings.portalEnableCompositeFiles; 
-        request.PortalMinifyCss = performanceSettings.portalMinifyCss; 
-        request.PortalMinifyJs = performanceSettings.portalMinifyJs;
-    }
-    
+
     return serviceFramework.post("ServerSettingsPerformance", "UpdatePerformanceSettings", request);
 };
 
-const incrementVersion = function (version, isGlobalSetting) {
+const incrementVersion = function (isGlobalSetting) {
     if (isGlobalSetting) {
         return serviceFramework.post("ServerSettingsPerformance", "IncrementHostVersion");
     }
-    
+
     return serviceFramework.post("ServerSettingsPerformance", "IncrementPortalVersion");
 };
 
@@ -88,4 +68,4 @@ const performanceTabService = {
     incrementVersion: incrementVersion
 };
 
-export default performanceTabService; 
+export default performanceTabService;

@@ -9,7 +9,7 @@
 
 | Property             | Attribute | Description                | Type     | Default     |
 | -------------------- | --------- | -------------------------- | -------- | ----------- |
-| `items` _(required)_ | `items`   | The list of items to move. | `Item[]` | `undefined` |
+| `items` _(required)_ | --        | The list of items to move. | `Item[]` | `undefined` |
 
 
 ## Dependencies

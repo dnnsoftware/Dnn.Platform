@@ -31,16 +31,19 @@ namespace DotNetNuke.Web.Client
         // public keys used to identify the various host and portal level settings
 
         /// <summary>The composite files key.</summary>
+        [Obsolete("Composite Files (bundling) have been deprecated in DNN 10.2.0. Scheduled for removal in DNN 12.")]
         public static readonly string EnableCompositeFilesKey = "CrmEnableCompositeFiles";
 
         /// <summary>The minify CSS key.</summary>
+        [Obsolete("Minification has been deprecated in DNN 10.2.0. Scheduled for removal in DNN 12.")]
         public static readonly string MinifyCssKey = "CrmMinifyCss";
 
         /// <summary>The minify JS key.</summary>
+        [Obsolete("Minification has been deprecated in DNN 10.2.0. Scheduled for removal in DNN 12.")]
         public static readonly string MinifyJsKey = "CrmMinifyJs";
 
         /// <summary>The override default settings key.</summary>
-        public static readonly string OverrideDefaultSettingsKey = "CrmUseApplicationSettings";
+        public static readonly string OverrideDefaultSettingsKey = "CrmOverrideDefaultSettings";
 
         /// <summary>The version key.</summary>
         public static readonly string VersionKey = "CrmVersion";
@@ -135,26 +138,35 @@ namespace DotNetNuke.Web.Client
 
         /// <summary>Gets a value indicating whether composite files are enabled.</summary>
         /// <returns>Whether it's enabled.</returns>
-        public bool? AreCompositeFilesEnabled()
+        [DnnDeprecated(10, 2, 0, "Composite files (bundling) have been deprecated.")]
+        public partial bool? AreCompositeFilesEnabled()
         {
             int? portalId = GetPortalIdThroughReflection();
+#pragma warning disable CS0618 // Type or member is obsolete
             return this.IsBooleanSettingEnabled(portalId, EnableCompositeFilesKey);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary>Gets a value indicating whether CSS minification is enabled.</summary>
         /// <returns>Whether it's enabled.</returns>
-        public bool? EnableCssMinification()
+        [DnnDeprecated(10, 2, 0, "Minification has been deprecated.")]
+        public partial bool? EnableCssMinification()
         {
             int? portalId = GetPortalIdThroughReflection();
+#pragma warning disable CS0618 // Type or member is obsolete
             return this.IsBooleanSettingEnabled(portalId, MinifyCssKey);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary>Gets a value indicating whether JS minification is enabled.</summary>
         /// <returns>Whether it's enabled.</returns>
-        public bool? EnableJsMinification()
+        [DnnDeprecated(10, 2, 0, "Minification has been deprecated.")]
+        public partial bool? EnableJsMinification()
         {
             int? portalId = GetPortalIdThroughReflection();
+#pragma warning disable CS0618 // Type or member is obsolete
             return this.IsBooleanSettingEnabled(portalId, MinifyJsKey);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         private static bool? GetBooleanSetting(int? portalId, string dictionaryKey, string settingKey)

@@ -1,6 +1,6 @@
 {
   "name": "site-import-export",
-  "version": "10.1.0",
+  "version": "10.2.3",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack --mode production",
@@ -16,7 +16,7 @@
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.28.5",
-    "@dnnsoftware/dnn-react-common": "10.1.0",
+    "@dnnsoftware/dnn-react-common": "10.2.3",
     "@svgr/webpack": "^8.1.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "10.0.0",

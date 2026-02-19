@@ -64,7 +64,6 @@
     <PackageVersion Include="Spectre.Console.Cli" Version="0.53.1" />
     <PackageVersion Include="Spectre.Console.Registrars.Microsoft-Di" Version="0.6.0" />
     <PackageVersion Include="Spectre.Console.Testing" Version="0.54.0" />
-    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
     <PackageVersion Include="System.Collections.Immutable" Version="9.0.2" />
     <PackageVersion Include="System.IO.Abstractions" Version="22.1.0" />
     <PackageVersion Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
@@ -77,5 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+    <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
   </ItemGroup>
 </Project>

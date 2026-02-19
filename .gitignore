@@ -100,7 +100,7 @@ DNN_*.zip
 !DNN [Pp]latform/[Cc]omponents
 !DNN [Pp]latform/[Cc]ontrols
 DNN [Pp]latform/[Cc]omponents/[Cc]lient[Dd]ependency/[Ss]ource/[Bb]in
-DNN [Pp]latform/[Cc]ontrols/[Cc]ountry[Ll]ist[Bb]ox/[Bb]in/*
+DNN [Pp]latform/[Cc]ontrols/*/[Bb]in/*
 
 DNN [Pp]latform/*/[Bb]in
 DNN [Pp]latform/Tests/*/[Bb]in/*
