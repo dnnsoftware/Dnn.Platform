@@ -14,8 +14,8 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
         /// <summary>A session that has not started its installation.</summary>
         NotStarted = 0,
 
-        /// <summary>A session that with an in progress installation.</summary>
-        InProgess = 1,
+        /// <summary>A session with an in progress installation.</summary>
+        InProgress = 1,
 
         /// <summary>A session that has completed its installation.</summary>
         Complete = 2,

@@ -97,7 +97,7 @@ namespace Dnn.Modules.BulkInstall.Components
             JavaScriptSerializer jsonSer = new JavaScriptSerializer();
 
             // Set as started.
-            this.Session.Status = SessionStatus.InProgess;
+            this.Session.Status = SessionStatus.InProgress;
             this.sessionManager.UpdateSession(this.Session);
 
             // Install in order.

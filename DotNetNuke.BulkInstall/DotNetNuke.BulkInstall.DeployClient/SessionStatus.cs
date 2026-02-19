@@ -10,7 +10,11 @@ public enum SessionStatus
     NotStarted = 0,
 
     /// <summary>The session is in progress.</summary>
-    InProgess = 1,
+    /// <remarks>Keep this typo for legacy PolyDeploy API.</remarks>
+    InProgess = InProgress,
+
+    /// <summary>The session is in progress.</summary>
+    InProgress = 1,
 
     /// <summary>The session is complete.</summary>
     Complete = 2,
