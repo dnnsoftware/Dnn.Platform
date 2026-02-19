@@ -1,0 +1,6 @@
+﻿UPDATE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Settings]
+SET [Group] = 'SAFELIST',
+    [Key] = 'ENABLED'
+WHERE [Group] = 'WHITELIST'
+  AND [Key] = 'STATE';
+GO

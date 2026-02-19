@@ -43,7 +43,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters
             try
             {
                 // Attempt to retrieve disabled state.
-                whitelistDisabled = this.SettingManager.GetSetting("WHITELIST", "STATE").Value.Equals("false", StringComparison.OrdinalIgnoreCase);
+                whitelistDisabled = !this.SettingManager.GetSetting(Settings.IpSafelistGroup, Settings.IpSafelistKey).ValueAsBoolean;
             }
             catch (SettingNotFoundException)
             {
