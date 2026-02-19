@@ -11,11 +11,11 @@ import { sessionStatus } from '../../../enums/SessionStatus';
 })
 export class BulkInstallInstall {
   @State() private selectedFiles: File[] = [];
-  @State() private installationSummary: InstallJob[];
+  @State() private installationSummary: InstallJob[] = [];
   @State() private cannotInstall = false;
   @State() private installationComplete = false;
   @State() private apiError = false;
-  @State() private session: Session;
+  @State() private session: Session | undefined;
 
   private installClient: InstallClient;
 
@@ -62,7 +62,7 @@ export class BulkInstallInstall {
         <div class="row">
           <div class="col">
             <div class="panel">
-              {!this.installationSummary && (
+              {this.installationSummary.length === 0 && (
                 <>
                   <div class="panel-heading">
                     <h3 class="panel-title">Upload Install Package(s)</h3>
@@ -105,7 +105,7 @@ export class BulkInstallInstall {
                   </div>
                 </>
               )}
-              {this.installationSummary && (
+              {this.installationSummary.length > 0 && (
                 <>
                   <div class="panel-heading">
                     <h3 class="panel-title">{store.resx.InstallingPackages}</h3>

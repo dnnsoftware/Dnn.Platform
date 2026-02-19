@@ -12,7 +12,7 @@ export class LocalizationClient {
   public async getResources(): Promise<BulkInstallLocalization> {
     const LocalizationStorageKey = 'BulkInstall_Localization';
     const localization = sessionStorage.getItem(LocalizationStorageKey);
-    if (localization) {
+    if (localization !== undefined && localization !== null && localization !== '') {
       return JSON.parse(localization) as BulkInstallLocalization;
     }
 

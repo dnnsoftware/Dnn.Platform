@@ -8,7 +8,9 @@ import state from '../../stores/store';
   shadow: false,
 })
 export class DnnBulkInstall {
+  /** The ID of the module. */
   @Prop() moduleId!: number;
+
   private localizationClient: LocalizationClient;
 
   constructor() {
