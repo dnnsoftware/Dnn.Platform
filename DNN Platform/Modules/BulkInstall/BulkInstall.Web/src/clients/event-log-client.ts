@@ -4,8 +4,8 @@ import { EventLogSeverityInfo, eventLogSeverity } from "../enums/EventLogSeverit
 
 export class EventLogClient
 {
-    private sf: DnnServicesFramework;
-    private requestUrl: string;
+    private readonly sf: DnnServicesFramework;
+    private readonly requestUrl: string;
 
     constructor(moduleId: number) {
         this.sf = new DnnServicesFramework(moduleId);
@@ -69,8 +69,8 @@ export interface Pagination {
 }
 
 interface ResponseBody {
-    Data: EventLogResponse[]
-    Pagination: Pagination
+  Data: EventLogResponse[]
+  Pagination: Pagination
 }
 
 interface EventLogResponse {

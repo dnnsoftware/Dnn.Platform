@@ -1,6 +1,7 @@
-import { Component, Host, h } from '@stencil/core';
+import { Component, Host, h, State } from '@stencil/core';
 import { User } from './bulk-install-api-users.model';
 import state from "../../../stores/store";
+import { ApiUserClient } from "../../../clients/api-user-client";
 
 @Component({
   tag: 'bulk-install-api-users',
@@ -9,24 +10,47 @@ import state from "../../../stores/store";
 })
 export class BulkInstallApiUsers {
 
-  private users: User[] = [];
-  private newUser: User = {
+  @State() private users: User[] = [];
+  @State() private newUser: User = {
+    id: -1,
     name: '',
     apiKey: '',
     encryptionKey: '',
     bypassIPWhitelist: false,
   }
-  
+
   private newUserModal: HTMLDnnModalElement;
 
-  private createUser(_newUser: User): (event: MouseEvent) => void {
-    alert('Method not implemented.');
-    return;
+  private apiUserClient: ApiUserClient;
+
+  constructor(){
+    this.apiUserClient = new ApiUserClient(state.moduleId);
   }
 
-  private deleteUser(_user: User): (event: MouseEvent) => void {
-    alert('Method not implemented.');
-    return;
+  async componentWillLoad() {
+    try {
+      this.users = await this.apiUserClient.getAll();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  private async createUser(_newUser: User): Promise<void> {
+    const createdUser = await this.apiUserClient.create(_newUser.name, _newUser.bypassIPWhitelist);
+    this.users = [...this.users, createdUser];
+    this.newUser = {
+      id: -1,
+      name: '',
+      apiKey: '',
+      encryptionKey: '',
+      bypassIPWhitelist: false,
+    }
+    await this.newUserModal.hide();
+  }
+
+  private async deleteUser(_user: User): Promise<void> {
+    await this.apiUserClient.delete(_user.id);
+    this.users = await this.apiUserClient.getAll();
   }
 
   render() {
@@ -87,9 +111,9 @@ export class BulkInstallApiUsers {
         >
           <form
             class="create-user"
-            onSubmit={(event) => {
+            onSubmit={async (event) => {
               event.preventDefault();
-              this.createUser(this.newUser);
+              await this.createUser(this.newUser);
             }}
           >
             <h4>{state.resx.NewApiUser}</h4>
@@ -98,9 +122,13 @@ export class BulkInstallApiUsers {
               label={state.resx.ApiUserNameText}
               helpText={state.resx.ApiUserNameHelp}
               required
+              value={this.newUser.name}
+              onValueInput={e => this.newUser = { ...this.newUser, name: (e.detail as string), } }
             />
             <label>
-              <dnn-checkbox checked={this.newUser.bypassIPWhitelist ? 'checked' : 'unchecked'}></dnn-checkbox>
+              <dnn-checkbox
+                checked={this.newUser.bypassIPWhitelist ? 'checked' : 'unchecked'}
+                onCheckedchange={e => this.newUser = { ...this.newUser, bypassIPWhitelist: e.detail === 'checked', } } />
               {state.resx.BypassIpAllowList}
             </label>
             <dnn-button formButtonType="submit">{state.resx.Create}</dnn-button>
