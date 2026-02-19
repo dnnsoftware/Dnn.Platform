@@ -1,28 +1,36 @@
-﻿using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-using DotNetNuke.BulkInstall.Components.Logging;
-using DotNetNuke.BulkInstall.Components.WebAPI.ActionFilters;
-using DotNetNuke.Web.Api;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Web.Http;
-using System.Web.Script.Serialization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.BulkInstall.Components.WebAPI
+namespace Dnn.Modules.BulkInstall.Components.WebAPI
 {
-    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-    using DotNetNuke.BulkInstall.Components.Logging;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
 
-    //[RequireHost]
-    //[ValidateAntiForgeryToken]
-    //[InWhitelist]
-    [AllowAnonymous]
-    public class EventLogController : DnnApiController
+    using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+    using Dnn.Modules.BulkInstall.Components.Logging;
+    using Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters;
+    using DotNetNuke.Web.Api;
+
+    /// <summary>A web API controller for <see cref="EventLog"/>.</summary>
+    /// <param name="eventLogManager">The event log manager.</param>
+    [RequireHost]
+    [ValidateAntiForgeryToken]
+    [InWhitelist]
+    public class EventLogController(EventLogManager eventLogManager) : DnnApiController
     {
+        private readonly EventLogManager eventLogManager = eventLogManager;
+
+        /// <summary>Gets a page of <see cref="EventLog"/> instances.</summary>
+        /// <param name="pageIndex">The 0-based page index.</param>
+        /// <param name="pageSize">The page size.</param>
+        /// <param name="eventType">An event type to filter by, or <see langword="null"/>.</param>
+        /// <param name="severity">A <see cref="EventLogSeverity"/> to filter by, or <c>-1</c>.</param>
+        /// <returns>A response with a list of <see cref="EventLog"/> and pagination data.</returns>
         [HttpGet]
         public HttpResponseMessage Browse(int pageIndex = 0, int pageSize = 30, string eventType = null, int severity = -1)
         {
@@ -35,99 +43,82 @@ namespace DotNetNuke.BulkInstall.Components.WebAPI
             }
 
             // Get event logs.
-            IEnumerable<EventLog> eventLogs = EventLogManager.Browse(pageIndex, pageSize, eventType, actualSeverity);
+            IEnumerable<EventLog> eventLogs = this.eventLogManager.Browse(pageIndex, pageSize, eventType, actualSeverity);
 
             // Work out pagination details.
-            int rowCount = EventLogManager.BrowseCount(pageIndex, pageSize, eventType, actualSeverity);
+            int rowCount = this.eventLogManager.BrowseCount(pageIndex, pageSize, eventType, actualSeverity);
             int pageCount = (int)Math.Ceiling(rowCount / (double)pageSize);
-
-            // Start building meta.
-            Dictionary<string, dynamic> pagination = new Dictionary<string, dynamic>();
-
-            // Add basics.
-            pagination.Add("Records", rowCount);
-            pagination.Add("Pages", pageCount);
-            pagination.Add("CurrentPage", pageIndex);
 
             // Build navigation.
             Dictionary<string, string> navigation = new Dictionary<string, string>();
 
             // Parameters passed in not changed by pagination.
-            string fixedParams = "";
+            string fixedParams = string.Empty;
 
             // Page size.
             if (pageSize != 30)
             {
-                fixedParams += string.Format("pageSize={0}", pageSize);
+                fixedParams += $"pageSize={pageSize}";
             }
 
             // Event type.
             if (eventType != null)
             {
-                fixedParams += string.Format("eventType={0}", eventType);
+                fixedParams += $"eventType={eventType}";
             }
 
             // Severity.
             if (severity != -1)
             {
-                fixedParams += string.Format("eventType={0}", severity);
+                fixedParams += $"eventType={severity}";
             }
 
             // Is there a next page?
             if (pageIndex < pageCount)
             {
-                string nextLink = string.Format("Browse?pageIndex={0}", pageIndex + 1);
+                string nextLink = $"Browse?pageIndex={pageIndex + 1}";
 
                 if (!string.IsNullOrEmpty(fixedParams))
                 {
-                    nextLink = string.Format("{0}&{1}", nextLink, fixedParams);
+                    nextLink = $"{nextLink}&{fixedParams}";
                 }
 
                 navigation.Add("Next", nextLink);
             }
-            
+
             // Is there a previous page?
             if (pageIndex > 0)
             {
-                string prevLink = string.Format("Browse?pageIndex={0}", pageIndex - 1);
+                string prevLink = $"Browse?pageIndex={pageIndex - 1}";
 
                 if (!string.IsNullOrEmpty(fixedParams))
                 {
-                    prevLink = string.Format("{0}&{1}", prevLink, fixedParams);
+                    prevLink = $"{prevLink}&{fixedParams}";
                 }
 
                 navigation.Add("Previous", prevLink);
             }
 
-            // Add navigation.
-            pagination.Add("Navigation", navigation);
-
-            Dictionary<string, dynamic> payload = new Dictionary<string, dynamic>();
-
-            payload.Add("Data", eventLogs);
-            payload.Add("Pagination", pagination);
-
-            string json = JsonConvert.SerializeObject(payload);
-
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-
-            response.Content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            return response;
+            var pagination = new { Records = rowCount, Pages = pageCount, CurrentPage = pageIndex, Navigation = navigation, };
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Data = eventLogs, Pagination = pagination, });
         }
 
+        /// <summary>Gets the total count of events.</summary>
+        /// <returns>A response with the total count.</returns>
         [HttpGet]
         public HttpResponseMessage Count()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, EventLogManager.EventCount());
+            return this.Request.CreateResponse(HttpStatusCode.OK, this.eventLogManager.EventCount());
         }
 
+        /// <summary>Gets the event types.</summary>
+        /// <returns>A response with a list of <see cref="string"/> values.</returns>
         [HttpGet]
         public HttpResponseMessage EventTypes()
         {
-            List<string> eventTypes = EventLogManager.GetEventTypes().ToList();
+            List<string> eventTypes = this.eventLogManager.GetEventTypes().ToList();
 
-            return Request.CreateResponse(HttpStatusCode.OK, eventTypes);
+            return this.Request.CreateResponse(HttpStatusCode.OK, eventTypes);
         }
     }
 }

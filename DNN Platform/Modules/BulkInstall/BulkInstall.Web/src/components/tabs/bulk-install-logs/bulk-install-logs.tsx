@@ -1,6 +1,7 @@
 import { Component, Host, h } from '@stencil/core';
 import { Event } from './bulk-install-logs.model';
 import state from "../../../stores/store";
+import {EventLogClient} from "../../../clients/event-log-client";
 
 @Component({
   tag: 'bulk-install-logs',
@@ -10,6 +11,26 @@ import state from "../../../stores/store";
 export class BulkInstallLogs {
 
   private events: Event[] = [];
+
+  private eventLogClient: EventLogClient;
+
+  constructor(){
+    this.eventLogClient = new EventLogClient(state.moduleId);
+  }
+
+  async componentWillLoad() {
+    try {
+      const browseResponse = await this.eventLogClient.browse();
+      this.events = browseResponse.Data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  static formatDate(event: Event): string {
+    const formatter = new Intl.DateTimeFormat(undefined, { dateStyle: 'long', timeStyle: 'medium' });
+    return formatter.format(event.date);
+  }
 
   render() {
     return (
@@ -25,6 +46,7 @@ export class BulkInstallLogs {
                   <thead>
                     <tr>
                       <th>{state.resx.Date}</th>
+                      <th>{state.resx.Severity}</th>
                       <th>{state.resx.Type}</th>
                       <th>{state.resx.Message}</th>
                     </tr>
@@ -32,7 +54,8 @@ export class BulkInstallLogs {
                   <tbody>
                     {this.events.map((event) => (
                       <tr>
-                        <td>{event.date}</td>
+                        <td>{BulkInstallLogs.formatDate(event)}</td>
+                        <td>{event.severity.localizedName}</td>
                         <td>{event.type}</td>
                         <td>{event.message}</td>
                       </tr>

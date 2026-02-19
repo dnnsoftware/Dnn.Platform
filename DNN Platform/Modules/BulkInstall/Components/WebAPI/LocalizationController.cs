@@ -1,32 +1,32 @@
-﻿using System.Web.Http;
-using DotNetNuke.BulkInstall.Components.WebAPI.ActionFilters;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.Modules.BulkInstall.Components.WebAPI
 {
-    /// <summary>
-    /// Provides REST APIs for localization.
-    /// </summary>
+    using System.Web.Http;
+
+    using Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Api;
+
+    /// <summary>Provides REST APIs for localization.</summary>
     [RequireHost]
     [ValidateAntiForgeryToken]
     [InWhitelist]
-    public class LocalizationController : DnnApiController
+    public class LocalizationController(ILocalizationProvider localizationProvider) : DnnApiController
     {
-        private readonly ILocalizationProvider localizationProvider;
+        private readonly ILocalizationProvider localizationProvider = localizationProvider;
 
-        public LocalizationController(ILocalizationProvider localizationProvider)
-        {
-            this.localizationProvider = localizationProvider;
-        }
-
+        /// <summary>Gets the localized resources for the current culture.</summary>
+        /// <returns>A response wrapping a dictionary.</returns>
         [HttpGet]
         public IHttpActionResult GetResources()
         {
             var culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
-            var resourceFile = "~/DesktopModules/BulkInstall/App_LocalResources/BulkInstall.resx";
-            var resources = localizationProvider.GetCompiledResourceFile(this.PortalSettings, resourceFile, culture);
-            return Ok(resources);
+            const string resourceFile = "~/DesktopModules/BulkInstall/App_LocalResources/BulkInstall.resx";
+            var resources = this.localizationProvider.GetCompiledResourceFile(this.PortalSettings, resourceFile, culture);
+            return this.Ok(resources);
         }
     }
 }

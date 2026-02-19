@@ -1,41 +1,53 @@
-﻿using DotNetNuke.BulkInstall.Components.DataAccess.Models;
-using DotNetNuke.Data;
-using System.Linq;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.BulkInstall.Components.DataAccess.DataControllers
+namespace Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers
 {
-    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+    using System.Linq;
 
-    internal class SessionDataController
+    using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Data;
+
+    /// <summary>The data controller for <see cref="Session"/>.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    public sealed class SessionDataController(IHostSettings hostSettings)
     {
-        public Session FindByGuid(string guid)
-        {
-            using (IDataContext context = DataContext.Instance())
-            {
-                var repo = context.GetRepository<Session>();
+        private readonly IHostSettings hostSettings = hostSettings;
 
-                return repo.Find("WHERE Guid = @0", guid).FirstOrDefault<Session>();
-            }
+        /// <summary>Gets the <see cref="Session"/> by its <see cref="Session.Guid"/>.</summary>
+        /// <param name="guid">The session GUID.</param>
+        /// <returns>The session or <see langword="null"/>.</returns>
+#pragma warning disable CA1720 // Identifier contains type name
+        public Session FindByGuid(string guid)
+#pragma warning restore CA1720 // Identifier contains type name
+        {
+            using IDataContext context = DataContext.Instance(this.hostSettings);
+            var repo = context.GetRepository<Session>();
+
+            return repo.Find("WHERE Guid = @0", guid).FirstOrDefault<Session>();
         }
 
+        /// <summary>Creates the <see cref="Session"/>.</summary>
+        /// <param name="session">The session to create.</param>
         public void Create(Session session)
         {
-            using (IDataContext context = DataContext.Instance())
-            {
-                var repo = context.GetRepository<Session>();
+            using IDataContext context = DataContext.Instance(this.hostSettings);
+            var repo = context.GetRepository<Session>();
 
-                repo.Insert(session);
-            }
+            repo.Insert(session);
         }
 
+        /// <summary>Updates a <see cref="Session"/>.</summary>
+        /// <param name="session">The new session data.</param>
         public void Update(Session session)
         {
-            using (IDataContext context = DataContext.Instance())
-            {
-                var repo = context.GetRepository<Session>();
+            using IDataContext context = DataContext.Instance(this.hostSettings);
+            var repo = context.GetRepository<Session>();
 
-                repo.Update(session);
-            }
+            repo.Update(session);
         }
     }
 }

@@ -25,7 +25,7 @@ public class EncryptorTests
         var encryptedStream = await encryptor.GetEncryptedStream(deployInput, new MemoryStream(Encoding.UTF8.GetBytes("ZIP")));
 
         var decryptedStream = Crypto.Decrypt(encryptedStream, deployInput.EncryptionKey);
-        var decryptedContents = await new StreamReader(decryptedStream).ReadToEndAsync();
+        var decryptedContents = await new StreamReader(decryptedStream).ReadToEndAsync(TestContext.Current.CancellationToken);
         decryptedContents.ShouldBe("ZIP");
     }
 }

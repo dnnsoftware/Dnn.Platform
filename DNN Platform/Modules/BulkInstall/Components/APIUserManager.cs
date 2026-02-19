@@ -1,26 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.BulkInstall.Components
+namespace Dnn.Modules.BulkInstall.Components
 {
-    using DotNetNuke.BulkInstall.Components.DataAccess.DataControllers;
-    using DotNetNuke.BulkInstall.Components.DataAccess.Models;
+    using System;
+    using System.Collections.Generic;
 
-    internal static class APIUserManager
+    using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
+    using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
+
+    /// <summary>Manager for <see cref="APIUser"/>.</summary>
+    /// <param name="dataController">The data controller.</param>
+    public sealed class APIUserManager(APIUserDataController dataController)
     {
-        private static APIUserDataController APIUserDC = new APIUserDataController();
+        private readonly APIUserDataController dataController = dataController;
 
-        /// <summary>
-        /// Creates a new APIUser with the passed name.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static APIUser Create(string name)
+        /// <summary>Creates a new APIUser with the passed name.</summary>
+        /// <param name="name">A label for the user.</param>
+        /// <returns>The user.</returns>
+        public APIUser Create(string name)
         {
-            return Create(name, bypass: false);
+            return this.Create(name, bypass: false);
         }
 
-        public static APIUser Create(string name, bool bypass)
+        /// <summary>Creates a new APIUser with the passed name.</summary>
+        /// <param name="name">A label for the user.</param>
+        /// <param name="bypass">Whether the user can bypass the IP allow list.</param>
+        /// <returns>The user.</returns>
+        public APIUser Create(string name, bool bypass)
         {
             APIUser newApiUser;
 
@@ -28,9 +36,9 @@ namespace DotNetNuke.BulkInstall.Components
             {
                 newApiUser = new APIUser(name, bypass);
 
-                APIUserDC.Create(newApiUser);
+                this.dataController.Create(newApiUser);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -38,65 +46,53 @@ namespace DotNetNuke.BulkInstall.Components
             return newApiUser;
         }
 
-        /// <summary>
-        /// Gets all APIUsers.
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<APIUser> GetAll()
+        /// <summary>Gets all <see cref="APIUser"/> instances.</summary>
+        /// <returns>A sequence of <see cref="APIUser"/>.</returns>
+        public IEnumerable<APIUser> GetAll()
         {
-            return APIUserDC.Get();
+            return this.dataController.Get();
         }
 
-        /// <summary>
-        /// Retrieves a single APIUser by its id.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static APIUser GetById(int id)
+        /// <summary>Retrieves a single <see cref="APIUser"/> by its ID.</summary>
+        /// <param name="id">The API user ID.</param>
+        /// <returns>The user or <see langword="null"/>.</returns>
+        public APIUser GetById(int id)
         {
-            return APIUserDC.Get(id);
+            return this.dataController.Get(id);
         }
 
-        /// <summary>
-        /// Retrieves a single APIUser by its api key.
-        /// </summary>
-        /// <param name="apiKey"></param>
-        /// <returns></returns>
-        public static APIUser GetByAPIKey(string apiKey)
+        /// <summary>Retrieves a single <see cref="APIUser"/> by its API key.</summary>
+        /// <param name="apiKey">The API key.</param>
+        /// <returns>The user or <see langword="null"/>.</returns>
+        public APIUser GetByAPIKey(string apiKey)
         {
-            return APIUserDC.Get(apiKey);
+            return this.dataController.Get(apiKey);
         }
 
-        /// <summary>
-        /// Updates the passed APIUser.
-        /// </summary>
-        /// <param name="apiUser"></param>
-        /// <returns></returns>
-        public static APIUser Update(APIUser apiUser)
+        /// <summary>Updates the passed <see cref="APIUser"/>.</summary>
+        /// <param name="apiUser">The new user information.</param>
+        /// <returns>The updated user.</returns>
+        public APIUser Update(APIUser apiUser)
         {
-            APIUserDC.Update(apiUser);
+            this.dataController.Update(apiUser);
 
-            return APIUserDC.Get(apiUser.APIUserId);
+            return this.dataController.Get(apiUser.APIUserId);
         }
 
-        /// <summary>
-        /// Deletes the passed APIUser.
-        /// </summary>
-        /// <param name="apiUser"></param>
-        public static void Delete(APIUser apiUser)
+        /// <summary>Deletes the passed <see cref="APIUser"/>.</summary>
+        /// <param name="apiUser">The user to delete.</param>
+        public void Delete(APIUser apiUser)
         {
-            APIUserDC.Delete(apiUser);
+            this.dataController.Delete(apiUser);
         }
 
-        /// <summary>
-        /// Looks up an APIUser by its api key and prepares it for use.
-        /// </summary>
-        /// <param name="apiKey"></param>
-        /// <returns></returns>
-        public static APIUser FindAndPrepare(string apiKey)
+        /// <summary>Looks up an <see cref="APIUser"/> by its API key and prepares it for use.</summary>
+        /// <param name="apiKey">The API key.</param>
+        /// <returns>The user of <see langword="null"/>.</returns>
+        public APIUser FindAndPrepare(string apiKey)
         {
             // Lookup user by api key.
-            APIUser apiUser = APIUserDC.Get(apiKey);
+            APIUser apiUser = this.dataController.Get(apiKey);
 
             // Verify and prepare for use.
             if (apiUser != null && apiUser.PrepareForUse(apiKey))
