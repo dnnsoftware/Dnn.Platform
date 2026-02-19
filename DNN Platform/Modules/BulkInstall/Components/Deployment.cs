@@ -16,6 +16,8 @@ namespace Dnn.Modules.BulkInstall.Components
 
     using DotNetNuke.Abstractions.Application;
 
+    using Newtonsoft.Json;
+
     /// <summary>A deployment of installation packages.</summary>
     internal class Deployment
     {
@@ -94,8 +96,6 @@ namespace Dnn.Modules.BulkInstall.Components
         public void Deploy()
         {
             // Do the install.
-            JavaScriptSerializer jsonSer = new JavaScriptSerializer();
-
             // Set as started.
             this.Session.Status = SessionStatus.InProgress;
             this.sessionManager.UpdateSession(this.Session);
@@ -119,14 +119,13 @@ namespace Dnn.Modules.BulkInstall.Components
 
                 // Make sorted list serializable.
                 SortedList<string, InstallJob> serOrderedInstall = new SortedList<string, InstallJob>();
-
                 foreach (KeyValuePair<int, InstallJob> pair in this.OrderedInstall)
                 {
                     serOrderedInstall.Add(pair.Key.ToString(CultureInfo.InvariantCulture), pair.Value);
                 }
 
                 // After each install job, update response.
-                this.Session.Response = jsonSer.Serialize(serOrderedInstall);
+                this.Session.Response = JsonConvert.SerializeObject(serOrderedInstall);
                 this.sessionManager.UpdateSession(this.Session);
             }
 
