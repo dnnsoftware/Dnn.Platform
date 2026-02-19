@@ -207,9 +207,6 @@
   <data name="EnableIpSafeList" xml:space="preserve">
     <value>Enable IP Safelist</value>
   </data>
-  <data name="NewIpSafelistEntry" xml:space="preserve">
-    <value>New IP Safelist Entry</value>
-  </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
