@@ -24,7 +24,7 @@
     "watch": "stencil build --config stencil.dnn.config.ts --watch",
     "start": "stencil build --dev --watch --serve",
     "generate": "stencil generate",
-    "lint": "eslint --fix"
+    "lint": "prettier . --write && eslint --fix"
   },
   "dependencies": {
     "@dnncommunity/dnn-elements": "^0.27.8",
@@ -37,6 +37,7 @@
     "@stencil/eslint-plugin": "^1.1.0",
     "@types/node": "^16.18.11",
     "eslint": "^9.38.0",
+    "prettier": "^3.8.1",
     "typescript-eslint": "^8.56.0"
   },
   "license": "MIT"

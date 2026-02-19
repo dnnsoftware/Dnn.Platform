@@ -15,11 +15,11 @@
   /* Panel styling */
   .panel {
     border: 1px solid var(--dnn-color-neutral, #ededee);
-    border-radius: .5em;
+    border-radius: 0.5em;
   }
 
   .panel-heading {
-    padding: .3em .5em;
+    padding: 0.3em 0.5em;
     border-bottom: 1px solid var(--dnn-color-neutral, #ededee);
     background-color: var(--dnn-color-neutral, #ededee);
   }
@@ -50,7 +50,7 @@
 
   label {
     display: flex;
-    gap: .5em;
+    gap: 0.5em;
     align-items: center;
   }
 

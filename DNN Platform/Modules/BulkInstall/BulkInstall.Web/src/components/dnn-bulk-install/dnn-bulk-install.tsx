@@ -1,6 +1,6 @@
 import { Component, Host, h, Prop } from '@stencil/core';
 import { LocalizationClient } from '../../clients/localization-client';
-import state from "../../stores/store";
+import state from '../../stores/store';
 
 @Component({
   tag: 'dnn-bulk-install',
@@ -14,7 +14,7 @@ export class DnnBulkInstall {
   constructor() {
     this.localizationClient = new LocalizationClient(this.moduleId);
   }
-  
+
   async componentWillLoad() {
     state.moduleId = this.moduleId;
     try {
@@ -23,7 +23,7 @@ export class DnnBulkInstall {
       console.error(error);
     }
   }
-  
+
   render() {
     return (
       <Host>

@@ -1,7 +1,7 @@
-import { Component, Host, h, State, } from '@stencil/core';
-import { Ip, } from './bulk-install-ip-safelist.model';
-import state from "../../../stores/store";
-import { IpSafelistClient, } from "../../../clients/ip-safelist-client";
+import { Component, Host, h, State } from '@stencil/core';
+import { Ip } from './bulk-install-ip-safelist.model';
+import state from '../../../stores/store';
+import { IpSafelistClient } from '../../../clients/ip-safelist-client';
 
 @Component({
   tag: 'bulk-install-ip-safelist',
@@ -9,18 +9,17 @@ import { IpSafelistClient, } from "../../../clients/ip-safelist-client";
   shadow: true,
 })
 export class BulkInstallIpSafelist {
-
   @State() private ipSafelist: Ip[] = [];
   @State() private newIp: Ip = {
     id: -1,
     name: '',
     ipAddress: '',
-  }
+  };
   @State() private enableIpSafelist: boolean = false;
 
   private ipSafelistClient: IpSafelistClient;
 
-  constructor(){
+  constructor() {
     this.ipSafelistClient = new IpSafelistClient(state.moduleId);
   }
 
@@ -70,7 +69,7 @@ export class BulkInstallIpSafelist {
                       helpText={state.resx.IPSafeListItemNameHelp}
                       required
                       value={this.newIp.name}
-                      onValueInput={e => this.newIp = { ...this.newIp, name: (e.detail as string), } }
+                      onValueInput={e => (this.newIp = { ...this.newIp, name: e.detail as string })}
                     />
                     <dnn-input
                       type="text"
@@ -78,10 +77,13 @@ export class BulkInstallIpSafelist {
                       helpText={state.resx.IPSafeListItemIpAddressHelp}
                       required
                       value={this.newIp.ipAddress}
-                      onValueInput={e => this.newIp = { ...this.newIp, ipAddress: (e.detail as string), } }
+                      onValueInput={e => (this.newIp = { ...this.newIp, ipAddress: e.detail as string })}
                     />
                     <dnn-button
-                      onClick={() => { this.createIp(this.newIp).catch(console.error); return; } }
+                      onClick={() => {
+                        this.createIp(this.newIp).catch(console.error);
+                        return;
+                      }}
                     >
                       {state.resx.Add}
                     </dnn-button>
@@ -107,7 +109,7 @@ export class BulkInstallIpSafelist {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.ipSafelist.map((ip) => (
+                    {this.ipSafelist.map(ip => (
                       <tr>
                         <td>{ip.name}</td>
                         <td>{ip.ipAddress}</td>
@@ -115,7 +117,10 @@ export class BulkInstallIpSafelist {
                           <dnn-button
                             appearance="danger"
                             size="small"
-                            onClick={() => { this.deleteIp(ip).catch(console.error); return; } }
+                            onClick={() => {
+                              this.deleteIp(ip).catch(console.error);
+                              return;
+                            }}
                           >
                             {state.resx.Delete}
                           </dnn-button>
@@ -136,14 +141,14 @@ export class BulkInstallIpSafelist {
                 <div class="form-horizontal">
                   <div class="form-group">
                     <label>
-                      <dnn-toggle
-                        name="enableIpSafelist"
-                        checked={this.enableIpSafelist}
-                        onCheckChanged={e => this.enableIpSafelist = e.detail.checked }/>
+                      <dnn-toggle name="enableIpSafelist" checked={this.enableIpSafelist} onCheckChanged={e => (this.enableIpSafelist = e.detail.checked)} />
                       {state.resx.EnableIpSafeList}
                     </label>
                     <dnn-button
-                      onClick={() => { this.saveIpSafelistConfiguration(this.enableIpSafelist).catch(console.error); return; } }
+                      onClick={() => {
+                        this.saveIpSafelistConfiguration(this.enableIpSafelist).catch(console.error);
+                        return;
+                      }}
                     >
                       {state.resx.Save}
                     </dnn-button>

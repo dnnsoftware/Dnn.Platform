@@ -1,8 +1,8 @@
-import {EventLogSeverityInfo} from "../../../enums/EventLogSeverity";
+import { EventLogSeverityInfo } from '../../../enums/EventLogSeverity';
 
 export interface Event {
-    date: Date;
-    type: string;
-    message: string;
-    severity: EventLogSeverityInfo;
+  date: Date;
+  type: string;
+  message: string;
+  severity: EventLogSeverityInfo;
 }

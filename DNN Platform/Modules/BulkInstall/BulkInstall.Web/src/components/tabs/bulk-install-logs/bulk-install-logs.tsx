@@ -1,7 +1,7 @@
 import { Component, Host, h } from '@stencil/core';
 import { Event } from './bulk-install-logs.model';
-import state from "../../../stores/store";
-import {EventLogClient} from "../../../clients/event-log-client";
+import state from '../../../stores/store';
+import { EventLogClient } from '../../../clients/event-log-client';
 
 @Component({
   tag: 'bulk-install-logs',
@@ -9,12 +9,11 @@ import {EventLogClient} from "../../../clients/event-log-client";
   shadow: true,
 })
 export class BulkInstallLogs {
-
   private events: Event[] = [];
 
   private eventLogClient: EventLogClient;
 
-  constructor(){
+  constructor() {
     this.eventLogClient = new EventLogClient(state.moduleId);
   }
 
@@ -27,7 +26,7 @@ export class BulkInstallLogs {
     }
   }
 
-  static formatDate(event: Event): string {
+  private static formatDate(event: Event): string {
     const formatter = new Intl.DateTimeFormat(undefined, { dateStyle: 'long', timeStyle: 'medium' });
     return formatter.format(event.date);
   }
@@ -52,7 +51,7 @@ export class BulkInstallLogs {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.events.map((event) => (
+                    {this.events.map(event => (
                       <tr>
                         <td>{BulkInstallLogs.formatDate(event)}</td>
                         <td>{event.severity.localizedName}</td>

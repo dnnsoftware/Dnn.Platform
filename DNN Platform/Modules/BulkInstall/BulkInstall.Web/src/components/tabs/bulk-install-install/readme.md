@@ -1,15 +1,12 @@
 # bulk-install-install
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Dependencies
 
 ### Used by
 
- - [dnn-bulk-install](../../dnn-bulk-install)
+- [dnn-bulk-install](../../dnn-bulk-install)
 
 ### Depends on
 
@@ -17,6 +14,7 @@
 - dnn-button
 
 ### Graph
+
 ```mermaid
 graph TD;
   bulk-install-install --> dnn-dropzone
@@ -27,6 +25,6 @@ graph TD;
   style bulk-install-install fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

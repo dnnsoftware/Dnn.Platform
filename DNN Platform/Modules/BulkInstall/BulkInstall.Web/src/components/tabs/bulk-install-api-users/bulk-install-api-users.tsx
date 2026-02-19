@@ -1,7 +1,7 @@
 import { Component, Host, h, State } from '@stencil/core';
 import { User } from './bulk-install-api-users.model';
-import state from "../../../stores/store";
-import { ApiUserClient } from "../../../clients/api-user-client";
+import state from '../../../stores/store';
+import { ApiUserClient } from '../../../clients/api-user-client';
 
 @Component({
   tag: 'bulk-install-api-users',
@@ -9,7 +9,6 @@ import { ApiUserClient } from "../../../clients/api-user-client";
   shadow: true,
 })
 export class BulkInstallApiUsers {
-
   @State() private users: User[] = [];
   @State() private newUser: User = {
     id: -1,
@@ -17,13 +16,13 @@ export class BulkInstallApiUsers {
     apiKey: '',
     encryptionKey: '',
     bypassIPWhitelist: false,
-  }
+  };
 
   private newUserModal: HTMLDnnModalElement;
 
   private apiUserClient: ApiUserClient;
 
-  constructor(){
+  constructor() {
     this.apiUserClient = new ApiUserClient(state.moduleId);
   }
 
@@ -44,7 +43,7 @@ export class BulkInstallApiUsers {
       apiKey: '',
       encryptionKey: '',
       bypassIPWhitelist: false,
-    }
+    };
     await this.newUserModal.hide();
   }
 
@@ -61,7 +60,10 @@ export class BulkInstallApiUsers {
             <div class="button-row">
               <dnn-button
                 size="small"
-                onClick={() => { this.newUserModal.show().catch(console.error); return; } }
+                onClick={() => {
+                  this.newUserModal.show().catch(console.error);
+                  return;
+                }}
               >
                 {state.resx.NewApiUser}
               </dnn-button>
@@ -82,7 +84,7 @@ export class BulkInstallApiUsers {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.users.map((user) => (
+                    {this.users.map(user => (
                       <tr>
                         <td>{user.name}</td>
                         <td>{user.apiKey}</td>
@@ -92,7 +94,10 @@ export class BulkInstallApiUsers {
                           <dnn-button
                             appearance="danger"
                             size="small"
-                            onClick={() => { this.deleteUser(user).catch(console.error); return; } }
+                            onClick={() => {
+                              this.deleteUser(user).catch(console.error);
+                              return;
+                            }}
                           >
                             {state.resx.Delete}
                           </dnn-button>
@@ -105,13 +110,10 @@ export class BulkInstallApiUsers {
             </div>
           </div>
         </div>
-        <dnn-modal
-          ref={(el) => this.newUserModal = el}
-
-        >
+        <dnn-modal ref={el => (this.newUserModal = el)}>
           <form
             class="create-user"
-            onSubmit={(event) => {
+            onSubmit={event => {
               event.preventDefault();
               this.createUser(this.newUser).catch(console.error);
               return;
@@ -124,12 +126,13 @@ export class BulkInstallApiUsers {
               helpText={state.resx.ApiUserNameHelp}
               required
               value={this.newUser.name}
-              onValueInput={e => this.newUser = { ...this.newUser, name: (e.detail as string), } }
+              onValueInput={e => (this.newUser = { ...this.newUser, name: e.detail as string })}
             />
             <label>
               <dnn-checkbox
                 checked={this.newUser.bypassIPWhitelist ? 'checked' : 'unchecked'}
-                onCheckedchange={e => this.newUser = { ...this.newUser, bypassIPWhitelist: e.detail === 'checked', } } />
+                onCheckedchange={e => (this.newUser = { ...this.newUser, bypassIPWhitelist: e.detail === 'checked' })}
+              />
               {state.resx.BypassIpAllowList}
             </label>
             <dnn-button type="submit">{state.resx.Create}</dnn-button>

@@ -1,10 +1,10 @@
-import { SessionStatusInfo, } from "../../../enums/SessionStatus";
+import { SessionStatusInfo } from '../../../enums/SessionStatus';
 
 export interface Session {
-  sessionGuid: string,
-  status: SessionStatusInfo,
-  response: InstallJob[],
-  lastUsed: Date,
+  sessionGuid: string;
+  status: SessionStatusInfo;
+  response: InstallJob[];
+  lastUsed: Date;
 }
 
 export interface InstallJob {

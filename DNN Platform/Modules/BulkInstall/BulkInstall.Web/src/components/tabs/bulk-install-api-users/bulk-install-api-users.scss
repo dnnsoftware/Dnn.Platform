@@ -12,7 +12,7 @@
     padding: 1em 0;
   }
 
-  .button-row{
+  .button-row {
     display: flex;
     justify-content: flex-end;
     gap: 1em;
@@ -22,11 +22,11 @@
   /* Panel styling */
   .panel {
     border: 1px solid var(--dnn-color-neutral, #ededee);
-    border-radius: .5em;
+    border-radius: 0.5em;
   }
 
   .panel-heading {
-    padding: .3em .5em;
+    padding: 0.3em 0.5em;
     border-bottom: 1px solid var(--dnn-color-neutral, #ededee);
     background-color: var(--dnn-color-neutral, #ededee);
   }
@@ -56,7 +56,7 @@
 
   label {
     display: flex;
-    gap: .5em;
+    gap: 0.5em;
     align-items: center;
   }
 
@@ -72,7 +72,7 @@
 
   .table th,
   .table td {
-    padding: .3em .5em;
+    padding: 0.3em 0.5em;
     text-align: left;
     border: 1px solid var(--dnn-color-neutral, #ededee);
   }
@@ -84,20 +84,19 @@
 
   /* Utility */
   .clearfix::after {
-    content: "";
+    content: '';
     display: table;
     clear: both;
   }
 
-  form.create-user{
+  form.create-user {
     margin: 1rem;
     display: flex;
     flex-direction: column;
     gap: 1em;
-    h4{
+    h4 {
       margin: 0;
       text-align: center;
     }
   }
-
 }

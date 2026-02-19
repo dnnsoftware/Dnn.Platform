@@ -3,11 +3,11 @@ import dnnConfig from '../../../../settings.local.json';
 import { Config } from '@stencil/core';
 
 if (!dnnConfig || !dnnConfig.WebsitePath) {
-  console.error("WebsitePath is not defined in settings.local.json");
+  console.error('WebsitePath is not defined in settings.local.json');
 }
 const outPath = `${dnnConfig.WebsitePath}\\DesktopModules\\BulkInstall\\Scripts`;
 
-export const config : Config = {
+export const config: Config = {
   ...originalConfig,
   outputTargets: [
     {
