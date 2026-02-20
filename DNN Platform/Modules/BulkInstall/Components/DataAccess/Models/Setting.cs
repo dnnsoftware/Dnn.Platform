@@ -9,11 +9,12 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
     using DotNetNuke.ComponentModel.DataAnnotations;
 
     /// <summary>A database entity representing a setting.</summary>
-    [TableName("Cantarus_PolyDeploy_Settings")]
+    [TableName("BulkInstall_Settings")]
     [PrimaryKey("SettingID")]
     public class Setting
     {
         /// <summary>Gets or sets the setting ID.</summary>
+        [ColumnName("SettingID")]
         public int SettingId { get; set; }
 
         /// <summary>Gets or sets the setting group.</summary>

@@ -30,7 +30,7 @@ public class Renderer : IRenderer
             return;
         }
 
-        this.console.Write(new FigletText("PolyDeploy").Color(Color.Orange1));
+        this.console.Write(new FigletText("Bulk Install").Color(Color.Orange1));
     }
 
     /// <inheritdoc/>

@@ -37,7 +37,7 @@ public class Installer : IInstaller
             var responseBody = JsonSerializer.Deserialize<Session>(responseString);
             if (responseBody == null)
             {
-                throw new InvalidOperationException("Received an empty response trying to get a PolyDeploy session");
+                throw new InvalidOperationException($"Received an empty response trying to get a {(options.LegacyApi ? "PolyDeploy" : "BulkInstall")} session");
             }
 
             var responseJson = JsonSerializer.Deserialize<ResponseJson>(responseString);
@@ -77,7 +77,7 @@ public class Installer : IInstaller
             var responseBody = await JsonSerializer.DeserializeAsync<CreateSessionResponse>(responseStream);
             if (string.IsNullOrWhiteSpace(responseBody?.SessionGuid))
             {
-                throw new InvalidOperationException("Received an empty response trying to create PolyDeploy session");
+                throw new InvalidOperationException($"Received an empty response trying to create {(options.LegacyApi ? "PolyDeploy" : "BulkInstall")} session");
             }
 
             return responseBody.SessionGuid;

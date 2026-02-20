@@ -61,7 +61,7 @@ namespace Dnn.Modules.BulkInstall.Components
                 {
                     string log = $"(IP: {this.IPAddress} | APIUserID: {this.APIUser.APIUserId}) {failure}";
 
-                    this.eventLogger.AddLog("PolyDeploy", log, EventLogType.HOST_ALERT);
+                    this.eventLogger.AddLog("BulkInstall", log, EventLogType.HOST_ALERT);
                 }
             }
         }

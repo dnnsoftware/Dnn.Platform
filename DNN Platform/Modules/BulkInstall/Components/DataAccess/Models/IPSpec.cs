@@ -9,7 +9,7 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
     using DotNetNuke.ComponentModel.DataAnnotations;
 
     /// <summary>A database entity representing an allowed IP address.</summary>
-    [TableName("Cantarus_PolyDeploy_IPSpecs")]
+    [TableName("BulkInstall_IPSpecs")]
     [PrimaryKey("IPSpecID")]
     public class IPSpec : Obfuscated
     {
@@ -46,6 +46,7 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
         }
 
         /// <summary>Gets or sets the integer ID of IPSpec.</summary>
+        [ColumnName("IPSpecID")]
         public int IPSpecId { get; set; }
 
         /// <summary>Gets or sets the name used to identify this address.</summary>

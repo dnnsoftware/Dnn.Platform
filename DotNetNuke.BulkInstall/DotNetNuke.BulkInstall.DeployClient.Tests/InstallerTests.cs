@@ -23,7 +23,7 @@ public class InstallerTests
     public async Task StartSessionAsync_CallsCreateSessionApi(bool legacyApi, string baseUri)
     {
         var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
-        var targetUri = new Uri("https://polydeploy.example.com/");
+        var targetUri = new Uri("https://bulkinstall.example.com/");
         var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
@@ -43,7 +43,7 @@ public class InstallerTests
     [MemberData(nameof(ApiData))]
     public async Task StartSessionAsync_CallsSessionPostApi_NotFound_ThrowsHttpRequestException(bool legacyApi, string baseUri)
     {
-        var targetUri = new Uri("https://polydeploy.example.com/");
+        var targetUri = new Uri("https://bulkinstall.example.com/");
         var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
@@ -62,7 +62,7 @@ public class InstallerTests
     public async Task UploadPackageAsync_CallsAddPackagesPostApiUsesCorrectSessionId(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
-        var targetUri = new Uri("https://polydeploy.example.com/");
+        var targetUri = new Uri("https://bulkinstall.example.com/");
         var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
@@ -88,7 +88,7 @@ public class InstallerTests
     public async Task UploadPackageAsync_CallsAddPackagesPostApiUsesCorrectFileName(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
-        var targetUri = new Uri("https://polydeploy.example.com/");
+        var targetUri = new Uri("https://bulkinstall.example.com/");
         var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
@@ -110,7 +110,7 @@ public class InstallerTests
     public async Task UploadPackageAsync_WhenApiErrors_ThrowWrappedException(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
-        var targetUri = new Uri("https://polydeploy.example.com/");
+        var targetUri = new Uri("https://bulkinstall.example.com/");
         var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
@@ -135,7 +135,7 @@ public class InstallerTests
     public async Task InstallPackagesAsync_WhenAPIErrors_ThrowsWrappedException(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
-        var targetUri = new Uri("https://polydeploy.example.com/");
+        var targetUri = new Uri("https://bulkinstall.example.com/");
         var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
@@ -153,7 +153,7 @@ public class InstallerTests
     public async Task InstallPackagesAsync_DoesGetInstall(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
-        var targetUri = new Uri("https://polydeploy.example.com/");
+        var targetUri = new Uri("https://bulkinstall.example.com/");
         var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
@@ -173,7 +173,7 @@ public class InstallerTests
     public async Task GetSessionAsync_DeserializesInProgressResponse(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
-        var targetUri = new Uri("https://polydeploy.example.com/");
+        var targetUri = new Uri("https://bulkinstall.example.com/");
         var options = TestHelpers.CreateDeployInput(targetUri.ToString(), legacyApi: legacyApi);
 
         var response = @"{
@@ -240,7 +240,7 @@ public class InstallerTests
     public async Task GetSessionAsync_TimeoutResponse_Exception(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
-        var targetUri = new Uri("https://polydeploy.example.com/");
+        var targetUri = new Uri("https://bulkinstall.example.com/");
         var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5, legacyApi: legacyApi);
         var stopwatch = new TestStopwatch(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(6));
 
@@ -260,7 +260,7 @@ public class InstallerTests
     public async Task GetSessionAsync_GoodResponseAfterNotFound_Succeeds(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
-        var targetUri = new Uri("https://polydeploy.example.com/");
+        var targetUri = new Uri("https://bulkinstall.example.com/");
         var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5, legacyApi: legacyApi);
         var stopwatch = new TestStopwatch(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(6));
 
@@ -280,7 +280,7 @@ public class InstallerTests
     public async Task GetSessionAsync_GoodResponseAfterHttpException_Succeeds(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
-        var targetUri = new Uri("https://polydeploy.example.com/");
+        var targetUri = new Uri("https://bulkinstall.example.com/");
         var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5, legacyApi: legacyApi);
         var stopwatch = new TestStopwatch(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(6));
 
@@ -300,7 +300,7 @@ public class InstallerTests
     public async Task UploadPackageAsync_DoesNotRetryAfterFailure(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
-        var targetUri = new Uri("https://polydeploy.example.com/");
+        var targetUri = new Uri("https://bulkinstall.example.com/");
         var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5, legacyApi: legacyApi);
         var stopwatch = new TestStopwatch(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(6));
 
@@ -327,7 +327,7 @@ public class InstallerTests
     public async Task UploadPackageAsync_TracksUploadProgress(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
-        var targetUri = new Uri("https://polydeploy.example.com/");
+        var targetUri = new Uri("https://bulkinstall.example.com/");
         var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5, legacyApi: legacyApi);
         var stopwatch = new TestStopwatch(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(6));
 
@@ -358,7 +358,7 @@ public class InstallerTests
     public async Task StartSessionAsync_SetsUserAgentHeader(bool legacyApi, string baseUri)
     {
         var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
-        var targetUri = new Uri("https://polydeploy.example.com/");
+        var targetUri = new Uri("https://bulkinstall.example.com/");
         var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(

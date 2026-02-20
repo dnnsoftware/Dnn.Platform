@@ -54,7 +54,7 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers
         public APIUser Get(string apiKey)
         {
             using IDataContext context = DataContext.Instance(this.hostSettings);
-            return context.ExecuteSingleOrDefault<APIUser>(System.Data.CommandType.StoredProcedure, "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]", apiKey);
+            return context.ExecuteSingleOrDefault<APIUser>(System.Data.CommandType.StoredProcedure, "{databaseOwner}[{objectQualifier}BulkInstall_APIUserByAPIKey]", apiKey);
         }
 
         /// <summary>Updates the passed <see cref="APIUser"/>.</summary>

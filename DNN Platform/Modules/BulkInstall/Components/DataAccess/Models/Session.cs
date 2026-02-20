@@ -22,7 +22,7 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
     }
 
     /// <summary>A session to which packages can be added and then installed.</summary>
-    [TableName("Cantarus_PolyDeploy_Sessions")]
+    [TableName("BulkInstall_Sessions")]
     [PrimaryKey("SessionID")]
     public class Session
     {
@@ -41,7 +41,8 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
         }
 
         /// <summary>Gets or sets the internal ID of the session.</summary>
-        public int SessionID { get; set; }
+        [ColumnName("SessionID")]
+        public int SessionId { get; set; }
 
         /// <summary>Gets or sets the public ID of the session.</summary>
         [ColumnName("Guid")]
