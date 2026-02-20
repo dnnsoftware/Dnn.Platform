@@ -353,10 +353,10 @@ public class DeployerTests
         A.CallTo(() => fakeInstaller.GetSessionAsync(options, sessionId))
             .ReturnsNextFromSequence(
                 new Session { Status = SessionStatus.NotStarted, Responses = null, },
-                new Session { Status = SessionStatus.InProgess, Responses = null, },
+                new Session { Status = SessionStatus.InProgress, Responses = null, },
                 new Session
                 {
-                    Status = SessionStatus.InProgess,
+                    Status = SessionStatus.InProgress,
                     Responses = new SortedList<int, SessionResponse?>(responses.Select((response, i) => new { response, i }).ToDictionary(keySelector: x => x.i, elementSelector: x => x.response)),
                 },
                 new Session

@@ -10,7 +10,6 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
-    using System.Web.Script.Serialization;
 
     using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
     using Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters;
@@ -65,42 +64,6 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
             apiUser.Salt = null;
 
             return this.Request.CreateResponse(HttpStatusCode.Created, new { User = apiUser, });
-        }
-
-        /// <summary>Updates an existing user.</summary>
-        /// <returns>A response with the updated <see cref="APIUser"/>.</returns>
-        [HttpPut]
-        public HttpResponseMessage Update()
-        {
-            JavaScriptSerializer jsonSer = new JavaScriptSerializer();
-
-            string json = this.Request.Content.ReadAsStringAsync().Result;
-
-            APIUser apiUser;
-
-            try
-            {
-                apiUser = jsonSer.Deserialize<APIUser>(json);
-            }
-            catch (Exception)
-            {
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Deserialization failure.");
-            }
-
-            try
-            {
-                apiUser = this.apiUserManager.Update(apiUser);
-
-                apiUser.ApiKeySha = null;
-                apiUser.EncryptedEncryptionKey = null;
-                apiUser.Salt = null;
-            }
-            catch (Exception)
-            {
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Failed to update API user.");
-            }
-
-            return this.Request.CreateResponse(HttpStatusCode.OK, apiUser);
         }
 
         /// <summary>Deletes an <see cref="APIUser"/>.</summary>

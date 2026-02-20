@@ -28,7 +28,7 @@ public class InstallerTests
 
         var handler = new FakeMessageHandler(
             new Uri(targetUri, baseUri + "CreateSession"),
-            new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(JsonSerializer.Serialize(new { Guid = expectedSessionId })), });
+            new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(JsonSerializer.Serialize(new { SessionGuid = expectedSessionId, })), });
         var installer = CreateInstaller(handler);
 
         var sessionId = await installer.StartSessionAsync(options);
@@ -213,7 +213,7 @@ public class InstallerTests
         handler.Request.ShouldNotBeNull();
         handler.Request.Method.ShouldBe(HttpMethod.Get);
 
-        session.Status.ShouldBe(SessionStatus.InProgess);
+        session.Status.ShouldBe(SessionStatus.InProgress);
         var responseItem = session.Responses.ShouldHaveSingleItem();
         responseItem.Key.ShouldBe(0);
         var sessionResponse = responseItem.Value.ShouldNotBeNull();
@@ -363,7 +363,7 @@ public class InstallerTests
 
         var handler = new FakeMessageHandler(
             new Uri(targetUri, baseUri + "CreateSession"),
-            new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(JsonSerializer.Serialize(new { Guid = expectedSessionId })), });
+            new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(JsonSerializer.Serialize(new { SessionGuid = expectedSessionId, })), });
         var installer = CreateInstaller(handler);
 
         var sessionId = await installer.StartSessionAsync(options);

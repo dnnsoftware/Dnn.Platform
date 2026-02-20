@@ -12,6 +12,9 @@ namespace Dnn.Modules.BulkInstall.Components
 
     using DotNetNuke.Services.Installer.Installers;
 
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
+
     /// <summary>Information about a package to be installed.</summary>
     internal sealed class PackageJob
     {
@@ -35,6 +38,11 @@ namespace Dnn.Modules.BulkInstall.Components
             {
                 this.Dependencies.Add(new PackageDependency(nav));
             }
+        }
+
+        [JsonConstructor]
+        private PackageJob()
+        {
         }
 
         /// <summary>Gets or sets the package name.</summary>
@@ -63,6 +71,8 @@ namespace Dnn.Modules.BulkInstall.Components
             }
         }
 
+        [JsonProperty]
+        [JsonConverter(typeof(VersionConverter))]
         private Version Version { get; set; }
     }
 }

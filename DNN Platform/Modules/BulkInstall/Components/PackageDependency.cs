@@ -10,6 +10,8 @@ namespace Dnn.Modules.BulkInstall.Components
 
     using DotNetNuke.Services.Installer.Dependencies;
 
+    using Newtonsoft.Json;
+
     /// <summary>A dependency of a package.</summary>
     internal sealed class PackageDependency
     {
@@ -28,6 +30,11 @@ namespace Dnn.Modules.BulkInstall.Components
             IDependency dep = DependencyFactory.GetDependency(dependencyRoot);
 
             this.DnnMet = dep.IsValid;
+        }
+
+        [JsonConstructor]
+        private PackageDependency()
+        {
         }
 
         /// <summary>Gets or sets a value indicating whether the dependency is for another package.</summary>

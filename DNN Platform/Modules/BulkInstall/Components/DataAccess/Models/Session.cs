@@ -14,8 +14,8 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
         /// <summary>A session that has not started its installation.</summary>
         NotStarted = 0,
 
-        /// <summary>A session that with an in progress installation.</summary>
-        InProgess = 1,
+        /// <summary>A session with an in progress installation.</summary>
+        InProgress = 1,
 
         /// <summary>A session that has completed its installation.</summary>
         Complete = 2,
@@ -32,12 +32,10 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
         }
 
         /// <summary>Initializes a new instance of the <see cref="Session"/> class.</summary>
-        /// <param name="guid">The public identifier of the session.</param>
-#pragma warning disable CA1720 // Identifier contains type name
-        public Session(string guid)
-#pragma warning restore CA1720 // Identifier contains type name
+        /// <param name="sessionGuid">The public identifier of the session.</param>
+        public Session(string sessionGuid)
         {
-            this.Guid = guid;
+            this.SessionGuid = sessionGuid;
             this.Status = SessionStatus.NotStarted;
             this.LastUsed = DateTime.Now;
         }
@@ -46,9 +44,8 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
         public int SessionID { get; set; }
 
         /// <summary>Gets or sets the public ID of the session.</summary>
-#pragma warning disable CA1720 // Identifier contains type name
-        public string Guid { get; set; }
-#pragma warning restore CA1720 // Identifier contains type name
+        [ColumnName("Guid")]
+        public string SessionGuid { get; set; }
 
         /// <summary>Gets or sets the status of the session.</summary>
         public SessionStatus Status { get; set; }

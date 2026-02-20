@@ -58,6 +58,8 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
+
     interface BulkInstallApiUsers {
     }
     interface BulkInstallInstall {
@@ -69,23 +71,28 @@ declare namespace LocalJSX {
     interface DnnBulkInstall {
         "moduleId": number;
     }
+
+    interface DnnBulkInstallAttributes {
+        "moduleId": number;
+    }
+
     interface IntrinsicElements {
         "bulk-install-api-users": BulkInstallApiUsers;
         "bulk-install-install": BulkInstallInstall;
         "bulk-install-ip-safelist": BulkInstallIpSafelist;
         "bulk-install-logs": BulkInstallLogs;
-        "dnn-bulk-install": DnnBulkInstall;
+        "dnn-bulk-install": Omit<DnnBulkInstall, keyof DnnBulkInstallAttributes> & { [K in keyof DnnBulkInstall & keyof DnnBulkInstallAttributes]?: DnnBulkInstall[K] } & { [K in keyof DnnBulkInstall & keyof DnnBulkInstallAttributes as `attr:${K}`]?: DnnBulkInstallAttributes[K] } & { [K in keyof DnnBulkInstall & keyof DnnBulkInstallAttributes as `prop:${K}`]?: DnnBulkInstall[K] } & OneOf<"moduleId", DnnBulkInstall["moduleId"], DnnBulkInstallAttributes["moduleId"]>;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "bulk-install-api-users": LocalJSX.BulkInstallApiUsers & JSXBase.HTMLAttributes<HTMLBulkInstallApiUsersElement>;
-            "bulk-install-install": LocalJSX.BulkInstallInstall & JSXBase.HTMLAttributes<HTMLBulkInstallInstallElement>;
-            "bulk-install-ip-safelist": LocalJSX.BulkInstallIpSafelist & JSXBase.HTMLAttributes<HTMLBulkInstallIpSafelistElement>;
-            "bulk-install-logs": LocalJSX.BulkInstallLogs & JSXBase.HTMLAttributes<HTMLBulkInstallLogsElement>;
-            "dnn-bulk-install": LocalJSX.DnnBulkInstall & JSXBase.HTMLAttributes<HTMLDnnBulkInstallElement>;
+            "bulk-install-api-users": LocalJSX.IntrinsicElements["bulk-install-api-users"] & JSXBase.HTMLAttributes<HTMLBulkInstallApiUsersElement>;
+            "bulk-install-install": LocalJSX.IntrinsicElements["bulk-install-install"] & JSXBase.HTMLAttributes<HTMLBulkInstallInstallElement>;
+            "bulk-install-ip-safelist": LocalJSX.IntrinsicElements["bulk-install-ip-safelist"] & JSXBase.HTMLAttributes<HTMLBulkInstallIpSafelistElement>;
+            "bulk-install-logs": LocalJSX.IntrinsicElements["bulk-install-logs"] & JSXBase.HTMLAttributes<HTMLBulkInstallLogsElement>;
+            "dnn-bulk-install": LocalJSX.IntrinsicElements["dnn-bulk-install"] & JSXBase.HTMLAttributes<HTMLDnnBulkInstallElement>;
         }
     }
 }

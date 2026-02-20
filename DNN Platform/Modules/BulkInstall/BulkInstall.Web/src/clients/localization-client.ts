@@ -32,12 +32,14 @@ export class LocalizationClient
 export interface BulkInstallLocalization {
     Action: string;
     Add: string;
+    ApiError: string;
     ApiKey: string;
     ApiUserNameText: string;
     ApiUserNameHelp: string;
     ApiUsers: string;
     BulkInstall: string;
     BypassIpAllowList: string;
+    CannotInstall: string;
     Close: string;
     Create: string;
     Date: string;
@@ -50,10 +52,12 @@ export interface BulkInstallLocalization {
     EventLogSeverity_Alert: string;
     EventLogSeverity_Critical: string;
     Install: string;
+    InstallationComplete: string;
+    InstallingPackages: string;
     IPAddress: string;
     IPSafeList: string;
     IPSafeListConfiguration: string;
-    IPSafeListEntries: any;
+    IPSafeListEntries: string;
     IPSafeListItemNameText: string;
     IPSafeListItemNameHelp: string;
     IPSafeListItemIpAddressText: string;
@@ -62,8 +66,19 @@ export interface BulkInstallLocalization {
     Message: string;
     Name: string;
     NewApiUser: string;
-    NewIpSafelistEntry: any;
-    Save: any;
+    NewIpSafelistEntry: string;
+    Reset: string;
+    Save: string;
+    SessionStatus_NotStared: string;
+    SessionStatus_InProgress: string;
+    SessionStatus_Complete: string;
     Severity: string;
     Type: string;
+    DropZone_DragAndDropFile: string;
+    DropZone_Or: string;
+    DropZone_UploadFile: string;
+    DropZone_UploadSizeTooLarge: string;
+    DropZone_FileSizeLimit: string;
+    DropZone_InvalidExtension: string;
+    DropZone_AllowedFileExtensions: string;
 }

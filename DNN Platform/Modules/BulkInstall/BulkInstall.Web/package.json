@@ -26,13 +26,12 @@
     "generate": "stencil generate"
   },
   "dependencies": {
-    "@dnncommunity/dnn-elements": "^0.26.0",
-    "@stencil/core": "^4.7.0",
-    "@stencil/sass": "^3.0.9",
-    "@stencil/store": "^2.0.13"
+    "@dnncommunity/dnn-elements": "^0.27.8",
+    "@stencil/core": "^4.43.0",
+    "@stencil/sass": "^3.2.3",
+    "@stencil/store": "^2.2.2"
   },
   "devDependencies": {
-    "@stencil/store": "^2.0.16",
     "@types/node": "^16.18.11"
   },
   "license": "MIT"

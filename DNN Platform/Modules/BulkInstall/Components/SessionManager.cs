@@ -33,7 +33,7 @@ namespace Dnn.Modules.BulkInstall.Components
             return session;
         }
 
-        /// <summary>Gets the <see cref="Session"/> by its <see cref="Session.Guid"/>.</summary>
+        /// <summary>Gets the <see cref="Session"/> by its <see cref="Session.SessionGuid"/>.</summary>
         /// <param name="sessionGuid">The session GUID.</param>
         /// <returns>The session or <see langword="null"/>.</returns>
         public Session GetSession(string sessionGuid)
@@ -81,7 +81,7 @@ namespace Dnn.Modules.BulkInstall.Components
                 throw new ArgumentException($"No session exists with guid: {sessionGuid}", nameof(sessionGuid));
             }
 
-            using FileStream fs = File.Create(Path.Combine(Utilities.GetModulePath(this.appStatus), "Sessions", session.Guid, filename));
+            using FileStream fs = File.Create(Path.Combine(Utilities.GetModulePath(this.appStatus), "Sessions", session.SessionGuid, filename));
             packageStream.CopyTo(fs);
         }
 
@@ -98,7 +98,7 @@ namespace Dnn.Modules.BulkInstall.Components
                 throw new ArgumentException($"No session exists with guid: {sessionGuid}", nameof(sessionGuid));
             }
 
-            return Path.Combine(Utilities.GetModulePath(this.appStatus), "Sessions", session.Guid);
+            return Path.Combine(Utilities.GetModulePath(this.appStatus), "Sessions", session.SessionGuid);
         }
 
         private string AvailableSessionDirectory()

@@ -75,12 +75,12 @@ public class Installer : IInstaller
             using var response = await this.SendRequestAsync(options, HttpMethod.Get, "CreateSession");
             var responseStream = await response.Content.ReadAsStreamAsync();
             var responseBody = await JsonSerializer.DeserializeAsync<CreateSessionResponse>(responseStream);
-            if (string.IsNullOrWhiteSpace(responseBody?.Guid))
+            if (string.IsNullOrWhiteSpace(responseBody?.SessionGuid))
             {
                 throw new InvalidOperationException("Received an empty response trying to create PolyDeploy session");
             }
 
-            return responseBody.Guid;
+            return responseBody.SessionGuid;
         }
         catch (Exception e)
         {
@@ -183,7 +183,7 @@ public class Installer : IInstaller
 
     private class CreateSessionResponse
     {
-        public string? Guid { get; set; }
+        public string? SessionGuid { get; set; }
     }
 
     private class WebResult

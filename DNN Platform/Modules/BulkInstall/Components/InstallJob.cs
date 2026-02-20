@@ -14,6 +14,8 @@ namespace Dnn.Modules.BulkInstall.Components
     using DotNetNuke.Services.Installer.Installers;
     using DotNetNuke.Services.Installer.Log;
 
+    using Newtonsoft.Json;
+
     /// <summary>Information about a request to install a package.</summary>
     internal sealed class InstallJob
     {
@@ -37,6 +39,11 @@ namespace Dnn.Modules.BulkInstall.Components
             {
                 this.Packages.Add(new PackageJob(orderedPackage.Value));
             }
+        }
+
+        [JsonConstructor]
+        private InstallJob()
+        {
         }
 
         /// <summary>Gets or sets the name of the package file to install.</summary>

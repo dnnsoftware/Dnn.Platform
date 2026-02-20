@@ -5,6 +5,7 @@
 namespace Dnn.Modules.BulkInstall.Components.WebAPI
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Net;
     using System.Net.Http;
@@ -18,6 +19,8 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Web.Api;
+
+    using Newtonsoft.Json;
 
     /// <summary>A web API controller for <see cref="Session"/>.</summary>
     /// <param name="sessionManager">The session manager.</param>
@@ -39,32 +42,28 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         {
             var session = this.sessionManager.CreateSession();
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, session);
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Session = new SessionDto(session), });
         }
 
-        /// <summary>Gets a session by its <paramref name="guid"/>.</summary>
-        /// <param name="guid">The public identifier for the <see cref="Session"/>.</param>
+        /// <summary>Gets a session by its <paramref name="sessionGuid"/>.</summary>
+        /// <param name="sessionGuid">The public identifier for the <see cref="Session"/>.</param>
         /// <returns>A response with either the <see cref="Session"/> or <see langword="null"/>.</returns>
         [HttpGet]
-#pragma warning disable CA1720 // Identifier contains type name
-        public HttpResponseMessage Get(string guid)
-#pragma warning restore CA1720 // Identifier contains type name
+        public HttpResponseMessage Get(string sessionGuid)
         {
-            var session = this.sessionManager.GetSession(guid);
+            var session = this.sessionManager.GetSession(sessionGuid);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, session);
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Session = new SessionDto(session), });
         }
 
-        /// <summary>Adds a package file to the session.</summary>
-        /// <param name="guid">The public identifier for the <see cref="Session"/>.</param>
+        /// <summary>Adds package files to the session.</summary>
+        /// <param name="sessionGuid">The public identifier for the <see cref="Session"/>.</param>
         /// <returns>A response indicating success.</returns>
         /// <exception cref="HttpResponseException">The request is not a multipart MIME type.</exception>
         [HttpPost]
-#pragma warning disable CA1720 // Identifier contains type name
-        public async Task<HttpResponseMessage> AddPackage(string guid)
-#pragma warning restore CA1720 // Identifier contains type name
+        public async Task<HttpResponseMessage> AddPackages(string sessionGuid)
         {
-            if (!this.sessionManager.SessionExists(guid))
+            if (!this.sessionManager.SessionExists(sessionGuid))
             {
                 // Session doesn't exist.
                 return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid session.");
@@ -81,13 +80,17 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                 // Receive files.
                 MultipartMemoryStreamProvider provider = await this.Request.Content.ReadAsMultipartAsync();
 
-                // TODO: Add filtering so that non .zip archives are not added.
                 foreach (HttpContent file in provider.Contents)
                 {
                     string filename = file.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
+                    if (!string.Equals(Path.GetExtension(filename), ".zip", StringComparison.OrdinalIgnoreCase))
+                    {
+                        this.eventLogManager.Log("INVALID_PACKAGE", EventLogSeverity.Warning, $"Attempted to upload {filename}, only zip archives are allowed");
+                        return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Package files must be zip archives");
+                    }
 
                     using MemoryStream ms = new MemoryStream(await file.ReadAsByteArrayAsync());
-                    this.sessionManager.AddPackage(guid, ms, filename);
+                    this.sessionManager.AddPackage(sessionGuid, ms, filename);
                 }
             }
             catch (Exception ex)
@@ -101,14 +104,12 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         }
 
         /// <summary>Gets the summary of a session.</summary>
-        /// <param name="guid">The public identifier for the <see cref="Session"/>.</param>
+        /// <param name="sessionGuid">The public identifier for the <see cref="Session"/>.</param>
         /// <returns>A response with a sorted list of <see cref="InstallJob"/>.</returns>
         [HttpGet]
-#pragma warning disable CA1720 // Identifier contains type name
-        public HttpResponseMessage Summary(string guid)
-#pragma warning restore CA1720 // Identifier contains type name
+        public HttpResponseMessage Summary(string sessionGuid)
         {
-            if (!this.sessionManager.SessionExists(guid))
+            if (!this.sessionManager.SessionExists(sessionGuid))
             {
                 // Session doesn't exist.
                 return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid session.");
@@ -120,14 +121,14 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                 string ipAddress = HttpContext.Current.Request.UserHostAddress;
 
                 // Get the session.
-                Session sessionObj = this.sessionManager.GetSession(guid);
+                Session sessionObj = this.sessionManager.GetSession(sessionGuid);
 
                 // Create a deploy operation.
                 Deployment deployOperation = new Deployment(this.sessionManager, this.eventLogManager, this.appStatus, sessionObj, ipAddress);
 
                 var summary = deployOperation.Summary();
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, summary);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { InstallJobs = summary.Values, });
             }
             catch (Exception ex)
             {
@@ -138,14 +139,12 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         }
 
         /// <summary>Starts the installation for the session.</summary>
-        /// <param name="guid">The public identifier for the <see cref="Session"/>.</param>
+        /// <param name="sessionGuid">The public identifier for the <see cref="Session"/>.</param>
         /// <returns>A response indicating success.</returns>
-        [HttpGet]
-#pragma warning disable CA1720 // Identifier contains type name
-        public HttpResponseMessage Install(string guid)
-#pragma warning restore CA1720 // Identifier contains type name
+        [HttpPost]
+        public HttpResponseMessage Install(string sessionGuid)
         {
-            if (!this.sessionManager.SessionExists(guid))
+            if (!this.sessionManager.SessionExists(sessionGuid))
             {
                 // Session doesn't exist.
                 return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid session.");
@@ -157,7 +156,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                 string ipAddress = HttpContext.Current.Request.UserHostAddress;
 
                 // Get the session.
-                Session sessionObj = this.sessionManager.GetSession(guid);
+                Session sessionObj = this.sessionManager.GetSession(sessionGuid);
 
                 // Create a deploy operation.
                 Deployment deployOperation = new Deployment(this.sessionManager, this.eventLogManager, this.appStatus, sessionObj, ipAddress);
@@ -172,6 +171,20 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
 
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
             }
+        }
+
+        private sealed class SessionDto(Session session)
+        {
+            public DateTime LastUsed => session.LastUsed;
+
+            public string SessionGuid => session.SessionGuid;
+
+            public SessionStatus Status => session.Status;
+
+            public IList<InstallJob> Response =>
+                string.IsNullOrWhiteSpace(session.Response)
+                    ? Array.Empty<InstallJob>()
+                    : JsonConvert.DeserializeObject<SortedList<string, InstallJob>>(session.Response).Values;
         }
     }
 }
