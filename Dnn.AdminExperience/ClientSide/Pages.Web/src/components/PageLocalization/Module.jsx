@@ -50,7 +50,7 @@ class Module extends Component {
                         title={module.IsShared ? Localization.get("LocalizedSharedModule_tooltip") : 
                             (module.IsLocalized ? Localization.get("ClickToDeLocalizeModule_tooltip") : Localization.get("ClickToLocalizeModule_tooltip"))}
                         onClick={this.toggleLink.bind(this) }
-><SvgIcons.LinkIcon /></span>
+                    ><SvgIcons.LinkIcon /></span>
                     {module.TranslatedVisible && 
                         <div title={module.IsTranslated ? Localization.get("UnCheckTranslatedModule_tooltip") : Localization.get("CheckToTranslateModule_tooltip")} style={{ float: "left", display: "inline-block" }}>
                             <Checkbox

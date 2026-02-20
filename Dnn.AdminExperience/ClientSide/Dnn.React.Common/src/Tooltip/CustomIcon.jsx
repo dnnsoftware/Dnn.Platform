@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
- const CustomIcon = props => {
+const CustomIcon = props => {
     let Icon = props.icon;
     return <div><Icon /></div>;
 };

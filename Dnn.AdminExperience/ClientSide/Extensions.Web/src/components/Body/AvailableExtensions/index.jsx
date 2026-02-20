@@ -105,7 +105,7 @@ class AvailableExtensions extends Component {
             <p>{Localization.get("Loading.Tooltip")}</p>
             <div><FetchingIcon /></div>
         </div>;
-        /* eslint-enable no-undef */
+         
     }
 
     render() {
