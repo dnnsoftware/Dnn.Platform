@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
 import "./style.less";
 import Localization from "localization";
 
-import { Dropdown, SearchBox, GridCell } from "@dnnsoftware/dnn-react-common";
+import {Dropdown, GridCell, SearchBox} from "@dnnsoftware/dnn-react-common";
 
 class FiltersBar extends Component {
     constructor(props) {
@@ -35,11 +35,9 @@ class FiltersBar extends Component {
             { "Key": Localization.get("SortByDateOldest"), "Value": "oldest" },
             { "Key": Localization.get("SortByName"), "Value": "name" }
         ];
-        let jobFiltersOptions = [];
-        jobFiltersOptions = jobFilters.map((jobFilters) => {
-            return { label: jobFilters.Key, value: jobFilters.Value };
+        return jobFilters.map((jobFilters) => {
+            return {label: jobFilters.Key, value: jobFilters.Value};
         });
-        return jobFiltersOptions;
     }
 
     render() {

@@ -14,9 +14,10 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters
     using Dnn.Modules.BulkInstall.Components.Logging;
 
     using DotNetNuke.DependencyInjection;
+    using DotNetNuke.Web.Api;
 
     /// <summary>Requires a value API key for the request.</summary>
-    internal sealed class APIAuthentication : ActionFilterAttribute
+    internal sealed class APIAuthentication : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
         [Dependency]
         private APIUserManager ApiUserManager { get; set; }
@@ -24,19 +25,15 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters
         [Dependency]
         private EventLogManager EventLogManager { get; set; }
 
-        /// <inheritdoc/>
-        public override void OnActionExecuting(HttpActionContext actionContext)
+        /// <inheritdoc />
+        public override bool IsAuthorized(AuthFilterContext context)
         {
-            base.OnActionExecuting(actionContext);
-
-            bool authenticated = false;
-            string message = "Access denied.";
-
+            var authenticated = false;
             string apiKey = null;
 
             try
             {
-                apiKey = actionContext.Request.GetApiKey();
+                apiKey = context.ActionContext.Request.GetApiKey();
 
                 // Make sure it's not null and it's 32 characters or we're wasting our time.
                 if (apiKey is { Length: 32, })
@@ -54,9 +51,6 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters
             }
             catch (Exception ex)
             {
-                // Set appropriate message.
-                message = "An error occurred while trying to authenticate this request.";
-
                 this.EventLogManager.Log("AUTH_EXCEPTION", EventLogSeverity.Info, ex);
             }
 
@@ -64,9 +58,9 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters
             if (!authenticated)
             {
                 this.EventLogManager.Log("AUTH_BAD_APIKEY", EventLogSeverity.Warning, $"Authentication failed for API key: {apiKey}.");
-
-                actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, message);
             }
+
+            return authenticated;
         }
     }
 }

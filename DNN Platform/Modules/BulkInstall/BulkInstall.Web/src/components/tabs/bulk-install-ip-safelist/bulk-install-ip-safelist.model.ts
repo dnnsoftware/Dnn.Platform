@@ -1,5 +1,5 @@
 export interface Ip {
-    id: number;
-    name: string;
-    ipAddress: string;
+  id: number;
+  name: string;
+  ipAddress: string;
 }

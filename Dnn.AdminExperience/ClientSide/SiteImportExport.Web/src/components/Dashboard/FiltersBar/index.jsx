@@ -34,11 +34,9 @@ class FiltersBar extends Component {
             { "Key": Localization.get("JobTypeImport"), "Value": 1 },
             { "Key": Localization.get("JobTypeExport"), "Value": 0 }
         ];
-        let jobFiltersOptions = [];
-        jobFiltersOptions = jobFilters.map((jobFilters) => {
+        return jobFilters.map((jobFilters) => {
             return { label: jobFilters.Key, value: jobFilters.Value };
         });
-        return jobFiltersOptions;
     }
 
     render() {

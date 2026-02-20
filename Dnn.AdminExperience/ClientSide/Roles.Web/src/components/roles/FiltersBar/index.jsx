@@ -137,11 +137,9 @@ class FiltersBar extends Component {
 
     BuildRoleGroupsOptions() {
         let {roleGroups} = this.props;
-        let roleGroupsOptions = [];
-        roleGroupsOptions = roleGroups.map((group) => {
+        return roleGroups.map((group) => {
             return { label: group.name, value: group.id };
         });
-        return roleGroupsOptions;
     }
 
     render() {

@@ -10,11 +10,11 @@ const TextLine = ({txt, css, isHtml}) => {
     const textLines = txt.split("\\n");
     const rows = textLines.map((line) => line ? <span key={DomKey.get("textline")} className={css}>{isHtml ? <Html html={line} /> : line}</span> : null)
         .reduce((prev,current) => {
-        if (current !== "" && current !== null && current !== undefined) {
-            return [...prev,current];
-        }
-        return [...prev,<br key={DomKey.get("textline")} />,<br key={DomKey.get("textline")} />];
-    }, []);
+            if (current !== "" && current !== null && current !== undefined) {
+                return [...prev,current];
+            }
+            return [...prev,<br key={DomKey.get("textline")} />,<br key={DomKey.get("textline")} />];
+        }, []);
     return <div key={DomKey.get("textline")}>{rows}</div>;
 };
 

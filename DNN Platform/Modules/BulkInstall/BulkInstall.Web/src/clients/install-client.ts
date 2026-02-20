@@ -1,11 +1,6 @@
-import { DnnServicesFramework, } from "@dnncommunity/dnn-elements";
-import {
-  InstallJob,
-  PackageDependency,
-  PackageJob,
-  Session,
-} from "../components/tabs/bulk-install-install/bulk-install-install.model";
-import { SessionStatusInfo, sessionStatus, } from "../enums/SessionStatus";
+import { DnnServicesFramework } from '@dnncommunity/dnn-elements';
+import { InstallJob, PackageDependency, PackageJob, Session } from '../components/tabs/bulk-install-install/bulk-install-install.model';
+import { SessionStatusInfo, sessionStatus } from '../enums/SessionStatus';
 
 export class InstallClient {
   private readonly sf: DnnServicesFramework;
@@ -13,28 +8,24 @@ export class InstallClient {
 
   constructor(moduleId: number) {
     this.sf = new DnnServicesFramework(moduleId);
-    this.requestUrl = this.sf.getServiceRoot("BulkInstall") + "Session/";
+    this.requestUrl = this.sf.getServiceRoot('BulkInstall') + 'Session/';
   }
 
   public async create(): Promise<Session> {
-    const response = await fetch(
-      `${this.requestUrl}Create`,
-      {
-        method: 'POST',
-        headers: this.sf.getModuleHeaders(),
-      });
-    const responseBody = await response.json() as { Session: SessionResponse };
+    const response = await fetch(`${this.requestUrl}Create`, {
+      method: 'POST',
+      headers: this.sf.getModuleHeaders(),
+    });
+    const responseBody = (await response.json()) as { Session: SessionResponse };
     return InstallClient.toSession(responseBody.Session);
   }
 
   public async getSession(sessionGuid: string): Promise<Session> {
-    const response = await fetch(
-      `${this.requestUrl}Get?sessionGuid=${sessionGuid}`,
-      {
-        method: 'GET',
-        headers: this.sf.getModuleHeaders(),
-      });
-    const responseBody = await response.json() as { Session: SessionResponse };
+    const response = await fetch(`${this.requestUrl}Get?sessionGuid=${sessionGuid}`, {
+      method: 'GET',
+      headers: this.sf.getModuleHeaders(),
+    });
+    const responseBody = (await response.json()) as { Session: SessionResponse };
     return InstallClient.toSession(responseBody.Session);
   }
 
@@ -43,37 +34,30 @@ export class InstallClient {
       const requestBody = new FormData();
       requestBody.append(file.name, file);
 
-      await fetch(
-        `${this.requestUrl}AddPackages?sessionGuid=${sessionGuid}`,
-        {
-          method: 'POST',
-          body: requestBody,
-          headers: this.sf.getModuleHeaders(),
-        });
+      await fetch(`${this.requestUrl}AddPackages?sessionGuid=${sessionGuid}`, {
+        method: 'POST',
+        body: requestBody,
+        headers: this.sf.getModuleHeaders(),
+      });
     }
   }
 
   public async install(sessionGuid: string): Promise<void> {
-    await fetch(
-      `${this.requestUrl}Install?sessionGuid=${sessionGuid}`,
-      {
-        method: 'POST',
-        headers: this.sf.getModuleHeaders(),
-      });
+    await fetch(`${this.requestUrl}Install?sessionGuid=${sessionGuid}`, {
+      method: 'POST',
+      headers: this.sf.getModuleHeaders(),
+    });
   }
 
-  public async summary(sessionGuid: string) : Promise<InstallJob[]> {
-    const response = await fetch(
-      `${this.requestUrl}Summary?sessionGuid=${sessionGuid}`,
-      {
-        headers: this.sf.getModuleHeaders(),
-      }
-    );
-    const responseBody = await response.json() as { InstallJobs: InstallJobResponse[] };
+  public async summary(sessionGuid: string): Promise<InstallJob[]> {
+    const response = await fetch(`${this.requestUrl}Summary?sessionGuid=${sessionGuid}`, {
+      headers: this.sf.getModuleHeaders(),
+    });
+    const responseBody = (await response.json()) as { InstallJobs: InstallJobResponse[] };
     return responseBody.InstallJobs.map(ij => InstallClient.toInstallJob(ij));
   }
 
-  private static toInstallJob(job: InstallJobResponse) : InstallJob {
+  private static toInstallJob(job: InstallJobResponse): InstallJob {
     return {
       attempted: job.Attempted,
       canInstall: job.CanInstall,
@@ -84,7 +68,7 @@ export class InstallClient {
     };
   }
 
-  private static toPackageJob(job: PackageJobResponse) : PackageJob {
+  private static toPackageJob(job: PackageJobResponse): PackageJob {
     return {
       canInstall: job.CanInstall,
       version: job.VersionStr,
@@ -93,7 +77,7 @@ export class InstallClient {
     };
   }
 
-  private static toPackageDependency(dependency: PackageDependencyResponse) : PackageDependency {
+  private static toPackageDependency(dependency: PackageDependencyResponse): PackageDependency {
     return {
       dependencyVersion: dependency.DependencyVersion,
       isPackageDependency: dependency.IsPackageDependency,
@@ -101,7 +85,7 @@ export class InstallClient {
     };
   }
 
-  private static toSession(session: SessionResponse) : Session {
+  private static toSession(session: SessionResponse): Session {
     return {
       lastUsed: new Date(session.LastUsed),
       response: session.Response.map(job => InstallClient.toInstallJob(job)),
@@ -110,7 +94,7 @@ export class InstallClient {
     };
   }
 
-  private static toSessionStatus(status: SessionStatusResponse) : SessionStatusInfo {
+  private static toSessionStatus(status: SessionStatusResponse): SessionStatusInfo {
     switch (status) {
       case SessionStatusResponse.NotStarted:
         return sessionStatus.notStarted;
@@ -119,7 +103,7 @@ export class InstallClient {
       case SessionStatusResponse.Complete:
         return sessionStatus.complete;
       default:
-        throw new Error(`Unknown status: ${status}`);
+        throw new Error(`Unknown status: ${status as number}`);
     }
   }
 }

@@ -1,16 +1,12 @@
 # my-component
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
 | Property                | Attribute   | Description | Type     | Default     |
 | ----------------------- | ----------- | ----------- | -------- | ----------- |
 | `moduleId` _(required)_ | `module-id` |             | `number` | `undefined` |
-
 
 ## Dependencies
 
@@ -24,6 +20,7 @@
 - [bulk-install-ip-safelist](../tabs/bulk-install-ip-safelist)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-bulk-install --> dnn-tabs
@@ -47,6 +44,6 @@ graph TD;
   style dnn-bulk-install fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

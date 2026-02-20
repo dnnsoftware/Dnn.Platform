@@ -43,7 +43,7 @@ export class Output extends Component {
             return result;
         }
         else if (props.output) {
-            const style = props.isHtml ? '' : props.isError ? "dnn-prompt-error" : `dnn-prompt-${props.style === "cmd" ? "cmd" : "ok"}`;
+            const style = props.isHtml ? "" : props.isError ? "dnn-prompt-error" : `dnn-prompt-${props.style === "cmd" ? "cmd" : "ok"}`;
             return <TextLine key={DomKey.get("output")} txt={props.output} css={style} isHtml={props.isHtml}/>;
         }
     }

@@ -34,7 +34,6 @@ export default tseslint.config(
                 projectService: {
                     allowDefaultProject: ["*.d.ts"],
                 },
-                project: 'tsconfig.json',
             },
         },
     },

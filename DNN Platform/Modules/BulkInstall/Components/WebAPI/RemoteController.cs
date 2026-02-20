@@ -28,7 +28,6 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
     /// <param name="eventLogManager">The event log manager.</param>
     /// <param name="eventLogger">The event logger.</param>
     /// <param name="appStatus">The application status.</param>
-    [AllowAnonymous]
     [InWhitelist]
     [APIAuthentication]
     public class RemoteController(SessionManager sessionManager, APIUserManager apiUserManager, EventLogManager eventLogManager, IEventLogger eventLogger, IApplicationStatusInfo appStatus) : DnnApiController

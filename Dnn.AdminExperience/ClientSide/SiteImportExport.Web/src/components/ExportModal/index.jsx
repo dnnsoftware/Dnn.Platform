@@ -78,10 +78,9 @@ class ExportModal extends Component {
     componentDidUpdate() {
         const { props, state } = this;
         const { exportRequest } = state;
-        let { reloadPages } = state;
         if (exportRequest.PortalId !== props.portalId) {
             exportRequest.PortalId = props.portalId;
-            reloadPages = true;
+            let reloadPages = true;
             this.setState({ exportRequest, reloadPages }, () => {
                 this.setState({
                     reloadPages: false
@@ -131,8 +130,7 @@ class ExportModal extends Component {
     }
 
     Validate() {
-        let success = true;
-        success = this.ValidateTexts();
+        let success = this.ValidateTexts();
         if (success && !this.ValidateHasExportItem()) {
             utilities.utilities.notifyError(Localization.get("NoExportItem.ErrorMessage"));
             success = false;
@@ -163,7 +161,7 @@ class ExportModal extends Component {
     }
 
     ValidateHasExportItem() {
-        let success = true;
+        let success;
         const { exportRequest } = this.state;
         if (exportRequest.IncludeContent || exportRequest.IncludeFiles || exportRequest.IncludeUsers || exportRequest.IncludeRoles ||
             exportRequest.IncludeVocabularies || exportRequest.IncludeTemplates || exportRequest.IncludeProperfileProperties ||
