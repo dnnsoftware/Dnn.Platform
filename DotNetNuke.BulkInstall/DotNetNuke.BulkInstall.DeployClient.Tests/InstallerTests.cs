@@ -377,12 +377,13 @@ public class InstallerTests
         sessionId.ShouldBe(expectedSessionId);
     }
 
-    private static Installer CreateInstaller(HttpMessageHandler? messageHandler = null, IStopwatch? stopwatch = null)
+    private static Installer CreateInstaller(HttpMessageHandler? messageHandler = null, IStopwatch? stopwatch = null, ILogger? logger = null)
     {
         messageHandler ??= new FakeMessageHandler(A.Dummy<Uri>(), null);
         return new Installer(
             new HttpClient(messageHandler),
-            stopwatch ?? new TestStopwatch());
+            stopwatch ?? new TestStopwatch(),
+            logger ?? new TestLogger());
     }
 
     private class FakeMessageHandler : HttpMessageHandler

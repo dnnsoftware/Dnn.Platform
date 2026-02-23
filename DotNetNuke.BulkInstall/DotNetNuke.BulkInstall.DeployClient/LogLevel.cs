@@ -7,23 +7,23 @@ namespace DotNetNuke.BulkInstall.DeployClient;
 public enum LogLevel
 {
     /// <summary>The lowest level, includes all details.</summary>
-    Trace = 0,
+    Trace = Microsoft.Extensions.Logging.LogLevel.Trace,
 
     /// <summary>Information to help with debugging issues.</summary>
-    Debug = 1,
+    Debug = Microsoft.Extensions.Logging.LogLevel.Debug,
 
     /// <summary>The default level, all informational messages.</summary>
-    Information = 2,
+    Information = Microsoft.Extensions.Logging.LogLevel.Information,
 
     /// <summary>Information which could be an issue but which does not stop execution.</summary>
-    Warning = 3,
+    Warning = Microsoft.Extensions.Logging.LogLevel.Warning,
 
     /// <summary>Information which is definitely an issue and will stop execution.</summary>
-    Error = 4,
+    Error = Microsoft.Extensions.Logging.LogLevel.Error,
 
     /// <summary>Unexpected issues which stop execution.</summary>
-    Critical = 5,
+    Critical = Microsoft.Extensions.Logging.LogLevel.Critical,
 
     /// <summary>The log level indicating that no logging should occur.</summary>
-    None = 6,
+    None = Microsoft.Extensions.Logging.LogLevel.None,
 }
