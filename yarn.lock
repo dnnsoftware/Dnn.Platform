@@ -2197,14 +2197,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dnncommunity/dnn-elements@npm:^0.27.7":
-  version: 0.27.7
-  resolution: "@dnncommunity/dnn-elements@npm:0.27.7"
+"@dnncommunity/dnn-elements@npm:^0.29.0":
+  version: 0.29.0
+  resolution: "@dnncommunity/dnn-elements@npm:0.29.0"
   dependencies:
     jodit: "npm:^4.6.2"
   peerDependencies:
     "@typescript-eslint/utils": ^8.30.1
-  checksum: 10/cb4f918993223411b412a52005ec0893b2c5d09c508d1a05e2f66385cf3116a060b454635f7544f287e1e079fb562ceb84c6139b3fc6c505bcfbd95eb0bca2bd
+  checksum: 10/5a7b7fd42d4032c4fa838a77472bc933f9c04cf9c428aae2ccb4a3b1f4c11ceecf52c0597df743a769c72e62f4c565433d191b6888ea340bb49573d619ad0318
   languageName: node
   linkType: hard
 
@@ -10922,7 +10922,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dnn-resource-manager@workspace:DNN Platform/Modules/ResourceManager/ResourceManager.Web"
   dependencies:
-    "@dnncommunity/dnn-elements": "npm:^0.27.7"
+    "@dnncommunity/dnn-elements": "npm:^0.29.0"
     "@eslint/js": "npm:^9.38.0"
     "@stencil/core": "npm:^4.38.2"
     "@stencil/eslint-plugin": "npm:^1.1.0"
@@ -22410,7 +22410,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "styles@workspace:Dnn.AdminExperience/ClientSide/Styles.Web"
   dependencies:
-    "@dnncommunity/dnn-elements": "npm:^0.27.7"
+    "@dnncommunity/dnn-elements": "npm:^0.29.0"
     "@stencil/core": "npm:^4.38.2"
     "@stencil/eslint-plugin": "npm:^1.1.0"
     "@stencil/sass": "npm:^3.2.2"

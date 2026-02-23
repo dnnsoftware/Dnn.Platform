@@ -31,9 +31,7 @@ export default tseslint.config(
             ecmaVersion: "latest",
             sourceType: "module",
             parserOptions: {
-                projectService: {
-                    allowDefaultProject: ["*.d.ts"],
-                },
+                projectService: true,
             },
         },
     },

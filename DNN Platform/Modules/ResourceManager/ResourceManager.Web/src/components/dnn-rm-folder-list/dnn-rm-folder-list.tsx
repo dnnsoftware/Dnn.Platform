@@ -1,6 +1,6 @@
 import { Component, Element, Host, h, State, Listen, Event, EventEmitter } from '@stencil/core';
 import { FolderTreeItem, InternalServicesClient } from "../../services/InternalServicesClient";
-import { ItemsClient } from "../../services/ItemsClient";
+import { Item, ItemsClient } from "../../services/ItemsClient";
 import { GetFolderContentResponse } from "../../services/ItemsClient";
 import state from "../../store/store";
 
@@ -18,11 +18,13 @@ export class DnnRmFolderList {
 
   @State() folderContents: GetFolderContentResponse;
   @State() selectedFolder: FolderTreeItem;
+  @State() rootItem: Item;
 
   @Element() el!: HTMLDnnRmFolderListElement;
-  
+
   private internalServicesClient: InternalServicesClient;
   private itemsClient: ItemsClient;
+  private rootItemContextMenu: HTMLDnnContextMenuElement;
 
   constructor(){
     this.internalServicesClient = new InternalServicesClient(state.moduleId);
@@ -34,13 +36,6 @@ export class DnnRmFolderList {
     void this.getFolders();
   }
 
-  @Listen("dnnRmcontextMenuOpened", {target: "body"})
-  handleDnnRmContextMenuOpened(e: CustomEvent<number>){
-    if (state.settings.HomeFolderId != e.detail){
-      this.dismissContextMenu();
-    }
-  }
-
   async componentWillLoad() {
     try {
       await this.getFolders();
@@ -49,16 +44,11 @@ export class DnnRmFolderList {
         0,
         state.pageSize,
         state.sortField,
-        state.sortOrder);  
-      
+        state.sortOrder);
+        this.rootItem = await this.itemsClient.getFolderItem(state.settings.HomeFolderId)
     } catch (error) {
       alert(error);
     }
-  }
-
-  private dismissContextMenu() {
-    const existingMenus = this.el.shadowRoot.querySelectorAll("dnn-collapsible");
-    existingMenus?.forEach(contextMenu => this.el.shadowRoot.removeChild(contextMenu));
   }
 
   private async getFolders() {
@@ -88,38 +78,25 @@ export class DnnRmFolderList {
     this.dnnRmFolderListFolderPicked.emit(item);
   }
 
-  private async handleContextMenu(e: MouseEvent) {
-    e.preventDefault();
-    try {
-      this.dismissContextMenu();
-  
-      const item = await this.itemsClient.getFolderItem(state.settings.HomeFolderId)
-      const collapsible = document.createElement("dnn-collapsible");
-      const folderContextMenu = document.createElement("dnn-rm-folder-context-menu");
-      collapsible.appendChild(folderContextMenu);
-      folderContextMenu.item = item;
-      const parentPosition = this.el.getBoundingClientRect();
-      collapsible.style.left = `${e.clientX - parentPosition.left}px`;
-      collapsible.style.top = `${e.clientY - parentPosition.top}px`;
-      collapsible.style.display = "block";
-      this.el.shadowRoot.appendChild(collapsible);
-      setTimeout(() => {
-        collapsible.expanded = true;
-      }, 100);
-      this.dnnRmcontextMenuOpened.emit(state.settings.HomeFolderId);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   render() {
     return (
       <Host>
         <button
           onClick={() => this.handleRootClicked()}
-          onContextMenu={e => void this.handleContextMenu(e)}
+          onContextMenu={e => {
+            e.preventDefault();
+            this.rootItemContextMenu.open(e as PointerEvent).catch(console.error);
+          }}
         >
           <strong>{state.settings.HomeFolderName}</strong>
+          <dnn-context-menu
+            ref={el => this.rootItemContextMenu = el}
+            closeOnClick
+          >
+            {this.rootItem && (
+              <dnn-rm-folder-context-menu item={this.rootItem} />
+            )}
+          </dnn-context-menu>
         </button>
         {state.rootFolders && state.rootFolders.Tree.children.map(item =>
             <dnn-rm-folder-list-item

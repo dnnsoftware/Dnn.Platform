@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
     using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Reflection;
     using System.Security.Cryptography;
     using System.Text;
     using System.Web;
@@ -99,17 +100,19 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         {
             var res = new SortedDictionary<string, ApiTokenAttribute>();
             var typeLocator = new TypeLocator();
-            var attributes = typeLocator.GetAllMatchingTypes(
-                t => t is { IsClass: true, IsAbstract: false, IsVisible: true, })
-                .SelectMany(x => x.GetMethods())
-                .SelectMany(m => m.GetCustomAttributes(typeof(ApiTokenAuthorizeAttribute), false))
-                .Cast<ApiTokenAuthorizeAttribute>()
-                .Where(a => a.Scope <= scope);
+            var attributes =
+                from type in typeLocator.GetAllMatchingTypes(t => t is { IsClass: true, IsAbstract: false, IsVisible: true, })
+                let typeAttributes = type.GetCustomAttributes<ApiTokenAuthorizeAttribute>(inherit: false)
+                from method in type.GetMethods()
+                let methodAttributes = method.GetCustomAttributes<ApiTokenAuthorizeAttribute>(inherit: false)
+                from attribute in typeAttributes.Concat(methodAttributes)
+                where attribute.Scope <= scope
+                select attribute;
 
             foreach (var attr in attributes)
             {
                 var key = attr.Key.ToLowerInvariant();
-                var k = attr.Scope.ToString() + key;
+                var k = $"{attr.Scope}{key}";
                 if (!res.ContainsKey(k))
                 {
                     var name = DotNetNuke.Services.Localization.Localization.GetString(attr.Key + ".Text", attr.ResourceFile, locale);
