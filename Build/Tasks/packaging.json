@@ -57,6 +57,7 @@
     "/bin/System.ValueTuple.dll",
     "/bin/System.Numerics.Vectors.dll",
     "/bin/System.Formats.Asn1.dll",
+    "/bin/System.Memory.dll",
     "/Install/Module/DNNCE_Website.Deprecated_*_Install.zip",
     "/Install/Module/DNNCE_TelerikRemoval_*_Install.zip"
   ],

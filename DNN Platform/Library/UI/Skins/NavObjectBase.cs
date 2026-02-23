@@ -11,6 +11,7 @@ namespace DotNetNuke.UI.Skins
     using System.Web.UI;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Modules.NavigationProvider;
     using DotNetNuke.UI.WebControls;
 

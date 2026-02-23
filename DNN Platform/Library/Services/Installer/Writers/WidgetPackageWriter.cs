@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.Installer.Writers
     using System.IO;
     using System.Xml;
 
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Installer.Packages;
 
     /// <summary>The WidgetPackageWriter class.</summary>
