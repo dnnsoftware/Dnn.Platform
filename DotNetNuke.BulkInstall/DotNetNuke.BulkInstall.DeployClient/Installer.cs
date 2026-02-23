@@ -163,7 +163,15 @@ public class Installer : IInstaller
             request.Method = method;
             request.Content = content;
 
-            request.Headers.Add("x-api-key", options.ApiKey);
+            if (options.LegacyApi)
+            {
+                request.Headers.Add("x-api-key", options.ApiKey);
+            }
+            else
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", options.ApiKey);
+            }
+
             request.Headers.UserAgent.Add(new ProductInfoHeaderValue("DotNetNuke.BulkInstall.DeployClient", DeployClientVersion.Replace(" ", "_")));
 
             this.logger.LogTrace(options.LogLevel, $"Sending {request.Method} request to {request.RequestUri}");

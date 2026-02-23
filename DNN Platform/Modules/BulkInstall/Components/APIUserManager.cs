@@ -6,35 +6,42 @@ namespace Dnn.Modules.BulkInstall.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers;
     using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
 
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Web.Api.Auth.ApiTokens;
+    using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
+
     /// <summary>Manager for <see cref="APIUser"/>.</summary>
     /// <param name="dataController">The data controller.</param>
-    public sealed class APIUserManager(APIUserDataController dataController)
+    /// <param name="apiTokenController">The API Token controller.</param>
+    public sealed class APIUserManager(APIUserDataController dataController, IApiTokenController apiTokenController)
     {
+        /// <summary>The key used to identify the Bulk Install APIs for API Token auth.</summary>
+        public const string BulkInstallApiTokenScopeKey = "bulk-install";
+
         private readonly APIUserDataController dataController = dataController;
+        private readonly IApiTokenController apiTokenController = apiTokenController;
 
-        /// <summary>Creates a new APIUser with the passed name.</summary>
-        /// <param name="name">A label for the user.</param>
-        /// <returns>The user.</returns>
-        public APIUser Create(string name)
-        {
-            return this.Create(name, bypass: false);
-        }
-
-        /// <summary>Creates a new APIUser with the passed name.</summary>
+        /// <summary>Creates a new <see cref="APIUser"/> with the specified <paramref name="name"/>.</summary>
         /// <param name="name">A label for the user.</param>
         /// <param name="bypass">Whether the user can bypass the IP allow list.</param>
+        /// <param name="expiresOn">The date/time on which the API token expires.</param>
+        /// <param name="createdByUserId">The ID of the user creating the <see cref="APIUser"/>.</param>
         /// <returns>The user.</returns>
-        public APIUser Create(string name, bool bypass)
+        public APIUser Create(string name, bool bypass, DateTime expiresOn, int createdByUserId)
         {
             APIUser newApiUser;
 
             try
             {
-                newApiUser = new APIUser(name, bypass);
+                var tokenName = $"Bulk Install: {name}";
+                var apiToken = this.apiTokenController.CreateApiToken(Null.NullInteger, tokenName, ApiTokenScope.Host, expiresOn, BulkInstallApiTokenScopeKey, createdByUserId);
+                var token = this.apiTokenController.GetApiTokens(ApiTokenScope.Host, false, Null.NullInteger, createdByUserId, ApiTokenFilter.Active, BulkInstallApiTokenScopeKey, 0, 1).First();
+                newApiUser = new APIUser(name, bypass, apiToken, token.ApiTokenId);
 
                 this.dataController.Create(newApiUser);
             }
@@ -62,11 +69,11 @@ namespace Dnn.Modules.BulkInstall.Components
         }
 
         /// <summary>Retrieves a single <see cref="APIUser"/> by its API key.</summary>
-        /// <param name="apiKey">The API key.</param>
+        /// <param name="apiTokenId">The API key.</param>
         /// <returns>The user or <see langword="null"/>.</returns>
-        public APIUser GetByAPIKey(string apiKey)
+        public APIUser GetByApiTokenId(int apiTokenId)
         {
-            return this.dataController.Get(apiKey);
+            return this.dataController.GetByApiTokenId(apiTokenId);
         }
 
         /// <summary>Updates the passed <see cref="APIUser"/>.</summary>
@@ -87,12 +94,13 @@ namespace Dnn.Modules.BulkInstall.Components
         }
 
         /// <summary>Looks up an <see cref="APIUser"/> by its API key and prepares it for use.</summary>
+        /// <param name="apiTokenId">The API token ID.</param>
         /// <param name="apiKey">The API key.</param>
         /// <returns>The user of <see langword="null"/>.</returns>
-        public APIUser FindAndPrepare(string apiKey)
+        public APIUser FindAndPrepare(int apiTokenId, string apiKey)
         {
             // Lookup user by api key.
-            APIUser apiUser = this.dataController.Get(apiKey);
+            APIUser apiUser = this.dataController.GetByApiTokenId(apiTokenId);
 
             // Verify and prepare for use.
             if (apiUser != null && apiUser.PrepareForUse(apiKey))

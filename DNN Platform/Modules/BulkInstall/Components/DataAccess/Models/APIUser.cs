@@ -8,6 +8,7 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
 
     using DotNetNuke.BulkInstall.Encryption;
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
 
     /// <summary>A database entity representing a user of the Bulk Install API.</summary>
     [TableName("BulkInstall_APIUsers")]
@@ -17,22 +18,17 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
         /// <summary>Initializes a new instance of the <see cref="APIUser"/> class, required by PetaPoco.</summary>
         public APIUser()
         {
-            this.APIKey = "********************************";
+            this.ApiKey = "********************************";
             this.EncryptionKey = "********************************";
             this.Prepared = false;
         }
 
         /// <summary>Initializes a new instance of the <see cref="APIUser"/> class.</summary>
         /// <param name="name">The label.</param>
-        public APIUser(string name)
-            : this(name, false)
-        {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="APIUser"/> class.</summary>
-        /// <param name="name">The label.</param>
         /// <param name="bypass">Whether the user can bypass the IP address allow list.</param>
-        public APIUser(string name, bool bypass)
+        /// <param name="apiKey">The API key.</param>
+        /// <param name="apiTokenId">The ID of the <see cref="ApiToken"/> backing this user.</param>
+        public APIUser(string name, bool bypass, string apiKey, int apiTokenId)
             : this()
         {
             if (string.IsNullOrEmpty(name))
@@ -42,20 +38,18 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
 
             this.Name = name;
             this.BypassIPWhitelist = bypass;
+            this.ApiTokenId = apiTokenId;
 
             // Create keys and place them in the readable fields.
-            this.APIKey = GenerateKey();
+            this.ApiKey = apiKey;
             this.EncryptionKey = GenerateKey();
             this.Prepared = true;
 
             // Generate salt.
             this.Salt = GenerateSalt();
 
-            // Hash api key with salt.
-            this.ApiKeySha = GenerateHash(this.APIKey, this.Salt);
-
             // Encrypt encryption key with api key.
-            this.EncryptedEncryptionKey = Crypto.Encrypt(this.EncryptionKey, this.APIKey);
+            this.EncryptedEncryptionKey = Crypto.Encrypt(this.EncryptionKey, apiKey);
         }
 
         /// <summary>Gets or sets the integer ID of APIUser.</summary>
@@ -65,9 +59,9 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
         /// <summary>Gets or sets the name of this APIUser.</summary>
         public string Name { get; set; }
 
-        /// <summary>Gets or sets the salted and hashed API key.</summary>
-        [ColumnName("APIKey_Sha")]
-        public string ApiKeySha { get; set; }
+        /// <summary>Gets or sets the ID of the DNN API token.</summary>
+        [ColumnName("APITokenId")]
+        public int ApiTokenId { get; set; }
 
         /// <summary>
         /// Gets or sets the encrypted encryption key.
@@ -92,9 +86,9 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
         [IgnoreColumn]
         public bool Prepared { get; private set; }
 
-        /// <summary>Gets the API key in plain text.</summary>
+        /// <summary>Gets the API key in plain text (only available immediately after the initial creation).</summary>
         [IgnoreColumn]
-        public string APIKey { get; private set; }
+        public string ApiKey { get; private set; }
 
         /// <summary>Gets the decrypted encryption key in plain text.</summary>
         [IgnoreColumn]
@@ -105,19 +99,8 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
         /// <returns><see langword="true"/> if the preparation was successful, otherwise <see langword="false"/>.</returns>
         public bool PrepareForUse(string apiKey)
         {
-            // Hash the passed api key with the salt.
-            string apiKeyHash = GenerateHash(apiKey, this.Salt);
-
-            // Does it match the stored hash?
-            if (!this.ApiKeySha.Equals(apiKeyHash, StringComparison.Ordinal))
-            {
-                // No, verification failure.
-                return false;
-            }
-
             // Store apiKey so we can use it.
-            this.APIKey = apiKey;
-            this.EncryptionKey = Crypto.Decrypt(this.EncryptedEncryptionKey, this.APIKey);
+            this.EncryptionKey = Crypto.Decrypt(this.EncryptedEncryptionKey, apiKey);
 
             // Prepared.
             this.Prepared = true;

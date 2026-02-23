@@ -34,7 +34,14 @@ public class InstallerTests
         var sessionId = await installer.StartSessionAsync(options);
 
         handler.Request.ShouldNotBeNull();
-        handler.Request.ShouldHaveApiKeyHeader(options.ApiKey);
+        if (legacyApi)
+        {
+            handler.Request.ShouldHaveApiKeyHeader(options.ApiKey);
+        }
+        else
+        {
+            handler.Request.ShouldHaveBearerAuth(options.ApiKey);
+        }
 
         sessionId.ShouldBe(expectedSessionId);
     }
@@ -75,7 +82,15 @@ public class InstallerTests
 
         handler.Request.ShouldNotBeNull();
         handler.Request.Method.ShouldBe(HttpMethod.Post);
-        handler.Request.ShouldHaveApiKeyHeader(options.ApiKey);
+        if (legacyApi)
+        {
+            handler.Request.ShouldHaveApiKeyHeader(options.ApiKey);
+        }
+        else
+        {
+            handler.Request.ShouldHaveBearerAuth(options.ApiKey);
+        }
+
         var formContent = handler.Request.Content.ShouldBeOfType<MultipartFormDataContent>();
         var innerContent = formContent.ShouldHaveSingleItem();
         var disposition = innerContent.Headers.ContentDisposition.ShouldNotBeNull();
@@ -165,7 +180,14 @@ public class InstallerTests
 
         handler.Request.ShouldNotBeNull();
         handler.Request.Method.ShouldBe(HttpMethod.Get);
-        handler.Request.ShouldHaveApiKeyHeader(options.ApiKey);
+        if (legacyApi)
+        {
+            handler.Request.ShouldHaveApiKeyHeader(options.ApiKey);
+        }
+        else
+        {
+            handler.Request.ShouldHaveBearerAuth(options.ApiKey);
+        }
     }
 
     [Theory]

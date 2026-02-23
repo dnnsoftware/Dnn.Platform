@@ -3,6 +3,20 @@ import { User } from './bulk-install-api-users.model';
 import state from '../../../stores/store';
 import { ApiUserClient } from '../../../clients/api-user-client';
 
+interface NewUser {
+  name: string;
+  bypassIPWhitelist: boolean;
+  expiresOn: Date;
+}
+
+function addYear(date: Date): Date {
+  return new Date(date.getTime() + 365 * 24 * 60 * 60 * 1000);
+}
+
+function toISODate(date: Date): string {
+  return date.toISOString().substring(0, 10);
+}
+
 @Component({
   tag: 'bulk-install-api-users',
   styleUrl: 'bulk-install-api-users.scss',
@@ -10,12 +24,10 @@ import { ApiUserClient } from '../../../clients/api-user-client';
 })
 export class BulkInstallApiUsers {
   @State() private users: User[] = [];
-  @State() private newUser: User = {
-    id: -1,
+  @State() private newUser: NewUser = {
     name: '',
-    apiKey: '',
-    encryptionKey: '',
     bypassIPWhitelist: false,
+    expiresOn: addYear(new Date()),
   };
 
   private newUserModal: HTMLDnnModalElement;
@@ -34,15 +46,13 @@ export class BulkInstallApiUsers {
     }
   }
 
-  private async createUser(_newUser: User): Promise<void> {
-    const createdUser = await this.apiUserClient.create(_newUser.name, _newUser.bypassIPWhitelist);
+  private async createUser(_newUser: NewUser): Promise<void> {
+    const createdUser = await this.apiUserClient.create(_newUser.name, _newUser.bypassIPWhitelist, _newUser.expiresOn);
     this.users = [...this.users, createdUser];
     this.newUser = {
-      id: -1,
       name: '',
-      apiKey: '',
-      encryptionKey: '',
       bypassIPWhitelist: false,
+      expiresOn: addYear(new Date()),
     };
     await this.newUserModal.hide();
   }
@@ -127,6 +137,16 @@ export class BulkInstallApiUsers {
               required
               value={this.newUser.name}
               onValueInput={e => (this.newUser = { ...this.newUser, name: e.detail as string })}
+            />
+            <dnn-input
+              type="date"
+              label={state.resx.ApiUserExpiresOnText}
+              helpText={state.resx.ApiUserExpiresOnHelp}
+              required
+              min={toISODate(new Date())}
+              max={toISODate(addYear(addYear(new Date())))}
+              value={toISODate(this.newUser.expiresOn)}
+              onValueInput={e => (this.newUser = { ...this.newUser, expiresOn: new Date(e.detail as string) })}
             />
             <label>
               <dnn-checkbox

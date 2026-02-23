@@ -35,7 +35,6 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
             // Loop and remove sensitive information.
             foreach (APIUser apiUser in apiUsers)
             {
-                apiUser.ApiKeySha = null;
                 apiUser.EncryptedEncryptionKey = null;
                 apiUser.Salt = null;
             }
@@ -46,9 +45,10 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         /// <summary>Creates a new <see cref="APIUser"/>.</summary>
         /// <param name="name">The label.</param>
         /// <param name="bypass">Whether the user can bypass the IP address allow list.</param>
+        /// <param name="expiresOn">The date/time on which the API user's token expires.</param>
         /// <returns>A response with the new <see cref="APIUser"/>.</returns>
         [HttpPost]
-        public HttpResponseMessage Create(string name, bool bypass = false)
+        public HttpResponseMessage Create(string name, bool bypass = false, DateTime? expiresOn = null)
         {
             // Check we have a name.
             if (string.IsNullOrEmpty(name))
@@ -57,9 +57,8 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
             }
 
             // Create user.
-            APIUser apiUser = this.apiUserManager.Create(name, bypass);
+            APIUser apiUser = this.apiUserManager.Create(name, bypass, expiresOn ?? DateTime.UtcNow.AddYears(1), this.UserInfo.UserID);
 
-            apiUser.ApiKeySha = null;
             apiUser.EncryptedEncryptionKey = null;
             apiUser.Salt = null;
 

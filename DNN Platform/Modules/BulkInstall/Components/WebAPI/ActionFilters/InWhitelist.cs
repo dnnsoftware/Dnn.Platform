@@ -15,10 +15,13 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters
     using Dnn.Modules.BulkInstall.Components.Exceptions;
     using Dnn.Modules.BulkInstall.Components.Logging;
 
+    using DotNetNuke.Common;
     using DotNetNuke.DependencyInjection;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Auth.ApiTokens;
 
     /// <summary>Requires a request to be from an allowed IP address.</summary>
-    internal sealed class InWhitelist : ActionFilterAttribute
+    internal sealed class InWhitelist : AuthorizeAttributeBase
     {
         [Dependency]
         private APIUserManager ApiUserManager { get; set; }
@@ -32,11 +35,12 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters
         [Dependency]
         private EventLogManager EventLogManager { get; set; }
 
-        /// <inheritdoc/>
-        public override void OnActionExecuting(HttpActionContext actionContext)
-        {
-            base.OnActionExecuting(actionContext);
+        [Dependency]
+        private IApiTokenController ApiTokenController { get; set; }
 
+        /// <inheritdoc />
+        public override bool IsAuthorized(AuthFilterContext context)
+        {
             // Get whitelist state.
             bool whitelistDisabled;
 
@@ -51,20 +55,22 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters
                 whitelistDisabled = true;
             }
 
+            if (whitelistDisabled)
+            {
+                return true;
+            }
+
             // Get api user.
-            string apiKey = actionContext.Request.GetApiKey();
-            APIUser apiUser = this.ApiUserManager.GetByAPIKey(apiKey);
+            var apiKey = this.ApiTokenController.GetCurrentThreadApiToken();
+            var apiUser = apiKey is null ? null : this.ApiUserManager.GetByApiTokenId(apiKey.ApiTokenId);
 
             // Is the whitelist disabled or does the api user have permission to
             // bypass it?
-            if (whitelistDisabled || apiUser is { BypassIPWhitelist: true, })
+            if (apiUser is { BypassIPWhitelist: true, })
             {
                 // No need to perform whitelisting checks, return early.
-                return;
+                return true;
             }
-
-            bool authenticated = false;
-            string message = "Access denied.";
 
             string forwardingAddress = null;
             string clientIpAddress = null;
@@ -74,11 +80,11 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters
                 // There is a strong possibility that this is not the ip address of the machine
                 // that sent the request. Being behind a load balancer with transparency switched
                 // off or being served through CloudFlare will both affect this value.
-                clientIpAddress = HttpContext.Current.Request.UserHostAddress;
+                clientIpAddress = HttpContextSource.Current.Request.UserHostAddress;
 
                 // We need to get the X-Forwarded-For header from the request, if this is set we
                 // should use it instead of the ip address from the request.
-                string forwardedFor = HttpContext.Current.Request.Headers.Get("X-Forwarded-For");
+                string forwardedFor = HttpContextSource.Current.Request.Headers.Get("X-Forwarded-For");
 
                 // Forwarded for set?
                 if (forwardedFor != null)
@@ -93,33 +99,26 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters
                     // Is it whitelisted or localhost?
                     if (this.IPSpecManager.IsAllowed(clientIpAddress) || clientIpAddress.Equals("127.0.0.1", StringComparison.Ordinal))
                     {
-                        authenticated = true;
+                        return true;
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Set appropriate message.
-                message = "An error occurred while trying to authenticate this request.";
-
                 this.EventLogManager.Log("AUTH_EXCEPTION", EventLogSeverity.Info, ex);
             }
 
-            // If authentication failure occurs, return a response without carrying on executing actions.
-            if (!authenticated)
+            string log = $"Whitelist check failed for IP address: {clientIpAddress}.";
+
+            // Was it forwarded?
+            if (forwardingAddress != null)
             {
-                string log = $"Whitelist check failed for IP address: {clientIpAddress}.";
-
-                // Was it forwarded?
-                if (forwardingAddress != null)
-                {
-                    log = $"Whitelist check failed for IP address: {clientIpAddress}, forwarded by: {forwardingAddress}.";
-                }
-
-                this.EventLogManager.Log("AUTH_BAD_IPADDRESS", EventLogSeverity.Warning, log);
-
-                actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, message);
+                log = $"Whitelist check failed for IP address: {clientIpAddress}, forwarded by: {forwardingAddress}.";
             }
+
+            this.EventLogManager.Log("AUTH_BAD_IPADDRESS", EventLogSeverity.Warning, log);
+
+            return false;
         }
     }
 }

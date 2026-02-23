@@ -32,6 +32,8 @@ export interface BulkInstallLocalization {
   ApiKey: string;
   ApiUserNameText: string;
   ApiUserNameHelp: string;
+  ApiUserExpiresOnText: string;
+  ApiUserExpiresOnHelp: string;
   ApiUsers: string;
   BulkInstall: string;
   BypassIpAllowList: string;

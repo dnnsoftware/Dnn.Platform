@@ -18,6 +18,13 @@ public static class AssertionExtensions
         apiKeys.ShouldHaveSingleItem().ShouldBe(apiKey);
     }
 
+    public static void ShouldHaveBearerAuth(this HttpRequestMessage request, string apiKey)
+    {
+        var authorizationHeader = request.Headers.Authorization.ShouldNotBeNull();
+        authorizationHeader.Scheme.ShouldBe("Bearer");
+        authorizationHeader.Parameter.ShouldBe(apiKey);
+    }
+
     public static void ShouldContainStringsInOrder(this string str, params string[] stringsToMatch)
     {
         str.ShouldContainStringsInOrder(onlyOnce: false, stringsToMatch);

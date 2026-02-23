@@ -5,8 +5,8 @@
             CONSTRAINT [PK_{objectQualifier}BulkInstall_APIUsers] PRIMARY KEY CLUSTERED,
         [Name] nvarchar(64) NOT NULL
             CONSTRAINT [UQ_{objectQualifier}BulkInstall_APIUsers_Name] UNIQUE,
-        [APIKey_Sha] char(64) NOT NULL
-            CONSTRAINT [UQ_{objectQualifier}BulkInstall_APIUsers_APIKey_Sha] UNIQUE,
+        [APITokenID] int NOT NULL
+            CONSTRAINT [UQ_{objectQualifier}BulkInstall_APIUsers_APITokenID] UNIQUE,
         [EncryptionKey_Enc] char(172) NOT NULL
             CONSTRAINT [UQ_{objectQualifier}BulkInstall_APIUsers_EncryptionKey_Enc] UNIQUE,
         [Salt] char(32) NOT NULL
@@ -73,44 +73,6 @@ IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}BulkInstall_Settin
     INSERT INTO {databaseOwner}[{objectQualifier}BulkInstall_Settings] ([Group], [Key], [Value])
     VALUES ('SAFELIST', 'ENABLED', 'false');
 GO
-
-IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}BulkInstall_APIUserByAPIKey]') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}BulkInstall_APIUserByAPIKey];
-GO
-
-/*
-    This procedure provides a mechanism to easily retrieve an APIUser by its
-    api key.
-
-    As each APIUser's api key is only stored as a salted and hashed value in
-    the APIKey_Sha field it's not possible to just use a plain api key to
-    retrieve that user from the database. The plain api key must be salted and
-    hashed using the stored salt for the APIUser before a comparison can be
-    made. Performing this within the application would involve retrieving all
-    the APIUser objects from the database and testing them individually.
-
-    This procedure allows the application to pass a plain api key in and have
-    it tested against every APIUser object in the database. As this is
-    happening within the database engine rather than the application, it should
-    perform much better.
-
-    The basic procedure is as follows:
-    - Concatenate plain api key with stored salt
-    - Produce hashed bytes of the concatenated value using SHA256
-    - Convert the hashed bytes to a string for comparison
-
-    Note: The third parameter passed to CONVERT removes the leading '0x' from
-    the returned value.
-    (https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql#binary-styles)
-*/
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}BulkInstall_APIUserByAPIKey]
-    @ApiKey varchar(64)
-AS
-    SELECT *
-    FROM {databaseOwner}[{objectQualifier}BulkInstall_APIUsers]
-    WHERE [APIKey_Sha] = CONVERT(varchar(64), HASHBYTES('SHA2_256', CONCAT(@ApiKey, [Salt])), 2);
-GO
-
 
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}BulkInstall_IPSpecByAddress]') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}BulkInstall_IPSpecByAddress];
