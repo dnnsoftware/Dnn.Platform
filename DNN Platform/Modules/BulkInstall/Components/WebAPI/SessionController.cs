@@ -18,6 +18,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
     using Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Web.Api;
 
     using Newtonsoft.Json;
@@ -42,7 +43,12 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         {
             var session = this.sessionManager.CreateSession();
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Session = new SessionDto(session), });
+            var responseBody = new
+            {
+                Session = new SessionDto(session),
+                MaxUploadFileSize = Config.GetMaxUploadSize(this.appStatus),
+            };
+            return this.Request.CreateResponse(HttpStatusCode.OK, responseBody);
         }
 
         /// <summary>Gets a session by its <paramref name="sessionGuid"/>.</summary>

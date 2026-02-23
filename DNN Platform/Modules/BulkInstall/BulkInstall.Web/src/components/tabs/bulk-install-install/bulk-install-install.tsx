@@ -16,6 +16,7 @@ export class BulkInstallInstall {
   @State() private installationComplete = false;
   @State() private apiError = false;
   @State() private session: Session | undefined;
+  @State() private maxUploadFileSize: number = 0;
 
   private installClient: InstallClient;
 
@@ -23,8 +24,17 @@ export class BulkInstallInstall {
     this.installClient = new InstallClient(store.moduleId);
   }
 
+  async componentDidLoad() {
+    try {
+      const { session, maxUploadFileSize } = await this.installClient.create();
+      this.session = session;
+      this.maxUploadFileSize = maxUploadFileSize;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   private async installPackages() {
-    this.session = await this.installClient.create();
     await this.installClient.addPackages(this.session.sessionGuid, this.selectedFiles);
     this.installationSummary = await this.installClient.summary(this.session.sessionGuid);
     if (this.installationSummary.some(installJob => !installJob.canInstall)) {
@@ -70,6 +80,7 @@ export class BulkInstallInstall {
                   <div class="panel-body">
                     <dnn-dropzone
                       allowedExtensions={['zip']}
+                      maxFileSize={this.maxUploadFileSize}
                       onFilesSelected={e => (this.selectedFiles = [...this.selectedFiles, ...e.detail])}
                       multiple
                       resx={{
@@ -91,7 +102,7 @@ export class BulkInstallInstall {
                     )}
                     <div class="form-group">
                       <dnn-button
-                        disabled={this.selectedFiles.length < 1 || this.session !== undefined}
+                        disabled={this.selectedFiles.length < 1}
                         onClick={() => {
                           this.installPackages().catch(console.error);
                           return;

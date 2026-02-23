@@ -11,13 +11,16 @@ export class InstallClient {
     this.requestUrl = this.sf.getServiceRoot('BulkInstall') + 'Session/';
   }
 
-  public async create(): Promise<Session> {
+  public async create(): Promise<{ session: Session; maxUploadFileSize: number }> {
     const response = await fetch(`${this.requestUrl}Create`, {
       method: 'POST',
       headers: this.sf.getModuleHeaders(),
     });
-    const responseBody = (await response.json()) as { Session: SessionResponse };
-    return InstallClient.toSession(responseBody.Session);
+    const responseBody = (await response.json()) as { Session: SessionResponse; MaxUploadFileSize: number };
+    return {
+      session: InstallClient.toSession(responseBody.Session),
+      maxUploadFileSize: responseBody.MaxUploadFileSize,
+    };
   }
 
   public async getSession(sessionGuid: string): Promise<Session> {
