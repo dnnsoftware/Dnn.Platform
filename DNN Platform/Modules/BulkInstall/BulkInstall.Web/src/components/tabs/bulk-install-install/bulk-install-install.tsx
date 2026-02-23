@@ -35,7 +35,6 @@ export class BulkInstallInstall {
   }
 
   private async installPackages() {
-    await this.installClient.addPackages(this.session.sessionGuid, this.selectedFiles);
     this.installationSummary = await this.installClient.summary(this.session.sessionGuid);
     if (this.installationSummary.some(installJob => !installJob.canInstall)) {
       this.cannotInstall = true;
@@ -93,13 +92,9 @@ export class BulkInstallInstall {
                         allowedFileExtensions: store.resx.DropZone_AllowedFileExtensions,
                       }}
                     />
-                    {this.selectedFiles.length > 0 && (
-                      <ul>
-                        {this.selectedFiles.map(file => (
-                          <li>{file.name}</li>
-                        ))}
-                      </ul>
-                    )}
+                    {this.selectedFiles.map(file => (
+                      <bulk-install-queued-file file={file} session={this.session} maxUploadFileSize={this.maxUploadFileSize} />
+                    ))}
                     <div class="form-group">
                       <dnn-button
                         disabled={this.selectedFiles.length < 1}

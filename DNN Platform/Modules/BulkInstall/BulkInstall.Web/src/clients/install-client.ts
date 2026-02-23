@@ -32,17 +32,37 @@ export class InstallClient {
     return InstallClient.toSession(responseBody.Session);
   }
 
-  public async addPackages(sessionGuid: string, files: File[]): Promise<void> {
-    for (const file of files) {
+  public async addPackage(sessionGuid: string, file: File, signal: AbortSignal, onProgress: (ev: ProgressEvent) => void): Promise<void> {
+    await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      xhr.onload = () => {
+        if (xhr.status !== 201) {
+          console.error(xhr);
+          reject(xhr.statusText);
+        }
+
+        resolve(xhr.responseText);
+      };
+
+      xhr.upload.onprogress = onProgress;
+
+      xhr.onabort = () => {
+        console.error(xhr);
+        reject();
+      };
+
+      signal.onabort = () => xhr.abort();
+
       const requestBody = new FormData();
       requestBody.append(file.name, file);
 
-      await fetch(`${this.requestUrl}AddPackages?sessionGuid=${sessionGuid}`, {
-        method: 'POST',
-        body: requestBody,
-        headers: this.sf.getModuleHeaders(),
+      xhr.open('POST', `${this.requestUrl}AddPackages?sessionGuid=${sessionGuid}`);
+      this.sf.getModuleHeaders().forEach((value, key) => {
+        xhr.setRequestHeader(key, value);
       });
-    }
+      xhr.send(requestBody);
+    });
   }
 
   public async install(sessionGuid: string): Promise<void> {

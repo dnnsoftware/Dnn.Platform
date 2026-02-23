@@ -285,4 +285,10 @@
   <data name="ApiAuthDisabled" xml:space="preserve">
     <value>API Token authentication must be enabled in the web.config before creating API Users</value>
   </data>
+  <data name="FileUploadedMessage" xml:space="preserve">
+    <value>Package uploaded</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 </root>

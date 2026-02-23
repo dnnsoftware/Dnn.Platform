@@ -2,11 +2,12 @@
 
 <!-- Auto Generated Below -->
 
+
 ## Dependencies
 
 ### Used by
 
-- [dnn-bulk-install](../../dnn-bulk-install)
+ - [dnn-bulk-install](../../dnn-bulk-install)
 
 ### Depends on
 
@@ -15,7 +16,6 @@
 - dnn-toggle
 
 ### Graph
-
 ```mermaid
 graph TD;
   bulk-install-ip-safelist --> dnn-input
@@ -28,6 +28,6 @@ graph TD;
   style bulk-install-ip-safelist fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
----
+----------------------------------------------
 
-_Built with [StencilJS](https://stenciljs.com/)_
+*Built with [StencilJS](https://stenciljs.com/)*

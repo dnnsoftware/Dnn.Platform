@@ -2,11 +2,13 @@
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
-| Property                | Attribute   | Description | Type     | Default     |
-| ----------------------- | ----------- | ----------- | -------- | ----------- |
-| `moduleId` _(required)_ | `module-id` |             | `number` | `undefined` |
+| Property                | Attribute   | Description           | Type     | Default     |
+| ----------------------- | ----------- | --------------------- | -------- | ----------- |
+| `moduleId` _(required)_ | `module-id` | The ID of the module. | `number` | `undefined` |
+
 
 ## Dependencies
 
@@ -20,7 +22,6 @@
 - [bulk-install-ip-safelist](../tabs/bulk-install-ip-safelist)
 
 ### Graph
-
 ```mermaid
 graph TD;
   dnn-bulk-install --> dnn-tabs
@@ -30,6 +31,7 @@ graph TD;
   dnn-bulk-install --> bulk-install-api-users
   dnn-bulk-install --> bulk-install-ip-safelist
   bulk-install-install --> dnn-dropzone
+  bulk-install-install --> bulk-install-queued-file
   bulk-install-install --> dnn-button
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
@@ -44,6 +46,6 @@ graph TD;
   style dnn-bulk-install fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
----
+----------------------------------------------
 
-_Built with [StencilJS](https://stenciljs.com/)_
+*Built with [StencilJS](https://stenciljs.com/)*
