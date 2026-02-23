@@ -53,7 +53,7 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers
             using IDataContext context = DataContext.Instance(this.hostSettings);
             return context.ExecuteQuery<EventLog>(
                 System.Data.CommandType.StoredProcedure,
-                "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPage]",
+                "{databaseOwner}[{objectQualifier}BulkInstall_GetEventLogsPage]",
                 pageIndex,
                 pageSize,
                 eventType,
@@ -71,7 +71,7 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers
             using IDataContext context = DataContext.Instance(this.hostSettings);
             return context.ExecuteQuery<int>(
                 System.Data.CommandType.StoredProcedure,
-                "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPageTotal]",
+                "{databaseOwner}[{objectQualifier}BulkInstall_GetEventLogsPageTotal]",
                 pageIndex,
                 pageSize,
                 eventType,
@@ -84,7 +84,7 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers
         public IEnumerable<string> GetEventTypes()
         {
             using IDataContext context = DataContext.Instance(this.hostSettings);
-            return context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT DISTINCT [EventType] FROM [dbo].[Cantarus_PolyDeploy_EventLogs]", null);
+            return context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT DISTINCT [EventType] FROM [dbo].[BulkInstall_EventLogs]", null);
         }
 
         /// <summary>Gets the total count of <see cref="EventLog"/> rows.</summary>
@@ -92,7 +92,7 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers
         public int EventCount()
         {
             using IDataContext context = DataContext.Instance(this.hostSettings);
-            return context.ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT COUNT(*) FROM [dbo].[Cantarus_PolyDeploy_EventLogs]", null).FirstOrDefault();
+            return context.ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT COUNT(*) FROM [dbo].[BulkInstall_EventLogs]", null).FirstOrDefault();
         }
     }
 }

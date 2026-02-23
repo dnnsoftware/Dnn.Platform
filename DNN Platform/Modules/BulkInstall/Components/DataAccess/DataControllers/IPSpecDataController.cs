@@ -57,7 +57,7 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers
             using IDataContext context = DataContext.Instance(this.hostSettings);
             return context.ExecuteSingleOrDefault<IPSpec>(
                 System.Data.CommandType.StoredProcedure,
-                "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecByAddress]",
+                "{databaseOwner}[{objectQualifier}BulkInstall_IPSpecByAddress]",
                 address);
         }
 

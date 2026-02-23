@@ -10,7 +10,7 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
     using DotNetNuke.ComponentModel.DataAnnotations;
 
     /// <summary>A database entity representing a user of the Bulk Install API.</summary>
-    [TableName("Cantarus_PolyDeploy_APIUsers")]
+    [TableName("BulkInstall_APIUsers")]
     [PrimaryKey("APIUserID")]
     public sealed class APIUser : Obfuscated
     {
@@ -59,6 +59,7 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
         }
 
         /// <summary>Gets or sets the integer ID of APIUser.</summary>
+        [ColumnName("APIUserID")]
         public int APIUserId { get; set; }
 
         /// <summary>Gets or sets the name of this APIUser.</summary>

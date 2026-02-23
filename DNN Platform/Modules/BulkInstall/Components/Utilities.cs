@@ -15,7 +15,7 @@ namespace Dnn.Modules.BulkInstall.Components
         /// <summary>Gets the module's path.</summary>
         /// <param name="appStatus">The application status.</param>
         /// <returns>The absolute/mapped path to the module directory.</returns>
-        public static string GetModulePath(IApplicationStatusInfo appStatus) => Path.Combine(appStatus.ApplicationMapPath, "DesktopModules", "Cantarus", "PolyDeploy");
+        public static string GetModulePath(IApplicationStatusInfo appStatus) => Path.Combine(appStatus.ApplicationMapPath, "DesktopModules", "BulkInstall");
 
         /// <summary>Gets the path to a temp folder.</summary>
         /// <param name="appStatus">The application status.</param>

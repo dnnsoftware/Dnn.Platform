@@ -10,8 +10,8 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
     using DotNetNuke.ComponentModel.DataAnnotations;
 
     /// <summary>A database entity representing an event log entry.</summary>
-    [TableName("Cantarus_PolyDeploy_EventLogs")]
-    [PrimaryKey(nameof(EventLogId))]
+    [TableName("BulkInstall_EventLogs")]
+    [PrimaryKey("EventLogID")]
     public class EventLog
     {
         private string eventType;
@@ -45,6 +45,7 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.Models
         }
 
         /// <summary>Gets or sets the ID.</summary>
+        [ColumnName("EventLogID")]
         public int EventLogId { get; set; }
 
         /// <summary>Gets or sets the date/time.</summary>

@@ -16,7 +16,7 @@ namespace Dnn.Modules.BulkInstall.Components
     /// <param name="dataController">The data controller.</param>
     public sealed class SettingManager(SettingDataController dataController)
     {
-        private const string SettingCacheKey = "Cantarus:PolyDeploy:Setting_";
+        private const string SettingCacheKey = "BulkInstall:Setting_";
 
         private readonly SettingDataController dataController = dataController;
 
