@@ -15,6 +15,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
     using Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters;
 
     using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Auth.ApiTokens;
 
     /// <summary>A web API controller for <see cref="APIUser"/>.</summary>
     /// <param name="apiUserManager">The API user manager.</param>
@@ -30,6 +31,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         [HttpGet]
         public HttpResponseMessage GetAll()
         {
+            var settings = ApiTokenSettings.GetSettings(this.PortalSettings.PortalId);
             List<APIUser> apiUsers = this.apiUserManager.GetAll().ToList();
 
             // Loop and remove sensitive information.
@@ -39,7 +41,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                 apiUser.Salt = null;
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Users = apiUsers, });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Users = apiUsers, Enabled = settings.ApiTokensEnabled, });
         }
 
         /// <summary>Creates a new <see cref="APIUser"/>.</summary>
@@ -53,7 +55,13 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
             // Check we have a name.
             if (string.IsNullOrEmpty(name))
             {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { Message = "name is required", });
+            }
+
+            var settings = ApiTokenSettings.GetSettings(this.PortalSettings.PortalId);
+            if (!settings.ApiTokensEnabled)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { Message = "API tokens are disabled", });
             }
 
             // Create user.

@@ -24,6 +24,7 @@ function toISODate(date: Date): string {
 })
 export class BulkInstallApiUsers {
   @State() private users: User[] = [];
+  @State() private enabled: boolean | null = null;
   @State() private newUser: NewUser = {
     name: '',
     bypassIPWhitelist: false,
@@ -40,7 +41,9 @@ export class BulkInstallApiUsers {
 
   async componentWillLoad() {
     try {
-      this.users = await this.apiUserClient.getAll();
+      const { users, enabled } = await this.apiUserClient.getAll();
+      this.users = users;
+      this.enabled = enabled;
     } catch (error) {
       console.error(error);
     }
@@ -59,17 +62,26 @@ export class BulkInstallApiUsers {
 
   private async deleteUser(_user: User): Promise<void> {
     await this.apiUserClient.delete(_user.id);
-    this.users = await this.apiUserClient.getAll();
+    const { users } = await this.apiUserClient.getAll();
+    this.users = users;
   }
 
   render() {
     return (
       <Host>
+        {this.enabled === false && (
+          <div class="row">
+            <div class="col">
+              <h3 class="danger">{state.resx.ApiAuthDisabled}</h3>
+            </div>
+          </div>
+        )}
         <div class="row">
           <div class="col">
             <div class="button-row">
               <dnn-button
                 size="small"
+                disabled={this.enabled === false}
                 onClick={() => {
                   this.newUserModal.show().catch(console.error);
                   return;

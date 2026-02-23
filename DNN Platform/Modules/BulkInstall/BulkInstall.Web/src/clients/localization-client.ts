@@ -29,6 +29,7 @@ export interface BulkInstallLocalization {
   Action: string;
   Add: string;
   ApiError: string;
+  ApiAuthDisabled: string;
   ApiKey: string;
   ApiUserNameText: string;
   ApiUserNameHelp: string;

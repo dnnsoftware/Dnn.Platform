@@ -10,12 +10,15 @@ export class ApiUserClient {
     this.requestUrl = this.sf.getServiceRoot('BulkInstall') + 'APIUser/';
   }
 
-  public async getAll(): Promise<User[]> {
+  public async getAll(): Promise<{ users: User[]; enabled: boolean }> {
     const response = await fetch(`${this.requestUrl}GetAll`, {
       headers: this.sf.getModuleHeaders(),
     });
-    const responseBody = (await response.json()) as { Users: ApiUser[] };
-    return responseBody.Users.map(u => ApiUserClient.toUser(u));
+    const responseBody = (await response.json()) as { Users: ApiUser[]; Enabled: boolean };
+    return {
+      users: responseBody.Users.map(u => ApiUserClient.toUser(u)),
+      enabled: responseBody.Enabled,
+    };
   }
 
   public async create(name: string, bypassIpWhitelist: boolean, expiresOn: Date): Promise<User> {

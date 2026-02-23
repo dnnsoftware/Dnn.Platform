@@ -282,4 +282,7 @@
   <data name="bulk-install.Help" xml:space="preserve">
     <value>The API to allow installing DNN extension packages in bulk</value>
   </data>
+  <data name="ApiAuthDisabled" xml:space="preserve">
+    <value>API Token authentication must be enabled in the web.config before creating API Users</value>
+  </data>
 </root>
