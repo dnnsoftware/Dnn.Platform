@@ -226,22 +226,22 @@
     <value>Severity</value>
   </data>
   <data name="DropZone_UploadSizeTooLarge" xml:space="preserve">
-    <value>The file you tried to upload is too large.</value>
+    <value>One or more of the files you tried to upload is too large.</value>
   </data>
   <data name="DropZone_DragAndDropFile" xml:space="preserve">
-    <value>Drag and drop a file</value>
+    <value>Drag and drop package files</value>
   </data>
   <data name="DropZone_Or" xml:space="preserve">
     <value>or</value>
   </data>
   <data name="DropZone_UploadFile" xml:space="preserve">
-    <value>Upload a file</value>
+    <value>Upload package files</value>
   </data>
   <data name="DropZone_FileSizeLimit" xml:space="preserve">
     <value>The maximum size is {0}</value>
   </data>
   <data name="DropZone_InvalidExtension" xml:space="preserve">
-    <value>The file you tried to upload has an invalid extension.</value>
+    <value>One or more of the files you tried to upload has an invalid extension.</value>
   </data>
   <data name="DropZone_AllowedFileExtensions" xml:space="preserve">
     <value>Allowed file extensions: {0}</value>
