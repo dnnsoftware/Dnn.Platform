@@ -1,7 +1,7 @@
-import { Component, Host, h, Prop, State, Element } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, h, Host, Prop, State } from '@stencil/core';
 import state from '../../../../stores/store';
 import { getFileSize } from '../../../../utilities/filesize-utilities';
-import { Session } from '../bulk-install-install.model';
+import { Session, UploadStatus } from '../bulk-install-install.model';
 import { InstallClient } from '../../../../clients/install-client';
 
 @Component({
@@ -19,9 +19,12 @@ export class BulkInstallQueuedFile {
   /** The maximal allowed file upload size */
   @Prop() maxUploadFileSize!: number;
 
+  @Event() uploadCompleted: EventEmitter<UploadStatus>;
+
   @State() overwrite = false;
   @State() progress: number;
   @State() successMessage: string;
+  @State() dismissed: boolean;
 
   @Element() el: HTMLBulkInstallQueuedFileElement;
 
@@ -36,8 +39,14 @@ export class BulkInstallQueuedFile {
     try {
       this.abortController = new AbortController();
       await this.installClient.addPackage(this.session.sessionGuid, this.file, this.abortController.signal, ev => this.onProgress(ev));
+      this.uploadCompleted.emit(UploadStatus.Success);
       this.successMessage = state.resx.FileUploadedMessage;
     } catch (err) {
+      if (this.dismissed) {
+        this.uploadCompleted.emit(UploadStatus.Cancelled);
+      } else {
+        this.uploadCompleted.emit(UploadStatus.Error);
+      }
       console.log(err);
     }
   }
@@ -50,6 +59,7 @@ export class BulkInstallQueuedFile {
   }
 
   private dismiss() {
+    this.dismissed = true;
     return new Promise<void>((resolve, reject) => {
       try {
         this.el.style.transition = 'all 1s ease-in-out';
@@ -61,6 +71,7 @@ export class BulkInstallQueuedFile {
           this.el.style.border = '0';
         });
         setTimeout(() => {
+          this.el.style.display = 'none';
           resolve();
         }, 1000);
       } catch (error) {
@@ -93,7 +104,8 @@ export class BulkInstallQueuedFile {
                 title={state.resx.Cancel}
                 onClick={() => {
                   this.abortController.abort();
-                  void this.dismiss();
+                  this.uploadCompleted.emit(UploadStatus.Cancelled);
+                  this.dismiss().catch(console.error);
                 }}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48">
