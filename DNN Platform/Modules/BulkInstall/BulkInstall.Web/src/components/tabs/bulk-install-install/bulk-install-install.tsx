@@ -71,6 +71,7 @@ export class BulkInstallInstall {
                     <dnn-dropzone
                       allowedExtensions={['zip']}
                       onFilesSelected={e => (this.selectedFiles = [...this.selectedFiles, ...e.detail])}
+                      multiple
                       resx={{
                         dragAndDropFile: store.resx.DropZone_DragAndDropFile,
                         or: store.resx.DropZone_Or,

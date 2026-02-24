@@ -2208,17 +2208,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dnncommunity/dnn-elements@npm:^0.27.8":
-  version: 0.27.8
-  resolution: "@dnncommunity/dnn-elements@npm:0.27.8"
-  dependencies:
-    jodit: "npm:^4.6.2"
-  peerDependencies:
-    "@typescript-eslint/utils": ^8.30.1
-  checksum: 10/109f021e5bfe0add18aa6d59acd2566044224307ee50d63b5567062f02f2071d781a8335079ec026a668bb71e3df2f82fe18d6a513dd129ba24d6c055f7ac791
-  languageName: node
-  linkType: hard
-
 "@dnnsoftware/dnn-react-common@npm:10.2.3, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
   version: 0.0.0-use.local
   resolution: "@dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common"
@@ -10897,7 +10886,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dnn-bulk-install@workspace:DNN Platform/Modules/BulkInstall/BulkInstall.Web"
   dependencies:
-    "@dnncommunity/dnn-elements": "npm:^0.27.8"
+    "@dnncommunity/dnn-elements": "npm:^0.29.0"
     "@eslint/js": "npm:^10.0.1"
     "@stencil/core": "npm:^4.43.0"
     "@stencil/eslint-plugin": "npm:^1.1.0"
