@@ -20,7 +20,7 @@ export class BulkInstallInstallJob {
           </div>
           <div class="file">
             <span>{this.job.name}</span>
-            {this.job.packages.length === 1 && <bulk-install-package-job job={this.job.packages[0]} />}
+            {this.job.packages.length === 1 && <bulk-install-package-job job={this.job.packages[0]} success={this.job.success} />}
             {this.job.packages.length !== 1 && (
               <details>
                 <summary>
@@ -29,7 +29,7 @@ export class BulkInstallInstallJob {
                 <ul>
                   {this.job.packages.map(p => (
                     <li>
-                      <bulk-install-package-job job={p} />
+                      <bulk-install-package-job job={p} success={this.job.success} />
                     </li>
                   ))}
                 </ul>

@@ -11,6 +11,9 @@ export class BulkInstallPackageJob {
   /** The package job. */
   @Prop() job!: PackageJob;
 
+  /** Whether the installation was completed successfully. */
+  @Prop() success!: boolean;
+
   render() {
     return (
       <Host>
@@ -18,7 +21,7 @@ export class BulkInstallPackageJob {
           {!this.job.canInstall && <bulk-install-circle-x-icon />}
           {this.job.name} <span class="version">{this.job.version}</span>
         </h4>
-        {this.job.dependencies.length > 0 && (
+        {!this.success && this.job.dependencies.length > 0 && (
           <summary>
             <detail>{store.resx.PackageDependencies}</detail>
             <ul>

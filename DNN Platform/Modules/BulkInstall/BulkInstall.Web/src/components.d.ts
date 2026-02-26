@@ -35,6 +35,10 @@ export namespace Components {
           * The package job.
          */
         "job": PackageJob;
+        /**
+          * Whether the installation was completed successfully.
+         */
+        "success": boolean;
     }
     interface BulkInstallQueuedFile {
         /**
@@ -190,6 +194,10 @@ declare namespace LocalJSX {
           * The package job.
          */
         "job": PackageJob;
+        /**
+          * Whether the installation was completed successfully.
+         */
+        "success": boolean;
     }
     interface BulkInstallQueuedFile {
         /**
@@ -213,6 +221,9 @@ declare namespace LocalJSX {
         "moduleId": number;
     }
 
+    interface BulkInstallPackageJobAttributes {
+        "success": boolean;
+    }
     interface BulkInstallQueuedFileAttributes {
         "maxUploadFileSize": number;
     }
@@ -230,7 +241,7 @@ declare namespace LocalJSX {
         "bulk-install-install-job": BulkInstallInstallJob;
         "bulk-install-ip-safelist": BulkInstallIpSafelist;
         "bulk-install-logs": BulkInstallLogs;
-        "bulk-install-package-job": BulkInstallPackageJob;
+        "bulk-install-package-job": Omit<BulkInstallPackageJob, keyof BulkInstallPackageJobAttributes> & { [K in keyof BulkInstallPackageJob & keyof BulkInstallPackageJobAttributes]?: BulkInstallPackageJob[K] } & { [K in keyof BulkInstallPackageJob & keyof BulkInstallPackageJobAttributes as `attr:${K}`]?: BulkInstallPackageJobAttributes[K] } & { [K in keyof BulkInstallPackageJob & keyof BulkInstallPackageJobAttributes as `prop:${K}`]?: BulkInstallPackageJob[K] } & OneOf<"success", BulkInstallPackageJob["success"], BulkInstallPackageJobAttributes["success"]>;
         "bulk-install-queued-file": Omit<BulkInstallQueuedFile, keyof BulkInstallQueuedFileAttributes> & { [K in keyof BulkInstallQueuedFile & keyof BulkInstallQueuedFileAttributes]?: BulkInstallQueuedFile[K] } & { [K in keyof BulkInstallQueuedFile & keyof BulkInstallQueuedFileAttributes as `attr:${K}`]?: BulkInstallQueuedFileAttributes[K] } & { [K in keyof BulkInstallQueuedFile & keyof BulkInstallQueuedFileAttributes as `prop:${K}`]?: BulkInstallQueuedFile[K] } & OneOf<"maxUploadFileSize", BulkInstallQueuedFile["maxUploadFileSize"], BulkInstallQueuedFileAttributes["maxUploadFileSize"]>;
         "dnn-bulk-install": Omit<DnnBulkInstall, keyof DnnBulkInstallAttributes> & { [K in keyof DnnBulkInstall & keyof DnnBulkInstallAttributes]?: DnnBulkInstall[K] } & { [K in keyof DnnBulkInstall & keyof DnnBulkInstallAttributes as `attr:${K}`]?: DnnBulkInstallAttributes[K] } & { [K in keyof DnnBulkInstall & keyof DnnBulkInstallAttributes as `prop:${K}`]?: DnnBulkInstall[K] } & OneOf<"moduleId", DnnBulkInstall["moduleId"], DnnBulkInstallAttributes["moduleId"]>;
     }
