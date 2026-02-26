@@ -70,6 +70,7 @@ export interface BulkInstallLocalization {
   NewIpSafelistEntry: string;
   Packages: string;
   PackageDependencies: string;
+  PlatformVersion: string;
   Reset: string;
   Save: string;
   SessionStatus_NotStared: string;

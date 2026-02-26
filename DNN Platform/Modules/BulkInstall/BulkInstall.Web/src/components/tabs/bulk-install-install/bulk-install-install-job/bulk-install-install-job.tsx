@@ -23,7 +23,9 @@ export class BulkInstallInstallJob {
             {this.job.packages.length === 1 && <bulk-install-package-job job={this.job.packages[0]} />}
             {this.job.packages.length !== 1 && (
               <details>
-                <summary>{state.resx.Packages}</summary>
+                <summary>
+                  {this.job.packages.length} {state.resx.Packages}
+                </summary>
                 <ul>
                   {this.job.packages.map(p => (
                     <li>

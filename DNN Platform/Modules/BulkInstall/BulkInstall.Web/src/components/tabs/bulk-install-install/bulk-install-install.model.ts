@@ -32,6 +32,7 @@ export interface PackageJob {
 
 export interface PackageDependency {
   isPackageDependency: boolean;
+  isCoreVersionDependency: boolean;
   packageName: string;
   dependencyVersion: string;
   isMet: boolean;

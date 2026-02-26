@@ -105,6 +105,7 @@ export class InstallClient {
     return {
       dependencyVersion: dependency.DependencyVersion,
       isPackageDependency: dependency.IsPackageDependency,
+      isCoreVersionDependency: dependency.IsCoreVersionDependency,
       packageName: dependency.PackageName,
       isMet: dependency.IsMet,
     };
@@ -164,6 +165,7 @@ interface PackageJobResponse {
 
 interface PackageDependencyResponse {
   IsPackageDependency: boolean;
+  IsCoreVersionDependency: boolean;
   PackageName: string;
   DependencyVersion: string;
   IsMet: boolean;

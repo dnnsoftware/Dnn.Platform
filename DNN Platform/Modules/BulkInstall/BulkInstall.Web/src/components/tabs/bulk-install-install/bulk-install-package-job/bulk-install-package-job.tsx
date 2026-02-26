@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop } from '@stencil/core';
+import { Component, h, Host, Prop, Fragment } from '@stencil/core';
 import store from '../../../../stores/store';
 import { PackageJob } from '../bulk-install-install.model';
 
@@ -26,7 +26,16 @@ export class BulkInstallPackageJob {
                 <li class={dependency.isMet ? 'success' : 'failure'}>
                   {dependency.isMet && <bulk-install-checkmark-icon />}
                   {!dependency.isMet && <bulk-install-circle-x-icon />}
-                  {dependency.packageName} <span class="version">{dependency.dependencyVersion}</span>
+                  {dependency.isCoreVersionDependency && (
+                    <>
+                      {store.resx.PlatformVersion} <span class="version">{dependency.packageName}</span>
+                    </>
+                  )}
+                  {!dependency.isCoreVersionDependency && (
+                    <>
+                      {dependency.packageName} <span class="version">{dependency.dependencyVersion}</span>
+                    </>
+                  )}
                 </li>
               ))}
             </ul>
