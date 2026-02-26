@@ -10,16 +10,19 @@ export class ApiUserClient {
     this.requestUrl = this.sf.getServiceRoot('BulkInstall') + 'APIUser/';
   }
 
-  public async getAll(): Promise<User[]> {
+  public async getAll(): Promise<{ users: User[]; enabled: boolean }> {
     const response = await fetch(`${this.requestUrl}GetAll`, {
       headers: this.sf.getModuleHeaders(),
     });
-    const responseBody = (await response.json()) as { Users: ApiUser[] };
-    return responseBody.Users.map(u => ApiUserClient.toUser(u));
+    const responseBody = (await response.json()) as { Users: ApiUser[]; Enabled: boolean };
+    return {
+      users: responseBody.Users.map(u => ApiUserClient.toUser(u)),
+      enabled: responseBody.Enabled,
+    };
   }
 
-  public async create(name: string, bypassIpWhitelist: boolean): Promise<User> {
-    const response = await fetch(`${this.requestUrl}Create?name=${encodeURIComponent(name)}&bypass=${bypassIpWhitelist}`, {
+  public async create(name: string, bypassIpWhitelist: boolean, expiresOn: Date): Promise<User> {
+    const response = await fetch(`${this.requestUrl}Create?name=${encodeURIComponent(name)}&bypass=${bypassIpWhitelist}&expiresOn=${expiresOn.toISOString()}`, {
       method: 'POST',
       headers: this.sf.getModuleHeaders(),
     });
@@ -38,7 +41,7 @@ export class ApiUserClient {
     return {
       id: user.APIUserId,
       name: user.Name,
-      apiKey: user.APIKey,
+      apiKey: user.ApiKey,
       encryptionKey: user.EncryptionKey,
       bypassIPWhitelist: user.BypassIPWhitelist,
     };
@@ -48,7 +51,7 @@ export class ApiUserClient {
 interface ApiUser {
   APIUserId: number;
   Name: string;
-  APIKey: string;
+  ApiKey: string;
   EncryptionKey: string;
   BypassIPWhitelist: boolean;
 }

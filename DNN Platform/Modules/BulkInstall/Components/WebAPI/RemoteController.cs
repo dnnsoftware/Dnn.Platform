@@ -21,22 +21,26 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.BulkInstall.Encryption;
     using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Auth.ApiTokens;
+    using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
 
-    /// <summary>A web API controller for use by the deploy client.</summary>
+    /// <summary>A web API controller for use by the Deploy Client.</summary>
     /// <param name="sessionManager">The session manager.</param>
     /// <param name="apiUserManager">The API user manager.</param>
     /// <param name="eventLogManager">The event log manager.</param>
     /// <param name="eventLogger">The event logger.</param>
     /// <param name="appStatus">The application status.</param>
+    /// <param name="apiTokenController">The API token controller.</param>
     [InWhitelist]
-    [APIAuthentication]
-    public class RemoteController(SessionManager sessionManager, APIUserManager apiUserManager, EventLogManager eventLogManager, IEventLogger eventLogger, IApplicationStatusInfo appStatus) : DnnApiController
+    [ApiTokenAuthorize(APIUserManager.BulkInstallApiTokenScopeKey, "~/DesktopModules/BulkInstall/App_LocalResources/BulkInstall.resx", ApiTokenScope.Host)]
+    public class RemoteController(SessionManager sessionManager, APIUserManager apiUserManager, EventLogManager eventLogManager, IEventLogger eventLogger, IApplicationStatusInfo appStatus, IApiTokenController apiTokenController) : DnnApiController
     {
         private readonly SessionManager sessionManager = sessionManager;
         private readonly APIUserManager apiUserManager = apiUserManager;
         private readonly EventLogManager eventLogManager = eventLogManager;
         private readonly IEventLogger eventLogger = eventLogger;
         private readonly IApplicationStatusInfo appStatus = appStatus;
+        private readonly IApiTokenController apiTokenController = apiTokenController;
 
         /// <summary>Creates a new session.</summary>
         /// <returns>A response with the <see cref="Session"/>.</returns>
@@ -81,10 +85,10 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                 }
 
                 // Get the api key from the header.
-                string apiKey = this.Request.Headers.GetValues("x-api-key").FirstOrDefault();
+                var apiKey = this.apiTokenController.GetCurrentThreadApiToken();
 
                 // Get the api user.
-                APIUser apiUser = this.apiUserManager.FindAndPrepare(apiKey);
+                APIUser apiUser = this.apiUserManager.FindAndPrepare(apiKey.ApiTokenId, this.Request.Headers.Authorization.Parameter);
 
                 // Receive files.
                 MultipartMemoryStreamProvider provider = await this.Request.Content.ReadAsMultipartAsync();
@@ -120,21 +124,19 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                 return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid session.");
             }
 
-            string apiKey = null;
-
             try
             {
                 // Get the users ip address.
                 string ipAddress = HttpContext.Current.Request.UserHostAddress;
 
                 // Get the api key from the header.
-                apiKey = this.Request.Headers.GetValues("x-api-key").FirstOrDefault();
+                var apiKey = this.apiTokenController.GetCurrentThreadApiToken();
 
                 // Get the session.
                 Session sessionObj = this.sessionManager.GetSession(sessionGuid);
 
-                // Create a deploy operation.
-                RemoteDeployment deployOperation = new RemoteDeployment(this.apiUserManager, this.sessionManager, this.eventLogManager, this.eventLogger, this.appStatus, sessionObj, ipAddress, apiKey);
+                // Create a deployment operation.
+                RemoteDeployment deployOperation = new RemoteDeployment(this.apiUserManager, this.sessionManager, this.eventLogManager, this.eventLogger, this.appStatus, sessionObj, ipAddress, apiKey.ApiTokenId);
 
                 // Deploy.
                 deployOperation.Deploy();

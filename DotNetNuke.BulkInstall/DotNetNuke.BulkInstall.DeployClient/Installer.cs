@@ -5,7 +5,6 @@ namespace DotNetNuke.BulkInstall.DeployClient;
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
@@ -16,14 +15,17 @@ public class Installer : IInstaller
     private static readonly string DeployClientVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? string.Empty;
     private readonly HttpClient httpClient;
     private readonly IStopwatch stopwatch;
+    private readonly ILogger logger;
 
     /// <summary>Initializes a new instance of the <see cref="Installer"/> class.</summary>
     /// <param name="httpClient">The HTTP client.</param>
     /// <param name="stopwatch">The stopwatch.</param>
-    public Installer(HttpClient httpClient, IStopwatch stopwatch)
+    /// <param name="logger">The logger.</param>
+    public Installer(HttpClient httpClient, IStopwatch stopwatch, ILogger logger)
     {
         this.httpClient = httpClient;
         this.stopwatch = stopwatch;
+        this.logger = logger;
     }
 
     /// <inheritdoc/>
@@ -161,16 +163,41 @@ public class Installer : IInstaller
             request.Method = method;
             request.Content = content;
 
-            request.Headers.Add("x-api-key", options.ApiKey);
+            if (options.LegacyApi)
+            {
+                request.Headers.Add("x-api-key", options.ApiKey);
+            }
+            else
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", options.ApiKey);
+            }
+
             request.Headers.UserAgent.Add(new ProductInfoHeaderValue("DotNetNuke.BulkInstall.DeployClient", DeployClientVersion.Replace(" ", "_")));
+
+            this.logger.LogTrace(options.LogLevel, $"Sending {request.Method} request to {request.RequestUri}");
 
             try
             {
                 using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(Math.Max(100, options.InstallationStatusTimeout)));
-                return new WebResult(await this.httpClient.SendAsync(request, cts.Token));
+                var webResult = new WebResult(await this.httpClient.SendAsync(request, cts.Token));
+                if (webResult.Exception is not null)
+                {
+                    this.logger.LogTrace(options.LogLevel, $"Exception sending {request.Method} request to {request.RequestUri}:\n{await webResult.Response.Content.ReadAsStringAsync(cts.Token)}");
+                }
+                else if (webResult.Response.IsSuccessStatusCode)
+                {
+                    this.logger.LogTrace(options.LogLevel, $"Success sending {request.Method} request to {request.RequestUri}");
+                }
+                else
+                {
+                    this.logger.LogTrace(options.LogLevel, $"{webResult.Response.StatusCode} status code from sending {request.Method} request to {request.RequestUri}:\n{await webResult.Response.Content.ReadAsStringAsync(cts.Token)}");
+                }
+
+                return webResult;
             }
             catch (HttpRequestException requestException)
             {
+                this.logger.LogTrace(options.LogLevel, $"Error sending {request.Method} request to {request.RequestUri}");
                 return new WebResult(requestException);
             }
         }

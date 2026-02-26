@@ -17,6 +17,7 @@ try
     services.AddHttpClient<IInstaller, Installer>(client => client.Timeout = Timeout.InfiniteTimeSpan);
     services.AddTransient<IFileSystem, FileSystem>();
     services.AddTransient<IRenderer, Renderer>();
+    services.AddTransient<ILogger, Renderer>();
     services.AddTransient<IPackageFileSource, PackageFileSource>();
     services.AddTransient<IStopwatch, Stopwatch>();
     services.AddTransient<IEncryptor, Encryptor>();

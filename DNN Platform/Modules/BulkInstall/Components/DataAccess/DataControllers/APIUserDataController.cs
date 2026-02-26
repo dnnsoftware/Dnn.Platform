@@ -5,6 +5,7 @@
 namespace Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Dnn.Modules.BulkInstall.Components.DataAccess.Models;
 
@@ -45,16 +46,17 @@ namespace Dnn.Modules.BulkInstall.Components.DataAccess.DataControllers
             using IDataContext context = DataContext.Instance(this.hostSettings);
             var repo = context.GetRepository<APIUser>();
 
-            return repo.GetById<int>(apiUserId);
+            return repo.GetById(apiUserId);
         }
 
         /// <summary>Retrieves a single <see cref="APIUser"/> by its API key.</summary>
-        /// <param name="apiKey">The API key.</param>
+        /// <param name="apiTokenId">The API token ID.</param>
         /// <returns>The user or <see langword="null"/>.</returns>
-        public APIUser Get(string apiKey)
+        public APIUser GetByApiTokenId(int apiTokenId)
         {
             using IDataContext context = DataContext.Instance(this.hostSettings);
-            return context.ExecuteSingleOrDefault<APIUser>(System.Data.CommandType.StoredProcedure, "{databaseOwner}[{objectQualifier}BulkInstall_APIUserByAPIKey]", apiKey);
+            var repo = context.GetRepository<APIUser>();
+            return repo.Find("WHERE APITokenID = @0", apiTokenId).SingleOrDefault();
         }
 
         /// <summary>Updates the passed <see cref="APIUser"/>.</summary>

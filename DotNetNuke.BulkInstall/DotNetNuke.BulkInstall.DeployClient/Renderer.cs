@@ -3,12 +3,10 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.BulkInstall.DeployClient;
 
-using System.Runtime.InteropServices.ComTypes;
-
 using Spectre.Console;
 
 /// <summary>The <see cref="IRenderer"/> implementation, using <see cref="IAnsiConsole"/> (i.e. Spectre.Console).</summary>
-public class Renderer : IRenderer
+public class Renderer : IRenderer, ILogger
 {
     private readonly IAnsiConsole console;
     private readonly HashSet<string> succeededPackageFiles = new();
@@ -275,5 +273,16 @@ public class Renderer : IRenderer
 
         this.console.WriteLine(message);
         this.console.WriteException(exception);
+    }
+
+    /// <inheritdoc/>
+    public void LogTrace(LogLevel level, string message)
+    {
+        if (level > LogLevel.Trace)
+        {
+            return;
+        }
+
+        this.console.WriteLine(message);
     }
 }

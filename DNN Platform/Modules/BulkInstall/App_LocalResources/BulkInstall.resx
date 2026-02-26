@@ -270,4 +270,19 @@
   <data name="ApiError" xml:space="preserve">
     <value>There was an error communicating with the API, please check the Admin Logs for more details</value>
   </data>
+  <data name="ApiUserExpiresOnText" xml:space="preserve">
+    <value>Expires On</value>
+  </data>
+  <data name="ApiUserExpiresOnHelp" xml:space="preserve">
+    <value>Expiration of the API User</value>
+  </data>
+  <data name="bulk-install.Text" xml:space="preserve">
+    <value>Bulk Install</value>
+  </data>
+  <data name="bulk-install.Help" xml:space="preserve">
+    <value>The API to allow installing DNN extension packages in bulk</value>
+  </data>
+  <data name="ApiAuthDisabled" xml:space="preserve">
+    <value>API Token authentication must be enabled in the web.config before creating API Users</value>
+  </data>
 </root>

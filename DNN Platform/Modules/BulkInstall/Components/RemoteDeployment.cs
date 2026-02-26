@@ -26,7 +26,7 @@ namespace Dnn.Modules.BulkInstall.Components
         /// <param name="appStatus">The application status.</param>
         /// <param name="session">The session.</param>
         /// <param name="ipAddress">The IP address.</param>
-        /// <param name="apiKey">The API key.</param>
+        /// <param name="apiTokenId">The API token ID.</param>
         public RemoteDeployment(
             APIUserManager apiUserManager,
             SessionManager sessionManager,
@@ -35,13 +35,13 @@ namespace Dnn.Modules.BulkInstall.Components
             IApplicationStatusInfo appStatus,
             Session session,
             string ipAddress,
-            string apiKey)
+            int apiTokenId)
             : base(sessionManager, eventLogManager, appStatus, session, ipAddress)
         {
             this.eventLogger = eventLogger;
 
             // Retrieve our API user.
-            this.APIUser = apiUserManager.GetByAPIKey(apiKey);
+            this.APIUser = apiUserManager.GetByApiTokenId(apiTokenId);
 
             // Did we find an API user?
             if (this.APIUser == null)

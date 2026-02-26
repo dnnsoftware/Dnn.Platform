@@ -15,6 +15,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
     using Dnn.Modules.BulkInstall.Components.WebAPI.ActionFilters;
 
     using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Auth.ApiTokens;
 
     /// <summary>A web API controller for <see cref="APIUser"/>.</summary>
     /// <param name="apiUserManager">The API user manager.</param>
@@ -30,36 +31,42 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         [HttpGet]
         public HttpResponseMessage GetAll()
         {
+            var settings = ApiTokenSettings.GetSettings(this.PortalSettings.PortalId);
             List<APIUser> apiUsers = this.apiUserManager.GetAll().ToList();
 
             // Loop and remove sensitive information.
             foreach (APIUser apiUser in apiUsers)
             {
-                apiUser.ApiKeySha = null;
                 apiUser.EncryptedEncryptionKey = null;
                 apiUser.Salt = null;
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Users = apiUsers, });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Users = apiUsers, Enabled = settings.ApiTokensEnabled, });
         }
 
         /// <summary>Creates a new <see cref="APIUser"/>.</summary>
         /// <param name="name">The label.</param>
         /// <param name="bypass">Whether the user can bypass the IP address allow list.</param>
+        /// <param name="expiresOn">The date/time on which the API user's token expires.</param>
         /// <returns>A response with the new <see cref="APIUser"/>.</returns>
         [HttpPost]
-        public HttpResponseMessage Create(string name, bool bypass = false)
+        public HttpResponseMessage Create(string name, bool bypass = false, DateTime? expiresOn = null)
         {
             // Check we have a name.
             if (string.IsNullOrEmpty(name))
             {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { Message = "name is required", });
+            }
+
+            var settings = ApiTokenSettings.GetSettings(this.PortalSettings.PortalId);
+            if (!settings.ApiTokensEnabled)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { Message = "API tokens are disabled", });
             }
 
             // Create user.
-            APIUser apiUser = this.apiUserManager.Create(name, bypass);
+            APIUser apiUser = this.apiUserManager.Create(name, bypass, expiresOn ?? DateTime.UtcNow.AddYears(1), this.UserInfo.UserID);
 
-            apiUser.ApiKeySha = null;
             apiUser.EncryptedEncryptionKey = null;
             apiUser.Salt = null;
 
