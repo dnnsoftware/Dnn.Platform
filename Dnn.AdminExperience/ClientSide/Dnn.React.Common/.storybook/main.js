@@ -1,4 +1,8 @@
+// This file has been automatically migrated to valid ESM format by Storybook.
 import { join, dirname } from "path";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
 
 /**
 * This function is used to resolve the absolute path of a package.
@@ -17,13 +21,37 @@ const config = {
     addons: [
         getAbsolutePath("@storybook/addon-webpack5-compiler-swc"),
         getAbsolutePath("@storybook/addon-onboarding"),
-        getAbsolutePath("@storybook/addon-docs")
+        getAbsolutePath("@storybook/addon-docs"),
     ],
     framework: {
         name: getAbsolutePath("@storybook/react-webpack5"),
         options: {}
     },
     webpackFinal: async (config) => {
+        // Helper to check if a rule matches SVG files
+        const matchesSvg = (rule) => rule.test instanceof RegExp && rule.test.test('.svg');
+
+        // Exclude SVG from the default asset/resource rule (top-level and inside oneOf blocks)
+        config.module.rules.forEach((rule) => {
+            if (matchesSvg(rule)) {
+                rule.exclude = /\.svg$/i;
+            }
+            if (rule.oneOf) {
+                rule.oneOf.forEach((subRule) => {
+                    if (matchesSvg(subRule)) {
+                        subRule.exclude = /\.svg$/i;
+                    }
+                });
+            }
+        });
+
+        // Add @svgr/webpack to handle SVG imports as React components
+        config.module.rules.push({
+            test: /\.svg$/i,
+            issuer: /\.[jt]sx?$/,
+            use: ["@svgr/webpack"],
+        });
+
         config.module.rules.push({
             test: /\.less$/,
             use: [
