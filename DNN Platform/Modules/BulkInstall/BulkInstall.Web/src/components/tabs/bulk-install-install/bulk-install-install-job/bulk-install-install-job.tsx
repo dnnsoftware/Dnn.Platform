@@ -20,7 +20,14 @@ export class BulkInstallInstallJob {
           </div>
           <div class="file">
             <span>{this.job.name}</span>
-            {this.job.packages.length === 1 && <bulk-install-package-job job={this.job.packages[0]} success={this.job.success} />}
+            {this.job.failures.length > 0 && (
+              <ul class="failure">
+                {this.job.failures.map(failure => (
+                  <li>{failure}</li>
+                ))}
+              </ul>
+            )}
+            {this.job.packages.length === 1 && <bulk-install-package-job job={this.job.packages[0]} attempted={this.job.attempted} />}
             {this.job.packages.length !== 1 && (
               <details>
                 <summary>
@@ -29,7 +36,7 @@ export class BulkInstallInstallJob {
                 <ul>
                   {this.job.packages.map(p => (
                     <li>
-                      <bulk-install-package-job job={p} success={this.job.success} />
+                      <bulk-install-package-job job={p} attempted={this.job.attempted} />
                     </li>
                   ))}
                 </ul>

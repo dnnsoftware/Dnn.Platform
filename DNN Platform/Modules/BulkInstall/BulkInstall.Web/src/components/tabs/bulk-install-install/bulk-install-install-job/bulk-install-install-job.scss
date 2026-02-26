@@ -19,8 +19,12 @@
     flex-direction: column;
     padding: 0.5em;
   }
-  .failure .icon {
-    fill: var(--dnn-color-danger, red);
+  .failure {
+    color: var(--dnn-color-danger, red);
+    font-weight: bold;
+    .icon {
+      fill: var(--dnn-color-danger, red);
+    }
   }
   .success .icon {
     fill: var(--dnn-color-success, green);
