@@ -37,6 +37,7 @@ export class BulkInstallInstall {
   @State() private apiError = false;
 
   private installClient: InstallClient;
+  private summaryAbortController: AbortController | null = null;
 
   constructor() {
     this.installClient = new InstallClient(store.moduleId);
@@ -63,8 +64,19 @@ export class BulkInstallInstall {
   }
 
   private async getInstallationSummary() {
-    const jobs = await this.installClient.summary(this.session.sessionGuid);
-    this.receiveInstallationSummary(jobs);
+    const reason = 'Cancelling in-progress summary request in order to start new request';
+    this.summaryAbortController?.abort(reason);
+    try {
+      this.summaryAbortController = new AbortController();
+      const jobs = await this.installClient.summary(this.session.sessionGuid, this.summaryAbortController.signal);
+      this.summaryAbortController = null;
+
+      this.receiveInstallationSummary(jobs);
+    } catch (err) {
+      if (err !== reason) {
+        throw err;
+      }
+    }
   }
 
   private receiveInstallationSummary(jobs: InstallJob[]) {

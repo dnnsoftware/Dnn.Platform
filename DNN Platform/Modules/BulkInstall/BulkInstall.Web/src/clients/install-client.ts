@@ -72,9 +72,10 @@ export class InstallClient {
     });
   }
 
-  public async summary(sessionGuid: string): Promise<InstallJob[]> {
+  public async summary(sessionGuid: string, signal: AbortSignal): Promise<InstallJob[]> {
     const response = await fetch(`${this.requestUrl}Summary?sessionGuid=${sessionGuid}`, {
       headers: this.sf.getModuleHeaders(),
+      signal: signal,
     });
     const responseBody = (await response.json()) as { InstallJobs: InstallJobResponse[] };
     return responseBody.InstallJobs.map(ij => InstallClient.toInstallJob(ij));
