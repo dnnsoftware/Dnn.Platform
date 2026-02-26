@@ -18,22 +18,6 @@
     display: flex;
     flex-direction: column;
     padding: 0.5em;
-    .success {
-      color: green;
-      margin-top: 0.25em;
-      font-weight: bold;
-    }
-    .warning {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 1em;
-      margin-top: 0.5em;
-      span {
-        color: red;
-        margin-right: auto;
-      }
-    }
   }
   .progress {
     width: 100%;
@@ -46,10 +30,6 @@
       transition: width 0.5s ease-in-out;
     }
   }
-  .warning {
-    margin: 0.25em;
-    font-weight: bold;
-  }
   .dismiss {
     button {
       margin: 0;
@@ -59,9 +39,7 @@
       cursor: pointer;
     }
   }
-  .uploaded {
-    .success {
-      fill: green;
-    }
+  .uploaded svg {
+    fill: var(--dnn-color-success, green);
   }
 }

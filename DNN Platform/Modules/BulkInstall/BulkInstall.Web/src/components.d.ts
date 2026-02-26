@@ -10,6 +10,14 @@ export { InstallJob, Session, UploadStatus } from "./components/tabs/bulk-instal
 export namespace Components {
     interface BulkInstallApiUsers {
     }
+    interface BulkInstallCheckmarkIcon {
+    }
+    interface BulkInstallCircleXIcon {
+    }
+    interface BulkInstallClockIcon {
+    }
+    interface BulkInstallDismissIcon {
+    }
     interface BulkInstallInstall {
     }
     interface BulkInstallInstallJob {
@@ -53,6 +61,30 @@ declare global {
     var HTMLBulkInstallApiUsersElement: {
         prototype: HTMLBulkInstallApiUsersElement;
         new (): HTMLBulkInstallApiUsersElement;
+    };
+    interface HTMLBulkInstallCheckmarkIconElement extends Components.BulkInstallCheckmarkIcon, HTMLStencilElement {
+    }
+    var HTMLBulkInstallCheckmarkIconElement: {
+        prototype: HTMLBulkInstallCheckmarkIconElement;
+        new (): HTMLBulkInstallCheckmarkIconElement;
+    };
+    interface HTMLBulkInstallCircleXIconElement extends Components.BulkInstallCircleXIcon, HTMLStencilElement {
+    }
+    var HTMLBulkInstallCircleXIconElement: {
+        prototype: HTMLBulkInstallCircleXIconElement;
+        new (): HTMLBulkInstallCircleXIconElement;
+    };
+    interface HTMLBulkInstallClockIconElement extends Components.BulkInstallClockIcon, HTMLStencilElement {
+    }
+    var HTMLBulkInstallClockIconElement: {
+        prototype: HTMLBulkInstallClockIconElement;
+        new (): HTMLBulkInstallClockIconElement;
+    };
+    interface HTMLBulkInstallDismissIconElement extends Components.BulkInstallDismissIcon, HTMLStencilElement {
+    }
+    var HTMLBulkInstallDismissIconElement: {
+        prototype: HTMLBulkInstallDismissIconElement;
+        new (): HTMLBulkInstallDismissIconElement;
     };
     interface HTMLBulkInstallInstallElement extends Components.BulkInstallInstall, HTMLStencilElement {
     }
@@ -103,6 +135,10 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "bulk-install-api-users": HTMLBulkInstallApiUsersElement;
+        "bulk-install-checkmark-icon": HTMLBulkInstallCheckmarkIconElement;
+        "bulk-install-circle-x-icon": HTMLBulkInstallCircleXIconElement;
+        "bulk-install-clock-icon": HTMLBulkInstallClockIconElement;
+        "bulk-install-dismiss-icon": HTMLBulkInstallDismissIconElement;
         "bulk-install-install": HTMLBulkInstallInstallElement;
         "bulk-install-install-job": HTMLBulkInstallInstallJobElement;
         "bulk-install-ip-safelist": HTMLBulkInstallIpSafelistElement;
@@ -115,6 +151,14 @@ declare namespace LocalJSX {
     type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
 
     interface BulkInstallApiUsers {
+    }
+    interface BulkInstallCheckmarkIcon {
+    }
+    interface BulkInstallCircleXIcon {
+    }
+    interface BulkInstallClockIcon {
+    }
+    interface BulkInstallDismissIcon {
     }
     interface BulkInstallInstall {
     }
@@ -159,6 +203,10 @@ declare namespace LocalJSX {
 
     interface IntrinsicElements {
         "bulk-install-api-users": BulkInstallApiUsers;
+        "bulk-install-checkmark-icon": BulkInstallCheckmarkIcon;
+        "bulk-install-circle-x-icon": BulkInstallCircleXIcon;
+        "bulk-install-clock-icon": BulkInstallClockIcon;
+        "bulk-install-dismiss-icon": BulkInstallDismissIcon;
         "bulk-install-install": BulkInstallInstall;
         "bulk-install-install-job": BulkInstallInstallJob;
         "bulk-install-ip-safelist": BulkInstallIpSafelist;
@@ -172,6 +220,10 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "bulk-install-api-users": LocalJSX.IntrinsicElements["bulk-install-api-users"] & JSXBase.HTMLAttributes<HTMLBulkInstallApiUsersElement>;
+            "bulk-install-checkmark-icon": LocalJSX.IntrinsicElements["bulk-install-checkmark-icon"] & JSXBase.HTMLAttributes<HTMLBulkInstallCheckmarkIconElement>;
+            "bulk-install-circle-x-icon": LocalJSX.IntrinsicElements["bulk-install-circle-x-icon"] & JSXBase.HTMLAttributes<HTMLBulkInstallCircleXIconElement>;
+            "bulk-install-clock-icon": LocalJSX.IntrinsicElements["bulk-install-clock-icon"] & JSXBase.HTMLAttributes<HTMLBulkInstallClockIconElement>;
+            "bulk-install-dismiss-icon": LocalJSX.IntrinsicElements["bulk-install-dismiss-icon"] & JSXBase.HTMLAttributes<HTMLBulkInstallDismissIconElement>;
             "bulk-install-install": LocalJSX.IntrinsicElements["bulk-install-install"] & JSXBase.HTMLAttributes<HTMLBulkInstallInstallElement>;
             "bulk-install-install-job": LocalJSX.IntrinsicElements["bulk-install-install-job"] & JSXBase.HTMLAttributes<HTMLBulkInstallInstallJobElement>;
             "bulk-install-ip-safelist": LocalJSX.IntrinsicElements["bulk-install-ip-safelist"] & JSXBase.HTMLAttributes<HTMLBulkInstallIpSafelistElement>;
