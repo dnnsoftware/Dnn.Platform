@@ -46,13 +46,13 @@ namespace Dnn.Modules.BulkInstall.Components
         /// <summary>Gets or sets the dependency version.</summary>
         public string DependencyVersion { get; set; }
 
+        /// <summary>Gets a value indicating whether the dependency is met.</summary>
+        public bool IsMet => this.DnnMet || this.DeployMet;
+
         /// <summary>Gets or sets a value indicating whether DNN already meets this dependency.</summary>
         internal bool DnnMet { get; set; }
 
         /// <summary>Gets or sets a value indicating whether the deployment meets this dependency.</summary>
         internal bool DeployMet { get; set; }
-
-        /// <summary>Gets a value indicating whether the dependency is met.</summary>
-        internal bool IsMet => this.DnnMet || this.DeployMet;
     }
 }

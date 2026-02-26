@@ -19,10 +19,10 @@
     flex-direction: column;
     padding: 0.5em;
   }
-  .failure svg {
+  .failure .icon {
     fill: var(--dnn-color-danger, red);
   }
-  .success svg {
+  .success .icon {
     fill: var(--dnn-color-success, green);
   }
 }

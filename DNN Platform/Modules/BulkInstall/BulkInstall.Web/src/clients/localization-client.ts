@@ -68,6 +68,8 @@ export interface BulkInstallLocalization {
   Name: string;
   NewApiUser: string;
   NewIpSafelistEntry: string;
+  Packages: string;
+  PackageDependencies: string;
   Reset: string;
   Save: string;
   SessionStatus_NotStared: string;
@@ -75,6 +77,7 @@ export interface BulkInstallLocalization {
   SessionStatus_Complete: string;
   Severity: string;
   Type: string;
+  UploadInstallPackages: string;
   DropZone_DragAndDropFile: string;
   DropZone_Or: string;
   DropZone_UploadFile: string;

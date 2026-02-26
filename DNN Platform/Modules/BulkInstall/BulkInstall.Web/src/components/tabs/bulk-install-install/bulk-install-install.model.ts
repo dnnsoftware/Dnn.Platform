@@ -34,4 +34,5 @@ export interface PackageDependency {
   isPackageDependency: boolean;
   packageName: string;
   dependencyVersion: string;
+  isMet: boolean;
 }

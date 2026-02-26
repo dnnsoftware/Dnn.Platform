@@ -253,7 +253,7 @@
     <value>One or more of the uploaded packages cannot be installed</value>
   </data>
   <data name="InstallationComplete" xml:space="preserve">
-    <value>Installation Complete!!!!</value>
+    <value>Installation Complete!</value>
   </data>
   <data name="SessionStatus_NotStarted" xml:space="preserve">
     <value>Not Started</value>
@@ -290,5 +290,14 @@
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="Packages" xml:space="preserve">
+    <value>Packages</value>
+  </data>
+  <data name="UploadInstallPackages" xml:space="preserve">
+    <value>Upload Install Package(s)</value>
+  </data>
+  <data name="PackageDependencies" xml:space="preserve">
+    <value>Dependencies</value>
   </data>
 </root>

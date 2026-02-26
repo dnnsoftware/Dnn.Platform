@@ -18,6 +18,11 @@
     display: flex;
     flex-direction: column;
     padding: 0.5em;
+    .success {
+      color: green;
+      margin-top: 0.25em;
+      font-weight: bold;
+    }
   }
   .progress {
     width: 100%;
@@ -39,7 +44,7 @@
       cursor: pointer;
     }
   }
-  .uploaded svg {
+  .uploaded .icon {
     fill: var(--dnn-color-success, green);
   }
 }

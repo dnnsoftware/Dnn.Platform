@@ -8,16 +8,12 @@ type FileViewModel = { type: 'pending'; file: File } | { type: 'error'; file: Fi
 
 type InstallStatus = { type: 'uploading' } | { type: 'cannotInstall' } | { type: 'installing' } | { type: 'installed' };
 
-function toFileViewModel(file: File): FileViewModel {
-  return { type: 'pending', file: file };
-}
-
-function getFileName(file: FileViewModel): string {
-  if (file.type === 'uploaded') {
-    return file.job.name;
+function toFileViewModel(fileOrJob: File | InstallJob): FileViewModel {
+  if (fileOrJob instanceof File) {
+    return { type: 'pending', file: fileOrJob };
+  } else {
+    return { type: 'uploaded', job: fileOrJob };
   }
-
-  return file.file.name;
 }
 
 function getCanInstall(file: FileViewModel): boolean {
@@ -72,14 +68,15 @@ export class BulkInstallInstall {
   }
 
   private receiveInstallationSummary(jobs: InstallJob[]) {
-    const updatedFiles = this.files.map((file): FileViewModel => {
-      const job = jobs.find(j => j.name === getFileName(file));
-      if (job) {
-        return { type: 'uploaded', job: job };
-      }
-      return file;
-    });
-    this.files = [...updatedFiles];
+    const jobViewModels = jobs.map(j => toFileViewModel(j));
+    const fileViewModels = this.files.filter(f => f.type !== 'uploaded' && jobs.every(j => j.name !== f.file.name));
+    this.files = [...fileViewModels, ...jobViewModels];
+  }
+
+  private async reset() {
+    const { session } = await this.installClient.create();
+    this.session = session;
+    this.files = [];
   }
 
   private async installPackages() {
@@ -120,161 +117,67 @@ export class BulkInstallInstall {
         <div class={`row ${this.installStatus.type}`}>
           <div class="col">
             <div class="panel">
-              {this.installStatus.type === 'uploading' && (
-                <>
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Upload Install Package(s)</h3>
-                  </div>
-                  <div class="panel-body">
-                    <dnn-dropzone
-                      allowedExtensions={['zip']}
-                      maxFileSize={this.maxUploadFileSize}
-                      onFilesSelected={e => (this.files = [...this.files, ...e.detail.map(toFileViewModel)])}
-                      multiple
-                      resx={{
-                        dragAndDropFile: store.resx.DropZone_DragAndDropFile,
-                        or: store.resx.DropZone_Or,
-                        uploadFile: store.resx.DropZone_UploadFile,
-                        uploadSizeTooLarge: store.resx.DropZone_UploadSizeTooLarge,
-                        fileSizeLimit: store.resx.DropZone_FileSizeLimit,
-                        invalidExtension: store.resx.DropZone_InvalidExtension,
-                        allowedFileExtensions: store.resx.DropZone_AllowedFileExtensions,
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  {this.installStatus.type === 'uploading'
+                    ? store.resx.UploadInstallPackages
+                    : this.installStatus.type === 'installing'
+                      ? store.resx.InstallingPackages
+                      : this.installStatus.type === 'installed'
+                        ? store.resx.InstallationComplete
+                        : store.resx.CannotInstall}
+                </h3>
+              </div>
+              <div class="panel-body">
+                {this.apiError && <h4 class="danger">{store.resx.ApiError}</h4>}
+                {this.installStatus.type === 'uploading' && (
+                  <dnn-dropzone
+                    allowedExtensions={['zip']}
+                    maxFileSize={this.maxUploadFileSize}
+                    onFilesSelected={e => (this.files = [...this.files, ...e.detail.map(toFileViewModel)])}
+                    multiple
+                    resx={{
+                      dragAndDropFile: store.resx.DropZone_DragAndDropFile,
+                      or: store.resx.DropZone_Or,
+                      uploadFile: store.resx.DropZone_UploadFile,
+                      uploadSizeTooLarge: store.resx.DropZone_UploadSizeTooLarge,
+                      fileSizeLimit: store.resx.DropZone_FileSizeLimit,
+                      invalidExtension: store.resx.DropZone_InvalidExtension,
+                      allowedFileExtensions: store.resx.DropZone_AllowedFileExtensions,
+                    }}
+                  />
+                )}
+                {this.files.map(file => (
+                  <>
+                    {file.type === 'uploaded' && <bulk-install-install-job key={file.job.name} job={file.job} />}
+                    {file.type !== 'uploaded' && (
+                      <bulk-install-queued-file
+                        key={file.file.name}
+                        file={file.file}
+                        session={this.session}
+                        maxUploadFileSize={this.maxUploadFileSize}
+                        onUploadCompleted={e => this.handleUploadCompleted(file, e.detail)}
+                      />
+                    )}
+                  </>
+                ))}
+                {this.installStatus.type === 'uploading' && (
+                  <div class="form-group">
+                    <dnn-button
+                      disabled={this.files.length < 1 || this.files.some(f => getCanInstall(f) === false)}
+                      onClick={() => {
+                        this.installPackages().catch(console.error);
+                        return;
                       }}
-                    />
-                    {this.files.map(file => (
-                      <>
-                        {file.type === 'uploaded' && <bulk-install-install-job key={file.job.name} job={file.job} />}
-                        {file.type !== 'uploaded' && (
-                          <bulk-install-queued-file
-                            key={file.file.name}
-                            file={file.file}
-                            session={this.session}
-                            maxUploadFileSize={this.maxUploadFileSize}
-                            onUploadCompleted={e => this.handleUploadCompleted(file, e.detail)}
-                          />
-                        )}
-                      </>
-                    ))}
-                    <div class="form-group">
-                      <dnn-button
-                        disabled={this.files.length < 1 || this.files.some(f => getCanInstall(f) === false)}
-                        onClick={() => {
-                          this.installPackages().catch(console.error);
-                          return;
-                        }}
-                      >
-                        {store.resx.Install}
-                      </dnn-button>
-                      <dnn-button appearance="tertiary" reversed onClick={() => (this.files = [])}>
-                        {store.resx.Reset}
-                      </dnn-button>
-                    </div>
+                    >
+                      {store.resx.Install}
+                    </dnn-button>
+                    <dnn-button appearance="tertiary" reversed onClick={() => this.reset()}>
+                      {store.resx.Reset}
+                    </dnn-button>
                   </div>
-                </>
-              )}
-              {this.installStatus.type === 'cannotInstall' && (
-                <>
-                  <div class="panel-heading">
-                    <h3 class="panel-title">{store.resx.InstallingPackages}</h3>
-                  </div>
-                  <div class="panel-body">
-                    <h4 class="danger">{store.resx.CannotInstall}</h4>
-                    {this.apiError && <h4 class="danger">{store.resx.ApiError}</h4>}
-                    <ol>
-                      {this.files
-                        .filter(f => f.type === 'uploaded')
-                        .map(({ job }) => (
-                          <li class={!job.canInstall ? 'install__invalid' : 'install__valid'}>
-                            <h3>{job.name}</h3>
-                            {job.failures?.length > 0 && (
-                              <ul>
-                                {job.failures.map(failure => (
-                                  <li>{failure}</li>
-                                ))}
-                              </ul>
-                            )}
-                            <ul>
-                              {job.packages.map(packageJob => (
-                                <li class={!packageJob.canInstall ? 'package__invalid' : 'package__valid'}>
-                                  <h4>{packageJob.name}</h4>
-                                  {packageJob.version}
-                                </li>
-                              ))}
-                            </ul>
-                          </li>
-                        ))}
-                    </ol>
-                  </div>
-                </>
-              )}
-              {this.installStatus.type === 'installing' && (
-                <>
-                  <div class="panel-heading">
-                    <h3 class="panel-title">{store.resx.InstallingPackages}</h3>
-                  </div>
-                  <div class="panel-body">
-                    {this.apiError && <h4 class="danger">{store.resx.ApiError}</h4>}
-                    <ol>
-                      {this.files
-                        .filter(f => f.type === 'uploaded')
-                        .map(({ job }) => (
-                          <li class={job.success ? 'install__success' : job.attempted ? 'install__failed' : 'install__pending'}>
-                            <h3>{job.name}</h3>
-                            {job.failures?.length > 0 && (
-                              <ul>
-                                {job.failures.map(failure => (
-                                  <li>{failure}</li>
-                                ))}
-                              </ul>
-                            )}
-                            <ul>
-                              {job.packages.map(packageJob => (
-                                <li class={!packageJob.canInstall ? 'package__invalid' : 'package__valid'}>
-                                  <h4>{packageJob.name}</h4>
-                                  {packageJob.version}
-                                </li>
-                              ))}
-                            </ul>
-                          </li>
-                        ))}
-                    </ol>
-                  </div>
-                </>
-              )}
-              {this.installStatus.type === 'installed' && (
-                <>
-                  <div class="panel-heading">
-                    <h3 class="panel-title">{store.resx.InstallingPackages}</h3>
-                  </div>
-                  <div class="panel-body">
-                    <h4 class={this.files.filter(f => f.type === 'uploaded').every(f => f.job.success) ? 'success' : 'danger'}>{store.resx.InstallationComplete}</h4>
-                    <ol>
-                      {this.files
-                        .filter(f => f.type === 'uploaded')
-                        .map(({ job }) => (
-                          <li class={job.success ? 'install__success' : 'install__failed'}>
-                            <h3>{job.name}</h3>
-                            {job.failures?.length > 0 && (
-                              <ul class="danger">
-                                {job.failures.map(failure => (
-                                  <li>{failure}</li>
-                                ))}
-                              </ul>
-                            )}
-                            <ul>
-                              {job.packages.map(packageJob => (
-                                <li>
-                                  <h4>{packageJob.name}</h4>
-                                  {packageJob.version}
-                                </li>
-                              ))}
-                            </ul>
-                          </li>
-                        ))}
-                    </ol>
-                  </div>
-                </>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>

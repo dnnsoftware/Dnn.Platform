@@ -5,8 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { InstallJob, Session, UploadStatus } from "./components/tabs/bulk-install-install/bulk-install-install.model";
-export { InstallJob, Session, UploadStatus } from "./components/tabs/bulk-install-install/bulk-install-install.model";
+import { InstallJob, PackageJob, Session, UploadStatus } from "./components/tabs/bulk-install-install/bulk-install-install.model";
+export { InstallJob, PackageJob, Session, UploadStatus } from "./components/tabs/bulk-install-install/bulk-install-install.model";
 export namespace Components {
     interface BulkInstallApiUsers {
     }
@@ -29,6 +29,12 @@ export namespace Components {
     interface BulkInstallIpSafelist {
     }
     interface BulkInstallLogs {
+    }
+    interface BulkInstallPackageJob {
+        /**
+          * The package job.
+         */
+        "job": PackageJob;
     }
     interface BulkInstallQueuedFile {
         /**
@@ -110,6 +116,12 @@ declare global {
         prototype: HTMLBulkInstallLogsElement;
         new (): HTMLBulkInstallLogsElement;
     };
+    interface HTMLBulkInstallPackageJobElement extends Components.BulkInstallPackageJob, HTMLStencilElement {
+    }
+    var HTMLBulkInstallPackageJobElement: {
+        prototype: HTMLBulkInstallPackageJobElement;
+        new (): HTMLBulkInstallPackageJobElement;
+    };
     interface HTMLBulkInstallQueuedFileElementEventMap {
         "uploadCompleted": UploadStatus;
     }
@@ -143,6 +155,7 @@ declare global {
         "bulk-install-install-job": HTMLBulkInstallInstallJobElement;
         "bulk-install-ip-safelist": HTMLBulkInstallIpSafelistElement;
         "bulk-install-logs": HTMLBulkInstallLogsElement;
+        "bulk-install-package-job": HTMLBulkInstallPackageJobElement;
         "bulk-install-queued-file": HTMLBulkInstallQueuedFileElement;
         "dnn-bulk-install": HTMLDnnBulkInstallElement;
     }
@@ -171,6 +184,12 @@ declare namespace LocalJSX {
     interface BulkInstallIpSafelist {
     }
     interface BulkInstallLogs {
+    }
+    interface BulkInstallPackageJob {
+        /**
+          * The package job.
+         */
+        "job": PackageJob;
     }
     interface BulkInstallQueuedFile {
         /**
@@ -211,6 +230,7 @@ declare namespace LocalJSX {
         "bulk-install-install-job": BulkInstallInstallJob;
         "bulk-install-ip-safelist": BulkInstallIpSafelist;
         "bulk-install-logs": BulkInstallLogs;
+        "bulk-install-package-job": BulkInstallPackageJob;
         "bulk-install-queued-file": Omit<BulkInstallQueuedFile, keyof BulkInstallQueuedFileAttributes> & { [K in keyof BulkInstallQueuedFile & keyof BulkInstallQueuedFileAttributes]?: BulkInstallQueuedFile[K] } & { [K in keyof BulkInstallQueuedFile & keyof BulkInstallQueuedFileAttributes as `attr:${K}`]?: BulkInstallQueuedFileAttributes[K] } & { [K in keyof BulkInstallQueuedFile & keyof BulkInstallQueuedFileAttributes as `prop:${K}`]?: BulkInstallQueuedFile[K] } & OneOf<"maxUploadFileSize", BulkInstallQueuedFile["maxUploadFileSize"], BulkInstallQueuedFileAttributes["maxUploadFileSize"]>;
         "dnn-bulk-install": Omit<DnnBulkInstall, keyof DnnBulkInstallAttributes> & { [K in keyof DnnBulkInstall & keyof DnnBulkInstallAttributes]?: DnnBulkInstall[K] } & { [K in keyof DnnBulkInstall & keyof DnnBulkInstallAttributes as `attr:${K}`]?: DnnBulkInstallAttributes[K] } & { [K in keyof DnnBulkInstall & keyof DnnBulkInstallAttributes as `prop:${K}`]?: DnnBulkInstall[K] } & OneOf<"moduleId", DnnBulkInstall["moduleId"], DnnBulkInstallAttributes["moduleId"]>;
     }
@@ -228,6 +248,7 @@ declare module "@stencil/core" {
             "bulk-install-install-job": LocalJSX.IntrinsicElements["bulk-install-install-job"] & JSXBase.HTMLAttributes<HTMLBulkInstallInstallJobElement>;
             "bulk-install-ip-safelist": LocalJSX.IntrinsicElements["bulk-install-ip-safelist"] & JSXBase.HTMLAttributes<HTMLBulkInstallIpSafelistElement>;
             "bulk-install-logs": LocalJSX.IntrinsicElements["bulk-install-logs"] & JSXBase.HTMLAttributes<HTMLBulkInstallLogsElement>;
+            "bulk-install-package-job": LocalJSX.IntrinsicElements["bulk-install-package-job"] & JSXBase.HTMLAttributes<HTMLBulkInstallPackageJobElement>;
             "bulk-install-queued-file": LocalJSX.IntrinsicElements["bulk-install-queued-file"] & JSXBase.HTMLAttributes<HTMLBulkInstallQueuedFileElement>;
             "dnn-bulk-install": LocalJSX.IntrinsicElements["dnn-bulk-install"] & JSXBase.HTMLAttributes<HTMLDnnBulkInstallElement>;
         }
