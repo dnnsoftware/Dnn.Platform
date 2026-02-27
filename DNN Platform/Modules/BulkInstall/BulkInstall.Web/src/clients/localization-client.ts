@@ -38,6 +38,7 @@ export interface BulkInstallLocalization {
   ApiUsers: string;
   BulkInstall: string;
   BypassIpAllowList: string;
+  Cancel: string;
   CannotInstall: string;
   Close: string;
   Create: string;
@@ -50,6 +51,7 @@ export interface BulkInstallLocalization {
   EventLogSeverity_Warning: string;
   EventLogSeverity_Alert: string;
   EventLogSeverity_Critical: string;
+  FileUploadedMessage: string;
   Install: string;
   InstallationComplete: string;
   InstallingPackages: string;
@@ -66,6 +68,9 @@ export interface BulkInstallLocalization {
   Name: string;
   NewApiUser: string;
   NewIpSafelistEntry: string;
+  Packages: string;
+  PackageDependencies: string;
+  PlatformVersion: string;
   Reset: string;
   Save: string;
   SessionStatus_NotStared: string;
@@ -73,6 +78,7 @@ export interface BulkInstallLocalization {
   SessionStatus_Complete: string;
   Severity: string;
   Type: string;
+  UploadInstallPackages: string;
   DropZone_DragAndDropFile: string;
   DropZone_Or: string;
   DropZone_UploadFile: string;

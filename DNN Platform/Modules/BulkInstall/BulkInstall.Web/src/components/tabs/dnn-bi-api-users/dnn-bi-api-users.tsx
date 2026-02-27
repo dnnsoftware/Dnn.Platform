@@ -1,5 +1,5 @@
 import { Component, Host, h, State } from '@stencil/core';
-import { User } from './bulk-install-api-users.model';
+import { User } from './dnn-bi-api-users.model';
 import state from '../../../stores/store';
 import { ApiUserClient } from '../../../clients/api-user-client';
 
@@ -18,11 +18,11 @@ function toISODate(date: Date): string {
 }
 
 @Component({
-  tag: 'bulk-install-api-users',
-  styleUrl: 'bulk-install-api-users.scss',
+  tag: 'dnn-bi-api-users',
+  styleUrl: 'dnn-bi-api-users.scss',
   shadow: true,
 })
-export class BulkInstallApiUsers {
+export class DnnBiApiUsers {
   @State() private users: User[] = [];
   @State() private enabled: boolean | null = null;
   @State() private newUser: NewUser = {

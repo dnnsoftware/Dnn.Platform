@@ -21,7 +21,9 @@ namespace Dnn.Modules.BulkInstall.Components
         /// <param name="dependencyRoot">The root of the <c>dependency</c> element.</param>
         public PackageDependency(XPathNavigator dependencyRoot)
         {
-            this.IsPackageDependency = PackageTypes.Contains(dependencyRoot.GetAttribute("type", string.Empty));
+            this.DependencyType = dependencyRoot.GetAttribute("type", string.Empty);
+            this.IsPackageDependency = PackageTypes.Contains(this.DependencyType);
+            this.IsCoreVersionDependency = this.DependencyType.Equals("COREVERSION", StringComparison.OrdinalIgnoreCase);
             this.PackageName = dependencyRoot.Value;
             this.DependencyVersion = dependencyRoot.GetAttribute("version", string.Empty);
             this.DnnMet = false;
@@ -37,8 +39,14 @@ namespace Dnn.Modules.BulkInstall.Components
         {
         }
 
+        /// <summary>Gets or sets the type of dependency.</summary>
+        public string DependencyType { get; set; }
+
         /// <summary>Gets or sets a value indicating whether the dependency is for another package.</summary>
         public bool IsPackageDependency { get; set; }
+
+        /// <summary>Gets or sets a value indicating whether the dependency is for the DNN Platform version.</summary>
+        public bool IsCoreVersionDependency { get; set; }
 
         /// <summary>Gets or sets the package name.</summary>
         public string PackageName { get; set; }
@@ -46,13 +54,13 @@ namespace Dnn.Modules.BulkInstall.Components
         /// <summary>Gets or sets the dependency version.</summary>
         public string DependencyVersion { get; set; }
 
+        /// <summary>Gets a value indicating whether the dependency is met.</summary>
+        public bool IsMet => this.DnnMet || this.DeployMet;
+
         /// <summary>Gets or sets a value indicating whether DNN already meets this dependency.</summary>
-        internal bool DnnMet { get; set; }
+        public bool DnnMet { get; set; }
 
         /// <summary>Gets or sets a value indicating whether the deployment meets this dependency.</summary>
-        internal bool DeployMet { get; set; }
-
-        /// <summary>Gets a value indicating whether the dependency is met.</summary>
-        internal bool IsMet => this.DnnMet || this.DeployMet;
+        public bool DeployMet { get; set; }
     }
 }

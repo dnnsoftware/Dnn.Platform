@@ -1,5 +1,12 @@
 import { SessionStatusInfo } from '../../../enums/SessionStatus';
 
+export enum UploadStatus {
+  InProgress,
+  Success,
+  Error,
+  Cancelled,
+}
+
 export interface Session {
   sessionGuid: string;
   status: SessionStatusInfo;
@@ -25,6 +32,8 @@ export interface PackageJob {
 
 export interface PackageDependency {
   isPackageDependency: boolean;
+  isCoreVersionDependency: boolean;
   packageName: string;
   dependencyVersion: string;
+  isMet: boolean;
 }

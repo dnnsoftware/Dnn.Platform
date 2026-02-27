@@ -253,7 +253,7 @@
     <value>One or more of the uploaded packages cannot be installed</value>
   </data>
   <data name="InstallationComplete" xml:space="preserve">
-    <value>Installation Complete!!!!</value>
+    <value>Installation Complete!</value>
   </data>
   <data name="SessionStatus_NotStarted" xml:space="preserve">
     <value>Not Started</value>
@@ -284,5 +284,23 @@
   </data>
   <data name="ApiAuthDisabled" xml:space="preserve">
     <value>API Token authentication must be enabled in the web.config before creating API Users</value>
+  </data>
+  <data name="FileUploadedMessage" xml:space="preserve">
+    <value>Package uploaded</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Packages" xml:space="preserve">
+    <value>Packages</value>
+  </data>
+  <data name="UploadInstallPackages" xml:space="preserve">
+    <value>Upload Install Package(s)</value>
+  </data>
+  <data name="PackageDependencies" xml:space="preserve">
+    <value>Dependencies</value>
+  </data>
+  <data name="PlatformVersion" xml:space="preserve">
+    <value>Platform Version</value>
   </data>
 </root>

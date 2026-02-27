@@ -1,5 +1,5 @@
 import { DnnServicesFramework } from '@dnncommunity/dnn-elements';
-import { Ip } from '../components/tabs/bulk-install-ip-safelist/bulk-install-ip-safelist.model';
+import { Ip } from '../components/tabs/dnn-bi-ip-safelist/dnn-bi-ip-safelist.model';
 
 export class IpSafelistClient {
   private readonly sf: DnnServicesFramework;

@@ -1,5 +1,5 @@
 import { DnnServicesFramework } from '@dnncommunity/dnn-elements';
-import { InstallJob, PackageDependency, PackageJob, Session } from '../components/tabs/bulk-install-install/bulk-install-install.model';
+import { InstallJob, PackageDependency, PackageJob, Session } from '../components/tabs/dnn-bi-install/dnn-bi-install.model';
 import { SessionStatusInfo, sessionStatus } from '../enums/SessionStatus';
 
 export class InstallClient {
@@ -11,13 +11,16 @@ export class InstallClient {
     this.requestUrl = this.sf.getServiceRoot('BulkInstall') + 'Session/';
   }
 
-  public async create(): Promise<Session> {
+  public async create(): Promise<{ session: Session; maxUploadFileSize: number }> {
     const response = await fetch(`${this.requestUrl}Create`, {
       method: 'POST',
       headers: this.sf.getModuleHeaders(),
     });
-    const responseBody = (await response.json()) as { Session: SessionResponse };
-    return InstallClient.toSession(responseBody.Session);
+    const responseBody = (await response.json()) as { Session: SessionResponse; MaxUploadFileSize: number };
+    return {
+      session: InstallClient.toSession(responseBody.Session),
+      maxUploadFileSize: responseBody.MaxUploadFileSize,
+    };
   }
 
   public async getSession(sessionGuid: string): Promise<Session> {
@@ -29,17 +32,37 @@ export class InstallClient {
     return InstallClient.toSession(responseBody.Session);
   }
 
-  public async addPackages(sessionGuid: string, files: File[]): Promise<void> {
-    for (const file of files) {
+  public async addPackage(sessionGuid: string, file: File, signal: AbortSignal, onProgress: (ev: ProgressEvent) => void): Promise<void> {
+    await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      xhr.onload = () => {
+        if (xhr.status !== 201) {
+          console.error(xhr);
+          reject(xhr.statusText);
+        }
+
+        resolve(xhr.responseText);
+      };
+
+      xhr.upload.onprogress = onProgress;
+
+      xhr.onabort = () => {
+        console.error(xhr);
+        reject();
+      };
+
+      signal.onabort = () => xhr.abort();
+
       const requestBody = new FormData();
       requestBody.append(file.name, file);
 
-      await fetch(`${this.requestUrl}AddPackages?sessionGuid=${sessionGuid}`, {
-        method: 'POST',
-        body: requestBody,
-        headers: this.sf.getModuleHeaders(),
+      xhr.open('POST', `${this.requestUrl}AddPackages?sessionGuid=${sessionGuid}`);
+      this.sf.getModuleHeaders().forEach((value, key) => {
+        xhr.setRequestHeader(key, value);
       });
-    }
+      xhr.send(requestBody);
+    });
   }
 
   public async install(sessionGuid: string): Promise<void> {
@@ -49,9 +72,10 @@ export class InstallClient {
     });
   }
 
-  public async summary(sessionGuid: string): Promise<InstallJob[]> {
+  public async summary(sessionGuid: string, signal: AbortSignal): Promise<InstallJob[]> {
     const response = await fetch(`${this.requestUrl}Summary?sessionGuid=${sessionGuid}`, {
       headers: this.sf.getModuleHeaders(),
+      signal: signal,
     });
     const responseBody = (await response.json()) as { InstallJobs: InstallJobResponse[] };
     return responseBody.InstallJobs.map(ij => InstallClient.toInstallJob(ij));
@@ -81,7 +105,9 @@ export class InstallClient {
     return {
       dependencyVersion: dependency.DependencyVersion,
       isPackageDependency: dependency.IsPackageDependency,
+      isCoreVersionDependency: dependency.IsCoreVersionDependency,
       packageName: dependency.PackageName,
+      isMet: dependency.IsMet,
     };
   }
 
@@ -139,6 +165,8 @@ interface PackageJobResponse {
 
 interface PackageDependencyResponse {
   IsPackageDependency: boolean;
+  IsCoreVersionDependency: boolean;
   PackageName: string;
   DependencyVersion: string;
+  IsMet: boolean;
 }

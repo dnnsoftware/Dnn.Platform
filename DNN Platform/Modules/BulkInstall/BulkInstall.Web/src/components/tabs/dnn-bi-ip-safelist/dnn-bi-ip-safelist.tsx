@@ -1,14 +1,14 @@
 import { Component, Host, h, State } from '@stencil/core';
-import { Ip } from './bulk-install-ip-safelist.model';
+import { Ip } from './dnn-bi-ip-safelist.model';
 import state from '../../../stores/store';
 import { IpSafelistClient } from '../../../clients/ip-safelist-client';
 
 @Component({
-  tag: 'bulk-install-ip-safelist',
-  styleUrl: 'bulk-install-ip-safelist.scss',
+  tag: 'dnn-bi-ip-safelist',
+  styleUrl: 'dnn-bi-ip-safelist.scss',
   shadow: true,
 })
-export class BulkInstallIpSafelist {
+export class DnnBiIpSafelist {
   @State() private ipSafelist: Ip[] = [];
   @State() private newIp: Ip = {
     id: -1,

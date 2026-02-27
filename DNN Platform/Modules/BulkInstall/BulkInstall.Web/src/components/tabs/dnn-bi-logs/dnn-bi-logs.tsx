@@ -1,14 +1,14 @@
 import { Component, Host, h } from '@stencil/core';
-import { Event } from './bulk-install-logs.model';
+import { Event } from './dnn-bi-logs.model';
 import state from '../../../stores/store';
 import { EventLogClient } from '../../../clients/event-log-client';
 
 @Component({
-  tag: 'bulk-install-logs',
-  styleUrl: 'bulk-install-logs.scss',
+  tag: 'dnn-bi-logs',
+  styleUrl: 'dnn-bi-logs.scss',
   shadow: true,
 })
-export class BulkInstallLogs {
+export class DnnBiLogs {
   private events: Event[] = [];
 
   private eventLogClient: EventLogClient;
@@ -53,7 +53,7 @@ export class BulkInstallLogs {
                   <tbody>
                     {this.events.map(event => (
                       <tr>
-                        <td>{BulkInstallLogs.formatDate(event)}</td>
+                        <td>{DnnBiLogs.formatDate(event)}</td>
                         <td>{event.severity.localizedName}</td>
                         <td>{event.type}</td>
                         <td>{event.message}</td>
