@@ -6,7 +6,9 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { InstallJob, PackageJob, Session, UploadStatus } from "./components/tabs/dnn-bi-install/dnn-bi-install.model";
+import { Pagination } from "./clients/event-log-client";
 export { InstallJob, PackageJob, Session, UploadStatus } from "./components/tabs/dnn-bi-install/dnn-bi-install.model";
+export { Pagination } from "./clients/event-log-client";
 export namespace Components {
     interface DnnBiApiUsers {
     }
@@ -27,6 +29,12 @@ export namespace Components {
         "job": InstallJob;
     }
     interface DnnBiIpSafelist {
+    }
+    interface DnnBiLogPagination {
+        /**
+          * The pagination
+         */
+        "pagination": Pagination;
     }
     interface DnnBiLogs {
     }
@@ -60,6 +68,10 @@ export namespace Components {
          */
         "moduleId": number;
     }
+}
+export interface DnnBiLogPaginationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDnnBiLogPaginationElement;
 }
 export interface DnnBiQueuedFileCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -114,6 +126,23 @@ declare global {
         prototype: HTMLDnnBiIpSafelistElement;
         new (): HTMLDnnBiIpSafelistElement;
     };
+    interface HTMLDnnBiLogPaginationElementEventMap {
+        "pageSelected": number;
+    }
+    interface HTMLDnnBiLogPaginationElement extends Components.DnnBiLogPagination, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDnnBiLogPaginationElementEventMap>(type: K, listener: (this: HTMLDnnBiLogPaginationElement, ev: DnnBiLogPaginationCustomEvent<HTMLDnnBiLogPaginationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDnnBiLogPaginationElementEventMap>(type: K, listener: (this: HTMLDnnBiLogPaginationElement, ev: DnnBiLogPaginationCustomEvent<HTMLDnnBiLogPaginationElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLDnnBiLogPaginationElement: {
+        prototype: HTMLDnnBiLogPaginationElement;
+        new (): HTMLDnnBiLogPaginationElement;
+    };
     interface HTMLDnnBiLogsElement extends Components.DnnBiLogs, HTMLStencilElement {
     }
     var HTMLDnnBiLogsElement: {
@@ -158,6 +187,7 @@ declare global {
         "dnn-bi-install": HTMLDnnBiInstallElement;
         "dnn-bi-install-job": HTMLDnnBiInstallJobElement;
         "dnn-bi-ip-safelist": HTMLDnnBiIpSafelistElement;
+        "dnn-bi-log-pagination": HTMLDnnBiLogPaginationElement;
         "dnn-bi-logs": HTMLDnnBiLogsElement;
         "dnn-bi-package-job": HTMLDnnBiPackageJobElement;
         "dnn-bi-queued-file": HTMLDnnBiQueuedFileElement;
@@ -186,6 +216,13 @@ declare namespace LocalJSX {
         "job": InstallJob;
     }
     interface DnnBiIpSafelist {
+    }
+    interface DnnBiLogPagination {
+        "onPageSelected"?: (event: DnnBiLogPaginationCustomEvent<number>) => void;
+        /**
+          * The pagination
+         */
+        "pagination": Pagination;
     }
     interface DnnBiLogs {
     }
@@ -240,6 +277,7 @@ declare namespace LocalJSX {
         "dnn-bi-install": DnnBiInstall;
         "dnn-bi-install-job": DnnBiInstallJob;
         "dnn-bi-ip-safelist": DnnBiIpSafelist;
+        "dnn-bi-log-pagination": DnnBiLogPagination;
         "dnn-bi-logs": DnnBiLogs;
         "dnn-bi-package-job": Omit<DnnBiPackageJob, keyof DnnBiPackageJobAttributes> & { [K in keyof DnnBiPackageJob & keyof DnnBiPackageJobAttributes]?: DnnBiPackageJob[K] } & { [K in keyof DnnBiPackageJob & keyof DnnBiPackageJobAttributes as `attr:${K}`]?: DnnBiPackageJobAttributes[K] } & { [K in keyof DnnBiPackageJob & keyof DnnBiPackageJobAttributes as `prop:${K}`]?: DnnBiPackageJob[K] } & OneOf<"attempted", DnnBiPackageJob["attempted"], DnnBiPackageJobAttributes["attempted"]>;
         "dnn-bi-queued-file": Omit<DnnBiQueuedFile, keyof DnnBiQueuedFileAttributes> & { [K in keyof DnnBiQueuedFile & keyof DnnBiQueuedFileAttributes]?: DnnBiQueuedFile[K] } & { [K in keyof DnnBiQueuedFile & keyof DnnBiQueuedFileAttributes as `attr:${K}`]?: DnnBiQueuedFileAttributes[K] } & { [K in keyof DnnBiQueuedFile & keyof DnnBiQueuedFileAttributes as `prop:${K}`]?: DnnBiQueuedFile[K] } & OneOf<"maxUploadFileSize", DnnBiQueuedFile["maxUploadFileSize"], DnnBiQueuedFileAttributes["maxUploadFileSize"]>;
@@ -258,6 +296,7 @@ declare module "@stencil/core" {
             "dnn-bi-install": LocalJSX.IntrinsicElements["dnn-bi-install"] & JSXBase.HTMLAttributes<HTMLDnnBiInstallElement>;
             "dnn-bi-install-job": LocalJSX.IntrinsicElements["dnn-bi-install-job"] & JSXBase.HTMLAttributes<HTMLDnnBiInstallJobElement>;
             "dnn-bi-ip-safelist": LocalJSX.IntrinsicElements["dnn-bi-ip-safelist"] & JSXBase.HTMLAttributes<HTMLDnnBiIpSafelistElement>;
+            "dnn-bi-log-pagination": LocalJSX.IntrinsicElements["dnn-bi-log-pagination"] & JSXBase.HTMLAttributes<HTMLDnnBiLogPaginationElement>;
             "dnn-bi-logs": LocalJSX.IntrinsicElements["dnn-bi-logs"] & JSXBase.HTMLAttributes<HTMLDnnBiLogsElement>;
             "dnn-bi-package-job": LocalJSX.IntrinsicElements["dnn-bi-package-job"] & JSXBase.HTMLAttributes<HTMLDnnBiPackageJobElement>;
             "dnn-bi-queued-file": LocalJSX.IntrinsicElements["dnn-bi-queued-file"] & JSXBase.HTMLAttributes<HTMLDnnBiQueuedFileElement>;

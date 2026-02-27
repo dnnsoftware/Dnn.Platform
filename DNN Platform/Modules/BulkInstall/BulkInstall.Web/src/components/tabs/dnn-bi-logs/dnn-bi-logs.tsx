@@ -101,23 +101,7 @@ export class DnnBiLogs {
                     ))}
                   </tbody>
                 </table>
-                {this.pagination.pages > 1 && (
-                  <ol class="pagination">
-                    {[...Array(this.pagination.pages)].map((_, index) => (
-                      <li class={index === this.pagination.currentPage ? 'active' : ''}>
-                        <button
-                          disabled={index === this.pagination.currentPage}
-                          onClick={e => {
-                            e.preventDefault();
-                            this.loadPage(index).catch(console.error);
-                          }}
-                        >
-                          {index + 1}
-                        </button>
-                      </li>
-                    ))}
-                  </ol>
-                )}
+                <dnn-bi-log-pagination pagination={this.pagination} onPageSelected={e => this.loadPage(e.detail).catch(console.error)} />
               </div>
             </div>
           </div>

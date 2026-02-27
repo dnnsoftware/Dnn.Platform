@@ -44,6 +44,9 @@ graph TD;
   dnn-bi-queued-file --> dnn-bi-checkmark-icon
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
+  dnn-bi-logs --> dnn-select
+  dnn-bi-logs --> dnn-bi-log-pagination
+  dnn-select --> dnn-fieldset
   dnn-bi-api-users --> dnn-button
   dnn-bi-api-users --> dnn-modal
   dnn-bi-api-users --> dnn-input
