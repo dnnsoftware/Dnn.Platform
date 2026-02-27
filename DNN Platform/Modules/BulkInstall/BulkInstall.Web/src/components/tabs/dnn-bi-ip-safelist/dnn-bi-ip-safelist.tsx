@@ -1,7 +1,7 @@
 import { Component, Host, h, State } from '@stencil/core';
-import { Ip } from './dnn-bi-ip-safelist.model';
-import state from '../../../stores/store';
+import store from '../../../stores/store';
 import { IpSafelistClient } from '../../../clients/ip-safelist-client';
+import { Ip } from './dnn-bi-ip-safelist.model';
 
 @Component({
   tag: 'dnn-bi-ip-safelist',
@@ -20,7 +20,7 @@ export class DnnBiIpSafelist {
   private ipSafelistClient: IpSafelistClient;
 
   constructor() {
-    this.ipSafelistClient = new IpSafelistClient(state.moduleId);
+    this.ipSafelistClient = new IpSafelistClient(store.moduleId);
   }
 
   async componentWillLoad() {
@@ -58,23 +58,23 @@ export class DnnBiIpSafelist {
           <div class="col">
             <div class="panel">
               <div class="panel-heading">
-                <h3 class="panel-title">{state.resx.NewIpSafelistEntry}</h3>
+                <h3 class="panel-title">{store.resx.NewIpSafelistEntry}</h3>
               </div>
               <div class="panel-body">
                 <div class="form-horizontal">
                   <div class="form-group">
                     <dnn-input
                       type="text"
-                      label={state.resx.IPSafeListItemNameText}
-                      helpText={state.resx.IPSafeListItemNameHelp}
+                      label={store.resx.IPSafeListItemNameText}
+                      helpText={store.resx.IPSafeListItemNameHelp}
                       required
                       value={this.newIp.name}
                       onValueInput={e => (this.newIp = { ...this.newIp, name: e.detail as string })}
                     />
                     <dnn-input
                       type="text"
-                      label={state.resx.IPSafeListItemIpAddressText}
-                      helpText={state.resx.IPSafeListItemIpAddressHelp}
+                      label={store.resx.IPSafeListItemIpAddressText}
+                      helpText={store.resx.IPSafeListItemIpAddressHelp}
                       required
                       value={this.newIp.ipAddress}
                       onValueInput={e => (this.newIp = { ...this.newIp, ipAddress: e.detail as string })}
@@ -85,7 +85,7 @@ export class DnnBiIpSafelist {
                         return;
                       }}
                     >
-                      {state.resx.Add}
+                      {store.resx.Add}
                     </dnn-button>
                   </div>
                 </div>
@@ -97,15 +97,15 @@ export class DnnBiIpSafelist {
           <div class="col">
             <div class="panel">
               <div class="panel-heading">
-                <h3 class="panel-title">{state.resx.IPSafeListEntries}</h3>
+                <h3 class="panel-title">{store.resx.IPSafeListEntries}</h3>
               </div>
               <div class="panel-body">
                 <table class="table">
                   <thead>
                     <tr>
-                      <th>{state.resx.Name}</th>
-                      <th>{state.resx.IPAddress}</th>
-                      <th>{state.resx.Action}</th>
+                      <th>{store.resx.Name}</th>
+                      <th>{store.resx.IPAddress}</th>
+                      <th>{store.resx.Action}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -122,7 +122,7 @@ export class DnnBiIpSafelist {
                               return;
                             }}
                           >
-                            {state.resx.Delete}
+                            {store.resx.Delete}
                           </dnn-button>
                         </td>
                       </tr>
@@ -135,14 +135,14 @@ export class DnnBiIpSafelist {
           <div class="col">
             <div class="panel">
               <div class="panel-heading">
-                <h3 class="panel-title">{state.resx.IPSafeListConfiguration}</h3>
+                <h3 class="panel-title">{store.resx.IPSafeListConfiguration}</h3>
               </div>
               <div class="panel-body">
                 <div class="form-horizontal">
                   <div class="form-group">
                     <label>
                       <dnn-toggle name="enableIpSafelist" checked={this.enableIpSafelist} onCheckChanged={e => (this.enableIpSafelist = e.detail.checked)} />
-                      {state.resx.EnableIpSafeList}
+                      {store.resx.EnableIpSafeList}
                     </label>
                     <dnn-button
                       onClick={() => {
@@ -150,7 +150,7 @@ export class DnnBiIpSafelist {
                         return;
                       }}
                     >
-                      {state.resx.Save}
+                      {store.resx.Save}
                     </dnn-button>
                   </div>
                 </div>

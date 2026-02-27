@@ -1,8 +1,8 @@
 import { Component, Fragment, h, Host, State } from '@stencil/core';
 import store from '../../../stores/store';
-import { InstallJob, Session, UploadStatus } from './dnn-bi-install.model';
 import { InstallClient } from '../../../clients/install-client';
 import { sessionStatus } from '../../../enums/SessionStatus';
+import { InstallJob, Session, UploadStatus } from './dnn-bi-install.model';
 
 type FileViewModel = { type: 'pending'; file: File } | { type: 'error'; file: File } | { type: 'uploaded'; job: InstallJob };
 

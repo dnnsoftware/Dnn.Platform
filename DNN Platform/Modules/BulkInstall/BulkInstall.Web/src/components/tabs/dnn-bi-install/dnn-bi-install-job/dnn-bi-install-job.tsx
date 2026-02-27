@@ -1,5 +1,5 @@
 import { Component, h, Host, Prop } from '@stencil/core';
-import state from '../../../../stores/store';
+import store from '../../../../stores/store';
 import { InstallJob } from '../dnn-bi-install.model';
 
 @Component({
@@ -31,7 +31,7 @@ export class DnnBiInstallJob {
             {this.job.packages.length !== 1 && (
               <details>
                 <summary>
-                  {this.job.packages.length} {state.resx.Packages}
+                  {this.job.packages.length} {store.resx.Packages}
                 </summary>
                 <ul>
                   {this.job.packages.map(p => (

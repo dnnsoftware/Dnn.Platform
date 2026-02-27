@@ -1,8 +1,8 @@
 import { Component, Element, Event, EventEmitter, h, Host, Prop, State } from '@stencil/core';
-import state from '../../../../stores/store';
+import store from '../../../../stores/store';
 import { getFileSize } from '../../../../utilities/filesize-utilities';
-import { Session, UploadStatus } from '../dnn-bi-install.model';
 import { InstallClient } from '../../../../clients/install-client';
+import { Session, UploadStatus } from '../dnn-bi-install.model';
 
 @Component({
   tag: 'dnn-bi-queued-file',
@@ -32,7 +32,7 @@ export class DnnBiQueuedFile {
   private abortController: AbortController;
 
   constructor() {
-    this.installClient = new InstallClient(state.moduleId);
+    this.installClient = new InstallClient(store.moduleId);
   }
 
   async componentDidLoad() {
@@ -40,7 +40,7 @@ export class DnnBiQueuedFile {
       this.abortController = new AbortController();
       await this.installClient.addPackage(this.session.sessionGuid, this.file, this.abortController.signal, ev => this.onProgress(ev));
       this.uploadCompleted.emit(UploadStatus.Success);
-      this.successMessage = state.resx.FileUploadedMessage;
+      this.successMessage = store.resx.FileUploadedMessage;
     } catch (err) {
       if (this.dismissed) {
         this.uploadCompleted.emit(UploadStatus.Cancelled);
@@ -101,7 +101,7 @@ export class DnnBiQueuedFile {
           {this.successMessage === undefined && (
             <div class="dismiss">
               <button
-                title={state.resx.Cancel}
+                title={store.resx.Cancel}
                 onClick={() => {
                   this.abortController.abort();
                   this.uploadCompleted.emit(UploadStatus.Cancelled);
