@@ -1,5 +1,5 @@
 import { DnnServicesFramework } from '@dnncommunity/dnn-elements';
-import { User } from '../components/tabs/bulk-install-api-users/bulk-install-api-users.model';
+import { User } from '../components/tabs/dnn-bi-api-users/dnn-bi-api-users.model';
 
 export class ApiUserClient {
   private readonly sf: DnnServicesFramework;

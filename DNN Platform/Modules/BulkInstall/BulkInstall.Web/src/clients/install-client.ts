@@ -1,5 +1,5 @@
 import { DnnServicesFramework } from '@dnncommunity/dnn-elements';
-import { InstallJob, PackageDependency, PackageJob, Session } from '../components/tabs/bulk-install-install/bulk-install-install.model';
+import { InstallJob, PackageDependency, PackageJob, Session } from '../components/tabs/dnn-bi-install/dnn-bi-install.model';
 import { SessionStatusInfo, sessionStatus } from '../enums/SessionStatus';
 
 export class InstallClient {

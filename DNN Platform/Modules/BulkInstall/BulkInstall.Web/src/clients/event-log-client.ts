@@ -1,5 +1,5 @@
 import { DnnServicesFramework } from '@dnncommunity/dnn-elements';
-import type { Event } from '../components/tabs/bulk-install-logs/bulk-install-logs.model';
+import type { Event } from '../components/tabs/dnn-bi-logs/dnn-bi-logs.model';
 import { EventLogSeverityInfo, eventLogSeverity } from '../enums/EventLogSeverity';
 
 export class EventLogClient {

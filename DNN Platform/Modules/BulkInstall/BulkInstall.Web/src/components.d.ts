@@ -5,32 +5,32 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { InstallJob, PackageJob, Session, UploadStatus } from "./components/tabs/bulk-install-install/bulk-install-install.model";
-export { InstallJob, PackageJob, Session, UploadStatus } from "./components/tabs/bulk-install-install/bulk-install-install.model";
+import { InstallJob, PackageJob, Session, UploadStatus } from "./components/tabs/dnn-bi-install/dnn-bi-install.model";
+export { InstallJob, PackageJob, Session, UploadStatus } from "./components/tabs/dnn-bi-install/dnn-bi-install.model";
 export namespace Components {
-    interface BulkInstallApiUsers {
+    interface DnnBiApiUsers {
     }
-    interface BulkInstallCheckmarkIcon {
+    interface DnnBiCheckmarkIcon {
     }
-    interface BulkInstallCircleXIcon {
+    interface DnnBiCircleXIcon {
     }
-    interface BulkInstallClockIcon {
+    interface DnnBiClockIcon {
     }
-    interface BulkInstallDismissIcon {
+    interface DnnBiDismissIcon {
     }
-    interface BulkInstallInstall {
+    interface DnnBiInstall {
     }
-    interface BulkInstallInstallJob {
+    interface DnnBiInstallJob {
         /**
           * The install job.
          */
         "job": InstallJob;
     }
-    interface BulkInstallIpSafelist {
+    interface DnnBiIpSafelist {
     }
-    interface BulkInstallLogs {
+    interface DnnBiLogs {
     }
-    interface BulkInstallPackageJob {
+    interface DnnBiPackageJob {
         /**
           * Whether the installation was completed.
          */
@@ -40,7 +40,7 @@ export namespace Components {
          */
         "job": PackageJob;
     }
-    interface BulkInstallQueuedFile {
+    interface DnnBiQueuedFile {
         /**
           * The file to upload.
          */
@@ -61,87 +61,87 @@ export namespace Components {
         "moduleId": number;
     }
 }
-export interface BulkInstallQueuedFileCustomEvent<T> extends CustomEvent<T> {
+export interface DnnBiQueuedFileCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLBulkInstallQueuedFileElement;
+    target: HTMLDnnBiQueuedFileElement;
 }
 declare global {
-    interface HTMLBulkInstallApiUsersElement extends Components.BulkInstallApiUsers, HTMLStencilElement {
+    interface HTMLDnnBiApiUsersElement extends Components.DnnBiApiUsers, HTMLStencilElement {
     }
-    var HTMLBulkInstallApiUsersElement: {
-        prototype: HTMLBulkInstallApiUsersElement;
-        new (): HTMLBulkInstallApiUsersElement;
+    var HTMLDnnBiApiUsersElement: {
+        prototype: HTMLDnnBiApiUsersElement;
+        new (): HTMLDnnBiApiUsersElement;
     };
-    interface HTMLBulkInstallCheckmarkIconElement extends Components.BulkInstallCheckmarkIcon, HTMLStencilElement {
+    interface HTMLDnnBiCheckmarkIconElement extends Components.DnnBiCheckmarkIcon, HTMLStencilElement {
     }
-    var HTMLBulkInstallCheckmarkIconElement: {
-        prototype: HTMLBulkInstallCheckmarkIconElement;
-        new (): HTMLBulkInstallCheckmarkIconElement;
+    var HTMLDnnBiCheckmarkIconElement: {
+        prototype: HTMLDnnBiCheckmarkIconElement;
+        new (): HTMLDnnBiCheckmarkIconElement;
     };
-    interface HTMLBulkInstallCircleXIconElement extends Components.BulkInstallCircleXIcon, HTMLStencilElement {
+    interface HTMLDnnBiCircleXIconElement extends Components.DnnBiCircleXIcon, HTMLStencilElement {
     }
-    var HTMLBulkInstallCircleXIconElement: {
-        prototype: HTMLBulkInstallCircleXIconElement;
-        new (): HTMLBulkInstallCircleXIconElement;
+    var HTMLDnnBiCircleXIconElement: {
+        prototype: HTMLDnnBiCircleXIconElement;
+        new (): HTMLDnnBiCircleXIconElement;
     };
-    interface HTMLBulkInstallClockIconElement extends Components.BulkInstallClockIcon, HTMLStencilElement {
+    interface HTMLDnnBiClockIconElement extends Components.DnnBiClockIcon, HTMLStencilElement {
     }
-    var HTMLBulkInstallClockIconElement: {
-        prototype: HTMLBulkInstallClockIconElement;
-        new (): HTMLBulkInstallClockIconElement;
+    var HTMLDnnBiClockIconElement: {
+        prototype: HTMLDnnBiClockIconElement;
+        new (): HTMLDnnBiClockIconElement;
     };
-    interface HTMLBulkInstallDismissIconElement extends Components.BulkInstallDismissIcon, HTMLStencilElement {
+    interface HTMLDnnBiDismissIconElement extends Components.DnnBiDismissIcon, HTMLStencilElement {
     }
-    var HTMLBulkInstallDismissIconElement: {
-        prototype: HTMLBulkInstallDismissIconElement;
-        new (): HTMLBulkInstallDismissIconElement;
+    var HTMLDnnBiDismissIconElement: {
+        prototype: HTMLDnnBiDismissIconElement;
+        new (): HTMLDnnBiDismissIconElement;
     };
-    interface HTMLBulkInstallInstallElement extends Components.BulkInstallInstall, HTMLStencilElement {
+    interface HTMLDnnBiInstallElement extends Components.DnnBiInstall, HTMLStencilElement {
     }
-    var HTMLBulkInstallInstallElement: {
-        prototype: HTMLBulkInstallInstallElement;
-        new (): HTMLBulkInstallInstallElement;
+    var HTMLDnnBiInstallElement: {
+        prototype: HTMLDnnBiInstallElement;
+        new (): HTMLDnnBiInstallElement;
     };
-    interface HTMLBulkInstallInstallJobElement extends Components.BulkInstallInstallJob, HTMLStencilElement {
+    interface HTMLDnnBiInstallJobElement extends Components.DnnBiInstallJob, HTMLStencilElement {
     }
-    var HTMLBulkInstallInstallJobElement: {
-        prototype: HTMLBulkInstallInstallJobElement;
-        new (): HTMLBulkInstallInstallJobElement;
+    var HTMLDnnBiInstallJobElement: {
+        prototype: HTMLDnnBiInstallJobElement;
+        new (): HTMLDnnBiInstallJobElement;
     };
-    interface HTMLBulkInstallIpSafelistElement extends Components.BulkInstallIpSafelist, HTMLStencilElement {
+    interface HTMLDnnBiIpSafelistElement extends Components.DnnBiIpSafelist, HTMLStencilElement {
     }
-    var HTMLBulkInstallIpSafelistElement: {
-        prototype: HTMLBulkInstallIpSafelistElement;
-        new (): HTMLBulkInstallIpSafelistElement;
+    var HTMLDnnBiIpSafelistElement: {
+        prototype: HTMLDnnBiIpSafelistElement;
+        new (): HTMLDnnBiIpSafelistElement;
     };
-    interface HTMLBulkInstallLogsElement extends Components.BulkInstallLogs, HTMLStencilElement {
+    interface HTMLDnnBiLogsElement extends Components.DnnBiLogs, HTMLStencilElement {
     }
-    var HTMLBulkInstallLogsElement: {
-        prototype: HTMLBulkInstallLogsElement;
-        new (): HTMLBulkInstallLogsElement;
+    var HTMLDnnBiLogsElement: {
+        prototype: HTMLDnnBiLogsElement;
+        new (): HTMLDnnBiLogsElement;
     };
-    interface HTMLBulkInstallPackageJobElement extends Components.BulkInstallPackageJob, HTMLStencilElement {
+    interface HTMLDnnBiPackageJobElement extends Components.DnnBiPackageJob, HTMLStencilElement {
     }
-    var HTMLBulkInstallPackageJobElement: {
-        prototype: HTMLBulkInstallPackageJobElement;
-        new (): HTMLBulkInstallPackageJobElement;
+    var HTMLDnnBiPackageJobElement: {
+        prototype: HTMLDnnBiPackageJobElement;
+        new (): HTMLDnnBiPackageJobElement;
     };
-    interface HTMLBulkInstallQueuedFileElementEventMap {
+    interface HTMLDnnBiQueuedFileElementEventMap {
         "uploadCompleted": UploadStatus;
     }
-    interface HTMLBulkInstallQueuedFileElement extends Components.BulkInstallQueuedFile, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLBulkInstallQueuedFileElementEventMap>(type: K, listener: (this: HTMLBulkInstallQueuedFileElement, ev: BulkInstallQueuedFileCustomEvent<HTMLBulkInstallQueuedFileElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+    interface HTMLDnnBiQueuedFileElement extends Components.DnnBiQueuedFile, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDnnBiQueuedFileElementEventMap>(type: K, listener: (this: HTMLDnnBiQueuedFileElement, ev: DnnBiQueuedFileCustomEvent<HTMLDnnBiQueuedFileElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLBulkInstallQueuedFileElementEventMap>(type: K, listener: (this: HTMLBulkInstallQueuedFileElement, ev: BulkInstallQueuedFileCustomEvent<HTMLBulkInstallQueuedFileElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDnnBiQueuedFileElementEventMap>(type: K, listener: (this: HTMLDnnBiQueuedFileElement, ev: DnnBiQueuedFileCustomEvent<HTMLDnnBiQueuedFileElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
-    var HTMLBulkInstallQueuedFileElement: {
-        prototype: HTMLBulkInstallQueuedFileElement;
-        new (): HTMLBulkInstallQueuedFileElement;
+    var HTMLDnnBiQueuedFileElement: {
+        prototype: HTMLDnnBiQueuedFileElement;
+        new (): HTMLDnnBiQueuedFileElement;
     };
     interface HTMLDnnBulkInstallElement extends Components.DnnBulkInstall, HTMLStencilElement {
     }
@@ -150,46 +150,46 @@ declare global {
         new (): HTMLDnnBulkInstallElement;
     };
     interface HTMLElementTagNameMap {
-        "bulk-install-api-users": HTMLBulkInstallApiUsersElement;
-        "bulk-install-checkmark-icon": HTMLBulkInstallCheckmarkIconElement;
-        "bulk-install-circle-x-icon": HTMLBulkInstallCircleXIconElement;
-        "bulk-install-clock-icon": HTMLBulkInstallClockIconElement;
-        "bulk-install-dismiss-icon": HTMLBulkInstallDismissIconElement;
-        "bulk-install-install": HTMLBulkInstallInstallElement;
-        "bulk-install-install-job": HTMLBulkInstallInstallJobElement;
-        "bulk-install-ip-safelist": HTMLBulkInstallIpSafelistElement;
-        "bulk-install-logs": HTMLBulkInstallLogsElement;
-        "bulk-install-package-job": HTMLBulkInstallPackageJobElement;
-        "bulk-install-queued-file": HTMLBulkInstallQueuedFileElement;
+        "dnn-bi-api-users": HTMLDnnBiApiUsersElement;
+        "dnn-bi-checkmark-icon": HTMLDnnBiCheckmarkIconElement;
+        "dnn-bi-circle-x-icon": HTMLDnnBiCircleXIconElement;
+        "dnn-bi-clock-icon": HTMLDnnBiClockIconElement;
+        "dnn-bi-dismiss-icon": HTMLDnnBiDismissIconElement;
+        "dnn-bi-install": HTMLDnnBiInstallElement;
+        "dnn-bi-install-job": HTMLDnnBiInstallJobElement;
+        "dnn-bi-ip-safelist": HTMLDnnBiIpSafelistElement;
+        "dnn-bi-logs": HTMLDnnBiLogsElement;
+        "dnn-bi-package-job": HTMLDnnBiPackageJobElement;
+        "dnn-bi-queued-file": HTMLDnnBiQueuedFileElement;
         "dnn-bulk-install": HTMLDnnBulkInstallElement;
     }
 }
 declare namespace LocalJSX {
     type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
 
-    interface BulkInstallApiUsers {
+    interface DnnBiApiUsers {
     }
-    interface BulkInstallCheckmarkIcon {
+    interface DnnBiCheckmarkIcon {
     }
-    interface BulkInstallCircleXIcon {
+    interface DnnBiCircleXIcon {
     }
-    interface BulkInstallClockIcon {
+    interface DnnBiClockIcon {
     }
-    interface BulkInstallDismissIcon {
+    interface DnnBiDismissIcon {
     }
-    interface BulkInstallInstall {
+    interface DnnBiInstall {
     }
-    interface BulkInstallInstallJob {
+    interface DnnBiInstallJob {
         /**
           * The install job.
          */
         "job": InstallJob;
     }
-    interface BulkInstallIpSafelist {
+    interface DnnBiIpSafelist {
     }
-    interface BulkInstallLogs {
+    interface DnnBiLogs {
     }
-    interface BulkInstallPackageJob {
+    interface DnnBiPackageJob {
         /**
           * Whether the installation was completed.
          */
@@ -199,7 +199,7 @@ declare namespace LocalJSX {
          */
         "job": PackageJob;
     }
-    interface BulkInstallQueuedFile {
+    interface DnnBiQueuedFile {
         /**
           * The file to upload.
          */
@@ -208,7 +208,7 @@ declare namespace LocalJSX {
           * The maximal allowed file upload size
          */
         "maxUploadFileSize": number;
-        "onUploadCompleted"?: (event: BulkInstallQueuedFileCustomEvent<UploadStatus>) => void;
+        "onUploadCompleted"?: (event: DnnBiQueuedFileCustomEvent<UploadStatus>) => void;
         /**
           * The current session.
          */
@@ -221,10 +221,10 @@ declare namespace LocalJSX {
         "moduleId": number;
     }
 
-    interface BulkInstallPackageJobAttributes {
+    interface DnnBiPackageJobAttributes {
         "attempted": boolean;
     }
-    interface BulkInstallQueuedFileAttributes {
+    interface DnnBiQueuedFileAttributes {
         "maxUploadFileSize": number;
     }
     interface DnnBulkInstallAttributes {
@@ -232,17 +232,17 @@ declare namespace LocalJSX {
     }
 
     interface IntrinsicElements {
-        "bulk-install-api-users": BulkInstallApiUsers;
-        "bulk-install-checkmark-icon": BulkInstallCheckmarkIcon;
-        "bulk-install-circle-x-icon": BulkInstallCircleXIcon;
-        "bulk-install-clock-icon": BulkInstallClockIcon;
-        "bulk-install-dismiss-icon": BulkInstallDismissIcon;
-        "bulk-install-install": BulkInstallInstall;
-        "bulk-install-install-job": BulkInstallInstallJob;
-        "bulk-install-ip-safelist": BulkInstallIpSafelist;
-        "bulk-install-logs": BulkInstallLogs;
-        "bulk-install-package-job": Omit<BulkInstallPackageJob, keyof BulkInstallPackageJobAttributes> & { [K in keyof BulkInstallPackageJob & keyof BulkInstallPackageJobAttributes]?: BulkInstallPackageJob[K] } & { [K in keyof BulkInstallPackageJob & keyof BulkInstallPackageJobAttributes as `attr:${K}`]?: BulkInstallPackageJobAttributes[K] } & { [K in keyof BulkInstallPackageJob & keyof BulkInstallPackageJobAttributes as `prop:${K}`]?: BulkInstallPackageJob[K] } & OneOf<"attempted", BulkInstallPackageJob["attempted"], BulkInstallPackageJobAttributes["attempted"]>;
-        "bulk-install-queued-file": Omit<BulkInstallQueuedFile, keyof BulkInstallQueuedFileAttributes> & { [K in keyof BulkInstallQueuedFile & keyof BulkInstallQueuedFileAttributes]?: BulkInstallQueuedFile[K] } & { [K in keyof BulkInstallQueuedFile & keyof BulkInstallQueuedFileAttributes as `attr:${K}`]?: BulkInstallQueuedFileAttributes[K] } & { [K in keyof BulkInstallQueuedFile & keyof BulkInstallQueuedFileAttributes as `prop:${K}`]?: BulkInstallQueuedFile[K] } & OneOf<"maxUploadFileSize", BulkInstallQueuedFile["maxUploadFileSize"], BulkInstallQueuedFileAttributes["maxUploadFileSize"]>;
+        "dnn-bi-api-users": DnnBiApiUsers;
+        "dnn-bi-checkmark-icon": DnnBiCheckmarkIcon;
+        "dnn-bi-circle-x-icon": DnnBiCircleXIcon;
+        "dnn-bi-clock-icon": DnnBiClockIcon;
+        "dnn-bi-dismiss-icon": DnnBiDismissIcon;
+        "dnn-bi-install": DnnBiInstall;
+        "dnn-bi-install-job": DnnBiInstallJob;
+        "dnn-bi-ip-safelist": DnnBiIpSafelist;
+        "dnn-bi-logs": DnnBiLogs;
+        "dnn-bi-package-job": Omit<DnnBiPackageJob, keyof DnnBiPackageJobAttributes> & { [K in keyof DnnBiPackageJob & keyof DnnBiPackageJobAttributes]?: DnnBiPackageJob[K] } & { [K in keyof DnnBiPackageJob & keyof DnnBiPackageJobAttributes as `attr:${K}`]?: DnnBiPackageJobAttributes[K] } & { [K in keyof DnnBiPackageJob & keyof DnnBiPackageJobAttributes as `prop:${K}`]?: DnnBiPackageJob[K] } & OneOf<"attempted", DnnBiPackageJob["attempted"], DnnBiPackageJobAttributes["attempted"]>;
+        "dnn-bi-queued-file": Omit<DnnBiQueuedFile, keyof DnnBiQueuedFileAttributes> & { [K in keyof DnnBiQueuedFile & keyof DnnBiQueuedFileAttributes]?: DnnBiQueuedFile[K] } & { [K in keyof DnnBiQueuedFile & keyof DnnBiQueuedFileAttributes as `attr:${K}`]?: DnnBiQueuedFileAttributes[K] } & { [K in keyof DnnBiQueuedFile & keyof DnnBiQueuedFileAttributes as `prop:${K}`]?: DnnBiQueuedFile[K] } & OneOf<"maxUploadFileSize", DnnBiQueuedFile["maxUploadFileSize"], DnnBiQueuedFileAttributes["maxUploadFileSize"]>;
         "dnn-bulk-install": Omit<DnnBulkInstall, keyof DnnBulkInstallAttributes> & { [K in keyof DnnBulkInstall & keyof DnnBulkInstallAttributes]?: DnnBulkInstall[K] } & { [K in keyof DnnBulkInstall & keyof DnnBulkInstallAttributes as `attr:${K}`]?: DnnBulkInstallAttributes[K] } & { [K in keyof DnnBulkInstall & keyof DnnBulkInstallAttributes as `prop:${K}`]?: DnnBulkInstall[K] } & OneOf<"moduleId", DnnBulkInstall["moduleId"], DnnBulkInstallAttributes["moduleId"]>;
     }
 }
@@ -250,17 +250,17 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "bulk-install-api-users": LocalJSX.IntrinsicElements["bulk-install-api-users"] & JSXBase.HTMLAttributes<HTMLBulkInstallApiUsersElement>;
-            "bulk-install-checkmark-icon": LocalJSX.IntrinsicElements["bulk-install-checkmark-icon"] & JSXBase.HTMLAttributes<HTMLBulkInstallCheckmarkIconElement>;
-            "bulk-install-circle-x-icon": LocalJSX.IntrinsicElements["bulk-install-circle-x-icon"] & JSXBase.HTMLAttributes<HTMLBulkInstallCircleXIconElement>;
-            "bulk-install-clock-icon": LocalJSX.IntrinsicElements["bulk-install-clock-icon"] & JSXBase.HTMLAttributes<HTMLBulkInstallClockIconElement>;
-            "bulk-install-dismiss-icon": LocalJSX.IntrinsicElements["bulk-install-dismiss-icon"] & JSXBase.HTMLAttributes<HTMLBulkInstallDismissIconElement>;
-            "bulk-install-install": LocalJSX.IntrinsicElements["bulk-install-install"] & JSXBase.HTMLAttributes<HTMLBulkInstallInstallElement>;
-            "bulk-install-install-job": LocalJSX.IntrinsicElements["bulk-install-install-job"] & JSXBase.HTMLAttributes<HTMLBulkInstallInstallJobElement>;
-            "bulk-install-ip-safelist": LocalJSX.IntrinsicElements["bulk-install-ip-safelist"] & JSXBase.HTMLAttributes<HTMLBulkInstallIpSafelistElement>;
-            "bulk-install-logs": LocalJSX.IntrinsicElements["bulk-install-logs"] & JSXBase.HTMLAttributes<HTMLBulkInstallLogsElement>;
-            "bulk-install-package-job": LocalJSX.IntrinsicElements["bulk-install-package-job"] & JSXBase.HTMLAttributes<HTMLBulkInstallPackageJobElement>;
-            "bulk-install-queued-file": LocalJSX.IntrinsicElements["bulk-install-queued-file"] & JSXBase.HTMLAttributes<HTMLBulkInstallQueuedFileElement>;
+            "dnn-bi-api-users": LocalJSX.IntrinsicElements["dnn-bi-api-users"] & JSXBase.HTMLAttributes<HTMLDnnBiApiUsersElement>;
+            "dnn-bi-checkmark-icon": LocalJSX.IntrinsicElements["dnn-bi-checkmark-icon"] & JSXBase.HTMLAttributes<HTMLDnnBiCheckmarkIconElement>;
+            "dnn-bi-circle-x-icon": LocalJSX.IntrinsicElements["dnn-bi-circle-x-icon"] & JSXBase.HTMLAttributes<HTMLDnnBiCircleXIconElement>;
+            "dnn-bi-clock-icon": LocalJSX.IntrinsicElements["dnn-bi-clock-icon"] & JSXBase.HTMLAttributes<HTMLDnnBiClockIconElement>;
+            "dnn-bi-dismiss-icon": LocalJSX.IntrinsicElements["dnn-bi-dismiss-icon"] & JSXBase.HTMLAttributes<HTMLDnnBiDismissIconElement>;
+            "dnn-bi-install": LocalJSX.IntrinsicElements["dnn-bi-install"] & JSXBase.HTMLAttributes<HTMLDnnBiInstallElement>;
+            "dnn-bi-install-job": LocalJSX.IntrinsicElements["dnn-bi-install-job"] & JSXBase.HTMLAttributes<HTMLDnnBiInstallJobElement>;
+            "dnn-bi-ip-safelist": LocalJSX.IntrinsicElements["dnn-bi-ip-safelist"] & JSXBase.HTMLAttributes<HTMLDnnBiIpSafelistElement>;
+            "dnn-bi-logs": LocalJSX.IntrinsicElements["dnn-bi-logs"] & JSXBase.HTMLAttributes<HTMLDnnBiLogsElement>;
+            "dnn-bi-package-job": LocalJSX.IntrinsicElements["dnn-bi-package-job"] & JSXBase.HTMLAttributes<HTMLDnnBiPackageJobElement>;
+            "dnn-bi-queued-file": LocalJSX.IntrinsicElements["dnn-bi-queued-file"] & JSXBase.HTMLAttributes<HTMLDnnBiQueuedFileElement>;
             "dnn-bulk-install": LocalJSX.IntrinsicElements["dnn-bulk-install"] & JSXBase.HTMLAttributes<HTMLDnnBulkInstallElement>;
         }
     }
