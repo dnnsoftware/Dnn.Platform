@@ -1,6 +1,6 @@
 import { DnnServicesFramework } from '@dnncommunity/dnn-elements';
 import type { Event } from '../components/tabs/dnn-bi-logs/dnn-bi-logs.model';
-import { EventLogSeverityInfo, eventLogSeverity } from '../enums/EventLogSeverity';
+import { eventLogSeverity, EventLogSeverityInfo } from '../enums/EventLogSeverity';
 
 export class EventLogClient {
   private readonly sf: DnnServicesFramework;
@@ -11,17 +11,15 @@ export class EventLogClient {
     this.requestUrl = this.sf.getServiceRoot('BulkInstall') + 'EventLog/';
   }
 
-  public async browse(): Promise<BrowseResponse> {
-    const response = await fetch(`${this.requestUrl}Browse`, {
+  public async browse(pageIndex = 0): Promise<BrowseResponse> {
+    const response = await fetch(`${this.requestUrl}Browse?pageIndex=${pageIndex}`, {
       headers: this.sf.getModuleHeaders(),
     });
     const responseBody = (await response.json()) as ResponseBody;
-    const browseResponse = {
-      Data: responseBody.Data.map(e => EventLogClient.toEvent(e)),
-      Pagination: responseBody.Pagination,
+    return {
+      data: responseBody.Data.map(e => EventLogClient.toEvent(e)),
+      pagination: EventLogClient.toPagination(responseBody.Pagination),
     };
-
-    return browseResponse;
   }
 
   private static toSeverity(severity: EventLogSeverityResponse): EventLogSeverityInfo {
@@ -47,14 +45,41 @@ export class EventLogClient {
       severity: EventLogClient.toSeverity(eventLog.Severity),
     };
   }
+
+  private static toPagination(pagination: PaginationResponse): Pagination {
+    return {
+      currentPage: pagination.CurrentPage,
+      pages: pagination.Pages,
+      records: pagination.Records,
+      navigation: {
+        next: pagination.Navigation.Next,
+        previous: pagination.Navigation.Previous,
+      },
+    };
+  }
 }
 
 export interface BrowseResponse {
-  Data: Event[];
-  Pagination: Pagination;
+  data: Event[];
+  pagination: Pagination;
 }
 
 export interface Pagination {
+  records: number;
+  pages: number;
+  currentPage: number;
+  navigation: {
+    previous?: string;
+    next?: string;
+  };
+}
+
+interface ResponseBody {
+  Data: EventLogResponse[];
+  Pagination: PaginationResponse;
+}
+
+interface PaginationResponse {
   Records: number;
   Pages: number;
   CurrentPage: number;
@@ -62,11 +87,6 @@ export interface Pagination {
     Previous?: string;
     Next?: string;
   };
-}
-
-interface ResponseBody {
-  Data: EventLogResponse[];
-  Pagination: Pagination;
 }
 
 interface EventLogResponse {

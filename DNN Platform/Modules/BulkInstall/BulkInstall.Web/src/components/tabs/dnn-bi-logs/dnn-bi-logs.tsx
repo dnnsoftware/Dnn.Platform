@@ -1,7 +1,7 @@
-import { Component, Host, h } from '@stencil/core';
+import { Component, Host, h, State } from '@stencil/core';
 import { Event } from './dnn-bi-logs.model';
 import state from '../../../stores/store';
-import { EventLogClient } from '../../../clients/event-log-client';
+import { EventLogClient, Pagination } from '../../../clients/event-log-client';
 
 @Component({
   tag: 'dnn-bi-logs',
@@ -9,7 +9,8 @@ import { EventLogClient } from '../../../clients/event-log-client';
   shadow: true,
 })
 export class DnnBiLogs {
-  private events: Event[] = [];
+  @State() private events: Event[] = [];
+  @State() private pagination: Pagination;
 
   private eventLogClient: EventLogClient;
 
@@ -19,16 +20,23 @@ export class DnnBiLogs {
 
   async componentWillLoad() {
     try {
-      const browseResponse = await this.eventLogClient.browse();
-      this.events = browseResponse.Data;
+      const { data, pagination } = await this.eventLogClient.browse();
+      this.events = data;
+      this.pagination = pagination;
     } catch (error) {
       console.error(error);
     }
   }
 
-  private static formatDate(event: Event): string {
+  private async loadPage(pageIndex: number) {
+    const { data, pagination } = await this.eventLogClient.browse(pageIndex);
+    this.events = data;
+    this.pagination = pagination;
+  }
+
+  private static formatDate(date: Date): string {
     const formatter = new Intl.DateTimeFormat(undefined, { dateStyle: 'long', timeStyle: 'medium' });
-    return formatter.format(event.date);
+    return formatter.format(date);
   }
 
   render() {
@@ -53,7 +61,9 @@ export class DnnBiLogs {
                   <tbody>
                     {this.events.map(event => (
                       <tr>
-                        <td>{DnnBiLogs.formatDate(event)}</td>
+                        <td>
+                          <time dateTime={event.date.toISOString()}>{DnnBiLogs.formatDate(event.date)}</time>
+                        </td>
                         <td>{event.severity.localizedName}</td>
                         <td>{event.type}</td>
                         <td>{event.message}</td>
@@ -61,6 +71,23 @@ export class DnnBiLogs {
                     ))}
                   </tbody>
                 </table>
+                {this.pagination.pages > 1 && (
+                  <ol class="pagination">
+                    {[...Array(this.pagination.pages)].map((_, index) => (
+                      <li class={index === this.pagination.currentPage ? 'active' : ''}>
+                        <button
+                          disabled={index === this.pagination.currentPage}
+                          onClick={e => {
+                            e.preventDefault();
+                            this.loadPage(index).catch(console.error);
+                          }}
+                        >
+                          {index + 1}
+                        </button>
+                      </li>
+                    ))}
+                  </ol>
+                )}
               </div>
             </div>
           </div>

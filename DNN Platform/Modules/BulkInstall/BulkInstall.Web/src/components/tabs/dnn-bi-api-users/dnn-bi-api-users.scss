@@ -82,13 +82,6 @@
     color: var(--dnn-color-neutral, #ededee);
   }
 
-  /* Utility */
-  .clearfix::after {
-    content: '';
-    display: table;
-    clear: both;
-  }
-
   form.create-user {
     margin: 1rem;
     display: flex;
