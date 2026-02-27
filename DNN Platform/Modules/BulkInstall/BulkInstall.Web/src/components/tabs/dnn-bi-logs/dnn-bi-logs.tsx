@@ -1,7 +1,7 @@
 import { Component, Host, h, State } from '@stencil/core';
-import { Event } from './dnn-bi-logs.model';
-import state from '../../../stores/store';
+import store from '../../../stores/store';
 import { EventLogClient, Pagination } from '../../../clients/event-log-client';
+import { Event } from './dnn-bi-logs.model';
 
 @Component({
   tag: 'dnn-bi-logs',
@@ -15,7 +15,7 @@ export class DnnBiLogs {
   private eventLogClient: EventLogClient;
 
   constructor() {
-    this.eventLogClient = new EventLogClient(state.moduleId);
+    this.eventLogClient = new EventLogClient(store.moduleId);
   }
 
   async componentWillLoad() {
@@ -46,16 +46,16 @@ export class DnnBiLogs {
           <div class="col">
             <div class="panel">
               <div class="panel-heading">
-                <h3 class="panel-title">{state.resx.Events}</h3>
+                <h3 class="panel-title">{store.resx.Events}</h3>
               </div>
               <div class="panel-body">
                 <table class="table">
                   <thead>
                     <tr>
-                      <th>{state.resx.Date}</th>
-                      <th>{state.resx.Severity}</th>
-                      <th>{state.resx.Type}</th>
-                      <th>{state.resx.Message}</th>
+                      <th>{store.resx.Date}</th>
+                      <th>{store.resx.Severity}</th>
+                      <th>{store.resx.Type}</th>
+                      <th>{store.resx.Message}</th>
                     </tr>
                   </thead>
                   <tbody>

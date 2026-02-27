@@ -1,6 +1,6 @@
 import { Component, Host, h, Prop } from '@stencil/core';
+import store from '../../stores/store';
 import { LocalizationClient } from '../../clients/localization-client';
-import state from '../../stores/store';
 
 @Component({
   tag: 'dnn-bulk-install',
@@ -18,9 +18,9 @@ export class DnnBulkInstall {
   }
 
   async componentWillLoad() {
-    state.moduleId = this.moduleId;
+    store.moduleId = this.moduleId;
     try {
-      state.resx = await this.localizationClient.getResources();
+      store.resx = await this.localizationClient.getResources();
     } catch (error) {
       console.error(error);
     }
@@ -31,22 +31,22 @@ export class DnnBulkInstall {
       <Host>
         <div class="container">
           <dnn-tabs>
-            <dnn-tab tabTitle={state.resx.Install}>
+            <dnn-tab tabTitle={store.resx.Install}>
               <div class="tab-content">
                 <dnn-bi-install></dnn-bi-install>
               </div>
             </dnn-tab>
-            <dnn-tab tabTitle={state.resx.Events}>
+            <dnn-tab tabTitle={store.resx.Events}>
               <div class="tab-content">
                 <dnn-bi-logs></dnn-bi-logs>
               </div>
             </dnn-tab>
-            <dnn-tab tabTitle={state.resx.ApiUsers}>
+            <dnn-tab tabTitle={store.resx.ApiUsers}>
               <div class="tab-content">
                 <dnn-bi-api-users></dnn-bi-api-users>
               </div>
             </dnn-tab>
-            <dnn-tab tabTitle={state.resx.IPSafeList}>
+            <dnn-tab tabTitle={store.resx.IPSafeList}>
               <div class="tab-content">
                 <dnn-bi-ip-safelist></dnn-bi-ip-safelist>
               </div>

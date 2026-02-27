@@ -1,7 +1,7 @@
 import { Component, Host, h, State } from '@stencil/core';
-import { User } from './dnn-bi-api-users.model';
-import state from '../../../stores/store';
+import store from '../../../stores/store';
 import { ApiUserClient } from '../../../clients/api-user-client';
+import { User } from './dnn-bi-api-users.model';
 
 interface NewUser {
   name: string;
@@ -36,7 +36,7 @@ export class DnnBiApiUsers {
   private apiUserClient: ApiUserClient;
 
   constructor() {
-    this.apiUserClient = new ApiUserClient(state.moduleId);
+    this.apiUserClient = new ApiUserClient(store.moduleId);
   }
 
   async componentWillLoad() {
@@ -72,7 +72,7 @@ export class DnnBiApiUsers {
         {this.enabled === false && (
           <div class="row">
             <div class="col">
-              <h3 class="danger">{state.resx.ApiAuthDisabled}</h3>
+              <h3 class="danger">{store.resx.ApiAuthDisabled}</h3>
             </div>
           </div>
         )}
@@ -87,22 +87,22 @@ export class DnnBiApiUsers {
                   return;
                 }}
               >
-                {state.resx.NewApiUser}
+                {store.resx.NewApiUser}
               </dnn-button>
             </div>
             <div class="panel">
               <div class="panel-heading">
-                <h3 class="panel-title">{state.resx.ApiUsers}</h3>
+                <h3 class="panel-title">{store.resx.ApiUsers}</h3>
               </div>
               <div class="panel-body">
                 <table class="table">
                   <thead>
                     <tr>
-                      <th>{state.resx.Name}</th>
-                      <th>{state.resx.ApiKey}</th>
-                      <th>{state.resx.EncryptionKey}</th>
-                      <th>{state.resx.BypassIpAllowList}</th>
-                      <th>{state.resx.Action}</th>
+                      <th>{store.resx.Name}</th>
+                      <th>{store.resx.ApiKey}</th>
+                      <th>{store.resx.EncryptionKey}</th>
+                      <th>{store.resx.BypassIpAllowList}</th>
+                      <th>{store.resx.Action}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -121,7 +121,7 @@ export class DnnBiApiUsers {
                               return;
                             }}
                           >
-                            {state.resx.Delete}
+                            {store.resx.Delete}
                           </dnn-button>
                         </td>
                       </tr>
@@ -141,19 +141,19 @@ export class DnnBiApiUsers {
               return;
             }}
           >
-            <h4>{state.resx.NewApiUser}</h4>
+            <h4>{store.resx.NewApiUser}</h4>
             <dnn-input
               type="text"
-              label={state.resx.ApiUserNameText}
-              helpText={state.resx.ApiUserNameHelp}
+              label={store.resx.ApiUserNameText}
+              helpText={store.resx.ApiUserNameHelp}
               required
               value={this.newUser.name}
               onValueInput={e => (this.newUser = { ...this.newUser, name: e.detail as string })}
             />
             <dnn-input
               type="date"
-              label={state.resx.ApiUserExpiresOnText}
-              helpText={state.resx.ApiUserExpiresOnHelp}
+              label={store.resx.ApiUserExpiresOnText}
+              helpText={store.resx.ApiUserExpiresOnHelp}
               required
               min={toISODate(new Date())}
               max={toISODate(addYear(addYear(new Date())))}
@@ -165,9 +165,9 @@ export class DnnBiApiUsers {
                 checked={this.newUser.bypassIPWhitelist ? 'checked' : 'unchecked'}
                 onCheckedchange={e => (this.newUser = { ...this.newUser, bypassIPWhitelist: e.detail === 'checked' })}
               />
-              {state.resx.BypassIpAllowList}
+              {store.resx.BypassIpAllowList}
             </label>
-            <dnn-button type="submit">{state.resx.Create}</dnn-button>
+            <dnn-button type="submit">{store.resx.Create}</dnn-button>
           </form>
         </dnn-modal>
       </Host>
