@@ -57,6 +57,12 @@
     width: fit-content;
   }
 
+  .filters {
+    display: flex;
+    justify-content: end;
+    gap: 1em;
+  }
+
   /* Table styling */
   .table {
     width: 100%;

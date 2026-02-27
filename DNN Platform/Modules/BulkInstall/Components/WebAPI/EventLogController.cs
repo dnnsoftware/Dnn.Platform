@@ -29,77 +29,19 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
         /// <param name="pageIndex">The 0-based page index.</param>
         /// <param name="pageSize">The page size.</param>
         /// <param name="eventType">An event type to filter by, or <see langword="null"/>.</param>
-        /// <param name="severity">A <see cref="EventLogSeverity"/> to filter by, or <c>-1</c>.</param>
+        /// <param name="severity">A <see cref="EventLogSeverity"/> to filter by, or <see langword="null"/>.</param>
         /// <returns>A response with a list of <see cref="EventLog"/> and pagination data.</returns>
         [HttpGet]
-        public HttpResponseMessage Browse(int pageIndex = 0, int pageSize = 30, string eventType = null, int severity = -1)
+        public HttpResponseMessage Browse(int pageIndex = 0, int pageSize = 30, string eventType = null, EventLogSeverity? severity = null)
         {
-            EventLogSeverity? actualSeverity = null;
-
-            // Is there a severity set?
-            if (severity >= 0)
-            {
-                actualSeverity = (EventLogSeverity)severity;
-            }
-
             // Get event logs.
-            IEnumerable<EventLog> eventLogs = this.eventLogManager.Browse(pageIndex, pageSize, eventType, actualSeverity);
+            IEnumerable<EventLog> eventLogs = this.eventLogManager.Browse(pageIndex, pageSize, eventType, severity);
 
             // Work out pagination details.
-            int rowCount = this.eventLogManager.BrowseCount(pageIndex, pageSize, eventType, actualSeverity);
+            int rowCount = this.eventLogManager.BrowseCount(pageIndex, pageSize, eventType, severity);
             int pageCount = (int)Math.Ceiling(rowCount / (double)pageSize);
 
-            // Build navigation.
-            Dictionary<string, string> navigation = new Dictionary<string, string>();
-
-            // Parameters passed in not changed by pagination.
-            string fixedParams = string.Empty;
-
-            // Page size.
-            if (pageSize != 30)
-            {
-                fixedParams += $"pageSize={pageSize}";
-            }
-
-            // Event type.
-            if (eventType != null)
-            {
-                fixedParams += $"eventType={eventType}";
-            }
-
-            // Severity.
-            if (severity != -1)
-            {
-                fixedParams += $"eventType={severity}";
-            }
-
-            // Is there a next page?
-            if (pageIndex < pageCount)
-            {
-                string nextLink = $"Browse?pageIndex={pageIndex + 1}";
-
-                if (!string.IsNullOrEmpty(fixedParams))
-                {
-                    nextLink = $"{nextLink}&{fixedParams}";
-                }
-
-                navigation.Add("Next", nextLink);
-            }
-
-            // Is there a previous page?
-            if (pageIndex > 0)
-            {
-                string prevLink = $"Browse?pageIndex={pageIndex - 1}";
-
-                if (!string.IsNullOrEmpty(fixedParams))
-                {
-                    prevLink = $"{prevLink}&{fixedParams}";
-                }
-
-                navigation.Add("Previous", prevLink);
-            }
-
-            var pagination = new { Records = rowCount, Pages = pageCount, CurrentPage = pageIndex, Navigation = navigation, };
+            var pagination = new { Pages = pageCount, CurrentPage = pageIndex, };
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Data = eventLogs, Pagination = pagination, });
         }
 

@@ -303,4 +303,7 @@
   <data name="PlatformVersion" xml:space="preserve">
     <value>Platform Version</value>
   </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
 </root>

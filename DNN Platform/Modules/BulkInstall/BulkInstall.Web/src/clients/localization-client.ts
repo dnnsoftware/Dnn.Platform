@@ -28,6 +28,7 @@ export class LocalizationClient {
 export interface BulkInstallLocalization {
   Action: string;
   Add: string;
+  All: string;
   ApiError: string;
   ApiAuthDisabled: string;
   ApiKey: string;
