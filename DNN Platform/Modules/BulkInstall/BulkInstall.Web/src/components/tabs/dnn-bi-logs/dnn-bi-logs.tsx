@@ -2,6 +2,7 @@ import { Component, Host, h, State } from '@stencil/core';
 import store from '../../../stores/store';
 import { EventLogClient, Pagination } from '../../../clients/event-log-client';
 import { Event } from './dnn-bi-logs.model';
+import { eventLogSeverity, EventLogSeverityInfo } from '../../../enums/EventLogSeverity';
 
 @Component({
   tag: 'dnn-bi-logs',
@@ -10,7 +11,10 @@ import { Event } from './dnn-bi-logs.model';
 })
 export class DnnBiLogs {
   @State() private events: Event[] = [];
+  @State() private eventTypes: string[] = [];
   @State() private pagination: Pagination;
+  @State() private severityFilter: EventLogSeverityInfo;
+  @State() private eventTypeFilter: string;
 
   private eventLogClient: EventLogClient;
 
@@ -23,13 +27,24 @@ export class DnnBiLogs {
       const { data, pagination } = await this.eventLogClient.browse();
       this.events = data;
       this.pagination = pagination;
+      this.eventTypes = await this.eventLogClient.getEventTypes();
     } catch (error) {
       console.error(error);
     }
   }
 
+  private async setSeverityFilter(key: string) {
+    this.severityFilter = eventLogSeverity.fromKey(key);
+    await this.loadPage(0);
+  }
+
+  private async setEventTypeFilter(eventType: string) {
+    this.eventTypeFilter = eventType;
+    await this.loadPage(0);
+  }
+
   private async loadPage(pageIndex: number) {
-    const { data, pagination } = await this.eventLogClient.browse(pageIndex);
+    const { data, pagination } = await this.eventLogClient.browse(pageIndex, this.severityFilter, this.eventTypeFilter);
     this.events = data;
     this.pagination = pagination;
   }
@@ -49,6 +64,21 @@ export class DnnBiLogs {
                 <h3 class="panel-title">{store.resx.Events}</h3>
               </div>
               <div class="panel-body">
+                <div class="filters">
+                  <dnn-select label={store.resx.Severity} onValueChange={e => this.setSeverityFilter(e.detail).catch(console.error)}>
+                    <option value="">{store.resx.All}</option>
+                    <option value={eventLogSeverity.info.eventLogSeverityKey}>{eventLogSeverity.info.localizedName}</option>
+                    <option value={eventLogSeverity.warning.eventLogSeverityKey}>{eventLogSeverity.warning.localizedName}</option>
+                    <option value={eventLogSeverity.alert.eventLogSeverityKey}>{eventLogSeverity.alert.localizedName}</option>
+                    <option value={eventLogSeverity.critical.eventLogSeverityKey}>{eventLogSeverity.critical.localizedName}</option>
+                  </dnn-select>
+                  <dnn-select label={store.resx.Type} onValueChange={e => this.setEventTypeFilter(e.detail).catch(console.error)}>
+                    <option value="">{store.resx.All}</option>
+                    {this.eventTypes.map(eventType => (
+                      <option>{eventType}</option>
+                    ))}
+                  </dnn-select>
+                </div>
                 <table class="table">
                   <thead>
                     <tr>

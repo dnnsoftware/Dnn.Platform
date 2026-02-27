@@ -11,8 +11,10 @@ export class EventLogClient {
     this.requestUrl = this.sf.getServiceRoot('BulkInstall') + 'EventLog/';
   }
 
-  public async browse(pageIndex = 0): Promise<BrowseResponse> {
-    const response = await fetch(`${this.requestUrl}Browse?pageIndex=${pageIndex}`, {
+  public async browse(pageIndex = 0, severity?: EventLogSeverityInfo, eventType?: string): Promise<BrowseResponse> {
+    const severityParam = severity ? `&severity=${severity.eventLogSeverityKey}` : '';
+    const eventTypeParam = eventType ? `&eventType=${eventType}` : '';
+    const response = await fetch(`${this.requestUrl}Browse?pageIndex=${pageIndex}${severityParam}${eventTypeParam}`, {
       headers: this.sf.getModuleHeaders(),
     });
     const responseBody = (await response.json()) as ResponseBody;
@@ -20,6 +22,11 @@ export class EventLogClient {
       data: responseBody.Data.map(e => EventLogClient.toEvent(e)),
       pagination: EventLogClient.toPagination(responseBody.Pagination),
     };
+  }
+
+  public async getEventTypes(): Promise<string[]> {
+    const response = await fetch(`${this.requestUrl}EventTypes`, { headers: this.sf.getModuleHeaders() });
+    return (await response.json()) as string[];
   }
 
   private static toSeverity(severity: EventLogSeverityResponse): EventLogSeverityInfo {
@@ -50,11 +57,6 @@ export class EventLogClient {
     return {
       currentPage: pagination.CurrentPage,
       pages: pagination.Pages,
-      records: pagination.Records,
-      navigation: {
-        next: pagination.Navigation.Next,
-        previous: pagination.Navigation.Previous,
-      },
     };
   }
 }
@@ -65,13 +67,8 @@ export interface BrowseResponse {
 }
 
 export interface Pagination {
-  records: number;
   pages: number;
   currentPage: number;
-  navigation: {
-    previous?: string;
-    next?: string;
-  };
 }
 
 interface ResponseBody {
@@ -80,13 +77,8 @@ interface ResponseBody {
 }
 
 interface PaginationResponse {
-  Records: number;
   Pages: number;
   CurrentPage: number;
-  Navigation: {
-    Previous?: string;
-    Next?: string;
-  };
 }
 
 interface EventLogResponse {
