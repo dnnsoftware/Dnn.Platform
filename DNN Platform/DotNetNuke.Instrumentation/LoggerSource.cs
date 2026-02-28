@@ -4,8 +4,11 @@
 
 namespace DotNetNuke.Instrumentation
 {
+    using DotNetNuke.Internal.SourceGenerators;
+
     /// <summary>Provides access to an <see cref="ILoggerSource"/> instance.</summary>
-    public static class LoggerSource
+    [DnnDeprecated(10, 3, 0, "Use Microsoft's ILogger instead", RemovalVersion = 12)]
+    public static partial class LoggerSource
     {
         /// <summary>Gets the instance.</summary>
         public static ILoggerSource Instance { get; private set; } = new LoggerSourceImpl();
