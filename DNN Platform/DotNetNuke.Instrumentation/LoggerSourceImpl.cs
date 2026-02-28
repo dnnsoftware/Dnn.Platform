@@ -7,14 +7,8 @@ namespace DotNetNuke.Instrumentation
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
-    using System.IO;
 
-    using DotNetNuke.Internal.SourceGenerators;
-    using log4net;
-    using log4net.Config;
-    using log4net.Core;
-    using log4net.Repository;
-    using log4net.Util;
+    using Serilog;
 
     /// <summary>An <see cref="ILoggerSource"/> implementation.</summary>
     [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
@@ -23,68 +17,66 @@ namespace DotNetNuke.Instrumentation
         /// <inheritdoc />
         public ILog GetLogger(Type type)
         {
-            return new Logger(LogManager.GetLogger(type).Logger, type);
+            return new Logger(type);
         }
 
         /// <inheritdoc />
         public ILog GetLogger(string name)
         {
-            return new Logger(LogManager.GetLogger(name).Logger, null);
+            return new Logger(null);
         }
 
-        private sealed class Logger : LoggerWrapperImpl, ILog
+        private sealed class Logger : ILog
         {
-            private const string ConfigFile = "DotNetNuke.log4net.config";
-            private static readonly object ConfigLock = new object();
-            private static Level levelTrace;
-            private static Level levelDebug;
-            private static Level levelInfo;
-            private static Level levelWarn;
-            private static Level levelError;
-            private static Level levelFatal;
-            private static bool configured;
+            private readonly ILogger logger;
 
-            // add custom logging levels (below trace value of 20000)
-            //            internal static Level LevelLogInfo = new Level(10001, "LogInfo");
-            //            internal static Level LevelLogError = new Level(10002, "LogError");
-            private readonly Type stackBoundary = typeof(Logger);
-
-            internal Logger(ILogger logger, Type type)
-                : base(logger)
+            internal Logger(Type type)
             {
-                this.stackBoundary = type ?? typeof(Logger);
-                EnsureConfig();
-                ReloadLevels(logger.Repository);
+                if (Log.Logger == null)
+                {
+                    // initialize Serilog
+                    var hostMapPath = System.Web.Hosting.HostingEnvironment.MapPath("~");
+                    SerilogController.AddSerilog(hostMapPath);
+                }
+
+                if (type == null)
+                {
+                    this.logger = Log.Logger;
+                }
+                else
+                {
+                    this.logger = Log.ForContext(type);
+                }
             }
 
             public bool IsDebugEnabled
             {
-                get { return this.Logger.IsEnabledFor(levelDebug); }
+                get { return this.logger.IsEnabled(Serilog.Events.LogEventLevel.Debug); }
             }
 
             public bool IsInfoEnabled
             {
-                get { return this.Logger.IsEnabledFor(levelInfo); }
+                get { return this.logger.IsEnabled(Serilog.Events.LogEventLevel.Information); }
             }
 
             public bool IsTraceEnabled
             {
-                get { return this.Logger.IsEnabledFor(levelTrace); }
+                get { return this.logger.IsEnabled(Serilog.Events.LogEventLevel.Verbose); }
             }
 
             public bool IsWarnEnabled
             {
-                get { return this.Logger.IsEnabledFor(levelWarn); }
+                get { return this.logger.IsEnabled(Serilog.Events.LogEventLevel.Warning); }
             }
 
             public bool IsErrorEnabled
             {
-                get { return this.Logger.IsEnabledFor(levelError); }
+                get { return this.logger.IsEnabled(Serilog.Events.LogEventLevel.Error); }
             }
 
             public bool IsFatalEnabled
             {
-                get { return this.Logger.IsEnabledFor(levelFatal); }
+                get { return this.logger.IsEnabled(Serilog.Events.LogEventLevel.Fatal); }
             }
 
             public void Debug(object message)
@@ -94,7 +86,14 @@ namespace DotNetNuke.Instrumentation
 
             public void Debug(object message, Exception exception)
             {
-                this.Logger.Log(this.stackBoundary, levelDebug, message, exception);
+                if (message is string)
+                {
+                    this.logger.Debug(exception, (string)message);
+                }
+                else
+                {
+                    this.logger.Debug(exception, message.ToString());
+                }
             }
 
             public void DebugFormat(string format, params object[] args)
@@ -104,7 +103,7 @@ namespace DotNetNuke.Instrumentation
 
             public void DebugFormat(IFormatProvider provider, string format, params object[] args)
             {
-                this.Logger.Log(this.stackBoundary, levelDebug, new SystemStringFormat(provider, format, args), null);
+                this.logger.Debug(string.Format(CultureInfo.InvariantCulture, format, args));
             }
 
             public void Info(object message)
@@ -114,7 +113,14 @@ namespace DotNetNuke.Instrumentation
 
             public void Info(object message, Exception exception)
             {
-                this.Logger.Log(this.stackBoundary, levelInfo, message, exception);
+                if (message is string)
+                {
+                    this.logger.Information(exception, (string)message);
+                }
+                else
+                {
+                    this.logger.Information(exception, message.ToString());
+                }
             }
 
             public void InfoFormat(string format, params object[] args)
@@ -124,7 +130,7 @@ namespace DotNetNuke.Instrumentation
 
             public void InfoFormat(IFormatProvider provider, string format, params object[] args)
             {
-                this.Logger.Log(this.stackBoundary, levelInfo, new SystemStringFormat(provider, format, args), null);
+                this.logger.Information(string.Format(CultureInfo.InvariantCulture, format, args));
             }
 
             public void Trace(object message)
@@ -134,7 +140,14 @@ namespace DotNetNuke.Instrumentation
 
             public void Trace(object message, Exception exception)
             {
-                this.Logger.Log(this.stackBoundary, levelTrace, message, exception);
+                if (message is string)
+                {
+                    this.logger.Verbose(exception, (string)message);
+                }
+                else
+                {
+                    this.logger.Verbose(exception, message.ToString());
+                }
             }
 
             public void TraceFormat(string format, params object[] args)
@@ -144,7 +157,7 @@ namespace DotNetNuke.Instrumentation
 
             public void TraceFormat(IFormatProvider provider, string format, params object[] args)
             {
-                this.Logger.Log(this.stackBoundary, levelTrace, new SystemStringFormat(provider, format, args), null);
+                this.logger.Verbose(string.Format(CultureInfo.InvariantCulture, format, args));
             }
 
             public void Warn(object message)
@@ -154,7 +167,14 @@ namespace DotNetNuke.Instrumentation
 
             public void Warn(object message, Exception exception)
             {
-                this.Logger.Log(this.stackBoundary, levelWarn, message, exception);
+                if (message is string)
+                {
+                    this.logger.Warning(exception, (string)message);
+                }
+                else
+                {
+                    this.logger.Warning(exception, message.ToString());
+                }
             }
 
             public void WarnFormat(string format, params object[] args)
@@ -164,7 +184,7 @@ namespace DotNetNuke.Instrumentation
 
             public void WarnFormat(IFormatProvider provider, string format, params object[] args)
             {
-                this.Logger.Log(this.stackBoundary, levelWarn, new SystemStringFormat(provider, format, args), null);
+                this.logger.Warning(string.Format(CultureInfo.InvariantCulture, format, args));
             }
 
             public void Error(object message)
@@ -174,7 +194,14 @@ namespace DotNetNuke.Instrumentation
 
             public void Error(object message, Exception exception)
             {
-                this.Logger.Log(this.stackBoundary, levelError, message, exception);
+                if (message is string)
+                {
+                    this.logger.Error(exception, (string)message);
+                }
+                else
+                {
+                    this.logger.Error(exception, message.ToString());
+                }
             }
 
             public void ErrorFormat(string format, params object[] args)
@@ -184,7 +211,7 @@ namespace DotNetNuke.Instrumentation
 
             public void ErrorFormat(IFormatProvider provider, string format, params object[] args)
             {
-                this.Logger.Log(this.stackBoundary, levelError, new SystemStringFormat(provider, format, args), null);
+                this.logger.Error(string.Format(CultureInfo.InvariantCulture, format, args));
             }
 
             public void Fatal(object message)
@@ -194,7 +221,14 @@ namespace DotNetNuke.Instrumentation
 
             public void Fatal(object message, Exception exception)
             {
-                this.Logger.Log(this.stackBoundary, levelFatal, message, exception);
+                if (message is string)
+                {
+                    this.logger.Fatal(exception, (string)message);
+                }
+                else
+                {
+                    this.logger.Fatal(exception, message.ToString());
+                }
             }
 
             public void FatalFormat(string format, params object[] args)
@@ -204,58 +238,7 @@ namespace DotNetNuke.Instrumentation
 
             public void FatalFormat(IFormatProvider provider, string format, params object[] args)
             {
-                this.Logger.Log(this.stackBoundary, levelFatal, new SystemStringFormat(provider, format, args), null);
-            }
-
-            private static void EnsureConfig()
-            {
-                if (!configured)
-                {
-                    lock (ConfigLock)
-                    {
-                        if (!configured)
-                        {
-                            var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigFile);
-                            var originalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config\\" + ConfigFile);
-                            if (!File.Exists(configPath) && File.Exists(originalPath))
-                            {
-                                File.Copy(originalPath, configPath);
-                            }
-
-                            if (File.Exists(configPath))
-                            {
-                                AddGlobalContext();
-                                XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
-                            }
-
-                            configured = true;
-                        }
-                    }
-                }
-            }
-
-            private static void ReloadLevels(ILoggerRepository repository)
-            {
-                LevelMap levelMap = repository.LevelMap;
-
-                levelTrace = levelMap.LookupWithDefault(Level.Trace);
-                levelDebug = levelMap.LookupWithDefault(Level.Debug);
-                levelInfo = levelMap.LookupWithDefault(Level.Info);
-                levelWarn = levelMap.LookupWithDefault(Level.Warn);
-                levelError = levelMap.LookupWithDefault(Level.Error);
-                levelFatal = levelMap.LookupWithDefault(Level.Fatal);
-            }
-
-            private static void AddGlobalContext()
-            {
-                try
-                {
-                    GlobalContext.Properties["appdomain"] = AppDomain.CurrentDomain.Id.ToString("D", CultureInfo.InvariantCulture);
-                }
-                catch
-                {
-                    // do nothing but just make sure no exception here.
-                }
+                this.logger.Fatal(string.Format(CultureInfo.InvariantCulture, format, args));
             }
         }
     }
