@@ -15,14 +15,14 @@ using Serilog;
 internal sealed class SerilogController
 {
     /// <summary>
-    /// Sets up Serilog using the config file ~/Config/Serilog.config.
+    /// Sets up Serilog using the config file ~/Serilog.config.
     /// </summary>
     /// <param name="hostMapPath">Path to the root of the DNN installation.</param>
     internal static void AddSerilog(string hostMapPath)
     {
-        var configFile = hostMapPath + "\\Config\\Serilog.config";
+        var configFile = Path.Combine(hostMapPath, "Serilog.config");
         var config = new LoggerConfiguration()
-            .WriteTo.File(hostMapPath + "\\Portals\\_default\\Logs\\log.txt", rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
+            .WriteTo.File(Path.Combine(hostMapPath, "Portals\\_default\\Logs\\log.txt"), rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
             .MinimumLevel.Debug();
         if (File.Exists(configFile))
         {
