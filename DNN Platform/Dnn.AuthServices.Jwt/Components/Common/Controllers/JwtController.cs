@@ -9,7 +9,6 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
     using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
-    using System.Runtime.CompilerServices;
     using System.Security.Claims;
     using System.Security.Cryptography;
     using System.Text;
@@ -130,7 +129,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (!JwtAuthMessageHandler.IsEnabled)
             {
-                Logger.LogTrace(this.SchemeType + " is not registered/enabled in web.config file");
+                Logger.LogTrace("{SchemeType} is not registered/enabled in web.config file", this.SchemeType);
                 return false;
             }
 
@@ -158,7 +157,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (!JwtAuthMessageHandler.IsEnabled)
             {
-                Logger.LogTrace(this.SchemeType + " is not registered/enabled in web.config file");
+                Logger.LogTrace("{SchemeType} is not registered/enabled in web.config file", this.SchemeType);
                 return EmptyWithError("disabled");
             }
 
@@ -245,7 +244,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (!JwtAuthMessageHandler.IsEnabled)
             {
-                Logger.LogTrace(this.SchemeType + " is not registered/enabled in web.config file");
+                Logger.LogTrace("{SchemeType} is not registered/enabled in web.config file", this.SchemeType);
                 return EmptyWithError("disabled");
             }
 
@@ -536,7 +535,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             if (!string.Equals(authHdr.Scheme, AuthScheme, StringComparison.CurrentCultureIgnoreCase))
             {
-                Logger.LogTrace("Authorization header scheme in the request is not equal to " + this.SchemeType);
+                Logger.LogTrace("Authorization header scheme in the request is not equal to {SchemeType}", this.SchemeType);
 
                 return null;
             }
@@ -565,7 +564,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var decoded = DecodeBase64(parts[0]);
             if (decoded.IndexOf("\"" + this.SchemeType + "\"", StringComparison.InvariantCultureIgnoreCase) < 0)
             {
-                Logger.LogTrace($"This is not a {this.SchemeType} authentication scheme.");
+                Logger.LogTrace("This is not a {SchemeType} authentication scheme.", this.SchemeType);
 
                 return null;
             }
@@ -589,7 +588,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (!this.SchemeType.Equals(token.Typ, StringComparison.OrdinalIgnoreCase))
             {
-                Logger.LogTrace("Unsupported authentication scheme type " + token.Typ);
+                Logger.LogTrace("Unsupported authentication scheme type {Type}", token.Typ);
 
                 return false;
             }
