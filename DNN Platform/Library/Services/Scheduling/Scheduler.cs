@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Scheduling
@@ -876,13 +876,13 @@ namespace DotNetNuke.Services.Scheduling
                                     scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddDays(scheduleHistoryItem.TimeLapse);
                                     break;
                                 case "w":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse * 7);
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddDays(scheduleHistoryItem.TimeLapse * 7);
                                     break;
                                 case "mo":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.TimeLapse);
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddMonths(scheduleHistoryItem.TimeLapse);
                                     break;
                                 case "y":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.TimeLapse);
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddYears(scheduleHistoryItem.TimeLapse);
                                     break;
                             }
                         }
@@ -891,25 +891,25 @@ namespace DotNetNuke.Services.Scheduling
                             switch (scheduleHistoryItem.TimeLapseMeasurement)
                             {
                                 case "s":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddSeconds(scheduleHistoryItem.TimeLapse);
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddSeconds(scheduleHistoryItem.TimeLapse);
                                     break;
                                 case "m":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddMinutes(scheduleHistoryItem.TimeLapse);
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddMinutes(scheduleHistoryItem.TimeLapse);
                                     break;
                                 case "h":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddHours(scheduleHistoryItem.TimeLapse);
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddHours(scheduleHistoryItem.TimeLapse);
                                     break;
                                 case "d":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse);
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddDays(scheduleHistoryItem.TimeLapse);
                                     break;
                                 case "w":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse * 7);
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddDays(scheduleHistoryItem.TimeLapse * 7);
                                     break;
                                 case "mo":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.TimeLapse);
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddMonths(scheduleHistoryItem.TimeLapse);
                                     break;
                                 case "y":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.TimeLapse);
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddYears(scheduleHistoryItem.TimeLapse);
                                     break;
                             }
                         }
@@ -1183,15 +1183,15 @@ namespace DotNetNuke.Services.Scheduling
                                         break;
                                     case "w":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse * 7);
+                                            scheduleHistoryItem.NextStart.AddDays(scheduleHistoryItem.TimeLapse * 7);
                                         break;
                                     case "mo":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.TimeLapse);
+                                            scheduleHistoryItem.NextStart.AddMonths(scheduleHistoryItem.TimeLapse);
                                         break;
                                     case "y":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.TimeLapse);
+                                            scheduleHistoryItem.NextStart.AddYears(scheduleHistoryItem.TimeLapse);
                                         break;
                                 }
                             }
@@ -1201,31 +1201,31 @@ namespace DotNetNuke.Services.Scheduling
                                 {
                                     case "s":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.StartDate.AddSeconds(scheduleHistoryItem.TimeLapse);
+                                            scheduleHistoryItem.NextStart.AddSeconds(scheduleHistoryItem.TimeLapse);
                                         break;
                                     case "m":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.StartDate.AddMinutes(scheduleHistoryItem.TimeLapse);
+                                            scheduleHistoryItem.NextStart.AddMinutes(scheduleHistoryItem.TimeLapse);
                                         break;
                                     case "h":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.StartDate.AddHours(scheduleHistoryItem.TimeLapse);
+                                            scheduleHistoryItem.NextStart.AddHours(scheduleHistoryItem.TimeLapse);
                                         break;
                                     case "d":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse);
+                                            scheduleHistoryItem.NextStart.AddDays(scheduleHistoryItem.TimeLapse);
                                         break;
                                     case "w":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse * 7);
+                                            scheduleHistoryItem.NextStart.AddDays(scheduleHistoryItem.TimeLapse * 7);
                                         break;
                                     case "mo":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.TimeLapse);
+                                            scheduleHistoryItem.NextStart.AddMonths(scheduleHistoryItem.TimeLapse);
                                         break;
                                     case "y":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.TimeLapse);
+                                            scheduleHistoryItem.NextStart.AddYears(scheduleHistoryItem.TimeLapse);
                                         break;
                                 }
                             }
