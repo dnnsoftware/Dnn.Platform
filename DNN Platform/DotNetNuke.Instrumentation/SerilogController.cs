@@ -22,8 +22,22 @@ internal sealed class SerilogController
     {
         var configFile = Path.Combine(hostMapPath, "Serilog.config");
         var config = new LoggerConfiguration()
-            .WriteTo.File(Path.Combine(hostMapPath, "Portals\\_default\\Logs\\log.txt"), rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
-            .MinimumLevel.Debug();
+            .WriteTo.File(
+                Path.Combine(hostMapPath, "Portals\\_default\\Logs\\log.txt"),
+                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}",
+                rollingInterval: RollingInterval.Day,
+                formatProvider: CultureInfo.InvariantCulture)
+            .MinimumLevel.Error();
+
+        if (!File.Exists(configFile))
+        {
+            var defaultConfigFile = Path.Combine(hostMapPath, "Config", "Serilog.default.config");
+            if (File.Exists(defaultConfigFile))
+            {
+                File.Copy(defaultConfigFile, configFile);
+            }
+        }
+
         if (File.Exists(configFile))
         {
             config = new LoggerConfiguration()
