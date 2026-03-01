@@ -8,35 +8,25 @@ namespace DotNetNuke.Instrumentation
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
 
-    using DotNetNuke.Internal.SourceGenerators;
     using Serilog;
 
     /// <summary>An <see cref="ILoggerSource"/> implementation.</summary>
     [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
-    [DnnDeprecated(10, 3, 0, "Use Microsoft's ILogger instead", RemovalVersion = 12)]
-#pragma warning disable CS0618 // Type or member is obsolete
     public partial class LoggerSourceImpl : ILoggerSource
-#pragma warning restore CS0618 // Type or member is obsolete
     {
         /// <inheritdoc />
-#pragma warning disable CS0618 // Type or member is obsolete
         public ILog GetLogger(Type type)
-#pragma warning restore CS0618 // Type or member is obsolete
         {
             return new Logger(type);
         }
 
         /// <inheritdoc />
-#pragma warning disable CS0618 // Type or member is obsolete
         public ILog GetLogger(string name)
-#pragma warning restore CS0618 // Type or member is obsolete
         {
             return new Logger(null);
         }
 
-#pragma warning disable CS0618 // Type or member is obsolete
         private sealed class Logger : ILog
-#pragma warning restore CS0618 // Type or member is obsolete
         {
             private readonly ILogger logger;
 
