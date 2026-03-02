@@ -876,13 +876,13 @@ namespace DotNetNuke.Services.Scheduling
                                     scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddDays(scheduleHistoryItem.TimeLapse);
                                     break;
                                 case "w":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddDays(scheduleHistoryItem.TimeLapse * 7);
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse * 7);
                                     break;
                                 case "mo":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddMonths(scheduleHistoryItem.TimeLapse);
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.TimeLapse);
                                     break;
                                 case "y":
-                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddYears(scheduleHistoryItem.TimeLapse);
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.TimeLapse);
                                     break;
                             }
                         }
