@@ -23351,11 +23351,11 @@ __metadata:
   linkType: hard
 
 "zip-lib@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "zip-lib@npm:1.1.2"
+  version: 1.2.1
+  resolution: "zip-lib@npm:1.2.1"
   dependencies:
     yauzl: "npm:^3.2.0"
     yazl: "npm:^3.3.1"
-  checksum: 10/03c1c95a1fad986f3db21e014f2e39c0acaa5314b65dcce5dfe3be64f70755fab3706806ef70e33a2ca0f8fd3e74448ea7ee659d0b44a93890434c9c1d7aee2c
+  checksum: 10/05a034162fb0513def606eba070caf8de293df9b3fc31d1884735690e582fea0389bea1c2ce191ace82930616025cbb8eb95fbdd89d9f74092907c50e01af0fe
   languageName: node
   linkType: hard
