@@ -53,12 +53,11 @@
     <Copy SourceFiles="bin\Microsoft.Extensions.Configuration.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\Microsoft.Extensions.Configuration.Abstractions.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\Microsoft.Extensions.Configuration.Binder.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\Microsoft.Extensions.Configuration.Json.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\Microsoft.Extensions.Configuration.FileExtensions.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\Microsoft.Extensions.Configuration.Json.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\Microsoft.Extensions.DependencyModel.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\Microsoft.Extensions.FileProviders.Abstractions.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\Microsoft.Extensions.FileProviders.Physical.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\Microsoft.Extensions.FileSystemGlobbing.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\Microsoft.Extensions.Logging.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\Microsoft.Extensions.Logging.Abstractions.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\Microsoft.Extensions.Options.dll" DestinationFolder="$(WebsitePath)\bin\" />
@@ -67,7 +66,6 @@
     <Copy SourceFiles="bin\Serilog.Extensions.Logging.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\Serilog.Settings.Configuration.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\Serilog.Sinks.File.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\System.Buffers.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\System.Diagnostics.DiagnosticSource.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\System.Threading.Channels.dll" DestinationFolder="$(WebsitePath)\bin\" />
   </Target>
