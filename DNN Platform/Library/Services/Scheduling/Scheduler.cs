@@ -1183,15 +1183,15 @@ namespace DotNetNuke.Services.Scheduling
                                         break;
                                     case "w":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.NextStart.AddDays(scheduleHistoryItem.TimeLapse * 7);
+                                            scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse * 7);
                                         break;
                                     case "mo":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.NextStart.AddMonths(scheduleHistoryItem.TimeLapse);
+                                            scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.TimeLapse);
                                         break;
                                     case "y":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.NextStart.AddYears(scheduleHistoryItem.TimeLapse);
+                                            scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.TimeLapse);
                                         break;
                                 }
                             }
