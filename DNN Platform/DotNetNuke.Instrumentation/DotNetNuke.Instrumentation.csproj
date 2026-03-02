@@ -66,7 +66,13 @@
     <Copy SourceFiles="bin\Serilog.Extensions.Logging.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\Serilog.Settings.Configuration.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\Serilog.Sinks.File.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\System.Buffers.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\System.Diagnostics.DiagnosticSource.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\System.Memory.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\System.Numerics.Vectors.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\System.Text.Encodings.Web.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\System.Text.Json.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\System.Threading.Channels.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\System.ValueTuple.dll" DestinationFolder="$(WebsitePath)\bin\" />
   </Target>
 </Project>
