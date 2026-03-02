@@ -20,26 +20,20 @@ namespace DotNetNuke.Web.UI.WebControls
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A tags control.</summary>
-    public class Tags : WebControl, IPostBackEventHandler, IPostBackDataHandler
+    /// <param name="vocabularyController">The vocabulary controller.</param>
+    /// <param name="termController">The term controller.</param>
+    public class Tags(IVocabularyController vocabularyController, ITermController termController)
+        : WebControl, IPostBackEventHandler, IPostBackDataHandler
     {
-        private readonly IVocabularyController vocabularyController;
-        private readonly ITermController termController;
+        private readonly IVocabularyController vocabularyController = vocabularyController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IVocabularyController>();
+        private readonly ITermController termController = termController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITermController>();
         private string tags;
 
         /// <summary>Initializes a new instance of the <see cref="Tags"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IVocabularyController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IVocabularyController. Scheduled removal in v12.0.0.")]
         protected Tags()
             : this(null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="Tags"/> class.</summary>
-        /// <param name="vocabularyController">The vocabulary controller.</param>
-        /// <param name="termController">The term controller.</param>
-        protected Tags(IVocabularyController vocabularyController, ITermController termController)
-        {
-            this.vocabularyController = vocabularyController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IVocabularyController>();
-            this.termController = termController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITermController>();
         }
 
         /// <summary>An event which is triggered when the tags are updated.</summary>

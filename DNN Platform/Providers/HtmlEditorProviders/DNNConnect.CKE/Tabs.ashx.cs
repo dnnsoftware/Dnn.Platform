@@ -22,11 +22,15 @@ namespace DNNConnect.CKEditorProvider
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>Renders the Tab JavaScript.</summary>
-    public class Tabs : PortalModuleBase, IHttpHandler
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="appStatus">The application status.</param>
+    public class Tabs(IPortalController portalController, IHostSettings hostSettings, IApplicationStatusInfo appStatus)
+        : PortalModuleBase, IHttpHandler
     {
-        private readonly IPortalController portalController;
-        private readonly IHostSettings hostSettings;
-        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalController portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
+        private readonly IHostSettings hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
 
         /// <summary>Initializes a new instance of the <see cref="Tabs"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
@@ -37,21 +41,10 @@ namespace DNNConnect.CKEditorProvider
 
         /// <summary>Initializes a new instance of the <see cref="Tabs"/> class.</summary>
         /// <param name="portalController">The portal controller.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Tabs(IPortalController portalController)
             : this(portalController, null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="Tabs"/> class.</summary>
-        /// <param name="portalController">The portal controller.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        /// <param name="appStatus">The application status.</param>
-        public Tabs(IPortalController portalController, IHostSettings hostSettings, IApplicationStatusInfo appStatus)
-        {
-            this.portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
-            this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
-            this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
         }
 
         /// <summary>Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler"/> instance.</summary>

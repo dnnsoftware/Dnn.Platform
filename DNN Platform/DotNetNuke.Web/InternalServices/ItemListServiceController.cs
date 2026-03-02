@@ -36,19 +36,27 @@ namespace DotNetNuke.Web.InternalServices
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>A web API controller for lists of items.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="dataProvider">The data provider.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="portalGroupController">The portal group controller.</param>
+    /// <param name="vocabularyController">The vocabulary controller.</param>
+    /// <param name="termController">The term controller.</param>
     [DnnAuthorize]
-    public class ItemListServiceController : DnnApiController
+    public class ItemListServiceController(IHostSettings hostSettings, DataProvider dataProvider, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IVocabularyController vocabularyController, ITermController termController)
+        : DnnApiController
     {
         private const string PortalPrefix = "P-";
         private const string RootKey = "Root";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ItemListServiceController));
-        private readonly IHostSettings hostSettings;
-        private readonly DataProvider dataProvider;
-        private readonly IPortalController portalController;
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly IPortalGroupController portalGroupController;
-        private readonly IVocabularyController vocabularyController;
-        private readonly ITermController termController;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly DataProvider dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IPortalGroupController portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+        private readonly IVocabularyController vocabularyController = vocabularyController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IVocabularyController>();
+        private readonly ITermController termController = termController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITermController>();
 
         /// <summary>Initializes a new instance of the <see cref="ItemListServiceController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
@@ -63,29 +71,10 @@ namespace DotNetNuke.Web.InternalServices
         /// <param name="portalController">The portal controller.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="portalGroupController">The portal group controller.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IVocabularyController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IVocabularyController. Scheduled removal in v12.0.0.")]
         public ItemListServiceController(IHostSettings hostSettings, DataProvider dataProvider, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
             : this(hostSettings, dataProvider, portalController, appStatus, portalGroupController, null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="ItemListServiceController"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        /// <param name="dataProvider">The data provider.</param>
-        /// <param name="portalController">The portal controller.</param>
-        /// <param name="appStatus">The application status.</param>
-        /// <param name="portalGroupController">The portal group controller.</param>
-        /// <param name="vocabularyController">The vocabulary controller.</param>
-        /// <param name="termController">The term controller.</param>
-        public ItemListServiceController(IHostSettings hostSettings, DataProvider dataProvider, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IVocabularyController vocabularyController, ITermController termController)
-        {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-            this.dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
-            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
-            this.vocabularyController = vocabularyController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IVocabularyController>();
-            this.termController = termController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITermController>();
         }
 
         /// <summary>Gets a list of page descendants.</summary>

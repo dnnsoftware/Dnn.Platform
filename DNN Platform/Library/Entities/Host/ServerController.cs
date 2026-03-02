@@ -115,7 +115,7 @@ namespace DotNetNuke.Entities.Host
 
         /// <summary>Gets the servers.</summary>
         /// <returns>A list of servers.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial List<ServerInfo> GetServers()
             => GetServers(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
 

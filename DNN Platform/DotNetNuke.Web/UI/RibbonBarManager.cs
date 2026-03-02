@@ -223,7 +223,7 @@ namespace DotNetNuke.Web.UI
 
         /// <summary>Gets the list of pages the current user can edit.</summary>
         /// <returns>A list of <see cref="TabInfo"/> instances.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial IList<TabInfo> GetPagesList()
             => GetPagesList(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>());
 

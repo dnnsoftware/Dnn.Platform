@@ -25,7 +25,7 @@ namespace DotNetNuke.Entities.Users.Membership
         private readonly DataProvider dataProvider = dataProvider ?? DataProvider.Instance();
 
         /// <summary> Initializes a new instance of the <see cref="MembershipPasswordController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public MembershipPasswordController()
             : this(null, null)
         {

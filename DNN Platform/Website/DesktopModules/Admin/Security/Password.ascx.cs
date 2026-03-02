@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly DataProvider dataProvider;
 
         /// <summary>Initializes a new instance of the <see cref="Password"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public Password()
             : this(null, null, null, null, null, null)
         {
@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public Password(IEventLogger eventLogger, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
             : this(eventLogger, hostSettings, javaScript, clientResourceController, null, null)
         {

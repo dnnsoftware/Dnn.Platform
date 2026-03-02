@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         /// <param name="appStatus">The application status.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="hostSettings">The host settings.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public EditExtension(INavigationManager navigationManager, IApplicationStatusInfo appStatus, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings)
             : this(navigationManager, appStatus, javaScript, hostSettings, null)
         {

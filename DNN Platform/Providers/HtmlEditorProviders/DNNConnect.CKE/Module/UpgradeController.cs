@@ -18,28 +18,22 @@ namespace DNNConnect.CKEditorProvider.Module
     using DotNetNuke.Services.Upgrade;
 
     /// <summary>Add Settings Module to Host -> HTML Editor Manager Page.</summary>
-    public class UpgradeController : IUpgradeable
+    /// <param name="hostSettings">The host settings.</param>
+    public class UpgradeController(IHostSettings hostSettings) : IUpgradeable
     {
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ??
+                                                      new HostSettings(
+                                                          new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                                              new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                                              new Lazy<IPortalController>(() => PortalController.Instance)));
 
         /// <summary>Initializes a new instance of the <see cref="UpgradeController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public UpgradeController()
             : this(null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="UpgradeController"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        public UpgradeController(IHostSettings hostSettings)
-        {
-            this.hostSettings = hostSettings ??
-                                new HostSettings(
-                                    new HostController(
-#pragma warning disable CS0618 // Type or member is obsolete
-                                        new EventLogController(),
-#pragma warning restore CS0618 // Type or member is obsolete
-                                        new Lazy<IPortalController>(() => PortalController.Instance)));
         }
 
         /// <summary>Upgrades the module.</summary>

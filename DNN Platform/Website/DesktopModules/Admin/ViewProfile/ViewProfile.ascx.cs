@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
         private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
 
         /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ViewProfile()
             : this(null, null)
         {
@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
         /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ViewProfile(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript)
             : this(navigationManager, javaScript, null, null)
         {

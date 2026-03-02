@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Modules
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
+    using System.Runtime.CompilerServices;
     using System.Web;
     using System.Web.Caching;
 
@@ -52,16 +53,13 @@ namespace DotNetNuke.Entities.Modules
         TextBox = 1,
     }
 
-    /// <summary>
-    /// The UserModuleBase class defines a custom base class inherited by all
-    /// desktop portal modules within the Portal that manage Users.
-    /// </summary>
+    /// <summary>The UserModuleBase class defines a custom base class inherited by all desktop portal modules within the Portal that manage Users.</summary>
     public partial class UserModuleBase : PortalModuleBase
     {
         private UserInfo user;
 
         /// <summary>Initializes a new instance of the <see cref="UserModuleBase"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public UserModuleBase()
             : this(null, null)
         {
@@ -72,8 +70,8 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="hostSettings">The host settings.</param>
         public UserModuleBase(ListController listController, IHostSettings hostSettings)
         {
-            this.ListController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
-            this.HostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.ListController = listController ?? this.DependencyProvider.GetRequiredService<ListController>();
+            this.HostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets or sets the User associated with this control.</summary>
@@ -223,7 +221,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="portalId">The portal ID, or <see cref="Null.NullInteger"/> to save as a host setting.</param>
         /// <param name="key">The setting key.</param>
         /// <param name="setting">The setting value.</param>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IHostSettingsService")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IHostSettingsService")]
         public static partial void UpdateSetting(int portalId, string key, string setting)
             => UpdateSetting(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(), Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), portalId, key, setting);
 
@@ -248,7 +246,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>Updates the Settings for the Module.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <param name="settings">The settings to update.</param>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial void UpdateSettings(int portalId, Hashtable settings)
             => UpdateSettings(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(), Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), portalId, settings);
 

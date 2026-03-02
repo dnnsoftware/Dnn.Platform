@@ -194,7 +194,7 @@ namespace DotNetNuke.Services.Authentication
 
         /// <summary>GetAuthenticationServices fetches a list of all the Authentication Systems installed in the system.</summary>
         /// <returns>A List of AuthenticationInfo objects.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial List<AuthenticationInfo> GetAuthenticationServices()
             => GetAuthenticationServices(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
 
@@ -232,7 +232,7 @@ namespace DotNetNuke.Services.Authentication
 
         /// <summary>GetEnabledAuthenticationServices fetches a list of all the Authentication Systems installed in the system that have been enabled by the Host user.</summary>
         /// <returns>A List of AuthenticationInfo objects.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial List<AuthenticationInfo> GetEnabledAuthenticationServices()
             => GetEnabledAuthenticationServices(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
 

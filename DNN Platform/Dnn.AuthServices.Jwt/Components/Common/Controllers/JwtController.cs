@@ -33,7 +33,8 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
     using Microsoft.IdentityModel.Tokens;
 
     /// <summary>Controls JWT features.</summary>
-    internal class JwtController : ServiceLocator<IJwtController, JwtController>, IJwtController
+    internal class JwtController(IHostSettings hostSettings)
+        : ServiceLocator<IJwtController, JwtController>, IJwtController
     {
         /// <summary>The name of the authentication scheme header.</summary>
         public const string AuthScheme = "Bearer";
@@ -48,7 +49,13 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         private static readonly Encoding TextEncoder = Encoding.UTF8;
         private static object hasherLock = new object();
 
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ??
+                                                      new HostSettings(
+                                                          new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                                              new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                                              new Lazy<IPortalController>(() => PortalController.Instance)));
 
         /// <summary>Initializes static members of the <see cref="JwtController"/> class.</summary>
         static JwtController()
@@ -57,23 +64,10 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         }
 
         /// <summary>Initializes a new instance of the <see cref="JwtController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public JwtController()
             : this(null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="JwtController"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        public JwtController(IHostSettings hostSettings)
-        {
-            this.hostSettings = hostSettings ??
-                                new HostSettings(
-                                    new HostController(
-#pragma warning disable CS0618 // Type or member is obsolete
-                                        new EventLogController(),
-#pragma warning restore CS0618 // Type or member is obsolete
-                                        new Lazy<IPortalController>(() => PortalController.Instance)));
         }
 
         /// <inheritdoc />

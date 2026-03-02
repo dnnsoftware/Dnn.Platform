@@ -16,10 +16,13 @@ namespace DotNetNuke.UI.WebControls
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The ProfileEditorControl control provides a Control to display Profile Properties.</summary>
+    /// <param name="serviceProvider">The DI container.</param>
+    /// <param name="listController">The list controller.</param>
     [ToolboxData("<{0}:ProfileEditorControl runat=server></{0}:ProfileEditorControl>")]
-    public class ProfileEditorControl : CollectionEditorControl
+    public class ProfileEditorControl(IServiceProvider serviceProvider, ListController listController)
+        : CollectionEditorControl(serviceProvider)
     {
-        private readonly ListController listController;
+        private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
 
         /// <summary>Initializes a new instance of the <see cref="ProfileEditorControl"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
@@ -30,19 +33,10 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>Initializes a new instance of the <see cref="ProfileEditorControl"/> class.</summary>
         /// <param name="serviceProvider">The DI container.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public ProfileEditorControl(IServiceProvider serviceProvider)
             : this(serviceProvider, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="ProfileEditorControl"/> class.</summary>
-        /// <param name="serviceProvider">The DI container.</param>
-        /// <param name="listController">The list controller.</param>
-        public ProfileEditorControl(IServiceProvider serviceProvider, ListController listController)
-            : base(serviceProvider)
-        {
-            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
         }
 
         /// <summary>CreateEditor creates the control collection.</summary>

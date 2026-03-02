@@ -29,12 +29,16 @@ namespace DotNetNuke.Modules.CoreMessaging
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Implements the logic of the Subscription view.</summary>
-    public partial class Subscriptions : UserControl
+    /// <param name="clientResourceController">The client resources controller.</param>
+    /// <param name="servicesFramework">The web API service framework.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public partial class Subscriptions(IClientResourceController clientResourceController, IServicesFramework servicesFramework, IHostSettings hostSettings)
+        : UserControl
     {
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
-        private readonly IClientResourceController clientResourceController;
-        private readonly IServicesFramework servicesFramework;
-        private readonly IHostSettings hostSettings;
+        private readonly IClientResourceController clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+        private readonly IServicesFramework servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="Subscriptions"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.0. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
@@ -54,21 +58,10 @@ namespace DotNetNuke.Modules.CoreMessaging
         /// <summary>Initializes a new instance of the <see cref="Subscriptions"/> class.</summary>
         /// <param name="clientResourceController">The client resources controller.</param>
         /// <param name="servicesFramework">The web API service framework.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Subscriptions(IClientResourceController clientResourceController, IServicesFramework servicesFramework)
             : this(clientResourceController, servicesFramework, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="Subscriptions"/> class.</summary>
-        /// <param name="clientResourceController">The client resources controller.</param>
-        /// <param name="servicesFramework">The web API service framework.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public Subscriptions(IClientResourceController clientResourceController, IServicesFramework servicesFramework, IHostSettings hostSettings)
-        {
-            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
-            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets or sets the module context.</summary>

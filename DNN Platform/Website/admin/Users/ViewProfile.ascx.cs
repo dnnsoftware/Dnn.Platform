@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
         /// <param name="cryptographyProvider">The cryptography provider.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public ViewProfile(ICryptographyProvider cryptographyProvider)
             : this(cryptographyProvider, null, null)
         {

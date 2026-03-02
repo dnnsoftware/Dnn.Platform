@@ -22,7 +22,6 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Security;
-    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
@@ -49,7 +48,7 @@ namespace DotNetNuke.Modules.Html
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="htmlTextController">The HTML/Text controller.</param>
         /// <param name="portalAliasService">The portal alias service.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditHtml(INavigationManager navigationManager, HtmlTextController htmlTextController, IPortalAliasService portalAliasService)
             : this(null, navigationManager, htmlTextController, portalAliasService, null)
         {

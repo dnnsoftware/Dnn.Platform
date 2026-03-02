@@ -84,7 +84,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// <summary>GetModuleDefinitions gets a Dictionary of Module Definitions.</summary>
         /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping module definition ID to <see cref="ModuleDefinitionInfo"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial Dictionary<int, ModuleDefinitionInfo> GetModuleDefinitions()
             => GetModuleDefinitions(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
 

@@ -28,7 +28,8 @@ namespace DotNetNuke.Services.FileSystem
         private readonly IUserController userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
         private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
 
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with DataProvider. Scheduled removal in v12.0.0.")]
+        /// <summary>Initializes a new instance of the <see cref="FileVersionController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with DataProvider. Scheduled removal in v12.0.0.")]
         public FileVersionController()
         : this(null, null, null, null, null)
         {

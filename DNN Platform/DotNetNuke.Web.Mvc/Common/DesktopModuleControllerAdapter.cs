@@ -13,22 +13,18 @@ namespace DotNetNuke.Web.Mvc.Common
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class DesktopModuleControllerAdapter : ServiceLocator<IDesktopModuleController, DesktopModuleControllerAdapter>, IDesktopModuleController
+    /// <summary>A <see cref="IDesktopModuleController"/> implementation.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    public class DesktopModuleControllerAdapter(IHostSettings hostSettings)
+        : ServiceLocator<IDesktopModuleController, DesktopModuleControllerAdapter>, IDesktopModuleController
     {
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="DesktopModuleControllerAdapter"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public DesktopModuleControllerAdapter()
             : this(null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="DesktopModuleControllerAdapter"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        public DesktopModuleControllerAdapter(IHostSettings hostSettings)
-        {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />

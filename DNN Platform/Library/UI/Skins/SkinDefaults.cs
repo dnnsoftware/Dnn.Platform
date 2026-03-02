@@ -68,7 +68,7 @@ namespace DotNetNuke.UI.Skins
         /// <summary>Gets the defaults for the <paramref name="defaultType"/>.</summary>
         /// <param name="defaultType">The type.</param>
         /// <returns>A <see cref="SkinDefaults"/> instance.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial SkinDefaults GetSkinDefaults(SkinDefaultType defaultType)
             => GetSkinDefaults(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), defaultType);
 

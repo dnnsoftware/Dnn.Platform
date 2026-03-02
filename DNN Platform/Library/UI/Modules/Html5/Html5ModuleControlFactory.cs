@@ -15,11 +15,14 @@ namespace DotNetNuke.UI.Modules.Html5
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Module control factory for HTML modules.</summary>
-    public class Html5ModuleControlFactory : BaseModuleControlFactory
+    /// <param name="businessControllerProvider">The business controller provider.</param>
+    /// <param name="servicesFramework">The web API service framework.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class Html5ModuleControlFactory(IBusinessControllerProvider businessControllerProvider, IServicesFramework servicesFramework, IHostSettings hostSettings) : BaseModuleControlFactory
     {
-        private readonly IServicesFramework servicesFramework;
-        private readonly IBusinessControllerProvider businessControllerProvider;
-        private readonly IHostSettings hostSettings;
+        private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+        private readonly IServicesFramework servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="Html5ModuleControlFactory"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
@@ -30,21 +33,10 @@ namespace DotNetNuke.UI.Modules.Html5
 
         /// <summary>Initializes a new instance of the <see cref="Html5ModuleControlFactory"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Html5ModuleControlFactory(IBusinessControllerProvider businessControllerProvider)
             : this(businessControllerProvider, null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="Html5ModuleControlFactory"/> class.</summary>
-        /// <param name="businessControllerProvider">The business controller provider.</param>
-        /// <param name="servicesFramework">The web API service framework.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public Html5ModuleControlFactory(IBusinessControllerProvider businessControllerProvider, IServicesFramework servicesFramework, IHostSettings hostSettings)
-        {
-            this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
-            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />

@@ -20,22 +20,17 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class RazorTemplateProcessor : ITemplateProcessor
+    /// <summary>An <see cref="ITemplateProcessor"/> for Razor files.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    public class RazorTemplateProcessor(IHostSettings hostSettings) : ITemplateProcessor
     {
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="RazorTemplateProcessor"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public RazorTemplateProcessor()
             : this(null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="RazorTemplateProcessor"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        public RazorTemplateProcessor(IHostSettings hostSettings)
-        {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />

@@ -70,7 +70,8 @@ namespace DotNetNuke.Services.FileSystem
         private readonly DataProvider dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
         private readonly IPathUtils pathUtils = pathUtils ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPathUtils>();
 
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IFileSecurityController. Scheduled removal in v12.0.0.")]
+        /// <summary>Initializes a new instance of the <see cref="FileManager"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IFileSecurityController. Scheduled removal in v12.0.0.")]
         public FileManager()
             : this(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
         {

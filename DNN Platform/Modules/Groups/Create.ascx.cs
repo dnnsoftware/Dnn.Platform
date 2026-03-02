@@ -54,7 +54,7 @@ public partial class Create : GroupsModuleBase
     /// <param name="applicationStatusInfo">The application status info.</param>
     /// <param name="eventLogger">The event logger.</param>
     /// <param name="dataProvider">The data provider.</param>
-    [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+    [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
     public Create(INavigationManager navigationManager, IFileManager fileManager, IFolderManager folderManager, IFileContentTypeManager fileContentTypeManager, IRoleController roleController, IApplicationStatusInfo applicationStatusInfo, IEventLogger eventLogger, DataProvider dataProvider)
         : this(navigationManager, fileManager, folderManager, fileContentTypeManager, roleController, applicationStatusInfo, eventLogger, dataProvider, null)
     {

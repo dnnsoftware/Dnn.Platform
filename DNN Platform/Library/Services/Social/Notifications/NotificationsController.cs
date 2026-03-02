@@ -28,17 +28,21 @@ namespace DotNetNuke.Services.Social.Notifications
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>Provides the methods to work with Notifications, NotificationTypes, NotificationTypeActions and NotificationActions.</summary>
-    public class NotificationsController : ServiceLocator<INotificationsController, NotificationsController>, INotificationsController
+    /// <param name="dataService">Class with methods to do CRUD in database for the entities of types <see cref="NotificationType"></see>, <see cref="NotificationTypeAction"></see> and <see cref="Notification"></see>.</param>
+    /// <param name="messagingDataService">Class with methods to do CRUD in database for the entities of types <see cref="Message"></see>, <see cref="MessageRecipient"></see> and <see cref="MessageAttachment"></see> and to interact with the stored procedures regarding messaging.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class NotificationsController(IDataService dataService, Messaging.Data.IDataService messagingDataService, IHostSettings hostSettings)
+        : ServiceLocator<INotificationsController, NotificationsController>, INotificationsController
     {
         internal const int ConstMaxSubject = 400;
         internal const int ConstMaxTo = 2000;
         private const string ToastsCacheKey = "GetToasts_{0}";
-        private readonly IDataService dataService;
-        private readonly Messaging.Data.IDataService messagingDataService;
-        private readonly IHostSettings hostSettings;
+        private readonly IDataService dataService = dataService ?? DataService.Instance;
+        private readonly Messaging.Data.IDataService messagingDataService = messagingDataService ?? Messaging.Data.DataService.Instance;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="NotificationsController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public NotificationsController()
             : this(null, null)
         {
@@ -47,21 +51,10 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <summary>Initializes a new instance of the <see cref="NotificationsController"/> class from a specific data service.</summary>
         /// <param name="dataService">Class with methods to do CRUD in database for the entities of types <see cref="NotificationType"></see>, <see cref="NotificationTypeAction"></see> and <see cref="Notification"></see>.</param>
         /// <param name="messagingDataService">Class with methods to do CRUD in database for the entities of types <see cref="Message"></see>, <see cref="MessageRecipient"></see> and <see cref="MessageAttachment"></see> and to interact with the stored procedures regarding messaging.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public NotificationsController(IDataService dataService, Messaging.Data.IDataService messagingDataService)
             : this(dataService, messagingDataService, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="NotificationsController"/> class from a specific data service.</summary>
-        /// <param name="dataService">Class with methods to do CRUD in database for the entities of types <see cref="NotificationType"></see>, <see cref="NotificationTypeAction"></see> and <see cref="Notification"></see>.</param>
-        /// <param name="messagingDataService">Class with methods to do CRUD in database for the entities of types <see cref="Message"></see>, <see cref="MessageRecipient"></see> and <see cref="MessageAttachment"></see> and to interact with the stored procedures regarding messaging.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public NotificationsController(IDataService dataService, Messaging.Data.IDataService messagingDataService, IHostSettings hostSettings)
-        {
-            this.dataService = dataService ?? DataService.Instance;
-            this.messagingDataService = messagingDataService ?? Messaging.Data.DataService.Instance;
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />

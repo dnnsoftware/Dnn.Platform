@@ -4,7 +4,6 @@
 namespace DotNetNuke.Entities.Modules
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
@@ -31,30 +30,23 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.EventQueue;
     using DotNetNuke.Services.Installer.Packages;
-    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Upgrade;
 
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>DesktopModuleController provides the Business Layer for Desktop Modules.</summary>
-    public partial class DesktopModuleController
+        /// <param name="eventLogger">The event logger.</param>
+    public partial class DesktopModuleController(IEventLogger eventLogger)
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DesktopModuleController));
         private static readonly DataProvider DataProvider = DataProvider.Instance();
-        private readonly IEventLogger eventLogger;
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
 
         /// <summary>Initializes a new instance of the <see cref="DesktopModuleController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public DesktopModuleController()
             : this(null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="DesktopModuleController"/> class.</summary>
-        /// <param name="eventLogger">The event logger.</param>
-        public DesktopModuleController(IEventLogger eventLogger)
-        {
-            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         public static void AddModuleCategory(string category)
@@ -100,18 +92,18 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>GetDesktopModule gets a Desktop Module by its ID.</summary>
         /// <remarks>This method uses the cached Dictionary of DesktopModules.  It first checks
         /// if the DesktopModule is in the cache.  If it is not in the cache it then makes a call
-        /// to the Dataprovider.</remarks>
+        /// to the <see cref="DataProvider"/>.</remarks>
         /// <param name="desktopModuleID">The ID of the Desktop Module to get.</param>
         /// <param name="portalID">The ID of the portal.</param>
         /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial DesktopModuleInfo GetDesktopModule(int desktopModuleID, int portalID)
             => GetDesktopModule(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), desktopModuleID, portalID);
 
         /// <summary>GetDesktopModule gets a Desktop Module by its ID.</summary>
         /// <remarks>This method uses the cached Dictionary of DesktopModules.  It first checks
         /// if the DesktopModule is in the cache.  If it is not in the cache it then makes a call
-        /// to the Dataprovider.</remarks>
+        /// to the <see cref="DataProvider"/>.</remarks>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="desktopModuleId">The ID of the Desktop Module to get.</param>
         /// <param name="portalId">The ID of the portal.</param>
@@ -142,11 +134,11 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>GetDesktopModuleByPackageID gets a Desktop Module by its Package ID.</summary>
         /// <param name="packageID">The ID of the Package.</param>
         /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial DesktopModuleInfo GetDesktopModuleByPackageID(int packageID)
             => GetDesktopModuleByPackageID(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), packageID);
 
-        /// <summary>GetDesktopModuleByPackageID gets a Desktop Module by its Package ID.</summary>
+        /// <summary>Gets a Desktop Module by its Package ID.</summary>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="packageId">The ID of the Package.</param>
         /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
@@ -173,7 +165,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="moduleName">The name of the Desktop Module to get.</param>
         /// <param name="portalID">The ID of the portal.</param>
         /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial DesktopModuleInfo GetDesktopModuleByModuleName(string moduleName, int portalID)
             => GetDesktopModuleByModuleName(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), moduleName, portalID);
 
@@ -203,7 +195,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>GetDesktopModules gets a Dictionary of Desktop Modules.</summary>
         /// <param name="portalID">The ID of the Portal (Use PortalID = Null.NullInteger (-1) to get all the DesktopModules including Modules not allowed for the current portal).</param>
         /// <returns>A new <see cref="Dictionary{TKey,TValue}"/> mapping desktop module ID to <see cref="DesktopModuleInfo"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial Dictionary<int, DesktopModuleInfo> GetDesktopModules(int portalID)
             => GetDesktopModules(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalID);
 
@@ -219,7 +211,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>Gets a Desktop Module by its friendly name.</summary>
         /// <param name="friendlyName">The friendly name of the Desktop Module to get.</param>
         /// <returns>The <see cref="DesktopModuleInfo"/> or <see langword="null"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial DesktopModuleInfo GetDesktopModuleByFriendlyName(string friendlyName)
             => GetDesktopModuleByFriendlyName(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), friendlyName);
 
@@ -352,7 +344,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// <summary>Adds each non-premium desktop module to the specified portal.</summary>
         /// <param name="portalId">The portal ID.</param>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial void AddDesktopModulesToPortal(int portalId)
             => AddDesktopModulesToPortal(
                 Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
@@ -399,7 +391,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>Gets the <see cref="PortalDesktopModuleInfo"/> values for the specified portal.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <returns>A dictionary of <see cref="PortalDesktopModuleInfo"/> instances by <see cref="PortalDesktopModuleInfo.PortalDesktopModuleID"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial Dictionary<int, PortalDesktopModuleInfo> GetPortalDesktopModulesByPortalID(int portalId)
             => GetPortalDesktopModulesByPortalID(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId);
 
@@ -420,7 +412,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>Gets the portal desktop modules.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <returns>A <see cref="SortedList{T,U}"/> of <see cref="PortalDesktopModuleInfo"/> instances by <see cref="PortalDesktopModuleInfo.FriendlyName"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial SortedList<string, PortalDesktopModuleInfo> GetPortalDesktopModules(int portalId)
             => GetPortalDesktopModules(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId);
 

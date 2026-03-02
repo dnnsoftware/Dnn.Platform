@@ -15,26 +15,19 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Used to resolved paths.</summary>
-    public class PathResolver
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="manifestFolder">The folder where the manifest is located.</param>
+    public class PathResolver(IHostSettings hostSettings, string manifestFolder)
     {
-        private readonly IHostSettings hostSettings;
-        private readonly string manifestFolder;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly string manifestFolder = manifestFolder;
 
         /// <summary>Initializes a new instance of the <see cref="PathResolver"/> class.</summary>
         /// <param name="manifestFolder">The folder where the manifest is located.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public PathResolver(string manifestFolder)
             : this(null, manifestFolder)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="PathResolver"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        /// <param name="manifestFolder">The folder where the manifest is located.</param>
-        public PathResolver(IHostSettings hostSettings, string manifestFolder)
-        {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-            this.manifestFolder = manifestFolder;
         }
 
         /// <summary>To which folder is the path relative to.</summary>

@@ -19,25 +19,20 @@ namespace Dnn.EditBar.UI.Items
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Personalization;
 
-    public abstract class WorkflowBaseMenuItem : BaseMenuItem
+    /// <summary>A <see cref="BaseMenuItem"/> for workflow menu items.</summary>
+    /// <param name="contentController">The content controller.</param>
+    /// <param name="workflowEngine">The workflow engine.</param>
+    public abstract class WorkflowBaseMenuItem(IContentController contentController, IWorkflowEngine workflowEngine)
+        : BaseMenuItem
     {
-        private readonly IContentController contentController;
-        private readonly IWorkflowEngine workflowEngine;
+        private readonly IContentController contentController = contentController ?? ContentController.Instance;
+        private readonly IWorkflowEngine workflowEngine = workflowEngine ?? WorkflowEngine.Instance;
 
         /// <summary>Initializes a new instance of the <see cref="WorkflowBaseMenuItem"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IContentController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IContentController. Scheduled removal in v12.0.0.")]
         protected WorkflowBaseMenuItem()
             : this(null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="WorkflowBaseMenuItem"/> class.</summary>
-        /// <param name="contentController">The content controller.</param>
-        /// <param name="workflowEngine">The workflow engine.</param>
-        protected WorkflowBaseMenuItem(IContentController contentController, IWorkflowEngine workflowEngine)
-        {
-            this.contentController = contentController ?? ContentController.Instance;
-            this.workflowEngine = workflowEngine ?? WorkflowEngine.Instance;
         }
 
         internal Workflow Workflow => this.WorkflowState != null ? WorkflowManager.Instance.GetWorkflow(this.WorkflowState.WorkflowID) : null;

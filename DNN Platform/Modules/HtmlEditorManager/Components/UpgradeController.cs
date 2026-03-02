@@ -24,19 +24,26 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Upgrade;
 
-    using Microsoft.Extensions.DependencyInjection;
-
     /// <summary>Class that contains upgrade procedures.</summary>
-    public class UpgradeController : IUpgradeable
+    /// <param name="applicationStatusInfo">The application status info.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class UpgradeController(IApplicationStatusInfo applicationStatusInfo, IHostSettings hostSettings)
+        : IUpgradeable
     {
         /// <summary>The module folder location.</summary>
         private const string ModuleFolder = "~/DesktopModules/Admin/HtmlEditorManager";
 
-        private readonly IApplicationStatusInfo applicationStatusInfo;
-        private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo applicationStatusInfo = applicationStatusInfo ?? new ApplicationStatusInfo(new Application());
+        private readonly IHostSettings hostSettings = hostSettings ??
+                                                      new HostSettings(
+                                                          new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                                              new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                                              new Lazy<IPortalController>(() => PortalController.Instance)));
 
         /// <summary> Initializes a new instance of the <see cref="UpgradeController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public UpgradeController()
             : this(null, null)
         {
@@ -44,25 +51,10 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
 
         /// <summary> Initializes a new instance of the <see cref="UpgradeController"/> class.</summary>
         /// <param name="applicationStatusInfo">The application status info.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public UpgradeController(IApplicationStatusInfo applicationStatusInfo)
             : this(applicationStatusInfo, null)
         {
-        }
-
-        /// <summary> Initializes a new instance of the <see cref="UpgradeController"/> class.</summary>
-        /// <param name="applicationStatusInfo">The application status info.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public UpgradeController(IApplicationStatusInfo applicationStatusInfo, IHostSettings hostSettings)
-        {
-            this.applicationStatusInfo = applicationStatusInfo ?? new ApplicationStatusInfo(new Application());
-            this.hostSettings = hostSettings ??
-                                new HostSettings(
-                                    new HostController(
-#pragma warning disable CS0618 // Type or member is obsolete
-                                        new EventLogController(),
-#pragma warning restore CS0618 // Type or member is obsolete
-                                        new Lazy<IPortalController>(() => PortalController.Instance)));
         }
 
         /// <summary>Called when a module is upgraded.</summary>

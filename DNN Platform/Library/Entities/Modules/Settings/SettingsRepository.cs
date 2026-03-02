@@ -32,7 +32,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         private readonly IPortalController portalController;
 
         /// <summary>Initializes a new instance of the <see cref="SettingsRepository{T}"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         protected SettingsRepository()
             : this(null, null, null, null)
         {

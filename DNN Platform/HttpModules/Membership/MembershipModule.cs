@@ -53,7 +53,7 @@ namespace DotNetNuke.HttpModules.Membership
         /// <param name="roleController">The role controller.</param>
         /// <param name="userController">The user controller.</param>
         /// <param name="eventLogger">The event logger.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload without parameters. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload without parameters. Scheduled removal in v12.0.0.")]
         public MembershipModule(IHostSettingsService hostSettingsService, IPortalController portalController, IUserRequestIPAddressController ipAddressController, IRoleController roleController, IUserController userController, IEventLogger eventLogger)
             : this()
         {
@@ -106,7 +106,7 @@ namespace DotNetNuke.HttpModules.Membership
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="context">The context.</param>
         /// <param name="allowUnknownExtensions">if set to <c>true</c> to allow unknown extensions.</param>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial void AuthenticateRequest(IHostSettingsService hostSettingsService, IPortalController portalController, IUserRequestIPAddressController ipAddressController, IRoleController roleController, IEventLogger eventLogger, HttpContextBase context, bool allowUnknownExtensions)
             => AuthenticateRequest(hostSettingsService, portalController, ipAddressController, roleController, eventLogger, Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), context, allowUnknownExtensions);
 

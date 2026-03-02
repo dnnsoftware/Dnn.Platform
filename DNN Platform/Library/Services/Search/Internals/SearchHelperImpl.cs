@@ -27,7 +27,13 @@ namespace DotNetNuke.Services.Search.Internals
 
     using Microsoft.Extensions.DependencyInjection;
 
-    internal class SearchHelperImpl : ISearchHelper
+    /// <summary>An <see cref="ISearchHelper"/> implementation.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="hostSettingsService">The host settings service.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="appStatus">The application status.</param>
+    internal class SearchHelperImpl(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IPortalController portalController, IApplicationStatusInfo appStatus)
+        : ISearchHelper
     {
         private const string SearchTypesCacheKey = "SearchTypes";
         private const string SynonymTermsCacheKey = "SynonymTerms";
@@ -37,29 +43,16 @@ namespace DotNetNuke.Services.Search.Internals
         private const string SearchStopWordsCacheKey = "SearchStopWords";
         private const string ResourceFileRelativePathWithoutExt = "/App_GlobalResources/GlobalResources";
         private readonly IList<string> emptySynonyms = new List<string>(0);
-        private readonly IHostSettings hostSettings;
-        private readonly IHostSettingsService hostSettingsService;
-        private readonly IPortalController portalController;
-        private readonly IApplicationStatusInfo appStatus;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly IHostSettingsService hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
 
         /// <summary>Initializes a new instance of the <see cref="SearchHelperImpl"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public SearchHelperImpl()
             : this(null, null, null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="SearchHelperImpl"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        /// <param name="hostSettingsService">The host settings service.</param>
-        /// <param name="portalController">The portal controller.</param>
-        /// <param name="appStatus">The application status.</param>
-        public SearchHelperImpl(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IPortalController portalController, IApplicationStatusInfo appStatus)
-        {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
-            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
         /// <inheritdoc />

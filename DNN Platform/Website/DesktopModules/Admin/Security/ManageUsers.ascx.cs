@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly IJavaScriptLibraryHelper javaScript;
 
         /// <summary>Initializes a new instance of the <see cref="ManageUsers"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public ManageUsers()
             : this(null, null)
         {
@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>Initializes a new instance of the <see cref="ManageUsers"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public ManageUsers(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript)
             : this(navigationManager, javaScript, null, null)
         {

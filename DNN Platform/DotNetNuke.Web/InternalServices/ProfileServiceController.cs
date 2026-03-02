@@ -26,16 +26,24 @@ namespace DotNetNuke.Web.InternalServices
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A web API controller for a user's profile.</summary>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="portalGroupController">The portal group controller.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="hostSettingsService">The host settings service.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="listController">The list controller.</param>
     [DnnAuthorize]
-    public class ProfileServiceController : DnnApiController
+    public class ProfileServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger, ListController listController)
+        : DnnApiController
     {
-        private readonly ListController listController;
-        private readonly IPortalController portalController;
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly IPortalGroupController portalGroupController;
-        private readonly IHostSettings hostSettings;
-        private readonly IHostSettingsService hostSettingsService;
-        private readonly IEventLogger eventLogger;
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IPortalGroupController portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly IHostSettingsService hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
 
         /// <summary>Initializes a new instance of the <see cref="ProfileServiceController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
@@ -61,29 +69,10 @@ namespace DotNetNuke.Web.InternalServices
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="eventLogger">The event logger.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public ProfileServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger)
             : this(portalController, appStatus, portalGroupController, hostSettings, hostSettingsService, eventLogger, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="ProfileServiceController"/> class.</summary>
-        /// <param name="portalController">The portal controller.</param>
-        /// <param name="appStatus">The application status.</param>
-        /// <param name="portalGroupController">The portal group controller.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        /// <param name="hostSettingsService">The host settings service.</param>
-        /// <param name="eventLogger">The event logger.</param>
-        /// <param name="listController">The list controller.</param>
-        public ProfileServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger, ListController listController)
-        {
-            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
-            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
-            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
         }
 
         /// <summary>Searches a registration profile.</summary>

@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="portalController">The portal controller.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="eventLogger">The event logger.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public EditUser(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings, IPortalController portalController, IHostSettingsService hostSettingsService, IEventLogger eventLogger)
             : this(navigationManager, javaScript, hostSettings, portalController, hostSettingsService, eventLogger, null)
         {

@@ -27,26 +27,21 @@ namespace DotNetNuke.Services.Localization
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class LocalizationProvider : ComponentBase<ILocalizationProvider, LocalizationProvider>, ILocalizationProvider
+    /// <summary>An <see cref="ILocalizationProvider"/> implementation.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="appStatus">The application status.</param>
+    public class LocalizationProvider(IHostSettings hostSettings, IApplicationStatusInfo appStatus)
+        : ComponentBase<ILocalizationProvider, LocalizationProvider>, ILocalizationProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LocalizationProvider));
-        private readonly IHostSettings hostSettings;
-        private readonly IApplicationStatusInfo appStatus;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
 
         /// <summary>Initializes a new instance of the <see cref="LocalizationProvider"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public LocalizationProvider()
             : this(null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="LocalizationProvider"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        /// <param name="appStatus">The application status.</param>
-        public LocalizationProvider(IHostSettings hostSettings, IApplicationStatusInfo appStatus)
-        {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
         public enum CustomizedLocale

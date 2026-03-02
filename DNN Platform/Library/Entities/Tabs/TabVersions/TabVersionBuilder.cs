@@ -24,18 +24,22 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class TabVersionBuilder : ServiceLocator<ITabVersionBuilder, TabVersionBuilder>, ITabVersionBuilder
+    /// <summary>An <see cref="ITabVersionBuilder"/> implementation.</summary>
+    /// <param name="businessControllerProvider">The business controller provider.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class TabVersionBuilder(IBusinessControllerProvider businessControllerProvider, IHostSettings hostSettings)
+        : ServiceLocator<ITabVersionBuilder, TabVersionBuilder>, ITabVersionBuilder
     {
         private const int DefaultVersionNumber = 1;
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabVersionBuilder));
-        private readonly IBusinessControllerProvider businessControllerProvider;
-        private readonly ITabController tabController;
-        private readonly IModuleController moduleController;
-        private readonly ITabVersionSettings tabVersionSettings;
-        private readonly ITabVersionController tabVersionController;
-        private readonly ITabVersionDetailController tabVersionDetailController;
-        private readonly PortalSettings portalSettings;
-        private readonly IHostSettings hostSettings;
+        private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly ITabController tabController = TabController.Instance;
+        private readonly IModuleController moduleController = ModuleController.Instance;
+        private readonly ITabVersionSettings tabVersionSettings = TabVersionSettings.Instance;
+        private readonly ITabVersionController tabVersionController = TabVersionController.Instance;
+        private readonly ITabVersionDetailController tabVersionDetailController = TabVersionDetailController.Instance;
+        private readonly PortalSettings portalSettings = PortalSettings.Current;
 
         /// <summary>Initializes a new instance of the <see cref="TabVersionBuilder"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
@@ -46,25 +50,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         /// <summary>Initializes a new instance of the <see cref="TabVersionBuilder"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public TabVersionBuilder(IBusinessControllerProvider businessControllerProvider)
             : this(businessControllerProvider, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="TabVersionBuilder"/> class.</summary>
-        /// <param name="businessControllerProvider">The business controller provider.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public TabVersionBuilder(IBusinessControllerProvider businessControllerProvider, IHostSettings hostSettings)
-        {
-            this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-            this.tabController = TabController.Instance;
-            this.moduleController = ModuleController.Instance;
-            this.tabVersionSettings = TabVersionSettings.Instance;
-            this.tabVersionController = TabVersionController.Instance;
-            this.tabVersionDetailController = TabVersionDetailController.Instance;
-            this.portalSettings = PortalSettings.Current;
         }
 
         /// <inheritdoc />

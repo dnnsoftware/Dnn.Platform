@@ -22,13 +22,17 @@ namespace DotNetNuke.Entities.Content
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class ContentController : ServiceLocator<IContentController, ContentController>, IContentController
+    /// <summary>A <see cref="IContentController"/> implementation.</summary>
+    /// <param name="dataService">The data service.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class ContentController(IDataService dataService, IHostSettings hostSettings)
+        : ServiceLocator<IContentController, ContentController>, IContentController
     {
-        private readonly IDataService dataService;
-        private readonly IHostSettings hostSettings;
+        private readonly IDataService dataService = dataService ?? Util.GetDataService();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="ContentController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ContentController()
             : this(null, null)
         {
@@ -36,19 +40,10 @@ namespace DotNetNuke.Entities.Content
 
         /// <summary>Initializes a new instance of the <see cref="ContentController"/> class.</summary>
         /// <param name="dataService">The data service.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ContentController(IDataService dataService)
             : this(dataService, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="ContentController"/> class.</summary>
-        /// <param name="dataService">The data service.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public ContentController(IDataService dataService, IHostSettings hostSettings)
-        {
-            this.dataService = dataService ?? Util.GetDataService();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />

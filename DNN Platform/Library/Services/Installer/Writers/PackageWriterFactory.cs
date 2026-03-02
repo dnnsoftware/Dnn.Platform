@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <summary>The GetWriter method instantiates the relevant PackageWriter Installer.</summary>
         /// <param name="package">The associated PackageInfo instance.</param>
         /// <returns>A <see cref="PackageWriterBase"/> instance or <see langword="null"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IServiceProvider")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IServiceProvider")]
         public static partial PackageWriterBase GetWriter(PackageInfo package)
             => GetWriter(Globals.GetCurrentServiceProvider(), package);
 

@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private readonly List<OAuthLoginBase> oAuthControls = new List<OAuthLoginBase>();
 
         /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public Login()
             : this(null, null, null)
         {
@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="hostSettings">The host settings.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public Login(INavigationManager navigationManager, IEventLogger eventLogger, IHostSettings hostSettings)
             : this(navigationManager, eventLogger, hostSettings, null)
         {

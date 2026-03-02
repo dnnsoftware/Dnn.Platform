@@ -30,14 +30,21 @@ namespace DotNetNuke.Admin.Containers
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A control which renders module actions.</summary>
-    public partial class ModuleActions : ActionBase
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="moduleControlPipeline">The module control pipeline.</param>
+    /// <param name="javaScript">The JavaScript library helper.</param>
+    /// <param name="clientResourceController">The client resources controller.</param>
+    /// <param name="servicesFramework">The web API service framework.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public partial class ModuleActions(IEventLogger eventLogger, IModuleControlPipeline moduleControlPipeline, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IServicesFramework servicesFramework, IHostSettings hostSettings)
+        : ActionBase(eventLogger)
     {
         private readonly List<int> validIDs = [];
-        private readonly IModuleControlPipeline moduleControlPipeline;
-        private readonly IJavaScriptLibraryHelper javaScript;
-        private readonly IClientResourceController clientResourceController;
-        private readonly IServicesFramework servicesFramework;
-        private readonly IHostSettings hostSettings;
+        private readonly IModuleControlPipeline moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
+        private readonly IJavaScriptLibraryHelper javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+        private readonly IClientResourceController clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+        private readonly IServicesFramework servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="ModuleActions"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
@@ -62,27 +69,10 @@ namespace DotNetNuke.Admin.Containers
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
         /// <param name="servicesFramework">The web API service framework.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ModuleActions(IEventLogger eventLogger, IModuleControlPipeline moduleControlPipeline, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IServicesFramework servicesFramework)
             : this(eventLogger, moduleControlPipeline, javaScript, clientResourceController, servicesFramework, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="ModuleActions"/> class.</summary>
-        /// <param name="eventLogger">The event logger.</param>
-        /// <param name="moduleControlPipeline">The module control pipeline.</param>
-        /// <param name="javaScript">The JavaScript library helper.</param>
-        /// <param name="clientResourceController">The client resources controller.</param>
-        /// <param name="servicesFramework">The web API service framework.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public ModuleActions(IEventLogger eventLogger, IModuleControlPipeline moduleControlPipeline, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IServicesFramework servicesFramework, IHostSettings hostSettings)
-            : base(eventLogger)
-        {
-            this.moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
-            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
-            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
-            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         protected string AdminText => Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile);

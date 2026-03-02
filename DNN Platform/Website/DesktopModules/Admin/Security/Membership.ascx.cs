@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="portalController">The portal controller.</param>
         /// <param name="userController">The user controller.</param>
         /// <param name="eventLogger">The event logger.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public Membership(INavigationManager navigationManager, DataProvider dataProvider, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger)
             : this(navigationManager, dataProvider, roleProvider, roleController, eventManager, portalController, userController, eventLogger, null, null)
         {

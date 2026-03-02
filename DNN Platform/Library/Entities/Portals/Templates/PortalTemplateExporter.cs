@@ -31,26 +31,15 @@ namespace DotNetNuke.Entities.Portals.Templates
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
 
-    internal class PortalTemplateExporter
+    internal class PortalTemplateExporter(IBusinessControllerProvider businessControllerProvider, ListController listController, IPortalController portalController, IHostSettings hostSettings, RoleProvider roleProvider, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
     {
-        private readonly IBusinessControllerProvider businessControllerProvider;
-        private readonly ListController listController;
-        private readonly IPortalController portalController;
-        private readonly IHostSettings hostSettings;
-        private readonly RoleProvider roleProvider;
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly IPortalGroupController portalGroupController;
-
-        public PortalTemplateExporter(IBusinessControllerProvider businessControllerProvider, ListController listController, IPortalController portalController, IHostSettings hostSettings, RoleProvider roleProvider, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
-        {
-            this.businessControllerProvider = businessControllerProvider;
-            this.listController = listController;
-            this.portalController = portalController;
-            this.hostSettings = hostSettings;
-            this.roleProvider = roleProvider;
-            this.appStatus = appStatus;
-            this.portalGroupController = portalGroupController;
-        }
+        private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider;
+        private readonly ListController listController = listController;
+        private readonly IPortalController portalController = portalController;
+        private readonly IHostSettings hostSettings = hostSettings;
+        private readonly RoleProvider roleProvider = roleProvider;
+        private readonly IApplicationStatusInfo appStatus = appStatus;
+        private readonly IPortalGroupController portalGroupController = portalGroupController;
 
         private static string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Sites/App_LocalResources/Sites.resx");
 

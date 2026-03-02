@@ -26,29 +26,22 @@ namespace DotNetNuke.Web.InternalServices
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>An API controller for managing content moving through its workflow.</summary>
+    /// <param name="contentController">The content controller.</param>
+    /// <param name="workflowEngine">The workflow engine.</param>
+    /// <param name="tabController">The tab controller.</param>
     [DnnAuthorize]
-    public partial class ContentWorkflowServiceController : DnnApiController
+    public partial class ContentWorkflowServiceController(IContentController contentController, IWorkflowEngine workflowEngine, ITabController tabController)
+        : DnnApiController
     {
-        private readonly ITabController tabController;
-        private readonly IContentController contentController;
-        private readonly IWorkflowEngine workflowEngine;
+        private readonly IContentController contentController = contentController ?? ContentController.Instance;
+        private readonly IWorkflowEngine workflowEngine = workflowEngine ?? WorkflowEngine.Instance;
+        private readonly ITabController tabController = tabController ?? TabController.Instance;
 
         /// <summary>Initializes a new instance of the <see cref="ContentWorkflowServiceController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IContentController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IContentController. Scheduled removal in v12.0.0.")]
         public ContentWorkflowServiceController()
             : this(null, null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="ContentWorkflowServiceController"/> class.</summary>
-        /// <param name="contentController">The content controller.</param>
-        /// <param name="workflowEngine">The workflow engine.</param>
-        /// <param name="tabController">The tab controller.</param>
-        public ContentWorkflowServiceController(IContentController contentController, IWorkflowEngine workflowEngine, ITabController tabController)
-        {
-            this.contentController = contentController ?? ContentController.Instance;
-            this.workflowEngine = workflowEngine ?? WorkflowEngine.Instance;
-            this.tabController = tabController ?? TabController.Instance;
         }
 
         /// <summary>Rejects a workflow.</summary>

@@ -18,28 +18,23 @@ namespace DotNetNuke.Entities.Content.Workflow
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class WorkflowStateManager : ServiceLocator<IWorkflowStateManager, WorkflowStateManager>, IWorkflowStateManager
+    /// <summary>A <see cref="IWorkflowStateManager"/> implementation.</summary>
+    /// <param name="dataContext">The data context.</param>
+    /// <param name="dataProvider">The data provider.</param>
+    public class WorkflowStateManager(IDataContext dataContext, DataProvider dataProvider)
+        : ServiceLocator<IWorkflowStateManager, WorkflowStateManager>, IWorkflowStateManager
     {
         private readonly IWorkflowRepository workflowRepository = WorkflowRepository.Instance;
         private readonly IWorkflowStateRepository workflowStateRepository = WorkflowStateRepository.Instance;
         private readonly IWorkflowStatePermissionsRepository workflowStatePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
-        private readonly DataProvider dataProvider;
-        private readonly IDataContext dataContext;
+        private readonly IDataContext dataContext = dataContext ?? Globals.GetCurrentServiceProvider().GetRequiredService<IDataContext>();
+        private readonly DataProvider dataProvider = dataProvider ?? DataProvider.Instance();
 
         /// <summary>Initializes a new instance of the <see cref="WorkflowStateManager"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IDataContext. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IDataContext. Scheduled removal in v12.0.0.")]
         public WorkflowStateManager()
             : this(null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="WorkflowStateManager"/> class.</summary>
-        /// <param name="dataContext">The data context.</param>
-        /// <param name="dataProvider">The data provider.</param>
-        public WorkflowStateManager(IDataContext dataContext, DataProvider dataProvider)
-        {
-            this.dataContext = dataContext ?? Globals.GetCurrentServiceProvider().GetRequiredService<IDataContext>();
-            this.dataProvider = dataProvider ?? DataProvider.Instance();
         }
 
         /// <inheritdoc />

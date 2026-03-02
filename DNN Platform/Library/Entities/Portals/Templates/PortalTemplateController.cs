@@ -25,20 +25,33 @@ namespace DotNetNuke.Entities.Portals.Templates
     using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc cref="IPortalTemplateController"/>
-    public class PortalTemplateController : ServiceLocator<IPortalTemplateController, PortalTemplateController>, IPortalTemplateController
+    /// <param name="permissionDefinitionService">The permission definition service.</param>
+    /// <param name="businessControllerProvider">The business controller provider.</param>
+    /// <param name="listController">The list controller.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="portalGroupController">The portal group controller.</param>
+    /// <param name="userController">The user controller.</param>
+    /// <param name="fileContentTypeManager">The file content type manager.</param>
+    /// <param name="roleProvider">The role provider.</param>
+    /// <param name="roleController">The role controller.</param>
+    public class PortalTemplateController(IPermissionDefinitionService permissionDefinitionService, IBusinessControllerProvider businessControllerProvider, ListController listController, IEventLogger eventLogger, IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IUserController userController, IFileContentTypeManager fileContentTypeManager, RoleProvider roleProvider, IRoleController roleController)
+        : ServiceLocator<IPortalTemplateController, PortalTemplateController>, IPortalTemplateController
     {
-        private readonly ListController listController;
-        private readonly IHostSettings hostSettings;
-        private readonly IPortalController portalController;
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly IPortalGroupController portalGroupController;
-        private readonly IUserController userController;
-        private readonly IFileContentTypeManager fileContentTypeManager;
-        private readonly RoleProvider roleProvider;
-        private readonly IRoleController roleController;
-        private readonly IBusinessControllerProvider businessControllerProvider;
-        private readonly IEventLogger eventLogger;
-        private readonly IPermissionDefinitionService permissionDefinitionService;
+        private readonly IPermissionDefinitionService permissionDefinitionService = permissionDefinitionService ?? Globals.DependencyProvider.GetRequiredService<IPermissionDefinitionService>();
+        private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+        private readonly ListController listController = listController ?? Globals.DependencyProvider.GetRequiredService<ListController>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.DependencyProvider.GetRequiredService<IHostSettings>();
+        private readonly IPortalController portalController = portalController ?? Globals.DependencyProvider.GetRequiredService<IPortalController>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+        private readonly IPortalGroupController portalGroupController = portalGroupController ?? Globals.DependencyProvider.GetRequiredService<IPortalGroupController>();
+        private readonly IUserController userController = userController ?? Globals.DependencyProvider.GetRequiredService<IUserController>();
+        private readonly IFileContentTypeManager fileContentTypeManager = fileContentTypeManager ?? Globals.DependencyProvider.GetRequiredService<IFileContentTypeManager>();
+        private readonly RoleProvider roleProvider = roleProvider ?? Globals.DependencyProvider.GetRequiredService<RoleProvider>();
+        private readonly IRoleController roleController = roleController ?? Globals.DependencyProvider.GetRequiredService<IRoleController>();
 
         /// <summary>Initializes a new instance of the <see cref="PortalTemplateController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
@@ -59,39 +72,10 @@ namespace DotNetNuke.Entities.Portals.Templates
         /// <param name="businessControllerProvider">The DI container.</param>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="permissionDefinitionService">The permission definition service.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public PortalTemplateController(IBusinessControllerProvider businessControllerProvider, IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService)
             : this(permissionDefinitionService, businessControllerProvider, null, eventLogger, null, null, null, null, null, null, null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="PortalTemplateController"/> class.</summary>
-        /// <param name="permissionDefinitionService">The permission definition service.</param>
-        /// <param name="businessControllerProvider">The business controller provider.</param>
-        /// <param name="listController">The list controller.</param>
-        /// <param name="eventLogger">The event logger.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        /// <param name="portalController">The portal controller.</param>
-        /// <param name="appStatus">The application status.</param>
-        /// <param name="portalGroupController">The portal group controller.</param>
-        /// <param name="userController">The user controller.</param>
-        /// <param name="fileContentTypeManager">The file content type manager.</param>
-        /// <param name="roleProvider">The role provider.</param>
-        /// <param name="roleController">The role controller.</param>
-        public PortalTemplateController(IPermissionDefinitionService permissionDefinitionService, IBusinessControllerProvider businessControllerProvider, ListController listController, IEventLogger eventLogger, IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IUserController userController, IFileContentTypeManager fileContentTypeManager, RoleProvider roleProvider, IRoleController roleController)
-        {
-            this.permissionDefinitionService = permissionDefinitionService ?? Globals.DependencyProvider.GetRequiredService<IPermissionDefinitionService>();
-            this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
-            this.listController = listController ?? Globals.DependencyProvider.GetRequiredService<ListController>();
-            this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
-            this.hostSettings = hostSettings ?? Globals.DependencyProvider.GetRequiredService<IHostSettings>();
-            this.portalController = portalController ?? Globals.DependencyProvider.GetRequiredService<IPortalController>();
-            this.appStatus = appStatus ?? Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
-            this.portalGroupController = portalGroupController ?? Globals.DependencyProvider.GetRequiredService<IPortalGroupController>();
-            this.userController = userController ?? Globals.DependencyProvider.GetRequiredService<IUserController>();
-            this.fileContentTypeManager = fileContentTypeManager ?? Globals.DependencyProvider.GetRequiredService<IFileContentTypeManager>();
-            this.roleProvider = roleProvider ?? Globals.DependencyProvider.GetRequiredService<RoleProvider>();
-            this.roleController = roleController ?? Globals.DependencyProvider.GetRequiredService<IRoleController>();
         }
 
         /// <inheritdoc />

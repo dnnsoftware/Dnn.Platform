@@ -21,22 +21,18 @@ namespace DotNetNuke.Entities.Tabs
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class TabModulesController : ServiceLocator<ITabModulesController, TabModulesController>, ITabModulesController
+    /// <summary>An <see cref="ITabModulesController"/> implementation.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    public class TabModulesController(IHostSettings hostSettings)
+        : ServiceLocator<ITabModulesController, TabModulesController>, ITabModulesController
     {
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="TabModulesController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public TabModulesController()
             : this(null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="TabModulesController"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        public TabModulesController(IHostSettings hostSettings)
-        {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />

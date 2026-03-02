@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.Library.Controllers
         /// <param name="serviceScopeFactory">The service scope factory.</param>
         /// <param name="personaBarRepository">The Persona Bar repository.</param>
         /// <param name="hostSettings">The host settings.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public PersonaBarController(IServiceScopeFactory serviceScopeFactory, IPersonaBarRepository personaBarRepository, IHostSettings hostSettings)
             : this(serviceScopeFactory, personaBarRepository, hostSettings, null)
         {

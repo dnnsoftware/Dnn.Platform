@@ -19,10 +19,13 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Implements generic localization support.</summary>
-    public class Generic : ILocalisation
+    /// <param name="businessControllerProvider">The business controller provider.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class Generic(IBusinessControllerProvider businessControllerProvider, IHostSettings hostSettings)
+        : ILocalisation
     {
-        private readonly IBusinessControllerProvider businessControllerProvider;
-        private readonly IHostSettings hostSettings;
+        private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.DependencyProvider.GetRequiredService<IHostSettings>();
         private bool haveChecked;
         private object locApi;
         private MethodInfo locTab;
@@ -37,19 +40,10 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 
         /// <summary>Initializes a new instance of the <see cref="Generic"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Generic(IBusinessControllerProvider businessControllerProvider)
             : this(businessControllerProvider, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="Generic"/> class.</summary>
-        /// <param name="businessControllerProvider">The business controller provider.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public Generic(IBusinessControllerProvider businessControllerProvider, IHostSettings hostSettings)
-        {
-            this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
-            this.hostSettings = hostSettings ?? Globals.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />

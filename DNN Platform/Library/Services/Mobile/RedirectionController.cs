@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.Mobile
         /// <summary>Initializes a new instance of the <see cref="RedirectionController"/> class.</summary>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="eventLogger">The event logger.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public RedirectionController(IPortalController portalController, IEventLogger eventLogger)
             : this(portalController, eventLogger, null, null)
         {

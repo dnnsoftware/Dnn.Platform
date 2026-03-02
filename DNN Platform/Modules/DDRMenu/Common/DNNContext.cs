@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         public static string ModuleName => moduleName ??= GetModuleNameFromAssembly();
 
         /// <summary>Gets the module folder.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use GetModuleFolder(IHostSettings). Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use GetModuleFolder(IHostSettings). Scheduled removal in v12.0.0.")]
         public static string ModuleFolder => GetModuleFolder(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
 
         /// <summary>Gets the current Dnn context.</summary>

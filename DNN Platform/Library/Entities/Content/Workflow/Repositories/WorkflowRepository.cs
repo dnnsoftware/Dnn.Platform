@@ -26,7 +26,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
         private readonly IWorkflowStateRepository stateRepository = WorkflowStateRepository.Instance;
 
         /// <summary>Initializes a new instance of the <see cref="WorkflowRepository"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public WorkflowRepository()
             : this(null)
         {

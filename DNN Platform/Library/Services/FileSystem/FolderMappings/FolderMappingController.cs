@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.FileSystem
         private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="FolderMappingController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         internal FolderMappingController()
             : this(null)
         {

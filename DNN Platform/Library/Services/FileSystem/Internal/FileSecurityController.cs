@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
         private readonly IServiceProvider serviceProvider = serviceProvider ?? Globals.GetCurrentServiceProvider();
 
         /// <summary>Initializes a new instance of the <see cref="FileSecurityController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public FileSecurityController()
             : this(null)
         {

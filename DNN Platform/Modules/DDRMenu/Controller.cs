@@ -22,13 +22,17 @@ namespace DotNetNuke.Web.DDRMenu
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Implements the Dnn interfaces for the module.</summary>
-    public class Controller : IUpgradeable, IPortable
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="permissionDefinitionService">The permission definition service.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class Controller(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings)
+        : IUpgradeable, IPortable
     {
         private const string DdrMenuModuleName = "DDRMenu";
         private const string DdrMenuModuleDefinitionName = "DDR Menu";
-        private readonly IEventLogger eventLogger;
-        private readonly IPermissionDefinitionService permissionDefinitionService;
-        private readonly IHostSettings hostSettings;
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        private readonly IPermissionDefinitionService permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="Controller"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
@@ -40,21 +44,10 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>Initializes a new instance of the <see cref="Controller"/> class.</summary>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="permissionDefinitionService">The permission definition service.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Controller(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService)
             : this(eventLogger, permissionDefinitionService, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="Controller"/> class.</summary>
-        /// <param name="eventLogger">The event logger.</param>
-        /// <param name="permissionDefinitionService">The permission definition service.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public Controller(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings)
-        {
-            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
-            this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />

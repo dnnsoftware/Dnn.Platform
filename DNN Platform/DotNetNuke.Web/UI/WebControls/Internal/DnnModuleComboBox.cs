@@ -22,10 +22,18 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
-    public class DnnModuleComboBox : DnnComboBox
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="clientResourceController">The client resource controller.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class DnnModuleComboBox(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController, IHostSettings hostSettings)
+        : DnnComboBox(
+            appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+            eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+            clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>())
     {
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         private DnnComboBox moduleCombo;
         private string originalValue;
@@ -41,24 +49,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         /// <param name="appStatus">The application status.</param>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="clientResourceController">The client resource controller.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public DnnModuleComboBox(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController)
             : this(appStatus, eventLogger, clientResourceController, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="DnnModuleComboBox"/> class.</summary>
-        /// <param name="appStatus">The application status.</param>
-        /// <param name="eventLogger">The event logger.</param>
-        /// <param name="clientResourceController">The client resource controller.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public DnnModuleComboBox(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController, IHostSettings hostSettings)
-            : base(
-                appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
-                eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
-                clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>())
-        {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>An event which triggers when the item changes.</summary>

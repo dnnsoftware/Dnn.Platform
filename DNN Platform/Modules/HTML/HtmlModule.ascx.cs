@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.Html
         /// <summary>Initializes a new instance of the <see cref="HtmlModule"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="htmlTextController">The HTML/Text controller.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with HtmlModuleSettingsRepository. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with HtmlModuleSettingsRepository. Scheduled removal in v12.0.0.")]
         public HtmlModule(INavigationManager navigationManager, HtmlTextController htmlTextController)
             : this(null, navigationManager, htmlTextController)
         {

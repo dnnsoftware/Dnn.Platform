@@ -49,15 +49,21 @@ namespace Dnn.ExportImport.Components.Services
     using Util = Dnn.ExportImport.Components.Common.Util;
 
     /// <summary>Service to export/import pages/tabs.</summary>
-    public class PagesExportService : BasePortableService
+    /// <param name="businessControllerProvider">The business controller provider.</param>
+    /// <param name="portalAliasService">The portal alias service.</param>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class PagesExportService(IBusinessControllerProvider businessControllerProvider, IPortalAliasService portalAliasService, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IHostSettings hostSettings)
+        : BasePortableService
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
 
-        private readonly IBusinessControllerProvider businessControllerProvider;
-        private readonly IPortalAliasService portalAliasService;
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly IEventLogger eventLogger;
-        private readonly IHostSettings hostSettings;
+        private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+        private readonly IPortalAliasService portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private ProgressTotals totals;
         private DataProvider dataProvider;
         private ITabController tabController;
@@ -90,25 +96,10 @@ namespace Dnn.ExportImport.Components.Services
         /// <param name="portalAliasService">The portal alias service.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="eventLogger">The event logger.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public PagesExportService(IBusinessControllerProvider businessControllerProvider, IPortalAliasService portalAliasService, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
             : this(businessControllerProvider, portalAliasService, appStatus, eventLogger, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="PagesExportService"/> class.</summary>
-        /// <param name="businessControllerProvider">The business controller provider.</param>
-        /// <param name="portalAliasService">The portal alias service.</param>
-        /// <param name="appStatus">The application status.</param>
-        /// <param name="eventLogger">The event logger.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public PagesExportService(IBusinessControllerProvider businessControllerProvider, IPortalAliasService portalAliasService, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IHostSettings hostSettings)
-        {
-            this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
-            this.portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />

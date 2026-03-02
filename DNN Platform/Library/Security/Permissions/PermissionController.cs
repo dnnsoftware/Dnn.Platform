@@ -42,7 +42,7 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>Initializes a new instance of the <see cref="PermissionController"/> class.</summary>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="dataProvider">The underlying data-provider to use.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public PermissionController(IEventLogger eventLogger, DataProvider dataProvider)
                 : this(eventLogger, dataProvider, null)
         {

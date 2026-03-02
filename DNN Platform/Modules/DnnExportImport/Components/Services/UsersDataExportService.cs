@@ -68,7 +68,7 @@ namespace Dnn.ExportImport.Components.Services
 
         /// <summary>Initializes a new instance of the <see cref="UsersDataExportService"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public UsersDataExportService(IHostSettings hostSettings)
             : this(hostSettings, null, null, null)
         {

@@ -9,17 +9,14 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Lists;
 
-    /// <summary>
-    /// The DNNCountryEditControl control provides a standard UI component for editing
-    /// Countries.
-    /// </summary>
+    /// <summary>The DNNCountryEditControl control provides a standard UI component for editing Countries.</summary>
     [ToolboxData("<{0}:DNNCountryEditControl runat=server></{0}:DNNCountryEditControl>")]
     public class DNNCountryEditControl : DNNListEditControl
     {
         private readonly ListController listController;
 
         /// <summary>Initializes a new instance of the <see cref="DNNCountryEditControl"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public DNNCountryEditControl()
             : this(null)
         {

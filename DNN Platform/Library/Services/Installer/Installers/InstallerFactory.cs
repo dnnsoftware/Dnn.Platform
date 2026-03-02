@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>The GetInstaller method instantiates the relevant Component Installer.</summary>
         /// <param name="installerType">The type of Installer.</param>
         /// <returns>A <see cref="ComponentInstallerBase"/> instance or <see langword="null"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IServiceProvider")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IServiceProvider")]
         public static partial ComponentInstallerBase GetInstaller(string installerType)
             => GetInstaller(Globals.GetCurrentServiceProvider(), installerType);
 
@@ -110,7 +110,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <param name="manifestNav">The manifest (XPathNavigator) for the component.</param>
         /// <param name="package">The associated PackageInfo instance.</param>
         /// <returns>A <see cref="ComponentInstallerBase"/> instance or <see langword="null"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IServiceProvider")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IServiceProvider")]
         public static partial ComponentInstallerBase GetInstaller(XPathNavigator manifestNav, PackageInfo package)
             => GetInstaller(Globals.GetCurrentServiceProvider(), manifestNav, package);
 

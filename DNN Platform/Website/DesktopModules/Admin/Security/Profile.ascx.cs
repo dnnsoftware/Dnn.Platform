@@ -34,7 +34,7 @@ namespace DesktopModules.Admin.Security
         private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
 
         /// <summary>Initializes a new instance of the <see cref="DNNProfile"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public DNNProfile()
             : this(null, null, null, null, null)
         {

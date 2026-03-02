@@ -22,24 +22,19 @@ namespace DotNetNuke.Web.InternalServices
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A web API controller for relationships.</summary>
+    /// <param name="hostSettings">The host settings.</param>
     [DnnAuthorize]
-    public class RelationshipServiceController : DnnApiController
+    public class RelationshipServiceController(IHostSettings hostSettings)
+        : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RelationshipServiceController));
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="RelationshipServiceController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public RelationshipServiceController()
             : this(null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="RelationshipServiceController"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        public RelationshipServiceController(IHostSettings hostSettings)
-        {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Accept a friend.</summary>

@@ -159,7 +159,7 @@ namespace DotNetNuke.Entities.Users
         /// <param name="oldPassword">The old password.</param>
         /// <param name="newPassword">The new password.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IEventLogger")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IEventLogger")]
         public static partial bool ChangePassword(UserInfo user, string oldPassword, string newPassword)
             => ChangePassword(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), user, oldPassword, newPassword);
 
@@ -200,7 +200,7 @@ namespace DotNetNuke.Entities.Users
         /// <param name="newPassword">The new password.</param>
         /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
         /// <returns>A Boolean indicating whether the password change succeeded.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IEventLogger")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IEventLogger")]
         public static partial bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken)
             => ChangePasswordByToken(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalid, username, newPassword, resetToken);
 
@@ -616,7 +616,7 @@ namespace DotNetNuke.Entities.Users
         /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="username">The username of the user being retrieved.</param>
         /// <returns>The user as a <see cref="UserInfo"/> object.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial UserInfo GetCachedUser(int portalId, string username)
             => GetCachedUser(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId, username);
 
@@ -707,7 +707,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <inheritdoc cref="IUserController.GetUserById"/>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial UserInfo GetUserById(int portalId, int userId)
             => GetUserById(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId, userId);
 
@@ -793,7 +793,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>Gets the number of users in a site (portal).</summary>
         /// <param name="portalId">The id of the portal to search.</param>
         /// <returns>The no of users the portal contains.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial int GetUserCountByPortal(int portalId)
             => GetUserCountByPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId);
 

@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private readonly List<AuthenticationSettingsBase> settingControls = new List<AuthenticationSettingsBase>();
 
         /// <summary>Initializes a new instance of the <see cref="Authentication"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Authentication()
             : this(null)
         {
@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <param name="hostSettings">The host settings.</param>
         public Authentication(IHostSettings hostSettings)
         {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />

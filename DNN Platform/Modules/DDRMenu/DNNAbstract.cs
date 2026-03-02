@@ -80,7 +80,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         /// <summary>Gets all the supported templating engines processors.</summary>
         /// <returns>An enumeration of all the available processors.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial IEnumerable<ITemplateProcessor> SupportedTemplateProcessors()
             => SupportedTemplateProcessors(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
 

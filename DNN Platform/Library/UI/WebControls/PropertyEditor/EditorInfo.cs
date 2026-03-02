@@ -56,7 +56,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>GetEditor gets the appropriate Editor based on ID properties.</summary>
         /// <param name="editorType">The ID of the Editor.</param>
         /// <returns>The non-localized name of the editor.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with ListController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with ListController")]
         public static partial string GetEditor(int editorType)
             => GetEditor(Globals.GetCurrentServiceProvider().GetRequiredService<ListController>(), editorType);
 
@@ -82,7 +82,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>GetEditor gets the appropriate Editor based on ID properties.</summary>
         /// <param name="editorValue">The value of the editor list item.</param>
         /// <returns>The non-localized name of the editor.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with ListController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with ListController")]
         public static partial string GetEditor(string editorValue)
             => GetEditor(Globals.GetCurrentServiceProvider().GetRequiredService<ListController>(), editorValue);
 

@@ -16,22 +16,17 @@ namespace DotNetNuke.Modules.Groups.Components
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class Notifications
+    /// <summary>Manages groups notifications.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    public class Notifications(IHostSettings hostSettings)
     {
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="Notifications"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Notifications()
             : this(null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="Notifications"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        public Notifications(IHostSettings hostSettings)
-        {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators)

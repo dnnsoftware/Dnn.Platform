@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Registration
         private readonly IPortalGroupController portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
 
         /// <summary>Initializes a new instance of the <see cref="RegistrationProfileController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public RegistrationProfileController()
             : this(null, null, null, null, null)
         {

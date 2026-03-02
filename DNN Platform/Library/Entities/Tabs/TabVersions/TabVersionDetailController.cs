@@ -18,6 +18,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>An <see cref="ITabVersionDetailController"/> implementation.</summary>
+    /// <param name="hostSettings">The host settings.</param>
     public class TabVersionDetailController(IHostSettings hostSettings)
         : ServiceLocator<ITabVersionDetailController, TabVersionDetailController>, ITabVersionDetailController
     {
@@ -25,7 +27,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="TabVersionDetailController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public TabVersionDetailController()
             : this(null)
         {

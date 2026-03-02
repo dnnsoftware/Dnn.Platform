@@ -202,7 +202,7 @@ namespace Dnn.ExportImport.Components.Common
         /// <param name="exportedProfilePropertyId">The exported profile property.</param>
         /// <param name="exportProfilePropertyname">The name of the exported profile property.</param>
         /// <returns>The ID of the profile property or <see langword="null"/> if not found.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial int? GetProfilePropertyId(IHostSettings hostSettings, int portalId, int? exportedProfilePropertyId, string exportProfilePropertyname)
             => GetProfilePropertyId(hostSettings, null, null, null, portalId, exportedProfilePropertyId, exportProfilePropertyname);
 

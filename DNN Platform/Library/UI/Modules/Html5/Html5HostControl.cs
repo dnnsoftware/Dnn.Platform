@@ -22,12 +22,18 @@ namespace DotNetNuke.UI.Modules.Html5
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class Html5HostControl : ModuleControlBase, IActionable
+    /// <summary>A WebForms control which outputs the content for a control using the HTML module pattern.</summary>
+    /// <param name="html5File">The path to the HTML file.</param>
+    /// <param name="businessControllerProvider">The business controller provider.</param>
+    /// <param name="servicesFramework">The web API service framework.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class Html5HostControl(string html5File, IBusinessControllerProvider businessControllerProvider, IServicesFramework servicesFramework, IHostSettings hostSettings)
+        : ModuleControlBase, IActionable
     {
-        private readonly string html5File;
-        private readonly IBusinessControllerProvider businessControllerProvider;
-        private readonly IServicesFramework servicesFramework;
-        private readonly IHostSettings hostSettings;
+        private readonly string html5File = html5File;
+        private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+        private readonly IServicesFramework servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private string fileContent;
 
         /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
@@ -52,23 +58,10 @@ namespace DotNetNuke.UI.Modules.Html5
         /// <param name="html5File">The path to the HTML file.</param>
         /// <param name="businessControllerProvider">The business controller provider.</param>
         /// <param name="servicesFramework">The web API service framework.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Html5HostControl(string html5File, IBusinessControllerProvider businessControllerProvider, IServicesFramework servicesFramework)
             : this(html5File, businessControllerProvider, servicesFramework, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
-        /// <param name="html5File">The path to the HTML file.</param>
-        /// <param name="businessControllerProvider">The business controller provider.</param>
-        /// <param name="servicesFramework">The web API service framework.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public Html5HostControl(string html5File, IBusinessControllerProvider businessControllerProvider, IServicesFramework servicesFramework, IHostSettings hostSettings)
-        {
-            this.html5File = html5File;
-            this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
-            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />

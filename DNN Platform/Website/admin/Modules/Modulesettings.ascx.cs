@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         private ModuleInfo module;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleSettingsPage"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public ModuleSettingsPage()
             : this(null, null, null, null, null, null)
         {
@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         /// <param name="moduleControlPipeline">The module control pipeline.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public ModuleSettingsPage(INavigationManager navigationManager, IPortalAliasService portalAliasService, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript)
             : this(navigationManager, portalAliasService, moduleControlPipeline, hostSettings, javaScript, null)
         {

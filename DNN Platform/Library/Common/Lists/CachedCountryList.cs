@@ -18,7 +18,7 @@ namespace DotNetNuke.Common.Lists
     {
         /// <summary>Initializes a new instance of the <see cref="CachedCountryList"/> class.</summary>
         /// <param name="locale">This value is not currently used.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public CachedCountryList(string locale)
             : this(Globals.GetCurrentServiceProvider().GetRequiredService<ListController>())
         {
@@ -47,7 +47,7 @@ namespace DotNetNuke.Common.Lists
         /// <summary>Gets the country list.</summary>
         /// <param name="locale">Which locale to use for the country names.</param>
         /// <returns>A cached list of countries.</returns>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public static CachedCountryList GetCountryList(string locale)
             => GetCountryList(Globals.GetCurrentServiceProvider().GetRequiredService<ListController>());
 

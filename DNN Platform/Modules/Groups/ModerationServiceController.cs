@@ -30,17 +30,27 @@ namespace DotNetNuke.Modules.Groups
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A web API controller for moderation in the Groups module.</summary>
+    /// <param name="navigationManager">The navigation manager.</param>
+    /// <param name="roleProvider">The role provider.</param>
+    /// <param name="roleController">The role controller.</param>
+    /// <param name="eventManager">The event manager.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="userController">The user controller.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="hostSettings">The host settings.</param>
     [DnnAuthorize]
-    public class ModerationServiceController : DnnApiController
+    public class ModerationServiceController(INavigationManager navigationManager, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger, IHostSettings hostSettings)
+        : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModerationServiceController));
-        private readonly RoleProvider roleProvider;
-        private readonly IRoleController roleController;
-        private readonly IEventManager eventManager;
-        private readonly IPortalController portalController;
-        private readonly IUserController userController;
-        private readonly IEventLogger eventLogger;
-        private readonly IHostSettings hostSettings;
+        private readonly RoleProvider roleProvider = roleProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>();
+        private readonly IRoleController roleController = roleController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>();
+        private readonly IEventManager eventManager = eventManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventManager>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        private readonly IUserController userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private int tabId;
         private int moduleId;
         private int roleId;
@@ -63,34 +73,14 @@ namespace DotNetNuke.Modules.Groups
         /// <param name="portalController">The portal controller.</param>
         /// <param name="userController">The user controller.</param>
         /// <param name="eventLogger">The event logger.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ModerationServiceController(INavigationManager navigationManager, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger)
             : this(navigationManager, roleProvider, roleController, eventManager, portalController, userController, eventLogger, null)
         {
         }
 
-        /// <summary>Initializes a new instance of the <see cref="ModerationServiceController"/> class.</summary>
-        /// <param name="navigationManager">The navigation manager.</param>
-        /// <param name="roleProvider">The role provider.</param>
-        /// <param name="roleController">The role controller.</param>
-        /// <param name="eventManager">The event manager.</param>
-        /// <param name="portalController">The portal controller.</param>
-        /// <param name="userController">The user controller.</param>
-        /// <param name="eventLogger">The event logger.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public ModerationServiceController(INavigationManager navigationManager, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger, IHostSettings hostSettings)
-        {
-            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
-            this.roleProvider = roleProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>();
-            this.roleController = roleController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>();
-            this.eventManager = eventManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventManager>();
-            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
-            this.userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
-            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-        }
-
-        protected INavigationManager NavigationManager { get; }
+        /// <summary>Gets the navigation manager.</summary>
+        protected INavigationManager NavigationManager { get; } = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -29,12 +29,16 @@ namespace DNNConnect.CKEditorProvider.Module
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The Editor Config Manger Module.</summary>
-    public partial class EditorConfigManager : ModuleSettingsBase
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="moduleController">The module controller.</param>
+    /// <param name="appStatus">The application status.</param>
+    public partial class EditorConfigManager(IHostSettings hostSettings, IPortalController portalController, IModuleController moduleController, IApplicationStatusInfo appStatus) : ModuleSettingsBase
     {
-        private readonly IHostSettings hostSettings;
-        private readonly IPortalController portalController;
-        private readonly IModuleController moduleController;
-        private readonly IApplicationStatusInfo appStatus;
+        private readonly IHostSettings hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+        private readonly IPortalController portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
+        private readonly IModuleController moduleController = moduleController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
 
         /// <summary>Initializes a new instance of the <see cref="EditorConfigManager"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
@@ -47,23 +51,10 @@ namespace DNNConnect.CKEditorProvider.Module
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="moduleController">The module controller.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public EditorConfigManager(IHostSettings hostSettings, IPortalController portalController, IModuleController moduleController)
             : this(hostSettings, portalController, moduleController, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="EditorConfigManager"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        /// <param name="portalController">The portal controller.</param>
-        /// <param name="moduleController">The module controller.</param>
-        /// <param name="appStatus">The application status.</param>
-        public EditorConfigManager(IHostSettings hostSettings, IPortalController portalController, IModuleController moduleController, IApplicationStatusInfo appStatus)
-        {
-            this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
-            this.portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
-            this.moduleController = moduleController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>();
-            this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
         }
 
         /// <summary>  Gets Current Language from Url.</summary>

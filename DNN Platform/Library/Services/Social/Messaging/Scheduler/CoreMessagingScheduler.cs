@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Initializes a new instance of the <see cref="CoreMessagingScheduler"/> class.</summary>
         /// <param name="objScheduleHistoryItem">The object schedule history item.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public CoreMessagingScheduler(ScheduleHistoryItem objScheduleHistoryItem)
             : this(objScheduleHistoryItem, null, null, null)
         {

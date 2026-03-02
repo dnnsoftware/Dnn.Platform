@@ -18,7 +18,7 @@ namespace DotNetNuke.Modules.Html
         private HtmlModuleSettings moduleSettings;
 
         /// <summary>Initializes a new instance of the <see cref="Settings"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with HtmlModuleSettingsRepository. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with HtmlModuleSettingsRepository. Scheduled removal in v12.0.0.")]
         public Settings()
             : this(null)
         {

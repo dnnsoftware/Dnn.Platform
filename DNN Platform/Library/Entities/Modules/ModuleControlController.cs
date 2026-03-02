@@ -40,7 +40,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>GetModuleControl gets a single Module Control from the database.</summary>
         /// <param name="moduleControlID">The ID of the Module Control to fetch.</param>
         /// <returns>The <see cref="ModuleControlInfo"/> or <see langword="null"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial ModuleControlInfo GetModuleControl(int moduleControlID)
             => GetModuleControl(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), moduleControlID);
 
@@ -56,14 +56,14 @@ namespace DotNetNuke.Entities.Modules
                    .FirstOrDefault();
         }
 
-        /// <summary>GetModuleControl gets a Dictionary of Module Controls by Module Definition.</summary>
+        /// <summary>Gets a Dictionary of Module Controls by Module Definition.</summary>
         /// <param name="moduleDefID">The ID of the Module Definition.</param>
         /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping control key to <see cref="ModuleControlInfo"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial Dictionary<string, ModuleControlInfo> GetModuleControlsByModuleDefinitionID(int moduleDefID)
             => GetModuleControlsByModuleDefinitionID(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), moduleDefID);
 
-        /// <summary>GetModuleControl gets a Dictionary of Module Controls by Module Definition.</summary>
+        /// <summary>Gets a Dictionary of Module Controls by Module Definition.</summary>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="moduleDefId">The ID of the Module Definition.</param>
         /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping control key to <see cref="ModuleControlInfo"/>.</returns>
@@ -77,7 +77,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="controlKey">The key for the control.</param>
         /// <param name="moduleDefID">The ID of the Module Definition.</param>
         /// <returns>The <see cref="ModuleControlInfo"/> or <see langword="null"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial ModuleControlInfo GetModuleControlByControlKey(string controlKey, int moduleDefID)
             => GetModuleControlByControlKey(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), controlKey, moduleDefID);
 

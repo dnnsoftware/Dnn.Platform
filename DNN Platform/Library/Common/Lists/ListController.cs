@@ -36,7 +36,7 @@ namespace DotNetNuke.Common.Lists
         private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="ListController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ListController()
             : this(null, null)
         {
@@ -44,7 +44,7 @@ namespace DotNetNuke.Common.Lists
 
         /// <summary>Initializes a new instance of the <see cref="ListController"/> class.</summary>
         /// <param name="eventLogger">An event logger.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ListController(IEventLogger eventLogger)
             : this(eventLogger, null)
         {

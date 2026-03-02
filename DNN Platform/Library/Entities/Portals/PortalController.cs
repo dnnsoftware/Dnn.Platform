@@ -954,7 +954,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingName">host settings key.</param>
         /// <param name="settingValue">host settings value.</param>
         /// <param name="passPhrase">pass phrase to allow encryption/decryption.</param>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial void UpdateEncryptedString(IHostSettings hostSettings, HashAlgorithmName hashAlgorithm, int portalId, string settingName, string settingValue, string passPhrase)
             => UpdateEncryptedString(hostSettings, Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), hashAlgorithm, portalId, settingName, settingValue, passPhrase);
 
@@ -981,7 +981,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial void UpdatePortalSetting(int portalID, string settingName, string settingValue)
             => UpdatePortalSetting(Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), portalID, settingName, settingValue);
 

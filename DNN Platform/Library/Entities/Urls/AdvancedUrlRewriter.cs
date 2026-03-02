@@ -33,7 +33,15 @@ namespace DotNetNuke.Entities.Urls
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class AdvancedUrlRewriter : UrlRewriterBase
+    /// <summary>The advanced URL rewriter.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="portalAliasService">The portal alias service.</param>
+    /// <param name="hostSettingsService">The host settings service.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="portalGroupController">The portal group controller.</param>
+    public class AdvancedUrlRewriter(IHostSettings hostSettings, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
+        : UrlRewriterBase(hostSettings, portalAliasService, hostSettingsService, portalController)
     {
         private const string ProductName = "AdvancedUrlRewriter";
         private static readonly Regex DefaultPageRegex = new Regex(@"(?<!(\?.+))/" + Globals.glbDefaultPage, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
@@ -41,9 +49,9 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex RewritePathRx = new Regex("(?:&(?<parm>.[^&]+)=$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex UrlSlashesRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
         private static readonly Regex AliasUrlRegex = new Regex(@"(?:^(?<http>http[s]{0,1}://){0,1})(?:(?<alias>_ALIAS_)(?<path>$|\?[\w]*|/[\w]*))", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-        private readonly IPortalAliasService portalAliasService;
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly IPortalGroupController portalGroupController;
+        private readonly IPortalAliasService portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IPortalGroupController portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
         private FriendlyUrlSettings settings;
 
         /// <summary>Initializes a new instance of the <see cref="AdvancedUrlRewriter"/> class.</summary>
@@ -58,25 +66,10 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="portalAliasService">The portal alias service.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="portalController">The portal controller.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public AdvancedUrlRewriter(IHostSettings hostSettings, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController)
             : this(hostSettings, portalAliasService, hostSettingsService, portalController, null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="AdvancedUrlRewriter"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        /// <param name="portalAliasService">The portal alias service.</param>
-        /// <param name="hostSettingsService">The host settings service.</param>
-        /// <param name="portalController">The portal controller.</param>
-        /// <param name="appStatus">The application status.</param>
-        /// <param name="portalGroupController">The portal group controller.</param>
-        public AdvancedUrlRewriter(IHostSettings hostSettings, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
-            : base(hostSettings, portalAliasService, hostSettingsService, portalController)
-        {
-            this.portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
         }
 
         public void ProcessTestRequestWithContext(

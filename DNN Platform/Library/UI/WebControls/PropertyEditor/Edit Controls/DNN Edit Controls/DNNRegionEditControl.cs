@@ -52,7 +52,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
         /// <param name="servicesFramework">The web API service framework.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public DNNRegionEditControl(IServicesFramework servicesFramework)
             : this(servicesFramework, null, null, null, null, null, null)
         {
@@ -89,7 +89,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
         /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
         /// <param name="servicesFramework">The web API service framework.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public DNNRegionEditControl(string type, IServicesFramework servicesFramework)
             : this(type, servicesFramework, null, null, null, null, null, null)
         {

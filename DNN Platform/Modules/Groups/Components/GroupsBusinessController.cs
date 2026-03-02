@@ -15,22 +15,17 @@ namespace DotNetNuke.Modules.Groups.Components
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class GroupsBusinessController : IUpgradeable
+    /// <summary>The business controller class for the Groups module.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    public class GroupsBusinessController(IHostSettings hostSettings) : IUpgradeable
     {
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="GroupsBusinessController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public GroupsBusinessController()
             : this(null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="GroupsBusinessController"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        public GroupsBusinessController(IHostSettings hostSettings)
-        {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />

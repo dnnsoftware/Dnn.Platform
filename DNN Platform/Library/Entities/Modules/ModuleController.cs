@@ -48,13 +48,17 @@ namespace DotNetNuke.Entities.Modules
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>ModuleController provides the Business Layer for Modules.</summary>
-    public partial class ModuleController : ServiceLocator<IModuleController, ModuleController>, IModuleController
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="permissionDefinitionService">The permission definition service.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public partial class ModuleController(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings)
+        : ServiceLocator<IModuleController, ModuleController>, IModuleController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleController));
         private static readonly DataProvider DataProvider = DataProvider.Instance();
-        private readonly IEventLogger eventLogger;
-        private readonly IPermissionDefinitionService permissionDefinitionService;
-        private readonly IHostSettings hostSettings;
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        private readonly IPermissionDefinitionService permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="ModuleController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
@@ -66,21 +70,10 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>Initializes a new instance of the <see cref="ModuleController"/> class.</summary>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="permissionDefinitionService">The permission definition service.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ModuleController(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService)
             : this(eventLogger, permissionDefinitionService, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="ModuleController"/> class.</summary>
-        /// <param name="eventLogger">The event logger.</param>
-        /// <param name="permissionDefinitionService">The permission definition service.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public ModuleController(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings)
-        {
-            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
-            this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         private static Hashtable ParsedLocalizedModuleGuid => (Hashtable)(HttpContext.Current.Items["ParsedLocalizedModuleGuid"] ??= new Hashtable());
@@ -278,7 +271,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="module">The ModuleInfo object to serialize.</param>
         /// <param name="includeContent">A flag that determines whether the content of the module is serialized.</param>
         /// <returns>An <see cref="XmlNode"/> representing the module.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial XmlNode SerializeModule(IBusinessControllerProvider businessControllerProvider, XmlDocument xmlModule, ModuleInfo module, bool includeContent)
             => SerializeModule(businessControllerProvider, Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), xmlModule, module, includeContent);
 

@@ -24,16 +24,24 @@ namespace DotNetNuke.Web.InternalServices
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A web API controller for new user notifications.</summary>
+    /// <param name="roleProvider">The role provider.</param>
+    /// <param name="roleController">The role controller.</param>
+    /// <param name="eventManager">The event manager.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="userController">The user controller.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="hostSettings">The host settings.</param>
     [DnnAuthorize]
-    public class NewUserNotificationServiceController : DnnApiController
+    public class NewUserNotificationServiceController(RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger, IHostSettings hostSettings)
+        : DnnApiController
     {
-        private readonly RoleProvider roleProvider;
-        private readonly IRoleController roleController;
-        private readonly IEventManager eventManager;
-        private readonly IPortalController portalController;
-        private readonly IUserController userController;
-        private readonly IEventLogger eventLogger;
-        private readonly IHostSettings hostSettings;
+        private readonly RoleProvider roleProvider = roleProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>();
+        private readonly IRoleController roleController = roleController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>();
+        private readonly IEventManager eventManager = eventManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventManager>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        private readonly IUserController userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="NewUserNotificationServiceController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
@@ -49,29 +57,10 @@ namespace DotNetNuke.Web.InternalServices
         /// <param name="portalController">The portal controller.</param>
         /// <param name="userController">The user controller.</param>
         /// <param name="eventLogger">The event logger.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public NewUserNotificationServiceController(RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger)
             : this(roleProvider, roleController, eventManager, portalController, userController, eventLogger, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="NewUserNotificationServiceController"/> class.</summary>
-        /// <param name="roleProvider">The role provider.</param>
-        /// <param name="roleController">The role controller.</param>
-        /// <param name="eventManager">The event manager.</param>
-        /// <param name="portalController">The portal controller.</param>
-        /// <param name="userController">The user controller.</param>
-        /// <param name="eventLogger">The event logger.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public NewUserNotificationServiceController(RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger, IHostSettings hostSettings)
-        {
-            this.roleProvider = roleProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>();
-            this.roleController = roleController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>();
-            this.eventManager = eventManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventManager>();
-            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
-            this.userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
-            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Authorizes a new user.</summary>

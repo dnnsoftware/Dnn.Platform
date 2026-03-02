@@ -22,23 +22,18 @@ namespace DotNetNuke.Web.InternalServices
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A web API controller for retrieving regions and countries.</summary>
+    /// <param name="listController">The list controller.</param>
     [AllowAnonymous]
-    public class CountryRegionController : DnnApiController
+    public class CountryRegionController(ListController listController)
+        : DnnApiController
     {
-        private readonly ListController listController;
+        private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
 
         /// <summary>Initializes a new instance of the <see cref="CountryRegionController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public CountryRegionController()
             : this(null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="CountryRegionController"/> class.</summary>
-        /// <param name="listController">The list controller.</param>
-        public CountryRegionController(ListController listController)
-        {
-            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
         }
 
         /// <summary>Gets the countries.</summary>

@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="eventLogger">The event logger.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public ProfileDefinitions(INavigationManager navigationManager, IHostSettings hostSettings, IEventLogger eventLogger)
             : this(navigationManager, hostSettings, eventLogger, null, null, null, null)
         {

@@ -22,28 +22,22 @@ namespace Dnn.PersonaBar.UI.MenuControllers
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>An <see cref="IMenuItemController"/> for menu items that link to other pages.</summary>
-    public class LinkMenuController : IMenuItemController
+    /// <param name="navigationManager">The navigation manager.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class LinkMenuController(INavigationManager navigationManager, IHostSettings hostSettings)
+        : IMenuItemController
     {
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="LinkMenuController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public LinkMenuController()
             : this(null, null)
         {
         }
 
-        /// <summary>Initializes a new instance of the <see cref="LinkMenuController"/> class.</summary>
-        /// <param name="navigationManager">The navigation manager.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public LinkMenuController(INavigationManager navigationManager, IHostSettings hostSettings)
-        {
-            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-        }
-
         /// <summary>Gets the navigation manager.</summary>
-        protected INavigationManager NavigationManager { get; }
+        protected INavigationManager NavigationManager { get; } = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         /// <inheritdoc />
         public void UpdateParameters(MenuItem menuItem)

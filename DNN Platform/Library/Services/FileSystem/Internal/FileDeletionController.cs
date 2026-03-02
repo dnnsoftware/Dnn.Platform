@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
         private readonly IContentController contentController = contentController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IContentController>();
         private readonly DataProvider dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
 
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IFileLockingController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IFileLockingController. Scheduled removal in v12.0.0.")]
         public FileDeletionController()
             : this(null, null, null, null, null)
         {

@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -20,6 +21,7 @@ namespace DotNetNuke.Services.FileSystem
         private Dictionary<string, string> contentTypes;
 
         /// <summary>Initializes a new instance of the <see cref="FileContentTypeManager"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public FileContentTypeManager()
             : this(null)
         {

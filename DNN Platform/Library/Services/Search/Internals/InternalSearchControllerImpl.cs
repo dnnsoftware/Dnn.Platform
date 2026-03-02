@@ -64,7 +64,7 @@ namespace DotNetNuke.Services.Search.Internals
         private readonly int moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
         /// <summary>Initializes a new instance of the <see cref="InternalSearchControllerImpl"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public InternalSearchControllerImpl()
             : this(null, null, null)
         {

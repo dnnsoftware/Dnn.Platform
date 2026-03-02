@@ -38,7 +38,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Adds the default property definitions for a portal.</summary>
         /// <param name="portalId">ID of the Portal.</param>
-        [DnnDeprecated(10, 2, 3, "Please use overload with ListController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with ListController")]
         public static partial void AddDefaultDefinitions(int portalId)
             => AddDefaultDefinitions(
                 Globals.GetCurrentServiceProvider().GetRequiredService<ListController>(),
@@ -144,7 +144,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Clears the Profile Definitions Cache.</summary>
         /// <param name="portalId">ID of the Portal.</param>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial void ClearProfileDefinitionCache(int portalId)
             => ClearProfileDefinitionCache(
                 Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
@@ -171,7 +171,7 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>Deletes a Property Definition from the Data Store.</summary>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="definition">The ProfilePropertyDefinition object to delete.</param>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial void DeletePropertyDefinition(IEventLogger eventLogger, ProfilePropertyDefinition definition)
             => DeletePropertyDefinition(
                 eventLogger,
@@ -202,20 +202,20 @@ namespace DotNetNuke.Entities.Profile
             DataCache.ClearCache(string.Format(CultureInfo.InvariantCulture, DataCache.UserProfileCacheKey, portalId, string.Empty));
         }
 
-        /// <summary>Gets a Property Definition from the Data Store by id.</summary>
-        /// <param name="definitionId">The id of the ProfilePropertyDefinition object to retrieve.</param>
-        /// <param name="portalId">Portal Id.</param>
+        /// <summary>Gets a Property Definition from the Data Store by ID.</summary>
+        /// <param name="definitionId">The ID of the ProfilePropertyDefinition object to retrieve.</param>
+        /// <param name="portalId">Portal ID.</param>
         /// <returns>The ProfilePropertyDefinition object.</returns>
         [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
         public static partial ProfilePropertyDefinition GetPropertyDefinition(int definitionId, int portalId)
             => GetPropertyDefinition(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), definitionId, portalId);
 
-        /// <summary>Gets a Property Definition from the Data Store by id.</summary>
+        /// <summary>Gets a Property Definition from the Data Store by ID.</summary>
         /// <param name="hostSettings">The host settings.</param>
-        /// <param name="definitionId">The id of the ProfilePropertyDefinition object to retrieve.</param>
-        /// <param name="portalId">Portal Id.</param>
+        /// <param name="definitionId">The ID of the ProfilePropertyDefinition object to retrieve.</param>
+        /// <param name="portalId">Portal ID.</param>
         /// <returns>The ProfilePropertyDefinition object.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial ProfilePropertyDefinition GetPropertyDefinition(IHostSettings hostSettings, int definitionId, int portalId)
             => GetPropertyDefinition(
                 hostSettings,
@@ -225,13 +225,13 @@ namespace DotNetNuke.Entities.Profile
                 definitionId,
                 portalId);
 
-        /// <summary>Gets a Property Definition from the Data Store by id.</summary>
+        /// <summary>Gets a Property Definition from the Data Store by ID.</summary>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="portalGroupController">The portal group controller.</param>
-        /// <param name="definitionId">The id of the ProfilePropertyDefinition object to retrieve.</param>
-        /// <param name="portalId">Portal Id.</param>
+        /// <param name="definitionId">The ID of the ProfilePropertyDefinition object to retrieve.</param>
+        /// <param name="portalId">Portal ID.</param>
         /// <returns>The ProfilePropertyDefinition object.</returns>
         public static ProfilePropertyDefinition GetPropertyDefinition(IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, int definitionId, int portalId)
         {
@@ -269,7 +269,7 @@ namespace DotNetNuke.Entities.Profile
         /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="name">The name of the ProfilePropertyDefinition object to retrieve.</param>
         /// <returns>The ProfilePropertyDefinition object.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial ProfilePropertyDefinition GetPropertyDefinitionByName(IHostSettings hostSettings, int portalId, string name)
             => GetPropertyDefinitionByName(
                 hostSettings,
@@ -325,7 +325,7 @@ namespace DotNetNuke.Entities.Profile
         /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="category">The category of the Property Definitions to retrieve.</param>
         /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial ProfilePropertyDefinitionCollection GetPropertyDefinitionsByCategory(IHostSettings hostSettings, int portalId, string category)
             => GetPropertyDefinitionsByCategory(
                 hostSettings,
@@ -362,7 +362,7 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>Gets a collection of Property Definitions from the Data Store by portal.</summary>
         /// <param name="portalId">The ID of the Portal.</param>
         /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IHostSettings")]
         public static partial ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(int portalId)
             => GetPropertyDefinitionsByPortal(
                 Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
@@ -385,7 +385,7 @@ namespace DotNetNuke.Entities.Profile
         /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="clone">Whether to use a clone object.</param>
         /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IHostSettings")]
         public static partial ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(int portalId, bool clone)
             => GetPropertyDefinitionsByPortal(
                 Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
@@ -421,7 +421,7 @@ namespace DotNetNuke.Entities.Profile
         /// <param name="clone">Whether to use a clone object.</param>
         /// <param name="includeDeleted">Whether to include deleted profile properties.</param>
         /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(IHostSettings hostSettings, int portalId, bool clone, bool includeDeleted)
             => GetPropertyDefinitionsByPortal(
                 hostSettings,
@@ -459,7 +459,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Gets the Profile Information for the User.</summary>
         /// <param name="user">The user whose Profile information we are retrieving.</param>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial void GetUserProfile(ref UserInfo user)
             => GetUserProfile(
                 Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
@@ -490,7 +490,7 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>Updates a Property Definition in the Data Store.</summary>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="definition">The ProfilePropertyDefinition object to update.</param>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial void UpdatePropertyDefinition(IEventLogger eventLogger, ProfilePropertyDefinition definition)
             => UpdatePropertyDefinition(
                 eventLogger,
@@ -533,7 +533,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Updates a User's Profile.</summary>
         /// <param name="user">The use to update.</param>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial void UpdateUserProfile(UserInfo user)
             => UpdateUserProfile(
                 Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
@@ -572,7 +572,7 @@ namespace DotNetNuke.Entities.Profile
         /// <param name="user">The use to update.</param>
         /// <param name="profileProperties">The collection of profile properties.</param>
         /// <returns>The updated User.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial UserInfo UpdateUserProfile(UserInfo user, ProfilePropertyDefinitionCollection profileProperties)
             => UpdateUserProfile(
                 Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
@@ -643,7 +643,7 @@ namespace DotNetNuke.Entities.Profile
         /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="objProfile">The profile.</param>
         /// <returns><see langword="true"/> if the profile is valid, otherwise <see langword="false"/>.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with ListController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with ListController")]
         public static partial bool ValidateProfile(int portalId, UserProfile objProfile)
             => ValidateProfile(Globals.GetCurrentServiceProvider().GetRequiredService<ListController>(), portalId, objProfile);
 
@@ -673,7 +673,7 @@ namespace DotNetNuke.Entities.Profile
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="searchString">The search string.</param>
         /// <returns>List of matching values.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with ListController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with ListController")]
         public static partial List<string> SearchProfilePropertyValues(int portalId, string propertyName, string searchString)
             => SearchProfilePropertyValues(
                 Globals.GetCurrentServiceProvider().GetRequiredService<ListController>(),

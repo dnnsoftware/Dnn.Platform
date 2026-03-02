@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         /// <summary>The GetDependency method instantiates (and returns) the relevant Dependency.</summary>
         /// <param name="dependencyNav">The manifest (XPathNavigator) for the dependency.</param>
         /// <returns>An <see cref="IDependency"/> instance.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IServiceProvider")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IServiceProvider")]
         public static partial IDependency GetDependency(XPathNavigator dependencyNav)
             => GetDependency(Globals.GetCurrentServiceProvider(), dependencyNav);
 

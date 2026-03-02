@@ -40,7 +40,14 @@ namespace DotNetNuke.Modules.Html
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The HtmlTextController is the Controller class for managing HtmlText information the HtmlText module.</summary>
-    public partial class HtmlTextController : ModuleSearchBase, IPortable, IUpgradeable, IVersionable
+    /// <param name="navigationManager">A navigation manager.</param>
+    /// <param name="portalAliasService">A portal alias service.</param>
+    /// <param name="portalController">A portal controller.</param>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="settingsRepository">The HTML settings repository.</param>
+    public partial class HtmlTextController(INavigationManager navigationManager, IPortalAliasService portalAliasService, IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, HtmlModuleSettingsRepository settingsRepository)
+        : ModuleSearchBase, IPortable, IUpgradeable, IVersionable
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         public const int MAX_DESCRIPTION_LENGTH = 100;
@@ -48,11 +55,11 @@ namespace DotNetNuke.Modules.Html
         private const string PortalRootToken = "{{PortalRoot}}";
 
         private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
-        private readonly IPortalAliasService portalAliasService;
-        private readonly IPortalController portalController;
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly IHostSettings hostSettings;
-        private readonly HtmlModuleSettingsRepository settingsRepository;
+        private readonly IPortalAliasService portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly HtmlModuleSettingsRepository settingsRepository = settingsRepository ?? Globals.GetCurrentServiceProvider().GetRequiredService<HtmlModuleSettingsRepository>();
 
         /// <summary>Initializes a new instance of the <see cref="HtmlTextController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalAliasService. Scheduled removal in v12.0.0.")]
@@ -74,30 +81,14 @@ namespace DotNetNuke.Modules.Html
         /// <param name="portalAliasService">A portal alias service.</param>
         /// <param name="portalController">A portal controller.</param>
         /// <param name="appStatus">The application status.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public HtmlTextController(INavigationManager navigationManager, IPortalAliasService portalAliasService, IPortalController portalController, IApplicationStatusInfo appStatus)
             : this(navigationManager, portalAliasService, portalController, appStatus, null, null)
         {
         }
 
-        /// <summary>Initializes a new instance of the <see cref="HtmlTextController"/> class.</summary>
-        /// <param name="navigationManager">A navigation manager.</param>
-        /// <param name="portalAliasService">A portal alias service.</param>
-        /// <param name="portalController">A portal controller.</param>
-        /// <param name="appStatus">The application status.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        /// <param name="settingsRepository">The HTML settings repository.</param>
-        public HtmlTextController(INavigationManager navigationManager, IPortalAliasService portalAliasService, IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, HtmlModuleSettingsRepository settingsRepository)
-        {
-            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
-            this.portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
-            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-            this.settingsRepository = settingsRepository ?? Globals.GetCurrentServiceProvider().GetRequiredService<HtmlModuleSettingsRepository>();
-        }
-
-        protected INavigationManager NavigationManager { get; }
+        /// <summary>Gets the navigation manager.</summary>
+        protected INavigationManager NavigationManager { get; } = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         /// <summary>FormatHtmlText formats HtmlText content for display in the browser.</summary>
         /// <param name="moduleId">The ModuleID.</param>

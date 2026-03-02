@@ -25,28 +25,23 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A web API controller for the Member Directory module.</summary>
+    /// <param name="listController">The list controller.</param>
+    /// <param name="hostSettings">The host settings.</param>
     [SupportedModules("DotNetNuke.Modules.MemberDirectory")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
-    public class MemberDirectoryController : DnnApiController
+    public class MemberDirectoryController(ListController listController, IHostSettings hostSettings)
+        : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MemberDirectoryController));
-        private readonly ListController listController;
-        private readonly IHostSettings hostSettings;
+        private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="MemberDirectoryController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public MemberDirectoryController()
             : this(null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="MemberDirectoryController"/> class.</summary>
-        /// <param name="listController">The list controller.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public MemberDirectoryController(ListController listController, IHostSettings hostSettings)
-        {
-            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         [HttpGet]

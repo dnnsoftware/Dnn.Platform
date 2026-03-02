@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.UI.Components
         /// <summary>Initializes a new instance of the <see cref="BusinessController"/> class.</summary>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="hostSettings">The host settings.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public BusinessController(IHostSettingsService hostSettingsService, IHostSettings hostSettings)
             : this(hostSettingsService, hostSettings, null)
         {

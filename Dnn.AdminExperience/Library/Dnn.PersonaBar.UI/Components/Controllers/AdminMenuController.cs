@@ -24,10 +24,13 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The default <see cref="IAdminMenuController"/> implementation.</summary>
-    public class AdminMenuController : ServiceLocator<IAdminMenuController, AdminMenuController>, IAdminMenuController
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class AdminMenuController(IApplicationStatusInfo appStatus, IHostSettings hostSettings)
+        : ServiceLocator<IAdminMenuController, AdminMenuController>, IAdminMenuController
     {
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private Dictionary<string, IList<string>> knownPages;
 
         /// <summary>Initializes a new instance of the <see cref="AdminMenuController"/> class.</summary>
@@ -39,19 +42,10 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
 
         /// <summary>Initializes a new instance of the <see cref="AdminMenuController"/> class.</summary>
         /// <param name="appStatus">The application status.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public AdminMenuController(IApplicationStatusInfo appStatus)
             : this(appStatus, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="AdminMenuController"/> class.</summary>
-        /// <param name="appStatus">The application status.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public AdminMenuController(IApplicationStatusInfo appStatus, IHostSettings hostSettings)
-        {
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />

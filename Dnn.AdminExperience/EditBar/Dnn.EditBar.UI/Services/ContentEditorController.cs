@@ -29,18 +29,22 @@ namespace Dnn.EditBar.UI.Services
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A web API controller for content editing.</summary>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="hostSettings">The host settings.</param>
     [DnnAuthorize]
     [DnnPageEditor]
-    public class ContentEditorController : DnnApiController
+    public class ContentEditorController(IApplicationStatusInfo appStatus, IHostSettings hostSettings)
+        : DnnApiController
     {
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentEditorController));
-        private readonly IApplicationStatusInfo appSettings;
-        private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appSettings = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+        private readonly IHostSettings hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="ContentEditorController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ContentEditorController()
             : this(null)
         {
@@ -48,19 +52,10 @@ namespace Dnn.EditBar.UI.Services
 
         /// <summary>Initializes a new instance of the <see cref="ContentEditorController"/> class.</summary>
         /// <param name="appStatus">The application status.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ContentEditorController(IApplicationStatusInfo appStatus)
             : this(appStatus, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="ContentEditorController"/> class.</summary>
-        /// <param name="appStatus">The application status.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public ContentEditorController(IApplicationStatusInfo appStatus, IHostSettings hostSettings)
-        {
-            this.appSettings = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
-            this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
         }
 
         private static string LocalResourcesFile => Path.Combine(ContentEditorManager.ControlFolder, "ContentEditorManager/App_LocalResources/SharedResources.resx");

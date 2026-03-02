@@ -24,7 +24,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="ScopeTypeController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ScopeTypeController()
             : this(null, null)
         {
@@ -32,7 +32,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         /// <summary>Initializes a new instance of the <see cref="ScopeTypeController"/> class.</summary>
         /// <param name="dataService">The data service.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ScopeTypeController(IDataService dataService)
             : this(dataService, null)
         {

@@ -29,9 +29,12 @@ namespace DotNetNuke.Modules.Journal
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A web API controller for the Journal module.</summary>
+    /// <param name="hostSettings">The host settings.</param>
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [SupportedModules("Journal")]
-    public class ServicesController : DnnApiController
+    public class ServicesController(IHostSettings hostSettings)
+        : DnnApiController
     {
         private const string MentionNotificationSuffix = "...";
         private const string MentionIdentityChar = "@";
@@ -40,20 +43,13 @@ namespace DotNetNuke.Modules.Journal
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesController));
         private static readonly string[] AcceptedFileExtensions = ["jpg", "png", "gif", "jpe", "jpeg", "tiff", "bmp",];
 
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="ServicesController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ServicesController()
             : this(null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="ServicesController"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        public ServicesController(IHostSettings hostSettings)
-        {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         [HttpPost]

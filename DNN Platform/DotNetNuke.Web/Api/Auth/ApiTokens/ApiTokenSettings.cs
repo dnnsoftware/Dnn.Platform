@@ -34,7 +34,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         /// <summary>Gets the settings defined for the API tokens.</summary>
         /// <param name="portalId">The ID of the portal for the settings.</param>
         /// <returns>The API token settings for the given portal ID.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking ApiTokenSettingsRepository")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking ApiTokenSettingsRepository")]
         public static partial ApiTokenSettings GetSettings(int portalId)
             => GetSettings(Globals.GetCurrentServiceProvider().GetRequiredService<ApiTokenSettingsRepository>(), portalId);
 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
 
         /// <summary>Saves the updated settings for the API tokens.</summary>
         /// <param name="portalId">The ID of the portal for the settings.</param>
-        [DnnDeprecated(10, 2, 3, "Use overload taking ApiTokenSettingsRepository")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking ApiTokenSettingsRepository")]
         public partial void SaveSettings(int portalId)
             => this.SaveSettings(Globals.GetCurrentServiceProvider().GetRequiredService<ApiTokenSettingsRepository>(), portalId);
 

@@ -115,6 +115,7 @@ namespace DotNetNuke
             services.AddTransient<ITabVersionBuilder, TabVersionBuilder>();
             services.AddTransient<ISearchController, SearchControllerImpl>();
             services.AddTransient<IFolderMappingController, FolderMappingController>(serviceProvider => new FolderMappingController(serviceProvider.GetRequiredService<IHostSettings>()));
+            services.AddTransient<IInternalSearchController, InternalSearchControllerImpl>(serviceProvider => new InternalSearchControllerImpl(serviceProvider.GetRequiredService<IHostSettingsService>(), serviceProvider.GetRequiredService<IHostSettings>(), serviceProvider));
             services.AddTransient<IServicesFramework, ServicesFrameworkImpl>(ActivatorUtilities.GetServiceOrCreateInstance<ServicesFrameworkImpl>);
 
             // TODO: LocalizationProvider can be overridden via the ComponentFactory, need to be able to get an instance registered via ComponentFactory without creating a dependency loop

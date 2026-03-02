@@ -19,23 +19,18 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class XsltTemplateProcessor : ITemplateProcessor
+    /// <summary>An <see cref="ITemplateProcessor"/> for XSLT files.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    public class XsltTemplateProcessor(IHostSettings hostSettings) : ITemplateProcessor
     {
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private XslCompiledTransform xsl;
 
         /// <summary>Initializes a new instance of the <see cref="XsltTemplateProcessor"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public XsltTemplateProcessor()
             : this(null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="XsltTemplateProcessor"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        public XsltTemplateProcessor(IHostSettings hostSettings)
-        {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />

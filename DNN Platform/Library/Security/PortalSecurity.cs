@@ -106,7 +106,7 @@ namespace DotNetNuke.Security
         private readonly IPortalGroupController portalGroupController;
 
         /// <summary>Initializes a new instance of the <see cref="PortalSecurity"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public PortalSecurity()
             : this(null, null, null, null, null)
         {
@@ -114,7 +114,7 @@ namespace DotNetNuke.Security
 
         /// <summary>Initializes a new instance of the <see cref="PortalSecurity"/> class.</summary>
         /// <param name="cryptographyProvider">The cryptography provider.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public PortalSecurity(ICryptographyProvider cryptographyProvider)
             : this(cryptographyProvider, null, null, null, null)
         {
@@ -236,7 +236,7 @@ namespace DotNetNuke.Security
         /// <summary>Gets the cookie domain for the portal group or from web.config.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <returns>Cookie domain for the portal group or from web.config.</returns>
-        [DnnDeprecated(10, 2, 3, "Please use overload with IPortalController")]
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
         public static partial string GetCookieDomain(int portalId)
             => GetCookieDomain(
                 Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),

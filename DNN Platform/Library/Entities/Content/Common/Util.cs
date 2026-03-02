@@ -13,7 +13,7 @@ namespace DotNetNuke.Entities.Content.Common
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Utility Methods for Content.</summary>
-    [DnnDeprecated(10, 2, 3, "Resolve types via Dependency Injection")]
+    [DnnDeprecated(10, 2, 4, "Resolve types via Dependency Injection")]
     public static partial class Util
     {
         /// <summary>Gets the data service.</summary>
@@ -32,7 +32,7 @@ namespace DotNetNuke.Entities.Content.Common
 
         /// <summary>Gets the content controller.</summary>
         /// <returns>ContentController from ComponentFactory.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial IContentController GetContentController()
             => GetContentController(null, null);
 
@@ -56,7 +56,7 @@ namespace DotNetNuke.Entities.Content.Common
 
         /// <summary>Gets the scope type controller.</summary>
         /// <returns>ScopeTypeController from ComponentFactory.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial IScopeTypeController GetScopeTypeController()
             => GetScopeTypeController(null, null);
 
@@ -80,7 +80,7 @@ namespace DotNetNuke.Entities.Content.Common
 
         /// <summary>Gets the term controller.</summary>
         /// <returns>TermController from ComponentFactory.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial ITermController GetTermController()
             => GetTermController(null, null);
 
@@ -104,7 +104,7 @@ namespace DotNetNuke.Entities.Content.Common
 
         /// <summary>Gets the vocabulary controller.</summary>
         /// <returns>VocabularyController from ComponentFactory.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial IVocabularyController GetVocabularyController()
             => GetVocabularyController(null, null);
 

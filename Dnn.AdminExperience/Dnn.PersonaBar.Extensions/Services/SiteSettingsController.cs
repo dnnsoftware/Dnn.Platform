@@ -58,8 +58,22 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using FileInfo = System.IO.FileInfo;
 
     /// <summary>Provides Web API methods for the Site Settings module to use.</summary>
+    /// <param name="navigationManager">A manager to provide navigation services.</param>
+    /// <param name="appStatus">The application status info.</param>
+    /// <param name="personalizationController">The personalization controller.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="listController">The list controller.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="portalGroupController">The portal group controller.</param>
+    /// <param name="cryptographyProvider">The cryptography provider.</param>
+    /// <param name="hostSettingsService">The host settings service.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="portalAliasService">The portal alias service.</param>
+    /// <param name="roleProvider">The role provider.</param>
+    /// <param name="tabController">The tab controller.</param>
     [MenuPermission(MenuName = Components.Constants.Constants.MenuName)]
-    public class SiteSettingsController : PersonaBarApiController
+    public class SiteSettingsController(INavigationManager navigationManager, IApplicationStatusInfo appStatus, PersonalizationController personalizationController, IHostSettings hostSettings, ListController listController, IPortalController portalController, IPortalGroupController portalGroupController, ICryptographyProvider cryptographyProvider, IHostSettingsService hostSettingsService, IEventLogger eventLogger, IPortalAliasService portalAliasService, RoleProvider roleProvider, ITabController tabController)
+        : PersonaBarApiController
     {
         // Field Boost Settings - they are scaled down by 10.
         private const int DefaultSearchTitleBoost = 50;
@@ -80,24 +94,24 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
 
         private readonly Components.SiteSettingsController controller = new Components.SiteSettingsController();
-        private readonly INavigationManager navigationManager;
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly PersonalizationController personalizationController;
-        private readonly IHostSettings hostSettings;
-        private readonly ListController listController;
-        private readonly IPortalController portalController;
-        private readonly IPortalGroupController portalGroupController;
-        private readonly ICryptographyProvider cryptographyProvider;
-        private readonly IHostSettingsService hostSettingsService;
-        private readonly IEventLogger eventLogger;
-        private readonly IPortalAliasService portalAliasService;
-        private readonly RoleProvider roleProvider;
-        private readonly ITabController tabController;
+        private readonly INavigationManager navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly PersonalizationController personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        private readonly IPortalGroupController portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+        private readonly ICryptographyProvider cryptographyProvider = cryptographyProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>();
+        private readonly IHostSettingsService hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        private readonly IPortalAliasService portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
+        private readonly RoleProvider roleProvider = roleProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>();
+        private readonly ITabController tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
 
         /// <summary>Initializes a new instance of the <see cref="SiteSettingsController"/> class.</summary>
         /// <param name="navigationManager">A manager to provide navigation services.</param>
         /// <param name="applicationStatusInfo">The application status info.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public SiteSettingsController(INavigationManager navigationManager, IApplicationStatusInfo applicationStatusInfo)
             : this(navigationManager, applicationStatusInfo, null, null, null, null, null, null, null, null, null, null, null)
         {
@@ -108,41 +122,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="applicationStatusInfo">The application status info.</param>
         /// <param name="personalizationController">The personalization controller.</param>
         /// <param name="hostSettings">The host settings.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public SiteSettingsController(INavigationManager navigationManager, IApplicationStatusInfo applicationStatusInfo, PersonalizationController personalizationController, IHostSettings hostSettings)
             : this(navigationManager, applicationStatusInfo, personalizationController, hostSettings, null, null, null, null, null, null, null, null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="SiteSettingsController"/> class.</summary>
-        /// <param name="navigationManager">A manager to provide navigation services.</param>
-        /// <param name="appStatus">The application status info.</param>
-        /// <param name="personalizationController">The personalization controller.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        /// <param name="listController">The list controller.</param>
-        /// <param name="portalController">The portal controller.</param>
-        /// <param name="portalGroupController">The portal group controller.</param>
-        /// <param name="cryptographyProvider">The cryptography provider.</param>
-        /// <param name="hostSettingsService">The host settings service.</param>
-        /// <param name="eventLogger">The event logger.</param>
-        /// <param name="portalAliasService">The portal alias service.</param>
-        /// <param name="roleProvider">The role provider.</param>
-        /// <param name="tabController">The tab controller.</param>
-        public SiteSettingsController(INavigationManager navigationManager, IApplicationStatusInfo appStatus, PersonalizationController personalizationController, IHostSettings hostSettings, ListController listController, IPortalController portalController, IPortalGroupController portalGroupController, ICryptographyProvider cryptographyProvider, IHostSettingsService hostSettingsService, IEventLogger eventLogger, IPortalAliasService portalAliasService, RoleProvider roleProvider, ITabController tabController)
-        {
-            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
-            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
-            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
-            this.cryptographyProvider = cryptographyProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>();
-            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
-            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
-            this.portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
-            this.roleProvider = roleProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>();
-            this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
         }
 
         /// <summary>Gets provides navigation services.</summary>

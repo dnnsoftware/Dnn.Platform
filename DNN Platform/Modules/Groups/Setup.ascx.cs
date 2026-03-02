@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.Groups
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="userController">The user controller.</param>
         /// <param name="permissionDefinitionService">The permission definition service.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Setup(RoleProvider roleProvider, IEventLogger eventLogger, IUserController userController, IPermissionDefinitionService permissionDefinitionService)
             : this(roleProvider, eventLogger, userController, permissionDefinitionService, null)
         {

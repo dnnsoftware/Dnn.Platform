@@ -25,9 +25,12 @@ namespace DotNetNuke.Modules.Journal.Components
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The Controller class for Journal.</summary>
-    public class FeatureController : ModuleSearchBase, IModuleSearchResultController
+    /// <param name="navigationManager">The navigation manager.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class FeatureController(INavigationManager navigationManager, IHostSettings hostSettings)
+        : ModuleSearchBase, IModuleSearchResultController
     {
-        private readonly IHostSettings hostSettings;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="FeatureController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
@@ -38,22 +41,14 @@ namespace DotNetNuke.Modules.Journal.Components
 
         /// <summary>Initializes a new instance of the <see cref="FeatureController"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public FeatureController(INavigationManager navigationManager)
             : this(navigationManager, null)
         {
         }
 
-        /// <summary>Initializes a new instance of the <see cref="FeatureController"/> class.</summary>
-        /// <param name="navigationManager">The navigation manager.</param>
-        /// <param name="hostSettings">The host settings.</param>
-        public FeatureController(INavigationManager navigationManager, IHostSettings hostSettings)
-        {
-            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-        }
-
-        protected INavigationManager NavigationManager { get; }
+        /// <summary>Gets the navigation manager.</summary>
+        protected INavigationManager NavigationManager { get; } = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         /// <inheritdoc cref="IPortable.ExportModule" />
         public string ExportModule(int moduleID)

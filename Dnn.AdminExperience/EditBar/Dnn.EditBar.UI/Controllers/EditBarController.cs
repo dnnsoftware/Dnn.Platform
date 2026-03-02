@@ -27,35 +27,30 @@ namespace Dnn.EditBar.UI.Controllers
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class EditBarController : ServiceLocator<IEditBarController, EditBarController>, IEditBarController
+    /// <summary>An <see cref="IEditBarController"/> implementation.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="menuItems">The menu items.</param>
+    public class EditBarController(IHostSettings hostSettings, IEnumerable<BaseMenuItem> menuItems)
+        : ServiceLocator<IEditBarController, EditBarController>, IEditBarController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditBarController));
-        private readonly IHostSettings hostSettings;
-        private readonly IEnumerable<BaseMenuItem> menuItems;
+
+        private readonly IHostSettings hostSettings = hostSettings ??
+                                                      HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ??
+                                                      new HostSettings(
+                                                          new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                                              new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                                              new Lazy<IPortalController>(() => PortalController.Instance)));
+
+        private readonly IEnumerable<BaseMenuItem> menuItems = menuItems ?? GetMenuItemInstances();
 
         /// <summary>Initializes a new instance of the <see cref="EditBarController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IEnumerable<BaseMenuItem>. Scheduled removal in v12.0.0.")]
         public EditBarController()
             : this(null, null)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="EditBarController"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        /// <param name="menuItems">The menu items.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IEnumerable<BaseMenuItem>. Scheduled removal in v12.0.0.")]
-        public EditBarController(IHostSettings hostSettings, IEnumerable<BaseMenuItem> menuItems)
-        {
-            this.hostSettings = hostSettings ??
-                                HttpContextSource.Current?.GetScope()
-                                    .ServiceProvider.GetRequiredService<IHostSettings>() ??
-                                new HostSettings(
-                                    new HostController(
-#pragma warning disable CS0618 // Type or member is obsolete
-                                        new EventLogController(),
-#pragma warning restore CS0618 // Type or member is obsolete
-                                        new Lazy<IPortalController>(() => PortalController.Instance)));
-            this.menuItems = menuItems ?? GetMenuItemInstances();
         }
 
         /// <inheritdoc />

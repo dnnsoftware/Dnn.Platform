@@ -75,7 +75,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="dataProvider">The data provider.</param>
         /// <param name="permissionDefinitionService">The permission definition service.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public TabController(IEventLogger eventLogger, DataProvider dataProvider, IPermissionDefinitionService permissionDefinitionService)
             : this(eventLogger, dataProvider, permissionDefinitionService, null, null)
         {
@@ -89,7 +89,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="parentTab">The parent tab.</param>
         /// <param name="skinSrc">The skin SRC.</param>
         /// <param name="containerSrc">The container SRC.</param>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IEventLogger")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IEventLogger")]
         public static partial void CopyDesignToChildren(TabInfo parentTab, string skinSrc, string containerSrc)
             => CopyDesignToChildren(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), parentTab, skinSrc, containerSrc);
 
@@ -173,7 +173,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Copies the permissions to children.</summary>
         /// <param name="parentTab">The parent tab.</param>
         /// <param name="newPermissions">The new permissions.</param>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IEventLogger")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IEventLogger")]
         public static partial void CopyPermissionsToChildren(TabInfo parentTab, TabPermissionCollection newPermissions)
             => CopyPermissionsToChildren(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), parentTab, newPermissions);
 
@@ -210,7 +210,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tabId">Tab being processed.</param>
         /// <param name="mergeTabs">Tabs need to merge.</param>
         /// <param name="hModules">Modules Hashtable.</param>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IPermissionDefinitionService")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IPermissionDefinitionService")]
         public static partial void DeserializePanes(IBusinessControllerProvider businessControllerProvider, XmlNode nodePanes, int portalId, int tabId, PortalTemplateModuleAction mergeTabs, Hashtable hModules)
             => DeserializePanes(businessControllerProvider, Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), nodePanes, portalId, tabId, mergeTabs, hModules);
 
@@ -467,7 +467,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="includeNoneSpecified">if set to <see langword="true"/> [include none specified].</param>
         /// <param name="includeHidden">if set to <see langword="true"/> [include hidden].</param>
         /// <returns>A <see cref="List{T}"/> or <see cref="TabInfo"/> instances.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial List<TabInfo> GetPortalTabs(int portalId, int excludeTabId, bool includeNoneSpecified, bool includeHidden)
             => GetPortalTabs(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), portalId, excludeTabId, includeNoneSpecified, includeHidden);
 
@@ -502,7 +502,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="includeDeleted">if set to <see langword="true"/> [include deleted].</param>
         /// <param name="includeURL">if set to <see langword="true"/> [include URL].</param>
         /// <returns>A <see cref="List{T}"/> or <see cref="TabInfo"/> instances.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial List<TabInfo> GetPortalTabs(int portalId, int excludeTabId, bool includeNoneSpecified, bool includeHidden, bool includeDeleted, bool includeURL)
             => GetPortalTabs(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), portalId, excludeTabId, includeNoneSpecified, includeHidden, includeDeleted, includeURL);
 
@@ -542,7 +542,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="checkViewPermisison">if set to <see langword="true"/> [check view permission].</param>
         /// <param name="checkEditPermission">if set to <see langword="true"/> [check edit permission].</param>
         /// <returns>A <see cref="List{T}"/> or <see cref="TabInfo"/> instances.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial List<TabInfo> GetPortalTabs(int portalId, int excludeTabId, bool includeNoneSpecified, string noneSpecifiedText, bool includeHidden, bool includeDeleted, bool includeURL, bool checkViewPermisison, bool checkEditPermission)
             => GetPortalTabs(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), portalId, excludeTabId, includeNoneSpecified, noneSpecifiedText, includeHidden, includeDeleted, includeURL, checkViewPermisison, checkEditPermission);
 
@@ -674,7 +674,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tabPath">The tab path.</param>
         /// <param name="cultureCode">The culture code.</param>
         /// <returns>The tab ID or <c>-1</c>.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial int GetTabByTabPath(int portalId, string tabPath, string cultureCode)
             => GetTabByTabPath(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId, tabPath, cultureCode);
 
@@ -699,7 +699,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="portalId">The portal id.</param>
         /// <param name="cultureCode">The culture code.</param>
         /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping tab path to tab ID.</returns>
-        [DnnDeprecated(10, 2, 3, "Use overload taking IHostSettings")]
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
         public static partial Dictionary<string, int> GetTabPathDictionary(int portalId, string cultureCode)
             => GetTabPathDictionary(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId, cultureCode);
 

@@ -11,20 +11,17 @@ namespace Dnn.EditBar.UI.Items
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Content.Workflow;
 
+    /// <summary>A <see cref="WorkflowBaseMenuItem"/> for the discard state menu item.</summary>
+    /// <param name="contentController">The content controller.</param>
+    /// <param name="workflowEngine">The workflow engine.</param>
     [Serializable]
-    public class DiscardStateMenu : WorkflowBaseMenuItem
+    public class DiscardStateMenu(IContentController contentController, IWorkflowEngine workflowEngine)
+        : WorkflowBaseMenuItem(contentController, workflowEngine)
     {
         /// <summary>Initializes a new instance of the <see cref="DiscardStateMenu"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IContentController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IContentController. Scheduled removal in v12.0.0.")]
         public DiscardStateMenu()
-        {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="DiscardStateMenu"/> class.</summary>
-        /// <param name="contentController">The content controller.</param>
-        /// <param name="workflowEngine">The workflow engine.</param>
-        public DiscardStateMenu(IContentController contentController, IWorkflowEngine workflowEngine)
-            : base(contentController, workflowEngine)
+            : this(null, null)
         {
         }
 

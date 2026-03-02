@@ -200,7 +200,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>Gets the date type for a profile property definition.</summary>
         /// <param name="definition">The <see cref="ProfilePropertyDefinition"/> to check.</param>
         /// <returns>A string representing the data type such as: truefalse, date, datetime, integer, page, image or richtext.</returns>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public static string DisplayDataType(ProfilePropertyDefinition definition)
             => DisplayDataType(Globals.GetCurrentServiceProvider().GetRequiredService<ListController>(), definition);
 

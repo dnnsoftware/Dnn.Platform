@@ -37,7 +37,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
         private readonly Dictionary<string, string> parentMaps = new Dictionary<string, string>();
 
         /// <summary>Initializes a new instance of the <see cref="PersonaBarMenuInstaller"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public PersonaBarMenuInstaller()
             : this(null, null)
         {
@@ -45,7 +45,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
         /// <summary>Initializes a new instance of the <see cref="PersonaBarMenuInstaller"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public PersonaBarMenuInstaller(IHostSettings hostSettings)
             : this(hostSettings, null)
         {

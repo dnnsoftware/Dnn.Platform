@@ -23,7 +23,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         /// <summary>Initializes a new instance of the <see cref="ProfileDefinitionDto"/> class.</summary>
         /// <param name="definition">The property definition.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public ProfileDefinitionDto(ProfilePropertyDefinition definition)
             : this(null, definition)
         {
