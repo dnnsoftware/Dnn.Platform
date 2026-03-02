@@ -13,7 +13,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
-    using DotNetNuke.Application;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Abstractions.Settings;
@@ -163,7 +162,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.SetupHostController();
             using (_ = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<ICryptographyProvider>())))
             {
-                PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>(), Mock.Of<IHostSettings>(), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IEventLogger>()));
+                PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>(), Mock.Of<IHostSettings>(), new FakeApplicationStatusInfo(), Mock.Of<IEventLogger>()));
             }
 
             this.serviceProvider = FakeServiceProvider.Setup(
@@ -176,7 +175,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     services.AddSingleton(this.mockLocaleController.Object);
                     services.AddSingleton(this.mockSearchHelper.Object);
                     services.AddSingleton(this.mockUserController.Object);
-                    services.AddSingleton<IApplicationStatusInfo>(new ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+                    services.AddSingleton<IApplicationStatusInfo>(new FakeApplicationStatusInfo());
                     services.AddTransient<FakeResultController>();
                     services.AddTransient<NoPermissionFakeResultController>();
                 });
@@ -2647,7 +2646,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     this.luceneController.Dispose();
                 }
 
-                this.luceneController = new LuceneControllerImpl();
+                this.luceneController = new LuceneControllerImpl(this.hostController, new FakeApplicationStatusInfo());
                 LuceneController.SetTestableInstance(this.luceneController);
             }
         }
@@ -2758,7 +2757,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     StopWords = "the,over",
                 });
 
-            this.mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns<string, bool, bool>(new SearchHelperImpl(Mock.Of<IHostSettings>(), Mock.Of<IHostSettingsService>(), Mock.Of<IPortalController>(), Mock.Of<IApplicationStatusInfo>()).RephraseSearchText);
+            this.mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns<string, bool, bool>(new SearchHelperImpl(Mock.Of<IHostSettings>(), Mock.Of<IHostSettingsService>(), Mock.Of<IPortalController>(), new FakeApplicationStatusInfo()).RephraseSearchText);
             this.mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
             SearchHelper.SetTestableInstance(this.mockSearchHelper.Object);
         }

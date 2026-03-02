@@ -111,7 +111,9 @@ namespace DotNetNuke.Services.Search.Internals
             // ModuleDefId will be zero for non-module
             var key = $"{searchResult.SearchTypeId}-{searchResult.ModuleDefId}-{Thread.CurrentThread.CurrentCulture}";
             var keys = CBO.Instance.GetCachedObject<IDictionary<string, string>>(
-                            new CacheItemArgs(key, 120, CacheItemPriority.Default), this.SearchDocumentTypeDisplayNameCallBack, false);
+                new CacheItemArgs(key, 120, CacheItemPriority.Default),
+                this.SearchDocumentTypeDisplayNameCallBack,
+                false);
 
             return keys.TryGetValue(key, out var documentTypeDisplayName) ? documentTypeDisplayName : string.Empty;
         }

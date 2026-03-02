@@ -17,6 +17,11 @@ using DotNetNuke.Entities.Controllers;
 public class FakeHostController(Dictionary<string, IConfigurationSetting> settings)
     : IHostController, IHostSettingsService
 {
+    public FakeHostController(IEnumerable<KeyValuePair<string, string>> settings)
+        : this(settings.ToDictionary(kvp => kvp.Key, IConfigurationSetting (kvp) => new ConfigurationSetting { Key = kvp.Key, Value = kvp.Value, IsSecure = false, }))
+    {
+    }
+
     public Dictionary<string, IConfigurationSetting> Settings { get; } = settings;
 
     public void AddSetting(string key, string value, bool isSecure = false)
