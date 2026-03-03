@@ -27,8 +27,8 @@ namespace DotNetNuke.Instrumentation
             if (Log.Logger == null)
             {
                 // initialize Serilog
-                var hostMapPath = System.Web.Hosting.HostingEnvironment.MapPath("~");
-                SerilogController.AddSerilog(hostMapPath);
+                var applicationMapPath = System.Web.Hosting.HostingEnvironment.MapPath("~");
+                SerilogController.AddSerilog(applicationMapPath);
             }
 
             return new SerilogLoggerFactory(Log.Logger).CreateLogger<T>();
