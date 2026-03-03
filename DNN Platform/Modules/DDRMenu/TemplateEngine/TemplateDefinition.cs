@@ -324,12 +324,12 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
             foreach (var stylesheet in this.StyleSheets)
             {
-                this.clientResourceController.RegisterStylesheet(stylesheet);
+                GetClientResourcesController().RegisterStylesheet(stylesheet);
             }
 
             foreach (var scriptUrl in this.ScriptUrls)
             {
-                this.clientResourceController.RegisterScript(scriptUrl);
+                GetClientResourcesController().RegisterScript(scriptUrl);
             }
 
             foreach (var libraryInfo in this.ScriptLibraries)
@@ -431,6 +431,12 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             }
 
             return string.Join(" && ", objectsToCheck.ToArray());
+        }
+
+        private static IClientResourceController GetClientResourcesController()
+        {
+            var serviceProvider = Globals.GetCurrentServiceProvider();
+            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
     }
 }
