@@ -64,6 +64,10 @@ namespace DotNetNuke.Services.Mail
         /// <inheritdoc />
         public override bool SupportsOAuth => true;
 
+        private static int CurrentPortalId => PortalSettings.Current?.PortalId ?? Null.NullInteger;
+
+        private static string CurrentPortalName => PortalSettings.Current?.PortalName ?? string.Empty;
+
         /// <inheritdoc />
         public override string SendMail(MailInfo mailInfo, SmtpInfo smtpInfo = null)
         {
@@ -140,22 +144,21 @@ namespace DotNetNuke.Services.Mail
         private static (string Host, int Port, string ErrorMessage) ParseSmtpServer(IMailSettings mailSettings, ref SmtpInfo smtpInfo)
         {
             var port = 25;
-            var currentPortalId = PortalSettings.Current.PortalId;
             if (smtpInfo == null || string.IsNullOrEmpty(smtpInfo.Server))
             {
-                if (string.IsNullOrWhiteSpace(mailSettings.GetServer(currentPortalId)))
+                if (string.IsNullOrWhiteSpace(mailSettings.GetServer(CurrentPortalId)))
                 {
                     return (null, port, "SMTP Server not configured");
                 }
 
                 smtpInfo = new SmtpInfo
                            {
-                               Server = mailSettings.GetServer(currentPortalId),
-                               Authentication = mailSettings.GetAuthentication(currentPortalId),
-                               Username = mailSettings.GetUsername(currentPortalId),
-                               Password = mailSettings.GetPassword(currentPortalId),
-                               EnableSSL = mailSettings.GetSecureConnectionEnabled(currentPortalId),
-                               AuthProvider = mailSettings.GetAuthProvider(currentPortalId),
+                               Server = mailSettings.GetServer(CurrentPortalId),
+                               Authentication = mailSettings.GetAuthentication(CurrentPortalId),
+                               Username = mailSettings.GetUsername(CurrentPortalId),
+                               Password = mailSettings.GetPassword(CurrentPortalId),
+                               EnableSSL = mailSettings.GetSecureConnectionEnabled(CurrentPortalId),
+                               AuthProvider = mailSettings.GetAuthProvider(CurrentPortalId),
                            };
             }
 
@@ -260,7 +263,7 @@ namespace DotNetNuke.Services.Mail
 
                     if (string.IsNullOrEmpty(senderDisplayName))
                     {
-                        senderDisplayName = mailSettings.IsPortalEnabled(PortalSettings.Current.PortalId) ? PortalSettings.Current.PortalName : hostSettings.HostTitle;
+                        senderDisplayName = mailSettings.IsPortalEnabled(CurrentPortalId) ? CurrentPortalName : hostSettings.HostTitle;
                         needUpdateSender = true;
                     }
 
@@ -274,7 +277,7 @@ namespace DotNetNuke.Services.Mail
                 else if (smtpInfo.Username.Contains("@"))
                 {
                     mailMessage.Sender = ParseAddressWithDisplayName(
-                        displayName: mailSettings.IsPortalEnabled(PortalSettings.Current.PortalId) ? PortalSettings.Current.PortalName : hostSettings.HostTitle,
+                        displayName: mailSettings.IsPortalEnabled(CurrentPortalId) ? CurrentPortalName : hostSettings.HostTitle,
                         address: smtpInfo.Username);
                 }
             }
@@ -336,9 +339,9 @@ namespace DotNetNuke.Services.Mail
             }
 
             var portalId = Null.NullInteger;
-            if (this.mailSettings.IsPortalEnabled(PortalSettings.Current.PortalId))
+            if (this.mailSettings.IsPortalEnabled(CurrentPortalId))
             {
-                portalId = PortalSettings.Current.PortalId;
+                portalId = CurrentPortalId;
             }
 
             return (authProvider, portalId);
