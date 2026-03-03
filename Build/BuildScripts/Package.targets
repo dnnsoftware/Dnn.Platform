@@ -6,7 +6,35 @@
   </PropertyGroup>
 
   <Import Project="MSBuild.Community.Tasks.Targets" />
-  <UsingTask AssemblyFile="$(DotNetNukeMSBuildTasksLib)" TaskName="DotNetNuke.MSBuild.Tasks.ExtensionPackager" />
+  <UsingTask TaskName="ExtensionPackager" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <WorkingFolder ParameterType="System.String" />
+      <Manifest Required="true" ParameterType="System.String" />
+      <PackageFiles Output="true" ParameterType="Microsoft.Build.Framework.ITaskItem[]" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="Microsoft.Build.Utilities" />
+      <Using Namespace="System.Collections.Generic" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Linq" />
+      <Using Namespace="System.Xml.Linq" />
+      <Code Type="Fragment" Language="cs">
+<![CDATA[
+    this.PackageFiles = (
+        from package in XDocument.Load(Path.Combine(this.WorkingFolder ?? string.Empty, this.Manifest)).Descendants("package")
+        from component in package.Element("components").Descendants("component")
+        let componentType = component.Attribute("type").Value
+        from file in component.Descendants().Descendants<XElement>(componentType.ToLowerInvariant())
+        let path = file.Element("path")
+        let name = file.Element("name")
+        let sourceFileName = file.Element("sourceFileName")
+        let fullFilePath = sourceFileName?.Value ?? Path.Combine(path?.Value ?? string.Empty, name.Value)
+        select new TaskItem(fullFilePath)
+    ).ToArray();
+]]>
+      </Code>
+    </Task>
+  </UsingTask>
   <UsingTask AssemblyFile="$(YuiLib)" TaskName="CssCompressorTask" />
   <!--<UsingTask AssemblyFile="$(YuiLib)" TaskName="JavaScriptCompressorTask" />-->
 
