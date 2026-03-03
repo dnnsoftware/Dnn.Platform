@@ -10,7 +10,6 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Web;
     using System.Web.Caching;
     using System.Web.UI;
     using System.Xml;
@@ -22,12 +21,11 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.ClientDependency;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class TemplateDefinition
+    public class TemplateDefinition(IApplicationStatusInfo appStatus, IEventLogger eventLogger)
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
@@ -66,9 +64,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 "( (href|src)=['\"]?)(?!http:|ftp:|mailto:|file:|javascript:|/)([^'\">]+['\">])",
                 RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private readonly IClientResourceController clientResourceController;
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly IEventLogger eventLogger;
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
 
         /// <summary>Initializes a new instance of the <see cref="TemplateDefinition"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
@@ -81,11 +78,10 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
         /// <param name="clientResourceController">The client resource controller.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Please use overload with IApplicationStatusInfo. Scheduled removeal in v12.0.0")]
         public TemplateDefinition(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+            : this(appStatus, eventLogger)
         {
-            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         public TemplateDefinition Clone()
@@ -322,14 +318,15 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
         {
             var page = DNNContext.Current.Page;
 
+            var clientResourcesController = GetClientResourcesController();
             foreach (var stylesheet in this.StyleSheets)
             {
-                GetClientResourcesController().RegisterStylesheet(stylesheet);
+                clientResourcesController.RegisterStylesheet(stylesheet);
             }
 
             foreach (var scriptUrl in this.ScriptUrls)
             {
-                GetClientResourcesController().RegisterScript(scriptUrl);
+                clientResourcesController.RegisterScript(scriptUrl);
             }
 
             foreach (var libraryInfo in this.ScriptLibraries)
