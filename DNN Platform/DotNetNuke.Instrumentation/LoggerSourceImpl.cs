@@ -86,7 +86,11 @@ namespace DotNetNuke.Instrumentation
 
             public void Debug(object message, Exception exception)
             {
-                if (message is string)
+                if (message == null)
+                {
+                    this.logger.Debug(exception, exception.Message);
+                }
+                else if (message is string)
                 {
                     this.logger.Debug(exception, (string)message);
                 }
