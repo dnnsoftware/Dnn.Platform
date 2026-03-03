@@ -17,33 +17,37 @@ internal sealed class SerilogController
     /// <summary>
     /// Sets up Serilog using the config file ~/Serilog.config.
     /// </summary>
-    /// <param name="hostMapPath">Path to the root of the DNN installation.</param>
-    internal static void AddSerilog(string hostMapPath)
+    /// <param name="applicationMapPath">Path to the root of the DNN installation.</param>
+    internal static void AddSerilog(string applicationMapPath)
     {
-        var configFile = Path.Combine(hostMapPath, "Serilog.config");
-        var config = new LoggerConfiguration()
-            .WriteTo.File(
-                Path.Combine(hostMapPath, "Portals\\_default\\Logs\\log.txt"),
-                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}",
-                rollingInterval: RollingInterval.Day,
-                formatProvider: CultureInfo.InvariantCulture)
-            .MinimumLevel.Error();
+        var configFile = Path.Combine(applicationMapPath, "Serilog.config");
 
         if (!File.Exists(configFile))
         {
-            var defaultConfigFile = Path.Combine(hostMapPath, "Config", "Serilog.default.config");
+            var defaultConfigFile = Path.Combine(applicationMapPath, "Config", "Serilog.default.config");
             if (File.Exists(defaultConfigFile))
             {
                 File.Copy(defaultConfigFile, configFile);
             }
         }
 
+        LoggerConfiguration config;
         if (File.Exists(configFile))
         {
             config = new LoggerConfiguration()
                 .ReadFrom.Configuration(new ConfigurationBuilder()
                     .AddJsonFile(configFile, optional: false, reloadOnChange: true)
                     .Build());
+        }
+        else
+        {
+            config = new LoggerConfiguration()
+                .WriteTo.File(
+                    Path.Combine(applicationMapPath, "Portals\\_default\\Logs\\log.log.resources"),
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}",
+                    rollingInterval: RollingInterval.Day,
+                    formatProvider: CultureInfo.InvariantCulture)
+                .MinimumLevel.Error();
         }
 
         Log.Logger = config.CreateLogger();
