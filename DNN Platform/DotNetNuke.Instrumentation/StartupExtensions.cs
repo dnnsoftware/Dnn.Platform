@@ -17,11 +17,11 @@ public static class StartupExtensions
     /// Add Serilog to the project.
     /// </summary>
     /// <param name="services">The IServiceCollection.</param>
-    /// <param name="hostMapPath">The path to the root of the DotNetNuke website. This is needed to find the correct directory to write the log files to.</param>
-    public static void AddSerilog(this IServiceCollection services, string hostMapPath)
+    /// <param name="applicationMapPath">The path to the root of the DotNetNuke website. This is needed to find the correct directory to write the log files to.</param>
+    public static void AddSerilog(this IServiceCollection services, string applicationMapPath)
     {
-        Environment.SetEnvironmentVariable("BASEDIR", hostMapPath);
-        SerilogController.AddSerilog(hostMapPath);
+        Environment.SetEnvironmentVariable("BASEDIR", applicationMapPath);
+        SerilogController.AddSerilog(applicationMapPath);
         services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(null, true));
     }
 }

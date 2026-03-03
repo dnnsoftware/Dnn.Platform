@@ -80,8 +80,8 @@ namespace DotNetNuke
         {
             services.AddTransient(typeof(Lazy<>), typeof(LazyWrapper<>));
 
-            var hostMapPath = System.Web.Hosting.HostingEnvironment.MapPath("~");
-            services.AddSerilog(hostMapPath);
+            var applicationMapPath = System.Web.Hosting.HostingEnvironment.MapPath("~");
+            services.AddSerilog(applicationMapPath);
 
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, WebFormsModuleControlFactory>());
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, Html5ModuleControlFactory>());
