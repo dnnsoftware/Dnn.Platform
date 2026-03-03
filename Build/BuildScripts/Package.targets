@@ -67,9 +67,9 @@
     </CreateItem>
     <Copy SourceFiles="$(OutputContent)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(OutputContent.RecursiveDir)" />
     <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
-      <Output TaskParameter="Include" ItemName="OutputContent" />
+      <Output TaskParameter="Include" ItemName="ZipOutputContent" />
     </CreateItem>
-    <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
+    <Zip Files="@(ZipOutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(InstallPath)" />
     <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
     <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" ContinueOnError="WarnAndContinue" />
