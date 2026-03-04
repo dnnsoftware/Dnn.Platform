@@ -19,26 +19,44 @@ namespace DotNetNuke.Web.Client.ResourceManager
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClientResourceController));
         private readonly IHostSettings hostSettings;
         private readonly IApplicationStatusInfo appStatus;
+        private readonly IClientResourceSettings clientResourceSettings;
         private readonly Guid controllerId;
+        private readonly int crmVersion = 1;
         private bool hasBegunRendering;
 
         /// <summary>Initializes a new instance of the <see cref="ClientResourceController"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public ClientResourceController(IHostSettings hostSettings)
-            : this(hostSettings, null)
+            : this(hostSettings, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ClientResourceController"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="appStatus">The application status.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.3. Use overload with IClientResourceSettings. Scheduled removal in v12.0.0.")]
         public ClientResourceController(IHostSettings hostSettings, IApplicationStatusInfo appStatus)
+            : this(hostSettings, appStatus, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ClientResourceController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="clientResourceSettings">The client resource settings.</param>
+        public ClientResourceController(IHostSettings hostSettings, IApplicationStatusInfo appStatus, IClientResourceSettings clientResourceSettings)
         {
             this.hostSettings = hostSettings;
             this.appStatus = appStatus;
+            this.clientResourceSettings = clientResourceSettings;
             this.RegisterPathNameAlias("SharedScripts", "~/Resources/Shared/Scripts/");
             this.controllerId = Guid.NewGuid();
+            if (clientResourceSettings != null)
+            {
+                this.crmVersion = clientResourceSettings.OverrideDefaultSettings ? clientResourceSettings.PortalCrmVersion : clientResourceSettings.HostCrmVersion;
+            }
+
             Logger.Debug($"ClientResourceController initialized with ID {this.controllerId}");
         }
 
@@ -265,7 +283,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
                 });
             }
 
-            return string.Join(string.Empty, sortedList.Select(resource => resource.Render(this.hostSettings.CrmVersion, this.hostSettings.CdnEnabled, applicationPath)));
+            return string.Join(string.Empty, sortedList.Select(resource => resource.Render(this.crmVersion, this.hostSettings.CdnEnabled, applicationPath)));
         }
 
         private List<T> AddResource<T>(List<T> resources, T resource)
@@ -333,7 +351,13 @@ namespace DotNetNuke.Web.Client.ResourceManager
 
             if (filePath.StartsWith("http", StringComparison.OrdinalIgnoreCase))
             {
-                // Path is already fully qualified
+                // Path is assumed to be fully qualified
+                return filePath;
+            }
+
+            if (filePath.StartsWith("//", StringComparison.OrdinalIgnoreCase))
+            {
+                // Path is assumed to be fully qualified
                 return filePath;
             }
 
@@ -343,7 +367,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             {
                 if (this.PathNameAliases.TryGetValue(pathNameAlias, out var alias))
                 {
-                    return $"{alias}/{filePath.TrimStart('/')}";
+                    return $"{alias.TrimEnd('/')}/{filePath.TrimStart('/')}";
                 }
             }
 

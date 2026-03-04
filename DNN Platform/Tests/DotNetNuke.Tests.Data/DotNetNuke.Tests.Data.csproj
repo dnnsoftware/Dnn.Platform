@@ -22,10 +22,6 @@
     </PackageReference>
     <PackageReference Include="NUnit3TestAdapter" />
     <PackageReference Include="PetaPoco.Compiled" />
-    <PackageReference Include="StyleCop.Analyzers">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 {
   "name": "dnn-sites-list-view",
-  "version": "10.1.0",
+  "version": "10.2.3",
   "description": "DNN Sites List View",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,9 +13,9 @@
     "@babel/core": "7.28.4",
     "@babel/plugin-proposal-object-rest-spread": "7.20.7",
     "@babel/plugin-transform-object-assign": "7.27.1",
-    "@babel/preset-env": "7.28.3",
+    "@babel/preset-env": "7.29.0",
     "@babel/preset-react": "7.28.5",
-    "@dnnsoftware/dnn-react-common": "10.1.0",
+    "@dnnsoftware/dnn-react-common": "10.2.3",
     "babel-loader": "10.0.0",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "babel-polyfill": "6.26.0",
@@ -37,7 +37,7 @@
     "react-dom": "^16.14.0",
     "react-hot-loader": "4.13.1",
     "style-loader": "^4.0.0",
-    "webpack": "5.102.1",
+    "webpack": "5.104.1",
     "webpack-cli": "6.0.1",
     "webpack-dev-server": "5.2.2"
   }

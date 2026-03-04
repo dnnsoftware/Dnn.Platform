@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, } from "react";
 import PropTypes from "prop-types";
-import { Collapsible, SvgIcons } from "@dnnsoftware/dnn-react-common";
+import { Collapsible, } from "@dnnsoftware/dnn-react-common";
 class Folder extends Component {
     constructor() {
         super();
@@ -23,8 +23,6 @@ class Folder extends Component {
     render() {
         const { props } = this;
         const isFolder = props.folder.NewValue.indexOf(".resx") === -1;
-        const svgIcon = isFolder ? SvgIcons.FolderIcon : SvgIcons.PagesIcon;
-        const isOpenIcon = this.state.isOpen ? SvgIcons.ArrowDownIcon : SvgIcons.ArrowRightIcon;
         return (
             <li>
                 {isFolder && <div onClick={this.toggleCollapse.bind(this)} className="edit-svg"><isOpenIcon /></div>}

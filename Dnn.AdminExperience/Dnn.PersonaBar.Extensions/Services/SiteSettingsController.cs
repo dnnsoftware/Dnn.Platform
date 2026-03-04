@@ -3471,7 +3471,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             var objListController = new ListController();
             string strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
             Regex propertyNameRegex = new Regex("^[a-zA-Z0-9]+$");
-            if (!propertyNameRegex.Match(definition.PropertyName).Success)
+            if (!propertyNameRegex.IsMatch(definition.PropertyName))
             {
                 isValid = false;
                 httpPropertyValidationError = this.Request.CreateErrorResponse(

@@ -34,8 +34,7 @@ class RolesPanel extends Component {
 
     onRoleGroupChanged(group) {
         const {props} = this;
-        let {groupId} = this.state;
-        groupId = group.value;
+        let groupId = group.value;
         this.setState({
             groupId: groupId
         });

@@ -1,6 +1,6 @@
 {
   "name": "styles",
-  "version": "10.1.0",
+  "version": "10.2.3",
   "private": true,
   "description": "Allows managing DNN css variables for styles",
   "main": "dist/index.cjs.js",
@@ -30,7 +30,7 @@
     "@stencil/core": "^4.38.2"
   },
   "devDependencies": {
-    "@dnncommunity/dnn-elements": "^0.27.7",
+    "@dnncommunity/dnn-elements": "^0.29.0",
     "@stencil/eslint-plugin": "^1.1.0",
     "@stencil/sass": "^3.2.2",
     "@types/node": "^24.9.0",

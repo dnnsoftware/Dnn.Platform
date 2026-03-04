@@ -1,6 +1,7 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.2.32616.157
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11505.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
 EndProject
@@ -122,6 +123,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
 		CONTRIBUTING.md = CONTRIBUTING.md
 		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
 		dnnplatform.png = dnnplatform.png
 		DNN_Platform.build = DNN_Platform.build
 		DNN_Platform.local.build = DNN_Platform.local.build
@@ -137,7 +139,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		settings.local.json = settings.local.json
 		SolutionInfo.cs = SolutionInfo.cs
 		stylecop.json = stylecop.json
-		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Integration", "DNN Platform\Tests\DotNetNuke.Tests.Integration\DotNetNuke.Tests.Integration.csproj", "{6629A64D-58B9-48B9-B932-15AF193C2212}"
@@ -647,6 +648,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bin", "bin", "{8696BBF6-427
 	ProjectSection(SolutionItems) = preProject
 		DNN Platform\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll = DNN Platform\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DotNetNuke.WebControls", "DNN Platform\Controls\DotNetNuke.WebControls\DotNetNuke.WebControls.vbproj", "{6C10669D-7897-BEA4-F994-4F74EED33F5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2488,6 +2491,30 @@ Global
 		{19727E7F-6D3E-917D-920A-112FD03CA96F}.Release-Net45|Any CPU.Build.0 = Release|Any CPU
 		{19727E7F-6D3E-917D-920A-112FD03CA96F}.Release-Net45|x86.ActiveCfg = Release|Any CPU
 		{19727E7F-6D3E-917D-920A-112FD03CA96F}.Release-Net45|x86.Build.0 = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Cloud_Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Cloud_Debug|Any CPU.Build.0 = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Cloud_Debug|x86.ActiveCfg = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Cloud_Debug|x86.Build.0 = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Cloud_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Cloud_Release|Any CPU.Build.0 = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Cloud_Release|x86.ActiveCfg = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Cloud_Release|x86.Build.0 = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Debug|x86.Build.0 = Debug|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Debug-Net45|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Debug-Net45|Any CPU.Build.0 = Debug|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Debug-Net45|x86.ActiveCfg = Debug|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Debug-Net45|x86.Build.0 = Debug|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Release|x86.ActiveCfg = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Release|x86.Build.0 = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Release-Net45|Any CPU.ActiveCfg = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Release-Net45|Any CPU.Build.0 = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Release-Net45|x86.ActiveCfg = Release|Any CPU
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A}.Release-Net45|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2633,6 +2660,7 @@ Global
 		{735974ED-BE2B-6C25-CD75-1528175F6206} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{19727E7F-6D3E-917D-920A-112FD03CA96F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{8696BBF6-427F-4E90-B00F-D55469133819} = {F3E526A3-3420-4B0B-9C31-FD813CCD83F7}
+		{6C10669D-7897-BEA4-F994-4F74EED33F5A} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {46B6A641-57EB-4B19-B199-23E6FC2AB40B}

@@ -38,7 +38,6 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls;
 
     using Microsoft.Extensions.DependencyInjection;

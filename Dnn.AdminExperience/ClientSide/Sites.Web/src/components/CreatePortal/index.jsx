@@ -197,8 +197,7 @@ class CreatePortal extends Component {
     }
     createPortal() {
         const { props, state } = this;
-        let {triedToSave} = state;
-        triedToSave = true;
+        let triedToSave = true;
         this.setState({
             triedToSave
         }, () => {

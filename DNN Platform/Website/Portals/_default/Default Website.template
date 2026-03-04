@@ -32,6 +32,8 @@
     <sitemapincludehidden>False</sitemapincludehidden>
     <sitemaplevelmode>False</sitemaplevelmode>
     <sitemapminpriority>0.2</sitemapminpriority>
+    <allowjsinmoduleheaders>False</allowjsinmoduleheaders>
+    <allowjsinmodulefooters>False</allowjsinmodulefooters>
   </settings>
   <profiledefinitions>
     <profiledefinition>
@@ -3174,7 +3176,7 @@
       <sitemappriority>0.5</sitemappriority>
       <skinsrc />
       <startdate>0001-01-01T00:00:00</startdate>
-      <name>[Tab.WebsiteAdministration.Name.Text]</name>
+      <name>Admin</name>
       <title>[Tab.WebsiteAdministration.Title.Text]</title>
       <url type="Normal" />
       <tabpermissions>

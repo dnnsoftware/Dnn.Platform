@@ -109,7 +109,7 @@ class FullEditor extends Component {
             <div className='fulleditor-editor' 
                 contentEditable
                 ref={(e) => { this.editorControl = e; }}>
-                    <Html html={props.value } />
+                <Html html={props.value } />
             </div>
         );
     }

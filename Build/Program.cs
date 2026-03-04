@@ -15,7 +15,7 @@ namespace DotNetNuke.Build
         internal const string MicrosoftTestPlatformVersion = "18.0.1";
 
         /// <summary>The version of the NUnit3TestAdapter NuGet package.</summary>
-        internal const string NUnit3TestAdapterVersion = "6.0.0";
+        internal const string NUnit3TestAdapterVersion = "6.1.0";
 
         /// <summary>Runs the build process.</summary>
         /// <param name="args">The arguments from the command line.</param>
@@ -27,10 +27,10 @@ namespace DotNetNuke.Build
                 .UseLifetime<Lifetime>()
                 .UseWorkingDirectory("..")
                 .UseModule<AzurePipelinesModule>()
-                .InstallTool(new Uri("dotnet:?package=GitVersion.Tool&version=6.3.0"))
+                .InstallTool(new Uri("dotnet:?package=GitVersion.Tool&version=6.6.0"))
                 .InstallTool(new Uri("nuget:?package=Microsoft.TestPlatform&version=" + MicrosoftTestPlatformVersion))
                 .InstallTool(new Uri("nuget:?package=NUnit3TestAdapter&version=" + NUnit3TestAdapterVersion))
-                .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=6.14.0"))
+                .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=7.3.0"))
                 .Run(args);
         }
     }

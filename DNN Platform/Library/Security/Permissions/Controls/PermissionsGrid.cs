@@ -518,12 +518,13 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <returns>The permission state (one of <see cref="PermissionTypeGrant"/>, <see cref="PermissionTypeDeny"/> or <paramref name="defaultState"/>).</returns>
         protected virtual string GetPermission(IPermissionDefinitionInfo permissionDefinition, UserInfo user, int column, string defaultState)
         {
-            if (this.PermissionsList == null)
+            IEnumerable<IPermissionInfo> permissionCollection = this.SupportsPermissionsAbstractions ? this.PermissionCollection : this.PermissionsList;
+            if (permissionCollection == null)
             {
                 return defaultState;
             }
 
-            foreach (IPermissionInfo permission in this.PermissionsList)
+            foreach (IPermissionInfo permission in permissionCollection)
             {
                 if (permission.PermissionId == permissionDefinition.PermissionId && permission.UserId == user.UserID)
                 {
@@ -548,13 +549,14 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <returns>An <see cref="ArrayList"/> of <see cref="UserInfo"/> instances.</returns>
         protected virtual ArrayList GetUsers()
         {
-            if (this.PermissionsList == null)
+            IEnumerable<IPermissionInfo> permissionCollection = this.SupportsPermissionsAbstractions ? this.PermissionCollection : this.PermissionsList;
+            if (permissionCollection == null)
             {
                 return [];
             }
 
             var usersMap = new Dictionary<int, UserInfo>();
-            foreach (var permission in this.PermissionsList.Cast<IPermissionInfo>().Where(permission => !Null.IsNull(permission.UserId)))
+            foreach (var permission in permissionCollection.Where(permission => !Null.IsNull(permission.UserId)))
             {
                 if (!usersMap.ContainsKey(permission.UserId))
                 {
@@ -1223,52 +1225,45 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         private IEnumerable<int> GetCheckedRoles()
         {
-            if (this.PermissionsList == null)
-            {
-                return new List<int>();
-            }
-
-            return this.PermissionsList.Select(r => r.RoleID).Distinct();
+            IEnumerable<IPermissionInfo> permissionCollection = this.SupportsPermissionsAbstractions ? this.PermissionCollection : this.PermissionsList;
+            return permissionCollection?.Select(p => p.RoleId).Distinct() ?? new List<int>();
         }
 
         private void SetUpGrid(DataGrid grid, string nameColumnDataField, string idColumnDataField, string permissionHeaderText)
         {
             grid.Columns.Clear();
-            var nameColumn = new BoundColumn
+            grid.Columns.Add(new BoundColumn
             {
                 HeaderText = permissionHeaderText,
                 DataField = nameColumnDataField,
-            };
-            nameColumn.ItemStyle.CssClass = "permissionHeader";
-            nameColumn.HeaderStyle.CssClass = "permissionHeader";
-            grid.Columns.Add(nameColumn);
-
-            var idColumn = new BoundColumn
+                ItemStyle = { CssClass = "permissionHeader", },
+                HeaderStyle = { CssClass = "permissionHeader", },
+            });
+            grid.Columns.Add(new BoundColumn
             {
                 HeaderText = string.Empty,
                 DataField = idColumnDataField,
                 Visible = false,
-            };
-            grid.Columns.Add(idColumn);
+            });
 
             foreach (var permission in this.permissions)
             {
-                var templateCol = new TemplateColumn();
-                var columnTemplate = new PermissionTriStateTemplate(permission)
-                {
-                    IsFullControl = IsFullControl(this, permission),
-                    IsView = IsViewPermission(this, permission),
-                    SupportDenyMode = SupportsDenyPermissions(this, permission),
-                };
-                templateCol.ItemTemplate = columnTemplate;
-
                 var locName = permission.ModuleDefId <= 0
                     ? Localization.GetString(permission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile) // system permission
                     : !string.IsNullOrEmpty(this.ResourceFile)
                         ? Localization.GetString(permission.PermissionName + ".Permission", this.ResourceFile) // custom permission
                         : string.Empty;
-                templateCol.HeaderText = !string.IsNullOrEmpty(locName) ? locName : permission.PermissionName;
-                templateCol.HeaderStyle.Wrap = true;
+                var templateCol = new TemplateColumn
+                {
+                    ItemTemplate = new PermissionTriStateTemplate(permission)
+                    {
+                        IsFullControl = IsFullControl(this, permission),
+                        IsView = IsViewPermission(this, permission),
+                        SupportDenyMode = SupportsDenyPermissions(this, permission),
+                    },
+                    HeaderText = !string.IsNullOrEmpty(locName) ? locName : permission.PermissionName,
+                    HeaderStyle = { Wrap = true, },
+                };
                 grid.Columns.Add(templateCol);
             }
 
@@ -1310,19 +1305,21 @@ namespace DotNetNuke.Security.Permissions.Controls
         private void DeleteRolePermissions(int entityId)
         {
             ////PermissionsList.RemoveAll(p => p.RoleID == entityID);
-            var permissionToDelete = this.PermissionsList.Where((IPermissionInfo p) => p.RoleId == entityId);
+            IEnumerable<IPermissionInfo> permissionCollection = this.SupportsPermissionsAbstractions ? this.PermissionCollection : this.PermissionsList;
+            var permissionToDelete = permissionCollection.Where(p => p.RoleId == entityId);
             foreach (var permission in permissionToDelete)
             {
                 this.RemovePermission(permission.PermissionId, entityId, permission.UserId);
             }
         }
 
-        private void DeleteUserPermissions(int entityID)
+        private void DeleteUserPermissions(int entityId)
         {
-            var permissionToDelete = this.PermissionsList.Where((IPermissionInfo p) => p.UserId == entityID);
-            foreach (PermissionInfoBase permission in permissionToDelete)
+            IEnumerable<IPermissionInfo> permissionCollection = this.SupportsPermissionsAbstractions ? this.PermissionCollection : this.PermissionsList;
+            var permissionToDelete = permissionCollection.Where(p => p.UserId == entityId);
+            foreach (var permission in permissionToDelete)
             {
-                this.RemovePermission(permission.PermissionID, permission.RoleID, entityID);
+                this.RemovePermission(permission.PermissionId, permission.RoleId, entityId);
             }
         }
 

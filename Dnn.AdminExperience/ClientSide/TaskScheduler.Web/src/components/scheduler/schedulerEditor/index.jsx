@@ -281,7 +281,7 @@ class SchedulerEditor extends Component {
             return <History pageSize={5} scheduleId={props.scheduleId} title={resx.get("HistoryModalTitle")} />;
         }
 
-        if (props.scheduleItemDetail !== undefined || props.id === "add") {
+        if ((props.scheduleItemDetail !== undefined && props.scheduleItemDetail.ScheduleID === props.scheduleId) || props.id === "add") {
             const columnOne = <div className="container" key="columnOne">
                 <div className="editor-row divider">
                     <SingleLineInputWithError

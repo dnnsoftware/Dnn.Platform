@@ -435,7 +435,6 @@ declare global {
         new (): HTMLDnnRmFolderListElement;
     };
     interface HTMLDnnRmFolderListItemElementEventMap {
-        "dnnRmcontextMenuOpened": number;
         "dnnRmFolderListItemClicked": FolderTreeItem;
     }
     interface HTMLDnnRmFolderListItemElement extends Components.DnnRmFolderListItem, HTMLStencilElement {
@@ -617,6 +616,8 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
+
     interface DnnActionCopyUrl {
         /**
           * The list of items to copy.
@@ -763,10 +764,6 @@ declare namespace LocalJSX {
          */
         "onDnnRmFolderListItemClicked"?: (event: DnnRmFolderListItemCustomEvent<FolderTreeItem>) => void;
         /**
-          * Fires when a context menu is opened for this item. Emits the folder ID.
-         */
-        "onDnnRmcontextMenuOpened"?: (event: DnnRmFolderListItemCustomEvent<number>) => void;
-        /**
           * The ID of the parent folder.
          */
         "parentFolderId": number;
@@ -874,34 +871,68 @@ declare namespace LocalJSX {
          */
         "onDnnRmFoldersChanged"?: (event: DnnRmUploadFileCustomEvent<void>) => void;
     }
+
+    interface DnnActionCreateFolderAttributes {
+        "parentFolderId": number;
+    }
+    interface DnnActionUploadFileAttributes {
+        "parentFolderId": number;
+    }
+    interface DnnResourceManagerAttributes {
+        "moduleId": number;
+    }
+    interface DnnRmEditFileAttributes {
+        "fileId": number;
+    }
+    interface DnnRmEditFolderAttributes {
+        "folderId": number;
+    }
+    interface DnnRmFilesPaneAttributes {
+        "preloadOffset": number;
+    }
+    interface DnnRmFolderListItemAttributes {
+        "expanded": boolean;
+        "parentFolderId": number;
+    }
+    interface DnnRmProgressBarAttributes {
+        "value": number;
+        "max": number;
+    }
+    interface DnnRmQueuedFileAttributes {
+        "extract": boolean;
+        "validationCode": string;
+        "filter": string;
+        "maxUploadFileSize": number;
+    }
+
     interface IntrinsicElements {
         "dnn-action-copy-url": DnnActionCopyUrl;
-        "dnn-action-create-folder": DnnActionCreateFolder;
+        "dnn-action-create-folder": Omit<DnnActionCreateFolder, keyof DnnActionCreateFolderAttributes> & { [K in keyof DnnActionCreateFolder & keyof DnnActionCreateFolderAttributes]?: DnnActionCreateFolder[K] } & { [K in keyof DnnActionCreateFolder & keyof DnnActionCreateFolderAttributes as `attr:${K}`]?: DnnActionCreateFolderAttributes[K] } & { [K in keyof DnnActionCreateFolder & keyof DnnActionCreateFolderAttributes as `prop:${K}`]?: DnnActionCreateFolder[K] };
         "dnn-action-delete-items": DnnActionDeleteItems;
         "dnn-action-download-item": DnnActionDownloadItem;
         "dnn-action-edit-item": DnnActionEditItem;
         "dnn-action-move-items": DnnActionMoveItems;
         "dnn-action-open-file": DnnActionOpenFile;
         "dnn-action-unlink-items": DnnActionUnlinkItems;
-        "dnn-action-upload-file": DnnActionUploadFile;
-        "dnn-resource-manager": DnnResourceManager;
+        "dnn-action-upload-file": Omit<DnnActionUploadFile, keyof DnnActionUploadFileAttributes> & { [K in keyof DnnActionUploadFile & keyof DnnActionUploadFileAttributes]?: DnnActionUploadFile[K] } & { [K in keyof DnnActionUploadFile & keyof DnnActionUploadFileAttributes as `attr:${K}`]?: DnnActionUploadFileAttributes[K] } & { [K in keyof DnnActionUploadFile & keyof DnnActionUploadFileAttributes as `prop:${K}`]?: DnnActionUploadFile[K] };
+        "dnn-resource-manager": Omit<DnnResourceManager, keyof DnnResourceManagerAttributes> & { [K in keyof DnnResourceManager & keyof DnnResourceManagerAttributes]?: DnnResourceManager[K] } & { [K in keyof DnnResourceManager & keyof DnnResourceManagerAttributes as `attr:${K}`]?: DnnResourceManagerAttributes[K] } & { [K in keyof DnnResourceManager & keyof DnnResourceManagerAttributes as `prop:${K}`]?: DnnResourceManager[K] } & OneOf<"moduleId", DnnResourceManager["moduleId"], DnnResourceManagerAttributes["moduleId"]>;
         "dnn-rm-actions-bar": DnnRmActionsBar;
         "dnn-rm-create-folder": DnnRmCreateFolder;
         "dnn-rm-delete-items": DnnRmDeleteItems;
-        "dnn-rm-edit-file": DnnRmEditFile;
-        "dnn-rm-edit-folder": DnnRmEditFolder;
+        "dnn-rm-edit-file": Omit<DnnRmEditFile, keyof DnnRmEditFileAttributes> & { [K in keyof DnnRmEditFile & keyof DnnRmEditFileAttributes]?: DnnRmEditFile[K] } & { [K in keyof DnnRmEditFile & keyof DnnRmEditFileAttributes as `attr:${K}`]?: DnnRmEditFileAttributes[K] } & { [K in keyof DnnRmEditFile & keyof DnnRmEditFileAttributes as `prop:${K}`]?: DnnRmEditFile[K] } & OneOf<"fileId", DnnRmEditFile["fileId"], DnnRmEditFileAttributes["fileId"]>;
+        "dnn-rm-edit-folder": Omit<DnnRmEditFolder, keyof DnnRmEditFolderAttributes> & { [K in keyof DnnRmEditFolder & keyof DnnRmEditFolderAttributes]?: DnnRmEditFolder[K] } & { [K in keyof DnnRmEditFolder & keyof DnnRmEditFolderAttributes as `attr:${K}`]?: DnnRmEditFolderAttributes[K] } & { [K in keyof DnnRmEditFolder & keyof DnnRmEditFolderAttributes as `prop:${K}`]?: DnnRmEditFolder[K] } & OneOf<"folderId", DnnRmEditFolder["folderId"], DnnRmEditFolderAttributes["folderId"]>;
         "dnn-rm-file-context-menu": DnnRmFileContextMenu;
-        "dnn-rm-files-pane": DnnRmFilesPane;
+        "dnn-rm-files-pane": Omit<DnnRmFilesPane, keyof DnnRmFilesPaneAttributes> & { [K in keyof DnnRmFilesPane & keyof DnnRmFilesPaneAttributes]?: DnnRmFilesPane[K] } & { [K in keyof DnnRmFilesPane & keyof DnnRmFilesPaneAttributes as `attr:${K}`]?: DnnRmFilesPaneAttributes[K] } & { [K in keyof DnnRmFilesPane & keyof DnnRmFilesPaneAttributes as `prop:${K}`]?: DnnRmFilesPane[K] };
         "dnn-rm-folder-context-menu": DnnRmFolderContextMenu;
         "dnn-rm-folder-list": DnnRmFolderList;
-        "dnn-rm-folder-list-item": DnnRmFolderListItem;
+        "dnn-rm-folder-list-item": Omit<DnnRmFolderListItem, keyof DnnRmFolderListItemAttributes> & { [K in keyof DnnRmFolderListItem & keyof DnnRmFolderListItemAttributes]?: DnnRmFolderListItem[K] } & { [K in keyof DnnRmFolderListItem & keyof DnnRmFolderListItemAttributes as `attr:${K}`]?: DnnRmFolderListItemAttributes[K] } & { [K in keyof DnnRmFolderListItem & keyof DnnRmFolderListItemAttributes as `prop:${K}`]?: DnnRmFolderListItem[K] } & OneOf<"parentFolderId", DnnRmFolderListItem["parentFolderId"], DnnRmFolderListItemAttributes["parentFolderId"]>;
         "dnn-rm-folder-mappings": DnnRmFolderMappings;
         "dnn-rm-items-cardview": DnnRmItemsCardview;
         "dnn-rm-items-listview": DnnRmItemsListview;
         "dnn-rm-left-pane": DnnRmLeftPane;
         "dnn-rm-move-items": DnnRmMoveItems;
-        "dnn-rm-progress-bar": DnnRmProgressBar;
-        "dnn-rm-queued-file": DnnRmQueuedFile;
+        "dnn-rm-progress-bar": Omit<DnnRmProgressBar, keyof DnnRmProgressBarAttributes> & { [K in keyof DnnRmProgressBar & keyof DnnRmProgressBarAttributes]?: DnnRmProgressBar[K] } & { [K in keyof DnnRmProgressBar & keyof DnnRmProgressBarAttributes as `attr:${K}`]?: DnnRmProgressBarAttributes[K] } & { [K in keyof DnnRmProgressBar & keyof DnnRmProgressBarAttributes as `prop:${K}`]?: DnnRmProgressBar[K] };
+        "dnn-rm-queued-file": Omit<DnnRmQueuedFile, keyof DnnRmQueuedFileAttributes> & { [K in keyof DnnRmQueuedFile & keyof DnnRmQueuedFileAttributes]?: DnnRmQueuedFile[K] } & { [K in keyof DnnRmQueuedFile & keyof DnnRmQueuedFileAttributes as `attr:${K}`]?: DnnRmQueuedFileAttributes[K] } & { [K in keyof DnnRmQueuedFile & keyof DnnRmQueuedFileAttributes as `prop:${K}`]?: DnnRmQueuedFile[K] } & OneOf<"validationCode", DnnRmQueuedFile["validationCode"], DnnRmQueuedFileAttributes["validationCode"]> & OneOf<"filter", DnnRmQueuedFile["filter"], DnnRmQueuedFileAttributes["filter"]> & OneOf<"maxUploadFileSize", DnnRmQueuedFile["maxUploadFileSize"], DnnRmQueuedFileAttributes["maxUploadFileSize"]>;
         "dnn-rm-right-pane": DnnRmRightPane;
         "dnn-rm-status-bar": DnnRmStatusBar;
         "dnn-rm-top-bar": DnnRmTopBar;
@@ -913,38 +944,38 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "dnn-action-copy-url": LocalJSX.DnnActionCopyUrl & JSXBase.HTMLAttributes<HTMLDnnActionCopyUrlElement>;
-            "dnn-action-create-folder": LocalJSX.DnnActionCreateFolder & JSXBase.HTMLAttributes<HTMLDnnActionCreateFolderElement>;
-            "dnn-action-delete-items": LocalJSX.DnnActionDeleteItems & JSXBase.HTMLAttributes<HTMLDnnActionDeleteItemsElement>;
-            "dnn-action-download-item": LocalJSX.DnnActionDownloadItem & JSXBase.HTMLAttributes<HTMLDnnActionDownloadItemElement>;
-            "dnn-action-edit-item": LocalJSX.DnnActionEditItem & JSXBase.HTMLAttributes<HTMLDnnActionEditItemElement>;
-            "dnn-action-move-items": LocalJSX.DnnActionMoveItems & JSXBase.HTMLAttributes<HTMLDnnActionMoveItemsElement>;
-            "dnn-action-open-file": LocalJSX.DnnActionOpenFile & JSXBase.HTMLAttributes<HTMLDnnActionOpenFileElement>;
-            "dnn-action-unlink-items": LocalJSX.DnnActionUnlinkItems & JSXBase.HTMLAttributes<HTMLDnnActionUnlinkItemsElement>;
-            "dnn-action-upload-file": LocalJSX.DnnActionUploadFile & JSXBase.HTMLAttributes<HTMLDnnActionUploadFileElement>;
-            "dnn-resource-manager": LocalJSX.DnnResourceManager & JSXBase.HTMLAttributes<HTMLDnnResourceManagerElement>;
-            "dnn-rm-actions-bar": LocalJSX.DnnRmActionsBar & JSXBase.HTMLAttributes<HTMLDnnRmActionsBarElement>;
-            "dnn-rm-create-folder": LocalJSX.DnnRmCreateFolder & JSXBase.HTMLAttributes<HTMLDnnRmCreateFolderElement>;
-            "dnn-rm-delete-items": LocalJSX.DnnRmDeleteItems & JSXBase.HTMLAttributes<HTMLDnnRmDeleteItemsElement>;
-            "dnn-rm-edit-file": LocalJSX.DnnRmEditFile & JSXBase.HTMLAttributes<HTMLDnnRmEditFileElement>;
-            "dnn-rm-edit-folder": LocalJSX.DnnRmEditFolder & JSXBase.HTMLAttributes<HTMLDnnRmEditFolderElement>;
-            "dnn-rm-file-context-menu": LocalJSX.DnnRmFileContextMenu & JSXBase.HTMLAttributes<HTMLDnnRmFileContextMenuElement>;
-            "dnn-rm-files-pane": LocalJSX.DnnRmFilesPane & JSXBase.HTMLAttributes<HTMLDnnRmFilesPaneElement>;
-            "dnn-rm-folder-context-menu": LocalJSX.DnnRmFolderContextMenu & JSXBase.HTMLAttributes<HTMLDnnRmFolderContextMenuElement>;
-            "dnn-rm-folder-list": LocalJSX.DnnRmFolderList & JSXBase.HTMLAttributes<HTMLDnnRmFolderListElement>;
-            "dnn-rm-folder-list-item": LocalJSX.DnnRmFolderListItem & JSXBase.HTMLAttributes<HTMLDnnRmFolderListItemElement>;
-            "dnn-rm-folder-mappings": LocalJSX.DnnRmFolderMappings & JSXBase.HTMLAttributes<HTMLDnnRmFolderMappingsElement>;
-            "dnn-rm-items-cardview": LocalJSX.DnnRmItemsCardview & JSXBase.HTMLAttributes<HTMLDnnRmItemsCardviewElement>;
-            "dnn-rm-items-listview": LocalJSX.DnnRmItemsListview & JSXBase.HTMLAttributes<HTMLDnnRmItemsListviewElement>;
-            "dnn-rm-left-pane": LocalJSX.DnnRmLeftPane & JSXBase.HTMLAttributes<HTMLDnnRmLeftPaneElement>;
-            "dnn-rm-move-items": LocalJSX.DnnRmMoveItems & JSXBase.HTMLAttributes<HTMLDnnRmMoveItemsElement>;
-            "dnn-rm-progress-bar": LocalJSX.DnnRmProgressBar & JSXBase.HTMLAttributes<HTMLDnnRmProgressBarElement>;
-            "dnn-rm-queued-file": LocalJSX.DnnRmQueuedFile & JSXBase.HTMLAttributes<HTMLDnnRmQueuedFileElement>;
-            "dnn-rm-right-pane": LocalJSX.DnnRmRightPane & JSXBase.HTMLAttributes<HTMLDnnRmRightPaneElement>;
-            "dnn-rm-status-bar": LocalJSX.DnnRmStatusBar & JSXBase.HTMLAttributes<HTMLDnnRmStatusBarElement>;
-            "dnn-rm-top-bar": LocalJSX.DnnRmTopBar & JSXBase.HTMLAttributes<HTMLDnnRmTopBarElement>;
-            "dnn-rm-unlink-items": LocalJSX.DnnRmUnlinkItems & JSXBase.HTMLAttributes<HTMLDnnRmUnlinkItemsElement>;
-            "dnn-rm-upload-file": LocalJSX.DnnRmUploadFile & JSXBase.HTMLAttributes<HTMLDnnRmUploadFileElement>;
+            "dnn-action-copy-url": LocalJSX.IntrinsicElements["dnn-action-copy-url"] & JSXBase.HTMLAttributes<HTMLDnnActionCopyUrlElement>;
+            "dnn-action-create-folder": LocalJSX.IntrinsicElements["dnn-action-create-folder"] & JSXBase.HTMLAttributes<HTMLDnnActionCreateFolderElement>;
+            "dnn-action-delete-items": LocalJSX.IntrinsicElements["dnn-action-delete-items"] & JSXBase.HTMLAttributes<HTMLDnnActionDeleteItemsElement>;
+            "dnn-action-download-item": LocalJSX.IntrinsicElements["dnn-action-download-item"] & JSXBase.HTMLAttributes<HTMLDnnActionDownloadItemElement>;
+            "dnn-action-edit-item": LocalJSX.IntrinsicElements["dnn-action-edit-item"] & JSXBase.HTMLAttributes<HTMLDnnActionEditItemElement>;
+            "dnn-action-move-items": LocalJSX.IntrinsicElements["dnn-action-move-items"] & JSXBase.HTMLAttributes<HTMLDnnActionMoveItemsElement>;
+            "dnn-action-open-file": LocalJSX.IntrinsicElements["dnn-action-open-file"] & JSXBase.HTMLAttributes<HTMLDnnActionOpenFileElement>;
+            "dnn-action-unlink-items": LocalJSX.IntrinsicElements["dnn-action-unlink-items"] & JSXBase.HTMLAttributes<HTMLDnnActionUnlinkItemsElement>;
+            "dnn-action-upload-file": LocalJSX.IntrinsicElements["dnn-action-upload-file"] & JSXBase.HTMLAttributes<HTMLDnnActionUploadFileElement>;
+            "dnn-resource-manager": LocalJSX.IntrinsicElements["dnn-resource-manager"] & JSXBase.HTMLAttributes<HTMLDnnResourceManagerElement>;
+            "dnn-rm-actions-bar": LocalJSX.IntrinsicElements["dnn-rm-actions-bar"] & JSXBase.HTMLAttributes<HTMLDnnRmActionsBarElement>;
+            "dnn-rm-create-folder": LocalJSX.IntrinsicElements["dnn-rm-create-folder"] & JSXBase.HTMLAttributes<HTMLDnnRmCreateFolderElement>;
+            "dnn-rm-delete-items": LocalJSX.IntrinsicElements["dnn-rm-delete-items"] & JSXBase.HTMLAttributes<HTMLDnnRmDeleteItemsElement>;
+            "dnn-rm-edit-file": LocalJSX.IntrinsicElements["dnn-rm-edit-file"] & JSXBase.HTMLAttributes<HTMLDnnRmEditFileElement>;
+            "dnn-rm-edit-folder": LocalJSX.IntrinsicElements["dnn-rm-edit-folder"] & JSXBase.HTMLAttributes<HTMLDnnRmEditFolderElement>;
+            "dnn-rm-file-context-menu": LocalJSX.IntrinsicElements["dnn-rm-file-context-menu"] & JSXBase.HTMLAttributes<HTMLDnnRmFileContextMenuElement>;
+            "dnn-rm-files-pane": LocalJSX.IntrinsicElements["dnn-rm-files-pane"] & JSXBase.HTMLAttributes<HTMLDnnRmFilesPaneElement>;
+            "dnn-rm-folder-context-menu": LocalJSX.IntrinsicElements["dnn-rm-folder-context-menu"] & JSXBase.HTMLAttributes<HTMLDnnRmFolderContextMenuElement>;
+            "dnn-rm-folder-list": LocalJSX.IntrinsicElements["dnn-rm-folder-list"] & JSXBase.HTMLAttributes<HTMLDnnRmFolderListElement>;
+            "dnn-rm-folder-list-item": LocalJSX.IntrinsicElements["dnn-rm-folder-list-item"] & JSXBase.HTMLAttributes<HTMLDnnRmFolderListItemElement>;
+            "dnn-rm-folder-mappings": LocalJSX.IntrinsicElements["dnn-rm-folder-mappings"] & JSXBase.HTMLAttributes<HTMLDnnRmFolderMappingsElement>;
+            "dnn-rm-items-cardview": LocalJSX.IntrinsicElements["dnn-rm-items-cardview"] & JSXBase.HTMLAttributes<HTMLDnnRmItemsCardviewElement>;
+            "dnn-rm-items-listview": LocalJSX.IntrinsicElements["dnn-rm-items-listview"] & JSXBase.HTMLAttributes<HTMLDnnRmItemsListviewElement>;
+            "dnn-rm-left-pane": LocalJSX.IntrinsicElements["dnn-rm-left-pane"] & JSXBase.HTMLAttributes<HTMLDnnRmLeftPaneElement>;
+            "dnn-rm-move-items": LocalJSX.IntrinsicElements["dnn-rm-move-items"] & JSXBase.HTMLAttributes<HTMLDnnRmMoveItemsElement>;
+            "dnn-rm-progress-bar": LocalJSX.IntrinsicElements["dnn-rm-progress-bar"] & JSXBase.HTMLAttributes<HTMLDnnRmProgressBarElement>;
+            "dnn-rm-queued-file": LocalJSX.IntrinsicElements["dnn-rm-queued-file"] & JSXBase.HTMLAttributes<HTMLDnnRmQueuedFileElement>;
+            "dnn-rm-right-pane": LocalJSX.IntrinsicElements["dnn-rm-right-pane"] & JSXBase.HTMLAttributes<HTMLDnnRmRightPaneElement>;
+            "dnn-rm-status-bar": LocalJSX.IntrinsicElements["dnn-rm-status-bar"] & JSXBase.HTMLAttributes<HTMLDnnRmStatusBarElement>;
+            "dnn-rm-top-bar": LocalJSX.IntrinsicElements["dnn-rm-top-bar"] & JSXBase.HTMLAttributes<HTMLDnnRmTopBarElement>;
+            "dnn-rm-unlink-items": LocalJSX.IntrinsicElements["dnn-rm-unlink-items"] & JSXBase.HTMLAttributes<HTMLDnnRmUnlinkItemsElement>;
+            "dnn-rm-upload-file": LocalJSX.IntrinsicElements["dnn-rm-upload-file"] & JSXBase.HTMLAttributes<HTMLDnnRmUploadFileElement>;
         }
     }
 }

@@ -23,22 +23,8 @@ class MessagingSettingsPanelBody extends Component {
     componentDidUpdate(prevProps) {
         const {props} = this;
         if (props.messagingSettings) {
-            let portalIdChanged = false;
-            let cultureCodeChanged = false;
-
-            if (props.portalId === undefined || prevProps.portalId === props.portalId) {
-                portalIdChanged = false;
-            }
-            else {
-                portalIdChanged = true;
-            }
-
-            if (props.cultureCode === undefined || prevProps.cultureCode === props.cultureCode) {
-                cultureCodeChanged = false;
-            }
-            else {
-                cultureCodeChanged = true;
-            }
+            let portalIdChanged = props.portalId !== undefined && prevProps.portalId !== props.portalId;
+            let cultureCodeChanged = props.cultureCode !== undefined && prevProps.cultureCode !== props.cultureCode;
 
             if (portalIdChanged || cultureCodeChanged) {
                 this.loadData();

@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace></RootNamespace>
+		<RootDirectory>$(MSBuildProjectDirectory)\..\..\..</RootDirectory>
+		<OutputPath>bin</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<TargetFramework>net48</TargetFramework>
+		<Deterministic>true</Deterministic>
+		<LangVersion>latest</LangVersion>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>BC40000,CA1010,CA1708,CA1710,CA1711,CA1725,CA1822</WarningsNotAsErrors>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="Microsoft.VisualBasic" />
+		<Reference Include="System.Web" />
+		<Reference Include="System.Design" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+		<ProjectReference Include="..\..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj" />
+		<ProjectReference Include="..\..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="..\..\..\stylecop.json" Link="stylecop.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="DotNetNuke.Web.UI.WebControls.DnnTree.bmp" />
+		<EmbeddedResource Include="*.js" />
+	</ItemGroup>
+
+</Project>

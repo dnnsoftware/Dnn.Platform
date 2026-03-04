@@ -1534,7 +1534,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                                     fileName = Path.GetFileName(fileName);
                                 }
 
-                                if (!Globals.FileEscapingRegex.Match(fileName).Success)
+                                if (!Globals.FileEscapingRegex.IsMatch(fileName))
                                 {
                                     stream = item.ReadAsStreamAsync().Result;
                                 }

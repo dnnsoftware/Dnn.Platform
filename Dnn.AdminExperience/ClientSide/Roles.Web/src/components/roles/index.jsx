@@ -47,15 +47,13 @@ class RolesPanel extends Component {
         const {props} = this;
         props.dispatch(RolesActions.getRoleGroupsList(false));
         this.refreshRolesList();
-        let {deleteAllowed} = this.state;
-        deleteAllowed = (props.rolesList !== undefined && props.rolesList.length === 0);
-        this.setState({ deleteAllowed });
+        let deleteAllowed = (props.rolesList !== undefined && props.rolesList.length === 0);
+        this.setState({ deleteAllowed, });
     }
 
-    static getDerivedStateFromProps(props, state) {
-        let {deleteAllowed} = state;
-        deleteAllowed = (props.rolesList !== undefined && props.rolesList.length === 0);
-        return { deleteAllowed };
+    static getDerivedStateFromProps(props) {
+        let deleteAllowed = (props.rolesList !== undefined && props.rolesList.length === 0);
+        return { deleteAllowed, };
     }
 
     refreshRolesList() {

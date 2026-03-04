@@ -71,13 +71,13 @@ class InstalledExtensions extends Component {
 
     renderLoading() {
 
-        /* eslint-disable no-undef */
+         
         return <div className="loading-extensions">
             <h2>{Localization.get("Loading")}</h2>
             <p>{Localization.get("Loading.Tooltip")}</p>
             <div><FetchingIcon /></div>
         </div>;
-        /* eslint-enable no-undef */
+         
     }
 
     render() {

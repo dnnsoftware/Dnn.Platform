@@ -27,7 +27,6 @@
     <form id="form1" runat="server">
         <asp:ScriptManager ID="scManager" runat="server" EnablePageMethods="true"></asp:ScriptManager>
         <asp:placeholder id="BodySCRIPTS" runat="server">
-              <script type="text/javascript" src="../Resources/Shared/Scripts/dnn.jquery.js"></script>
         </asp:placeholder>
 
     <br/>
@@ -222,7 +221,7 @@
                         <div id="installation-progress">
                             <span id="timer"> </span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span id="percentage" style="height: auto; max-height: 200px; overflow: auto"> </span>
                             <div class="dnnProgressbar">
-                                <div id="progressbar"></div>
+                                <progress id="progressbar" value="0" max="100"></progress>
                             </div>
                             <div id="installation-buttons">
                                 <a id="retry" href="javascript:void(0)" class="dnnPrimaryAction"><%= LocalizeString("Retry") %></a>
@@ -513,8 +512,7 @@
                     $.stopProgressbarOnError();
                 });
                 $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
-                //Making sure that progress indicate 0
-                $("#progressbar").progressbar('value', 0);
+                document.querySelector("#progressbar").value = 0;
                 $("#percentage").text('0% ');
                 $("#timer").html('0:00 ' + '<%=LocalizeString("TimerMinutes") %>');
             };
@@ -578,7 +576,6 @@
                     if ($(this).html().length)
                         $(this).css('display', 'block');
                 });
-                installWizard.dnnProgressbar = $(".dnnProgressbar").dnnProgressbar();
             });
 
             $(document).ready(function () {
@@ -728,10 +725,9 @@
         $.updateProgressbar = function (status) {
             var result = jQuery.parseJSON(status);
             if (result !== null) {
-                if (result.progress < $("#progressbar").progressbar('value')) return;
-                //Updating progress
-                $("#progressbar").progressbar('value', result.progress);
-                installWizard.dnnProgressbar.update(result.progress);
+                const progressBar = document.querySelector("#progressbar");
+                if (result.progress < progressBar.value) return;
+                progressBar.value = result.progress;
                 $("#percentage").text(result.progress + '% ' + result.details);
                 var installationError = result.details.toUpperCase().indexOf('ERROR') > -1;
                 if (installationError) {
@@ -782,16 +778,14 @@
             }
         };
 
-        //Start progress bar
         $.startProgressbar = function () {
-            //Disabling button
             $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
-            //Making sure that progress indicate 0
-            $("#progressbar").progressbar().progressbar('value', 0);
+            const progressBar = document.querySelector("#progressbar");                 
+            progressBar.value = 0;
             $("#percentage").text('0%');
             installWizard.startProgressBar();
-            $("#progressbar").removeClass('stoppedProgress');
-            $("#progressbar").addClass('inProgress');
+            progressBar.classList.remove('stoppedProgress');
+            progressBar.classList.add('inProgress');
         };
 
         //Stop update progress bar on errors
@@ -803,13 +797,14 @@
             }
             $('#installation-steps > p.step-running').attr('class', 'step-error');
             installWizard.stopProgressBar();
-            $("#progressbar").removeClass('inProgress');
-            $("#progressbar").addClass('stoppedProgress');
+            const progressBar = document.querySelector("#progressbar");
+            progressBar.classList.remove('inProgress');
+            progressBar.classList.add('stoppedProgress');
         };
 
         $(document).ready(function () {
             //Progressbar and button initialization
-            $("#progressbar").progressbar({ value: 0 });
+            document.querySelector("#progressbar").value = 0;
             $('#visitSite, #seeLogs, #retry').addClass('dnnDisabledAction');
 
             $("#retry").click(function (e) {
@@ -841,7 +836,6 @@
                         if (installationLogStartLine === 0)
                             $('#installation-log').html('<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("NoInstallationLog"))%>');
                     }
-                    $('#installation-log-container').jScrollPane();
                 }, function (err) {
                 });
             };

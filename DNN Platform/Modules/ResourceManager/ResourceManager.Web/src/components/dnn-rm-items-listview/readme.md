@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property                    | Attribute       | Description                | Type                       | Default     |
-| --------------------------- | --------------- | -------------------------- | -------------------------- | ----------- |
-| `currentItems` _(required)_ | `current-items` | The list of current items. | `GetFolderContentResponse` | `undefined` |
+| Property                    | Attribute | Description                | Type                       | Default     |
+| --------------------------- | --------- | -------------------------- | -------------------------- | ----------- |
+| `currentItems` _(required)_ | --        | The list of current items. | `GetFolderContentResponse` | `undefined` |
 
 
 ## Events
@@ -75,8 +75,7 @@ graph TD;
   dnn-rm-move-items --> dnn-rm-folder-list
   dnn-rm-move-items --> dnn-rm-progress-bar
   dnn-rm-move-items --> dnn-button
-  dnn-rm-folder-list --> dnn-collapsible
-  dnn-rm-folder-list --> dnn-rm-folder-context-menu
+  dnn-rm-folder-list --> dnn-context-menu
   dnn-rm-folder-list --> dnn-rm-folder-list-item
   dnn-rm-folder-list-item --> dnn-collapsible
   dnn-rm-folder-list-item --> dnn-rm-folder-context-menu

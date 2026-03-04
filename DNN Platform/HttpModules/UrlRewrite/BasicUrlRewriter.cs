@@ -78,7 +78,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             // the application should always use the exact relative location of the resource it is requesting
             var strURL = request.Url.AbsolutePath;
             var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.RawUrl)) ?? string.Empty;
-            if (Globals.FileEscapingRegex.Match(strURL).Success || Globals.FileEscapingRegex.Match(strDoubleDecodeURL).Success)
+            if (Globals.FileEscapingRegex.IsMatch(strURL) || Globals.FileEscapingRegex.IsMatch(strDoubleDecodeURL))
             {
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessHttpException(request);
             }

@@ -2,7 +2,7 @@
   "name": "dnn.contactlist.spareact",
   "version": "1.0.0",
   "type": "module",
-  "packageManager": "yarn@4.10.3",
+  "packageManager": "yarn@4.12.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build --mode production",

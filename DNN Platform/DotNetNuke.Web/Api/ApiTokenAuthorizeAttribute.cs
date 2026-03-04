@@ -10,14 +10,10 @@ namespace DotNetNuke.Web.Api
     using DotNetNuke.Web.Api.Auth.ApiTokens;
     using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
 
-    /// <summary>
-    /// Attribute to authorize apis based on the api token used.
-    /// </summary>
+    /// <summary>Attribute to authorize apis based on the api token used.</summary>
     public class ApiTokenAuthorizeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApiTokenAuthorizeAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ApiTokenAuthorizeAttribute"/> class.</summary>
         /// <param name="key">The Key to authenticate api.</param>
         /// <param name="resourceFile">The resource file for the token api.</param>
         /// <param name="scope">The required api token scope.</param>
@@ -28,29 +24,21 @@ namespace DotNetNuke.Web.Api
             this.Scope = scope;
         }
 
-        /// <summary>
-        /// Gets or sets the Key for the api token.
-        /// </summary>
-        public string Key { get; set; } = string.Empty;
+        /// <summary>Gets or sets the Key for the api token.</summary>
+        public string Key { get; set; }
 
-        /// <summary>
-        /// Gets or sets the resource file for the api token.
-        /// </summary>
-        public string ResourceFile { get; set; } = string.Empty;
+        /// <summary>Gets or sets the resource file for the api token.</summary>
+        public string ResourceFile { get; set; }
 
-        /// <summary>
-        /// Gets or sets the required api token scope.
-        /// </summary>
-        public ApiTokenScope Scope { get; set; } = ApiTokenScope.User;
+        /// <summary>Gets or sets the required api token scope.</summary>
+        public ApiTokenScope Scope { get; set; }
 
         [Dependency]
         private IApiTokenController ApiTokenController { get; set; }
 
-        /// <summary>
-        /// Check if the request is authorized.
-        /// </summary>
+        /// <summary>Check if the request is authorized.</summary>
         /// <param name="context">The authentication filter context.</param>
-        /// <returns>True if authorized, false otherwise.</returns>
+        /// <returns><see langword="true"/> if authorized, <see langword="false"/> otherwise.</returns>
         public override bool IsAuthorized(AuthFilterContext context)
         {
             var token = this.ApiTokenController.GetCurrentThreadApiToken();

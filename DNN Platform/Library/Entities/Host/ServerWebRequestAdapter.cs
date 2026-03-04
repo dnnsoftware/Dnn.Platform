@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Host
     using System.Web;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
 
     public class ServerWebRequestAdapter : IServerWebRequestAdapter
     {

@@ -288,6 +288,72 @@ namespace DotNetNuke.Entities.Portals.Templates
                 writer.WriteElementString("showquickmoduleaddmenu", setting);
             }
 
+            settingsDictionary.TryGetValue("AllowJsInModuleHeaders", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("allowjsinmoduleheaders", setting);
+            }
+
+            settingsDictionary.TryGetValue("AllowJsInModuleFooters", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("allowjsinmodulefooters", setting);
+            }
+
+            settingsDictionary.TryGetValue("AllowUserUICulture", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("allowuseruiculture", setting);
+            }
+
+            settingsDictionary.TryGetValue("EnableBrowserLanguage", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("enablebrowserlanguage", setting);
+            }
+
+            settingsDictionary.TryGetValue("SitemapCacheDays", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("sitemapcachedays", setting);
+            }
+
+            settingsDictionary.TryGetValue("SitemapExcludePriority", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("sitemapexcludepriority", setting);
+            }
+
+            settingsDictionary.TryGetValue("SitemmpIncludeHidden", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("sitemapincludehidden", setting);
+            }
+
+            settingsDictionary.TryGetValue("SitemapLevelMode", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("sitemaplevelmode", setting);
+            }
+
+            settingsDictionary.TryGetValue("SitemapMinPriority", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("sitemapminpriority", setting);
+            }
+
+            settingsDictionary.TryGetValue(PortalTemplateImporter.HtmlTextAutoSaveEnabled, out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("enableautosave", setting);
+            }
+
+            settingsDictionary.TryGetValue(PortalTemplateImporter.HtmlTextTimeToAutoSave, out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("timetoautosave", setting);
+            }
+
             // End Portal Settings
             writer.WriteEndElement();
         }
