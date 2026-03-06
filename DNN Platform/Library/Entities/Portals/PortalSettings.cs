@@ -541,14 +541,6 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>Gets whitelist of file extensions for end users.</summary>
         public FileExtensionWhitelist AllowedExtensionsWhitelist { get; internal set; }
 
-        /// <inheritdoc />
-        public bool ShowQuickModuleAddMenu => PortalController.GetPortalSettingAsBoolean("ShowQuickModuleAddMenu", this.PortalId, false);
-
-        /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
-        /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>
-        public static IPortalSettings Create()
-            => new PortalSettings();
-
         public CspMode CspHeaderMode { get; internal set; }
 
         public bool CspHeaderFixed { get; internal set; }
@@ -557,7 +549,14 @@ namespace DotNetNuke.Entities.Portals
 
         public string CspReportingHeader { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        public bool ShowQuickModuleAddMenu => PortalController.GetPortalSettingAsBoolean("ShowQuickModuleAddMenu", this.PortalId, false);
+
+        /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
+        /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>
+        public static IPortalSettings Create()
+            => new PortalSettings();
+
         /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
         /// <param name="portalController">A portal controller.</param>
         /// <param name="portalId">The portal ID.</param>
