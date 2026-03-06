@@ -763,6 +763,11 @@
     <Content Include="Licenses\CodeMirror %28MIT%29.txt.resources" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.01.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.02.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.02.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.02.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.02.04.SqlDataProvider" />
     <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
     <Content Include="Resources\Shared\components\DatePicker\pikaday.css" />
     <Content Include="Resources\Shared\components\DatePicker\pikaday.jquery.js" />
@@ -1200,8 +1205,7 @@
     <Content Include="Install\Config\09.13.04.config" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.04.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.08.SqlDataProvider" />
-    <Content Include="Install\Config\10.02.00.config" />
-    <Content Include="Install\Config\10.02.01.config" />
+    <Content Include="Install\Config\10.02.04.config" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.12.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.02.SqlDataProvider" />
