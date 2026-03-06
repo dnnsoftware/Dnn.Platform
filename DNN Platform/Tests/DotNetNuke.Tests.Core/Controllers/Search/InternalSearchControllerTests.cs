@@ -6,10 +6,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.IO;
     using System.Threading;
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Application;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
@@ -38,7 +38,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private const int UrlSearchTypeId = (int)SearchTypeIds.UrlSearchTypeId;
         private const int OtherSearchTypeId = (int)SearchTypeIds.OtherSearchTypeId;
-        private const int UnknownSearchTypeId = (int)SearchTypeIds.UnknownSearchTypeId;
 
         private const int PortalId0 = 0;
         private const int PortalId1 = 1;
@@ -56,7 +55,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const string TabSearchTypeName = "tab";
         private const string DocumentSearchTypeName = "document";
         private const string UrlSearchTypeName = "url";
-        private const string ModuleResultControllerClass = "DotNetNuke.Services.Search.Crawlers.ModuleResultController, DotNetNuke";
         private const string FakeResultControllerClass = "DotNetNuke.Tests.Core.Controllers.Search.FakeResultController, DotNetNuke.Tests.Core";
 
         private const string NoPermissionFakeResultControllerClass =
@@ -73,7 +71,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private const string SearchIndexFolder = @"App_Data\InternalSearchTests";
         private readonly double readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
-        private Mock<IHostController> mockHostController;
+        private FakeHostController fakeHostController;
         private Mock<CachingProvider> mockCachingProvider;
         private Mock<DataProvider> mockDataProvider;
         private Mock<ILocaleController> mockLocaleController;
@@ -100,7 +98,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             ComponentFactory.Container = new SimpleContainer();
             MockComponentProvider.ResetContainer();
 
-            this.mockHostController = new Mock<IHostController>();
             this.SetupHostController();
 
             this.mockDataProvider = MockComponentProvider.CreateDataProvider();
@@ -120,14 +117,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.serviceProvider = FakeServiceProvider.Setup(
                 services =>
                 {
-                    services.AddSingleton(this.mockHostController.Object);
-                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                    services.AddSingleton<IHostController>(this.fakeHostController);
+                    services.AddSingleton<IHostSettingsService>(this.fakeHostController);
                     services.AddSingleton(this.mockCachingProvider.Object);
                     services.AddSingleton(this.mockDataProvider.Object);
                     services.AddSingleton(this.mockLocaleController.Object);
                     services.AddSingleton(this.mockSearchHelper.Object);
                     services.AddSingleton(this.mockUserController.Object);
-                    services.AddSingleton<IApplicationStatusInfo>(new ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+                    services.AddSingleton<IApplicationStatusInfo>(new FakeApplicationStatusInfo());
                     services.AddSingleton(Mock.Of<IPortalController>());
                 });
 
@@ -138,7 +135,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void TearDown()
         {
             this.DeleteIndexFolder();
-            this.mockHostController = null;
+            this.fakeHostController = null;
             this.serviceProvider.Dispose();
             this.luceneController.Dispose();
             InternalSearchController.ClearInstance();
@@ -177,7 +174,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-        public void SearchController_AddSearchDcoumets_Does_Not_Throw_On_Null_OrEmpty_Title()
+        public void SearchController_AddSearchDocuments_Does_Not_Throw_On_Null_OrEmpty_Title()
         {
             // Arrange
             var documents = new List<SearchDocument> { new SearchDocument { UniqueKey = Guid.NewGuid().ToString() } };
@@ -187,7 +184,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-        public void SearchController_AddSearchDcoumets_Does_Not_Throw_On_Empty_Search_Document()
+        public void SearchController_AddSearchDocuments_Does_Not_Throw_On_Empty_Search_Document()
         {
             // Arrange
             var documents = new List<SearchDocument> { new SearchDocument() };
@@ -540,23 +537,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 this.luceneController.Dispose();
             }
 
-            this.luceneController = new LuceneControllerImpl();
+            this.luceneController = new LuceneControllerImpl(this.fakeHostController, new FakeApplicationStatusInfo());
             LuceneController.SetTestableInstance(this.luceneController);
         }
 
         private void SetupHostController()
         {
-            this.mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder + DateTime.UtcNow.Ticks);
-            this.mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this.readerStaleTimeSpan);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchTitleBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTitleBoost);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchTagBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTagBoost);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchContentBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchKeywordBoost);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchDescriptionBoostSetting, It.IsAny<int>()))
-                .Returns(Constants.DefaultSearchDescriptionBoost);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchAuthorBoost);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
-            this.mockHostController.As<IHostSettingsService>();
+            this.fakeHostController = new FakeHostController(new Dictionary<string, string>
+            {
+                { Constants.SearchIndexFolderKey, SearchIndexFolder + DateTime.UtcNow.Ticks },
+                { Constants.SearchReaderRefreshTimeKey, this.readerStaleTimeSpan.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchTitleBoostSetting, Constants.DefaultSearchTitleBoost.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchTagBoostSetting, Constants.DefaultSearchTagBoost.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchContentBoostSetting, Constants.DefaultSearchKeywordBoost.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchDescriptionBoostSetting, Constants.DefaultSearchDescriptionBoost.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchAuthorBoostSetting, Constants.DefaultSearchAuthorBoost.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchMinLengthKey, Constants.DefaultMinLen.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchMaxLengthKey, Constants.DefaultMaxLen.ToString(CultureInfo.InvariantCulture) },
+            });
         }
 
         private void SetupLocaleController()
@@ -640,8 +638,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     StopWords = "los,de,el",
                 });
             this.mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
-                .Returns<string, bool, bool>(new SearchHelperImpl().RephraseSearchText);
-            this.mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
+                .Returns<string, bool, bool>(new SearchHelperImpl(Mock.Of<IHostSettings>(), Mock.Of<IHostSettingsService>(), Mock.Of<IPortalController>(), new FakeApplicationStatusInfo()).RephraseSearchText);
+            this.mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool _) => html);
             SearchHelper.SetTestableInstance(this.mockSearchHelper.Object);
         }
 
@@ -739,7 +737,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             try
             {
-                var searchIndexFolder = this.mockHostController.Object.GetString(Constants.SearchIndexFolderKey, SearchIndexFolder);
+                var searchIndexFolder = this.fakeHostController.GetString(Constants.SearchIndexFolderKey, SearchIndexFolder);
                 if (Directory.Exists(searchIndexFolder))
                 {
                     Directory.Delete(searchIndexFolder, true);

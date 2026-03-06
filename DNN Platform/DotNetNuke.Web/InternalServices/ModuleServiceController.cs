@@ -69,7 +69,7 @@ namespace DotNetNuke.Web.InternalServices
             DesktopModuleInfo desktopModule;
             if (tabId < 0)
             {
-                desktopModule = DesktopModuleController.GetDesktopModule(moduleId, portalId);
+                desktopModule = DesktopModuleController.GetDesktopModule(this.hostSettings, moduleId, portalId);
             }
             else
             {

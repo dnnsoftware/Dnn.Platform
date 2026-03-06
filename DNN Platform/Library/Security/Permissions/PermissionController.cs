@@ -11,6 +11,7 @@ namespace DotNetNuke.Security.Permissions
     using System.Linq;
     using System.Text;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
@@ -25,26 +26,26 @@ namespace DotNetNuke.Security.Permissions
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The default <see cref="IPermissionDefinitionService"/> implementation.</summary>
-    public partial class PermissionController : IPermissionDefinitionService
+    public partial class PermissionController(IEventLogger eventLogger, DataProvider dataProvider, IHostSettings hostSettings) : IPermissionDefinitionService
     {
-        private readonly IEventLogger eventLogger;
-        private readonly DataProvider dataProvider;
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        private readonly DataProvider dataProvider = dataProvider ?? DataProvider.Instance();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="PermissionController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public PermissionController()
-            : this(null, null)
+            : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PermissionController"/> class.</summary>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="dataProvider">The underlying data-provider to use.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public PermissionController(IEventLogger eventLogger, DataProvider dataProvider)
+                : this(eventLogger, dataProvider, null)
         {
-            var serviceProvider = Globals.GetCurrentServiceProvider();
-            this.eventLogger = eventLogger ?? serviceProvider.GetRequiredService<IEventLogger>();
-            this.dataProvider = dataProvider ?? DataProvider.Instance();
         }
 
         public static string BuildPermissions(IList permissions, string permissionKey)
@@ -96,21 +97,21 @@ namespace DotNetNuke.Security.Permissions
         [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByFolder)} instead.")]
         public static partial ArrayList GetPermissionsByFolder()
         {
-            return new ArrayList(GetPermissionsByFolderEnumerable(Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>()).ToArray());
+            return new ArrayList(GetPermissionsByFolderEnumerable(Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(), Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>()).ToArray());
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByPortalDesktopModule" />
         [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByPortalDesktopModule)} instead.")]
         public static partial ArrayList GetPermissionsByPortalDesktopModule()
         {
-            return new ArrayList(GetPermissionsByPortalDesktopModuleEnumerable(Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>()).ToArray());
+            return new ArrayList(GetPermissionsByPortalDesktopModuleEnumerable(Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(), Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>()).ToArray());
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByTab" />
         [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByTab)} instead.")]
         public static partial ArrayList GetPermissionsByTab()
         {
-            return new ArrayList(GetPermissionsByTabEnumerable(Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>()).ToArray());
+            return new ArrayList(GetPermissionsByTabEnumerable(Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(), Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>()).ToArray());
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.AddDefinition" />
@@ -153,28 +154,28 @@ namespace DotNetNuke.Security.Permissions
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public PermissionInfo GetPermission(int permissionID)
         {
-            return GetPermissions(Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>()).SingleOrDefault(p => p.PermissionID == permissionID);
+            return GetPermissions(this.dataProvider, this.hostSettings).SingleOrDefault(p => ((IPermissionDefinitionInfo)p).PermissionId == permissionID);
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByCodeAndKey" />
         [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByCodeAndKey)} instead.")]
         public partial ArrayList GetPermissionByCodeAndKey(string permissionCode, string permissionKey)
         {
-            return new ArrayList(GetPermissionByCodeAndKeyEnumerable(Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(), permissionCode, permissionKey).ToArray());
+            return new ArrayList(GetPermissionByCodeAndKeyEnumerable(this.dataProvider, this.hostSettings, permissionCode, permissionKey).ToArray());
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByModuleDefId" />
         [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByModuleDefId)} instead.")]
         public partial ArrayList GetPermissionsByModuleDefID(int moduleDefID)
         {
-            return new ArrayList(GetPermissionsByModuleDefIdEnumerable(Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(), moduleDefID).ToArray());
+            return new ArrayList(GetPermissionsByModuleDefIdEnumerable(this.dataProvider, this.hostSettings, moduleDefID).ToArray());
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.GetDefinitionsByModule" />
         [DnnDeprecated(9, 13, 1, $"Use {nameof(IPermissionDefinitionService)}.{nameof(IPermissionDefinitionService.GetDefinitionsByModule)} instead.")]
         public partial ArrayList GetPermissionsByModule(int moduleId, int tabId)
         {
-            return new ArrayList(GetPermissionsByModuleEnumerable(Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(), moduleId, tabId).ToArray());
+            return new ArrayList(GetPermissionsByModuleEnumerable(this.dataProvider, this.hostSettings, moduleId, tabId).ToArray());
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.UpdateDefinition" />
@@ -201,7 +202,7 @@ namespace DotNetNuke.Security.Permissions
         public T RemapPermission<T>(T permission, int portalId)
             where T : PermissionInfoBase
         {
-            PermissionInfo permissionInfo = this.GetPermissionByCodeAndKey(permission.PermissionCode, permission.PermissionKey).ToArray().Cast<PermissionInfo>().FirstOrDefault();
+            var permissionInfo = this.GetPermissionByCodeAndKey(permission.PermissionCode, permission.PermissionKey).Cast<IPermissionDefinitionInfo>().FirstOrDefault();
             T result = null;
 
             if (permissionInfo != null)
@@ -241,15 +242,15 @@ namespace DotNetNuke.Security.Permissions
                 // if role was found add, otherwise ignore
                 if (roleID != int.MinValue || userID != int.MinValue)
                 {
-                    permission.PermissionID = permissionInfo.PermissionID;
+                    ((IPermissionDefinitionInfo)permission).PermissionId = permissionInfo.PermissionId;
                     if (roleID != int.MinValue)
                     {
-                        permission.RoleID = roleID;
+                        ((IPermissionInfo)permission).RoleId = roleID;
                     }
 
                     if (userID != int.MinValue)
                     {
-                        permission.UserID = userID;
+                        ((IPermissionInfo)permission).UserId = userID;
                     }
 
                     result = permission;
@@ -260,25 +261,25 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <inheritdoc />
-        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitions() => GetPermissions(this.dataProvider);
+        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitions() => GetPermissions(this.dataProvider, this.hostSettings);
 
         /// <inheritdoc />
-        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByFolder() => GetPermissionsByFolderEnumerable(this.dataProvider);
+        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByFolder() => GetPermissionsByFolderEnumerable(this.dataProvider, this.hostSettings);
 
         /// <inheritdoc />
-        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByPortalDesktopModule() => GetPermissionsByPortalDesktopModuleEnumerable(this.dataProvider);
+        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByPortalDesktopModule() => GetPermissionsByPortalDesktopModuleEnumerable(this.dataProvider, this.hostSettings);
 
         /// <inheritdoc />
-        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByTab() => GetPermissionsByTabEnumerable(this.dataProvider);
+        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByTab() => GetPermissionsByTabEnumerable(this.dataProvider, this.hostSettings);
 
         /// <inheritdoc />
-        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByCodeAndKey(string permissionCode, string permissionKey) => GetPermissionByCodeAndKeyEnumerable(this.dataProvider, permissionCode, permissionKey);
+        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByCodeAndKey(string permissionCode, string permissionKey) => GetPermissionByCodeAndKeyEnumerable(this.dataProvider, this.hostSettings, permissionCode, permissionKey);
 
         /// <inheritdoc />
-        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByModuleDefId(int moduleDefId) => GetPermissionsByModuleDefIdEnumerable(this.dataProvider, moduleDefId);
+        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByModuleDefId(int moduleDefId) => GetPermissionsByModuleDefIdEnumerable(this.dataProvider, this.hostSettings, moduleDefId);
 
         /// <inheritdoc />
-        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByModule(int moduleId, int tabId) => GetPermissionsByModuleEnumerable(this.dataProvider, moduleId, tabId);
+        IEnumerable<IPermissionDefinitionInfo> IPermissionDefinitionService.GetDefinitionsByModule(int moduleId, int tabId) => GetPermissionsByModuleEnumerable(this.dataProvider, this.hostSettings, moduleId, tabId);
 
         /// <inheritdoc />
         int IPermissionDefinitionService.AddDefinition(IPermissionDefinitionInfo permission) => this.AddPermission(permission);
@@ -295,48 +296,49 @@ namespace DotNetNuke.Security.Permissions
         /// <inheritdoc />
         void IPermissionDefinitionService.ClearCache() => ClearCache();
 
-        private static IEnumerable<PermissionInfo> GetPermissions(DataProvider dataProvider)
+        private static IEnumerable<PermissionInfo> GetPermissions(DataProvider dataProvider, IHostSettings hostSettings)
         {
             return CBO.GetCachedObject<IEnumerable<PermissionInfo>>(
+                hostSettings,
                 new CacheItemArgs(
-                DataCache.PermissionsCacheKey,
-                DataCache.PermissionsCacheTimeout,
-                DataCache.PermissionsCachePriority),
-                c => CBO.FillCollection<PermissionInfo>(dataProvider.ExecuteReader("GetPermissions")));
+                    DataCache.PermissionsCacheKey,
+                    DataCache.PermissionsCacheTimeout,
+                    DataCache.PermissionsCachePriority),
+                _ => CBO.FillCollection<PermissionInfo>(dataProvider.ExecuteReader("GetPermissions")));
         }
 
-        private static IEnumerable<PermissionInfo> GetPermissionsByFolderEnumerable(DataProvider dataProvider)
+        private static IEnumerable<PermissionInfo> GetPermissionsByFolderEnumerable(DataProvider dataProvider, IHostSettings hostSettings)
         {
-            return GetPermissions(dataProvider).Where(p => p.PermissionCode == "SYSTEM_FOLDER");
+            return GetPermissions(dataProvider, hostSettings).Where(p => p.PermissionCode == "SYSTEM_FOLDER");
         }
 
-        private static IEnumerable<PermissionInfo> GetPermissionsByPortalDesktopModuleEnumerable(DataProvider dataProvider)
+        private static IEnumerable<PermissionInfo> GetPermissionsByPortalDesktopModuleEnumerable(DataProvider dataProvider, IHostSettings hostSettings)
         {
-            return GetPermissions(dataProvider).Where(p => p.PermissionCode == "SYSTEM_DESKTOPMODULE");
+            return GetPermissions(dataProvider, hostSettings).Where(p => p.PermissionCode == "SYSTEM_DESKTOPMODULE");
         }
 
-        private static IEnumerable<PermissionInfo> GetPermissionsByTabEnumerable(DataProvider dataProvider)
+        private static IEnumerable<PermissionInfo> GetPermissionsByTabEnumerable(DataProvider dataProvider, IHostSettings hostSettings)
         {
-            return GetPermissions(dataProvider).Where(p => p.PermissionCode == "SYSTEM_TAB");
+            return GetPermissions(dataProvider, hostSettings).Where(p => p.PermissionCode == "SYSTEM_TAB");
         }
 
-        private static IEnumerable<PermissionInfo> GetPermissionByCodeAndKeyEnumerable(DataProvider dataProvider, string permissionCode, string permissionKey)
+        private static IEnumerable<PermissionInfo> GetPermissionByCodeAndKeyEnumerable(DataProvider dataProvider, IHostSettings hostSettings, string permissionCode, string permissionKey)
         {
-            return GetPermissions(dataProvider).Where(p => p.PermissionCode.Equals(permissionCode, StringComparison.OrdinalIgnoreCase)
-                                                           && p.PermissionKey.Equals(permissionKey, StringComparison.OrdinalIgnoreCase));
+            return GetPermissions(dataProvider, hostSettings).Where(p => p.PermissionCode.Equals(permissionCode, StringComparison.OrdinalIgnoreCase)
+                                                                       && p.PermissionKey.Equals(permissionKey, StringComparison.OrdinalIgnoreCase));
         }
 
-        private static IEnumerable<PermissionInfo> GetPermissionsByModuleDefIdEnumerable(DataProvider dataProvider, int moduleDefId)
+        private static IEnumerable<PermissionInfo> GetPermissionsByModuleDefIdEnumerable(DataProvider dataProvider, IHostSettings hostSettings, int moduleDefId)
         {
-            return GetPermissions(dataProvider).Where(p => p.ModuleDefID == moduleDefId);
+            return GetPermissions(dataProvider, hostSettings).Where(p => ((IPermissionDefinitionInfo)p).ModuleDefId == moduleDefId);
         }
 
-        private static IEnumerable<PermissionInfo> GetPermissionsByModuleEnumerable(DataProvider dataProvider, int moduleId, int tabId)
+        private static IEnumerable<PermissionInfo> GetPermissionsByModuleEnumerable(DataProvider dataProvider, IHostSettings hostSettings, int moduleId, int tabId)
         {
             var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
             var moduleDefId = module.ModuleDefID;
 
-            return GetPermissions(dataProvider).Where(p => p.ModuleDefID == moduleDefId || p.PermissionCode == "SYSTEM_MODULE_DEFINITION");
+            return GetPermissions(dataProvider, hostSettings).Where(p => ((IPermissionDefinitionInfo)p).ModuleDefId == moduleDefId || p.PermissionCode == "SYSTEM_MODULE_DEFINITION");
         }
 
         private static void ClearCache()

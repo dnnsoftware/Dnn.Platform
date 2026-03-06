@@ -172,7 +172,7 @@ public class GoogleCredentialDataStore : IDataStore
         }
         else
         {
-            PortalController.UpdateEncryptedString(this.hostSettings, HashAlgorithmName.SHA512, this.portalId, settingName, settingValue, Config.GetDecryptionkey());
+            PortalController.UpdateEncryptedString(this.hostSettings, this.portalController, HashAlgorithmName.SHA512, this.portalId, settingName, settingValue, Config.GetDecryptionkey());
         }
     }
 }

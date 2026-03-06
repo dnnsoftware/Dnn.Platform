@@ -39,7 +39,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
     using NUnit.Framework;
 
-    /// <summary>  Summary description for RedirectionControllerTests.</summary>
     [TestFixture]
     public class RedirectionControllerTests
     {
@@ -107,21 +106,15 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             this.mockHostController.As<IHostSettingsService>();
             HostController.RegisterInstance(this.mockHostController.Object);
 
-            var eventLogger = Mock.Of<IEventLogger>();
-            this.portalController = new PortalController(Mock.Of<IBusinessControllerProvider>(), new HostSettings((IHostSettingsService)this.mockHostController.Object), Mock.Of<IApplicationStatusInfo>(), eventLogger, Mock.Of<ICryptographyProvider>(), Mock.Of<IPermissionDefinitionService>());
-            this.redirectionController = new RedirectionController(this.portalController, eventLogger);
+            var tabController = new TabController(Mock.Of<IEventLogger>(), this.dataProvider.Object, Mock.Of<IPermissionDefinitionService>(), Mock.Of<IHostSettings>(), Mock.Of<IApplicationStatusInfo>());
+            this.portalController = new PortalController(Mock.Of<IBusinessControllerProvider>(), new HostSettings((IHostSettingsService)this.mockHostController.Object), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IEventLogger>(), Mock.Of<ICryptographyProvider>(), Mock.Of<IPermissionDefinitionService>());
+            PortalController.SetTestableInstance(this.portalController);
+            this.redirectionController = new RedirectionController(this.portalController, Mock.Of<IEventLogger>(), Mock.Of<IHostSettings>(), tabController);
             this.SetupContainer();
 
             this.SetupDataProvider();
             this.SetupClientCapabilityProvider();
             SetupRoleProvider();
-
-            var tabController = TabController.Instance;
-            var dataProviderField = tabController.GetType().GetField("dataProvider", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (dataProviderField != null)
-            {
-                dataProviderField.SetValue(tabController, this.dataProvider.Object);
-            }
         }
 
         [TearDown]
@@ -133,6 +126,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             CachingProvider.Instance().PurgeCache();
             MockComponentProvider.ResetContainer();
             UnitTestHelper.ClearHttpContext();
+            PortalController.ClearInstance();
             if (this.dtRedirections != null)
             {
                 this.dtRedirections.Dispose();
@@ -293,13 +287,14 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             Assert.That(this.redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1), Is.EqualTo(NavigateUrl(AnotherPageOnSamePortal)));
         }
 
-        // [Test]
-        // public void RedirectionController_GetRedirectionUrl_Returns_HomePageOfOtherPortal_When_Surfing_AnyPageOfCurrentPortal_OnMobile()
-        // {
-        //    PrepareHomePageToHomePageRedirectionRule();
-        //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
-        //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 2));
-        // }
+        //// [Test]
+        //// public void RedirectionController_GetRedirectionUrl_Returns_HomePageOfOtherPortal_When_Surfing_AnyPageOfCurrentPortal_OnMobile()
+        //// {
+        ////    PrepareHomePageToHomePageRedirectionRule();
+        ////    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
+        ////    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 2));
+        //// }
+        ////
         [Test]
         public void RedirectionController_GetRedirectionUrl_Returns_ExternalSite_When_Surfing_AnyPageOfCurrentPortal_OnMobile()
         {
@@ -414,13 +409,13 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             using (Assert.EnterMultipleScope())
             {
                 // First Page returns link to first url
-                Assert.That(mobileUrlForPage1, Is.EqualTo(string.Format("{0}?nomo=0", redirectUrlPage1)));
+                Assert.That(mobileUrlForPage1, Is.EqualTo($"{redirectUrlPage1}?nomo=0"));
 
                 // Second Page returns link to second url
-                Assert.That(mobileUrlForPage2, Is.EqualTo(string.Format("{0}?nomo=0", redirectUrlPage2)));
+                Assert.That(mobileUrlForPage2, Is.EqualTo($"{redirectUrlPage2}?nomo=0"));
 
                 // Third Page returns link to first url - as this is the first found url and third page has no redirect defined
-                Assert.That(string.Format("{0}?nomo=0", redirectUrlPage1), Is.EqualTo(mobileUrlForPage3));
+                Assert.That($"{redirectUrlPage1}?nomo=0", Is.EqualTo(mobileUrlForPage3));
             }
         }
 

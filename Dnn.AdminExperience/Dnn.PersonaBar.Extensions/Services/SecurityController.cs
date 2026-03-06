@@ -215,7 +215,7 @@ namespace Dnn.PersonaBar.Security.Services
                     this.hostSettingsService.Update(UserRequestIPHeaderSettingName, request.UserRequestIPHeader, true);
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -329,7 +329,7 @@ namespace Dnn.PersonaBar.Security.Services
                     IPFilterController.Instance.AddIPFilter(ipf);
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (ArgumentException exc)
             {
@@ -366,7 +366,7 @@ namespace Dnn.PersonaBar.Security.Services
                     var ipf = new IPFilterInfo();
                     ipf.IPFilterID = filterId;
                     IPFilterController.Instance.DeleteIPFilter(ipf);
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
                 }
             }
             catch (Exception exc)
@@ -595,7 +595,7 @@ namespace Dnn.PersonaBar.Security.Services
                 PortalController.UpdatePortalSetting(this.PortalId, "Security_RequireValidProfile", request.RequireValidProfile.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Security_CaptchaRegister", request.UseCaptchaRegister.ToString(), false);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -642,7 +642,7 @@ namespace Dnn.PersonaBar.Security.Services
 
                 DataCache.ClearPortalCache(this.PortalId, false);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -662,7 +662,7 @@ namespace Dnn.PersonaBar.Security.Services
             try
             {
                 DotNetNuke.Data.DataProvider.Instance().SetAllPortalTabsSecure(this.PortalId, true);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -1143,7 +1143,7 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {

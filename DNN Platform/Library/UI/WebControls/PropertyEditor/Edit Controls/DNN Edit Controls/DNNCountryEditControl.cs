@@ -3,24 +3,30 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
     using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common.Lists;
 
-    /// <summary>
-    /// The DNNCountryEditControl control provides a standard UI component for editing
-    /// Countries.
-    /// </summary>
+    /// <summary>The DNNCountryEditControl control provides a standard UI component for editing Countries.</summary>
     [ToolboxData("<{0}:DNNCountryEditControl runat=server></{0}:DNNCountryEditControl>")]
     public class DNNCountryEditControl : DNNListEditControl
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNCountryEditControl"/> class.
-        /// Constructs a DNNCountryEditControl.
-        /// </summary>
+        private readonly ListController listController;
+
+        /// <summary>Initializes a new instance of the <see cref="DNNCountryEditControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public DNNCountryEditControl()
+            : this(null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DNNCountryEditControl"/> class.</summary>
+        /// <param name="listController">The list controller.</param>
+        public DNNCountryEditControl(ListController listController)
+        {
+            this.listController = listController;
             this.AutoPostBack = true;
             this.ListName = "Country";
             this.ParentKey = string.Empty;
@@ -38,8 +44,7 @@ namespace DotNetNuke.UI.WebControls
                 var regionControl = ControlUtilities.FindFirstDescendent<DNNRegionEditControl>(regionContainer);
                 if (regionControl != null)
                 {
-                    var listController = new ListController();
-                    var countries = listController.GetListEntryInfoItems("Country");
+                    var countries = this.listController.GetListEntryInfoItems("Country");
                     foreach (var checkCountry in countries)
                     {
                         if (checkCountry.EntryID.ToString(CultureInfo.InvariantCulture) == e.StringValue)

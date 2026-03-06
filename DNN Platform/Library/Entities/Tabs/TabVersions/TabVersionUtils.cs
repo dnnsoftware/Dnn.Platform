@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
 
@@ -47,13 +48,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 return false;
             }
 
-            var currentPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var currentPortalSettings = PortalController.Instance.GetCurrentSettings();
             if (currentPortalSettings == null)
             {
                 return false;
             }
 
-            var isAdminUser = currentPortalSettings.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortalSettings.AdministratorRoleName);
+            var isAdminUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser || PortalSecurity.IsInRole(currentPortalSettings.AdministratorRoleName);
             if (isAdminUser)
             {
                 return true;
@@ -64,7 +65,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         private static string GetTabVersionQueryStringValue()
         {
-            var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
+            var currentPortal = PortalController.Instance.GetCurrentSettings();
             return currentPortal == null ?
                 string.Empty :
                 HttpContext.Current.Request.QueryString[TabVersionSettings.Instance.GetTabVersionQueryStringParameter(currentPortal.PortalId)];

@@ -12,6 +12,8 @@ namespace DotNetNuke.Services.Search
     using System.Text;
     using System.Text.RegularExpressions;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
@@ -25,8 +27,10 @@ namespace DotNetNuke.Services.Search
     using Lucene.Net.QueryParsers;
     using Lucene.Net.Search;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The UserIndexer is an implementation of the abstract <see cref="IndexingProviderBase"/> class.</summary>
-    public class UserIndexer : IndexingProviderBase
+    public class UserIndexer(ListController listController, IPortalController portalController, IHostSettings hostSettings, DataProvider dataProvider, IUserController userController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IEventLogger eventLogger) : IndexingProviderBase
     {
         internal const string UserIndexResetFlag = "UserIndexer_ReIndex";
         internal const string ValueSplitFlag = "$$$";
@@ -35,6 +39,21 @@ namespace DotNetNuke.Services.Search
         private const int ClauseMaxCount = 1024;
 
         private static readonly int UserSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
+        private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly DataProvider dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
+        private readonly IUserController userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IPortalGroupController portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+
+        /// <summary>Initializes a new instance of the <see cref="UserIndexer"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public UserIndexer()
+            : this(null, null, null, null, null, null, null, null)
+        {
+        }
 
         /// <summary>Searches for and indexes modified users for the given portal.</summary>
         /// <param name="portalId">The portal ID.</param>
@@ -51,27 +70,24 @@ namespace DotNetNuke.Services.Search
             startDateLocal = this.GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new Dictionary<string, SearchDocument>();
 
-            var needReindex = PortalController.GetPortalSettingAsBoolean(UserIndexResetFlag, portalId, false);
+            var needReindex = PortalController.GetPortalSettingAsBoolean(this.portalController, UserIndexResetFlag, portalId, false);
             if (needReindex)
             {
                 startDateLocal = SqlDateTime.MinValue.Value.AddDays(1);
             }
 
-            var controller = new ListController();
-            var textDataType = controller.GetListEntryInfo("DataType", "Text");
-            var richTextDataType = controller.GetListEntryInfo("DataType", "RichText");
+            var textDataType = this.listController.GetListEntryInfo("DataType", "Text");
+            var richTextDataType = this.listController.GetListEntryInfo("DataType", "RichText");
 
-            var profileDefinitions = ProfileController.GetPropertyDefinitionsByPortal(portalId, false, false)
-                .Cast<ProfilePropertyDefinition>()
-                .Where(d => (textDataType != null && d.DataType == textDataType.EntryID)
-                            || (richTextDataType != null && d.DataType == richTextDataType.EntryID))
+            var profileDefinitions = ProfileController.GetPropertyDefinitionsByPortal(this.hostSettings, this.portalController, this.appStatus, this.portalGroupController, portalId, false, false)
+                .Where(d =>
+                    (textDataType != null && d.DataType == textDataType.EntryID) || (richTextDataType != null && d.DataType == richTextDataType.EntryID))
                 .ToList();
 
             try
             {
-                int startUserId;
                 var checkpointData = this.GetLastCheckpointData(portalId, schedule.ScheduleID);
-                if (string.IsNullOrEmpty(checkpointData) || !int.TryParse(checkpointData, out startUserId))
+                if (string.IsNullOrEmpty(checkpointData) || !int.TryParse(checkpointData, out var startUserId))
                 {
                     startUserId = Null.NullInteger;
                 }
@@ -107,7 +123,7 @@ namespace DotNetNuke.Services.Search
 
                 if (needReindex)
                 {
-                    PortalController.DeletePortalSetting(portalId, UserIndexResetFlag);
+                    PortalController.DeletePortalSetting(this.dataProvider, this.eventLogger, this.userController, portalId, UserIndexResetFlag);
                 }
             }
             catch (Exception ex)

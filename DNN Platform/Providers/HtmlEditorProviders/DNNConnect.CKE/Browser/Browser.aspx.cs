@@ -1786,7 +1786,7 @@ public partial class Browser : PageBase
             return;
         }
 
-        var allPortalTabsList = TabController.GetPortalTabs(this.portalSettings.PortalId, -1, false, null, true, false, true, true, false);
+        var allPortalTabsList = TabController.GetPortalTabs(this.HostSettings, this.AppStatus, this.portalSettings.PortalId, -1, false, null, true, false, true, true, false);
         var allPortalTabs = new HashSet<TabInfo>(allPortalTabsList);
 
         var helper = new TreeViewHelper<int>();

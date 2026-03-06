@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -23,17 +24,22 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class TabVersionBuilder : ServiceLocator<ITabVersionBuilder, TabVersionBuilder>, ITabVersionBuilder
+    /// <summary>An <see cref="ITabVersionBuilder"/> implementation.</summary>
+    /// <param name="businessControllerProvider">The business controller provider.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class TabVersionBuilder(IBusinessControllerProvider businessControllerProvider, IHostSettings hostSettings)
+        : ServiceLocator<ITabVersionBuilder, TabVersionBuilder>, ITabVersionBuilder
     {
         private const int DefaultVersionNumber = 1;
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabVersionBuilder));
-        private readonly IBusinessControllerProvider businessControllerProvider;
-        private readonly ITabController tabController;
-        private readonly IModuleController moduleController;
-        private readonly ITabVersionSettings tabVersionSettings;
-        private readonly ITabVersionController tabVersionController;
-        private readonly ITabVersionDetailController tabVersionDetailController;
-        private readonly PortalSettings portalSettings;
+        private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly ITabController tabController = TabController.Instance;
+        private readonly IModuleController moduleController = ModuleController.Instance;
+        private readonly ITabVersionSettings tabVersionSettings = TabVersionSettings.Instance;
+        private readonly ITabVersionController tabVersionController = TabVersionController.Instance;
+        private readonly ITabVersionDetailController tabVersionDetailController = TabVersionDetailController.Instance;
+        private readonly PortalSettings portalSettings = PortalSettings.Current;
 
         /// <summary>Initializes a new instance of the <see cref="TabVersionBuilder"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
@@ -44,15 +50,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         /// <summary>Initializes a new instance of the <see cref="TabVersionBuilder"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public TabVersionBuilder(IBusinessControllerProvider businessControllerProvider)
+            : this(businessControllerProvider, null)
         {
-            this.businessControllerProvider = businessControllerProvider;
-            this.tabController = TabController.Instance;
-            this.moduleController = ModuleController.Instance;
-            this.tabVersionSettings = TabVersionSettings.Instance;
-            this.tabVersionController = TabVersionController.Instance;
-            this.tabVersionDetailController = TabVersionDetailController.Instance;
-            this.portalSettings = PortalSettings.Current;
         }
 
         /// <inheritdoc />
@@ -255,10 +256,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PublishedTabModuleCacheKey, tabId);
             return CBO.GetCachedObject<IEnumerable<ModuleInfo>>(
-                new CacheItemArgs(
-                cacheKey,
-                DataCache.PublishedTabModuleCacheTimeOut,
-                DataCache.PublishedTabModuleCachePriority),
+                this.hostSettings,
+                new CacheItemArgs(cacheKey, DataCache.PublishedTabModuleCacheTimeOut, DataCache.PublishedTabModuleCachePriority),
                 c => this.GetCurrentModulesInternal(tabId));
         }
 

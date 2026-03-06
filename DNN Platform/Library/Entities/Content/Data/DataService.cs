@@ -8,11 +8,10 @@ namespace DotNetNuke.Entities.Content.Data
     using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Taxonomy;
 
     /// <summary>Persistent data of content with DataProvider instance.</summary>
-    /// <remarks>It's better to use <see cref="Util.GetDataService"/> instead of create new instance directly.</remarks>
+    /// <remarks>It's better to request <see cref="IDataService"/> via Dependency Injection instead of creating a new instance directly.</remarks>
     /// <example>
     /// <code lang="C#">
     /// public ContentController() : this(Util.GetDataService())

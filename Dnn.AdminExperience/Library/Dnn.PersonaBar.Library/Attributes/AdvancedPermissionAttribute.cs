@@ -53,8 +53,9 @@ namespace Dnn.PersonaBar.Library.Attributes
             // Permissions separated by & should be treated with AND operand.
             // Permissions separated by , are internally treated with OR operand.
             var hostSettings = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            var portalController = Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
             var allPermissionGroups = this.Permission.Split(PermissionCombiner, StringSplitOptions.RemoveEmptyEntries);
-            return allPermissionGroups.All(allPermissions => MenuPermissionController.HasMenuPermission(hostSettings, portalSettings.PortalId, menuItem, allPermissions));
+            return allPermissionGroups.All(allPermissions => MenuPermissionController.HasMenuPermission(hostSettings, portalController, portalSettings.PortalId, menuItem, allPermissions));
         }
 
         private MenuItem GetMenuByIdentifier()

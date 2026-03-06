@@ -12,6 +12,7 @@ namespace DotNetNuke.Entities.Urls
     using System.Text.RegularExpressions;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
@@ -21,6 +22,8 @@ namespace DotNetNuke.Entities.Urls
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Log.EventLog;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class ExtensionUrlProviderController
     {
@@ -58,15 +61,21 @@ namespace DotNetNuke.Entities.Urls
         /// <returns>A <see cref="List{T}"/> of <see cref="ExtensionUrlProvider"/> instances.</returns>
         /// <remarks>Note : similar copy for UI purposes in ConfigurationController.cs.</remarks>
         public static List<ExtensionUrlProvider> GetModuleProviders(int portalId)
+            => GetModuleProviders(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), Globals.GetCurrentServiceProvider(), portalId);
+
+        /// <summary>Loads the module providers.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A <see cref="List{T}"/> of <see cref="ExtensionUrlProvider"/> instances.</returns>
+        /// <remarks>Note : similar copy for UI purposes in ConfigurationController.cs.</remarks>
+        public static List<ExtensionUrlProvider> GetModuleProviders(IHostSettings hostSettings, IServiceProvider serviceProvider, int portalId)
         {
             var cacheKey = FormattableString.Invariant($"ExtensionUrlProviders_{portalId}");
             var moduleProviders = CBO.GetCachedObject<List<ExtensionUrlProvider>>(
-                new CacheItemArgs(
-                    cacheKey,
-                    60,
-                    CacheItemPriority.High,
-                    portalId),
-                static c =>
+                hostSettings,
+                new CacheItemArgs(cacheKey, 60, CacheItemPriority.High, portalId),
+                c =>
                 {
                     var id = (int)c.Params[0];
                     IDataReader dr = DataProvider.Instance().GetExtensionUrlProviders(id);
@@ -83,7 +92,7 @@ namespace DotNetNuke.Entities.Urls
                                 continue;
                             }
 
-                            if (Reflection.CreateObject(providerType) is not ExtensionUrlProvider provider)
+                            if (Reflection.CreateObject(serviceProvider, providerType) is not ExtensionUrlProvider provider)
                             {
                                 continue;
                             }

@@ -9,6 +9,8 @@ namespace DotNetNuke.Web.InternalServices
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Instrumentation;
@@ -17,11 +19,23 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>A web API controller for relationships.</summary>
+    /// <param name="hostSettings">The host settings.</param>
     [DnnAuthorize]
-    public class RelationshipServiceController : DnnApiController
+    public class RelationshipServiceController(IHostSettings hostSettings)
+        : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RelationshipServiceController));
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
+        /// <summary>Initializes a new instance of the <see cref="RelationshipServiceController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public RelationshipServiceController()
+            : this(null)
+        {
+        }
 
         /// <summary>Accept a friend.</summary>
         /// <param name="postData">The request.</param>
@@ -38,13 +52,12 @@ namespace DotNetNuke.Web.InternalServices
                 if (recipient != null)
                 {
                     var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
-                    int userRelationshipId;
-                    if (int.TryParse(notification.Context, out userRelationshipId))
+                    if (int.TryParse(notification.Context, out var userRelationshipId))
                     {
                         var userRelationship = RelationshipController.Instance.GetUserRelationship(userRelationshipId);
                         if (userRelationship != null)
                         {
-                            var friend = UserController.GetUserById(this.PortalSettings.PortalId, userRelationship.UserId);
+                            var friend = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, userRelationship.UserId);
                             FriendsController.Instance.AcceptFriend(friend);
                             success = true;
                         }
@@ -58,7 +71,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (success)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
@@ -79,10 +92,9 @@ namespace DotNetNuke.Web.InternalServices
                 if (recipient != null)
                 {
                     var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
-                    int targetUserId;
-                    if (int.TryParse(notification.Context, out targetUserId))
+                    if (int.TryParse(notification.Context, out var targetUserId))
                     {
-                        var targetUser = UserController.GetUserById(this.PortalSettings.PortalId, targetUserId);
+                        var targetUser = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, targetUserId);
 
                         if (targetUser == null)
                         {
@@ -121,7 +133,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (success)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");

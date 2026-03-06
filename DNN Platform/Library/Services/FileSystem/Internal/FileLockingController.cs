@@ -6,9 +6,12 @@ namespace DotNetNuke.Services.FileSystem.Internal
 {
     using System;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Framework;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class FileLockingController : ServiceLocator<IFileLockingController, FileLockingController>, IFileLockingController
     {
@@ -57,7 +60,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
         /// <inheritdoc />
         protected override Func<IFileLockingController> GetFactory()
         {
-            return () => new FileLockingController();
+            return () => Globals.DependencyProvider.GetRequiredService<IFileLockingController>();
         }
 
         private static bool IsFileOutOfPublishPeriod(IFileInfo file)

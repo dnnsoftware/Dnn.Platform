@@ -54,6 +54,22 @@ public partial class D
     }
 
     [Test]
+    public async Task Class_Error()
+    {
+        await Verify("""
+namespace G;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+[DnnDeprecated(10, 0, 0, "Please resolve B via dependency injection.", true)]
+public partial class D
+{
+}
+
+""");
+    }
+
+    [Test]
     public async Task GenericClass()
     {
         await Verify("""

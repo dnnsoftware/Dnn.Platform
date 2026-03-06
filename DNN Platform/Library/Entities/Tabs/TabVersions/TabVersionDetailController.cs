@@ -4,19 +4,34 @@
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Framework;
 
-    public class TabVersionDetailController : ServiceLocator<ITabVersionDetailController, TabVersionDetailController>, ITabVersionDetailController
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>An <see cref="ITabVersionDetailController"/> implementation.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    public class TabVersionDetailController(IHostSettings hostSettings)
+        : ServiceLocator<ITabVersionDetailController, TabVersionDetailController>, ITabVersionDetailController
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
+        /// <summary>Initializes a new instance of the <see cref="TabVersionDetailController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public TabVersionDetailController()
+            : this(null)
+        {
+        }
 
         /// <inheritdoc />
         public TabVersionDetail GetTabVersionDetail(int tabVersionDetailId, int tabVersionId, bool ignoreCache = false)
@@ -28,17 +43,15 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         public IEnumerable<TabVersionDetail> GetTabVersionDetails(int tabVersionId, bool ignoreCache = false)
         {
             // if we are not using the cache
-            if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
+            if (ignoreCache || this.hostSettings.PerformanceSetting == PerformanceSettings.NoCaching)
             {
                 return CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId));
             }
 
             return CBO.GetCachedObject<List<TabVersionDetail>>(
-                new CacheItemArgs(
-                GetTabVersionDetailCacheKey(tabVersionId),
-                DataCache.TabVersionDetailsCacheTimeOut,
-                DataCache.TabVersionDetailsCachePriority),
-                c => CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId)));
+                this.hostSettings,
+                new CacheItemArgs(GetTabVersionDetailCacheKey(tabVersionId), DataCache.TabVersionDetailsCacheTimeOut, DataCache.TabVersionDetailsCachePriority),
+                _ => CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId)));
         }
 
         /// <inheritdoc />

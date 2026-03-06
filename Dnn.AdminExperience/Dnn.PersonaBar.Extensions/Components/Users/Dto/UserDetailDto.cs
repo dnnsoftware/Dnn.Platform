@@ -33,7 +33,9 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             this.LastActivity = user.Membership.LastActivityDate;
             this.LastPasswordChange = user.Membership.LastPasswordChangeDate;
             this.LastLockout = user.Membership.LastLockoutDate;
+#pragma warning disable CS0618 // Type or member is obsolete
             this.IsOnline = user.Membership.IsOnLine;
+#pragma warning restore CS0618 // Type or member is obsolete
             this.IsLocked = user.Membership.LockedOut;
             this.NeedUpdatePassword = user.Membership.UpdatePassword;
             this.PortalId = user.PortalID;

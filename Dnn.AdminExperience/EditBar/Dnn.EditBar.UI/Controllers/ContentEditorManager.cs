@@ -614,7 +614,7 @@ namespace Dnn.EditBar.UI.Controllers
         private bool HaveContentLayoutModuleOnPage()
         {
             var moduleDefinition =
-                ModuleDefinitionController.GetModuleDefinitions().Values
+                ModuleDefinitionController.GetModuleDefinitions(this.hostSettings).Values
                     .FirstOrDefault(m => m.DefinitionName == "Content Layout");
             if (moduleDefinition != null)
             {

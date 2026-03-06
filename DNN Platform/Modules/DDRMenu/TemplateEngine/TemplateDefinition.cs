@@ -135,19 +135,19 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             }
         }
 
-        internal static TemplateDefinition FromName(string templateName, string manifestName)
+        internal static TemplateDefinition FromName(IHostSettings hostSettings, string templateName, string manifestName)
         {
-            var manifestUrl = new PathResolver(null).Resolve(
+            var manifestUrl = new PathResolver(hostSettings, null).Resolve(
                 templateName + "/" + manifestName,
                 PathResolver.RelativeTo.Container,
                 PathResolver.RelativeTo.Skin,
                 PathResolver.RelativeTo.Portal,
                 PathResolver.RelativeTo.Module,
                 PathResolver.RelativeTo.Dnn);
-            return FromManifest(manifestUrl);
+            return FromManifest(hostSettings, manifestUrl);
         }
 
-        internal static TemplateDefinition FromManifest(string manifestUrl)
+        internal static TemplateDefinition FromManifest(IHostSettings hostSettings, string manifestUrl)
         {
             var httpContext = HttpContextSource.Current;
             var cache = httpContext.Cache;
@@ -158,13 +158,13 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 baseDef = ActivatorUtilities.CreateInstance<TemplateDefinition>(Globals.DependencyProvider);
                 baseDef.Folder = Path.GetDirectoryName(manifestUrl);
 
-                var xml = new XmlDocument { XmlResolver = null };
+                var xml = new XmlDocument { XmlResolver = null, };
                 using (var manifestReader = XmlReader.Create(manifestPath, new XmlReaderSettings { XmlResolver = null, }))
                 {
                     xml.Load(manifestReader);
                 }
 
-                var resolver = new PathResolver(baseDef.Folder);
+                var resolver = new PathResolver(hostSettings, baseDef.Folder);
 
                 // ReSharper disable once PossibleNullReferenceException
                 foreach (XmlNode node in xml.DocumentElement.ChildNodes)
@@ -292,7 +292,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                     }
                 }
 
-                foreach (var processor in DNNAbstract.SupportedTemplateProcessors())
+                foreach (var processor in DNNAbstract.SupportedTemplateProcessors(hostSettings))
                 {
                     if (processor.LoadDefinition(baseDef))
                     {

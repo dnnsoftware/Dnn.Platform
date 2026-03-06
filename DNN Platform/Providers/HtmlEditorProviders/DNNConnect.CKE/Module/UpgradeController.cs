@@ -6,19 +6,39 @@ namespace DNNConnect.CKEditorProvider.Module
 {
     using System;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Upgrade;
 
-    /// <summary>Add Settings Module to Host -> Html Editor Manager Page.</summary>
-    public class UpgradeController : IUpgradeable
+    /// <summary>Add Settings Module to Host -> HTML Editor Manager Page.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    public class UpgradeController(IHostSettings hostSettings) : IUpgradeable
     {
+        private readonly IHostSettings hostSettings = hostSettings ??
+                                                      new HostSettings(
+                                                          new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                                              new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                                              new Lazy<IPortalController>(() => PortalController.Instance)));
+
+        /// <summary>Initializes a new instance of the <see cref="UpgradeController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public UpgradeController()
+            : this(null)
+        {
+        }
+
         /// <summary>Upgrades the module.</summary>
         /// <param name="version">The <paramref name="version"/> number string.</param>
-        /// <returns>Returns if Upgrade was Success fully or not.</returns>
+        /// <returns>Returns if Upgrade was Successfully or not.</returns>
         public string UpgradeModule(string version)
         {
             try
@@ -42,7 +62,7 @@ namespace DNNConnect.CKEditorProvider.Module
                     false);
 
                 // Add Module To Page
-                var moduleDefId = GetModuleDefinitionID();
+                var moduleDefId = GetModuleDefinitionID(this.hostSettings);
 
                 Upgrade.AddModuleToPage(
                     editorManagerPage,
@@ -63,10 +83,10 @@ namespace DNNConnect.CKEditorProvider.Module
 
         /// <summary>Gets the module definition ID.</summary>
         /// <returns>Returns the module definition ID.</returns>
-        private static int GetModuleDefinitionID()
+        private static int GetModuleDefinitionID(IHostSettings hostSettings)
         {
             var editorDesktopModule =
-                DesktopModuleController.GetDesktopModuleByModuleName("CKEditor.EditorConfigManager", Null.NullInteger);
+                DesktopModuleController.GetDesktopModuleByModuleName(hostSettings, "CKEditor.EditorConfigManager", Null.NullInteger);
 
             if (editorDesktopModule == null)
             {
@@ -78,7 +98,7 @@ namespace DNNConnect.CKEditorProvider.Module
                 ModuleDefinitionController.GetModuleDefinitionByFriendlyName(
                     "CKEditor Config Manager", editorDesktopModule.DesktopModuleID);
 
-            return editorModuleDefinition == null ? -1 : editorModuleDefinition.ModuleDefID;
+            return editorModuleDefinition?.ModuleDefID ?? -1;
         }
     }
 }
