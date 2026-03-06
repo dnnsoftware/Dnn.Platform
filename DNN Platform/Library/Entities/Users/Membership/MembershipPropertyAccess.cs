@@ -49,8 +49,10 @@ namespace DotNetNuke.Entities.Users
                     return PropertyAccess.Boolean2LocalizedYesNo(objMembership.Approved, formatProvider);
                 case "createdondate":
                     return objMembership.CreatedDate.ToString(outputFormat, formatProvider);
+#pragma warning disable CS0618 // Type or member is obsolete
                 case "isonline":
                     return PropertyAccess.Boolean2LocalizedYesNo(objMembership.IsOnLine, formatProvider);
+#pragma warning restore CS0618 // Type or member is obsolete
                 case "lastactivitydate":
                     return objMembership.LastActivityDate.ToString(outputFormat, formatProvider);
                 case "lastlockoutdate":

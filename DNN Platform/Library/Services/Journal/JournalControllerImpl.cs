@@ -95,17 +95,23 @@ internal class JournalControllerImpl : IJournalController
         string xml = null;
         if (!string.IsNullOrEmpty(journalItem.Title))
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             journalItem.Title = this.portalSecurity.InputFilter(journalItem.Title, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if (!string.IsNullOrEmpty(journalItem.Summary))
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             journalItem.Summary = this.portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if (!string.IsNullOrEmpty(journalItem.Body))
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             journalItem.Body = this.portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if (!string.IsNullOrEmpty(journalItem.Body))
@@ -130,22 +136,30 @@ internal class JournalControllerImpl : IJournalController
         {
             if (!string.IsNullOrEmpty(journalItem.ItemData.Title))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 journalItem.ItemData.Title = this.portalSecurity.InputFilter(journalItem.ItemData.Title, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!string.IsNullOrEmpty(journalItem.ItemData.Description))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 journalItem.ItemData.Description = this.portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!string.IsNullOrEmpty(journalItem.ItemData.Url))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 journalItem.ItemData.Url = this.portalSecurity.InputFilter(journalItem.ItemData.Url, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!string.IsNullOrEmpty(journalItem.ItemData.ImageUrl))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 journalItem.ItemData.ImageUrl = this.portalSecurity.InputFilter(journalItem.ItemData.ImageUrl, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
 
@@ -225,17 +239,23 @@ internal class JournalControllerImpl : IJournalController
         string xml = null;
         if (!string.IsNullOrEmpty(journalItem.Title))
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             journalItem.Title = this.portalSecurity.InputFilter(journalItem.Title, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if (!string.IsNullOrEmpty(journalItem.Summary))
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             journalItem.Summary = this.portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if (!string.IsNullOrEmpty(journalItem.Body))
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             journalItem.Body = this.portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if (!string.IsNullOrEmpty(journalItem.Body))
@@ -260,23 +280,31 @@ internal class JournalControllerImpl : IJournalController
         {
             if (!string.IsNullOrEmpty(journalItem.ItemData.Title))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 journalItem.ItemData.Title = this.portalSecurity.InputFilter(journalItem.ItemData.Title, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!string.IsNullOrEmpty(journalItem.ItemData.Description))
             {
                 journalItem.ItemData.Description =
+#pragma warning disable CS0618 // Type or member is obsolete
                     this.portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!string.IsNullOrEmpty(journalItem.ItemData.Url))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 journalItem.ItemData.Url = this.portalSecurity.InputFilter(journalItem.ItemData.Url, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!string.IsNullOrEmpty(journalItem.ItemData.ImageUrl))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 journalItem.ItemData.ImageUrl = this.portalSecurity.InputFilter(journalItem.ItemData.ImageUrl, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
 
@@ -517,7 +545,9 @@ internal class JournalControllerImpl : IJournalController
         if (!string.IsNullOrEmpty(comment.Comment))
         {
             comment.Comment =
+#pragma warning disable CS0618 // Type or member is obsolete
                 this.portalSecurity.InputFilter(comment.Comment, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         // TODO: enable once the profanity filter is working properly.

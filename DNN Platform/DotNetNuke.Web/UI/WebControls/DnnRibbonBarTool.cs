@@ -27,11 +27,17 @@ namespace DotNetNuke.Web.UI.WebControls
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A control for a tool in a <see cref="DnnRibbonBar"/>.</summary>
+    /// <param name="navigationManager">A navigation manager.</param>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="eventLogger">The event logger.</param>
     [ParseChildren(true)]
-    public class DnnRibbonBarTool : Control, IDnnRibbonBarTool
+    public class DnnRibbonBarTool(INavigationManager navigationManager, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IEventLogger eventLogger)
+        : Control, IDnnRibbonBarTool
     {
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         private IDictionary<string, RibbonBarToolInfo> allTools;
         private DnnTextLink dnnLink;
         private DnnTextButton dnnLinkButton;
@@ -55,11 +61,10 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <param name="navigationManager">A navigation manager.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public DnnRibbonBarTool(INavigationManager navigationManager, IApplicationStatusInfo appStatus, IHostSettings hostSettings)
+            : this(navigationManager, appStatus, hostSettings, null)
         {
-            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets or sets the tool info.</summary>
@@ -131,7 +136,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>Gets the navigation manager.</summary>
-        protected INavigationManager NavigationManager { get; }
+        protected INavigationManager NavigationManager { get; } = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         /// <summary>Gets the link button.</summary>
         protected virtual DnnTextButton DnnLinkButton
@@ -207,7 +212,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 case "CopyPermissionsToChildren":
                     if (this.HasToolPermissions("CopyPermissionsToChildren"))
                     {
-                        TabController.CopyPermissionsToChildren(PortalSettings.ActiveTab, PortalSettings.ActiveTab.TabPermissions);
+                        TabController.CopyPermissionsToChildren(this.eventLogger, PortalSettings.ActiveTab, PortalSettings.ActiveTab.TabPermissions);
                         this.Page.Response.Redirect(this.Page.Request.RawUrl);
                     }
 
@@ -215,7 +220,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 case "CopyDesignToChildren":
                     if (this.HasToolPermissions("CopyDesignToChildren"))
                     {
-                        TabController.CopyDesignToChildren(PortalSettings.ActiveTab, PortalSettings.ActiveTab.SkinSrc, PortalSettings.ActiveTab.ContainerSrc);
+                        TabController.CopyDesignToChildren(this.eventLogger, PortalSettings.ActiveTab, PortalSettings.ActiveTab.SkinSrc, PortalSettings.ActiveTab.ContainerSrc);
                         this.Page.Response.Redirect(this.Page.Request.RawUrl);
                     }
 

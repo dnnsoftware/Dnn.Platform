@@ -117,7 +117,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (IsUserFolder(folder.FolderPath, out var userId))
             {
-                var user = UserController.GetUserById(effectivePortalId, userId);
+                var user = UserController.GetUserById(this.hostSettings, effectivePortalId, userId);
                 if (user is { IsSuperUser: true, })
                 {
                     effectivePortalId = Null.NullInteger;
@@ -244,7 +244,7 @@ namespace DotNetNuke.Web.InternalServices
                             currentSynchronizationContext.Send(
                                 _ =>
                                     {
-                                        returnFileDto = SaveFile(stream, this.portalController, this.appStatus, this.portalGroupController, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
+                                        returnFileDto = SaveFile(stream, this.portalController, this.appStatus, this.portalGroupController, this.hostSettings, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
                                     },
                                 null);
                         }
@@ -434,6 +434,7 @@ namespace DotNetNuke.Web.InternalServices
             IPortalController portalController,
             IApplicationStatusInfo appStatus,
             IPortalGroupController portalGroupController,
+            IHostSettings hostSettings,
             IPortalSettings portalSettings,
             UserInfo userInfo,
             string folder,
@@ -463,7 +464,7 @@ namespace DotNetNuke.Web.InternalServices
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
                 if (IsUserFolder(folder, out var userId))
                 {
-                    var user = UserController.GetUserById(effectivePortalId, userId);
+                    var user = UserController.GetUserById(hostSettings, effectivePortalId, userId);
                     if (user != null)
                     {
                         folderInfo = folderManager.GetUserFolder(user);
@@ -601,7 +602,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 if (folderInfo == null && IsUserFolder(folder, out var userId))
                 {
-                    var user = UserController.GetUserById(effectivePortalId, userId);
+                    var user = UserController.GetUserById(hostSettings, effectivePortalId, userId);
                     if (user != null)
                     {
                         folderInfo = folderManager.GetUserFolder(user);

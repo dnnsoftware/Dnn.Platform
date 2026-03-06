@@ -5,15 +5,19 @@ namespace DotNetNuke.Entities.Modules
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>ModuleControlController provides the Business Layer for Module Controls.</summary>
-    public class ModuleControlController
+    public partial class ModuleControlController
     {
         private const string Key = "ModuleControlID";
         private static readonly DataProvider DataProvider = DataProvider.Instance();
@@ -36,20 +40,36 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>GetModuleControl gets a single Module Control from the database.</summary>
         /// <param name="moduleControlID">The ID of the Module Control to fetch.</param>
         /// <returns>The <see cref="ModuleControlInfo"/> or <see langword="null"/>.</returns>
-        public static ModuleControlInfo GetModuleControl(int moduleControlID)
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
+        public static partial ModuleControlInfo GetModuleControl(int moduleControlID)
+            => GetModuleControl(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), moduleControlID);
+
+        /// <summary>GetModuleControl gets a single Module Control from the database.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="moduleControlId">The ID of the Module Control to fetch.</param>
+        /// <returns>The <see cref="ModuleControlInfo"/> or <see langword="null"/>.</returns>
+        public static ModuleControlInfo GetModuleControl(IHostSettings hostSettings, int moduleControlId)
         {
-            return (from kvp in GetModuleControls()
-                    where kvp.Key == moduleControlID
+            return (from kvp in GetModuleControls(hostSettings)
+                    where kvp.Key == moduleControlId
                     select kvp.Value)
                    .FirstOrDefault();
         }
 
-        /// <summary>GetModuleControl gets a Dictionary of Module Controls by Module Definition.</summary>
+        /// <summary>Gets a Dictionary of Module Controls by Module Definition.</summary>
         /// <param name="moduleDefID">The ID of the Module Definition.</param>
         /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping control key to <see cref="ModuleControlInfo"/>.</returns>
-        public static Dictionary<string, ModuleControlInfo> GetModuleControlsByModuleDefinitionID(int moduleDefID)
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
+        public static partial Dictionary<string, ModuleControlInfo> GetModuleControlsByModuleDefinitionID(int moduleDefID)
+            => GetModuleControlsByModuleDefinitionID(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), moduleDefID);
+
+        /// <summary>Gets a Dictionary of Module Controls by Module Definition.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="moduleDefId">The ID of the Module Definition.</param>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping control key to <see cref="ModuleControlInfo"/>.</returns>
+        public static Dictionary<string, ModuleControlInfo> GetModuleControlsByModuleDefinitionID(IHostSettings hostSettings, int moduleDefId)
         {
-            return GetModuleControls().Where(kvp => kvp.Value.ModuleDefID == moduleDefID)
+            return GetModuleControls(hostSettings).Where(kvp => kvp.Value.ModuleDefID == moduleDefId)
                    .ToDictionary(kvp => kvp.Value.ControlKey, kvp => kvp.Value);
         }
 
@@ -57,11 +77,20 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="controlKey">The key for the control.</param>
         /// <param name="moduleDefID">The ID of the Module Definition.</param>
         /// <returns>The <see cref="ModuleControlInfo"/> or <see langword="null"/>.</returns>
-        public static ModuleControlInfo GetModuleControlByControlKey(string controlKey, int moduleDefID)
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
+        public static partial ModuleControlInfo GetModuleControlByControlKey(string controlKey, int moduleDefID)
+            => GetModuleControlByControlKey(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), controlKey, moduleDefID);
+
+        /// <summary>GetModuleControlByControlKey gets a single Module Control from the database.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="controlKey">The key for the control.</param>
+        /// <param name="moduleDefId">The ID of the Module Definition.</param>
+        /// <returns>The <see cref="ModuleControlInfo"/> or <see langword="null"/>.</returns>
+        public static ModuleControlInfo GetModuleControlByControlKey(IHostSettings hostSettings, string controlKey, int moduleDefId)
         {
-            return (from kvp in GetModuleControls()
+            return (from kvp in GetModuleControls(hostSettings)
                     where kvp.Value.ControlKey.Equals(controlKey, StringComparison.OrdinalIgnoreCase)
-                                && kvp.Value.ModuleDefID == moduleDefID
+                                && kvp.Value.ModuleDefID == moduleDefId
                     select kvp.Value)
                    .FirstOrDefault();
         }
@@ -123,13 +152,11 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>GetModuleControls gets a Dictionary of Module Controls from the Cache.</summary>
-        private static Dictionary<int, ModuleControlInfo> GetModuleControls()
+        private static Dictionary<int, ModuleControlInfo> GetModuleControls(IHostSettings hostSettings)
         {
             return CBO.GetCachedObject<Dictionary<int, ModuleControlInfo>>(
-                new CacheItemArgs(
-                DataCache.ModuleControlsCacheKey,
-                DataCache.ModuleControlsCacheTimeOut,
-                DataCache.ModuleControlsCachePriority),
+                hostSettings,
+                new CacheItemArgs(DataCache.ModuleControlsCacheKey, DataCache.ModuleControlsCacheTimeOut, DataCache.ModuleControlsCachePriority),
                 GetModuleControlsCallBack);
         }
 

@@ -11,6 +11,8 @@ namespace DotNetNuke.Web.InternalServices
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Dto;
@@ -21,16 +23,25 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>An API controller for managing content moving through its workflow.</summary>
+    /// <param name="contentController">The content controller.</param>
+    /// <param name="workflowEngine">The workflow engine.</param>
+    /// <param name="tabController">The tab controller.</param>
     [DnnAuthorize]
-    public partial class ContentWorkflowServiceController : DnnApiController
+    public partial class ContentWorkflowServiceController(IContentController contentController, IWorkflowEngine workflowEngine, ITabController tabController)
+        : DnnApiController
     {
-        private readonly IWorkflowEngine workflowEngine;
+        private readonly IContentController contentController = contentController ?? ContentController.Instance;
+        private readonly IWorkflowEngine workflowEngine = workflowEngine ?? WorkflowEngine.Instance;
+        private readonly ITabController tabController = tabController ?? TabController.Instance;
 
         /// <summary>Initializes a new instance of the <see cref="ContentWorkflowServiceController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IContentController. Scheduled removal in v12.0.0.")]
         public ContentWorkflowServiceController()
+            : this(null, null, null)
         {
-            this.workflowEngine = WorkflowEngine.Instance;
         }
 
         /// <summary>Rejects a workflow.</summary>
@@ -191,10 +202,9 @@ namespace DotNetNuke.Web.InternalServices
         {
             var portalId = this.PortalSettings.PortalId;
             var tabId = this.Request.FindTabId();
-            var currentPage = TabController.Instance.GetTab(tabId, portalId);
+            var currentPage = this.tabController.GetTab(tabId, portalId);
             var contentItemId = currentPage.ContentItemId;
-            var contentController = Util.GetContentController();
-            var contentItem = contentController.GetContentItem(contentItemId);
+            var contentItem = this.contentController.GetContentItem(contentItemId);
             var stateTransaction = new StateTransaction
             {
                 ContentItemId = contentItem.ContentItemId,

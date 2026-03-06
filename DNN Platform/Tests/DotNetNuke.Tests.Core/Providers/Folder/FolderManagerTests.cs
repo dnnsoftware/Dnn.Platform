@@ -16,7 +16,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.FileSystem.Internal;
-    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Tests.Core.Providers.Builders;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Fakes;
@@ -84,6 +83,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                     services.AddSingleton(this.pathUtils.Object);
                     services.AddSingleton(this.mockUserSecurityController.Object);
                     services.AddSingleton(this.mockFileDeletionController.Object);
+                    services.AddSingleton(Mock.Of<IPortalController>());
                 });
         }
 

@@ -30,15 +30,21 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Provides messaging web services.</summary>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="portalGroupController">The portal group controller.</param>
+    /// <param name="hostSettings">The host settings.</param>
     [SupportedModules("DotNetNuke.Modules.CoreMessaging")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [DnnAuthorize]
-    public class MessagingServiceController : DnnApiController
+    public class MessagingServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IHostSettings hostSettings)
+        : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MessagingServiceController));
-        private readonly IPortalController portalController;
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly IPortalGroupController portalGroupController;
+        private readonly IPortalController portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+        private readonly IPortalGroupController portalGroupController = portalGroupController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalGroupController>();
+        private readonly IHostSettings hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="MessagingServiceController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
@@ -51,11 +57,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <param name="portalController">The portal controller.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="portalGroupController">The portal group controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public MessagingServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
+            : this(portalController, appStatus, portalGroupController, null)
         {
-            this.portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
-            this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
-            this.portalGroupController = portalGroupController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalGroupController>();
         }
 
         /// <summary>Provides access to the user inbox.</summary>
@@ -474,13 +479,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
             if (desktopModuleId > 0)
             {
-                var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, this.PortalSettings.PortalId);
+                var desktopModule = DesktopModuleController.GetDesktopModule(this.hostSettings, desktopModuleId, this.PortalSettings.PortalId);
 
-                var resourceFile = string.Format(
-                    "~/DesktopModules/{0}/{1}/{2}",
-                    desktopModule.FolderName.Replace(@"\", "/"),
-                    Localization.LocalResourceDirectory,
-                    Localization.LocalSharedResourceFile);
+                var folderName = desktopModule.FolderName.Replace(@"\", "/");
+                var resourceFile = $"~/DesktopModules/{folderName}/{Localization.LocalResourceDirectory}/{Localization.LocalSharedResourceFile}";
 
                 actionString = Localization.GetString(key, resourceFile);
             }

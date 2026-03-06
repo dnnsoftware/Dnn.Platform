@@ -259,7 +259,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                 switch (apiToken.Scope)
                 {
                     case ApiTokenScope.User:
-                        var userInfo = UserController.GetUserById(PortalSettings.PortalId, apiToken.CreatedByUserId);
+                        var userInfo = UserController.GetUserById(this.hostSettings, PortalSettings.PortalId, apiToken.CreatedByUserId);
                         if (userInfo == null)
                         {
                             if (Logger.IsTraceEnabled)

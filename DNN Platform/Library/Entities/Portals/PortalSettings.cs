@@ -134,7 +134,9 @@ namespace DotNetNuke.Entities.Portals
             HardDelete = 3,
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         public static PortalSettings Current => PortalController.Instance.GetCurrentPortalSettings();
+#pragma warning restore CS0618 // Type or member is obsolete
 
         /// <inheritdoc />
         public CacheLevel Cacheability => CacheLevel.fullyCacheable;

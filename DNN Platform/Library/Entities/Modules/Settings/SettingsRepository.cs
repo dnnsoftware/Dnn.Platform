@@ -12,6 +12,7 @@ namespace DotNetNuke.Entities.Modules.Settings
     using System.Web.Caching;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -26,12 +27,29 @@ namespace DotNetNuke.Entities.Modules.Settings
         where T : class, new()
     {
         private readonly IModuleController moduleController;
+        private readonly IHostSettings hostSettings;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IPortalController portalController;
 
         /// <summary>Initializes a new instance of the <see cref="SettingsRepository{T}"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         protected SettingsRepository()
+            : this(null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SettingsRepository{T}"/> class.</summary>
+        /// <param name="moduleController">The module controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        protected SettingsRepository(IModuleController moduleController, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IPortalController portalController)
         {
             this.Mapping = this.LoadMapping();
-            this.moduleController = ModuleController.Instance;
+            this.moduleController = moduleController ?? ModuleController.Instance;
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
         }
 
         /// <summary>Gets cache key for this class. Used for parameter mapping storage as well as entire class persistence.</summary>
@@ -44,13 +62,21 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// <inheritdoc />
         public T GetSettings(ModuleInfo moduleContext)
         {
-            return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(moduleContext.PortalID, moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext), this.Load, false);
+            return CBO.GetCachedObject<T>(
+                this.hostSettings,
+                new CacheItemArgs(this.CacheKey(moduleContext.PortalID, moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext),
+                this.Load,
+                false);
         }
 
         /// <inheritdoc />
         public T GetSettings(int portalId)
         {
-            return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(portalId, -1), 20, CacheItemPriority.AboveNormal, null, portalId), this.Load, false);
+            return CBO.GetCachedObject<T>(
+                this.hostSettings,
+                new CacheItemArgs(this.CacheKey(portalId, -1), 20, CacheItemPriority.AboveNormal, null, portalId),
+                this.Load,
+                false);
         }
 
         /// <inheritdoc />
@@ -122,10 +148,6 @@ namespace DotNetNuke.Entities.Modules.Settings
 
         private void SaveSettings(int portalId, ModuleInfo moduleContext, T settings)
         {
-            var hostSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<Abstractions.Application.IHostSettingsService>();
-            var hostSettings = Globals.GetCurrentServiceProvider().GetRequiredService<Abstractions.Application.IHostSettings>();
-            var portalController = Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
-
             this.Mapping.ForEach(mapping =>
             {
                 var attribute = mapping.Attribute;
@@ -141,7 +163,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                         if (msa.IsSecure)
                         {
                             var hashAlgorithmName = HashAlgorithmName.SHA512;
-                            settingValueAsString = Security.FIPSCompliant.EncryptAES(hashAlgorithmName, settingValueAsString, Config.GetDecryptionkey(), hostSettings.Guid);
+                            settingValueAsString = Security.FIPSCompliant.EncryptAES(hashAlgorithmName, settingValueAsString, Config.GetDecryptionkey(), this.hostSettings.Guid);
                             this.moduleController.UpdateModuleSetting(moduleContext.ModuleID, GetAlgorithmNameSettingKey(mapping), hashAlgorithmName.Name);
                             moduleContext.ModuleSettings[GetAlgorithmNameSettingKey(mapping)] = hashAlgorithmName.Name;
                         }
@@ -154,7 +176,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                         if (tmsa.IsSecure)
                         {
                             var hashAlgorithmName = HashAlgorithmName.SHA512;
-                            settingValueAsString = Security.FIPSCompliant.EncryptAES(hashAlgorithmName, settingValueAsString, Config.GetDecryptionkey(), hostSettings.Guid);
+                            settingValueAsString = Security.FIPSCompliant.EncryptAES(hashAlgorithmName, settingValueAsString, Config.GetDecryptionkey(), this.hostSettings.Guid);
                             this.moduleController.UpdateTabModuleSetting(moduleContext.TabModuleID, GetAlgorithmNameSettingKey(mapping), hashAlgorithmName.Name);
                             moduleContext.TabModuleSettings[GetAlgorithmNameSettingKey(mapping)] = hashAlgorithmName.Name;
                         }
@@ -164,18 +186,18 @@ namespace DotNetNuke.Entities.Modules.Settings
                     }
                     else if (attribute is PortalSettingAttribute psa && portalId != -1)
                     {
-                        portalController.UpdatePortalSetting(portalId, mapping.FullParameterName, settingValueAsString, true, Null.NullString, psa.IsSecure);
+                        this.portalController.UpdatePortalSetting(portalId, mapping.FullParameterName, settingValueAsString, true, Null.NullString, psa.IsSecure);
                     }
                     else if (attribute is HostSettingAttribute hsa)
                     {
                         if (hsa.IsSecure)
                         {
                             var hashAlgorithmName = HashAlgorithmName.SHA512;
-                            settingValueAsString = Security.FIPSCompliant.EncryptAES(hashAlgorithmName, settingValueAsString, Config.GetDecryptionkey(), hostSettings.Guid);
-                            hostSettingsService.Update(GetAlgorithmNameSettingKey(mapping), hashAlgorithmName.Name);
+                            settingValueAsString = Security.FIPSCompliant.EncryptAES(hashAlgorithmName, settingValueAsString, Config.GetDecryptionkey(), this.hostSettings.Guid);
+                            this.hostSettingsService.Update(GetAlgorithmNameSettingKey(mapping), hashAlgorithmName.Name);
                         }
 
-                        hostSettingsService.Update(mapping.FullParameterName, settingValueAsString);
+                        this.hostSettingsService.Update(mapping.FullParameterName, settingValueAsString);
                     }
                 }
             });
@@ -189,9 +211,8 @@ namespace DotNetNuke.Entities.Modules.Settings
             var ctlModule = (ModuleInfo)args.ParamList[0];
             var portalId = ctlModule?.PortalID ?? (int)args.ParamList[1];
             var settings = new T();
-            var hostSettingsDictionary = Globals.GetCurrentServiceProvider().GetRequiredService<Abstractions.Application.IHostSettingsService>().GetSettings();
-            var portalSettingsDictionary = PortalController.Instance.GetPortalSettings(portalId);
-            var hostSettings = Globals.GetCurrentServiceProvider().GetRequiredService<Abstractions.Application.IHostSettings>();
+            var hostSettingsDictionary = this.hostSettingsService.GetSettings();
+            var portalSettingsDictionary = this.portalController.GetPortalSettings(portalId);
 
             this.Mapping.ForEach(mapping =>
             {
@@ -239,7 +260,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                     var algorithm = string.IsNullOrWhiteSpace(algorithmName) ? HashAlgorithmName.SHA1 : new HashAlgorithmName(algorithmName);
                     try
                     {
-                        settingValue = Security.FIPSCompliant.DecryptAES(algorithm, settingValue, Config.GetDecryptionkey(), hostSettings.Guid);
+                        settingValue = Security.FIPSCompliant.DecryptAES(algorithm, settingValue, Config.GetDecryptionkey(), this.hostSettings.Guid);
                     }
                     catch (Exception ex)
                     {

@@ -3,10 +3,11 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.Core.Services.Search.Internals
 {
+    using System.Collections.Generic;
     using System.Data;
 
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Application;
+    using DotNetNuke.Abstractions.Settings;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Tests.Utilities.Fakes;
@@ -38,7 +39,7 @@ namespace DotNetNuke.Tests.Core.Services.Search.Internals
                 var nameCol = hostSettings.Columns.Add(SettingNameColumnName);
                 hostSettings.Columns.Add(SettingValueColumnName);
                 hostSettings.Columns.Add(SettingIsSecureColumnName);
-                hostSettings.PrimaryKey = new[] { nameCol };
+                hostSettings.PrimaryKey = [nameCol];
                 hostSettings.Rows.Add(CustomAnalyzerCacheKeyName, CzechAnalyzerTypeName, true);
                 mockData.Setup(c => c.GetHostSettings()).Returns(hostSettings.CreateDataReader());
                 var mockedApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
@@ -54,7 +55,7 @@ namespace DotNetNuke.Tests.Core.Services.Search.Internals
 
                 MockComponentProvider.CreateDataCacheProvider();
                 DataCache.ClearCache();
-                var luceneController = new LuceneControllerImpl();
+                var luceneController = new LuceneControllerImpl(new FakeHostController(new Dictionary<string, IConfigurationSetting>(0)), mockedApplicationStatusInfo.Object);
 
                 // Act
                 var analyzer = luceneController.GetCustomAnalyzer();

@@ -4,19 +4,27 @@
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Drawing;
     using System.IO;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Settings;
     using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities;
     using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Taxonomy;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Entities;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.FileSystem;
@@ -56,7 +64,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IEventHandlersContainer<IFileEventHandlers>> fileEventHandlersContainer;
         private Mock<IFileLockingController> mockFileLockingController;
         private Mock<IFileDeletionController> mockFileDeletionController;
-        private Mock<IHostController> hostController;
+        private FakeHostController hostController;
+        private Mock<IUserController> mockUserController;
         private FakeServiceProvider serviceProvider;
 
         [SetUp]
@@ -69,8 +78,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this.folderManager = new Mock<IFolderManager>();
             this.folderPermissionController = new Mock<IFolderPermissionController>();
             this.portalController = new Mock<IPortalController>();
-            this.hostController = new Mock<IHostController>();
-            this.hostController.As<IHostSettingsService>();
+            this.hostController = new FakeHostController(new Dictionary<string, IConfigurationSetting>());
             this.folderMappingController = new Mock<IFolderMappingController>();
             this.fileVersionController = new Mock<IFileVersionController>();
             this.workflowManager = new Mock<IWorkflowManager>();
@@ -80,6 +88,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this.pathUtils = new Mock<IPathUtils>();
             this.mockFileLockingController = new Mock<IFileLockingController>();
             this.mockFileDeletionController = new Mock<IFileDeletionController>();
+            this.mockUserController = new Mock<IUserController>();
 
             EventLogController.SetTestableInstance(Mock.Of<IEventLogController>());
             FolderManager.RegisterInstance(this.folderManager.Object);
@@ -92,15 +101,13 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             FileVersionController.RegisterInstance(this.fileVersionController.Object);
             WorkflowManager.SetTestableInstance(this.workflowManager.Object);
             EventHandlersContainer<IFileEventHandlers>.RegisterInstance(this.fileEventHandlersContainer.Object);
-            this.mockFileManager = new Mock<FileManager> { CallBase = true };
+            UserController.SetTestableInstance(this.mockUserController.Object);
 
             this.folderInfo = new Mock<IFolderInfo>();
             this.fileInfo = new Mock<IFileInfo>();
 
-            this.fileManager = new FileManager();
-
-            FileLockingController.SetTestableInstance(this.mockFileLockingController.Object);
-            FileDeletionController.SetTestableInstance(this.mockFileDeletionController.Object);
+            var hostSettings = new HostSettings(this.hostController);
+            var eventManager = new EventManager(Mock.Of<IEventLogger>());
 
             this.serviceProvider = FakeServiceProvider.Setup(
                 services =>
@@ -111,8 +118,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                     services.AddSingleton(this.folderManager.Object);
                     services.AddSingleton(this.folderPermissionController.Object);
                     services.AddSingleton(this.portalController.Object);
-                    services.AddSingleton(this.hostController.Object);
-                    services.AddSingleton((IHostSettingsService)this.hostController.Object);
+                    services.AddSingleton<IHostController>(this.hostController);
+                    services.AddSingleton<IHostSettingsService>(this.hostController);
                     services.AddSingleton(this.folderMappingController.Object);
                     services.AddSingleton(this.fileVersionController.Object);
                     services.AddSingleton(this.workflowManager.Object);
@@ -122,7 +129,73 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                     services.AddSingleton(this.pathUtils.Object);
                     services.AddSingleton(this.mockFileLockingController.Object);
                     services.AddSingleton(this.mockFileDeletionController.Object);
+                    services.AddSingleton(new ListController(Mock.Of<IEventLogger>(), hostSettings));
+                    services.AddSingleton<IHostSettings>(hostSettings);
+                    services.AddSingleton<IEventManager>(eventManager);
+                    services.AddSingleton(Mock.Of<IApplicationStatusInfo>());
+                    services.AddSingleton(Mock.Of<IPortalGroupController>());
+                    services.AddSingleton(Mock.Of<IEventLogger>());
+                    services.AddSingleton(Mock.Of<ITermController>());
+                    services.AddSingleton(Mock.Of<IContentTypeController>());
+                    services.AddSingleton(Mock.Of<IContentController>());
+                    services.AddSingleton(Mock.Of<IWorkflowEngine>());
+                    services.AddSingleton(Mock.Of<IWorkflowSecurity>());
+                    services.AddSingleton(Mock.Of<ISystemWorkflowManager>());
+                    services.AddSingleton(Mock.Of<IFileContentTypeManager>());
+                    services.AddTransient<IFileSecurityController, FileSecurityController>();
                 });
+
+            this.fileManager = new FileManager(
+                this.serviceProvider.GetRequiredService<IFileSecurityController>(),
+                this.mockFileLockingController.Object,
+                this.fileVersionController.Object,
+                this.mockFileDeletionController.Object,
+                Mock.Of<IFileContentTypeManager>(),
+                this.folderMappingController.Object,
+                this.folderPermissionController.Object,
+                Mock.Of<ISystemWorkflowManager>(),
+                this.workflowManager.Object,
+                Mock.Of<IWorkflowEngine>(),
+                Mock.Of<IWorkflowSecurity>(),
+                this.mockUserController.Object,
+                Mock.Of<IContentController>(),
+                Mock.Of<IContentTypeController>(),
+                Mock.Of<ITermController>(),
+                hostSettings,
+                this.cbo.Object,
+                eventManager,
+                Mock.Of<IEventLogger>(),
+                this.portalController.Object,
+                this.mockData.Object,
+                this.pathUtils.Object);
+            this.mockFileManager = new Mock<FileManager>(
+                this.serviceProvider.GetRequiredService<IFileSecurityController>(),
+                this.mockFileLockingController.Object,
+                this.fileVersionController.Object,
+                this.mockFileDeletionController.Object,
+                Mock.Of<IFileContentTypeManager>(),
+                this.folderMappingController.Object,
+                this.folderPermissionController.Object,
+                Mock.Of<ISystemWorkflowManager>(),
+                this.workflowManager.Object,
+                Mock.Of<IWorkflowEngine>(),
+                Mock.Of<IWorkflowSecurity>(),
+                this.mockUserController.Object,
+                Mock.Of<IContentController>(),
+                Mock.Of<IContentTypeController>(),
+                Mock.Of<ITermController>(),
+                hostSettings,
+                this.cbo.Object,
+                eventManager,
+                Mock.Of<IEventLogger>(),
+                this.portalController.Object,
+                this.mockData.Object,
+                this.pathUtils.Object) { CallBase = true, };
+
+            FileLockingController.SetTestableInstance(this.mockFileLockingController.Object);
+            FileDeletionController.SetTestableInstance(this.mockFileDeletionController.Object);
+
+            this.mockUserController.Setup(uc => uc.GetCurrentUserInfo()).Returns(new UserInfo());
         }
 
         [TearDown]
@@ -187,10 +260,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this.portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(false);
 
-            this.mockFileManager.Setup(fm => fm.CreateFileContentItem()).Returns(new ContentItem());
-            this.mockFileManager.Setup(fm => fm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
-
-            Assert.Throws<NoSpaceAvailableException>(() => this.mockFileManager.Object.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType));
+            Assert.Throws<NoSpaceAvailableException>(() => this.fileManager.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType));
         }
 
         [Test]
@@ -206,7 +276,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var fileContent = new MemoryStream("some data here"u8.ToArray());
 
-            this.hostController.Setup(c => c.GetString("FileExtensions")).Returns("");
+            this.hostController.AddSetting("FileExtensions", string.Empty);
 
             this.portalController.Setup(pc => pc.HasSpaceAvailable(It.IsAny<int>(), It.IsAny<long>())).Returns(true);
 
@@ -219,14 +289,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this.mockFolder.Setup(mf => mf.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(false);
             this.mockFolder.Setup(mf => mf.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent)).Verifiable();
 
-            this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
-            this.mockFileManager.Setup(mfm => mfm.CreateFileContentItem()).Returns(new ContentItem());
-            this.mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
-
             this.workflowManager.Setup(we => we.GetWorkflow(It.IsAny<int>())).Returns((Workflow)null);
 
             // Act
-            this.mockFileManager.Object.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, true, false, Constants.CONTENTTYPE_ValidContentType);
+            this.fileManager.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, true, false, Constants.CONTENTTYPE_ValidContentType);
 
             // Assert
             this.portalController.Verify(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length));
@@ -240,10 +306,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var fileContent = new MemoryStream();
 
             this.portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
+            this.hostController.AddSetting("FileExtensions", "abc");
 
-            this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(false);
-
-            Assert.Throws<InvalidFileExtensionException>(() => this.mockFileManager.Object.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType));
+            Assert.Throws<InvalidFileExtensionException>(() => this.fileManager.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType));
         }
 
         [TestCase("invalid_script.svg")]
@@ -283,8 +348,16 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             using var fileContent = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"Resources/{fileName}"));
             this.portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
             this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidSvgFileName)).Returns(true);
+            this.hostController.AddSetting("FileExtensions", string.Empty);
 
-            Assert.Throws<InvalidFileContentException>(() => this.mockFileManager.Object.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidSvgFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType));
+            Assert.Throws<InvalidFileContentException>(() =>
+                this.fileManager.AddFile(
+                    this.folderInfo.Object,
+                    Constants.FOLDER_ValidSvgFileName,
+                    fileContent,
+                    false,
+                    false,
+                    Constants.CONTENTTYPE_ValidContentType));
         }
 
         [TestCase("valid.svg")]
@@ -299,7 +372,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this.portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
             this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidSvgFileName)).Returns(true);
             this.mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
-            this.hostController.Setup(c => c.GetString("FileExtensions")).Returns("");
+            this.hostController.AddSetting("FileExtensions", string.Empty);
 
             this.mockFileManager.Object.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidSvgFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
         }
@@ -1127,7 +1200,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
                 return dataTable.CreateDataReader();
             });
-            this.hostController.Setup(c => c.GetString("PerformanceSetting")).Returns("NoCaching");
+            this.hostController.AddSetting("PerformanceSetting", "NoCaching");
             this.globals.Setup(g => g.HostMapPath).Returns(AppDomain.CurrentDomain.BaseDirectory);
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
