@@ -197,7 +197,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var controller = Components.UsersController.Instance;
                 controller.ChangePassword(this.PortalId, userId, password);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (InvalidPasswordException exc)
             {
@@ -232,7 +232,7 @@ namespace Dnn.PersonaBar.Users.Services
                 }
 
                 return Components.UsersController.Instance.ForceChangePassword(user, this.PortalId, true)
-                    ? this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true })
+                    ? this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, })
                     : this.Request.CreateErrorResponse(
                         HttpStatusCode.BadRequest,
                         Localization.GetString("OptionUnavailable", Components.Constants.LocalResourcesFile));
@@ -277,7 +277,7 @@ namespace Dnn.PersonaBar.Users.Services
                         }
                         else
                         {
-                            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
                         }
                     }
                     catch (ArgumentException exc)
@@ -324,11 +324,11 @@ namespace Dnn.PersonaBar.Users.Services
                 if (user.Membership.Approved == authorized)
                 {
                     // Do nothing if the new status is same as current status.
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
                 }
 
                 Components.UsersController.Instance.UpdateAuthorizeStatus(user, this.PortalId, authorized);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -357,7 +357,7 @@ namespace Dnn.PersonaBar.Users.Services
                     ? this.Request.CreateErrorResponse(
                         HttpStatusCode.InternalServerError,
                         Localization.GetString("UserDeleteError", Components.Constants.LocalResourcesFile))
-                    : this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    : this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -385,7 +385,7 @@ namespace Dnn.PersonaBar.Users.Services
                     ? this.Request.CreateErrorResponse(
                         HttpStatusCode.InternalServerError,
                         Localization.GetString("UserRemoveError", Components.Constants.LocalResourcesFile))
-                    : this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    : this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -413,7 +413,7 @@ namespace Dnn.PersonaBar.Users.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("CouldNotRemoveAll", Components.Constants.LocalResourcesFile));
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
         }
 
         [HttpPost]
@@ -435,7 +435,7 @@ namespace Dnn.PersonaBar.Users.Services
                     ? this.Request.CreateErrorResponse(
                         HttpStatusCode.InternalServerError,
                         Localization.GetString("UserRestoreError", Components.Constants.LocalResourcesFile))
-                    : this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    : this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -464,7 +464,7 @@ namespace Dnn.PersonaBar.Users.Services
                 UserController.UpdateUser(this.PortalId, user);
                 DataCache.ClearCache();
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -531,7 +531,7 @@ namespace Dnn.PersonaBar.Users.Services
                     ? this.Request.CreateErrorResponse(
                         HttpStatusCode.InternalServerError,
                         Localization.GetString("UserUnlockError", Components.Constants.LocalResourcesFile))
-                    : this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    : this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -659,7 +659,7 @@ namespace Dnn.PersonaBar.Users.Services
                     false,
                     true);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {

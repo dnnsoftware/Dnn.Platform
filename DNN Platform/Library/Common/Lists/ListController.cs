@@ -6,26 +6,24 @@ namespace DotNetNuke.Common.Lists
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Data;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Threading;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Log.EventLog;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Provides access to Dnn Lists.</summary>
-    public partial class ListController
+    public partial class ListController(IEventLogger eventLogger, IHostSettings hostSettings)
     {
         /// <summary>The list of list types that are not localized.</summary>
         [Obsolete("Deprecated in DotNetNuke 9.8.1. Use UnLocalizedLists instead. Scheduled removal in v11.0.0.")]
@@ -34,19 +32,22 @@ namespace DotNetNuke.Common.Lists
         public readonly string[] NonLocalizedLists = UnLocalizableLists;
 
         private static readonly string[] UnLocalizableLists = ["ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords",];
-        private readonly IEventLogger eventLogger;
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="ListController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ListController()
-            : this(null)
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ListController"/> class.</summary>
         /// <param name="eventLogger">An event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ListController(IEventLogger eventLogger)
+            : this(eventLogger, null)
         {
-            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         /// <summary>Gets the lists that do not support localization.</summary>
@@ -164,7 +165,7 @@ namespace DotNetNuke.Common.Lists
             // add Children
             if (includeChildren)
             {
-                foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(list.PortalID))
+                foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(this.hostSettings, list.PortalID))
                 {
                     if (listPair.Value.ParentList.StartsWith(list.Key, StringComparison.OrdinalIgnoreCase))
                     {
@@ -219,7 +220,7 @@ namespace DotNetNuke.Common.Lists
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ListEntryInfo GetListEntryInfo(string listName, int entryId)
         {
-            return GetListEntries(listName, Null.NullInteger).SingleOrDefault(l => l.EntryID == entryId);
+            return GetListEntries(this.hostSettings, listName, Null.NullInteger).SingleOrDefault(l => l.EntryID == entryId);
         }
 
         /// <summary>Gets a list entry information.</summary>
@@ -229,7 +230,7 @@ namespace DotNetNuke.Common.Lists
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ListEntryInfo GetListEntryInfo(string listName, string listValue)
         {
-            return GetListEntries(listName, Null.NullInteger).SingleOrDefault(l => l.Value == listValue);
+            return GetListEntries(this.hostSettings, listName, Null.NullInteger).SingleOrDefault(l => l.Value == listValue);
         }
 
         /// <summary>Gets the entries in the list with the given <paramref name="listName"/>.</summary>
@@ -238,7 +239,7 @@ namespace DotNetNuke.Common.Lists
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<ListEntryInfo> GetListEntryInfoItems(string listName)
         {
-            return GetListEntries(listName, Null.NullInteger);
+            return GetListEntries(this.hostSettings, listName, Null.NullInteger);
         }
 
         /// <summary>Gets the entries in a child list.</summary>
@@ -248,7 +249,7 @@ namespace DotNetNuke.Common.Lists
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<ListEntryInfo> GetListEntryInfoItems(string listName, string parentKey)
         {
-            return GetListEntries(listName, Null.NullInteger).Where(l => l.ParentKey == parentKey);
+            return GetListEntries(this.hostSettings, listName, Null.NullInteger).Where(l => l.ParentKey == parentKey);
         }
 
         /// <summary>Gets the entries in a child list.</summary>
@@ -259,7 +260,7 @@ namespace DotNetNuke.Common.Lists
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<ListEntryInfo> GetListEntryInfoItems(string listName, string parentKey, int portalId)
         {
-            return GetListEntries(listName, portalId).Where(l => l.ParentKey == parentKey);
+            return GetListEntries(this.hostSettings, listName, portalId).Where(l => l.ParentKey == parentKey);
         }
 
         /// <summary>Gets all list entries for a given list name.</summary>
@@ -322,7 +323,7 @@ namespace DotNetNuke.Common.Lists
             }
 
             key += listName;
-            Dictionary<string, ListInfo> dicLists = GetListInfoDictionary(portalId);
+            Dictionary<string, ListInfo> dicLists = GetListInfoDictionary(this.hostSettings, portalId);
             if (!dicLists.TryGetValue(key, out list))
             {
                 IDataReader dr = DataProvider.Instance().GetList(listName, parentKey, portalId);
@@ -371,8 +372,8 @@ namespace DotNetNuke.Common.Lists
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ListInfoCollection GetListInfoCollection(string listName, string parentKey, int portalId)
         {
-            IList lists = new ListInfoCollection();
-            foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(portalId).OrderBy(l => l.Value.DisplayName))
+            IList lists = new ListInfoCollection(this);
+            foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(this.hostSettings, portalId).OrderBy(l => l.Value.DisplayName))
             {
                 ListInfo list = listPair.Value;
                 if ((list.Name == listName || string.IsNullOrEmpty(listName)) && (list.ParentKey == parentKey || string.IsNullOrEmpty(parentKey)) &&
@@ -521,26 +522,22 @@ namespace DotNetNuke.Common.Lists
             return dic;
         }
 
-        private static Dictionary<string, ListInfo> GetListInfoDictionary(int portalId)
+        private static Dictionary<string, ListInfo> GetListInfoDictionary(IHostSettings hostSettings, int portalId)
         {
             string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.ListsCacheKey, portalId);
             return CBO.GetCachedObject<Dictionary<string, ListInfo>>(
-                new CacheItemArgs(
-                cacheKey,
-                DataCache.ListsCacheTimeOut,
-                DataCache.ListsCachePriority),
-                c => FillListInfoDictionary(DataProvider.Instance().GetLists(portalId)));
+                hostSettings,
+                new CacheItemArgs(cacheKey, DataCache.ListsCacheTimeOut, DataCache.ListsCachePriority),
+                _ => FillListInfoDictionary(DataProvider.Instance().GetLists(portalId)));
         }
 
-        private static IEnumerable<ListEntryInfo> GetListEntries(string listName, int portalId)
+        private static IEnumerable<ListEntryInfo> GetListEntries(IHostSettings hostSettings, string listName, int portalId)
         {
             string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.ListEntriesCacheKey, portalId, listName);
             return CBO.GetCachedObject<IEnumerable<ListEntryInfo>>(
-                new CacheItemArgs(
-                cacheKey,
-                DataCache.ListsCacheTimeOut,
-                DataCache.ListsCachePriority),
-                c => CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, string.Empty, portalId)));
+                hostSettings,
+                new CacheItemArgs(cacheKey, DataCache.ListsCacheTimeOut, DataCache.ListsCachePriority),
+                _ => CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, string.Empty, portalId)));
         }
     }
 }

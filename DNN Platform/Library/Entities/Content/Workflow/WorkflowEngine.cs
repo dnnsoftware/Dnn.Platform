@@ -24,39 +24,32 @@ namespace DotNetNuke.Entities.Content.Workflow
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Social.Notifications;
 
-    public class WorkflowEngine : ServiceLocator<IWorkflowEngine, WorkflowEngine>, IWorkflowEngine
+    using Microsoft.Extensions.DependencyInjection;
+
+    public class WorkflowEngine(IContentController contentController)
+        : ServiceLocator<IWorkflowEngine, WorkflowEngine>, IWorkflowEngine
     {
         private const string ContentWorkflowNotificationType = "ContentWorkflowNotification";
         private const string ContentWorkflowNotificationNoActionType = "ContentWorkflowNoActionNotification";
-        private const string ContentWorkflowNotificatioStartWorkflowType = "ContentWorkflowStartWorkflowNotification";
-        private readonly IContentController contentController;
-        private readonly IWorkflowRepository workflowRepository;
-        private readonly IWorkflowStateRepository workflowStateRepository;
-        private readonly IWorkflowStatePermissionsRepository workflowStatePermissionsRepository;
-        private readonly IWorkflowLogRepository workflowLogRepository;
-        private readonly IWorkflowActionManager workflowActionManager;
-        private readonly IUserController userController;
-        private readonly IWorkflowSecurity workflowSecurity;
-        private readonly INotificationsController notificationsController;
-        private readonly IWorkflowManager workflowManager;
-        private readonly IWorkflowLogger workflowLogger;
-        private readonly ISystemWorkflowManager systemWorkflowManager;
+        private const string ContentWorkflowNotificationStartWorkflowType = "ContentWorkflowStartWorkflowNotification";
+        private readonly IContentController contentController = contentController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IContentController>();
+        private readonly IWorkflowRepository workflowRepository = WorkflowRepository.Instance;
+        private readonly IWorkflowStateRepository workflowStateRepository = WorkflowStateRepository.Instance;
+        private readonly IWorkflowStatePermissionsRepository workflowStatePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
+        private readonly IWorkflowLogRepository workflowLogRepository = WorkflowLogRepository.Instance;
+        private readonly IWorkflowActionManager workflowActionManager = WorkflowActionManager.Instance;
+        private readonly IWorkflowSecurity workflowSecurity = WorkflowSecurity.Instance;
+        private readonly IUserController userController = UserController.Instance;
+        private readonly INotificationsController notificationsController = NotificationsController.Instance;
+        private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
+        private readonly IWorkflowLogger workflowLogger = WorkflowLogger.Instance;
+        private readonly ISystemWorkflowManager systemWorkflowManager = SystemWorkflowManager.Instance;
 
         /// <summary>Initializes a new instance of the <see cref="WorkflowEngine"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IContentController. Scheduled removal in v12.0.0.")]
         public WorkflowEngine()
+            : this(null)
         {
-            this.contentController = Util.GetContentController();
-            this.workflowRepository = WorkflowRepository.Instance;
-            this.workflowStateRepository = WorkflowStateRepository.Instance;
-            this.workflowStatePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
-            this.workflowLogRepository = WorkflowLogRepository.Instance;
-            this.workflowActionManager = WorkflowActionManager.Instance;
-            this.workflowSecurity = WorkflowSecurity.Instance;
-            this.userController = UserController.Instance;
-            this.notificationsController = NotificationsController.Instance;
-            this.workflowManager = WorkflowManager.Instance;
-            this.workflowLogger = WorkflowLogger.Instance;
-            this.systemWorkflowManager = SystemWorkflowManager.Instance;
         }
 
         /// <inheritdoc />
@@ -336,7 +329,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <inheritdoc />
         protected override Func<IWorkflowEngine> GetFactory()
         {
-            return () => new WorkflowEngine();
+            return () => Globals.DependencyProvider.GetRequiredService<IWorkflowEngine>();
         }
 
         private static List<RoleInfo> GetRolesFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions)
@@ -523,7 +516,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             var context = GetWorkflowNotificationContext(contentItem, state);
             var notificationTypeId = this.notificationsController.GetNotificationType(ContentWorkflowNotificationType).NotificationTypeId;
             this.DeleteNotificationsByType(notificationTypeId, context);
-            notificationTypeId = this.notificationsController.GetNotificationType(ContentWorkflowNotificatioStartWorkflowType).NotificationTypeId;
+            notificationTypeId = this.notificationsController.GetNotificationType(ContentWorkflowNotificationStartWorkflowType).NotificationTypeId;
             this.DeleteNotificationsByType(notificationTypeId, context);
         }
 
@@ -594,7 +587,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
                 var message = workflowAction.GetActionMessage(stateTransaction, workflow.FirstState);
 
-                var notification = this.GetNotification(GetWorkflowNotificationContext(contentItem, workflow.FirstState), stateTransaction, message, ContentWorkflowNotificatioStartWorkflowType);
+                var notification = this.GetNotification(GetWorkflowNotificationContext(contentItem, workflow.FirstState), stateTransaction, message, ContentWorkflowNotificationStartWorkflowType);
 
                 this.notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
             }

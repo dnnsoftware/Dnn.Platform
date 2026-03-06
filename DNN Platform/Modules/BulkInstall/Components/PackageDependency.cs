@@ -18,8 +18,9 @@ namespace Dnn.Modules.BulkInstall.Components
         private static readonly HashSet<string> PackageTypes = new HashSet<string>(["PACKAGE", "MANAGEDPACKAGE",], StringComparer.OrdinalIgnoreCase);
 
         /// <summary>Initializes a new instance of the <see cref="PackageDependency"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
         /// <param name="dependencyRoot">The root of the <c>dependency</c> element.</param>
-        public PackageDependency(XPathNavigator dependencyRoot)
+        public PackageDependency(IServiceProvider serviceProvider, XPathNavigator dependencyRoot)
         {
             this.DependencyType = dependencyRoot.GetAttribute("type", string.Empty);
             this.IsPackageDependency = PackageTypes.Contains(this.DependencyType);
@@ -29,7 +30,7 @@ namespace Dnn.Modules.BulkInstall.Components
             this.DnnMet = false;
             this.DeployMet = false;
 
-            IDependency dep = DependencyFactory.GetDependency(dependencyRoot);
+            IDependency dep = DependencyFactory.GetDependency(serviceProvider, dependencyRoot);
 
             this.DnnMet = dep.IsValid;
         }

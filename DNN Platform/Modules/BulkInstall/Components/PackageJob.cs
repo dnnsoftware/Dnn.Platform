@@ -19,8 +19,9 @@ namespace Dnn.Modules.BulkInstall.Components
     internal sealed class PackageJob
     {
         /// <summary>Initializes a new instance of the <see cref="PackageJob"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
         /// <param name="packageInstaller">The installer.</param>
-        public PackageJob(PackageInstaller packageInstaller)
+        public PackageJob(IServiceProvider serviceProvider, PackageInstaller packageInstaller)
         {
             this.Name = packageInstaller.Package.Name;
             this.Version = packageInstaller.Package.Version;
@@ -36,7 +37,7 @@ namespace Dnn.Modules.BulkInstall.Components
 
             foreach (XPathNavigator nav in rootNav.Select("dependencies/dependency"))
             {
-                this.Dependencies.Add(new PackageDependency(nav));
+                this.Dependencies.Add(new PackageDependency(serviceProvider, nav));
             }
         }
 

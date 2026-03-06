@@ -46,6 +46,10 @@ namespace DotNetNuke.Services.Mail
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
+        private static int CurrentPortalId => PortalSettings.Current?.PortalId ?? Null.NullInteger;
+
+        private static string CurrentPortalName => PortalSettings.Current?.PortalName ?? string.Empty;
+
         /// <inheritdoc />
         public override string SendMail(MailInfo mailInfo, SmtpInfo smtpInfo = null)
         {
@@ -116,7 +120,7 @@ namespace DotNetNuke.Services.Mail
                 return null;
             }
 
-            if (!string.IsNullOrWhiteSpace(mailSettings.GetServer(PortalSettings.Current.PortalId)))
+            if (!string.IsNullOrWhiteSpace(mailSettings.GetServer(CurrentPortalId)))
             {
                 return null;
             }
@@ -131,15 +135,14 @@ namespace DotNetNuke.Services.Mail
                 return smtpInfo;
             }
 
-            var currentPortalId = PortalSettings.Current.PortalId;
             return new SmtpInfo
                    {
-                       Server = mailSettings.GetServer(currentPortalId),
-                       Authentication = mailSettings.GetAuthentication(currentPortalId),
-                       Username = mailSettings.GetUsername(currentPortalId),
-                       Password = mailSettings.GetPassword(currentPortalId),
-                       EnableSSL = mailSettings.GetSecureConnectionEnabled(currentPortalId),
-                       AuthProvider = mailSettings.GetAuthProvider(currentPortalId),
+                       Server = mailSettings.GetServer(CurrentPortalId),
+                       Authentication = mailSettings.GetAuthentication(CurrentPortalId),
+                       Username = mailSettings.GetUsername(CurrentPortalId),
+                       Password = mailSettings.GetPassword(CurrentPortalId),
+                       EnableSSL = mailSettings.GetSecureConnectionEnabled(CurrentPortalId),
+                       AuthProvider = mailSettings.GetAuthProvider(CurrentPortalId),
                    };
         }
 
@@ -200,7 +203,7 @@ namespace DotNetNuke.Services.Mail
 
                     if (string.IsNullOrEmpty(senderDisplayName))
                     {
-                        senderDisplayName = mailSettings.IsPortalEnabled(PortalSettings.Current.PortalId) ? PortalSettings.Current.PortalName : hostSettings.HostTitle;
+                        senderDisplayName = mailSettings.IsPortalEnabled(CurrentPortalId) ? CurrentPortalName : hostSettings.HostTitle;
                         needUpdateSender = true;
                     }
 
@@ -213,7 +216,7 @@ namespace DotNetNuke.Services.Mail
                 {
                     mailMessage.Sender = new MailAddress(
                         smtpInfo.Username,
-                        mailSettings.IsPortalEnabled(PortalSettings.Current.PortalId) ? PortalSettings.Current.PortalName : hostSettings.HostTitle);
+                        mailSettings.IsPortalEnabled(CurrentPortalId) ? CurrentPortalName : hostSettings.HostTitle);
                 }
             }
 

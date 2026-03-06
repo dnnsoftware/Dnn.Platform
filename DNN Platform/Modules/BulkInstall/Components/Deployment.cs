@@ -29,9 +29,10 @@ namespace Dnn.Modules.BulkInstall.Components
         /// <param name="sessionManager">The session manager.</param>
         /// <param name="eventLogManager">The event log manager.</param>
         /// <param name="appStatus">The application status.</param>
+        /// <param name="serviceProvider">The DI container.</param>
         /// <param name="session">The session.</param>
         /// <param name="ipAddress">The IP address.</param>
-        public Deployment(SessionManager sessionManager, EventLogManager eventLogManager, IApplicationStatusInfo appStatus, Session session, string ipAddress)
+        public Deployment(SessionManager sessionManager, EventLogManager eventLogManager, IApplicationStatusInfo appStatus, IServiceProvider serviceProvider, Session session, string ipAddress)
         {
             this.sessionManager = sessionManager;
             this.eventLogManager = eventLogManager;
@@ -55,7 +56,7 @@ namespace Dnn.Modules.BulkInstall.Components
 
             foreach (string packageZip in packageZips)
             {
-                InstallJob installJob = new InstallJob(this.appStatus, packageZip);
+                InstallJob installJob = new InstallJob(this.appStatus, serviceProvider, packageZip);
                 installJobs.Add(installJob);
                 packageJobs.AddRange(installJob.Packages);
             }

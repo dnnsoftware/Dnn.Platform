@@ -24,6 +24,7 @@ namespace Dnn.Modules.BulkInstall.Components
         /// <param name="eventLogManager">The event log manager.</param>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="appStatus">The application status.</param>
+        /// <param name="serviceProvider">The DI container.</param>
         /// <param name="session">The session.</param>
         /// <param name="ipAddress">The IP address.</param>
         /// <param name="apiTokenId">The API token ID.</param>
@@ -33,10 +34,11 @@ namespace Dnn.Modules.BulkInstall.Components
             EventLogManager eventLogManager,
             IEventLogger eventLogger,
             IApplicationStatusInfo appStatus,
+            IServiceProvider serviceProvider,
             Session session,
             string ipAddress,
             int apiTokenId)
-            : base(sessionManager, eventLogManager, appStatus, session, ipAddress)
+            : base(sessionManager, eventLogManager, appStatus, serviceProvider, session, ipAddress)
         {
             this.eventLogger = eventLogger;
 

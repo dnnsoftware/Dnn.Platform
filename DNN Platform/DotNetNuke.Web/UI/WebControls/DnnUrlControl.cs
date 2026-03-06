@@ -189,9 +189,19 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// <summary>Initializes a new instance of the <see cref="DnnUrlControl"/> class.</summary>
         /// <param name="appStatus">The application status.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         protected DnnUrlControl(IApplicationStatusInfo appStatus)
+            : this(appStatus, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnUrlControl"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        protected DnnUrlControl(IApplicationStatusInfo appStatus, IHostSettings hostSettings)
         {
             this.AppStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.HostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets a value indicating whether to add logging to the URL.</summary>
@@ -620,7 +630,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     case "M":
                         if (!string.IsNullOrEmpty(this.txtUser.Text))
                         {
-                            UserInfo objUser = UserController.GetCachedUser(((IPortalInfo)this.objPortal).PortalId, this.txtUser.Text);
+                            UserInfo objUser = UserController.GetCachedUser(this.HostSettings, ((IPortalInfo)this.objPortal).PortalId, this.txtUser.Text);
                             if (objUser != null)
                             {
                                 r = "UserID=" + objUser.UserID;
@@ -696,6 +706,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// <summary>Gets the application status.</summary>
         protected IApplicationStatusInfo AppStatus { get; }
+
+        /// <summary>Gets the host settings.</summary>
+        protected IHostSettings HostSettings { get; }
 
         /// <inheritdoc />
         protected override void OnInit(EventArgs e)
@@ -931,7 +944,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     if (url.StartsWith("userid=", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        UserInfo objUser = UserController.GetUserById(((IPortalInfo)this.objPortal).PortalId, int.Parse(url.Substring(7), CultureInfo.InvariantCulture));
+                        UserInfo objUser = UserController.GetUserById(this.HostSettings, ((IPortalInfo)this.objPortal).PortalId, int.Parse(url.Substring(7), CultureInfo.InvariantCulture));
                         if (objUser != null)
                         {
                             url = objUser.Username;

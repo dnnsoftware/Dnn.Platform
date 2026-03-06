@@ -19,19 +19,21 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
 
     /// <summary>A web API controller for <see cref="APIUser"/>.</summary>
     /// <param name="apiUserManager">The API user manager.</param>
+    /// <param name="apiTokenSettingsRepository">The API token settings repository.</param>
     [RequireHost]
     [ValidateAntiForgeryToken]
     [InWhitelist]
-    public class APIUserController(APIUserManager apiUserManager) : DnnApiController
+    public class APIUserController(APIUserManager apiUserManager, ApiTokenSettingsRepository apiTokenSettingsRepository) : DnnApiController
     {
         private readonly APIUserManager apiUserManager = apiUserManager;
+        private readonly ApiTokenSettingsRepository apiTokenSettingsRepository = apiTokenSettingsRepository;
 
         /// <summary>Gets all <see cref="APIUser"/> instances.</summary>
         /// <returns>A response with a list of <see cref="APIUser"/>.</returns>
         [HttpGet]
         public HttpResponseMessage GetAll()
         {
-            var settings = ApiTokenSettings.GetSettings(this.PortalSettings.PortalId);
+            var settings = ApiTokenSettings.GetSettings(this.apiTokenSettingsRepository, this.PortalSettings.PortalId);
             List<APIUser> apiUsers = this.apiUserManager.GetAll().ToList();
 
             // Loop and remove sensitive information.
@@ -58,7 +60,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { Message = "name is required", });
             }
 
-            var settings = ApiTokenSettings.GetSettings(this.PortalSettings.PortalId);
+            var settings = ApiTokenSettings.GetSettings(this.apiTokenSettingsRepository, this.PortalSettings.PortalId);
             if (!settings.ApiTokensEnabled)
             {
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { Message = "API tokens are disabled", });

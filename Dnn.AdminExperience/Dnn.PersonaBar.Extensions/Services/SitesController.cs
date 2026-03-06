@@ -152,7 +152,7 @@ namespace Dnn.PersonaBar.Sites.Services
                         var strMessage = PortalController.DeletePortal(portal, this.GetAbsoluteServerPath());
                         if (string.IsNullOrEmpty(strMessage))
                         {
-                            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
                         }
 
                         return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, strMessage);
@@ -252,7 +252,7 @@ namespace Dnn.PersonaBar.Sites.Services
             try
             {
                 PortalController.DeleteExpiredPortals(this.GetAbsoluteServerPath());
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {

@@ -31,6 +31,8 @@ namespace DotNetNuke.Web
             services.AddTransient<IApiTokenController, ApiTokenController>();
             services.AddTransient<IApiTokenRepository, ApiTokenRepository>();
             services.AddTransient<IControlBarController, ControlBarController>();
+
+            services.AddTransient<ApiTokenSettingsRepository>();
         }
     }
 }

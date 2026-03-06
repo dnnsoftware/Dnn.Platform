@@ -23,8 +23,9 @@ namespace Dnn.Modules.BulkInstall.Components
 
         /// <summary>Initializes a new instance of the <see cref="InstallJob"/> class.</summary>
         /// <param name="appStatus">The application status.</param>
+        /// <param name="serviceProvider">The DI container.</param>
         /// <param name="path">The path to the package file.</param>
-        public InstallJob(IApplicationStatusInfo appStatus, string path)
+        public InstallJob(IApplicationStatusInfo appStatus, IServiceProvider serviceProvider, string path)
         {
             this.appStatus = appStatus;
 
@@ -37,7 +38,7 @@ namespace Dnn.Modules.BulkInstall.Components
 
             foreach (KeyValuePair<int, PackageInstaller> orderedPackage in this.Installer.Packages)
             {
-                this.Packages.Add(new PackageJob(orderedPackage.Value));
+                this.Packages.Add(new PackageJob(serviceProvider, orderedPackage.Value));
             }
         }
 

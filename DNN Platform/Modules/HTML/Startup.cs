@@ -5,6 +5,7 @@
 namespace DotNetNuke.Modules.Html;
 
 using DotNetNuke.DependencyInjection;
+using DotNetNuke.Modules.Html.Components;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,5 +15,6 @@ public class Startup : IDnnStartup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddTransient<HtmlTextController>();
+        services.AddTransient<HtmlModuleSettingsRepository>();
     }
 }

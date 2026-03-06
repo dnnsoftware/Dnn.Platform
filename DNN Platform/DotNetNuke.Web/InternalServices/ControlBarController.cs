@@ -40,20 +40,31 @@ namespace DotNetNuke.Web.InternalServices
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A web API for the control bar.</summary>
+    /// <param name="businessControllerProvider">The business controller provider.</param>
+    /// <param name="personalizationController">The personalization controller.</param>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="portalAliasService">The portal alias service.</param>
+    /// <param name="hostSettingsService">The host settings service.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="permissionDefinitionService">The permission definition service.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="hostSettings">The host settings.</param>
     [DnnAuthorize]
-    public class ControlBarController : DnnApiController
+    public class ControlBarController(IBusinessControllerProvider businessControllerProvider, PersonalizationController personalizationController, IApplicationStatusInfo appStatus, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController, IPermissionDefinitionService permissionDefinitionService, IEventLogger eventLogger, IHostSettings hostSettings)
+        : DnnApiController
     {
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ControlBarController));
-        private readonly IBusinessControllerProvider businessControllerProvider;
-        private readonly PersonalizationController personalizationController;
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly IPortalAliasService portalAliasService;
-        private readonly IHostSettingsService hostSettingsService;
-        private readonly IPortalController portalController;
-        private readonly IPermissionDefinitionService permissionDefinitionService;
-        private readonly IEventLogger eventLogger;
-        private readonly Components.Controllers.IControlBarController controller;
+        private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+        private readonly PersonalizationController personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IPortalAliasService portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
+        private readonly IHostSettingsService hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        private readonly IPermissionDefinitionService permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly Components.Controllers.IControlBarController controller = Components.Controllers.ControlBarController.Instance;
 
         /// <summary>Initializes a new instance of the <see cref="ControlBarController"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
@@ -81,17 +92,10 @@ namespace DotNetNuke.Web.InternalServices
         /// <param name="portalController">The portal controller.</param>
         /// <param name="permissionDefinitionService">The permission definition service.</param>
         /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ControlBarController(IBusinessControllerProvider businessControllerProvider, PersonalizationController personalizationController, IApplicationStatusInfo appStatus, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController, IPermissionDefinitionService permissionDefinitionService, IEventLogger eventLogger)
+            : this(businessControllerProvider, personalizationController, appStatus, portalAliasService, hostSettingsService, portalController, permissionDefinitionService, eventLogger, null)
         {
-            this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
-            this.personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
-            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
-            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
-            this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
-            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
-            this.controller = Components.Controllers.ControlBarController.Instance;
         }
 
         /// <summary>Gets the desktop modules available to the portal.</summary>
@@ -146,7 +150,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 ModuleID = kvp.Value.DesktopModuleID,
                 ModuleName = kvp.Key,
-                ModuleImage = GetDeskTopModuleImage(kvp.Value.DesktopModuleID),
+                ModuleImage = GetDeskTopModuleImage(this.hostSettings, kvp.Value.DesktopModuleID),
                 Bookmarked = bookmarkedModules.Any(m => m.Key == kvp.Key),
                 ExistsInBookmarkCategory = bookmarkCategoryModules.Any(m => m.Key == kvp.Key),
             }).ToList();
@@ -165,7 +169,7 @@ namespace DotNetNuke.Web.InternalServices
             List<TabInfo> tabList;
             if (this.PortalSettings.PortalId == portalSettings.PortalId)
             {
-                tabList = TabController.GetPortalTabs(portalSettings.PortalId, this.PortalSettings.ActiveTab.TabID, false, string.Empty, true, false, false, false, true);
+                tabList = TabController.GetPortalTabs(this.hostSettings, this.appStatus, portalSettings.PortalId, this.PortalSettings.ActiveTab.TabID, false, string.Empty, true, false, false, false, true);
             }
             else
             {
@@ -180,7 +184,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 if (myGroup != null && myGroup.Any(p => p.PortalId == portalSettings.PortalId))
                 {
-                    tabList = TabController.GetPortalTabs(portalSettings.PortalId, Null.NullInteger, false, string.Empty, true, false, false, false, false);
+                    tabList = TabController.GetPortalTabs(this.hostSettings, this.appStatus, portalSettings.PortalId, Null.NullInteger, false, string.Empty, true, false, false, false, false);
                 }
                 else
                 {
@@ -208,18 +212,16 @@ namespace DotNetNuke.Web.InternalServices
         [DnnPageEditor]
         public HttpResponseMessage GetTabModules(string tab)
         {
-            int tabID;
-
-            if (int.TryParse(tab, out tabID))
+            if (int.TryParse(tab, out var tabId))
             {
                 var result = new List<ModuleDefDTO>();
-                if (tabID > 0)
+                if (tabId > 0)
                 {
-                    var pageModules = GetModules(tabID);
+                    var pageModules = GetModules(tabId);
 
                     Dictionary<int, string> resultDict = pageModules.ToDictionary(module => module.ModuleID, module => module.ModuleTitle);
                     result.AddRange(from kvp in resultDict
-                                    let imageUrl = GetTabModuleImage(tabID, kvp.Key)
+                                    let imageUrl = GetTabModuleImage(this.hostSettings, tabId, kvp.Key)
                                     select new ModuleDefDTO { ModuleID = kvp.Key, ModuleName = kvp.Value, ModuleImage = imageUrl });
                 }
 
@@ -239,8 +241,8 @@ namespace DotNetNuke.Web.InternalServices
             if (TabPermissionController.CanManagePage() && UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators")
                                                         && this.ActiveTabHasChildren() && !this.PortalSettings.ActiveTab.IsSuperTab)
             {
-                TabController.CopyPermissionsToChildren(this.PortalSettings.ActiveTab, this.PortalSettings.ActiveTab.TabPermissions);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                TabController.CopyPermissionsToChildren(this.eventLogger, this.PortalSettings.ActiveTab, this.PortalSettings.ActiveTab.TabPermissions);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
 
             return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
@@ -335,7 +337,7 @@ namespace DotNetNuke.Web.InternalServices
                         }
                         else
                         {
-                            tabModuleId = DoAddNewModule(string.Empty, moduleLstId, dto.Pane, positionId, permissionType, string.Empty);
+                            tabModuleId = DoAddNewModule(this.hostSettings, string.Empty, moduleLstId, dto.Pane, positionId, permissionType, string.Empty);
                         }
                     }
 
@@ -360,7 +362,7 @@ namespace DotNetNuke.Web.InternalServices
             if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 DataCache.ClearCache();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
 
             return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
@@ -438,7 +440,7 @@ namespace DotNetNuke.Web.InternalServices
                         personalization.Profile["Usability:UICulture"] = dto.Language;
                         personalization.IsModified = true;
                         this.personalizationController.SaveProfile(personalization);
-                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
                     }
                 }
             }
@@ -468,7 +470,7 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             this.ToggleUserMode(userMode.UserMode);
-            var response = this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            var response = this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
 
             if (userMode.UserMode.Equals("VIEW", StringComparison.OrdinalIgnoreCase))
             {
@@ -500,7 +502,7 @@ namespace DotNetNuke.Web.InternalServices
 
             this.controller.SaveBookMark(this.PortalSettings.PortalId, this.UserInfo.UserID, bookmark.Title, bookmark.Bookmark);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
         }
 
         /// <summary>Locks or unlocks the instance.</summary>
@@ -569,9 +571,9 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-        private static string GetDeskTopModuleImage(int moduleId)
+        private static string GetDeskTopModuleImage(IHostSettings hostSettings, int moduleId)
         {
-            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
+            var portalDesktopModules = DesktopModuleController.GetDesktopModules(hostSettings, PortalSettings.Current.PortalId);
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             string imageUrl =
@@ -584,11 +586,11 @@ namespace DotNetNuke.Web.InternalServices
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
         }
 
-        private static string GetTabModuleImage(int tabId, int moduleId)
+        private static string GetTabModuleImage(IHostSettings hostSettings, int tabId, int moduleId)
         {
             var tabModules = ModuleController.Instance.GetTabModules(tabId);
-            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
-            var moduleDefinitions = ModuleDefinitionController.GetModuleDefinitions();
+            var portalDesktopModules = DesktopModuleController.GetDesktopModules(hostSettings, PortalSettings.Current.PortalId);
+            var moduleDefinitions = ModuleDefinitionController.GetModuleDefinitions(hostSettings);
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             string imageUrl = (from package in packages
@@ -663,11 +665,11 @@ namespace DotNetNuke.Web.InternalServices
             return 0;
         }
 
-        private static int DoAddNewModule(string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
+        private static int DoAddNewModule(IHostSettings hostSettings, string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
         {
             try
             {
-                if (!DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId).TryGetValue(desktopModuleId, out _))
+                if (!DesktopModuleController.GetDesktopModules(hostSettings, PortalSettings.Current.PortalId).TryGetValue(desktopModuleId, out _))
                 {
                     throw new ArgumentException($"Could not find desktop module with given ID: {desktopModuleId}", nameof(desktopModuleId));
                 }

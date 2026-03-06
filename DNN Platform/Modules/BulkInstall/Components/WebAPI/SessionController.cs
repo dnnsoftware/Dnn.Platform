@@ -27,14 +27,16 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
     /// <param name="sessionManager">The session manager.</param>
     /// <param name="eventLogManager">The event log manager.</param>
     /// <param name="appStatus">The application status.</param>
+    /// <param name="serviceProvider">The DI container.</param>
     [RequireHost]
     [ValidateAntiForgeryToken]
     [InWhitelist]
-    public class SessionController(SessionManager sessionManager, EventLogManager eventLogManager, IApplicationStatusInfo appStatus) : DnnApiController
+    public class SessionController(SessionManager sessionManager, EventLogManager eventLogManager, IApplicationStatusInfo appStatus, IServiceProvider serviceProvider) : DnnApiController
     {
         private readonly SessionManager sessionManager = sessionManager;
         private readonly EventLogManager eventLogManager = eventLogManager;
         private readonly IApplicationStatusInfo appStatus = appStatus;
+        private readonly IServiceProvider serviceProvider = serviceProvider;
 
         /// <summary>Create a new session.</summary>
         /// <returns>A response with the <see cref="Session"/>.</returns>
@@ -130,7 +132,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                 Session sessionObj = this.sessionManager.GetSession(sessionGuid);
 
                 // Create a deploy operation.
-                Deployment deployOperation = new Deployment(this.sessionManager, this.eventLogManager, this.appStatus, sessionObj, ipAddress);
+                Deployment deployOperation = new Deployment(this.sessionManager, this.eventLogManager, this.appStatus, this.serviceProvider, sessionObj, ipAddress);
 
                 var summary = deployOperation.Summary();
 
@@ -165,7 +167,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                 Session sessionObj = this.sessionManager.GetSession(sessionGuid);
 
                 // Create a deploy operation.
-                Deployment deployOperation = new Deployment(this.sessionManager, this.eventLogManager, this.appStatus, sessionObj, ipAddress);
+                Deployment deployOperation = new Deployment(this.sessionManager, this.eventLogManager, this.appStatus, this.serviceProvider, sessionObj, ipAddress);
 
                 deployOperation.Deploy();
 

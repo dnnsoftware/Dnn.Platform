@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.Search.Controllers
         public SearchResults SiteSearch(SearchQuery searchQuery)
         {
             var results = this.GetResults(searchQuery);
-            return new SearchResults { TotalHits = results.Item1, Results = results.Item2 };
+            return new SearchResults { TotalHits = results.Item1, Results = results.Item2, };
         }
 
         /// <inheritdoc />
@@ -289,8 +289,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 throw new ArgumentException(Localization.GetExceptionMessage("ModuleIdMustHaveSearchTypeIdForModule", "ModuleId based search must have SearchTypeId for a module only"));
             }
 
-            if (searchQuery.SortField == SortFields.CustomStringField || searchQuery.SortField == SortFields.CustomNumericField
-                                                                      || searchQuery.SortField == SortFields.NumericKey || searchQuery.SortField == SortFields.Keyword)
+            if (searchQuery.SortField is SortFields.CustomStringField or SortFields.CustomNumericField or SortFields.NumericKey or SortFields.Keyword)
             {
                 Requires.NotNullOrEmpty("CustomSortField", searchQuery.CustomSortField);
             }
@@ -471,8 +470,7 @@ namespace DotNetNuke.Services.Search.Controllers
             var localeField = luceneResult.Document.GetField(Constants.LocaleTag);
             if (localeField != null)
             {
-                int id;
-                if (int.TryParse(localeField.StringValue, out id) && id >= 0)
+                if (int.TryParse(localeField.StringValue, out var id) && id >= 0)
                 {
                     result.CultureCode = LocaleController.Instance.GetLocale(id).Code;
                 }

@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Common.Extensions
 {
+    using System;
     using System.Collections;
     using System.Web;
 
@@ -58,7 +59,6 @@ namespace DotNetNuke.Common.Extensions
                 return scope;
             }
 
-            var scopeLock = new object();
             const string ScopeLockName = "GetScope_lock";
             if (httpContext.Items.Contains(ScopeLockName))
             {
@@ -66,6 +66,7 @@ namespace DotNetNuke.Common.Extensions
                 return GetScope(httpContext);
             }
 
+            var scopeLock = new object();
             httpContext.Items.Add(ScopeLockName, scopeLock);
             lock (httpContext.Items[ScopeLockName])
             {

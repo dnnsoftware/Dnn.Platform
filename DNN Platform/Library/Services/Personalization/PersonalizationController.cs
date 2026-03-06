@@ -74,6 +74,7 @@ namespace DotNetNuke.Services.Personalization
             {
                 var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.UserPersonalizationCacheKey, portalId, userId);
                 profileData = CBO.GetCachedObject<string>(
+                    this.hostSettings,
                     new CacheItemArgs(
                         cacheKey,
                         DataCache.UserPersonalizationCacheTimeout,
@@ -139,6 +140,7 @@ namespace DotNetNuke.Services.Personalization
                     var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.UserPersonalizationCacheKey, portalId, userId);
                     DataCache.RemoveCache(cacheKey);
                     CBO.GetCachedObject<string>(
+                        this.hostSettings,
                         new CacheItemArgs(
                             cacheKey,
                             DataCache.UserPersonalizationCacheTimeout,

@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Search.Controllers
     using System.Linq;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -20,7 +21,6 @@ namespace DotNetNuke.Services.Search.Controllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
-    using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
@@ -42,8 +42,10 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private readonly ConcurrentDictionary<string, IModuleSearchResultController> moduleSearchControllers = new ConcurrentDictionary<string, IModuleSearchResultController>();
         private readonly IBusinessControllerProvider businessControllerProvider;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleResultController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ModuleResultController()
             : this(null)
         {
@@ -51,9 +53,19 @@ namespace DotNetNuke.Services.Search.Controllers
 
         /// <summary>Initializes a new instance of the <see cref="ModuleResultController"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ModuleResultController(IBusinessControllerProvider businessControllerProvider)
+            : this(businessControllerProvider, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleResultController"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public ModuleResultController(IBusinessControllerProvider businessControllerProvider, IHostSettings hostSettings)
         {
             this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+            this.hostSettings = hostSettings ?? Globals.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />
@@ -117,7 +129,7 @@ namespace DotNetNuke.Services.Search.Controllers
             var url = Localization.GetString("SEARCH_NoLink");
 
             // Get All related tabIds from moduleId
-            var tabModules = GetModuleTabs(searchResult.ModuleId);
+            var tabModules = GetModuleTabs(this.hostSettings, searchResult.ModuleId);
 
             foreach (ModuleInfo module in tabModules)
             {
@@ -148,13 +160,14 @@ namespace DotNetNuke.Services.Search.Controllers
             return url;
         }
 
-        private static ArrayList GetModuleTabs(int moduleId)
+        private static ArrayList GetModuleTabs(IHostSettings hostSettings, int moduleId)
         {
             // no manual clearing of the cache exists; let it just expire
             var cacheKey = string.Format(CultureInfo.InvariantCulture, ModuleByIdCacheKey, moduleId);
             return CBO.GetCachedObject<ArrayList>(
+                hostSettings,
                 new CacheItemArgs(cacheKey, ModuleByIdCacheTimeOut, ModuleByIdCachePriority, moduleId),
-                (args) => CBO.FillCollection(DataProvider.Instance().GetModule(moduleId, Null.NullInteger), typeof(ModuleInfo)));
+                _ => CBO.FillCollection(DataProvider.Instance().GetModule(moduleId, Null.NullInteger), typeof(ModuleInfo)));
         }
 
         private static bool ModuleIsAvailable(TabInfo tab, ModuleInfo module)
@@ -164,8 +177,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private static IEnumerable<ModuleInfo> GetModules(TabInfo tab)
         {
-            int urlVersion;
-            if (TabVersionUtils.TryGetUrlVersion(out urlVersion))
+            if (TabVersionUtils.TryGetUrlVersion(out var urlVersion))
             {
                 return TabVersionBuilder.Instance.GetVersionModules(tab.TabID, urlVersion);
             }

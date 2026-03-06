@@ -6,7 +6,9 @@ namespace DotNetNuke.Modules.Admin.Users
     using System;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities;
@@ -57,7 +59,25 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="portalController">The portal controller.</param>
         /// <param name="userController">The user controller.</param>
         /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public Membership(INavigationManager navigationManager, DataProvider dataProvider, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger)
+            : this(navigationManager, dataProvider, roleProvider, roleController, eventManager, portalController, userController, eventLogger, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Membership"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="eventManager">The event manager.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public Membership(INavigationManager navigationManager, DataProvider dataProvider, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger, ListController listController, IHostSettings hostSettings)
+            : base(listController, hostSettings)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.dataProvider = dataProvider ?? this.DependencyProvider.GetRequiredService<DataProvider>();

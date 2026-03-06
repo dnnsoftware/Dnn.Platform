@@ -729,14 +729,14 @@ namespace DotNetNuke.Framework
                 ClientAPI.RegisterClientVariable(this, "cc_link", Localization.GetString("cc_link", Localization.GlobalResourceFile), true);
                 this.clientResourceController.RegisterScript("~/Resources/Shared/Components/CookieConsent/cookieconsent.min.js", FileOrder.Js.DnnControls);
                 this.clientResourceController.RegisterStylesheet("~/Resources/Shared/Components/CookieConsent/cookieconsent.min.css", FileOrder.Css.ResourceCss);
-                this.clientResourceController.RegisterStylesheet("~/js/dnn.cookieconsent.js");
+                this.clientResourceController.RegisterScript("~/js/dnn.cookieconsent.js");
             }
         }
 
         /// <summary>
         /// Look for skin level doctype configuration file, and inject the value into the top of default.aspx
         /// when no configuration if found, the doctype for versions prior to 4.4 is used to maintain backwards compatibility with existing skins.
-        /// Adds xmlns and lang parameters when appropiate.
+        /// Adds xmlns and lang parameters when appropriate.
         /// </summary>
         private void SetSkinDoctype()
         {

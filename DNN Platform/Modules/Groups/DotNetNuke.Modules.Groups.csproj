@@ -94,7 +94,6 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Components\Constants.cs" />
-    <Compile Include="Components\Content.cs" />
     <Compile Include="Components\GroupItemTokenReplace.cs" />
     <Compile Include="Components\GroupMemberType.cs" />
     <Compile Include="Components\GroupsBusinessController.cs" />

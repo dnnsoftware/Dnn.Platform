@@ -94,7 +94,7 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
             }
 
             writer.WriteLine($"""
-[global::System.Obsolete(@"Deprecated in DotNetNuke {deprecation.MajorVersion}.{deprecation.MinorVersion}.{deprecation.PatchVersion}. {deprecation.Replacement.TrimEnd('.').Replace("\"", "\"\"")}. Scheduled for removal in v{deprecation.RemovalVersion}.0.0.")]
+[global::System.Obsolete(@"Deprecated in DotNetNuke {deprecation.MajorVersion}.{deprecation.MinorVersion}.{deprecation.PatchVersion}. {deprecation.Replacement.TrimEnd('.').Replace("\"", "\"\"")}. Scheduled for removal in v{deprecation.RemovalVersion}.0.0."{(deprecation.IsError ? ", true" : string.Empty)})]
 """);
             switch (memberDeclaration)
             {
@@ -484,7 +484,8 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
                 (int)args[0].Value!,
                 (int)args[1].Value!,
                 (int)args[2].Value!,
-                (string)args[3].Value!);
+                (string)args[3].Value!,
+                args.Length > 4 ? (bool)args[4].Value! : false);
 
             foreach (var arg in attribute.NamedArguments)
             {
@@ -572,12 +573,13 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
 
     private sealed class DnnDeprecation
     {
-        public DnnDeprecation(int majorVersion, int minorVersion, int patchVersion, string replacement)
+        public DnnDeprecation(int majorVersion, int minorVersion, int patchVersion, string replacement, bool error)
         {
             this.MajorVersion = majorVersion;
             this.MinorVersion = minorVersion;
             this.PatchVersion = patchVersion;
             this.Replacement = replacement;
+            this.IsError = error;
             this.RemovalVersion = majorVersion + 2;
         }
 
@@ -588,6 +590,8 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
         public int PatchVersion { get; }
 
         public string Replacement { get; }
+
+        public bool IsError { get; }
 
         public int RemovalVersion { get; set; }
     }

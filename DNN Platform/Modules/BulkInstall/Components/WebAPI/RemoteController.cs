@@ -30,16 +30,18 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
     /// <param name="eventLogManager">The event log manager.</param>
     /// <param name="eventLogger">The event logger.</param>
     /// <param name="appStatus">The application status.</param>
+    /// <param name="serviceProvider">The DI container.</param>
     /// <param name="apiTokenController">The API token controller.</param>
     [InWhitelist]
     [ApiTokenAuthorize(APIUserManager.BulkInstallApiTokenScopeKey, "~/DesktopModules/BulkInstall/App_LocalResources/BulkInstall.resx", ApiTokenScope.Host)]
-    public class RemoteController(SessionManager sessionManager, APIUserManager apiUserManager, EventLogManager eventLogManager, IEventLogger eventLogger, IApplicationStatusInfo appStatus, IApiTokenController apiTokenController) : DnnApiController
+    public class RemoteController(SessionManager sessionManager, APIUserManager apiUserManager, EventLogManager eventLogManager, IEventLogger eventLogger, IApplicationStatusInfo appStatus, IServiceProvider serviceProvider, IApiTokenController apiTokenController) : DnnApiController
     {
         private readonly SessionManager sessionManager = sessionManager;
         private readonly APIUserManager apiUserManager = apiUserManager;
         private readonly EventLogManager eventLogManager = eventLogManager;
         private readonly IEventLogger eventLogger = eventLogger;
         private readonly IApplicationStatusInfo appStatus = appStatus;
+        private readonly IServiceProvider serviceProvider = serviceProvider;
         private readonly IApiTokenController apiTokenController = apiTokenController;
 
         /// <summary>Creates a new session.</summary>
@@ -136,7 +138,7 @@ namespace Dnn.Modules.BulkInstall.Components.WebAPI
                 Session sessionObj = this.sessionManager.GetSession(sessionGuid);
 
                 // Create a deployment operation.
-                RemoteDeployment deployOperation = new RemoteDeployment(this.apiUserManager, this.sessionManager, this.eventLogManager, this.eventLogger, this.appStatus, sessionObj, ipAddress, apiKey.ApiTokenId);
+                RemoteDeployment deployOperation = new RemoteDeployment(this.apiUserManager, this.sessionManager, this.eventLogManager, this.eventLogger, this.appStatus, this.serviceProvider, sessionObj, ipAddress, apiKey.ApiTokenId);
 
                 // Deploy.
                 deployOperation.Deploy();

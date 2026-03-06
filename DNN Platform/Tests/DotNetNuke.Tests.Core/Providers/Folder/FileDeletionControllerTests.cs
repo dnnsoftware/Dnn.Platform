@@ -9,38 +9,41 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content;
+    using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Tests.Core.Providers.Builders;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
     using Moq;
     using NUnit.Framework;
 
     public class FileDeletionControllerTests
     {
-        private Mock<IFileLockingController> _mockFileLockingController;
-        private Mock<DataProvider> _mockData;
-        private Mock<IFileVersionController> _fileVersionController;
-        private Mock<IFolderMappingController> _folderMappingController;
-        private Mock<FolderProvider> _mockFolderProvider;
-        private Mock<IContentController> _mockContentController;
+        private Mock<IFileLockingController> mockFileLockingController;
+        private Mock<DataProvider> mockData;
+        private Mock<IFileVersionController> fileVersionController;
+        private Mock<IFolderMappingController> folderMappingController;
+        private Mock<FolderProvider> mockFolderProvider;
+        private Mock<IContentController> mockContentController;
+        private FileDeletionController fileDeletionController;
 
         [SetUp]
         public void Setup()
         {
-            this._mockFileLockingController = new Mock<IFileLockingController>();
-            this._mockData = MockComponentProvider.CreateDataProvider();
-            this._fileVersionController = new Mock<IFileVersionController>();
-            this._folderMappingController = new Mock<IFolderMappingController>();
-            this._mockFolderProvider = MockComponentProvider.CreateFolderProvider(Constants.FOLDER_ValidFolderProviderType);
-            this._mockContentController = new Mock<IContentController>();
+            this.mockFileLockingController = new Mock<IFileLockingController>();
+            this.mockData = MockComponentProvider.CreateDataProvider();
+            this.fileVersionController = new Mock<IFileVersionController>();
+            this.folderMappingController = new Mock<IFolderMappingController>();
+            this.mockFolderProvider = MockComponentProvider.CreateFolderProvider(Constants.FOLDER_ValidFolderProviderType);
+            this.mockContentController = new Mock<IContentController>();
+            MockComponentProvider.CreateDataCacheProvider();
+            FileLockingController.SetTestableInstance(this.mockFileLockingController.Object);
+            FileVersionController.RegisterInstance(this.fileVersionController.Object);
+            FolderMappingController.RegisterInstance(this.folderMappingController.Object);
 
-            FileLockingController.SetTestableInstance(this._mockFileLockingController.Object);
-            FileVersionController.RegisterInstance(this._fileVersionController.Object);
-            FolderMappingController.RegisterInstance(this._folderMappingController.Object);
-
-            ComponentFactory.RegisterComponentInstance<IContentController>(this._mockContentController.Object);
+            this.fileDeletionController = new FileDeletionController(this.mockFileLockingController.Object, this.fileVersionController.Object, this.folderMappingController.Object, this.mockContentController.Object, this.mockData.Object);
         }
 
         [TearDown]
@@ -55,23 +58,23 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             // Arrange
             var fileInfo = new FileInfoBuilder().Build();
-            this._fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(fileInfo, false));
+            this.fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(fileInfo, false));
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-            this._folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
-            this._mockData.Setup(md => md.DeleteFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>()));
+            this.mockData.Setup(md => md.DeleteFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>()));
 
-            this._mockFolderProvider.Setup(mf => mf.DeleteFile(fileInfo)).Verifiable();
+            this.mockFolderProvider.Setup(mf => mf.DeleteFile(fileInfo)).Verifiable();
 
             string someString;
-            this._mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(false);
+            this.mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(false);
 
             // Act
-            FileDeletionController.Instance.DeleteFile(fileInfo);
+            this.fileDeletionController.DeleteFile(fileInfo);
 
             // Assert
-            this._mockFolderProvider.Verify();
+            this.mockFolderProvider.Verify();
         }
 
         [Test]
@@ -81,10 +84,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var fileInfo = new FileInfoBuilder().Build();
 
             string someString;
-            this._mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(true);
+            this.mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(true);
 
             // Act
-            Assert.Throws<FileLockedException>(() => FileDeletionController.Instance.DeleteFile(fileInfo));
+            Assert.Throws<FileLockedException>(() => this.fileDeletionController.DeleteFile(fileInfo));
         }
 
         [Test]
@@ -93,18 +96,18 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             // Arrange
             var fileInfo = new FileInfoBuilder().Build();
 
-            this._fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(fileInfo, false));
+            this.fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(fileInfo, false));
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
 
-            this._folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
             string someString;
-            this._mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(false);
+            this.mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(false);
 
-            this._mockFolderProvider.Setup(mf => mf.DeleteFile(fileInfo)).Throws<Exception>();
+            this.mockFolderProvider.Setup(mf => mf.DeleteFile(fileInfo)).Throws<Exception>();
 
-            Assert.Throws<FolderProviderException>(() => FileDeletionController.Instance.DeleteFile(fileInfo));
+            Assert.Throws<FolderProviderException>(() => this.fileDeletionController.DeleteFile(fileInfo));
         }
 
         [Test]
@@ -113,23 +116,23 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             // Arrange
             var fileInfo = new FileInfoBuilder().Build();
 
-            this._fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(fileInfo, false));
+            this.fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(fileInfo, false));
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-            this._folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
-            this._mockData.Setup(md => md.DeleteFile(Constants.CONTENT_ValidPortalId, It.IsAny<string>(), Constants.FOLDER_ValidFolderId)).Verifiable();
+            this.mockData.Setup(md => md.DeleteFile(Constants.CONTENT_ValidPortalId, It.IsAny<string>(), Constants.FOLDER_ValidFolderId)).Verifiable();
 
-            this._mockFolderProvider.Setup(mf => mf.DeleteFile(fileInfo));
+            this.mockFolderProvider.Setup(mf => mf.DeleteFile(fileInfo));
 
             string someString;
-            this._mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(false);
+            this.mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(false);
 
             // Act
-            FileDeletionController.Instance.DeleteFileData(fileInfo);
+            this.fileDeletionController.DeleteFileData(fileInfo);
 
             // Assert
-            this._mockData.Verify();
+            this.mockData.Verify();
         }
 
         [Test]
@@ -140,25 +143,25 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .WithContentItemId(Constants.CONTENT_ValidContentItemId)
                 .Build();
 
-            this._fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(fileInfo, false));
+            this.fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(fileInfo, false));
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-            this._folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
-            this._mockData.Setup(md => md.DeleteFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>()));
+            this.mockData.Setup(md => md.DeleteFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>()));
 
-            this._mockFolderProvider.Setup(mf => mf.DeleteFile(fileInfo));
+            this.mockFolderProvider.Setup(mf => mf.DeleteFile(fileInfo));
 
-            this._mockContentController.Setup(mcc => mcc.DeleteContentItem(Constants.CONTENT_ValidContentItemId)).Verifiable();
+            this.mockContentController.Setup(mcc => mcc.DeleteContentItem(Constants.CONTENT_ValidContentItemId)).Verifiable();
 
             string someString;
-            this._mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(false);
+            this.mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(false);
 
             // Act
-            FileDeletionController.Instance.DeleteFileData(fileInfo);
+            this.fileDeletionController.DeleteFileData(fileInfo);
 
             // Assert
-            this._mockContentController.Verify();
+            this.mockContentController.Verify();
         }
     }
 }

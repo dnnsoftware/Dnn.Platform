@@ -122,7 +122,7 @@ namespace Dnn.PersonaBar.Seo.Services
                 DataCache.ClearPortalCache(this.PortalId, false);
                 DataCache.ClearTabsCache(this.PortalId);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -243,7 +243,7 @@ namespace Dnn.PersonaBar.Seo.Services
                     // clear cache
                     this.ClearCache();
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
                 }
             }
             catch (Exception exc)
@@ -321,7 +321,7 @@ namespace Dnn.PersonaBar.Seo.Services
             try
             {
                 this.controller.CreateVerification(verification);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -364,7 +364,7 @@ namespace Dnn.PersonaBar.Seo.Services
                 }
 
                 PortalController.UpdatePortalSetting(this.PortalId, "SitemapCacheDays", request.SitemapCacheDays.ToString(CultureInfo.InvariantCulture));
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -383,7 +383,7 @@ namespace Dnn.PersonaBar.Seo.Services
             try
             {
                 this.controller.ResetCache();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -446,7 +446,7 @@ namespace Dnn.PersonaBar.Seo.Services
                     }
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -504,7 +504,7 @@ namespace Dnn.PersonaBar.Seo.Services
                     ExtensionUrlProviderController.DisableProvider(request.ProviderId, this.PortalId);
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {

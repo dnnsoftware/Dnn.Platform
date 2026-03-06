@@ -36,6 +36,9 @@ namespace DotNetNuke.Web.Api
         [Dependency]
         private IApiTokenController ApiTokenController { get; set; }
 
+        [Dependency]
+        private ApiTokenSettingsRepository ApiTokenSettingsRepository { get; set; }
+
         /// <summary>Check if the request is authorized.</summary>
         /// <param name="context">The authentication filter context.</param>
         /// <returns><see langword="true"/> if authorized, <see langword="false"/> otherwise.</returns>
@@ -49,7 +52,7 @@ namespace DotNetNuke.Web.Api
 
             if (token.Scope != ApiTokenScope.Host)
             {
-                var settings = ApiTokenSettings.GetSettings(PortalController.Instance.GetCurrentSettings().PortalId);
+                var settings = ApiTokenSettings.GetSettings(this.ApiTokenSettingsRepository, PortalController.Instance.GetCurrentSettings().PortalId);
                 if (!settings.AllowApiTokens)
                 {
                     return false;

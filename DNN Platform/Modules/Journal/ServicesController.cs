@@ -5,16 +5,15 @@
 namespace DotNetNuke.Modules.Journal
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
@@ -25,21 +24,33 @@ namespace DotNetNuke.Modules.Journal
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Journal;
-    using DotNetNuke.Services.Journal.Internal;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A web API controller for the Journal module.</summary>
+    /// <param name="hostSettings">The host settings.</param>
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [SupportedModules("Journal")]
-    public class ServicesController : DnnApiController
+    public class ServicesController(IHostSettings hostSettings)
+        : DnnApiController
     {
-        private const int MentionNotificationLength = 100;
         private const string MentionNotificationSuffix = "...";
         private const string MentionIdentityChar = "@";
+        private const int MentionNotificationLength = 100;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesController));
+        private static readonly string[] AcceptedFileExtensions = ["jpg", "png", "gif", "jpe", "jpeg", "tiff", "bmp",];
 
-        private static readonly string[] AcceptedFileExtensions = { "jpg", "png", "gif", "jpe", "jpeg", "tiff", "bmp" };
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
+        /// <summary>Initializes a new instance of the <see cref="ServicesController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public ServicesController()
+            : this(null)
+        {
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -268,7 +279,7 @@ namespace DotNetNuke.Modules.Journal
                 foreach (var ur in relations)
                 {
                     var targetUserId = ur.UserId == this.UserInfo.UserID ? ur.RelatedUserId : ur.UserId;
-                    var targetUser = UserController.GetUserById(this.PortalSettings.PortalId, targetUserId);
+                    var targetUser = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, targetUserId);
                     var relationship = RelationshipController.Instance.GetRelationship(ur.RelationshipId);
                     if (ur.Status == RelationshipStatus.Accepted && targetUser != null
                         && ((relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers && ur.RelatedUserId == this.UserInfo.UserID)
@@ -459,18 +470,16 @@ namespace DotNetNuke.Modules.Journal
 
             foreach (var mention in mentions)
             {
-                var user = UserController.GetUserById(this.PortalSettings.PortalId, mention.UserId);
+                var user = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, mention.UserId);
 
                 if (user != null)
                 {
                     var relationship = RelationshipController.Instance.GetFollowingRelationship(this.UserInfo, user) ??
                                        RelationshipController.Instance.GetFriendRelationship(this.UserInfo, user);
-                    if (relationship != null && relationship.Status == RelationshipStatus.Accepted)
+                    if (relationship is { Status: RelationshipStatus.Accepted })
                     {
-                        var userLink = string.Format(
-                            "<a href=\"{0}\" class=\"userLink\" target=\"_blank\">{1}</a>",
-                            Globals.UserProfileURL(user.UserID),
-                            MentionIdentityChar + user.DisplayName);
+                        var userLink =
+                            $"""<a href="{Globals.UserProfileURL(user.UserID)}" class="userLink" target="_blank">{MentionIdentityChar + user.DisplayName}</a>""";
                         content = content.Replace(MentionIdentityChar + mention.DisplayName, userLink);
 
                         mentionedUsers.Add(mention.DisplayName, user);

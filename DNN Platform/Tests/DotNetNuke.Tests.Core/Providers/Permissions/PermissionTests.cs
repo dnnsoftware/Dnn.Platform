@@ -6,8 +6,11 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
 {
     using System.Collections.Generic;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
@@ -36,7 +39,14 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
         [SetUp]
         public void SetUp()
         {
-            this.serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<ICryptographyProvider>()));
+            this.serviceProvider = FakeServiceProvider.Setup(services =>
+            {
+                services.AddSingleton(Mock.Of<ICryptographyProvider>());
+                services.AddSingleton(new ListController(Mock.Of<IEventLogger>(), Mock.Of<IHostSettings>()));
+                services.AddSingleton(Mock.Of<IPortalController>());
+                services.AddSingleton(Mock.Of<IApplicationStatusInfo>());
+                services.AddSingleton(Mock.Of<IPortalGroupController>());
+            });
         }
 
         [TearDown]
